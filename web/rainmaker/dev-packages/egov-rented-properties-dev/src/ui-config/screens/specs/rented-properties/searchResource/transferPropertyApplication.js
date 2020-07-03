@@ -94,20 +94,7 @@ const statusField = {
   },
   required: false,
   jsonPath: "searchScreen.state",
-  data: [
-    {
-      code: "Status of Super Intendent",
-      label: "STATUS_SUPER_INTENDENT"
-    },
-    {
-      code: "Competent Authority",
-      label: "COMPETENT_AUTHORITY"
-    },
-    {
-      code: "APRO to be added",
-      label: "APRO_TO_ADDED"
-    }
-  ],
+  data: [],
   gridDefination: {
     xs: 12,
     sm: 6

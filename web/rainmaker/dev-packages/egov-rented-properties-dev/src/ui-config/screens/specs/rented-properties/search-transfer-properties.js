@@ -4,6 +4,7 @@ import {
     getBreak,
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
+  import { transferPropertyApplication } from "./searchResource/transferPropertyApplication";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg, setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField,
@@ -12,7 +13,6 @@ import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils
 import { httpRequest } from "../../../../ui-utils";
 import find from "lodash/find";
 import get from "lodash/get";
-import { transferPropertyApplication } from "./searchResource/transferPropertyApplication";
 import { searchApiCall } from "./searchResource/functions"
 import { searchResults } from "./searchResource/searchResults";
 import { getColonyTypes } from "./apply";
@@ -26,17 +26,14 @@ const getStatusList = async (action, state, dispatch) => {
     const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
     dispatch(
       handleField(
-        "search",
-        "components.div.children.transferPropertyApplication.children.cardContent.children.colonyContainer.children.status",
+        "search-transfer-properties",
+        "components.div.children.transferPropertyApplication.children.cardContent.children.phoneNumberContainer.children.status",
         "props.data",
         status
       )
     );
   }  
 }
-
-
-
 
   const header = getCommonHeader({
     labelName: "Ownership Transfer",
