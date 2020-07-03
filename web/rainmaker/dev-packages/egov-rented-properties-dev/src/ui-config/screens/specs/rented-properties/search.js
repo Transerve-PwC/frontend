@@ -72,7 +72,6 @@ import {
                   xs: 12,
                   sm: 8
                 },
-                ...header
               },
               searchButton: {
                 componentPath: "Button",

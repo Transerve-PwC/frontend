@@ -6,7 +6,7 @@ import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
 const header = getCommonHeader(
     {
       labelName: "Rented Properties",
-      labelKey: "RP_COMMON_RP"
+      labelKey: "RP_COMMON_RENTED_PROPERTIES"
     },
     {
       classes: {
@@ -17,16 +17,16 @@ const header = getCommonHeader(
 
   const cardItems = [{
     label: {
-        labelKey: "MASTER_ENTRY",
-        labelName: "Master Entry"
+        labelKey: "RP_PROPERTY_MASTER_HEADER",
+        labelName: "Property Master"
     },
     icon: <FormIcon />,
     route: "search"
   },
   {
     label: {
-        labelKey: "OWNER_SHIP_TRANSFER_HEADER",
-        labelName: "Transfer of Transit site In case of Legal Heir (Ownership Transfer)"
+        labelKey: "RP_OWNERSHIP_TRANSFER_HEADER",
+        labelName: "Ownership Transfer"
     },
     icon: <FormIcon />,
     route: "search-transfer-properties"
@@ -61,24 +61,24 @@ const cardItems2 = [
   },
   {
     label: {
-        labelKey: "OFFLINE_RENT_AMOUNT_PAYMENT_HEADER",
-        labelName: "Offline Rent amount payment"
+        labelKey: "RP_OFFLINE_RENT_AMOUNT_PAYMENT_HEADER",
+        labelName: "Offline rent amount"
     },
     icon: <FormIcon />,
     route: "search-transfer-properties"
   },
   {
     label: {
-        labelKey: "NOTICE_GENERATION_HEADER",
-        labelName: "Notice Gneration"
+        labelKey: "RP_GENERATING_NOTICE_HEADER",
+        labelName: "Generating notice for Violation/Recovery"
     },
     icon: <FormIcon />,
     route: "search-transfer-properties"
   },
   {
     label: {
-        labelKey: "CAPTURING_TRANSIT_SITE_IMAGE_HEADER",
-        labelName: "Capturing Transit site Images "
+        labelKey: "RP_CAPTURING_TRANSIT_SITE_IMAGE_HEADER",
+        labelName: "Capturing Transit Site Images"
     },
     icon: <FormIcon />,
     route: "search-transfer-properties"

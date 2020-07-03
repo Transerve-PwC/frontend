@@ -10,8 +10,8 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
 import { get } from "lodash";
 
 const header = getCommonHeader({
-    labelName: "Apply Fresh License",
-    labelKey: "RP_COMMON_FRESH_LICENSE_APPLY"
+    labelName: "Apply for Ownership Transfer",
+    labelKey: "RP_APPLY_OWNERSHIP_TRANFER"
 });
 
 const setDocumentData = async(action, state, dispatch) => {

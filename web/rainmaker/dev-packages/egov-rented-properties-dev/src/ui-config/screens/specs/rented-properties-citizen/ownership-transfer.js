@@ -9,8 +9,8 @@ const tenantId = getTenantId();
 
 const header = getCommonHeader(
     {
-      labelName: "Transfer of Transit site In case of Legal Heir (Ownership Transfer)",
-      labelKey: "OWNER_SHIP_TRANSFER_HEADER"
+      labelName: "Transfer of Transit site In case of Legal Heir",
+      labelKey: "RP_OWNER_SHIP_TRANSFER_HEADER"
     },
     {
       classes: {
@@ -21,8 +21,8 @@ const header = getCommonHeader(
 
 const cardItems = [{
     label: {
-        labelKey: "Apply",
-        labelName: "Apply"
+        labelKey: "RP_APPLY_OWNERSHIP_TRANFER",
+        labelName: "Apply for Ownership Transfer"
     },
     icon: <TradeLicenseIcon />,
     route: `ownership-apply?tenantId=${tenantId}`

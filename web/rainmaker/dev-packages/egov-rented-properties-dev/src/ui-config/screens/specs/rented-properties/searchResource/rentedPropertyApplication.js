@@ -107,12 +107,12 @@ const statusField = {
 
 export const rentedPropertyApplication = getCommonCard({
   subHeader: getCommonTitle({
-    labelName: "Search Rented Property Application",
-    labelKey: "RP_HOME_SEARCH_RESULTS_HEADING"
+    labelName: "Search Property Master",
+    labelKey: "RP_SEARCH_PROPERTY_MASTER_HEADER"
   }),
   subParagraph: getCommonParagraph({
-    labelName: "Provide at least one parameter to search for an application",
-    labelKey: "TL_HOME_SEARCH_RESULTS_DESC"
+    labelName: "Please provide atleast one parameter to search Property",
+    labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_PROPERTY_LABEL"
   }),
   colonyContainer: getCommonContainer({
     colony: getSelectField(colonyField),
