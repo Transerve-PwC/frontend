@@ -11,14 +11,14 @@ import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils
 import { httpRequest } from "../../../../ui-utils";
 import find from "lodash/find";
 import get from "lodash/get";
-import { rentedPropertyApplication } from "./searchResource/rentedPropertyApplication";
+import { transferPropertyApplication } from "./searchResource/transferPropertyApplication";
 import { searchApiCall } from "./searchResource/functions"
 import { searchResults } from "./searchResource/searchResults";
 import { getColonyTypes } from "./apply";
 
   const header = getCommonHeader({
-    labelName: "Transfer Properties",
-    labelKey: "RP_COMMON_TRANSFER_PROPERTIES"
+    labelName: "Ownership Transfer",
+    labelKey: "RP_OWNERSHIP_TRANSFER_HEADER"
   });
   const transferPropertiesSearchAndResult = {
     uiFramework: "material-ui",
@@ -51,7 +51,7 @@ import { getColonyTypes } from "./apply";
               }
             }
           },
-          rentedPropertyApplication,
+          transferPropertyApplication,
           breakAfterSearch: getBreak(),
           searchResults
         }
