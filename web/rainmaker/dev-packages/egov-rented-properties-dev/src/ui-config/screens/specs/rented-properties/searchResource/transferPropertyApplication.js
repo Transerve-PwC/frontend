@@ -94,7 +94,20 @@ const statusField = {
   },
   required: false,
   jsonPath: "searchScreen.state",
-  data:[],
+  data: [
+    {
+      code: "Status of Super Intendent",
+      label: "STATUS_SUPER_INTENDENT"
+    },
+    {
+      code: "Competent Authority",
+      label: "COMPETENT_AUTHORITY"
+    },
+    {
+      code: "APRO to be added",
+      label: "APRO_TO_ADDED"
+    }
+  ],
   gridDefination: {
     xs: 12,
     sm: 6
@@ -135,15 +148,15 @@ export const transferPropertyApplication = getCommonCard({
     labelKey: "TL_HOME_SEARCH_RESULTS_DESC"
   }),
   colonyContainer: getCommonContainer({
-    applicationNumber: getSelectField(applicationNumberField),
-    transitNumber: getSelectField(transitNumberField)
+    applicationNumber: getTextField(applicationNumberField),
+    transitNumber: getTextField(transitNumberField)
   }),
   transitNumberContainer: getCommonContainer({
-    colony: getTextField(colonyField),
+    colony: getSelectField(colonyField),
     applicantName: getTextField(applicantNameField)
   }),
   phoneNumberContainer: getCommonContainer({
-    status: getTextField(statusField),
+    status: getSelectField(statusField),
     phone: getTextField(phoneNumberField)
   }),
   button: getCommonContainer({
