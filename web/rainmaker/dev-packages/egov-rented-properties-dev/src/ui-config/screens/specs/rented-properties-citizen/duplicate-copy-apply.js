@@ -2,7 +2,9 @@ import {
     getCommonHeader
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 
-import {stepper, formwizardDuplicateCopyFirstStep } from '../rented-properties/applyResource/applyConfig';
+import {stepper, formwizardDuplicateCopyFirstStep, formwizardDuplicateCopySecondStep } from '../rented-properties/applyResource/applyConfig';
+import {footer} from './footer-duplicate-copy';
+
 
 const header = getCommonHeader({
     labelName: "Apply Duplicate Copy Of Allotment",
@@ -38,6 +40,8 @@ const applyLicense = {
                 },
                 stepper,
                 formwizardFirstStep: formwizardDuplicateCopyFirstStep,
+                formwizardSecondStep: formwizardDuplicateCopySecondStep,
+                footer
             }
         }
     }

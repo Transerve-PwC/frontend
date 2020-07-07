@@ -151,3 +151,15 @@ export const formwizardDuplicateCopyFirstStep = {
     ownershipAddressDetails
   }
 };
+
+export const formwizardDuplicateCopySecondStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form5"
+  },
+  children: {
+    ownershipTransferDocumentsDetails
+  },
+  visible: false
+};

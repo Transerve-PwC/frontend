@@ -183,7 +183,7 @@ const getTransitSiteDetails = () => {
         header: transitSiteHeader,
         detailsContainer: getCommonContainer({
             transitNumber: getTextField(transitNumberField),
-            colony: getSelectField(colonyFieldConfig),
+            colony: getSelectField(colonyField),
         })
     }
 }
