@@ -244,3 +244,61 @@ export const getDetailsFromProperty = async (state, dispatch) => {
   console.log(e);
   }
 }
+
+
+export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
+  try {
+      let queryObject = JSON.parse(
+          JSON.stringify(
+            get(state.screenConfiguration.preparedFinalObject, "Owners", [])
+          )
+        );
+
+
+
+      const userInfo = JSON.parse(getUserInfo())
+      const tenantId = userInfo.permanentCity;
+      // const tenantId = getQueryArg(window.location.href, "tenantId");
+      const id = get(queryObject[0], "id");
+      let response;
+
+
+
+      
+
+
+      set(queryObject[0], "tenantId", tenantId);
+      set(queryObject[0], "applicationStatus", "");
+      set(queryObject[0], "activeState", true);
+      set(queryObject[0], "isPrimaryOwner", true);
+
+      set(queryObject[0], "ownerDetails.phone", userInfo.userName)
+      set(queryObject[0], "ownerDetails.permanent", false)
+      set(queryObject[0], "ownerDetails.applicationType", "CitizenApplication")
+      set(queryObject[0], "ownerDetails.dateOfDeathAllottee", convertDateToEpoch(queryObject[0].ownerDetails.dateOfDeathAllottee))
+
+      console.log(queryObject);
+      console.log(id);
+      
+
+
+
+      // if(!id) {
+      //   set(queryObject[0], "action", "INITIATE");
+      //   response = await httpRequest(
+      //     "post",
+      //     "/csp/ownership-transfer/_create",
+      //     "",
+      //     [],
+      //     { Owners: queryObject }
+      //   );
+      // }
+      // let {Owners} = response
+      // dispatch(prepareFinalObject("Owners", Owners));
+      return true;
+  } catch (error) {
+      dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+      console.log(error);
+      return false;
+  }
+}

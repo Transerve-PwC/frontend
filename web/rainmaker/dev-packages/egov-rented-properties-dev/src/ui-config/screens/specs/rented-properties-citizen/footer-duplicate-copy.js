@@ -1,7 +1,7 @@
 import { getCommonApplyFooter, validateFields } from "../utils";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
-import { applyOwnershipTransfer, getDetailsFromProperty } from "../../../../ui-utils/apply";
+import { applyDuplicateCopy, getDetailsFromProperty } from "../../../../ui-utils/apply";
 import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DETAILS_STEP, DOCUMENT_UPLOAD_STEP, SUMMARY_STEP } from "../rented-properties/applyResource/footer-duplicate-copy";
 import { some } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -39,7 +39,7 @@ const callBackForNext = async(state, dispatch) => {
           if(!propertyId) {
             const res = await getDetailsFromProperty(state, dispatch)
             if(!!res) {
-              const applyRes = applyOwnershipTransfer(state, dispatch, activeStep)
+              const applyRes = applyDuplicateCopy(state, dispatch, activeStep)
               if(!applyRes) {
                 return
               }
@@ -128,7 +128,7 @@ const callBackForNext = async(state, dispatch) => {
 }
 
 const callBackForPrevious = (state, dispatch) => {
-  changeStep(state, dispatch, "ownership-apply", "previous");
+  changeStep(state, dispatch, "duplicate-copy-apply", "previous");
 };
 
 export const footer = getCommonApplyFooter({
