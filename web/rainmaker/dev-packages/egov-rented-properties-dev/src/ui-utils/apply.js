@@ -236,6 +236,13 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               findOwner.ownerDetails.revisionPercentage
             )
           )
+          dispatch(
+            prepareFinalObject(
+              "Owners[0].ownerDetails.name",
+              findOwner.ownerDetails.name
+            )
+          )
+          
           return true
         }
     }
@@ -254,6 +261,17 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
           )
         );
 
+        let propertyQueryObject = JSON.parse(
+          JSON.stringify(
+            get(state.screenConfiguration.preparedFinalObject, "Properties", [])
+          )
+        );
+
+        console.log(propertyQueryObject);
+        console.log(queryObject);
+        
+        
+
 
 
       const userInfo = JSON.parse(getUserInfo())
@@ -261,21 +279,41 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
       // const tenantId = getQueryArg(window.location.href, "tenantId");
       const id = get(queryObject[0], "id");
       let response;
+      let finalObject = {
+        "propertyId": queryObject[0].propertyId,
+        "transitNumber": propertyQueryObject[0].transitNumber,
+        "tenantId": tenantId,
+        "state": "",
+        "propertyDetails": "",
+        "applicant": [{
+          "name": queryObject[0].ownerDetails.name,
+          "email": queryObject[0].ownerDetails.email,
+          "phone": "7588444040",
+          "guardian": "EFG",
+          "relationship": queryObject[0].ownerDetails.relationWithDeceasedAllottee,
+          "adhaarNumber": queryObject[0].ownerDetails.aadhaarNumber,
+        }]
+      };
+
+
+
+
+
 
 
 
       
 
 
-      set(queryObject[0], "tenantId", tenantId);
-      set(queryObject[0], "applicationStatus", "");
-      set(queryObject[0], "activeState", true);
-      set(queryObject[0], "isPrimaryOwner", true);
+      // set(queryObject[0], "tenantId", tenantId);
+      // set(queryObject[0], "applicationStatus", "");
+      // set(queryObject[0], "activeState", true);
+      // set(queryObject[0], "isPrimaryOwner", true);
 
-      set(queryObject[0], "ownerDetails.phone", userInfo.userName)
-      set(queryObject[0], "ownerDetails.permanent", false)
-      set(queryObject[0], "ownerDetails.applicationType", "CitizenApplication")
-      set(queryObject[0], "ownerDetails.dateOfDeathAllottee", convertDateToEpoch(queryObject[0].ownerDetails.dateOfDeathAllottee))
+      // set(queryObject[0], "ownerDetails.phone", userInfo.userName)
+      // set(queryObject[0], "ownerDetails.permanent", false)
+      // set(queryObject[0], "ownerDetails.applicationType", "CitizenApplication")
+      // set(queryObject[0], "ownerDetails.dateOfDeathAllottee", convertDateToEpoch(queryObject[0].ownerDetails.dateOfDeathAllottee))
 
       console.log(queryObject);
       console.log(id);
@@ -283,18 +321,20 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
 
 
 
-      // if(!id) {
-      //   set(queryObject[0], "action", "INITIATE");
-      //   response = await httpRequest(
-      //     "post",
-      //     "/csp/ownership-transfer/_create",
-      //     "",
-      //     [],
-      //     { Owners: queryObject }
-      //   );
-      // }
-      // let {Owners} = response
-      // dispatch(prepareFinalObject("Owners", Owners));
+      if(!id) {
+        set(queryObject[0], "action", "INITIATE");
+
+        finalObject.action = "INITIATE"
+        response = await httpRequest(
+          "post",
+          "/csp/duplicatecopy/_create",
+          "",
+          [],
+          { DuplicateCopyApplications: [finalObject] }
+        );
+      }
+      let {Owners} = response
+      dispatch(prepareFinalObject("Owners", Owners));
       return true;
   } catch (error) {
       dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
