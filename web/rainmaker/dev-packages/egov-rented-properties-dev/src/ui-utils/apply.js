@@ -291,60 +291,28 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
 
       const userInfo = JSON.parse(getUserInfo())
       const tenantId = userInfo.permanentCity;
-      // const tenantId = getQueryArg(window.location.href, "tenantId");
+      const phoneNumber = userInfo.userName;
       const id = get(queryObject[0], "id");
       let response;
-      let finalObject = {
-        "property": queryObject[0].property,
-        "tenantId": tenantId,
-        "state": "",
-        "propertyDetails": "",
-        "applicant": [{
-          "name": queryObject[0].ownerDetails.name,
-          "email": queryObject[0].ownerDetails.email,
-          "phone": "7588444040",
-          "guardian": "EFG",
-          "relationship": queryObject[0].ownerDetails.relationWithDeceasedAllottee,
-          "adhaarNumber": queryObject[0].ownerDetails.aadhaarNumber,
-        }]
-      };
 
-
-
-
-
-
-
-
+      set(queryObject[0], "tenantId", tenantId);
+      set(queryObject[0], "state", "");
+      set(queryObject[0], "propertyDetails", "");
+      set(queryObject[0], "applicant[0].name", queryObject[0].ownerDetails.name)
+      set(queryObject[0], "applicant[0].email", queryObject[0].ownerDetails.email)
+      set(queryObject[0], "applicant[0].phone", phoneNumber)
+      set(queryObject[0], "applicant[0].guardian", "EFG")
+      set(queryObject[0], "applicant[0].relationship", queryObject[0].ownerDetails.relationWithDeceasedAllottee)
+      set(queryObject[0], "applicant[0].adhaarNumber", queryObject[0].ownerDetails.aadhaarNumber)
       
-
-
-      // set(queryObject[0], "tenantId", tenantId);
-      // set(queryObject[0], "applicationStatus", "");
-      // set(queryObject[0], "activeState", true);
-      // set(queryObject[0], "isPrimaryOwner", true);
-
-      // set(queryObject[0], "ownerDetails.phone", userInfo.userName)
-      // set(queryObject[0], "ownerDetails.permanent", false)
-      // set(queryObject[0], "ownerDetails.applicationType", "CitizenApplication")
-      // set(queryObject[0], "ownerDetails.dateOfDeathAllottee", convertDateToEpoch(queryObject[0].ownerDetails.dateOfDeathAllottee))
-
-      console.log(queryObject);
-      console.log(id);
-      
-
-
-
       if(!id) {
         set(queryObject[0], "action", "INITIATE");
-
-        finalObject.action = "INITIATE"
         response = await httpRequest(
           "post",
           "/csp/duplicatecopy/_create",
           "",
           [],
-          { DuplicateCopyApplications: [finalObject] }
+          { DuplicateCopyApplications:queryObject }
         );
       }
       let {Owners} = response
