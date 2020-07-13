@@ -14,8 +14,8 @@ const userInfo = JSON.parse(getUserInfo());
 
 export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
 export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
-export const OWNER_NAME = getLocaleLabels("OWNER NAME", "RP_COMMON_TABLE_COL_OWNER_NAME")
-export const STATUS = getLocaleLabels("STATUS", "RP_COMMON_TABLE_COL_STATUS")
+export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
+export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 
 
 export const searchResults = {
@@ -82,6 +82,7 @@ const onRowClick = rowData => {
 
 const onTransferPropertyRowClick = rowData => {
   console.log("=======row data======", rowData)
+  window.location.href = `ownership-search-preview?applicationNumber=${rowData[0]}&tenantId=${getTenantId()}`
 }
 
 export const transferSearchResults = {
@@ -89,7 +90,8 @@ export const transferSearchResults = {
   props: {...searchResults.props, 
     columns: [
       APPLICATION_NO,
-      PROPERTY_ID,
+      getTextToLocalMapping("Transit No"),
+      // PROPERTY_ID,
       OWNER_NAME,
       STATUS
     ],

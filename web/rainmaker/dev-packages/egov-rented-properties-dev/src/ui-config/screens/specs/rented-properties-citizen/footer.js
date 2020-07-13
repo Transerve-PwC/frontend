@@ -28,18 +28,18 @@ const callBackForNext = async(state, dispatch) => {
           "ownership-apply"
         )
         if(!!isOwnerDetailsValid && !!isAddressDetailsValid) {
-          const propertyId = get(state.screenConfiguration.preparedFinalObject, "Owners[0].propertyId");
-          const transitNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].transitNumber")
+          const propertyId = get(state.screenConfiguration.preparedFinalObject, "Owners[0].property.id");
+          let res = true;
           if(!propertyId) {
-            const res = await getDetailsFromProperty(state, dispatch)
-            if(!!res) {
-              const applyRes = applyOwnershipTransfer(state, dispatch, activeStep)
-              if(!applyRes) {
-                return
-              }
-            } else {
+            res = await getDetailsFromProperty(state, dispatch)
+          }
+          if(!!res) {
+            const applyRes = applyOwnershipTransfer(state, dispatch, activeStep)
+            if(!applyRes) {
               return
             }
+          } else {
+            return
           }
         } else {
             isFormValid = false;
@@ -48,13 +48,13 @@ const callBackForNext = async(state, dispatch) => {
     if(activeStep === DOCUMENT_UPLOAD_STEP) {
       const uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
-        "Properties[0].propertyDetails.applicationDocuments",
+        "Owners[0].ownerDetails.ownershipTransferDocuments",
         []
     );
 
     const uploadedTempDocData = get(
         state.screenConfiguration.preparedFinalObject,
-        "PropertiesTemp[0].applicationDocuments",
+        "OwnersTemp[0].ownershipTransferDocuments",
         []
     );
 
@@ -78,18 +78,19 @@ const callBackForNext = async(state, dispatch) => {
                   };
               });
               dispatch(
-                prepareFinalObject("PropertiesTemp[0].reviewDocData", reviewDocData)
+                prepareFinalObject("OwnersTemp[0].reviewDocData", reviewDocData)
             );
     }
+    isFormValid = true
     }
     if(activeStep === SUMMARY_STEP) {
-      const rentedData = get(
-        state.screenConfiguration.preparedFinalObject,
-        "Properties[0]"
-    );
-    // isFormValid = await applyOwnershipTransfer(state, dispatch);
+    isFormValid = await applyOwnershipTransfer(state, dispatch);
       if (isFormValid) {
-          moveToSuccess(rentedData, dispatch);
+        const rentedData = get(
+          state.screenConfiguration.preparedFinalObject,
+          "Owners[0]"
+      );
+          moveToSuccess(rentedData, dispatch, "OWNERSHIPTRANSFERRP");
       }
     }
     if(activeStep !== SUMMARY_STEP) {

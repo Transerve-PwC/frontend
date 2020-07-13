@@ -140,6 +140,14 @@ class SingleApplication extends React.Component {
         default:
           setRoute(`/egov-opms/roadcutnoc-search-preview?applicationNumber=${item.applicationId}&tenantId=${item.tenantId}`);
       }
+    } else if(moduleName === "OWNERSHIPTRANSFERRP") {
+      switch (item.applicationState) {
+        case "INITIATED": 
+          setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
+          break;
+        default:
+          setRoute(`/rented-properties/ownership-search-preview?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
+      }
     }
   };
 

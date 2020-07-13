@@ -40,6 +40,16 @@ const fieldConfig = {
       labelName: "Enter Comments",
       labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
     }
+  },
+  amount: {
+    label: {
+      labelName: "Extra Charges",
+      labelKey: "WF_EXTRA_CHARGES"
+    },
+    placeholder: {
+      labelName: "Enter Extra Charges",
+      labelKey: "WF_EXTRA_CHARGES_PLACEHOLDER"
+    }
   }
 };
 
@@ -92,7 +102,7 @@ class ActionDialog extends React.Component {
       handleFieldChange,
       onButtonClick,
       dialogData,
-      dataPath
+      dataPath,
     } = this.props;
     const {
       buttonLabel,
@@ -197,52 +207,19 @@ class ActionDialog extends React.Component {
                       placeholder={fieldConfig.comments.placeholder}
                     />
                   </Grid>
-                  <Grid item sm="12">
-                    <Typography
-                      component="h3"
-                      variant="subheading"
-                      style={{
-                        color: "rgba(0, 0, 0, 0.8700000047683716)",
-                        fontFamily: "Roboto",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "20px",
-                        marginBottom: "8px"
-                      }}
-                    >
-                      {/* <div className="rainmaker-displayInline">
-                        <LabelContainer
-                          labelName="Supporting Documents"
-                          labelKey="WF_APPROVAL_UPLOAD_HEAD"
-                        />
-                        {isDocRequired && (
-                          <span style={{ marginLeft: 5, color: "red" }}>*</span>
-                        )}
-                      </div> */}
-                    </Typography>
-                    {/* <div
-                      style={{
-                        color: "rgba(0, 0, 0, 0.60)",
-                        fontFamily: "Roboto",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "20px"
-                      }}
-                    >
-                      <LabelContainer
-                        labelName="Only .jpg and .pdf files. 5MB max file size."
-                        labelKey="WF_APPROVAL_UPLOAD_SUBHEAD"
-                      />
-                    </div>
-                    <UploadMultipleFiles
-                      maxFiles={4}
-                      inputProps={{
-                        accept: "image/*, .pdf, .png, .jpeg"
-                      }}
-                      buttonLabel={{ labelName: "UPLOAD FILES",labelKey : "TL_UPLOAD_FILES_BUTTON" }}
-                      jsonPath={`${dataPath}.wfDocuments`}
-                      maxFileSize={5000}
-                    /> */}
+                  {moduleName === "OwnershipTransferRP" && (dataPath[0].applicationState === "PENDINGSIVERIFICATION" || dataPath[0].applicationState === "PENDINGAPRO") && (
+                    <Grid item sm="12">
+                    <TextFieldContainer
+                      InputLabelProps={{ shrink: true }}
+                      label={fieldConfig.amount.label}
+                      onChange={e =>
+                        handleFieldChange(`${dataPath}.amount`, e.target.value)
+                      }
+                      jsonPath={`${dataPath}.amount`}
+                      placeholder={fieldConfig.amount.placeholder}
+                    />
+                  </Grid>
+                  )}
                     <Grid sm={12} style={{ textAlign: "right" }} className="bottom-button-container">
                       <Button
                         variant={"contained"}
@@ -266,7 +243,6 @@ class ActionDialog extends React.Component {
                         />
                       </Button>
                     </Grid>
-                  </Grid>
                 </Grid>
               }
             />

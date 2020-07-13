@@ -66,10 +66,6 @@ class Footer extends React.Component {
     const {preparedFinalObject} = this.props.state.screenConfiguration;
     const {workflow: {ProcessInstances = []}, Properties} = preparedFinalObject || {}
     let employeeList = [];
-    if (dataPath === "BPA") {
-      handleFieldChange(`${dataPath}.comment`, "");
-      handleFieldChange(`${dataPath}.assignees`, "");
-    } else {
       let action = ""
       switch(item.buttonLabel) {
         case "SENDBACK": {
@@ -85,8 +81,6 @@ class Footer extends React.Component {
       }
       handleFieldChange(`${dataPath}[0].comment`, "");
       handleFieldChange(`${dataPath}[0].assignee`, assignee);
-    }
-
     if (item.isLast) {
       const url =
         process.env.NODE_ENV === "development"
@@ -255,6 +249,8 @@ class Footer extends React.Component {
       },
       menu: downloadMenu
     };
+
+    console.log("==========downloadMenu", downloadMenu)
     return (
       <div className="apply-wizard-footer" id="custom-atoms-footer">
         {!isEmpty(downloadMenu) && (
@@ -272,6 +268,7 @@ class Footer extends React.Component {
           handleFieldChange={handleFieldChange}
           onButtonClick={onDialogButtonClick}
           dataPath={dataPath}
+          moduleName={moduleName}
         />
       </div>
     );

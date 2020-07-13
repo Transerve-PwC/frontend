@@ -14,10 +14,16 @@ const getAcknowledgementCard = (
     purpose,
     status,
     tenant,
-    transitNumber
+    transitNumber,
+    applicationNumber,
+    type
   ) => {
     if ((purpose === "apply" || purpose === "forward" || purpose === "sendback" || purpose ==="reject" || purpose === "approve") && status === "success") {
-      const header =  purpose === "apply" ? {
+      const header = type === "OWNERSHIPTRANSFERRP" ? {
+        labelName: "Ownership transfer application submitted successfully",
+        labelKey: "RP_OWNER_SHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
+      }
+      : purpose === "apply" ? {
         labelName: "Rented Property Master Entry Submitted Successfully",
         labelKey: "RP_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
       } : purpose === "forward" ? {
@@ -32,6 +38,14 @@ const getAcknowledgementCard = (
       } : {
         labelName: "Rented Property Master Entry is Approved Successfully",
         labelKey: "RP_APPROVAL_SUCCESS_MESSAGE_HEAD"
+      }
+
+      const tailText = type === "OWNERSHIPTRANSFERRP" ? {
+        labelName: "Application Number",
+        labelKey: "RP_APPLICATION_NUMBER_LABEL"
+      } : {
+        labelName: "Transit Number",
+        labelKey: "RP_SITE_PLOT_LABEL"
       }
 
       return {
@@ -58,11 +72,8 @@ const getAcknowledgementCard = (
             //       "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
             //     labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
             //   },
-              tailText: {
-                labelName: "Transit Number",
-                labelKey: "RP_SITE_PLOT_LABEL"
-              },
-              number: transitNumber
+              tailText: tailText,
+              number: transitNumber || applicationNumber
             })
           }
         },
@@ -76,14 +87,16 @@ const getAcknowledgementCard = (
     } 
 }
 
-const getData = async (action, state, dispatch, purpose, status, tenant, transitNumber) => {
+const getData = async (action, state, dispatch, purpose, status, tenant, transitNumber,applicationNumber, type) => {
     const data = await getAcknowledgementCard(
       state,
       dispatch,
       purpose,
       status,
       tenant,
-      transitNumber
+      transitNumber,
+      applicationNumber,
+      type
     );
     dispatch(
       handleField(
@@ -106,8 +119,13 @@ const screenConfig = {
         window.location.href,
         "transitNumber"
       );
+      const applicationNumber = getQueryArg(
+        window.location.href,
+        "applicationNumber"
+      );
       const tenant = getQueryArg(window.location.href, "tenantId");
-      getData(action, state, dispatch, purpose, status, tenant, transitNumber)
+      const type = getQueryArg(window.location.href , "type")
+      getData(action, state, dispatch, purpose, status, tenant, transitNumber, applicationNumber, type)
       return action;
     },
     components: {

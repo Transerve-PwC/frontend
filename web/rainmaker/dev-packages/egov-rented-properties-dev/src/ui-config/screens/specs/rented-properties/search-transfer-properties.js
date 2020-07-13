@@ -6,6 +6,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { ownerShipTransferApplication } from "./searchResource/rentedPropertyApplication";
 import { searchTransferProperties } from "./searchResource/functions"
 import { transferSearchResults } from "./searchResource/searchResults";
+import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getStatusList } from "./search";
 
   const header = getCommonHeader({
     labelName: "Transfer Properties",
@@ -16,8 +18,11 @@ import { transferSearchResults } from "./searchResource/searchResults";
     uiFramework: "material-ui",
     name: "search-transfer-properties",
     beforeInitScreen: (action, state, dispatch) => {
+      const queryObject = [{ key: "tenantId", value: getTenantId() }, 
+                      { key: "businessServices", value: "OwnershipTransferRP" }]
       dispatch(prepareFinalObject("searchScreen", {}))
       searchTransferProperties(state, dispatch, true)
+      getStatusList(action, state, dispatch, queryObject, "search-transfer-properties", "components.div.children.ownerShipTransferApplication.children.cardContent.children.statusContainer.children.status")
       return action
     },
     components: {

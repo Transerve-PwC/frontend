@@ -72,7 +72,7 @@ const areaNameField = {
 
 const ownershipTransitNumberField = {
     ...transitNumberConfig,
-    jsonPath: "Properties[0].transitNumber",
+    jsonPath: "Owners[0].property.transitNumber",
     iconObj: {
         iconName: "search",
         position: "end",
@@ -87,13 +87,25 @@ const ownershipTransitNumberField = {
       title: {
         value:
           "If you have already assessed your property, then please search your property by your transit Number",
-        key: "TL_PROPERTY_ID_TOOLTIP_MESSAGE"
+        key: "If you have already assessed your property, then please search your property by your transit Number"
       },
       infoIcon: "info_circle",
       beforeFieldChange: (action, state, dispatch) => {
         dispatch(
             prepareFinalObject(
-              "Owners[0].propertyId",
+              "Owners[0].property.id",
+              ""
+            )
+          )
+        dispatch(
+            prepareFinalObject(
+              "Properties[0].area",
+              ""
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "Properties[0].pincode",
               ""
             )
           )

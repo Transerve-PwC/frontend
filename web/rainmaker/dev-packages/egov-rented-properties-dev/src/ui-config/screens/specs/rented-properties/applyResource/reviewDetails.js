@@ -11,7 +11,7 @@ const reviewPaymentDetails = getReviewPaymentDetails();
 const reviewDocuments = getReviewDocuments(true, "apply");
 const reviewApplicantDetails = getReviewApplicantDetails();
 const reviewPropertyAddressDetails = getreviewPropertyAddressDetails()
-const reviewFreshLicenceDocuments = getReviewDocuments(true, "ownership-apply")
+const reviewFreshLicenceDocuments = getReviewDocuments(true, "ownership-apply", "OwnersTemp[0].reviewDocData")
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",

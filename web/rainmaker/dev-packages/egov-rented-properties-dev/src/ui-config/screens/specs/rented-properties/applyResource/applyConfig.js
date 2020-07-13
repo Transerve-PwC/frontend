@@ -31,13 +31,31 @@ const documentCardConfig = {
 
 export const rentedDocumentsDetails = getCommonCard({
   ...documentCardConfig,
-  documentList
+  documentList : {
+    ...documentList,
+    props: {
+      ...documentList.props,
+      documentsJsonPath: "PropertiesTemp[0].applicationDocuments",
+      uploadedDocumentsJsonPath: "PropertiesTemp[0].uploadedDocsInRedux",
+      tenantIdJsonPath: "Properties[0].tenantId",
+      removedJsonPath: "PropertiesTemp[0].removedDocs"
+    }
+  }
 });
 
 
 export const ownershipTransferDocumentsDetails = getCommonCard({
   ...documentCardConfig,
-  documentList
+  documentList : {
+    ...documentList,
+    props: {
+      ...documentList.props,
+      documentsJsonPath: "OwnersTemp[0].ownershipTransferDocuments",
+      uploadedDocumentsJsonPath: "OwnersTemp[0].uploadedDocsInRedux",
+      tenantIdJsonPath: "Owners[0].tenantId",
+      removedJsonPath: "OwnersTemp[0].removedDocs"
+    }
+  }
 });
 
 

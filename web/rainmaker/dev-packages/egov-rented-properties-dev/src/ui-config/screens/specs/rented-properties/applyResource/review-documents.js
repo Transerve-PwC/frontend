@@ -6,7 +6,7 @@ import {
   
   import { changeStep } from "./footer";
   
-  export const getReviewDocuments = (isEditable = true, screenKey) => {
+  export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath = "PropertiesTemp[0].reviewDocData") => {
     return getCommonGrayCard({
       headerDiv: {
         uiFramework: "custom-atoms",
@@ -58,7 +58,7 @@ import {
             moduleName: "egov-rented-properties",
             componentPath: "DownloadFileContainer",
             props: {
-              sourceJsonPath: "PropertiesTemp[0].reviewDocData",
+              sourceJsonPath,
               className: "review-documents"
             }
           }

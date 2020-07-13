@@ -49,7 +49,7 @@ export const getReviewApplicantDetails = (isEditable = true) => {
                     labelName: "Relationship",
                     labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
                 },
-                { jsonPath: "Owners[0].ownerDetails.relation" }
+                { jsonPath: "Owners[0].ownerDetails.relationWithDeceasedAllottee" }
             ),
             phone: getLabelWithValue(
                 {
@@ -106,7 +106,7 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
                     labelName: "Property Id",
                     labelKey: "RP_PROPERTY_ID"
                 },
-                {jsonPath: "Owners[0].propertyId"}
+                {jsonPath: "Owners[0].property.id"}
             ),
             allotmentNumber: getLabelWithValue(
                 {
@@ -114,14 +114,14 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
                     labelKey: "RP_ALLOTMENT_NUMBER"
                 },
                 {jsonPath: "Owners[0].allotmenNumber"}
+            ),
+            transitNumber: getLabelWithValue(
+                {
+                    labelName: "Transit Site/Plot number",
+                    labelKey: "RP_SITE_PLOT_LABEL"
+                },
+                { jsonPath: "Owners[0].property.transitNumber" }
             )
-            // transitNumber: getLabelWithValue(
-            //     {
-            //         labelName: "Transit Site/Plot number",
-            //         labelKey: "RP_SITE_PLOT_LABEL"
-            //     },
-            //     { jsonPath: "Properties[0].propertyDetails.address.transitNumber" }
-            // ),
             // area: getLabelWithValue(
             //     areaLabel,
             //     { jsonPath: "Properties[0].propertyDetails.address.area" }

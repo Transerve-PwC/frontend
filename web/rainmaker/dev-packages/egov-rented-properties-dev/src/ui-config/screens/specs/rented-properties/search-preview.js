@@ -1,18 +1,10 @@
 import {
     getCommonHeader,
-    getLabel,
-    getBreak,
     getCommonContainer,
     getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { httpRequest } from "../../../../ui-utils";
-import find from "lodash/find";
-import get from "lodash/get";
-import set from "lodash/set";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails } from "./applyResource/review-property";
 import { getReviewDocuments } from "./applyResource/review-documents";

@@ -11,16 +11,18 @@ export const DETAILS_STEP = 0;
 export const DOCUMENT_UPLOAD_STEP = 1;
 export const SUMMARY_STEP = 2;
 
-export const moveToSuccess = (rentedData, dispatch) => {
+export const moveToSuccess = (rentedData, dispatch, type) => {
   const id = get(rentedData, "id");
   const transitNumber = get(rentedData, "transitNumber")
+  const applicationNumber = get(rentedData, "ownerDetails.applicationNumber")
   const tenantId = get(rentedData, "tenantId");
   const purpose = "apply";
   const status = "success";
+  const path = type === "OWNERSHIPTRANSFERRP" ? 
+  `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+  : `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${transitNumber}&tenantId=${tenantId}`
   dispatch(
-    setRoute(
-      `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${transitNumber}&tenantId=${tenantId}`
-    )
+    setRoute(path)
   );
 };
 
@@ -109,12 +111,12 @@ const callBackForNext = async(state, dispatch) => {
     }
 
     if(activeStep === SUMMARY_STEP) {
-      const rentedData = get(
-        state.screenConfiguration.preparedFinalObject,
-        "Properties[0]"
-    );
     isFormValid = await applyRentedProperties(state, dispatch);
       if (isFormValid) {
+        const rentedData = get(
+          state.screenConfiguration.preparedFinalObject,
+          "Properties[0]"
+      );
           moveToSuccess(rentedData, dispatch);
       }
     }

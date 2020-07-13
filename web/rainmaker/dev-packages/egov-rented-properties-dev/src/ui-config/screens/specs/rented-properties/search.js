@@ -26,17 +26,16 @@ import {
     labelKey: "RP_SEARCH_PROPERTY_MASTER_HEADER"
   });
 
-  const getStatusList = async (action, state, dispatch) => {
-    const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "MasterRP" }]
+  export const getStatusList = async (action, state, dispatch, queryObject, screenkey, path) => {
+    
     await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
     const businessServices = JSON.parse(localStorageGet("businessServiceData"));
     if(!!businessServices) {
       const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
       dispatch(
         handleField(
-          "search",
-          "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children.status",
+          screenkey,
+          path,
           "props.data",
           status
         )
@@ -48,10 +47,12 @@ import {
     uiFramework: "material-ui",
     name: "search",
     beforeInitScreen: (action, state, dispatch) => {
+      const queryObject = [{ key: "tenantId", value: getTenantId() }, 
+                      { key: "businessServices", value: "MasterRP" }]
       dispatch(prepareFinalObject("searchScreen", {}))
       getColonyTypes(action, state, dispatch)
       searchApiCall(state, dispatch, true)
-      getStatusList(action, state, dispatch)
+      getStatusList(action, state, dispatch, queryObject, "search", "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children.status")
       return action
     },
     components: {

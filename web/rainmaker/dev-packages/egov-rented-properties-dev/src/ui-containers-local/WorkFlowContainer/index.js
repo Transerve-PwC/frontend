@@ -37,13 +37,26 @@ class WorkFlowContainer extends React.Component {
       window.location.href,
       "transitNumber"
     );
+    const applicationNumber = getQueryArg(
+      window.location.href,
+      "applicationNumber"
+    )
     let data = get(preparedFinalObject, this.props.dataPath, []);
     const tenantId = getQueryArg(window.location.href, "tenantId");
-    const queryObject = [
-      { key: "businessIds", value: transitNumber },
-      { key: "history", value: true },
-      { key: "tenantId", value: tenantId }
-    ];
+      let queryObject = [
+        { key: "history", value: true },
+        { key: "tenantId", value: tenantId }
+      ]
+      switch(this.props.moduleName) {
+        case "MasterRP": {
+          queryObject = [...queryObject, { key: "businessIds", value: transitNumber }]
+          break
+        }
+        case "OwnershipTransferRP": {
+          queryObject = [...queryObject, { key: "businessIds", value: applicationNumber }]
+          break
+        }
+      }
     try {
       const payload = await httpRequest(
         "post",
@@ -131,9 +144,18 @@ class WorkFlowContainer extends React.Component {
       });
       if (payload) {
         let path = "";
+        switch(this.props.moduleName) {
+          case "MasterRP": {
+            path = `&transitNumber=${data[0].transitNumber}&tenantId=${tenant}`
+            break
+          }
+          case "OwnershipTransferRP": {
+            path = `&applicationNumber=${data[0].ownerDetails.applicationNumber}&tenantId=${tenant}&type=OWNERSHIPTRANSFERRP`
+          }
+        }
         window.location.href = `acknowledgement?${this.getPurposeString(
           label
-        )}&transitNumber=${data[0].transitNumber}&tenantId=${tenant}`;
+        )}${path}`;
       }
     } catch (e) {
         if (e.message) {
@@ -304,7 +326,7 @@ class WorkFlowContainer extends React.Component {
     } = this;
     let businessService = moduleName
     // let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
-    let businessId = get(data[data.length - 1], "propertyDetails.propertyId");
+    let businessId = moduleName === "OwnershipTransferRP" ? get(data[data.length - 1], businessId) : get(data[data.length - 1], "propertyDetails.propertyId");
     let filteredActions = [];
 
     filteredActions = get(data[data.length - 1], "nextActions", []).filter(
@@ -364,8 +386,8 @@ class WorkFlowContainer extends React.Component {
       ProcessInstances &&
       ProcessInstances.length > 0 &&
       this.prepareWorkflowContract(ProcessInstances, moduleName);
-     let showFooter;
-     showFooter=process.env.REACT_APP_NAME === "Citizen" ? false : true;
+      let showFooter;
+      showFooter=process.env.REACT_APP_NAME === "Citizen" ? false : true;
     return (
       <div>
         {ProcessInstances && ProcessInstances.length > 0 && (

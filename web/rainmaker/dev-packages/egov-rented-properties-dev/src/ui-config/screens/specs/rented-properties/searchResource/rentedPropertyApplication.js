@@ -121,6 +121,18 @@ const phoneNumberField = {
   jsonPath: "searchScreen.phone"
 }
 
+const applicantMobileNumberField = {
+  ...phoneNumberField,
+  label: {
+    labelName: "Applicant Mobile No.",
+    labelKey: "RP_APPLICANT_MOBILE_NO_LABEL"
+},
+placeholder: {
+    labelName: "Enter Applicant Mobile No.",
+    labelKey: "RP_APPLICANT_MOBILE_NO_PLACEHOLDER"
+},
+}
+
 const statusField = {
   label: {
     labelName: "Status",
@@ -137,6 +149,19 @@ const statusField = {
     xs: 12,
     sm: 6
   }
+}
+
+const ownershipStatusField = {
+  ...statusField,
+  label: {
+    labelName: "Application Status",
+    labelKey: "RP_COMMON_TABLE_COL_APPLICATION_STATUS"
+  },
+  placeholder: {
+    labelName: "Select Status",
+    labelKey: "TL_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
+  },
+  jsonPath: "searchScreen.status"
 }
 
 
@@ -218,16 +243,16 @@ export const ownerShipTransferApplication = getCommonCard({
   //   labelKey: "RP_SEARCH_OWNERSHIP_TRANSFER_HEADER"
   // }),
   subParagraph: getCommonParagraph({
-    labelName: "Please provide atleast one parameter to search Property",
-    labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_PROPERTY_LABEL"
+    labelName: "Please provide atleast one parameter to search Application",
+    labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATION_LABEL"
   }),
   applicationNoContainer: getCommonContainer({
     applicationNo: getTextField(applicationNoField),
-    propertyId: getTextField(propertyIdField),
+    transitNumber: getTextField(transitNumberField),
   }),
   statusContainer: getCommonContainer({
-    mobileNo: getTextField(phoneNumberField),
-    status: getSelectField(statusField)
+    mobileNo: getTextField(applicantMobileNumberField),
+    status: getSelectField(ownershipStatusField)
   }),
   button: getCommonContainer({
     buttonContainer: getCommonContainer(

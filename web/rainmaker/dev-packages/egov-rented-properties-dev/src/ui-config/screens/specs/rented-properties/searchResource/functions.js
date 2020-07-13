@@ -33,7 +33,7 @@ export const getStatusList = async (state, dispatch, screen, path) => {
 }
 
 export const searchTransferProperties = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
-  !!hideTable && showHideTable(false, dispatch);
+  !!hideTable && showHideTable(false, dispatch, "search-transfer-properties");
   let queryObject = [
     // {
     //   key: "tenantId",
@@ -100,9 +100,10 @@ export const searchTransferProperties = async (state, dispatch, onInit, offset, 
     try {
       let data = response.Owners.map(item => ({
         [APPLICATION_NO]: item.ownerDetails.applicationNumber || "-",
-        [PROPERTY_ID]: item.propertyId || "-",
+        [getTextToLocalMapping("Transit No")]: item.property.transitNumber || "-",
+        // [PROPERTY_ID]: item.property.id || "-",
         [OWNER_NAME]: item.ownerDetails.name || "-",
-        [STATUS]: getLocaleLabels(item.state, item.state) || "-",
+        [STATUS]: getLocaleLabels(item.applicationState, item.applicationState) || "-",
       }));
       dispatch(
         handleField(
@@ -112,7 +113,7 @@ export const searchTransferProperties = async (state, dispatch, onInit, offset, 
           data
         )
       );
-      !!hideTable && showHideTable(true, dispatch);
+      !!hideTable && showHideTable(true, dispatch, "search-transfer-properties");
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
       console.log(error);
@@ -121,7 +122,7 @@ export const searchTransferProperties = async (state, dispatch, onInit, offset, 
 }
 
 export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
-  !!hideTable && showHideTable(false, dispatch);
+  !!hideTable && showHideTable(false, dispatch, "search");
   let queryObject = [
     {
       key: "tenantId",
@@ -203,17 +204,17 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
           data
         )
       );
-      !!hideTable && showHideTable(true, dispatch);
+      !!hideTable && showHideTable(true, dispatch, "search");
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
       console.log(error);
     }
   }
 };
-const showHideTable = (booleanHideOrShow, dispatch) => {
+const showHideTable = (booleanHideOrShow, dispatch, screenKey) => {
   dispatch(
     handleField(
-      "search",
+      screenKey,
       "components.div.children.searchResults",
       "visible",
       booleanHideOrShow
