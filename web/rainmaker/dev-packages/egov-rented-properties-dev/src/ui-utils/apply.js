@@ -289,27 +289,13 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
           )
         );
 
-        let propertyQueryObject = JSON.parse(
-          JSON.stringify(
-            get(state.screenConfiguration.preparedFinalObject, "Properties", [])
-          )
-        );
-
-        console.log(propertyQueryObject);
-        console.log(queryObject);
-        
-        
-
-
-
       const userInfo = JSON.parse(getUserInfo())
       const tenantId = userInfo.permanentCity;
       // const tenantId = getQueryArg(window.location.href, "tenantId");
       const id = get(queryObject[0], "id");
       let response;
       let finalObject = {
-        "propertyId": queryObject[0].propertyId,
-        "transitNumber": propertyQueryObject[0].transitNumber,
+        "property": queryObject[0].property,
         "tenantId": tenantId,
         "state": "",
         "propertyDetails": "",
