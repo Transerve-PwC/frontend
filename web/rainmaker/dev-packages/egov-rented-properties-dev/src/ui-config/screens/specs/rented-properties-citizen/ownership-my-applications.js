@@ -59,7 +59,7 @@ const screenConfig = {
               },
               {
                 label: "RP_COMMON_TABLE_COL_STATUS",
-                jsonPath: "state"
+                jsonPath: "applicationState"
               }
             ],
             moduleName: "OWNERSHIPTRANSFERRP",
