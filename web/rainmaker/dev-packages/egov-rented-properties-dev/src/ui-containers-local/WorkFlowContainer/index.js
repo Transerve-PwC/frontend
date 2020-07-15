@@ -116,6 +116,8 @@ class WorkFlowContainer extends React.Component {
         return "purpose=approve&status=success";
       case "SENDBACK":
         return "purpose=sendback&status=success";
+      case "SUBMIT": 
+        return "purpose=submit&status=success";
       case "REFER":
         return "purpose=refer&status=success";
       case "SENDBACKTOCITIZEN":

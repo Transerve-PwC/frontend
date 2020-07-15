@@ -66,7 +66,7 @@ export const getReviewApplicantDetails = (isEditable = true) => {
                     labelKey: "RP_OWNER_DETAILS_EMAIL_LABEL"
                 },
                 {
-                    jsonPath: "Owners[0].ownerDetails.eamil" 
+                    jsonPath: "Owners[0].ownerDetails.email" 
                 }
             ),
             aadhar: getLabelWithValue(
@@ -101,12 +101,19 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
             }
         },
         viewFour: getCommonContainer({
-            propertyId: getLabelWithValue(
+            // propertyId: getLabelWithValue(
+            //     {
+            //         labelName: "Property Id",
+            //         labelKey: "RP_PROPERTY_ID"
+            //     },
+            //     {jsonPath: "Owners[0].property.id"}
+            // ),
+            transitNumber: getLabelWithValue(
                 {
-                    labelName: "Property Id",
-                    labelKey: "RP_PROPERTY_ID"
+                    labelName: "Transit Site/Plot number",
+                    labelKey: "RP_SITE_PLOT_LABEL"
                 },
-                {jsonPath: "Owners[0].property.id"}
+                { jsonPath: "Owners[0].property.transitNumber" }
             ),
             allotmentNumber: getLabelWithValue(
                 {
@@ -115,21 +122,14 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
                 },
                 {jsonPath: "Owners[0].allotmenNumber"}
             ),
-            transitNumber: getLabelWithValue(
-                {
-                    labelName: "Transit Site/Plot number",
-                    labelKey: "RP_SITE_PLOT_LABEL"
-                },
-                { jsonPath: "Owners[0].property.transitNumber" }
-            )
-            // area: getLabelWithValue(
-            //     areaLabel,
-            //     { jsonPath: "Properties[0].propertyDetails.address.area" }
-            // ),
-            // pincode: getLabelWithValue(
-            //     pincodeLabel,
-            //     { jsonPath: "Properties[0].propertyDetails.address.pincode" }
-            // ),
+            area: getLabelWithValue(
+                areaLabel,
+                { jsonPath: "Owners[0].property.address.area" }
+            ),
+            pincode: getLabelWithValue(
+                pincodeLabel,
+                { jsonPath: "Owners[0].property.address.pincode" }
+            ),
         })
     })
 }

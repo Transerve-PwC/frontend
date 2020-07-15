@@ -32,6 +32,7 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import axios from 'axios';
 import { RC_PEDAL_RICKSHAW_LOADING_REHRI, DL_PEDAL_RICKSHAW_LOADING_REHRI, LICENSE_DHOBI_GHAT, RENEWAL_RENT_DEED_SHOP } from "../../../../ui-constants";
+import { getSearchResults } from "../../../../ui-utils/commons";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -416,7 +417,7 @@ export const getFeesEstimateCard = props => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
-    moduleName: "egov-tradelicence",
+    moduleName: "egov-rented-properties",
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
@@ -505,22 +506,6 @@ export const objectToDropdown = object => {
     }
   }
   return dropDown;
-};
-
-// Search API call
-export const getSearchResults = async queryObject => {
-  try {
-    const response = await httpRequest(
-      "post",
-      "/tl-services/v1/_search",
-      "",
-      queryObject
-    );
-    return response;
-  } catch (error) {
-    console.log(error);
-    return {};
-  }
 };
 
 export const getBill = async queryObject => {
@@ -1086,21 +1071,8 @@ const getToolTipInfo = (taxHead, LicenseData) => {
   }
 };
 
-const getEstimateData = (ResponseData, isPaid, LicenseData) => {
+const getEstimateData = (ResponseData, isPaid, OwnersData) => {
   if (ResponseData) {
-    // const extraData = ["TL_COMMON_REBATE", "TL_COMMON_PEN"].map(item => {
-    //   return {
-    //     name: {
-    //       labelName: item,
-    //       labelKey: item
-    //     },
-    //     value: null,
-    //     info: getToolTipInfo(item, LicenseData) && {
-    //       value: getToolTipInfo(item, LicenseData),
-    //       key: getToolTipInfo(item, LicenseData)
-    //     }
-    //   };
-    // });
     const { billAccountDetails } = ResponseData.billDetails[0];
     let transformedData = billAccountDetails.reduce((result, item) => {
       if (isPaid) {
@@ -1115,15 +1087,15 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
             value : item.amount,
             info: getToolTipInfo(
               item.accountDescription.split("-")[0],
-              LicenseData
+              OwnersData
             ) && {
                 value: getToolTipInfo(
                   item.accountDescription.split("-")[0],
-                  LicenseData
+                  OwnersData
                 ),
                 key: getToolTipInfo(
                   item.accountDescription.split("-")[0],
-                  LicenseData
+                  OwnersData
                 )
               }
           });
@@ -1136,9 +1108,9 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
             order: item.order,
             // value: getTaxValue(item),
             value : item.amount,
-            info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
-              value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
+            info: getToolTipInfo(item.taxHeadCode, OwnersData) && {
+              value: getToolTipInfo(item.taxHeadCode, OwnersData),
+              key: getToolTipInfo(item.taxHeadCode, OwnersData)
             }
           });
       } else {
@@ -1152,9 +1124,9 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
             value : item.amount,
             // value: getTaxValue(item),
             // value : get(ResponseData , "totalAmount"),
-            info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
-              value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
+            info: getToolTipInfo(item.taxHeadCode, OwnersData) && {
+              value: getToolTipInfo(item.taxHeadCode, OwnersData),
+              key: getToolTipInfo(item.taxHeadCode, OwnersData)
             }
           });
       }
@@ -1308,19 +1280,18 @@ const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
 };
 
 export const createEstimateData = async (
-  LicenseData,
+  OwnersData,
   jsonPath,
   dispatch,
   href = {},
-  getFromReceipt
 ) => {
-  const workflowCode = get(LicenseData , "workflowCode") ? get(LicenseData , "workflowCode") : "NewTL"
+  const workflowCode = get(OwnersData , "workflowCode") ? get(OwnersData , "workflowCode") : "OwnershipTransferRP"
   const applicationNo =
-    get(LicenseData, "applicationNumber") ||
+    get(OwnersData, "ownerDetails.applicationNumber") ||
     getQueryArg(href, "applicationNumber");
   const tenantId =
-    get(LicenseData, "tenantId") || getQueryArg(href, "tenantId");
-  const businessService = get(LicenseData, "businessService", "");
+    get(OwnersData, "tenantId") || getQueryArg(href, "tenantId");
+  const businessService = get(OwnersData, "businessService", "") || "RENTED_PROPERTIES"
   const queryObj = [
     { key: "tenantId", value: tenantId },
     {
@@ -1343,12 +1314,12 @@ export const createEstimateData = async (
       value: businessService
     }
   ];
-  const currentStatus = LicenseData.status;
+  const currentStatus = OwnersData.applicationState;
   const isPAID = isApplicationPaid(currentStatus,workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
   const payload = isPAID
-    ? await getReceipt(queryObj.filter(item => item.key !== "businessService"))
-    : fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
+    ? await getReceipt(queryObj.filter(item => item.key !== "businessService")) :
+  fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
 
   let estimateData = payload
     ? isPAID
@@ -1358,9 +1329,9 @@ export const createEstimateData = async (
       getEstimateData(
         payload.Payments[0].paymentDetails[0].bill,
         isPAID,
-        LicenseData
+        OwnersData
       )
-      : payload && getEstimateData(payload, false, LicenseData)
+      : payload && getEstimateData(payload, false, OwnersData)
     : [];
   estimateData = estimateData || [];
   set(
@@ -1369,18 +1340,18 @@ export const createEstimateData = async (
     isPAID
   );
   dispatch(prepareFinalObject(jsonPath, estimateData));
-  const accessories = get(LicenseData, "tradeLicenseDetail.accessories", []);
-  if (payload) {
-    const getBillResponse = await calculateBill(getBillQueryObj);
-    getBillResponse &&
-      getBillResponse.billingSlabIds &&
-      getBillingSlabData(
-        dispatch,
-        getBillResponse.billingSlabIds,
-        tenantId,
-        accessories
-      );
-  }
+  // const accessories = get(O, "tradeLicenseDetail.accessories", []);
+  // if (payload) {
+  //   const getBillResponse = await calculateBill(getBillQueryObj);
+  //   getBillResponse &&
+  //     getBillResponse.billingSlabIds &&
+  //     getBillingSlabData(
+  //       dispatch,
+  //       getBillResponse.billingSlabIds,
+  //       tenantId,
+  //       accessories
+  //     );
+  // }
 
   /** Waiting for estimate to load while downloading confirmation form */
   var event = new CustomEvent("estimateLoaded", { detail: true });
@@ -1556,21 +1527,21 @@ export const fetchBill = async (action, state, dispatch) => {
       value: getQueryArg(window.location.href, "consumerCode")
     }
   ];
-  const LicensesPayload = await getSearchResults(queryObject);
+  const OwnersPayload = await getSearchResults(queryObject);
   //get bill and populate estimate card
   const payload =
-    LicensesPayload &&
-    LicensesPayload.Licenses &&
+  OwnersPayload &&
+  OwnersPayload.Owners &&
     (await createEstimateData(
-      LicensesPayload.Licenses[0],
-      "LicensesTemp[0].estimateCardData",
+      OwnersPayload.Owners[0],
+      "OwnersTemp[0].estimateCardData",
       dispatch,
       window.location.href
     ));
   //set in redux to be used for adhoc
-  LicensesPayload &&
-    LicensesPayload.Licenses &&
-    dispatch(prepareFinalObject("Licenses[0]", LicensesPayload.Licenses[0]));
+  OwnersPayload &&
+    OwnersPayload.Owners &&
+    dispatch(prepareFinalObject("Owners[0]", OwnersPayload.Owners[0]));
 
   //initiate receipt object
   payload &&

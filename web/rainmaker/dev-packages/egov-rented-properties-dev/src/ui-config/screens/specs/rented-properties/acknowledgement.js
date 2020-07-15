@@ -7,6 +7,7 @@ handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import acknowledgementCard from "./acknowledgementResource/acknowledgementUtils";
 import { applicationSuccessFooter } from "./acknowledgementResource/applicationSuccessFooter";
+import { paymentFailureFooter } from "./acknowledgementResource/paymentFailureFooter";
 
 const getAcknowledgementCard = (
     state,
@@ -18,7 +19,7 @@ const getAcknowledgementCard = (
     applicationNumber,
     type
   ) => {
-    if ((purpose === "apply" || purpose === "forward" || purpose === "sendback" || purpose ==="reject" || purpose === "approve") && status === "success") {
+    if ((purpose === "apply" || purpose === "forward" || purpose === "sendback" || purpose ==="reject" || purpose === "approve" || purpose === "submit" || purpose === "pay") && status === "success") {
       const header = type === "OWNERSHIPTRANSFERRP" ? {
         labelName: "Ownership transfer application submitted successfully",
         labelKey: "RP_OWNER_SHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
@@ -35,9 +36,15 @@ const getAcknowledgementCard = (
       } : purpose ==="reject" ? {
         labelName: "Rented Property Master Entry is Rejected",
         labelKey: "RP_APPROVAL_REJ_MESSAGE_HEAD"
-      } : {
+      } : purpose === "approve" ? {
         labelName: "Rented Property Master Entry is Approved Successfully",
         labelKey: "RP_APPROVAL_SUCCESS_MESSAGE_HEAD"
+      } : purpose === "submit" ? {
+        labelName: "Rented Property Master Entry is Submitted Successfully",
+        labelKey: "RP_SUBMISSION_SUCCESS_MESSAGE_HEAD"
+      } : {
+        labelName: "Payment is collected successfully",
+        labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       }
 
       const tailText = type === "OWNERSHIPTRANSFERRP" ? {
@@ -50,18 +57,12 @@ const getAcknowledgementCard = (
 
       return {
         header: getCommonHeader({
-          labelName: `Rented Properties Master Entry`,
-          labelKey: "RP_MASTER_ENTRY",
+          labelName: `Rented Properties`,
+          labelKey: "RP_COMMON_RENTED_PROPERTIES",
         }),
         applicationSuccessCard: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
-          props: {
-            // style: {
-            //   position: "absolute",
-            //   width: "95%"
-            // }
-          },
           children: {
             card: acknowledgementCard({
               icon: "done",
@@ -84,7 +85,39 @@ const getAcknowledgementCard = (
           tenant
         )
       };
-    } 
+    } else if(status === "failure" && purpose === "pay") {
+      return {
+        header: getCommonHeader({
+          labelName: `Rented Properties`,
+          labelKey: "RP_COMMON_RENTED_PROPERTIES",
+        }),
+        applicationSuccessCard: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          children: {
+            card: acknowledgementCard({
+              icon: "done",
+              backgroundColor: "#39CB74",
+              header: {
+                labelName: "Payment is Failed!",
+                labelKey: "RP_PAYMENT_FAILED_MESSAGE_HEAD"
+              },
+            //   body: {
+            //     labelName:
+            //       "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+            //     labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
+            //   },
+              tailText: {
+                labelName: "Application Number",
+                labelKey: "RP_APPLICATION_NUMBER_LABEL"
+              },
+              number: applicationNumber
+            })
+          }
+        },
+        paymentFailureFooter: paymentFailureFooter(applicationNumber, tenant)
+      }
+    }
 }
 
 const getData = async (action, state, dispatch, purpose, status, tenant, transitNumber,applicationNumber, type) => {

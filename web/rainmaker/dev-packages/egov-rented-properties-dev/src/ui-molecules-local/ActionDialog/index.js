@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
+import { get } from "lodash";
 
 const styles = theme => ({
   root: {
@@ -103,6 +104,7 @@ class ActionDialog extends React.Component {
       onButtonClick,
       dialogData,
       dataPath,
+      state
     } = this.props;
     const {
       buttonLabel,
@@ -123,6 +125,8 @@ class ActionDialog extends React.Component {
     } else {
       dataPath = `${dataPath}[0]`;
     }
+
+    const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
 
     return (
       <Dialog
@@ -207,15 +211,15 @@ class ActionDialog extends React.Component {
                       placeholder={fieldConfig.comments.placeholder}
                     />
                   </Grid>
-                  {moduleName === "OwnershipTransferRP" && (dataPath[0].applicationState === "PENDINGSIVERIFICATION" || dataPath[0].applicationState === "PENDINGAPRO") && (
+                  {moduleName === "OwnershipTransferRP" && (applicationState === "PENDINGSAVERIFICATION" || applicationState === "PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
                     <Grid item sm="12">
                     <TextFieldContainer
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.amount.label}
                       onChange={e =>
-                        handleFieldChange(`${dataPath}.amount`, e.target.value)
+                        handleFieldChange(applicationState === "PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge` , e.target.value)
                       }
-                      jsonPath={`${dataPath}.amount`}
+                      jsonPath={applicationState === "PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge`}
                       placeholder={fieldConfig.amount.placeholder}
                     />
                   </Grid>

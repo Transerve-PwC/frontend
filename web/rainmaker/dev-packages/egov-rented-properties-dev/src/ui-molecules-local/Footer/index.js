@@ -228,6 +228,7 @@ class Footer extends React.Component {
           onButtonClick={onDialogButtonClick}
           dataPath={dataPath}
           moduleName={moduleName}
+          state={state}
         />
       </div>
     );

@@ -111,6 +111,12 @@ const getData = async(action, state, dispatch) => {
         []
         )
         )
+    dispatch(
+      prepareFinalObject(
+        "OwnersTemp",
+        []
+      )
+    )
   }
   setDocumentData(action, state, dispatch)
 }

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import get from "lodash/get";
 import { httpRequest } from "../../ui-utils/api";
 import { withRouter } from "react-router";
-import { getSearchResults } from "../../ui-utils/commons";
 
 class PaymentRedirect extends Component {
   componentDidMount = async () => {
@@ -28,17 +27,15 @@ class PaymentRedirect extends Component {
           value: consumerCode
         }
       ];
-      const response = await getSearchResults(queryObject);
-      const financialYear = get(response.Licenses[0], "financialYear");
       if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
         window.location.href = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/tradelicence/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&FY=${financialYear}&tenantId=${tenantId}`;
+        }/rented-properties/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
       } else {
         let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
         window.location.href = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/tradelicence/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&FY=${financialYear}&tenantId=${tenantId}&secondNumber=${transactionId}`;
+        }/rented-properties/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`;
       }
     } catch (e) {
       alert(e);

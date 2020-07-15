@@ -282,13 +282,13 @@ export const getDetailsFromProperty = async (state, dispatch) => {
           const findOwner = owners.find(item => !!item.activeState) || {}
           dispatch(
             prepareFinalObject(
-              "Properties[0].area",
+              "Owners[0].property.area",
               Properties[0].propertyDetails.address.area
             )
           )
           dispatch(
             prepareFinalObject(
-              "Properties[0].pincode",
+              "Owners[0].property.pincode",
               Properties[0].propertyDetails.address.pincode
             )
           )

@@ -117,8 +117,8 @@ const getOwnershipAddressDetails = () => {
         header: propertyHeader,
         detailsContainer: getCommonContainer({
             ownershipTransitNumber: getTextField(ownershipTransitNumberField),
-            areaName: getTextField({...areaNameField, jsonPath: "Properties[0].area", required: false, props: {...areaNameField.props, disabled: true}}),
-            pincode: getTextField({...pincodeField, jsonPath: "Properties[0].pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+            areaName: getTextField({...areaNameField, jsonPath: "Owners[0].property.area", required: false, props: {...areaNameField.props, disabled: true}}),
+            pincode: getTextField({...pincodeField, jsonPath: "Owners[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
         })
     }
 }

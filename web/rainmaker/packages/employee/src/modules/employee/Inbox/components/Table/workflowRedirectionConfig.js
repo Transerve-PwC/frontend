@@ -7,6 +7,11 @@ export const getWFConfig = (module,businessService) => {
           INITIATED: "/rented-properties/apply",
           DEFAULT: "/rented-properties/search-preview",
         };
+      } else if(businessService === "OwnershipTransferRP") {
+        return {
+          INITIATED: "/rented-properties/ownership-search-preview",
+          DEFAULT: "/rented-properties/ownership-search-preview",
+        };
       } else {
         return {
           INITIATED: "/tradelicence/apply",
@@ -14,10 +19,17 @@ export const getWFConfig = (module,businessService) => {
         };
       }
     case "RENTEDPROPERTIES": {
+      if(businessService === "MasterRP") {
       return {
         INITIATED: "/rented-properties/apply",
         DEFAULT: "/rented-properties/search-preview",
       };
+    } else if(businessService === "OwnershipTransferRP") {
+      return {
+        INITIATED: "/rented-properties/ownership-search-preview",
+        DEFAULT: "/rented-properties/ownership-search-preview",
+      };
+    }
     }
     case "FIRENOC":
       return {
