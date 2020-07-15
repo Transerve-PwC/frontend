@@ -183,9 +183,9 @@ const transitNumberField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.area",
-    optionValue: "code",
-    optionLabel: "label",
-    sourceJsonPath: "applyScreenMdmsData.propertyAreas",
+    // optionValue: "code",
+    // optionLabel: "label",
+    // sourceJsonPath: "applyScreenMdmsData.propertyAreas",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -217,7 +217,7 @@ const getPropertyDetails = () => {
         detailsContainer: getCommonContainer({
             colony: getSelectField(colonyField),
             transitNumber: getTextField(transitNumberField),
-            areaOfProperty: getSelectField(areaField),
+            areaOfProperty: getTextField(areaField),
             dateOfAllotment: getDateField(allotmentDateField),
             allotmentNumber: getTextField(allotmentNumberField),
             posessionDate: getDateField(posessionDateField)
