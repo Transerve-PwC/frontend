@@ -125,6 +125,7 @@ const setDocumentTypes = (state, code) => {
 }
 
 export const callBackForNext = async (state, dispatch) => {
+  let errorMessage = '';
   let activeStep = get(
       state.screenConfiguration.screenConfig["apply"],
       "components.div.children.stepper.props.activeStep",
@@ -134,6 +135,12 @@ export const callBackForNext = async (state, dispatch) => {
   let isFormValid = true;
   let hasFieldToaster = true;
   let ageFieldError = false;
+
+  let validatestepformflag = validatestepform(activeStep + 1);
+
+  isFormValid = validatestepformflag[0];
+  hasFieldToaster = validatestepformflag[1];
+  
   if (activeStep === TRADE_DETAILS_STEP) {
       const data = get(state.screenConfiguration, "preparedFinalObject");
       // setOwnerShipDropDownFieldChange(state, dispatch, data);
@@ -1353,4 +1360,50 @@ export const downloadPrintContainer = (
       // }
     }
   }
+};
+
+export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
+  let allAreFilled = true;
+
+  document.getElementById("apply_form" + activeStep).querySelectorAll("[required]").forEach(function (i) {
+    if (!i.value) {
+      i.focus();
+      allAreFilled = false;
+      i.parentNode.classList.add("MuiInput-error-853");
+      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
+    }
+    if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
+      i.parentNode.classList.add("MuiInput-error-853");
+      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
+      allAreFilled = false;
+      isFormValid = false;
+      hasFieldToaster = true;
+    }
+  });
+
+  if (activeStep != 2) {
+    document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
+
+      if (i.value == i.placeholder) {
+
+        i.focus();
+        allAreFilled = false;
+        i.parentNode.classList.add("MuiInput-error-853");
+        i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
+        allAreFilled = false;
+        isFormValid = false;
+        hasFieldToaster = true;
+      }
+    });
+  }
+
+  if (allAreFilled == false) {
+    isFormValid = false;
+    hasFieldToaster = true;
+  }
+  else {
+    isFormValid = true;
+    hasFieldToaster = false;
+  }
+  return [isFormValid, hasFieldToaster]
 };
