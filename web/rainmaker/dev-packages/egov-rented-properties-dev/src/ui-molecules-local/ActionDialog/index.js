@@ -288,6 +288,7 @@ class ActionDialog extends React.Component {
                   {moduleName === "OwnershipTransferRP" && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
                     <Grid item sm="12">
                     <TextFieldContainer
+                     required={true}  
                       InputLabelProps={{ shrink: true }}
                       label={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
                       onChange={e =>
@@ -379,8 +380,11 @@ class ActionDialog extends React.Component {
                           height: "48px"
                         }}
                         className="bottom-button"
+                        // onClick={() =>
+                        //   onButtonClick(buttonLabel, isDocRequired)
+                        // }
                         onClick={() =>
-                          onButtonClick(buttonLabel, isDocRequired)
+                            onButtonClick(buttonLabel, isDocRequired)
                         }
                       >
                         <LabelContainer
