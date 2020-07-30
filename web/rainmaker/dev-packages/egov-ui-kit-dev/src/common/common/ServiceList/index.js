@@ -75,6 +75,16 @@ class ServiceList extends React.Component {
       orderNumber: 2,
       tenantId: "ch",
       url: "card"
+  },{
+    displayName: "Estate",
+      enabled: true,
+      id: 1775,
+      leftIcon: "action:announcement",
+      name: "rainmaker-common-estate",
+      navigationURL: "estate/home",
+      orderNumber: 2,
+      tenantId: "ch",
+      url: "card"
   }
 ]
     this.setState({
