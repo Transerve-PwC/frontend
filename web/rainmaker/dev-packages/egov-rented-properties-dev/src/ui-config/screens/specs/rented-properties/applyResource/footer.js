@@ -14,8 +14,8 @@ export const SUMMARY_STEP = 2;
 export const moveToSuccess = (rentedData, dispatch, type) => {
   const id = get(rentedData, "id");
   const transitNumber = get(rentedData, "transitNumber")
-  const transitNumberTransitSite = get(PropertyImagesApplications, "property.transitNumber")
-  const applicationNumberTransitSite = get(PropertyImagesApplications, "applicationNumber")
+  const transitNumberTransitSite = get(rentedData, "property.transitNumber")
+  const applicationNumberTransitSite = get(rentedData, "applicationNumber")
   const applicationNumber = get(rentedData, "ownerDetails.applicationNumber")
   const duplicateCopyApplicatioNumber =  get(rentedData, "applicationNumber")
   const tenantId = get(rentedData, "tenantId");

@@ -153,9 +153,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
           res = await getDetailsFromPropertyTransit(state, dispatch)
         }
         if(!!res) {
-          console.log(`HERE SEEE ${res}`);
           const applytrans = submittransitsiteimages(state, dispatch)
-          console.log(`HERE  ${applytrans}`);
           if(!applytrans){
             return
           }

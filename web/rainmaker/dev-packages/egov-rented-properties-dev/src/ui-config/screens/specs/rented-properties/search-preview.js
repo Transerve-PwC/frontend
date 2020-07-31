@@ -1,14 +1,20 @@
 import {
     getCommonHeader,
     getCommonContainer,
+    getLabel,
     getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails } from "./applyResource/review-property";
-import { getReviewDocuments } from "./applyResource/review-documents";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails } from "./applyResource/review-property";
+import { getReviewDocuments } from "./applyResource/review-documents";
+import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let transitNumber = getQueryArg(window.location.href, "transitNumber");
 
@@ -24,6 +30,7 @@ const reviewAddressDetails = getReviewAddress(false);
 const reviewRentDetails = getReviewRentDetails(false);
 const reviewPaymentDetails = getReviewPaymentDetails(false);
 const reviewDocumentDetails = getReviewDocuments(false, "apply")
+const reviewGrantDetails = getReviewGrantDetails(false)
 
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
@@ -31,7 +38,8 @@ export const propertyReviewDetails = getCommonCard({
   reviewOwnerDetails,
   reviewRentDetails,
   reviewPaymentDetails,
-  reviewDocumentDetails
+  reviewDocumentDetails,
+  reviewGrantDetails
 });
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
@@ -122,19 +130,38 @@ const rentedPropertiesDetailPreview = {
               },
              ...headerrow
             },
-            helpSection: {
-              uiFramework: "custom-atoms",
-              componentPath: "Container",
-              props: {
-                color: "primary",
-                style: { justifyContent: "flex-end" }
-              },
+            searchButton: {
+              componentPath: "Button",
+              visible: !!findItem,
               gridDefination: {
                 xs: 12,
                 sm: 4,
                 align: "right"
+              },
+              props: {
+                variant: "contained",
+                style: {
+                  color: "white",
+                  backgroundColor: "#fe7a51",
+                  borderColor:"#fe7a51",
+                  borderRadius: "2px",
+                  width: "50%",
+                  height: "48px",
+                }
+              },
+              children: {
+                buttonLabel: getLabel({
+                  labelName: "NOTICE RECOVERY",
+                  labelKey: "RP_NOTICE_RECOVERY"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: (state, dispatch) => {
+                  dispatch(setRoute(`/rented-properties/notice-recovry?tenantId=${getTenantId()}`));
+                }
               }
-            }
+            },
             }
           },
           tabSection: {

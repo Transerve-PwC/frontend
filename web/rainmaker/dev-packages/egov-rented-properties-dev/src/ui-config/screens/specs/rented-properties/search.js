@@ -104,7 +104,7 @@ import {
                   callBack: (state, dispatch) => {
                     dispatch(setRoute(`/rented-properties/apply?tenantId=${getTenantId()}`));
                   }
-                }
+                },
               }
             }
           },

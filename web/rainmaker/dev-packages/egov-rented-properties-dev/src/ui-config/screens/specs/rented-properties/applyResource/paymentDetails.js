@@ -71,6 +71,10 @@ const paymentModeField = {
     jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].paymentMode"
   }
 
+
+  
+ 
+
 const getPaymentDetails = () => {
     return {
         header: paymentHeader,
@@ -81,5 +85,7 @@ const getPaymentDetails = () => {
         })
     }
 }
+
+
 
 export const paymentDetails = getCommonCard(getPaymentDetails())

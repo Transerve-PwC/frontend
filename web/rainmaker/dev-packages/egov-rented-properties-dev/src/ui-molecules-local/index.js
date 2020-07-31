@@ -76,6 +76,11 @@ const MultipleOwners = Loadable({
   loading: () => <Loading />
 });
 
+const MultipleDocuments = Loadable({
+  loader: () => import("./MultipleDocuments"),
+  loading: () => <Loading />
+})
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -90,5 +95,6 @@ export {
   Footer,
   LandingPage,
   ImageUploadMolecule,
-  MultipleOwners
+  MultipleOwners,
+  MultipleDocuments
 }

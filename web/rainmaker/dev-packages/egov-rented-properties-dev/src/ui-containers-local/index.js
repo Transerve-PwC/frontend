@@ -62,6 +62,11 @@ const MultipleOwnerContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const MultipleDocumentsContainer = Loadable({
+  loader: () => import("./MultipleDocumentsContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -75,5 +80,6 @@ export {
   DialogContainer,
   ResubmitActionContainer,
   WorkFlowContainer,
-  MultipleOwnerContainer
+  MultipleOwnerContainer,
+  MultipleDocumentsContainer
 };

@@ -105,31 +105,6 @@ export const getReviewProperty = (isEditable = true) => {
                 },
                 { jsonPath: "Properties[0].propertyDetails.area" }
             ),
-            allotementDate: getLabelWithValue(
-                {
-                    labelName: "Date of Allotment",
-                    labelKey: "RP_ALLOTMENT_DATE_LABEL"
-                },
-                { jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate", 
-                callBack: convertEpochToDate
-            }
-            ),
-            allotementNumber: getLabelWithValue(
-                {
-                    labelName: "Allotment Number",
-                    labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
-                },
-                { jsonPath: "Properties[0].owners[0].allotmenNumber" }
-            ),
-            possessionDate: getLabelWithValue(
-                {
-                    labelName: "Date of Possession",
-                    labelKey: "RP_POSSESSION_DATE_LABEL"
-                },
-                { jsonPath: "Properties[0].owners[0].ownerDetails.posessionStartdate",
-                callBack: convertEpochToDate
-            }
-            ),
         })
     })
 }
@@ -152,74 +127,77 @@ export const getReviewOwner = (isEditable = true) => {
                 editSection: masterEntryEditSection(isEditable)
             }
         },
-        viewFour: {
-            uiFramework: "custom-containers-local",
-            componentPath: "MultipleOwnerContainer",
-            moduleName: "egov-rented-properties",
-            props: {
-                contents: [
-                    {label: "RP_OWNER_NAME_LABEL",
-                    jsonPath: "ownerDetails.name"},
-                    {label: "RP_MOBILE_NO_LABEL",
-                    jsonPath: "ownerDetails.phone"},
-                    {label: "TL_FATHER_OR_HUSBANDS_NAME_LABEL",
-                    jsonPath: "ownerDetails.fatherOrHusband"},
-                    {label: "TL_COMMON_RELATIONSHIP_LABEL",
-                    jsonPath: "ownerDetails.relation"},
-                    {label: "RP_OWNER_DETAILS_EMAIL_LABEL",
-                    jsonPath: "ownerDetails.email"},
-                    {label: "RP_AADHAR_LABEL",
-                    jsonPath: "ownerDetails.aadhaarNumber"}
-                ],
-                jsonPath: "Properties[0].owners"
-            }
-        }
-        // viewFour: getCommonContainer({
-        //         ownerName: getLabelWithValue(
-        //             {
-        //                 labelName: "Owner Name",
-        //                 labelKey: "RP_OWNER_NAME_LABEL"
-        //             },
-        //             { jsonPath: "Properties[0].owners[0].ownerDetails.name" }
-        //         ),
-        //         ownerMobile: getLabelWithValue(
-        //             {
-        //                 labelName: "Mobile No",
-        //                 labelKey: "RP_MOBILE_NO_LABEL"
-        //             },
-        //             { jsonPath: "Properties[0].owners[0].ownerDetails.phone" }
-        //         ),
-        //         ownerFatherOrHusband: getLabelWithValue(
-        //             {
-        //                 labelName: "Father/ Husband's Name",
-        //                 labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
-        //             },
-        //             {jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband"}
-        //         ),
-        //         ownerRelationShip: getLabelWithValue(
-        //             {
-        //                 labelName: "Relationship",
-        //                 labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
-        //             },
-        //             {
-        //                 jsonPath:"Properties[0].owners[0].ownerDetails.relation"
-        //             }
-        //         ),
-        //         ownerEmail: getLabelWithValue(
-        //             {
-        //                 labelName: "Email",
-        //                 labelKey: "RP_OWNER_DETAILS_EMAIL_LABEL"
-        //             },
-        //             { jsonPath: "Properties[0].owners[0].ownerDetails.email" }
-        //         ),
-        //         ownerAadhaarNo: getLabelWithValue(
-        //             {
-        //                 labelName: "Aadhar Number",
-        //                 labelKey: "RP_AADHAR_LABEL"
-        //             },
-        //             { jsonPath: "Properties[0].owners[0].ownerDetails.aadhaarNumber" }
-        //         )
-        // })
+        viewFour: getCommonContainer({
+                ownerName: getLabelWithValue(
+                    {
+                        labelName: "Owner Name",
+                        labelKey: "RP_OWNER_NAME_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.name" }
+                ),
+                ownerMobile: getLabelWithValue(
+                    {
+                        labelName: "Mobile No",
+                        labelKey: "RP_MOBILE_NO_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.phone" }
+                ),
+                ownerFatherOrHusband: getLabelWithValue(
+                    {
+                        labelName: "Father/ Husband's Name",
+                        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                    },
+                    {jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband"}
+                ),
+                ownerRelationShip: getLabelWithValue(
+                    {
+                        labelName: "Relationship",
+                        labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
+                    },
+                    {
+                        jsonPath:"Properties[0].owners[0].ownerDetails.relation"
+                    }
+                ),
+                ownerEmail: getLabelWithValue(
+                    {
+                        labelName: "Email",
+                        labelKey: "RP_OWNER_DETAILS_EMAIL_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.email" }
+                ),
+                ownerAadhaarNo: getLabelWithValue(
+                    {
+                        labelName: "Aadhar Number",
+                        labelKey: "RP_AADHAR_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.aadhaarNumber" }
+                ),
+                allotementNumber: getLabelWithValue(
+                    {
+                        labelName: "Allotment Number",
+                        labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].allotmenNumber" }
+                ),
+                allotementDate: getLabelWithValue(
+                    {
+                        labelName: "Date of Allotment",
+                        labelKey: "RP_ALLOTMENT_DATE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate", 
+                    callBack: convertEpochToDate
+                }
+                ),
+                possessionDate: getLabelWithValue(
+                    {
+                        labelName: "Date of Possession",
+                        labelKey: "RP_POSSESSION_DATE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.posessionStartdate",
+                    callBack: convertEpochToDate
+                }
+                )
+        })
     })
 }
 
@@ -338,6 +316,67 @@ export const getReviewPaymentDetails = (isEditable = true) => {
                     },
                     { jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].paymentMode" }
                 ),
+        })
+    })
+}
+
+
+export const getReviewGrantDetails = () => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Grant Details",
+                        labelKey: "RP_GRANT_DETAILS_HEADER"
+                    })
+                },
+                
+            }
+        },
+        viewFour: getCommonContainer({
+         
+                nameOfTheBank: getLabelWithValue(
+                    {
+                        labelName: "Name of the bank (Text field)",
+                        labelKey: "WF_BANK_NAME"
+                    },
+                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].bankName" }
+                ),
+                mortageAmount: getLabelWithValue(
+                    {
+                        labelName: "Enter mortgage amount",
+                        labelKey: "WF_MORTAGE_AMOUNT"
+                    },
+                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].mortgageAmount" }
+                ),
+                sanctionLetterNo: getLabelWithValue(
+                    {
+                        labelName: "Sanction letter number",
+                        labelKey: "WF_SANCTION_LETTER_LABEL"
+                    },
+                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].sanctionLetterNumber" }
+                ),
+                mortageEndDate: getLabelWithValue(
+                    {
+                        labelName: "Mortgage end date ",
+                        labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
+                ),
+                sanctioningDate: getLabelWithValue(
+                    {
+                        labelName: "Date of sanctioning",
+                        labelKey: "WF_SANCTIONING_DATE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].sanctionDate" , callBack: convertEpochToDate}
+                ),
+              
         })
     })
 }

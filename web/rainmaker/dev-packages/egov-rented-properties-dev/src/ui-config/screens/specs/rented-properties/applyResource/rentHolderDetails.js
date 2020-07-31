@@ -556,6 +556,10 @@ const applicantAddressField = {
     jsonPath: "OwnerShipLicenses[0].owners[0].correspondenceAddress"
 }
 
+
+
+
+
 const getApplicantDetails = () => {
     return {
         header: rentHolderHeader,
@@ -601,9 +605,13 @@ const getApplicantDetailsForDuplicateCopy = () => {
     }
 }
 
+
+
+
 export const applicantDetails = getCommonCard(getApplicantDetails())
 export const applicantDetailsMortgage = getCommonCard(getApplicantDetailsMortgage())
 
 export const rentHolderDetails = getCommonCard(getRentHolderDetails())
 
 export const rentHolderDetailsForDuplicateProperties = getCommonCard(getApplicantDetailsForDuplicateCopy())
+

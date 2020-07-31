@@ -177,7 +177,7 @@ const TaskStatusComponents = ({ currentObj, index }) => {
     <Grid
       container={true}
       spacing={12}
-      style={{ paddingLeft: 10, paddingBottom: 20 }}
+      style={{ paddingLeft: 10, paddingBottom: 20 ,wordBreak: "break-word"}}
     >
       <Grid
         item

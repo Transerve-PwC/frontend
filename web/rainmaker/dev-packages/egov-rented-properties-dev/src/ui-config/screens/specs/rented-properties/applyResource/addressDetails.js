@@ -15,6 +15,18 @@ const addressHeader = getCommonTitle(
         }
     }
   )
+  const commentsHeader = getCommonTitle(
+    {
+        labelName: "Transit Site Comments",
+        labelKey: "RP_TRANSITSIT_COMMENTS_HEADER"
+    },
+    {
+        style: {
+                marginBottom: 18,
+                marginTop: 18
+        }
+    }
+  )
 
 export const areaField = {
     label: {
@@ -49,6 +61,23 @@ export const pincodeField = {
     },
     minLength: 6,
     maxLength: 6,
+    required: true,
+  }
+  export const commentsField = {
+    label: {
+        labelName: "Comments",
+        labelKey: "RP_TRANSIT_COMMENTS_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Comments for Transit Site",
+        labelKey: "RP_TRANSIT_COMMENTS_PLACEHOLDER"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 1,
+    maxLength: 1000,
     required: true,
   }
 
@@ -227,8 +256,19 @@ const getTransitSitePropertyDetails = () => {
       })
   }
 }
+const getTransitSiteComments = () => {
+  return {
+      header: commentsHeader,
+      detailsContainer: getCommonContainer({
+          comments: getTextField({...commentsField,jsonPath: "PropertyImagesApplications[0].description", required: false, props: {...areaNameField.props, disabled: false}})
+      })
+  }
+}
+
+
 
 export const addressDetails = getCommonCard(getAddressDetails())
 export const ownershipAddressDetails = getCommonCard(getOwnershipAddressDetails())
 export const ownershipAddressDetailsMortgage = getCommonCard(getOwnershipAddressDetailsMortgage())
 export const transitSitePropertyDetails = getCommonCard(getTransitSitePropertyDetails())
+export const transitSiteComments = getCommonCard(getTransitSiteComments());
