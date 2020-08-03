@@ -109,6 +109,50 @@ export const getReviewProperty = (isEditable = true) => {
     })
 }
 
+export const getNoticeReviewProperty = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Property Details",
+                        labelKey: "RP_PROPERTY_DETAILS_HEADER"
+                    })
+                },
+                editSection: masterEntryEditSection(isEditable)
+            }
+        },
+        viewFour: getCommonContainer({
+            propertyTransitNumber: getLabelWithValue(
+                {
+                    labelName: "Transit Site/Plot number",
+                    labelKey: "RP_SITE_PLOT_LABEL"
+                },
+                { jsonPath: "Properties[0].transitNumber" }
+            ),
+            allotmentNumber: getLabelWithValue(
+                {
+                    labelName: "Allotment Number",
+                    labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
+                },
+                { jsonPath: "Properties[0].owners[0].allotmenNumber" }
+            ),
+            memoDate: getLabelWithValue(
+                {
+                    labelName: "Memo Date",
+                    labelKey: "RP_MEMO_DATE_LABEL"
+                },
+                { jsonPath: "Properties[0].owners[0].ownerDetails.memoDate" }
+            )
+        })
+    })
+}
+
 export const getReviewOwner = (isEditable = true) => {
     return getCommonGrayCard({
         headerDiv: {
@@ -127,79 +171,36 @@ export const getReviewOwner = (isEditable = true) => {
                 editSection: masterEntryEditSection(isEditable)
             }
         },
-        viewFour: getCommonContainer({
-                ownerName: getLabelWithValue(
-                    {
-                        labelName: "Owner Name",
-                        labelKey: "RP_OWNER_NAME_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.name" }
-                ),
-                ownerMobile: getLabelWithValue(
-                    {
-                        labelName: "Mobile No",
-                        labelKey: "RP_MOBILE_NO_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.phone" }
-                ),
-                ownerFatherOrHusband: getLabelWithValue(
-                    {
-                        labelName: "Father/ Husband's Name",
-                        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
-                    },
-                    {jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband"}
-                ),
-                ownerRelationShip: getLabelWithValue(
-                    {
-                        labelName: "Relationship",
-                        labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
-                    },
-                    {
-                        jsonPath:"Properties[0].owners[0].ownerDetails.relation"
-                    }
-                ),
-                ownerEmail: getLabelWithValue(
-                    {
-                        labelName: "Email",
-                        labelKey: "RP_OWNER_DETAILS_EMAIL_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.email" }
-                ),
-                ownerAadhaarNo: getLabelWithValue(
-                    {
-                        labelName: "Aadhar Number",
-                        labelKey: "RP_AADHAR_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.aadhaarNumber" }
-                ),
-                allotementNumber: getLabelWithValue(
-                    {
-                        labelName: "Allotment Number",
-                        labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].allotmenNumber" }
-                ),
-                allotementDate: getLabelWithValue(
-                    {
-                        labelName: "Date of Allotment",
-                        labelKey: "RP_ALLOTMENT_DATE_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate", 
-                    callBack: convertEpochToDate
-                }
-                ),
-                possessionDate: getLabelWithValue(
-                    {
-                        labelName: "Date of Possession",
-                        labelKey: "RP_POSSESSION_DATE_LABEL"
-                    },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.posessionStartdate",
-                    callBack: convertEpochToDate
-                }
-                )
-        })
+        viewFour: {
+            uiFramework: "custom-containers-local",
+            componentPath: "MultipleOwnerContainer",
+            moduleName: "egov-rented-properties",
+            props: {
+                contents: [
+                    {label: "RP_OWNER_NAME_LABEL",
+                    jsonPath: "ownerDetails.name"},
+                    {label: "RP_MOBILE_NO_LABEL",
+                    jsonPath: "ownerDetails.phone"},
+                    {label: "TL_FATHER_OR_HUSBANDS_NAME_LABEL",
+                    jsonPath: "ownerDetails.fatherOrHusband"},
+                    {label: "TL_COMMON_RELATIONSHIP_LABEL",
+                    jsonPath: "ownerDetails.relation"},
+                    {label: "RP_OWNER_DETAILS_EMAIL_LABEL",
+                    jsonPath: "ownerDetails.email"},
+                    {label: "RP_AADHAR_LABEL",
+                    jsonPath: "ownerDetails.aadhaarNumber"},
+                    {label: "RP_ALLOTMENT_NUMBER_LABEL",
+                    jsonPath: "allotmenNumber"},
+                    {label: "RP_ALLOTMENT_DATE_LABEL",
+                    jsonPath: "ownerDetails.allotmentStartdate",
+                    callBack: convertEpochToDate}
+                ],
+                jsonPath: "Properties[0].owners"
+            }
+        }
     })
 }
+
 
 export const getReviewAddress = (isEditable = true) => {
     return getCommonGrayCard({
@@ -275,6 +276,59 @@ export const getReviewRentDetails = (isEditable = true) => {
         })
     })
 }
+
+
+export const getNoticeReviewRentDetails = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Rent holder Particulars",
+                        labelKey: "RP_RENT_HOLDER_PARTICULAR_HEADER"
+                    })
+                },
+                editSection: masterEntryEditSection(isEditable)
+            }
+        },
+        viewFour: getCommonContainer({
+            // fatherOrHusbandsName: getLabelWithValue(
+            //         {
+            //             labelName: "Father/ Husband's Name",
+            //             labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+            //         },
+            //         { jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband" }
+            //     ),
+            //     originalAllotte: getLabelWithValue(
+            //         {
+            //             labelName: "Original Allottee",
+            //             labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
+            //         },
+            //         { jsonPath: "Properties[0].owners[0].ownerDetails.orignalAllottee" }
+            //     ),
+                violations: getLabelWithValue(
+                    {
+                        labelName: "Violations",
+                        labelKey: "RP_VIOLATIONS_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.violations" }
+                ),
+                editor: getLabelWithValue(
+                    {
+                        labelName: "Editor",
+                        labelKey: "RP_EDITOR_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.editor" }
+                ),
+        })
+    })
+}
+
 
 export const getReviewPaymentDetails = (isEditable = true) => {
     return getCommonGrayCard({
