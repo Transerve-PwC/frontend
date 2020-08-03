@@ -1635,7 +1635,7 @@ export const fetchBill = async (action, state, dispatch) => {
       getQueryArg(window.location.href, "tenantId")
     )
   );
-};
+  };
 
 export const setMultiOwnerForSV = (action, isIndividual) => {
   if (isIndividual) {
@@ -2392,6 +2392,9 @@ export const fillOldLicenseData = async (state, dispatch) => {
 export const getTextToLocalMapping = label => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
+
+    case "MODIFIED": 
+      return getLocaleLabels("Modified", "WF_NEWTL_MODIFIED", localisationLabels);
 
     case "PENDINGL1VERIFICATION":
       return getLocaleLabels("Initiated,", "WF_NEWTL_PENDINGL1VERIFICATION", localisationLabels);

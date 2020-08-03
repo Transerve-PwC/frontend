@@ -13,6 +13,8 @@ import {
 import { fetchBill } from "../utils";
 import set from "lodash/set";
 import { getPaymentGateways } from "../../../../ui-utils/commons";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { get } from "lodash";
 
 const header = getCommonContainer({
   header: getCommonHeader({
@@ -41,18 +43,40 @@ const setPaymentMethods = async (action, state, dispatch) => {
   }
 }
 
-const screenConfig = {
-  uiFramework: "material-ui",
-  name: "pay",
-  beforeInitScreen: (action, state, dispatch) => {
-    const tenantId = getQueryArg(window.location.href, "tenantId");
+const beforeScreenInit = async(action, state, dispatch) => {
+  const tenantId = getQueryArg(window.location.href, "tenantId");
     const queryObject = [
       { key: "tenantId", value: tenantId },
       { key: "businessServices", value: "NewTL" }
     ];
-    setPaymentMethods(action, state, dispatch)
     setBusinessServiceDataToLocalStorage(queryObject, dispatch);
-    fetchBill(action, state, dispatch);
+    await fetchBill(action, state, dispatch);
+    setPaymentMethods(action, state, dispatch)
+    const estimateCardData = get(state.screenConfiguration, "preparedFinalObject.LicensesTemp[0].estimateCardData") || [];
+    const showPaymentButton = estimateCardData.some(item => !!Number(item.value))
+    dispatch(
+      handleField(
+        "pay",
+        "components.div.children.footer.children.makePayment",
+        "visible",
+        showPaymentButton
+      )
+    );
+    dispatch(
+      handleField(
+        "pay",
+        "components.div.children.footer.children.errorButton",
+        "visible",
+        !showPaymentButton
+      )
+    );
+}
+
+const screenConfig = {
+  uiFramework: "material-ui",
+  name: "pay",
+  beforeInitScreen: (action, state, dispatch) => {
+    beforeScreenInit(action, state, dispatch)
     return action;
   },
   components: {

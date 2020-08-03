@@ -149,32 +149,7 @@ class SingleApplication extends React.Component {
         default:
           setRoute(`/egov-opms/roadcutnoc-search-preview?applicationNumber=${item.applicationId}&tenantId=${item.tenantId}`);
       }
-    } else if(moduleName === "OWNERSHIPTRANSFERRP") {
-      switch (item.applicationState) {
-        case "OT_DRAFTED": 
-          setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
-          break;
-        default:
-          setRoute(`/rented-properties/ownership-search-preview?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
-      }
-    }
-    else if(moduleName === "DUPLICATECOPYOFALLOTMENTLETTERRP") {
-      switch (item.state) {
-        case "DC_DRAFTED": 
-          setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-          break;
-        default:
-          setRoute(`/rented-properties/search-duplicate-copy-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-      }
-    } else if(moduleName === "MORTGAGERP") {
-      switch(item.state) {
-        case "MG_DRAFTED": 
-        setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-        break;
-        default:
-          setRoute(`/rented-properties/mortgage-search-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-    }
-   } else if (moduleName === "EGOV-ECHALLAN") {
+    } else if (moduleName === "EGOV-ECHALLAN") {
       switch (item.status) {
         case "INITIATED":
           setRoute(`/egov-echallan/apply?challanNumber=${item.challanId}&tenantId=${item.tenantId}`);

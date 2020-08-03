@@ -43,6 +43,15 @@ const styles = {
     lineHeight: "19px"
   };
 
+  const commentHeader = {
+    color: "rgba(0, 0, 0, 0.87)",
+    fontFamily: "Roboto",
+    fontSize: "17px",
+    fontWeight: 400,
+    letterSpacing: "0.67px",
+    lineHeight: "19px"
+  }
+
 class MultipleDocuments extends Component {
 
   render() {
@@ -54,6 +63,16 @@ class MultipleDocuments extends Component {
                   <CardContent>
                   <Grid container>
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
+                  <Grid xs={12} sm={12} style={{textAlign: "left"}}>
+                  <LabelContainer
+                      labelName= "Comments :"
+                      style={commentHeader}
+                  />
+                   <LabelContainer
+                      labelName= {datum.description ? datum.description : 'NA'}
+                      style={documentTitle}
+                  />
+                    </Grid>  
                   <Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1}  color="primary"  variant="contained"  
                   onClick={() => { 

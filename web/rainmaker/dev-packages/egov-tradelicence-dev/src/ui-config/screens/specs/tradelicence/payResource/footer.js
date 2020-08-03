@@ -184,6 +184,19 @@ const allDateToEpoch = (finalObj, jsonPaths) => {
   });
 };
 
+const showError = async (state, dispatch) => {
+  dispatch(
+    toggleSnackbar(
+      true,
+      {
+        labelName: "",
+        labelKey: "TL_ERR_AMOUNT_NULL"
+      },
+      "error"
+    )
+  );
+}
+
 const callBackForPay = async (state, dispatch) => {
   const { href } = window.location;
   let isFormValid = true;
@@ -437,5 +450,25 @@ export const footer = getCommonApplyFooter({
         menu: []
       }
     },
+  },
+  errorButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "45px"
+      }
+    },
+    children: {
+      submitButtonLabel: getLabel({labelName : "MAKE PAYMENT" , labelKey :"COMMON_MAKE_PAYMENT"}),
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: showError
+    },
+    visible: false
   }
 });

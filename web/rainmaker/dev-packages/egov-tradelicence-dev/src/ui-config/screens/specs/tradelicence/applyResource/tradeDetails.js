@@ -789,6 +789,7 @@ const applicantNameField = {
   minLength: 1,
   maxLength: 100,
   required: true,
+  errorMessage: "TL_ERR_APPLICANT_NAME",
   jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].name"
 }
 
@@ -802,6 +803,7 @@ const applicationTypeField = {
       labelKey: "TL_APPLICATION_TYPE_PLACEHOLDER"
   },
   required: true,
+  errorMessage: "TL_ERR_APPLICATION_TYPE",
   visible: false,
   jsonPath: "Licenses[0].applicationType",
   sourceJsonPath: "applyScreenMdmsData.TradeLicense.ApplicationType",
@@ -821,6 +823,7 @@ const tradeLicenseTypeField = {
         labelKey: "TL_TRADE_TYPE_PLACEHOLDER"
     },
     required: true,
+    errorMessage: "TL_ERR_LICENSE_TYPE",
     jsonPath: "Licenses[0].myLicenseType",
     optionValue: "code",
     optionLabel: "label",
@@ -841,6 +844,7 @@ const serviceTypeField = {
         labelKey: "TL_SERVICE_TYPE_PLACEHOLDER"
     },
     required: true,
+    errorMessage: "TL_ERR_SERVICE_TYPE",
     jsonPath: "Licenses[0].businessService",
     optionValue: "code",
     optionLabel: "label",
@@ -868,6 +872,7 @@ const oldLicenseNumberField = {
   minLength: 1,
   maxLength: 100,
   required: true,
+  errorMessage: "TL_ERR_OLD_LICENSE_NUMBER",
   visible: false,
   jsonPath: "Licenses[0].oldLicenseNumber"
 }
@@ -884,6 +889,7 @@ const oldLicenseValidToField = {
   pattern: getPattern("Date"),
   jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.oldLicenseValidTo",
   required: true,
+  errorMessage: "TL_ERR_OLD_LICENSE_VALIDTO",
   visible: false,
   props: {
       inputProps: {
@@ -908,6 +914,7 @@ const fatherOrHusbandsNameField = {
   minLength: 1,
   maxLength: 100,
   required: true,
+  errorMessage: "TL_ERR_FATHER_OR_HUSBAND",
   jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].fatherOrHusbandName"
 }
 
@@ -928,6 +935,7 @@ const occupationField = {
   maxLength: 100,
   visible: false,
   required: true,
+  errorMessage: "TL_ERR_OCCUPATION",
   jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.occupation"
 }
 
@@ -948,6 +956,7 @@ const fullAddressField = {
       },
   required: true,
   visible: false,
+  errorMessage:"TL_ERR_FULL_ADDRESS",
   jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].permanentAddress"
 }
 
@@ -961,6 +970,7 @@ const dateOfBirthField = {
       labelKey: "TL_DOB_PLACEHOLDER"
   },
   required: true,
+  errorMessage: "TL_ERR_DATE_OF_BIRTH",
   pattern: getPattern("Date"),
   jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].dob",
   props: {
@@ -1050,6 +1060,7 @@ const licensePeriodField = {
       labelName: "Enter Period for which License is required",
       labelKey: "TL_LICENSE_PERIOD_PLACEHOLDER"
   },
+  errorMessage: "TL_ERR_LICENCE_PERIOD",
   required: true,
   visible: false,
   optionValue: "code",
@@ -1134,6 +1145,7 @@ const particularsOfAreaField = {
       labelName: "Enter particulars of the area required for washing clothes",
       labelKey: "TL_PARTICULARS_OF_AREA_PLACEHOLDER"
   },
+  errorMessage: "TL_ERR_PARTICULARS_OF_AREA",
   required: true,
   visible: false,
   minLength: 1,
@@ -1156,6 +1168,7 @@ const tradeField = {
     },
     maxLength: 100,
     visible: false,
+    errorMessage: "TL_ERR_TRADE",
     required: true,
     jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.tradeValue"
 }
@@ -1172,6 +1185,7 @@ const completeResidentialAddressField = {
     visible: false,
     minLength: 1,
     maxLength: 100,
+    errorMessage: "TL_ERR_COMPLETE_ADDRESS",
     required: true,
     props:{
         multiline: true,
@@ -1193,6 +1207,7 @@ const permanentAddressField = {
     minLength: 1,
     maxLength: 100,
     required: true,
+    errorMessage: "TL_ERR_PERMANENT_ADDRESS",
     props:{
         multiline: true,
         rows: "2"
@@ -1214,6 +1229,7 @@ const platformNumberField = {
     minLength: 1,
     maxLength: 100,
     required: true,
+    errorMessage: "TL_ERR_PLATFORM_NUMBER",
     jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.platformNumber"
 }
 
@@ -1230,6 +1246,7 @@ const placeOfWorkField = {
     minLength: 1,
     maxLength: 100,
     required: true,
+    errorMessage: "TL_ERR_PLACE_OF_WORK",
     jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.placeOfWork"
 }
 
@@ -1245,6 +1262,7 @@ const businessStartDateField = {
     pattern: getPattern("Date"),
     jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.businessStartDate",
     required: true,
+    errorMessage: "TL_ERR_BUSINESS_START_DATE",
     visible: false,
     props: {
         inputProps: {
@@ -1264,6 +1282,7 @@ const familyMonthlyIncomeField = {
     },
     visible: false,
     required: true,
+    errorMessage: "TL_ERR_FAMILY_INCOME",
     pattern: getPattern("familyMonthlyIncome"),
     jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.familyMonthlyIncome"
 }

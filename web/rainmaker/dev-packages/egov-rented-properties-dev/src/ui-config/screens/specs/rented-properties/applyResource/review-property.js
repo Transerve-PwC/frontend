@@ -346,35 +346,35 @@ export const getReviewGrantDetails = () => {
                         labelName: "Name of the bank (Text field)",
                         labelKey: "WF_BANK_NAME"
                     },
-                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].bankName" }
+                    { jsonPath: "Properties[0].grantDetails[0].bankName" }
                 ),
                 mortageAmount: getLabelWithValue(
                     {
                         labelName: "Enter mortgage amount",
                         labelKey: "WF_MORTAGE_AMOUNT"
                     },
-                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].mortgageAmount" }
+                    { jsonPath: "Properties[0].grantDetails[0].mortgageAmount" }
                 ),
                 sanctionLetterNo: getLabelWithValue(
                     {
                         labelName: "Sanction letter number",
                         labelKey: "WF_SANCTION_LETTER_LABEL"
                     },
-                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].sanctionLetterNumber" }
+                    { jsonPath: "Properties[0].grantDetails[0].sanctionLetterNumber" }
                 ),
                 mortageEndDate: getLabelWithValue(
                     {
                         labelName: "Mortgage end date ",
                         labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
                     },
-                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
+                    { jsonPath: "Properties[0].grantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
                 ),
                 sanctioningDate: getLabelWithValue(
                     {
                         labelName: "Date of sanctioning",
                         labelKey: "WF_SANCTIONING_DATE_LABEL"
                     },
-                    { jsonPath: "Properties[0].mortgageApprovedGrantDetails[0].sanctionDate" , callBack: convertEpochToDate}
+                    { jsonPath: "Properties[0].grantDetails[0].sanctionDate" , callBack: convertEpochToDate}
                 ),
               
         })
