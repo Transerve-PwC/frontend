@@ -64,7 +64,7 @@ const getEditorField = {
         rows: "4"
     },
     visible: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.editor" 
+    jsonPath: "Properties[0].notices[0].description" 
   }
 
 const ownerNameField = {
@@ -139,7 +139,7 @@ const getViolationField = {
         multiline: true,
         rows: "4"
     },
-    jsonPath: "Properties[0].owners[0].ownerDetails.violations" 
+    jsonPath: "Properties[0].notices[0].violations" 
 }
 
 export const transitNumberConfig = {
@@ -193,7 +193,7 @@ const transitNumberField = {
             labelKey: "RP_MEMO_DATE_PLACEHOLDER"
         },
         pattern: getPattern("Date"),
-        jsonPath: "Properties[0].owners[0].ownerDetails.memoDate",
+        jsonPath: "Properties[0].notices[0].memoDate",
         props: {
             inputProps: {
                 max: getTodaysDateInYMD()
@@ -212,7 +212,7 @@ const demandNoticeFromDate = {
     },
     required: true,
     pattern: getPattern("Date"),
-    jsonPath: "Properties[0].owners[0].ownerDetails.demandStartdate",
+    jsonPath: "Properties[0].notices[0].demandNoticeFrom",
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
@@ -231,7 +231,7 @@ const demandNoticeFromDate = {
     },
     required: true,
     pattern: getPattern("Date"),
-    jsonPath: "Properties[0].owners[0].ownerDetails.demandlastdate",
+    jsonPath: "Properties[0].notices[0].demandNoticeTo",
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
@@ -252,7 +252,7 @@ const demandNoticeFromDate = {
     optionValue: "code",
     optionLabel: "label",
     sourceJsonPath: "applyScreenMdmsData.propertyTypes",
-    jsonPath: "Properties[0].owners[0].ownerDetails.recoveryType" 
+    jsonPath: "Properties[0].notices[0].recoveryType" 
 }
 
 
@@ -269,7 +269,7 @@ const paymentAmountFieldNotice = {
     minLength: 4,
     maxLength: 25,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid"
+    jsonPath: "Properties[0].notices[0].amount"
 
 }
 const getOwnerDetailsForNotice = () => {

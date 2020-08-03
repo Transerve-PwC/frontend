@@ -17,8 +17,8 @@ import { updatePFOforSearchResults } from "../../../../ui-utils/commons";
 
 
 const header = getCommonHeader({
-    labelName: "Add Rented Properties",
-    labelKey: "RP_COMMON_RENTED_PROPERTIES_ADD"
+    labelName: "Recovery Notice",
+    labelKey: "RP_RECOVERY_NOTICE_APPLY"
   });
 
 
