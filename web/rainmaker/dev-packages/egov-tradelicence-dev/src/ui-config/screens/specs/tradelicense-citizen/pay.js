@@ -59,7 +59,7 @@ const beforeScreenInit = async(action, state, dispatch) => {
         "pay",
         "components.div.children.footer.children.makePayment",
         "visible",
-        showPaymentButton
+        showPaymentButton && !estimateCardData["payStatus"]
       )
     );
     dispatch(
@@ -67,7 +67,7 @@ const beforeScreenInit = async(action, state, dispatch) => {
         "pay",
         "components.div.children.footer.children.errorButton",
         "visible",
-        !showPaymentButton
+        !showPaymentButton || !!estimateCardData["payStatus"]
       )
     );
 }
