@@ -2,9 +2,8 @@ import React from "react";
 import {
   sortByEpoch,
   getEpochForDate,
-  getTextToLocalMapping
 } from "../../utils";
-import { searchApiCall } from "./functions";
+import { getTextToLocalMapping } from "./functions";
 
 export const searchResults = {
   uiFramework: "custom-molecules",

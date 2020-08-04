@@ -1,11 +1,12 @@
 import get from "lodash/get";
 import set from "lodash/set";
+import memoize from "lodash/memoize";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getCount } from "../../../../..//ui-utils/commons";
 import {
   convertEpochToDate,
   convertDateToEpoch,
-  getTextToLocalMapping
+  getTextToLocalMapping as _getTextToLocalMapping
 } from "../../utils/index";
 import { toggleSnackbar, prepareFinalObject, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
@@ -16,6 +17,8 @@ import { httpRequest } from "../../../../../ui-utils"
 import {
   localStorageGet,
 } from "egov-ui-kit/utils/localStorageUtils";
+
+export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(label));
 
 export const getStatusList = async (state, dispatch, screen, path) => {
   const queryObject = [{ key: "tenantId", value: getTenantId() }, 
@@ -36,9 +39,6 @@ export const getStatusList = async (state, dispatch, screen, path) => {
 }
 
 export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100 , hideTable = true) => {
-  // show loader
-  dispatch(toggleSpinner());
-
   !!hideTable && showHideTable(false, dispatch);
   let queryObject = [
     {
@@ -199,8 +199,6 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
         )
       );
       !!hideTable && showHideTable(true, dispatch);
-      // hide loader
-      dispatch(toggleSpinner());
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
       console.log(error);

@@ -2389,8 +2389,8 @@ export const fillOldLicenseData = async (state, dispatch) => {
   );
 };
 
+const localisationLabels = getTransformedLocalStorgaeLabels();
 export const getTextToLocalMapping = label => {
-  const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
 
     case "PENDINGCLARIFICATION":
