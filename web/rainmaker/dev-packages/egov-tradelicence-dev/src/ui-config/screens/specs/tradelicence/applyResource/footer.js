@@ -1101,6 +1101,8 @@ export const footerReviewTop = (
         applicationPrintObject
       ];
       break;
+    case "PENDINGCLARIFICATION":
+    case "MODIFIED":
     case "APPLIED":
     case "CITIZENACTIONREQUIRED":
     case "PENDINGPAYMENT":

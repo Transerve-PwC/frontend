@@ -7,6 +7,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import connect from 'react-redux';
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 const styles = theme => ({
   root: {
@@ -16,10 +18,15 @@ const styles = theme => ({
 });
 
 class HowItWorks extends React.Component {
+
+  goToHowItWorks = () => {
+    this.props.setRoute('/tradelicense-citizen/how-it-works')
+  }
+
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <div className={classes.root} onClick={this.goToHowItWorks}>
         <List component="nav">
           <ListItem button>
             <ListItemText
@@ -45,5 +52,10 @@ class HowItWorks extends React.Component {
     );
   }
 }
+const mapDispacthToProps = dispatch => {
+  return {
+    setRoute: route => dispatch(setRoute(route))
+  };
+};
 
-export default withStyles(styles)(HowItWorks);
+export default withStyles(styles)(connect(null, mapDispacthToProps)(HowItWorks));

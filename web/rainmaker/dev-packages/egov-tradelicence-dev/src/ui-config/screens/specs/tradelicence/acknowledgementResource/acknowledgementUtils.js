@@ -63,7 +63,7 @@ const acknowledgementCard = ({
             )
           },
           props: {
-            style: style.tailBox,
+            style: {...style.tailBox, flexBasis: "auto", flexGrow: 0, flexShrink:1},
             className: "ack-tail"
           }
         }

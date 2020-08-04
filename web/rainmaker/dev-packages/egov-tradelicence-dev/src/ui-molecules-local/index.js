@@ -66,6 +66,11 @@ const TaskDialog = Loadable({
   loading: () => <Loading />
 });
 
+const TlHowItWorks = Loadable({
+  loader: () => import("./TlHowItWorks"),
+  loading: () => <Loading />
+})
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -78,5 +83,6 @@ export {
   HowItWorks,
   ActionDialog,
   Footer,
-  TaskDialog
+  TaskDialog,
+  TlHowItWorks
 };
