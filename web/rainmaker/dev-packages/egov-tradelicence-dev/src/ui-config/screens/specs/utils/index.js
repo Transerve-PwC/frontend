@@ -2393,6 +2393,9 @@ export const getTextToLocalMapping = label => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
 
+    case "PENDINGCLARIFICATION":
+      return getLocaleLabels("PENDINGCLARIFICATION", "WF_NEWTL_PENDINGCLARIFICATION", localisationLabels)
+
     case "MODIFIED": 
       return getLocaleLabels("Modified", "WF_NEWTL_MODIFIED", localisationLabels);
 
