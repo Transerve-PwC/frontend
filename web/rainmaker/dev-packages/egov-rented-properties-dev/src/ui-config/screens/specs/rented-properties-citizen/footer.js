@@ -309,30 +309,247 @@ const callBackForPrevious = (state, dispatch) => {
   changeStep(state, dispatch, "ownership-apply", "previous");
 };
 
+const callBackForNextCommon = async(action,state, dispatch , 
+  {screenkey , validationFieldFirst , validationFieldSecond , 
+    applicationsArray , tempArray , moduleName , documentsTempJson , 
+    applicationsJsonPath }) => {
+  console.log(screenkey)
+  // let activeStep = get(
+  //     // state.screenConfiguration.screenConfig["ownership-apply"],
+  //     `state.screenConfiguration.screenConfig.${screenkey}`,
+  //     "components.div.children.stepper.props.activeStep",
+  //     0
+  // );
+  let activeStep = 0;
+  let isFormValid = true;
+  let hasFieldToaster = true;
+  if(activeStep === DETAILS_STEP) {
+      // const isOwnerDetailsValid = validateFields(
+      //   "components.div.children.formwizardFirstStep.children.applicantDetails.children.cardContent.children.detailsContainer.children",            
+      //   state,
+      //   dispatch,
+      //   "ownership-apply"
+      // )
+      const isOwnerDetailsValid = validateFields(
+        `components.div.children.formwizardFirstStep.children.${validationFieldFirst}`,            
+        state,
+        dispatch,
+        `${screenkey}`
+      )
+      console.log(isOwnerDetailsValid)
+
+      // const isAddressDetailsValid = validateFields(
+      //   "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children",            
+      //   state,
+      //   dispatch,
+      //   "ownership-apply"
+      // )
+
+      // const isAddressDetailsValid = validateFields(
+      //   `components.div.children.formwizardFirstStep.children.${validationFieldSecond}`,            
+      //   state,
+      //   dispatch,
+      //   screenkey
+      // )
+  //     if(!!isOwnerDetailsValid && !!isAddressDetailsValid) {
+  //       const propertyId = get(state.screenConfiguration.preparedFinalObject, `${applicationsArray}[0].property.id`);
+  //       // const propertyId = get(state.screenConfiguration.preparedFinalObject, "Owners[0].property.id");
+  //       let res = true;
+  //       if(!propertyId) {
+  //         res = moduleName == 'OWNERSHIPTRANSFERRP' ?  await getDetailsFromProperty(state, dispatch) : await getDuplicateDetailsFromProperty(state, dispatch)
+  //      }
+  //       if(!!res) {
+  //         Owners[0].ownerDetails.ownershipTransferDocuments
+  //         // const applyRes = applyOwnershipTransfer(state, dispatch, activeStep)
+  //         const applyRes = moduleName == 'OWNERSHIPTRANSFERRP' ? applyOwnershipTransfer(state, dispatch, activeStep) : applyDuplicateCopy(state, dispatch, activeStep)
+  //         if(!applyRes) {
+  //           return
+  //         }
+  //       } else {
+  //         return
+  //       }
+  //     } else {
+  //         isFormValid = false;
+  //     }
+  }
+  // if(activeStep === DOCUMENT_UPLOAD_STEP) {
+  //   const uploadedDocData = get(
+  //     state.screenConfiguration.preparedFinalObject,
+  //     // "Owners[0].ownerDetails.ownershipTransferDocuments",
+  //     `${applicationsJsonPath}`,
+  //     []
+  // );
+
+  // const uploadedTempDocData = get(
+  //     state.screenConfiguration.preparedFinalObject,
+  //     // "OwnersTemp[0].ownershipTransferDocuments",
+  //    ` ${documentsTempJson}`,
+  //     []
+  // );
+
+  // for (var y = 0; y < uploadedTempDocData.length; y++) {
+  //   if (
+  //       uploadedTempDocData[y].required &&
+  //       !some(uploadedDocData, { documentType: uploadedTempDocData[y].name })
+  //   ) {
+  //       isFormValid = false;
+  //   }
+  // }
+  // if(isFormValid) {
+  //   const reviewDocData =
+  //           uploadedDocData &&
+  //           uploadedDocData.map(item => {
+  //               return {
+  //                   title: `RP_${item.documentType}`,
+  //                   link: item.fileUrl && item.fileUrl.split(",")[0],
+  //                   linkText: "View",
+  //                   name: item.fileName
+  //               };
+  //           });
+  //           dispatch(
+  //             // prepareFinalObject("OwnersTemp[0].reviewDocData", reviewDocData)
+  //             prepareFinalObject(`${tempArray}[0].reviewDocData`, reviewDocData)
+  //         );
+  // }
+  // }
+  // // if(activeStep === SUMMARY_STEP) {
+  // // isFormValid = await applyOwnershipTransfer(state, dispatch);
+  // //   if (isFormValid) {
+  // //     const rentedData = get(
+  // //       state.screenConfiguration.preparedFinalObject,
+  // //       "Owners[0]"
+  // //   );
+  // //       moveToSuccess(rentedData, dispatch, "OWNERSHIPTRANSFERRP");
+  // //   }
+  // // }
+
+  // if(activeStep === SUMMARY_STEP) {
+  //   switch(moduleName){
+  //     case 'OWNERSHIPTRANSFERRP':
+  //         isFormValid = await applyOwnershipTransfer(state, dispatch);
+  //         if (isFormValid) {
+  //           let rentedData = get(
+  //             state.screenConfiguration.preparedFinalObject,
+  //             "Owners[0]"
+  //         );
+  //             moveToSuccess(rentedData, dispatch, "OWNERSHIPTRANSFERRP");
+  //         }
+  //         break;
+  //     case 'DUPLICATECOPYOFALLOTMENTLETTERRP' :
+  //       let rentedData = get(
+  //           state.screenConfiguration.preparedFinalObject,
+  //           "DuplicateCopyApplications[0]"
+  //       );
+  //       isFormValid = await applyDuplicateCopy(state, dispatch);
+  //         if (isFormValid) {
+  //             moveToSuccess(rentedData, dispatch, "DUPLICATECOPYOFALLOTMENTLETTERRP");
+  //         } 
+  //         break;
+
+
+  //   }
+  //   // isFormValid = await applyOwnershipTransfer(state, dispatch);
+  //   //   if (isFormValid) {
+  //   //     const rentedData = get(
+  //   //       state.screenConfiguration.preparedFinalObject,
+  //   //       "Owners[0]"
+  //   //   );
+  //   //       moveToSuccess(rentedData, dispatch, "OWNERSHIPTRANSFERRP");
+  //   //   }
+  //   }
+
+  // if(activeStep !== SUMMARY_STEP) {
+  //     if (isFormValid) {
+  //         changeStep(state, dispatch, `${screenkey}`);
+  //     } else if (hasFieldToaster) {
+  //         let errorMessage = {
+  //             labelName:
+  //                 "Please fill all mandatory fields and upload the documents !",
+  //             labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+  //         };
+  //         switch (activeStep) {
+  //             case DETAILS_STEP:
+  //                 errorMessage = {
+  //                     labelName:
+  //                         "Please fill all mandatory fields, then do next !",
+  //                     labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+  //                 };
+  //                 break;
+  //             case DOCUMENT_UPLOAD_STEP:
+  //                 errorMessage = {
+  //                     labelName: "Please upload all the required documents !",
+  //                     labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+  //                 };
+  //                 break;
+  //         }
+  //         dispatch(toggleSnackbar(true, errorMessage, "warning"));
+  //     }
+  // }
+}
+
+
+// export const footer = getCommonApplyFooter({
+//     previousButton: {
+//       ...previousButton,
+//       onClickDefination: {
+//         action: "condition",
+//         callBack: callBackForPrevious
+//       },
+//     },
+//     nextButton: {
+//       ...nextButton,
+//       onClickDefination: {
+//         action: "condition",
+//         callBack: callBackForNext
+//       }
+//     },
+//     submitButton: {
+//       ...submitButton,
+//       onClickDefination: {
+//         action: "condition",
+//         callBack: callBackForNext
+//       },
+//     }
+// });
 
 export const footer = getCommonApplyFooter({
-    previousButton: {
-      ...previousButton,
-      onClickDefination: {
-        action: "condition",
-        callBack: callBackForPrevious
-      },
+  previousButton: {
+    ...previousButton,
+    onClickDefination: {
+      action: "condition",
+      callBack: callBackForPrevious
     },
-    nextButton: {
-      ...nextButton,
-      onClickDefination: {
-        action: "condition",
-        callBack: callBackForNext
-      }
-    },
-    submitButton: {
-      ...submitButton,
-      onClickDefination: {
-        action: "condition",
-        callBack: callBackForNext
-      },
+  },
+  nextButton: {
+    ...nextButton,
+    onClickDefination: {
+      action: "condition",
+      callBack: (action, state, dispatch) => {
+        callBackForNextCommon(action, state, dispatch,{ screenkey:"ownership-apply",validationFieldFirst:"applicantDetails.children.cardContent.children.detailsContainer.children",
+        validationFieldSecond:"ownershipAddressDetails.children.cardContent.children.detailsContainer.children", applicationsArray:"Owners",tempArray:"OwnersTemp" , 
+        moduleName:"OWNERSHIPTRANSFERRP",documentsTempJson:"OwnersTemp[0].ownershipTransferDocuments" ,applicationsJsonPath: "Owners[0].ownerDetails.ownershipTransferDocuments", 
+          
+        })
+      }  , 
+      
+      // callBack: callBackForNextCommon(action,state,dispatch,{ screenkey: "ownership-apply"})
     }
-  });
+  },
+  submitButton: {
+    ...submitButton,
+    onClickDefination: {
+      action: "condition",
+      callBack: (action, state, dispatch) => {
+        callBackForNextCommon(action, state, dispatch,{ screenkey:"ownership-apply",validationFieldFirst:"applicantDetails.children.cardContent.children.detailsContainer.children",
+        validationFieldSecond:"ownershipAddressDetails.children.cardContent.children.detailsContainer.children", applicationsArray:"Owners",tempArray:"OwnersTemp" , 
+        moduleName:"OWNERSHIPTRANSFERRP",documentsTempJson:"OwnersTemp[0].ownershipTransferDocuments" ,applicationsJsonPath: "Owners[0].ownerDetails.ownershipTransferDocuments", 
+        })
+      }  , 
+      // callBack: callBackForNextCommon({applicationsJsonPath: "Owners[0].ownerDetails.ownershipTransferDocuments", screenKey: "ownership-apply", screenPath: "components.div.children.formwizardSecondStep.children.ownershipTransferDocumentsDetails.children.cardContent.children.documentList", tempJsonPath:"OwnersTemp[0].ownershipTransferDocuments"})
+    },
+  }
+});
+  
 
 const callBackForPreviousDuplicate = (state, dispatch) => {
   changeStep(state, dispatch, "duplicate-copy-apply", "previous");
