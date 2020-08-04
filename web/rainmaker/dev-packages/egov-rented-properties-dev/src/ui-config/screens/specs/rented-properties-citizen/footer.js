@@ -36,7 +36,7 @@ const callBackForNext = async(state, dispatch) => {
             res = await getDetailsFromProperty(state, dispatch)
           }
           if(!!res) {
-            const applyRes = applyOwnershipTransfer(state, dispatch, activeStep)
+            const applyRes = await applyOwnershipTransfer(state, dispatch, activeStep)
             if(!applyRes) {
               return
             }
@@ -153,7 +153,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
           res = await getDetailsFromPropertyTransit(state, dispatch)
         }
         if(!!res) {
-          const applytrans = submittransitsiteimages(state, dispatch)
+          const applytrans = await submittransitsiteimages(state, dispatch)
           if(!applytrans){
             return
           }
@@ -167,7 +167,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
      } 
     } 
 
-    isFormValid = await submittransitsiteimages(state, dispatch);
+    // isFormValid = await submittransitsiteimages(state, dispatch);
       if (isFormValid) {
         const transitData = get(
           state.screenConfiguration.preparedFinalObject,
@@ -217,7 +217,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
             res = await getDuplicateDetailsFromProperty(state, dispatch)
           }
           if(!!res) {
-            const applyRes = applyDuplicateCopy(state, dispatch, activeStep)
+            const applyRes = await applyDuplicateCopy(state, dispatch, activeStep)
             if(!applyRes) {
               return
             }

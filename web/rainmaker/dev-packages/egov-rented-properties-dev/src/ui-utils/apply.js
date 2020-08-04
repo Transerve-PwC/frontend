@@ -689,7 +689,7 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
            dispatch(
             prepareFinalObject(
               "DuplicateCopyApplications[0].property.colony",
-              getLocaleLabels("colony",Properties[0].propertyDetails.address.colony)
+              Properties[0].propertyDetails.address.colony
             )
           )
           dispatch(

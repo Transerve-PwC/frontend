@@ -36,7 +36,7 @@ const callBackForNextMortgage = async(state, dispatch) => {
           res = await getDetailsFromPropertyMortgage(state, dispatch)
         }
         if(!!res) {
-          const applyRes = applyMortgage(state, dispatch, activeStep)
+          const applyRes = await applyMortgage(state, dispatch, activeStep)
           if(!applyRes) {
             return
           }

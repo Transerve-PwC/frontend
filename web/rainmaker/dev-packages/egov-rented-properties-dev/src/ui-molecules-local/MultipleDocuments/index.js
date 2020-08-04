@@ -10,6 +10,7 @@ import {LabelContainer}  from "egov-ui-framework/ui-containers"
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import moment from 'moment'
 
 const styles = {
     card: {
@@ -55,7 +56,8 @@ const styles = {
 class MultipleDocuments extends Component {
 
   render() {
-      const {data = [], contents, classes , dispatch} = this.props
+      let {data = [], btnhide,contents, classes , dispatch} = this.props
+      data = data.filter(dat => !!dat.applicationDocuments)
       return (
           <div>
               {!!data.length && data.map((datum, index) => (
@@ -64,23 +66,24 @@ class MultipleDocuments extends Component {
                   <Grid container>
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
                   <Grid xs={12} sm={12} style={{textAlign: "left"}}>
-                  <LabelContainer
-                      labelName= "Comments :"
-                      style={commentHeader}
-                  />
-                   <LabelContainer
-                      labelName= {datum.description ? datum.description : 'NA'}
+                  <br></br>
+                    <LabelContainer   
+                      labelName= {datum.memoDate ? moment(datum.memoDate).format('dddd, MMMM Do, YYYY h:mm:ss A') : 'NA'}
                       style={documentTitle}
                   />
-                    </Grid>  
-                  <Grid xs={12} sm={4} style={{textAlign: "right"}}>
+
+                    </Grid> 
+                    {!btnhide && 
+                      (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1}  color="primary"  variant="contained"  
                   onClick={() => { 
                     dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}`)); 
                     dispatch(prepareFinalObject("SingleImage[0]", datum));}}> 
                     Violation Notice
                     </Button>
-                    </Grid>
+                    </Grid>)
+                    } 
+                  
                  </Grid>
                       {datum.applicationDocuments.map((content) => (
                           <Grid xs={6} sm={3} 
@@ -121,6 +124,16 @@ class MultipleDocuments extends Component {
                           </Grid>)
                       )}
                   </Grid>
+                  <br></br>
+                      <LabelContainer
+                      labelName= "Comments : "
+                      style={commentHeader}
+                  />
+                  &nbsp;
+                   <LabelContainer
+                      labelName= {datum.description ? datum.description : 'NA'}
+                      style={documentTitle}
+                  />
                   </CardContent>
                   </Card>)
                   )}

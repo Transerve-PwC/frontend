@@ -63,7 +63,7 @@ class LandingPage extends React.Component {
   render() {
     const { classes, items, applicationCount } = this.props;
     return (
-      <Grid container className="landing-page-main-grid">
+      <Grid container className="landing-page-main-grid" style={{padding: "0px 8px"}}>
         {items.map(obj => {
           return !obj.hide ? (
             <Grid
