@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import connect from 'react-redux';
+import { connect } from "react-redux";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 const styles = theme => ({
@@ -52,10 +52,15 @@ class HowItWorks extends React.Component {
     );
   }
 }
-const mapDispacthToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     setRoute: route => dispatch(setRoute(route))
   };
 };
 
-export default withStyles(styles)(connect(null, mapDispacthToProps)(HowItWorks));
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(HowItWorks)
+);

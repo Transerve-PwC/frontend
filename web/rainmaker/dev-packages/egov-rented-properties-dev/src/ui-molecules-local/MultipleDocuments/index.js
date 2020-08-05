@@ -52,12 +52,38 @@ const styles = {
     letterSpacing: "0.67px",
     lineHeight: "19px"
   }
+  const labelHeader = {
+    color: "rgba(0, 0, 0, 0.87)",
+    fontFamily: "Roboto",
+    fontSize: "25px",
+    fontWeight: 400,
+    letterSpacing: "0.67px",
+    lineHeight: "19px"
+  }
 
 class MultipleDocuments extends Component {
 
   render() {
       let {data = [], btnhide,contents, classes , dispatch} = this.props
       data = data.filter(dat => !!dat.applicationDocuments)
+        if(data.length==0){
+        return(
+          <Card className="Multiple-card-212">  
+          <CardContent>
+          <Grid container>
+          <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
+          <Grid xs={12} sm={12} style={{textAlign: "center"}}>
+          <LabelContainer
+              labelName= "No transit site images captured."
+              style={labelHeader}
+          />
+          </Grid>
+          </Grid>
+          </Grid>
+          </CardContent>
+          </Card>
+        )
+      }
       return (
           <div>
               {!!data.length && data.map((datum, index) => (
@@ -67,13 +93,22 @@ class MultipleDocuments extends Component {
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
                   <Grid xs={12} sm={12} style={{textAlign: "left"}}>
                   <br></br>
-                    <LabelContainer   
+                
+                    {!btnhide && (<LabelContainer   
                       labelName= {datum.memoDate ? moment(datum.memoDate).format('dddd, MMMM Do, YYYY h:mm:ss A') : 'NA'}
                       style={documentTitle}
-                  />
+                  />)
+                    }
+                    {btnhide && 
+                      (<LabelContainer   
+                        labelName= {moment(datum.auditDetails.createdTime).format('dddd, MMMM Do, YYYY h:mm:ss A')}
+                        style={documentTitle}
+                    />)
+                    }
+                    
 
                     </Grid> 
-                    {!btnhide && 
+                    {btnhide && 
                       (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1}  color="primary"  variant="contained"  
                   onClick={() => { 

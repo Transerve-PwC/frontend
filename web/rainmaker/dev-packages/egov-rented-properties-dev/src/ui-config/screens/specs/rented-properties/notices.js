@@ -88,7 +88,7 @@ const notices = {
               componentPath: "MultipleDocumentsContainer",
               props: {
                 sourceJsonPath:"Properties[0].notices",
-                btnhide: true,
+                btnhide: false,
                 businessService:"RP",
                 className: "review-documents"
               }

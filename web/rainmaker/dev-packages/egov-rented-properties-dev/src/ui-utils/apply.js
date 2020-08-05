@@ -209,7 +209,7 @@ let userInfo = JSON.parse(getUserInfo());
           `Document - ${index + 1}`,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
-          "documentType" : fileitem.file.documentType,
+          "documentType" :  `PROPERTYIMAGE${index + 1}`,
           "tenantId" : tenantId,
           "active": true
         })

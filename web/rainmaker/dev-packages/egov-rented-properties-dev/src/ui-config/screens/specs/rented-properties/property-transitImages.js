@@ -121,6 +121,7 @@ import {
                 componentPath: "MultipleDocumentsContainer",
                 props: {
                   sourceJsonPath:"Images",
+                  btnhide: true,
                   businessService:"RP",
                   className: "review-documents"
                 }
