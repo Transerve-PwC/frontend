@@ -15,9 +15,18 @@
     min-height: 180px;
     min-width: 365px;
   }
+  .common-header-cont{
+    padding: 44px 0px 0px 12px;
+  }
   
   @media only screen and (max-width: 768px) {
     .city-picker-dialog-style {
       min-width: 250px;
+    }
+  
+  }
+  @media only screen and (min-width: 768px){
+    .apply-wizard-footer{
+      width: 100%;
     }
   }

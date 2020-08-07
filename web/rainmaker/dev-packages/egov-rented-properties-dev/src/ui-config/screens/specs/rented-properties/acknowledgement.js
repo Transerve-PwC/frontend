@@ -8,6 +8,7 @@ handleScreenConfigurationFieldChange as handleField
 import acknowledgementCard from "./acknowledgementResource/acknowledgementUtils";
 import { applicationSuccessFooter } from "./acknowledgementResource/applicationSuccessFooter";
 import { paymentFailureFooter } from "./acknowledgementResource/paymentFailureFooter";
+import { RP_MASTER_ENTRY, TRANSITSITEIMAGES, NOTICE_GENERATION, PERMISSIONTOMORTGAGE, DUPLICATECOPYOFALLOTMENTLETTERRP, OWNERSHIPTRANSFERRP } from "../../../../ui-constants";
 
 const getAcknowledgementCard = (
     state,
@@ -21,7 +22,7 @@ const getAcknowledgementCard = (
     businessService
   ) => {
     if (status === "success") {
-      const header = type === "OWNERSHIPTRANSFERRP" ? purpose === "apply" ? {
+      const header = type === OWNERSHIPTRANSFERRP ? purpose === "apply" ? {
         labelName: "Ownership transfer application submitted successfully",
         labelKey: "RP_OWNER_SHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
       } : purpose === "forward" ? {
@@ -43,7 +44,8 @@ const getAcknowledgementCard = (
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       } :
-      type === "DUPLICATECOPYOFALLOTMENTLETTERRP" ? purpose === "apply" ? {
+
+      type === DUPLICATECOPYOFALLOTMENTLETTERRP ? purpose === "apply" ? {
         labelName: "Duplicate Copy Allotment application submitted successfully",
         labelKey: "RP_DUPLICATE_COPY_SUCCESS_MESSAGE_MAIN"
       } : purpose === "forward" ? {
@@ -66,7 +68,7 @@ const getAcknowledgementCard = (
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       } 
 
-      :type === "PERMISSIONTOMORTGAGE" ? purpose === "apply" ? {
+      :type === PERMISSIONTOMORTGAGE ? purpose === "apply" ? {
         labelName: "Mortgage Application Submitted Successfully",
         labelKey: "RP_MORTGAGE_SUCCESS_MESSAGE_MAIN"
       } : purpose === "forward" ? {
@@ -88,13 +90,11 @@ const getAcknowledgementCard = (
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       } 
-      : purpose === "apply" ? {
+      : type === RP_MASTER_ENTRY ?
+       purpose === "apply" ? {
         labelName: "Rented Property Master Entry Submitted Successfully",
         labelKey: "RP_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
-      }: purpose === "TransitSiteapply" ? {
-        labelName: "Transit Site Image Capture Submitted Successfully",
-        labelKey: "RP_TRANSIT_SITE_IMAGE_MESSAGE_MAIN"
-      } : purpose === "forward" ? {
+      }: purpose === "forward" ? {
         labelName: "Rented Property Master Entry Forwarded Successfully",
         labelKey: "RP_FORWARD_SUCCESS_MESSAGE_MAIN"
       } : purpose === "sendback" ? {
@@ -113,9 +113,20 @@ const getAcknowledgementCard = (
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       }
+      : type === TRANSITSITEIMAGES ?  {
+        labelName: "Transit Site Image Capture Submitted Successfully",
+        labelKey: "RP_TRANSIT_SITE_IMAGE_MESSAGE_MAIN"
+      }
+      : type === NOTICE_GENERATION ? {
+        labelName: "Notice Generated Successfully",
+        labelKey: "RP_NOTICE_GENERATED_SUCCESS_MESSAGE_MAIN"
+      } : {
+        labelName: "",
+        labelKey: ""
+      }
 
-      const tailText = type === "OWNERSHIPTRANSFERRP" || type === "DUPLICATECOPYOFALLOTMENTLETTERRP" 
-      || type === "PERMISSIONTOMORTGAGE" ? {
+      const tailText = type === OWNERSHIPTRANSFERRP || type === DUPLICATECOPYOFALLOTMENTLETTERRP 
+      || type === PERMISSIONTOMORTGAGE ? {
         labelName: "Application Number",
         labelKey: "RP_APPLICATION_NUMBER_LABEL"
       } : !!transitNumber ? {
@@ -139,11 +150,11 @@ const getAcknowledgementCard = (
               icon: purpose ==="reject" ? "close" : "done",
               backgroundColor: purpose ==="reject" ? "#E54D42" : "#39CB74",
               header,
-            //   body: {
-            //     labelName:
-            //       "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
-            //     labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
-            //   },
+              body: {
+                labelName:
+                  "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+                labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
+              },
               tailText: tailText,
               number: transitNumber || applicationNumber
             })
@@ -173,11 +184,11 @@ const getAcknowledgementCard = (
                 labelName: "Payment is Failed!",
                 labelKey: "RP_PAYMENT_FAILED_MESSAGE_HEAD"
               },
-            //   body: {
-            //     labelName:
-            //       "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
-            //     labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
-            //   },
+              body: {
+                labelName:
+                  "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+                labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
+              },
               tailText: {
                 labelName: "Application Number",
                 labelKey: "RP_APPLICATION_NUMBER_LABEL"

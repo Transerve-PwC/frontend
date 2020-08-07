@@ -9,7 +9,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getOwnershipSearchResults } from "../../../../ui-utils/commons";
 import { getReviewApplicantDetails, getreviewPropertyAddressDetails } from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { footerReview } from "./applyResource/reviewFooter";
+import { footerReview, downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
 import { set } from "lodash";
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -84,6 +84,39 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       window.location.href,
       "OwnershipTransferRP"
     );
+
+    const printCont = downloadPrintContainer(
+      action,
+      state,
+      dispatch,
+      status,
+      applicationNumber,
+      tenantId
+    );
+    const CitizenprintCont=footerReviewTop(
+      action,
+      state,
+      dispatch,
+      status,
+      applicationNumber,
+      tenantId,
+      //financialYear
+    );
+
+
+    process.env.REACT_APP_NAME === "Citizen"
+      ? set(
+          action,
+          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+          CitizenprintCont
+        )
+      : set(
+          action,
+          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+          printCont
+        );
+
+
     const footer = footerReview(
       action,
       state,

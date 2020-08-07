@@ -39,7 +39,6 @@ import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
-import { RENEWAL_RENT_DEED_SHOP } from "../ui-constants";
 
 export const updateTradeDetails = async requestBody => {
   try {
@@ -967,7 +966,7 @@ export const organizeLicenseData = data => {
       age: Number((new Date().getTime() - owner.dob)/31536000000).toFixed(0)
     }))
     tradeLicenseDetail = {...tradeLicenseDetail, additionalDetail: {...tradeLicenseDetail.additionalDetail, licensePeriod: tradeLicenseDetail.additionalDetail.licensePeriod + ""}, owners}
-    applicationType = !applicationType && businessService === RENEWAL_RENT_DEED_SHOP ? "Renew" : applicationType
+    // applicationType = applicationType
     return {...item, tradeLicenseDetail, applicationType}
   })
 }

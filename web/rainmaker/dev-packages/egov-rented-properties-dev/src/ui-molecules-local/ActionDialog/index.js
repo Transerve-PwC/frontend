@@ -22,7 +22,7 @@ const styles = theme => ({
 });
 
 const getEpochForDate = (date) => {
-  const dateSplit = date.split("-");
+  const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
 
@@ -304,7 +304,7 @@ class ActionDialog extends React.Component {
                     </Grid>
                   )}
                   <Grid item sm="12">
-                    <TextFieldContainer
+                    {/* <TextFieldContainer
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
                       onChange={e =>
@@ -312,7 +312,9 @@ class ActionDialog extends React.Component {
                       }
                       jsonPath={`${dataPath}.comment`}
                       placeholder={fieldConfig.comments.placeholder}
-                    />
+                    /> */}
+                    <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label>
+                    <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/>
                   </Grid>
     
                   {moduleName === "OwnershipTransferRP" && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (

@@ -147,7 +147,7 @@ let userInfo = JSON.parse(getUserInfo());
             set(queryObject[0], "applicationAction", "SUBMIT")
           }
           let ownershipTransferDocuments = get(queryObject[0], "ownerDetails.ownershipTransferDocuments") || [];
-          ownershipTransferDocuments = ownershipTransferDocuments.map(item => ({...item, active: true}))
+          ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item).map(item => ({...item, active: true}))
           const removedDocs = get(state.screenConfiguration.preparedFinalObject, "OwnersTemp[0].removedDocs") || [];
           ownershipTransferDocuments = [...ownershipTransferDocuments, ...removedDocs]
           set(queryObject[0], "ownerDetails.ownershipTransferDocuments", ownershipTransferDocuments)
@@ -218,6 +218,7 @@ let userInfo = JSON.parse(getUserInfo());
       dispatch(
         prepareFinalObject("PropertyImagesApplications[0].applicationDocuments", output)
       );
+      console.log(`PAYLOAD REQ : ${queryObject}`);
       response = await httpRequest(
         "post",
         "/csp/property-images/_create",
@@ -232,7 +233,90 @@ let userInfo = JSON.parse(getUserInfo());
       return false;
   }
   }
-  
+
+  export const applynoticegeneration = async (state, dispatch, str) => {
+    try {
+
+      
+      const transitNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].transitNumber")
+      const id = get(state.screenConfiguration.preparedFinalObject, "Properties[0].id")
+      const pincode = get(state.screenConfiguration.preparedFinalObject, "Properties[0].pincode")
+      const area = get(state.screenConfiguration.preparedFinalObject, "Properties[0].area")
+      const filedata = get(state.screenConfiguration.preparedFinalObject, "SingleImage[0]",[]);
+      const memoDate = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.memoDate")
+      const violations = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.violations")
+      const description = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.editor")
+      const relationship = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.relation")
+      const fatherOrHusbandname = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.fatherOrHusband")
+      const demandNoticeFrom = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.demandStartdate")
+      const demandNoticeTo = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.demandlastdate")
+      const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
+      const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
+      const noticeType = str
+      const tenantId = getTenantId()
+      let response;
+ 
+      let fileStoreId = filedata && filedata.applicationDocuments.map(item => item.fileStoreId).join(",");
+      const fileUrlPayload =  fileStoreId && (await getFileUrlFromAPI(fileStoreId)); 
+      const output = filedata.applicationDocuments.map((fileitem,index) => 
+      
+        ({
+          "fileName" : (fileUrlPayload &&
+            fileUrlPayload[fileitem.fileStoreId] &&
+            decodeURIComponent(
+              getFileUrl(fileUrlPayload[fileitem.fileStoreId])
+                .split("?")[0]
+                .split("/")
+                .pop()
+                .slice(13)
+            )) ||
+          `Document - ${index + 1}`,
+          "fileStoreId" : fileitem.fileStoreId,
+          "fileUrl" : Object.values(fileUrlPayload)[index],
+          "documentType" : `PROPERTYIMAGE${index + 1}`,
+          "tenantId" : tenantId,
+          "active": true
+        })
+      );
+      
+      const NoticeApplications = [{
+        "tenantId": tenantId,
+        "memoDate" : convertDateToEpoch(memoDate),
+        "violations": violations,
+        "noticeType" : noticeType,
+        "description": description,
+        "relationship": relationship,
+        "guardian": fatherOrHusbandname,
+        "recoveryType": recoveryType,
+        "demandNoticeFrom": demandNoticeFrom,
+        "demandNoticeTo" : demandNoticeTo,
+        "amount" : amount,
+        "property": {
+          "id": id,
+          "transitNumber": transitNumber,
+          "pincode": pincode,
+          "area": area
+        },
+
+        "applicationDocuments": output
+    }]
+    
+   
+      response = await httpRequest(
+        "post",
+        "/csp/notice-generation/_create",
+        "",
+        [],
+        { NoticeApplications }
+      );
+      return true;
+  } catch (error) {
+      dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+      console.log(error);
+      return false;
+  }
+  }
+ 
   export const applyMortgage = async (state, dispatch, activeIndex) => {
     try {
         let queryObject = JSON.parse(

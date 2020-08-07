@@ -9,10 +9,11 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getDuplicateCopySearchResults} from "../../../../ui-utils/commons";
 import { getDuplicateCopyReviewPropertyAddressDetails , getDuplicateCopyPreviewApplicantDetails} from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { footerReview } from "./applyResource/reviewFooter";
+import { footerReview, downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
 import { set } from "lodash";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 const headerrow = getCommonContainer({
@@ -84,7 +85,41 @@ const duplicateReviewDetails = getCommonCard({
           window.location.href,
           "DuplicateCopyOfAllotmentLetterRP"
         );
-        
+     
+        const printCont = downloadPrintContainer(
+          action,
+          state,
+          dispatch,
+          status,
+          applicationNumber,
+          tenantId
+        );
+        const CitizenprintCont=footerReviewTop(
+          action,
+          state,
+          dispatch,
+          status,
+          applicationNumber,
+          tenantId,
+          //financialYear
+        );
+    
+    
+        process.env.REACT_APP_NAME === "Citizen"
+          ? set(
+              action,
+              "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+              CitizenprintCont
+            )
+          : set(
+              action,
+              "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+              printCont
+            );
+    
+
+
+
         const footer = footerReview(
           action,
           state,

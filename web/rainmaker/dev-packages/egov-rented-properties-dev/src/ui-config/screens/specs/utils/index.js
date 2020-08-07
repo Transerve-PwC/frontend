@@ -31,7 +31,6 @@ import {
   getTransformedLocalStorgaeLabels, getFileUrlFromAPI
 } from "egov-ui-framework/ui-utils/commons";
 import axios from 'axios';
-import { RC_PEDAL_RICKSHAW_LOADING_REHRI, DL_PEDAL_RICKSHAW_LOADING_REHRI, LICENSE_DHOBI_GHAT, RENEWAL_RENT_DEED_SHOP } from "../../../../ui-constants";
 import { getSearchResults, getOwnershipSearchResults, getDuplicateCopySearchResults } from "../../../../ui-utils/commons";
 
 export const getCommonApplyFooter = children => {
@@ -2523,18 +2522,6 @@ export const getTextToLocalMapping = label => {
         "TL_TYPE_NEW",
         localisationLabels
       );
-      case RC_PEDAL_RICKSHAW_LOADING_REHRI:
-        return getLocaleLabels("Initiated,", label, localisationLabels);
-  
-      case DL_PEDAL_RICKSHAW_LOADING_REHRI:
-        return getLocaleLabels("Initiated,", label, localisationLabels);
-  
-      case LICENSE_DHOBI_GHAT:
-        return getLocaleLabels("Initiated,", label, localisationLabels);
-      
-      case RENEWAL_RENT_DEED_SHOP:
-        return getLocaleLabels("Initiated,", label, localisationLabels);
-
       case "Transit No":
           return getLocaleLabels(
             "Transit No",

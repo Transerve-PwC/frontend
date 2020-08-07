@@ -16,8 +16,10 @@ import {
       fontWeight: 400
     },
     tailNumber: {
-      fontSize: 24,
-      fontWeight: 500
+      // fontSize: 24,
+      // fontWeight: 500
+      fontSize: 15,
+    fontWeight: 500
     },
     tailBox: {
       textAlign: "right",
@@ -34,14 +36,100 @@ import {
       display: "flex",
       minHeight: "106px",
       justifyContent: "center",
-      alignItems: "center"
+      //alignItems: "center"
     }
   };
   
+  // const acknowledgementCard = ({
+  //   icon = "done",
+  //   backgroundColor = "#39CB74",
+  //   header,
+  //   body,
+  //   tailText,
+  //   number
+  // } = {}) => {
+  //   const tail =
+  //     tailText && number && number !== "null"
+  //       ? {
+  //           uiFramework: "custom-atoms",
+  //           componentPath: "Div",
+  //           children: {
+  //             text: getCommonHeader(tailText, { style: style.tailText }),
+  //             paragraph: getCommonHeader(
+  //               {
+  //                 labelName: number
+  //               },
+  //               { style: style.tailNumber }
+  //             )
+  //           },
+  //           props: {
+  //             style: style.tailBox,
+  //             className: "ack-tail"
+  //           }
+  //         }
+  //       : {};
+  
+  //   return getCommonCard({
+  //     applicationSuccessContainer: getCommonContainer(
+  //       {
+  //         avatar: {
+  //           componentPath: "Avatar",
+  //           props: {
+  //             style: {
+  //               width: "72px",
+  //               height: "72px",
+  //               backgroundColor: backgroundColor
+  //             }
+  //           },
+  //           children: {
+  //             Icon: {
+  //               uiFramework: "custom-atoms",
+  //               componentPath: "Icon",
+  //               props: {
+  //                 iconName: icon,
+  //                 style: {
+  //                   fontSize: "50px"
+  //                 },
+  //                 iconSize: "50px",
+  //                 className: "ack-avatar"
+  //               }
+  //             }
+  //           }
+  //         },
+  //         body: {
+  //           uiFramework: "custom-atoms",
+  //           componentPath: "Div",
+  //           children: {
+  //             header: getCommonHeader(header),
+  //             paragraph: body
+  //               ? getCommonParagraph(body, {
+  //                   style: style.bodySub
+  //                 })
+  //               : {}
+  //           },
+  //           props: {
+  //             style: style.bodyBox,
+  //             className: "ack-body"
+  //           }
+  //         },
+  //         tail: tail
+  //       },
+  //       {
+  //         style: style.container
+  //       }
+  //     )
+  //   });
+  // };
+  
+  // export default acknowledgementCard;
+  
+
+
   const acknowledgementCard = ({
     icon = "done",
     backgroundColor = "#39CB74",
     header,
+    subheader,
     body,
     tailText,
     number
@@ -61,7 +149,7 @@ import {
               )
             },
             props: {
-              style: style.tailBox,
+              style: {...style.tailBox, flexBasis: "auto", flexGrow: 0, flexShrink:1},
               className: "ack-tail"
             }
           }
@@ -99,6 +187,7 @@ import {
             componentPath: "Div",
             children: {
               header: getCommonHeader(header),
+              //subheader: getCommonSubHeader(subheader),
               paragraph: body
                 ? getCommonParagraph(body, {
                     style: style.bodySub

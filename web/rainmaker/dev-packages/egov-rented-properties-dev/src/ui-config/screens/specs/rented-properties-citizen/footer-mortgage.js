@@ -5,6 +5,7 @@ import { getDetailsFromPropertyMortgage,applyMortgage } from "../../../../ui-uti
 import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DETAILS_STEP, DOCUMENT_UPLOAD_STEP, SUMMARY_STEP } from "../rented-properties/applyResource/footer";
 import { some } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { PERMISSIONTOMORTGAGE } from "../../../../ui-constants";
 
 const callBackForNextMortgage = async(state, dispatch) => {
   let activeStep = get(
@@ -91,7 +92,7 @@ const callBackForNextMortgage = async(state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "MortgageApplications[0]"
     );
-        moveToSuccess(rentedData, dispatch, "PERMISSIONTOMORTGAGE");
+        moveToSuccess(rentedData, dispatch, PERMISSIONTOMORTGAGE);
     }
   }
   if(activeStep !== SUMMARY_STEP) {

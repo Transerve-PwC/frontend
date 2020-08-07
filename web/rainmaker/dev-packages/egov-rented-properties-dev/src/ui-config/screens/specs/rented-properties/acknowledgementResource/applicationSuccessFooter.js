@@ -42,6 +42,62 @@ export const applicationSuccessFooter = (
       onClickDefination: {
         action: "page_change",
         path: redirectionURL
+      },
+      downloadFormButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px"
+          }
+        },
+        children: {
+          downloadFormButtonLabel: getLabel({
+            labelName: "DOWNLOAD CONFIRMATION FORM",
+            labelKey: "TL_APPLICATION_BUTTON_DOWN_CONF"
+          })
+        },
+        // onClickDefination: {
+        //   action: "condition",
+        //   callBack: () => {
+        //   const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
+        //   const documents = LicensesTemp[0].reviewDocData;
+        //   set(Licenses[0],"additionalDetails.documents",documents)
+        //   downloadAcknowledgementForm(Licenses, LicensesTemp[0].estimateCardData);
+        //   }
+        // },
+        visible:true
+      },
+      printFormButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px"
+          }
+        },
+        children: {
+          printFormButtonLabel: getLabel({
+            labelName: "PRINT CONFIRMATION FORM",
+            labelKey: "TL_APPLICATION_BUTTON_PRINT_CONF"
+          })
+        },
+        // onClickDefination: {
+        //   action: "condition",
+        //   callBack: () => {
+        //   const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
+        //   const documents = LicensesTemp[0].reviewDocData;
+        //   set(Licenses[0],"additionalDetails.documents",documents)
+        //   downloadAcknowledgementForm(Licenses, LicensesTemp[0].estimateCardData,'print');
+        //   }
+        // },
+        visible:true
       }
     }
   });

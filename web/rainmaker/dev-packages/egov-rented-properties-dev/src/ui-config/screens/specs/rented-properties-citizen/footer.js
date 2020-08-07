@@ -5,6 +5,7 @@ import { applyOwnershipTransfer, submittransitsiteimages ,getDetailsFromProperty
 import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DETAILS_STEP, DOCUMENT_UPLOAD_STEP, SUMMARY_STEP, submitButtontransit } from "../rented-properties/applyResource/footer";
 import { some } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { OWNERSHIPTRANSFERRP, TRANSITSITEIMAGES, DUPLICATECOPYOFALLOTMENTLETTERRP } from "../../../../ui-constants";
 
 const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
@@ -91,7 +92,7 @@ const callBackForNext = async(state, dispatch) => {
           state.screenConfiguration.preparedFinalObject,
           "Owners[0]"
       );
-          moveToSuccess(rentedData, dispatch, "OWNERSHIPTRANSFERRP");
+          moveToSuccess(rentedData, dispatch, OWNERSHIPTRANSFERRP);
       }
     }
     if(activeStep !== SUMMARY_STEP) {
@@ -173,7 +174,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
           state.screenConfiguration.preparedFinalObject,
           "PropertyImagesApplications[0]"
       );
-      moveToSuccess(transitData, dispatch);
+      moveToSuccess(transitData, dispatch, TRANSITSITEIMAGES);
       }
 
     if (!isFormValid && !uploadFlag) {
@@ -273,7 +274,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
     );
     isFormValid = await applyDuplicateCopy(state, dispatch);
       if (isFormValid) {
-          moveToSuccess(rentedData, dispatch, "DUPLICATECOPYOFALLOTMENTLETTERRP");
+          moveToSuccess(rentedData, dispatch, DUPLICATECOPYOFALLOTMENTLETTERRP);
       }
     }
     if(activeStep !== SUMMARY_STEP) {

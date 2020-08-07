@@ -2,9 +2,10 @@ import { getCommonApplyFooter, validateFields } from "../../utils";
 import { getLabel, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
-import { applyRentedProperties } from "../../../../../ui-utils/apply";
+import { applyRentedProperties,applynoticegeneration,applyrecoveryNotice } from "../../../../../ui-utils/apply";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { some } from "lodash";
+import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP, DUPLICATECOPYOFALLOTMENTLETTERRP, PERMISSIONTOMORTGAGE, TRANSITSITEIMAGES, NOTICE_GENERATION } from "../../../../../ui-constants";
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -12,29 +13,46 @@ export const DOCUMENT_UPLOAD_STEP = 1;
 export const SUMMARY_STEP = 2;
 
 export const moveToSuccess = (rentedData, dispatch, type) => {
-  const id = get(rentedData, "id");
-  const transitNumber = get(rentedData, "transitNumber")
-  const transitNumberTransitSite = get(rentedData, "property.transitNumber")
-  const applicationNumberTransitSite = get(rentedData, "applicationNumber")
-  const applicationNumber = get(rentedData, "ownerDetails.applicationNumber")
-  const duplicateCopyApplicatioNumber =  get(rentedData, "applicationNumber")
-  const tenantId = get(rentedData, "tenantId");
-  const purpose = "apply";
-  const purposeTransit = "TransitSiteapply";
   const status = "success";
- 
-  const path = type === "OWNERSHIPTRANSFERRP" ? 
-  `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
-  :type === "DUPLICATECOPYOFALLOTMENTLETTERRP" ? 
-  `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${duplicateCopyApplicatioNumber}&tenantId=${tenantId}&type=${type}` :
-  type === "PERMISSIONTOMORTGAGE" ? 
-  `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${duplicateCopyApplicatioNumber}&tenantId=${tenantId}&type=${type}`
-  : `/rented-properties/acknowledgement?purpose=${purposeTransit}&status=${status}&transitNumber=${transitNumberTransitSite}&tenantId=${tenantId}`
+  let purpose = "apply";
+  let applicationNumber = ""
+  let path = ""
+  const tenantId = get(rentedData, "tenantId");
+
+  switch(type) {
+    case OWNERSHIPTRANSFERRP: {
+      applicationNumber = get(rentedData, "ownerDetails.applicationNumber")
+      path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+      break
+    }
+    case DUPLICATECOPYOFALLOTMENTLETTERRP:
+    case PERMISSIONTOMORTGAGE:  
+    {
+      applicationNumber = get(rentedData, "applicationNumber")
+      path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+      break
+    }
+    case RP_MASTER_ENTRY: {
+      applicationNumber = get(rentedData, "transitNumber")
+      path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+      break
+    }
+    case TRANSITSITEIMAGES: {
+      applicationNumber = get(rentedData, "property.transitNumber")
+      path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+      break
+    }
+    case VIOLATION_NOTICE:
+    case RECOVERY_NOTICE: {
+      applicationNumber = get(rentedData, "property.transitNumber")
+      path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${applicationNumber}&tenantId=${tenantId}&type=${NOTICE_GENERATION}`
+      break
+    }
+  }
   dispatch(
     setRoute(path)
   );
 };
-
 const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
         state.screenConfiguration.screenConfig["apply"],
@@ -126,7 +144,7 @@ const callBackForNext = async(state, dispatch) => {
           state.screenConfiguration.preparedFinalObject,
           "Properties[0]"
       );
-          moveToSuccess(rentedData, dispatch);
+          moveToSuccess(rentedData, dispatch, RP_MASTER_ENTRY);
       }
     }
 
@@ -158,6 +176,108 @@ const callBackForNext = async(state, dispatch) => {
             dispatch(toggleSnackbar(true, errorMessage, "warning"));
         }
     }
+}
+
+const callBackForNextrecoveryNoticegeneration = async(state, dispatch) => {
+
+  let isFormValid = true;
+
+const isOwnerDetailsValid = validateFields(
+  "components.div.children.formwizardFirstStep.children.noticePropertyDetails.children.cardContent.children.detailsContainer.children",   
+  state,
+  dispatch,
+  "notice-recovry"
+)
+
+const isRentHolderValid = validateFields(
+  "components.div.children.formwizardFirstStep.children.ownerDetailsForNotice.children.cardContent.children.detailsContainer.children",   
+  state,
+  dispatch,
+  "notice-recovry"
+)
+
+const isPaymentDetailsValid = validateFields(
+  "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children",   
+  state,
+  dispatch,
+  "notice-recovry"
+)
+if(isOwnerDetailsValid && isRentHolderValid && isPaymentDetailsValid) {
+  const res = await applynoticegeneration(state, dispatch, "Recovery")
+  if(!res) {
+   return
+  } 
+else{
+  isFormValid = false;
+  } 
+}
+
+
+if (isFormValid) {
+  const noticegendata = get(
+    state.screenConfiguration.preparedFinalObject,
+    "NoticeApplications[0]"
+);
+moveToSuccess(noticegendata, dispatch, RECOVERY_NOTICE);
+}
+
+if (!isFormValid) {
+  
+  let errorMessage = {
+    labelName:
+        "Please fill all mandatory fields, then do next !",
+    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}   
+}
+
+const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
+
+  let isFormValid = true;
+
+const isOwnerDetailsValid = validateFields(
+  "components.div.children.formwizardFirstStep.children.noticePropertyDetails.children.cardContent.children.detailsContainer.children",   
+  state,
+  dispatch,
+  "notice-violation"
+)
+
+const isRentHolderValid = validateFields(
+  "components.div.children.formwizardFirstStep.children.ownerDetailsForNotice.children.cardContent.children.detailsContainer.children",   
+  state,
+  dispatch,
+  "notice-violation"
+)
+if(isOwnerDetailsValid && isRentHolderValid) {
+  const res = await applynoticegeneration(state, dispatch, "Violation")
+  if(!res) {
+   return
+  } 
+else{
+  isFormValid = false;
+  } 
+}
+
+if (isFormValid) {
+  const noticegendata = get(
+    state.screenConfiguration.preparedFinalObject,
+    "NoticeApplications[0]"
+);
+moveToSuccess(noticegendata, dispatch, VIOLATION_NOTICE);
+}
+
+if (!isFormValid) {
+  
+  let errorMessage = {
+    labelName:
+        "Please fill all mandatory fields, then do next !",
+    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}   
 }
 
 export const changeStep = (
@@ -416,6 +536,28 @@ export const footer = getCommonApplyFooter({
       onClickDefination: {
         action: "condition",
         callBack: callBackForNext
+      },
+    }
+  });
+
+  export const Violationnoticegenfooter = getCommonApplyFooter({
+    
+    submitButton: {
+      ...submitButtontransit,
+      onClickDefination: {
+        action: "condition",
+        callBack: callBackForNextViolationnoticegeneration
+      },
+    }
+  });
+
+  export const recoveryNoticefooter = getCommonApplyFooter({
+    
+    submitButton: {
+      ...submitButtontransit,
+      onClickDefination: {
+        action: "condition",
+        callBack: callBackForNextrecoveryNoticegeneration
       },
     }
   });

@@ -5,7 +5,7 @@ import {stepper, formwizardFirstStep, formwizardSecondStep, formwizardThirdStep,
 import { httpRequest } from "../../../../ui-utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
-import {footer} from './applyResource/footer';
+import {footer,recoveryNoticefooter} from './applyResource/footer';
 import { searchResults } from "./search-preview";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareDocumentTypeObj } from "../utils";
@@ -48,8 +48,9 @@ const recoveryNotice = {
                           }
                     }
                 },
-                stepper,
+                // stepper,
                 formwizardFirstStep: recoveryNoticeFirstStep,
+                footer: recoveryNoticefooter
                 
             }
         }

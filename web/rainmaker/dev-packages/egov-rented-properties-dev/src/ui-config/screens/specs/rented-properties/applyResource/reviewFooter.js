@@ -75,3 +75,125 @@ import {
       }
     });
   };
+
+
+
+
+
+
+
+  export const footerReviewTop = (
+    action,
+    state,
+    dispatch,
+    status,
+    applicationNumber,
+    tenantId,
+    financialYear
+  ) => {
+    
+  
+    return {
+      rightdiv: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        props: {
+          style: { textAlign: "right", display: "flex" }
+        },
+        children: {
+          downloadMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                 leftIcon: "cloud_download",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginLeft:"10px" }, className: "tl-download-button" },
+                //menu: downloadMenu
+              }
+            }
+          },
+          printMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                leftIcon: "print",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginLeft:"5px" }, className: "tl-print-button" },
+                //menu: printMenu
+              }
+            }
+          }
+  
+        },
+        // gridDefination: {
+        //   xs: 12,
+        //   sm: 6
+        // }
+      } 
+    }
+    
+  };
+  
+
+
+  export const downloadPrintContainer = (
+    action,
+    state,
+    dispatch,
+    status,
+    applicationNumber,
+    tenantId
+  ) => {
+    
+  
+    return {
+      rightdiv: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        props: {
+          style: { textAlign: "right", display: "flex" }
+        },
+        children: {
+          downloadMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                 leftIcon: "cloud_download",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+               // menu: downloadMenu
+              }
+            }
+          },
+          printMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                leftIcon: "print",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+                //menu: printMenu
+              }
+            }
+          }
+  
+        },
+        // gridDefination: {
+        //   xs: 12,
+        //   sm: 6
+        // }
+      }
+    }
+  };

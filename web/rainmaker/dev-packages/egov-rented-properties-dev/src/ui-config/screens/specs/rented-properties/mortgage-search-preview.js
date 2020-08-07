@@ -11,6 +11,7 @@ import { set } from "lodash";
 import { getreviewPropertyAddressDetailsMortgage, getReviewApplicantDetailsMortgage } from "./applyResource/review-applications-mortgage";
 import { getMortgageSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
+import {  downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
 
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 
@@ -69,6 +70,36 @@ const beforeInitFn = async(action, state, dispatch) => {
       );
       }
     }
+    const printCont = downloadPrintContainer(
+      action,
+      state,
+      dispatch,
+      status,
+      applicationNumber,
+      tenantId
+    );
+    const CitizenprintCont=footerReviewTop(
+      action,
+      state,
+      dispatch,
+      status,
+      applicationNumber,
+      tenantId,
+      //financialYear
+    );
+
+
+    process.env.REACT_APP_NAME === "Citizen"
+      ? set(
+          action,
+          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+          CitizenprintCont
+        )
+      : set(
+          action,
+          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+          printCont
+        );
   }
 const mortgagePreviewDetails = {
     uiFramework: "material-ui",

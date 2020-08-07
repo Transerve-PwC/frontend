@@ -5,7 +5,7 @@ import {stepper, formwizardFirstStep, noticeViolationForm, formwizardThirdStep} 
 import { httpRequest } from "../../../../ui-utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
-import {footer} from './applyResource/footer';
+import {footer,Violationnoticegenfooter} from './applyResource/footer';
 import { searchResults } from "./search-preview";
 import { getQueryArg,setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareDocumentTypeObj } from "../utils";
@@ -72,7 +72,7 @@ const applyNoticeViolation = {
                 formwizardFirstStep: noticeViolationForm,
                 noticeDocumentDetails,
                 // formwizardThirdStep,
-                footer
+                footer: Violationnoticegenfooter
             }
         }
     }
