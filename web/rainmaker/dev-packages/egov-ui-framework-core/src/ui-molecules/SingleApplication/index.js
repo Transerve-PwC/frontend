@@ -161,6 +161,9 @@ class SingleApplication extends React.Component {
         case "OT_DRAFTED": 
           setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
           break;
+          case "OT_PENDINGCLVERIFICATION":
+            setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
+            break;
         default:
           setRoute(`/rented-properties/ownership-search-preview?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
       }
@@ -170,12 +173,18 @@ class SingleApplication extends React.Component {
         case "DC_DRAFTED": 
           setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
           break;
+          case "DC_PENDINGCLVERIFICATION":
+            setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+            break;
         default:
           setRoute(`/rented-properties/search-duplicate-copy-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
       }
     } else if(moduleName === "MORTGAGERP") {
       switch(item.state) {
         case "MG_DRAFTED": 
+        setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+        break;
+        case "MG_PENDINGCLVERIFICATION":
         setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
         break;
         default:
