@@ -88,7 +88,11 @@
     "go_rp": "yarn && yarn run build-css-common-rp && yarn run transpile-common-modules-rp && lerna bootstrap",
     "build-css-common-rp": "run-p build-css-egov-ui-kit build-css-egov-ui-framework-core build-css-egov-workflow build-css-egov-tradelicence build-css-egov-rented-properties",
     "transpile-common-modules-rp": "run-p egov-ui-kit egov-ui-framework egov-workflow egov-tradelicence egov-rented-properties",
-    "watch_rp": "babel dev-packages/egov-rented-properties-dev/src --out-dir packages/lib/egov-rented-properties --copy-files --watch"
+    "watch_rp": "babel dev-packages/egov-rented-properties-dev/src --out-dir packages/lib/egov-rented-properties --copy-files --watch",
+    "go_estate": "yarn && yarn run build-css-common-estate && yarn run transpile-common-modules-estate && lerna bootstrap",
+    "build-css-common-estate": "run-p build-css-egov-ui-kit build-css-egov-ui-framework-core build-css-egov-workflow build-css-egov-estate",
+    "transpile-common-modules-estate": "run-p egov-ui-kit egov-ui-framework egov-workflow egov-estate",
+    "watch_estate": "babel dev-packages/egov-estate-dev/src --out-dir packages/lib/egov-estate --copy-files --watch"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -112,6 +116,7 @@
     "node-sass-chokidar": "^1.3.4",
     "npm-run-all": "^4.1.5",
     "react-quill": "^1.3.5",
-    "xlsx": "^0.16.0"
+    "xlsx": "^0.16.0",
+    "yarn": "^1.22.4"
   }
 }

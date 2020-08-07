@@ -88,7 +88,7 @@ export const getSearchResults = async queryObject => {
   try {
     const response = await httpRequest(
       "post",
-      "/tl-services/v1/_search",
+      "property-service/property-master/_search",
       "",
       queryObject
     );

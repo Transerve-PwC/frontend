@@ -61,6 +61,11 @@ const Footer = Loadable({
   loading: () => <Loading />
 })
 
+const LandingPage = Loadable({
+  loader: () => import("./LandingPage"),
+  loading: () => <Loading />
+});
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -72,5 +77,6 @@ export {
   FeesEstimateCard,
   HowItWorks,
   ActionDialog,
-  Footer
+  Footer,
+  LandingPage
 };

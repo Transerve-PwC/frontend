@@ -24,21 +24,21 @@ class DocumentListContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
   const { screenConfiguration } = state;
   const documents = get(
     screenConfiguration.preparedFinalObject,
-    "LicensesTemp[0].applicationDocuments",
+    props.documentsJsonPath,
     []
   );
   const uploadedDocuments = get(
     screenConfiguration.preparedFinalObject,
-    "LicensesTemp[0].uploadedDocsInRedux",
+    props.uploadedDocumentsJsonPath,
     {}
   );
   const tenantId = get(
     screenConfiguration.preparedFinalObject,
-    "Licenses[0].tenantId",
+    props.tenantIdJsonPath,
     ""
   );
   const { preparedFinalObject } = screenConfiguration || {};

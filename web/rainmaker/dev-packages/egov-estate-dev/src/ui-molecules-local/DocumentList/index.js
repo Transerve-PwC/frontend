@@ -78,7 +78,8 @@ class DocumentList extends Component {
     let {
       prepareFinalObject,
       uploadedDocsInRedux: uploadedDocuments,
-      documents
+      documents,
+      uploadedDocumentsJsonPath
     } = this.props;
     let uploadedDocumentsArranged = uploadedDocuments
     if (uploadedDocuments && Object.keys(uploadedDocuments).length) {
@@ -103,14 +104,15 @@ class DocumentList extends Component {
         uploadedDocuments: uploadedDocumentsArranged,
         uploadedIndex
       });
-      prepareFinalObject("LicensesTemp[0].uploadedDocsInRedux", {
+      prepareFinalObject(uploadedDocumentsJsonPath, {
         ...uploadedDocumentsArranged
       });
     }
     getQueryArg(window.location.href, "action") !== "edit" &&
       Object.values(uploadedDocumentsArranged).forEach((item, index) => {
+        const { jsonPath } = documents[index];
         prepareFinalObject(
-          `Licenses[0].tradeLicenseDetail.applicationDocuments[${index}]`,
+          jsonPath,
           { ...item[0] }
         );
       });
@@ -122,7 +124,7 @@ class DocumentList extends Component {
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId } = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
     const fileUrl = await getFileUrlFromAPI(fileStoreId);
     uploadedDocuments = {
@@ -137,8 +139,7 @@ class DocumentList extends Component {
         }
       ]
     };
-
-    prepareFinalObject("LicensesTemp[0].uploadedDocsInRedux", {
+    prepareFinalObject(uploadedDocumentsJsonPath, {
       ...uploadedDocuments
     });
     prepareFinalObject(jsonPath, {
@@ -164,11 +165,11 @@ class DocumentList extends Component {
 
   removeDocument = remDocIndex => {
     let { uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, preparedFinalObject } = this.props;
+    const { prepareFinalObject, documents, preparedFinalObject, uploadedDocumentsJsonPath, removedJsonPath } = this.props;
     const jsonPath = documents[remDocIndex].jsonPath;
       uploadedDocuments[remDocIndex][0].id &&
-      prepareFinalObject("LicensesTemp[0].removedDocs", [
-        ...get(preparedFinalObject, "LicensesTemp[0].removedDocs", []),
+      prepareFinalObject(removedJsonPath, [
+        ...get(preparedFinalObject, removedJsonPath, []),
         {
           ...uploadedDocuments[remDocIndex][0],
           active: false
@@ -177,7 +178,7 @@ class DocumentList extends Component {
     uploadedDocuments[remDocIndex] = [];
     prepareFinalObject(jsonPath, uploadedDocuments[remDocIndex]);
     prepareFinalObject(
-      "LicensesTemp[0].uploadedDocsInRedux",
+      uploadedDocumentsJsonPath,
       uploadedDocuments
     );
     this.setState({ uploadedDocuments });
