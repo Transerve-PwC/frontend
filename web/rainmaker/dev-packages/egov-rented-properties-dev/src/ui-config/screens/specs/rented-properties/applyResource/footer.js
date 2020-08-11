@@ -531,7 +531,7 @@ export const payment = {
       children: {
         submitButtonLabel: getLabel({
           labelName: "Make Payment",
-          labelKey: "RP_COMMON_MAKE_PAYMENT_BUTTON_"
+          labelKey: "RP_COMMON_MAKE_PAYMENT_BUTTON"
         }),
         submitButtonIcon: {
           uiFramework: "custom-atoms",

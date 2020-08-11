@@ -36,6 +36,8 @@ import {
     let payload = await getSearchResults(queryObject);
     if(payload) {
       let properties = payload.Properties;
+      let notices = properties[0].notices;
+     
       if(properties[0].propertyImages){
         let data = properties[0].propertyImages;
         data = data.filter(function(image) {
@@ -49,6 +51,19 @@ import {
           applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index] }));
           return { ...item, applicationDocuments };
         });
+        const generated = images.map(function(image){
+          debugger
+          notices.forEach(notice => {
+            console.log(notice.applicationDocuments[0].fileStoreId,image.applicationDocuments[0].fileStoreId)
+            if(notice.applicationDocuments[0].fileStoreId === image.applicationDocuments[0].fileStoreId){
+                image["noticeGenerated"] = "Yes"
+            }
+          })
+          return image
+          
+        })
+        console.log(generated)
+        console.log(images)
         dispatch(prepareFinalObject("Images", images));
         dispatch(prepareFinalObject("Properties[0]", properties[0]));     
       }
