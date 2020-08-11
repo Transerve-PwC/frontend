@@ -69,8 +69,6 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
     set(queryObject[0], "tenantId", tenantId);
     set(queryObject[0], "propertyDetails.dateOfAuction", convertDateToEpoch(queryObject[0].propertyDetails.dateOfAuction))
     set(queryObject[0], "propertyDetails.lastNocDate", convertDateToEpoch(queryObject[0].propertyDetails.lastNocDate))
-    set(queryObject[0], "propertyDetails.dateOfAllotment", convertDateToEpoch(queryObject[0].propertyDetails.dateOfAllotment))
-    set(queryObject[0], "propertyDetails.possesionDate", convertDateToEpoch(queryObject[0].propertyDetails.possesionDate))
 
     const purchaseDetails = get(
       queryObject[0],
@@ -79,6 +77,16 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
     )
     purchaseDetails.map((item, index) => {
       set(queryObject[0], `propertyDetails.purchaseDetails[${index}].dateOfRegistration`, convertDateToEpoch(queryObject[0].propertyDetails.purchaseDetails[index].dateOfRegistration));
+    })
+
+    const ownerDetails = get(
+      queryObject[0],
+      "propertyDetails.owners",
+      []
+    )
+    ownerDetails.map((item, index) => {
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
     })
     
     if (!id) {
@@ -106,7 +114,7 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
         []
       )
       owners.map((item, index) => {
-        let ownerDocuments = get(queryObject[0, `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`]) || [];
+        let ownerDocuments = get(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`) || [];
         ownerDocuments = ownerDocuments.map(item => ({
           ...item,
           isActive: true
@@ -148,8 +156,8 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
 
     owners.map((item, index) => {
       let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDocuments || [];
-      const removedDocs = ownerDocuments.filter(item => !item.active)
-      ownerDocuments = ownerDocuments.filter(item => item.active)
+      const removedDocs = ownerDocuments.filter(item => !item.isActive)
+      ownerDocuments = ownerDocuments.filter(item => item.isActive)
       Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
       dispatch(
         prepareFinalObject(

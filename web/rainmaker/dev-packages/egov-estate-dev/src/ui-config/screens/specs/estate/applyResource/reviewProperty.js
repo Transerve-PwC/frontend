@@ -228,7 +228,8 @@ export const getReviewAuction = (isEditable = true) => {
       ),
       dateOfAuction: getLabelWithValue(
         dateOfAuctionLabel, {
-          jsonPath: "Properties[0].propertyDetails.dateOfAuction"
+          jsonPath: "Properties[0].propertyDetails.dateOfAuction",
+          callBack: convertEpochToDate
         }
       )
     })
@@ -256,7 +257,8 @@ export const getReviewAdditional = (isEditable = true) => {
     viewFour: getCommonContainer({
       lastNocDate: getLabelWithValue(
         lastNocDateLabel, {
-          jsonPath: "Properties[0].propertyDetails.lastNocDate"
+          jsonPath: "Properties[0].propertyDetails.lastNocDate",
+          callBack: convertEpochToDate
         }
       ),
       serviceCategory: getLabelWithValue(
@@ -354,12 +356,14 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
       ),
       possessionDate: getLabelWithValue(
         possessionDateLabel, {
-          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.possessionDate`
+          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.possessionDate`,
+          callBack: convertEpochToDate
         }
       ),
       dateOfAllotment: getLabelWithValue(
         dateOfAllotmentLabel, {
-          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.dateOfAllotment`
+          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.dateOfAllotment`,
+          callBack: convertEpochToDate
         }
       ),
       allotmentNumber: getLabelWithValue(
@@ -484,7 +488,8 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
       ),
       dateOfRegistration: getLabelWithValue(
         dateOfRegistrationLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].dateOfRegistration`
+          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].dateOfRegistration`,
+          callBack: convertEpochToDate
         }
       )
     })
@@ -619,7 +624,8 @@ export const getReviewPayment = (isEditable = true, owner) => {
       header: groundRentHeader,
       dueDateOfPayment: getLabelWithValue(
         dueDateOfPaymentLabel, {
-          jsonPath: "Properties[0].paymentDetails.groundRent.dueDateOfPayment"
+          jsonPath: "Properties[0].paymentDetails.groundRent.dueDateOfPayment",
+          callBack: convertEpochToDate
         }
       ),
       payable: getLabelWithValue(
@@ -639,7 +645,8 @@ export const getReviewPayment = (isEditable = true, owner) => {
       ),
       dateOfDeposit: getLabelWithValue(
         dateOfDepositLabel, {
-          jsonPath: "Properties[0].paymentDetails.groundRent.dateOfDeposit"
+          jsonPath: "Properties[0].paymentDetails.groundRent.dateOfDeposit",
+          callBack: convertEpochToDate
         }
       ),
       delayInPayment: getLabelWithValue(
@@ -707,7 +714,8 @@ export const getReviewPayment = (isEditable = true, owner) => {
       ),
       dateOfDeposit: getLabelWithValue(
         dateOfDepositLabel, {
-          jsonPath: "Properties[0].paymentDetails.serviceTax.dateOfDeposit"
+          jsonPath: "Properties[0].paymentDetails.serviceTax.dateOfDeposit",
+          callBack: convertEpochToDate
         }
       ),
       delayInPayment: getLabelWithValue(

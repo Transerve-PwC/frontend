@@ -51,10 +51,11 @@ export const SUMMARY_STEP = 5;
 export const moveToSuccess = (estatesData, dispatch, type) => {
   const id = get(estatesData, "id");
   const tenantId = get(estatesData, "tenantId");
+  const fileNumber = get(estatesData, "fileNumber");
   const purpose = "apply";
   const status = "success";
 
-  const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&tenantId=${tenantId}`
+  const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}`
   dispatch(
     setRoute(path)
   );

@@ -38,8 +38,8 @@ const {
 } = userInfo
 const findItem = roles.find(item => item.code === "CTL_CLERK");
 const header = getCommonHeader({
-  labelName: "Search Estate Master",
-  labelKey: "EST_SEARCH_ESTSTE_MASTER_HEADER"
+  labelName: "Search Property Master",
+  labelKey: "EST_SEARCH_PROPERTY_MASTER_HEADER"
 });
 
 export const getStatusList = async (action, state, dispatch, queryObject, screenkey, path, businessService) => {
@@ -121,7 +121,7 @@ const estateSearchAndResult = {
               },
               children: {
                 buttonLabel: getLabel({
-                  labelName: "MASTER ADD",
+                  labelName: "Add Property Master",
                   labelKey: "EST_ESTATE_HOME_ADD_BUTTON"
                 })
               },

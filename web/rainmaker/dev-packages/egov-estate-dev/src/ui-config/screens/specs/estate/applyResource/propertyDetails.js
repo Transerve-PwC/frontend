@@ -8,7 +8,8 @@ import {
     getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-    prepareFinalObject
+    prepareFinalObject,
+    handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
     getTodaysDateInYMD
@@ -26,7 +27,7 @@ const typeOfAllocationField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.typeOfAllocation",
-    sourceJsonPath: "applyScreenMdmsData.Estate.AllocationType",
+    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.allocationType",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -136,10 +137,37 @@ const categoryField = {
     },
     required: true,
     jsonPath: "Properties[0].category",
-    sourceJsonPath: "applyScreenMdmsData.Estate.Category",
+    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.categories",
     gridDefination: {
         xs: 12,
         sm: 6
+    },
+    beforeFieldChange: (action, state, dispatch) => {
+        if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
+                    "visible",
+                    true
+                )
+            );
+
+            const categories = get(
+                state.screenConfiguration.preparedFinalObject,
+                "applyScreenMdmsData.EstatePropertyService.categories"
+            )
+
+            const filteredCategory = categories.filter(item => item.code === action.value)
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
+                    "props.data",
+                    filteredCategory[0].SubCategory
+                )
+            )
+        }
     }
 }
 
@@ -154,7 +182,7 @@ const subCategoryField = {
     },
     required: true,
     jsonPath: "Properties[0].subCategory",
-    sourceJsonPath: "applyScreenMdmsData.Estate.SubCategory",
+    visible: false,
     gridDefination: {
         xs: 12,
         sm: 6
@@ -191,7 +219,7 @@ const sectorNumberField = {
     },
     required: true,
     jsonPath: "Properties[0].sectorNumber",
-    sourceJsonPath: "applyScreenMdmsData.Estate.SectorNumber",
+    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.SectorNumber",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -246,7 +274,7 @@ const propertyTypeField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.propertyType",
-    sourceJsonPath: "applyScreenMdmsData.Estate.PropertyType",
+    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.propertyType",
     gridDefination: {
         xs: 12,
         sm: 6

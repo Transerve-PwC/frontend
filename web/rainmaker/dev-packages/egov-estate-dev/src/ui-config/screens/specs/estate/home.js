@@ -15,8 +15,8 @@ const header = getCommonHeader({
 
 const cardItems = [{
   label: {
-    labelKey: "EST_ESTATE_MASTER_HEADER",
-    labelName: "Estate Master"
+    labelKey: "EST_PROPERTY_MASTER_HEADER",
+    labelName: "Property Master"
   },
   icon: < FormIcon / > ,
   route: "search"
