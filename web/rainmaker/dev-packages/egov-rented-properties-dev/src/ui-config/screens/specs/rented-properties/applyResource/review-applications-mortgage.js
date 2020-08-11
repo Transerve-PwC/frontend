@@ -113,7 +113,7 @@ export const getreviewPropertyAddressDetailsMortgage = (isEditable = true) => {
                     labelName: "Allotment Number",
                     labelKey: "RP_ALLOTMENT_NUMBER"
                 },
-                {jsonPath: "MortgageApplications[0].allotmenNumber"}
+                {jsonPath: "MortgageApplications[0].allotmentNumber"}
             ),
             area: getLabelWithValue(
                 areaLabel,

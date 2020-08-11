@@ -3,6 +3,11 @@ import { getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils
 import "../utils/index.css";
 import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
 import TradeLicenseIcon from "../../../../ui-atoms-local/Icons/TradeLicenseIcon";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const findItem = roles.find(item => item.code === "CTL_CLERK" || item.code === "CTL_SURVEYOR");
 
 const header = getCommonHeader(
     {
@@ -82,6 +87,10 @@ const header = getCommonHeader(
   }
 ]
 
+if(!findItem){
+  cardItems.pop();
+}
+
 const citizenCardItems = [{
   label: {
     labelName: "Transfer of Transit site In case of Legal Heir (Ownership Transfer)",
@@ -108,12 +117,12 @@ const citizenCardItems = [{
       },
       {
         label: {
-          labelName: "Account Statement Generation",
-          labelKey: "ACCOUNT_STATEMENT_GENERATION_HEADER"
+          labelName: "Pay Rent",
+          labelKey: "RP_PAY_RENT_HEADER"
         },
         icon: <TradeLicenseIcon />,
-        route: `/rented-properties-citizen/account-statement`
-        }
+        route: `/rented-properties-citizen/account-statement-apply`
+      }
 ]
 
   const home = {

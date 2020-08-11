@@ -127,9 +127,8 @@ export const accountStatementResults = {
     ],
     options: {...searchResults.props.options,
       download:true,
-      filter: true,
       onRowClick: (row, index) => {
-        onTransferPropertyRowClick(row);
+        // onTransferPropertyRowClick(row);
       }
     }
   }

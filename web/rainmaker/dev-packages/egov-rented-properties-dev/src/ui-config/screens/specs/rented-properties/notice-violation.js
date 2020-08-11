@@ -21,7 +21,7 @@ export const noticeDocumentDetails = getCommonCard({
 });
 
 const header = getCommonHeader({
-    labelName: "Apply For Violation Notice",
+    labelName: "Create Violation Notice",
     labelKey: "RP_VIOLATION_NOTICE_APPLY"
   });
 

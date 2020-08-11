@@ -271,6 +271,7 @@ const accountStatementHeader = getCommonTitle(
     minLength: 4,
     maxLength: 40,
     required: false,
+    disabled:true,
     jsonPath: "",
     errorMessage: "",
   } 
@@ -291,6 +292,7 @@ const accountStatementHeader = getCommonTitle(
     minLength: 4,
     maxLength: 40,
     jsonPath: "",
+    disabled:true,
     errorMessage: "",
   } 
 
@@ -310,6 +312,7 @@ const accountStatementHeader = getCommonTitle(
     minLength: 4,
     maxLength: 40,
     jsonPath: "",
+    disabled:true,
     errorMessage: "",
   } 
 
@@ -329,6 +332,7 @@ const accountStatementHeader = getCommonTitle(
     minLength: 4,
     maxLength: 40,
     jsonPath: "",
+    disabled:true,
     errorMessage: "",
   } 
 
@@ -356,10 +360,14 @@ const getaccountStatementGenerationDetails = () => {
     return {
         header: accountStatementHeader,
         detailsContainer: getCommonContainer({
-            principalAmount: getTextField(principalAmountField),
-            interest: getTextField(interestField),
-            total: getTextField(totalField),
-            outstanding: getTextField(outstandingField)
+            principalAmount: getTextField(
+                {...principalAmountField,jsonPath: "", required: false, props: {...principalAmountField.props, disabled: true}}),
+            interest: getTextField(
+                {...interestField,jsonPath: "", required: false, props: {...interestField.props, disabled: true}}),
+            total: getTextField(
+                {...totalField,jsonPath: "", required: false, props: {...totalField.props, disabled: true}}),
+            outstanding: getTextField(
+                {...outstandingField,jsonPath: "", required: false, props: {...outstandingField.props, disabled: true}})
         })
     }
 }

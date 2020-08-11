@@ -22,6 +22,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import orderBy from "lodash/orderBy";
+import { RP_MASTER_ENTRY } from "../../ui-constants";
 
 const tenant = getQueryArg(window.location.href, "tenantId");
 
@@ -103,6 +104,7 @@ class WorkFlowContainer extends React.Component {
     switch (action) {
       case "APPLY":
         return "purpose=apply&status=success";
+      case "SENDFORPAYMENT":
       case "FORWARD":
       case "RESUBMIT":
         return "purpose=forward&status=success";
@@ -154,7 +156,7 @@ class WorkFlowContainer extends React.Component {
         let path = "";
         switch(this.props.moduleName) {
           case "MasterRP": {
-            path = `&transitNumber=${data[0].transitNumber}&tenantId=${tenant}`
+            path = `&transitNumber=${data[0].transitNumber}&tenantId=${tenant}&type=${RP_MASTER_ENTRY}`
             break
           }
           case "OwnershipTransferRP": {

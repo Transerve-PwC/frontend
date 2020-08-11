@@ -43,6 +43,7 @@ export const applicationSuccessFooter = (
         action: "page_change",
         path: redirectionURL
       },
+    },
       downloadFormButton: {
         componentPath: "Button",
         props: {
@@ -99,6 +100,6 @@ export const applicationSuccessFooter = (
         // },
         visible:true
       }
-    }
+    
   });
 };

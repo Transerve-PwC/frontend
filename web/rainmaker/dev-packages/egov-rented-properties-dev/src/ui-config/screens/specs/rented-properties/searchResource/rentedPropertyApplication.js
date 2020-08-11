@@ -232,9 +232,12 @@ const areaField = {
   gridDefination: {
     xs: 12,
     sm: 6
-},
-required: false,
-jsonPath: "searchScreen.area"
+ },
+  props:{
+    disabled:true
+  },
+  required: false,
+  jsonPath: "searchScreen.area"
 }
 const pincodeField = {
   label: {
@@ -250,6 +253,9 @@ const pincodeField = {
       sm: 6
   },
   required: false,
+  props:{
+    disabled:true
+  },
   jsonPath: "searchScreen.pincode"
 }
 
@@ -265,6 +271,9 @@ const ownernameField = {
   gridDefination: {
       xs: 12,
       sm: 6
+  },
+  props:{
+    disabled:true
   },
   required: false,
   jsonPath: "searchScreen.ownername"
@@ -341,40 +350,6 @@ const buttonItem = {
   }
 }
 
-const submitButtonItem = {
-  firstCont: {
-    uiFramework: "custom-atoms",
-    componentPath: "Div",
-    gridDefination: {
-      xs: 12,
-      sm: 4
-    }
-  },
-  submitButton: {
-    componentPath: "Button",
-    gridDefination: {
-      xs: 12,
-      sm: 4
-    },
-    props: {
-      variant: "contained",
-      style: {
-        color: "white",
-        backgroundColor: "#fe7a51",
-        borderRadius: "2px",
-        width: "80%",
-        height: "48px"
-      }
-    },
-    children: {
-      buttonLabel: getLabel({
-        labelName: "Submit",
-        labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_SUBMIT"
-      })
-    }
-  }
-}
-
 const filterButtonItem = {
   firstCont: {
     uiFramework: "custom-atoms",
@@ -402,7 +377,7 @@ const filterButtonItem = {
     },
     children: {
       buttonLabel: getLabel({
-        labelName: "Filter",
+        labelName: "Generate Account Statement",
         labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_FILTER"
       })
     }
@@ -511,44 +486,25 @@ const duplicateCopySearchForm = {
 
 const accountStatementSearchForm = {
   subParagraph: getCommonParagraph({
-    labelName: "Please provide atleast one parameter to search Application",
-    labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATION_LABEL"
+    labelName: "Please Provide Transit Number",
+    labelKey: "RP_PLEASE_TRANSIT_NUMBER_TO_SEARCH_APPLICATION_LABEL"
   }),
   applicationNoContainer: getCommonContainer({
-    // applicationNo: getTextField(applicationNoField),
     transitNumber: getTextField(transitNumberField),
     area:getTextField(areaField)
   }),
   statusContainer: getCommonContainer({
     pincode:getTextField(pincodeField),
     ownername:getTextField(ownernameField)
-    // mobileNo: getTextField(duplicateCopyApplicantMobileNumberField),
-    // status: getSelectField(ownershipStatusField)
+    
   }),
-  button: getCommonContainer({
-    buttonContainer: getCommonContainer(
-      {...submitButtonItem, submitButton: {...submitButtonItem.submitButton, 
-        onClickDefination: {
-          action: "condition",
-          // callBack: searchTransferProperties
-        }
-      }, lastCont: {
-        uiFramework: "custom-atoms",
-        componentPath: "Div",
-        gridDefination: {
-          xs: 12,
-          sm: 4
-        }
-      }
-    })
-  })
 }
 
 const accountStatementFilterForm = {
-  // subParagraph: getCommonParagraph({
-  //   labelName: "Please provide atleast one parameter to search Application",
-  //   labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATION_LABEL"
-  // }),
+  subParagraph: getCommonParagraph({
+    labelName: "Select start date and end date to generate account statement",
+    labelKey: "RP_FILTER_CONTAINER_HEADER_LABEL"
+  }),
   dateContainer:getCommonContainer({
       from:getDateField(fromDateField),
       to:getDateField(toDateField)
@@ -578,25 +534,7 @@ export const ownerShipTransferApplication = getCommonCard(
 
 
 export const accountStatementGenerationApplications = getCommonCard(
-  {...accountStatementSearchForm,
-    button: getCommonContainer({
-      buttonContainer: getCommonContainer(
-        {...submitButtonItem, submitButton: {...submitButtonItem.submitButton, 
-          onClickDefination: {
-            action: "condition",
-            callBack: searchDuplicateCopy
-          }
-        }, lastCont: {
-          uiFramework: "custom-atoms",
-          componentPath: "Div",
-          gridDefination: {
-            xs: 12,
-            sm: 4
-          }
-        }
-      })
-    })
-  }
+  accountStatementSearchForm
 )
 
 export const accountStatementFilter = getCommonCard(

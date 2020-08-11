@@ -42,7 +42,7 @@ export const areaField = {
         sm: 6
     },
     minLength: 3,
-    maxLength: 20,
+    maxLength: 100,
     required: true,
     errorMessage: "RP_ERR_AREA_FIELD",
   }
@@ -78,8 +78,13 @@ export const pincodeField = {
         xs: 12,
         sm: 6
     },
-    minLength: 1,
-    maxLength: 1000,
+    props:{
+      multiline: true,
+      rows: "4"
+  },
+  visible: true,
+    // minLength: 1,
+    // maxLength: 1000,
     required: true,
     errorMessage: "RP_ERR_COMMENTS_FIELD",
   }
@@ -263,7 +268,7 @@ const getTransitSiteComments = () => {
   return {
       header: commentsHeader,
       detailsContainer: getCommonContainer({
-          comments: getTextField({...commentsField,jsonPath: "PropertyImagesApplications[0].description", required: false, props: {...areaNameField.props, disabled: false}})
+          comments: getTextField({...commentsField,jsonPath: "PropertyImagesApplications[0].description",  props: {...commentsField.props}})
       })
   }
 }

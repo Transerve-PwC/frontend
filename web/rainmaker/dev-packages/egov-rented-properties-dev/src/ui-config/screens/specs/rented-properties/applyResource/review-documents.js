@@ -18,7 +18,7 @@ import {
               sm: 10
             },
             ...getCommonSubHeader({
-              labelName: "Documents",
+              labelName: "Images",
               labelKey: "TL_COMMON_DOCS"
             })
           },
