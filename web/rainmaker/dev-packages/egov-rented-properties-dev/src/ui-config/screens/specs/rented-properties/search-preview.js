@@ -116,6 +116,8 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
     path = `/rented-properties/property-transitImages?transitNumber=${transitNumber}&tenantId=${tenantId}`
   } else if(tabIndex === 2) {
     path = `/rented-properties/notices?transitNumber=${transitNumber}&tenantId=${tenantId}`
+  } else if(tabIndex === 3){
+    path = `/rented-properties/account-statement-xls?transitNumber=${transitNumber}&tenantId=${tenantId}`
   }
   dispatch(setRoute(path))
 }
@@ -129,6 +131,9 @@ export const tabs = [
   },
   {
     tabButton: { labelName: "Notices", labelKey: "RP_NOTICES" },
+  },
+  {
+    tabButton: { labelName: "Account Statement Generation", labelKey: "RP_ACCOUNT_STATEMENT_GENERATION" },
   }
 ]
 

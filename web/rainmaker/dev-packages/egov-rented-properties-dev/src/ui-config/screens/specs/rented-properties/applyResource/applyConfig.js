@@ -270,6 +270,20 @@ export const formwizardAccountGenerationFirstStep = {
   visible: true
 };
 
+export const uploadXLS = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form2"
+  },
+  children: {
+    transitSiteDetailsForAccountStatement,
+    // accountStatementGenerationDetails,
+    // amountField
+  },
+  visible: true
+}
+
 
 export const formwizardDuplicateCopyThirdStep = {
   uiFramework: "custom-atoms",

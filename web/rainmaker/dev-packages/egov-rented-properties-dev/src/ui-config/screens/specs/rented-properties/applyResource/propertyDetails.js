@@ -300,3 +300,4 @@ const getPropertyDetailsForAccount = () => {
 export const propertyDetails = getCommonCard(getPropertyDetails())
 export const transitSiteDetails = getCommonCard(getTransitSiteDetails())
 export const transitSiteDetailsForAccountStatement = getCommonCard(getPropertyDetailsForAccount())
+export const 
