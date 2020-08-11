@@ -12,6 +12,9 @@ const remoteConfigPath = (path, screenKey) => {
     case "estate":
       config = require(`egov-estate/ui-config/screens/specs/${path}/${screenKey}`).default;
       break;
+    case "estate-citizen":
+      config = require(`egov-estate/ui-config/screens/specs/${path}/${screenKey}`).default;
+      break;
     case "pt-mutation":
       case "pt-common-screens":
       // case "pt-citizen":

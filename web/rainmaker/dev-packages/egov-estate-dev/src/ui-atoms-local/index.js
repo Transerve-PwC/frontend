@@ -47,8 +47,8 @@ const FormIcon = Loadable({
   loading: () => <Loading />
 });
 
-const TradeLicenseIcon = Loadable({
-  loader: () => import("./Icons/TradeLicenseIcon"),
+const EstateIcon = Loadable({
+  loader: () => import("./Icons/EstateIcon"),
   loading: () => <Loading />
 });
 
@@ -62,5 +62,5 @@ export {
   Asteric,
   MenuButton,
   FormIcon,
-  TradeLicenseIcon
+  EstateIcon
 };

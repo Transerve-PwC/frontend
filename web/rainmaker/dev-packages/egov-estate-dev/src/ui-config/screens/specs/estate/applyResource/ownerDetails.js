@@ -195,7 +195,7 @@ const possessionDateField = {
   },
   pattern: getPattern("Date"),
   required: true,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.possessionDate",
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()

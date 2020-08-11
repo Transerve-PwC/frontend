@@ -4,7 +4,8 @@ import {
 } from "../../utils";
 import {
   getLabel,
-  dispatchMultipleFieldChangeAction
+  dispatchMultipleFieldChangeAction,
+  getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   toggleSnackbar,
@@ -102,7 +103,7 @@ const callBackForNext = async (state, dispatch) => {
         return
       }
     } else {
-      // isFormValid = false;
+      isFormValid = false;
     }
   }
 
@@ -157,7 +158,7 @@ const callBackForNext = async (state, dispatch) => {
             `apply.components.div.children.formwizardFourthStep.children.groundRentDetails_0`, {}
           ))
           var newGroundRentString = groundRentString.replace(/_0/g, `_${i}`);
-          newGroundRentString = newGroundRentString.replace(/paymentDetails\[0\]/g, `paymentDetails[${i}]`)
+          newGroundRentString = newGroundRentString.replace(/owners\[0\]/g, `owners[${i}]`)
           var groundRentObj = JSON.parse(newGroundRentString);
           set(
             state.screenConfiguration.screenConfig,
@@ -165,12 +166,28 @@ const callBackForNext = async (state, dispatch) => {
             groundRentObj
           )
 
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardFourthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
+            getPattern("Date")
+          )
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardFourthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dueDateOfPayment.pattern`,
+            getPattern("Date")
+          )
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardFourthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
+            getPattern("Date")
+          )
+
           var serviceTaxString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
             `apply.components.div.children.formwizardFourthStep.children.serviceTaxDetails_0`, {}
           ))
           var newServiceTaxString = serviceTaxString.replace(/_0/g, `_${i}`);
-          newServiceTaxString = newServiceTaxString.replace(/paymentDetails\[0\]/g, `paymentDetails[${i}]`)
+          newServiceTaxString = newServiceTaxString.replace(/owners\[0\]/g, `owners[${i}]`)
           var serviceTaxObj = JSON.parse(newServiceTaxString);
           set(
             state.screenConfiguration.screenConfig,
@@ -178,11 +195,23 @@ const callBackForNext = async (state, dispatch) => {
             serviceTaxObj
           )
 
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardFourthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
+            getPattern("Date")
+          )
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardFourthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
+            getPattern("Date")
+          )
+
           var paymentMadeByString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
             `apply.components.div.children.formwizardFourthStep.children.paymentMadeBy_0`, {}
           ))
           var newPaymentMadeByString = paymentMadeByString.replace(/_0/g, `_${i}`)
+          newPaymentMadeByString = newPaymentMadeByString.replace(/owners\[0\]/g, `owners[${i}]`)
           var paymentMadeByObj = JSON.parse(newPaymentMadeByString);
           set(
             state.screenConfiguration.screenConfig,
@@ -273,7 +302,7 @@ const callBackForNext = async (state, dispatch) => {
         return
       }
     } else {
-      // isFormValid = false;
+      isFormValid = false;
     }
   }
 
@@ -322,7 +351,7 @@ const callBackForNext = async (state, dispatch) => {
         return
       }
     } else {
-      // isFormValid = false;
+      isFormValid = false;
     }
   }
 

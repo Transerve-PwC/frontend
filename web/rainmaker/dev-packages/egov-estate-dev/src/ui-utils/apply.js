@@ -87,6 +87,11 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
     ownerDetails.map((item, index) => {
       set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
       set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.paymentDetails[0].grDueDateOfPayment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.paymentDetails[0].grDueDateOfPayment));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.paymentDetails[0].grDateOfDeposit`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.paymentDetails[0].grDateOfDeposit));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.paymentDetails[0].grReceiptDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.paymentDetails[0].grReceiptDate));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.paymentDetails[0].stDateOfDeposit`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.paymentDetails[0].stDateOfDeposit));
+      set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.paymentDetails[0].stReceiptDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.paymentDetails[0].stReceiptDate));
     })
     
     if (!id) {
@@ -102,7 +107,7 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
         }
       );
     } else {
-      if (activeIndex === 0) {
+      if ([0,1,2,3].indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "MODIFY")
       } else {
         set(queryObject[0], "action", "SUBMIT")

@@ -22,6 +22,33 @@ const cardItems = [{
   route: "search"
 }]
 
+const citizenCardItems = [
+  {
+    label: {
+      labelKey: "EST_ESTATE_BRANCH_HEADER",
+      labelName: "Estate Branch"
+    },
+    icon: < FormIcon / > ,
+    route: `/estate-citizen/estate-branch`
+  },
+  {
+    label: {
+      labelKey: "EST_BUILDING_BRANCH_HEADER",
+      labelName: "Building Branch"
+    },
+    icon: < FormIcon / > ,
+    route: `/estate-citizen/building-branch`
+  },
+  {
+    label: {
+      labelKey: "EST_MANIMAJRA_HEADER",
+      labelName: "Manimajra"
+    },
+    icon: < FormIcon / > ,
+    route: `/estate-citizen/manimajra`
+  }
+]
+
 
 const estateHome = {
   uiFramework: "material-ui",
@@ -37,7 +64,7 @@ const estateHome = {
           uiFramework: "custom-molecules-local",
           componentPath: "LandingPage",
           props: {
-            items: cardItems,
+            items: process.env.REACT_APP_NAME === "Citizen" ? citizenCardItems : cardItems,
             history: {},
           }
         }

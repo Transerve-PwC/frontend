@@ -1,7 +1,7 @@
 import React from "react";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import "../index.css";
-class TradeLicenseIcon extends React.Component {
+class EstateIcon extends React.Component {
   render() {
     const { classes } = this.props;
     return (
@@ -19,4 +19,4 @@ class TradeLicenseIcon extends React.Component {
   }
 }
 
-export default TradeLicenseIcon;
+export default EstateIcon;

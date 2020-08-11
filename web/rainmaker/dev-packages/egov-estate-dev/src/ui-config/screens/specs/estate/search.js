@@ -36,7 +36,8 @@ const userInfo = JSON.parse(getUserInfo());
 const {
   roles = []
 } = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
+console.log(roles);
+const findItem = roles.find(item => item.code === "CPS_DS");
 const header = getCommonHeader({
   labelName: "Search Property Master",
   labelKey: "EST_SEARCH_PROPERTY_MASTER_HEADER"
@@ -100,9 +101,9 @@ const estateSearchAndResult = {
               },
               ...header
             },
-            searchButton: {
+            addButton: {
               componentPath: "Button",
-              // visible: !!findItem,
+              visible: !!findItem,
               gridDefination: {
                 xs: 12,
                 sm: 4,

@@ -73,7 +73,7 @@ const chiefAdministratorsCourtField = {
       sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].chiefAdministratorsCourt"
+  jsonPath: "Properties[0].propertyDetails.courtCases[0].chiefAdministartorsCourt"
 }
 
 const advisorToAdminCourtField = {

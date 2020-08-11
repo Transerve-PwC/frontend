@@ -217,7 +217,7 @@ const sectorNumberField = {
         labelName: "Select Sector Number",
         labelKey: "EST_SECTOR_NUMBER_PLACEHOLDER"
     },
-    required: true,
+    // required: true,
     jsonPath: "Properties[0].sectorNumber",
     sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.SectorNumber",
     gridDefination: {
