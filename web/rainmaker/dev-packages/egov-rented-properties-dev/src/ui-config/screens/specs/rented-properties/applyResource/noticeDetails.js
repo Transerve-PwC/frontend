@@ -43,7 +43,11 @@ const fatherOrHusbandsNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband"
+    jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband",
+    errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD",
+    props: {
+        disabled: true
+      }
 }
 
 const getEditorField = {
@@ -64,7 +68,7 @@ const getEditorField = {
         rows: "4"
     },
     visible: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.editor" 
+    jsonPath: "Properties[0].owners[0].ownerDetails.editor"
   }
 
 const ownerNameField = {
@@ -83,7 +87,8 @@ const ownerNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.name"
+    jsonPath: "Properties[0].owners[0].ownerDetails.name",
+    errorMessage:"RP_ERR_OWNER_NAME_FIELD"
   }
 
 const originalAllotteField = {
@@ -101,7 +106,10 @@ const originalAllotteField = {
     },
     minLength: 4,
     maxLength: 40,
-    jsonPath: "Properties[0].owners[0].ownerDetails.orignalAllottee"
+    props: {
+        disabled: true
+      },
+    jsonPath: "Properties[0].owners[0].ownerDetails.name"
 }
 
 const getDocumentField = {
@@ -139,7 +147,10 @@ const getViolationField = {
         multiline: true,
         rows: "4"
     },
-    jsonPath: "Properties[0].owners[0].ownerDetails.violations" 
+    props: {
+        disabled: true
+      },
+    jsonPath: "SingleImage[0].description" 
 }
 
 export const transitNumberConfig = {
@@ -158,10 +169,14 @@ export const transitNumberConfig = {
     minLength: 4,
     maxLength: 25,
     required: true,
+    errorMessage:"RP_ERR_TRANSIT_FIELD"
 }
 
 const transitNumberField = {
     ...transitNumberConfig,
+    props: {
+        disabled: true
+      },
     jsonPath: "Properties[0].transitNumber"
   }
   const allotmentNumberField = {
@@ -180,7 +195,11 @@ const transitNumberField = {
     minLength: 3,
     maxLength: 20,
     required: true,
-    jsonPath: "Properties[0].owners[0].allotmenNumber"
+    jsonPath: "Properties[0].owners[0].allotmenNumber",
+    errorMessage:"RP_ERR_ALLOTMENT_NUMBER_FIELD",
+    props: {
+        disabled: true
+      }
   }  
 
   const memoDateField = {
@@ -217,7 +236,8 @@ const demandNoticeFromDate = {
         inputProps: {
             max: getTodaysDateInYMD()
         }
-    }
+    },
+    errorMessage:"RP_ERR_DEMAND_NOTICE_FROM_DATE_FIELD"
   }
 
   const demandNoticeLastDate = {
@@ -236,7 +256,8 @@ const demandNoticeFromDate = {
         inputProps: {
             max: getTodaysDateInYMD()
         }
-    }
+    },
+    errorMessage:"RP_ERR_DEMAND_NOTICE_LAST_DATE_FIELD"
   }
   const recoveryType = {
     label: {
@@ -252,7 +273,8 @@ const demandNoticeFromDate = {
     optionValue: "code",
     optionLabel: "label",
     sourceJsonPath: "applyScreenMdmsData.propertyTypes",
-    jsonPath: "Properties[0].owners[0].ownerDetails.recoveryType" 
+    jsonPath: "Properties[0].owners[0].ownerDetails.recoveryType",
+    errorMessage:"RP_ERR_RECOVERY_TYPE_FIELD"
 }
 
 
@@ -269,7 +291,8 @@ const paymentAmountFieldNotice = {
     minLength: 4,
     maxLength: 25,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid"
+    jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid",
+    errorMessage:"RP_ERR_PAYMENT_AMOUNT_FIELD"
 
 }
 const getOwnerDetailsForNotice = () => {

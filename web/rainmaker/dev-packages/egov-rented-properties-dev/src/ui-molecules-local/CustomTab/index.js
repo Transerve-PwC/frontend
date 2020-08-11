@@ -41,7 +41,7 @@ class NavPills extends React.Component {
         onChange={this.handleChange}
         centered={alignCenter}
         scrollable
-        scrollButtons="off"
+        scrollButtons="on"
       >
         {tabs.map((prop, key) => {
           return (

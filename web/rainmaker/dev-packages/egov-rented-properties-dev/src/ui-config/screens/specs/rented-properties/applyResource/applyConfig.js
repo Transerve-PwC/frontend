@@ -3,7 +3,8 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {noticePropertyDetails,ownerDetailsForNotice,paymentDetailsNotice} from './noticeDetails'
 import {rentHolderDetails,applicantDetailsMortgage,applicantDetails,rentHolderDetailsForDuplicateProperties} from './rentHolderDetails';
-import {propertyDetails, transitSiteDetails} from './propertyDetails';
+import {propertyDetails, transitSiteDetails ,transitSiteDetailsForAccountStatement} from './propertyDetails';
+import {accountStatementGenerationDetails ,amountField} from './accountStatementDetails';
 import {addressDetails, ownershipAddressDetails,ownershipAddressDetailsMortgage,addressDetailsTransitsite,transitSitePropertyDetails,transitSiteComments} from './addressDetails';
 import {uploadimage,imageUploadDetailsProperties} from './imageUploadDetails'
 import {rentDetails} from './rentDetails';
@@ -254,6 +255,21 @@ export const formwizardDuplicateCopySecondStep = {
   },
   visible: false
 };
+
+export const formwizardAccountGenerationFirstStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form2"
+  },
+  children: {
+    transitSiteDetailsForAccountStatement,
+    accountStatementGenerationDetails,
+    amountField
+  },
+  visible: true
+};
+
 
 export const formwizardDuplicateCopyThirdStep = {
   uiFramework: "custom-atoms",

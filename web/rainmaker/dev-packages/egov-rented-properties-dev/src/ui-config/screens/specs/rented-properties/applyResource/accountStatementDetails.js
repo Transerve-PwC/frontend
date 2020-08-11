@@ -3,6 +3,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getTodaysDateInYMD } from "../../utils";
 import get from "lodash/get";
 import { getDetailsFromProperty ,getDuplicateDetailsFromProperty} from "../../../../../ui-utils/apply";
+import { getColonyTypes } from "../apply";
 
 
 export const propertyHeader = getCommonTitle(
@@ -241,10 +242,10 @@ const getPropertyDetails = () => {
     }
 }
 
-const transitSiteHeader = getCommonTitle(
+const accountStatementHeader = getCommonTitle(
     {
-        labelName: "Transit Site Details",
-        labelKey: "RP_TRANSIT_SITE_DETAILS_HEADER"
+        labelName:"Account Statement Details",
+        labelKey: "RP_ACCOUNT_STATEMENT_DETAILS_HEADER"
     },
     {
         style: {
@@ -254,14 +255,14 @@ const transitSiteHeader = getCommonTitle(
     }
   )
 
-  const ownerNameField = {
+  const principalAmountField = {
     label: {
-        labelName: "Owner Name",
-        labelKey: "RP_OWNER_NAME_LABEL"
+        labelName: "Principal Amount",
+        labelKey: "RP_PRINCIPAL_AMOUNT_LABEL"
     },
     placeholder: {
-        labelName: "Enter Owner Name",
-        labelKey: "RP_OWNER_NAME_PLACEHOLDER"
+        labelName: "Principal Amount",
+        labelKey: "RP_PRINCIPAL_AMOUNT_LABEL"
     },
     gridDefination: {
         xs: 12,
@@ -269,34 +270,109 @@ const transitSiteHeader = getCommonTitle(
     },
     minLength: 4,
     maxLength: 40,
-    disabled: true,
+    required: false,
     jsonPath: "",
     errorMessage: "",
-  }  
+  } 
 
-const getTransitSiteDetails = () => {
+  const interestField = {
+    label: {
+        labelName: "Interest",
+        labelKey: "RP_INTEREST_LABEL"
+    },
+    placeholder: {
+        labelName: "Interest",
+        labelKey: "RP_INTEREST_LABEL"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 4,
+    maxLength: 40,
+    jsonPath: "",
+    errorMessage: "",
+  } 
+
+  const totalField = {
+    label: {
+        labelName: "Total",
+        labelKey: "RP_TOTAL_AMOUNT_LABEL"
+    },
+    placeholder: {
+        labelName: "Total",
+        labelKey: "RP_TOTAL_AMOUNT_LABEL"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 4,
+    maxLength: 40,
+    jsonPath: "",
+    errorMessage: "",
+  } 
+
+  const outstandingField = {
+    label: {
+        labelName: "Outstanding",
+        labelKey: "RP_OUSTANDING_AMOUNT_LABEL"
+    },
+    placeholder: {
+        labelName: "Outstanding",
+        labelKey: "RP_OUSTANDING_AMOUNT_LABEL"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 4,
+    maxLength: 40,
+    jsonPath: "",
+    errorMessage: "",
+  } 
+
+  const enterAmountField = {
+    label: {
+        labelName: "Enter Amount",
+        labelKey: "RP_ENTER_AMOUNT_LABEL"
+    },
+    placeholder: {
+        labelName: "Please Enter Amount",
+        labelKey: "RP_ENTER_AMOUNT_PLACEHOLDER"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 4,
+    maxLength: 40,
+    jsonPath: "",
+    errorMessage: "",
+  } 
+  
+  
+const getaccountStatementGenerationDetails = () => {
     return {
-        header: transitSiteHeader,
+        header: accountStatementHeader,
         detailsContainer: getCommonContainer({
-            transitNumber: getTextField(ownershipTransitNumberField),
-            colony: getTextField({...colonyFieldConfig,jsonPath: "Properties[0].colony", required: false, props: {...colonyFieldConfig.props, disabled: true}}),
-            pincode: getTextField({...pincodeField, jsonPath: "DuplicateCopyApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+            principalAmount: getTextField(principalAmountField),
+            interest: getTextField(interestField),
+            total: getTextField(totalField),
+            outstanding: getTextField(outstandingField)
         })
     }
 }
 
-const getPropertyDetailsForAccount = () => {
+const getAmountField = () => {
     return {
-        header: transitSiteHeader,
         detailsContainer: getCommonContainer({
-            transitNumber: getTextField(ownershipTransitNumberField),
-            colony: getTextField({...colonyFieldConfig,jsonPath: "", required: false, props: {...colonyFieldConfig.props, disabled: true}}),
-            pincode: getTextField({...pincodeField, jsonPath: "", required: false, props: {...pincodeField.props, disabled: true}}),
-            ownername: getTextField({...ownerNameField , props: {...ownerNameField.props, disabled: true}})
+            enterAmount: getTextField(enterAmountField),
         })
     }
 }
 
-export const propertyDetails = getCommonCard(getPropertyDetails())
-export const transitSiteDetails = getCommonCard(getTransitSiteDetails())
-export const transitSiteDetailsForAccountStatement = getCommonCard(getPropertyDetailsForAccount())
+
+
+export const accountStatementGenerationDetails = getCommonCard(getaccountStatementGenerationDetails())
+export const amountField = getCommonCard(getAmountField())

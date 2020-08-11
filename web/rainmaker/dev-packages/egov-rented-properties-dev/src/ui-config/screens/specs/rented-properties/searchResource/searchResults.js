@@ -17,7 +17,16 @@ export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_P
 export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
 export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
-
+export const MONTHASSESSMENT = getLocaleLabels("MONTH ASSESSMENT", "RP_COMMON_TABLE_COL_MONTHASSESSMENT")
+export const AMOUNTREALIZATION = getLocaleLabels("AMOUNT REALIZATION","RP_COMMON_TABLE_COL_AMOUNTREALIZATION")
+export const AMOUNTBALANCE = getLocaleLabels("AMOUNT BALANCE","RP_COMMON_TABLE_COL_AMOUNTBALANCE")
+export const AMOUNT = getLocaleLabels("AMOUNT","RP_COMMON_TABLE_COL_AS_AMOUNT")
+export const TOTAL_DAYS = getLocaleLabels("TOTAL DAYS","RP_COMMON_TABLE_COL_TOTAL_DAYS")
+export const INTEREST = getLocaleLabels("INTEREST","RP_COMMON_TABLE_COL_INTEREST")
+export const DAYS = getLocaleLabels("DAYS","RP_COMMON_TABLE_COL_DAYS")
+export const INTEREST_CALCULATION = getLocaleLabels("INTEREST CALCULATION","RP_COMMON_TABLE_COL_INTEREST_CALCULATION")
+export const RECEIPT_NO = getLocaleLabels("RECEIPT NO","RP_COMMON_TABLE_COL_RECEIPT_NO")
+export const DATE = getLocaleLabels("DATE","RP_COMMON_TABLE_COL_DATE")
 
 export const searchResults = {
   uiFramework: "custom-molecules",
@@ -94,6 +103,31 @@ export const transferSearchResults = {
       LAST_MODIFIED_ON
     ],
     options: {...searchResults.props.options,
+      onRowClick: (row, index) => {
+        onTransferPropertyRowClick(row);
+      }
+    }
+  }
+}
+
+export const accountStatementResults = {
+  ...searchResults,
+  props: {...searchResults.props, 
+    columns: [
+      MONTHASSESSMENT,
+      AMOUNTREALIZATION,
+      AMOUNTBALANCE,
+      AMOUNT,
+      TOTAL_DAYS,
+      INTEREST,
+      DAYS,
+      INTEREST_CALCULATION,
+      RECEIPT_NO,
+      DATE
+    ],
+    options: {...searchResults.props.options,
+      download:true,
+      filter: true,
       onRowClick: (row, index) => {
         onTransferPropertyRowClick(row);
       }

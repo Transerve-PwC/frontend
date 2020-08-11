@@ -44,6 +44,7 @@ export const areaField = {
     minLength: 3,
     maxLength: 20,
     required: true,
+    errorMessage: "RP_ERR_AREA_FIELD",
   }
 
 export const pincodeField = {
@@ -62,6 +63,7 @@ export const pincodeField = {
     minLength: 6,
     maxLength: 6,
     required: true,
+    errorMessage: "RP_ERR_PINCODE_FIELD",
   }
   export const commentsField = {
     label: {
@@ -79,6 +81,7 @@ export const pincodeField = {
     minLength: 1,
     maxLength: 1000,
     required: true,
+    errorMessage: "RP_ERR_COMMENTS_FIELD",
   }
 
 const getAddressDetails = () => {

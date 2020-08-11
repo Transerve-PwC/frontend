@@ -2,10 +2,12 @@ import { getCommonApplyFooter, validateFields } from "../utils";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import { applyOwnershipTransfer, submittransitsiteimages ,getDetailsFromPropertyTransit ,getDetailsFromProperty ,applyDuplicateCopy, getDuplicateDetailsFromProperty} from "../../../../ui-utils/apply";
-import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DETAILS_STEP, DOCUMENT_UPLOAD_STEP, SUMMARY_STEP, submitButtontransit } from "../rented-properties/applyResource/footer";
+import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DETAILS_STEP, DOCUMENT_UPLOAD_STEP, SUMMARY_STEP, submitButtontransit ,payment } from "../rented-properties/applyResource/footer";
 import { some } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { OWNERSHIPTRANSFERRP, TRANSITSITEIMAGES, DUPLICATECOPYOFALLOTMENTLETTERRP } from "../../../../ui-constants";
+import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
@@ -76,7 +78,7 @@ const callBackForNext = async(state, dispatch) => {
                   return {
                       title: `RP_${item.documentType}`,
                       link: item.fileUrl && item.fileUrl.split(",")[0],
-                      linkText: "View",
+                      linkText: "Download",
                       name: item.fileName
                   };
               });
@@ -258,7 +260,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
                   return {
                       title: `RP_${item.documentType}`,
                       link: item.fileUrl && item.fileUrl.split(",")[0],
-                      linkText: "View",
+                      linkText: "Download",
                       name: item.fileName
                   };
               });
@@ -374,3 +376,15 @@ export const duplicatefooter = getCommonApplyFooter({
       },
     }
   });
+
+export const accountGenerationFooter = getCommonApplyFooter({ 
+  submitButton: {
+    ...payment,
+    onClickDefination: {
+      action: "condition",
+      callBack: (state, dispatch) => {
+        dispatch(setRoute(`/rented-properties-citizen/PaymentRedirectPage?tenantId=${getTenantId()}`));
+      }
+    },
+  }
+});

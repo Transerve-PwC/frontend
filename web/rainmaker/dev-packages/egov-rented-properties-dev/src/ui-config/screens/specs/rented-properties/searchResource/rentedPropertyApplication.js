@@ -9,6 +9,8 @@ import {
   getDateField,
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getTodaysDateInYMD } from "../../utils";
+
 import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage} from "./functions";
 
 const colonyField = {
@@ -95,6 +97,24 @@ const transitNumberField = {
       xs: 12,
       sm: 6
   },
+  required:true,
+  iconObj: {
+    iconName: "search",
+    position: "end",
+    color: "#FE7A51",
+    onClickDefination: {
+      action: "condition",
+      callBack: (state, dispatch) => {
+        // getDuplicateDetailsFromProperty(state, dispatch);
+      }
+    }
+  },
+  title: {
+    value:
+      "If you have already assessed your property, then please search your property by your transit Number",
+    key: "If you have already assessed your property, then please search your property by your transit Number"
+  },
+  infoIcon: "info_circle",
   required: false,
   jsonPath: "searchScreen.transitNumber"
 }
@@ -200,6 +220,91 @@ const ownershipStatusField = {
   jsonPath: "searchScreen.status"
 }
 
+const areaField = {
+  label: {
+    labelName: "Area",
+    labelKey: "RP_AREA",
+  },
+  placeholder: {
+    labelName: "Enter Area",
+    labelKey: "RP_AREA_PLACEHOLDER"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 6
+},
+required: false,
+jsonPath: "searchScreen.area"
+}
+const pincodeField = {
+  label: {
+      labelName: "Pincode",
+      labelKey: "RP_PINCODE_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Pincode",
+      labelKey: "RP_PINCODE_PLACEHOLDER"
+  },
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  required: false,
+  jsonPath: "searchScreen.pincode"
+}
+
+const ownernameField = {
+  label: {
+      labelName: "Owner Name",
+      labelKey: "RP_OWNER_NAME_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Owner Name.",
+      labelKey: "RP_OWNER_NAME_PLACEHOLDER"
+  },
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  required: false,
+  jsonPath: "searchScreen.ownername"
+}
+
+const fromDateField = {
+  label: {
+    labelName: "From",
+    labelKey: "RP_FROM_DATE_LABEL"
+},
+placeholder: {
+    labelName: "Enter Date",
+    labelKey: "RP_FROM_DATE_PLACEHOLDER"
+},
+  pattern: getPattern("Date"),
+  jsonPath: "searchScreen.fromDate",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+const toDateField = {
+  label: {
+      labelName: "To",
+      labelKey: "RP_TO_DATE_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Date",
+      labelKey: "RP_TO_DATE_PLACEHOLDER"
+  },
+  pattern: getPattern("Date"),
+  jsonPath: "searchScreen.toDate",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+
 
 const buttonItem = {
   firstCont: {
@@ -231,6 +336,74 @@ const buttonItem = {
       buttonLabel: getLabel({
         labelName: "Search",
         labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+      })
+    }
+  }
+}
+
+const submitButtonItem = {
+  firstCont: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    gridDefination: {
+      xs: 12,
+      sm: 4
+    }
+  },
+  submitButton: {
+    componentPath: "Button",
+    gridDefination: {
+      xs: 12,
+      sm: 4
+    },
+    props: {
+      variant: "contained",
+      style: {
+        color: "white",
+        backgroundColor: "#fe7a51",
+        borderRadius: "2px",
+        width: "80%",
+        height: "48px"
+      }
+    },
+    children: {
+      buttonLabel: getLabel({
+        labelName: "Submit",
+        labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_SUBMIT"
+      })
+    }
+  }
+}
+
+const filterButtonItem = {
+  firstCont: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    gridDefination: {
+      xs: 12,
+      sm: 4
+    }
+  },
+  filterButton: {
+    componentPath: "Button",
+    gridDefination: {
+      xs: 12,
+      sm: 4
+    },
+    props: {
+      variant: "contained",
+      style: {
+        color: "white",
+        backgroundColor: "#fe7a51",
+        borderRadius: "2px",
+        width: "80%",
+        height: "48px"
+      }
+    },
+    children: {
+      buttonLabel: getLabel({
+        labelName: "Filter",
+        labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_FILTER"
       })
     }
   }
@@ -336,8 +509,116 @@ const duplicateCopySearchForm = {
   })
 }
 
+const accountStatementSearchForm = {
+  subParagraph: getCommonParagraph({
+    labelName: "Please provide atleast one parameter to search Application",
+    labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATION_LABEL"
+  }),
+  applicationNoContainer: getCommonContainer({
+    // applicationNo: getTextField(applicationNoField),
+    transitNumber: getTextField(transitNumberField),
+    area:getTextField(areaField)
+  }),
+  statusContainer: getCommonContainer({
+    pincode:getTextField(pincodeField),
+    ownername:getTextField(ownernameField)
+    // mobileNo: getTextField(duplicateCopyApplicantMobileNumberField),
+    // status: getSelectField(ownershipStatusField)
+  }),
+  button: getCommonContainer({
+    buttonContainer: getCommonContainer(
+      {...submitButtonItem, submitButton: {...submitButtonItem.submitButton, 
+        onClickDefination: {
+          action: "condition",
+          // callBack: searchTransferProperties
+        }
+      }, lastCont: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 4
+        }
+      }
+    })
+  })
+}
+
+const accountStatementFilterForm = {
+  // subParagraph: getCommonParagraph({
+  //   labelName: "Please provide atleast one parameter to search Application",
+  //   labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATION_LABEL"
+  // }),
+  dateContainer:getCommonContainer({
+      from:getDateField(fromDateField),
+      to:getDateField(toDateField)
+  }),
+  button: getCommonContainer({
+    buttonContainer: getCommonContainer(
+      {...filterButtonItem, filterButton: {...filterButtonItem.filterButton, 
+        onClickDefination: {
+          action: "condition",
+          // callBack: searchTransferProperties
+        }
+      }, lastCont: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 4
+        }
+      }
+    })
+  })
+}
+
 export const ownerShipTransferApplication = getCommonCard(
   commonSearchForm
+)
+
+
+export const accountStatementGenerationApplications = getCommonCard(
+  {...accountStatementSearchForm,
+    button: getCommonContainer({
+      buttonContainer: getCommonContainer(
+        {...submitButtonItem, submitButton: {...submitButtonItem.submitButton, 
+          onClickDefination: {
+            action: "condition",
+            callBack: searchDuplicateCopy
+          }
+        }, lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
+        }
+      })
+    })
+  }
+)
+
+export const accountStatementFilter = getCommonCard(
+  {...accountStatementFilterForm,
+    button: getCommonContainer({
+      buttonContainer: getCommonContainer(
+        {...filterButtonItem, filterButton: {...filterButtonItem.filterButton, 
+          onClickDefination: {
+            action: "condition",
+            callBack: searchDuplicateCopy
+          }
+        }, lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
+        }
+      })
+    })
+  }
 )
 
 export const searchDuplicateCopyApplication = getCommonCard(

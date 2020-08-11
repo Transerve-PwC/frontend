@@ -60,7 +60,8 @@ export const getGenderLabel = {
       required: true
     },
     required: true,
-    type: "array"
+    type: "array",
+    errorMessage: "RP_ERR_GENDER_FIELD",
   };
 
 
@@ -94,7 +95,8 @@ export const getRelationshipRadioButton = {
       required: true
     },
     required: true,
-    type: "array"
+    type: "array",
+    errorMessage: "RP_ERR_RELATIONSHIP_FIELD",
   };
 
   const ownerShipRelationShip = {
@@ -114,7 +116,8 @@ export const getRelationshipRadioButton = {
               value: "SPOUSE"
             }
           ],
-          jsonPath: "Owners[0].ownerDetails.relationWithDeceasedAllottee"
+          jsonPath: "Owners[0].ownerDetails.relationWithDeceasedAllottee",
+          //errorMessage: "RP_ERR_OWNER_RELATIONSHIP_FIELD",
       }
   }
 
@@ -134,7 +137,8 @@ const fatherOrHusbandsNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband"
+    jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband",
+    errorMessage: "RP_ERR_FATHER_OR_HUSBAND_FIELD",
 }
 
 const ownerNameField = {
@@ -153,7 +157,8 @@ const ownerNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.name"
+    jsonPath: "Properties[0].owners[0].ownerDetails.name",
+    errorMessage: "RP_ERR_OWNER_NAME_FIELD",
   }
 
 const phoneNumberConfig = {
@@ -173,6 +178,7 @@ const phoneNumberConfig = {
     maxLength: 100,
     required: true,
     pattern: getPattern("MobileNo"),
+    errorMessage: "RP_ERR_PHONE_NUMBER_FIELD",
   }
 
   const phoneNumberField = {
@@ -196,7 +202,8 @@ const dobFieldConfig = {
         inputProps: {
             max: getTodaysDateInYMD()
         }
-    }
+    },
+    errorMessage: "RP_ERR_DOB_FIELD",
 }  
 
 const dobField = {
@@ -282,8 +289,64 @@ const colonyField = {
     gridDefination: {
         xs: 12,
         sm: 6
-    }
+    },
+    errorMessage:"RP_ERR_COLONY_FIELD",
 }
+const allotmentDateField = {
+    label: {
+        labelName: "Date of Allotment",
+        labelKey: "RP_ALLOTMENT_DATE_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Date of Allotment",
+        labelKey: "RP_ALLOTMENT_DATE_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate",
+    props: {
+        inputProps: {
+            max: getTodaysDateInYMD()
+        }
+    }
+  }
+  const allotmentNumberField = {
+    label: {
+        labelName: "Allotment Number",
+        labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Allotment Number",
+        labelKey: "RP_ALLOTMENT_NUMBER_PLACEHOLDER"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 3,
+    maxLength: 20,
+    required: true,
+    jsonPath: "Properties[0].owners[0].allotmenNumber"
+  }
+
+  const posessionDateField = {
+    label: {
+        labelName: "Date of Possession",
+        labelKey: "RP_POSSESSION_DATE_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Date of Possession",
+        labelKey: "RP_POSSESSION_DATE_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "Properties[0].owners[0].ownerDetails.posessionStartdate",
+    props: {
+        inputProps: {
+            max: getTodaysDateInYMD()
+        }
+    }
+  }
 
 const getRentHolderDetails = () => {
     return {
@@ -294,7 +357,12 @@ const getRentHolderDetails = () => {
             fatherOrHusbandsName:getTextField(fatherOrHusbandsNameField),
             relationShip: getRelationshipRadioButton,
             email: getTextField(emailField),
-            aadhar: getTextField(aadharField)
+            aadhar: getTextField(aadharField),
+            dateOfAllotment: getDateField(allotmentDateField),
+            allotmentNumber: getTextField(allotmentNumberField),
+            posessionDate: getDateField(posessionDateField)
+        
+
         })
     }
 }
@@ -315,7 +383,8 @@ const applicantNameField = {
     minLength: 1,
     maxLength: 100,
     required: true,
-    jsonPath: "Owners[0].ownerDetails.name"
+    jsonPath: "Owners[0].ownerDetails.name",
+    errorMessage:"RP_ERR_APPLICANT_NAME_FIELD"
 }
 const applicantNameFieldMortgage = {
     label: {
@@ -333,7 +402,8 @@ const applicantNameFieldMortgage = {
     minLength: 1,
     maxLength: 100,
     required: true,
-    jsonPath: "MortgageApplications[0].applicant[0].name"
+    jsonPath: "MortgageApplications[0].applicant[0].name",
+    errorMessage:"RP_ERR_APPLICANT_NAME_FIELD"
 }
 
 const applicantNameFieldname = {
@@ -352,7 +422,7 @@ const applicantNameFieldname = {
     minLength: 1,
     maxLength: 100,
     required: true,
-    
+    errorMessage:"RP_ERR_APPLICANT_NAME_FIELD"
 }
 const duplicateapplicantNameFieldname = {
     ...applicantNameFieldname,
@@ -419,7 +489,8 @@ export const  applicantGenderLabel = {
       required: true
     },
     required: true,
-    type: "array"
+    type: "array",
+    errorMessage:"RP_ERR_GENDER_FIELD"
 };
 
 
@@ -439,7 +510,8 @@ const fatherOrHusbandsName = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "DuplicateCopyApplications[0].applicant[0].guardian"
+    jsonPath: "DuplicateCopyApplications[0].applicant[0].guardian",
+    errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD"
 }
 
 const fatherOrHusbandsNameMortgage = {
@@ -458,7 +530,8 @@ const fatherOrHusbandsNameMortgage = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    jsonPath: "MortgageApplications[0].applicant[0].guardian"
+    jsonPath: "MortgageApplications[0].applicant[0].guardian",
+    errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD"
 }
 
 const ownerShipRelationShipduplicate = {
@@ -479,7 +552,7 @@ const ownerShipRelationShipduplicate = {
               }
           ],
           jsonPath: "DuplicateCopyApplications[0].applicant[0].relationship"
-      }
+      },
   }
 
   const ownerShipRelationShipMortgage = {
@@ -553,7 +626,8 @@ const applicantAddressField = {
     minLength: 1,
     maxLength: 100,
     required: true,
-    jsonPath: "OwnerShipLicenses[0].owners[0].correspondenceAddress"
+    jsonPath: "OwnerShipLicenses[0].owners[0].correspondenceAddress",
+    errorMessage: "RP_ERR_ADDRESS_FIELD"
 }
 
 

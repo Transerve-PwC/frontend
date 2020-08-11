@@ -110,7 +110,7 @@ class DocumentList extends Component {
     }
     getQueryArg(window.location.href, "action") !== "edit" &&
       Object.values(uploadedDocumentsArranged).forEach((item, index) => {
-        const {documentType} = item
+        const documentType = item.documentType || item[0].documentType
         const { jsonPath, name } = documents[index];
         documentType === name && prepareFinalObject(
           jsonPath,

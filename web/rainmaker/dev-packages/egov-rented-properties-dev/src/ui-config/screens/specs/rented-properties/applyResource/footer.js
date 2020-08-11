@@ -44,7 +44,7 @@ export const moveToSuccess = (rentedData, dispatch, type) => {
     }
     case VIOLATION_NOTICE:
     case RECOVERY_NOTICE: {
-      applicationNumber = get(rentedData, "property.transitNumber")
+      applicationNumber = get(rentedData, "notices[0].property.transitNumber")
       path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${applicationNumber}&tenantId=${tenantId}&type=${NOTICE_GENERATION}`
       break
     }
@@ -126,7 +126,7 @@ const callBackForNext = async(state, dispatch) => {
                   return {
                       title: `RP_${item.documentType}`,
                       link: item.fileUrl && item.fileUrl.split(",")[0],
-                      linkText: "View",
+                      linkText: "Download",
                       name: item.fileName
                   };
               });
@@ -255,15 +255,15 @@ if(isOwnerDetailsValid && isRentHolderValid) {
   if(!res) {
    return
   } 
+}
 else{
   isFormValid = false;
   } 
-}
 
 if (isFormValid) {
   const noticegendata = get(
     state.screenConfiguration.preparedFinalObject,
-    "NoticeApplications[0]"
+    "Properties[0]"
 );
 moveToSuccess(noticegendata, dispatch, VIOLATION_NOTICE);
 }
@@ -503,7 +503,35 @@ export const submitButtontransit = {
       children: {
         submitButtonLabel: getLabel({
           labelName: "Submit",
-          labelKey: "TL_COMMON_BUTTON_SUBMIT"
+          labelKey: "RP_TRANSITE_SITE_BUTTON_SUBMIT"
+        }),
+        submitButtonIcon: {
+          uiFramework: "custom-atoms",
+          componentPath: "Icon",
+          props: {
+            iconName: "keyboard_arrow_right"
+          }
+        }
+      },
+      
+}
+
+export const payment = {
+  componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+          minWidth: "180px",
+          height: "48px",
+          marginRight: "45px",
+          borderRadius: "inherit"
+        }
+      },
+      children: {
+        submitButtonLabel: getLabel({
+          labelName: "Make Payment",
+          labelKey: "RP_COMMON_MAKE_PAYMENT_BUTTON_"
         }),
         submitButtonIcon: {
           uiFramework: "custom-atoms",

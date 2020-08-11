@@ -5,13 +5,13 @@ import {
     getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails } from "./applyResource/review-property";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
 const findItem = roles.find(item => item.code === "CTL_CLERK");
@@ -49,7 +49,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-
+    let state = properties[0].masterDataState;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
@@ -67,6 +67,35 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       "PropertiesTemp[0].reviewDocData",
       dispatch,'RP'
     );
+    if(state == 'PM_REJECTED'){
+      let path = "components.div.children.headerDiv.children.searchButton"
+      dispatch(
+        handleField(
+          "search-preview",
+          path,
+          "visible",
+          false
+        )
+      );
+      let tabs = [
+        {
+          tabButton: { labelName: "Property Details", labelKey: "RP_PROPERTY_DETAILS" }
+        }
+      ]
+      const props = {
+        tabs,
+        activeIndex: 0,
+        onTabChange
+      }
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.tabSection",
+          "props",
+          props
+        )
+      );
+    }
   }
 }
 

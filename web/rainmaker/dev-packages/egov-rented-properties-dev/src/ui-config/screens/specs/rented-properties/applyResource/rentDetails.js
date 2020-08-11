@@ -29,7 +29,8 @@ const rentAmountField = {
     minLength: 1,
     maxLength: 5,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.monthlyRent"
+    jsonPath: "Properties[0].owners[0].ownerDetails.monthlyRent",
+    errorMessage: "RP_ERR_RENT_AMOUNT_FIELD",
   }
 
 const revisedPeriodField = {
@@ -48,7 +49,8 @@ const revisedPeriodField = {
     minLength: 1,
     maxLength: 5,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.revisionPeriod"
+    jsonPath: "Properties[0].owners[0].ownerDetails.revisionPeriod",
+    errorMessage: "RP_ERR_REVISED_PERIOD_FIELD",
   }
 
 const revisedPercentageField = {
@@ -67,7 +69,8 @@ const revisedPercentageField = {
     minLength: 1,
     maxLength: 3,
     required: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.revisionPercentage"
+    jsonPath: "Properties[0].owners[0].ownerDetails.revisionPercentage",
+    errorMessage: "RP_ERR_REVISED_PERCENTAGE_FIELD",
   }
 
 const getRentDetails = () => {

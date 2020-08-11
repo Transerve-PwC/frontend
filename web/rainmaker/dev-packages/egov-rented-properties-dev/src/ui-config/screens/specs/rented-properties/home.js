@@ -54,7 +54,7 @@ const header = getCommonHeader(
         labelName: "Account Statement Generation"
     },
     icon: <FormIcon />,
-    route: "search-transfer-properties"
+    route: "search-account-statement"
   },
   {
     label: {

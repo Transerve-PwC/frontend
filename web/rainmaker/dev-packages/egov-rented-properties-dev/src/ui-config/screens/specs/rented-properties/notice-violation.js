@@ -31,6 +31,7 @@ const getData = async(action, state, dispatch) => {
     screenConfiguration.preparedFinalObject,
     "SingleImage",
     [])
+    
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
     await setDocuments(
       payload[0],
