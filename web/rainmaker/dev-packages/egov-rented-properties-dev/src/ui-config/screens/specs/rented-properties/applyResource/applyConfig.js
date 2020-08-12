@@ -113,7 +113,7 @@ export const stepper = getStepperObject(
       addressDetails,
       rentHolderDetails,
       rentDetails,
-      paymentDetails
+      // paymentDetails
     }
   };
 

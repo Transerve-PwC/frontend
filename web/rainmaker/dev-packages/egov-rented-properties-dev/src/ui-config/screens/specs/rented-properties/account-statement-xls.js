@@ -49,7 +49,7 @@ const accountStatementXLS = {
                     },
                     type: "array",
                   },
-                formwizardFirstStep: uploadXLS,
+                // formwizardFirstStep: uploadXLS,
                 footer:accountGenerationFooter
             }
         }

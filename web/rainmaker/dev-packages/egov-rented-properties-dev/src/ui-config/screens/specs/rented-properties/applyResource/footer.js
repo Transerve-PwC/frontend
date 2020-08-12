@@ -82,12 +82,12 @@ const callBackForNext = async(state, dispatch) => {
             state,
             dispatch
         )
-        const isPaymentValid = validateFields(
-            "components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.detailsContainer.children",
-            state,
-            dispatch
-        )
-        if(!!isPropertyDetailsValid && !!isRentHolderValid && !!isRentValid && !!isPaymentValid && !!isAddressValid
+        // const isPaymentValid = validateFields(
+        //     "components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.detailsContainer.children",
+        //     state,
+        //     dispatch
+        // )
+        if(!!isPropertyDetailsValid && !!isRentHolderValid && !!isRentValid && !!isAddressValid
             ) {
               const res = await applyRentedProperties(state, dispatch, activeStep)
               if(!res) {
