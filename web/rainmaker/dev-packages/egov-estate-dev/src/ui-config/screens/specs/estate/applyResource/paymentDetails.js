@@ -61,7 +61,6 @@ const payableField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grPayable`
 }
@@ -80,7 +79,6 @@ const amountOfGRField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountOfGr`
 }
@@ -99,7 +97,6 @@ const totalGRField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalGr`
 }
@@ -133,7 +130,6 @@ const delayInPaymentField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grDelayInPayment`
 }
@@ -152,7 +148,6 @@ const interestForDelayField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grInterestForDelay`
 }
@@ -171,7 +166,6 @@ const totalAmountDueWithInterestField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalAmountDueWithInterest`
 }
@@ -190,7 +184,6 @@ const amountDepositedGRField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountDepositedGr`
 }
@@ -209,7 +202,6 @@ const amountDepositedInttField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountDepositedIntt`
 }
@@ -228,7 +220,6 @@ const balanceGRField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grBalanceGr`
 }
@@ -247,7 +238,6 @@ const balanceInttField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grBalanceIntt`
 }
@@ -266,7 +256,6 @@ const totalDueField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalDue`
 }
@@ -285,7 +274,6 @@ const receiptNumberField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 75,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grReceiptNumber`
 }
@@ -351,7 +339,6 @@ const rateOfStOrGstFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stRateOfStGst`
 }
@@ -370,7 +357,6 @@ const amountOfGstFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountOfGst`
 }
@@ -389,7 +375,6 @@ const amountDueFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDue`
 }
@@ -423,7 +408,6 @@ const delayInPaymentFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stDelayInPayment`
 }
@@ -442,7 +426,6 @@ const interestForDelayFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stInterestForDelay`
 }
@@ -461,7 +444,6 @@ const totalAmountDueWithInterestFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stTotalAmountDueWithInterest`
 }
@@ -480,7 +462,6 @@ const amountDepositedFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDepositedStGst`
 }
@@ -499,7 +480,6 @@ const amountDepositedInttFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDepositedIntt`
 }
@@ -518,7 +498,6 @@ const balanceFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stBalanceStGst`
 }
@@ -537,7 +516,6 @@ const balanceInttFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stBalanceIntt`
 }
@@ -556,7 +534,6 @@ const totalDueFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stTotalDue`
 }
@@ -575,7 +552,6 @@ const receiptNumberFieldST = {
     sm: 6
   },
   required: true,
-  minLength: 1,
   maxLength: 75,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stReceiptNumber`
 }
@@ -632,7 +608,6 @@ const paymentMadeByField = {
     disabled: true
   },
   required: true,
-  minLength: 1,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stPaymentMadeBy`
 }

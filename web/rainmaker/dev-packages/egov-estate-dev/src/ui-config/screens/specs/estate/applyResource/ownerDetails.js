@@ -234,7 +234,6 @@ const allotmentNumberField = {
     xs: 12,
     sm: 6
   },
-  minLength: 1,
   maxLength: 50,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber"
 }

@@ -47,7 +47,6 @@ const modeOfAuctionField = {
         xs: 12,
         sm: 6
     },
-    minLength: 1,
     maxLength: 100,
     jsonPath: "Properties[0].propertyDetails.modeOfAuction"
 }
@@ -65,7 +64,6 @@ const schemeNameField = {
         xs: 12,
         sm: 6
     },
-    minLength: 1,
     maxLength: 100,
     jsonPath: "Properties[0].propertyDetails.schemeName"
 }
@@ -203,7 +201,6 @@ const siteNumberField = {
         sm: 6
     },
     required: true,
-    minLength: 1,
     maxLength: 50,
     jsonPath: "Properties[0].siteNumber"
 }
@@ -240,7 +237,6 @@ const fileNumberField = {
         sm: 6
     },
     required: true,
-    minLength: 1,
     maxLength: 50,
     jsonPath: "Properties[0].fileNumber"
 }
@@ -294,7 +290,6 @@ const serviceCategoryField = {
         xs: 12,
         sm: 6
     },
-    minLength: 1,
     maxLength: 100,
     jsonPath: "Properties[0].propertyDetails.serviceCategory"
 }

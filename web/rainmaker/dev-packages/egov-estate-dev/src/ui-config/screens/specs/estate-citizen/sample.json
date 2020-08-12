@@ -1,0 +1,58 @@
+{
+    "dataFormat": {
+        "sections": [
+            {   
+                "header": "Property Details",
+                "fields": [
+                    {
+                        "label": "propertyId",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.id",
+                        "required": true,
+                        "placeHolder": "Enter PropertyId"
+                    },
+                    {
+                        "label": "area",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.area",
+                        "required": true,
+                        "placeHolder": "Enter area"
+                    },
+                    {
+                        "label": "pincode",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.pincode",
+                        "required": true,
+                        "placeHolder": "Enter pincode"
+                    }
+                ]
+            },
+            {
+                "header": "Owner Details",
+                "fields": [
+                    {
+                        "label": "ownerName",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].ownerDetails.name",
+                        "required": true,
+                        "placeHolder": "Enter OwnerName"
+                    },
+                    {
+                        "label": "dob",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].ownerDetails.dob",
+                        "required": true,
+                        "placeHolder": "Enter Dob"
+                    },
+                    {
+                        "label": "fatherOrHusbandName",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].ownerDetails.fatherOrHusbandName",
+                        "required": true,
+                        "placeHolder": "Enter Father Or Husband Name"
+                    }
+                ]
+            }
+        ]
+    }
+}
