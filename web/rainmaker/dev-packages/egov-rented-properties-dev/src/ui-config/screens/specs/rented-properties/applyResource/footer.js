@@ -56,7 +56,7 @@ export const moveToSuccess = (rentedData, dispatch, type) => {
 const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
         state.screenConfiguration.screenConfig["apply"],
-        "components.div.children.stepper.props.activeStep",
+        "components.div.children.addPropertyStepper.props.activeStep",
         0
     );
     let isFormValid = true;

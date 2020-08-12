@@ -83,10 +83,23 @@ export const stepsData = [
     { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
   ];
 
+export const addPropertyStepperData = [
+    { labelName: "Details", labelKey: "RP_COMMON_TR_DETAILS" },
+    { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
+    { labelName: "Rent History", labelKey: "TL_COMMON_RENT_HISTORY"},
+    { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" },
+];  
+
 export const stepper = getStepperObject(
     { props: { activeStep: 0 } },
     stepsData
   );
+
+export const addPropertyStepper =  getStepperObject(
+  { props: { activeStep: 0 } },
+  addPropertyStepperData
+); 
+
 
   export const mortgageDocumentsDetails = getCommonCard({
     ...documentCardConfig,

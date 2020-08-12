@@ -1,7 +1,7 @@
 import {
     getCommonHeader
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {stepper, formwizardFirstStep, formwizardSecondStep, formwizardThirdStep} from './applyResource/applyConfig'
+import {addPropertyStepper, formwizardFirstStep, formwizardSecondStep, formwizardThirdStep} from './applyResource/applyConfig'
 import { httpRequest } from "../../../../ui-utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
@@ -166,7 +166,7 @@ const applyRentedProperties = {
                           }
                     }
                 },
-                stepper,
+                addPropertyStepper,
                 formwizardFirstStep,
                 formwizardSecondStep,
                 formwizardThirdStep,
