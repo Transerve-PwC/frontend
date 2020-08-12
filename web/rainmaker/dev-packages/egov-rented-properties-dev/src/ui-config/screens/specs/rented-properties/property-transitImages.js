@@ -11,14 +11,17 @@ import {
   getQueryArg,
   getFileUrlFromAPI
 } from "egov-ui-framework/ui-utils/commons";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+
   let transitNumber = getQueryArg(window.location.href, "transitNumber");
 
-  const fetchImage = async (imgId) => {
+  export const fetchImage = async (imgId) => {
     const res = await getFileUrlFromAPI(imgId.fileStoreId)           
       return res.fileStoreIds[0].url;
   }
  
-  const getImages = (imageObs) => {
+  export const getImages = (imageObs) => {
     return Promise.all(
       imageObs.map(imageOb =>
         Promise.all(imageOb.applicationDocuments.map(id => fetchImage(id))).then(urls => ({
@@ -45,12 +48,12 @@ import {
         }
       }).map(item => {
         const transitNotices = notices.filter(notice => notice.propertyImageId === item.id).map(notice => notice.memoNumber)
-          return {...item, notices: transitNotices}
+          return {...item, notices: transitNotices.join(",")}
       })
         let images = await getImages(data);
         images = images.map(item => {
           let { applicationDocuments, urls } = item;
-          applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index] }));
+          applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: urls[index].split("?")[0].split("/").pop().slice(13) }));
           return { ...item, applicationDocuments };
         });
         dispatch(prepareFinalObject("Images", images));
@@ -126,7 +129,22 @@ import {
                   sourceJsonPath:"Images",
                   btnhide: true,
                   businessService:"RP",
-                  className: "review-documents"
+                  className: "review-documents",
+                  contents: [
+                    {
+                      label: "RP_NOTICE_ID",
+                      jsonPath: "notices",
+                      url:`/rented-properties/notices?tenantId=${getTenantId()}` 
+                    },
+                    {
+                      label: "RP_CREATED_DATE",
+                      jsonPath: "auditDetails.createdTime"
+                    },
+                    {
+                      label: "RP_COMMENTS_LABEL",
+                      jsonPath: "description"
+                    }
+                  ]
                 }
               },
           }

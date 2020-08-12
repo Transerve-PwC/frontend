@@ -14,7 +14,7 @@ const uploadimage = getCommonCard({
     labelKey: "ERR_FILE_MORE_THAN_SIXMB"
     },
     visible: true,
-    // required: true
+     required: true
     }
 });
 

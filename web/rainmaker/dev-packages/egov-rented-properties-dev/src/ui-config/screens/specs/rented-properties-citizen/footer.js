@@ -132,10 +132,10 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         let uploadFlag = false;
         let activeStep = 1;
         let isFormValid = true;
-  
+        let hasFieldToaster = true;
       if(activeStep === 1){
       const isOwnerDetailsValid = validateFields(
-        "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",   
+        "components.div.children.formwizardFirstStep.children.transitSiteComments.children.cardContent.children.detailsContainer.children",   
                  
         state,
         dispatch,
@@ -143,15 +143,24 @@ const callBackForNextTransitImages = async(state, dispatch) => {
       )
       
       const isImageDetailsValid = validateFields(
-        "components.div.children.formwizardFirstStep.children.imageUploadDetailsProperties.children.cardContent.children.detailsContainer.children",       
+        "components.div.children.formwizardFirstStep.children.imageUploadDetailsProperties.children.cardContent.children.uploadimage.children.cardContent.children",       
              
         state,
         dispatch,
         "transit-site-images"
       )
-      if(!!isOwnerDetailsValid && !!isImageDetailsValid) {
+
+      const isDetailsValid = validateFields(
+        "components.div.children.formwizardFirstStep.children.transitSitePropertyDetails.children.cardContent.children.detailsContainer.children",       
+             
+        state,
+        dispatch,
+        "transit-site-images"
+      )
+      
+      if(!!isOwnerDetailsValid && !!isImageDetailsValid && !!isDetailsValid) {
         const propertyId = get(state.screenConfiguration.preparedFinalObject, "PropertyImagesApplications[0].property.id");
-        let res;
+        let res = true;
         if(!propertyId) {
           res = await getDetailsFromPropertyTransit(state, dispatch)
         }
@@ -179,7 +188,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
       moveToSuccess(transitData, dispatch, TRANSITSITEIMAGES);
       }
 
-    if (!isFormValid && !uploadFlag) {
+     if (!isFormValid && !uploadFlag) {
         
         let errorMessage = {
           labelName:

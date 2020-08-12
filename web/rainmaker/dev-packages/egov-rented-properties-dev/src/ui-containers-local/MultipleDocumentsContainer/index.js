@@ -12,7 +12,6 @@ import { func } from "prop-types";
 class MultipleDocumentsContainer extends Component {
     render() {
         const {data,...rest} = this.props
-        console.log("container",data)
         return(
             <MultipleDocuments data={data} {...rest}/>
         )

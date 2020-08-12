@@ -44,7 +44,7 @@ export const moveToSuccess = (rentedData, dispatch, type) => {
     }
     case VIOLATION_NOTICE:
     case RECOVERY_NOTICE: {
-      applicationNumber = get(rentedData, "notices[0].property.transitNumber")
+      applicationNumber = get(rentedData, "notices[0].memoNumber")
       path = `/rented-properties/acknowledgement?purpose=${purpose}&status=${status}&transitNumber=${applicationNumber}&tenantId=${tenantId}&type=${NOTICE_GENERATION}`
       break
     }
@@ -531,7 +531,7 @@ export const payment = {
       children: {
         submitButtonLabel: getLabel({
           labelName: "Make Payment",
-          labelKey: "RP_COMMON_MAKE_PAYMENT_BUTTON_"
+          labelKey: "RP_COMMON_MAKE_PAYMENT_BUTTON"
         }),
         submitButtonIcon: {
           uiFramework: "custom-atoms",
