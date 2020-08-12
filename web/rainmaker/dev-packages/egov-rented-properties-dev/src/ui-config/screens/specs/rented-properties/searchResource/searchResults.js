@@ -17,17 +17,12 @@ export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_P
 export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
 export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
-export const MONTHASSESSMENT = getLocaleLabels("MONTH ASSESSMENT", "RP_COMMON_TABLE_COL_MONTHASSESSMENT")
-export const AMOUNTREALIZATION = getLocaleLabels("AMOUNT REALIZATION","RP_COMMON_TABLE_COL_AMOUNTREALIZATION")
-export const AMOUNTBALANCE = getLocaleLabels("AMOUNT BALANCE","RP_COMMON_TABLE_COL_AMOUNTBALANCE")
-export const AMOUNT = getLocaleLabels("AMOUNT","RP_COMMON_TABLE_COL_AS_AMOUNT")
-export const TOTAL_DAYS = getLocaleLabels("TOTAL DAYS","RP_COMMON_TABLE_COL_TOTAL_DAYS")
-export const INTEREST = getLocaleLabels("INTEREST","RP_COMMON_TABLE_COL_INTEREST")
-export const DAYS = getLocaleLabels("DAYS","RP_COMMON_TABLE_COL_DAYS")
-export const INTEREST_CALCULATION = getLocaleLabels("INTEREST CALCULATION","RP_COMMON_TABLE_COL_INTEREST_CALCULATION")
-export const RECEIPT_NO = getLocaleLabels("RECEIPT NO","RP_COMMON_TABLE_COL_RECEIPT_NO")
 export const DATE = getLocaleLabels("DATE","RP_COMMON_TABLE_COL_DATE")
-
+export const AMOUNT = getLocaleLabels("AMOUNT","RP_COMMON_TABLE_COL_AS_AMOUNT")
+export const REMAINING_INTEREST = getLocaleLabels("REMAINING INTEREST","RP_COMMON_TABLE_COL_AS_REMAINING_INTEREST")
+export const REMAINING_PRINCIPAL = getLocaleLabels("REMAINING PRINCIPAL","RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
+export const TOTAL_DUE = getLocaleLabels("TOTAL DUE","RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
+export const TYPE = getLocaleLabels("TYPE","RP_COMMON_TABLE_COL_AS_TYPE")
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
@@ -114,16 +109,12 @@ export const accountStatementResults = {
   ...searchResults,
   props: {...searchResults.props, 
     columns: [
-      MONTHASSESSMENT,
-      AMOUNTREALIZATION,
-      AMOUNTBALANCE,
+      DATE,
       AMOUNT,
-      TOTAL_DAYS,
-      INTEREST,
-      DAYS,
-      INTEREST_CALCULATION,
-      RECEIPT_NO,
-      DATE
+      TYPE,
+      REMAINING_INTEREST,
+      REMAINING_PRINCIPAL,
+      TOTAL_DUE  
     ],
     options: {...searchResults.props.options,
       download:true,

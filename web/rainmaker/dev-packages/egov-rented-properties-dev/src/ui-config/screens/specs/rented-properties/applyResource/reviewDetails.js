@@ -20,8 +20,8 @@ const reviewDuplicateApplicantDetails = getDuplicateCopyPreviewApplicantDetails(
 const reviewDupliateCopyDocuments = getReviewDocuments(true,"duplicate-copy-apply","DuplicateTemp[0].reviewDocData")
 const reviewMortgageDocuments = getReviewDocuments(true, "mortage-apply", "MortgageApplicationsTemp[0].reviewDocData")
 const header = getCommonTitle({
-  labelName: "Please review your Application and Submit",
-  labelKey: "TL_SUMMARY_HEADER"
+  labelName: "Summary",
+  labelKey: "RP_PM_SUMMARY_HEADER"
 })
 
 export const rentedReviewDetails = getCommonCard({

@@ -253,6 +253,7 @@ let userInfo = JSON.parse(getUserInfo());
       const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
       const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
       const noticeType = str
+      const properyImageId = filedata.id;
       const tenantId = getTenantId()
       let response;
  
@@ -291,6 +292,7 @@ let userInfo = JSON.parse(getUserInfo());
         "demandNoticeFrom": demandNoticeFrom,
         "demandNoticeTo" : demandNoticeTo,
         "amount" : amount,
+        "propertyImageId": properyImageId,
         "property": {
           "id": id,
           "transitNumber": transitNumber,

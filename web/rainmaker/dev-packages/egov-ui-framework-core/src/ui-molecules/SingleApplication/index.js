@@ -159,9 +159,7 @@ class SingleApplication extends React.Component {
     } else if(moduleName === "OWNERSHIPTRANSFERRP") {
       switch (item.applicationState) {
         case "OT_DRAFTED": 
-          setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
-          break;
-          case "OT_PENDINGCLVERIFICATION": 
+        case "OT_PENDINGCLARIFICATION": 
           setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
           break;
         default:
@@ -170,21 +168,17 @@ class SingleApplication extends React.Component {
     }
     else if(moduleName === "DUPLICATECOPYOFALLOTMENTLETTERRP") {
       switch (item.state) {
-        case "DC_DRAFTED": 
-          setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-          break;
-          case "DC_PENDINGCLVERIFICATION": 
-          setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+        case "DC_DRAFTED":
+        case "DC_PENDINGCLARIFICATION": 
+        setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
           break;
         default:
           setRoute(`/rented-properties/search-duplicate-copy-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
       }
     } else if(moduleName === "MORTGAGERP") {
       switch(item.state) {
-        case "MG_DRAFTED": 
-        setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
-        break;
-        case "MG_PENDINGCLVERIFICATION": 
+        case "MG_DRAFTED":
+        case "MG_PENDINGCLARIFICATION":  
         setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
         break;
         default:

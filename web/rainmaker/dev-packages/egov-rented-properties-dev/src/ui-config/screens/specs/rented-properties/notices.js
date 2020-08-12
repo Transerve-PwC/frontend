@@ -9,6 +9,7 @@ import {onTabChange, headerrow, tabs} from './search-preview'
 import { getSearchResults } from "../../../../ui-utils/commons";
 import {  downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
 import { set } from "lodash";
+import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 let transitNumber = getQueryArg(window.location.href, "transitNumber");
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
@@ -118,6 +119,75 @@ const notices = {
                 activeIndex: 2
               },
               type: "array",
+            },
+            rightdiv: {
+              uiFramework: "custom-atoms",
+              componentPath: "Div",
+              props: {
+                style: { textAlign: "right", display: "flex" }
+              },
+              children: {
+                recoveryButton: {
+                  componentPath: "Button",
+                  // gridDefination: {
+                  //   xs: 12,
+                  //   sm: 4,
+                  // },
+                  props: {
+                    variant: "contained",
+                    style: {
+                      color: "white",
+                      backgroundColor: "#fe7a51",
+                      borderColor:"#fe7a51",
+                      borderRadius: "2px",
+                      width: "50%",
+                      height: "48px",
+                    }
+                  },
+                  children: {
+                    buttonLabel: getLabel({
+                      labelName: "Create Recovery Notice",
+                      labelKey: "Create Recovery Notice"
+                    })
+                  },
+                  onClickDefination: {
+                    action: "condition",
+                    callBack: (state, dispatch) => {
+                      dispatch(setRoute(`/rented-properties/notice-recovry?tenantId=${getTenantId()}`));
+                    }
+                  }
+                },
+                violationButton: {
+                  componentPath: "Button",
+                  // gridDefination: {
+                  //   xs: 12,
+                  //   sm: 4,
+                  // },
+                  props: {
+                    variant: "contained",
+                    style: {
+                      color: "white",
+                      backgroundColor: "#fe7a51",
+                      borderColor:"#fe7a51",
+                      borderRadius: "2px",
+                      width: "50%",
+                      height: "48px",
+                    }
+                  },
+                  children: {
+                    buttonLabel: getLabel({
+                      labelName: "Create Violation Notice",
+                      labelKey: "Create Violation Notice"
+                    })
+                  },
+                  onClickDefination: {
+                    action: "condition",
+                    callBack: (state, dispatch) => {
+                      dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}`));
+                    }
+                  }
+              },
+              },
             },
             // write code for transit images
             viewFour: {

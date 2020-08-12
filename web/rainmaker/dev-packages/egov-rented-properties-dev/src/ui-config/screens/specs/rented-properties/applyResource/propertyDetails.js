@@ -41,8 +41,8 @@ const colonyFieldConfig = {
         labelKey: "RP_COLONY_LABEL"
     },
     placeholder: {
-        labelName: "Enter Colony",
-        labelKey: "RP_COLONY_PLACEHOLDER"
+        labelName: "Select Colony",
+        labelKey: "RP_SELECT_COLONY_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].colony",

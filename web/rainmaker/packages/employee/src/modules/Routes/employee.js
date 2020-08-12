@@ -164,7 +164,7 @@ const routes = [
 
     options: {
       hideFooter: true,
-      title: "CS_PGR_REPORTS_HEADER",
+      title: "CS_HOME_HEADER_HOME",
       hideTitle: true,
       redirectionUrl,
     },

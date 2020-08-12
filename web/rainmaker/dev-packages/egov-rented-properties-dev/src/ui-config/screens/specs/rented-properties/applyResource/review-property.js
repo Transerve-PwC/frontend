@@ -193,6 +193,9 @@ export const getReviewOwner = (isEditable = true) => {
                     jsonPath: "allotmenNumber"},
                     {label: "RP_ALLOTMENT_DATE_LABEL",
                     jsonPath: "ownerDetails.allotmentStartdate",
+                    callBack: convertEpochToDate},
+                    {label: "RP_POSSESSION_DATE_LABEL",
+                    jsonPath: "ownerDetails.posessionStartdate",
                     callBack: convertEpochToDate}
                 ],
                 jsonPath: "Properties[0].owners"

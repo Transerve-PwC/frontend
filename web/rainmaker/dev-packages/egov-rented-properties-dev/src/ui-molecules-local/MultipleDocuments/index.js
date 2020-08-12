@@ -92,27 +92,6 @@ class MultipleDocuments extends Component {
                   <CardContent>
                   <Grid container>
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
-                  <Grid xs={12} sm={12} style={{textAlign: "left"}}>
-                  <br></br>
-                  {!btnhide && (<LabelContainer   
-                      labelName= "Notice ID : "
-                      style={documentTitle}
-                  />)
-                    }
-                  {!btnhide && (<LabelContainer   
-                      labelName= {datum.id ? datum.id : 'NA'}
-                      style={documentTitle}
-                  />)
-                    }
-                    {btnhide && 
-                      (<LabelContainer   
-                        labelName= {moment(datum.auditDetails.createdTime).format('dddd, MMMM Do, YYYY h:mm:ss A')}
-                        style={documentTitle}
-                    />)
-                    }
-                    
-
-                    </Grid> 
                     {btnhide &&
                       (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1} mr={0} color="primary"  variant="contained"  
@@ -123,19 +102,40 @@ class MultipleDocuments extends Component {
                     </Button>
                     </Grid>)
                     } 
-
-                  {!btnhide && 
-                      (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
-                  <Button  mt={1}  color="primary"  variant="contained"  
+                 </Grid>
+                 <Grid xs={12} sm={12} >
+                  {!btnhide && (<LabelContainer   
+                      labelName= "Notice ID : "
+                      style={documentTitle}
+                  />)
+                    }
+                  {!btnhide && (<LabelContainer   
+                      labelName= {datum.memoNumber ? datum.memoNumber : 'NA'}
+                      style={documentTitle}
+                  />)
+                    }
+                  {btnhide && !!datum.notices.length &&  (<Grid xs={6} align="left">
+                  <Button color="primary"
                   onClick={() => { 
-                    dispatch(setRoute(`/rented-properties/notice-recovry?tenantId=${getTenantId()}`)); 
+                    dispatch(setRoute(`/rented-properties/notices?tenantId=${getTenantId()}`)); 
                     }}> 
-                    Recovery Notice 
+                     Notice ID : {datum.notices.join(",")}
                     </Button>
                     </Grid>)
-                    } 
-                  
-                 </Grid>
+                    }
+                    <br></br>
+                    {!btnhide && (<LabelContainer   
+                      labelName= {datum.memoDate ? moment(datum.memoDate).format('dddd, MMMM Do, YYYY h:mm:ss A') : 'NA'}
+                      style={documentTitle}
+                  />)
+                    }
+                    {btnhide && 
+                      (<LabelContainer   
+                        labelName= {moment(datum.auditDetails.createdTime).format('dddd, MMMM Do, YYYY h:mm:ss A')}
+                        style={documentTitle}
+                    />)
+                    }
+                    </Grid> 
                       {datum.applicationDocuments.map((content) => (
                           <Grid xs={6} sm={3} 
                           style={{
@@ -162,30 +162,15 @@ class MultipleDocuments extends Component {
                           </Grid>
                           <Grid container>
                             <Grid xs={6} className={classes.subtext}>
-                              {btnhide && (<Typography className={classes.body2}>{content.url.split("?")[0].split("/").pop().slice(13)}</Typography>)}
-                              {content.fileStoreId = decodeURIComponent(getFileUrl(content.fileStoreId))}
-                              {!btnhide && (<Typography className={classes.body2}>{content.fileStoreId && decodeURIComponent(getFileUrl(content.fileStoreId)).split("?")[0].split("/").pop().slice(13)}</Typography>)}
+                              {btnhide && (<Typography className={classes.body2}>{!!content.url ? content.url.split("?")[0].split("/").pop().slice(13) : content.fileStoreId ? decodeURIComponent(getFileUrl(content.fileStoreId)).split("?")[0].split("/").pop().slice(13) : ""}</Typography>)}
                             </Grid>
                             <Grid xs={6} align="right">
-                              {
-                                btnhide && (
-                                  <Button href={content.url} color="primary">
-                                  Download
-                                </Button>
-                                )
-                              }
-                              {
-                                !btnhide && (
-                                  <Button href={getFileUrlFromAPI(content.fileStoreId)} color="primary">
-                                  Download
-                                </Button>
-                                )
-                              }
-                             
+                              <Button href={!!content.url ? content.url : getFileUrlFromAPI(content.fileStoreId)} color="primary">
+                              Download
+                              </Button>
                             </Grid>
                           </Grid>
                           </Grid>
-                      
                           </Grid>)
                       )}
                   </Grid>

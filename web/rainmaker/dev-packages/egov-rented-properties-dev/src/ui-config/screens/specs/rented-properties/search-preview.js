@@ -30,9 +30,9 @@ const reviewAddressDetails = getReviewAddress(false);
 const reviewRentDetails = getReviewRentDetails(false);
 const reviewPaymentDetails = getReviewPaymentDetails(false);
 const reviewDocumentDetails = getReviewDocuments(false, "apply")
+const grantDetailAvailed=getGrantDetailsAvailed(false)
 const reviewGrantDetails = getReviewGrantDetails(false)
 const grantDetail=getGrantDetails(false)
-const grantDetailAvailed=getGrantDetailsAvailed(false)
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
   reviewAddressDetails,
@@ -40,9 +40,10 @@ export const propertyReviewDetails = getCommonCard({
   reviewRentDetails,
   reviewPaymentDetails,
   reviewDocumentDetails,
+  grantDetailAvailed,
   reviewGrantDetails,
-  grantDetail,
-  grantDetailAvailed
+  grantDetail
+  
 });
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
@@ -81,6 +82,15 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
         getGrantDetailsAvailed
     ),
   );
+  const isGrantDetails = grandDetails ===null
+  dispatch(
+    handleField(
+      "search-preview",
+      "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetail",
+      "visible",
+      isGrantDetails
+  ),
+);
       const showEstimate = grandDetails !==null
       dispatch(
         handleField(
@@ -90,15 +100,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
             showEstimate
         ),
       );
-      const isGrantDetails = grandDetails ===null
-      dispatch(
-        handleField(
-          "search-preview",
-          "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetail",
-          "visible",
-          isGrantDetails
-      ),
-    );
+  
         
     if(state == 'PM_REJECTED'){
       let path = "components.div.children.headerDiv.children.searchButton"

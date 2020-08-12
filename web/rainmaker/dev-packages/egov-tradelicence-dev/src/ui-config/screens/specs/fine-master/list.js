@@ -30,7 +30,9 @@ const showOrHidePopup = (state, dispatch) => {
 
 const updateRate = async (state, dispatch) => {
   const {fineMasterEditData} = state.screenConfiguration.preparedFinalObject
-try {
+  const {rate} = fineMasterEditData;
+  if(!!Number(rate)) {
+  try {
   await httpRequest(
     "post",
     "/tl-calculator/ctlbillingslab/_update",
@@ -54,6 +56,7 @@ try {
       "error"
     )
   );
+}
 }
 }
 

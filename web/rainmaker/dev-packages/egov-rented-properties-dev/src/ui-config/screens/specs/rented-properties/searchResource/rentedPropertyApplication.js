@@ -484,7 +484,7 @@ const duplicateCopySearchForm = {
   })
 }
 
-const accountStatementSearchForm = {
+const accountStatementFilterForm = {
   subParagraph: getCommonParagraph({
     labelName: "Please Provide Transit Number",
     labelKey: "RP_PLEASE_TRANSIT_NUMBER_TO_SEARCH_APPLICATION_LABEL"
@@ -498,9 +498,6 @@ const accountStatementSearchForm = {
     ownername:getTextField(ownernameField)
     
   }),
-}
-
-const accountStatementFilterForm = {
   subParagraph: getCommonParagraph({
     labelName: "Select start date and end date to generate account statement",
     labelKey: "RP_FILTER_CONTAINER_HEADER_LABEL"
@@ -530,11 +527,6 @@ const accountStatementFilterForm = {
 
 export const ownerShipTransferApplication = getCommonCard(
   commonSearchForm
-)
-
-
-export const accountStatementGenerationApplications = getCommonCard(
-  accountStatementSearchForm
 )
 
 export const accountStatementFilter = getCommonCard(
