@@ -37,11 +37,15 @@ import {
     if(payload) {
       let properties = payload.Properties;
       if(properties[0].propertyImages){
+        const {notices = []} = properties[0]
         let data = properties[0].propertyImages;
         data = data.filter(function(image) {
         if(image.applicationDocuments != null){
           return image;
         }
+      }).map(item => {
+        const transitNotices = notices.filter(notice => notice.propertyImageId === item.id).map(notice => notice.memoNumber)
+          return {...item, notices: transitNotices}
       })
         let images = await getImages(data);
         images = images.map(item => {
@@ -53,7 +57,6 @@ import {
         dispatch(prepareFinalObject("Properties[0]", properties[0]));     
       }
     }
-    
    }
   
   const beforeInitFn = async (action, state, dispatch, transitNumber) => {

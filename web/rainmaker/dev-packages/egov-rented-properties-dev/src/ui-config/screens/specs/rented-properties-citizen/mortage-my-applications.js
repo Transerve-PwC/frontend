@@ -52,7 +52,7 @@ const screenConfig = {
               // },
               {
                 label: "RP_ALLOTMENT_NUMBER",
-                jsonPath: "allotmenNumber",
+                jsonPath: "allotmentNumber",
               },
               {
                 label: "RP_COMMON_TABLE_COL_OWNER_NAME",

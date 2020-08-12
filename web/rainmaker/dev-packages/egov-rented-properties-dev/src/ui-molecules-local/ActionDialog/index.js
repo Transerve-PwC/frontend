@@ -164,12 +164,28 @@ class ActionDialog extends React.Component {
             );
       return
     }
+    else if(isNaN(value)) {
+      toggleSnackbar(
+              true,
+              { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
+              "error"
+            );
+      return
+    }
   } else if(this.props.moduleName === "DuplicateCopyOfAllotmentLetterRP" && (duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" || duplicateCopyApplicationState === "DC_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT")) {
     const value = duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? data.applicant[0].feeAmount : data.applicant[0].aproCharge
     if(!value) {
       toggleSnackbar(
               true,
               { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
+              "error"
+            );
+      return
+    }
+    else if(isNaN(value)) {
+      toggleSnackbar(
+              true,
+              { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
               "error"
             );
       return
@@ -236,7 +252,7 @@ class ActionDialog extends React.Component {
         fullScreen={fullscreen}
         open={open}
         onClose={onClose}
-        maxWidth={false}
+        maxWidth="sm"
         style={{zIndex:2000}}
       >
         <DialogContent

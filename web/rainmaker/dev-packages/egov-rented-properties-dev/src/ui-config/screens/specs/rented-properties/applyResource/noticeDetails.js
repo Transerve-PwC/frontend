@@ -202,23 +202,25 @@ const transitNumberField = {
       }
   }  
 
-  const memoDateField = {
-        label: {
-            labelName: "Memo Date",
-            labelKey: "RP_MEMO_DATE_LABEL"
-        },
-        placeholder: {
-            labelName: "Enter Memo Date",
-            labelKey: "RP_MEMO_DATE_PLACEHOLDER"
-        },
-        pattern: getPattern("Date"),
-        jsonPath: "Properties[0].owners[0].ownerDetails.memoDate",
-        props: {
-            inputProps: {
-                max: getTodaysDateInYMD()
-            }
+  const allotmentDateField = {
+    label: {
+        labelName: "Date of Allotment",
+        labelKey: "RP_ALLOTMENT_DATE_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Date of Allotment",
+        labelKey: "RP_ALLOTMENT_DATE_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate",
+    props: {
+        disabled: true,
+        inputProps: {
+            max: getTodaysDateInYMD()
         }
-      }
+    }
+  }
 
 const demandNoticeFromDate = {
     label: {
@@ -226,7 +228,7 @@ const demandNoticeFromDate = {
         labelKey: "RP_DEMAND_NOTICE_FIRST_DATE"
     },
     placeholder: {
-        labelName: "Demand Notice First Date",
+        labelName: "Enter Demand Notice First Date",
         labelKey: "RP_DEMAND_DATE_PLACEHOLDER"
     },
     required: true,
@@ -246,7 +248,7 @@ const demandNoticeFromDate = {
         labelKey: "RP_DEMAND_NOTICE_LAST_DATE"
     },
     placeholder: {
-        labelName: "Demand Notice Last Date",
+        labelName: "Enter Demand Notice Last Date",
         labelKey: "RP_DEMAND_DATE_PLACEHOLDER"
     },
     required: true,
@@ -281,18 +283,18 @@ const demandNoticeFromDate = {
 
 const paymentAmountFieldNotice = {
     label: {
-        labelName: "Payment Amount",
-        labelKey: "RP_PAYMENT_AMOUNT_LABEL"
+        labelName: "Due Amount",
+        labelKey: "RP_DUE_AMOUNT_LABEL"
     },
     placeholder: {
-        labelName: "Enter Payment Amount",
-        labelKey: "RP_PAYMENT_AMOUNT"
+        labelName: "Enter Due Amount",
+        labelKey: "RP_ENTER_DUE_AMOUNT"
     },
     minLength: 4,
     maxLength: 25,
     required: true,
     jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid",
-    errorMessage:"RP_ERR_PAYMENT_AMOUNT_FIELD"
+    errorMessage:"RP_ERR_DUE_AMOUNT_FIELD"
 
 }
 const getOwnerDetailsForNotice = () => {
@@ -313,7 +315,7 @@ const getPropertyDetailsForNotice = () => {
         detailsContainer: getCommonContainer({
             transitNumber: getTextField(transitNumberField),
             allotmentNumber: getTextField(allotmentNumberField),
-            memoDate: getDateField(memoDateField),
+            memoDate: getDateField(allotmentDateField),
         })
     }
 }

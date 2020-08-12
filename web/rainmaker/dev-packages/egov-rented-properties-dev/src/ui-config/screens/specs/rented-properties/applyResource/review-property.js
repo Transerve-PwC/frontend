@@ -193,6 +193,9 @@ export const getReviewOwner = (isEditable = true) => {
                     jsonPath: "allotmenNumber"},
                     {label: "RP_ALLOTMENT_DATE_LABEL",
                     jsonPath: "ownerDetails.allotmentStartdate",
+                    callBack: convertEpochToDate},
+                    {label: "RP_POSSESSION_DATE_LABEL",
+                    jsonPath: "ownerDetails.posessionStartdate",
                     callBack: convertEpochToDate}
                 ],
                 jsonPath: "Properties[0].owners"
@@ -374,6 +377,48 @@ export const getReviewPaymentDetails = (isEditable = true) => {
     })
 }
 
+export const getGrantDetails = () => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Is Grant Availed : No",
+                        labelKey: "RP_GRANT_DETAILS_AVAILED_NO"
+                    })
+                },
+                
+            }
+        },
+       
+    })
+}
+export const getGrantDetailsAvailed = () => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Is Grant Availed : Yes",
+                        labelKey: "RP_GRANT_DETAILS_AVAILED_YES"
+                    })
+                },
+                
+            }
+        },
+       
+    })
+}
 
 export const getReviewGrantDetails = () => {
     return getCommonGrayCard({

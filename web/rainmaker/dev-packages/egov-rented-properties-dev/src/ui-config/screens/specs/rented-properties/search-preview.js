@@ -7,7 +7,7 @@ import {
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails } from "./applyResource/review-property";
+import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails ,getGrantDetails,getGrantDetailsAvailed} from "./applyResource/review-property";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField,
@@ -30,8 +30,9 @@ const reviewAddressDetails = getReviewAddress(false);
 const reviewRentDetails = getReviewRentDetails(false);
 const reviewPaymentDetails = getReviewPaymentDetails(false);
 const reviewDocumentDetails = getReviewDocuments(false, "apply")
+const grantDetailAvailed=getGrantDetailsAvailed(false)
 const reviewGrantDetails = getReviewGrantDetails(false)
-
+const grantDetail=getGrantDetails(false)
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
   reviewAddressDetails,
@@ -39,7 +40,10 @@ export const propertyReviewDetails = getCommonCard({
   reviewRentDetails,
   reviewPaymentDetails,
   reviewDocumentDetails,
-  reviewGrantDetails
+  grantDetailAvailed,
+  reviewGrantDetails,
+  grantDetail
+  
 });
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
@@ -49,6 +53,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    const grandDetails=properties[0].grantDetails
     let state = properties[0].masterDataState;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
@@ -67,6 +72,36 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       "PropertiesTemp[0].reviewDocData",
       dispatch,'RP'
     );
+
+    const getGrantDetailsAvailed = grandDetails !==null
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetailAvailed",
+        "visible",
+        getGrantDetailsAvailed
+    ),
+  );
+  const isGrantDetails = grandDetails ===null
+  dispatch(
+    handleField(
+      "search-preview",
+      "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetail",
+      "visible",
+      isGrantDetails
+  ),
+);
+      const showEstimate = grandDetails !==null
+      dispatch(
+        handleField(
+            "search-preview",
+            "components.div.children.propertyReviewDetails.children.cardContent.children.reviewGrantDetails",
+            "visible",
+            showEstimate
+        ),
+      );
+  
+        
     if(state == 'PM_REJECTED'){
       let path = "components.div.children.headerDiv.children.searchButton"
       dispatch(

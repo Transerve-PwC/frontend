@@ -14,14 +14,14 @@ import { get } from "lodash";
 import { updatePFOforSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
 
-const reviewDocumentDetails = getReviewDocuments(false, "apply")
+const reviewDocumentDetails = getReviewDocuments(false, "notice-violation")
 
 export const noticeDocumentDetails = getCommonCard({
   reviewDocumentDetails
 });
 
 const header = getCommonHeader({
-    labelName: "Apply For Violation Notice",
+    labelName: "Create Violation Notice",
     labelKey: "RP_VIOLATION_NOTICE_APPLY"
   });
 

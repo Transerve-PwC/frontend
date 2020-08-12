@@ -10,6 +10,7 @@ import {LabelContainer}  from "egov-ui-framework/ui-containers"
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import { getFileUrl,getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 import moment from 'moment'
 
 const styles = {
@@ -91,9 +92,38 @@ class MultipleDocuments extends Component {
                   <CardContent>
                   <Grid container>
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
-                  <Grid xs={12} sm={12} style={{textAlign: "left"}}>
-                  <br></br>
-                
+                    {btnhide &&
+                      (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
+                  <Button  mt={1} mr={0} color="primary"  variant="contained"  
+                  onClick={() => { 
+                    dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}`)); 
+                    dispatch(prepareFinalObject("SingleImage[0]", datum));}}> 
+                    Create Violation
+                    </Button>
+                    </Grid>)
+                    } 
+                 </Grid>
+                 <Grid xs={12} sm={12} >
+                  {!btnhide && (<LabelContainer   
+                      labelName= "Notice ID : "
+                      style={documentTitle}
+                  />)
+                    }
+                  {!btnhide && (<LabelContainer   
+                      labelName= {datum.memoNumber ? datum.memoNumber : 'NA'}
+                      style={documentTitle}
+                  />)
+                    }
+                  {btnhide && !!datum.notices.length &&  (<Grid xs={6} align="left">
+                  <Button color="primary"
+                  onClick={() => { 
+                    dispatch(setRoute(`/rented-properties/notices?tenantId=${getTenantId()}`)); 
+                    }}> 
+                     Notice ID : {datum.notices.join(",")}
+                    </Button>
+                    </Grid>)
+                    }
+                    <br></br>
                     {!btnhide && (<LabelContainer   
                       labelName= {datum.memoDate ? moment(datum.memoDate).format('dddd, MMMM Do, YYYY h:mm:ss A') : 'NA'}
                       style={documentTitle}
@@ -105,21 +135,7 @@ class MultipleDocuments extends Component {
                         style={documentTitle}
                     />)
                     }
-                    
-
                     </Grid> 
-                    {btnhide && 
-                      (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
-                  <Button  mt={1}  color="primary"  variant="contained"  
-                  onClick={() => { 
-                    dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}`)); 
-                    dispatch(prepareFinalObject("SingleImage[0]", datum));}}> 
-                    Violation Notice
-                    </Button>
-                    </Grid>)
-                    } 
-                  
-                 </Grid>
                       {datum.applicationDocuments.map((content) => (
                           <Grid xs={6} sm={3} 
                           style={{
@@ -146,16 +162,15 @@ class MultipleDocuments extends Component {
                           </Grid>
                           <Grid container>
                             <Grid xs={6} className={classes.subtext}>
-                              <Typography className={classes.body2}>{content.documentType}</Typography>
+                              {btnhide && (<Typography className={classes.body2}>{!!content.url ? content.url.split("?")[0].split("/").pop().slice(13) : content.fileStoreId ? decodeURIComponent(getFileUrl(content.fileStoreId)).split("?")[0].split("/").pop().slice(13) : ""}</Typography>)}
                             </Grid>
                             <Grid xs={6} align="right">
-                              <Button href={content.url} color="primary">
-                                Download
+                              <Button href={!!content.url ? content.url : getFileUrlFromAPI(content.fileStoreId)} color="primary">
+                              Download
                               </Button>
                             </Grid>
                           </Grid>
                           </Grid>
-                      
                           </Grid>)
                       )}
                   </Grid>

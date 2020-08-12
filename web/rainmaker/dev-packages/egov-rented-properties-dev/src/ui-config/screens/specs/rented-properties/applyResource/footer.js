@@ -502,7 +502,7 @@ export const submitButtontransit = {
       },
       children: {
         submitButtonLabel: getLabel({
-          labelName: "Submit",
+          labelName: "submit",
           labelKey: "RP_TRANSITE_SITE_BUTTON_SUBMIT"
         }),
         submitButtonIcon: {

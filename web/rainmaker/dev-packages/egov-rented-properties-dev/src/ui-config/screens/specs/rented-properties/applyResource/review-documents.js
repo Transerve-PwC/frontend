@@ -18,8 +18,8 @@ import {
               sm: 10
             },
             ...getCommonSubHeader({
-              labelName: "Documents",
-              labelKey: "TL_COMMON_DOCS"
+              labelName: "Images",
+              labelKey: screenKey == "notice-violation" ? "RP_COMMON_VIOLATION_NOTICE_DOCS" :"TL_COMMON_DOCS"
             })
           },
           editSection: {

@@ -3,7 +3,7 @@ import {
     getBreak,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { accountStatementGenerationApplications,accountStatementFilter } from "./searchResource/rentedPropertyApplication";
+import { accountStatementFilter } from "./searchResource/rentedPropertyApplication";
 import { searchTransferProperties } from "./searchResource/functions"
 import { accountStatementResults } from "./searchResource/searchResults";
 import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -47,7 +47,6 @@ import { getStatusList } from "./search";
               }
             }
           },
-          accountStatementGenerationApplications,
           accountStatementFilter,
           breakAfterSearch: getBreak(),
           accountStatementResults
