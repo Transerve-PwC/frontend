@@ -13,14 +13,48 @@ const header = getCommonHeader({
   }
 });
 
-const cardItems = [{
-  label: {
-    labelKey: "EST_PROPERTY_MASTER_HEADER",
-    labelName: "Property Master"
+const cardItems = [
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_HEADER",
+      labelName: "Property Master"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
   },
-  icon: < FormIcon / > ,
-  route: "search"
-}]
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_SEARCH_APPLICATION_HEADER",
+      labelName: "Search Applications"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
+  },
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_ALLOTMENT_CANCELLATION_HEADER",
+      labelName: "Allotment/Cancellation"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
+  },
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_REFUND_HEADER",
+      labelName: "Refund"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
+  },
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_ISSUING_NOTICE_HEADER",
+      labelName: "Issuing Notice"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
+  }
+]
 
 const citizenCardItems = [
   {
