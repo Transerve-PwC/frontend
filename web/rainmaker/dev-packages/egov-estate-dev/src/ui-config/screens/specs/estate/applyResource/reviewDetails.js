@@ -13,9 +13,9 @@ import {
   getReviewCourtCase
 } from "./reviewProperty";
 
-import {
-  getReviewDocuments
-} from "./reviewDocuments";
+// import {
+//   getReviewDocuments
+// } from "./reviewDocuments";
 
 
 const reviewPropertyInfo = getReviewPropertyInfo();
@@ -26,7 +26,7 @@ const reviewOwnerDetails = getReviewOwner();
 const reviewPurchaserDetails = getReviewPurchaser();
 const reviewCourtCaseDetails = getReviewCourtCase();
 const reviewPaymentDetails = getReviewPayment();
-const reviewDocuments = getReviewDocuments();
+// const reviewDocuments = getReviewDocuments();
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",

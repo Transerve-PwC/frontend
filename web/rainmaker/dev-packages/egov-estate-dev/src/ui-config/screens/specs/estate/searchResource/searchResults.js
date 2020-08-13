@@ -62,70 +62,15 @@ export const searchResults = {
 const onRowClick = rowData => {
   const {roles = []} = userInfo
   const findItem = roles.find(item => item.code === "CTL_CLERK");
-  if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
-    window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
-  } else {
-    window.location.href = `search-preview?transitNumber=${rowData[0]}&tenantId=${getTenantId()}`;
-  }
+  window.location.href = `search-preview?filenumber=${rowData[0]}`;
+  // if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
+  //   window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
+  // } else {
+  //   window.location.href = `search-preview?transitNumber=${rowData[0]}&tenantId=${getTenantId()}`;
+  // }
 };
 
-const onTransferPropertyRowClick = rowData => {
-  window.location.href = `ownership-search-preview?applicationNumber=${rowData[0]}&tenantId=${getTenantId()}`
-}
 
-const onDuplicateCopyRowClick = rowData => {
-  window.location.href = `search-duplicate-copy-preview?applicationNumber=${rowData[0]}&tenantId=${getTenantId()}`
-}
 
-const onMortgageRowClick = rowData => {
-  window.location.href = `mortgage-search-preview?applicationNumber=${rowData[0]}&tenantId=${getTenantId()}`
-}
 
-export const transferSearchResults = {
-  ...searchResults,
-  props: {...searchResults.props, 
-    columns: [
-      APPLICATION_NO,
-      // getTextToLocalMapping("Transit No"),
-      // PROPERTY_ID,
-      OWNER_NAME,
-      STATUS,
-      LAST_MODIFIED_ON
-    ],
-    options: {...searchResults.props.options,
-      onRowClick: (row, index) => {
-        onTransferPropertyRowClick(row);
-      }
-    }
-  }
-}
 
-export const duplicateCopySearchResult = {
-  ...searchResults,
-  props: {...searchResults.props, 
-    columns: [
-      APPLICATION_NO,
-      // getTextToLocalMapping("Transit No"),
-      // PROPERTY_ID,
-      OWNER_NAME,
-      STATUS,
-      LAST_MODIFIED_ON
-    ],
-    options: {...searchResults.props.options,
-      onRowClick: (row, index) => {
-        onDuplicateCopyRowClick(row);
-      }
-    }
-  }
-}
-
-export const mortgageSearchResults = {
-  ...duplicateCopySearchResult,
-  props: {...duplicateCopySearchResult.props, 
-    options: {...searchResults.props.options,
-      onRowClick: (row, index) => {
-        onMortgageRowClick(row);
-      }
-    }
-  }
-}
