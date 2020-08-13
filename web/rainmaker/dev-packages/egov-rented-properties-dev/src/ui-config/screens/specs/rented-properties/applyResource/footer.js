@@ -11,6 +11,8 @@ export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
 export const DOCUMENT_UPLOAD_STEP = 1;
 export const SUMMARY_STEP = 2;
+export const ADD_PROPERTY_SUMMARY_STEP = 3;
+export const RENT_DETAILS_STEP = 2;
 
 export const moveToSuccess = (rentedData, dispatch, type) => {
   const status = "success";
@@ -54,6 +56,7 @@ export const moveToSuccess = (rentedData, dispatch, type) => {
   );
 };
 const callBackForNext = async(state, dispatch) => {
+  debugger
     let activeStep = get(
         state.screenConfiguration.screenConfig["apply"],
         "components.div.children.addPropertyStepper.props.activeStep",
@@ -98,7 +101,7 @@ const callBackForNext = async(state, dispatch) => {
         }
     }
 
-    if(activeStep === DOCUMENT_UPLOAD_STEP) {
+    if(activeStep === DOCUMENT_UPLOAD_STEP || activeStep === RENT_DETAILS_STEP ) {
       const uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
         "Properties[0].propertyDetails.applicationDocuments",
@@ -136,7 +139,7 @@ const callBackForNext = async(state, dispatch) => {
     }
     }
 
-    if(activeStep === SUMMARY_STEP) {
+    if(activeStep === ADD_PROPERTY_SUMMARY_STEP) {
     isFormValid = await applyRentedProperties(state, dispatch);
     isFormValid = true;
       if (isFormValid) {
@@ -148,10 +151,10 @@ const callBackForNext = async(state, dispatch) => {
       }
     }
 
-    if(activeStep !== SUMMARY_STEP) {
+    if(activeStep !== ADD_PROPERTY_SUMMARY_STEP) {
         if (isFormValid) {
           
-            changeStep(state, dispatch, "apply");
+          changeAddPropertyStep(state, dispatch, "apply");
         } else if (hasFieldToaster) {
             let errorMessage = {
                 labelName:
@@ -172,6 +175,13 @@ const callBackForNext = async(state, dispatch) => {
                         labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
                     };
                     break;
+                case RENT_DETAILS_STEP:
+                      errorMessage = {
+                          labelName: "Please upload csv file and do next !",
+                          labelKey: "ERR_UPLOAD_CSV_DOCUMENTS"
+                      };
+                    break;
+
             }
             dispatch(toggleSnackbar(true, errorMessage, "warning"));
         }
@@ -336,8 +346,68 @@ export const changeStep = (
     dispatchMultipleFieldChangeAction(screenName, actionDefination, dispatch);
     renderSteps(activeStep, dispatch, screenName);
   };
+
+export const changeAddPropertyStep = (
+    state,
+    dispatch,
+    screenName,
+    mode = "next",
+    defaultActiveStep = -1
+  ) => {
+    debugger
+    let activeStep = get(
+        state.screenConfiguration.screenConfig[screenName],
+        "components.div.children.addPropertyStepper.props.activeStep",
+        0
+    );
+    if (defaultActiveStep === DEFAULT_STEP) {
+        if (activeStep === ADD_PROPERTY_SUMMARY_STEP && mode === "next") {
+            activeStep = ADD_PROPERTY_SUMMARY_STEP
+            // const isDocsUploaded = get(
+            //     state.screenConfiguration.preparedFinalObject,
+            //     "LicensesTemp[0].reviewDocData",
+            //     null
+            // );
+            // activeStep = isDocsUploaded ? SUMMARY_STEP : DOCUMENT_UPLOAD_STEP;
+        } else {
+            activeStep = mode === "next" ? activeStep + 1 : activeStep - 1;
+        }
+    } else {
+        activeStep = defaultActiveStep;
+    }
+  
+    const isPreviousButtonVisible = activeStep > DETAILS_STEP ? true : false;
+    const isNextButtonVisible = activeStep < ADD_PROPERTY_SUMMARY_STEP ? true : false;
+    const isSubmitButtonVisible = activeStep === ADD_PROPERTY_SUMMARY_STEP ? true : false;
+    const actionDefination = [
+        {
+            path: "components.div.children.addPropertyStepper.props",
+            property: "activeStep",
+            value: activeStep
+        },
+        {
+            path: "components.div.children.footer.children.previousButton",
+            property: "visible",
+            value: isPreviousButtonVisible
+        },
+        {
+            path: "components.div.children.footer.children.nextButton",
+            property: "visible",
+            value: isNextButtonVisible
+        },
+        {
+            path: "components.div.children.footer.children.submitButton",
+            property: "visible",
+            value: isSubmitButtonVisible
+        }
+    ];
+    dispatchMultipleFieldChangeAction(screenName, actionDefination, dispatch);
+    renderSteps(activeStep, dispatch, screenName);
+  };
+    
   
   export const renderSteps = (activeStep, dispatch, screenName) => {
+    debugger
     switch (activeStep) {
         case DETAILS_STEP:
             dispatchMultipleFieldChangeAction(
@@ -357,11 +427,20 @@ export const changeStep = (
                 dispatch
             );
             break;
+          case RENT_DETAILS_STEP:
+              dispatchMultipleFieldChangeAction(
+                  screenName,
+                  getActionDefinationForStepper(
+                      "components.div.children.formwizardThirdStep"
+                  ),
+                  dispatch
+              );
+              break;    
         default:
             dispatchMultipleFieldChangeAction(
                 screenName,
                 getActionDefinationForStepper(
-                    "components.div.children.formwizardThirdStep"
+                    "components.div.children.formwizardFourthStep"
                 ),
                 dispatch
             );
@@ -384,7 +463,12 @@ export const changeStep = (
             path: "components.div.children.formwizardThirdStep",
             property: "visible",
             value: false
-        }
+        },
+        {
+          path: "components.div.children.formwizardFourthStep",
+          property: "visible",
+          value: false
+      }
     ];
     for (var i = 0; i < actionDefination.length; i++) {
         actionDefination[i] = {

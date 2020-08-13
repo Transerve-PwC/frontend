@@ -24,6 +24,11 @@ const header = getCommonTitle({
   labelKey: "RP_PM_SUMMARY_HEADER"
 })
 
+const rentHistoryHeader = getCommonTitle({
+  labelName: "Upload Account Statement",
+  labelKey: "RP_PM_UPLOAD_ACCOUNT_STATEMENT_HEADER"
+})
+
 export const rentedReviewDetails = getCommonCard({
       header,
       reviewPropertyDetails,
@@ -32,6 +37,17 @@ export const rentedReviewDetails = getCommonCard({
       reviewRentDetails,
       reviewPaymentDetails,
       reviewDocuments
+})
+
+export const rentHistoryDetails = getCommonCard({
+  rentHistoryHeader,
+  rentHistoryUploadCSV,
+  // reviewPropertyDetails,
+  // reviewOwnerDetails,
+  // reviewAddressDetails,
+  // reviewRentDetails,
+  // reviewPaymentDetails,
+  // reviewDocuments
 })
 
 export const ownerShipReviewDetails = getCommonCard({

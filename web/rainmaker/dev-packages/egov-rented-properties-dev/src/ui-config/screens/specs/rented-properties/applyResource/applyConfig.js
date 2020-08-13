@@ -10,7 +10,7 @@ import {uploadimage,imageUploadDetailsProperties} from './imageUploadDetails'
 import {rentDetails} from './rentDetails';
 import {paymentDetails} from './paymentDetails'
 import {documentList} from './documentList'
-import {rentedReviewDetails, ownerShipReviewDetails, mortgageReviewDetails,duplicateCopyDetails} from './reviewDetails'
+import {rentedReviewDetails, ownerShipReviewDetails,rentHistoryDetails, mortgageReviewDetails,duplicateCopyDetails} from './reviewDetails'
 
 
 
@@ -142,7 +142,7 @@ export const addPropertyStepper =  getStepperObject(
     visible: false
   };
 
-export const formwizardThirdStep = {
+export const formwizardFourthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
@@ -153,6 +153,19 @@ export const formwizardThirdStep = {
   },
   visible: false
 }
+
+export const  formwizardThirdStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form3"
+  },
+  children: {
+    rentHistoryDetails
+  },
+  visible: false
+}
+
 
 export const formwizardOwnershipFirstStep = {
   uiFramework: "custom-atoms",
