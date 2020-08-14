@@ -1,8 +1,9 @@
-import { getCommonHeader, getTextField, getCommonContainer, getCommonCard } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonHeader, getTextField, getCommonContainer, getCommonCard, getSelectField, getPattern, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { stepper } from '../estate/applyResource/applyConfig'
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
 import {dataFormat} from './sample.json'
+import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+
 const header = getCommonHeader({
     labelName: "Apply",
     labelKey: "EST_COMMON_APPLY"
@@ -25,32 +26,73 @@ const headerObj = value => {
     })
 }
 
-const textFieldObj = item => {
-    const {label, placeHolder, ...rest} = item
-    return getTextField({
-        label: {
-            labelName: label,
-            labelKey: label
-        },
-        placeholder: {
-            labelName: placeHolder,
-            labelKey: placeHolder
-        },
-        gridDefination: {
-            xs: 12,
-            sm: 6
-        },
+const getField = item => {
+
+  const {label: labelItem, placeHolder, type, pattern, editable = true, ...rest } = item
+  
+  let fieldProps = {
+    label : {
+      labelName: labelItem,
+      labelKey: labelItem
+    },
+     placeholder : {
+      labelName: placeHolder,
+      labelKey: placeHolder
+    },
+     gridDefination : {
+      xs: 12,
+      sm: 6
+    },
+    props: { disabled: !editable }
+  }
+
+  fieldProps = !!pattern ? {...fieldProps, pattern: getPattern(pattern)} : fieldProps
+
+  switch(type) {
+    case "text_field": {
+      return getTextField({
+        ...fieldProps,
         ...rest
     })
+    }
+    case "dropDown": {
+      return getSelectField({
+        ...fieldProps,
+        ...rest
+      })
+    }
+    case "date": {
+      return getDateField({
+        ...fieldProps,
+        ...rest,
+        props: {...fieldProps.props, inputProps: {
+          max: getTodaysDateInYMD()
+      }
+      },
+        pattern: getPattern("Date")
+      })
+    }
+    case "text_area": {
+      return getTextField({
+        ...fieldProps,
+        ...rest,
+        props:{
+          ...fieldProps.props,
+          multiline: true,
+          rows: "2"
+        }
+      })
+    }
+    default: return getTextField({
+      ...fieldProps,
+      ...rest
+  })
+  }
 }
 
 const getDetailsContainer = ({fields = []}) => {
     const values = fields.reduce((acc, field) => {
-        if(field.type === "text_field") {
-            return {...acc, [field.label]: textFieldObj(field)}
-        } else {
-            return acc
-        }
+      return {...acc, [field.label.replace(/ /g, "_")]: getField(field)}
     }, {})
     return getCommonContainer(values);
 }

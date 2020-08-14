@@ -247,8 +247,8 @@ export const getReviewAdditional = (isEditable = true) => {
             sm: 10
           },
           ...getCommonSubHeader({
-            labelName: "Additional Details",
-            labelKey: "EST_ADDITIONAL_DETAILS_HEADER"
+            labelName: "NOC Details",
+            labelKey: "EST_NOC_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 0)
@@ -289,7 +289,7 @@ const addressLabel = {
 }
 const mobileNumberLabel = {
   labelName: "Mobile No.",
-  labelKey: "TL_MOBILE_NUMBER_LABEL"
+  labelKey: "ESTATE_MOBILE_NUMBER_LABEL"
 }
 const shareLabel = {
   labelName: "Share",
@@ -390,7 +390,7 @@ const newOwnerAddressLabel = {
 }
 const newOwnerMobileNumberLabel = {
   labelName: "New Owner Mobile No.",
-  labelKey: "TL_NEW_OWNER_MOBILE_NUMBER_LABEL"
+  labelKey: "ESTATE_NEW_OWNER_MOBILE_NUMBER_LABEL"
 }
 const sellerNameLabel = {
   labelName: "Seller Name",
@@ -432,7 +432,7 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
             labelKey: "EST_PURCHASER_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 1)
+        editSection: masterEntryEditSection(isEditable, 2)
       }
     },
     viewFour: getCommonContainer({
@@ -625,7 +625,7 @@ export const getReviewPayment = (isEditable = true, owner) => {
             labelKey: "EST_PAYMENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 3)
+        editSection: masterEntryEditSection(isEditable, 4)
       }
     },
     viewGroundRent: getCommonContainer({
@@ -823,7 +823,7 @@ const honbleSupremeCourtLabel = {
   labelKey: "EST_HONBLE_SUPREME_COURT_LABEL"
 }
 
-export const getReviewCourtCase = (isEditable = true) => {
+export const getReviewCourtCase = (isEditable = true, owner = 0) => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -838,43 +838,43 @@ export const getReviewCourtCase = (isEditable = true) => {
             labelKey: "EST_COURT_CASE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2)
+        editSection: masterEntryEditSection(isEditable, 3)
       }
     },
     viewFour: getCommonContainer({
       estateOfficerCourt: getLabelWithValue(
         estateOfficerCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].estateOfficerCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].estateOfficerCourt`
         }
       ),
       commissionersCourt: getLabelWithValue(
         commissionersCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].commissionersCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].commissionersCourt`
         }
       ),
       chiefAdministratorsCourt: getLabelWithValue(
         chiefAdministratorsCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].chiefAdministartorsCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].chiefAdministartorsCourt`
         }
       ),
       advisorToAdminCourt: getLabelWithValue(
         advisorToAdminCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].advisorToAdminCourt`
         }
       ),
       honbleDistrictCourt: getLabelWithValue(
         honbleDistrictCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableDistrictCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].honorableDistrictCourt`
         }
       ),
       honbleHighCourt: getLabelWithValue(
         honbleHighCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableHighCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].honorableHighCourt`
         }
       ),
       honbleSupremeCourt: getLabelWithValue(
         honbleSupremeCourtLabel, {
-          jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableSupremeCourt"
+          jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].honorableSupremeCourt`
         }
       )
     })

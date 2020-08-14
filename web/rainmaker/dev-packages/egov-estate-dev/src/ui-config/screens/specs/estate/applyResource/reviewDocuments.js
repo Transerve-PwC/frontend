@@ -49,7 +49,7 @@ export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath 
           onClickDefination: {
             action: "condition",
             callBack: (state, dispatch) => {
-              changeStep(state, dispatch, screenKey, "", 1);
+              changeStep(state, dispatch, screenKey, "", 5);
             }
           }
         },

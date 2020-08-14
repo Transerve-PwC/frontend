@@ -18,7 +18,7 @@ const cardItems = [{
       labelName: "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed"
     },
     icon: < EstateIcon / > ,
-    route: `ownership-transfer?type=registeredDeed`,
+    route: `property-search?type=registeredDeed`,
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"

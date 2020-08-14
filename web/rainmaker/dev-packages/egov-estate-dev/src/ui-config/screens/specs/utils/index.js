@@ -2463,13 +2463,6 @@ import {
         localisationLabels
       );
   
-      case "Owner Name":
-        return getLocaleLabels(
-          "Owner Name",
-          "TL_COMMON_TABLE_COL_OWN_NAME",
-          localisationLabels
-        );
-  
       case "Application Date":
         return getLocaleLabels(
           "Application Date",
@@ -2556,6 +2549,48 @@ import {
               "ESTATE_COMMON_TABLE_COL_SECTOR_NO",
               localisationLabels
             )
+      case "Action":
+        return getLocaleLabels(
+          "Action",
+          "EST_COMMON_TABLE_COL_ACTION",
+          localisationLabels
+        );
+      case "File No":
+        return getLocaleLabels(
+          "File No",
+          "EST_COMMON_TABLE_COL_FILE_NUMBER",
+          localisationLabels
+        );
+      case "Property Id":
+        return getLocaleLabels(
+          "Property Id",
+          "EST_COMMON_TABLE_COL_PROPERTY_ID",
+          localisationLabels
+        );
+      case "House No":
+        return getLocaleLabels(
+          "House No",
+          "EST_COMMON_TABLE_COL_HOUSE_NUMBER",
+          localisationLabels
+        );
+      case "Owner Name":
+        return getLocaleLabels(
+          "Owner Name",
+          "EST_COMMON_TABLE_COL_OWN_NAME",
+          localisationLabels
+        );
+      case "Mobile No":
+        return getLocaleLabels(
+          "Mobile No",
+          "EST_COMMON_TABLE_COL_MOBILE_NUMBER",
+          localisationLabels
+        );
+      case "Search Results for Estates":
+        return getLocaleLabels(
+          "Search Results for Estates",
+          "EST_SEARCH_RESULTS_TABLE_HEADING",
+          localisationLabels
+        );
     }
   };
   

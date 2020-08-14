@@ -135,11 +135,11 @@ const addressField = {
 const mobileNumberField = {
   label: {
     labelName: "Mobile No.",
-    labelKey: "TL_MOBILE_NUMBER_LABEL"
+    labelKey: "ESTATE_MOBILE_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter Mobile No.",
-    labelKey: "TL_MOBILE_NUMBER_PLACEHOLDER"
+    labelKey: "EST_MOBILE_NUMBER_PLACEHOLDER"
   },
   pattern: getPattern("MobileNo"),
   // props: {
@@ -241,7 +241,7 @@ const allotmentNumberField = {
 const commonOwnerInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
-      labelName: "Owner",
+      labelName: "Owner Information",
       labelKey: "EST_COMMON_OWNER_INFORMATION"
     }, {
       style: {
@@ -285,8 +285,8 @@ export const ownerDetails = getCommonCard({
               labelName: "Add Owner",
               labelKey: "EST_COMMON_ADD_OWNER_LABEL"
             },
-            headerName: "Owner ",
-            headerJsonPath: "children.cardContent.children.header.children.key.props.label",
+            headerName: "Owner Information",
+            headerJsonPath: "children.cardContent.children.header.children.Owner Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.owners",
             prefixSourceJsonPath: "children.cardContent.children.ownerCard.children"
           },

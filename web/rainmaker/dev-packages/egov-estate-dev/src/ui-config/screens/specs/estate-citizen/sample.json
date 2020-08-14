@@ -5,25 +5,76 @@
                 "header": "Property Details",
                 "fields": [
                     {
-                        "label": "propertyId",
+                        "label": "File Number",
                         "type": "text_field",
-                        "jsonPath": "Owners[0].property.id",
+                        "jsonPath": "Owners[0].property.fileNumber",
                         "required": true,
-                        "placeHolder": "Enter PropertyId"
+                        "editable": false,
+                        "placeHolder": "Enter FileNumber"
                     },
                     {
-                        "label": "area",
-                        "type": "text_field",
-                        "jsonPath": "Owners[0].property.area",
+                        "label": "Category",
+                        "type": "dropDown",
+                        "jsonPath": "Owners[0].property.category",
                         "required": true,
-                        "placeHolder": "Enter area"
+                        "editable": false,
+                        "placeHolder": "Enter Category"
                     },
                     {
-                        "label": "pincode",
-                        "type": "text_field",
-                        "jsonPath": "Owners[0].property.pincode",
+                        "label": "SubCategory",
+                        "type": "dropDown",
+                        "jsonPath": "Owners[0].property.subCategory",
                         "required": true,
-                        "placeHolder": "Enter pincode"
+                        "editable": false,
+                        "placeHolder": "Enter SubCategory"
+                    },
+                    {
+                        "label": "Site No.",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.siteNo",
+                        "required": true,
+                        "editable": false,
+                        "placeHolder": "Enter Site No."
+                    },
+                    {
+                        "label": "Sector No.",
+                        "type": "dropDown",
+                        "jsonPath": "Owners[0].property.sectorNo",
+                        "required": true,
+                        "editable": false,
+                        "placeHolder": "Enter Sector No."
+                    },
+                    {
+                        "label": "Property Type",
+                        "type": "dropDown",
+                        "jsonPath": "Owners[0].property.propertyType",
+                        "required": true,
+                        "editable": false,
+                        "placeHolder": "Enter property type"
+                    },
+                    {
+                        "label": "Last NOC date",
+                        "type": "date",
+                        "jsonPath": "Owners[0].property.lastNocDate",
+                        "required": false,
+                        "editable": true,
+                        "placeHolder": "Enter last noc date"
+                    },
+                    {
+                        "label": "Property Application Number",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.applicationNumber",
+                        "required": true,
+                        "editable": true,
+                        "placeHolder": "Enter property application number"
+                    },
+                    {
+                        "label": "Due Amount",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].property.dueAmount",
+                        "required": true,
+                        "editable": true,
+                        "placeHolder": "Enter due amount"
                     }
                 ]
             },
@@ -31,25 +82,53 @@
                 "header": "Owner Details",
                 "fields": [
                     {
-                        "label": "ownerName",
+                        "label": "Owner Name",
                         "type": "text_field",
                         "jsonPath": "Owners[0].ownerDetails.name",
+                        "editable": true,
                         "required": true,
                         "placeHolder": "Enter OwnerName"
                     },
                     {
-                        "label": "dob",
-                        "type": "text_field",
-                        "jsonPath": "Owners[0].ownerDetails.dob",
-                        "required": true,
-                        "placeHolder": "Enter Dob"
-                    },
-                    {
-                        "label": "fatherOrHusbandName",
+                        "label": "Father/Husband Name",
                         "type": "text_field",
                         "jsonPath": "Owners[0].ownerDetails.fatherOrHusbandName",
                         "required": true,
+                        "editable": true,
                         "placeHolder": "Enter Father Or Husband Name"
+                    },
+                    {
+                        "label": "Address",
+                        "type": "text_area",
+                        "jsonPath": "Owners[0].ownerDetails.address",
+                        "required": true,
+                        "editable": true,
+                        "placeHolder": "Enter Address"
+                    },
+                    {
+                        "label": "Mobile No",
+                        "type": "text_field",
+                        "pattern": "MobileNo",
+                        "jsonPath": "Owners[0].ownerDetails.mobileNumber",
+                        "required": false,
+                        "editable": true,
+                        "placeHolder": "Enter Mobile Number"
+                    },
+                    {
+                        "label": "Share",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].ownerDetails.share",
+                        "required": true,
+                        "editable": true,
+                        "placeHolder": "Enter share"
+                    },
+                    {
+                        "label": "CP NO.",
+                        "type": "text_field",
+                        "jsonPath": "Owners[0].ownerDetails.share",
+                        "required": false,
+                        "editable": true,
+                        "placeHolder": "Enter CP NO"
                     }
                 ]
             }

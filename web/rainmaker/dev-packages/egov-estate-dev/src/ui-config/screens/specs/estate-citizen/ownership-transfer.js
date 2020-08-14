@@ -1,5 +1,7 @@
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
-const type = getQueryArg(window.location.href, "type");
+const applicationType = getQueryArg(window.location.href, "applicationType");
+const fileNumber = getQueryArg(window.location.href, "fileNumber");
 
-console.log(type)
+console.log(applicationType)
+console.log(fileNumber)

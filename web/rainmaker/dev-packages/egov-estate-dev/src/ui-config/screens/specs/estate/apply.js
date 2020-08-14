@@ -8,7 +8,8 @@ import {
   formwizardThirdStep,
   formwizardFourthStep,
   formwizardFifthStep,
-  formwizardSixthStep
+  formwizardSixthStep,
+  formwizardSeventhStep
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -123,7 +124,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardFifthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardSixthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -201,6 +202,7 @@ const applyEstate = {
         formwizardFourthStep,
         formwizardFifthStep,
         formwizardSixthStep,
+        formwizardSeventhStep,
         footer
       }
     }

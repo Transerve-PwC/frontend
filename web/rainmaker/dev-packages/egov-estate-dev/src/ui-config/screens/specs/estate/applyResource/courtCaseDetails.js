@@ -5,7 +5,8 @@ import {
   getDateField,
   getCommonTitle,
   getPattern,
-  getCommonContainer
+  getCommonContainer,
+  getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   prepareFinalObject
@@ -144,15 +145,72 @@ const honbleSupremeCourtField = {
   jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableSupremeCourt"
 }
 
+// export const courtCaseDetails = getCommonCard({
+//   header: courtCaseHeader,
+//   detailsContainer: getCommonContainer({
+//     estateOfficerCourt: getTextField(estateOfficerCourtField),
+//     commissionersCourt: getTextField(commissionersCourtField),
+//     chiefAdministratorsCourt: getTextField(chiefAdministratorsCourtField),
+//     advisorToAdminCourt: getTextField(advisorToAdminCourtField),
+//     honbleDistrictCourt: getTextField(honbleDistrictCourtField),
+//     honbleHighCourt: getTextField(honbleHighCourtField),
+//     honbleSupremeCourt: getTextField(honbleSupremeCourtField)
+//   })
+// })
+
+const commonCourtCaseInformation = () => {
+  return getCommonGrayCard({
+    header: getCommonTitle({
+      labelName: "Court Case Information",
+      labelKey: "EST_COMMON_COURT_CASE_INFORMATION"
+    }, {
+      style: {
+        marginBottom: 18
+      }
+    }),
+    courtCaseCard: getCommonContainer({
+      estateOfficerCourt: getTextField(estateOfficerCourtField),
+      commissionersCourt: getTextField(commissionersCourtField),
+      chiefAdministratorsCourt: getTextField(chiefAdministratorsCourtField),
+      advisorToAdminCourt: getTextField(advisorToAdminCourtField),
+      honbleDistrictCourt: getTextField(honbleDistrictCourtField),
+      honbleHighCourt: getTextField(honbleHighCourtField),
+      honbleSupremeCourt: getTextField(honbleSupremeCourtField)
+    })
+  });
+};
+
 export const courtCaseDetails = getCommonCard({
   header: courtCaseHeader,
   detailsContainer: getCommonContainer({
-    estateOfficerCourt: getTextField(estateOfficerCourtField),
-    commissionersCourt: getTextField(commissionersCourtField),
-    chiefAdministratorsCourt: getTextField(chiefAdministratorsCourtField),
-    advisorToAdminCourt: getTextField(advisorToAdminCourtField),
-    honbleDistrictCourt: getTextField(honbleDistrictCourtField),
-    honbleHighCourt: getTextField(honbleHighCourtField),
-    honbleSupremeCourt: getTextField(honbleSupremeCourtField)
+    multipleApplicantContainer: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      children: {
+        multipleApplicantInfo: {
+          uiFramework: "custom-containers",
+          componentPath: "MultiItem",
+          props: {
+            scheama: commonCourtCaseInformation(),
+            items: [],
+            addItemLabel: {
+              labelName: "Add Court Case",
+              labelKey: "EST_COMMON_ADD_COURT_CASE_LABEL"
+            },
+            headerName: "Court Case",
+            headerJsonPath:
+              "children.cardContent.children.header.children.Court Case.props.label",
+            sourceJsonPath: "Properties[0].propertyDetails.courtCases",
+            prefixSourceJsonPath: "children.cardContent.children.courtCaseCard.children"
+          },
+          type: "array"
+        }
+      }
+    }
   })
 })
