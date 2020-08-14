@@ -63,7 +63,7 @@ let userInfo = JSON.parse(getUserInfo());
         set(queryObject[0], "owners[0].ownerDetails.payment[0].amountDue", "")
         set(queryObject[0], "owners[0].ownerDetails.payment[0].receiptNumber", "")
         if(!id) {
-          set(queryObject[0], "masterDataAction", "DRAFT");
+          set(queryObject[0], "masterDataAction", "");
           response = await httpRequest(
             "post",
             "/csp/property/_create",
@@ -73,7 +73,7 @@ let userInfo = JSON.parse(getUserInfo());
           );
         } else {
           if(activeIndex === 0) {
-            set(queryObject[0], "masterDataAction", "MODIFY")
+            set(queryObject[0], "masterDataAction", "")
           } else {
             set(queryObject[0], "masterDataAction", "SUBMIT")
           }

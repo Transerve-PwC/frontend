@@ -75,7 +75,7 @@ const callBackForNextMortgage = async(state, dispatch) => {
             uploadedDocData.map(item => {
                 return {
                     title: `RP_${item.documentType}`,
-                    link: item.fileUrl && item.fileUrl.split(",")[0],
+                    link: item.fileUrl && item.fileUrl.toString().split(",")[0],
                     linkText: "Download",
                     name: item.fileName
                 };

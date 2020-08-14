@@ -62,8 +62,8 @@ const clearSearch = (state, dispatch) => {
 
 const searchCard = getCommonCard({
   subHeader: getCommonTitle({
-    labelName: "Search Trade License Application",
-    labelKey: "TL_HOME_SEARCH_RESULTS_HEADING"
+    labelName: "Search Mortage Application",
+    labelKey: "RP_MORTAGE_SEARCH_RESULTS_HEADING"
   }),
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for an application",
@@ -222,10 +222,10 @@ const screenConfig = {
               //   label: "RP_PROPERTY_ID_LABEL",
               //   jsonPath: "property.id"
               // },
-              {
-                label: "RP_ALLOTMENT_NUMBER",
-                jsonPath: "allotmentNumber",
-              },
+              // {
+              //   label: "RP_ALLOTMENT_NUMBER",
+              //   jsonPath: "allotmentNumber",
+              // },
               {
                 label: "RP_COMMON_TABLE_COL_OWNER_NAME",
                 jsonPath: "applicant[0].name"

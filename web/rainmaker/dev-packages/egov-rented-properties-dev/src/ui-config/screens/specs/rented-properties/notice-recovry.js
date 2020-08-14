@@ -20,13 +20,54 @@ const header = getCommonHeader({
     labelName: "Apply For Recovery Notice",
     labelKey: "RP_RECOVERY_NOTICE_APPLY"
   });
+  export const getMdmsData = async (dispatch, body) => {
+    let mdmsBody = {
+      MdmsCriteria: {
+        tenantId: commonConfig.tenantId,
+        moduleDetails: body
+      }
+    };
+    try {
+      let payload = await httpRequest(
+        "post",
+        "/egov-mdms-service/v1/_search",
+        "_search",
+        [],
+        mdmsBody
+      );
+      return payload;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  export const getColonyTypes = async(action, state, dispatch) => {
+    const colonyTypePayload = [{
+      moduleName: "PropertyServices",
+      masterDetails: [{name: "recoverytype"}]
+    }
+  ]
+    const colonyRes = await getMdmsData(dispatch, colonyTypePayload);
+     const {PropertyServices} = !!colonyRes && !!colonyRes.MdmsRes ? colonyRes.MdmsRes : {}
+     const {colonies = []} = PropertyServices || []
+      dispatch(prepareFinalObject("applyScreenMdmsData.rentedPropertyColonies", PropertyServices.recoverytype))
+      const propertyTypes = PropertyServices.recoverytype.map(item => ({
+        code: item.code,
+        label: item.code
+      }))
+      dispatch(prepareFinalObject("applyScreenMdmsData.propertyTypes", propertyTypes))
+  }
 
-
+  const getData = async(action, state, dispatch) => {
+    getColonyTypes(action, state, dispatch);
+  }
 
 const recoveryNotice = {
     uiFramework: "material-ui",
     name: "notice-recovry",
- 
+    beforeInitScreen: (action, state, dispatch) => {
+        getData(action, state, dispatch)
+        return action;
+      },
     components: {
         div: {
             uiFramework: "custom-atoms",

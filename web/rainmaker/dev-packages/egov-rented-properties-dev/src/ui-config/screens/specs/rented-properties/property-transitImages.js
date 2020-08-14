@@ -143,7 +143,11 @@ import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
                     {
                       label: "RP_COMMENTS_LABEL",
                       jsonPath: "description"
-                    }
+                    },
+                    {
+                      label: "RP_CAPTUREDBY_LABEL",
+                      jsonPath: "capturedBy"
+                    },
                   ]
                 }
               },

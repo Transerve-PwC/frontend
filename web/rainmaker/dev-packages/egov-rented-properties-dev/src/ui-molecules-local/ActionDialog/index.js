@@ -301,7 +301,7 @@ class ActionDialog extends React.Component {
                     >
                       <TextFieldContainer
                         select={true}
-                        style={{ marginRight: "15px" }}
+                        style={{ marginRight: "15px", width: "90%" }}
                         label={fieldConfig.approverName.label}
                         placeholder={fieldConfig.approverName.placeholder}
                         data={dropDownData}

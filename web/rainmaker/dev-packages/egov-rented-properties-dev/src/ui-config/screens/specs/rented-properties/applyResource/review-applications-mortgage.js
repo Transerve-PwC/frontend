@@ -6,6 +6,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { changeStep } from "./footer";
 import { headerDiv, editSection, areaLabel, pincodeLabel } from "./review-property";
+import { convertEpochToDate, } from "../../utils";
 
 const mortgageEditSection = isEditable => ({
     ...editSection,
@@ -60,6 +61,16 @@ export const getReviewApplicantDetailsMortgage = (isEditable = true) => {
                     jsonPath: "MortgageApplications[0].applicant[0].phone" 
                 }
             ),
+            guardian: getLabelWithValue(
+                {
+                    labelName: "Father/ Husband's Name",
+                    labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                },
+                {
+                    jsonPath: "MortgageApplications[0].applicant[0].guardian" 
+                }
+            ),
+            
             email: getLabelWithValue(
                 {
                     labelName: "Email",
@@ -108,13 +119,13 @@ export const getreviewPropertyAddressDetailsMortgage = (isEditable = true) => {
                 },
                 { jsonPath: "MortgageApplications[0].property.transitNumber" }
             ),
-            allotmentNumber: getLabelWithValue(
-                {
-                    labelName: "Allotment Number",
-                    labelKey: "RP_ALLOTMENT_NUMBER"
-                },
-                {jsonPath: "MortgageApplications[0].allotmentNumber"}
-            ),
+            // allotmentNumber: getLabelWithValue(
+            //     {
+            //         labelName: "Allotment Number",
+            //         labelKey: "RP_ALLOTMENT_NUMBER"
+            //     },
+            //     {jsonPath: "MortgageApplications[0].allotmentNumber"}
+            // ),
             area: getLabelWithValue(
                 areaLabel,
                 { jsonPath: "MortgageApplications[0].property.area" }
@@ -122,6 +133,64 @@ export const getreviewPropertyAddressDetailsMortgage = (isEditable = true) => {
             pincode: getLabelWithValue(
                 pincodeLabel,
                 { jsonPath: "MortgageApplications[0].property.pincode" }
+            ),
+        })
+    })
+}
+
+
+export const getreviewGrantDetailsMortgage = () => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Grant Details",
+                        labelKey: "RP_GRANT_DETAILS_HEADER"
+                    })
+                },
+            }
+        },
+        viewFour: getCommonContainer({
+            bankname: getLabelWithValue(
+                {
+                    labelName: "Name of the bank (Text field)",
+                    labelKey: "WF_BANK_NAME"
+                },
+                { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].bankName" }
+            ),
+            mortagageAmount: getLabelWithValue(
+                {
+                    labelName: "Enter mortgage amount",
+                    labelKey: "WF_MORTAGE_AMOUNT"
+                },
+                {jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].mortgageAmount"}
+            ),
+            mortagageEndDate: getLabelWithValue(
+                {
+                    labelName: "Mortgage end date ",
+                        labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
+                },
+                { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
+            ),
+            sanctionDate: getLabelWithValue(
+                {
+                    labelName: "Date of sanctioning",
+                        labelKey: "WF_SANCTIONING_DATE_LABEL"
+                },
+                { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].sanctionDate", callBack: convertEpochToDate }
+            ),
+            sanctionLetterNumber: getLabelWithValue(
+                {
+                    labelName: "Sanction letter number",
+                    labelKey: "WF_SANCTION_LETTER_LABEL"
+                },
+                {jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].sanctionLetterNumber"}
             ),
         })
     })

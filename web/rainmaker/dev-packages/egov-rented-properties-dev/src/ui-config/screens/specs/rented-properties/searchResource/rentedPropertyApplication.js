@@ -10,7 +10,7 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "../../utils";
-
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage} from "./functions";
 
 const colonyField = {
@@ -316,30 +316,66 @@ const toDateField = {
 
 
 const buttonItem = {
-  firstCont: {
-    uiFramework: "custom-atoms",
-    componentPath: "Div",
+  // firstCont: {
+  //   uiFramework: "custom-atoms",
+  //   componentPath: "Div",
+  //   gridDefination: {
+  //     xs: 12,
+  //     sm: 4
+  //   }
+  // },
+  resetButton: {
+    componentPath: "Button",
     gridDefination: {
-      xs: 12,
-      sm: 4
-    }
+      xs: 6,
+      sm: 6
+    },
+    props: {
+      variant: "outlined",
+      style: {
+        color: "rgba(0, 0, 0, 0.6000000238418579)",
+        borderColor: "rgba(0, 0, 0, 0.6000000238418579)",
+        width: "70%",
+        height: "48px",
+        margin: "8px",
+        float: "right"
+      }
+    },
+    children: {
+      buttonLabel: getLabel({
+        labelName: "Reset",
+        labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_RESET"
+      })
+    },
+    // onClickDefination: {
+    //   action: "condition",
+    //   callBack: resetFields
+    // }
   },
   searchButton: {
     componentPath: "Button",
     gridDefination: {
-      xs: 12,
-      sm: 4
+      xs: 6,
+      sm: 6
     },
     props: {
       variant: "contained",
       style: {
         color: "white",
-
+        margin: "8px",
         backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
         borderRadius: "2px",
-        width: "80%",
+        width: "70%",
         height: "48px"
       }
+      // style: {
+      //   color: "white",
+
+      //   backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
+      //   borderRadius: "2px",
+      //   width: "80%",
+      //   height: "48px"
+      // }
     },
     children: {
       buttonLabel: getLabel({
@@ -404,7 +440,14 @@ export const rentedPropertyApplication = getCommonCard({
           action: "condition",
           callBack: searchApiCall
         }
-      }, lastCont: {
+      },
+        resetButton:{...buttonItem.resetButton,
+          onClickDefination: {
+            action: "condition",
+            callBack: resetFields
+          }
+        },
+       lastCont: {
         uiFramework: "custom-atoms",
         componentPath: "Div",
         gridDefination: {
@@ -439,6 +482,11 @@ const commonSearchForm = {
         onClickDefination: {
           action: "condition",
           callBack: searchTransferProperties
+        }
+      },resetButton:{...buttonItem.resetButton,
+        onClickDefination: {
+          action: "condition",
+          callBack: resetOwnershipFields
         }
       }, lastCont: {
         uiFramework: "custom-atoms",
@@ -560,6 +608,12 @@ export const searchDuplicateCopyApplication = getCommonCard(
             action: "condition",
             callBack: searchDuplicateCopy
           }
+        },
+        resetButton:{...buttonItem.resetButton,
+          onClickDefination: {
+            action: "condition",
+            callBack: resetDuplicateFields
+          }
         }, lastCont: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
@@ -582,6 +636,11 @@ export const searchMortgageApplication = getCommonCard(
             action: "condition",
             callBack: searchMortgage
           }
+        },resetButton:{...buttonItem.resetButton,
+          onClickDefination: {
+            action: "condition",
+            callBack: resetMortageFields
+          }
         }, lastCont: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
@@ -594,3 +653,151 @@ export const searchMortgageApplication = getCommonCard(
     })
   }
 )
+
+
+
+function resetFields(state, dispatch) {
+  dispatch(
+    handleField(
+      "search",
+      "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children.colony",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search",
+      "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children.status",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search",
+      "components.div.children.rentedPropertyApplication.children.cardContent.children.transitNumberContainer.children.phone",
+      "props.value",
+      ""
+    )
+  )
+
+  dispatch(
+    handleField(
+      "search",
+      "components.div.children.rentedPropertyApplication.children.cardContent.children.transitNumberContainer.children.transitNumber",
+      "props.value",
+      ""
+    )
+  )
+}
+
+function resetMortageFields(state, dispatch) {
+  dispatch(
+    handleField(
+      "search-mortgage",
+      "components.div.children.searchMortgageApplication.children.cardContent.children.applicationNoContainer.children.applicationNo",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-mortgage",
+      "components.div.children.searchMortgageApplication.children.cardContent.children.applicationNoContainer.children.transitNumber",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-mortgage",
+      "components.div.children.searchMortgageApplication.children.cardContent.children.statusContainer.children.mobileNo",
+      "props.value",
+      ""
+    )
+  )
+
+  dispatch(
+    handleField(
+      "search-mortgage",
+      "components.div.children.searchMortgageApplication.children.cardContent.children.statusContainer.children.status",
+      "props.value",
+      ""
+    )
+  )
+}
+
+
+function resetDuplicateFields(state, dispatch) {
+  dispatch(
+    handleField(
+      "search-duplicate-copy",
+      "components.div.children.searchDuplicateCopyApplication.children.cardContent.children.applicationNoContainer.children.applicationNo",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-duplicate-copy",
+      "components.div.children.searchDuplicateCopyApplication.children.cardContent.children.applicationNoContainer.children.transitNumber",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-duplicate-copy",
+      "components.div.children.searchDuplicateCopyApplication.children.cardContent.children.statusContainer.children.mobileNo",
+      "props.value",
+      ""
+    )
+  )
+
+  dispatch(
+    handleField(
+      "search-duplicate-copy",
+      "components.div.children.searchDuplicateCopyApplication.children.cardContent.children.statusContainer.children.status",
+      "props.value",
+      ""
+    )
+  )
+}
+
+
+function resetOwnershipFields(state, dispatch) {
+  dispatch(
+    handleField(
+      "search-transfer-properties",
+      "components.div.children.ownerShipTransferApplication.children.cardContent.children.applicationNoContainer.children.applicationNo",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-transfer-properties",
+      "components.div.children.ownerShipTransferApplication.children.cardContent.children.applicationNoContainer.children.transitNumber",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-transfer-properties",
+      "components.div.children.ownerShipTransferApplication.children.cardContent.children.statusContainer.children.mobileNo",
+      "props.value",
+      ""
+    )
+  )
+
+  dispatch(
+    handleField(
+      "search-transfer-properties",
+      "components.div.children.ownerShipTransferApplication.children.cardContent.children.statusContainer.children.status",
+      "props.value",
+      ""
+    )
+  )
+}

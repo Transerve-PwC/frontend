@@ -8,7 +8,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { set } from "lodash";
-import { getreviewPropertyAddressDetailsMortgage, getReviewApplicantDetailsMortgage } from "./applyResource/review-applications-mortgage";
+import { getreviewPropertyAddressDetailsMortgage, getReviewApplicantDetailsMortgage,getreviewGrantDetailsMortgage } from "./applyResource/review-applications-mortgage";
 import { getMortgageSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import {  downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
@@ -33,11 +33,12 @@ const headerrow = getCommonContainer({
 const reviewPropertyAddressDetailsMortgage = getreviewPropertyAddressDetailsMortgage(false);
 const reviewApplicantDetailsMortgage = getReviewApplicantDetailsMortgage(false);
 const reviewDocuments = getReviewDocuments(false, "mortage-apply", "MortgageApplicationsTemp[0].reviewDocData")
-
+const reviewGrantDetailsMortgage=getreviewGrantDetailsMortgage(false)
 const mortgageReviewDetails = getCommonCard({
     reviewPropertyAddressDetailsMortgage,
     reviewApplicantDetailsMortgage,
-    reviewDocuments
+    reviewDocuments,
+    reviewGrantDetailsMortgage
 })
 
 const beforeInitFn = async(action, state, dispatch) => {
@@ -51,6 +52,7 @@ const beforeInitFn = async(action, state, dispatch) => {
       const response = await getMortgageSearchResults(queryObject);
       if (response && response.MortgageApplications) {
       let {MortgageApplications} = response
+      const grandDetails=MortgageApplications[0].mortgageApprovedGrantDetails
       let applicationDocuments = MortgageApplications[0].applicationDocuments|| [];
       const removedDocs = applicationDocuments.filter(item => !item.active)
       applicationDocuments = applicationDocuments.filter(item => !!item.active)
@@ -68,6 +70,15 @@ const beforeInitFn = async(action, state, dispatch) => {
         "MortgageApplicationsTemp[0].reviewDocData",
         dispatch,'RP'
       );
+      const getGrantDetailsAvailed = grandDetails !==null
+      dispatch(
+        handleField(
+          "mortgage-search-preview",
+          "components.div.children.mortgageReviewDetails.children.cardContent.children.reviewGrantDetailsMortgage",
+          "visible",
+          getGrantDetailsAvailed
+      ),
+    );
       }
     }
     const printCont = downloadPrintContainer(
