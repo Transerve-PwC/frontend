@@ -53,7 +53,7 @@ const searchBy = {
         let siteNumberContainerItems = ["category", "subCategory", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
-            "property-search",
+            "estate-branch-property-search",
             "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.fileNumberContainer",
             "visible",
             true
@@ -63,7 +63,7 @@ const searchBy = {
         siteNumberContainerItems.map(item => {
           dispatch(
             handleField(
-              "property-search",
+              "estate-branch-property-search",
               `components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.${item}`,
               "visible",
               false
@@ -76,7 +76,7 @@ const searchBy = {
         let siteNumberContainerItems = ["category", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
-            "property-search",
+            "estate-branch-property-search",
             "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.fileNumberContainer",
             "visible",
             false
@@ -85,7 +85,7 @@ const searchBy = {
         siteNumberContainerItems.map(item => {
           dispatch(
             handleField(
-              "property-search",
+              "estate-branch-property-search",
               `components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.${item}`,
               "visible",
               true
@@ -97,6 +97,10 @@ const searchBy = {
   }
 };
 export const estateApplication = getCommonCard({
+  subHeader: getCommonTitle({
+    labelName: "Search Estate",
+    labelKey: "EST_HOME_SEARCH_RESULTS_HEADING"
+  }),
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for a property",
     labelKey: "EST_HOME_SEARCH_RESULTS_DESC"
@@ -118,6 +122,8 @@ export const estateApplication = getCommonCard({
           sm: 4
         },
         required: true,
+        pattern: /^[a-zA-Z0-9-]*$/i,
+        errorMessage: "ERR_INVALID_FILE_NO",
         jsonPath: "searchScreenFileNo.fileNumber"
       })
     }),
@@ -143,7 +149,7 @@ export const estateApplication = getCommonCard({
             if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
               dispatch(
                   handleField(
-                      "property-search",
+                      "estate-branch-property-search",
                       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.subCategory",
                       "visible",
                       true
@@ -158,7 +164,7 @@ export const estateApplication = getCommonCard({
               const filteredCategory = categories.filter(item => item.code === action.value)
               dispatch(
                   handleField(
-                      "property-search",
+                      "estate-branch-property-search",
                       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.subCategory",
                       "props.data",
                       filteredCategory[0].SubCategory
@@ -168,7 +174,7 @@ export const estateApplication = getCommonCard({
           else {
             dispatch(
               handleField(
-                  "property-search",
+                  "estate-branch-property-search",
                   "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.subCategory",
                   "visible",
                   false
@@ -298,7 +304,7 @@ export const estateApplication = getCommonCard({
 function resetFields(state, dispatch) {
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.fileNumberContainer.children.fileNumber",
       "props.value",
       ""
@@ -306,7 +312,7 @@ function resetFields(state, dispatch) {
   )
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.category",
       "props.value",
       ""
@@ -314,7 +320,7 @@ function resetFields(state, dispatch) {
   )
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.subCategory",
       "props.value",
       ""
@@ -322,7 +328,7 @@ function resetFields(state, dispatch) {
   )
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.siteNumber",
       "props.value",
       ""
@@ -330,7 +336,7 @@ function resetFields(state, dispatch) {
   )
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.sectorNumber",
       "props.value",
       ""

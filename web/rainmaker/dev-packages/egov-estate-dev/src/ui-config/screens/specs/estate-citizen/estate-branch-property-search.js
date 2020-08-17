@@ -4,8 +4,8 @@ import {
   getBreak,
   getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { estateApplication } from './citizenSearchResource/estateApplication';
-import { searchResults } from './citizenSearchResource/searchResults';
+import { estateApplication } from './estateBranchSearchResource/estateApplication';
+import { searchResults } from './estateBranchSearchResource/searchResults';
 import commonConfig from "config/common.js";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "../../../../ui-utils";
@@ -44,9 +44,9 @@ const getMdmsData = async (dispatch) => {
   }
 }
 
-const citizenEstateSearchAndResult = {
+const propertySearchAndResult = {
   uiFramework: "material-ui",
-  name: "property-search",
+  name: "estate-branch-property-search",
   beforeInitScreen: (action, state, dispatch) => {
     state.screenConfiguration.preparedFinalObject.citizenSearchScreen = {}
     getMdmsData(dispatch);
@@ -82,4 +82,4 @@ const citizenEstateSearchAndResult = {
   }
 };
 
-export default citizenEstateSearchAndResult;
+export default propertySearchAndResult;

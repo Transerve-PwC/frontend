@@ -8,14 +8,16 @@ import {
   getReviewAdditional
 } from "./reviewProperty";
 
-const reviewPropertyInfo = getReviewPropertyInfo();
-const reviewAuction = getReviewAuction();
-const reviewAdditional = getReviewAdditional();
-
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
   labelKey: "TL_SUMMARY_HEADER"
 })
+
+if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "undefined" && typeof getReviewAdditional != "undefined") {
+  var reviewPropertyInfo = getReviewPropertyInfo();
+  var reviewAuction = getReviewAuction();
+  var reviewAdditional = getReviewAuction();
+}
 
 export const reviewDetails = getCommonCard({
   header,

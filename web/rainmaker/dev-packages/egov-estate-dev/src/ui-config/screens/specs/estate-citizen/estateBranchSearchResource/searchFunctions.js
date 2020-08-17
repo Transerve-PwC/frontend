@@ -40,7 +40,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
   
   const searchBy = get(
     state.screenConfiguration.screenConfig,
-    "property-search.components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.searchBy.props.value",
+    "estate-branch-property-search.components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.searchBy.props.value",
     ""
   )
   var searchScreenObject;
@@ -53,7 +53,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.fileNumberContainer.children",
       state,
       dispatch,
-      "property-search"
+      "estate-branch-property-search"
     );
   }
   else {
@@ -65,7 +65,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
       "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children",
       state,
       dispatch,
-      "property-search"
+      "estate-branch-property-search"
     );
   }
 
@@ -112,7 +112,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
       const length = response.Properties.length
       dispatch(
         handleField(
-          "property-search",
+          "estate-branch-property-search",
           "components.div.children.searchResults",
           "props.count",
           length
@@ -129,33 +129,17 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
           )} (${length})`
         )
       );
-      let applyButtonStyle = {
-        "background-color": "#FE7A51",
-        "color": "#fff",
-        "height": "30px",
-        "padding": "6px 16px",
-        "width": "83px"
-      }
-      let data = response.Properties.map(item => ({
-        [getTextToLocalMapping("Action")]: React.createElement('div', {style: applyButtonStyle}, "SELECT"),
-        [getTextToLocalMapping("File No")]: item.fileNumber || "-",
-        [getTextToLocalMapping("Property Id")]: item.propertyDetails.propertyId,
-        [getTextToLocalMapping("House No")]: "-",
-        [getTextToLocalMapping("Owner Name")]: item.propertyDetails ? item.propertyDetails.owners.map(item => item.ownerDetails.ownerName).join(",") || "-" : "-",
-        [getTextToLocalMapping("Mobile No")]: item.propertyDetails ? item.propertyDetails.owners.map(item => {
-          if (item.ownerDetails.mobileNumber) {
-          var mobileNo = item.ownerDetails.mobileNumber;
-          var replaced= mobileNo.replace(/.(?=....)/g, '*');
-          return replaced;
-          }
-        }).join(",") || "-" : "-"
-      }));
 
-      
+      let data = response.Properties.map(item => ({
+        [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
+        [getTextToLocalMapping("Sector Number")]: item.sectorNumber || "-",
+        [getTextToLocalMapping("Status")]: item.state || "-",
+        [getTextToLocalMapping("Last Modified On")]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
+      }));
 
       dispatch(
         handleField(
-          "property-search",
+          "estate-branch-property-search",
           "components.div.children.searchResults",
           "props.data",
           data
@@ -174,7 +158,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
 const showHideTable = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
-      "property-search",
+      "estate-branch-property-search",
       "components.div.children.searchResults",
       "visible",
       booleanHideOrShow

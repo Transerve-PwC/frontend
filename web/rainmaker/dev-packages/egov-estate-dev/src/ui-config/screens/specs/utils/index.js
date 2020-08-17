@@ -2558,7 +2558,7 @@ import {
       case "File No":
         return getLocaleLabels(
           "File No",
-          "EST_COMMON_TABLE_COL_FILE_NUMBER",
+          "ESTATE_COMMON_TABLE_COL_FILE_NO",
           localisationLabels
         );
       case "Property Id":
@@ -2585,10 +2585,16 @@ import {
           "EST_COMMON_TABLE_COL_MOBILE_NUMBER",
           localisationLabels
         );
-      case "Search Results for Estates":
+      case "Search Results for Properties":
         return getLocaleLabels(
-          "Search Results for Estates",
+          "Search Results for Properties",
           "EST_SEARCH_RESULTS_TABLE_HEADING",
+          localisationLabels
+        );
+      case "Last Modified On":
+        return getLocaleLabels(
+          "Last Modified On",
+          "EST_LAST_MODIFIED_ON",
           localisationLabels
         );
     }
