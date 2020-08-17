@@ -50,7 +50,7 @@ import {
                       { key: "businessServices", value: "MasterRP" }]
       dispatch(prepareFinalObject("searchScreen", {}))
       getColonyTypes(action, state, dispatch)
-      searchApiCall(state, dispatch, true)
+      searchApiCall(state, dispatch, true, "owner")
       getStatusList(action, state, dispatch, queryObject, "search", "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children.status", "MasterRP")
       return action
     },

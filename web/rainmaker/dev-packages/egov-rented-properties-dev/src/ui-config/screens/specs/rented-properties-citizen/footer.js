@@ -128,7 +128,7 @@ const callBackForNext = async(state, dispatch) => {
 
 
 const callBackForNextTransitImages = async(state, dispatch) => {
-
+        let imageupload=true
         let uploadFlag = false;
         let activeStep = 1;
         let isFormValid = true;
@@ -149,8 +149,14 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         dispatch,
         "transit-site-images"
       )
-      
-      if(!!isOwnerDetailsValid  && !!isDetailsValid) {
+      const images=get(
+        state, 'form.newapplication.files.media', []
+      )
+      console.log(images)
+      if(images.length===0){
+        imageupload=false
+      }
+      if(!!isOwnerDetailsValid  && !!isDetailsValid && !!imageupload) {
         const propertyId = get(state.screenConfiguration.preparedFinalObject, "PropertyImagesApplications[0].property.id");
         let res = true;
         if(!propertyId) {
@@ -170,17 +176,6 @@ const callBackForNextTransitImages = async(state, dispatch) => {
        isFormValid = false;
      } 
     } 
-    if(isFormValid){
-    const uploadedDocData = get(
-      state.screenConfiguration.preparedFinalObject,
-      "PropertyImagesApplications[0].applicationDocuments",
-      []
-  );
-if(uploadedDocData.length!=6){
-  isFormValid = false;
-}
-}
-    // isFormValid = await submittransitsiteimages(state, dispatch);
       if (isFormValid) {
         const transitData = get(
           state.screenConfiguration.preparedFinalObject,
@@ -189,16 +184,15 @@ if(uploadedDocData.length!=6){
       moveToSuccess(transitData, dispatch, TRANSITSITEIMAGES);
       }
 
-     if (!isFormValid && !uploadFlag) {
+     if (!isFormValid) {
         
         let errorMessage = {
           labelName:
-              "Please fill all mandatory fields and upload the images !",
-          labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_IMG"
+              "Please fill all mandatory fields and upload at least one the images !",
+          labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
       };
-      
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
-    }   
+    } 
 }
 
 const callBackForNextDuplicate = async(state, dispatch) => {

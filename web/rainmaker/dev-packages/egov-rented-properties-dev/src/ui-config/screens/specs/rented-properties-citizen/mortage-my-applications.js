@@ -98,10 +98,6 @@ const searchCard = getCommonCard({
         labelKey: "TL_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
       },
       required: false,
-      localePrefix: {
-        moduleName: "WF",
-        masterName: "NEWTL"
-      },
       jsonPath: "searchScreen.status",
       data:[
       ],

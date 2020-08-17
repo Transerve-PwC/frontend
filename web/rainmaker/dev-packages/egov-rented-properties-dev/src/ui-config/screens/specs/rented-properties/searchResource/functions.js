@@ -298,7 +298,7 @@ export const searchDuplicateCopy = async (state, dispatch, onInit, offset, limit
   }
 }
 
-export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
+export const searchApiCall = async (state, dispatch, onInit, relations, offset, limit , hideTable = true) => {
   !!hideTable && showHideTable(false, dispatch, "search");
   let queryObject = [
     {
@@ -306,7 +306,8 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
       value: getTenantId()
     },
     { key: "offset", value: offset },
-    { key: "limit", value: limit }
+    { key: "limit", value: limit },
+    { key: "relations", value: relations}
   ];
   queryObject = queryObject.filter(({value}) => !!value)
   let searchScreenObject = get(
