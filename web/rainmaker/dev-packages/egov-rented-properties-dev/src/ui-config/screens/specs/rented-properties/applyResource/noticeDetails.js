@@ -310,7 +310,7 @@ const getOwnerDetailsForNotice = () => {
         detailsContainer: getCommonContainer({
         fatherOrHusbandsName:getTextField(fatherOrHusbandsNameField),
         originalAllotte :getTextField(originalAllotteField),
-        violations:getTextField(getViolationField),
+        // violations:getTextField(getViolationField),
         editor : getTextField(getEditorField),
         })
     }

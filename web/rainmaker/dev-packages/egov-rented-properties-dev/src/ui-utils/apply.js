@@ -280,8 +280,8 @@ let userInfo = JSON.parse(getUserInfo());
         "relationship": relationship,
         "guardian": fatherOrHusbandname,
         "recoveryType": recoveryType,
-        "demandNoticeFrom": demandNoticeFrom,
-        "demandNoticeTo" : demandNoticeTo,
+        "demandNoticeFrom": convertDateToEpoch(demandNoticeFrom),
+        "demandNoticeTo" : convertDateToEpoch(demandNoticeTo),
         "amount" : amount,
         "propertyImageId": properyImageId,
         "property": {

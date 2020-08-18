@@ -23,6 +23,7 @@ export const REMAINING_INTEREST = getLocaleLabels("REMAINING INTEREST","RP_COMMO
 export const REMAINING_PRINCIPAL = getLocaleLabels("REMAINING PRINCIPAL","RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
 export const TOTAL_DUE = getLocaleLabels("TOTAL DUE","RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
 export const TYPE = getLocaleLabels("TYPE","RP_COMMON_TABLE_COL_AS_TYPE")
+export const PROPERTY_NUMBER = getLocaleLabels("PROPERTY NUMBER", "RP_COMMON_TABLE_PROPERTY_NUMBER")
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
@@ -30,6 +31,7 @@ export const searchResults = {
   props: {
     columns: [
       getTextToLocalMapping("Transit No"),
+      PROPERTY_NUMBER,
       getTextToLocalMapping("Colony"),
       getTextToLocalMapping("Owner"),
       getTextToLocalMapping("Status"),
@@ -68,9 +70,9 @@ const onRowClick = rowData => {
   const {roles = []} = userInfo
   const findItem = roles.find(item => item.code === "CTL_CLERK");
   if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
-    window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
+    window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}&propertyNumber=${rowData[1]}`
   } else {
-    window.location.href = `search-preview?transitNumber=${rowData[0]}&tenantId=${getTenantId()}`;
+    window.location.href = `search-preview?transitNumber=${rowData[0]}&propertyNumber=${rowData[1]}&tenantId=${getTenantId()}`;
   }
 };
 

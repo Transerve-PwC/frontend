@@ -25,6 +25,21 @@ const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
+const getEpochForDateGrant = (dateString, dayStartOrEnd = "dayend") => {
+  //example input format : "2018-10-02"
+  try {
+    const parts = dateString.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    const DateObj = new Date(Date.UTC(parts[1], parts[2] - 1, parts[3]));
+    DateObj.setMinutes(DateObj.getMinutes() + DateObj.getTimezoneOffset());
+    if (dayStartOrEnd === "dayend") {
+      DateObj.setHours(DateObj.getHours() + 24);
+      DateObj.setSeconds(DateObj.getSeconds() - 1);
+    }
+    return DateObj.getTime();
+  } catch (e) {
+    return dateString;
+  }
+};
 
 const fieldConfig = {
   approverName: {
@@ -404,7 +419,7 @@ class ActionDialog extends React.Component {
                        InputLabelProps={{ shrink: true }}
                        label= {fieldConfig.sanctioningDate.label}
                        onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate` , getEpochForDate(e.target.value))
+                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate` , getEpochForDateGrant(e.target.value))
                       }
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate`}
                        />
@@ -415,7 +430,7 @@ class ActionDialog extends React.Component {
                        InputLabelProps={{ shrink: true }}
                        label= {fieldConfig.mortageEndDate.label}
                        onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].mortgageEndDate` , getEpochForDate(e.target.value))
+                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].mortgageEndDate` , getEpochForDateGrant(e.target.value))
                       }
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].mortgageEndDate`}
                        />   

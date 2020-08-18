@@ -38,6 +38,10 @@ class WorkFlowContainer extends React.Component {
       window.location.href,
       "transitNumber"
     );
+    const propertyNumber = getQueryArg(
+      window.location.href,
+      "propertyNumber"
+    )
     const applicationNumber = getQueryArg(
       window.location.href,
       "applicationNumber"
@@ -50,7 +54,7 @@ class WorkFlowContainer extends React.Component {
       ]
       switch(this.props.moduleName) {
         case "MasterRP": {
-          queryObject = [...queryObject, { key: "businessIds", value: transitNumber }]
+          queryObject = [...queryObject, { key: "businessIds", value: propertyNumber }]
           break
         }
         case "PermissionToMortgage":
