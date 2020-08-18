@@ -19,6 +19,7 @@ const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
+
 // const purchaserDetails = getPurchaserDetails(false);
 
 
@@ -38,7 +39,8 @@ children: {
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
-    { key: "fileNumber", value: fileNumber }
+    { key: "fileNumber", value: fileNumber },
+    {key: "relations", value: "purchase"}
   ];
   let payload = await getSearchResults(queryObject);
   if(payload) {
@@ -46,10 +48,13 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    properties[0].propertyDetails.purchaseDetails.forEach((element,index) => { 
-      let purchaseDetailContainer = getPurchaserDetails(false,index);
-      containers[index] = getCommonCard({purchaseDetailContainer})
-    });
+    if(properties[0].propertyDetails.purchaseDetails){
+      properties[0].propertyDetails.purchaseDetails.forEach((element,index) => { 
+        let purchaseDetailContainer = getPurchaserDetails(false,index);
+        containers[index] = getCommonCard({purchaseDetailContainer})
+      });
+    }
+    
     dispatch(
       handleField(
       "purchaser-details",
@@ -64,8 +69,8 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-    await searchResults(action, state, dispatch, fileNumber)
-  }
+      await searchResults(action, state, dispatch, fileNumber)
+    }
 }
 
 

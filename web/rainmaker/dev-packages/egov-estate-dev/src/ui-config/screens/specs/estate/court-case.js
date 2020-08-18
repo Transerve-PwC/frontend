@@ -19,7 +19,6 @@ const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
-
 const courtCaseContainer = {
   uiFramework: "custom-atoms",
 componentPath: "Container",
@@ -32,7 +31,8 @@ children: {
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
 let queryObject = [
-  { key: "fileNumber", value: fileNumber }
+  { key: "fileNumber", value: fileNumber },
+  {key: "relations", value: "court"}
 ];
 let payload = await getSearchResults(queryObject);
 if(payload) {
@@ -40,12 +40,14 @@ if(payload) {
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    properties[0].propertyDetails.courtCases.forEach((element,index) => { 
-      let courtCaseDetails = getCourtCaseDetails(false,index);
-      containers[index] = getCommonCard({
-        courtCaseDetails
-      });  
-    });
+    if(properties[0].propertyDetails.courtCases){
+      properties[0].propertyDetails.courtCases.forEach((element,index) => { 
+        let courtCaseDetails = getCourtCaseDetails(false,index);
+        containers[index] = getCommonCard({
+          courtCaseDetails
+        });  
+      });
+    }
     dispatch(
       handleField(
       "court-case",
@@ -60,8 +62,8 @@ if(payload) {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 dispatch(prepareFinalObject("workflow.ProcessInstances", []))
 if(fileNumber){
-  await searchResults(action, state, dispatch, fileNumber)
-}
+    await searchResults(action, state, dispatch, fileNumber)
+  }
 }
 
 const CourtCaseDetails = {

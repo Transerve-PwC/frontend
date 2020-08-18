@@ -67,7 +67,8 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-    await searchResults(action, state, dispatch, fileNumber)
+   
+     await searchResults(action, state, dispatch, fileNumber)
   }
 }
 

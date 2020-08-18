@@ -5,6 +5,7 @@ import {first_step} from './first_step.json';
 import {preview} from './preview.json';
 import {footer, stepper} from './footer'
 import { get } from "lodash";
+import { setThirdStep } from "./applyResource/review";
 
 const header = getCommonHeader({
     labelName: "Apply",
@@ -222,10 +223,6 @@ const getDetailsContainer = ({fields = []}) => {
     return getCommonContainer(values);
 }
 
-const setThirdStep = async (action, state, dispatch) => {
-  const {sections = []} = preview;
-}
-
 const getData = async (action, state, dispatch) => {
     await new Promise((resolve) => {
         setTimeout(resolve, 0)
@@ -249,7 +246,7 @@ const getData = async (action, state, dispatch) => {
         )
       );
     setDocumentData(action, state, dispatch, {screenKey: "apply", screenPath: "components.div.children.formwizardSecondStep.children.documentDetails.children.cardContent.children.documentList"})
-    setThirdStep(action, state, dispatch)
+    setThirdStep(action, state, dispatch, {screenKey: "apply", screenPath: "components.div.children.formwizardThirdStep.children"})
 }
 
 const formwizardThirdStep = {

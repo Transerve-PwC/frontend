@@ -18,6 +18,7 @@ const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
+
 // const OwnerDetails = getOwnerDetails(false);
 // const AllotmentDetails = getAllotmentDetails(false);
 
@@ -39,7 +40,8 @@ children: {
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
-    { key: "fileNumber", value: fileNumber }
+    { key: "fileNumber", value: fileNumber },
+    {key: "relations", value: "owner"}
   ];
   let payload = await getSearchResults(queryObject);
   if(payload) {
@@ -47,14 +49,17 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    properties[0].propertyDetails.owners.forEach((element,index) => { 
-      let ownerdetailsComponent = getOwnerDetails(false,index);
-      let allotmentDetailsComponent = getAllotmentDetails(false,index);
-      containers[index] = getCommonCard({
-        ownerdetailsComponent,
-        allotmentDetailsComponent
-      });  
-    });
+    if(properties[0].propertyDetails.owners){
+      properties[0].propertyDetails.owners.forEach((element,index) => { 
+        let ownerdetailsComponent = getOwnerDetails(false,index);
+        let allotmentDetailsComponent = getAllotmentDetails(false,index);
+        containers[index] = getCommonCard({
+          ownerdetailsComponent,
+          allotmentDetailsComponent
+        });  
+      });
+    }
+    
     dispatch(
       handleField(
       "owner-details",
@@ -69,7 +74,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-    await searchResults(action, state, dispatch, fileNumber)
+      await searchResults(action, state, dispatch, fileNumber)
   }
 }
 
