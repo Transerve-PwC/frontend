@@ -129,7 +129,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
     process.env.REACT_APP_NAME === "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)
         : set(action, "screenConfig.components.div.children.footer", {});
-    const showEstimate = status !== "OT_DRAFTED" && status !== "OT_PENDINGCLVERIFICATION" && status !== "OT_PENDINGJAVERIFICATION" && status !== "OT_PENDINGSAVERIFICATION" && status!="OT_PENDINGCLARIFICATION"
+    const showEstimate = status !== "OT_DRAFTED" && status !== "OT_PENDINGCLVERIFICATION" && status !== "OT_PENDINGJAVERIFICATION" && status !== "OT_PENDINGSAVERIFICATION" && status!=="OT_PENDINGCLARIFICATION"&& status!=="OT_PENDINGSIVERIFICATION"&& status!=="OT_PENDINGCAAPPROVAL"&& status!="OT_PENDINGAPRO"
     dispatch(
       handleField(
           "ownership-search-preview",

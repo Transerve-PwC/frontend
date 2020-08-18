@@ -176,6 +176,13 @@ export const getDuplicateCopyPreviewApplicantDetails = (isEditable = true) => {
                 },
                 { jsonPath: "DuplicateCopyApplications[0].applicant[0].relationship" }
             ),
+            fatherOrHusband: getLabelWithValue(
+                {
+                    labelName: "Father/ Husband's Name",
+                    labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                },
+                { jsonPath: "DuplicateCopyApplications[0].applicant[0].guardian" }
+            ),
             phone: getLabelWithValue(
                 {
                     labelName: "Mobile No.",

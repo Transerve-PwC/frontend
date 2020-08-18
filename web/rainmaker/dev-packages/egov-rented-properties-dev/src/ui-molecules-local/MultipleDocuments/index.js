@@ -105,7 +105,7 @@ class MultipleDocuments extends Component {
                       (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1} mr={0} color="primary"  variant="contained"  
                   onClick={() => { 
-                    dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}`)); 
+                    dispatch(setRoute(`/rented-properties/notice-violation?tenantId=${getTenantId()}&propertyIdTransit=${datum.property.id}`)); 
                     dispatch(prepareFinalObject("SingleImage[0]", datum));}}> 
                     Create Violation
                     </Button>

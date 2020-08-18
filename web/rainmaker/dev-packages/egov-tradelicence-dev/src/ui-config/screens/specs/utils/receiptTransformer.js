@@ -56,21 +56,6 @@ export const getMessageFromLocalization = code => {
   return messageObject ? messageObject.code : code;
 };
 
-export const loadUlbLogo = tenantid => {
-  var img = new Image();
-  img.crossOrigin = "Anonymous";
-  img.onload = function() {
-    var canvas = document.createElement("CANVAS");
-    var ctx = canvas.getContext("2d");
-    canvas.height = this.height;
-    canvas.width = this.width;
-    ctx.drawImage(this, 0, 0);
-    store.dispatch(prepareFinalObject("base64UlbLogo", canvas.toDataURL()));
-    canvas = null;
-  };
-  img.src = `${process.env.REACT_APP_MEDIA_BASE_URL}/logo.png`;
-};
-
 export const loadApplicationData = async (applicationNumber, tenant, state, dispatch) => {
   let data = {};
   let queryObject = [
@@ -421,7 +406,6 @@ export const loadUserNameData = async uuid => {
 /** Data used for creation of receipt is generated and stored in local storage here */
 export const loadReceiptGenerationData = async (applicationNumber, tenant, state, dispatch) => {
   /** Logo loaded and stored in local storage in base64 */
-  await loadUlbLogo(tenant);
   await loadApplicationData(applicationNumber, tenant, state, dispatch); //PB-TL-2018-09-27-000004
   await loadReceiptData(applicationNumber, tenant); //PT-107-001330:AS-2018-08-29-001426     //PT consumerCode
   await loadMdmsData(tenant);

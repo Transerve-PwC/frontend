@@ -337,6 +337,7 @@ class ActionDialog extends React.Component {
                     <Grid item sm="12">
                     <TextFieldContainer
                       required={true}
+                      style={{ width: "90%" }}
                       InputLabelProps={{ shrink: true }}
                       label={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
                       onChange={e =>
@@ -352,6 +353,7 @@ class ActionDialog extends React.Component {
                     <Grid item sm="12">
                     <TextFieldContainer
                       required={true}
+                      style={{ width: "90%" }}
                       InputLabelProps={{ shrink: true }}
                       label={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
                       onChange={e =>

@@ -209,7 +209,7 @@ let userInfo = JSON.parse(getUserInfo());
           `Document - ${index + 1}`,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
-          "documentType" :  `PROPERTYIMAGE${index + 1}`,
+          "documentType" :  `PROPERTYIMAGE ${index + 1}`,
           "tenantId" : tenantId,
           "active": true
         })
@@ -242,7 +242,7 @@ let userInfo = JSON.parse(getUserInfo());
       const id = get(state.screenConfiguration.preparedFinalObject, "Properties[0].id")
       const pincode = get(state.screenConfiguration.preparedFinalObject, "Properties[0].pincode")
       const area = get(state.screenConfiguration.preparedFinalObject, "Properties[0].area")
-      const filedata = get(state.screenConfiguration.preparedFinalObject, "SingleImage[0]",[]);
+      const filedata = get(state.form.newapplication, "files.media",[]);
       const memoDate = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.memoDate")
       const violations = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.violations")
       const description = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.editor")
@@ -257,24 +257,15 @@ let userInfo = JSON.parse(getUserInfo());
       const tenantId = getTenantId()
       let response;
  
-      let fileStoreId = filedata && filedata.applicationDocuments.map(item => item.fileStoreId).join(",");
+      let fileStoreId = filedata && filedata.map(item => item.fileStoreId).join(",");
       const fileUrlPayload =  fileStoreId && (await getFileUrlFromAPI(fileStoreId)); 
-      const output = filedata.applicationDocuments.map((fileitem,index) => 
+      const output = filedata.map((fileitem,index) => 
       
         ({
-          "fileName" : (fileUrlPayload &&
-            fileUrlPayload[fileitem.fileStoreId] &&
-            decodeURIComponent(
-              getFileUrl(fileUrlPayload[fileitem.fileStoreId])
-                .split("?")[0]
-                .split("/")
-                .pop()
-                .slice(13)
-            )) ||
-          `Document - ${index + 1}`,
+          "fileName" : fileitem.file.name,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
-          "documentType" : `PROPERTYIMAGE${index + 1}`,
+          "documentType" : `PROPERTYIMAGE ${index + 1}`,
           "tenantId" : tenantId,
           "active": true
         })

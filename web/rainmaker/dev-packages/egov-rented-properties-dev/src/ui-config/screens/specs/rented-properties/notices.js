@@ -71,7 +71,7 @@ const buttonComponent = (label, route) => ({
   componentPath: "Button",
   gridDefination: {
     xs: 12,
-    sm: 3
+    sm: 2
   },
   props: {
     variant: "contained",
