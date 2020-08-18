@@ -60,7 +60,7 @@ class SingleApplication extends React.Component {
       switch (item.status) {
         case "INITIATED":
         case "MODIFIED":
-        case "PENDINGCLARIFICATION":
+        // case "PENDINGCLARIFICATION":
           setRoute(`/tradelicense-citizen/apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`);
           break
         default:

@@ -16,6 +16,7 @@ import { getPaymentGateways } from "../../../../ui-utils/commons";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { get } from "lodash";
 
+var consumerCode = getQueryArg(window.location.href, "consumerCode");
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Application for New Trade License (2018-2019)",
@@ -26,7 +27,7 @@ const header = getCommonContainer({
     moduleName: "egov-tradelicence",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: getQueryArg(window.location.href, "consumerCode")
+      number: consumerCode
     }
   }
 });
@@ -45,6 +46,7 @@ const setPaymentMethods = async (action, state, dispatch) => {
 
 const beforeScreenInit = async(action, state, dispatch) => {
   const tenantId = getQueryArg(window.location.href, "tenantId");
+  consumerCode = getQueryArg(window.location.href, "consumerCode");
     const queryObject = [
       { key: "tenantId", value: tenantId },
       { key: "businessServices", value: "NewTL" }
@@ -70,6 +72,14 @@ const beforeScreenInit = async(action, state, dispatch) => {
         !showPaymentButton || !!estimateCardData["payStatus"]
       )
     );
+    dispatch(
+      handleField(
+        "pay",
+        "components.div.children.headerDiv.children.header.children.applicationNumber.props",
+        "number",
+        consumerCode
+      )
+    )
 }
 
 const screenConfig = {

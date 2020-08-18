@@ -454,7 +454,7 @@ export const getButtonVisibility = (status, button) => {
   if(status === "INITIATED" && button === "SUBMISSION") {
     return true;
   }
-  if(status==="CITIZENACTIONREQUIRED" && button ==="RESUBMIT")
+  if(status==="PENDINGCLARIFICATION" && button ==="EDIT")
   return true;
   if (status === "PENDINGPAYMENT" && button === "PROCEED TO PAYMENT")
     return true;

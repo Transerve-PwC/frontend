@@ -372,6 +372,11 @@ const getAcknowledgementCard = (
               labelName: "Application is sent back Successfully",
               labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_HEAD"
             },
+            body: {
+              labelName:
+                "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
+              labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
+            },
             tailText: {
               labelName: "Application No.",
               labelKey: "TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"
@@ -452,11 +457,11 @@ const getAcknowledgementCard = (
               labelName: "Application is sent back to Citizen Successfully",
               labelKey: "TL_SENDBACK_TOCITIZEN_CHECKLIST_MESSAGE_HEAD"
             },
-            // body: {
-            //   labelName:
-            //     "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
-            //   labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
-            // },
+            body: {
+              labelName:
+                "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
+              labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
+            },
             tailText: {
               labelName: "Trade License No.",
               labelKey: "TL_HOME_SEARCH_RESULTS_TL_NO_LABEL"
