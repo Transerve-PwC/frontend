@@ -315,6 +315,17 @@ const getOwnerDetailsForNotice = () => {
         })
     }
 }
+const getOwnerDetailsForViolationNotice = () => {
+    return {
+        header: rentHolderHeader,
+        detailsContainer: getCommonContainer({
+        fatherOrHusbandsName:getTextField(fatherOrHusbandsNameField),
+        originalAllotte :getTextField(originalAllotteField),
+        violations:getTextField(getViolationField),
+        editor : getTextField(getEditorField),
+        })
+    }
+}
 
 const getPropertyDetailsForNotice = () => {
     return {
@@ -338,6 +349,7 @@ const getPaymentDetailsNotice = () => {
 }
 
 export const ownerDetailsForNotice = getCommonCard(getOwnerDetailsForNotice())
+export const ownerDetailsForViolationNotice = getCommonCard(getOwnerDetailsForViolationNotice())
 export const noticePropertyDetails = getCommonCard(getPropertyDetailsForNotice())
 
 export const paymentDetailsNotice=getCommonCard(getPaymentDetailsNotice())

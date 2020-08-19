@@ -208,16 +208,16 @@ if(isOwnerDetailsValid && isRentHolderValid && isPaymentDetailsValid) {
   if(!res) {
    return
   } 
+}
 else{
   isFormValid = false;
   } 
-}
 
 
 if (isFormValid) {
   const noticegendata = get(
     state.screenConfiguration.preparedFinalObject,
-    "NoticeApplications[0]"
+    "Properties[0]"
 );
 moveToSuccess(noticegendata, dispatch, RECOVERY_NOTICE);
 }

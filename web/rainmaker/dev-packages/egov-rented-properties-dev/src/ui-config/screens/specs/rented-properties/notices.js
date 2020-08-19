@@ -181,7 +181,12 @@ const notices = {
                   },
                   {
                     label: "RP_MEMO_DATE",
-                    jsonPath: "memoDate"
+                    jsonPath: "memoDate",
+                    type: "date"
+                  },
+                  {
+                    label: "RP_NOTICE_TYPE",
+                    jsonPath: "noticeType"
                   },
                   {
                     label: "RP_COMMENTS_LABEL",
