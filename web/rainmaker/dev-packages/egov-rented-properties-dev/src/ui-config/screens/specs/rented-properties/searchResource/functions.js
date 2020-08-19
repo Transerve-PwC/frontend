@@ -13,7 +13,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, PROPERTY_NUMBER } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON } from "./searchResults";
 
 export const getStatusList = async (state, dispatch, screen, path) => {
   const queryObject = [{ key: "tenantId", value: getTenantId() }, 
@@ -368,7 +368,6 @@ export const searchApiCall = async (state, dispatch, onInit, relations, offset, 
     try {
       let data = response.Properties.map(item => ({
         [getTextToLocalMapping("Transit No")]: item.transitNumber || "-",
-        [PROPERTY_NUMBER]: item.propertyNumber,
         [getTextToLocalMapping("Colony")]: getLocaleLabels(item.colony, item.colony) || "-",
         [getTextToLocalMapping("Owner")]: item.propertyDetails.currentOwner || "-",
         [getTextToLocalMapping("Status")]: getLocaleLabels(item.masterDataState, item.masterDataState) || "-",

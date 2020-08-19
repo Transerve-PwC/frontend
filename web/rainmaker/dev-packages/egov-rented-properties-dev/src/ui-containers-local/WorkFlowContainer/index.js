@@ -54,7 +54,7 @@ class WorkFlowContainer extends React.Component {
       ]
       switch(this.props.moduleName) {
         case "MasterRP": {
-          queryObject = [...queryObject, { key: "businessIds", value: propertyNumber }]
+          queryObject = [...queryObject, { key: "businessIds", value: transitNumber }]
           break
         }
         case "PermissionToMortgage":
