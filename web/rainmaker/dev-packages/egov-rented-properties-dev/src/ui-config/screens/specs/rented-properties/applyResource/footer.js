@@ -1,7 +1,8 @@
-import { getCommonApplyFooter, validateFields } from "../../utils";
+import { getCommonApplyFooter, validateFields,downloadAcknowledgementForm } from "../../utils";
 import { getLabel, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
+import set from "lodash/set";
 import { applyRentedProperties,applynoticegeneration,applyrecoveryNotice } from "../../../../../ui-utils/apply";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { some } from "lodash";
@@ -589,3 +590,78 @@ export const footer = getCommonApplyFooter({
       },
     }
   });
+
+  export const downloadPrintContainer = (
+    action,
+    state,
+    dispatch,
+    status,
+    applicationNumber,
+    tenantId
+  ) => {
+    /** MenuButton data based on status */
+    let downloadMenu = [];
+    let printMenu = [];
+  
+    
+    let applicationDownloadObject = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        
+        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = OwnersTemp[0].reviewDocData;
+        set(Owners[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData);
+      },
+      leftIcon: "assignment"
+    };
+    downloadMenu = [
+      applicationDownloadObject
+    ];
+   
+  
+    return {
+      rightdiv: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        props: {
+          style: { textAlign: "right", display: "flex" }
+        },
+        children: {
+          downloadMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                 leftIcon: "cloud_download",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+                menu: downloadMenu
+              }
+            }
+          },
+          printMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                leftIcon: "print",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+                menu: printMenu
+              }
+            }
+          }
+  
+        },
+        // gridDefination: {
+        //   xs: 12,
+        //   sm: 6
+        // }
+      }
+    }
+  };

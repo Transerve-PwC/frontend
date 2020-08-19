@@ -9,7 +9,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getOwnershipSearchResults } from "../../../../ui-utils/commons";
 import { getReviewApplicantDetails, getreviewPropertyAddressDetails } from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { footerReview, downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
+import {downloadPrintContainer} from "./applyResource/footer"
+import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
 import { set } from "lodash";
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
