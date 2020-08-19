@@ -625,16 +625,6 @@ export const footer = getCommonApplyFooter({
       },
       leftIcon: "assignment"
     };
-    let applicationPrintObject = {
-      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
-      link: () => {
-        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
-        const documents = OwnersTemp[0].reviewDocData;
-        set(Owners[0],"additionalDetails.documents",documents)
-        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData, "print");
-      },
-      leftIcon: "assignment"
-    };
     downloadMenu = [
       applicationDownloadObject
     ];
