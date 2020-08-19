@@ -16,6 +16,7 @@ const {roles = []} = userInfo
 const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
+let tenantId = getTenantId()
 
 export const headerrow = getCommonContainer({
   header: getCommonHeader({
@@ -77,25 +78,25 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
   let path = ""
   switch(tabIndex){
       case 0:
-        path = `/estate/search-preview?filenumber=${fileNumber}`
+        path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 1:
-        path = `/estate/owner-details?filenumber=${fileNumber}`
+        path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 2:
-        path = `/estate/purchaser-details?filenumber=${fileNumber}`
+        path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 3:
-        path = `/estate/payment-details?filenumber=${fileNumber}`
+        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 4:
-        path = `/estate/document-details?filenumber=${fileNumber}`
+        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 5:
-        path = `/estate/notices?filenumber=${fileNumber}`
+        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 6:
-        path = `/estate/court-case?filenumber=${fileNumber}`
+        path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
 
   }
@@ -166,16 +167,19 @@ const estateDetailPreview = {
             },
             type: "array",
           },
-          // taskStatus: {
-          //   uiFramework: "custom-containers-local",
-          //   moduleName: "egov-estate",
-          //   componentPath: "WorkFlowContainer",
-          //   props: {
-          //     dataPath: "Properties",
-          //     moduleName: "MasterEsatate",
-          //     updateUrl: "/csp/property/_update"
-          //   }
-          // },
+          taskStatus: {
+            uiFramework: "custom-containers-local",
+            moduleName: "egov-estate",
+            componentPath: "WorkFlowContainer",
+            props: {
+              dataPath: "Properties",
+              moduleName: "PropertyMaster",
+              updateUrl: "/property-service/property-master/_update",
+              style: {
+                wordBreak: "break-word"
+              }
+            }
+          },
         propertyReviewDetails
       }
     }

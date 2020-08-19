@@ -11,6 +11,7 @@ import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
+const tenantId = getTenantId();
 
 export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
 export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
@@ -62,7 +63,7 @@ export const searchResults = {
 const onRowClick = rowData => {
   const {roles = []} = userInfo
   const findItem = roles.find(item => item.code === "CTL_CLERK");
-  window.location.href = `search-preview?filenumber=${rowData[0]}`;
+  window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;
   // if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
   //   window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
   // } else {

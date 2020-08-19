@@ -17,7 +17,7 @@ import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON } fro
 
 export const getStatusList = async (state, dispatch, screen, path) => {
   const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "NewTL" }]
+                      { key: "businessServices", value: "PropertyMaster" }]
   const businessServices = await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   if(!!businessServices) {
     const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))

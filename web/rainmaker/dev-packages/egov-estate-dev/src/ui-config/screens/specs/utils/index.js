@@ -2573,6 +2573,12 @@ import {
           "EST_COMMON_TABLE_COL_HOUSE_NUMBER",
           localisationLabels
         );
+      case "Site Number":
+        return getLocaleLabels(
+          "Site Number",
+          "EST_COMMON_TABLE_COL_SITE_NUMBER",
+          localisationLabels
+        );
       case "Owner Name":
         return getLocaleLabels(
           "Owner Name",

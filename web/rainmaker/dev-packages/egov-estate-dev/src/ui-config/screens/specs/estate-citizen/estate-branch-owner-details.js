@@ -8,31 +8,21 @@ import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getOwnerDetails,getAllotmentDetails } from "./preview-resource/owner-properties";
+import { getOwnerDetails,getAllotmentDetails } from "../estate/preview-resource/owner-properties";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow, tabs} from './estate-branch-search-preview'
 
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
 const findItem = roles.find(item => item.code === "CTL_CLERK");
 
-let fileNumber = getQueryArg(window.location.href, "fileNumber");
-
-
-// const OwnerDetails = getOwnerDetails(false);
-// const AllotmentDetails = getAllotmentDetails(false);
-
-
-// export const propertyReviewDetails = getCommonCard({
-//   OwnerDetails,
-//   AllotmentDetails
-// });
+let fileNumber = getQueryArg(window.location.href, "filenumber");
 
 const ownerContainer = {
   uiFramework: "custom-atoms",
 componentPath: "Container",
 props: {
-  id: "docs"
+  id: "owner"
 },
 children: {
 }
@@ -62,7 +52,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     
     dispatch(
       handleField(
-      "owner-details",
+      "estate-branch-owner-details",
       "components.div.children.ownerContainer",
       "children",
       containers
@@ -79,9 +69,9 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 }
 
 
-const EstateOwnerDetails = {
+const EstateBranchOwnerDetails = {
   uiFramework: "material-ui",
-  name: "owner-details",
+  name: "estate-branch-owner-details",
   beforeInitScreen: (action, state, dispatch) => {
     fileNumber = getQueryArg(window.location.href, "filenumber");
     beforeInitFn(action, state, dispatch, fileNumber);
@@ -119,23 +109,10 @@ const EstateOwnerDetails = {
             },
             type: "array",
           },
-          taskStatus: {
-            uiFramework: "custom-containers-local",
-            moduleName: "egov-estate",
-            componentPath: "WorkFlowContainer",
-            props: {
-              dataPath: "Properties",
-              moduleName: "PropertyMaster",
-              updateUrl: "/property-service/property-master/_update",
-              style: {
-                wordBreak: "break-word"
-              }
-            }
-          },
           ownerContainer
       }
     }
   }
 };
 
-export default EstateOwnerDetails;
+export default EstateBranchOwnerDetails;

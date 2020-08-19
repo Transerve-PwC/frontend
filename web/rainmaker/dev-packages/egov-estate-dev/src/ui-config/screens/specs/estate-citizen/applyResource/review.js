@@ -56,7 +56,7 @@ const headerDiv = (isEditable = true, label, index) => {
   }
 }
 
-const viewFour = (section) => {
+export const viewFour = (section) => {
   const {fields = [], type} = section
   switch(type) {
     case "DOCUMENTS" : {

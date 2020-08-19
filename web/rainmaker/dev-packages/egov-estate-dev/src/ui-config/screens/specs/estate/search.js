@@ -73,12 +73,12 @@ const estateSearchAndResult = {
       },
       {
         key: "businessServices",
-        value: "MasterEsatate"
+        value: "PropertyMaster"
       }
     ]
     dispatch(prepareFinalObject("searchScreen", {}))
       searchApiCall(state, dispatch, true)
-      getStatusList(action, state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", "MasterEsatate")
+      getStatusList(action, state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", "PropertyMaster")
     return action
   },
   components: {

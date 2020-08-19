@@ -1,81 +1,131 @@
 import {
-  getCommonHeader, getCommonCard
+  getCommonHeader,
+  getCommonContainer,
+  getLabel,
+  getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {
-  getQueryArg
-} from "egov-ui-framework/ui-utils/commons";
-import {
-  getTenantId
-} from "egov-ui-kit/utils/localStorageUtils";
+import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {
-  getReviewPropertyInfo,
-  getReviewAuction,
-  getReviewAdditional
-} from "../estate/applyResource/reviewProperty";
 import { getSearchResults } from "../../../../ui-utils/commons";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getReviewAuction, getPropertyDetails,getAdditionalDetails } from "../estate/preview-resource/preview-properties";
+import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const findItem = roles.find(item => item.code === "CTL_CLERK");
+
+let fileNumber = getQueryArg(window.location.href, "filenumber");
+
+export const headerrow = getCommonContainer({
+header: getCommonHeader({
+  labelName: "Estate",
+  labelKey: "ESTATE_COMMON_ESTATE"
+})
+});
+const reviewAuctionDetails = getReviewAuction(false);
+const reviewPropertyDetails = getPropertyDetails(false);
+const additionalDetails = getAdditionalDetails(false)
+
+
+export const propertyReviewDetails = getCommonCard({
+reviewPropertyDetails,
+reviewAuctionDetails,
+additionalDetails
+});
+
+export const searchResults = async (action, state, dispatch, fileNumber) => {
+let queryObject = [
+  { key: "fileNumber", value: fileNumber }
+];
+let payload = await getSearchResults(queryObject);
+if(payload) {
+  let properties = payload.Properties;
+
+  let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
+  const removedDocs = applicationDocuments.filter(item => !item.active)
+  applicationDocuments = applicationDocuments.filter(item => !!item.active)
+  properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+  dispatch(prepareFinalObject("Properties[0]", properties[0]));
+
+}
+}
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
-  if (fileNumber) {
-    let queryObject = [{
-        key: "tenantId",
-        value: getTenantId()
-      },
-      {
-        key: "fileNumber",
-        value: fileNumber
-      }
-    ];
-
-    let payload = await getSearchResults(queryObject);
-
-    if (payload) {
-      let properties = payload.Properties;
-      dispatch(prepareFinalObject("Properties[0]", properties[0]));
-    }
-  }
+dispatch(prepareFinalObject("workflow.ProcessInstances", []))
+if(fileNumber){
+ 
+   await searchResults(action, state, dispatch, fileNumber)
+}
 }
 
-var reviewPropertyInfo = getReviewPropertyInfo(false);
-var reviewAuction = getReviewAuction(false);
-var reviewNocDetails = getReviewAdditional(false);
+export const onTabChange = async(tabIndex, dispatch, state) => {
+fileNumber = getQueryArg(window.location.href, "filenumber");
+let path = ""
+switch(tabIndex){
+    case 0:
+      path = `/estate-citizen/estate-branch-search-preview?filenumber=${fileNumber}`
+      break
+    case 1:
+      path = `/estate-citizen/estate-branch-owner-details?filenumber=${fileNumber}`
+      break
+}
+dispatch(setRoute(path))
+}
 
-const propertyDetails = getCommonCard({
-  reviewPropertyInfo,
-  reviewAuction,
-  reviewNocDetails
-})
+export const tabs = [
+{
+  tabButton: { labelName: "Property Details", labelKey: "ESTATE_PROPERTY_DETAILS" },
+},
+{
+  tabButton: { labelName: "Owner Details", labelKey: "ESTATE_OWNER_DETAILS" },
+}
+]
 
-const screenConfig = {
-  uiFramework: "material-ui",
-  name: "estate-branch-search-preview",
-  beforeInitScreen: (action, state, dispatch) => {
-    let fileNumber = getQueryArg(window.location.href, "fileNumber");
-    beforeInitFn(action, state, dispatch, fileNumber);
-    return action;
-  },
-  components: {
-    div: {
-      uiFramework: "custom-atoms",
-      componentPath: "Div",
-      props: {
-        className: "common-div-css search-preview"
-      },
-      children: {
-        headerDiv: {
-          uiFramework: "custom-atoms",
-          componentPath: "Container",
-          children: {
-            header: getCommonHeader({
-              labelName: "Property Details",
-              labelKey: "EST_COMMON_PROPERTY_DETAILS"
-            })
+const EstateBranchPropertyDetails = {
+uiFramework: "material-ui",
+name: "estate-branch-search-preview",
+beforeInitScreen: (action, state, dispatch) => {
+  fileNumber = getQueryArg(window.location.href, "filenumber");
+  beforeInitFn(action, state, dispatch, fileNumber);
+  return action;
+},
+components: {
+  div: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    props: {
+      className: "common-div-css search-preview"
+    },
+    children: {
+      headerDiv: {
+        uiFramework: "custom-atoms",
+        componentPath: "Container",
+        children: {
+          header1: {
+            gridDefination: {
+              xs: 12,
+              sm: 8
+            },
+           ...headerrow
+          },
           }
         },
-        propertyDetails
-      }
+        tabSection: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
+          componentPath: "CustomTabContainer",
+          props: {
+            tabs,
+            activeIndex: 0,
+            onTabChange
+          },
+          type: "array",
+        },
+      propertyReviewDetails
     }
   }
 }
+};
 
-export default screenConfig;
+export default EstateBranchPropertyDetails;

@@ -25,10 +25,40 @@ const getAcknowledgementCard = (
   type,
   businessService
 ) => {
+  var header;
   if (status === "success") {
-    const header = {
-      labelName: "Estate Property Master Entry Submitted Successfully",
-      labelKey: "EST_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
+    if (purpose == "apply") {
+      header = {
+        labelName: "Estate Property Master Entry Submitted Successfully",
+        labelKey: "EST_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
+      }
+    }
+    else if (purpose == "forward") {
+      header = {
+        labelName: "Estate Property Master Entry Forwarded Successfully",
+        labelKey: "EST_MASTER_ENTRY_FORWARD_SUCCESS_MESSAGE_MAIN"
+      }
+    }
+    else if (purpose == "sendback") {
+      header = {
+        labelName: "Estate Property Master Entry is Sent Back Successfully",
+        labelKey: "EST_MASTER_ENTRY_SENDBACK_SUCCESS_MESSAGE_MAIN"
+      }
+    }
+    else if (purpose == "reject") {
+      header = {
+        labelName: "Estate Property Master Entry Rejected",
+        labelKey: "EST_MASTER_ENTRY_REJECT_SUCCESS_MESSAGE_MAIN"
+      }
+    }
+    else if (purpose == "approve") {
+      header = {
+        labelName: "Estate Property Master Entry is Approved Successfully",
+        labelKey: "EST_MASTER_ENTRY_APPROVE_SUCCESS_MESSAGE_MAIN"
+      }
+    }
+    else {
+      header = {}
     }
 
     const tailText = {

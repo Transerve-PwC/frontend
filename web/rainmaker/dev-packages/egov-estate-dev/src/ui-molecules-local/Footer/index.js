@@ -28,13 +28,13 @@ class Footer extends React.Component {
       state,
       `screenConfiguration.preparedFinalObject.${dataPath}`
     );
-    const { status, applicationNumber } = (data && data[0]) || "";
+    const { status, fileNumber } = (data && data[0]) || "";
     return {
       label: "Download",
       leftIcon: "cloud_download",
       rightIcon: "arrow_drop_down",
       props: { variant: "outlined", style: { marginLeft: 10 } },
-      menu: getDownloadItems(status, applicationNumber, state).downloadMenu
+      menu: getDownloadItems(status, fileNumber, state).downloadMenu
       // menu: ["One ", "Two", "Three"]
     };
   };
@@ -45,14 +45,14 @@ class Footer extends React.Component {
       state,
       `screenConfiguration.preparedFinalObject.${dataPath}`
     );
-    const { status, applicationNumber } = (data && data[0]) || "";
+    const { status, fileNumber } = (data && data[0]) || "";
     return {
       label: "Print",
       leftIcon: "print",
       rightIcon: "arrow_drop_down",
       props: { variant: "outlined", style: { marginLeft: 10 } },
       // menu: ["One ", "Two", "Three"]
-      menu: getDownloadItems(status, applicationNumber, state).printMenu
+      menu: getDownloadItems(status, fileNumber, state).printMenu
     };
   };
 
@@ -62,30 +62,31 @@ class Footer extends React.Component {
   }
 
   openActionDialog = async item => {
-    const { handleFieldChange, setRoute, dataPath } = this.props;
+    const { handleFieldChange, setRoute, dataPath, moduleName } = this.props;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
-    const {workflow: {ProcessInstances = []}, Licenses} = preparedFinalObject || {}
+    const {workflow: {ProcessInstances = []}} = preparedFinalObject || {}
     let employeeList = [];
-    if (dataPath === "BPA") {
-      handleFieldChange(`${dataPath}.comment`, "");
-      handleFieldChange(`${dataPath}.assignees`, "");
-    } else {
-      let action = ""
-      switch(item.buttonLabel) {
-        case "SENDBACK": {
-          action = "FORWARD"
-          break
-        }
-        default : action = ""
+    let action = ""
+    switch(item.buttonLabel) {
+      case "SENDBACK": {
+        action = "FORWARD"
+        break
       }
-      let assignee = [];
-      if(!!action && Licenses[0].status !== "PENDINGL1VERIFICATION") {
-        const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
-        assignee = !!assigner.uuid ? [assigner.uuid] : []
-      }
-      handleFieldChange(`${dataPath}[0].comment`, "");
-      handleFieldChange(`${dataPath}[0].assignee`, assignee);
+      default : action = ""
     }
+    let assignee = [];
+    switch(moduleName) {
+      case "PropertyMaster": {
+        if(!!action && dataPath[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
+          const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+          assignee = !!assigner.uuid ? [assigner.uuid] : []
+        }
+        break
+      }
+    }
+
+    handleFieldChange(`${dataPath}[0].comment`, "");
+    handleFieldChange(`${dataPath}[0].assignee`, assignee);
 
     if (item.isLast) {
       const url =
@@ -213,39 +214,6 @@ class Footer extends React.Component {
           }
         };
       });
-      if(moduleName === "NewTL"){
-        const responseLength = get(
-          state.screenConfiguration.preparedFinalObject,
-          `licenseCount`,
-          1
-        );
-      const rolearray=  getUserInfo() && JSON.parse(getUserInfo()).roles.filter((item)=>{
-          if(item.code=="TL_CEMP"&&item.tenantId===tenantId)
-          return true;
-        })
-       const rolecheck= rolearray.length>0? true: false;
-    if ((status === "APPROVED"||status === "EXPIRED") && applicationType !=="RENEWAL"&& responseLength===1 && rolecheck===true) {
-      const editButton = {
-        label: "Edit",
-        labelKey: "WF_TL_RENEWAL_EDIT_BUTTON",
-        link: () => {
-          this.props.setRoute(
-            `/tradelicence/apply?applicationNumber=${applicationNumber}&licenseNumber=${licenseNumber}&tenantId=${tenantId}&action=EDITRENEWAL`
-          );
-        }
-      };
-      downloadMenu && downloadMenu.push(editButton);
-      const submitButton = {
-        label: "Submit",
-        labelKey: "WF_TL_RENEWAL_SUBMIT_BUTTON",
-        link: () => {
-          this.renewTradelicence(financialYear, tenantId);
-        }
-      };
-      downloadMenu && downloadMenu.push(submitButton);
-    }
-  }
-
     
     const buttonItems = {
       label: { labelName: "Take Action", labelKey: "WF_TAKE_ACTION" },

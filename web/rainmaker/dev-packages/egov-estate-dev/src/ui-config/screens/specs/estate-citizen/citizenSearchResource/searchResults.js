@@ -6,8 +6,6 @@ import {
 import { getTextToLocalMapping } from "./searchFunctions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
-const applicationType = getQueryArg(window.location.href, "type");
-
 export const searchResults = {
   uiFramework: "custom-molecules",
   moduleName: "egov-estate",
@@ -17,10 +15,8 @@ export const searchResults = {
     columns: [
       getTextToLocalMapping("Action"),
       getTextToLocalMapping("File No"),
-      getTextToLocalMapping("Property Id"),
-      getTextToLocalMapping("House No"), 
-      getTextToLocalMapping("Owner Name"),
-      getTextToLocalMapping("Mobile No")
+      getTextToLocalMapping("Site Number"), 
+      getTextToLocalMapping("Owner Name")
     ],
     options: {
       filter: false,
@@ -37,5 +33,6 @@ export const searchResults = {
 };
 
 const onRowClick = rowData => {
-  window.location.href = `ownership-transfer?fileNumber=${rowData[0]}&applicationType=${applicationType}`;
+  const type = getQueryArg(window.location.href, "type")
+  window.location.href = `apply?fileNumber=${rowData[1]}&applicationType=${type}`;
 };

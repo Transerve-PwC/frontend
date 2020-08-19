@@ -197,7 +197,12 @@ export const headerDiv = {
             cpNumberField, {
               jsonPath:`Properties[0].propertyDetails.owners[${index}].cpNumber`
             }
-          )
+          ),
+          share: getLabelWithValue(
+            shareField, {
+              jsonPath: `Properties[0].propertyDetails.owners[${index}].share`
+            }
+          ),
       })
     })
   }
