@@ -169,20 +169,18 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "apply",
   beforeInitScreen: (action, state, dispatch) => {
-    if(!getQueryArg(window.location.href, "applicationNumber")) {
-      dispatch(
-        prepareFinalObject(
-          "Licenses",
-          []
-        )
+    dispatch(
+      prepareFinalObject(
+        "Licenses",
+        []
       )
-      dispatch(
-        prepareFinalObject(
-          "LicensesTemp",
-          []
-        )
+    )
+    dispatch(
+      prepareFinalObject(
+        "LicensesTemp",
+        []
       )
-    }
+    )
     const queryValue = getQueryArg(window.location.href, "applicationNumber") || get(
       state.screenConfiguration.preparedFinalObject,
       "Licenses[0].applicationNumber",

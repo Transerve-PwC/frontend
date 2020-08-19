@@ -92,7 +92,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       dispatch,
       status,
       applicationNumber,
-      tenantId
+      tenantId,"ownership-transfer","OT"
     );
     const CitizenprintCont=footerReviewTop(
       action,

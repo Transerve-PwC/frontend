@@ -953,11 +953,12 @@ const getStatementForDocType = docType => {
 };
 
 
-export const downloadAcknowledgementForm = (Owners, feeEstimate ,mode="download") => {
+export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,applicationType,mode="download") => {
   const queryStr = [
-    { key: "key", value: "rp-ownership-transfer-fresh" },
+    { key: "key", value: status == `${applicationType}_PENDINGPAYMENT` || status == `${applicationType}_APPROVED` || status == `${applicationType}_REJECTEDPAID` ? `rp-${pdfkey}-paid`: `rp-${pdfkey}-fresh`},
     { key: "tenantId", value: "ch" }
   ]
+
   let {documents} = Owners[0].additionalDetails;
   let fees = feeEstimate.map(item => ({
     ...item,
