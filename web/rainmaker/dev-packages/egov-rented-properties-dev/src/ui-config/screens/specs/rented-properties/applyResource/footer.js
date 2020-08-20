@@ -1,4 +1,4 @@
-import { getCommonApplyFooter, validateFields,downloadAcknowledgementForm } from "../../utils";
+import { getCommonApplyFooter, validateFields,downloadAcknowledgementForm,download } from "../../utils";
 import { getLabel, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
@@ -7,6 +7,9 @@ import { applyRentedProperties,applynoticegeneration,applyrecoveryNotice } from 
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { some } from "lodash";
 import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP, DUPLICATECOPYOFALLOTMENTLETTERRP, PERMISSIONTOMORTGAGE, TRANSITSITEIMAGES, NOTICE_GENERATION } from "../../../../../ui-constants";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -601,6 +604,29 @@ export const footer = getCommonApplyFooter({
     pdfkey,
     applicationType
   ) => {
+    const data = function() {
+      let data1 = get(
+        state.screenConfiguration.preparedFinalObject,
+        "applicationDataForReceipt",
+        {}
+      );
+      let data2 = get(
+        state.screenConfiguration.preparedFinalObject,
+        "receiptDataForReceipt",
+        {}
+      );
+      let data3 = get(
+        state.screenConfiguration.preparedFinalObject,
+        "mdmsDataForReceipt",
+        {}
+      );
+      let data4 = get(
+        state.screenConfiguration.preparedFinalObject,
+        "userDataForReceipt",
+        {}
+      );
+      return {...data1, ...data2, ...data3, ...data4}
+    }
     /** MenuButton data based on status */
     let downloadMenu = [];
     console.log(pdfkey,applicationType)
@@ -625,8 +651,140 @@ export const footer = getCommonApplyFooter({
       },
       leftIcon: "assignment"
     };
+
+    let receiptDownloadObject = {
+      label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
+      link: () => {
+  
+        const Owners = get(state.screenConfiguration.preparedFinalObject, "Owners", []);
+        const receiptQueryString = [
+          { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.Owners[0].ownerDetails, "applicationNumber") },
+          { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.Owners[0], "tenantId") }
+        ]
+        download(receiptQueryString, Owners, data(), userInfo.name);
+        // generateReceipt(state, dispatch, "receipt_download");
+      },
+      leftIcon: "receipt"
+    };
+    switch (status) {
+      case "OT_APPROVED":
+        downloadMenu = [
+          receiptDownloadObject,
+          applicationDownloadObject
+        ];
+        printMenu = [
+          applicationPrintObject
+        ];
+        break;
+      default:
+          downloadMenu = [
+            applicationDownloadObject
+          ];
+          printMenu = [
+            applicationPrintObject
+          ];
+        break;
+    }
+  
+    return {
+      rightdiv: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        props: {
+          style: { textAlign: "right", display: "flex" }
+        },
+        children: {
+          downloadMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                 leftIcon: "cloud_download",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+                menu: downloadMenu
+              }
+            }
+          },
+          printMenu: {
+            uiFramework: "custom-atoms-local",
+            moduleName: "egov-tradelicence",
+            componentPath: "MenuButton",
+            props: {
+              data: {
+                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                leftIcon: "print",
+                rightIcon: "arrow_drop_down",
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+                menu: printMenu
+              }
+            }
+          }
+  
+        },
+        // gridDefination: {
+        //   xs: 12,
+        //   sm: 6
+        // }
+      }
+    }
+  };
+
+  export const downloadContainerForDuplicateCopy = (
+    action,
+    state,
+    dispatch,
+    status,
+    applicationNumber,
+    tenantId,
+    pdfkey,
+    applicationType
+  ) => {
+  
+    /** MenuButton data based on status */
+    let downloadMenu = [];
+    console.log(pdfkey,applicationType)
+    let printMenu = [];  
+    let applicationDownloadObject = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = OwnersTemp[0].reviewDocData;
+        set(Owners[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData,status,pdfkey,applicationType);
+      },
+      leftIcon: "assignment"
+    };
+    let applicationPrintObject = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = OwnersTemp[0].reviewDocData;
+        set(Owners[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData, "print");
+      },
+      leftIcon: "assignment"
+    };
+
+    let receiptDownloadObject = {
+      label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
+      link: () => {
+  
+        const Owners = get(state.screenConfiguration.preparedFinalObject, "Owners", []);
+        const receiptQueryString = [
+          { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.Owners[0].ownerDetails, "applicationNumber") },
+          { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.Owners[0], "tenantId") }
+        ]
+        download(receiptQueryString, Owners, data(), userInfo.name);
+        // generateReceipt(state, dispatch, "receipt_download");
+      },
+      leftIcon: "receipt"
+    };
     downloadMenu = [
-      applicationDownloadObject
+      applicationDownloadObject,
+      receiptDownloadObject
     ];
     printMenu = [
       applicationPrintObject
@@ -677,3 +835,4 @@ export const footer = getCommonApplyFooter({
       }
     }
   };
+  

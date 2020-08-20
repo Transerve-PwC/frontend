@@ -9,7 +9,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getDuplicateCopySearchResults} from "../../../../ui-utils/commons";
 import { getDuplicateCopyReviewPropertyAddressDetails , getDuplicateCopyPreviewApplicantDetails} from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { footerReview, downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
+import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
+import {downloadPrintContainer} from "./applyResource/footer"
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
 import { set } from "lodash";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -92,7 +93,8 @@ const duplicateReviewDetails = getCommonCard({
           dispatch,
           status,
           applicationNumber,
-          tenantId
+          tenantId,
+          "duplicate-copy","DC"
         );
         const CitizenprintCont=footerReviewTop(
           action,

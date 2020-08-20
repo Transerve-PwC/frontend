@@ -1007,6 +1007,53 @@ export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,a
   }
 }
 
+export const download = (receiptQueryString, Owners, data, generateBy, mode = "download") => {
+  const FETCHRECEIPT = {
+    GET: {
+      URL: "/collection-services/payments/_search",
+      ACTION: "_get",
+    },
+  };
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
+      const queryStr = [
+        { key: "key", value: "rp-payment-receipt" },
+        { key: "tenantId", value: receiptQueryString[1].value.split('.')[0] }
+      ]
+      if(payloadReceiptDetails&&payloadReceiptDetails.Payments&&payloadReceiptDetails.Payments.length==0){
+        console.log("Could not find any receipts");   
+        return;
+      }
+      let {Payments} = payloadReceiptDetails;
+      let {billAccountDetails} = Payments[0].paymentDetails[0].bill.billDetails[0];
+      billAccountDetails = billAccountDetails.map(({taxHeadCode, ...rest}) => ({
+        ...rest,
+        taxHeadCode: taxHeadCode.includes("_FEE") ? "TL_FEE" : taxHeadCode.includes("_PENALTY") ? "TL_TIME_PENALTY" : taxHeadCode.includes("_TAX") ? "TL_TAX" : taxHeadCode.includes("_ROUNDOFF") ? "TL_ROUNDOFF" : taxHeadCode.includes("REHRI_REGISTRATION_CHARGES") ? "TL_CHARGES"  : taxHeadCode
+      }))
+      Payments = [{...Payments[0], paymentDetails: [{...Payments[0].paymentDetails[0], bill: {...Payments[0].paymentDetails[0].bill, billDetails: [{...Payments[0].paymentDetails[0].bill.billDetails[0],billAccountDetails }] } }]}]
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Payments, generateBy }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+        .then(res => {
+          res.filestoreIds[0]
+          if(res&&res.filestoreIds&&res.filestoreIds.length>0){
+            res.filestoreIds.map(fileStoreId=>{
+              downloadReceiptFromFilestoreID(fileStoreId,mode)
+            })          
+          }else{
+            console.log("Error In Receipt Download");        
+          }         
+        });
+    })
+  } catch (exception) {
+    alert('Some Error Occured while downloading Receipt!');
+  }
+}
+
 export const downloadCertificateForm = (Licenses, data, mode='download') => {
  const applicationType= Licenses &&  Licenses.length >0 ? get(Licenses[0],"applicationType") : "NEW";
   const queryStr = [
