@@ -604,7 +604,9 @@ export const footer = getCommonApplyFooter({
     pdfkey,
     applicationType
   ) => {
+    debugger
     const data = function() {
+      debugger
       let data1 = get(
         state.screenConfiguration.preparedFinalObject,
         "applicationDataForReceipt",
@@ -627,9 +629,9 @@ export const footer = getCommonApplyFooter({
       );
       return {...data1, ...data2, ...data3, ...data4}
     }
+
     /** MenuButton data based on status */
     let downloadMenu = [];
-    console.log(pdfkey,applicationType)
     let printMenu = [];  
     let applicationDownloadObject = {
       label: { labelName: "Application", labelKey: "TL_APPLICATION" },
@@ -666,6 +668,22 @@ export const footer = getCommonApplyFooter({
       },
       leftIcon: "receipt"
     };
+
+    let receiptDownloadObjectForDC = {
+      label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
+      link: () => {
+  
+        const Owners = get(state.screenConfiguration.preparedFinalObject, "DuplicateCopyApplications", []);
+        console.log(Owners)
+        const receiptQueryString = [
+          { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "applicationNumber") },
+          { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "tenantId") }
+        ]
+        download(receiptQueryString, Owners, data(), userInfo.name);
+        // generateReceipt(state, dispatch, "receipt_download");
+      },
+      leftIcon: "receipt"
+    };
     switch (status) {
       case "OT_APPROVED":
         downloadMenu = [
@@ -676,9 +694,9 @@ export const footer = getCommonApplyFooter({
           applicationPrintObject
         ];
         break;
-      default:
+      case "DC_APPROVED":
           downloadMenu = [
-            applicationDownloadObject
+            receiptDownloadObjectForDC,
           ];
           printMenu = [
             applicationPrintObject
@@ -757,16 +775,16 @@ export const footer = getCommonApplyFooter({
       },
       leftIcon: "assignment"
     };
-    let applicationPrintObject = {
-      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
-      link: () => {
-        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
-        const documents = OwnersTemp[0].reviewDocData;
-        set(Owners[0],"additionalDetails.documents",documents)
-        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData, "print");
-      },
-      leftIcon: "assignment"
-    };
+    // let applicationPrintObject = {
+    //   label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+    //   link: () => {
+    //     const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+    //     const documents = OwnersTemp[0].reviewDocData;
+    //     set(Owners[0],"additionalDetails.documents",documents)
+    //     downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData, "print");
+    //   },
+    //   leftIcon: "assignment"
+    // };
 
     let receiptDownloadObject = {
       label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },

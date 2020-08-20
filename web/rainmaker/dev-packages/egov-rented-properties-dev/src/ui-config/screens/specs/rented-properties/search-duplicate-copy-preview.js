@@ -119,9 +119,6 @@ const duplicateReviewDetails = getCommonCard({
               printCont
             );
     
-
-
-
         const footer = footerReview(
           action,
           state,

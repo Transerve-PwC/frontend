@@ -100,17 +100,17 @@ const beforeInitFn = async(action, state, dispatch) => {
     );
 
 
-    process.env.REACT_APP_NAME === "Citizen"
-      ? set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          CitizenprintCont
-        )
-      : set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          printCont
-        );
+    // process.env.REACT_APP_NAME === "Citizen"
+    //   ? set(
+    //       action,
+    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+    //       CitizenprintCont
+    //     )
+    //   : set(
+    //       action,
+    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+    //       printCont
+    //     );
   }
 const mortgagePreviewDetails = {
     uiFramework: "material-ui",
