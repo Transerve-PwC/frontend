@@ -7,7 +7,7 @@ import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK" || item.code === "CTL_SURVEYOR");
+const findItem = roles.find(item => item.code === "RP_CLERK" || item.code === "RP_SURVEYOR");
 
 const header = getCommonHeader(
     {

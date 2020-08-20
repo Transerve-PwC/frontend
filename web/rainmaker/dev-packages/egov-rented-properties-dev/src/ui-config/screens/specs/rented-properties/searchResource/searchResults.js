@@ -66,7 +66,7 @@ export const searchResults = {
 
 const onRowClick = rowData => {
   const {roles = []} = userInfo
-  const findItem = roles.find(item => item.code === "CTL_CLERK");
+  const findItem = roles.find(item => item.code === "RP_CLERK");
   if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
     window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
   } else {
