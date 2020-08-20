@@ -1,6 +1,5 @@
 import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {viewFour} from './review'
 
 const headerObj = value => {
@@ -120,7 +119,7 @@ const getDetailsContainer = (section, data_config) => {
     return getCommonContainer(values);
 }
 
-export const setFirstStep = (action, state, dispatch, {screenKey, screenPath, data_config, format_config}) => {
+export const setFirstStep = (state, dispatch, {data_config, format_config}) => {
     let {sections = []} = format_config
     sections = sections.reduce((acc, section) => {
         return {
@@ -131,12 +130,5 @@ export const setFirstStep = (action, state, dispatch, {screenKey, screenPath, da
         })
     }
     }, {})
-    dispatch(
-        handleField(
-          screenKey,
-          screenPath,
-          "children",
-          sections
-        )
-      );
+    return sections;
 }

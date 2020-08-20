@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getCommonCard, getCommonTitle, getCommonParagraph } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 const prepareDocuments = (documents, jsonPath) => {
@@ -18,7 +18,7 @@ const prepareDocuments = (documents, jsonPath) => {
     return documentsArr;
   };
 
-export const setDocumentData = async(action, state, dispatch, {screenKey, screenPath, format_config}) => {
+export const setDocumentData = async(state, dispatch, {format_config}) => {
     const {jsonPath, documentList = []} = format_config;
     const documents = documentList.map(item => ({
       type: item.code,
@@ -60,17 +60,11 @@ export const setDocumentData = async(action, state, dispatch, {screenKey, screen
             applicationDocsReArranged
           )
         );
-      dispatch(
-        handleField(
-            screenKey,
-            screenPath,
-            "props.inputProps",
-            documents
-        )
-    );
       dispatch(prepareFinalObject("temp[0].documents", documentTypes))
+      return documents
   }
 
+export const inputProps = []
 
 const documentList = {
     uiFramework: "custom-containers-local",
@@ -85,7 +79,7 @@ const documentList = {
         labelName: "DOWNLOAD FILE",
         labelKey: "TL_BUTTON_DOWNLOAD_FILE"
       },
-      inputProps : [],
+      inputProps,
       documentTypePrefix: "EST_",
       documentsJsonPath: "temp[0].documents",
       uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
