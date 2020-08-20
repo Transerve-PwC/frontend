@@ -2603,6 +2603,12 @@ import {
           "EST_LAST_MODIFIED_ON",
           localisationLabels
         );
+      case "Search Results for Applications":
+        return getLocaleLabels(
+          "Search Results for Applications",
+          "EST_SEARCH_RESULTS_APPLICATIONS",
+          localisationLabels
+        );
     }
   };
   
