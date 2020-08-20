@@ -1,6 +1,5 @@
 import { getCommonSubHeader, getCommonGrayCard, getLabelWithValue, getCommonContainer, getCommonCard, getCommonTitle, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { changeStep } from "../footer";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {preview} from '../preview.json'
 
 const headerDiv = (isEditable = true, label, index) => {
@@ -87,7 +86,7 @@ export const viewFour = (section) => {
 }
 
 
-export const setThirdStep = async (action, state, dispatch, {screenKey, screenPath}) => {
+export const setThirdStep = async (state, dispatch) => {
     const {sections = []} = preview;
     const details = sections.reduce((acc, section, index) => {
       return {
@@ -105,12 +104,5 @@ export const setThirdStep = async (action, state, dispatch, {screenKey, screenPa
       }),
       ...details
     })
-    dispatch(
-      handleField(
-          screenKey,
-          screenPath,
-          "reviewDetails",
-          reviewDetails
-      )
-      )
+     return reviewDetails
   }
