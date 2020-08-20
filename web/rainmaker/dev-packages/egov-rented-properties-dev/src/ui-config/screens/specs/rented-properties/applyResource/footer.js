@@ -604,9 +604,7 @@ export const footer = getCommonApplyFooter({
     pdfkey,
     applicationType
   ) => {
-    debugger
     const data = function() {
-      debugger
       let data1 = get(
         state.screenConfiguration.preparedFinalObject,
         "applicationDataForReceipt",
