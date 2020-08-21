@@ -17,7 +17,7 @@ const cardItems = [{
       labelName: "Apply"
     },
     icon: < EstateIcon / > ,
-    route: `estate-branch-apply`
+    route: `manimajra-branch-apply`
   },
   {
     label: {

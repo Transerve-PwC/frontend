@@ -14,8 +14,8 @@ const tenantId = getTenantId();
 
 const cardItems = [{
     label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
-      labelName: "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed"
+      labelKey: "EST_MANIMAJRA_SALE_GIFT_EXCHANGE_FAMILY_TRANSFER_DEED",
+      labelName: "Entry of ownership on the basis of Sale/gift/ exchange/family transfer deed"
     },
     icon: < EstateIcon / > ,
     route: `property-search?type=EstateBranch_OwnershipTransfer_SaleDeed`,
@@ -27,7 +27,7 @@ const cardItems = [{
   {
     label: {
       labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_WILL",
-      labelName: "Transfer of Ownership on the basis of Registered Will"
+      labelName: "Entry of ownership on the basis of registered will"
     },
     icon: < EstateIcon / > ,
     route: "ownership-transfer?type=registeredWill",
@@ -38,8 +38,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_UNREGISTERED_WILL",
-      labelName: "Transfer of Ownership on the basis of Un-registered Will"
+      labelKey: "EST_MANIMAJRA_OWNERSHIP_UNREGISTERED_WILL",
+      labelName: "Entry of ownership on the basis of un-registered will"
     },
     icon: < EstateIcon / > ,
     route: "ownership-transfer?type=unregisteredWill",
@@ -50,8 +50,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_INTESTATE_DEATH",
-      labelName: "Transfer of Ownership on the basis of Intestate Death (without will)"
+      labelKey: "EST_MANIMAJRA_OWNERSHIP_INTESTATE_DEATH_WILL",
+      labelName: "Entry of ownership on the basis of intestate death (without will)"
     },
     icon: < EstateIcon / > ,
     route: "ownership-transfer?type=intestateDeath",
@@ -62,8 +62,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_PARTNERSHIP_DEED",
-      labelName: "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company"
+      labelKey: "EST_MANIMAJRA_OWNERSHIP_COURT_DECREE_FAMILY_SETTLEMENT",
+      labelName: "Entry of ownership on the basis of court decree/family settlement"
     },
     icon: < EstateIcon / > ,
     route: "ownership-transfer?type=partnershipDeed",
@@ -74,8 +74,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_TRANSFER_OF_PROPERTY",
-      labelName: "Transfer of Property on the basis of Court Decree/Family Settlement"
+      labelKey: "EST_MANIMAJRA_ALLOTMENT_NEW_HOUSE_NO",
+      labelName: "Allotment of new house number"
     },
     icon: < EstateIcon / > ,
     route: "",
@@ -86,8 +86,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_NO_OBJECTION_CERTIFICATE",
-      labelName: "No Objection Certificate for Transfer of Lease Rights by way of Sale/Gift/Family Transfer Deed/Exchange Deed"
+      labelKey: "EST_MANIMAJRA_ISSUANCE_OWNERSHIP_NDC",
+      labelName: "Issuance of ownership/No Due Certificate"
     },
     icon: < EstateIcon / > ,
     route: "",
@@ -98,80 +98,8 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_EXECUTION_OF_LEASE_DEED",
-      labelName: "Execution of Lease Deed/Deed of Conveyance"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_NO_DUES_CERTIFICATE",
-      labelName: "No Dues Certificate"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_PERMISSION_TO_MORTGAGE",
-      labelName: "Permission to Mortgage"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CONVERSION_FROM_LEASEHOLD_TO_FREEHOLD",
-      labelName: "Conversion from Leasehold to Freehold Property"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_DUPLICATE_ALLOTMENT_POSSESSION_LETTER",
-      labelName: "Duplicate Allotment Letter/Possession Letter"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CONVERSION_OF_PROPERTY_RES_TO_COMM",
-      labelName: "Conversion of Property from residential to Commercial (SCF to SCO)"
-    },
-    icon: < EstateIcon / > ,
-    route: "",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CHANGE_OF_TRADE",
-      labelName: "Change of Trade"
+      labelKey: "EST_MANIMAJRA_NOC_WATER_SEWEARAGE_ELECTRICITY_CONNECTION_OWNERSHIP_CONVERSION_RESIADENTIAL_TO_COMMERCIAL",
+      labelName: "NOC for water/sewerage and electricity connection/ownership letter/conversion of residential into commercial"
     },
     icon: < EstateIcon / > ,
     route: "",
