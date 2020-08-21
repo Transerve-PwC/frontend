@@ -72,12 +72,12 @@ const searchApplications = {
       },
       {
         key: "businessServices",
-        value: "PropertyMaster"
+        value: "SaleGift"
       }
     ]
     dispatch(prepareFinalObject("searchApplicationsScreen", {}))
     searchApiCall(state, dispatch, true)
-    // getStatusList(action, state, dispatch, queryObject, "search-applications", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", "PropertyMaster")
+    getStatusList(action, state, dispatch, queryObject, "search-applications", "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.applicationStatus", "SaleGift")
     return action
   },
   components: {
