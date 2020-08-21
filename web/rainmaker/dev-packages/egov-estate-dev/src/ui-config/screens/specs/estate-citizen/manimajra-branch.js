@@ -46,9 +46,9 @@ const cardItems = [{
 ]
 
 
-const BuildingBranchHome = {
+const ManimajraBranchHome = {
   uiFramework: "material-ui",
-  name: "building-branch",
+  name: "manimajra-branch",
   // beforeInitScreen: (action, state, dispatch) => {
   //   return action
   // },
@@ -74,4 +74,4 @@ const BuildingBranchHome = {
   }
 }
 
-export default BuildingBranchHome
+export default ManimajraBranchHome

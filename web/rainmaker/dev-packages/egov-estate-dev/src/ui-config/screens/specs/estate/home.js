@@ -79,7 +79,7 @@ const citizenCardItems = [
       labelName: "Manimajra"
     },
     icon: < FormIcon / > ,
-    route: `/estate-citizen/manimajra`
+    route: `/estate-citizen/manimajra-branch`
   }
 ]
 
