@@ -952,25 +952,27 @@ const getStatementForDocType = docType => {
   }
 };
 
-
-export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,applicationType,mode="download") => {
-  const queryStr = [
-    { key: "key", value: status == `${applicationType}_PENDINGPAYMENT` || status == `${applicationType}_APPROVED` || status == `${applicationType}_REJECTEDPAID` ? `rp-${pdfkey}-paid`: `rp-${pdfkey}-fresh`},
-    { key: "tenantId", value: "ch" }
-  ]
-
+export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,applicationType,payloadName,mode="download") => {
+  let queryStr = []
+  switch(applicationType){
+    case 'MG':
+        queryStr = [
+          { key: "key", value: status == `${applicationType}_APPROVED` ? `rp-${pdfkey}-approved-alternate`: `rp-${pdfkey}-fresh`},
+          { key: "tenantId", value: "ch" }        
+          ]
+    break;
+    case 'DC':
+    case 'OT':
+        queryStr = [
+          { key: "key", value: status == `${applicationType}_PENDINGPAYMENT` || status == `${applicationType}_APPROVED` || status == `${applicationType}_REJECTEDPAID` ? `rp-${pdfkey}-paid`: `rp-${pdfkey}-fresh`},
+          { key: "tenantId", value: "ch" }
+        ]
+    break;   
+  }
+  
   let {documents} = Owners[0].additionalDetails;
-  let fees = feeEstimate.map(item => ({
-    ...item,
-    label: getLocaleLabels(item.name.labelName, item.name.labelKey)
-  }))
-  const totalAmount = feeEstimate.reduce((prev, curr) => prev + Number(curr.value), 0).toFixed(2);
-  const {owners, additionalDetail = {}} = Owners[0].ownerDetails;
-  let {businessStartDate} = additionalDetail;
-  businessStartDate = new Date(businessStartDate).getTime();
   const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
   const ownerDocument = findIndex !== -1 ? documents[findIndex] : {link : `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`};
-  // documents = findIndex !== -1 ? [...documents.slice(0, findIndex), ...documents.slice(findIndex+1)] : documents
   const length = documents.length % 4
   documents = !!length ? [...documents, ...new Array(4 - length).fill({title: "", name: ""})] : documents
   const myDocuments = documents.map((item) => ({
@@ -982,7 +984,19 @@ export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,a
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
   let ownerInfo = Owners[0];
-  ownerInfo = {...ownerInfo, ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments: myDocuments}}
+
+  switch(applicationType){
+    case 'OT':
+      ownerInfo = {...ownerInfo, ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments: myDocuments}}
+      break;
+    case 'DC':
+    case 'MG':
+        ownerInfo = {...ownerInfo, applicationDocuments: myDocuments}
+    break;
+    default:
+      break;
+
+  }
     
   const DOWNLOADRECEIPT = {
     GET: {
@@ -991,19 +1005,200 @@ export const downloadAcknowledgementForm = (Owners, feeEstimate ,status,pdfkey,a
     },
   };
   try {
-    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Owners: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
-      .then(res => {
-        res.filestoreIds[0]
-        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-          res.filestoreIds.map(fileStoreId => {
-            downloadReceiptFromFilestoreID(fileStoreId,mode)
-          })
-        } else {
-          console.log("Error In Acknowledgement form Download");
-        }
-      });
+   switch(applicationType){
+     case 'DC':
+     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { DuplicateCopyApplications: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+     .then(res => {
+       res.filestoreIds[0]
+       if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+         res.filestoreIds.map(fileStoreId => {
+           downloadReceiptFromFilestoreID(fileStoreId,mode)
+         })
+       } else {
+         console.log("Error In Acknowledgement form Download");
+       }
+     });
+     break;
+     case 'MG':
+        httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { MortgageApplications: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId,mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+        break;
+        case 'OT':
+            httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Owners: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+            .then(res => {
+              res.filestoreIds[0]
+              if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+                res.filestoreIds.map(fileStoreId => {
+                  downloadReceiptFromFilestoreID(fileStoreId,mode)
+                })
+              } else {
+                console.log("Error In Acknowledgement form Download");
+              }
+            });
+            break;    
+     default:
+       break;   
+   }
   } catch (exception) {
     alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
+export const downloadAcknowledgementFormForCitizen = (Owners , feeEstimate , type,pdfkey,mode="download") => {
+  let queryStr = []
+  switch(type){
+    case 'PERMISSIONTOMORTGAGE':
+        queryStr = [
+          { key: "key", value: `rp-${pdfkey}-fresh`},
+          { key: "tenantId", value: "ch" }        
+          ]
+    break;
+    case 'DUPLICATECOPYOFALLOTMENTLETTERRP':
+    case 'OWNERSHIPTRANSFERRP':
+        queryStr = [
+          { key: "key", value: `rp-${pdfkey}-fresh`},
+          { key: "tenantId", value: "ch" }
+        ]
+    break;   
+  }
+  
+  let {documents} = Owners[0].additionalDetails;
+  const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
+  const ownerDocument = findIndex !== -1 ? documents[findIndex] : {link : `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`};
+  const length = documents.length % 4
+  documents = !!length ? [...documents, ...new Array(4 - length).fill({title: "", name: ""})] : documents
+  const myDocuments = documents.map((item) => ({
+    ...item, title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+  let ownerInfo = Owners[0];
+
+  switch(type){
+    case 'OWNERSHIPTRANSFERRP':
+      ownerInfo = {...ownerInfo, ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments: myDocuments}}
+      break;
+    case 'DUPLICATECOPYOFALLOTMENTLETTERRP':
+    case 'PERMISSIONTOMORTGAGE':
+        ownerInfo = {...ownerInfo, applicationDocuments: myDocuments}
+    break;
+    default:
+      break;
+
+  }
+    
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+   switch(type){
+     case 'DUPLICATECOPYOFALLOTMENTLETTERRP':
+     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { DuplicateCopyApplications: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+     .then(res => {
+       res.filestoreIds[0]
+       if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+         res.filestoreIds.map(fileStoreId => {
+           downloadReceiptFromFilestoreID(fileStoreId,mode)
+         })
+       } else {
+         console.log("Error In Acknowledgement form Download");
+       }
+     });
+     break;
+     case 'PERMISSIONTOMORTGAGE':
+        httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { MortgageApplications: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId,mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+        break;
+        case 'OWNERSHIPTRANSFERRP':
+            httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Owners: [ownerInfo] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+            .then(res => {
+              res.filestoreIds[0]
+              if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+                res.filestoreIds.map(fileStoreId => {
+                  downloadReceiptFromFilestoreID(fileStoreId,mode)
+                })
+              } else {
+                console.log("Error In Acknowledgement form Download");
+              }
+            });
+            break;    
+     default:
+       break;   
+   }
+  } catch (exception) {
+    alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
+
+export const download = (receiptQueryString, Owners, data, generateBy, mode = "download") => {
+  const FETCHRECEIPT = {
+    GET: {
+      URL: "/collection-services/payments/_search",
+      ACTION: "_get",
+    },
+  };
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
+      const queryStr = [
+        { key: "key", value: "rp-payment-receipt" },
+        { key: "tenantId", value: receiptQueryString[1].value.split('.')[0] }
+      ]
+      if(payloadReceiptDetails&&payloadReceiptDetails.Payments&&payloadReceiptDetails.Payments.length==0){
+        console.log("Could not find any receipts");   
+        return;
+      }
+      let {Payments} = payloadReceiptDetails;
+      let {billAccountDetails} = Payments[0].paymentDetails[0].bill.billDetails[0];
+      billAccountDetails = billAccountDetails.map(({taxHeadCode, ...rest}) => ({
+        ...rest,
+        taxHeadCode: taxHeadCode.includes("_DUE") ? "RP_DUE" : taxHeadCode.includes("_PENALTY") ? "RP_PENALTY" : taxHeadCode.includes("_TAX") ? "RP_TAX" : taxHeadCode.includes("_ROUNDOFF") ? "RP_ROUNDOFF" : taxHeadCode.includes("_CHARGES") ? "RP_CHARGES"  : taxHeadCode
+      }))
+      Payments = [{...Payments[0], paymentDetails: [{...Payments[0].paymentDetails[0], bill: {...Payments[0].paymentDetails[0].bill, billDetails: [{...Payments[0].paymentDetails[0].bill.billDetails[0],billAccountDetails }] } }]}]
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Payments, generateBy }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+        .then(res => {
+          res.filestoreIds[0]
+          if(res&&res.filestoreIds&&res.filestoreIds.length>0){
+            res.filestoreIds.map(fileStoreId=>{
+              downloadReceiptFromFilestoreID(fileStoreId,mode)
+            })          
+          }else{
+            console.log("Error In Receipt Download");        
+          }         
+        });
+    })
+  } catch (exception) {
+    alert('Some Error Occured while downloading Receipt!');
   }
 }
 

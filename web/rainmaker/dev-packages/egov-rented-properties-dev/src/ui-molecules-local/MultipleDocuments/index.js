@@ -14,6 +14,10 @@ import { getFileUrl,getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons
 import moment from 'moment'
 import { checkValueForNA } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { get } from "lodash";
+
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const findItem = roles.find(item => item.code === "RP_CLERK");
 const styles = {
     card: {
       paddingTop: 8,
@@ -101,7 +105,7 @@ class MultipleDocuments extends Component {
                   <CardContent>
                   <Grid container>
                   <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
-                    {btnhide &&
+                    {btnhide && findItem &&
                       (<Grid xs={12} sm={4} style={{textAlign: "right"}}>
                   <Button  mt={1} mr={0} color="primary"  variant="contained"  
                   onClick={() => { 
@@ -127,9 +131,9 @@ class MultipleDocuments extends Component {
                           </Grid>
                           <Grid item xs={9}>
                             <LabelContainer
-                              onClick={content.callBack ? content.callBack : content.url ? () => dispatch(setRoute(content.url)) : () => {}}
+                              onClick={content.callBack ? content.callBack : content.url ? () => dispatch(setRoute(content.url+`&NoticedetailsId=${get(datum, content.jsonPath, "")}`)) : () => {}}
                               labelKey={
-                                content.type === "date" ? moment(get(datum, content.jsonPath, "")).format('dddd, MMMM Do, YYYY h:mm:ss A') : get(datum, content.jsonPath, "")
+                                content.type === "date" ? moment(get(datum, content.jsonPath, "")).format('dddd, MMMM Do, YYYY') : get(datum, content.jsonPath, "")
                                 }
                               fontSize={14}
                               checkValueForNA={checkValueForNA}

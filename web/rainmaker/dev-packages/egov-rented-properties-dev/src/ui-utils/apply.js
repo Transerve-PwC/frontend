@@ -66,7 +66,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "masterDataAction", "");
           response = await httpRequest(
             "post",
-            "/csp/property/_create",
+            "/rp-services/property/_create",
             "",
             [],
             { Properties: queryObject }
@@ -84,7 +84,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "propertyDetails.applicationDocuments", applicationDocuments)
           response = await httpRequest(
             "post",
-            "/csp/property/_update",
+            "/rp-services/property/_update",
             "",
             [],
             { Properties: queryObject }
@@ -135,7 +135,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "applicationAction", "DRAFT");
           response = await httpRequest(
             "post",
-            "/csp/ownership-transfer/_create",
+            "/rp-services/ownership-transfer/_create",
             "",
             [],
             { Owners: queryObject }
@@ -153,7 +153,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "ownerDetails.ownershipTransferDocuments", ownershipTransferDocuments)
           response = await httpRequest(
             "post",
-            "/csp/ownership-transfer/_update",
+            "/rp-services/ownership-transfer/_update",
             "",
             [],
             { Owners: queryObject }
@@ -221,7 +221,7 @@ let userInfo = JSON.parse(getUserInfo());
       console.log(`PAYLOAD REQ : ${queryObject}`);
       response = await httpRequest(
         "post",
-        "/csp/property-images/_create",
+        "/rp-services/property-images/_create",
         "",
         [],
         { PropertyImagesApplications: queryObject }
@@ -297,7 +297,7 @@ let userInfo = JSON.parse(getUserInfo());
    
       response = await httpRequest(
         "post",
-        "/csp/notice-generation/_create",
+        "/rp-services/notice-generation/_create",
         "",
         [],
         { NoticeApplications }
@@ -332,7 +332,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "action", "DRAFT");
           response = await httpRequest(
             "post",
-            "/csp/mortgage/_create",
+            "/rp-services/mortgage/_create",
             "",
             [],
             { MortgageApplications: queryObject }
@@ -351,7 +351,7 @@ let userInfo = JSON.parse(getUserInfo());
           set(queryObject[0], "applicationDocuments", applicationDocuments)
           response = await httpRequest(
             "post",
-            "/csp/mortgage/_update",
+            "/rp-services/mortgage/_update",
             "",
             [],
             { MortgageApplications: queryObject }
@@ -401,7 +401,7 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
           set(queryObject[0], "action", "DRAFT");
           response = await httpRequest(
             "post",
-            "/csp/duplicatecopy/_create",
+            "/rp-services/duplicatecopy/_create",
             "",
             [],
             { DuplicateCopyApplications: queryObject }
@@ -419,7 +419,7 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
           set(queryObject[0], "applicationDocuments", applicationDocuments)
           response = await httpRequest(
             "post",
-            "/csp/duplicatecopy/_update",
+            "/rp-services/duplicatecopy/_update",
             "",
             [],
             { DuplicateCopyApplications: queryObject }

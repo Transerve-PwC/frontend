@@ -11,7 +11,9 @@ import { set } from "lodash";
 import { getreviewPropertyAddressDetailsMortgage, getReviewApplicantDetailsMortgage,getreviewGrantDetailsMortgage } from "./applyResource/review-applications-mortgage";
 import { getMortgageSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import {  downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
+import { footerReviewTop} from "./applyResource/reviewFooter";
+import {downloadPrintContainer} from './applyResource/footer';
+
 
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 
@@ -52,6 +54,7 @@ const beforeInitFn = async(action, state, dispatch) => {
       const response = await getMortgageSearchResults(queryObject);
       if (response && response.MortgageApplications) {
       let {MortgageApplications} = response
+      const status = MortgageApplications[0].state
       const grandDetails=MortgageApplications[0].mortgageApprovedGrantDetails
       let applicationDocuments = MortgageApplications[0].applicationDocuments|| [];
       const removedDocs = applicationDocuments.filter(item => !item.active)
@@ -79,15 +82,13 @@ const beforeInitFn = async(action, state, dispatch) => {
           getGrantDetailsAvailed
       ),
     );
-      }
-    }
     const printCont = downloadPrintContainer(
       action,
       state,
       dispatch,
       status,
       applicationNumber,
-      tenantId
+      tenantId,"mortgage","MG"
     );
     const CitizenprintCont=footerReviewTop(
       action,
@@ -100,17 +101,27 @@ const beforeInitFn = async(action, state, dispatch) => {
     );
 
 
-    process.env.REACT_APP_NAME === "Citizen"
-      ? set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          CitizenprintCont
-        )
-      : set(
-          action,
-          "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-          printCont
-        );
+    // process.env.REACT_APP_NAME === "Citizen"
+    //   ? set(
+    //       action,
+    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+    //       CitizenprintCont
+    //     )
+    //   : set(
+    //       action,
+    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+    //       printCont
+    //     );
+
+    set(
+      action,
+      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+      printCont
+    );
+      }
+     
+    }
+    
   }
 const mortgagePreviewDetails = {
     uiFramework: "material-ui",
@@ -160,7 +171,7 @@ const mortgagePreviewDetails = {
                   props: {
                     dataPath: "MortgageApplications",
                     moduleName: "PermissionToMortgage",
-                    updateUrl: "/csp/mortgage/_update"
+                    updateUrl: "/rp-services/mortgage/_update"
                   }
                 },
                 mortgageReviewDetails

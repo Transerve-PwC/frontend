@@ -3,15 +3,26 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import {onTabChange, headerrow, tabs} from './search-preview'
 import { getSearchResults } from "../../../../ui-utils/commons";
 import {  downloadPrintContainer,footerReviewTop } from "./applyResource/reviewFooter";
-import { set } from "lodash";
+import { set, get } from "lodash";
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { getImages } from "./property-transitImages";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import NoticedetailsPreview from "./noticestabNoticepreview";
+
 
 let transitNumber = getQueryArg(window.location.href, "transitNumber");
+// export const noticeIdValue = (state) => {
+//   const noticearr = get(state.screenConfiguration.preparedFinalObject, "Properties[0].notices.memoNumber")
+//   return noticearr
+// }
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const findItem = roles.find(item => item.code === "RP_CLERK");
   let queryObject = [
     { key: "transitNumber", value: transitNumber }
   ];
@@ -30,6 +41,17 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       properties = [{...properties[0], notices}]
       dispatch(prepareFinalObject("Properties[0]", properties[0]));     
   }
+  if(findItem === null || findItem === undefined){
+    let pathBtn = "components.div.children.rightdiv"
+    dispatch(
+      handleField(
+        "notices",
+        pathBtn,
+        "visible",
+        false
+      )
+    );
+   }
  }
 
  const beforeInitFn = async (action, state, dispatch, transitNumber) => {
@@ -37,34 +59,35 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   if(transitNumber){
     await searchResults(action, state, dispatch, transitNumber)
   }
-  const printCont = downloadPrintContainer(
-    action,
-    state,
-    dispatch,
-    // status,
-    // applicationNumber,
-    // tenantId
-  );
-  const CitizenprintCont=footerReviewTop(
-    action,
-    state,
-    dispatch,
-    // status,
-    // applicationNumber,
-    // tenantId,
-    //financialYear
-  );
-  process.env.REACT_APP_NAME === "Citizen"
-    ? set(
-        action,
-        "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-        CitizenprintCont
-      )
-    : set(
-        action,
-        "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-        printCont
-      );
+  // const printCont = downloadPrintContainer(
+  //   action,
+  //   state,
+  //   dispatch,
+  //   // status,
+  //   // applicationNumber,
+  //   // tenantId
+  // );
+  // const CitizenprintCont=footerReviewTop(
+  //   action,
+  //   state,
+  //   dispatch,
+  //   // status,
+  //   // applicationNumber,
+  //   // tenantId,
+  //   //financialYear
+  // );
+  // 
+  // process.env.REACT_APP_NAME === "Citizen"
+  //   ? set(
+  //       action,
+  //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+  //       CitizenprintCont
+  //     )
+  //   : set(
+  //       action,
+  //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+  //       printCont
+  //     );
 }
 
 const buttonComponent = (label, route) => ({
@@ -177,7 +200,8 @@ const notices = {
                 contents: [
                   {
                     label: "RP_NOTICE_ID",
-                    jsonPath: "memoNumber"
+                    jsonPath: "memoNumber",
+                    url:`/rented-properties/noticestabNoticepreview?tenantId=${getTenantId()}`
                   },
                   {
                     label: "RP_MEMO_DATE",

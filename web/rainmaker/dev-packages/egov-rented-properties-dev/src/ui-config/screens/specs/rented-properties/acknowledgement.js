@@ -167,7 +167,8 @@ const getAcknowledgementCard = (
           state,
           dispatch,
           transitNumber,
-          tenant
+          tenant,
+          type
         )
       };
     } else if(status === "failure" && purpose === "pay") {

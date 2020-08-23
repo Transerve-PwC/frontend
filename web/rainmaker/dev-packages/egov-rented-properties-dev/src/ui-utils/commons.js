@@ -86,7 +86,7 @@ export const getSearchResults = async queryObject => {
   try {
     const response = await httpRequest(
       "post",
-      "/csp/property/_search",
+      "/rp-services/property/_search",
       "",
       queryObject
     );
@@ -111,7 +111,7 @@ export const getOwnershipSearchResults = async (queryObject = []) => {
     ]
     const response = await httpRequest(
       "post",
-      "/csp/ownership-transfer/_search",
+      "/rp-services/ownership-transfer/_search",
       "",
       queryObject
     )
@@ -136,7 +136,7 @@ export const getMortgageSearchResults = async (queryObject = []) => {
     ]
     const response = await httpRequest(
       "post",
-      "/csp/mortgage/_search",
+      "/rp-services/mortgage/_search",
       "",
       queryObject
     )
@@ -161,7 +161,7 @@ export const getDuplicateCopySearchResults = async (queryObject = []) => {
     ]
     const response = await httpRequest(
       "post",
-      "/csp/duplicatecopy/_search",
+      "/rp-services/duplicatecopy/_search",
       "",
       queryObject
     )

@@ -141,7 +141,7 @@ import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
                     {
                       label: "RP_CREATED_DATE",
                       jsonPath: "auditDetails.createdTime",
-                      callback: convertEpochToDate
+                      type: "date"
                     },
                     {
                       label: "RP_COMMENTS_LABEL",

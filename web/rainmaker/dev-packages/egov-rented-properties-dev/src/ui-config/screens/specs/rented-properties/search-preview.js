@@ -214,7 +214,7 @@ const rentedPropertiesDetailPreview = {
             props: {
               dataPath: "Properties",
               moduleName: "MasterRP",
-              updateUrl: "/csp/property/_update"
+              updateUrl: "/rp-services/property/_update"
             }
           },
         propertyReviewDetails

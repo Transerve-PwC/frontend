@@ -196,7 +196,7 @@ const ownerShipDetailsPreview = {
                   props: {
                     dataPath: "Owners",
                     moduleName: "OwnershipTransferRP",
-                    updateUrl: "/csp/ownership-transfer/_update"
+                    updateUrl: "/rp-services/ownership-transfer/_update"
                   }
                 },
               transferReviewDetails

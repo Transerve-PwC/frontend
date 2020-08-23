@@ -153,6 +153,50 @@ export const getNoticeReviewProperty = (isEditable = true) => {
     })
 }
 
+export const getNoticePreviewReviewProperty = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Property Details",
+                        labelKey: "RP_PROPERTY_DETAILS_HEADER"
+                    })
+                },
+                editSection: masterEntryEditSection(isEditable)
+            }
+        },
+        viewFour: getCommonContainer({
+            propertyTransitNumber: getLabelWithValue(
+                {
+                    labelName: "Transit Site/Plot number",
+                    labelKey: "RP_SITE_PLOT_LABEL"
+                },
+                { jsonPath: "Properties[0].transitNumber" }
+            ),
+            allotmentNumber: getLabelWithValue(
+                {
+                    labelName: "Allotment Number",
+                    labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
+                },
+                { jsonPath: "Properties[0].owners[1].allotmenNumber" }
+            ),
+            memoDate: getLabelWithValue(
+                {
+                    labelName: "Memo Date",
+                    labelKey: "RP_MEMO_DATE_LABEL"
+                },
+                { jsonPath: "SingleProperties[0].memoDate" ,callBack: convertEpochToDate}
+            )
+        })
+    })
+}
+
 export const getReviewOwner = (isEditable = true) => {
     return getCommonGrayCard({
         headerDiv: {
@@ -332,6 +376,85 @@ export const getNoticeReviewRentDetails = (isEditable = true) => {
     })
 }
 
+export const getNoticePreviewReviewRentDetails = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Rent holder Particulars",
+                        labelKey: "RP_RENT_HOLDER_PARTICULAR_HEADER"
+                    })
+                },
+                editSection: masterEntryEditSection(isEditable)
+            }
+        },
+        viewFour: getCommonContainer({
+            fatherOrHusbandsName: getLabelWithValue(
+                    {
+                        labelName: "Father/ Husband's Name",
+                        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[2].ownerDetails.fatherOrHusband" },
+                    {visible: false}
+                ),
+                originalAllotte: getLabelWithValue(
+                    {
+                        labelName: "Original Allottee",
+                        labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].owners[2].ownerDetails.orignalAllottee" }
+                ),
+                violations: getLabelWithValue(
+                    {
+                        labelName: "Violations",
+                        labelKey: "RP_VIOLATIONS_LABEL"
+                    },
+                    { jsonPath: "SingleProperties[0].violations" }
+                ),
+                editor: getLabelWithValue(
+                    {
+                        labelName: "Editor",
+                        labelKey: "RP_EDITOR_LABEL"
+                    },
+                    { jsonPath: "SingleProperties[0].description" }
+                ),
+                demandNoticeFromDate: getLabelWithValue(
+                    {
+                        labelName: "Demand Notice First Date",
+                        labelKey: "RP_DEMAND_NOTICE_FIRST_DATE"
+                    },
+                    { jsonPath: "SingleProperties[0].demandNoticeFrom", callBack: convertEpochToDate}
+                ),
+                demandNoticeLastDate: getLabelWithValue(
+                    {
+                        labelName: "Demand Notice Last Date",
+                        labelKey: "RP_DEMAND_NOTICE_LAST_DATE"
+                    },
+                    { jsonPath: "SingleProperties[0].demandNoticeTo", callBack: convertEpochToDate}
+                ),
+                recoveryType: getLabelWithValue(
+                    {
+                        labelName: "Recovery Type",
+                        labelKey: "RP_RECOVERY_TYPE"
+                    },
+                    { jsonPath: "SingleProperties[0].recoveryType" }
+                ),
+                paymentAmount: getLabelWithValue(
+                    {
+                        labelName: "Due Amount",
+                        labelKey: "RP_DUE_AMOUNT_LABEL"
+                    },
+                    { jsonPath: "SingleProperties[0].amount" }
+                ),
+        })
+    })
+}
 
 export const getReviewPaymentDetails = (isEditable = true) => {
     return getCommonGrayCard({
