@@ -201,6 +201,27 @@
           ]
         },
         {
+          "header": "EST_OWNER_DETAILS_HEADER",
+          "type": "EXPANSION_DETAIL",
+          "path": "payload.owner.id",
+          "valueJsonPath": "ownerDetails.ownerId",
+          "sourceJsonPath": "property.propertyDetails.owners",
+          "fields":[
+            {
+              "label": "EST_OWNER_NAME_LABEL",
+              "jsonPath": "ownerDetails.ownerName"
+            },
+            {
+              "label": "EST_OWNER_SHARE_LABEL",
+              "jsonPath": "share"
+            },
+            {
+              "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+              "jsonPath": "ownerDetails.mobileNumber"
+            }
+          ]
+        },
+        {
           "header": "EST_PURCHASER_DETAILS_HEADER",
           "type": "FORM",
           "fields": [

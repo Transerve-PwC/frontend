@@ -88,7 +88,7 @@ export const getSearchResults = async queryObject => {
   try {
     const response = await httpRequest(
       "post",
-      "property-service/property-master/_search",
+      "/property-service/property-master/_search",
       "",
       queryObject
     );

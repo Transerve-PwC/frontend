@@ -71,6 +71,10 @@ const VerticalCardItems = Loadable({
   loading: () => <Loading />
 });
 
+const ExpansionPanelMolecule = Loadable({
+  loader: () => import("./ExpansionPanel"),
+  loading: () => <Loading />
+})
 
 export {
   TestMolecules,
@@ -85,5 +89,6 @@ export {
   ActionDialog,
   Footer,
   LandingPage,
-  VerticalCardItems
+  VerticalCardItems,
+  ExpansionPanelMolecule
 };
