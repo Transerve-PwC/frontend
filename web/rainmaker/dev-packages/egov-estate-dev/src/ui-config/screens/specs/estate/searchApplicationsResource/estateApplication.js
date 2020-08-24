@@ -123,7 +123,7 @@ export const estateApplication = getCommonCard({
   searchBoxContainer: getCommonContainer({
     applicationNumber: getTextField(applicationNumberField),
     fileNumber: getTextField(fileNumberField),
-    applicantMobile: getTextField(applicationNumberField),
+    applicantMobile: getTextField(applicantMobileField),
     applicationStatus: getSelectField(applicationStatusField),
     branch: getSelectField(branchField),
     applicationType: getSelectField(applicationTypeField)

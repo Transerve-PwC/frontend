@@ -85,7 +85,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
       }
     }
 
-    const response = await getSearchResults(queryObject);
+    const response = await getSearchResults(queryObject, "/est-services/application/_search");
     try {
       const length = response.Properties.length
       dispatch(

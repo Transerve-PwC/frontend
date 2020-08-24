@@ -84,11 +84,11 @@ export const getLocaleLabelsforTL = (label, labelKey, localizationLabels) => {
   }
 };
 
-export const getSearchResults = async queryObject => {
+export const getSearchResults = async (queryObject, url = "/est-services/property-master/_search") => {
   try {
     const response = await httpRequest(
       "post",
-      "/est-services/property-master/_search",
+      url,
       "",
       queryObject
     );
