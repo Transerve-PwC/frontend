@@ -12,6 +12,7 @@ import {
 import {
   searchApiCall
 } from "./functions";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 const applicationNumberField = {
   label: {
@@ -191,4 +192,52 @@ export const estateApplication = getCommonCard({
 })
 
 function resetFields(state, dispatch) {
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.applicationNumber",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.fileNumber",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.applicantMobile",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.applicationStatus",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.branch",
+      "props.value",
+      ""
+    )
+  )
+  dispatch(
+    handleField(
+      "search-applications",
+      "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.applicationType",
+      "props.value",
+      ""
+    )
+  )
 }
