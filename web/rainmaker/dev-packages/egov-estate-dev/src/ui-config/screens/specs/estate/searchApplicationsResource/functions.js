@@ -87,7 +87,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
 
     const response = await getSearchResults(queryObject, "/est-services/application/_search");
     try {
-      const length = response.Properties.length
+      const length = response.Applications.length
       dispatch(
         handleField(
           "search-applications",
@@ -108,7 +108,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
         )
       );
       
-      let data = response.Properties.map(item => ({
+      let data = response.Applications.map(item => ({
         [getTextToLocalMapping("Application No")]: item.applicationNumber || "-",
         [getTextToLocalMapping("File No")]: item.fileNumber || "-",
         [getTextToLocalMapping("Status")]: item.state,

@@ -61,7 +61,7 @@ const applicantMobileField = {
 const applicationStatusField = {
   label: {
     labelName: "Application Status",
-    labelKey: "EST_APPLICATION_STATUS_LABEL"
+    labelKey: "EST_APPLICATION_STATUS"
   },
   placeholder: {
     labelName: "Select Status",

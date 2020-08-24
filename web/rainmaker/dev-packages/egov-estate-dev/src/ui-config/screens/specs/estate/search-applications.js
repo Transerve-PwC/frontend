@@ -71,7 +71,7 @@ const searchApplications = {
         value: getTenantId()
       },
       {
-        key: "businessServices",
+        key: "businessService",
         value: "SaleGift"
       }
     ]
