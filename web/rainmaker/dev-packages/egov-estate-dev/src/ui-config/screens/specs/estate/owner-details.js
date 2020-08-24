@@ -119,19 +119,6 @@ const EstateOwnerDetails = {
             },
             type: "array",
           },
-          taskStatus: {
-            uiFramework: "custom-containers-local",
-            moduleName: "egov-estate",
-            componentPath: "WorkFlowContainer",
-            props: {
-              dataPath: "Properties",
-              moduleName: "PropertyMaster",
-              updateUrl: "/est-services/property-master/_update",
-              style: {
-                wordBreak: "break-word"
-              }
-            }
-          },
           ownerContainer
       }
     }
