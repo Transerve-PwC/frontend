@@ -2,32 +2,26 @@ import {
     getCommonHeader,getCommonCard,getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getQueryArg,setDocuments } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg} from "egov-ui-framework/ui-utils/commons";
 import { get } from "lodash";
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getImages } from "./property-transitImages";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { getNoticePreviewReviewProperty,getNoticeReviewProperty,getNoticePreviewViolationReviewRentDetails,getNoticePreviewRecoveryReviewRentDetails,getNoticePreviewReviewRentDetails } from "./applyResource/review-property";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getNoticeReviewProperty, getNoticeViolationPreviewReviewRentDetails, getNoticeRecoveryPreviewReviewRentDetails} from "./applyResource/review-property";
 
 
 const reviewNoticePropertyDetails = getNoticeReviewProperty(false);
-const reviewNoticeRentDetails = getNoticePreviewReviewRentDetails(false);
-const reviewNoticeDocuments = getReviewDocuments(false,"apply","SingleProperties[0].applicationDocuments");
-// const reviewNoticeRentDetailsRecovery = getNoticePreviewRecoveryReviewRentDetails(false);
+const reviewNoticeViolationRentDetails = getNoticeViolationPreviewReviewRentDetails(false);
+const reviewNoticeRecoveryRentDetails = getNoticeRecoveryPreviewReviewRentDetails(false);
+const reviewNoticeDocuments = getReviewDocuments(false,"apply","SingleProperties[0].applicationDocuments",true);
 let NoticedetailsId = getQueryArg(window.location.href, "NoticedetailsId");
 
 const header = getCommonContainer({
     header : getCommonHeader({
     labelName: "Notice Summary",
     labelKey: "RP_NOTICE_PREVIEW_SUMMARY"
-  }),
-  applicationNumber: {
-    uiFramework: "custom-atoms-local",
-    moduleName: "egov-rented-properties",
-    componentPath: "ApplicationNoContainer",
-    props: {
-      number: NoticedetailsId
-    }
-  }
+  })
 });
 
 const getData = async(action, state, dispatch) => {
@@ -39,8 +33,61 @@ const getData = async(action, state, dispatch) => {
         "Properties[0]",
         []);
     let singleNoticeDetails = propertyArr.notices.filter(item => item.memoNumber === NoticeId)
-    singleNoticeDetails = [...singleNoticeDetails]
+  
+    let notices = await getImages(singleNoticeDetails);
+    notices = notices.map(item => {
+      let { applicationDocuments, urls } = item;
+      applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index],
+      name: urls[index].split("?")[0].split("/").pop().slice(13)
+      }));
+      return { ...item, applicationDocuments };
+    });
+    // const {Properties} = payload;
+    // const {owners = []} = propertyArr[0]
+    // const findOwner = propertyArr.find(item => !!item.activeState) || {}
+    // if(!!findOwner.isPrimaryOwner){
+    //     dispatch(
+    //         prepareFinalObject(
+    //             "SingleProperties[0].originalAllottee",
+    //             findOwner.ownerDetails.name
+    //         )
+    //         )
+    // }
+    singleNoticeDetails = [...singleNoticeDetails,notices]  
     dispatch(prepareFinalObject("SingleProperties[0]", singleNoticeDetails[0]));
+
+    if(singleNoticeDetails[0].noticeType === "Violation"){
+        let path = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeRecoveryRentDetails"
+        dispatch(
+          handleField(
+            "noticestabNoticepreview",
+            path,
+            "visible",
+            false
+          )
+        );
+       }
+    else if(singleNoticeDetails[0].noticeType === "Recovery"){
+        let path = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeViolationRentDetails"
+        let pathdoc = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeDocuments"
+        dispatch(
+          handleField(
+            "noticestabNoticepreview",
+            path,
+            "visible",
+            false
+          )
+        );
+
+        dispatch(
+            handleField(
+              "noticestabNoticepreview",
+              pathdoc,
+              "visible",
+              false
+            )
+          );
+    }
     
 }
 
@@ -57,7 +104,8 @@ const getData = async(action, state, dispatch) => {
 // })
 const noticeDocumentDetails = getCommonCard({
         reviewNoticePropertyDetails,
-        reviewNoticeRentDetails,
+        reviewNoticeViolationRentDetails,
+        reviewNoticeRecoveryRentDetails,
         reviewNoticeDocuments
     })
 
@@ -114,8 +162,8 @@ const NoticedetailsPreview = {
                             },
                             children: {
                               downloadFormButtonLabel: getLabel({
-                                labelName: "DOWNLOAD CONFIRMATION FORM",
-                                labelKey: "TL_APPLICATION_BUTTON_DOWN_CONF"
+                                labelName: "DOWNLOAD",
+                                labelKey: "RP_APPLICATION_BUTTON_DOWN"
                               })
                             },
                             // onClickDefination: {
@@ -142,8 +190,8 @@ const NoticedetailsPreview = {
                             },
                             children: {
                               printFormButtonLabel: getLabel({
-                                labelName: "PRINT CONFIRMATION FORM",
-                                labelKey: "TL_APPLICATION_BUTTON_PRINT_CONF"
+                                labelName: "PRINT",
+                                labelKey: "RP_APPLICATION_BUTTON_PRINT"
                               })
                             },
                             // onClickDefination: {

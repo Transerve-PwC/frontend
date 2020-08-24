@@ -402,6 +402,9 @@ const applicantNameFieldMortgage = {
     minLength: 1,
     maxLength: 100,
     required: true,
+    props: {
+        disabled: true
+      },
     jsonPath: "MortgageApplications[0].applicant[0].name",
     errorMessage:"RP_ERR_APPLICANT_NAME_FIELD"
 }
@@ -510,6 +513,9 @@ const fatherOrHusbandsName = {
     minLength: 4,
     maxLength: 40,
     required: true,
+    props: {
+        disabled: true
+      },
     jsonPath: "DuplicateCopyApplications[0].applicant[0].guardian",
     errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD"
 }
@@ -530,6 +536,9 @@ const fatherOrHusbandsNameMortgage = {
     minLength: 4,
     maxLength: 40,
     required: true,
+    props: {
+        disabled: true
+      },
     jsonPath: "MortgageApplications[0].applicant[0].guardian",
     errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD"
 }
@@ -551,6 +560,9 @@ const ownerShipRelationShipduplicate = {
                 value: "HUSBAND"
               }
           ],
+          props: {
+            disabled: true
+          },
           jsonPath: "DuplicateCopyApplications[0].applicant[0].relationship"
       },
   }
@@ -572,6 +584,9 @@ const ownerShipRelationShipduplicate = {
                 value: "HUSBAND"
               }
         ],
+        props: {
+            disabled: true
+          },
         jsonPath: "MortgageApplications[0].applicant[0].relationship"
     }
 }
@@ -584,12 +599,18 @@ const applicantEmailField = {
 
 const applicantEmailFieldduplicate = {
     ...emailConfig,
+    props: {
+        disabled: true
+      },
     jsonPath: "DuplicateCopyApplications[0].applicant[0].email",
     required: false
 }
 
 const applicantEmailFieldMortgage = {
     ...emailConfig,
+    props: {
+        disabled: true
+      },
     jsonPath: "MortgageApplications[0].applicant[0].email",
     required: false
 }
@@ -602,12 +623,18 @@ const applicantAadharField = {
 
 const applicantAadharFieldduplicate = {
     ...aadharFieldConfig,
-     jsonPath: "DuplicateCopyApplications[0].applicant[0].adhaarNumber"
+    props: {
+        disabled: true
+      },
+     jsonPath: "DuplicateCopyApplications[0].applicant[0].aadhaarNumber"
 }
 
 const applicantAadharFieldMortgage = {
     ...aadharFieldConfig,
-     jsonPath: "MortgageApplications[0].applicant[0].adhaarNumber"
+    props: {
+        disabled: true
+      },
+     jsonPath: "MortgageApplications[0].applicant[0].aadhaarNumber"
 }
 
 const applicantAddressField = {

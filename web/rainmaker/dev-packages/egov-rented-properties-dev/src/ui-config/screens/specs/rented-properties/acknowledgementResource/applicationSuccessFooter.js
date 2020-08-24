@@ -2,11 +2,15 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  ifUserRoleExists,
+  ifUserRoleExists,download,
   downloadAcknowledgementFormForCitizen
 } from "../../utils";
 import set from "lodash/set";
+import get from "lodash/get"
+import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 
+const userInfo = JSON.parse(getUserInfo());
 const getCommonApplyFooter = children => {
   return {
     uiFramework: "custom-atoms",
@@ -99,9 +103,17 @@ export const applicationSuccessFooter = (
                 break;
 
               default:
+                const data = []
+                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                let tenantId = getQueryArg(window.location.href, "tenantId");
+                  const OwnersData = [];
+                  const receiptQueryString = [
+                    { key: "consumerCodes", value:consumerCodes},
+                    { key: "tenantId", value: tenantId }
+                  ]
+                  download(receiptQueryString, OwnersData,data, userInfo.name);                
                 break;
             }
-            console.log(type)
           }
         },
         visible: true

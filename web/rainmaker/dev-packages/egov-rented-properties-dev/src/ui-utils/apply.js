@@ -613,6 +613,42 @@ export const getDetailsFromPropertyMortgage = async (state, dispatch) => {
               Properties[0].propertyDetails.address.area
             )
           )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].name",
+              findOwner.ownerDetails.name
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].guardian",
+              findOwner.ownerDetails.fatherOrHusband
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].relationship",
+              findOwner.ownerDetails.relation
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].aadhaarNumber",
+              findOwner.ownerDetails.aadhaarNumber
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].email",
+              findOwner.ownerDetails.email
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].phone",
+              findOwner.ownerDetails.phone
+            )
+          )
           
           return true
         }
@@ -779,6 +815,30 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
             prepareFinalObject(
               "DuplicateCopyApplications[0].applicant[0].name",
               findOwner.ownerDetails.name
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "DuplicateCopyApplications[0].applicant[0].guardian",
+              findOwner.ownerDetails.fatherOrHusband
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "DuplicateCopyApplications[0].applicant[0].relationship",
+              findOwner.ownerDetails.relation
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "DuplicateCopyApplications[0].applicant[0].aadhaarNumber",
+              findOwner.ownerDetails.aadhaarNumber
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "DuplicateCopyApplications[0].applicant[0].email",
+              findOwner.ownerDetails.email
             )
           )
           return true
