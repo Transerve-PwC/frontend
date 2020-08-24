@@ -37,7 +37,7 @@ const {
   roles = []
 } = userInfo
 console.log(roles);
-const findItem = roles.find(item => item.code === "CPS_DS");
+const findItem = roles.find(item => item.code === "ES_EB_DISPATCH_OFFICER");
 const header = getCommonHeader({
   labelName: "Search Property Master",
   labelKey: "EST_SEARCH_PROPERTY_MASTER_HEADER"

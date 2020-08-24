@@ -119,12 +119,28 @@ const getDetailsContainer = (section, data_config) => {
     return getCommonContainer(values);
 }
 
+const expansionSection = (section) => {
+  const {fields =[], path, valueJsonPath, sourceJsonPath, header} = section;
+  return {
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-estate",
+    componentPath: "ExpansionPanelContainer",
+    props: {
+      sourceJsonPath,
+      jsonPath: path,
+      valueJsonPath,
+      contents: fields,
+      header
+    }
+  }
+}
+
 export const setFirstStep = (state, dispatch, {data_config, format_config}) => {
     let {sections = []} = format_config
     sections = sections.reduce((acc, section) => {
         return {
         ...acc, 
-        [section.header]: getCommonCard({
+        [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
             details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config)
         })

@@ -113,7 +113,7 @@ components: {
           props: {
             dataPath: "Properties",
             moduleName: "PropertyMaster",
-            updateUrl: "/property-service/property-master/_update",
+            updateUrl: "/est-services/property-master/_update",
             style: {
               wordBreak: "break-word"
             }
