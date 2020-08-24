@@ -167,7 +167,7 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
 
       response = await httpRequest(
         "post",
-        "/property-service/property-master/_update",
+        "/est-services/property-master/_update",
         "",
         [], {
           Properties: queryObject
