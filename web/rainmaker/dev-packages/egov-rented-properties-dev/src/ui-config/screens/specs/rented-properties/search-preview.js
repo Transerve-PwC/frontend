@@ -24,7 +24,7 @@ export const headerrow = getCommonContainer({
     labelKey: "RP_COMMON_RENTED_PROPERTIES"
   })
 });
-const reviewOwnerDetails = getReviewOwner(false);
+const reviewOwnerDetails = getReviewOwner(true);
 const reviewPropertyDetails = getReviewProperty(false);
 const reviewAddressDetails = getReviewAddress(false);
 const reviewRentDetails = getReviewRentDetails(false);

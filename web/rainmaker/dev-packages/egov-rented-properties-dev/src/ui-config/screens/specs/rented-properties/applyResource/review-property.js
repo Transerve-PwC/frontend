@@ -55,6 +55,7 @@ const masterEntryEditSection = (isEditable) => ({
     onClickDefination: {
         action: "condition",
         callBack: (state, dispatch) => {
+            debugger
             changeStep(state, dispatch, "apply", "", 0);
         }
     }

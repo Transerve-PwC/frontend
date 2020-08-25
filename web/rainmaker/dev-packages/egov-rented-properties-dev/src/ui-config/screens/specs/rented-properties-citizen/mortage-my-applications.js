@@ -231,6 +231,7 @@ const screenConfig = {
                 jsonPath: "state"
               }
             ],
+            applicationType:'MG',
             moduleName: "MORTGAGERP",
             homeURL: "/rented-properties-citizen/mortage-apply"
           }

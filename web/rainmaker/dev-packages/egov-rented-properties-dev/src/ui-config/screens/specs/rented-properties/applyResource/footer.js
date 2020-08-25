@@ -290,6 +290,7 @@ export const changeStep = (
     mode = "next",
     defaultActiveStep = -1
   ) => {
+    debugger
     let activeStep = get(
         state.screenConfiguration.screenConfig[screenName],
         "components.div.children.stepper.props.activeStep",

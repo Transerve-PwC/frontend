@@ -233,6 +233,7 @@ const screenConfig = {
                 jsonPath: "state"
               }
             ],
+            applicationType:'DC',
             moduleName: "DUPLICATECOPYOFALLOTMENTLETTERRP",
             homeURL: "/rented-properties-citizen/duplicate-copy-apply"
           }

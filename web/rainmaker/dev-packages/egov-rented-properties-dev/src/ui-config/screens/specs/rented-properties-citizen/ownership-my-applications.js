@@ -235,6 +235,7 @@ const screenConfig = {
                 jsonPath: "applicationState"
               }
             ],
+            applicationType:'OT',
             moduleName: "OWNERSHIPTRANSFERRP",
             homeURL: "/rented-properties-citizen/ownership-apply"
           }
