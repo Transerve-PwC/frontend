@@ -37,7 +37,7 @@ const documentTitle = {
 };
 
 function MultiCardDownloadGrid(props) {
-  const { classes, data, ...rest } = props;
+  const { classes,datatoggle,data, ...rest } = props;
   return (
     <Grid container {...rest}>
       {data && data.length && data.map((item, key) => {
@@ -60,10 +60,29 @@ function MultiCardDownloadGrid(props) {
                 style={documentTitle}
               />
             </Grid>
+            { datatoggle && (
+              <Grid xs={12}>
+              <LabelContainer
+                  labelName= {item.documentType}
+                  // labelKey={content.id}
+                  style={documentTitle}
+              />
+            </Grid>
+            )
+            }
             <Grid container>
               <Grid xs={6} className={classes.subtext}>
                 <Typography className={classes.body2}>{item.name}</Typography>
               </Grid>
+              {
+                datatoggle && (
+                  <Grid xs={6} align="right">
+                    <Button href={item.url} color="primary">
+                        Download
+                    </Button>
+                    </Grid>
+                )
+              }
               <Grid xs={6} align="right">
                 <Button href={item.link} color="primary">
                   {item.linkText}

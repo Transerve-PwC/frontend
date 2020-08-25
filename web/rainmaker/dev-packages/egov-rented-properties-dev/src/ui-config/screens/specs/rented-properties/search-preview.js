@@ -53,84 +53,87 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-    const grandDetails=properties[0].grantDetails
-    let state = properties[0].masterDataState;
-    let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
-    const removedDocs = applicationDocuments.filter(item => !item.active)
-    applicationDocuments = applicationDocuments.filter(item => !!item.active)
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
-    dispatch(prepareFinalObject("Properties[0]", properties[0]));
-    dispatch(
-      prepareFinalObject(
-        "PropertiesTemp[0].removedDocs",
-        removedDocs
-      )
+    if(properties.length!=0){
+      const grandDetails=properties[0].grantDetails
+      let state = properties[0].masterDataState;
+      let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
+      const removedDocs = applicationDocuments.filter(item => !item.active)
+      applicationDocuments = applicationDocuments.filter(item => !!item.active)
+      properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+      dispatch(prepareFinalObject("Properties[0]", properties[0]));
+      dispatch(
+        prepareFinalObject(
+          "PropertiesTemp[0].removedDocs",
+          removedDocs
+        )
+      );
+      await setDocuments(
+        payload,
+        "Properties[0].propertyDetails.applicationDocuments",
+        "PropertiesTemp[0].reviewDocData",
+        dispatch,'RP'
+      );
+  
+      const getGrantDetailsAvailed = grandDetails !==null
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetailAvailed",
+          "visible",
+          getGrantDetailsAvailed
+      ),
     );
-    await setDocuments(
-      payload,
-      "Properties[0].propertyDetails.applicationDocuments",
-      "PropertiesTemp[0].reviewDocData",
-      dispatch,'RP'
-    );
-
-    const getGrantDetailsAvailed = grandDetails !==null
+    const isGrantDetails = grandDetails ===null
     dispatch(
       handleField(
         "search-preview",
-        "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetailAvailed",
+        "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetail",
         "visible",
-        getGrantDetailsAvailed
+        isGrantDetails
     ),
   );
-  const isGrantDetails = grandDetails ===null
-  dispatch(
-    handleField(
-      "search-preview",
-      "components.div.children.propertyReviewDetails.children.cardContent.children.grantDetail",
-      "visible",
-      isGrantDetails
-  ),
-);
-      const showEstimate = grandDetails !==null
-      dispatch(
-        handleField(
+        const showEstimate = grandDetails !==null
+        dispatch(
+          handleField(
+              "search-preview",
+              "components.div.children.propertyReviewDetails.children.cardContent.children.reviewGrantDetails",
+              "visible",
+              showEstimate
+          ),
+        );
+    
+          
+      if(state == 'PM_REJECTED'){
+        let path = "components.div.children.headerDiv.children.searchButton"
+        dispatch(
+          handleField(
             "search-preview",
-            "components.div.children.propertyReviewDetails.children.cardContent.children.reviewGrantDetails",
+            path,
             "visible",
-            showEstimate
-        ),
-      );
-  
-        
-    if(state == 'PM_REJECTED'){
-      let path = "components.div.children.headerDiv.children.searchButton"
-      dispatch(
-        handleField(
-          "search-preview",
-          path,
-          "visible",
-          false
-        )
-      );
-      let tabs = [
-        {
-          tabButton: { labelName: "Property Details", labelKey: "RP_PROPERTY_DETAILS" }
+            false
+          )
+        );
+        let tabs = [
+          {
+            tabButton: { labelName: "Property Details", labelKey: "RP_PROPERTY_DETAILS" }
+          }
+        ]
+        const props = {
+          tabs,
+          activeIndex: 0,
+          onTabChange
         }
-      ]
-      const props = {
-        tabs,
-        activeIndex: 0,
-        onTabChange
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.tabSection",
+            "props",
+            props
+          )
+        );
       }
-      dispatch(
-        handleField(
-          "search-preview",
-          "components.div.children.tabSection",
-          "props",
-          props
-        )
-      );
     }
+  
   }
 }
 

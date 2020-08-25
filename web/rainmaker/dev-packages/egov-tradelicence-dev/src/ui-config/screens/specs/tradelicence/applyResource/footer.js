@@ -874,13 +874,6 @@ export const footerReview = (
                 }
               },
               children: {
-                previousButtonIcon: {
-                  uiFramework: "custom-atoms",
-                  componentPath: "Icon",
-                  props: {
-                    iconName: "keyboard_arrow_left"
-                  }
-                },
                 previousButtonLabel: getLabel({
                   labelName: "Edit",
                   labelKey: "TL_BUTTON_EDIT"
