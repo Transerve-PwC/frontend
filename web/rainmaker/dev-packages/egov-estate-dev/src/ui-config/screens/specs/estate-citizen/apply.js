@@ -7,6 +7,7 @@ import { getSearchResults } from "../../../../ui-utils/commons";
 import { setFirstStep } from "./applyResource/detailsStep";
 import { setDocumentData, documentDetails, inputProps } from "./applyResource/documentsStep";
 import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
+import get from "lodash/get";
 
 const header = getCommonHeader({
     labelName: "Apply",
@@ -54,6 +55,11 @@ const getData = async (action, state, dispatch) => {
                   sm: 10
                 },
                 ...header
+              },
+              updateContainer: {
+                uiFramework: "custom-containers-local",
+                moduleName: "egov-estate",
+                componentPath: "UpdateContainer",
               }
             }
           },

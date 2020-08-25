@@ -1,6 +1,7 @@
 import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
+import get from "lodash/get";
 
 const headerObj = value => {
     return getCommonHeader({
@@ -21,9 +22,9 @@ export const getRelationshipRadioButton = {
   };
 
 
-const getField = (item, fieldData) => {
+const getField = (item, fieldData, state) => {
 
-    const {label: labelItem, placeholder, type, pattern, editable = true, ...rest } = item
+    const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
     const {required, validations} = fieldData
     let fieldProps = {
       label : {
@@ -38,7 +39,7 @@ const getField = (item, fieldData) => {
         xs: 12,
         sm: 6
       },
-      props: { disabled: !editable },
+      props: { disabled: eval(disabled) },
       required
     }
   
@@ -110,11 +111,11 @@ const getField = (item, fieldData) => {
     }
   }
 
-const getDetailsContainer = (section, data_config) => {
+const getDetailsContainer = (section, data_config, state) => {
     const {fields = []} = section;
     const values = fields.reduce((acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
-      return {...acc, [field.label]: getField(field, findFieldData)}
+      return {...acc, [field.label]: getField(field, findFieldData, state)}
     }, {})
     return getCommonContainer(values);
 }
@@ -142,7 +143,7 @@ export const setFirstStep = (state, dispatch, {data_config, format_config}) => {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config, state)
         })
     }
     }, {})
