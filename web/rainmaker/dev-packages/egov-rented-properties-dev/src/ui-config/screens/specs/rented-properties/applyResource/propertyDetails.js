@@ -3,7 +3,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getTodaysDateInYMD } from "../../utils";
 import get from "lodash/get";
 import { getDetailsFromProperty ,getDuplicateDetailsFromProperty} from "../../../../../ui-utils/apply";
-
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 export const propertyHeader = getCommonTitle(
         {
@@ -68,6 +68,35 @@ const colonyField = {
         const rentPerSqyd = !!findItem ? findItem.costPerSqyd : ""
         dispatch(prepareFinalObject("applyScreenMdmsData.propertyAreas", propertyAreas))
         dispatch(prepareFinalObject("Properties[0].propertyDetails.rentPerSqyd", rentPerSqyd))
+
+        rentedPropertyColonies.map(item => {
+            if (action.value === item.code) {
+                dispatch(
+                    handleField(
+                        "apply",
+                        "components.div.children.formwizardFirstStep.children.rentDetails.children.cardContent.children.detailsContainer.children.interestRatePerYear",
+                        "props.value",
+                        item.interestRateOrYear
+                    )
+                )
+                dispatch(
+                    handleField(
+                        "apply",
+                        "components.div.children.formwizardFirstStep.children.rentDetails.children.cardContent.children.detailsContainer.children.rentIncrementPercentage",
+                        "props.value",
+                        item.rentIncrementPercentage
+                    )
+                )
+                dispatch(
+                    handleField(
+                        "apply",
+                        "components.div.children.formwizardFirstStep.children.rentDetails.children.cardContent.children.detailsContainer.children.rentIncrementPeriod",
+                        "props.value",
+                        item.rentIncrementPeriod
+                    )
+                )
+            }
+        })
       }
 }
 

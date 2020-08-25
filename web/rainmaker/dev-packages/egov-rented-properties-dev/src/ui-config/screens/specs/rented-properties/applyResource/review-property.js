@@ -49,13 +49,13 @@ export const editSection = {
     }
 }
 
-const masterEntryEditSection = (isEditable) => ({
+const masterEntryEditSection = (isEditable, index = 0) => ({
     ...editSection,
     visible: isEditable,
     onClickDefination: {
         action: "condition",
         callBack: (state, dispatch) => {
-            changeStep(state, dispatch, "apply", "", 0);
+            changeStep(state, dispatch, "apply", "", index);
         }
     }
 })
@@ -299,26 +299,33 @@ export const getReviewRentDetails = (isEditable = true) => {
             }
         },
         viewFour: getCommonContainer({
-                monthlyRentAmount: getLabelWithValue(
+                // monthlyRentAmount: getLabelWithValue(
+                //     {
+                //         labelName: "Monthly Rent Amount",
+                //         labelKey: "RP_MONTHLY_RENT_LABEL"
+                //     },
+                //     { jsonPath: "Properties[0].owners[0].ownerDetails.monthlyRent" }
+                // ),
+                interestRatePerYear: getLabelWithValue(
                     {
-                        labelName: "Monthly Rent Amount",
-                        labelKey: "RP_MONTHLY_RENT_LABEL"
+                        labelName: "Interest Rate/Year",
+                        labelKey: "RP_INTEREST_RATE_PER_YEAR_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.monthlyRent" }
+                    { jsonPath: "Properties[0].propertyDetails.interestRate" }
                 ),
-                revisionPeriod: getLabelWithValue(
+                rentIncrementPeriod: getLabelWithValue(
                     {
-                        labelName: "Rent Amount Revised Period",
-                        labelKey: "RP_RENT_AMOUNT_REVISED_PERIOD_LABEL"
+                        labelName: "Rent Increment Period",
+                        labelKey: "RP_RENT_INCREMENT_PERIOD_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.revisionPeriod" }
+                    { jsonPath: "Properties[0].propertyDetails.rentIncrementPeriod" }
                 ),
-                revisionPercentage: getLabelWithValue(
+                rentIncrementPercentage: getLabelWithValue(
                     {
-                        labelName: "Rent Amount Revision Percentage",
-                        labelKey: "RP_RENT_AMOUNT_REVISED_PERCENTAGE_LABEL"
+                        labelName: "Rent Increment Percentage",
+                        labelKey: "RP_RENT_INCREMENT_PERCENTAGE_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.revisionPercentage" }
+                    { jsonPath: "Properties[0].propertyDetails.rentIncrementPercentage" }
                 ),
         })
     })
@@ -551,30 +558,30 @@ export const getReviewPaymentDetails = (isEditable = true) => {
                         labelKey: "RP_PAYMENT_DETAILS_HEADER"
                     })
                 },
-                editSection: masterEntryEditSection(isEditable)
+                editSection: masterEntryEditSection(isEditable, 2)
             }
         },
         viewFour: getCommonContainer({
                 amountPaid: getLabelWithValue(
                     {
-                        labelName: "Payment Amount",
-                        labelKey: "RP_PAYMENT_AMOUNT_LABEL"
+                        labelName: "Balance Principal",
+                        labelKey: "RP_BALANCE_PRINCIPAL_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid" }
+                    { jsonPath: "Properties[0].rentSummary.balancePrincipal" }
                 ),
                 paymentDate: getLabelWithValue(
                     {
                         labelName: "Date of Payment",
-                        labelKey: "RP_DATE_PAYMENT_LABEL"
+                        labelKey: "RP_BALANCE_INTEREST_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].paymentDate", callBack: convertEpochToDate }
+                    { jsonPath: "Properties[0].rentSummary.balanceInterest" }
                 ),
                 paymentMode: getLabelWithValue(
                     {
                         labelName: "Payment Mode",
-                        labelKey: "RP_PAYMENT_MODE_LABEL"
+                        labelKey: "RP_BALANCE_AMOUNT_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].paymentMode" }
+                    { jsonPath: "Properties[0].rentSummary.balanceAmount" }
                 ),
         })
     })

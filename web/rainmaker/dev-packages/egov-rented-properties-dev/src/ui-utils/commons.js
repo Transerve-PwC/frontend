@@ -39,6 +39,8 @@ import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
+import {RP_MONTH, RP_ASSESMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
+import moment from "moment";
 
 export const updateTradeDetails = async requestBody => {
   try {
@@ -921,6 +923,78 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
         }
       }
     });
+  }
+};
+
+export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStoreId) => {
+  const queryObject = [
+    {key: "tenantId", value: "ch"},
+    {key: "fileStoreId", value: fileStoreId}
+  ]
+  try {
+    const response = await httpRequest(
+      "post",
+      getUrl,
+      "",
+      queryObject
+    )
+
+    if(!!response) {
+      const {demand, payment} = response;
+      let data = demand.map(item => {
+        const findItem = payment.find(payData => payData.dateOfPayment === item.generationDate);
+        return !!findItem ? {...item, ...findItem} : {...item}
+      })
+      data = data.map(item => ({
+        [RP_MONTH]: moment(new Date(item.generationDate)).format("MM YYYY"),
+        [RP_ASSESMENT_AMOUNT]: item.collectionPrincipal,
+        [RP_REALIZATION_AMOUNT]: item.amountPaid,
+        [RP_RECEIPT_NO]: item.receiptNo
+      }))
+      store.dispatch(
+        handleField(
+            screenKey,
+            componentJsonPath,
+            "props.data",
+            data
+        )
+      );
+      store.dispatch(
+        handleField(
+            screenKey,
+            componentJsonPath,
+            "visible",
+            true
+        )
+      );
+    }
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+  }
+}
+
+export const getXLSFileUrlFromAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	//{ key: "tenantId", value: tenantId||commonConfig.tenantId },
+    { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
+    { key: "fileStoreId", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/rp-services/v1/excel/read",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
   }
 };
 

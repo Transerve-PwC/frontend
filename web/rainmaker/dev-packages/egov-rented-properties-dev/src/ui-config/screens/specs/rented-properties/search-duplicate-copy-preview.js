@@ -79,7 +79,7 @@ const duplicateReviewDetails = getCommonCard({
           dispatch,'RP'
         );
 
-        createEstimateData(
+        const estimateResponse = await createEstimateData(
           response.DuplicateCopyApplications[0],
           "DuplicateTemp[0].estimateCardData",
           dispatch,
@@ -93,30 +93,8 @@ const duplicateReviewDetails = getCommonCard({
           dispatch,
           status,
           applicationNumber,
-          tenantId, "duplicate-copy","DC" ,"DuplicateCopyApplications"  
+          tenantId, "duplicate-copy","DC" ,"DuplicateCopyApplications",
         );
-        const CitizenprintCont=footerReviewTop(
-          action,
-          state,
-          dispatch,
-          status,
-          applicationNumber,
-          tenantId,
-          //financialYear
-        );
-    
-    
-        // process.env.REACT_APP_NAME === "Citizen"
-        //   ? set(
-        //       action,
-        //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-        //       CitizenprintCont
-        //     )
-        //   : set(
-        //       action,
-        //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-        //       printCont
-        //     );
 
     set(
       action,
@@ -138,7 +116,9 @@ const duplicateReviewDetails = getCommonCard({
         ? set(action, "screenConfig.components.div.children.footer", footer)
         : set(action, "screenConfig.components.div.children.footer", {});
 
-        const showEstimate = status !== "DC_DRAFTED" && status !== "DC_PENDINGCLVERIFICATION" && status !== "DC_PENDINGJAVERIFICATION" && status !== "DC_PENDINGSAVERIFICATION" && status!=="DC_PENDINGCLARIFICATION" && status!=="DC_PENDINGSIVERIFICATION" && status!=="DC_PENDINGCAAPPROVAL" && status!=="DC_PENDINGAPRO"
+        const showEstimate = process.env.REACT_APP_NAME === "Citizen" ? status === "DC_PENDINGPAYMENT" || status === "DC_PENDINGCLAPPROVAL" || status === "DC_PENDINGSAREJECTION" || status === "DC_APPROVED" || status === "OT_REJECTEDPAID" : !!estimateResponse
+
+        // const showEstimate = status !== "DC_DRAFTED" && status !== "DC_PENDINGCLVERIFICATION" && status !== "DC_PENDINGJAVERIFICATION" && status !== "DC_PENDINGSAVERIFICATION" && status!=="DC_PENDINGCLARIFICATION" && status!=="DC_PENDINGSIVERIFICATION" && status!=="DC_PENDINGCAAPPROVAL" && status!=="DC_PENDINGAPRO"
         dispatch(
           handleField(
               "search-duplicate-copy-preview",

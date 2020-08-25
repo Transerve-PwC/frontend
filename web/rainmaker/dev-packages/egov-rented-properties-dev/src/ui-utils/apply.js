@@ -72,7 +72,7 @@ let userInfo = JSON.parse(getUserInfo());
             { Properties: queryObject }
           );
         } else {
-          if(activeIndex === 0) {
+          if(activeIndex !== 3) {
             set(queryObject[0], "masterDataAction", "")
           } else {
             set(queryObject[0], "masterDataAction", "SUBMIT")
@@ -94,7 +94,11 @@ let userInfo = JSON.parse(getUserInfo());
         let applicationDocuments = Properties[0].propertyDetails.applicationDocuments || [];
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
-        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, applicationDocuments}}]
+        Properties = [{...Properties[0], rentSummary: !!Properties[0].rentSummary ? Properties[0].rentSummary : {
+          balancePrincipal: "0",
+          balanceInterest: "0",
+          balanceAmount: "0"
+        }, propertyDetails: {...Properties[0].propertyDetails, applicationDocuments}}]
         dispatch(prepareFinalObject("Properties", Properties));
         dispatch(
           prepareFinalObject(

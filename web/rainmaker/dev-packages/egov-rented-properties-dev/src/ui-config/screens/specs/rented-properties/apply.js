@@ -1,13 +1,13 @@
 import {
     getCommonHeader
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {stepper, formwizardFirstStep, formwizardSecondStep, formwizardThirdStep} from './applyResource/applyConfig'
+import {stepper, formwizardFirstStep, formwizardSecondStep, formwizardThirdStep,addPropertyStepper,formwizardFourthStep} from './applyResource/applyConfig'
 import { httpRequest } from "../../../../ui-utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
 import {footer} from './applyResource/footer';
 import { searchResults } from "./search-preview";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg, getFileUrlFromAPI, getFileUrl } from "egov-ui-framework/ui-utils/commons";
 import { prepareDocumentTypeObj } from "../utils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { get } from "lodash";
@@ -36,6 +36,66 @@ export const getMdmsData = async (dispatch, body) => {
     }
   };
 
+  const setPaymentDocumentData = async (action, state, dispatch) => {
+    const paymentDocuments=[{
+      type:"PAYMENT_DOCUMENT",
+      description: {
+        labelName: "RP_ONLY_CSV",
+        labelKey: "ONLY_CSV",
+      },
+        formatProps :{
+          accept : ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+        }, 
+        maxFileSize: 6000,
+        moduleName: "RentedProperties",
+    statement: {
+         labelName: "RP_ALLOWED_DOCS_CSV",
+         labelKey: "RP_UPLOAD_CSV"
+    }
+    }]
+    const documentsType=[
+      {
+      name: "PAYMENT_DOCUMENT",
+      required: true,
+      jsonPath: `paymentDocuments`,
+      statement: "RP_UPLOAD_CSV"
+      }
+    ]
+    dispatch(
+      handleField(
+          "apply",
+          "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+          "props.inputProps",
+          paymentDocuments
+      )
+  );
+  dispatch(prepareFinalObject("PropertiesTemp[0].applicationPaymentDocuments", documentsType))
+  const fileStoreId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].fileStoreId")
+  const tenantId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].tenantId")
+  if(!!fileStoreId) {
+    const fileUrl = await getFileUrlFromAPI(fileStoreId);
+   const paymentDocuments = { "fileName" : (fileUrl &&
+    fileUrl[fileStoreId] &&
+      decodeURIComponent(
+        getFileUrl(fileUrl[fileStoreId])
+          .split("?")[0]
+          .split("/")
+          .pop()
+          .slice(13)
+      )) ||
+    `Document`,
+    "fileStoreId" : fileStoreId,
+    "fileUrl" : Object.values(fileUrl)[0],
+    "documentType" :  "PAYMENT_DOCUMENT",
+    "tenantId" : tenantId,
+    "active": true }
+
+    dispatch(prepareFinalObject(
+      "paymentDocuments", paymentDocuments
+    ))
+  }
+  }
+
   const setDocumentData = async (action, state, dispatch) => {
     const documentTypePayload = [{
       moduleName: "PropertyServices",
@@ -47,6 +107,7 @@ export const getMdmsData = async (dispatch, body) => {
     const {applications = []} = PropertyServices || {}
     const findMasterItem = applications.find(item => item.code === "MasterRP")
     const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+    console.log(masterDocuments)
     const rentedMasterDocuments = masterDocuments.map(item => ({
     type: item.code,
     description: {
@@ -97,6 +158,7 @@ export const getMdmsData = async (dispatch, body) => {
   );
     dispatch(prepareFinalObject("PropertiesTemp[0].applicationDocuments", documentTypes))
     dispatch(prepareFinalObject("applyScreenMdmsData.rentedApplications", applications))
+    setPaymentDocumentData(action, state, dispatch)
   }
   
 export const getColonyTypes = async(action, state, dispatch) => {
@@ -136,6 +198,7 @@ const getData = async(action, state, dispatch) => {
         )
   }
   setDocumentData(action, state, dispatch)
+  // setPaymentDocumentData(action, state, dispatch)
 }
 
 const applyRentedProperties = {
@@ -166,10 +229,11 @@ const applyRentedProperties = {
                           }
                     }
                 },
-                stepper,
+                addPropertyStepper,
                 formwizardFirstStep,
                 formwizardSecondStep,
                 formwizardThirdStep,
+                formwizardFourthStep,
                 footer
             }
         }

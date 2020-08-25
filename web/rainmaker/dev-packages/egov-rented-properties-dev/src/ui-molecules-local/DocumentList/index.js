@@ -9,9 +9,9 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import { connect } from "react-redux";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { UploadSingleFile } from "../../ui-molecules-local";
-import { handleFileUpload } from "../../ui-utils/commons"
+import { handleFileUpload, getXLSData } from "../../ui-utils/commons"
 import { LabelContainer } from "egov-ui-framework/ui-containers";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
@@ -124,10 +124,14 @@ class DocumentList extends Component {
   };
 
   handleDocument = async (file, fileStoreId) => {
+    let fileUrl = {}
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath } = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, getUrl, screenKey, componentJsonPath } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
-    const fileUrl = await getFileUrlFromAPI(fileStoreId);
+    fileUrl = await getFileUrlFromAPI(fileStoreId);
+    if(getUrl) {
+      getXLSData(getUrl, componentJsonPath, screenKey, fileStoreId)
+    }
     uploadedDocuments = {
       ...uploadedDocuments,
       [uploadedDocIndex]: [
@@ -298,6 +302,8 @@ DocumentList.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
+    handleField: (screenKey, jsonPath, fieldKey, value) =>
+      dispatch(handleField(screenKey, jsonPath, fieldKey, value)),
     prepareFinalObject: (jsonPath, value) =>
       dispatch(prepareFinalObject(jsonPath, value))
   };

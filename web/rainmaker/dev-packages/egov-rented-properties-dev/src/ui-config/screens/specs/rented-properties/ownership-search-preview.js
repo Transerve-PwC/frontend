@@ -78,7 +78,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       "OwnersTemp[0].reviewDocData",
       dispatch,'RP'
     );
-    createEstimateData(
+    const estimateResponse = await createEstimateData(
       response.Owners[0],
       "OwnersTemp[0].estimateCardData",
       dispatch,
@@ -94,29 +94,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       applicationNumber,
       tenantId,"ownership-transfer","OT"
     );
-    const CitizenprintCont=footerReviewTop(
-      action,
-      state,
-      dispatch,
-      status,
-      applicationNumber,
-      tenantId,
-      //financialYear
-    );
-
-
-    // process.env.REACT_APP_NAME === "Citizen"
-    //   ? set(
-    //       action,
-    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-    //       CitizenprintCont
-    //     )
-    //   : set(
-    //       action,
-    //       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-    //       printCont
-    //     );
-
+    
     set(
       action,
       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
@@ -135,7 +113,11 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
     process.env.REACT_APP_NAME === "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)
         : set(action, "screenConfig.components.div.children.footer", {});
-    const showEstimate = status !== "OT_DRAFTED" && status !== "OT_PENDINGCLVERIFICATION" && status !== "OT_PENDINGJAVERIFICATION" && status !== "OT_PENDINGSAVERIFICATION" && status!=="OT_PENDINGCLARIFICATION"&& status!=="OT_PENDINGSIVERIFICATION"&& status!=="OT_PENDINGCAAPPROVAL"&& status!="OT_PENDINGAPRO"
+
+    const showEstimate = process.env.REACT_APP_NAME === "Citizen" ? status === "OT_PENDINGPAYMENT" || status === "OT_PENDINGCLAPPROVAL" || status === "OT_PENDINGSAREJECTION" || status === "OT_APPROVED" || status === "OT_REJECTEDPAID" : !!estimateResponse
+    
+    // const showEstimate = status !== "OT_DRAFTED" && status !== "OT_PENDINGCLVERIFICATION" && status !== "OT_PENDINGJAVERIFICATION" && status !== "OT_PENDINGSAVERIFICATION" && status!=="OT_PENDINGCLARIFICATION"&& status!=="OT_PENDINGSIVERIFICATION"&& status!=="OT_PENDINGCAAPPROVAL"&& status!="OT_PENDINGAPRO"
+
     dispatch(
       handleField(
           "ownership-search-preview",
