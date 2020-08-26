@@ -1371,6 +1371,65 @@ export const downloadCertificateForm = (Owners, data, applicationType, mode = 'd
 }
 
 
+export const downloadNoticeForm = (notice , mode="download") => {
+  let queryStr = []
+  const noticeType = notice[0].noticeType;
+  switch (noticeType) {
+    case 'Recovery':
+      queryStr = [{
+        key: "key",
+        value: `rp-recovery-notice`
+      },
+      {
+        key: "tenantId",
+        value: "ch"
+      }]
+      break;
+    case 'Violation':  
+    queryStr = [{
+      key: "key",
+      value: `rp-violation-notice`
+    },
+    {
+      key: "tenantId",
+      value: "ch"
+    }]
+    break;
+    default:
+      break;
+  }
+const DOWNLOADRECEIPT = {
+  GET: {
+    URL: "/pdf-service/v1/_create",
+    ACTION: "_get",
+  },
+};
+try {
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+          notices:notice
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+
+
+
+} catch (exception) {
+  alert('Some Error Occured while downloading Acknowledgement form!');
+}
+}
+
 export const download = (receiptQueryString, Owners, data, generateBy, mode = "download") => {
   const FETCHRECEIPT = {
     GET: {

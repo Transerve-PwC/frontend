@@ -1,5 +1,5 @@
-import { getCommonApplyFooter, validateFields,downloadAcknowledgementForm ,downloadCertificateForm,download} from "../../utils";
-import { getLabel, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonApplyFooter, validateFields,downloadAcknowledgementForm,downloadCertificateForm ,download} from "../../utils";
+import { getLabel, dispatchMultipleFieldChangeAction, convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -8,6 +8,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { some } from "lodash";
 import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP, DUPLICATECOPYOFALLOTMENTLETTERRP, PERMISSIONTOMORTGAGE, TRANSITSITEIMAGES, NOTICE_GENERATION } from "../../../../../ui-constants";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getSearchResults } from "../../../../../ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
 export const DEFAULT_STEP = -1;
@@ -138,15 +139,31 @@ const callBackForNext = async(state, dispatch) => {
               dispatch(
                 prepareFinalObject("PropertiesTemp[0].reviewDocData", reviewDocData)
             );
+            const transitNumber = get(state.screenConfiguration, "preparedFinalObject.Properties[0].transitNumber")
+            let queryObject = [
+              { key: "transitNumber", value: transitNumber },
+              { key: "relations", value: "finance"}
+            ];
+            const payload = await getSearchResults(queryObject)
+            if(!!payload) {
+              const {Properties} = payload
+              const {demands, payments} = Properties[0];
+              let propertyData = get(state.screenConfiguration, "preparedFinalObject.Properties[0]")
+              propertyData = {...propertyData, demands, payments}
+              dispatch(
+                prepareFinalObject("Properties[0]", propertyData)
+            );
+            }
     }
     }
     if(activeStep=== PAYMENT_DOCUMENT_UPLOAD_STEP){
-      const paymentDocuments = get(state.screenConfiguration.preparedFinalObject, "paymentDocuments")
-      if(!paymentDocuments) {
+      const demands = get(state.screenConfiguration.preparedFinalObject, "Properties[0].demands") || []
+      const payments = get(state.screenConfiguration.preparedFinalObject, "Properties[0].payments") || []
+      if(!demands.length && !payments.length) {
         isFormValid = false
       }
       if(isFormValid) {
-        dispatch(prepareFinalObject("Properties[0].fileStoreId", paymentDocuments.fileStoreId));
+        // dispatch(prepareFinalObject("Properties[0].fileStoreId", paymentDocuments.fileStoreId));
         const res = await applyRentedProperties(state, dispatch, activeStep)
         if(!res) {
           return
@@ -203,6 +220,8 @@ const callBackForNext = async(state, dispatch) => {
 const callBackForNextrecoveryNoticegeneration = async(state, dispatch) => {
 
   let isFormValid = true;
+  let isDateValid = true;
+  let isPaymentAmountValid = true;
 
 const isOwnerDetailsValid = validateFields(
   "components.div.children.formwizardFirstStep.children.noticePropertyDetails.children.cardContent.children.detailsContainer.children",   
@@ -234,8 +253,18 @@ else{
   isFormValid = false;
   } 
 
+const dateFrom = get(state.screenConfiguration.screenConfig["notice-recovry"],"components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.demandNoticeFromDate.props.value")
+const dateTo = get(state.screenConfiguration.screenConfig["notice-recovry"],"components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.demandNoticeLastDate.props.value")
+if(convertDateToEpoch(dateTo) - convertDateToEpoch(dateFrom) < 0){
+  isDateValid = false
+}
 
-if (isFormValid) {
+const paymentValid = get(state.screenConfiguration.screenConfig["notice-recovry"],"components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount.props.value")
+if(parseInt(paymentValid) == 0 || paymentValid === ""){
+  isPaymentAmountValid = false
+}
+
+if (isFormValid && isDateValid && isPaymentAmountValid) {
   const noticegendata = get(
     state.screenConfiguration.preparedFinalObject,
     "Properties[0]"
@@ -253,6 +282,26 @@ if (!isFormValid) {
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
 }   
+if (!isDateValid) {
+  
+  let errorMessage = {
+    labelName:
+        "From date cannot be greater than To date!",
+    labelKey: "ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}   
+if (!isPaymentAmountValid) {
+  
+  let errorMessage = {
+    labelName:
+        "Due Amount Cannot be 0 or empty!",
+    labelKey: "ERR_DUE_AMOUNT_0_OR_EMPTY"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}  
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
@@ -873,7 +922,7 @@ export const footer = getCommonApplyFooter({
     };
 
     let certificateDownloadObjectDC = {
-      label: { labelName: "TL Certificate", labelKey: "TL_CERTIFICATE" },
+      label: { labelName: "Duplicate copy Letter", labelKey: "RP_DUPLICATE_COPY_LETTER" },
       link: () => {
         const { DuplicateCopyApplications, DuplicateTemp } = state.screenConfiguration.preparedFinalObject;
         const documents = DuplicateTemp[0].reviewDocData;
@@ -884,7 +933,7 @@ export const footer = getCommonApplyFooter({
     };
 
     let certificateDownloadObjectOT = {
-      label: { labelName: "TL Certificate", labelKey: "TL_CERTIFICATE" },
+      label: { labelName: "Ownership transfer Letter", labelKey: "RP_OWNERSHIP_TRANSFER_LETTER" },
       link: () => {
         const { Owners, OwnersTemp } = state.screenConfiguration.preparedFinalObject;
         const documents = OwnersTemp[0].reviewDocData;

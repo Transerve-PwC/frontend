@@ -9,7 +9,7 @@ import { getImages } from "./property-transitImages";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getNoticeReviewProperty, getNoticeViolationPreviewReviewRentDetails, getNoticeRecoveryPreviewReviewRentDetails} from "./applyResource/review-property";
-
+import {downloadNoticeForm} from '../utils/index'
 
 const reviewNoticePropertyDetails = getNoticeReviewProperty(false);
 const reviewNoticeViolationRentDetails = getNoticeViolationPreviewReviewRentDetails(false);
@@ -166,15 +166,13 @@ const NoticedetailsPreview = {
                                 labelKey: "RP_APPLICATION_BUTTON_DOWN"
                               })
                             },
-                            // onClickDefination: {
-                            //   action: "condition",
-                            //   callBack: () => {
-                            //   const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                            //   const documents = LicensesTemp[0].reviewDocData;
-                            //   set(Licenses[0],"additionalDetails.documents",documents)
-                            //   downloadAcknowledgementForm(Licenses, LicensesTemp[0].estimateCardData);
-                            //   }
-                            // },
+                            onClickDefination: {
+                              action: "condition",
+                              callBack: (state) => {
+                              const { SingleProperties } = state.screenConfiguration.preparedFinalObject;
+                              downloadNoticeForm(SingleProperties);
+                              }
+                            },
                             visible:true
                           },
                           printFormButton: {

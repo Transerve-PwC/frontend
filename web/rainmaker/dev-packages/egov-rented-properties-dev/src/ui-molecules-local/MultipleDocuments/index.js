@@ -71,6 +71,7 @@ class MultipleDocuments extends Component {
 
   render() {
       let {data = [], btnhide, contents, classes , dispatch} = this.props
+      data = !!data ? data : [];
       data = data.filter(dat => !!dat.applicationDocuments)
         if(data.length==0){
         return(

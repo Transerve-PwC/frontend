@@ -40,7 +40,7 @@ export const getMdmsData = async (dispatch, body) => {
     const paymentDocuments=[{
       type:"PAYMENT_DOCUMENT",
       description: {
-        labelName: "RP_ONLY_CSV",
+        labelName: "ONLY_CSV",
         labelKey: "ONLY_CSV",
       },
         formatProps :{
@@ -49,8 +49,8 @@ export const getMdmsData = async (dispatch, body) => {
         maxFileSize: 6000,
         moduleName: "RentedProperties",
     statement: {
-         labelName: "RP_ALLOWED_DOCS_CSV",
-         labelKey: "RP_UPLOAD_CSV"
+         labelName: "UPLOAD_CSV",
+         labelKey: "UPLOAD_CSV"
     }
     }]
     const documentsType=[
@@ -58,7 +58,7 @@ export const getMdmsData = async (dispatch, body) => {
       name: "PAYMENT_DOCUMENT",
       required: true,
       jsonPath: `paymentDocuments`,
-      statement: "RP_UPLOAD_CSV"
+      statement: "UPLOAD_CSV"
       }
     ]
     dispatch(
@@ -70,30 +70,30 @@ export const getMdmsData = async (dispatch, body) => {
       )
   );
   dispatch(prepareFinalObject("PropertiesTemp[0].applicationPaymentDocuments", documentsType))
-  const fileStoreId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].fileStoreId")
-  const tenantId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].tenantId")
-  if(!!fileStoreId) {
-    const fileUrl = await getFileUrlFromAPI(fileStoreId);
-   const paymentDocuments = { "fileName" : (fileUrl &&
-    fileUrl[fileStoreId] &&
-      decodeURIComponent(
-        getFileUrl(fileUrl[fileStoreId])
-          .split("?")[0]
-          .split("/")
-          .pop()
-          .slice(13)
-      )) ||
-    `Document`,
-    "fileStoreId" : fileStoreId,
-    "fileUrl" : Object.values(fileUrl)[0],
-    "documentType" :  "PAYMENT_DOCUMENT",
-    "tenantId" : tenantId,
-    "active": true }
+  // const fileStoreId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].fileStoreId")
+  // const tenantId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].tenantId")
+  // if(!!fileStoreId) {
+  //   const fileUrl = await getFileUrlFromAPI(fileStoreId);
+  //  const paymentDocuments = { "fileName" : (fileUrl &&
+  //   fileUrl[fileStoreId] &&
+  //     decodeURIComponent(
+  //       getFileUrl(fileUrl[fileStoreId])
+  //         .split("?")[0]
+  //         .split("/")
+  //         .pop()
+  //         .slice(13)
+  //     )) ||
+  //   `Document`,
+  //   "fileStoreId" : fileStoreId,
+  //   "fileUrl" : Object.values(fileUrl)[0],
+  //   "documentType" :  "PAYMENT_DOCUMENT",
+  //   "tenantId" : tenantId,
+  //   "active": true }
 
-    dispatch(prepareFinalObject(
-      "paymentDocuments", paymentDocuments
-    ))
-  }
+  //   dispatch(prepareFinalObject(
+  //     "paymentDocuments", paymentDocuments
+  //   ))
+  // }
   }
 
   const setDocumentData = async (action, state, dispatch) => {
@@ -188,7 +188,7 @@ const getData = async(action, state, dispatch) => {
   const transitNumber = getQueryArg(window.location.href, "transitNumber");
   getColonyTypes(action, state, dispatch);
   if(transitNumber) {
-    await updatePFOforSearchResults(action, state, dispatch, transitNumber)
+    await updatePFOforSearchResults(action, state, dispatch, transitNumber, "owner")
   } else {
     dispatch(
       prepareFinalObject(

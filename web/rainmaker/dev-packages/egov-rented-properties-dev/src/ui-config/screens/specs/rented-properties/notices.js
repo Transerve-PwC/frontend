@@ -30,18 +30,22 @@ const findItem = roles.find(item => item.code === "RP_CLERK");
   if(payload) {
     let properties = payload.Properties;
       let {notices = []} = properties[0]
-      notices = await getImages(notices);
-      notices = notices.map(item => {
-        let { applicationDocuments, urls } = item;
-        applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index],
-        name: urls[index].split("?")[0].split("/").pop().slice(13)
-        }));
-        return { ...item, applicationDocuments };
-      });
-      properties = [{...properties[0], notices}]
+      if(notices != null){
+        notices = await getImages(notices);
+        notices = notices.map(item => {
+          let { applicationDocuments, urls } = item;
+          applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index],
+          name: urls[index].split("?")[0].split("/").pop().slice(13)
+          }));
+          return { ...item, applicationDocuments };
+        });
+        properties = [{...properties[0], notices}]
+      }
       dispatch(prepareFinalObject("Properties[0]", properties[0]));     
   }
-  if(findItem === null || findItem === undefined){
+  let properties = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
+  let approvedflagdata = properties.owners[0].activeState
+  if(findItem === null || findItem === undefined && !!approvedflagdata){
     let pathBtn = "components.div.children.rightdiv"
     dispatch(
       handleField(
@@ -204,17 +208,17 @@ const notices = {
                     url:`/rented-properties/noticestabNoticepreview?tenantId=${getTenantId()}`
                   },
                   {
-                    label: "RP_MEMO_DATE",
-                    jsonPath: "memoDate",
-                    type: "date"
-                  },
-                  {
                     label: "RP_NOTICE_TYPE",
                     jsonPath: "noticeType"
                   },
                   {
-                    label: "RP_COMMENTS_LABEL",
-                    jsonPath: "description"
+                    label: "RP_TRANSIT_SITE",
+                    jsonPath: "property.transitNumber"
+                  },
+                  {
+                    label: "RP_MEMO_DATE",
+                    jsonPath: "memoDate",
+                    type: "date"
                   }
                 ]
               }

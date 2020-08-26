@@ -39,7 +39,7 @@ import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
-import {RP_MONTH, RP_ASSESMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
+import {RP_MONTH, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
 import moment from "moment";
 
 export const updateTradeDetails = async requestBody => {
@@ -361,17 +361,28 @@ export const updatePFOforSearchResults = async (
   action,
   state,
   dispatch,
-  transitNumber
+  transitNumber,
+  relations
 ) => {
 
   let queryObject = [
-    { key: "transitNumber", value: transitNumber }
+    { key: "transitNumber", value: transitNumber },
+    { key: "relations", value: relations}
   ];
 
   const payload = await getSearchResults(queryObject)
 
   if (payload && payload.Properties) {
-    dispatch(prepareFinalObject("Properties", payload.Properties));
+    const properies = payload.Properties.reduce((prev, curr) => {
+      let keys = Object.keys(curr);
+      keys = keys.filter(key => !!curr[key]).reduce((acc, key) => {
+        return {...acc, [key]: curr[key]}
+      }, {})
+      return [...prev, {
+        ...keys
+      }]
+    }, [])
+    dispatch(prepareFinalObject("Properties", properies));
   }
   setDocsForEditFlow(state, dispatch, "Properties[0].propertyDetails.applicationDocuments", "PropertiesTemp[0].uploadedDocsInRedux");
 };
@@ -942,15 +953,31 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
     if(!!response) {
       const {demand, payment} = response;
       let data = demand.map(item => {
-        const findItem = payment.find(payData => payData.dateOfPayment === item.generationDate);
+        const findItem = payment.find(payData => moment(new Date(payData.dateOfPayment)).format("MMM YYYY") === moment(new Date(item.generationDate)).format("MMM YYYY"));
         return !!findItem ? {...item, ...findItem} : {...item}
       })
       data = data.map(item => ({
-        [RP_MONTH]: moment(new Date(item.generationDate)).format("MM YYYY"),
-        [RP_ASSESMENT_AMOUNT]: item.collectionPrincipal,
-        [RP_REALIZATION_AMOUNT]: item.amountPaid,
+        [RP_MONTH]: moment(new Date(item.generationDate)).format("MMM YYYY"),
+        [RP_ASSESSMENT_AMOUNT]: item.collectionPrincipal.toFixed(2),
+        [RP_REALIZATION_AMOUNT]: item.amountPaid.toFixed(2),
         [RP_RECEIPT_NO]: item.receiptNo
       }))
+
+      const {totalAssessment, totalRealization} = data.reduce((prev, curr) => {
+        prev = {
+          totalAssessment: prev.totalAssessment + Number(curr[RP_ASSESSMENT_AMOUNT]),
+          totalRealization: prev.totalRealization + Number(curr[RP_REALIZATION_AMOUNT])
+        } 
+        return prev
+      }, {totalAssessment: 0, totalRealization: 0})
+
+      data = [...data, {
+        [RP_MONTH]: "Total",
+        [RP_ASSESSMENT_AMOUNT]: totalAssessment.toFixed(2),
+        [RP_REALIZATION_AMOUNT]: totalRealization.toFixed(2),
+        [RP_RECEIPT_NO]: ""
+      }]
+
       store.dispatch(
         handleField(
             screenKey,
@@ -967,6 +994,12 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
             true
         )
       );
+      store.dispatch(
+        prepareFinalObject("Properties[0].demands", demand)
+      )
+      store.dispatch(
+        prepareFinalObject("Properties[0].payments", payment)
+      )
     }
   } catch (error) {
     store.dispatch(

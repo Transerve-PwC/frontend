@@ -1,3 +1,4 @@
+import React from "react";
 import {
     getStepperObject, getCommonCard, getCommonTitle, getCommonParagraph, getBreak
   } from "egov-ui-framework/ui-config/screens/specs/utils";
@@ -13,7 +14,7 @@ import {documentList} from './documentList'
 import {rentedReviewDetails, ownerShipReviewDetails, mortgageReviewDetails,duplicateCopyDetails} from './reviewDetails'
 import { getEpochForDate, sortByEpoch } from "../../utils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-import {RP_MONTH, RP_ASSESMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../../../../../ui-constants'
+import {RP_MONTH, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../../../../../ui-constants'
 
 const documentCardConfig = {
   header: getCommonTitle(
@@ -72,14 +73,27 @@ export const paymentDetailsTable =  {
   visible: false,
   props: {
     columns: [
-      RP_MONTH,
-      RP_ASSESMENT_AMOUNT,
+      {
+        name: RP_MONTH,
+        options: {
+          customBodyRender: value => (
+            <span style={{ color: "black" }}>
+              {value}
+            </span>
+          )
+        }
+      },
+      RP_ASSESSMENT_AMOUNT,
       RP_REALIZATION_AMOUNT,
       RP_RECEIPT_NO
     ],
     options: {
+      pagination: false,
       filter: false,
       download: false,
+      print: false,
+      search:false,
+      viewColumns:false,
       responsive: "stacked",
       selectableRows: false,
       hover: true,
@@ -140,7 +154,7 @@ export const stepsData = [
   export const steps = [
     { labelName: "Details", labelKey: "RP_COMMON_TR_DETAILS" },
     { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
-    { labelName: "Payment", labelKey: "TL_COMMON_PAY" },
+    { labelName: "Rent History", labelKey: "RP_COMMON_RENT_HISTORY" },
     { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
   ];
 

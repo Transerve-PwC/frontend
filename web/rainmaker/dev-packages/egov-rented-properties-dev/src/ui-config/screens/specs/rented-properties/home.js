@@ -71,14 +71,6 @@ const header = getCommonHeader(
   },
   {
     label: {
-        labelKey: "RP_GENERATING_NOTICE_HEADER",
-        labelName: "Generating notice for Violation/Recovery"
-    },
-    icon: <FormIcon />,
-    route: "search-transfer-properties"
-  },
-  {
-    label: {
         labelKey: "RP_CAPTURING_TRANSIT_SITE_IMAGE_HEADER",
         labelName: "Capturing Transit Site Images"
     },
