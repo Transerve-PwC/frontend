@@ -1374,7 +1374,6 @@ export const downloadNoticeForm = (notices , mode="download") => {
   const notice = [];
   let queryStr = [];
   notice[0] = notices;
-  console.log(notice);
   const noticeType = notice[0].noticeType;
   switch (noticeType) {
     case 'Recovery':
@@ -1400,19 +1399,6 @@ export const downloadNoticeForm = (notices , mode="download") => {
     default:
       break;
   }
-  
-// let {
-//   documents
-// } = Owners[0].additionalDetails;
-// const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-// const ownerDocument = findIndex !== -1 ? documents[findIndex] : {
-//   link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`
-// };
-// let ownersData = Owners[0];
-// ownersData = {
-//   ...ownersData,
-//   ownerDocument
-// }
 const DOWNLOADRECEIPT = {
   GET: {
     URL: "/pdf-service/v1/_create",
