@@ -1370,6 +1370,81 @@ export const downloadCertificateForm = (Owners, data, applicationType, mode = 'd
   }
 }
 
+export const downloadNoticeForm = (notices , mode="download") => {
+  const notice = [];
+  let queryStr = [];
+  notice[0] = notices;
+  console.log(notice);
+  const noticeType = notice[0].noticeType;
+  switch (noticeType) {
+    case 'Recovery':
+      queryStr = [{
+        key: "key",
+        value: `rp-recovery-notice`
+      },
+      {
+        key: "tenantId",
+        value: "ch"
+      }]
+      break;
+    case 'Violation':  
+    queryStr = [{
+      key: "key",
+      value: `rp-violation-notice`
+    },
+    {
+      key: "tenantId",
+      value: "ch"
+    }]
+    break;
+    default:
+      break;
+  }
+  
+// let {
+//   documents
+// } = Owners[0].additionalDetails;
+// const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
+// const ownerDocument = findIndex !== -1 ? documents[findIndex] : {
+//   link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`
+// };
+// let ownersData = Owners[0];
+// ownersData = {
+//   ...ownersData,
+//   ownerDocument
+// }
+const DOWNLOADRECEIPT = {
+  GET: {
+    URL: "/pdf-service/v1/_create",
+    ACTION: "_get",
+  },
+};
+try {
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+          notices:notice
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+
+   
+
+} catch (exception) {
+  alert('Some Error Occured while downloading Acknowledgement form!');
+}
+}
+
 
 export const download = (receiptQueryString, Owners, data, generateBy, mode = "download") => {
   const FETCHRECEIPT = {

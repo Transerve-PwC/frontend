@@ -14,7 +14,7 @@ import { getFileUrl,getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons
 import moment from 'moment'
 import { checkValueForNA } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { get } from "lodash";
-
+import {downloadNoticeForm} from "../../ui-config/screens/specs/utils"
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
 const findItem = roles.find(item => item.code === "RP_CLERK");
@@ -67,6 +67,10 @@ const styles = {
     lineHeight: "19px"
   }
 
+  
+export const downloadNotice = (data) => {
+  downloadNoticeForm(data);
+}  
 class MultipleDocuments extends Component {
 
   render() {
@@ -116,6 +120,17 @@ class MultipleDocuments extends Component {
                     </Grid>)
                     } 
                   </Grid>
+                  <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
+
+                  {!btnhide &&
+                     <Button  mt={1} mr={0} color="primary"  variant="contained"  
+                        onClick={() => { 
+                          downloadNotice(datum); 
+                    }}> 
+                        Download Notice
+                  </Button>
+                          }
+                   </Grid>
                  {contents.map(content => {
                       return (
                         <Grid container style={{ marginBottom: 12 }}>
