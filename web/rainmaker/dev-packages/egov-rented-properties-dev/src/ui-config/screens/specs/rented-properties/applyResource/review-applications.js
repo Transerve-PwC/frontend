@@ -143,6 +143,45 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
     })
 }
 
+export const getReviewPropertyDetailsWithoutAllotmentNumber = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Property Details",
+                        labelKey: "RP_PROPERTY_DETAILS_HEADER"
+                    })
+                },
+                editSection: freshLicenseEditSection(isEditable)
+            }
+        },
+        viewFour: getCommonContainer({
+            transitNumber: getLabelWithValue(
+                {
+                    labelName: "Transit Site/Plot number",
+                    labelKey: "RP_SITE_PLOT_LABEL"
+                },
+                { jsonPath: "Owners[0].property.transitNumber" }
+            ),
+            area: getLabelWithValue(
+                areaLabel,
+                { jsonPath: "Owners[0].property.area" }
+            ),
+            pincode: getLabelWithValue(
+                pincodeLabel,
+                { jsonPath: "Owners[0].property.pincode" }
+            ),
+        })
+    })
+}
+
+
 export const getDuplicateCopyPreviewApplicantDetails = (isEditable = true) => {
     return getCommonGrayCard({
         headerDiv: {

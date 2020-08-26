@@ -65,7 +65,6 @@ export const searchResults = {
 };
 
 const onRowClick = rowData => {
-  debugger
   const {roles = []} = userInfo
   const findItem = roles.find(item => item.code === "RP_CLERK");
   if(rowData[3] === "Drafted (PM)" && !!findItem) {

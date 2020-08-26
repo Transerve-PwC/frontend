@@ -74,7 +74,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
         dispatch,'RP'
       );
   
-      const getGrantDetailsAvailed = grandDetails !==null
+      const getGrantDetailsAvailed = grandDetails !== null
       dispatch(
         handleField(
           "search-preview",
