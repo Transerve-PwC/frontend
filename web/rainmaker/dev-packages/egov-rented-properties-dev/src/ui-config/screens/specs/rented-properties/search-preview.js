@@ -167,10 +167,9 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
     path = `/rented-properties/property-transitImages?transitNumber=${transitNumber}&tenantId=${tenantId}`
   } else if(tabIndex === 2) {
     path = `/rented-properties/notices?transitNumber=${transitNumber}&tenantId=${tenantId}`
-  } 
-  // else if(tabIndex === 3) {
-  //   path = `/rented-properties/rent-history?transitNumber=${transitNumber}&tenantId=${tenantId}`
-  // }
+  } else if(tabIndex === 3) {
+    path = `/rented-properties/rent-history?transitNumber=${transitNumber}&tenantId=${tenantId}`
+  }
   dispatch(setRoute(path))
 }
 
@@ -184,9 +183,9 @@ export const tabs = [
   {
     tabButton: { labelName: "Notices", labelKey: "RP_NOTICES" },
   },
-  // {
-  //   tabButton: {labelName: "Rent History", labelKey: "RP_COMMON_RENT_HISTORY"}
-  // }
+  {
+    tabButton: {labelName: "Rent History", labelKey: "RP_COMMON_RENT_HISTORY"}
+  }
 ]
 
 const buttonComponent = (label) => ({

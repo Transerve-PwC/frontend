@@ -99,6 +99,15 @@ let userInfo = JSON.parse(getUserInfo());
           balanceInterest: "0",
           balanceAmount: "0"
         }, propertyDetails: {...Properties[0].propertyDetails, applicationDocuments}}]
+        Properties = Properties.reduce((prev, curr) => {
+          let keys = Object.keys(curr);
+          keys = keys.filter(key => !!curr[key]).reduce((acc, key) => {
+            return {...acc, [key]: curr[key]}
+          }, {})
+          return [...prev, {
+            ...keys
+          }]
+        }, [])
         dispatch(prepareFinalObject("Properties", Properties));
         dispatch(
           prepareFinalObject(

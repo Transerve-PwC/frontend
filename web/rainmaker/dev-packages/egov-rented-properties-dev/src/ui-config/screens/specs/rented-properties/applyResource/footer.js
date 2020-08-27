@@ -8,7 +8,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { some } from "lodash";
 import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP, DUPLICATECOPYOFALLOTMENTLETTERRP, PERMISSIONTOMORTGAGE, TRANSITSITEIMAGES, NOTICE_GENERATION } from "../../../../../ui-constants";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-import { getSearchResults } from "../../../../../ui-utils/commons";
+import { getSearchResults, setXLSTableData } from "../../../../../ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
 export const DEFAULT_STEP = -1;
@@ -139,6 +139,8 @@ const callBackForNext = async(state, dispatch) => {
               dispatch(
                 prepareFinalObject("PropertiesTemp[0].reviewDocData", reviewDocData)
             );
+            const res = await applyRentedProperties(state, dispatch, activeStep)
+            if(!!res) {
             const transitNumber = get(state.screenConfiguration, "preparedFinalObject.Properties[0].transitNumber")
             let queryObject = [
               { key: "transitNumber", value: transitNumber },
@@ -147,13 +149,17 @@ const callBackForNext = async(state, dispatch) => {
             const payload = await getSearchResults(queryObject)
             if(!!payload) {
               const {Properties} = payload
-              const {demands, payments} = Properties[0];
-              let propertyData = get(state.screenConfiguration, "preparedFinalObject.Properties[0]")
-              propertyData = {...propertyData, demands, payments}
-              dispatch(
-                prepareFinalObject("Properties[0]", propertyData)
-            );
-            }
+              let {demands, payments} = Properties[0];
+              demands = demands || [];
+              payments = payments || [];
+              setXLSTableData({
+                demands, payments, screenKey: "apply",
+                 componentJsonPath: "components.div.children.formwizardThirdStep.children.paymentDetailsTable"
+              })
+      }
+    } else {
+      return
+    }
     }
     }
     if(activeStep=== PAYMENT_DOCUMENT_UPLOAD_STEP){

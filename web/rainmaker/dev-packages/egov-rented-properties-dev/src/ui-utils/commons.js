@@ -39,7 +39,7 @@ import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
-import {RP_MONTH, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
+import {RP_DEMAND_GENERATION_DATE, RP_PAYMENT_DATE, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
 import moment from "moment";
 
 export const updateTradeDetails = async requestBody => {
@@ -937,6 +937,59 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
   }
 };
 
+export const setXLSTableData = async({demands, payments, componentJsonPath, screenKey}) => {
+  let data = demands.map(item => {
+    const findItem = payments.find(payData => moment(new Date(payData.dateOfPayment)).format("MMM YYYY") === moment(new Date(item.generationDate)).format("MMM YYYY"));
+    return !!findItem ? {...item, ...findItem} : {...item}
+  })
+  data = data.map(item => ({
+    [RP_DEMAND_GENERATION_DATE]: moment(new Date(item.generationDate)).format("DD MMM YYYY"),
+    [RP_PAYMENT_DATE]: moment(new Date(item.dateOfPayment)).format("DD MMM YYYY"),
+    [RP_ASSESSMENT_AMOUNT]: !!item.collectionPrincipal && item.collectionPrincipal.toFixed(2),
+    [RP_REALIZATION_AMOUNT]: !!item.amountPaid && item.amountPaid.toFixed(2),
+    [RP_RECEIPT_NO]: item.receiptNo
+  }))
+
+  const {totalAssessment, totalRealization} = data.reduce((prev, curr) => {
+    prev = {
+      totalAssessment: prev.totalAssessment + Number(curr[RP_ASSESSMENT_AMOUNT]),
+      totalRealization: prev.totalRealization + Number(curr[RP_REALIZATION_AMOUNT])
+    } 
+    return prev
+  }, {totalAssessment: 0, totalRealization: 0})
+
+  data = [...data, {
+    [RP_DEMAND_GENERATION_DATE]: "Total",
+    [RP_PAYMENT_DATE]: "",
+    [RP_ASSESSMENT_AMOUNT]: totalAssessment.toFixed(2),
+    [RP_REALIZATION_AMOUNT]: totalRealization.toFixed(2),
+    [RP_RECEIPT_NO]: ""
+  }]
+
+  store.dispatch(
+    handleField(
+        screenKey,
+        componentJsonPath,
+        "props.data",
+        data
+    )
+  );
+  store.dispatch(
+    handleField(
+        screenKey,
+        componentJsonPath,
+        "visible",
+        true
+    )
+  );
+  store.dispatch(
+    prepareFinalObject("Properties[0].demands", demands)
+  )
+  store.dispatch(
+    prepareFinalObject("Properties[0].payments", payments)
+  )
+}
+
 export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStoreId) => {
   const queryObject = [
     {key: "tenantId", value: "ch"},
@@ -949,57 +1002,11 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
       "",
       queryObject
     )
-
     if(!!response) {
-      const {demand, payment} = response;
-      let data = demand.map(item => {
-        const findItem = payment.find(payData => moment(new Date(payData.dateOfPayment)).format("MMM YYYY") === moment(new Date(item.generationDate)).format("MMM YYYY"));
-        return !!findItem ? {...item, ...findItem} : {...item}
-      })
-      data = data.map(item => ({
-        [RP_MONTH]: moment(new Date(item.generationDate)).format("MMM YYYY"),
-        [RP_ASSESSMENT_AMOUNT]: item.collectionPrincipal.toFixed(2),
-        [RP_REALIZATION_AMOUNT]: item.amountPaid.toFixed(2),
-        [RP_RECEIPT_NO]: item.receiptNo
-      }))
-
-      const {totalAssessment, totalRealization} = data.reduce((prev, curr) => {
-        prev = {
-          totalAssessment: prev.totalAssessment + Number(curr[RP_ASSESSMENT_AMOUNT]),
-          totalRealization: prev.totalRealization + Number(curr[RP_REALIZATION_AMOUNT])
-        } 
-        return prev
-      }, {totalAssessment: 0, totalRealization: 0})
-
-      data = [...data, {
-        [RP_MONTH]: "Total",
-        [RP_ASSESSMENT_AMOUNT]: totalAssessment.toFixed(2),
-        [RP_REALIZATION_AMOUNT]: totalRealization.toFixed(2),
-        [RP_RECEIPT_NO]: ""
-      }]
-
-      store.dispatch(
-        handleField(
-            screenKey,
-            componentJsonPath,
-            "props.data",
-            data
-        )
-      );
-      store.dispatch(
-        handleField(
-            screenKey,
-            componentJsonPath,
-            "visible",
-            true
-        )
-      );
-      store.dispatch(
-        prepareFinalObject("Properties[0].demands", demand)
-      )
-      store.dispatch(
-        prepareFinalObject("Properties[0].payments", payment)
-      )
+      let {demand, payment} = response;
+      demand = demand.map(item => ({...item, active: true}))
+      payment = payment.map(item => ({...item, active: true}))
+      setXLSTableData({demands: demand, payments: payment, componentJsonPath, screenKey})
     }
   } catch (error) {
     store.dispatch(

@@ -14,7 +14,7 @@ import {documentList} from './documentList'
 import {rentedReviewDetails, ownerShipReviewDetails, mortgageReviewDetails,duplicateCopyDetails} from './reviewDetails'
 import { getEpochForDate, sortByEpoch } from "../../utils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-import {RP_MONTH, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../../../../../ui-constants'
+import {RP_DEMAND_GENERATION_DATE, RP_PAYMENT_DATE, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../../../../../ui-constants'
 
 const documentCardConfig = {
   header: getCommonTitle(
@@ -74,7 +74,7 @@ export const paymentDetailsTable =  {
   props: {
     columns: [
       {
-        name: RP_MONTH,
+        name: RP_DEMAND_GENERATION_DATE,
         options: {
           customBodyRender: value => (
             <span style={{ color: "black" }}>
@@ -83,6 +83,7 @@ export const paymentDetailsTable =  {
           )
         }
       },
+      RP_PAYMENT_DATE,
       RP_ASSESSMENT_AMOUNT,
       RP_REALIZATION_AMOUNT,
       RP_RECEIPT_NO
