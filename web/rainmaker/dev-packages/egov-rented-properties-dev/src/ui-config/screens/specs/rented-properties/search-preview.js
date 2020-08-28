@@ -55,6 +55,8 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    // properties = properties[0].owners.filter(itemdat => itemdat.permanent === true)
+    properties[0].owners = properties[0].owners.reverse()
     const grandDetails=properties[0].grantDetails
     let state = properties[0].masterDataState;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];

@@ -6,6 +6,7 @@ import {
 } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { RP_DEMAND_GENERATION_DATE, RP_PAYMENT_DATE, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO } from "../../../../../ui-constants";
 
 const userInfo = JSON.parse(getUserInfo());
 
@@ -105,6 +106,7 @@ export const transferSearchResults = {
 
 export const accountStatementResults = {
   ...searchResults,
+  visible: false,
   props: {...searchResults.props, 
     columns: [
       DATE,
@@ -115,10 +117,14 @@ export const accountStatementResults = {
       TOTAL_DUE  
     ],
     options: {...searchResults.props.options,
-      download:true,
-      onRowClick: (row, index) => {
-        // onTransferPropertyRowClick(row);
-      }
+      pagination: false,
+      filter: false,
+      download: true,
+      print: true,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
     }
   }
 }

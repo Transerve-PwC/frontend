@@ -234,6 +234,7 @@ const screenConfig = {
               }
             ],
             moduleName: "DUPLICATECOPYOFALLOTMENTLETTERRP",
+            applicationType:'DC',
             homeURL: "/rented-properties-citizen/duplicate-copy-apply"
           }
         }

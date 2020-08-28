@@ -7,6 +7,9 @@ import { get } from "lodash";
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getImages } from "./property-transitImages";
 import { getReviewDocuments } from "./applyResource/review-documents";
+import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import { set } from "lodash";
+import {downloadPrintContainer} from "./applyResource/footer"
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getNoticeReviewProperty, getNoticeViolationPreviewReviewRentDetails, getNoticeRecoveryPreviewReviewRentDetails} from "./applyResource/review-property";
 import {downloadNoticeForm} from '../utils/index'
@@ -43,18 +46,36 @@ const getData = async(action, state, dispatch) => {
       return { ...item, applicationDocuments };
     });
     // const {Properties} = payload;
-    // const {owners = []} = propertyArr[0]
-    // const findOwner = propertyArr.find(item => !!item.activeState) || {}
-    // if(!!findOwner.isPrimaryOwner){
-    //     dispatch(
-    //         prepareFinalObject(
-    //             "SingleProperties[0].originalAllottee",
-    //             findOwner.ownerDetails.name
-    //         )
-    //         )
-    // }
+    // const {owner = []} = propertyArr
     singleNoticeDetails = [...singleNoticeDetails,notices]  
     dispatch(prepareFinalObject("SingleProperties[0]", singleNoticeDetails[0]));
+
+    const findOwner = propertyArr.owners.find(item => !!item.activeState)
+    const orgOwner = propertyArr.owners.find(item => !!item.isPrimaryOwner)
+    if(!!orgOwner){
+        dispatch(
+            prepareFinalObject(
+                "SingleProperties[0].originalAllottee",
+                orgOwner.ownerDetails.name
+            )
+            )
+    }
+    if(!!findOwner.activeState){
+        dispatch(
+            prepareFinalObject(
+                "SingleProperties[0].allotmentStartdate",
+                findOwner.ownerDetails.allotmentStartdate
+            )
+            )
+        dispatch(
+            prepareFinalObject(
+                "SingleProperties[0].allotmenNumber",
+                findOwner.allotmenNumber
+            )
+            )
+      
+    }
+    
 
     if(singleNoticeDetails[0].noticeType === "Violation"){
         let path = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeRecoveryRentDetails"
@@ -88,6 +109,7 @@ const getData = async(action, state, dispatch) => {
             )
           );
     }
+
     
 }
 
@@ -135,7 +157,8 @@ const NoticedetailsPreview = {
                             },
                             ...header
                           }
-                    }
+                    },
+                  
                 },
                 rightdiv: {
                     uiFramework: "custom-atoms",
@@ -143,68 +166,43 @@ const NoticedetailsPreview = {
                     props: {
                       style: { justifyContent: "flex-end", marginTop: 10 }
                     },
-                    gridDefination: {
-                      xs: 12,
-                      sm: 12,
-                      align: "right"
-                    },
                     children: {
-                        downloadFormButton: {
-                            componentPath: "Button",
-                            props: {
-                              variant: "outlined",
-                              color: "primary",
-                              style: {
-                                minWidth: "180px",
-                                height: "48px",
-                                marginRight: "16px"
-                              }
-                            },
-                            children: {
-                              downloadFormButtonLabel: getLabel({
-                                labelName: "DOWNLOAD",
-                                labelKey: "RP_APPLICATION_BUTTON_DOWN"
-                              })
-                            },
-                            onClickDefination: {
-                              action: "condition",
-                              callBack: (state) => {
-                              const { SingleProperties } = state.screenConfiguration.preparedFinalObject;
-                              downloadNoticeForm(SingleProperties);
-                              }
-                            },
-                            visible:true
-                          },
-                          printFormButton: {
-                            componentPath: "Button",
-                            props: {
-                              variant: "outlined",
-                              color: "primary",
-                              style: {
-                                minWidth: "180px",
-                                height: "48px",
-                                marginRight: "16px"
-                              }
-                            },
-                            children: {
-                              printFormButtonLabel: getLabel({
-                                labelName: "PRINT",
-                                labelKey: "RP_APPLICATION_BUTTON_PRINT"
-                              })
-                            },
-                            // onClickDefination: {
-                            //   action: "condition",
-                            //   callBack: () => {
-                            //   const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                            //   const documents = LicensesTemp[0].reviewDocData;
-                            //   set(Licenses[0],"additionalDetails.documents",documents)
-                            //   downloadAcknowledgementForm(Licenses, LicensesTemp[0].estimateCardData,'print');
-                            //   }
-                            // },
-                            visible:true
+                      downloadMenu: {
+                        uiFramework: "custom-atoms-local",
+                        moduleName: "egov-rented-properties",
+                        componentPath: "MenuButton",
+                        props: {
+                          data: {
+                            label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                             leftIcon: "cloud_download",
+                            rightIcon: "arrow_drop_down",
+                            props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+                            // menu: downloadMenu
                           }
-                    }
+                        }
+                      },
+                      printMenu: {
+                        uiFramework: "custom-atoms-local",
+                        moduleName: "egov-rented-properties",
+                        componentPath: "MenuButton",
+                        props: {
+                          data: {
+                            label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                            leftIcon: "print",
+                            rightIcon: "arrow_drop_down",
+                            props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+                            // menu: printMenu
+                          }
+                        }
+                      }
+              
+                    },
+                    // gridDefination: {
+                    //   xs: 12,
+                    //   sm: 6
+                    // }
                   },
+                
                 formwizardFirstStep: noticeDocumentDetails
             }
         }

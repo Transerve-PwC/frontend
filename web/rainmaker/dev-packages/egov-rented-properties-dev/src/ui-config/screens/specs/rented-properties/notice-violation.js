@@ -101,6 +101,26 @@ const getData = async(action, state, dispatch) => {
         )
       );
   }
+  const propertyArr = get(
+    screenConfiguration.preparedFinalObject,
+    "Properties[0]",
+    [])
+  const orgOwner = propertyArr.owners.find(item => !!item.isPrimaryOwner)
+    if(!!orgOwner){
+        dispatch(
+            prepareFinalObject(
+                "Properties[0].owners[0].ownerDetails.originalAllottee",
+                orgOwner.ownerDetails.name
+            )
+            )
+    }
+    let violationcomment = get(state.screenConfiguration.screenConfig["notice-violation"],"components.div.children.formwizardFirstStep.children.ownerDetailsForViolationNotice.children.cardContent.children.detailsContainer.children.violations.props.value")
+        dispatch(
+            prepareFinalObject(
+                "Images[0].violations",
+                violationcomment
+            )
+            )
 }
 
 const beforeInitFn =async(action, state, dispatch)=>{

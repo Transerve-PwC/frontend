@@ -44,8 +44,8 @@ const findItem = roles.find(item => item.code === "RP_CLERK");
       dispatch(prepareFinalObject("Properties[0]", properties[0]));     
   }
   let properties = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
-  let approvedflagdata = properties.owners[0].activeState
-  if(findItem === null || findItem === undefined && !!approvedflagdata){
+  let approvedflagdata = properties.masterDataState
+  if(findItem === null || findItem === undefined || approvedflagdata != "PM_APPROVED"){
     let pathBtn = "components.div.children.rightdiv"
     dispatch(
       handleField(

@@ -44,20 +44,26 @@ import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
       if(properties[0].propertyImages){
         const {notices = []} = properties[0]
         let data = properties[0].propertyImages;
-        data = data.filter(function(image) {
-        if(image.applicationDocuments != null){
-          return image;
-        }
-      }).map(item => {
-        const transitNotices = notices.filter(notice => notice.propertyImageId === item.id).map(notice => notice.memoNumber)
+        data = data.filter(image => !!image.applicationDocuments)
+        if(notices != null){
+        data.map(item => {
+          const transitNotices = notices.filter(notice => notice.propertyImageId === item.id).map(notice => notice.memoNumber)
           return {...item, notices: transitNotices.join(",")}
       })
-        let images = await getImages(data);
-        images = images.map(item => {
-          let { applicationDocuments, urls } = item;
-          applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: urls[index].split("?")[0].split("/").pop().slice(13) }));
-          return { ...item, applicationDocuments };
-        });
+    
+    }
+    let images;
+        if(!!properties[0].propertyImages){
+          images = await getImages(data);
+          images = images.map(item => {
+            let { applicationDocuments, urls } = item;
+            applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: urls[index].split("?")[0].split("/").pop().slice(13) }));
+            return { ...item, applicationDocuments };
+          });
+        }
+        else{
+          images = []
+        }
         dispatch(prepareFinalObject("Images", images));
         dispatch(prepareFinalObject("Properties[0]", properties[0]));     
       }

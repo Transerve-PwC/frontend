@@ -13,7 +13,9 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE } from "./searchResults";
+import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
+import moment from "moment";
 
 export const getStatusList = async (state, dispatch, screen, path) => {
   const queryObject = [{ key: "tenantId", value: getTenantId() }, 
@@ -206,6 +208,75 @@ export const searchMortgage = async (state, dispatch, onInit, offset, limit , hi
       !!hideTable && showHideTable(true, dispatch, "search-mortgage");
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
+    }
+  }
+}
+
+export const searchAccountStatement = async (state, dispatch) => {
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.accountStatementFilterForm.children.cardContent.children.applicationNoContainer.children",
+    state,
+    dispatch,
+    "search-account-statement"
+  );
+
+  const isSearchBoxSecondRowValid = validateFields(
+    "components.div.children.accountStatementFilterForm.children.cardContent.children.dateContainer.children",
+    state,
+    dispatch,
+    "search-account-statement"
+  );
+
+  if(!!isSearchBoxFirstRowValid && !!isSearchBoxSecondRowValid) {
+    let Criteria = {
+      fromdate: convertDateToEpoch(searchScreenObject.fromDate),
+      todate: convertDateToEpoch(searchScreenObject.toDate)
+    }
+    const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
+      if(!!propertyId) {
+        Criteria = {...Criteria, propertyid: propertyId}
+        const response = await httpRequest(
+          "post",
+          '/rp-services/property/_accountstatement',
+          "",
+          [],
+          {Criteria}
+        )
+
+        try {
+          let data = response.RentAccountStatements.map(item => ({
+            [DATE]: moment(new Date(item.date)).format("DD/MM/YYYY") || "-",
+            [AMOUNT]: item.amount.toFixed(2) || "-",
+            [TYPE]: item.type || "-",
+            [REMAINING_INTEREST]: !!item.remainingInterest ? item.remainingInterest.toFixed(2) : "-",
+            [REMAINING_PRINCIPAL]: !!item.remainingPrincipal ? item.remainingPrincipal.toFixed(2) : "-",
+            [TOTAL_DUE]: !!item.dueAmount ? item.dueAmount.toFixed(2) : "-"
+          }));
+          dispatch(
+            handleField(
+              "search-account-statement",
+              "components.div.children.accountStatementResults",
+              "visible",
+              true
+            )
+          );
+          dispatch(
+            handleField(
+              "search-account-statement",
+              "components.div.children.accountStatementResults",
+              "props.data",
+              data
+            )
+          );
+        } catch (error) {
+          dispatch(toggleSnackbar(true, error.message, "error"));
+        }
     }
   }
 }

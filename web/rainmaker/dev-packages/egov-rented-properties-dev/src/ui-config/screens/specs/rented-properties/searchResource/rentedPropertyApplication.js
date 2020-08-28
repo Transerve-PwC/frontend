@@ -10,8 +10,9 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "../../utils";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage} from "./functions";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage, searchAccountStatement} from "./functions";
+import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
 
 const colonyField = {
   label: {
@@ -514,34 +515,75 @@ const duplicateCopySearchForm = {
   })
 }
 
-const accountStatementFilterForm = {
+const accountStatementTransitNumber = {
+  ...transitNumberField,
+  required: true,
+  iconObj: {
+    iconName: "search",
+    position: "end",
+    color: "#FE7A51",
+    onClickDefination: {
+      action: "condition",
+      callBack: (state, dispatch) => {
+        getAccountStatementProperty(state, dispatch);
+      }
+    }
+  },
+  title: {
+    value:
+      "If you have already assessed your property, then please search your property by your transit Number",
+    key: "If you have already assessed your property, then please search your property by your transit Number"
+  },
+  infoIcon: "info_circle",
+  beforeFieldChange: (action, state, dispatch) => {
+    dispatch(
+        prepareFinalObject(
+          "searchScreen.area",
+          ""
+        )
+      )
+    dispatch(
+        prepareFinalObject(
+          "searchScreen.pincode",
+          ""
+        )
+      )
+      dispatch(
+        prepareFinalObject(
+          "searchScreen.ownername",
+          ""
+        )
+      )
+  }
+}
+
+export const accountStatementFilterForm = getCommonCard({
   subParagraph: getCommonParagraph({
     labelName: "Please Provide Transit Number",
     labelKey: "RP_PLEASE_TRANSIT_NUMBER_TO_SEARCH_APPLICATION_LABEL"
   }),
   applicationNoContainer: getCommonContainer({
-    transitNumber: getTextField(transitNumberField),
-    area:getTextField(areaField)
+    transitNumber: getTextField(accountStatementTransitNumber),
+    area:getTextField({...areaField})
   }),
   statusContainer: getCommonContainer({
     pincode:getTextField(pincodeField),
     ownername:getTextField(ownernameField)
-    
   }),
   subParagraph: getCommonParagraph({
     labelName: "Select start date and end date to generate account statement",
     labelKey: "RP_FILTER_CONTAINER_HEADER_LABEL"
   }),
   dateContainer:getCommonContainer({
-      from:getDateField(fromDateField),
-      to:getDateField(toDateField)
+      from:getDateField({...fromDateField, required: true}),
+      to:getDateField({...toDateField, required: true})
   }),
   button: getCommonContainer({
     buttonContainer: getCommonContainer(
       {...filterButtonItem, filterButton: {...filterButtonItem.filterButton, 
         onClickDefination: {
           action: "condition",
-          // callBack: searchTransferProperties
+          callBack: searchAccountStatement
         }
       }, lastCont: {
         uiFramework: "custom-atoms",
@@ -553,32 +595,10 @@ const accountStatementFilterForm = {
       }
     })
   })
-}
+})
 
 export const ownerShipTransferApplication = getCommonCard(
   commonSearchForm
-)
-
-export const accountStatementFilter = getCommonCard(
-  {...accountStatementFilterForm,
-    button: getCommonContainer({
-      buttonContainer: getCommonContainer(
-        {...filterButtonItem, filterButton: {...filterButtonItem.filterButton, 
-          onClickDefination: {
-            action: "condition",
-            callBack: searchDuplicateCopy
-          }
-        }, lastCont: {
-          uiFramework: "custom-atoms",
-          componentPath: "Div",
-          gridDefination: {
-            xs: 12,
-            sm: 4
-          }
-        }
-      })
-    })
-  }
 )
 
 export const searchDuplicateCopyApplication = getCommonCard(

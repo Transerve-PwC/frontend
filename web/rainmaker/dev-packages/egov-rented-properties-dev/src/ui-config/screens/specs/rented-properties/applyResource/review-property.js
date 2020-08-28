@@ -140,14 +140,14 @@ export const getNoticeReviewProperty = (isEditable = true) => {
                     labelName: "Allotment Number",
                     labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
                 },
-                { jsonPath: "Properties[0].owners[0].allotmenNumber" }
+                { jsonPath: "SingleProperties[0].allotmenNumber" }
             ),
             memoDate: getLabelWithValue(
                 {
                     labelName: "Allotment Date",
                     labelKey: "RP_ALLOTMENT_DATE_LABEL"
                 },
-                { jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate", callBack: convertEpochToDate }
+                { jsonPath: "SingleProperties[0].allotmentStartdate", callBack: convertEpochToDate }
             )
         })
     })
@@ -407,12 +407,11 @@ export const getNoticeViolationPreviewReviewRentDetails = (isEditable = true) =>
                         labelName: "Father/ Husband's Name",
                         labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
                     },
-                    { jsonPath: "Properties[0].owners[1].ownerDetails.fatherOrHusband" },
-                    {visible: false}
+                    { jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband" }
                 ),
                 originalAllotte: getLabelWithValue(
                     {
-                        labelName: "Original Allottee",
+                        labelName: "Allottee",
                         labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
                     },
                     { jsonPath: "SingleProperties[0].originalAllottee" }
@@ -492,7 +491,7 @@ export const getNoticeRecoveryPreviewReviewRentDetails = (isEditable = true) => 
                 ),
                 originalAllotte: getLabelWithValue(
                     {
-                        labelName: "Original Allottee",
+                        labelName: "Allottee",
                         labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
                     },
                     { jsonPath: "SingleProperties[0].originalAllottee" }

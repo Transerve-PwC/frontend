@@ -321,7 +321,7 @@ let userInfo = JSON.parse(getUserInfo());
         [],
         { NoticeApplications }
       );
-      return true;
+      return response;
   } catch (error) {
       dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
       console.log(error);
@@ -463,55 +463,110 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
         return false;
     }
   }
-  
+ 
+const getPropertyDetails = async ({state, dispatch, transitNumber, screenKey, componentJsonPath, jsonPath}) => {
+  let queryObject = [
+    { key: "transitNumber", value: transitNumber },
+    { key: "state", value: "PM_APPROVED"},
+    { key: "relations", value: "owner" }
+  ];
+  const payload = await getSearchResults(queryObject)
+  if (
+    payload &&
+    payload.Properties
+  ) {
+    if (!payload.Properties.length) {
+      dispatch(
+        toggleSnackbar(
+          true,
+          {
+            labelName: "Property is not found with this Transit Number",
+            labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+          },
+          "info"
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          jsonPath,
+          ""
+        )
+      )
+      dispatch(
+        handleField(
+          screenKey,
+          componentJsonPath,
+          "props.value",
+          ""
+        )
+      );
+    } else {
+      return payload
+    }
+  }
+}
+
+export const getAccountStatementProperty = async (state, dispatch) => {
+  try {
+    const transitNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreen.transitNumber")
+    if(!!transitNumber) {
+      const payload = await getPropertyDetails({
+        state, dispatch, transitNumber, screenKey: "search-account-statement",
+        jsonPath: "searchScreen.transitNumber",
+        componentJsonPath:"components.div.children.accountStatementFilterForm.children.cardContent.children.applicationNoContainer.children.transitNumber"
+      })
+      if(!!payload) {
+        const {Properties} = payload;
+        const {owners = []} = Properties[0]
+        const findOwner = owners.find(item => !!item.activeState) || {}
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.area",
+            Properties[0].propertyDetails.address.area
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.pincode",
+            Properties[0].propertyDetails.address.pincode
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.propertyId",
+            Properties[0].propertyDetails.propertyId
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.ownername",
+            findOwner.ownerDetails.name
+          )
+        )
+        return Properties[0].propertyDetails.propertyId
+      }
+    }
+  } catch (error) {
+    dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    return false
+  }
+}
 
 
 
 export const getDetailsFromProperty = async (state, dispatch) => {
   try {
-    
     const transitNumber = get(
       state.screenConfiguration.preparedFinalObject,
       "Owners[0].property.transitNumber",
       ""
     );
     if(!!transitNumber) {
-      let queryObject = [
-        { key: "transitNumber", value: transitNumber },
-        { key: "state", value: "PM_APPROVED"}
-      ];
-      const payload = await getSearchResults(queryObject)
-      if (
-        payload &&
-        payload.Properties
-      ) {
-        if (!payload.Properties.length) {
-          dispatch(
-            toggleSnackbar(
-              true,
-              {
-                labelName: "Property is not found with this Transit Number",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
-              },
-              "info"
-            )
-          );
-          dispatch(
-            prepareFinalObject(
-              "Owners[0].property.transitNumber",
-              ""
-            )
-          )
-          dispatch(
-            handleField(
-              "ownership-apply",
-              "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",
-              "props.value",
-              ""
-            )
-          );
-        } else {
-          const {Properties} = payload;
+      const payload = await getPropertyDetails({state, dispatch, transitNumber, screenKey: "ownership-apply", jsonPath: "Owners[0].property.transitNumber",
+    componentJsonPath: "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber"
+    })
+    if(!!payload) {
+      const {Properties} = payload;
           const {owners = []} = Properties[0]
           const findOwner = owners.find(item => !!item.activeState) || {}
           dispatch(
@@ -557,11 +612,11 @@ export const getDetailsFromProperty = async (state, dispatch) => {
             )
           )
           return true
-        }
     }
-  }
+  }     
  } catch (error) {
-  console.log(e);
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    return false
   }
 }
 
@@ -575,41 +630,10 @@ export const getDetailsFromPropertyMortgage = async (state, dispatch) => {
       ""
     );
     if(!!transitNumber) {
-      let queryObject = [
-        { key: "transitNumber", value: transitNumber },
-        { key: "state", value: "PM_APPROVED" }
-      ];
-      const payload = await getSearchResults(queryObject)
-      if (
-        payload &&
-        payload.Properties
-      ) {
-        if (!payload.Properties.length) {
-          dispatch(
-            toggleSnackbar(
-              true,
-              {
-                labelName: "Property is not found with this Transit Number",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
-              },
-              "info"
-            )
-          );
-          dispatch(
-            prepareFinalObject(
-              "MortgageApplications[0].property.transitNumber",
-              ""
-            )
-          )
-          dispatch(
-            handleField(
-              "apply",
-              "components.div.children.formwizardFirstStep.children.ownershipAddressDetailsMortgage.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",
-              "props.value",
-              ""
-            )
-          );
-        } else {
+
+      const payload = await getPropertyDetails({state, dispatch, transitNumber, screenKey: "mortage-apply", jsonPath: "MortgageApplications[0].property.transitNumber", componentJsonPath: "components.div.children.formwizardFirstStep.children.ownershipAddressDetailsMortgage.children.cardContent.children.detailsContainer.children.ownershipTransitNumber"
+    })
+      if(!!payload) {
           const {Properties} = payload;
           const {owners = []} = Properties[0]
           const findOwner = owners.find(item => !!item.activeState) || {}
@@ -668,13 +692,12 @@ export const getDetailsFromPropertyMortgage = async (state, dispatch) => {
               findOwner.ownerDetails.phone
             )
           )
-          
           return true
         }
     }
-  }
  } catch (error) {
-  console.log(e);
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    return false
   }
 }
 
@@ -688,47 +711,10 @@ export const getDetailsFromPropertyTransit = async (state, dispatch) => {
       ""
     );
     if(!!transitNumber) {
-      let queryObject = [
-        { key: "transitNumber", value: transitNumber },
-        { key: "state", value: "PM_APPROVED" }
-      ];
-      
-      const payload = await getSearchResults(queryObject)
-      
-      if (
-        payload &&
-        payload.Properties
-      ) {
-        if (!payload.Properties.length) {
-          dispatch(
-            toggleSnackbar(
-              true,
-              {
-                labelName: "Property is not found with this Transit Number",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
-              },
-              "info"
-            )
-          );
-          dispatch(
-            prepareFinalObject(
-              "owners[0].property.transitNumber",
-              ""
-            )
-          )
-          dispatch(
-            handleField(
-              "apply",
-              "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",
-              "props.value",
-              ""
-            )
-          );
-        } else {
-          
-          const {Properties} = payload;
-          const {owners = []} = Properties[0]
-          
+      const payload = await getPropertyDetails({state, dispatch, transitNumber, screenKey: "transit-site-images", jsonPath: "owners[0].property.transitNumber", componentJsonPath: "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber"
+    })
+      if(!!payload) {
+          const {Properties} = payload;          
           dispatch(
             prepareFinalObject(
               "PropertyImagesApplications[0].property.pincode",
@@ -747,13 +733,12 @@ export const getDetailsFromPropertyTransit = async (state, dispatch) => {
               Properties[0].propertyDetails.address.area
             )
           )
-          
           return true
         }
     }
-  }
  } catch (error) {
-  console.log(e);
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    return false
   }
 }
 
@@ -767,41 +752,9 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
       ""
     );
     if(!!transitNumber) {
-      let queryObject = [
-        { key: "transitNumber", value: transitNumber },
-        { key: "state", value: "PM_APPROVED" }
-      ];
-      const payload = await getSearchResults(queryObject)
-      if (
-        payload &&
-        payload.Properties
-      ) {
-        if (!payload.Properties.length) {
-          dispatch(
-            toggleSnackbar(
-              true,
-              {
-                labelName: "Property is not found with this Transit Number",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
-              },
-              "info"
-            )
-          );
-          dispatch(
-            prepareFinalObject(
-              "DuplicateCopyApplications[0].property.transitNumber",
-              ""
-            )
-          )
-          dispatch(
-            handleField(
-              "duplicate-copy-apply",
-              "components.div.children.formwizardFirstStep.children.transitSiteDetails.children.cardContent.children.detailsContainer.children.transitNumber",
-              "props.value",
-              ""
-            )
-          );
-        } else {
+        const payload = await getPropertyDetails({state, dispatch, transitNumber, screenKey: "duplicate-copy-apply", jsonPath: "DuplicateCopyApplications[0].property.transitNumber", componentJsonPath: "components.div.children.formwizardFirstStep.children.transitSiteDetails.children.cardContent.children.detailsContainer.children.transitNumber"
+        })
+        if(!!payload) {
           const {Properties} = payload;
           const {owners = []} = Properties[0]
           const findOwner = owners.find(item => !!item.activeState) || {}
@@ -863,8 +816,8 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
           return true
         }
     }
-  }
  } catch (error) {
-  console.log(e);
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    return false
   }
 }

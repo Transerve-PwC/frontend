@@ -258,6 +258,36 @@ class SingleApplication extends React.Component {
                         </Grid>
                       );
                     })}
+                    {moduleName === "OWNERSHIPTRANSFERRP" && item.applicationState === "OT_APPROVED" && (
+                      <div>
+                      <Grid container style={{ marginBottom: 12 }}>
+                        <Grid item xs={6}>
+                          <Label
+                            labelKey="RP_ALLOTMENT_NUMBER"
+                            fontSize={14}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.60"
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Label
+                            labelKey={this.generateLabelKey(
+                              { label: "RP_ALLOTMENT_NUMBER",
+                                jsonPath: "allotmenNumber",
+                              }, item)}
+                            fontSize={14}
+                            checkValueForNA={checkValueForNA}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.87"
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </div>
+                    )}
                     {moduleName === "TL" &&
                       <div>
                         <Grid container style={{ marginBottom: 12 }}>

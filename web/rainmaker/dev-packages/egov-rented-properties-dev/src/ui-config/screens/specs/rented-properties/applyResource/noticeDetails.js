@@ -93,7 +93,7 @@ const ownerNameField = {
 
 const originalAllotteField = {
     label: {
-        labelName: "Original Allottee",
+        labelName: "Allottee",
         labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
     },
     placeholder: {
@@ -109,7 +109,7 @@ const originalAllotteField = {
     props: {
         disabled: true
       },
-    jsonPath: "Properties[0].owners[0].ownerDetails.name"
+    jsonPath: "Properties[0].owners[0].ownerDetails.originalAllottee"
 }
 
 const getDocumentField = {
@@ -151,7 +151,7 @@ const getViolationField = {
         disabled: false
       },
       required:true,
-    jsonPath: "SingleImage[0].description" 
+    jsonPath: "Properties[0].owners[0].ownerDetails.violations" 
 }
 
 export const transitNumberConfig = {
@@ -297,8 +297,8 @@ const paymentAmountFieldNotice = {
         labelName: "Enter Due Amount",
         labelKey: "RP_ENTER_DUE_AMOUNT"
     },
-    minLength: 4,
-    maxLength: 25,
+    minLength: 1,
+    maxLength: 8,
     required: true,
     jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid",
     errorMessage:"RP_ERR_DUE_AMOUNT_FIELD"

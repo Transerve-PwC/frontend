@@ -59,6 +59,19 @@ const header = getCommonHeader({
 
   const getData = async(action, state, dispatch) => {
     getColonyTypes(action, state, dispatch);
+    const propertyArr = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0]",
+      [])
+    const orgOwner = propertyArr.owners.find(item => !!item.isPrimaryOwner)
+      if(!!orgOwner){
+          dispatch(
+              prepareFinalObject(
+                  "Properties[0].owners[0].ownerDetails.originalAllottee",
+                  orgOwner.ownerDetails.name
+              )
+              )
+      }
   }
 
 const recoveryNotice = {

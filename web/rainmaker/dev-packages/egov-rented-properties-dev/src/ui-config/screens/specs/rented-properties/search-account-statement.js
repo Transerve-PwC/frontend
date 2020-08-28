@@ -3,11 +3,8 @@ import {
     getBreak,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { accountStatementFilter } from "./searchResource/rentedPropertyApplication";
-import { searchTransferProperties } from "./searchResource/functions"
+import { accountStatementFilterForm } from "./searchResource/rentedPropertyApplication";
 import { accountStatementResults } from "./searchResource/searchResults";
-import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { getStatusList } from "./search";
 
   const header = getCommonHeader({
     labelName: "Account Statement Generation",
@@ -18,11 +15,7 @@ import { getStatusList } from "./search";
     uiFramework: "material-ui",
     name: "search-account-statement",
     beforeInitScreen: (action, state, dispatch) => {
-      const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "OwnershipTransferRP" }]
       dispatch(prepareFinalObject("searchScreen", {}))
-    //   searchTransferProperties(state, dispatch, true)
-      getStatusList(action, state, dispatch, queryObject, "search-transfer-properties", "components.div.children.ownerShipTransferApplication.children.cardContent.children.statusContainer.children.status")
       return action
     },
     components: {
@@ -47,7 +40,7 @@ import { getStatusList } from "./search";
               }
             }
           },
-          accountStatementFilter,
+          accountStatementFilterForm,
           breakAfterSearch: getBreak(),
           accountStatementResults
         }

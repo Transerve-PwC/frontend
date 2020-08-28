@@ -148,7 +148,7 @@ class MultipleDocuments extends Component {
                         </Grid>
                       );
                     })}
-                      {datum.applicationDocuments.map((content) => (
+                      {btnhide && (datum.applicationDocuments.map((content) => (
                           <Grid xs={6} sm={3} 
                           style={{
                               marginBottom: "8px",
@@ -184,6 +184,7 @@ class MultipleDocuments extends Component {
                           </Grid>
                           </Grid>
                           </Grid>)
+                      )
                       )}
                   </Grid>
                   </CardContent>
