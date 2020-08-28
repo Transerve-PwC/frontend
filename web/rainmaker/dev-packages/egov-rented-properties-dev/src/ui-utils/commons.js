@@ -7,11 +7,13 @@ import {
   getHygeneLevelJson,
   getLocalityHarmedJson,
   setFilteredTradeTypes,
-  getTradeTypeDropdownData
+  getTradeTypeDropdownData,
+  getTextToLocalMapping
 } from "../ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
-  toggleSnackbar
+  toggleSnackbar,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTranslatedLabel,
@@ -943,8 +945,8 @@ export const setXLSTableData = async({demands, payments, componentJsonPath, scre
     return !!findItem ? {...item, ...findItem} : {...item}
   })
   data = data.map(item => ({
-    [RP_DEMAND_GENERATION_DATE]: moment(new Date(item.generationDate)).format("DD MMM YYYY"),
-    [RP_PAYMENT_DATE]: moment(new Date(item.dateOfPayment)).format("DD MMM YYYY"),
+    [RP_DEMAND_GENERATION_DATE]: !!item.generationDate && moment(new Date(item.generationDate)).format("DD MMM YYYY"),
+    [RP_PAYMENT_DATE]: !!item.dateOfPayment && moment(new Date(item.dateOfPayment)).format("DD MMM YYYY"),
     [RP_ASSESSMENT_AMOUNT]: !!item.collectionPrincipal && item.collectionPrincipal.toFixed(2),
     [RP_REALIZATION_AMOUNT]: !!item.amountPaid && item.amountPaid.toFixed(2),
     [RP_RECEIPT_NO]: item.receiptNo
@@ -959,29 +961,30 @@ export const setXLSTableData = async({demands, payments, componentJsonPath, scre
   }, {totalAssessment: 0, totalRealization: 0})
 
   data = [...data, {
-    [RP_DEMAND_GENERATION_DATE]: "Total",
+    [RP_DEMAND_GENERATION_DATE]: getTextToLocalMapping("RP_TOTAL_AMOUNT"),
     [RP_PAYMENT_DATE]: "",
     [RP_ASSESSMENT_AMOUNT]: totalAssessment.toFixed(2),
     [RP_REALIZATION_AMOUNT]: totalRealization.toFixed(2),
     [RP_RECEIPT_NO]: ""
   }]
-
-  store.dispatch(
-    handleField(
-        screenKey,
-        componentJsonPath,
-        "props.data",
-        data
-    )
-  );
-  store.dispatch(
-    handleField(
-        screenKey,
-        componentJsonPath,
-        "visible",
-        true
-    )
-  );
+  if(data.length > 1) {
+    store.dispatch(
+      handleField(
+          screenKey,
+          componentJsonPath,
+          "props.data",
+          data
+      )
+    );
+    store.dispatch(
+      handleField(
+          screenKey,
+          componentJsonPath,
+          "visible",
+          true
+      )
+    );
+  }
   store.dispatch(
     prepareFinalObject("Properties[0].demands", demands)
   )
@@ -996,6 +999,7 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
     {key: "fileStoreId", value: fileStoreId}
   ]
   try {
+    store.dispatch(toggleSpinner());
     const response = await httpRequest(
       "post",
       getUrl,
@@ -1004,10 +1008,11 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
     )
     if(!!response) {
       let {demand, payment} = response;
-      demand = demand.map(item => ({...item, active: true}))
-      payment = payment.map(item => ({...item, active: true}))
-      setXLSTableData({demands: demand, payments: payment, componentJsonPath, screenKey})
+      if(!!demand.length && !!payment.length) {
+        setXLSTableData({demands: demand, payments: payment, componentJsonPath, screenKey})
+      }
     }
+    store.dispatch(toggleSpinner());
   } catch (error) {
     store.dispatch(
       toggleSnackbar(
@@ -1016,27 +1021,9 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
         "error"
       )
     );
+    store.dispatch(toggleSpinner());
   }
 }
-
-export const getXLSFileUrlFromAPI = async (fileStoreId,tenantId) => {
-  const queryObject = [
-  	//{ key: "tenantId", value: tenantId||commonConfig.tenantId },
-    { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
-    { key: "fileStoreId", value: fileStoreId }
-  ];
-  try {
-    const fileUrl = await httpRequest(
-      "get",
-      "/rp-services/v1/excel/read",
-      "",
-      queryObject
-    );
-    return fileUrl;
-  } catch (e) {
-    console.log(e);
-  }
-};
 
 export const getNextFinancialYearForRenewal = async (currentFinancialYear) => {
   let payload = null;

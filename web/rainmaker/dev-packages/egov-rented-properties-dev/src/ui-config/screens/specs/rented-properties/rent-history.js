@@ -4,6 +4,7 @@ import {onTabChange, headerrow, tabs} from './search-preview'
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getSearchResults, setXLSTableData } from "../../../../ui-utils/commons";
 import {paymentDetailsTable} from './applyResource/applyConfig'
+import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 
 const beforeInitFn = async (action, state, dispatch, transitNumber) => {
@@ -76,6 +77,7 @@ const rentHistory = {
                 },
                 type: "array",
               },
+              breakAfterSearch: getBreak(),
               paymentDetailsTable
           }
         }

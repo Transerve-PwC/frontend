@@ -187,18 +187,22 @@ const header = getCommonHeader({
 const getData = async(action, state, dispatch) => {
   const transitNumber = getQueryArg(window.location.href, "transitNumber");
   getColonyTypes(action, state, dispatch);
+  dispatch(
+    prepareFinalObject(
+      "Properties",
+      []
+      )
+      )
+  dispatch(
+    prepareFinalObject(
+      "PropertiesTemp",
+      []
+    )
+  )
   if(transitNumber) {
     await updatePFOforSearchResults(action, state, dispatch, transitNumber, "owner")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        []
-        )
-        )
   }
   setDocumentData(action, state, dispatch)
-  // setPaymentDocumentData(action, state, dispatch)
 }
 
 const applyRentedProperties = {

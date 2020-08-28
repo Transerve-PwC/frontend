@@ -4,25 +4,23 @@ import {
   getEpochForDate,
   getTextToLocalMapping
 } from "../../utils";
-import { searchApiCall } from "./functions";
-import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
 
-export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
-export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
-export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
-export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
-export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
-export const DATE = getLocaleLabels("DATE","RP_COMMON_TABLE_COL_DATE")
-export const AMOUNT = getLocaleLabels("AMOUNT","RP_COMMON_TABLE_COL_AS_AMOUNT")
-export const REMAINING_INTEREST = getLocaleLabels("REMAINING INTEREST","RP_COMMON_TABLE_COL_AS_REMAINING_INTEREST")
-export const REMAINING_PRINCIPAL = getLocaleLabels("REMAINING PRINCIPAL","RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
-export const TOTAL_DUE = getLocaleLabels("TOTAL DUE","RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
-export const TYPE = getLocaleLabels("TYPE","RP_COMMON_TABLE_COL_AS_TYPE")
+export const APPLICATION_NO = getTextToLocalMapping("RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
+export const PROPERTY_ID = getTextToLocalMapping("RP_COMMON_TABLE_COL_PROPERTY_ID")
+export const OWNER_NAME = getTextToLocalMapping("RP_COMMON_TABLE_COL_APPLICANT_NAME")
+export const STATUS = getTextToLocalMapping("RP_COMMON_TABLE_COL_APPLICATION_STATUS")
+export const LAST_MODIFIED_ON = getTextToLocalMapping("RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
+export const DATE = getTextToLocalMapping("RP_COMMON_TABLE_COL_DATE")
+export const AMOUNT = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_AMOUNT")
+export const REMAINING_INTEREST = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_INTEREST")
+export const REMAINING_PRINCIPAL = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
+export const TOTAL_DUE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
+export const TYPE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TYPE")
+
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",

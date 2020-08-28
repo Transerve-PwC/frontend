@@ -8,7 +8,7 @@ const uploadimage = getCommonCard({
     // componentPath: "ImageUploadMolecule",
     props: {
     formKey: `newapplication`,
-    imageLength: 6,
+    // imageLength: 6,
     hide: false,
     MAX_IMAGE_SIZE: 6000,
     labelKey: "ERR_FILE_MORE_THAN_SIXMB"

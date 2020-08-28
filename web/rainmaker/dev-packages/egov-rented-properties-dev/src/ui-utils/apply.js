@@ -6,7 +6,8 @@ import {
 } from "../ui-config/screens/specs/utils";
 import {
     prepareFinalObject,
-    toggleSnackbar
+    toggleSnackbar,
+    toggleSpinner
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
     getTranslatedLabel,
@@ -40,6 +41,7 @@ let userInfo = JSON.parse(getUserInfo());
 
   export const applyRentedProperties = async (state, dispatch, activeIndex) => {
     try {
+        dispatch(toggleSpinner())
         let queryObject = JSON.parse(
             JSON.stringify(
               get(state.screenConfiguration.preparedFinalObject, "Properties", [])
@@ -94,11 +96,13 @@ let userInfo = JSON.parse(getUserInfo());
         let applicationDocuments = Properties[0].propertyDetails.applicationDocuments || [];
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
-        Properties = [{...Properties[0], rentSummary: !!Properties[0].rentSummary ? Properties[0].rentSummary : {
-          balancePrincipal: "0",
-          balanceInterest: "0",
-          balanceAmount: "0"
-        }, propertyDetails: {...Properties[0].propertyDetails, applicationDocuments}}]
+        let {rentSummary} = Properties[0]
+        rentSummary = {
+          balancePrincipal: !!rentSummary ? rentSummary.balancePrincipal.toFixed(2) : 0,
+          balanceInterest: !!rentSummary ? rentSummary.balanceInterest.toFixed(2) : 0,
+          balanceAmount: !!rentSummary ? rentSummary.balanceAmount.toFixed(2) : 0
+        }
+        Properties = [{...Properties[0], rentSummary, propertyDetails: {...Properties[0].propertyDetails, applicationDocuments}}]
         Properties = Properties.reduce((prev, curr) => {
           let keys = Object.keys(curr);
           keys = keys.filter(key => !!curr[key]).reduce((acc, key) => {
@@ -115,9 +119,11 @@ let userInfo = JSON.parse(getUserInfo());
             removedDocs
           )
         );
+        dispatch(toggleSpinner())
         return true;
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+        dispatch(toggleSpinner())
         console.log(error);
         return false;
     }

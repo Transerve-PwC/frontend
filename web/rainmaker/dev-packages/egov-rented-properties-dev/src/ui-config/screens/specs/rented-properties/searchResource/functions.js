@@ -103,7 +103,7 @@ export const searchTransferProperties = async (state, dispatch, onInit, offset, 
         [getTextToLocalMapping("Transit No")]: item.property.transitNumber || "-",
         // [PROPERTY_ID]: item.property.id || "-",
         [OWNER_NAME]: item.ownerDetails.name || "-",
-        [STATUS]: getLocaleLabels(item.applicationState, item.applicationState) || "-",
+        [STATUS]: getTextToLocalMapping(item.applicationState) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(
@@ -192,7 +192,7 @@ export const searchMortgage = async (state, dispatch, onInit, offset, limit , hi
         [APPLICATION_NO]: item.applicationNumber || "-",
         [getTextToLocalMapping("Transit No")]: item.property.transitNumber || "-",
         [OWNER_NAME]: item.applicant[0].name || "-",
-        [STATUS]: getLocaleLabels(item.state, item.state) || "-",
+        [STATUS]: getTextToLocalMapping(item.state) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(
@@ -280,7 +280,7 @@ export const searchDuplicateCopy = async (state, dispatch, onInit, offset, limit
         [APPLICATION_NO]: item.applicationNumber || "-",
         [getTextToLocalMapping("Transit No")]: item.property.transitNumber || "-",
         [OWNER_NAME]: item.applicant[0].name || "-",
-        [STATUS]: getLocaleLabels(item.state, item.state) || "-",
+        [STATUS]: getTextToLocalMapping(item.state) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(
@@ -366,13 +366,16 @@ export const searchApiCall = async (state, dispatch, onInit, relations = "owner"
     }
     const response = await getSearchResults(queryObject);
     try {
-      let data = response.Properties.map(item => ({
+      let data = response.Properties.map(item => {
+        const findOwner = item.owners.find(itemdat => itemdat.activeState === true)
+        return {
         [getTextToLocalMapping("Transit No")]: item.transitNumber || "-",
-        [getTextToLocalMapping("Colony")]: getLocaleLabels(item.colony, item.colony) || "-",
-        [getTextToLocalMapping("Owner")]: [item.owners.find(itemdat => itemdat.activeState === true)][0].ownerDetails.name || "-",
-        [getTextToLocalMapping("Status")]: getLocaleLabels(item.masterDataState, item.masterDataState) || "-",
+        [getTextToLocalMapping("Colony")]: getTextToLocalMapping(item.colony) || "-",
+        [getTextToLocalMapping("Owner")]: !!findOwner ? findOwner.ownerDetails.name : "-",
+        [getTextToLocalMapping("Status")]: getTextToLocalMapping(item.masterDataState) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
-      }));
+      }
+    });
       dispatch(
         handleField(
           "search",

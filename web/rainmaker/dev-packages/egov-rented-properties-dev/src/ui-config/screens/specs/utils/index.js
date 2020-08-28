@@ -3072,6 +3072,7 @@ export const getTextToLocalMapping = label => {
         "RP_COMMON_TABLE_COL_OWNER",
         localisationLabels
       );
+    default: return getLocaleLabels(label, label, localisationLabels)
   }
 };
 

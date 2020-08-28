@@ -60,11 +60,13 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
-    properties = [{...properties[0], rentSummary: !!properties[0].rentSummary ? properties[0].rentSummary : {
-      balancePrincipal: "0",
-	    balanceInterest: "0",
-	    balanceAmount: "0"
-    } , propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+    let {rentSummary} = properties[0]
+    rentSummary = {
+      balancePrincipal: !!rentSummary ? rentSummary.balancePrincipal.toFixed(2) : 0,
+      balanceInterest: !!rentSummary ? rentSummary.balanceInterest.toFixed(2) : 0,
+      balanceAmount: !!rentSummary ? rentSummary.balanceAmount.toFixed(2) : 0
+    }
+    properties = [{...properties[0], rentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(
       prepareFinalObject(

@@ -15,6 +15,27 @@ import { updatePFOforSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { imageUploadDetailsProperties } from "./applyResource/imageUploadDetails";
 
+const getMdmsData = async (dispatch, body) => {
+  let mdmsBody = {
+        MdmsCriteria: {
+        tenantId: commonConfig.tenantId,
+        moduleDetails: body
+      }
+  };
+  try {
+      let payload = await httpRequest(
+        "post",
+        "/egov-mdms-service/v1/_search",
+        "_search",
+        [],
+        mdmsBody
+      );
+      return payload;
+  } catch (e) {
+      console.log(e);
+  }
+};
+
 const reviewDocumentDetails = getReviewDocuments(false, "notice-violation")
 
 export const noticeDocumentDetails = getCommonCard({
@@ -82,11 +103,35 @@ const getData = async(action, state, dispatch) => {
   }
 }
 
+const beforeInitFn =async(action, state, dispatch)=>{
+  const transitImagesPayload = [{
+    moduleName: "PropertyServices",
+    masterDetails: [{name: "applications"}]
+  }]
+  let documentsRes = await getMdmsData(dispatch, transitImagesPayload);
+
+  if (documentsRes) {
+    documentsRes = documentsRes.MdmsRes.PropertyServices.applications[0].documentList;
+
+    documentsRes = documentsRes.filter(item => item.code == "TRANSIT_SITE_IMAGES");
+    const imageLength = documentsRes[0].maxCount;
+    dispatch(
+      handleField(
+        "notice-violation",
+        "components.div.children.imageUploadDetailsProperties.children.cardContent.children.uploadimage.children.cardContent.children.imageUpload",
+        "props.imageLength",
+        imageLength
+      )
+    )
+  }
+}
+
 const applyNoticeViolation = {
     uiFramework: "material-ui",
     name: "notice-violation",
     beforeInitScreen: (action, state, dispatch) => {
-        getData(action, state, dispatch)
+        getData(action, state, dispatch);
+        beforeInitFn(action, state, dispatch);
         return action;
       },
     components: {
