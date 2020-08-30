@@ -7,7 +7,7 @@ import {
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getOwnershipSearchResults } from "../../../../ui-utils/commons";
-import { getReviewApplicantDetails, getreviewPropertyAddressDetails,getReviewPropertyDetailsWithoutAllotmentNumber } from "./applyResource/review-applications";
+import { getReviewApplicantDetails, getreviewPropertyAddressDetails,getReviewPropertyDetailsWithoutAllotmentNumber,getreviewChargesDetails } from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import {downloadPrintContainer} from "./applyResource/footer"
 import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
@@ -35,6 +35,7 @@ const headerrow = getCommonContainer({
 const reviewApplicantDetails = getReviewApplicantDetails(false);
 const reviewPropertyAddressDetails = getreviewPropertyAddressDetails(false)
 const reviewFreshLicenceDocuments = getReviewDocuments(false, "ownership-apply", "OwnersTemp[0].reviewDocData")
+const getreviewCharges=getreviewChargesDetails(false)
 const reviewPropertyDetailsWithoutAllotmentNumber = getReviewPropertyDetailsWithoutAllotmentNumber(false)
 
 const estimate = getCommonGrayCard({
@@ -48,8 +49,8 @@ const transferReviewDetails = getCommonCard({
     reviewPropertyAddressDetails,
     reviewPropertyDetailsWithoutAllotmentNumber,
     reviewApplicantDetails,
-    reviewFreshLicenceDocuments,
-    
+    getreviewCharges,
+    reviewFreshLicenceDocuments
 })
 
 const beforeInitFn = async(action, state, dispatch) => {
@@ -162,6 +163,15 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
           showEstimate
       )
   );
+  const showCharge =  status === "OT_PENDINGSIVERIFICATION" || status === "OT_PENDINGCAAPPROVAL" || status === "OT_PENDINGAPRO" 
+  dispatch(
+    handleField(
+        "ownership-search-preview",
+        "components.div.children.transferReviewDetails.children.cardContent.children.getreviewCharges",
+        "visible",
+        showCharge
+    )
+);
     }
   }
 }

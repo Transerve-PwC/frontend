@@ -7,7 +7,7 @@ import {
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getDuplicateCopySearchResults} from "../../../../ui-utils/commons";
-import { getDuplicateCopyReviewPropertyAddressDetails , getDuplicateCopyPreviewApplicantDetails} from "./applyResource/review-applications";
+import { getDuplicateCopyReviewPropertyAddressDetails , getDuplicateCopyPreviewApplicantDetails,getduplicatereviewChargesDetails} from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
@@ -35,7 +35,7 @@ const headerrow = getCommonContainer({
 const reviewApplicantDetails = getDuplicateCopyPreviewApplicantDetails(false);
 const reviewPropertyAddressDetails = getDuplicateCopyReviewPropertyAddressDetails(false)
 const reviewDuplicateCopyDocuments = getReviewDocuments(false, "duplicate-copy-apply","DuplicateTemp[0].reviewDocData")
-
+const duplicatereviewChargesDetails=getduplicatereviewChargesDetails(false)
 const estimate = getCommonGrayCard({
   estimateSection: getFeesEstimateCard({
     sourceJsonPath: "DuplicateTemp[0].estimateCardData"
@@ -46,6 +46,7 @@ const duplicateReviewDetails = getCommonCard({
     estimate,
     reviewPropertyAddressDetails,
     reviewApplicantDetails,
+    duplicatereviewChargesDetails,
     reviewDuplicateCopyDocuments
 })
 
@@ -127,6 +128,15 @@ const duplicateReviewDetails = getCommonCard({
               showEstimate
           )
       );
+      const showCharge =  status === "DC_PENDINGSIVERIFICATION" || status === "DC_PENDINGCAAPPROVAL" || status === "DC_PENDINGAPRO" 
+  dispatch(
+    handleField(
+        "search-duplicate-copy-preview",
+        "components.div.children.duplicateReviewDetails.children.cardContent.children.duplicatereviewChargesDetails",
+        "visible",
+        showCharge
+    )
+);
         }
       }
     }

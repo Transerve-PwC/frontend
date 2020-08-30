@@ -445,6 +445,22 @@ export const getFeesEstimateCard = props => {
   };
 };
 
+export const getRentSummaryCard = props => {
+  const {
+    sourceJsonPath,
+    ...rest
+  } = props;
+  return {
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-rented-properties",
+    componentPath: "RentSummaryCardContainer",
+    props: {
+      sourceJsonPath,
+      ...rest
+    }
+  };
+};
+
 const style = {
   textfieldIcon: {
     position: "relative",

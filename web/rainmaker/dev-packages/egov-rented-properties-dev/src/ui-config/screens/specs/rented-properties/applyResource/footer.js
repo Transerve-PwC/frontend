@@ -9,6 +9,7 @@ import { some } from "lodash";
 import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP, DUPLICATECOPYOFALLOTMENTLETTERRP, PERMISSIONTOMORTGAGE, TRANSITSITEIMAGES, NOTICE_GENERATION } from "../../../../../ui-constants";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getSearchResults, setXLSTableData } from "../../../../../ui-utils/commons";
+import { getQueryArg,setDocuments } from "egov-ui-framework/ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
 export const DEFAULT_STEP = -1;
@@ -170,7 +171,26 @@ const callBackForNext = async(state, dispatch) => {
       }
       if(isFormValid) {
         // dispatch(prepareFinalObject("Properties[0].fileStoreId", paymentDocuments.fileStoreId));
-        const res = await applyRentedProperties(state, dispatch, activeStep)
+        const res = await applyRentedProperties(state, dispatch, activeStep);
+
+        const interestRate = get(
+          state.screenConfiguration.preparedFinalObject,
+          "Properties[0].propertyDetails.interestRate"
+        )
+        const rentIncrementPeriod = get(
+          state.screenConfiguration.preparedFinalObject,
+          "Properties[0].propertyDetails.rentIncrementPeriod"
+        )
+        const rentIncrementPercentage = get(
+          state.screenConfiguration.preparedFinalObject,
+          "Properties[0].propertyDetails.rentIncrementPercentage"
+        )
+        
+        // convert rent detail values to string to avoid empty values at summary page
+        set(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.interestRate", interestRate.toString());
+        set(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.rentIncrementPeriod", rentIncrementPeriod.toString());
+        set(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.rentIncrementPercentage", rentIncrementPercentage.toString());
+
         if(!res) {
           return
         }
@@ -228,6 +248,7 @@ const callBackForNextrecoveryNoticegeneration = async(state, dispatch) => {
   let isFormValid = true;
   let isDateValid = true;
   let isPaymentAmountValid = true;
+  let isAmountValid = true;
 
 const isOwnerDetailsValid = validateFields(
   "components.div.children.formwizardFirstStep.children.noticePropertyDetails.children.cardContent.children.detailsContainer.children",   
@@ -249,8 +270,9 @@ const isPaymentDetailsValid = validateFields(
   dispatch,
   "notice-recovry"
 )
+let res = []
 if(isOwnerDetailsValid && isRentHolderValid && isPaymentDetailsValid) {
-  const res = await applynoticegeneration(state, dispatch, "Recovery")
+  res = await applynoticegeneration(state, dispatch, "Recovery")
   if(!res) {
    return
   } 
@@ -270,12 +292,12 @@ if(parseInt(paymentValid) == 0 || paymentValid === ""){
   isPaymentAmountValid = false
 }
 
+if(paymentValid.length > 8 || paymentValid.length === 0){
+  isAmountValid = false
+}
+
 if (isFormValid && isDateValid && isPaymentAmountValid) {
-  const noticegendata = get(
-    state.screenConfiguration.preparedFinalObject,
-    "Properties[0]"
-);
-moveToSuccess(noticegendata, dispatch, RECOVERY_NOTICE);
+moveToSuccess(res.NoticeApplications[0], dispatch, RECOVERY_NOTICE);
 }
 
 if (!isFormValid) {
@@ -308,11 +330,22 @@ if (!isPaymentAmountValid) {
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
 }  
+if (!isAmountValid) {
+  
+  let errorMessage = {
+    labelName:
+        "Please enter Amount between 1 and 8 digits!",
+    labelKey: "ERR_AMOUNT_BETWEEN_1_AND_8_DIGITS"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}   
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
 
   let isFormValid = true;
+  let propertyIdTransit = getQueryArg(window.location.href, "propertyIdTransit");
 
 const isOwnerDetailsValid = validateFields(
   "components.div.children.formwizardFirstStep.children.noticePropertyDetails.children.cardContent.children.detailsContainer.children",   
@@ -329,7 +362,7 @@ const isRentHolderValid = validateFields(
 )
 let res = [];
 if(isOwnerDetailsValid && isRentHolderValid) {
-  res = await applynoticegeneration(state, dispatch, "Violation")
+  res = await applynoticegeneration(state, dispatch, "Violation",propertyIdTransit)
   if(!res) {
    return
   } 

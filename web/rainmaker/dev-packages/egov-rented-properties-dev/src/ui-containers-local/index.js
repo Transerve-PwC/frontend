@@ -67,6 +67,11 @@ const MultipleDocumentsContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const RentSummaryCardContainer = Loadable({
+  loader: () => import("./RentSummaryCardContainer"),
+  loading: () => <Loading />
+});
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -81,5 +86,6 @@ export {
   ResubmitActionContainer,
   WorkFlowContainer,
   MultipleOwnerContainer,
-  MultipleDocumentsContainer
+  MultipleDocumentsContainer,
+  RentSummaryCardContainer
 };

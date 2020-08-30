@@ -136,7 +136,6 @@ let userInfo = JSON.parse(getUserInfo());
               get(state.screenConfiguration.preparedFinalObject, "Owners", [])
             )
           );
-        
         const userInfo = JSON.parse(getUserInfo())
         const tenantId = userInfo.permanentCity;
         // const tenantId = getQueryArg(window.location.href, "tenantId");
@@ -149,6 +148,8 @@ let userInfo = JSON.parse(getUserInfo());
         set(queryObject[0], "activeState", true);
         set(queryObject[0], "ownerDetails.applicationType", "CitizenApplication")
         set(queryObject[0], "ownerDetails.dateOfDeathAllottee", convertDateToEpoch(queryObject[0].ownerDetails.dateOfDeathAllottee))
+        set(queryObject[0], "ownerDetails.relation", queryObject[0].ownerDetails.relationWithDeceasedAllottee)
+        set(queryObject[0], "ownerDetails.fatherOrHusband", queryObject[0].ownerDetails.fatherOrHusband)
         if(!id) {
           set(queryObject[0], "applicationState", "");
           set(queryObject[0], "applicationAction", "DRAFT");
@@ -253,7 +254,7 @@ let userInfo = JSON.parse(getUserInfo());
   }
   }
 
-  export const applynoticegeneration = async (state, dispatch, str) => {
+  export const applynoticegeneration = async (state, dispatch, str, propertyIdTransitNumber) => {
     try {
 
       
@@ -261,9 +262,10 @@ let userInfo = JSON.parse(getUserInfo());
       const id = get(state.screenConfiguration.preparedFinalObject, "Properties[0].id")
       const pincode = get(state.screenConfiguration.preparedFinalObject, "Properties[0].pincode")
       const area = get(state.screenConfiguration.preparedFinalObject, "Properties[0].area")
-      const filedata = get(state.form.newapplication, "files.media",[]);
+      const filedataImages = !!propertyIdTransitNumber ? get(state.screenConfiguration.preparedFinalObject, "SingleImage[0].applicationDocuments") : get(state.form.newapplication, "files.media",[]);
+      const filedata = get(state.screenConfiguration.preparedFinalObject, "SingleImage",[]);
       const memoDate = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.allotmentStartdate")
-      const violations = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.violations")
+      const violations = get(state.screenConfiguration.screenConfig["notice-violation"],"components.div.children.formwizardFirstStep.children.ownerDetailsForViolationNotice.children.cardContent.children.detailsContainer.children.violations.props.value") || get(state.screenConfiguration.preparedFinalObject, "Images[0].description")
       const description = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.editor")
       const relationship = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.relation")
       const fatherOrHusbandname = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.fatherOrHusband")
@@ -272,16 +274,16 @@ let userInfo = JSON.parse(getUserInfo());
       const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
       const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
       const noticeType = str
-      const properyImageId = filedata.id;
+      const properyImageId = noticeType === "Violation" ? filedata[0].id : null
       const tenantId = getTenantId()
       let response;
  
-      let fileStoreId = filedata && filedata.map(item => item.fileStoreId).join(",");
+      let fileStoreId = filedataImages && filedataImages.map(item => item.fileStoreId).join(",");
       const fileUrlPayload =  fileStoreId && (await getFileUrlFromAPI(fileStoreId)); 
-      const output = filedata.map((fileitem,index) => 
+      const output = filedataImages.map((fileitem,index) => 
       
         ({
-          "fileName" : fileitem.file.name,
+          "fileName" : fileitem.name,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
           "documentType" : `PROPERTYIMAGE ${index + 1}`,
@@ -345,7 +347,6 @@ let userInfo = JSON.parse(getUserInfo());
         set(queryObject[0], "tenantId", tenantId);
         set(queryObject[0], "propertyDetails", "null");
         set(queryObject[0], "applicant[0].phone", userInfo.userName);
-
         if(!id) {
           set(queryObject[0], "state", "");
           set(queryObject[0], "action", "DRAFT");
@@ -381,7 +382,7 @@ let userInfo = JSON.parse(getUserInfo());
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
         MortgageApplications = [{...MortgageApplications[0], applicationDocuments}]
-        dispatch(prepareFinalObject("MortgageApplications", MortgageApplications));
+        // dispatch(prepareFinalObject("MortgageApplications", MortgageApplications));
         dispatch(
           prepareFinalObject(
             "MortgageApplicationsTemp[0].removedDocs",
@@ -611,6 +612,12 @@ export const getDetailsFromProperty = async (state, dispatch) => {
               findOwner.ownerDetails.revisionPercentage
             )
           )
+          dispatch(
+            prepareFinalObject(
+              "Owners[0].ownerDetails.fatherOrHusband",
+              findOwner.ownerDetails.name
+            )
+          )
           return true
     }
   }     
@@ -819,5 +826,172 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
  } catch (error) {
   dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
     return false
+  }
+}
+
+
+export const getRecoveryValueProperty = async (action,state, dispatch) => {
+  try {
+    const monthlyRent = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].rentSummary.balancePrincipal",
+      ""
+    );
+    const onlyInterest = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].rentSummary.balanceInterest",
+      ""
+    );
+    const balanceAmount=get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].rentSummary.balanceAmount",
+      ""
+    );
+    const totalDues = Math.max(0 , monthlyRent + onlyInterest - balanceAmount)
+
+      if(action.value==="RECOVERY.MONTHLYRENT"){
+
+        dispatch(
+          handleField(
+            "notice-recovry",
+            "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
+            "props.value",
+            monthlyRent
+          )
+        )
+       
+      }
+      if(action.value==="RECOVERY.INTEREST"){
+
+        dispatch(
+          handleField(
+            "notice-recovry",
+            "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
+            "props.value",
+            onlyInterest
+          )
+        )
+      }
+      if(action.value==="RECOVERY.DUES"){
+
+        dispatch(
+          handleField(
+            "notice-recovry",
+            "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
+            "props.value",
+            totalDues
+          )
+        )
+      }
+      if(action.value==="RECOVERY.LEASE"){
+
+        dispatch(
+          handleField(
+            "notice-recovry",
+            "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
+            "props.value",
+            ""
+          )
+        )
+      }
+          return true
+
+  }
+ catch (error) {
+  console.log(e);
+  }
+}
+
+export const getOfflineRentPaymentDetailsFromProperty = async (state, dispatch) => {
+  try {
+    
+    const transitNumber = get(
+      state.screenConfiguration.preparedFinalObject,
+      "OfflineRentPayment[0].property.transitNumber",
+      ""
+    );
+    if(!!transitNumber) {
+      let queryObject = [
+        { key: "transitNumber", value: transitNumber },
+        { key: "state", value: "PM_APPROVED" }
+      ];
+      const payload = await getSearchResults(queryObject)
+      if (
+        payload &&
+        payload.Properties
+      ) {
+        if (!payload.Properties.length) {
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Property is not found with this Transit Number",
+                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+              },
+              "info"
+            )
+          );
+          dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].property.transitNumber",
+              ""
+            )
+          )
+          dispatch(
+            handleField(
+              "offline-rent-payment",
+              "components.div.children.formwizardFirstStep.children.transitSiteDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+              "props.value",
+              ""
+            )
+          );
+        } else {
+          const {Properties} = payload;
+          const {owners = []} = Properties[0]
+          const findOwner = owners.find(item => !!item.activeState) || {}
+        
+          dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].property.pincode",
+              Properties[0].propertyDetails.address.pincode
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].property.id",
+              Properties[0].propertyDetails.propertyId
+            )
+          )
+           dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].property.colony",
+              Properties[0].propertyDetails.address.colony
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "Properties[0].colony",
+              getLocaleLabels("colony",Properties[0].propertyDetails.address.colony)
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].applicant[0].name",
+              findOwner.ownerDetails.name
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "OfflineRentPayment[0].rentSummary",
+              Properties[0].rentSummary
+            )
+          )
+          
+          return true
+        }
+    }
+  }
+ } catch (error) {
+  console.log(e);
   }
 }

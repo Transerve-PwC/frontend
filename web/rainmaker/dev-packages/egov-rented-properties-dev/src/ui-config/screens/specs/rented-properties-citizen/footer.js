@@ -8,6 +8,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { OWNERSHIPTRANSFERRP, TRANSITSITEIMAGES, DUPLICATECOPYOFALLOTMENTLETTERRP } from "../../../../ui-constants";
 import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getOwnershipSearchResults, getDuplicateCopySearchResults } from "../../../../ui-utils/commons"
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
@@ -19,6 +21,48 @@ const callBackForNext = async(state, dispatch) => {
     let isFormValid = true;
     let hasFieldToaster = true;
     if(activeStep === DETAILS_STEP) {
+      const transitNumber = get(
+        state.screenConfiguration.preparedFinalObject, 
+        "Owners[0].property.transitNumber",
+        "");
+      const applicationNumber = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Owners[0].ownerDetails.applicationNumber"
+      )
+
+      // the following block of code prevents a citizen from initiating a new application in case if another application with same transit number is in progress i.e. it is not rejected or approved
+      if (!!transitNumber) {
+        const queryObject = [
+          {key: "transitNumber", value: transitNumber}
+        ]
+
+        const errorMessage = {
+          labelName:
+            "Unable to process your request, as another application with same transit number is already in progress",
+          labelKey: "ERR_OT_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
+        };
+
+        const applicationNo = getQueryArg(window.location.href, "applicationNumber") || applicationNumber
+        let response = await getOwnershipSearchResults(queryObject);
+        response = response.Owners;
+
+        const draftedApplication = response.filter(item => item.applicationState == "OT_DRAFTED")
+
+        // citizen should not be able to create a new application with same transit number when there is an application that is already present in drafted state.
+        if (draftedApplication.length) {
+          // check applicationNo to differentiate between new and drafted application
+          if (!applicationNo) {
+            return dispatch(toggleSnackbar(true, errorMessage, "error"));
+          }
+        }
+
+        const filteredResponse = response.filter(item => (item.applicationState == "OT_PENDINGCLARIFICATION" || item.applicationState == "OT_PENDINGCLVERIFICATION" || item.applicationState == "OT_PENDINGJAVERIFICATION" || item.applicationState == "OT_PENDINGSAVERIFICATION" || item.applicationState == "OT_PENDINGSIVERIFICATION" || item.applicationState == "OT_PENDINGCAAPPROVAL" || item.applicationState == "OT_PENDINGAPRO" || item.applicationState == "OT_PENDINGSAAPPROVAL" || item.applicationState == "OT_PENDINGPAYMENT" || item.applicationState == "OT_PENDINGCLAPPROVAL" || item.applicationState == "OT_PENDINGSAREJECTION"))
+
+        if (filteredResponse.length) {
+          return dispatch(toggleSnackbar(true, errorMessage, "error"));
+        }
+      }
+
         const isOwnerDetailsValid = validateFields(
           "components.div.children.formwizardFirstStep.children.applicantDetails.children.cardContent.children.detailsContainer.children",            
           state,
@@ -201,10 +245,51 @@ const callBackForNextDuplicate = async(state, dispatch) => {
         "components.div.children.stepper.props.activeStep",
         0
     );
-    
     let isFormValid = true;
     let hasFieldToaster = true;
     if(activeStep === DETAILS_STEP) {
+        const transitNumber = get(
+          state.screenConfiguration.preparedFinalObject, 
+          "DuplicateCopyApplications[0].property.transitNumber",
+          "");
+        const applicationNumber = get(
+          state.screenConfiguration.preparedFinalObject,
+          "DuplicateCopyApplications[0].applicationNumber"
+        )
+
+        // the following block of code prevents a citizen from initiating a new application in case if another application with same transit number is in progress i.e. it is not rejected or approved
+        if (!!transitNumber) {
+          const queryObject = [
+            {key: "transitNumber", value: transitNumber}
+          ]
+
+          const errorMessage = {
+            labelName:
+              "Unable to process your request, as another application with same transit number is already in progress",
+            labelKey: "ERR_DC_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
+          };
+
+          const applicationNo = getQueryArg(window.location.href, "applicationNumber") || applicationNumber
+          let response = await getDuplicateCopySearchResults(queryObject);
+          response = response.DuplicateCopyApplications;
+
+          const draftedApplication = response.filter(item => item.state == "DC_DRAFTED")
+
+          // citizen should not be able to create a new application with same transit number when there is an application that is already present in drafted state.
+          if (draftedApplication.length) {
+            // check applicationNo to differentiate between new and drafted application
+            if (!applicationNo) {
+              return dispatch(toggleSnackbar(true, errorMessage, "error"));
+            }
+          }
+
+          const filteredResponse = response.filter(item => (item.state == "DC_PENDINGCLARIFICATION" || item.state == "DC_PENDINGCLVERIFICATION" || item.state == "DC_PENDINGJAVERIFICATION" || item.state == "DC_PENDINGSAVERIFICATION" || item.state == "DC_PENDINGSIVERIFICATION" || item.state == "DC_PENDINGCAAPPROVAL" || item.state == "DC_PENDINGAPRO" || item.state == "DC_PENDINGSAAPPROVAL" || item.state == "DC_PENDINGPAYMENT" || item.state == "DC_PENDINGCLAPPROVAL" || item.state == "DC_PENDINGSAREJECTION"))
+
+          if (filteredResponse.length) {
+            return dispatch(toggleSnackbar(true, errorMessage, "error"));
+          }
+        }
+        
         const isOwnerDetailsValid = validateFields(
           "components.div.children.formwizardFirstStep.children.rentHolderDetailsForDuplicateProperties.children.cardContent.children.detailsContainer.children",            
           state,

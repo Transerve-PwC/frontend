@@ -45,8 +45,6 @@ const getData = async(action, state, dispatch) => {
       }));
       return { ...item, applicationDocuments };
     });
-    // const {Properties} = payload;
-    // const {owner = []} = propertyArr
     singleNoticeDetails = [...singleNoticeDetails,notices]  
     dispatch(prepareFinalObject("SingleProperties[0]", singleNoticeDetails[0]));
 
@@ -113,17 +111,7 @@ const getData = async(action, state, dispatch) => {
     
 }
 
-// let singlePropdata = get(
-//     state.screenConfiguration.preparedFinalObject,
-//     "SingleProperties[0]",
-//     []);
-// const noticeDocumentDetails = (singlePropdata[0].noticeType === "Violation") ? getCommonCard({
-//     reviewNoticePropertyDetails,
-//     reviewNoticeRentDetailsViolation
-// }) : getCommonCard({
-//     reviewNoticePropertyDetails,
-//     reviewNoticeRentDetailsRecovery
-// })
+
 const noticeDocumentDetails = getCommonCard({
         reviewNoticePropertyDetails,
         reviewNoticeViolationRentDetails,

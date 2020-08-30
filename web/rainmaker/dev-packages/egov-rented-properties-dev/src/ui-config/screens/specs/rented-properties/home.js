@@ -67,7 +67,7 @@ const header = getCommonHeader(
         labelName: "Offline rent amount"
     },
     icon: <FormIcon />,
-    route: "search-transfer-properties"
+    route: "offline-rent-payment"
   },
   {
     label: {

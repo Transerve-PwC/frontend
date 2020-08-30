@@ -4,9 +4,9 @@ import {
     getLabel
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   
-  import { changeStep } from "./footer";
+  import { changeStep, changePropertyStep } from "./footer";
   
-  export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath = "PropertiesTemp[0].reviewDocData",datatoggle = false) => {
+  export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", isPropertyMaster = false ) => {
     return getCommonGrayCard({
       headerDiv: {
         uiFramework: "custom-atoms",
@@ -49,7 +49,7 @@ import {
             onClickDefination: {
               action: "condition",
               callBack: (state, dispatch) => {
-                changeStep(state, dispatch, screenKey, "", 1);
+                !!isPropertyMaster ? changePropertyStep(state, dispatch, screenKey, "", 1) : changeStep(state, dispatch, screenKey, "", 1);
               }
             }
           },
@@ -59,7 +59,6 @@ import {
             componentPath: "DownloadFileContainer",
             props: {
               sourceJsonPath,
-              datatoggle,
               className: "review-documents"
             }
           }

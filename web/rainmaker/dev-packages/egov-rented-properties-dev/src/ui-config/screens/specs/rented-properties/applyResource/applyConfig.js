@@ -4,7 +4,7 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {noticePropertyDetails,ownerDetailsForNotice,ownerDetailsForViolationNotice,paymentDetailsNotice} from './noticeDetails'
 import {rentHolderDetails,applicantDetailsMortgage,applicantDetails,rentHolderDetailsForDuplicateProperties} from './rentHolderDetails';
-import {propertyDetails, transitSiteDetails ,transitSiteDetailsForAccountStatement} from './propertyDetails';
+import {propertyDetails, transitSiteDetails ,transitSiteDetailsForAccountStatement, transitSiteDetailsForOfflineRentPayment} from './propertyDetails';
 import {accountStatementGenerationDetails ,amountField} from './accountStatementDetails';
 import {addressDetails, ownershipAddressDetails,ownershipAddressDetailsMortgage,addressDetailsTransitsite,transitSitePropertyDetails,transitSiteComments} from './addressDetails';
 import {uploadimage,imageUploadDetailsProperties} from './imageUploadDetails'
@@ -15,6 +15,7 @@ import {rentedReviewDetails, ownerShipReviewDetails, mortgageReviewDetails,dupli
 import { getEpochForDate, sortByEpoch } from "../../utils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import {RP_DEMAND_GENERATION_DATE, RP_PAYMENT_DATE, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../../../../../ui-constants'
+import { rentSummaryDetails, paymentInfo } from './offlineRentPaymentDetails'
 
 const documentCardConfig = {
   header: getCommonTitle(
@@ -35,6 +36,20 @@ const documentCardConfig = {
   }),
 }
 
+const documentHeaderConfig = {
+  header: getCommonTitle(
+    {
+      labelName: "Required Documents",
+      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+    },
+    {
+      style: {
+        marginBottom: 18
+      }
+    }
+  )
+}
+
 export const rentedDocumentsDetails = getCommonCard({
   ...documentCardConfig,
   documentList : {
@@ -51,7 +66,7 @@ export const rentedDocumentsDetails = getCommonCard({
 
 
 export const paymentDocumentsDetails = getCommonCard({
-  ...documentCardConfig,
+  ...documentHeaderConfig,
   documentList : {
     ...documentList,
     props: {
@@ -399,3 +414,17 @@ export const noticeViolationForm = {
     document
   },
 }
+
+export const formwizardOfflineRentPayment = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form1"
+  },
+  children: {
+    transitSiteDetailsForOfflineRentPayment,
+    rentSummaryDetails,
+    paymentInfo
+  },
+  visible: true
+};

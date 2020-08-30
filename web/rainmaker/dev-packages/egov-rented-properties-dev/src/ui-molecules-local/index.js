@@ -61,6 +61,11 @@ const Footer = Loadable({
   loading: () => <Loading />
 })
 
+const RentSummaryCard = Loadable({
+  loader: () => import("./RentSummaryCard"),
+  loading: () => <Loading />
+});
+
 const LandingPage = Loadable({
   loader: () => import("./LandingPage"),
   loading: () => <Loading />
@@ -96,5 +101,6 @@ export {
   LandingPage,
   ImageUploadMolecule,
   MultipleOwners,
-  MultipleDocuments
+  MultipleDocuments,
+  RentSummaryCard
 }

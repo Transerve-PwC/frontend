@@ -2,7 +2,7 @@ import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTit
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTodaysDateInYMD } from "../../utils";
 import get from "lodash/get";
-import { getDetailsFromProperty ,getDuplicateDetailsFromProperty} from "../../../../../ui-utils/apply";
+import { getDetailsFromProperty ,getDuplicateDetailsFromProperty,getRecoveryValueProperty} from "../../../../../ui-utils/apply";
 export const propertyHeader = getCommonTitle(
     {
         labelName: "Property Details",
@@ -151,7 +151,7 @@ const getViolationField = {
         disabled: false
       },
       required:true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.violations" 
+    jsonPath: "SingleImage[0].description" 
 }
 
 export const transitNumberConfig = {
@@ -285,6 +285,9 @@ const recoveryTypeField = {
     beforeFieldChange: (action, state, dispatch) => {
         const rentedPropertyColonies = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.rentedPropertyColonies") || []
         const findItem = rentedPropertyColonies.find(item => item.code === action.value)
+      },
+      afterFieldChange:(action, state, dispatch)=>{
+        getRecoveryValueProperty(action, state, dispatch);
       }
 }
 
@@ -298,7 +301,7 @@ const paymentAmountFieldNotice = {
         labelKey: "RP_ENTER_DUE_AMOUNT"
     },
     minLength: 1,
-    maxLength: 8,
+    //maxLength: 8,
     required: true,
     jsonPath: "Properties[0].owners[0].ownerDetails.payment[0].amountPaid",
     errorMessage:"RP_ERR_DUE_AMOUNT_FIELD"

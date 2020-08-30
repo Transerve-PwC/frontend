@@ -37,6 +37,9 @@ const header = getCommonHeader({
 });
 const beforeInitFn =async(action, state, dispatch)=>{
     set(state, 'form.newapplication.files.media', []);
+    set(state,'screenConfiguration.preparedFinalObject.PropertyImagesApplications',[]);
+    
+
     console.log(state)
     const transitImagesPayload = [{
       moduleName: "PropertyServices",

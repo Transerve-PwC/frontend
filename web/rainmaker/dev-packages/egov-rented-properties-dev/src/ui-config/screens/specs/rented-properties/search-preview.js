@@ -68,6 +68,11 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       balanceInterest: !!rentSummary ? rentSummary.balanceInterest.toFixed(2) : 0,
       balanceAmount: !!rentSummary ? rentSummary.balanceAmount.toFixed(2) : 0
     }
+    
+    properties[0].propertyDetails.interestRate = (properties[0].propertyDetails.interestRate).toString()
+    properties[0].propertyDetails.rentIncrementPercentage = (properties[0].propertyDetails.rentIncrementPercentage).toString()
+    properties[0].propertyDetails.rentIncrementPeriod = (properties[0].propertyDetails.rentIncrementPeriod).toString()
+
     properties = [{...properties[0], rentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(

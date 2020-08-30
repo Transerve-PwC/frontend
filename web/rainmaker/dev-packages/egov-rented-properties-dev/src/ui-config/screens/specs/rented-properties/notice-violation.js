@@ -100,6 +100,13 @@ const getData = async(action, state, dispatch) => {
           false
         )
       );
+      let violationDesc = get(state.screenConfiguration.screenConfig["notice-violation"],"components.div.children.formwizardFirstStep.children.ownerDetailsForViolationNotice.children.cardContent.children.detailsContainer.children.violations.props.value")
+      dispatch(
+          prepareFinalObject(
+              "SingleProperties[0].violations",
+              violationDesc
+          )
+          )
   }
   const propertyArr = get(
     screenConfiguration.preparedFinalObject,
