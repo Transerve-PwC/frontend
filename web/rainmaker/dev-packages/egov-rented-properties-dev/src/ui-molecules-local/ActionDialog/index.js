@@ -187,6 +187,22 @@ class ActionDialog extends React.Component {
             );
       return
     }
+    else if(value==="0"){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
+        "error"
+      );
+return
+    }
+    else if(value.indexOf(' ')>=0){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
+        "error"
+      );
+return
+    }
   } else if(this.props.moduleName === "DuplicateCopyOfAllotmentLetterRP" && (duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" || duplicateCopyApplicationState === "DC_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT")) {
     const value = duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? data.applicant[0].feeAmount : data.applicant[0].aproCharge
     if(!value) {
@@ -204,6 +220,22 @@ class ActionDialog extends React.Component {
               "error"
             );
       return
+    }
+    else if(value==="0"){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
+        "error"
+      );
+return
+    }
+    else if(value.indexOf(' ')>=0){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
+        "error"
+      );
+return
     }
   }
     this.props.onButtonClick(buttonLabel, isDocRequired)
