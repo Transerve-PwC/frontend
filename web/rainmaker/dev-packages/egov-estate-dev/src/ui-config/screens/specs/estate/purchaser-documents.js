@@ -2,13 +2,14 @@ import {
     getCommonHeader,
     getCommonContainer,
     getLabel,
-    getCommonCard
+    getCommonCard,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import {getReviewDocuments} from "./applyResource/reviewDocuments"
 import {onTabChange, headerrow, tabs} from './search-preview'
 
 
@@ -18,9 +19,15 @@ const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
-export const noticesDetails = getCommonCard({
-
-});
+const documentContainer = {
+  uiFramework: "custom-atoms",
+componentPath: "Container",
+props: {
+  id: "docs"
+},
+children: {
+}
+}
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
@@ -29,23 +36,28 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    dispatch(prepareFinalObject("Properties", properties));
 
-    let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
-    const removedDocs = applicationDocuments.filter(item => !item.active)
-    applicationDocuments = applicationDocuments.filter(item => !!item.active)
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
-    dispatch(prepareFinalObject("Properties[0]", properties[0]));
-    dispatch(
-      prepareFinalObject(
-        "PropertiesTemp[0].removedDocs",
-        removedDocs
-      )
+    let containers={}
+    properties[0].propertyDetails.owners.forEach((element,index) => { 
+    setDocuments(
+    payload,
+    `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`,
+    `PropertiesTemp[${index}].reviewDocData`,
+    dispatch,'EST'
     );
-    await setDocuments(
-      payload,
-      "Properties[0].propertyDetails.applicationDocuments",
-      "PropertiesTemp[0].reviewDocData",
-      dispatch,'RP'
+    let documentListContainer = getReviewDocuments(false,'purchaser-documents',`PropertiesTemp[${index}].reviewDocData`);
+    containers[index] = getCommonCard({
+      documentListContainer
+      }); 
+    });
+    dispatch(
+      handleField(
+      "purchaser-documents",
+      "components.div.children.documentContainer",
+      "children",
+      containers
+      )
     );
   }
 }
@@ -57,10 +69,9 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   }
 }
 
-
-const EstateNotices = {
+const PurchaserDocumentReviewDetails = {
   uiFramework: "material-ui",
-  name: "notices",
+  name: "purchaser-documents",
   beforeInitScreen: (action, state, dispatch) => {
     fileNumber = getQueryArg(window.location.href, "filenumber");
     beforeInitFn(action, state, dispatch, fileNumber);
@@ -93,25 +104,17 @@ const EstateNotices = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 6,
+              activeIndex: 5,
               onTabChange
             },
             type: "array",
           },
-          // taskStatus: {
-          //   uiFramework: "custom-containers-local",
-          //   moduleName: "egov-estate",
-          //   componentPath: "WorkFlowContainer",
-          //   props: {
-          //     dataPath: "Properties",
-          //     moduleName: "MasterRP",
-          //     updateUrl: "/csp/property/_update"
-          //   }
-          // },
-        noticesDetails
+        documentContainer
       }
     }
   }
 };
 
-export default EstateNotices;
+
+
+export default PurchaserDocumentReviewDetails;

@@ -60,6 +60,20 @@ export const ownerDocumentDetails_0 = getCommonCard({
   }
 });
 
+export const purchaserDocumentDetails_0 = getCommonCard({
+  ...documentCardConfig,
+  documentList: {
+    ...documentList,
+    props: {
+      ...documentList.props,
+      documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.ownerDocuments",
+      uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
+      tenantIdJsonPath: "Properties[0].tenantId",
+      removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs"
+    }
+  }
+});
+
 // export const getOwnerDocumentDetails = (owner) => {
 //   return getCommonCard({
 //     ...documentCardConfig,
@@ -98,8 +112,12 @@ export const stepsData = [{
     labelKey: "EST_COMMON_PAYMENT_DETAILS"
   },
   {
-    labelName: "Documents",
-    labelKey: "EST_COMMON_DOCUMENTS"
+    labelName: "Owner Documents",
+    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
+  },
+  {
+    labelName: "Purchaser Documents",
+    labelKey: "EST_COMMON_PURCHASER_DOCUMENTS"
   },
   {
     labelName: "Summary",
@@ -198,6 +216,18 @@ export const formwizardSeventhStep = {
   componentPath: "Form",
   props: {
     id: "apply_form7"
+  },
+  children: {
+    ownerDocumentDetails_0
+  },
+  visible: false
+}
+
+export const formwizardEigthStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form8"
   },
   children: {
     reviewDetails

@@ -9,7 +9,8 @@ import {
   formwizardFourthStep,
   formwizardFifthStep,
   formwizardSixthStep,
-  formwizardSeventhStep
+  formwizardSeventhStep,
+  formwizardEigthStep
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -202,7 +203,9 @@ const applyEstate = {
         formwizardFourthStep,
         formwizardFifthStep,
         formwizardSixthStep,
+        formwizardSixthStep,
         formwizardSeventhStep,
+        formwizardEigthStep,
         footer
       }
     }

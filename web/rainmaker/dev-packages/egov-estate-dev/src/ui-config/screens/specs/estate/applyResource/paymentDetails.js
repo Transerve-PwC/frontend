@@ -38,7 +38,7 @@ const dueDateOfPaymentField = {
     labelKey: "EST_DUE_DATE_OF_PAYMENT_LABEL"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grDueDateOfPayment`,
   props: {
     inputProps: {
@@ -60,7 +60,7 @@ const payableField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grPayable`
 }
@@ -78,7 +78,7 @@ const amountOfGRField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountOfGr`
 }
@@ -96,7 +96,7 @@ const totalGRField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalGr`
 }
@@ -107,7 +107,7 @@ const dateOfDepositField = {
     labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grDateOfDeposit`,
   props: {
     inputProps: {
@@ -129,7 +129,7 @@ const delayInPaymentField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grDelayInPayment`
 }
@@ -147,7 +147,7 @@ const interestForDelayField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grInterestForDelay`
 }
@@ -165,7 +165,7 @@ const totalAmountDueWithInterestField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalAmountDueWithInterest`
 }
@@ -183,7 +183,7 @@ const amountDepositedGRField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountDepositedGr`
 }
@@ -201,7 +201,7 @@ const amountDepositedInttField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grAmountDepositedIntt`
 }
@@ -219,7 +219,7 @@ const balanceGRField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grBalanceGr`
 }
@@ -237,7 +237,7 @@ const balanceInttField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grBalanceIntt`
 }
@@ -255,7 +255,7 @@ const totalDueField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grTotalDue`
 }
@@ -273,7 +273,7 @@ const receiptNumberField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 75,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grReceiptNumber`
 }
@@ -284,7 +284,7 @@ const receiptDateField = {
     labelKey: "EST_RECEIPT_DATE_LABEL"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].grReceiptDate`,
   props: {
     inputProps: {
@@ -338,7 +338,7 @@ const rateOfStOrGstFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stRateOfStGst`
 }
@@ -356,7 +356,7 @@ const amountOfGstFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountOfGst`
 }
@@ -374,7 +374,7 @@ const amountDueFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDue`
 }
@@ -385,7 +385,7 @@ const dateOfDepositFieldST = {
     labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stDateOfDeposit`,
   props: {
     inputProps: {
@@ -407,7 +407,7 @@ const delayInPaymentFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stDelayInPayment`
 }
@@ -425,7 +425,7 @@ const interestForDelayFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stInterestForDelay`
 }
@@ -443,7 +443,7 @@ const totalAmountDueWithInterestFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stTotalAmountDueWithInterest`
 }
@@ -461,7 +461,7 @@ const amountDepositedFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDepositedStGst`
 }
@@ -479,7 +479,7 @@ const amountDepositedInttFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stAmountDepositedIntt`
 }
@@ -497,7 +497,7 @@ const balanceFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stBalanceStGst`
 }
@@ -515,7 +515,7 @@ const balanceInttFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stBalanceIntt`
 }
@@ -533,7 +533,7 @@ const totalDueFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stTotalDue`
 }
@@ -551,7 +551,7 @@ const receiptNumberFieldST = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 75,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stReceiptNumber`
 }
@@ -562,7 +562,7 @@ const receiptDateFieldST = {
     labelKey: "EST_RECEIPT_DATE_LABEL"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stReceiptDate`,
   props: {
     inputProps: {
@@ -607,7 +607,7 @@ const paymentMadeByField = {
   props: {
     disabled: true
   },
-  required: true,
+  required: false,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stPaymentMadeBy`
 }

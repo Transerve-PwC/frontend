@@ -93,9 +93,12 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
         path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 5:
-        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/purchaser-documents?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 6:
+        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+        break
+      case 7:
         path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
 
@@ -117,7 +120,10 @@ export const tabs = [
     tabButton: { labelName: "Payment Details", labelKey: "ESTATE_PAYMENT_DETAILS" },
   },
   {
-    tabButton: { labelName: "Documents", labelKey: "ESTATE_DOCUMENTS" },
+    tabButton: { labelName: "Owner Documents", labelKey: "ESTATE_OWNER_DOCUMENTS" },
+  },
+  {
+    tabButton: { labelName: "Purchaser Documents", labelKey: "ESTATE_PURCHASER_DOCUMENTS" },
   },
   {
     tabButton: { labelName: "Notices", labelKey: "ESTATE_NOTICES" },

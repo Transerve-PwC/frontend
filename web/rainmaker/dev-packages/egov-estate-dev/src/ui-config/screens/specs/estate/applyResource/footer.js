@@ -49,7 +49,8 @@ export const PURCHASER_DETAILS_STEP = 2;
 export const COURT_CASE_DETAILS_STEP = 3;
 export const PAYMENT_DETAILS_STEP = 4;
 export const DOCUMENT_UPLOAD_STEP = 5;
-export const SUMMARY_STEP = 6;
+export const DOCUMENT_PURCHASER_UPLOAD_STEP = 6;
+export const SUMMARY_STEP = 7;
 
 export const moveToSuccess = (estatesData, dispatch, type) => {
   const id = get(estatesData, "id");
@@ -127,7 +128,7 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
-        
+
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
@@ -245,7 +246,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+          `apply.components.div.children.formwizardEigthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
           reviewOwnerDetails
         )
 
@@ -257,7 +258,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
+          `apply.components.div.children.formwizardEigthStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
           reviewPaymentDetails
         )
       }
@@ -305,7 +306,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
+          `apply.components.div.children.formwizardEigthStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
           reviewPurchaserDetails
         )
       }
@@ -343,7 +344,7 @@ const callBackForNext = async (state, dispatch) => {
         const reviewCourtCaseDetails = getReviewCourtCase(true, i);
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
+          `apply.components.div.children.formwizardEigthStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
           reviewCourtCaseDetails
         )
       }
@@ -451,7 +452,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          `apply.components.div.children.formwizardEigthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
       }
@@ -488,6 +489,7 @@ const callBackForNext = async (state, dispatch) => {
             labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
           };
           break;
+        case DOCUMENT_PURCHASER_UPLOAD_STEP:
         case DOCUMENT_UPLOAD_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
@@ -606,11 +608,20 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    default:
+    case DOCUMENT_PURCHASER_UPLOAD_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
           "components.div.children.formwizardSeventhStep"
+        ),
+        dispatch
+      );
+      break;
+    default:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardEigthStep"
         ),
         dispatch
       );
@@ -650,6 +661,11 @@ export const getActionDefinationForStepper = path => {
     },
     {
       path: "components.div.children.formwizardSeventhStep",
+      property: "visible",
+      value: false
+    },
+    {
+      path: "components.div.children.formwizardEigthStep",
       property: "visible",
       value: false
     }
