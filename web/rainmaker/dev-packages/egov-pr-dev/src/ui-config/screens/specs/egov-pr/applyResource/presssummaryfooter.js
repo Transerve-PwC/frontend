@@ -19,7 +19,9 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import {  
    localStorageGet
  } from "egov-ui-kit/utils/localStorageUtils";
-const DeletePresmaterData = (state, dispatch) => {
+ import {  showHideAdhocPopupopmsReject } from "../../utils";
+export const DeletePresmaterData = (state, dispatch) => {
+  alert('aaa')
   var confirmCancel= confirm("Are you sure you want to delete this press?");
   if(confirmCancel===true)
   {
@@ -102,9 +104,16 @@ export const presssummaryfooter = getCommonApplyFooter({
         labelKey: "PR_DELETE_BUTTON"
       })
     },
+    // onClickDefination: {
+    //   action: "condition",
+    //   callBack: DeletePresmaterData
+    // },
     onClickDefination: {
       action: "condition",
-      callBack: DeletePresmaterData
+       callBack: (state, dispatch) =>{
+        
+            showHideAdhocPopupopmsReject(state, dispatch, "PressMasterSummary", "pressMaster")
+    }
     },
     visible: true,
    

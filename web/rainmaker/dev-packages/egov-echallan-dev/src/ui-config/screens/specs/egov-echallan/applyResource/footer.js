@@ -21,65 +21,66 @@ import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/a
 const setReviewPageRoute = (state, dispatch) => {
 
   let tenantId = getTenantId();
+
   const applicationNumber = get(
     state,
     "screenConfiguration.preparedFinalObject.eChallan.challanId"
   );
   const appendUrl =
     process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
-  const reviewUrl = `${appendUrl}/egov-echallan/summary?challanNumber=${applicationNumber}&tenantId=${tenantId}`;
+  const reviewUrl = `${appendUrl}/egov-echallan/summary?applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
   dispatch(setRoute(reviewUrl));
 };
 
-const moveToReview = (state, dispatch) => {
+// const moveToReview = (state, dispatch) => {
 
-  const documentsFormat = Object.values(
-    get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
-  );
+//   const documentsFormat = Object.values(
+//     get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
+//   );
 
-  let validateDocumentField = false;
+//   let validateDocumentField = false;
 
-  for (let i = 0; i < documentsFormat.length; i++) {
-    let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
-    let isDocumentTypeRequired = get(documentsFormat[i], "isDocumentTypeRequired");
+//   for (let i = 0; i < documentsFormat.length; i++) {
+//     let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
+//     let isDocumentTypeRequired = get(documentsFormat[i], "isDocumentTypeRequired");
 
-    let documents = get(documentsFormat[i], "documents");
-    if (isDocumentRequired) {
-      if (documents && documents.length > 0) {
-        if (isDocumentTypeRequired) {
-          if (get(documentsFormat[i], "dropdown.value")) {
-            validateDocumentField = true;
-          } else {
-            dispatch(
-              toggleSnackbar(
-                true,
-                { labelName: "Please select type of Document!", labelKey: "" },
-                "warning"
-              )
-            );
-            validateDocumentField = false;
-            break;
-          }
-        } else {
-          validateDocumentField = true;
-        }
-      } else {
-        dispatch(
-          toggleSnackbar(
-            true,
-            { labelName: "Please uplaod mandatory documents!", labelKey: "" },
-            "warning"
-          )
-        );
-        validateDocumentField = false;
-        break;
-      }
-    } else {
-      validateDocumentField = true;
-    }
-  }
-  return validateDocumentField;
-};
+//     let documents = get(documentsFormat[i], "documents");
+//     if (isDocumentRequired) {
+//       if (documents && documents.length > 0) {
+//         if (isDocumentTypeRequired) {
+//           if (get(documentsFormat[i], "dropdown.value")) {
+//             validateDocumentField = true;
+//           } else {
+//             dispatch(
+//               toggleSnackbar(
+//                 true,
+//                 { labelName: "Please select type of Document!", labelKey: "" },
+//                 "warning"
+//               )
+//             );
+//             validateDocumentField = false;
+//             break;
+//           }
+//         } else {
+//           validateDocumentField = true;
+//         }
+//       } else {
+//         dispatch(
+//           toggleSnackbar(
+//             true,
+//             { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+//             "warning"
+//           )
+//         );
+//         validateDocumentField = false;
+//         break;
+//       }
+//     } else {
+//       validateDocumentField = true;
+//     }
+//   }
+//   return validateDocumentField;
+// };
 
 const callBackForNext = async (state, dispatch) => {
 
@@ -130,7 +131,7 @@ const callBackForNext = async (state, dispatch) => {
             true,
             {
               labelName: "Atleast one item is required to proceed !",
-              labelKey: ''//"EC_FINE_MASTER_SUCCESS_TOASTER"
+              labelKey: "EC_ARTICLE_DETAIL_REQUIRED_TOASTER"
             },
             "warning"
           ));
@@ -139,29 +140,29 @@ const callBackForNext = async (state, dispatch) => {
       hasFieldToaster = isFormValid === true ? false : true;
       break;
     case 2:
-      isFormValid = false; //moveToReview(state, dispatch);
+      isFormValid = true; //moveToReview(state, dispatch);
       let isviolatorImage = false;
       let isviolatorIdProofImage = false;
 
       let violatorImage = get(state, "form.apply_Violator_Image.files.echallanViolaterImage", []);
       let violatorIdProofImage = get(state, "form.apply_Violator_ID_PROOF.files.echallanViolaterIDProofImage", []);
       let violationsImage = get(state, "form.apply_Violations_Image.files.echallanViolationImage", []);
-      if (violatorImage.length > 0) {
-        isviolatorImage = true;
-      }
-      else {
-        isviolatorImage = false;
-      }
-      if (violatorIdProofImage.length > 0) {
-        isviolatorIdProofImage = true;
-      } else {
-        isviolatorIdProofImage = false;
-      }
-      if (isviolatorImage === false || isviolatorIdProofImage === false) {
-        isFormValid = false;
-      }else {
-        isFormValid = true;
-      }
+      // if (violatorImage.length > 0) {
+      //   isviolatorImage = true;
+      // }
+      // else {
+      //   isviolatorImage = false;
+      // }
+      // if (violatorIdProofImage.length > 0) {
+      //   isviolatorIdProofImage = true;
+      // } else {
+      //   isviolatorIdProofImage = false;
+      // }
+      // if (isviolatorImage === false || isviolatorIdProofImage === false) {
+      //   isFormValid = false;
+      // } else {
+      //   isFormValid = true;
+      // }
 
       hasFieldToaster = isFormValid === true ? false : true;
       break;

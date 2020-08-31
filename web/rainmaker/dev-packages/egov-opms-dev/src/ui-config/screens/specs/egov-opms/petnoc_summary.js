@@ -47,9 +47,9 @@ export const stepper = getStepperObject(
   stepsData
 );
 import {
-  
+
   getCommonApplyFooter,
- 
+
 } from "../utils";
 
 
@@ -333,11 +333,14 @@ const setSearchResponse = async (state, dispatch, applicationNumber, tenantId) =
     { key: "tenantId", value: tenantId },
     { key: "applicationNumber", value: applicationNumber }
   ]);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else {
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
 
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
-
-  prepareDocumentsView(state, dispatch);
-
+    prepareDocumentsView(state, dispatch);
+  }
 };
 
 

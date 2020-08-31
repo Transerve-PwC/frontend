@@ -16,9 +16,24 @@ import {
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { invitationtoguests ,updateCommitteemaster,createCommitteemaster} from "../../../../../ui-utils/commons.js";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-import { localStorageGet, lSRemoveItemlocal, lSRemoveItem} from "egov-ui-kit/utils/localStorageUtils";
+import { localStorageGet,localStorageSet, lSRemoveItemlocal, lSRemoveItem} from "egov-ui-kit/utils/localStorageUtils";
 import store from "../../../../../ui-redux/store";
 const state = store.getState();
+
+
+// toggleactionmenu
+const toggleactionmenu = (state, dispatch) => {
+	
+  var x = document.getElementById("custom-atoms-footer");
+ 	 // if (x.style.display === "none") {
+   if(window.getComputedStyle(x).display === "none") {   
+    x.style.display = "block";
+    x.classList.add("addpadding");
+	  } else {
+    x.style.display = "none";
+    x.classList.remove("addpadding");
+	  }
+}
 
 export const cancelCommittee  = (
   state, dispatch
@@ -135,6 +150,7 @@ let obj= {
 let activeStepforbtn = 0;
 
 const callBackForNext = async (state, dispatch) => {
+  toggleactionmenu(state, dispatch)
   let activeStep = get(
     state.screenConfiguration.screenConfig["createCommitteeMaster"],
     "components.div.children.stepper.props.activeStep",
@@ -146,12 +162,17 @@ const callBackForNext = async (state, dispatch) => {
 )
 let checkboxcheck=localStorageGet("committeelist")
    activeStepforbtn = activeStep;
-   let isFormValid = true;
-   let hasFieldToaster = false;
-   let validatestepformflag = validatestepform(activeStep,committedept,checkboxcheck)
-   
-     isFormValid = validatestepformflag[0];
-     hasFieldToaster = validatestepformflag[1];
+    let isFormValid = false;
+  //  let hasFieldToaster = false;
+  //  let validatestepformflag = validatestepform(activeStep,committedept,checkboxcheck)
+  // screenConfiguration.screenConfig.createCommitteeMaster.components.div.children.formwizardFirstStep.children.createCommittee.children.cardContent.children.propertyDetailsConatiner.children
+   isFormValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.createCommittee.children.cardContent.children.propertyDetailsConatiner.children",
+    state,
+    dispatch,
+    "createCommitteeMaster")
+    //  isFormValid = validatestepformflag[0];
+    //  hasFieldToaster = validatestepformflag[1];
   
   if(activeStep === 0){
     if(isFormValid==false){
@@ -197,6 +218,16 @@ let checkboxcheck=localStorageGet("committeelist")
     	
 	changeStep(state, dispatch);
   }
+  
+    else{
+      let errorMessage = {
+        labelName:"Please fill all mandatory fields and select atleast one employee!",
+        labelKey: "PR_ERR_FILL_ALL_COMMITTEE_MANDATORY_FIELDS_TOAST"
+        };
+       
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+  
 }
 else{
   let errorMessage = {
@@ -235,7 +266,7 @@ export const changeStep = (
     activeStep = defaultActiveStep;
   }
 
-  //const isPreviousButtonVisible = activeStep > 0 ? true : false;
+ const isPreviousButtonVisible = activeStep === 1 ? true : false;
   const isNextButtonVisible = activeStep < 1 ? true : false;
   const isPayButtonVisible = activeStep ===1 ? true : false;
   const iscancel = activeStep ===1 ? true : false;
@@ -245,6 +276,11 @@ export const changeStep = (
       path: "components.div.children.stepper.props",
       property: "activeStep",
       value: activeStep
+    },
+    {
+      path: "components.div.children.footer.children.previousButton",
+      property: "visible",
+      value: isPreviousButtonVisible
     },
     {
       path: "components.div.children.footer.children.cancel",
@@ -346,72 +382,126 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
-	lSRemoveItemlocal("committeelist");
-	lSRemoveItemlocal("selectedDepartmentsInvite");
-	lSRemoveItem("committeelist")
-	lSRemoveItem("selectedDepartmentsInvite");
-	
-	dispatch(
+ // localStorageSet("selectedDepartmentsInvite",[{"key":"REVENUE","cat":"REV01","active":true}]);
+ toggleactionmenu(state, dispatch)
+  if(localStorageGet("committeelist")!=="[]")
+  {
+if(localStorageGet("committeelist")!==null || localStorageGet("committeelistAll") !== null )
+{
+  
+
+  let selectedrows = localStorageGet("committeelist") === null ? JSON.parse(localStorageGet("committeelistAll")) : JSON.parse(localStorageGet("committeelist"));
+  
+  let data = selectedrows.map(item => ({
+  // alert(item)
+  [getTextToLocalMapping("Department")]:
+  item.Department || "-",
+  [getTextToLocalMapping("Employee Name")]: item['Employee Name'] || "-",
+  [getTextToLocalMapping("Mobile No")]: item['Mobile No'] || "-",
+  [getTextToLocalMapping("Email ID")]:  item['Email ID'] || "-",
+  [getTextToLocalMapping("Department Id")]: item['Department Id'] || "-",
+  [getTextToLocalMapping("Employee ID")]:  item['Employee ID'] || "-",
+  [getTextToLocalMapping("Designation")]:  item['Designation'] || "-"
+ 
+  }));
+  
+
+  dispatch(
   handleField(
-    "createCommitteeMaster",    "components.div.children.formwizardFirstStep.children.searchDepartmentEmployeesResults_committee.children.cardContent.children.committieegrid",
-    "props.data",
-    []
+  "createCommitteeMaster",
+  "components.div.children.formwizardSecondStep.children.searchDepartmentEmployeesResults_committee1",			 
+  "props.data",
+  data
   )
-);
-  changeStep(state, dispatch, "previous");
+  );
+  
+//changeStep(state, dispatch);
+changeStep(state, dispatch, "previous");
+
+}
+
+else{
+  let errorMessage = {
+    labelName:"Please fill all mandatory fields and select atleast one employee!",
+    labelKey: "PR_ERR_FILL_ALL_COMMITTEE_MANDATORY_FIELDS_TOAST"
+    };
+   
+  dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}
+
+}
+else{
+let errorMessage = {
+labelName:"Please fill all mandatory fields and select atleast one employee!",
+labelKey: "PR_ERR_FILL_ALL_COMMITTEE_MANDATORY_FIELDS_TOAST"
+};
+
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}
+
+
 };
 
  
 export const footer = getCommonApplyFooter({
-  cancel: {
-    componentPath: "Button",
-    props: {
-      variant: "outlined",
-      color: "primary",
-      style: {
-       // minWidth: "200px",
-        height: "48px",
-        marginRight: "16px" 
-      }
-    },
-    children: {
-      previousButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_left"
-        }
-      },
-      previousButtonLabel: getLabel({
-        labelName: "Cancel",
-        labelKey: "PR_COMMON_BUTTON_CANCLE"
-      })
-    },
-    onClickDefination: {
-      action: "condition",
-      callBack: cancelCommittee
-    },
-    visible: false
-  },
   previousButton: {
     componentPath: "Button",
     props: {
       variant: "outlined",
       color: "primary",
       style: {
-       // minWidth: "200px",
         height: "48px",
-        marginRight: "16px" 
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
     },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
     children: {
-      previousButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_left"
-        }
-      },
+      
+      previousButtonLabel: getLabel({
+        labelName: "Previous Step",
+        labelKey: "PR_COMMON_BUTTON_PREV_STEP"
+      })
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: callBackForPrevious
+    },
+    visible: false
+  },
+  
+  previousButton: {
+    componentPath: "Button",
+    props: {
+      variant: "outlined",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
+    children: {
+     
       previousButtonLabel: getLabel({
         labelName: "Previous Step",
         labelKey: "PR_COMMON_BTN_PREV_STEP"
@@ -429,23 +519,27 @@ export const footer = getCommonApplyFooter({
       variant: "contained",
       color: "primary",
       style: {
-       // minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
     },
     children: {
       nextButtonLabel: getLabel({
         labelName: "Next Step",
         labelKey: "PR_COMMON_BTN_NXT_STEP"
       }),
-      nextButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+     
     },
     onClickDefination: {
       action: "condition",
@@ -458,23 +552,27 @@ export const footer = getCommonApplyFooter({
       variant: "contained",
       color: "primary",
       style: {
-        //minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
     },
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
         labelKey: "PR_COMMON_BTN_SUBMIT"
       }),
-      submitButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+    
     },
     onClickDefination: {
       action: "condition",
@@ -482,37 +580,41 @@ export const footer = getCommonApplyFooter({
     },
     visible: false
   }, 
-  InviteEmployeebtn: {
-			componentPath: "Button",
-			props: {
-			  variant: "contained",
-			  color: "primary",
-			  style: {
-			   // minWidth: "200px",
-				height: "48px",
-				marginRight: "45px"
-			  }
-			},
-			children: {
-			  nextButtonLabel: getLabel({
-				labelName: "Send Invitation",
-				labelKey: "PR_INVITATION_BUTTON"
-			  }),
-			  nextButtonIcon: {
-				uiFramework: "custom-atoms",
-				componentPath: "Icon",
-				props: {
-				  iconName: "keyboard_arrow_right"
-				}
-			  }
-			},
-			onClickDefination: {
-			  action: "condition",
-			  callBack: (state, dispatch) => {invitationtoguests(state, dispatch) }
-			},
-			visible : false
-		}
-  
+ 
+  cancel: {
+    componentPath: "Button",
+    props: {
+      variant: "outlined",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
+    children: {
+     
+      previousButtonLabel: getLabel({
+        labelName: "Cancel",
+        labelKey: "PR_COMMON_BUTTON_CANCLE"
+      })
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: cancelCommittee
+    },
+    visible: false
+  }
 });
 export const validatestepform = (activeStep,committedept,checkboxcheck,isFormValid, hasFieldToaster) => {
   
@@ -553,3 +655,39 @@ export const validatestepform = (activeStep,committedept,checkboxcheck,isFormVal
    }
    return [isFormValid, hasFieldToaster]
  };
+
+
+ export const takeactionfooter = getCommonApplyFooter({
+  actionbutton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px" 
+      }
+    },
+    children: {
+       
+      pressguestbuttonLabel: getLabel({
+        labelName: "Take Action",
+        labelKey: "PR_TAKE_ACTION"
+      }),
+	  nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_up"
+        }
+      },
+    },
+    onClickDefination: {
+      action: "condition",
+       callBack: (state, dispatch) =>{
+           toggleactionmenu(state, dispatch)
+    }
+    },
+    visible: true
+  }
+});  

@@ -8,6 +8,7 @@ import get from "lodash/get";
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { WORKFLOW_BUSINESS_SERVICE_DC } from "../../../../ui-constants";
 const header = getCommonHeader(
   {
     labelName: "My Applications",
@@ -190,7 +191,7 @@ const screenConfig = {
   name: "duplicate-copy-my-applications",
   beforeInitScreen: (action, state, dispatch) => {
     const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-    { key: "businessServices", value: "DuplicateCopyOfAllotmentLetterRP" }]
+    { key: "businessServices", value: WORKFLOW_BUSINESS_SERVICE_DC }]
     clearSearch(state, dispatch);
     dispatch(prepareFinalObject("actualResults", []));
     dispatch(prepareFinalObject("searchResults", []));

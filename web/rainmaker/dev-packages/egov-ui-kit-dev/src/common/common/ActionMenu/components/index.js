@@ -480,6 +480,7 @@ class ActionMenuComp extends Component {
           {(path || searchText) && (
             <div
               className="pull-left whiteColor pointerCursor"
+              style={{marginTop:10}}
               onClick={() => {
                 toggleDrawer && toggleDrawer();
                 changeLevel(path);
@@ -496,6 +497,7 @@ class ActionMenuComp extends Component {
             // >
             <div
               className="pull-right pointerCursor"
+              style={{marginTop:10}}
               onClick={() => {
                 // changeLevel("");
                 updateActiveRoute("Home", "Home");

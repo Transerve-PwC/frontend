@@ -22,7 +22,9 @@ export const getLocale = () => {
 export const getDefaultLocale = () => {
   return localStorage.getItem("defaultLocale");
 };
-
+export const getPGRSector = () => {
+  return localStorage.getItem("PGRSector");
+};
 
 export const getapplicationType = () => {
   return localStorage.getItem("applicationType");
@@ -57,9 +59,20 @@ export const getEncroachmentType = () => {
 export const getModule = () => {
   return localStorage.getItem("module");
 };
+export const getHCRoles = () => {
+  return localStorage.getItem("HCRoles");
+};
+
+export const getEChallanPaymentMailSent = () => {
+  return localStorage.getItem('EChallanPaymentMailSent');
+};
 
 
 //SET methods 
+export const setHCRoles = (HCRoles) => {
+  localStorageSet("HCRoles", HCRoles, null);
+};
+
 export const setCurrentAssignee = (CurrentAssignee) => {
   localStorageSet("CurrentAssignee", CurrentAssignee, null);
 };
@@ -91,6 +104,9 @@ export const setReturnUrl = (url) => {
 export const setDefaultLocale = (locale) => {
   localStorageSet("defaultLocale", locale);
 };
+export const setPGRSector = (locale) => {
+  localStorageSet("PGRSector", locale);
+};
 
 export const setapplicationType = (applicationTypeName) => {
   localStorageSet("applicationType", applicationTypeName);
@@ -121,6 +137,11 @@ export const seteventuuid = (eventuuId) => {
 export const setEncroachmentType = (encroachmentType) => {
   localStorageSet('encroachmentType',encroachmentType);
 };
+
+export const setEChallanPaymentMailSent = (isChallanPayMailSent) => {
+  localStorageSet('EChallanPaymentMailSent',isChallanPayMailSent);
+};
+
 
 //Remove Items (LOGOUT)
 export const clearUserDetails = () => {

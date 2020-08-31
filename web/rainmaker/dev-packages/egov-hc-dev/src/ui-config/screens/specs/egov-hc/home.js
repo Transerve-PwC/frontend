@@ -63,7 +63,6 @@ const horticultureSearchAndResult = {
   name: "serviceRequestLanding",
   beforeInitScreen: (action, state, dispatch) => {
     clearlocalstorageAppDetails(state);
-    setapplicationType('HORTICULTURE');
     return action;
   },
   components: {

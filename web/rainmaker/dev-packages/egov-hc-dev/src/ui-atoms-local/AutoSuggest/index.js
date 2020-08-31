@@ -41,13 +41,15 @@ const styles = theme => ({
   },
   ac_singleValue: {
     fontSize: 16,
-    marginBottom: 2
+    marginBottom: 2,
+    color: "rgba(0, 0, 0, 0.87)"
   },
   ac_placeholder: {
     position: "absolute",
     left: 2,
     fontSize: 16,
-    color: "rgba(162, 162, 162, 0.77)"
+    // color: "rgba(162, 162, 162, 0.77)"
+    color: "rgba(0, 0, 0, 0.87)"
   },
   ac_paper: {
     width: "80%",
@@ -203,6 +205,7 @@ class IntegrationReactSelect extends React.Component {
       [name]: value
     });
     this.props.onSelect(value);
+    
   };
 
   render() {
@@ -227,7 +230,9 @@ class IntegrationReactSelect extends React.Component {
         "& input": {
           font: "inherit"
         }
-      })
+      }),
+
+      maxLength:5
     };
     return (
       <div className={classes.root}>
@@ -238,8 +243,10 @@ class IntegrationReactSelect extends React.Component {
             label: label,
             InputLabelProps: inputLabelProps,
             required: required,
-            fullWidth: fullwidth
+            fullWidth: fullwidth,
+            maxLength: 5
           }}
+          
           options={getSuggestions(suggestions) || []}
           components={components}
           value={value ? value : this.state.multi}

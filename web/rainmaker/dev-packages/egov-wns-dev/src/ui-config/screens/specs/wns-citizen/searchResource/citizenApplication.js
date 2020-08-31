@@ -68,10 +68,6 @@ export const citizenApplication = getCommonCard({
             placeholder: {
                 labelKey: "WS_PROP_DETAIL_CITY_PLACEHOLDER"
             },
-            labelPrefix: {
-                moduleName: "TENANT",
-                masterName: "TENANTS"
-            },
             sourceJsonPath: "applyScreenMdmsData.tenant.tenants",
             jsonPath: "searchScreen.tenantId",//db sake
             required: true,
@@ -79,6 +75,11 @@ export const citizenApplication = getCommonCard({
                 xs: 12,
                 sm: 4
             },
+            props: {
+                className: "hr-generic-selectfield",
+                optionValue: "code",
+                optionLabel: "name"
+            }
         }),
         propertyid: getTextField({
             label: {

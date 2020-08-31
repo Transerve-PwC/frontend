@@ -8,14 +8,16 @@ import {
 } from "../../../../../ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getButtonVisibility,
   getCommonApplyFooter,
   ifUserRoleExists,
   validateFields,
-  epochToYmd
+  epochToYmd,
+  getLocalizationCodeValue
 } from "../../utils";
+import {ValidateCard} from '../../../../../ui-utils/storecommonsapi'
 // import "./index.css";
 
 const moveToReview = dispatch => {
@@ -76,15 +78,92 @@ export const callBackForNext = async (state, dispatch) => {
 
       // check validation for file uplaod
       if (get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux") !== undefined) {
+        let fileUrl =
+        get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux[0].documents[0].fileUrl",'') 
+        let fileName =
+        get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux[0].documents[0].fileName",'') 
+    if(fileUrl) 
+    {
+  fileUrl = getFileUrl(fileUrl)
+    }
+  let  documentsPreview= [
+    {
+      title: "STORE_DOCUMENT_TYPE_RATE_CONTRACT_QUATION",
+      linkText: "VIEW", 
+      link:fileUrl,//"https://chstage.blob.core.windows.net/fileshare/ch/undefined/July/15/1594826295177document.pdf?sig=R3nzPxT9MRMfROREe6LHEwuGfeVxB%2FKneAeWrDJZvOs%3D&st=2020-07-15T15%3A21%3A01Z&se=2020-07-16T15%3A21%3A01Z&sv=2016-05-31&sp=r&sr=b",
+      name: fileName, 
+    },]
+   
+  dispatch(
+    prepareFinalObject("documentsPreview", documentsPreview)
+  );
+  //validate duplicate card
+  let cardJsonPath =
+  "components.div.children.formwizardSecondStep.children.MaterialPriceDetails.children.cardContent.children.MaterialDetailsCard.props.items";
+  let pagename = "createpricelist";
+  let jasonpath =  "priceLists[0].priceListDetails";
+  let value = "material.code";
+  let DuplicatItem = ValidateCard(state,dispatch,cardJsonPath,pagename,jasonpath,value)
+  if(DuplicatItem && DuplicatItem[0])
+  {
+    if(!DuplicatItem[0].IsDuplicatItem)
+            {
+
+              // refresh card item
+              var storeMappingTemp = [];
+          let  storeMapping =  get(
+            state.screenConfiguration.preparedFinalObject,
+            `priceLists[0].priceListDetails`,
+            []
+          );
+          for(var i = 0; i < storeMapping.length; i++){
+              if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
+                storeMappingTemp.push(storeMapping[i]);
+              }
+          }
+          storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+          if(storeMappingTemp.length>0)
+          {
+            dispatch(prepareFinalObject("priceLists[0].priceListDetails",storeMappingTemp)
+          );
+            }
       moveToReview(dispatch);
+          }
+          else{
+            const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+            const errorMessage = {
+              labelName: "Duplicate Material Added",
+              //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+              labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          }
+  }
+  else{
+    moveToReview(dispatch);
+  }
       }
       else{
-        dispatch(
-          toggleSnackbar(
-            true,
-            { labelName: "Please uplaod mandatory documents!", labelKey: "" },
-            "warning"
-          ))
+
+        let id = get(
+          state.screenConfiguration.preparedFinalObject,
+          "priceLists[0].id",
+          null
+        );
+        if(id)
+        {
+          moveToReview(dispatch);
+       
+        }
+        else{
+          dispatch(
+            toggleSnackbar(
+              true,
+              { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+              "warning"
+            ))
+
+        }
       }
     
   }
@@ -160,7 +239,7 @@ export const callBackForNext = async (state, dispatch) => {
     const  agreementEndDate_ = new Date(agreementEndDate)
     let IsValidDate = true
     let IsValidStartDate = true    
-    if(rateContractDate_>CurrentDate || AgreementDate_> CurrentDate|| agreementStartDate_> CurrentDate|| agreementEndDate_> CurrentDate)
+    if(rateContractDate_>CurrentDate || AgreementDate_> CurrentDate|| agreementStartDate_> CurrentDate)
     {
       IsValidDate = false
     }
@@ -204,7 +283,16 @@ export const callBackForNext = async (state, dispatch) => {
     }
   }
 };
-
+export const getFileUrl = (linkText="") => {
+  const linkList = linkText.split(",");
+  let fileURL = '';
+  linkList&&linkList.map(link => {
+    if (!link.includes('large') && !link.includes('medium') && !link.includes('small')) {
+      fileURL = link;
+    }
+  })
+  return fileURL;
+}
 export const changeStep = (
   state,
   dispatch,

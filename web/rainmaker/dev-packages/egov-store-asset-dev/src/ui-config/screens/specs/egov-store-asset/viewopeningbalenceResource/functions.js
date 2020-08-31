@@ -7,7 +7,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import {
   createMaterial,
-  getMaterialMasterSearchResults,
+  getOpeningBalanceSearchResults,
   updateMaterial
 } from "../../../../../ui-utils/storecommonsapi";
 import {
@@ -245,16 +245,16 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
 
 };
 
-export const getMaterialmasterData = async (
+export const getOpeningBalanceData = async (
   state,
   dispatch,
-  code,
+  id,
   tenantId
 ) => {
   let queryObject = [
     {
-      key: "code",
-      value: code
+      key: "ids",
+      value: id
     },
     {
       key: "tenantId",
@@ -262,19 +262,9 @@ export const getMaterialmasterData = async (
     }
   ];
 
- let response = await getMaterialMasterSearchResults(queryObject, dispatch);
+ let response = await getOpeningBalanceSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
   dispatch(prepareFinalObject("materials", get(response, "materials")));
-  dispatch(
-    handleField(
-      "create",
-      "components.div.children.headerDiv.children.header.children.header.children.key",
-      "props",
-      {
-        labelName: "Edit Material Maste",
-        labelKey: "STORE_EDITMATERIAL_MASTER_HEADER"
-      }
-    )
-  );
+
  // furnishmaterialsData(state, dispatch);
 };

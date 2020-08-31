@@ -9,6 +9,11 @@ import store from "redux/store";
 import { convertDateToEpoch, getCheckBoxJsonpath, getHygeneLevelJson, getLocalityHarmedJson, getSafetyNormsJson, getTranslatedLabel, ifUserRoleExists, updateDropDowns } from "../ui-config/screens/specs/utils";
 import { httpRequest } from "./api";
 
+export const serviceConst = {
+    "WATER": "WATER",
+    "SEWERAGE": "SEWERAGE"
+}
+
 export const pushTheDocsUploadedToRedux = async (state, dispatch) => {
     let reduxDocuments = get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux", {});
     let uploadedDocs = [];
@@ -1980,5 +1985,31 @@ export const downloadApp = async (wnsConnection, type, mode = "download") => {
             });
     } catch (exception) {
         alert('Some Error Occured while downloading!');
+    }
+}
+export const validateConnHolderDetails = (holderData) => {
+    if(holderData.connectionHolders==null){
+        return true
+    }else if( holderData.connectionHolders && holderData.connectionHolders.length > 0){
+        let holderOwners = holderData.connectionHolders;
+        let valid = [];
+        for (let i = 0; i < holderOwners.length; i++) {
+            if (
+                holderOwners[i].hasOwnProperty("mobileNumber") && holderOwners[i]['mobileNumber'] !== undefined && holderOwners[i]["mobileNumber"] !== "" &&
+                holderOwners[i].hasOwnProperty("name") && holderOwners[i]['name'] !== undefined && holderOwners[i]["name"] !== "" &&
+                holderOwners[i].hasOwnProperty("fatherOrHusbandName") && holderOwners[i]['fatherOrHusbandName'] !== undefined && holderOwners[i]["fatherOrHusbandName"] !== "" &&
+                holderOwners[i].hasOwnProperty("correspondenceAddress") && holderOwners[i]['correspondenceAddress'] !== undefined && holderOwners[i]["correspondenceAddress"] !== "" &&
+                holderOwners[i].hasOwnProperty("gender") &&
+                holderOwners[i]["gender"] !== undefined &&
+                holderOwners[i]["gender"] !== "" &&
+                holderOwners[i].hasOwnProperty("ownerType") &&
+                holderOwners[i]["ownerType"] !== undefined &&
+                holderOwners[i]["ownerType"] !== "" &&
+                holderOwners[i].hasOwnProperty("relationship") &&
+                holderOwners[i]["relationship"] !== undefined &&
+                holderOwners[i]["relationship"] !== ""
+            ) { valid.push(1) } else { valid.push(0) }
+        }
+        if (valid.includes(0)) { return false; } else { return true; }
     }
 }

@@ -57,6 +57,7 @@ const immunizationDetails = {
             // errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
             jsonPath: "nocApplicationDetail[0].applicationdetail",
             callBack: value => {
+              
               if (value != undefined) {
                 let immunizationNameVeterinaryDoctor = JSON.parse(value).hasOwnProperty('immunizationNameVeterinaryDoctor') ? JSON.parse(value)['immunizationNameVeterinaryDoctor'] : '';
                 return immunizationNameVeterinaryDoctor;
@@ -127,6 +128,7 @@ const immunizationDetails = {
             jsonPath: "nocApplicationDetail[0].applicationdetail",
 
             callBack: value => {
+              
               if (value != undefined) {
                 let immunizationClinicNo = JSON.parse(value).hasOwnProperty('immunizationClinicNo') ? JSON.parse(value)['immunizationClinicNo'] : '';
             

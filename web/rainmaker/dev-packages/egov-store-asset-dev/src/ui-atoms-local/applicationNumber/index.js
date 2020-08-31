@@ -13,8 +13,68 @@ const styles = {
   fontSize: "16px"
 };
 
+const getApplicationDisplayCode =(screenName) => {
+  let labelValue = "";
+  switch(screenName){
+    case "Indent": labelValue = {
+      labelName: "Indent No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Indent Note": labelValue = {
+      labelName: "Issue No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    //Non Indent
+    case "Non Indent": labelValue = {
+      labelName: "Non Indent Issue No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "PO": labelValue = {
+      labelName: "PO No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Material Recept": labelValue = {
+      labelName: "MRN No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Material Recept MISC": labelValue = {
+      labelName: "Misc. MRN No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Indent Transfer": labelValue = {
+      labelName: "MRIN Transfer No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Indent Transfer Outword": labelValue = {
+      labelName: "MRIN Outword No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break; 
+    case "Indent Transfer Inword": labelValue = {
+      labelName: "MRIN Inword No.",
+      labelKey: `STORE_APPLICATION_NUMBER_INDENT`,
+    }
+    break;  
+    
+    default :  labelValue = {
+      labelName: "Application No.",
+      labelKey: "STORE_APPLICATION_NUMBER_DEFAULT",
+    }
+
+  }
+ return labelValue.labelName;
+}
 function ApplicationNoContainer(props) {
-	return <div style={styles}>Application No. {getapplicationNumber()}</div>;
+  const { number } = props;//number
+  const { pagename } = props;//number
+	return <div style={styles}>{getApplicationDisplayCode(pagename)} : {number}</div>;
 }
 
 export default ApplicationNoContainer;

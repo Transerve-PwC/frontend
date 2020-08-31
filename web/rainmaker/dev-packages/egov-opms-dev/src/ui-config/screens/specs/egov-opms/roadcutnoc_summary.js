@@ -53,9 +53,9 @@ import {
 import { taskStatusSummary } from './summaryResource/taskStatusSummary';
 
 import {
-  
+
   getCommonApplyFooter,
- 
+
 } from "../utils";
 
 
@@ -211,54 +211,6 @@ var titlebarfooter = getCommonApplyFooter({
   }
 });
 
-// const prepareDocumentsView = async (state, dispatch) => {
-//   //alert('prepare')
-//   let documentsPreview = [];
-
-//   // Get all documents from response
-//   let ROADCUTNOC = get(
-//     state,
-//     "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]",
-//     {}
-//   );
-//   let uploadDocuments = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('uploadDocuments') ?
-//     JSON.parse(ROADCUTNOC.applicationdetail).uploadDocuments[0]['fileStoreId'] : '';
-
-
-//   let allDocuments = [];
-//   allDocuments.push(uploadDocuments)
-
-//   if (uploadDocuments !== '') {
-//     documentsPreview.push(
-//       {
-//         title: "uploadDocuments",
-//         fileStoreId: uploadDocuments,
-//         linkText: "View"
-//       });
-
-//     let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
-//     let fileUrls =
-//       fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
-//     documentsPreview = documentsPreview.map(function (doc, index) {
-
-//       doc["link"] = fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
-//       doc["name"] =
-//         (fileUrls[doc.fileStoreId] &&
-//           decodeURIComponent(
-//             fileUrls[doc.fileStoreId]
-//               .split(",")[0]
-//               .split("?")[0]
-//               .split("/")
-//               .pop()
-//               .slice(13)
-//           )) ||
-//         `Document - ${index + 1}`;
-//       return doc;
-//     });
-
-//     dispatch(prepareFinalObject("documentsPreview", documentsPreview));
-//   }
-// };
 
 const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
@@ -323,8 +275,13 @@ const setSearchResponse = async (
     { key: "tenantId", value: tenantId },
     { key: "applicationNumber", value: applicationNumber }
   ]);
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
-  prepareDocumentsView(state, dispatch);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else {
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
+    prepareDocumentsView(state, dispatch);
+  }
 
 };
 

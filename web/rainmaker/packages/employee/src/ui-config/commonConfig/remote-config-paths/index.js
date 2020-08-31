@@ -65,18 +65,21 @@ const remoteConfigPath = (path, screenKey) => {
     case "egov-echallan":
       config = require(`egov-echallan/ui-config/screens/specs/${path}/${screenKey}`).default;
       break;
-	case "auction":
+	case "egov-echallan-auction":
       config = require(`egov-echallan/ui-config/screens/specs/${path}/${screenKey}`).default;
 	 break;
-    case "item-master":
+    case "egov-echallan-item-master":
       config = require(`egov-echallan/ui-config/screens/specs/${path}/${screenKey}`).default;
       break;
-    case "fine-master":
+    case "egov-echallan-fine-master":
       config = require(`egov-echallan/ui-config/screens/specs/${path}/${screenKey}`).default;
       break;
-    case "vendor-master":
+    case "egov-echallan-vendor-master":
       config = require(`egov-echallan/ui-config/screens/specs/${path}/${screenKey}`).default;
       break;
+        case "egov-nulm":
+          config = require(`egov-nulm/ui-config/screens/specs/${path}/${screenKey}`).default;
+          break;
     default:
       config = require(`ui-config/screens/specs/${path}/${screenKey}`).default;
       break;

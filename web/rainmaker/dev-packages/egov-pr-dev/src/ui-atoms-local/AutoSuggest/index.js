@@ -148,9 +148,9 @@ function Menu(props) {
       square
       className={props.selectProps.classes.ac_paper}
       {...props.innerProps}
-      style={{}}
+      style={{overflowX: "scroll"}}
     >
-      <div style={{}}>{props.children}</div>
+      <div style={{width: 800}}>{props.children}</div>
     </Paper>
   );
 }
@@ -217,14 +217,19 @@ class IntegrationReactSelect extends React.Component {
             label: label,
             InputLabelProps: inputLabelProps,
             required: required,
-            fullWidth: fullwidth
+            fullWidth: fullwidth,
+           
           }}
+         
           options={getSuggestions(suggestions) || []}
           components={components}
           value={value ? value : this.state.single}
           placeholder={placeholder}
           {...rest}
           onChange={this.handleChange("single")}
+         
+         
+          
         />
       </div>
     );

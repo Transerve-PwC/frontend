@@ -20,6 +20,7 @@ import {
 } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
+import {  validateFields } from "../../utils";
 
 export const UpdateMaster = async (state, dispatch) => {
   let perDay = 0
@@ -28,9 +29,15 @@ export const UpdateMaster = async (state, dispatch) => {
   let annual = 0
   let isValid = true;
   let isDateValid = true;
-  let validatMasterUpdateformflag = masterFormvalidate()
-  let isFormValid = validatMasterUpdateformflag[0];
-
+  // let validatMasterUpdateformflag = masterFormvalidate()
+  // let isFormValid = validatMasterUpdateformflag[0];
+  //screenConfiguration.screenConfig.masterUpdateRate.components.div.children.NOCApplication2.children.cardContent.children.masterContainer.children
+let  isFormValid = validateFields(
+    "components.div.children.NOCApplication2.children.cardContent.children.masterContainer.children",
+    state,
+    dispatch,
+    "masterUpdateRate"
+  );
   let Duration = get(
     state.screenConfiguration.preparedFinalObject,
     "Matserdata[0].duration"
@@ -40,75 +47,28 @@ export const UpdateMaster = async (state, dispatch) => {
     labelName: "Fill all complusory fields'.",
     labelKey: "COMPULSORY_FEILD_MASTER_TOST"
   };
-  if (NewDueation.includes("day") === true) {
-    if (get(
-      state.screenConfiguration.preparedFinalObject,
-      "Matserdata[0].perDayPrice"
-    ) === "") {
-      isValid = false;
-      dispatch(toggleSnackbar(true, errorMessage1, "warning"));
-
-    }
-    else {
+  
       perDay = get(
         state.screenConfiguration.preparedFinalObject,
         "Matserdata[0].perDayPrice"
       )
-    }
-    isValid = true;
-  }
-  if (NewDueation.includes("week") === true) {
-    if (get(
-      state.screenConfiguration.preparedFinalObject,
-      "Matserdata[0].perWeekPrice"
-    ) === "") {
-      isValid = false;
-      dispatch(toggleSnackbar(true, errorMessage1, "warning"));
-    }
-    else {
+ 
+  
       perWeek = get(
         state.screenConfiguration.preparedFinalObject,
         "Matserdata[0].perWeekPrice"
       )
-      isValid = true;
-    }
-  }
-  if (NewDueation.includes("month") === true) {
-    if (get(
-      state.screenConfiguration.preparedFinalObject,
-      "Matserdata[0].perMonthPrice"
-    ) === "") {
-      isValid = false;
-      dispatch(toggleSnackbar(true, errorMessage1, "warning"));
-
-    }
-    else {
+  
       perMonth = get(
         state.screenConfiguration.preparedFinalObject,
         "Matserdata[0].perMonthPrice"
       )
-      isValid = true;
-    }
-  }
-  if (NewDueation.includes("annual") === true) {
-    if (get(
-      state.screenConfiguration.preparedFinalObject,
-      "Matserdata[0].annualPrice"
-    ) === "") {
-      isValid = false;
-      dispatch(toggleSnackbar(true, errorMessage1, "warning"));
-
-    }
-    else {
+  
       annual = get(
         state.screenConfiguration.preparedFinalObject,
         "Matserdata[0].annualPrice"
       )
-      isValid = true;
-    }
-
-
-  }
+  
   let date = convertEpochToDate(get(
     state.screenConfiguration.preparedFinalObject,
     "Matserdata[0].effectiveFromDate"

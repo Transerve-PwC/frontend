@@ -11,17 +11,17 @@ import {
     getCommonParagraph,
     getDateField
   } from "egov-ui-framework/ui-config/screens/specs/utils";
- import { documentDetails } from "./emaildocumentDetails";
+ import { documentDetails ,MultipleDocumentDetails} from "./emaildocumentDetails";
  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../../ui-utils";
 import AutoComplete from 'material-ui/AutoComplete';
 import {localStorageGet, localStorageSet} from "egov-ui-kit/utils/localStorageUtils";
   import "./index.css";
 
-
+  import { documentsPressNoteSummary } from "../summaryResource/documentsSummary";
+  
   import {  masterGrid} from "../searchResource/searchResults";
 
-  
   
   
   
@@ -263,6 +263,12 @@ export const EmailSmsContent = getCommonCard({
   break: getBreak(),
   
     break: getBreak(),
+
+   break: getBreak(),
+  
+  documentsPressNoteSummary,
+  break: getBreak(),
+  MultipleDocumentDetails,
    break: getBreak(),
    headersms:  getCommonParagraph(
     {
@@ -277,8 +283,9 @@ export const EmailSmsContent = getCommonCard({
     }
   ),
   break: getBreak(),
-   break: getBreak(),
-   
+  break: getBreak(),
+  break: getBreak(),
+    
   // SMSContent: {
      // uiFramework: "custom-molecules-local",
           // moduleName: "egov-pr",
@@ -294,7 +301,7 @@ export const EmailSmsContent = getCommonCard({
         labelKey: "PR_SMS_TEMPLATE"
       },
       pattern: getPattern("subjectvalidation"),
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      errorMessage: "PR_SMS_INVALID",
       required: true,
       jsonPath: "pressnote.SMSContent",
       props:{

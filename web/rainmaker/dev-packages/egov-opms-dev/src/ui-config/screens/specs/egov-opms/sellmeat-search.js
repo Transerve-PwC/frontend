@@ -8,7 +8,8 @@ import { searchResultsSellmeat } from "./searchResource/searchResults";
 import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 import {
   getOPMSTenantId,
-  localStorageGet
+  localStorageGet,
+  setapplicationType
 } from "egov-ui-kit/utils/localStorageUtils";
 import find from "lodash/find";
 import set from "lodash/set";
@@ -18,7 +19,9 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getRequiredDocuments } from "./requiredDocuments/reqDocs";
-import { getGridDataSellMeat } from "./searchResource/citizenSearchFunctions";
+import { getGridDataSellMeat, getTextForSellMeatNoc } from "./searchResource/citizenSearchFunctions";
+import { SearchFormForEmployee } from "./searchResource/EmployeeSearchForm";
+import "./searchGrid.css";
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
@@ -34,9 +37,9 @@ const NOCSearchAndResult = {
   uiFramework: "material-ui",
   name: "sellmeat-search",
   beforeInitScreen: (action, state, dispatch) => {
-    getGridDataSellMeat(action, state, dispatch);
+    setapplicationType("SELLMEATNOC")
 
-
+    //getGridDataSellMeat(action, state, dispatch);
     const tenantId = getOPMSTenantId();
     const BSqueryObject = [
       { key: "tenantId", value: tenantId },
@@ -51,17 +54,20 @@ const NOCSearchAndResult = {
     if (states && states.length > 0) {
       const status = states.map((item, index) => {
         return {
-          code: item.state
-        };
+          code: item.state,
+          name: getTextForSellMeatNoc(item.state)
+        }
       });
+      let arr = status.slice(1)
       dispatch(
         prepareFinalObject(
           "applyScreenMdmsData.searchScreen.status",
-          status.filter(item => item.code != null)
+          arr.filter(item => item.code != null)
         )
       );
+
     }
-    
+
     return action;
   },
   components: {
@@ -137,6 +143,8 @@ const NOCSearchAndResult = {
         },
         // pendingApprovals,
         // NOCApplication,
+        SearchFormForEmployee,
+
         breakAfterSearch: getBreak(),
         // progressStatus,
         searchResultsSellmeat

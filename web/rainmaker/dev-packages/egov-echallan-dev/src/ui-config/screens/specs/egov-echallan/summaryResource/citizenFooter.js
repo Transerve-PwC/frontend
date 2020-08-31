@@ -25,20 +25,20 @@ import {
   
   const callbackforsummaryactionpay = async (state, dispatch) => {
   
-    const applicationid = getQueryArg(window.location.href, "challanNumber");
+    const applicationid = getQueryArg(window.location.href, "applicationNumber");
     const tenantId = getQueryArg(window.location.href, "tenantId");
     let appStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].status", '');
     let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
-    let encroachmentType = new Date(get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType', ''));
+    let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType', '');
   
-    if (appStatus !== 'CLOSED' && paymentStatus === 'PENDING') {
+    if (appStatus !== ('RELEASED FROM STORE' || 'RELEASED ON GROUND' || 'CLOSED') && paymentStatus === 'PENDING') {
       //make payment code
       let violationDate = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate", new Date());
   
       if (getDiffernceBetweenTodayDate(violationDate) <= 30) {
         const appendUrl =
           process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
-        const reviewUrl = `${appendUrl}/egov-echallan/pay?challanNumber=${applicationid}&tenantId=${tenantId}`;
+        const reviewUrl = `${appendUrl}/egov-echallan/pay?applicationNumber=${applicationid}&tenantId=${tenantId}`;
         dispatch(setRoute(reviewUrl));
   
       } else {
@@ -46,14 +46,14 @@ import {
         if (encroachmentType === 'Seizure of Vehicles' && getDiffernceBetweenTodayDate(violationDate) <= 365) {
           const appendUrl =
             process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
-          const reviewUrl = `${appendUrl}/egov-echallan/pay?challanNumber=${applicationid}&tenantId=${tenantId}`;
+          const reviewUrl = `${appendUrl}/egov-echallan/pay?applicationNumber=${applicationid}&tenantId=${tenantId}`;
           dispatch(setRoute(reviewUrl));
         } else if (encroachmentType === 'Seizure of Vehicles' && getDiffernceBetweenTodayDate(violationDate) > 365) {
           dispatch(toggleSnackbar(
             true,
             {
               labelName: "Payment cannot be made after 365 days of voilation date",
-              labelKey: ""
+              labelKey: "EC_VEHICLE_PAYMENT_365_DAYS"
             },
             "warning"
           ));
@@ -62,7 +62,7 @@ import {
             true,
             {
               labelName: "Payment cannot be made after 30 days of voilation date",
-              labelKey: ""
+              labelKey: "EC_VEHICLE_PAYMENT_30_DAYS"
             },
             "warning"
           ));

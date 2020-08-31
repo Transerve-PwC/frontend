@@ -8,12 +8,12 @@ import {
     getPattern
   } from "egov-ui-framework/ui-config/screens/specs/utils";
  import { getTodaysDateInYMD } from "../../utils";
-  
+ import {  handleScreenConfigurationFieldChange as handleField, prepareFinalObject  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   export const SupplierDetails = getCommonCard({
     header: getCommonTitle(
       {
-        labelName: "Material Details",
-        labelKey: "STORE_MATERIAL_DETAILS"
+        labelName: "Supplier Details",
+        labelKey: "STORE_PRICE_SUPPLIER_DETAILS"
       },
       {
         style: {
@@ -105,7 +105,7 @@ import {
           jsonPath: "priceLists[0].rateContractDate",
           props: {
             inputProps: {
-              max: getTodaysDateInYMD()
+              max: new Date().toISOString().slice(0, 10),
             }
           }
         })
@@ -140,7 +140,7 @@ import {
           jsonPath: "priceLists[0].agreementDate",
           props: {
             inputProps: {
-              max: getTodaysDateInYMD()
+              max: new Date().toISOString().slice(0, 10),
             }
           }
         })
@@ -160,10 +160,23 @@ import {
           jsonPath: "priceLists[0].agreementStartDate",
           props: {
             inputProps: {
-              max: getTodaysDateInYMD()
+              max: new Date().toISOString().slice(0, 10),
             }
           }
-        })
+        }),
+        beforeFieldChange: (action, state, dispatch) => {
+
+          let date = action.value;
+
+          dispatch(
+            handleField(
+              "createpricelist",
+              "components.div.children.formwizardFirstStep.children.SupplierDetails.children.cardContent.children.SupplierDetailsContainer.children.agreementEndDate",
+              "props.inputProps",
+              { min: new Date(date).toISOString().slice(0, 10)}
+            )
+          );
+        }
       },
       agreementEndDate: {
         ...getDateField({

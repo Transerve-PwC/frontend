@@ -30,9 +30,9 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
 import { checkForRole } from "../utils";
 import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  
+
   getCommonApplyFooter,
- 
+
 } from "../utils";
 
 export const stepsData = [
@@ -347,40 +347,44 @@ const setSearchResponse = async (
     { key: "tenantId", value: tenantId },
     { key: "applicationNumber", value: applicationNumber }
   ]);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else {
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
+    // Set Institution/Applicant info card visibility
 
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
-  // Set Institution/Applicant info card visibility
+    dispatch(
+      handleField(
+        "advertisement_summary",
+        "components.div.children.body.children.cardContent.children.advertisementapplicantSummary",
+        "visible",
+        true
+      )
+    );
 
-  dispatch(
-    handleField(
-      "advertisement_summary",
-      "components.div.children.body.children.cardContent.children.advertisementapplicantSummary",
-      "visible",
-      true
-    )
-  );
-
-  dispatch(
-    handleField(
-      "advertisement_summary",
-      "components.div.children.body.children.cardContent.children.detailSummary",
-      "visible",
-      true
-    )
-  );
-
-
-  prepareDocumentsView(state, dispatch);
-
-
-  getMdmsData(action, state, dispatch).then(response => {
-    let advertisementtypeselected = '';
-    let advertisementsubtypeselected = '';
-    let advt = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationdetail", {});
+    dispatch(
+      handleField(
+        "advertisement_summary",
+        "components.div.children.body.children.cardContent.children.detailSummary",
+        "visible",
+        true
+      )
+    );
 
 
+    prepareDocumentsView(state, dispatch);
 
-  });
+
+    getMdmsData(action, state, dispatch).then(response => {
+      let advertisementtypeselected = '';
+      let advertisementsubtypeselected = '';
+      let advt = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationdetail", {});
+
+
+
+    });
+  }
 };
 
 const screenConfig = {

@@ -20,11 +20,7 @@ import { httpRequest } from "../../../../ui-utils";
 import {getPressMasterSearchResultsViewMain} from "../../../../ui-utils/commons";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import {
-  prepareDocumentsUploadData,
-  getSearchResults,
-  furnishNocResponse,
-  setApplicationNumberBox,
-  getSearchResultsViewEvent,
+ 
   furnishNocResponse_PressMaster
 } from "../../../../ui-utils/commons";
 import commonConfig from '../../../../config/common';

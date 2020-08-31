@@ -8,7 +8,8 @@ import { furnishServiceRequestDetailResponse, getSearchResultsView, setApplicati
 import { clearlocalstorageAppDetails } from "../utils";
 import { addressdetails } from './serviceRequestDetails/addressdetails';
 import { footerEdit } from "./serviceRequestDetails/footerEdit";
-import { ownerdetails } from './serviceRequestDetails/ownerdetails';
+// import { ownerdetails } from './serviceRequestDetails/ownerdetails';
+import { ownerdetailsEdit } from './serviceRequestDetails/ownerdetailsEdit';
 import { servicerequestdetailsEdit } from './serviceRequestDetails/servicerequestdetailsEdit';
 import { uploadimage } from './serviceRequestDetails/uploadimage';
 
@@ -59,7 +60,7 @@ export const formwizardSecondStep = {
     id: "apply_form3"
   },
   children: {
-    ownerdetails
+    ownerdetailsEdit
   }
 };
 
@@ -136,8 +137,9 @@ export const prepareEditFlow = async (state, dispatch, applicationNumber, tenant
     ]);
     
     let Refurbishresponse = furnishServiceRequestDetailResponse(response);
-
+    // let RefurbishresponseOnFail = furnishServiceRequestDetailResponse(response);
     dispatch(prepareFinalObject("SERVICEREQUEST", Refurbishresponse));
+    // dispatch(prepareFinalObject("SERVICEREQUESTONFAIL", RefurbishresponseOnFail));
     if (applicationNumber) {
       setapplicationNumber(applicationNumber);
       setApplicationNumberBox(state, dispatch, applicationNumber);

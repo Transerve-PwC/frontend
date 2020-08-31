@@ -45,7 +45,7 @@ class ImageUploadViolation extends Component {
     if(getapplicationType() === "egov-echallan")
     {
       for (let i = 0; i < 5 - images.length; i++) {
-        placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={i === 1 ? true : false} />);
+        placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={i === 1 ? false : false} />);
       }
     }
     else{
@@ -63,13 +63,13 @@ class ImageUploadViolation extends Component {
 
   onFilePicked = (file, imageUri) => {
     const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText } = this.props;
-    const MAX_IMAGE_SIZE = 15000;
+    const MAX_IMAGE_SIZE = 75000;
     const fileSize = getFileSize(file);
     const isImage = isFileImage(file);
     if (!isImage) {
       toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "EC_ERR_NOT_VALID_VIOLATION_IMAGE" }, "error");
     } else if (fileSize > MAX_IMAGE_SIZE) {
-      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: "EC_ERR_FILE_MORE_THAN_VIOLATION_FIFTEENMB" },"error");
+      toggleSnackbarAndSetText(true, { labelName: "The file is more than 75mb", labelKey: "EC_ERR_FILE_MORE_THAN_VIOLATION_SEVENTYFIVEMB" },"error");
     } else {
       if(getapplicationType() === "egov-echallan"){
         if (images.length < 5) {
@@ -121,7 +121,7 @@ class ImageUploadViolation extends Component {
           </div>
           </div>
         )}
-        <Label label="EC_ERR_FILE_MORE_THAN_VIOLATION_FIFTEENMB" labelStyle={inlineLabelStyle} fontSize="12px" />
+        <Label label="EC_ERR_FILE_MORE_THAN_VIOLATION_SEVENTYFIVEMB" labelStyle={inlineLabelStyle} fontSize="12px" />
       </div>
       
     );

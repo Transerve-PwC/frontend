@@ -84,6 +84,20 @@ const getMdmsData = async (action, state, dispatch) => {
     obj['name']="ALL"
     obj['code']="ALL"
      payload.MdmsRes["RAINMAKER-PR"].eventReportMonth.unshift(obj)
+     let obj1={}
+     let obj2={}
+     let obj3={}
+  obj1['name']="Select Year"
+  payload.MdmsRes["RAINMAKER-PR"].eventReportYear.unshift(obj1)
+
+
+  
+  obj2['name']="Select Month"
+  payload.MdmsRes["RAINMAKER-PR"].eventReportMonth.push(obj2)
+
+  
+  obj3['name']="Select Aggregated By"
+  payload.MdmsRes["RAINMAKER-PR"].eventReportAggregatedBy.unshift(obj3)
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
 
 

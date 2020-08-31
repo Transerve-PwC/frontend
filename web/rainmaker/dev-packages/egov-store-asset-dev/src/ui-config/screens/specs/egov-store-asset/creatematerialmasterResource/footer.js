@@ -9,8 +9,11 @@ import {
   getButtonVisibility,
   getCommonApplyFooter,
   ifUserRoleExists,
-  validateFields
+  validateFields,
+  getLocalizationCodeValue
 } from "../../utils";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { set } from "lodash";
 // import "./index.css";
 
 const moveToReview = dispatch => {
@@ -92,13 +95,17 @@ export const callBackForNext = async (state, dispatch) => {
     if(isFormValid)
     {
 
-    // get max and min Qty and validate     
+    // get max and min Qty and validate  
+    if(get(state.screenConfiguration.preparedFinalObject, "materials[0].maxQuantity") &&  get(state.screenConfiguration.preparedFinalObject, "materials[0].minQuantity"))
+    {  
     let MaxQty =0
     let MinQty = 0
     MaxQty = Number( get(state.screenConfiguration.preparedFinalObject, "materials[0].maxQuantity"))
     MinQty = Number( get(state.screenConfiguration.preparedFinalObject, "materials[0].minQuantity"))
-    if(MaxQty> MinQty)
-    moveToReview(dispatch);
+    if(MaxQty && MinQty &&  MinQty <=MaxQty)
+    {
+    }
+ 
     else{
      // pop earnning Message
      const errorMessage = {
@@ -106,8 +113,66 @@ export const callBackForNext = async (state, dispatch) => {
       labelKey: "STORE_MATERIAL_MASTER_MAX_MIN_QTY_VALIDATION_MESSAGE"
     };
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
-
+    return;
     }
+  }
+      let IsDuplicatItem = false
+      if(!IsDuplicatItem)
+      {
+        let  materials =  get(
+          state.screenConfiguration.preparedFinalObject,
+          `materials[0]`,
+          []
+        ); 
+        let  storeMapping =  get(
+          state.screenConfiguration.preparedFinalObject,
+          `materials[0].storeMapping`,
+          []
+        ); 
+        let id = get(
+          state.screenConfiguration.preparedFinalObject,
+          `materials[0].id`,
+          0
+        ); 
+        if(id)
+        {       
+          for (let index = 0; index < storeMapping.length; index++) {
+            const element = storeMapping[index];
+            if(element.isDeleted === false)
+            {
+              //set Active false
+             // set(materials[0], `storeMapping[${index}].active`, false);
+              dispatch(
+                prepareFinalObject(
+                  `materials[0].storeMapping[${index}].active`,
+                  false,
+                )
+              );
+            }
+            
+          }
+         // storeMapping = storeMapping.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+        }
+        else{
+       
+          storeMapping = storeMapping.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+
+        }
+        
+       moveToReview(dispatch);
+      }   
+      else
+      {
+        const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_STORE_VALIDATION")
+        const errorMessage = {
+          labelName: "Duplicate Store Added",
+          //labelKey:   `STORE_MATERIAL_DUPLICATE_STORE_VALIDATION ${DuplicatItem[0].duplicates}`
+          labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+      }
+   
     
   }
     else{
@@ -122,8 +187,132 @@ export const callBackForNext = async (state, dispatch) => {
   }
   if (activeStep !== 2) {
     if (isFormValid) {
+      let IsDuplicatItem = false
+       // check duplicat Item 
+       let cardJsonPath =
+       "components.div.children.formwizardSecondStep.children.storeDetails.children.cardContent.children.storeDetailsCard.props.items";
+     let CardItem = get(
+       state.screenConfiguration.screenConfig.creatematerialmaster,
+       cardJsonPath,
+       []
+     );
+
+    // CardItem = CardItem.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+    // console.log(CardItem)
+    let matcode =[];
+     for (let index = 0; index < CardItem.length; index++) {
+       
+       if(CardItem[index].isDeleted === undefined ||
+        CardItem[index].isDeleted !== false)
+        {
+          let code = get(state.screenConfiguration.preparedFinalObject,`materials[0].storeMapping[${index}].store.code`,'')        
+          matcode.push(code)
+        }
+        else{
+          let code_ = get(state.screenConfiguration.preparedFinalObject,`materials[0].storeMapping[${index}].store.code`,'')        
+        }      
+     } 
+        var uniq = matcode
+      .map((name) => {
+        return {
+          count: 1,
+          name: name
+        }
+      })
+      .reduce((a, b) => {
+        a[b.name] = (a[b.name] || 0) + b.count
+        return a
+      }, {})    
+
+      var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1)
+      var unoque = Object.keys(uniq).filter((a) => uniq[a] === 1)
+      if(duplicates.length>0)
+      {
+      duplicates= duplicates.map(itm => {
+          return `${itm}`;
+        })
+        .join() || "-"
+        IsDuplicatItem = true;
+        
+      }     
+      if(!IsDuplicatItem)
+      {
+        // remove duplicate item form card
+        // //CardItem = CardItem.filter(x=x.)
+        // CardItem = CardItem.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+        var storeMappingTemp = [];
+        let  storeMapping =  get(
+          state.screenConfiguration.preparedFinalObject,
+          `materials[0].storeMapping`,
+          []
+        );
+        for(var i = 0; i < storeMapping.length; i++){
+            if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
+              storeMappingTemp.push(storeMapping[i]);
+            }
+        }
+        //materials[0].storeMapping
+        let id = get(
+          state.screenConfiguration.preparedFinalObject,
+          `materials[0].id`,
+          0
+        ); 
+        if(id)
+        {
+          
+          let  materials =  get(
+            state.screenConfiguration.preparedFinalObject,
+            `materials[0]`,
+            []
+          ); 
+          for (let index = 0; index < storeMappingTemp.length; index++) {
+            const element = storeMappingTemp[index];
+            if(element.isDeleted === false)
+            {
+              //set Active false
+             // set(materials[0], `storeMapping[${index}].active`, false);
+              dispatch(
+                prepareFinalObject(
+                  `materials[0].storeMapping[${index}].active`,
+                  false,
+                )
+              );
+            }
+            
+          }
+         // storeMapping = storeMapping.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+        }
+        else{
+         
+          storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+
+        }
+        
+
+        if(storeMappingTemp.length>0)
+        {
+           dispatch(
+          prepareFinalObject(
+            "materials[0].storeMapping",
+            storeMappingTemp,
+          )
+        );
+          }
       changeStep(state, dispatch);
-    } else {
+      }
+      else{
+
+       const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_STORE_VALIDATION")
+        const errorMessage = {
+          labelName: "Duplicate Material Added",
+          //labelKey:   `STORE_MATERIAL_DUPLICATE_STORE_VALIDATION ${DuplicatItem[0].duplicates}`
+          labelKey:   LocalizationCodeValue+' '+duplicates
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+      }
+    } 
+    else {
       const errorMessage = {
         labelName: "Please fill all fields",
         labelKey: "ERR_FILL_ALL_FIELDS"
@@ -288,7 +477,7 @@ export const footer = getCommonApplyFooter({
       },
       previousButtonLabel: getLabel({
         labelName: "Previous Step",
-        labelKey: "HR_COMMON_BUTTON_PREV_STEP"
+        labelKey: "STORE_COMMON_BUTTON_PREV_STEP"
       })
     },
     onClickDefination: {
@@ -311,7 +500,7 @@ export const footer = getCommonApplyFooter({
     children: {
       nextButtonLabel: getLabel({
         labelName: "Next Step",
-        labelKey: "HR_COMMON_BUTTON_NXT_STEP"
+        labelKey: "STORE_COMMON_BUTTON_NXT_STEP"
       }),
       nextButtonIcon: {
         uiFramework: "custom-atoms",
@@ -340,7 +529,7 @@ export const footer = getCommonApplyFooter({
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
-        labelKey: "HR_COMMON_BUTTON_SUBMIT"
+        labelKey: "STORE_COMMON_BUTTON_SUBMIT"
       }),
       submitButtonIcon: {
         uiFramework: "custom-atoms",

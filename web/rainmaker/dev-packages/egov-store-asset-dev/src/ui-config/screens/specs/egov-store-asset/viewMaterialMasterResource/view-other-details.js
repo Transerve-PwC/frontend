@@ -10,9 +10,9 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 const gotoCreatePage = (state, dispatch) => {
   const createUrl =
-    process.env.REACT_APP_SELF_RUNNING === "true"
-      ? `/egov-ui-framework/hrms/create?step=0`
-      : `/hrms/create?step=0`;
+  process.env.REACT_APP_SELF_RUNNING === "true"
+    ? `/egov-ui-framework/egov-store-asset/creatematerialmaster?step=2`
+    : `/egov-store-asset/creatematerialmaster?step=2`;
   dispatch(setRoute(createUrl));
 };
 
@@ -78,25 +78,25 @@ export const getOtherDetailsView = (isReview = true) => {
         }
       }
     },
-    PurchasingInformationHeader: getHeader({
-      labelName: "Purchasing Information",
-      labelKey: "STORE_MATERIAL_PURCHASING_INFORMATION"
-    }),
-    break1: getBreak(),
-    viewOne: getCommonContainer({
-      reviewPurchaseUOMName: getLabelWithValue(
-        {
-          labelName: "PurchaseUOMName",
-          labelKey: "STORE_MATERIAL_PURCHASE_UOM_NAME"
-        },
-        { jsonPath: "materials[0].purchaseUom" }
-      ),
-      reviewExpenseAccountCode: getLabelWithValue(
-        { labelName: "Expense Account Code", labelKey: "STORE_MATERIAL_EXPENSE_ACCOUNT_CODE" },
-        { jsonPath: "materials[0].expenseAccount" }
-      ), 
+    // PurchasingInformationHeader: getHeader({
+    //   labelName: "Purchasing Information",
+    //   labelKey: "STORE_MATERIAL_PURCHASING_INFORMATION"
+    // }),
+    // break1: getBreak(),
+    // viewOne: getCommonContainer({
+    //   reviewPurchaseUOMName: getLabelWithValue(
+    //     {
+    //       labelName: "PurchaseUOMName",
+    //       labelKey: "STORE_MATERIAL_PURCHASE_UOM_NAME"
+    //     },
+    //     { jsonPath: "materials[0].purchaseUom.code" }
+    //   ),
+    //   reviewExpenseAccountCode: getLabelWithValue(
+    //     { labelName: "Expense Account Code", labelKey: "STORE_MATERIAL_EXPENSE_ACCOUNT_CODE" },
+    //     { jsonPath: "materials[0].expenseAccount" }
+    //   ), 
       
-    }),
+    // }),
     StockingInformationDetailsHeader: getHeader({
       labelName: "Stocking Information",
       labelKey: "STORE_MATERIAL_STOCKING_INFORMATION"
@@ -108,12 +108,12 @@ export const getOtherDetailsView = (isReview = true) => {
           labelName: "Usage Class",
           labelKey: "STORE_MATERIAL_USAGE_CLASS"
         },
-        { jsonPath: "materials[0].code" }
+        { jsonPath: "materials[0].materialClass" }
       ),
       reviewStockingUOMName: getLabelWithValue(
         { labelName: "Stocking UOM Name", labelKey: "STORE_MATERIAL_STOCKING_UOM_NAME" },
         {
-          jsonPath: "materials[0].stockingUom"
+          jsonPath: "materials[0].stockingUom.name"
         }
       ),
       reviewMaximunQty: getLabelWithValue(
@@ -171,13 +171,13 @@ export const getOtherDetailsView = (isReview = true) => {
       reviewManufracturerPartNo: getLabelWithValue(
         { labelName: "Manufracturer Part No", labelKey: "STORE_MATERIAL_MANUFRACTURER_PART_NO" },
         {
-          jsonPath: "materials[0].manufacturePartNo"
+          jsonPath: "materials[0].manufracturerPartNo"
         }
       ),
       reviewTechnicalSpecifications: getLabelWithValue(
         { labelName: "Technical Specifications", labelKey: "STORE_MATERIAL_TECHNICAL_SPECIFICATIONS" },
         {
-          jsonPath: "materials[0].techincalSpecs",
+          jsonPath: "materials[0].technicalSpecifications",
           
         }
       ),

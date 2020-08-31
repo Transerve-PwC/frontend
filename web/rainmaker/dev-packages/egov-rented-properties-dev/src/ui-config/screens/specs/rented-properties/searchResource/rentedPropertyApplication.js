@@ -575,8 +575,8 @@ export const accountStatementFilterForm = getCommonCard({
     labelKey: "RP_FILTER_CONTAINER_HEADER_LABEL"
   }),
   dateContainer:getCommonContainer({
-      from:getDateField({...fromDateField, required: true}),
-      to:getDateField({...toDateField, required: true})
+      from:getDateField({...fromDateField}),
+      to:getDateField({...toDateField})
   }),
   button: getCommonContainer({
     buttonContainer: getCommonContainer(

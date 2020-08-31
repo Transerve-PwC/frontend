@@ -22,7 +22,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import orderBy from "lodash/orderBy";
-import { RP_MASTER_ENTRY } from "../../ui-constants";
+import { RP_MASTER_ENTRY, WORKFLOW_BUSINESS_SERVICE_OT, WORKFLOW_BUSINESS_SERVICE_DC } from "../../ui-constants";
 
 const tenant = getQueryArg(window.location.href, "tenantId");
 
@@ -58,8 +58,8 @@ class WorkFlowContainer extends React.Component {
           break
         }
         case "PermissionToMortgage":
-        case "DuplicateCopyOfAllotmentLetterRP":
-        case "OwnershipTransferRP": {
+        case WORKFLOW_BUSINESS_SERVICE_DC:
+        case WORKFLOW_BUSINESS_SERVICE_OT: {
           queryObject = [...queryObject, { key: "businessIds", value: applicationNumber }]
           break
         }
@@ -163,11 +163,11 @@ class WorkFlowContainer extends React.Component {
             path = `&transitNumber=${data[0].transitNumber}&tenantId=${tenant}&type=${RP_MASTER_ENTRY}`
             break
           }
-          case "OwnershipTransferRP": {
+          case WORKFLOW_BUSINESS_SERVICE_OT: {
             path = `&applicationNumber=${data[0].ownerDetails.applicationNumber}&tenantId=${tenant}&type=OWNERSHIPTRANSFERRP`
             break
           }
-          case "DuplicateCopyOfAllotmentLetterRP": {
+          case WORKFLOW_BUSINESS_SERVICE_DC: {
             path = `&applicationNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=DUPLICATECOPYOFALLOTMENTLETTERRP`
             break
           }
@@ -216,12 +216,12 @@ class WorkFlowContainer extends React.Component {
         break;
       }
       case "PermissionToMortgage":
-      case "DuplicateCopyOfAllotmentLetterRP": {
+      case WORKFLOW_BUSINESS_SERVICE_DC: {
           set(data, `Action`, label);
             break;
       }
       
-      case "OwnershipTransferRP": {
+      case WORKFLOW_BUSINESS_SERVICE_OT: {
         set(data, `applicationAction`, label);
         break;
       }
@@ -363,7 +363,7 @@ class WorkFlowContainer extends React.Component {
     } = this;
     let businessService = moduleName
     // let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
-    let businessId = moduleName === "OwnershipTransferRP" || moduleName === "DuplicateCopyOfAllotmentLetterRP" || moduleName === "PermissionToMortgage" ? get(data[data.length - 1], "businessId") :
+    let businessId = moduleName === WORKFLOW_BUSINESS_SERVICE_OT || moduleName === WORKFLOW_BUSINESS_SERVICE_DC || moduleName === "PermissionToMortgage" ? get(data[data.length - 1], "businessId") :
     get(data[data.length - 1], "propertyDetails.propertyId");
     let filteredActions = [];
 

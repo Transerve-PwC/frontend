@@ -16,9 +16,9 @@
   position: relative;
 }
 
-.profile-form-field > label {
-  color: #03b0c6 !important;
-}
+// .profile-form-field > label {
+//   color: #03b0c6 !important;
+// }
 
 .profileContainer {
   position: relative;
@@ -31,6 +31,9 @@
 @media only screen and (max-width: 768px) {
   .profile-card-container {
     margin: 0px !important;
+  }
+  .profile-profilesection {
+    margin-top: 65px;
   }
 }
 @media only screen and (min-width: 768px) {

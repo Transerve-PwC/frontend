@@ -43,6 +43,11 @@ const DialogContainer = Loadable({
   loading: () => <Loading />
 });
 
+const DeleteConfirmationContainer = Loadable({
+  loader: () => import("./DeleteConfirmationContainer"),
+  loading: () => <Loading />
+});
+
 const ViewBreakupContainer = Loadable({
   loader: () => import("./ViewbreakupDialogContainer"),
   loading: () => <Loading />
@@ -73,6 +78,7 @@ export {
   PaymentRedirectPage,
   ViewBreakupContainer,
   DialogContainer,
+  DeleteConfirmationContainer,
   PopupContainer,
   CustomizeTableContainer,
   ForwardContainer

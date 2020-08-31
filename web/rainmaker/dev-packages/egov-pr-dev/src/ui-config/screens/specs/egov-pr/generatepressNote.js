@@ -7,7 +7,7 @@ import {
 
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getCurrentFinancialYear } from "../utils";
-import { pressapplyfooter } from "./applyResource/pressapplyfooter";
+import { pressapplyfooter,takeactionfooter } from "./applyResource/pressapplyfooter";
 
 import jp from "jsonpath";
 import {localStorageSet} from "egov-ui-kit/utils/localStorageUtils";
@@ -34,7 +34,7 @@ import set from "lodash/set";
 import get from "lodash/get";
 import {
   prepareDocumentsUploadData,
-  getSearchResults,
+  //getSearchResults,
   furnishResponsePressNote,
 
   getSearchResultsViewPressnotedata,
@@ -332,7 +332,8 @@ const screenConfig = {
   name: "generatepressNote",
   beforeInitScreen: (action, state, dispatch) => {
     dispatch(prepareFinalObject("pressnote", {}));
-    dispatch(prepareFinalObject("documentsUploadRedux[0]", {}));
+    dispatch(prepareFinalObject("PressNoteDocuments", []));
+
     const applicationNumber = getQueryArg(
       window.location.href,
       "applicationNumber"
@@ -440,7 +441,8 @@ const screenConfig = {
         formwizardFirstStep,
         formwizardSecondStep,
        formwizardThirdStep,
-        pressapplyfooter
+        pressapplyfooter,
+        takeactionfooter
       }
     }
   }

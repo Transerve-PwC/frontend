@@ -3,14 +3,16 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getapplicationNumber, getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
-import { EditServiceRequest } from "../../../../../ui-utils/commons";
+import { EditServiceRequest, furnishServiceRequestDetailResponseForEdit } from "../../../../../ui-utils/commons";
 import { getCommonApplyFooter } from "../../utils";
 import "./index.css";
 import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-framework/ui-redux/screen-configuration/actions";  
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   
-  let role_name = JSON.parse(getUserInfo()).roles[0].code
-
-  
+export const getRedirectionURL = () => {
+  const redirectionURL = `/egov-hc/search-preview?applicationNumber=${getapplicationNumber()}&tenantId=${getTenantId()}`;
+  return redirectionURL;
+  };
 
   const callBackForNext = async (state, dispatch) => {
    
@@ -76,14 +78,23 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
     let ownerName = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.ownerName");
     let contactNumber = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.contactNumber");
     let email = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.email");
-    let locality = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.mohalla.label");
+    let locality = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.mohalla");
+    let serviceType = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST.serviceType");
    
     let validationErrorMsg = ""
     let flagValidField = true;
 
-   
+    if (locality == undefined){
+      
+    }
+    
 
-    if(! /^[0-9][0-9]{0,1}$/.test(treeCount))
+    if(! /^(0?[1-9]|[1-9][0-9])$/.test(treeCount))
+    {
+      validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
+      flagValidField = false;
+    }
+    else if(parseInt(treeCount)===0)
     {
       validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
       flagValidField = false;
@@ -98,7 +109,7 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
       validationErrorMsg = { labelName: "ERROR", labelKey: "HC_FIELD_HOUSE_NO_ERROR" };
       flagValidField = false;
     }
-    else if(! /^[a-zA-Z0-9#$%&@/.,''"":;\s,'-]{1,256}$/.test(landmark))
+    else if(! /^[a-zA-Z0-9#$%&@/.,''"":;\s,'-]{0,256}$/.test(landmark) )
     {
       validationErrorMsg = { labelName: "ERROR", labelKey: "HC_FIELD_LANDMARK_ERROR" };
       flagValidField = false;
@@ -130,22 +141,18 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
        );
       
     }
+    var workflowProcessInstanceArray = []
+      workflowProcessInstanceArray = get(state,"screenConfiguration.preparedFinalObject.workflow.ProcessInstances")
+      var processInstanceCurrentState = workflowProcessInstanceArray[workflowProcessInstanceArray.length - 1].state.state
 
-  
-  
       if (isFormValid && flagValidField) {
-        // let responseStatus = "success";
-        if(locality && typeOfService)
-        {
-          let locality = get(state, "screenConfiguration.screenConfig.apply.components.div.children.formwizardFirstStep.children.servicerequestdetailsEdit.children.cardContent.children.servicerequestdetailsContainer.children.locality.props.value.label");
-          let typeOfService = get(state, "screenConfiguration.screenConfig.apply.components.div.children.formwizardFirstStep.children.servicerequestdetailsEdit.children.cardContent.children.servicerequestdetailsContainer.children.typeofrequest.props.value.label");
-        }
-
+      
         if (typeOfService != undefined && locality != undefined )
     {if (activeStep === 1) { 
           let status = 'INITIATED'
           serviceRequest['city']= JSON.parse(getUserInfo()).permanentCity,
           serviceRequest['media'] = media,
+          serviceRequest['currentState'] = processInstanceCurrentState,
           serviceRequest['isEditState'] = 1
           try
           { serviceRequest['mohalla'] = serviceRequest.mohalla["label"]
@@ -182,8 +189,12 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
           // debugger;
           
           let responseStatus = get(response, "status", "");
-          // let serviceRequestId = get(response, "service_request_id", "");
+            
           let serviceRequestId = getapplicationNumber();
+          // get(state, "")
+          var serviceRequestStatePayload = []
+          serviceRequestStatePayload = get(state, "screenConfiguration.preparedFinalObject.SERVICEREQUEST");
+          var RefurbishresponseOnFailedEdit = furnishServiceRequestDetailResponseForEdit(serviceRequestStatePayload);
           if (responseStatus == "successful" || responseStatus == "SUCCESSFUL") {
 
           dispatch(
@@ -197,6 +208,8 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
                 dispatch(setRoute(`/egov-hc/acknowledgementServiceRequestUpdate?serviceRequestId=${serviceRequestId}&isEditState=${1}`));
             
           } else {
+            // dispatch(prepareFinalObject("SERVICEREQUEST", ""));
+            dispatch(prepareFinalObject("SERVICEREQUEST", RefurbishresponseOnFailedEdit));
             dispatch(
               handleField(
                 "apply",
@@ -211,7 +224,9 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
             };
             dispatch(toggleSnackbar(true, errorMessage, "error"));
           }
-        }}else{
+        }
+      }
+        else{
           if(typeOfService ==undefined)
           {dispatch(
             toggleSnackbar(
@@ -229,8 +244,9 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
             )
           );}
         }
-        // responseStatus === "success" && changeStep(state, dispatch);
-      } else if (hasFieldToaster) {
+        
+      } 
+      else if (hasFieldToaster) {
         let errorMessage = {
           labelName: "Please fill all mandatory fields !",
           labelKey: "ERR_DEFAULT_INPUT_FIELD_MSG"
@@ -261,7 +277,35 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
 
   
   export const footerEdit = getCommonApplyFooter({
-    
+
+
+    cancelButton: {
+      componentPath: "Button",
+      props: {
+      variant: "outlined",
+      style: {
+      color: "#FE7A51",
+     
+      border: "#FE7A51 solid 1px",
+      borderRadius: "2px",
+      minWidth: "200px",
+      height: "48px",
+      marginRight: "45px"
+      }
+      },
+      children: {
+      nextButtonLabel: getLabel({
+      labelName: "Cancel",
+      labelKey: "HC_EDIT_CANCEL_BUTTON_LABEL"
+      }),
+     
+      },
+      onClickDefination: {
+      action: "page_change",
+      path: `${getRedirectionURL()}`
+      },
+      visible:true
+      },
     nextButton: {
       componentPath: "Button",
       props: {
@@ -298,7 +342,6 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
   
   
   export const validatestepform = (state, dispatch, isFormValid, hasFieldToaster) => {
-
     if(window.NodeList && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = Array.prototype.forEach;
       }
@@ -333,7 +376,7 @@ import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-fra
           )
         );
       }else if(!locality)
-      {
+      {         
         dispatch(
           toggleSnackbar(
             true,

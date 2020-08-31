@@ -2,7 +2,11 @@ import {
   getCommonCard,
   getCommonContainer,
   getCommonHeader,
-  getLabelWithValue
+  getLabelWithValue,
+  getBreak,
+  getCommonParagraph ,
+  getLabel,
+   
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
@@ -21,6 +25,13 @@ import { generateBill } from "../utils/index";
 import { getTenantId ,geteventuuid} from "../../../../../../../packages/lib/egov-ui-kit/utils/localStorageUtils/index";
 import {getSearchResultsView,getSearchResultsViewLibrary} from "../egov-pr/searchResource/citizenSearchFunctions";
 import "./publishtender.css"
+import { httpRequest, baserequestURL } from "../../../../ui-utils";
+import { checkLibraryVisibility } from "../../../../ui-utils/commons";
+import commonConfig from '../../../../config/common';
+import {
+  getUserInfo
+ } from "egov-ui-kit/utils/localStorageUtils";
+
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Library Details",
@@ -37,6 +48,141 @@ const header = getCommonContainer({
   },
 });
 
+
+export const handleEvent =( state, dispatch) => {
+  let fileid=get(
+    state.screenConfiguration.preparedFinalObject,
+    "fileid"
+  )
+  
+   let tenantId = getTenantId();
+   let invitedGuestlist = [];
+   var data_result="";
+   let eventId = getQueryArg(window.location.href, "eventuuId"); 
+   let mdmsBody = {
+         "tenantId": tenantId,
+         "moduleCode":localStorageGet("modulecode"),   
+         "eventDetailUuid": eventId,
+         "documentList":[
+                   {
+                    "documentType":"",
+                    "documentId":[
+                   {
+                    "fileStoreId":fileid
+                   }
+                    ]
+                   }
+                 ]
+   };
+   
+    console.log(mdmsBody)
+   try {
+   let payload = null;
+   let delete_api = baserequestURL+"/prscp-services/v1/library/_delete";
+   payload =  httpRequest("post", delete_api, "_delete", [], { RequestBody: mdmsBody }).then(response => {
+  
+   console.log(response)
+   if(response.ResponseInfo.status === "Success")
+   {
+     window.location.reload();
+   }
+   else
+   {
+     alert("Internal Error, Try Again!")
+   }
+ 
+     }).catch(error => {
+     alert("Invalid Request")
+     });
+   } catch (e) {
+   console.log(e);
+   }
+		
+ };
+
+
+export const ConfirmMsg = getCommonContainer({
+   
+  msgContainer: getCommonContainer({
+    subText: getCommonParagraph({
+      labelName: "Are you sure you want to remove this media?",
+      
+      labelKey: "PR_LIBRARY_CONFIRM_MSG"
+    }
+    ,
+      
+      {
+        style: {
+          wordBreak:"break-all"
+        }
+      }
+    
+    ),
+  }),
+    break: getBreak(),
+    btnContainer: getCommonContainer({
+
+    cancel: {
+      componentPath: "Button",
+      props: {
+        variant: "outlined",
+      //  color: "primary",
+        style: {
+          color: "rgb(254, 122, 81)",
+            border: "1px solid rgb(254, 122, 81)",
+            borderRadius: "2px",
+            height: "38px",
+            marginRight: "16px",
+            marginTop: "40px",
+            minWidth:"80px",
+
+        }
+      },
+      children: {
+        nextButtonLabel: getLabel({
+          labelName: "Cancel",
+          labelKey: "PR_BUTTON_CANCEL"
+        }),
+       
+      },
+      onClickDefination: {
+
+
+        action: "condition",
+        callBack: (action, state, dispatch) => { window.location.reload(); }
+      }
+    },
+    submit: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+       color: "primary",
+        style: {
+
+          borderRadius: "2px",
+          height: "38px",
+          marginRight: "16px",
+          marginTop: "40px",
+          minWidth:"80px",
+        }
+      },
+      children: {
+        nextButtonLabel: getLabel({
+          labelName: "OK",
+          labelKey: "PR_OK_BUTTON"
+        }),
+        
+      },
+      onClickDefination: {
+
+
+        action: "condition",
+        callBack:handleEvent
+      }
+    }
+
+  })
+});
 const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
   let reduxDocuments = get(
@@ -65,13 +211,57 @@ const prepareDocumentsView = async (state, dispatch) => {
         dispatch(prepareFinalObject("documentsPreview", documentsPreview));
     
 }
+const getMdmsData = async (action, state, dispatch) => {
 
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+        {
+          moduleName: "RAINMAKER-PR",
+          masterDetails: [ { name: "LibraryRoleCheck" }
+          
+        ]
+        },
+       
+
+     
+      ]
+    }
+  };
+  try {
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+  
+      
+    dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const screenConfig = {
   uiFramework: "material-ui",
   name: "library-summary",
   beforeInitScreen: (action, state, dispatch) => {
-  
+    
+    getMdmsData(action, state, dispatch).then(response => {
+      let mdmsresponse=  get(
+        state,
+        "screenConfiguration.preparedFinalObject.applyScreenMdmsData",
+        {}
+      );
+      checkLibraryVisibility(action, state, dispatch,mdmsresponse,JSON.parse(getUserInfo()).roles)
+    })
+
+
+
     let payload={
       "requestBody":{
               "tenantId":getTenantId(),
@@ -168,7 +358,20 @@ set(
         }),
         librarysummaryFooter: librarysummaryFooter
       }
-    }
+    },
+    adhocDialog: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-pr",
+      componentPath: "DialogContainer",
+      props: {
+        open: false,
+        maxWidth: "xs",
+        screenKey: "library-summary"
+      },
+      children: {
+        popup: ConfirmMsg
+      }
+    },
   }
 };
 

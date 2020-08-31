@@ -6,9 +6,12 @@ import {
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { searchResultsAdvertisement } from "./searchResource/searchResults";
 import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
+import { SearchFormForEmployee } from "./searchResource/EmployeeSearchForm";
+import "./searchGrid.css";
 import {
   getOPMSTenantId,
-  localStorageGet
+  localStorageGet,
+  setapplicationType
 } from "egov-ui-kit/utils/localStorageUtils";
 import find from "lodash/find";
 import set from "lodash/set";
@@ -18,7 +21,7 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getRequiredDocuments } from "./requiredDocuments/reqDocs";
-import { getGridDataAdvertisement } from "./searchResource/citizenSearchFunctions";
+import { getGridDataAdvertisement, getTextAdvertisement } from "./searchResource/citizenSearchFunctions";
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
@@ -34,7 +37,8 @@ const NOCSearchAndResult = {
   uiFramework: "material-ui",
   name: "advertisement-search",
   beforeInitScreen: (action, state, dispatch) => {
-    getGridDataAdvertisement(action, state, dispatch);
+    setapplicationType("ADVERTISEMENTNOC")
+    //getGridDataAdvertisement(action, state, dispatch);
 
 
     const tenantId = getOPMSTenantId();
@@ -51,13 +55,20 @@ const NOCSearchAndResult = {
     if (states && states.length > 0) {
       const status = states.map((item, index) => {
         return {
-          code: item.state
-        };
+          code: item.state,
+          name: getTextAdvertisement(item.state, "0")
+        }
       });
+      let arr = status.slice(1)
+      arr = arr.filter(item => item.code != "WITHDRAWREJECTED")
+      arr = arr.filter(item => item.code != "WITHDRAWAPPROVAL")
+      arr.push({ code: "APPROVEFORWITHDRAW", name: getTextAdvertisement("APPROVEFORWITHDRAW", "0") })
+      arr.push({ code: "REJECTEFORWITHDRAW", name: getTextAdvertisement("REJECTEFORWITHDRAW", "0") })
+
       dispatch(
         prepareFinalObject(
           "applyScreenMdmsData.searchScreen.status",
-          status.filter(item => item.code != null)
+          arr.filter(item => item.code != null)
         )
       );
     }
@@ -78,6 +89,7 @@ const NOCSearchAndResult = {
 
         },
 
+        SearchFormForEmployee,
         breakAfterSearch: getBreak(),
         searchResultsAdvertisement
       }

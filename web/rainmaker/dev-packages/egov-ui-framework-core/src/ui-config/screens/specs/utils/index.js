@@ -609,7 +609,7 @@ export const getPattern = type => {
     case "TINNo":
       return /^\d{2}[A-Za-z0-9-!@#$%&*.?=]{9}$/i;
     case "DecimalAmount":
-      return /^\d{0,6}(\.\d{1,2})?$/i
+      return /^\d{0,6}$/i
     case "ECViolatorAddress":
       return /^[a-zA-Z.0-9 @#%&-:]{1,512}$/i;
     case "SeizedQuantity":
@@ -625,7 +625,7 @@ export const getPattern = type => {
 
       //validation patterns for HC....don't use
     case "NoOfTree":
-      return /^[0-9][0-9]{0,1}$/i;
+      return /^(0?[1-9]|[1-9][0-9])$/i;
     case "serviceRequestDescription":
       return  /^[a-zA-Z0-9#$%&?@/!\\n~^*()_+`=|{}<>.[\\\],''"":;\s,'-]{1,256}$/;
     case "location":
@@ -638,10 +638,65 @@ export const getPattern = type => {
       return /^[a-zA-Z\s\\/\-]{1,256}$/i;
     case "HCMobileNoSearch":
         return /^[0-9]{0,10}$/i;
+     case "aadhar":
+      return  /^[0-9]{12}$/i;
+     case "aadharAcknowledgementNo":
+      return  /^[0-9]{14}$/i;  
   }
 };
 
 export const checkValueForNA = value => {
   return value && value !== "null" ? value : "NA";
 };
+export const getCommonLabelWithValue = (paragraph, value, props = {}) => {
+  return getCommonLabelValue(paragraph, value, { variant: "caption", ...props });
+}
 
+export const getCommonLabelValue = (header, value, props) => {
+  return {
+    componentPath: "Typography",
+    props: {
+      variant: "headline",
+      ...props
+    },
+    children: {
+      // [header]: getLabel(header)
+      key: getLabelForModify(header, value),
+    }
+  };
+};
+
+export const getLabelForModify = (label, jsonPath, props = {}) => {
+  return {
+    uiFramework: "custom-containers",
+    componentPath: "ModifyLabelConatiner",
+    props: {
+      ...label,
+      ...jsonPath,
+      ...props
+    }
+  };
+};
+
+export const getLabelWithValueForModifiedLabel = (label, value, label2, value2, props = {}) => {
+  return {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    gridDefination: {
+      xs: 6,
+      sm: 3
+    },
+    props: {
+      style: {
+        marginBottom: "16px",
+        wordBreak: "break-word"
+      },
+      ...props
+    },
+    children: {
+      label1: getCommonCaption(label),
+      value1: getCommonValue(value),
+      label2: getCommonLabelWithValue(label2, value2)
+    }
+  };
+};

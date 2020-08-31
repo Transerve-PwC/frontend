@@ -156,7 +156,7 @@ export const searchApiCallForEmployeeFilter = async (state, dispatch) =>{
         "service_request_id":servicerequestid,
         "serviceType":servicetype,
         "serviceRequestStatus":servicestatus,
-        "streetName":mohalla,
+        "houseNoAndStreetName":mohalla,
         "ownerContactNumber":contactNumber}
     
     // debugger

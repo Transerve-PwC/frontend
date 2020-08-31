@@ -108,8 +108,10 @@ export const applicantSummary = getCommonGrayCard({
                 "nocApplicationDetail[0].housenumber", 
                 callBack: value => {
                   if(value!=undefined){
-                  let housenumber = value.length === 1 ? Number.isInteger(JSON.parse(value)) ? 
-                  Number(value) : value : value;
+                  // let housenumber = value.length === 1 ? Number.isInteger(JSON.parse(value)) ? 
+                  // Number(value) : value : value;
+                  let housenumber = value.length === 1 ? JSON.parse(value) ? 
+                  value: value : value;
                   return housenumber;
                   }else{
                     return '';

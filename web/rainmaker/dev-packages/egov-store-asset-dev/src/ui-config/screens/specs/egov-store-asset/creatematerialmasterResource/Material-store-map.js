@@ -7,8 +7,9 @@ import {
     getPattern,
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import get from "lodash/get";
-  import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import get from "lodash/get"; 
+  import set from "lodash/set"; 
+  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   
   const arrayCrawler = (arr, n) => {
     if (n == 1) {
@@ -28,7 +29,8 @@ import {
       scheama: getCommonGrayCard({
         storeDetailsCardContainer: getCommonContainer(
           {
-            store: getSelectField({
+            store: {
+              ...getSelectField({
               label: { labelName: "Store Name", labelKey: "STORE_DETAILS_STORE_NAME" },
               placeholder: {
                 labelName: "Select Store Name",
@@ -45,20 +47,18 @@ import {
                 optionValue: "code",
                 optionLabel: "name",
               },
-               // sourceJsonPath: "store.stores",
-              //  props: {
-              //   data: [
-              //     {
-              //       value: "storecode123",
-              //       label: "storecode123"
-              //     },
-                  
-              //   ],
-              //   optionValue: "value",
-              //   optionLabel: "label"
-              // },
+               
               
             }),
+            beforeFieldChange: (action, state, dispatch) => {
+              let store = get(state, "screenConfiguration.preparedFinalObject.store.stores",[]) 
+              store = store.filter(x=>x.code == action.value)//.materialType.code
+              if(store[0].department)
+              dispatch(prepareFinalObject("materials[0].storeMapping[0].department.name",store[0].department.name));
+              else
+              dispatch(prepareFinalObject("materials[0].storeMapping[0].department.name",""));
+            }
+          },
             DepartmentName: {
               ...getTextField({
                 label: {
@@ -70,6 +70,9 @@ import {
                   labelKey: "STORE_DETAILS_DEPARTMENT_NAME"
                 },
                 required: false,
+                props: {
+                  disabled:true,
+                },
                 pattern: getPattern("Name") || null,
                 jsonPath: "materials[0].storeMapping[0].department.name"
               })
@@ -81,6 +84,7 @@ import {
                 labelKey: "STORE_MATERIAL_ACCOUNT_CODE_SELECT",
               },
               required: false,
+              visible:false,
               jsonPath: "materials[0].storeMapping[0].chartofAccount.glCode",
               gridDefination: {
                 xs: 12,
@@ -88,6 +92,7 @@ import {
               },
              // sourceJsonPath: "store.stores",
               props: {
+                disabled:true,
                 data: [
                   {
                     value: "46130",
@@ -112,7 +117,7 @@ import {
               required: false,
         
               props: {
-                content: "MATERIAL_TYPE_ACTIVE",
+                content: "STORE_MATERIAL_TYPE_ACTIVE",
                 jsonPath: "materials[0].storeMapping[0].active",
                 screenName: "search-material-master",
                 checkBoxPath:
@@ -127,6 +132,20 @@ import {
           }
         )
       }),
+            // set active true
+            onMultiItemAdd: (state, muliItemContent) => {          
+              let preparedFinalObject = get(
+                state,
+                "screenConfiguration.preparedFinalObject",
+                {}
+              );
+              let cardIndex = get(muliItemContent, "store.index");
+            if(preparedFinalObject){
+              set(preparedFinalObject.materials[0],`storeMapping[${cardIndex}].active` , true);
+            } 
+              //console.log("click on add");
+            return muliItemContent;
+          },
       items: [],
       addItemLabel: {
         labelName: "ADD STORE",
@@ -135,7 +154,7 @@ import {
       headerName: "Store",
       headerJsonPath:
         "children.cardContent.children.header.children.head.children.Accessories.props.label",
-      sourceJsonPath: "materials[0].jurisdictions",
+      sourceJsonPath: "materials[0].storeMapping",
       prefixSourceJsonPath:
         "children.cardContent.children.storeDetailsCardContainer.children"
     },

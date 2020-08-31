@@ -79,12 +79,33 @@ class MultiSelect extends Component {
 		//	alert("Get employees in module")
 		
 		
-	  });
+    });
+    
 		
-	  
-	  // this.setState({
-			// selectedValues : JSON.parse(localStorageGet("selectedDepartmentsInvite"))
-	  // });
+    if(localStorageGet("selectedDepartmentsInvite") !== null)
+    {
+        let selected = [];
+        
+      let temp = localStorageGet("selectedDepartmentsInvite") !== null ? JSON.parse(localStorageGet("selectedDepartmentsInvite")) : [];
+      selected.push(temp)
+      // temp.map(item => {
+      //   let key = item.cat
+      //   response.map(function(dept, index) {
+      //     let tempsel= { key: dept.name, cat: dept.code, active: dept.active }
+      //     if(key == dept.code)
+      //     {
+      //       selected.push(tempsel)
+            
+      //     }
+      //   });
+      // });
+      
+      
+      this.setState({
+        selectedValues : temp
+      });
+      
+    }
   }
   
   
@@ -151,7 +172,8 @@ class MultiSelect extends Component {
 	console.log(response);
 	if(localStorageGet("selectedDepartmentsInvite") !== null)
 	{
-	    let selected = [];
+      let selected = [];
+      
 		let temp = localStorageGet("selectedDepartmentsInvite") !== null ? JSON.parse(localStorageGet("selectedDepartmentsInvite")) : [];
 		
 		temp.map(item => {
@@ -206,6 +228,7 @@ class MultiSelect extends Component {
 			  style={this.style}
               selectedValues={this.state.selectedValues}
               avoidHighlightFirstOption
+              
             />
             
           {/* </div> */}

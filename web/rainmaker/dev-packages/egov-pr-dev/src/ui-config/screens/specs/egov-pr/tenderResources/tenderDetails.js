@@ -25,6 +25,7 @@ import {
   lSRemoveItemlocal,
   lSRemoveItem
 } from "egov-ui-kit/utils/localStorageUtils";
+import { documentsSummary } from "../summaryResource/tenderDocumentsSummary";
 
   import "./index.css";
 
@@ -32,6 +33,7 @@ import {
   import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   
   
+  import { MultipleDocumentDetails} from "./emaildocumentDetails";
   
   
 
@@ -54,9 +56,9 @@ import {
                 labelName: "Size Of Publication",
                 labelKey: "PR_TENDER_SIZE_OF_PUBLICATION_PLACEHOLDER"
               },
-              pattern: getPattern("sizeofpublication"),
+              pattern: getPattern("fileNumber"),
               errorMessage: "PR_TENDER_SIZE_OF_PUBLICATION_INVALID",
-              required: true,
+              required: false,
               jsonPath: "tender.publicationsize"
             })
           } 
@@ -114,8 +116,10 @@ export const EmailSmsContent = getCommonCard({
           props: { label : "email"}
   },
   break: getBreak(),
-  
+  documentsSummary,
     break: getBreak(),
+    MultipleDocumentDetails,
+    
    break: getBreak(),
    headersms: getCommonParagraph(
     {
@@ -146,7 +150,7 @@ export const EmailSmsContent = getCommonCard({
       },
      
       pattern:getPattern("subjectvalidation"),
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      errorMessage: "PR_SMS_INVALID",
       required: true,
       jsonPath: "tender.SMSContent",
       props:{
@@ -280,7 +284,7 @@ const onPressselect = async (type, rowData, allrowdata, index) => {
             }
               if(checked===false){
                 let temp = rowData
-                temp.push(index.rowIndex)
+                temp.push(index.dataIndex)
                 
 				selectedrows.push(temp)
         localStorageSet("ResendInvitelist", JSON.stringify(selectedrows));
@@ -313,7 +317,7 @@ const onPressselect = async (type, rowData, allrowdata, index) => {
 			{
         let temp = JSON.parse(localStorageGet("ResendInvitelist"));
         let temp2 = rowData
-        temp2.push(index.rowIndex)
+        temp2.push(index.dataIndex)
         				console.log("temppppppppppppp")
         console.log(temp)
         let checked=false;
@@ -444,7 +448,7 @@ selectedrows = (temp)
           })
           if(checked===false){
 let temp=rowData
-            temp.push(index.rowIndex)
+            temp.push(index.dataIndex)
 				selectedrows.push(rowData)
 
         localStorageSet("ResendInvitelist", JSON.stringify(selectedrows));
@@ -476,7 +480,7 @@ let temp=rowData
 			else
 			{
         let temp = JSON.parse(localStorageGet("ResendInvitelist"));
-        temp.push(index.rowIndex)
+        temp.push(index.dataIndex)
 				console.log("temppppppppppppp")
         console.log(temp)
         let checked=false;

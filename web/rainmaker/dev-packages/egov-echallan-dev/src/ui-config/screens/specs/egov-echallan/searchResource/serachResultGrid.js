@@ -103,7 +103,7 @@ export const serachResultGrid = {
       viewColumns: true,
       print: true,
       download: true,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       disableToolbarSelect: true,
       resizableColumns: false,
@@ -159,14 +159,14 @@ const onRowClick = rowData => {
 
   switch (rowData[5]) {
     case "INITIATED":
-      window.location.href = `apply?challanNumber=${rowData[0]}&tenantId=${
+      window.location.href = `apply?applicationNumber=${rowData[0]}&tenantId=${
         rowData[5]
         }`;
       break;
     default:
-      window.location.href = `search-preview?challanNumber=${
+      window.location.href = `search-preview?applicationNumber=${
         rowData[0]
-        }&tenantId=${rowData[8]}&Key=${rowData[9]}`;
+        }&tenantId=${rowData[8]}`; //&Key=${rowData[9]}`;
       break;
   }
 };

@@ -16,7 +16,7 @@ import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import { documentsSummary,documentsEventSummary } from "./summaryResource/documentsSummary";
-import { footer } from "./summaryResource/footer";
+//import { footer } from "./summaryResource/footer";
 import { propertySummary } from "./summaryResource/propertySummary";
 import { getCommonApplyFooter, validateFields, getTextToLocalMapping } from "../utils";
 import { getTenantId ,geteventuuid} from "../../../../../../../packages/lib/egov-ui-kit/utils/localStorageUtils/index";
@@ -29,6 +29,21 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+const toggleactionmenu = (state, dispatch) => {
+	
+  var x = document.getElementById("custom-atoms-footer");
+ 	 // if (x.style.display === "none") {
+   if(window.getComputedStyle(x).display === "none") {   
+    x.style.display = "block";
+    x.classList.add("addpadding");
+	  } else {
+    x.style.display = "none";
+    x.classList.remove("addpadding");
+	  }
+}
+
+
+
 
 const header = getCommonContainer({
   header: getCommonHeader({
@@ -70,8 +85,138 @@ const setcreateinviteroute = (state, dispatch,payload) => {
   
  }
  
-
- 
+ export const footer =  getCommonApplyFooter({
+		
+  
+  ResendButton: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "16px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        }
+      },
+      gridDefination:{
+        xs: 12,
+        sm: 12,
+        md: 12
+      },
+      children: {
+        submitButtonLabel: getLabel({
+        labelName: "Invite",
+        labelKey: "PR_RESEND_BUTTON"
+        }),
+       
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: resendinvitationevent
+      },
+      
+  },
+  inviteButton: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "16px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        }
+      },
+      gridDefination:{
+        xs: 12,
+        sm: 12,
+        md: 12
+      },
+      children: {
+        submitButtonLabel: getLabel({
+        labelName: "Invite",
+        labelKey: "PR_INVITE_BUTTON"
+        }),
+       
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: setcreateinviteroute
+      }
+  },
+  cancelButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+      minWidth: "200px",
+      height: "48px",
+      marginRight: "16px",
+      background:"#fff",
+      border: "1px solid #ddd" ,
+      color: "#000"
+      }
+    },
+    gridDefination:{
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
+    children: {
+      submitButtonLabel: getLabel({
+      labelName: "Cancel",
+      labelKey: "PR_CANCEL_BUTTON"
+      }),
+     
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: setcancelinviteroute
+    }
+},
+})
+export const takeactionfooter = getCommonApplyFooter({
+  actionbutton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px" 
+      }
+    },
+    children: {
+       
+      pressguestbuttonLabel: getLabel({
+        labelName: "Take Action",
+        labelKey: "PR_TAKE_ACTION"
+      }),
+	  nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_up"
+        }
+      },
+    },
+    onClickDefination: {
+      action: "condition",
+       callBack: (state, dispatch) =>{
+           toggleactionmenu(state, dispatch)
+    }
+    },
+    visible: true
+  }
+});
 const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
   let reduxDocuments = get(
@@ -254,81 +399,10 @@ const screenConfig = {
 				labelKey: "PR_INVITED_GUEST_LIST"
 			}),
 			guestlist : ResendInvitedEmployeesResults
-		}),	
-        footer: getCommonApplyFooter({
-		
-		cancelButton: {
-				componentPath: "Button",
-				props: {
-				  variant: "contained",
-				  color: "primary",
-				  style: {
-					minWidth: "200px",
-					height: "48px",
-					marginRight: "40px"
-				  }
-				},
-				children: {
-				  submitButtonLabel: getLabel({
-					labelName: "Cancel",
-					labelKey: "PR_CANCEL_BUTTON"
-				  }),
-				 
-				},
-				onClickDefination: {
-				  action: "condition",
-				  callBack: setcancelinviteroute
-				}
-		},
-		ResendButton: {
-				componentPath: "Button",
-				props: {
-				  variant: "contained",
-				  color: "primary",
-				  style: {
-					minWidth: "200px",
-					height: "48px",
-					marginRight: "40px"
-				  }
-				},
-				children: {
-				  submitButtonLabel: getLabel({
-					labelName: "Invite",
-					labelKey: "PR_RESEND_BUTTON"
-				  }),
-				 
-				},
-				onClickDefination: {
-				  action: "condition",
-				  callBack: resendinvitationevent
-				},
-				
-		},
-		inviteButton: {
-				componentPath: "Button",
-				props: {
-				  variant: "contained",
-				  color: "primary",
-				  style: {
-					minWidth: "200px",
-					height: "48px",
-					marginRight: "40px"
-				  }
-				},
-				children: {
-				  submitButtonLabel: getLabel({
-					labelName: "Invite",
-					labelKey: "PR_INVITE_BUTTON"
-				  }),
-				 
-				},
-				onClickDefination: {
-				  action: "condition",
-				  callBack: setcreateinviteroute
-				}
-		}
-  })
-  
+    }),	
+    footer,
+    
+  takeactionfooter
       }
     }
   }

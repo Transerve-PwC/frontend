@@ -28,6 +28,11 @@ import { getGridData } from "./searchResource/citizenSearchFunctions";
 import commonConfig from '../../../../config/common';
 
 import {EventFilter} from "./gridFilter/Filter";
+
+import {GetSortOrder} from "../../../../ui-utils/commons";
+
+
+
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
@@ -78,8 +83,15 @@ const getMdmsData = async (action, state, dispatch) => {
       mdmsBody
     );
     
+   
+    let obj1={}
+    let obj2={}
+    
 
-
+    obj1['name']="Select Schedule Status"
+    payload.MdmsRes["RAINMAKER-PR"].eventScheduledStatus.unshift(obj1)
+    obj2['name']="Select Event Status"
+    payload.MdmsRes["RAINMAKER-PR"].eventStatus.unshift(obj2)
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {
     console.log(e);

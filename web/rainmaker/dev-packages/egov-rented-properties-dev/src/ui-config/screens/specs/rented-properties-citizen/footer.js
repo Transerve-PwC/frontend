@@ -46,7 +46,7 @@ const callBackForNext = async(state, dispatch) => {
         let response = await getOwnershipSearchResults(queryObject);
         response = response.Owners;
 
-        const draftedApplication = response.filter(item => item.applicationState == "OT_DRAFTED")
+        const draftedApplication = response.filter(item => item.applicationState == "OT_DRAFTED" || item.applicationState === "OT_PENDINGCLARIFICATION")
 
         // citizen should not be able to create a new application with same transit number when there is an application that is already present in drafted state.
         if (draftedApplication.length) {
@@ -125,7 +125,7 @@ const callBackForNext = async(state, dispatch) => {
                       linkText: "Download",
                       name: item.fileName
                   };
-              });
+              }).filter(item => !!item.link && !!item.name);
               dispatch(
                 prepareFinalObject("OwnersTemp[0].reviewDocData", reviewDocData)
             );
@@ -273,7 +273,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
           let response = await getDuplicateCopySearchResults(queryObject);
           response = response.DuplicateCopyApplications;
 
-          const draftedApplication = response.filter(item => item.state == "DC_DRAFTED")
+          const draftedApplication = response.filter(item => item.state === "DC_DRAFTED" || item.state === "DC_PENDINGCLARIFICATION")
 
           // citizen should not be able to create a new application with same transit number when there is an application that is already present in drafted state.
           if (draftedApplication.length) {

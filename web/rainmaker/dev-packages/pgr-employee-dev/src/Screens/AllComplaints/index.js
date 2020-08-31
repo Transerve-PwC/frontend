@@ -12,15 +12,15 @@ import orderby from "lodash/orderBy";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, getPGRSector, setPGRSector } from "egov-ui-kit/utils/localStorageUtils";
 import CountDetails from "./components/CountDetails";
 import "./index.css";
-import { Multiselect } from "multiselect-react-dropdown";
+import { Multiselect } from "multiselect-react-dropdown";
 
 class AllComplaints extends Component {
-  constructor(props) {   
-     super(props);  
-      this.multiselectRef = React.createRef();
+  constructor(props) {
+    super(props);
+    this.multiselectRef = React.createRef();
     this.multiDropdownStyle = {
       chips: {
         background: "#FE7A51"
@@ -32,20 +32,21 @@ class AllComplaints extends Component {
       },
       multiselectContainer: {
         color: "#FE7A51"
-      },    
-	optionListContainer:{
-		"position" : "relative !important",
-		"z-index" : "99999"
-	}
-	};
-    }
-   selectedSector = [];
+      },
+      optionListContainer: {
+        "position": "relative !important",
+        "z-index": "99999"
+      }
+    };
+  }
+  selectedSector = window.localStorage.getItem('PGRSector') ? JSON.parse(getPGRSector()).map(ele => ele.value).join() : [];
   state = {
     complaintNo: "",
     mobileNo: "",
     complaints: [],
     search: false,
-    value: window.localStorage.getItem('tabValue')?parseInt(window.localStorage.getItem('tabValue')):0,
+    value: window.localStorage.getItem('tabValue') ? parseInt(window.localStorage.getItem('tabValue')) : 0,
+    defaultSelectedSector: window.localStorage.getItem('PGRSector') ? JSON.parse(getPGRSector()) : [],
     sortPopOpen: false,
     errorText: ""
   };
@@ -55,7 +56,19 @@ class AllComplaints extends Component {
       width: "30px"
     }
   };
+  functionToCheckQueryParams = (queryParams = []) => {
 
+    return queryParams.filter(params => {
+      if (typeof params.value === "string" && params.value) {
+        return params.value
+      }
+      else if (typeof params.value === "object" && Array.isArray(params.value) && params.value.length > 0) {
+        return params.value.join();
+      }
+
+    })
+
+  }
   componentDidMount = async () => {
     let {
       role,
@@ -66,11 +79,11 @@ class AllComplaints extends Component {
       prepareFinalObject
     } = this.props;
 
-    if(window.localStorage.getItem('tabValue')){
+    if (window.localStorage.getItem('tabValue')) {
       // this.onChange(parseInt(window.localStorage.getItem('tabValue')));
-       window.localStorage.removeItem('tabValue');
-     }
-     
+      window.localStorage.removeItem('tabValue');
+    }
+
     let rawRole =
       userInfo && userInfo.roles && userInfo.roles[0].code.toUpperCase();
     //const numberOfComplaints = role === "employee" ? numEmpComplaint : role === "csr" ? numCSRComplaint : 0;
@@ -86,9 +99,9 @@ class AllComplaints extends Component {
           value:
             role === "csr"
               ? "assigned,open,reassignrequested"
-              :role ==="eo"
-              ? "escalatedlevel1pending,escalatedlevel2pending"
-              : "assigned,reassignrequested"
+              : role === "eo"
+                ? "escalatedlevel1pending,escalatedlevel2pending"
+                : "assigned,reassignrequested"
         }
       ];
       let payloadCount = await httpRequest(
@@ -155,29 +168,37 @@ class AllComplaints extends Component {
           true,
           false
         );
-      } else if(role === "eo"){
+      } else if (role === "eo") {
         fetchComplaints(
-          [
+          this.functionToCheckQueryParams([
             {
               key: "status",
-              value:"escalatedlevel1pending,escalatedlevel2pending"
+              value: "escalatedlevel1pending,escalatedlevel2pending"
+            },
+            {
+              key: "mohalla",
+              value: this.selectedSector
             }
-          ],
+          ]),
           true,
           true
         );
       }
       else {
         fetchComplaints(
-          [
+          this.functionToCheckQueryParams([
             {
               key: "status",
               value:
                 rawRole === "EMPLOYEE"
                   ? "assigned,reassignrequested"
                   : "assigned,open,reassignrequested"
+            },
+            {
+              key: "mohalla",
+              value: this.selectedSector
             }
-          ],
+          ]),
           true,
           true
         );
@@ -186,7 +207,7 @@ class AllComplaints extends Component {
     let inputType = document.getElementsByTagName("input");
     for (let input in inputType) {
       if (inputType[input].type === "number") {
-        inputType[input].addEventListener("mousewheel", function() {
+        inputType[input].addEventListener("mousewheel", function () {
           this.blur();
         });
       }
@@ -205,8 +226,8 @@ class AllComplaints extends Component {
         role === "employee"
           ? 0
           : role === "csr"
-          ? nextProps.numCSRComplaint
-          : 0;
+            ? nextProps.numCSRComplaint
+            : 0;
       renderCustomTitle(numberOfComplaints);
     }
   };
@@ -249,14 +270,14 @@ class AllComplaints extends Component {
 
   onSearch = () => {
     const { complaintNo, mobileNo } = this.state;
-    const { fetchComplaints, toggleSnackbarAndSetText,role } = this.props;
+    const { fetchComplaints, toggleSnackbarAndSetText, role } = this.props;
     let queryObj = [];
 
-    if(role === "eo"){
-      queryObj.push({ key: "status", value: "assigned,escalatedlevel1pending,escalatedlevel2pending" });
+    if (role === "eo") {
+      queryObj.push({ key: "status", value: "assigned,escalatedlevel1pending,escalatedlevel2pending,reassignrequested" });
     }
-    else if (role === "employee"){
-      queryObj.push({ key: "status", value: "open,reassignrequested" });
+    else if (role === "employee") {
+      queryObj.push({ key: "status", value: "open,reassignrequested,assigned" });
     }
     if (complaintNo) {
       queryObj.push({ key: "serviceRequestId", value: complaintNo });
@@ -264,8 +285,8 @@ class AllComplaints extends Component {
     if (mobileNo) {
       queryObj.push({ key: "phone", value: mobileNo });
     }
-    if (this.selectedSector.length > 0) { 
-       queryObj.push({ key: "mohalla", value: this.selectedSector });
+    if (this.selectedSector.length > 0) {
+      queryObj.push({ key: "mohalla", value: this.selectedSector });
     }
     // if (complaintNo || mobileNo) {
     //   fetchComplaints(queryObj, true, true);
@@ -287,9 +308,9 @@ class AllComplaints extends Component {
     } else if (mobileNo) {
       fetchComplaints(queryObj, true, true);
     }
-    else if (this.selectedSector.length > 0) { 
-        fetchComplaints(queryObj, true, true); 
-       }
+    else if (this.selectedSector.length > 0) {
+      fetchComplaints(queryObj, true, true);
+    }
     this.setState({ search: true });
   };
 
@@ -298,15 +319,20 @@ class AllComplaints extends Component {
     fetchComplaints([
       { key: "status", value: "assigned,open,reassignrequested,escalatedlevel1pending,escalatedlevel2pending" }
     ]);
-    this.setState({ mobileNo: "", complaintNo: "", search: false,sector:[] });
-    this.selectedSector = [];    this.multiselectRef.current.resetSelectedValues();
+    this.setState({ mobileNo: "", complaintNo: "", search: false, sector: [] });
+    setPGRSector("[]");
+    this.selectedSector = []; this.multiselectRef.current.resetSelectedValues();
   };
-  onSelect(selectedList, selectedItem) {  
-      this.selectedSector = selectedList.map((sectorDetail) => sectorDetail.value );
-    }
+  onSelect(selectedList, selectedItem) {
+    const sectorStr = JSON.stringify(selectedList);
+    setPGRSector(sectorStr);
+    this.selectedSector = selectedList.map((sectorDetail) => sectorDetail.value);
+  }
 
-    onRemove(selectedList, removedItem) {   
-     this.selectedSector = selectedList.map( (sectorDetail) => sectorDetail.value );  
+  onRemove(selectedList, removedItem) {
+    const sectorStr = JSON.stringify(selectedList);
+    setPGRSector(sectorStr);
+    this.selectedSector = selectedList.map((sectorDetail) => sectorDetail.value);
   }
   onChange = value => {
     this.setState({ value });
@@ -347,55 +373,57 @@ class AllComplaints extends Component {
     };
     return role === "ao" ? (
       <div>
-        <div
-          className="sort-button rainmaker-displayInline"
-          style={{ padding: "20px 20px 0px 0px", justifyContent: "flex-end" }}
-        >
+        <div>
           <div
-            className="rainmaker-displayInline"
-            style={{ cursor: "pointer", marginRight: "20px" }}
-            onClick={onSortClick}
+            className="gro-search rainmaker-displayInline"
+            style={{ padding: "10px 20px 0px 0px", justifyContent: "flex-end" }}
           >
-            <Label
-              label="ES_SORT_BUTTON"
-              color="rgba(0, 0, 0, 0.8700000047683716)"
-              containerStyle={{ marginRight: 5 }}
-              labelStyle={{ fontWeight: 500 }}
-            />
-            <Icon
-              style={style.iconStyle}
-              action="action"
-              name="swap-vert"
-              color="rgba(0, 0, 0, 0.8700000047683716)"
+            <div
+              className="rainmaker-displayInline"
+              style={{ cursor: "pointer", marginRight: "20px" }}
+              onClick={onSortClick}
+            >
+              <Label
+                label="ES_SORT_BUTTON"
+                color="rgba(0, 0, 0, 0.8700000047683716)"
+                containerStyle={{ marginRight: 5 }}
+                labelStyle={{ fontWeight: 500 }}
+              />
+              <Icon
+                style={style.iconStyle}
+                action="action"
+                name="swap-vert"
+                color="rgba(0, 0, 0, 0.8700000047683716)"
+              />
+            </div>
+            <div
+              className="rainmaker-displayInline"
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push("search-complaint")}
+            >
+              <Label
+                label="ES_SEARCH_BUTTON"
+                color="rgba(0, 0, 0, 0.8700000047683716)"
+                containerStyle={{ marginRight: 5 }}
+                labelStyle={{ fontWeight: 500 }}
+              />
+              <Icon
+                style={style.iconStyle}
+                action="action"
+                name="search"
+                color="rgba(0, 0, 0, 0.8700000047683716)"
+              />
+            </div>
+            <SortDialog
+              sortPopOpen={sortPopOpen}
+              closeSortDialog={closeSortDialog}
             />
           </div>
-          <div
-            className="rainmaker-displayInline"
-            style={{ cursor: "pointer" }}
-            onClick={() => history.push("search-complaint")}
-          >
-            <Label
-              label="ES_SEARCH_BUTTON"
-              color="rgba(0, 0, 0, 0.8700000047683716)"
-              containerStyle={{ marginRight: 5 }}
-              labelStyle={{ fontWeight: 500 }}
-            />
-            <Icon
-              style={style.iconStyle}
-              action="action"
-              name="search"
-              color="rgba(0, 0, 0, 0.8700000047683716)"
-            />
-          </div>
-          <SortDialog
-            sortPopOpen={sortPopOpen}
-            closeSortDialog={closeSortDialog}
-          />
         </div>
         <Tabs
           className="employee-complaints-tab"
           onChange={this.onChange}
-          value = {this.state.value}
+          value={this.state.value}
           tabs={[
             {
               label: (
@@ -652,166 +680,166 @@ class AllComplaints extends Component {
         </div>
       </Screen>
     ) : (
-      <Screen loading={loading}>
-        <div className="form-without-button-cont-generic">
-          <Card
-            id="complaint-search-card"
-            className="complaint-search-main-card"
-            textChildren={
-              <div className="complaint-search-cont clearfix">
-                <div className="col-xs-12" style={{ paddingLeft: 8 }}>
-                  <Label
-                    label="CORE_COMMON_SEARCH_COMPLAINT"
-                    fontSize={16}
-                    dark={true}
-                    bold={true}
-                  />
-                </div>
-                <div
-                  className="col-sm-3 col-xs-12"
-                  style={{ paddingLeft: 8, paddingRight: 40 }}
-                >
-                  <TextField
-                    id="mobile-no"
-                    name="mobile-no"
-                    type="number"
-                    value={mobileNo}
-                    hintText={
+          <Screen loading={loading}>
+            <div className="form-without-button-cont-generic">
+              <Card
+                id="complaint-search-card"
+                className="complaint-search-main-card"
+                textChildren={
+                  <div className="complaint-search-cont clearfix">
+                    <div className="col-xs-12" style={{ paddingLeft: 8 }}>
                       <Label
-                        label="CORE_COMMON_MOBILE_NUMBER_PLACEHOLDER"
-                        color="rgba(0, 0, 0, 0.3799999952316284)"
+                        label="CORE_COMMON_SEARCH_COMPLAINT"
                         fontSize={16}
-                        labelStyle={hintTextStyle}
+                        dark={true}
+                        bold={true}
                       />
-                    }
-                    floatingLabelText={
-                      <Label
-                        key={0}
-                        label="ES_CREATECOMPLAINT_MOBILE_NUMBER"
-                        color="rgba(0,0,0,0.60)"
-                        fontSize="12px"
+                    </div>
+                    <div
+                      className="col-sm-3 col-xs-12"
+                      style={{ paddingLeft: 8, paddingRight: 40 }}
+                    >
+                      <TextField
+                        id="mobile-no"
+                        name="mobile-no"
+                        type="number"
+                        value={mobileNo}
+                        hintText={
+                          <Label
+                            label="CORE_COMMON_MOBILE_NUMBER_PLACEHOLDER"
+                            color="rgba(0, 0, 0, 0.3799999952316284)"
+                            fontSize={16}
+                            labelStyle={hintTextStyle}
+                          />
+                        }
+                        floatingLabelText={
+                          <Label
+                            key={0}
+                            label="ES_CREATECOMPLAINT_MOBILE_NUMBER"
+                            color="rgba(0,0,0,0.60)"
+                            fontSize="12px"
+                          />
+                        }
+                        onChange={(e, value) => this.onMobileChange(e)}
+                        underlineStyle={{ bottom: 7 }}
+                        underlineFocusStyle={{ bottom: 7 }}
+                        hintStyle={{ width: "100%" }}
                       />
-                    }
-                    onChange={(e, value) => this.onMobileChange(e)}
-                    underlineStyle={{ bottom: 7 }}
-                    underlineFocusStyle={{ bottom: 7 }}
-                    hintStyle={{ width: "100%" }}
-                  />
-                </div>
-                <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
-                  <TextField
-                    id="complaint-no"
-                    name="complaint-no"
-                    value={complaintNo}
-                    hintText={
-                      <Label
-                        label="ES_MYCOMPLAINTS_COMPLAINT_NO"
-                        color="rgba(0, 0, 0, 0.3799999952316284)"
-                        fontSize={16}
-                        labelStyle={hintTextStyle}
+                    </div>
+                    <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
+                      <TextField
+                        id="complaint-no"
+                        name="complaint-no"
+                        value={complaintNo}
+                        hintText={
+                          <Label
+                            label="ES_MYCOMPLAINTS_COMPLAINT_NO"
+                            color="rgba(0, 0, 0, 0.3799999952316284)"
+                            fontSize={16}
+                            labelStyle={hintTextStyle}
+                          />
+                        }
+                        errorText={<Label label={errorText} color="red" />}
+                        floatingLabelText={
+                          <Label
+                            key={1}
+                            label="CS_COMPLAINT_SUBMITTED_COMPLAINT_NO"
+                            color="rgba(0,0,0,0.60)"
+                            fontSize="12px"
+                          />
+                        }
+                        onChange={(e, value) => this.onComplaintChange(e)}
+                        underlineStyle={{
+                          bottom: 7,
+                          borderBottom: "1px solid #e0e0e0"
+                        }}
+                        underlineFocusStyle={{
+                          bottom: 7,
+                          borderBottom: "1px solid #e0e0e0"
+                        }}
+                        hintStyle={{ width: "100%" }}
                       />
-                    }
-                    errorText={<Label label={errorText} color="red" />}
-                    floatingLabelText={
-                      <Label
-                        key={1}
-                        label="CS_COMPLAINT_SUBMITTED_COMPLAINT_NO"
-                        color="rgba(0,0,0,0.60)"
-                        fontSize="12px"
+                    </div>
+                    <div className="col-sm-6 col-md-6 col-xs-12" style={{ paddingLeft: 8, paddingTop: 8 }}>
+                      <Multiselect
+                        options={sectorDropdown}
+                        closeIcon="close"
+                        displayValue="name"
+                        style={this.multiDropdownStyle}
+                        onSelect={(selectedList, selectedItem) => this.onSelect(selectedList, selectedItem)}
+                        onRemove={(selectedList, selectedItem) => this.onRemove(selectedList, selectedItem)}
+                        ref={this.multiselectRef}
+                        closeIcon={"circle"}
+                        placeholder={"Select Sector"}
+                        selectedValues={this.state.defaultSelectedSector}
+                        avoidHighlightFirstOption
                       />
-                    }
-                    onChange={(e, value) => this.onComplaintChange(e)}
-                    underlineStyle={{
-                      bottom: 7,
-                      borderBottom: "1px solid #e0e0e0"
-                    }}
-                    underlineFocusStyle={{
-                      bottom: 7,
-                      borderBottom: "1px solid #e0e0e0"
-                    }}
-                    hintStyle={{ width: "100%" }}
-                  />
-                   </div>
-                <div className="col-sm-6 col-md-6 col-xs-12" style={{ paddingLeft: 8,paddingTop:8 }}>   
-                  <Multiselect   
-                    options={sectorDropdown}  
-                    closeIcon="close"      
-                    displayValue="name"   
-                    style={this.multiDropdownStyle}
-                    onSelect={(selectedList, selectedItem) => this.onSelect(selectedList, selectedItem)}                   
-                    onRemove={(selectedList, selectedItem) => this.onRemove(selectedList, selectedItem)} 
-                    ref={this.multiselectRef}    
-                    closeIcon={"circle"}     
-                    placeholder={"Select Sector"} 
-                    selectedValues={this.state.sector}       
-                    avoidHighlightFirstOption             
-                   />   
-                  </div>     
-                <div
-                  className="col-sm-12 col-xs-12 csr-action-buttons"
-                  style={{ marginTop: 10, paddingRight: 8,textAlign:"center" }}
-                >
-                  <Button
-                    label={
-                      <Label
-                        buttonLabel={true}
-                        label="ES_MYCOMPLAINTS_SEARCH_BUTTON"
+                    </div>
+                    <div
+                      className="col-sm-12 col-xs-12 csr-action-buttons"
+                      style={{ marginTop: 10, paddingRight: 8, textAlign: "center" }}
+                    >
+                      <Button
+                        label={
+                          <Label
+                            buttonLabel={true}
+                            label="ES_MYCOMPLAINTS_SEARCH_BUTTON"
+                          />
+                        }
+                        style={{ marginRight: 28, width: "36%" }}
+                        backgroundColor="#fe7a51"
+                        labelStyle={{
+                          letterSpacing: 0.7,
+                          padding: 0,
+                          color: "#fff"
+                        }}
+                        buttonStyle={{ border: 0 }}
+                        onClick={() => this.onSearch()}
                       />
-                    }
-                    style={{ marginRight: 28, width: "36%" }}
-                    backgroundColor="#fe7a51"
-                    labelStyle={{
-                      letterSpacing: 0.7,
-                      padding: 0,
-                      color: "#fff"
-                    }}
-                    buttonStyle={{ border: 0 }}
-                    onClick={() => this.onSearch()}
-                  />
-                  <Button
-                    label={
-                      <Label
-                        buttonLabel={true}
-                        color="#fe7a51"
-                        label="ES_MYCOMPLAINTS_CLEAR_SEARCH_BUTTON"
+                      <Button
+                        label={
+                          <Label
+                            buttonLabel={true}
+                            color="#fe7a51"
+                            label="ES_MYCOMPLAINTS_CLEAR_SEARCH_BUTTON"
+                          />
+                        }
+                        labelStyle={{
+                          letterSpacing: 0.7,
+                          padding: 0,
+                          color: "#fe7a51"
+                        }}
+                        buttonStyle={{ border: "1px solid #fe7a51" }}
+                        style={{ width: "36%" }}
+                        onClick={() => this.clearSearch()}
                       />
-                    }
-                    labelStyle={{
-                      letterSpacing: 0.7,
-                      padding: 0,
-                      color: "#fe7a51"
-                    }}
-                    buttonStyle={{ border: "1px solid #fe7a51" }}
-                    style={{ width: "36%" }}
-                    onClick={() => this.clearSearch()}
-                  />
-                </div>
-              </div>
-            }
-          />
-        </div>
-        <div className="form-without-button-cont-generic">
-          <CountDetails
-            count={
-              search
-                ? searchFilterEmployeeComplaints.length
-                : employeeComplaints.length
-            }
-            total={employeeTotalComplaints}
-            status="open"
-          />
-          <Complaints
-            noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
-            onComplaintClick={onComplaintClick}
-            complaints={
-              search ? searchFilterEmployeeComplaints : employeeComplaints
-            }
-            role={role}
-            complaintLocation={true}
-          />
-        </div>
-      </Screen>
-    );
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="form-without-button-cont-generic">
+              <CountDetails
+                count={
+                  search
+                    ? searchFilterEmployeeComplaints.length
+                    : employeeComplaints.length
+                }
+                total={employeeTotalComplaints}
+                status="open"
+              />
+              <Complaints
+                noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
+                onComplaintClick={onComplaintClick}
+                complaints={
+                  search ? searchFilterEmployeeComplaints : employeeComplaints
+                }
+                role={role}
+                complaintLocation={true}
+              />
+            </div>
+          </Screen>
+        );
   }
 }
 
@@ -839,7 +867,7 @@ const displayStatus = (status = "") => {
 
 const mapStateToProps = state => {
   const { complaints, common, screenConfiguration = {} } = state || {};
-  const { categoriesById, byId, order,complaintSector } = complaints;
+  const { categoriesById, byId, order, complaintSector } = complaints;
   const { fetchSuccess } = complaints;
   const { preparedFinalObject = {} } = screenConfiguration;
   const { pgrComplaintCount = {} } = preparedFinalObject;
@@ -857,14 +885,14 @@ const mapStateToProps = state => {
   const { userInfo } = state.auth;
   const role =
     roleFromUserInfo(userInfo.roles, "GRO") ||
-    roleFromUserInfo(userInfo.roles, "DGRO")
+      roleFromUserInfo(userInfo.roles, "DGRO")
       ? "ao"
-      :roleFromUserInfo(userInfo.roles, "ESCALATION_OFFICER1") ||
-      roleFromUserInfo(userInfo.roles, "ESCALATION_OFFICER2")
-      ? "eo"
-      : roleFromUserInfo(userInfo.roles, "CSR")
-      ? "csr"
-      : "employee";
+      : roleFromUserInfo(userInfo.roles, "ESCALATION_OFFICER1") ||
+        roleFromUserInfo(userInfo.roles, "ESCALATION_OFFICER2")
+        ? "eo"
+        : roleFromUserInfo(userInfo.roles, "CSR")
+          ? "csr"
+          : "employee";
   let transformedComplaints = transformComplaintForComponent(
     complaints,
     role,
@@ -878,37 +906,37 @@ const mapStateToProps = state => {
     employeeComplaints = [],
     csrComplaints = [];
 
-    let filteredEmployeeComplaints;
-    if(role === "eo"){
-      filteredEmployeeComplaints = transformedComplaints.filter(
-        complaint =>
-          complaint.rawStatus === "escalatedlevel1pending" ||
-          complaint.rawStatus === "escalatedlevel2pending" ||
-          complaint.rawStatus === "assigned" ||
-          complaint.rawStatus === "reassignrequested"
-      );  
-    }else{
-      filteredEmployeeComplaints = transformedComplaints.filter(
-       complaint =>
-       
-         complaint.complaintStatus === "ASSIGNED" ||
-         complaint.rawStatus === "reassignrequested"
-     );
-   }
-
-
-  let searchFilterEmployeeComplaints;
-  if(role === "eo"){
-     searchFilterEmployeeComplaints = transformedComplaints.filter(
+  let filteredEmployeeComplaints;
+  if (role === "eo") {
+    filteredEmployeeComplaints = transformedComplaints.filter(
       complaint =>
         complaint.rawStatus === "escalatedlevel1pending" ||
         complaint.rawStatus === "escalatedlevel2pending" ||
         complaint.rawStatus === "assigned" ||
         complaint.rawStatus === "reassignrequested"
-    );  
+    );
+  } else {
+    filteredEmployeeComplaints = transformedComplaints.filter(
+      complaint =>
+
+        complaint.complaintStatus === "ASSIGNED" ||
+        complaint.rawStatus === "reassignrequested"
+    );
   }
-  else{
-     searchFilterEmployeeComplaints = transformedComplaints.filter(
+
+
+  let searchFilterEmployeeComplaints;
+  if (role === "eo") {
+    searchFilterEmployeeComplaints = transformedComplaints.filter(
+      complaint =>
+        complaint.rawStatus === "escalatedlevel1pending" ||
+        complaint.rawStatus === "escalatedlevel2pending" ||
+        complaint.rawStatus === "assigned" ||
+        complaint.rawStatus === "reassignrequested"
+    );
+  }
+  else {
+    searchFilterEmployeeComplaints = transformedComplaints.filter(
       complaint =>
         complaint.complaintStatus === "ASSIGNED" ||
         complaint.rawStatus === "reassignrequested" ||
@@ -916,7 +944,7 @@ const mapStateToProps = state => {
         complaint.complaintStatus === "CLOSED"
     );
   }
-  
+
 
   let filteredAssignedComplaints = transformedComplaints.filter(
     complaint => complaint.complaintStatus === "ASSIGNED" || complaint.complaintStatus === "ESCALATED"
@@ -1004,14 +1032,14 @@ const mapStateToProps = state => {
   );
   const numEmpComplaint = employeeComplaints.length;
   const numCSRComplaint = transformedComplaints.length;
-  let  sectorDropdown ="";
-if(complaintSector){
-  sectorDropdown =  Object.values(complaintSector).map(sector => {
-                                    let value = sector.code;
-                                    let name = sector.name;
-                                    return { value:value , name:name}
-                            });
-                   }
+  let sectorDropdown = "";
+  if (complaintSector) {
+    sectorDropdown = Object.values(complaintSector).map(sector => {
+      let value = sector.code;
+      let name = sector.name;
+      return { value: value, name: name }
+    });
+  }
   return {
     assignedComplaints,
     unassignedComplaints,

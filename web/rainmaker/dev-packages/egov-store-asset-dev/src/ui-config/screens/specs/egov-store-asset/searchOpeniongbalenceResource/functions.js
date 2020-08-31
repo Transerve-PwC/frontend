@@ -5,6 +5,7 @@ import {
   toggleSnackbar,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getOpeningBalanceSearchResults } from "../../../../../ui-utils/storecommonsapi";
+import { ReceiptType } from "../../../../../ui-utils/sampleResponses";
 import { getTextToLocalMapping } from "./searchResults";
 import { validateFields } from "../../utils";
 import { getTenantId,getOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -44,7 +45,13 @@ export const searchApiCall = async (state, dispatch) => {
       key: "tenantId",
       value: tenantId,
     },
+// add default receiptType(remove from UI if exist) hard code in search query string
+    {
+      key: "receiptType",
+      value: ReceiptType().StoreReceiptType.OPENINGBALANCE_RECEIPT_TYPE
+    }
   ];
+  
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
     "searchScreen",
@@ -110,11 +117,11 @@ export const searchApiCall = async (state, dispatch) => {
        
 
         return {
-          [getTextToLocalMapping("Material Name")]: get(item, "name", "-") || "-",
-          [getTextToLocalMapping("Material Type Name")]: get(item, "materialType.name", "-") || "-", 
-          [getTextToLocalMapping("Store Name")]: get(item, "StoreName", "-") || "-", 
-          [getTextToLocalMapping("Active")]: get(item, "status", "-") || "-",  
-          code: item.code,       
+          [getTextToLocalMapping("MRN Number")]: get(item, "mrnNumber", "-") || "-",
+          [getTextToLocalMapping("Store Name")]: get(item, "receivingStore.code", "-") || "-", 
+          [getTextToLocalMapping("Financial Year")]: get(item, "financialYear", "-") || "-", 
+         // [getTextToLocalMapping("Active")]: get(item, "status", "-") || "-",  
+          id: item.id,       
          
         };
       });
@@ -132,7 +139,7 @@ export const searchApiCall = async (state, dispatch) => {
           "search-opening-balence",
           "components.div.children.searchResults",
           "props.title",
-          `${getTextToLocalMapping("Search Results for Material Master")} (${
+          `${getTextToLocalMapping("Search Results for Opening Balence")} (${
             response.materialReceipt.length
           })`
         )

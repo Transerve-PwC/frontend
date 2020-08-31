@@ -87,7 +87,7 @@ const moveToReview = (state, dispatch, applnid) => {
       // }
     }
 
-    //validateDocumentField = true;
+   // validateDocumentField = true;
 
     return validateDocumentField;
   }
@@ -143,25 +143,36 @@ const callBackForNext = async (state, dispatch) => {
     "components.div.children.stepper.props.activeStep",
     0
   );
-  // validatestepform(activeStep+1)
-  // console.log(activeStep);
+ 
   let isFormValid = false;
   let hasFieldToaster = true;
   let immunizationSector = get(
     state,
     "screenConfiguration.preparedFinalObject.PETNOC.immunizationSector"
   );
-  //screenConfiguration.preparedFinalObject.PETNOC.immunizationSector
-  let validatestepformflag = validatestepform(activeStep + 1, immunizationSector)
+ 
+  if (activeStep === 0) {
+   
+    let PetParticularDetails = validateFields(
+      "components.div.children.formwizardFirstStep.children.PetParticularDetails.children.cardContent.children.applicationDetailsConatiner.children",
+      state, dispatch,'apply');
 
-  isFormValid = validatestepformflag[0];
-  hasFieldToaster = validatestepformflag[1];
-  if (activeStep === 1) {
-    let isapplicantnamevalid = validateFields(
-      "components.div.children.formwizardSecondStep.children.nocDetails.children.cardContent.children",
-      state, dispatch);
+     
+      let nocDetails = validateFields(
+        "components.div.children.formwizardFirstStep.children.nocDetails.children.cardContent.children.nocDetailsContainer.children",
+        state, dispatch,'apply');
+        isFormValid=PetParticularDetails & nocDetails
   }
-  if (activeStep === 2 && isFormValid != false) {
+ 
+  if (activeStep === 1) {
+    
+   isFormValid = validateFields(
+      "components.div.children.formwizardSecondStep.children.immunizationDetails.children.cardContent.children.immunizationDetailsConatiner.children.buildingDataCard.children.singleBuildingContainer.children.singleBuilding.children.cardContent.children.singleBuildingCard.children",
+      state, dispatch,'apply');
+    //  screenConfiguration.screenConfig.apply.components.div.children.formwizardFirstStep.children.nocDetails.children.cardContent.children
+  }
+  if (activeStep === 2) {
+    
     isFormValid = moveToReview(state, dispatch);
   }
 
@@ -264,7 +275,7 @@ export const changeStep = (
   const isNextButtonVisible = activeStep < 4 ? true : false;
   const isPayButtonVisible = activeStep === 4 ? true : false;
   const actionDefination = [
-    {
+    { 
       path: "components.div.children.stepper.props",
       property: "activeStep",
       value: activeStep
@@ -465,70 +476,3 @@ export const footer = getCommonApplyFooter({
 
 
 
-export const validatestepform = (activeStep, immunizationSector, isFormValid, hasFieldToaster) => {
-  let allAreFilled = true;
-
-  document.getElementById("apply_form" + activeStep).querySelectorAll("[required]").forEach(function (i) {
-    if (!i.value) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-    }
-    if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-  });
-
-  if (activeStep != 2) {
-    document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
-
-      if (i.value == i.placeholder) {
-
-        i.focus();
-        allAreFilled = false;
-        i.parentNode.classList.add("MuiInput-error-853");
-        i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-        allAreFilled = false;
-        isFormValid = false;
-        hasFieldToaster = true;
-      }
-    });
-
-
-
-
-    // 
-  }
-
-
-
-
-  // else{
-
-  //   document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
-  //     if (i.value == i.placeholder) {
-  //       i.focus();
-  //       allAreFilled = false;
-  //       i.parentNode.classList.add("MuiInput-error-853");
-  //       i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-  //       allAreFilled = false;
-  //       isFormValid = false;
-  //       hasFieldToaster = true;
-  //     }
-  //   });
-  // }
-  if (allAreFilled == false) {
-    isFormValid = false;
-    hasFieldToaster = true;
-  }
-  else {
-    isFormValid = true;
-    hasFieldToaster = false;
-  }
-  return [isFormValid, hasFieldToaster]
-}; 

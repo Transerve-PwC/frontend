@@ -32,12 +32,16 @@ import {
       MdmsCriteria: {
         tenantId: tenantId,
         moduleDetails: [
+          // {
+          //   moduleName: "store-asset",
+          //   masterDetails: [
+          //     { name: "Material" },
+          //     { name: "MaterialType"},
+          //   ],
+          // },
           {
-            moduleName: "store-asset",
-            masterDetails: [
-              { name: "Material" },
-              { name: "MaterialType"},
-            ],
+            moduleName: "egf-master",
+            masterDetails: [{ name: "FinancialYear" }]
           },
          
           {
@@ -82,9 +86,11 @@ import {
   
   const materialMasterSearchAndResult = {
     uiFramework: "material-ui",
-    name: "search-material-master",
+    name: "search-opening-balence",
     beforeInitScreen: (action, state, dispatch) => {
       getData(action, state, dispatch);
+      //set search param blank
+dispatch(prepareFinalObject("searchScreen",{}));
       return action;
     },
     components: {

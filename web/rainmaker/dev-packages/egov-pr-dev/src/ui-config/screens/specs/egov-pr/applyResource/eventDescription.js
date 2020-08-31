@@ -321,7 +321,7 @@ import {
       {
         style: {
           marginBottom: 18
-        }
+        } 
       }
     ),
     break: getBreak(),
@@ -335,6 +335,10 @@ import {
           labelName: "Description Of Event",
           labelKey: "PR_EVENT_DESCRIPTION_LABEL"
         },
+        gridDefination:{
+xs:12,
+xm:12
+        },
         props:{
           
                   className:"textfield-enterable-selection",
@@ -342,7 +346,7 @@ import {
                   rows: "4"
                 },
         required: true,
-        pattern: getPattern("EventDescription"),
+        pattern: getPattern("PREventDescription"),
         errorMessage: "PR_EVENT_DESCRIPTION_INVALID",
         jsonPath: "PublicRelation[0].CreateEventDetails.eventDescription"
       }),

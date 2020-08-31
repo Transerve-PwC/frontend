@@ -3,9 +3,12 @@ import get from "lodash/get";
 import { getSearchResults, getSearchResultsForFilters } from "../../../../../ui-utils/commons";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { set } from "lodash";
+import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 
 //useful
 export const fetchData = async (action, state, dispatch) => {
+  dispatch(toggleSpinner());
   const response = await getSearchResults();
   try {
     if (response.services.length > 0) {
@@ -102,7 +105,7 @@ export const fetchDataForFilterFields = async (state, dispatch) => {
   };
   if (flag_api_call === true)
   {
-    
+  dispatch(toggleSpinner()); 
   const response = await getSearchResultsForFilters(filterdata);
   // console.log("^^^^^^^",response.services.length)
   // alert(JSON.stringify(response.services[0].createdtime));
@@ -154,6 +157,15 @@ export const resetFields = (state, dispatch) => {
       ""
     )
   );
+      //resetting servicerequestt id 
+      dispatch(
+        handleField(
+          "myServiceRequests",
+          "components.div.children.form.children.cardContent.children.masterContainer.children.ServiceRequestId",
+          "props.value",
+          ""
+        )
+      );
 //resetting service request type
 try{
   var serviceRequestTypePlaceholderMyRequest = get(state, "screenConfiguration.screenConfig.myServiceRequests.components.div.children.form.children.cardContent.children.masterContainer.children.ServiceRequestType.props.placeholder")
@@ -268,6 +280,14 @@ catch(e)
     )
   );
   //resetting serviceRequestID
+  dispatch(
+    handleField(
+      "employeeServiceRequestsFilter",
+      "components.div.children.ServiceRequestFilterFormForEmployee.children.cardContent.children.serviceRequestidContactNoAndRequestTypeContainer.children.ServiceRequestId",
+      "props.value",
+      ""
+    )
+  );
   dispatch(
     handleField(
       "employeeServiceRequestsFilter",

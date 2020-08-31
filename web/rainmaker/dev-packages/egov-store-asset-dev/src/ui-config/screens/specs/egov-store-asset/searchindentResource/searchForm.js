@@ -6,6 +6,7 @@ import {
   getLabel,
   getPattern,
   getSelectField,
+  getDateField,
   getTextField,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
@@ -13,16 +14,17 @@ import {
   prepareFinalObject,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchApiCall } from "./functions";
+import { convertDateToEpoch, convertDateToEpochIST } from "../../utils";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["supplierName","materialCode","RateType",  "active"];
+  const textFields = ["indentNumber","indentDate","indentPurpose",  "inventoryType","indentStore"];
   for (let i = 0; i < textFields.length; i++) {
     if (
-      `state.screenConfiguration.screenConfig.search-price-list.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
+      `state.screenConfiguration.screenConfig.search-indent.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
     ) {
       dispatch(
         handleField(
-          "search-price-list",
+          "search-indent",
           `components.div.children.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}`,
           "props.value",
           ""
@@ -43,91 +45,115 @@ export const searchForm = getCommonCard({
     labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
   }),
   searchFormContainer: getCommonContainer({
-    supplierName: getTextField({
-      label: { labelName: "supplier Name", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
+    indentNumber: getTextField({
+      label: { labelName: "Indent No.", labelKey: "STORE_MATERIAL_INDENT_NUMBER" },
       placeholder: {
-        labelName: "supplier Name",
-        labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME",
+        labelName: "Indent No.",
+        labelKey: "STORE_MATERIAL_INDENT_NUMBER",
       },
       required: false,
-      jsonPath: "searchScreen.supplierName",
+      jsonPath: "searchScreen.indentNumber",
       gridDefination: {
         xs: 12,
         sm: 4,
       },
-      // sourceJsonPath: "searchScreenMdmsData.common-masters.materialName",
-      // props: {
-      //   optionValue: "code",
-      //   optionLabel: "name",
-      // },
-      // localePrefix: {
-      //   moduleName: "common-store",
-      //   masterName: "materialName",
-      // },
+     
     }),
-    materialCode: getTextField({
-      label: { labelName: "material Code", labelKey: "STORE_MATERIAL_CODE" },
-      placeholder: {
-        labelName: "material Code",
-        labelKey: "STORE_MATERIAL_CODE",
-      },
-      required: false,
-      jsonPath: "searchScreen.materialCode",
-      gridDefination: {
-        xs: 12,
-        sm: 4,
-      },
-      // sourceJsonPath: "searchScreenMdmsData.common-masters.materialName",
-      // props: {
-      //   optionValue: "code",
-      //   optionLabel: "name",
-      // },
-      // localePrefix: {
-      //   moduleName: "common-store",
-      //   masterName: "materialName",
-      // },
-    }),
-    RateType: {
-      ...getSelectField({
-        label: { labelName: "Rate Type", labelKey: "STORE_PRICE_RATE_TYPE" },
+    indentDate: {
+      ...getDateField({
+        label: {
+          labelName: "Indent Date",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE"
+        },
         placeholder: {
-          labelName: "Select Rate Type",
-          labelKey: "STORE_PRICE_RATE_TYPE_SELECT"
+          labelName: "Enter Indent Date",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE_PLACEHOLDER"
         },
         required: false,
-        jsonPath: "searchScreen.rateType",
-         // sourceJsonPath: "searchScreenMdmsData.store-asset.inventoryType",
-         props: {
-          data: [
-            {
-              value: "DOT/DGS$ND/Tender/Quatation",
-              label: "DOT/DGS$ND/Tender/Quatation"
-            },
-           
-          ],
-          optionValue: "value",
-          optionLabel: "label"
+        pattern: getPattern("Date") || null,
+        jsonPath: "searchScreen.indentDate",
+        gridDefination: {
+          xs: 12,
+          sm: 4,
+        },
+        props: {
+          // inputProps: {
+          //   max: getTodaysDateInYMD()
+          // }
+        }
+      }),
+    
+    },
+    indentPurpose: {
+      ...getSelectField({
+        label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
+        placeholder: {
+          labelName: "Select Indent Purpose",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
+        },
+        required: false,
+        jsonPath: "searchScreen.indentPurpose",
+        gridDefination: {
+          xs: 12,
+          sm: 4,
+        },
+        sourceJsonPath: "searchScreenMdmsData.store-asset.IndentPurpose",
+      props: {
+        // data: [
+        //   {
+        //     code: "Consumption",
+        //     name: "Capital/Repair/Consumption"
+        //   },
+         
+        // ],
+        optionValue: "code",
+        optionLabel: "name",
+      },
+      })
+    },
+    inventoryType: {
+      ...getSelectField({
+        label: { labelName: "Inventry Type", labelKey: "STORE_INVENTRY_TYPE" },
+        placeholder: {
+          labelName: "Select Inventry Type",
+          labelKey: "STORE_INVENTRY_TYPE"
+        },
+        required: false,
+        jsonPath: "searchScreen.inventoryType",
+        gridDefination: {
+          xs: 12,
+          sm: 4,
+        },
+         sourceJsonPath: "searchScreenMdmsData.store-asset.InventoryType",
+        props: {
+         
+          optionValue: "code",
+          optionLabel: "name"
         },
       })
-    },    
-    active: {
-      uiFramework: "custom-containers-local",
-      moduleName: "egov-store-asset",
-      componentPath: "CheckboxContainer",
-      jsonPath: "searchScreen.active",
-      gridDefination: {
-        xs: 4,
-      },
-      isFieldValid: true,
-      required: false,
-
-      props: {
-        content: "STORE_MATERIAL_MASTER_ACTIVE",
-        jsonPath: "searchScreen.active",
-        screenName: "search-price-list",
-        checkBoxPath:
-          "components.div.children.searchForm.children.cardContent.children.searchFormContainer.children.active",
-      },
+    },   
+    indentStore: {
+      ...getSelectField({
+        label: {
+          labelName: "Indenting Store Name",
+          labelKey: "STORE_MATERIAL_INDENT_STORE_NAME"
+        },
+        placeholder: {
+          labelName: "Indenting Store Name",
+          labelKey: "STORE_MATERIAL_INDENT_STORE_NAME"
+        },
+        required: false,
+        jsonPath: "searchScreen.indentStore", 
+        gridDefination: {
+          xs: 12,
+          sm: 4,
+        },        
+        sourceJsonPath: "store.stores",
+        props: {
+          optionValue: "code",
+          optionLabel: "name",
+        },
+      })
     },
   }),
 

@@ -70,7 +70,7 @@ class Footer extends React.Component {
       const applicationNumberHC = get(
         state.screenConfiguration.preparedFinalObject.workflow,
         `ProcessInstances[0].businessId`);
-      
+      let tenantId = getTenantId().split(".")[0];
       handleFieldChange(`${dataPath}[0].comment`, "");
       handleFieldChange(`${dataPath}[0].assignee`, []);
       handleFieldChange(`${dataPath}[0].roleList`, []); // this line I chnages from array to "" just remember so evr time got it?
@@ -78,9 +78,9 @@ class Footer extends React.Component {
       handleFieldChange(`${dataPath}[0].serviceType`, item.moduleName);
       handleFieldChange(`${dataPath}[0].service_request_id`, applicationNumberHC);
       handleFieldChange(`${dataPath}[0].wfDocuments`, []);
-
+	  handleFieldChange(`${dataPath}[0].locality`, tenantId);
       if (item.showEmployeeList) {
-      let tenantId = getTenantId().split(".")[0];
+      
       let mdmsBody = {
         MdmsCriteria: {
           tenantId: tenantId,
@@ -173,10 +173,10 @@ class Footer extends React.Component {
 
   onClose = () => {
     var {state} = this.props;
-    set(state, "form.workflow.files.wfDocuments", []),
     this.setState({
       open: false
     });
+    set(state, "form.workflow.files.wfDocuments", "")
   };
 
   renewTradelicence = async (financialYear, tenantId) => {

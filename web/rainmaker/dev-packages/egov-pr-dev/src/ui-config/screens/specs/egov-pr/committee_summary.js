@@ -33,9 +33,7 @@ import {
     getapplicationNumber,
     localStorageGet
   } from "egov-ui-kit/utils/localStorageUtils";
-  import {
-    createUpdateRoadCutNocApplication
-  } from "../../../../ui-utils/commons";
+  
  
   import { committeeSummaryfooter } from './applyResource/committeeSummaryfooter'
   import {  getCommitieeGridByIdData  } from "../egov-pr/searchResource/citizenSearchFunctions"

@@ -83,7 +83,7 @@ export const footerReviewTop = (
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        style: { textAlign: "right", display: "flex" }
+        style: { textAlign: "right", display: "flex", paddingRight: "8px", paddingLeft: "5px" }
       },
       children: {
         downloadMenu: {
@@ -144,6 +144,16 @@ export const downloadPrintContainer = (
       );
       var docs = "";
       var img_cnt =1;
+      
+      for(var i=0;i<document_list.length;i++)
+      {
+        if(document_list[i].length > 80)
+        {
+          var image_EditedName = "";
+          image_EditedName = document_list[i].substring(0,40) + "......" + document_list[i].substring(document_list[i].length-5,document_list[i].length);
+          document_list[i] = image_EditedName;
+        }
+      }
       for(var i=0;i<document_list.length;i++)
       {
         if(document_list[i].length <80){
@@ -155,6 +165,13 @@ export const downloadPrintContainer = (
         docs = docs + "Document "+img_cnt + " -   " +document_list[i];
         img_cnt = img_cnt+1;
       }
+
+      // for(var i=0;i<document_list.length;i++)
+      // {
+      //   document_list[i] = document_list[i].substring(0,50);
+      // }
+
+
       var { myRequestDetails } = state.screenConfiguration.preparedFinalObject;
       myRequestDetails["SLADays"] = getSLADays();
       myRequestDetails["Status"] = getServiceRequestStatus();
@@ -184,6 +201,16 @@ export const downloadPrintContainer = (
       );
       var docs = "";
       var img_cnt =1;
+      
+      for(var i=0;i<document_list.length;i++)
+      {
+        if(document_list[i].length > 80)
+        {
+          var image_EditedName = "";
+          image_EditedName = document_list[i].substring(0,40) + "......" + document_list[i].substring(document_list[i].length-5,document_list[i].length);
+          document_list[i] = image_EditedName;
+        }
+      }
       for(var i=0;i<document_list.length;i++)
       {
         if(document_list[i].length <80){
@@ -195,14 +222,25 @@ export const downloadPrintContainer = (
         docs = docs + "Document "+img_cnt + " -   " +document_list[i];
         img_cnt = img_cnt+1;
       }
+
+      // for(var i=0;i<document_list.length;i++)
+      // {
+      //   document_list[i] = document_list[i].substring(0,50);
+      // }
+
+
       var { myRequestDetails } = state.screenConfiguration.preparedFinalObject;
       myRequestDetails["SLADays"] = getSLADays();
       myRequestDetails["Status"] = getServiceRequestStatus();
       myRequestDetails["documents"] = docs;
-      // var demo = myRequestDetails["description"];
-      // var str_eg = `test demo 'Single' sp - !@#$%^&*()_+ test's 'test' "Demo" `;
+      myRequestDetails["street_name"] = myRequestDetails["street_name"].toString().replace(/"/g, "''")
+      myRequestDetails["landmark"] = myRequestDetails["landmark"].toString().replace(/"/g, "''")
+      
+      
       var str_eg = myRequestDetails["description"];
       str_eg = str_eg.toString().replace(/"/g, "''")
+      str_eg = str_eg.toString().replace(/[\r\n]+/g," ");
+      // myRequestDetails["description"] = myRequestDetails["description"].toString().replace(/"/g, "''")
       myRequestDetails["description"] =str_eg.toString();
       const data= [myRequestDetails];
 
@@ -219,7 +257,7 @@ export const downloadPrintContainer = (
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        style: { textAlign: "right", display: "flex" }
+        style: { textAlign: "right", display: "flex", paddingRight: "8px", paddingLeft: "5px" }
       },
       children: {
         downloadMenu: {
@@ -284,7 +322,7 @@ export const downloadPrintContainerScreenDownload= (serviceRequestId)=>{
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
-        style: { textAlign: "right", display: "flex" }
+        style: { textAlign: "right", display: "flex", paddingRight: "8px", paddingLeft: "5px" }
       },
       children: {
         downloadMenu: {

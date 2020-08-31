@@ -274,7 +274,7 @@ if(checked===false){
      obj['Email Id']=rowData[3]
      obj['Mobile Number']=rowData[4]
      obj['Press master UUID']=rowData[5]
-     obj['index']=index.rowIndex
+     obj['index']=index.dataIndex
    selectedrows1.push(obj)
    let selIndex1=[]
       localStorageSet("PressNoteList", JSON.stringify(selectedrows1));
@@ -357,7 +357,7 @@ if(checked===false){
       obj['Email Id']=rowData[3]
       obj['Mobile Number']=rowData[4]
     obj['Press master UUID']=rowData[5]
-    obj['index']=index.rowIndex
+    obj['index']=index.dataIndex
     selectedrows1.push(obj)
       localStorageSet("PressNoteList", JSON.stringify(selectedrows1));	
       let selIndex1=[]
@@ -583,7 +583,7 @@ if(checked===false){
      obj['Email Id']=rowData[3]
      obj['Mobile Number']=rowData[4]
      obj['Press master UUID']=rowData[5]
-     obj['index']=index.rowIndex
+     obj['index']=index.dataIndex
      
    selectedrows1.push(obj)
       localStorageSet("PressTenderList", JSON.stringify(selectedrows1));
@@ -666,7 +666,7 @@ if(checked===false){
       obj['Email Id']=rowData[3]
       obj['Mobile Number']=rowData[4]
     obj['Press master UUID']=rowData[5]
-    obj['index']=index.rowIndex
+    obj['index']=index.dataIndex
     
     selectedrows1.push(obj)
       localStorageSet("PressTenderList", JSON.stringify(selectedrows1));	
@@ -1624,7 +1624,7 @@ const onPressselect = async (type, rowData,index) => {
     if(checked===false){
 				let temp = rowData
         //temp.splice(0, 2,"PRESS");
-        temp.push(index.rowIndex)
+        temp.push(index.dataIndex)
         
 				selectedrows.push(temp)
 				console.log("ROwdata 1");
@@ -1659,11 +1659,11 @@ const onPressselect = async (type, rowData,index) => {
 				let temp = JSON.parse(localStorageGet("ResendInvitelist"));
 				console.log(temp)
         let temp2 = rowData
-        temp2.push(index.rowIndex)
+        temp2.push(index.dataIndex)
      //   temp2=temp2+index
-     console.log('index.rowIndex')
+     console.log('index.dataIndex')
      
-     console.log(index.rowIndex)
+     console.log(index.dataIndex)
       //  temp2.splice(6, 2,index.rowIndex);
         console.log('temp2222222222222222')
         console.log(temp2)

@@ -43,15 +43,19 @@
 // }
 
 .responsive-action-button-cont {
-  position: absolute;
+  position: fixed !important;
   bottom: 0px;
   display: flex;
   left: 0;
   right: 0;
-  justify-content: space-evenly;
+  justify-content: flex-end !important;
   padding: 10px;
-  background: white;
-}
-@media only screen and (max-width: 600px) {
-  .apply-wizard-footer button {
-    min-width: auto !important; } }
+  background: white; }
+
+  @media only screen and (max-width: 600px) {
+    .apply-wizard-footer button {
+      min-width: auto !important; } }
+
+      .MuiDialog-paperWidthSm-273 {
+        overflow-y: unset !important;
+      }

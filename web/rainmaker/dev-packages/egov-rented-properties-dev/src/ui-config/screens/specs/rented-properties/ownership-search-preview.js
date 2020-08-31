@@ -14,6 +14,7 @@ import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
 import { set } from "lodash";
 import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { BILLING_BUSINESS_SERVICE_OT, WORKFLOW_BUSINESS_SERVICE_OT } from "../../../../ui-constants";
 
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 
@@ -87,7 +88,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       "OwnersTemp[0].estimateCardData",
       dispatch,
       window.location.href,
-      "OwnershipTransferRP"
+      BILLING_BUSINESS_SERVICE_OT
     );
 
     const printCont = downloadPrintContainer(
@@ -145,7 +146,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       status,
       applicationNumber,
       tenantId,
-      "OwnershipTransferRP"
+      BILLING_BUSINESS_SERVICE_OT
     );
     process.env.REACT_APP_NAME === "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)
@@ -223,7 +224,7 @@ const ownerShipDetailsPreview = {
                   componentPath: "WorkFlowContainer",
                   props: {
                     dataPath: "Owners",
-                    moduleName: "OwnershipTransferRP",
+                    moduleName: WORKFLOW_BUSINESS_SERVICE_OT,
                     updateUrl: "/rp-services/ownership-transfer/_update"
                   }
                 },

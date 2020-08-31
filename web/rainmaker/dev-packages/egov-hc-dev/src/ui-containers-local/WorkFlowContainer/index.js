@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import TaskStatusContainer from "egov-workflow/ui-containers-local/TaskStatusContainer";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { Footer } from "egov-workflow/ui-molecules-local";
+import Footer  from "egov-workflow/ui-molecules-local/Footer";
 import {
   getQueryArg,
   addWflowFileUrl,
@@ -96,6 +96,7 @@ class WorkFlowContainer extends React.Component {
   };
 
   onClose = () => {
+    
     this.setState({
       open: false
     });
@@ -323,24 +324,24 @@ class WorkFlowContainer extends React.Component {
         );
       }
 
-      if(data.comment.length> 128)
+      if(data.comment.length> 250)
       {
         validated= false;
         toggleSnackbar(
           true,
-          { labelName: "Invalid Comment Length", labelKey: "ERR_INVALID_COMMENT_LENGTH" },
+          { labelName: "Invalid comment length", labelKey: "ERR_INVALID_COMMENT_LENGTH" },
           "error"
         );
       }
  
-        if(data.action==="VERIFY AND FORWARD" ||data.action==="REQUEST CLARIFICATION"){
+        if(data.action==="VERIFY AND FORWARD" ||data.action==="REQUEST CLARIFICATION" || data.action==="APPROVE"){
           if(data.roleList.length==0)
           {
             validated= false;  
             
             toggleSnackbar(
               true,
-              { labelName: "Please select Role !", labelKey: "ERR_SELECT_ROLE" },
+              { labelName: "Please select role !", labelKey: "ERR_SELECT_ROLE" },
               "error"
             );
   
@@ -352,7 +353,7 @@ class WorkFlowContainer extends React.Component {
               validated= false;
               toggleSnackbar(
                 true,
-                { labelName: "Please Upload file !", labelKey: "ERR_UPLOAD_FILE" },
+                { labelName: "Please upload file !", labelKey: "ERR_UPLOAD_FILE" },
                 "error"
               );
             }}
@@ -502,17 +503,43 @@ class WorkFlowContainer extends React.Component {
     const data = find(businessServiceData, { businessService: moduleName });
     const state = find(data.states, { applicationStatus: status });
     let actions = [];
+    let actionsForEdit = [];
     state.actions &&
       state.actions.forEach(item => {
         actions = [...actions, ...item.roles];
+      
       });
+     if(state.actions!==null)
+     { if (state.actions.length > 0) 
+      {
+        for(var i = 0; i < state.actions.length; i++) {
+          actionsForEdit.push( state.actions[i].action);
+
+      }
+    }
+      if (state.actions === null) {
+        actionsForEdit = [];
+      }
+      
+    };
     const userRoles = JSON.parse(getUserInfo()).roles;
     const roleIndex = userRoles.findIndex(item => {
       if (actions.indexOf(item.code) > -1) return true;
     });
-
+    let isEditPresent=false;
+    for(var i = 0; i < actionsForEdit.length; i++) {
+      if(actionsForEdit[i]== "EDIT")
+      {
+        isEditPresent=true;
+        break;
+      }  
+      
+  }
     let editAction = {};
-    if (state.isStateUpdatable && actions.length > 0 && roleIndex > -1) {
+    
+   if (isEditPresent && actions.length > 0 && roleIndex > -1) {
+    // this.getRedirectUrl("EDIT", businessId, moduleName)
+    // if ( actions.length > 0 && roleIndex > -1) {  
       editAction = {
         buttonLabel: "EDIT",
         moduleName: moduleName,
@@ -525,7 +552,7 @@ class WorkFlowContainer extends React.Component {
   };
 
   prepareWorkflowContract = (data, moduleName) => {
-  //  alert ("inside prepareWorkflowContract")
+
     const { 
       getRedirectUrl,
       getHeaderName,
@@ -534,7 +561,7 @@ class WorkFlowContainer extends React.Component {
       checkIfDocumentRequired,
       getEmployeeRoles
     } = this;
-    let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
+   let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService; 
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];
     // debugger
@@ -560,6 +587,7 @@ class WorkFlowContainer extends React.Component {
       };
     });
     actions = actions.filter(item => item.buttonLabel !== 'INITIATE');
+    actions = actions.filter(item => item.buttonLabel !== 'EDIT');
     let editAction = getActionIfEditable(
       applicationStatus,
       businessId,
@@ -599,42 +627,84 @@ class WorkFlowContainer extends React.Component {
       ProcessInstances.length > 0 &&
       this.prepareWorkflowContract(ProcessInstances, moduleName);
      let showFooter = false;
-    // debugger
+        // debugger
      if(moduleName=== 'HORTICULTURE')
      {      
       // alert("inside"+moduleName)
-      const roleData = this.state.currentRoleOrAssignee
-      const userRolesForHC = JSON.parse(getUserInfo()).roles;
-      const userForHC = JSON.parse(getUserInfo());
-      //  debugger;
-
-      // const userForHC = JSON.parse(getUserInfo());
-      console.log(JSON.stringify(userForHC))
-      for (var index = 0; index < userRolesForHC.length; ++index)
+      var new_user_role_code
+      var currentAssigneeString
+      const currentRoleOrAssignee = this.state.currentRoleOrAssignee
+      const currentlyLoggedInUserRoles = JSON.parse(getUserInfo()).roles;
+      const currentlyLoggedInUserInfo = JSON.parse(getUserInfo());
+      var currentRoleOrAssigneeArray = currentRoleOrAssignee.split(",")
+      if (currentRoleOrAssigneeArray.length===1)
+      {   
+      for (var index = 0; index < currentlyLoggedInUserRoles.length; ++index)
        {
-        var newUserRoleCode = userRolesForHC[index];
-
-        var assignedTo = userForHC.id;
+        var newUserRoleCode = currentlyLoggedInUserRoles[index];
+        var assignedTo = currentlyLoggedInUserInfo.id;
 
         var userRoleFound=false; 
-        if(assignedTo == roleData)
+        if(assignedTo === parseInt(currentRoleOrAssigneeArray[0]))
         {      
           userRoleFound = true;          
           break;
         }
-        
-        if(newUserRoleCode.code == roleData)
+        try
+       { 
+         new_user_role_code = newUserRoleCode.code.toString()
+         currentAssigneeString = currentRoleOrAssigneeArray[0].toString()
+         if(new_user_role_code === currentAssigneeString)
         {      
           userRoleFound = true;          
           break;
-        }
+        }}
+        catch(e){}
        }      
-      // user_role_exist = userRolesForHC.includes(roleData);
-
+  
       if(userRoleFound)
       //  alert("inside showfooter")
         showFooter=true;   
        }
+       else if ((currentRoleOrAssigneeArray.length > 1)){
+        { 
+          for (var i = 0; i<currentRoleOrAssigneeArray.length; i++)
+          {
+            
+         
+          for (var index = 0; index < currentlyLoggedInUserRoles.length; ++index)
+           {
+            var newUserRoleCode = currentlyLoggedInUserRoles[index];
+    
+            var assignedTo = currentlyLoggedInUserInfo.id;
+    
+            var userRoleFound=false; 
+            if(assignedTo === parseInt(currentRoleOrAssigneeArray[i]))
+            {      
+              userRoleFound = true;          
+              break;
+            }
+            
+            if(newUserRoleCode.code.toString() === currentRoleOrAssigneeArray[i].toString())
+            {      
+              userRoleFound = true;          
+              break;
+            }
+           }  
+
+          if(userRoleFound)
+          {
+            break
+          }
+          }   
+ 
+    
+          if(userRoleFound)
+   
+            showFooter=true;   
+           }
+       }}
+      
      else
      {    
       if(moduleName==='NewWS1'||moduleName==='NewSW1'){

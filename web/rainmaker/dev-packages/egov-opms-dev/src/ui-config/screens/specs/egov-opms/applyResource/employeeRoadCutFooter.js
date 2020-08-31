@@ -5,6 +5,7 @@ import {
 import {
   getCommonApplyFooter,
   showHideAdhocPopupopmsReject,
+  showHideAdhocPopup,
   showHideAdhocPopupopmsReassign,
   showHideAdhocPopupopmsApprove,
   showHideAdhocPopupopmsForward, checkForRole
@@ -27,20 +28,21 @@ import {
 } from "egov-ui-kit/utils/localStorageUtils";
 import { getapplicationType } from "egov-ui-kit/utils/localStorageUtils";
 import { callbackforSummaryActionCancel, callbackforSummaryActionSubmit } from '../roadcutnoc_summary'
-import store from "ui-redux/store";
+import { checkVisibility } from '../../../../../ui-utils/commons'
+import set from "lodash/set";
 
 let roles = JSON.parse(getUserInfo()).roles
 const toggleactionmenu = (state, dispatch) => {
-	
+
   var x = document.getElementById("custom-atoms-footerEmp");
- 	 // if (x.style.display === "none") {
-   if(window.getComputedStyle(x).display === "none") {   
+  // if (x.style.display === "none") {
+  if (window.getComputedStyle(x).display === "none") {
     x.style.display = "block";
     x.classList.add("addpadding");
-	  } else {
+  } else {
     x.style.display = "none";
     x.classList.remove("addpadding");
-	  }
+  }
 }
 const callbackforsummaryactionpay = async (dispatch) => {
   let tenantId = getOPMSTenantId();
@@ -199,7 +201,9 @@ export const footerEmp = getCommonApplyFooter({
         minWidth: "180px",
         height: "48px",
         marginRight: "16px",
-        borderRadius: "inherit"
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -222,10 +226,17 @@ export const footerEmp = getCommonApplyFooter({
     },
     onClickDefination: {
       action: "condition",
-      callBack: (state, dispatch) => showHideAdhocPopupopmsForward(state, dispatch, "roadcutnoc-search-preview", "nextButton")
+      callBack: (state, dispatch) => {
+        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
+        if (localStorageGet("applicationStatus") == "INITIATED" || localStorageGet("applicationStatus") == "REASSIGNTOJE" || localStorageGet("applicationStatus") == "RESENT") {
+          showHideAdhocPopup(state, dispatch, "roadcutnoc-search-preview")
+        } else {
+          showHideAdhocPopupopmsForward(state, dispatch, "roadcutnoc-search-preview", "nextButton")
+        }
+      }
     },
-    visible: checkForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
-
+    //    visible: checkForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
+    visible: false//checkVisibility("REVIEWSDO,REVIEWOFSE,REVIEWOFEE")
   },
   reject: {
     componentPath: "Button",
@@ -236,7 +247,9 @@ export const footerEmp = getCommonApplyFooter({
         minWidth: "180px",
         height: "48px",
         marginRight: "16px",
-        borderRadius: "inherit"
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -262,7 +275,7 @@ export const footerEmp = getCommonApplyFooter({
 
       callBack: (state, dispatch) => {
 
-
+        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
         showHideAdhocPopupopmsReject(state, dispatch, "roadcutnoc-search-preview", "reject")
       }
     },
@@ -277,7 +290,9 @@ export const footerEmp = getCommonApplyFooter({
         minWidth: "180px",
         height: "48px",
         marginRight: "16px",
-        borderRadius: "inherit"
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -302,12 +317,55 @@ export const footerEmp = getCommonApplyFooter({
       action: "condition",
 
       callBack: (state, dispatch) => {
-
-
+        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
         showHideAdhocPopupopmsReassign(state, dispatch, "roadcutnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'CE') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
+    //    visible: checkForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'CE') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
+    visible: false
+  },
+  reassignToDO: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "180px",
+        height: "48px",
+        marginRight: "16px",
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000'
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
+    children: {
+      nextButtonLabel: getLabel({
+        labelName: "REASSIGN TO DO",
+        labelKey: "PM_REASSIGNTODO"
+      }),
+      nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_right"
+        }
+      }
+    },
+    onClickDefination: {
+      action: "condition",
+
+      callBack: (state, dispatch) => {
+        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', true);
+        showHideAdhocPopupopmsReassign(state, dispatch, "roadcutnoc-search-preview", "reject")
+      }
+    },
+    //    visible: checkForRolecheckForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'CE') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
+    visible: false
   },
   approve: {
     componentPath: "Button",
@@ -318,7 +376,9 @@ export const footerEmp = getCommonApplyFooter({
         minWidth: "180px",
         height: "48px",
         marginRight: "16px",
-        borderRadius: "inherit"
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -342,6 +402,7 @@ export const footerEmp = getCommonApplyFooter({
     onClickDefination: {
       action: "condition",
       callBack: (state, dispatch) => {
+        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
         showHideAdhocPopupopmsApprove(state, dispatch, "roadcutnoc-search-preview", "reject")
       }
     },
@@ -356,7 +417,9 @@ export const footerEmp = getCommonApplyFooter({
         minWidth: "180px",
         height: "48px",
         marginRight: "16px",
-        borderRadius: "inherit"
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -430,7 +493,10 @@ export const footerEmp = getCommonApplyFooter({
       style: {
         minWidth: "180px",
         height: "48px",
-        marginRight: "16px"
+        marginRight: "16px",
+        borderRadius: "2px",
+        background: "#fff",
+        color: '#000',
       }
     },
     gridDefination: {
@@ -467,16 +533,16 @@ export const takeactionfooter = getCommonApplyFooter({
       color: "primary",
       style: {
         height: "48px",
-        marginRight: "16px" 
+        marginRight: "16px"
       }
     },
     children: {
-       
+
       pressguestbuttonLabel: getLabel({
         labelName: "Take Action",
-        labelKey: "PR_TAKE_ACTION"
+        labelKey: "PM_TAKE_ACTION"
       }),
-	  nextButtonIcon: {
+      nextButtonIcon: {
         uiFramework: "custom-atoms",
         componentPath: "Icon",
         props: {
@@ -486,10 +552,10 @@ export const takeactionfooter = getCommonApplyFooter({
     },
     onClickDefination: {
       action: "condition",
-       callBack: (state, dispatch) =>{
-           toggleactionmenu(state, dispatch)
-    }
+      callBack: (state, dispatch) => {
+        toggleactionmenu(state, dispatch)
+      }
     },
     visible: true
   }
-});  
+});

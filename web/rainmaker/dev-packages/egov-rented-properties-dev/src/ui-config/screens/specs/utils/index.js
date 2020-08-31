@@ -49,6 +49,7 @@ import {
   getOwnershipSearchResults,
   getDuplicateCopySearchResults
 } from "../../../../ui-utils/commons";
+import { BILLING_BUSINESS_SERVICE_DC, BILLING_BUSINESS_SERVICE_OT } from "../../../../ui-constants";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -2051,7 +2052,7 @@ export const fetchBill = async (action, state, dispatch, businessService) => {
   let payload;
 
   switch (businessService) {
-    case "OwnershipTransferRP": {
+    case BILLING_BUSINESS_SERVICE_OT: {
       const response = await getOwnershipSearchResults(queryObject)
       payload = response &&
         response.Owners &&
@@ -2068,7 +2069,7 @@ export const fetchBill = async (action, state, dispatch, businessService) => {
         dispatch(prepareFinalObject("Owners[0]", response.Owners[0]));
       break
     }
-    case "DuplicateCopyOfAllotmentLetterRP": {
+    case BILLING_BUSINESS_SERVICE_DC: {
       const response = await getDuplicateCopySearchResults(queryObject)
       payload = response && response.DuplicateCopyApplications && (
         await createEstimateData(

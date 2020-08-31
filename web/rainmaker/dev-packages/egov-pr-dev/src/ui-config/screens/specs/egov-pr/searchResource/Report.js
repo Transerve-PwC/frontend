@@ -177,70 +177,208 @@ if(dept!=undefined )
     
     
     TimeseriesReportContainer: getCommonContainer({
-      Year: getSelectField({
-        label: {
-          labelName: "Year",
-          labelKey: "PR_REPORT_YEAR_LABEL"
-        },
-        placeholder: {
-          labelName: "Select Year",
-          labelKey: "PR_REPORT_YEAR_PLACEHOLDER"
-        },
+      // Year: getSelectField({
+      //   label: {
+      //     labelName: "Year",
+      //     labelKey: "PR_REPORT_YEAR_LABEL"
+      //   },
+      //   placeholder: {
+      //     labelName: "Select Year",
+      //     labelKey: "PR_REPORT_YEAR_PLACEHOLDER"
+      //   },
   
-        optionValue:"code",
-        optionLabel:"name",
-        jsonPath: "TimeseriesReport.Year",
-        sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportYear",
-        required: true,
-        gridDefination: {
-          xs: 12,
-          sm: 4
-        }
-      
-      }),
-  
-      Month: getSelectField({
-        label: {
-          labelName: "Month",
-          labelKey: "PR_REPORT_MONTH_LABEL"
-        },
-        placeholder: {
-          labelName: "Select Month",
-          labelKey: "PR_REPORT_MONTH_PLACEHOLDER"
-        },
-  
-        optionValue:"code",
-        optionLabel:"name",
-        jsonPath: "TimeseriesReport.Month",
-        sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportMonth",
-        required: false,
-        gridDefination: {
-          xs: 12,
-          sm: 4
-        }
-      
-      }),
-
-      AggrigatedBy: getSelectField({
-        label: {
-          labelName: "Aggrigated By",
-          labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL"
-        },
-        placeholder: {
-          labelName: "Select AggrigatedBy",
-          labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL_PLACEHOLDER"
-        },
-        optionValue:"name",
-        optionLabel:"name",
        
+      //   jsonPath: "TimeseriesReport.Year",
+      //   sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportYear",
+      //   required: true,
+      //   optionValue:"code",
+      //   optionLabel:"name",
+      //   gridDefination: {
+      //     xs: 12,
+      //     sm: 4
+      //   }
+      
+      // }),
+  
+      // Month: getSelectField({
+      //   label: {
+      //     labelName: "Month",
+      //     labelKey: "PR_REPORT_MONTH_LABEL"
+      //   },
+      //   placeholder: {
+      //     labelName: "Select Month",
+      //     labelKey: "PR_REPORT_MONTH_PLACEHOLDER"
+      //   },
+  
+        
+      //   jsonPath: "TimeseriesReport.Month",
+      //   sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportMonth",
+      //   optionValue:"code",
+      //   optionLabel:"name",
+      //   required: false,
+      //   gridDefination: {
+      //     xs: 12,
+      //     sm: 4
+      //   }
+      
+      // }),
+      Year: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-pr",
+        componentPath: "AutosuggestContainer",
+        jsonPath: "TimeseriesReport.Year",
+
+        
+              required: true,
+     gridDefination: {
+      xs: 12,
+      sm: 4
+    },
+      props: {
+      style: {
+      width: "100%",
+      cursor: "pointer",
+      
+
+      },
+     
+      className: "citizen-city-picker",
+      label: {
+        labelName: "Year",
+        labelKey: "PR_REPORT_YEAR_LABEL"
+      },
+      placeholder: {
+        labelName: "Select Year",
+        labelKey: "PR_REPORT_YEAR_PLACEHOLDER"
+      },
+
+     
+      jsonPath: "TimeseriesReport.Year",
+      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportYear",
+      labelsFromLocalisation: false,
+      suggestions: [],
+      fullwidth: true,
+      required: true,
+      inputLabelProps: {
+        shrink: true
+      },
+      isMulti: false,
+    labelName: "name",
+     valueName: "name"
+      },
+    },
+    Month: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-pr",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "TimeseriesReport.Month",
+      
+            required: false,
+   gridDefination: {
+    xs: 12,
+    sm: 4
+  },
+    props: {
+    style: {
+    width: "100%",
+    cursor: "pointer",
+    
+
+    },
+   
+    className: "citizen-city-picker",
+    label: {
+      labelName: "Month",
+      labelKey: "PR_REPORT_MONTH_LABEL"
+    },
+    placeholder: {
+      labelName: "Select Month",
+      labelKey: "PR_REPORT_MONTH_PLACEHOLDER"
+    },
+
+    
+    jsonPath: "TimeseriesReport.Month",
+    sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportMonth",
+    labelsFromLocalisation: false,
+    suggestions: [],
+    fullwidth: true,
+    required: false,
+    inputLabelProps: {
+      shrink: true
+    },
+    isMulti: false,
+  labelName: "name",
+   valueName: "name"
+    },
+  },
+
+      // AggrigatedBy: getSelectField({
+      //   label: {
+      //     labelName: "Aggrigated By",
+      //     labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL"
+      //   },
+      //   placeholder: {
+      //     labelName: "Select AggrigatedBy",
+      //     labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL_PLACEHOLDER"
+      //   },
+        
+       
+      //   jsonPath: "TimeseriesReport.AggrigatedBy",
+      //   sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportAggregatedBy",
+      //   optionValue:"name",
+      //   optionLabel:"name",
+      //   required: true,
+      //   gridDefination: {
+      //     xs: 12,
+      //     sm: 4
+      //   }
+      // }),
+
+      AggrigatedBy: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-pr",
+        componentPath: "AutosuggestContainer",
         jsonPath: "TimeseriesReport.AggrigatedBy",
-        sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportAggregatedBy",
-        required: true,
-        gridDefination: {
-          xs: 12,
-          sm: 4
-        }
-      }),
+        
+              required: true,
+     gridDefination: {
+      xs: 12,
+      sm: 4
+    },
+      props: {
+      style: {
+      width: "100%",
+      cursor: "pointer",
+      
+  
+      },
+     
+      className: "citizen-city-picker",
+      label: {
+        labelName: "Aggrigated By",
+        labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL"
+      },
+      placeholder: {
+        labelName: "Select AggrigatedBy",
+        labelKey: "PR_REPORT_AGGRIGATEDBY_LABEL_PLACEHOLDER"
+      },
+      
+     
+      jsonPath: "TimeseriesReport.AggrigatedBy",
+      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventReportAggregatedBy",
+      labelsFromLocalisation: false,
+      suggestions: [],
+      fullwidth: true,
+      required: true,
+      inputLabelProps: {
+        shrink: true
+      },
+      isMulti: false,
+    labelName: "name",
+     valueName: "name"
+      },
+    },
+  
     }),
   
     button: getCommonContainer({
@@ -262,7 +400,8 @@ if(dept!=undefined )
               backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
             }
           },
           children: {
@@ -295,7 +434,8 @@ if(dept!=undefined )
               border: "1px solid rgb(254, 122, 81)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
             }
           },
           children: {
@@ -405,7 +545,9 @@ if(dept!=undefined )
               backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
+              
             }
           },
           children: {
@@ -438,7 +580,8 @@ if(dept!=undefined )
               border: "1px solid rgb(254, 122, 81)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
             }
           },
           children: {
@@ -601,7 +744,8 @@ if(dept!=undefined )
               backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
             }
           },
           children: {
@@ -634,7 +778,8 @@ if(dept!=undefined )
               border: "1px solid rgb(254, 122, 81)",
               borderRadius: "2px",
              width: "80%",
-              height: "48px"
+              height: "48px",
+              marginBottom: "8px",
             }
           },
           children: {

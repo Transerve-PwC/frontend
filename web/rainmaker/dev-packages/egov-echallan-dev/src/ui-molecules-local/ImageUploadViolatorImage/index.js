@@ -64,13 +64,13 @@ class ImageUploadViolatorImage extends Component {
 
   onFilePicked = (file, imageUri) => {
     const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText } = this.props;
-    const MAX_IMAGE_SIZE = 5000;
+    const MAX_IMAGE_SIZE = 15000;
     const fileSize = getFileSize(file);
     const isImage = isFileImage(file);
     if (!isImage) {
       toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "EC_ERR_NOT_VALID_VIOLATOR_IMAGE" }, "error");
     } else if (fileSize > MAX_IMAGE_SIZE) {
-      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: "EC_ERR_FILE_MORE_THAN_VIOLATOR_IMAGE_FIVEMB" },"error");
+      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: "EC_ERR_FILE_MORE_THAN_VIOLATOR_IMAGE_FIFTEENMB" },"error");
     } else {
       if(getapplicationType() === "egov-echallan"){
         if (images.length < 1) {
@@ -122,7 +122,7 @@ class ImageUploadViolatorImage extends Component {
           </div>
           </div>
         )}
-        <Label label="EC_ERR_FILE_MORE_THAN_VIOLATOR_IMAGE_FIVEMB" labelStyle={inlineLabelStyle} fontSize="12px" />
+        <Label label="EC_ERR_FILE_MORE_THAN_VIOLATOR_IMAGE_FIFTEENMB" labelStyle={inlineLabelStyle} fontSize="12px" />
       </div>
       
     );

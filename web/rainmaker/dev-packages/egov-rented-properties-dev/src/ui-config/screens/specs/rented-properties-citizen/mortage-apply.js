@@ -17,6 +17,18 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   });
   
   const getData = async(action, state, dispatch) => {
+    dispatch(
+      prepareFinalObject(
+        "MortgageApplications",
+        []
+        )
+        )
+    dispatch(
+      prepareFinalObject(
+        "MortgageApplicationsTemp",
+        []
+      )
+    )
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     if(!!applicationNumber) {
       const queryObject = [
@@ -24,23 +36,19 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
       ]
       const response = await getMortgageSearchResults(queryObject);
       if (response && response.MortgageApplications) {
-      dispatch(prepareFinalObject("MortgageApplications", response.MortgageApplications))
-      }
-      // setDocsForEditFlow(state, dispatch, "Owners[0].ownerDetails.ownershipTransferDocuments", "OwnersTemp[0].uploadedDocsInRedux");
-      setDocsForEditFlow(state, dispatch, "MortgageApplications[0].applicationDocuments", "MortgageApplicationsTemp[0].uploadedDocsInRedux");
-    } else {
+      let applicationDocuments = response.MortgageApplications[0].applicationDocuments|| [];
+      const removedDocs = applicationDocuments.filter(item => !item.active)
+      applicationDocuments = applicationDocuments.filter(item => !!item.active)
+      MortgageApplications = [{...MortgageApplications[0], applicationDocuments}]
+      dispatch(prepareFinalObject("MortgageApplications", MortgageApplications))
       dispatch(
         prepareFinalObject(
-          "MortgageApplications",
-          []
-          )
-          )
-      dispatch(
-        prepareFinalObject(
-          "MortgageApplicationsTemp",
-          []
+          "MortgageApplicationsTemp[0].removedDocs",
+          removedDocs
         )
-      )
+      );
+      }
+      setDocsForEditFlow(state, dispatch, "MortgageApplications[0].applicationDocuments", "MortgageApplicationsTemp[0].uploadedDocsInRedux");
     }
     setDocumentData(action, state, dispatch, {documentCode: "MortgageRP", jsonPath: "MortgageApplications[0].applicationDocuments", screenKey: "mortage-apply", screenPath: "components.div.children.formwizardSecondStep.children.mortgageDocumentsDetails.children.cardContent.children.documentList", tempJsonPath:"MortgageApplicationsTemp[0].applicationDocuments"})
   }

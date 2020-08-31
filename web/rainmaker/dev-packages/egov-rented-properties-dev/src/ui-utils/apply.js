@@ -119,6 +119,7 @@ let userInfo = JSON.parse(getUserInfo());
             removedDocs
           )
         );
+        await setDocsForEditFlow(state, dispatch, "Properties[0].propertyDetails.applicationDocuments", "PropertiesTemp[0].uploadedDocsInRedux");
         dispatch(toggleSpinner())
         return true;
     } catch (error) {
@@ -167,7 +168,7 @@ let userInfo = JSON.parse(getUserInfo());
             set(queryObject[0], "applicationAction", "SUBMIT")
           }
           let ownershipTransferDocuments = get(queryObject[0], "ownerDetails.ownershipTransferDocuments") || [];
-          ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item).map(item => ({...item, active: true}))
+          ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item.fileStoreId).map(item => ({...item, active: true}))
           const removedDocs = get(state.screenConfiguration.preparedFinalObject, "OwnersTemp[0].removedDocs") || [];
           ownershipTransferDocuments = [...ownershipTransferDocuments, ...removedDocs]
           set(queryObject[0], "ownerDetails.ownershipTransferDocuments", ownershipTransferDocuments)
@@ -191,6 +192,7 @@ let userInfo = JSON.parse(getUserInfo());
             removedDocs
           )
         );
+        await setDocsForEditFlow(state, dispatch, "Owners[0].ownerDetails.ownershipTransferDocuments", "OwnersTemp[0].uploadedDocsInRedux");
         return true;
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
@@ -382,13 +384,14 @@ let userInfo = JSON.parse(getUserInfo());
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
         MortgageApplications = [{...MortgageApplications[0], applicationDocuments}]
-        // dispatch(prepareFinalObject("MortgageApplications", MortgageApplications));
+        dispatch(prepareFinalObject("MortgageApplications", MortgageApplications));
         dispatch(
           prepareFinalObject(
             "MortgageApplicationsTemp[0].removedDocs",
             removedDocs
           )
         );
+        await setDocsForEditFlow(state, dispatch, "MortgageApplications[0].applicationDocuments", "MortgageApplicationsTemp[0].uploadedDocsInRedux");
         return true;
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
@@ -457,6 +460,7 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
             removedDocs
           )
         );
+        await setDocsForEditFlow(state, dispatch, "DuplicateCopyApplications[0].applicationDocuments", "DuplicateTemp[0].uploadedDocsInRedux");
         return true;
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));

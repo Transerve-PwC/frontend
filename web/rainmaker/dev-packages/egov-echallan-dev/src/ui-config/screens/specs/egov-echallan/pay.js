@@ -19,14 +19,14 @@ const header = getCommonContainer({
   header: getCommonHeader({
     //labelName: `Application for ${getapplicationType()} - (${getCurrentFinancialYear()})`, //later use getFinancialYearDates
     //labelKey: "NOC_COMMON_APPLY_NOC"
-    labelName: `${getapplicationType()} for -- ${getEncroachmentType()} -- (${getCurrentFinancialYear()})` //later use getFinancialYearDates
+    labelName: `${getEncroachmentType()} -- (${getCurrentFinancialYear()})` //later use getFinancialYearDates
   }),
   applicationNumber: {
     uiFramework: "custom-atoms-local",
     moduleName: "egov-echallan",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: getQueryArg(window.location.href, "challanNumber")
+      number: getQueryArg(window.location.href, "applicationNumber")
     }
   }
 });

@@ -4,7 +4,7 @@ import {
   getStepperObject
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getCurrentFinancialYear } from "../utils";
-import { footer } from "./applyResource/footer";
+import { EventFooter } from "./applyResource/footer";
 import { eventDetails } from "./applyResource/eventDetails";
 import { eventDescription } from "./applyResource/eventDescription";
 import jp from "jsonpath";
@@ -20,16 +20,12 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId, localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils";
-import {
-  sampleSearch,
-  sampleSingleSearch,
-  sampleDocUpload
-} from "../../../../ui-utils/sampleResponses";
+
 import set from "lodash/set";
 import get from "lodash/get";
 import {
   prepareDocumentsUploadData,
-  getSearchResults,
+  
   furnishResponse,
   setApplicationNumberBox,
   getSearchResultsViewEvent
@@ -46,7 +42,11 @@ export const stepper = getStepperObject(
   { props: { activeStep: 0 } },
   stepsData
 );
-
+const toTitleCase=(str)=> {
+  return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+} 
 const applicationNumberContainer = () => {
   const applicationNumber = getQueryArg(
     window.location.href,
@@ -110,7 +110,11 @@ const getMdmsData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "RAINMAKER-PR",
-          masterDetails: [{ name: "eventType" }, { name: "eventStatus" },{ name: "eventDocuments" },  { name: "eventSector" },{ name: "localityAreaName" }]
+          masterDetails: [{ name: "eventType" }, { name: "eventStatus" },{ name: "eventDocuments" },  { name: "eventSector" },{ name: "localityAreaName" }
+
+        
+          
+        ]
         },
         {
           moduleName: "tenant",
@@ -151,6 +155,17 @@ const getMdmsData = async (action, state, dispatch) => {
       mdmsBody
     );
   
+      
+    for(let i=0;i<payload.MdmsRes["common-masters"].Department.length;i++)
+    {
+      
+
+      payload.MdmsRes["common-masters"].Department[i].name= toTitleCase(payload.MdmsRes["common-masters"].Department[i].name)
+
+      
+      
+
+    }
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {
     console.log(e);
@@ -359,8 +374,8 @@ const screenConfig = {
       handleField(
         "apply",
         "components.div.children.formwizardFirstStep.children.EventFirstStepperDetail.children.cardContent.children.propertyDetailsConatiner.children.committiee",
-        "props.disabled",
-        true
+        "visible",
+        false
       )
     );
   }
@@ -369,8 +384,8 @@ const screenConfig = {
       handleField(
         "apply",
         "components.div.children.formwizardFirstStep.children.EventFirstStepperDetail.children.cardContent.children.propertyDetailsConatiner.children.committiee",
-        "props.disabled",
-        false
+        "visible",
+        true
       )
     );
   }
@@ -418,7 +433,7 @@ const screenConfig = {
         );
         set(
           action.screenConfig,
-          `components.div.children.footer.children.previousButton.visible`,
+          `components.div.children.EventFooter.children.previousButton.visible`,
           step != 0
         );
       }
@@ -451,7 +466,7 @@ const screenConfig = {
         stepper,
         formwizardFirstStep,
         formwizardSecondStep,
-        footer
+        EventFooter
       }
     }
   }

@@ -7,6 +7,7 @@ import { textToLocalMapping } from "./searchResults";
 import { validateFields, getTextToLocalMapping } from "../../utils";
 import get from "lodash/get";
 import set from "lodash/set";
+import { getPageName } from "./EmployeeSearchForm";
 export const fetchData = async (action, state, dispatch) => {
   const response = await getSearchResults();
   //const mdmsRes = await getMdmsData(dispatch);
@@ -587,7 +588,7 @@ const showHideTable4 = (booleanHideOrShow, dispatch) => {
 };
 
 
-const showHideTable = (booleanHideOrShow, dispatch) => {
+export const showHideTable = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
       "search",
@@ -599,7 +600,7 @@ const showHideTable = (booleanHideOrShow, dispatch) => {
 };
 
 
-const showHideTableSellmeat = (booleanHideOrShow, dispatch) => {
+export const showHideTableSellmeat = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
       "sellmeat-search",
@@ -610,7 +611,7 @@ const showHideTableSellmeat = (booleanHideOrShow, dispatch) => {
   );
 };
 
-const showHideTableADV = (booleanHideOrShow, dispatch) => {
+export const showHideTableADV = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
       "advertisement-search",
@@ -621,7 +622,7 @@ const showHideTableADV = (booleanHideOrShow, dispatch) => {
   );
 };
 
-const showHideTableRoadCut = (booleanHideOrShow, dispatch) => {
+export const showHideTableRoadCut = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
       "roadcut-search",
@@ -684,6 +685,15 @@ export const getTextForPetNoc = label => {
       return 'Resent'
     case "APPROVED":
       return 'Apllication Approved'
+    case "REASSIGN":
+      return 'Application Reassigned To Citizen'
+    case "INITIATED":
+      return 'Initiated'
+    case "PENDINGAPPROVAL":
+      return 'Pending Approval'
+    case "REJECTED":
+      return "Application Rejected"
+
     default:
       return '-'
   }
@@ -702,11 +712,16 @@ export const getTextForSellMeatNoc = label => {
     case "RESENT":
       return 'Resent'
     case "APPROVED":
-      return 'Apllication Approved'
+      return 'Application Approved'
     case "REVIEWOFSUPERINTENDENT":
       return 'Review Of Superintendent'
     case "REASSIGNTOSUPERINTENDENT":
       return 'Reassign To Superintendent'
+    case "REJECTED":
+      return "Application Rejected"
+    case "REASSIGN":
+      return 'Application Reassigned To Citizen'
+
     default:
       return '-'
   }
@@ -729,12 +744,18 @@ export const getTextAdvertisement = (label, isWithdrawn) => {
       return isWithdrawn === "0" ? 'Review Of OSD' : 'Withdraw Request';
     case "WITHDRAWAPPROVAL":
       return 'Withdraw Approval';
+    case "WITHDRAWREJECTED":
+      return 'Withdraw Rejected';
+    case "APPROVEFORWITHDRAW":
+      return 'Withdraw Approval';
+    case "REJECTEFORWITHDRAW":
+      return 'Withdraw Rejected';
     case "WITHDRAWAFTERAPRROVAL":
       return 'Withdraw Request';
     case "WITHDRAW":
       return 'Withdraw';
     case "PENDINGAPPROVAL":
-      return 'Pending Approval';
+      return isWithdrawn === "0" ? 'Pending Approval' : 'Withdraw Request';
     case "PENDINGAPPROVALFORWITHDRAW":
       return 'Withdraw Request';
     case "REJECTED":
@@ -753,6 +774,31 @@ export const getTextAdvertisement = (label, isWithdrawn) => {
       return isWithdrawn === "0" ? 'Reassign To OSD' : 'Withdraw Request';
     case "PAYMENTPENDING":
       return 'Payment Pending'
+    case "REVIEWOFJC":
+      return 'Review Of JC';
+    case "REVIEWOFAC":
+      return 'Review Of AC';
+    case "REVIEWOFSC":
+      return 'Review Of SC';
+    case "REVIEWOFSEC":
+      return 'Review Of SEC';
+    case "REASSIGNTOJC":
+      return isWithdrawn === "0" ? 'Reassigned Of JC' : 'Withdraw Request';
+    case "REASSIGNTOAC":
+      return isWithdrawn === "0" ? 'Reassigned Of AC' : 'Withdraw Request';
+    case "REASSIGNTOSC":
+      return isWithdrawn === "0" ? 'Reassigned Of SC' : 'Withdraw Request';
+    case "REASSIGNTOSEC":
+      return isWithdrawn === "0" ? 'Reassigned Of SEC' : 'Withdraw Request';
+    case "REVIEWOFJCFORWITHDRAW":
+      return 'Withdraw Request';
+    case "REVIEWOFACFORWITHDRAW":
+      return 'Withdraw Request';
+    case "REVIEWOFSCFORWITHDRAW":
+      return 'Withdraw Request';
+    case "REVIEWOFSECFORWITHDRAW":
+      return 'Withdraw Request';
+
     default:
       return '-'
   }
@@ -789,12 +835,38 @@ export const getTextForRoadCuttNoc = label => {
       return 'Approved'
     case "PAID":
       return 'Paid'
-    case "PENDINGAPRROVAL":
+    case "PENDINGAPPROVAL":
       return 'Pending Approval'
     case "REASSIGNTOEE":
       return 'Reassign To EE'
     case "PAYMENTPENDING":
       return 'Payment Pending'
+    case "REVIEWAPPROVEEE":
+      return 'Review Approve Of EE'
+    case "REVIEWAPPROVESE":
+      return 'Review Approve Of SE'
+    case "REASSIGNAPPROVEEE":
+      return 'Reassigned To EE'
+    case "REASSIGNAPPROVESE":
+      return 'Reassigned To SE'
+    case "VERIFYDOEE":
+      return 'Verfication Of DOEE'
+    case "VERIFYDOSE":
+      return 'Verfication Of DOSE'
+    case "VERIFYDOCE":
+      return 'Verfication Of DOCE'
+    case "REASSIGNDOEE":
+      return 'Reassigned To DOEE'
+    case "REASSIGNDOSE":
+      return 'Reassigned To DOSE'
+    case "REASSIGNDOCE":
+      return 'Reassigned To DOCE'
+    case "REASSIGNDOCE":
+      return 'Reassigned To DOCE'
+    case "REVIEWOFCE":
+      return 'Review of CE'
+    case "REVIEWOFWD":
+      return 'Review of WD'
     default:
       return '-'
   }
@@ -809,4 +881,62 @@ const showHideTableMaster = (booleanHideOrShow, dispatch) => {
       booleanHideOrShow
     )
   );
+};
+
+export const resetFieldsForEmployeeFilter = (state, dispatch) => {
+  //resetting servicerequeststatus using below 2 lines  of dispatch
+
+  try {
+    var serviceRequestStatusPlaceholder = get(state, `screenConfiguration.screenConfig.${getPageName()}.components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestStatus.props.placeholder`, {})
+    dispatch(
+      handleField(
+        getPageName(),
+        "components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestStatus",
+        "props.value",
+        serviceRequestStatusPlaceholder.labelKey
+      )
+    );
+  }
+  catch (e) {
+    dispatch(
+      handleField(
+        getPageName(),
+        "components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestStatus",
+        "props.value",
+        undefined
+      )
+    );
+  }
+
+
+
+  //resetting from date
+  dispatch(
+    handleField(
+      getPageName(),
+      "components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.fromDate",
+      "props.value",
+      ""
+    )
+  );
+  //resetting to date
+  dispatch(
+    handleField(
+      getPageName(),
+      "components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.toDate",
+      "props.value",
+      ""
+    )
+  );
+  //resetting serviceRequestID
+  dispatch(
+    handleField(
+      getPageName(),
+      "components.div.children.SearchFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestId",
+      "props.value",
+      ""
+    )
+  );
+
+  set(state, "screenConfiguration.preparedFinalObject.OPMS.searchFilter", {});
 };

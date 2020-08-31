@@ -3,8 +3,8 @@ import { serachResultGrid } from "./searchResource/serachResultGrid";
 import { searchResultApiResponse } from './searchResource/searchResultApiResponse'
 import { footer } from "./challanManage/footer/manageChallanFooter"
 import { getTenantId, getUserInfo, setapplicationType } from "egov-ui-kit/utils/localStorageUtils/";
-import { clearlocalstorageAppDetails, checkForRole } from "../utils";
-
+import { clearlocalstorageAppDetails, checkForRole, getMdmsEncroachmentSectorData, getSiNameDetails } from "../utils";
+import { searchCriteria } from "./searchCriteria";
 let roles = JSON.parse(getUserInfo()).roles;
 
 const header = getCommonHeader({
@@ -18,7 +18,10 @@ const MANAGECHALLANSearchAndResult = {
   beforeInitScreen: (action, state, dispatch) => {
     clearlocalstorageAppDetails(state);
     setapplicationType('egov-echallan');
-    searchResultApiResponse(action, state, dispatch);
+    getMdmsEncroachmentSectorData(action, state, dispatch).then(response => {
+      getSiNameDetails(action, state, dispatch);
+    });
+    //searchResultApiResponse(action, state, dispatch);
     return action;
   },
   components: {
@@ -42,10 +45,11 @@ const MANAGECHALLANSearchAndResult = {
               },
               ...header
             },
-            
-            footer: checkForRole(roles, 'challanSI') ? footer: {}
+
+            footer: checkForRole(roles, 'challanSI') ? footer : {}
           }
         },
+        searchCriteria,
         breakAfterSearch: getBreak(),
         serachResultGrid
       }

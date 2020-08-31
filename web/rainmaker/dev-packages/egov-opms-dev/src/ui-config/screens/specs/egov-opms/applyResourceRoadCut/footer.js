@@ -158,19 +158,17 @@ const callBackForNext = async (state, dispatch) => {
     0
   );
 
-  let isFormValid = true;
+  let isFormValid = false;
   let hasFieldToaster = false;
 
-  let validatestepformflag = validatestepform(activeStep + 1)
 
-  isFormValid = validatestepformflag[0];
-  hasFieldToaster = validatestepformflag[1];
   if (activeStep === 0) {
 
-    let isapplicantnamevalid = validateFields(
-      "components.div.children.formwizardSecondStep.children.nocDetails.children.cardContent.children",
+    isFormValid = validateFields(
+      "components.div.children.formwizardFirstStep.children.nocDetails.children.cardContent.children.nocDetailsContainer.children",
       state,
-      dispatch
+      dispatch,
+      'applyroadcuts'
     );
 
   }
@@ -217,27 +215,12 @@ const callBackForNext = async (state, dispatch) => {
 
 
 
-    } else if (hasFieldToaster) {
+    } else {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents!",
         labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST"
       };
-      switch (activeStep) {
-        case 1:
-          errorMessage = {
-            labelName:
-              "Please check the Missing/Invalid field for Property Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_PROPERTY_TOAST"
-          };
-          break;
-        case 2:
-          errorMessage = {
-            labelName:
-              "Please fill all mandatory fields for Applicant Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST"
-          };
-          break;
-      }
+
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
@@ -470,49 +453,3 @@ export const footer = getCommonApplyFooter({
 });
 
 
-export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
-  let allAreFilled = true;
-  document.getElementById("apply_form" + activeStep).querySelectorAll("[required]").forEach(function (i) {
-    i.parentNode.classList.remove("MuiInput-error-853");
-    i.parentNode.parentNode.classList.remove("MuiFormLabel-error-844");
-    if (!i.value) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-    }
-    if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-  })
-
-  document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
-    i.parentNode.classList.remove("MuiInput-error-853");
-    i.parentNode.parentNode.parentNode.classList.remove("MuiFormLabel-error-844");
-    if (i.value == i.placeholder) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-
-  })
-  if (!allAreFilled) {
-    //alert('Fill all fields')
-    isFormValid = false;
-    hasFieldToaster = true;
-  }
-  else {
-    //alert('Submit')
-    isFormValid = true;
-    hasFieldToaster = false;
-  }
-  return [isFormValid, hasFieldToaster]
-}; 

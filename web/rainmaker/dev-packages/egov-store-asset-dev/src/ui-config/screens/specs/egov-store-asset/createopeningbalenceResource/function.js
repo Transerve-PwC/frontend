@@ -24,9 +24,9 @@ import {
   
   } from "../../../../../ui-utils/sampleResponses";
 export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
-    let uuid = get(
+    let id = get(
       state.screenConfiguration.preparedFinalObject,
-      "Employee[0].uuid",
+      "materialReceipt[0].id",
       null
     );
 
@@ -101,7 +101,7 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
      
    
 
-    if (uuid) {
+    if (id) {
       createUpdateOpeningBalence(state, dispatch, "UPDATE");
     } else {
       createUpdateOpeningBalence(state, dispatch, "CREATE");
@@ -136,10 +136,21 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate",0) 
   receivedDate = convertDateToEpoch(receivedDate);
   set(materialReceiptObject[0],"receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate", receivedDate);
+  let id = get(
+    state.screenConfiguration.preparedFinalObject,
+    "materialReceipt[0].id",
+    null
+  );
+  if(id === null)
+  {
+    // const CurrentDate_ = new Date();
+    // let receiptDate = convertDateToEpoch(CurrentDate_);
   set(materialReceiptObject[0],"mrnNumber","");
-  set(materialReceiptObject[0],"receiptDate","");
+  set(materialReceiptObject[0],"receiptDate",receivedDate);
   set(materialReceiptObject[0],"mrnStatus","CREATED");
   set(materialReceiptObject[0],"receiptDetails[0].material.description","");
+  }
+  
   let UOM = get(state, "screenConfiguration.preparedFinalObject.material.materials",[]) 
   let MaterialCode = get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].material.code",'') 
   let UOMCode = UOM.filter((x) => x.code ===MaterialCode)
@@ -163,7 +174,8 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
           dispatch
         );
         if(response){
-          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=create&code=123456`));
+          let mrnNumber = response.materialReceipt[0].mrnNumber
+          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=OPENINGBALANCE&mode=create&code=${mrnNumber}`));
          }
       } catch (error) {
         //furnishmaterialsData(state, dispatch);
@@ -176,7 +188,8 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
           dispatch
         );
         if(response){
-          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=update&code=123456`));
+          let mrnNumber = response.materialReceipt[0].mrnNumber
+          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=OPENINGBALANCE&mode=update&code=${mrnNumber}`));
          }
       } catch (error) {
         //furnishmaterialsData(state, dispatch);

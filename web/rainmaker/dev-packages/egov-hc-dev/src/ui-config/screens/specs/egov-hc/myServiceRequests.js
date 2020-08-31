@@ -196,7 +196,8 @@ export const FieldsForFilterForm = getCommonCard({
             borderRadius: "2px",
             // minWidth: "220px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -233,7 +234,8 @@ export const FieldsForFilterForm = getCommonCard({
             // width: window.innerWidth > 480 ? "80%" : "100%",
            // minWidth: "220px",
            width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {

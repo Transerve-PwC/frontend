@@ -28,8 +28,9 @@ const undertakingButton1 = getCommonContainer({
     componentPath: "RadioGroupContainer",
   
     jsonPath: "ADVERTISEMENTNOC.exemptedCategory",
+    required: false,
     props: {
-      required: true,
+      required: false,
       label: { name: "Exempted Category", key: "ADV_EXEMPTED_CATEGORY_NOC_PLACEHOLDER" },
       buttons: [
         {
@@ -405,7 +406,7 @@ const commonBuildingData = buildingType => {
           labelName: "Enter Space(In Sq.ft.)",
           labelKey: "ADV_ENTER_SPACE_NOC_PLACEHOLDER"
         },
-        required: false,
+        required: true,
         props: {
           disabled: false,
         },

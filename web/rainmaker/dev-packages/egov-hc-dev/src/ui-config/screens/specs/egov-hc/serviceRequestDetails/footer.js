@@ -85,8 +85,14 @@ const callBackForNext = async (state, dispatch) => {
     let flagValidField = true;
 
    
-
-    if(! /^[0-9][0-9]{0,1}$/.test(treeCount))
+    // ^(0?[1-9]|[1-9][0-9])$
+    // ^(\d?[1-9]|[1-9]0)$
+    if(! /^(0?[1-9]|[1-9][0-9])$/.test(treeCount))
+    {
+      validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
+      flagValidField = false;
+    }
+    else if(parseInt(treeCount)===0)
     {
       validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
       flagValidField = false;
@@ -280,7 +286,6 @@ export const footer = getCommonApplyFooter({
 
 
 export const validatestepform = (state, dispatch, isFormValid, hasFieldToaster) => {
-
   if(window.NodeList && !NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach;
     }

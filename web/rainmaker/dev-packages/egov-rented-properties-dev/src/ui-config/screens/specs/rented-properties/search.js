@@ -30,7 +30,7 @@ import {
     await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
     const businessServices = JSON.parse(localStorageGet("businessServiceData"));
     if(!!businessServices) {
-      const status = businessServices[0].states.filter(item => !!businessService ? !!item.state : !!item.state && (item.state !== "OT_DRAFTED" && item.state !== "DC_DRAFTED" && item.state !== "MG_DRAFTED")).map(({state}) => ({code: state}))
+      const status = businessServices[0].states.filter(item => !!businessService ? !!item.state : !!item.state).map(({state}) => ({code: state}))
       dispatch(
         handleField(
           screenkey,

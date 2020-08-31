@@ -16,6 +16,18 @@ const header = getCommonHeader({
 });
 
 const getData = async(action, state, dispatch) => {
+  dispatch(
+    prepareFinalObject(
+      "Owners",
+      []
+      )
+      )
+  dispatch(
+    prepareFinalObject(
+      "OwnersTemp",
+      []
+    )
+  )
   const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
   if(!!applicationNumber) {
     const queryObject = [
@@ -23,22 +35,20 @@ const getData = async(action, state, dispatch) => {
     ]
     const response = await getOwnershipSearchResults(queryObject);
     if (response && response.Owners) {
-    dispatch(prepareFinalObject("Owners", response.Owners))
+      let {Owners} = response
+    let ownershipTransferDocuments = Owners[0].ownerDetails.ownershipTransferDocuments || [];
+    const removedDocs = ownershipTransferDocuments.filter(item => !item.active)
+    ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item.active)
+    Owners = [{...Owners[0], ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments}}]
+    dispatch(prepareFinalObject("Owners", Owners))
+    dispatch(
+      prepareFinalObject(
+        "OwnersTemp[0].removedDocs",
+        removedDocs
+      )
+    );
     }
     setDocsForEditFlow(state, dispatch, "Owners[0].ownerDetails.ownershipTransferDocuments", "OwnersTemp[0].uploadedDocsInRedux");
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Owners",
-        []
-        )
-        )
-    dispatch(
-      prepareFinalObject(
-        "OwnersTemp",
-        []
-      )
-    )
   }
   setDocumentData(action, state, dispatch, {documentCode: "FRESHLICENSE", jsonPath: "Owners[0].ownerDetails.ownershipTransferDocuments", screenKey: "ownership-apply", screenPath: "components.div.children.formwizardSecondStep.children.ownershipTransferDocumentsDetails.children.cardContent.children.documentList", tempJsonPath:"OwnersTemp[0].ownershipTransferDocuments"})
 }

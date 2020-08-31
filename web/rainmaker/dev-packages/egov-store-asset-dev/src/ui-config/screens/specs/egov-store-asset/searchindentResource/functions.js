@@ -4,9 +4,11 @@ import {
   handleScreenConfigurationFieldChange as handleField,
   toggleSnackbar,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getPriceListSearchResults } from "../../../../../ui-utils/storecommonsapi";
+import { getMaterialIndentSearchResults } from "../../../../../ui-utils/storecommonsapi";
 import { getTextToLocalMapping } from "./searchResults";
+import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
 import { validateFields } from "../../utils";
+import { IndentConfigType } from "../../../../../ui-utils/sampleResponses";
 import { getTenantId,getOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 export const getDeptName = (state, codes) => {
@@ -35,6 +37,7 @@ export const getDesigName = (state, codes) => {
 
 export const searchApiCall = async (state, dispatch) => {
   let { localisationLabels } = state.app || {};
+  let Dateselect = true;
   showHideTable(false, dispatch);
   const tenantId =
     get(state.screenConfiguration.preparedFinalObject, "searchScreen.ulb") ||
@@ -43,6 +46,10 @@ export const searchApiCall = async (state, dispatch) => {
     {
       key: "tenantId",
       value: tenantId,
+    },
+    {
+      key: "indentType",
+      value: IndentConfigType().IndntType.INEDENT
     },
   ];
   let searchScreenObject = get(
@@ -54,7 +61,7 @@ export const searchApiCall = async (state, dispatch) => {
     "components.div.children.searchForm.children.cardContent.children.searchFormContainer.children",
     state,
     dispatch,
-    "search-price-list"
+    "search-indent"
   );
 
   if (!isSearchFormValid) {
@@ -89,13 +96,22 @@ export const searchApiCall = async (state, dispatch) => {
         searchScreenObject.hasOwnProperty(key) &&
         searchScreenObject[key].trim() !== ""
       ) {
-        queryObject.push({ key: key, value: searchScreenObject[key].trim() });
+
+        if (key === "indentDate") {
+          Dateselect = true;
+          queryObject.push({
+            key: key,
+            value: convertDateToEpoch(searchScreenObject[key])
+          });
+        } 
+        else
+                queryObject.push({ key: key, value: searchScreenObject[key].trim() });
       }
     }
-    let response = await getPriceListSearchResults(queryObject, dispatch);
+    let response = await getMaterialIndentSearchResults(queryObject, dispatch);
     try {
 
-      if(response.priceLists.length===0)
+      if(response.indents.length===0)
       {
         dispatch(
               toggleSnackbar(
@@ -107,22 +123,23 @@ export const searchApiCall = async (state, dispatch) => {
            
       }
       else{
-      let data = response.priceLists.map((item) => {
+      let data = response.indents.map((item) => {
        
 
         return {
-          [getTextToLocalMapping("Suplier Name")]: get(item, "name", "-") || "-",
-          [getTextToLocalMapping("rate Type")]: get(item, "rateType", "-") || "-", 
-        //  [getTextToLocalMapping("Store Name")]: get(item, "StoreName", "-") || "-", 
-          [getTextToLocalMapping("Active")]: get(item, "status", "-") || "-",  
-          code: item.code,       
+          [getTextToLocalMapping("Indent No.")]: get(item, "indentNumber", "-") || "-",
+          [getTextToLocalMapping("Indent Date")]:  convertEpochToDate(Number(item.indentDate,"indentDate" ,"-")) || "-", 
+         [getTextToLocalMapping("Indenting Store Name")]: get(item, "indentStore.name", "-") || "-", 
+          [getTextToLocalMapping("Indent Purpose")]: get(item, "indentPurpose", "-") || "-",  
+          [getTextToLocalMapping("Indent Status")]: get(item, "indentStatus", "-") || "-",  
+          id: item.id,       
          
         };
       });
 
       dispatch(
         handleField(
-          "search-price-list",
+          "search-indent",
           "components.div.children.searchResults",
           "props.data",
           data
@@ -130,11 +147,11 @@ export const searchApiCall = async (state, dispatch) => {
       );
       dispatch(
         handleField(
-          "search-price-list",
+          "search-indent",
           "components.div.children.searchResults",
           "props.title",
-          `${getTextToLocalMapping("Search Results for Material Master")} (${
-            response.priceLists.length
+          `${getTextToLocalMapping("Search Results for Material Indent")} (${
+            response.indents.length
           })`
         )
       );
@@ -155,7 +172,7 @@ export const searchApiCall = async (state, dispatch) => {
 const showHideTable = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(
-      "search-price-list",
+      "search-indent",
       "components.div.children.searchResults",
       "visible",
       booleanHideOrShow

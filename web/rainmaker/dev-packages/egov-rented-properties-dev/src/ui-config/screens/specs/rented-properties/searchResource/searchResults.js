@@ -21,7 +21,7 @@ export const REMAINING_INTEREST = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_
 export const REMAINING_PRINCIPAL = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
 export const TOTAL_DUE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
 export const TYPE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TYPE")
-
+export const ACCOUNT_BALANCE = getTextToLocalMapping("RP_COMMON_TABLE_ACCOUNT_BALANCE")
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
@@ -114,7 +114,8 @@ export const accountStatementResults = {
       TYPE,
       REMAINING_INTEREST,
       REMAINING_PRINCIPAL,
-      TOTAL_DUE  
+      TOTAL_DUE,
+      ACCOUNT_BALANCE 
     ],
     options: {...searchResults.props.options,
       pagination: false,

@@ -70,9 +70,15 @@ const getMdmsData = async (action, state, dispatch) => {
       mdmsBody
     );
     let obj={}
+    let obj1={}
     obj['name']="ALL"
-  
-  payload.MdmsRes["RAINMAKER-PR"].pressType.unshift(obj)
+    obj['code']="ALL"
+   
+    
+
+    obj1['name']="Select Type Of The Press"
+  payload.MdmsRes["RAINMAKER-PR"].pressType.unshift(obj1)
+  payload.MdmsRes["RAINMAKER-PR"].pressType.push(obj)
  
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {

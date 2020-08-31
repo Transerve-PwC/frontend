@@ -3,8 +3,8 @@ import { getBreak, getCommonCard, getCommonParagraph, getCommonTitle } from "ego
 export const documentDetails = getCommonCard({
   header: getCommonTitle(
     {
-      abelName: "Documents",
-      labelKey: "ADV_DOCUMENTS_NOC"
+      labelName: "Documents",
+      labelKey: "ROADCUT_DOCUMENTS_NOC"
     },
     {
       style: {
@@ -44,7 +44,7 @@ export const documentDetails = getCommonCard({
           },
           buttonLabel: {
             labelName: "UPLOAD FILE",
-            labelKey: "PR_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
+            labelKey: "PM_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
           },
           maxFileSize: 2000,
           moduleName: "egov-opms",

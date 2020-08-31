@@ -71,6 +71,11 @@ const DynamicTableContainer = Loadable({
   loader: () => import("./DynamicTableContainer"),
   loading: () => <Loading />
 })
+const MultiItem = Loadable({
+  loader: () => import("./MultiItem"),
+  loading: () => <Loading />
+});
+
 
 export {
   CustomTabContainer,
@@ -88,5 +93,6 @@ export {
   ReassignContainer,
   ForwardContainer,
   UnderTakingContainer,
-  DynamicTableContainer
+  DynamicTableContainer,
+  MultiItem
 };

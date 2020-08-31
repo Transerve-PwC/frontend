@@ -128,7 +128,9 @@ export const nocDetails = getCommonCard({
       },
       sourceJsonPath: "applyScreenMdmsData.egpm.sector",
       jsonPath: "SELLMEATNOC.sector",
+      required: true,
       errorMessage:"ERR_DEFAULT_INPUT_FIELD_MSG",
+
       props: {
         className: "applicant-details-error",
         required: true

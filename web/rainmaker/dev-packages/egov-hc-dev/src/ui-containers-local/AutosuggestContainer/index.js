@@ -19,6 +19,7 @@ class AutoSuggestor extends Component {
     const { onChange } = this.props;
     onChange({ target: { value: value } });
   };
+  
 
   render() {
     const {
@@ -45,6 +46,8 @@ class AutoSuggestor extends Component {
     return (
       <div>
         <AutoSuggest
+
+        
           onSelect={this.onSelect}
           suggestions={suggestions}
           className={className}
@@ -64,7 +67,7 @@ const getLocalisedSuggestions = (suggestions, localePrefix, transfomedKeys) => {
     suggestions.length > 0 &&	
     suggestions.map((option, key) => {	
       option.name = getLocaleLabels(	
-        option.code,	
+        String(option.code).split(" ")[0],	
         localePrefix && !isEmpty(localePrefix)	
           ? appendModulePrefix(option.code, localePrefix)	
           : option.name,	

@@ -12,7 +12,7 @@ import {
 import { headerChallan } from "./challanManage/headerChallan/manageChallanHeader";
 import { getDashboardChallanCount } from "../../../../ui-utils/commons";
 import { handleFieldChange } from "egov-ui-kit/redux/form/actions";
-import { checkForRole } from "../utils";
+import { checkForRole, getMdmsEncroachmentSectorData } from "../utils";
 
 const header = getCommonHeader(
   {
@@ -30,109 +30,111 @@ const header = getCommonHeader(
     }
   }
 );
-let cardItems = [];
 
-const cardlist = [
-  {
-    label: {
-      labelName: "E - Challan",
-      labelKey: "",
-    },
-    icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      font-size="40px"
-      class="material-icons module-page-icon">
-      wysiwyg
-      </i>,
-    route: "echallan-landing",
-    id: "eChallan",
-    pendingCount: '', //localStorageGet("challanCount") === null ? "" : localStorageGet("challanCount"),
-    color: 'powderblue',
-    roleDefination: {
-      rolePath: "user-info.roles",
-      roles: ["challanSI", "challanSM", "challanHOD", "challanEAO"],
-    },
+const ECHALLAN = {
+  label: {
+    labelName: "E - Challan",
+    labelKey: "EC_CHALLAN_CARD"
+  },
+  icon: <i
+    viewBox="0 -8 35 42"
+    color="primary"
+    font-size="40px"
+    class="material-icons module-page-icon" style={{ fontSize: "40px" }}>
+    wysiwyg
+</i>,
+  route: "echallan-landing",
+  id: "eChallan",
+  roleDefination: {
+    rolePath: "user-info.roles",
+    roles: ["challanSI", "challanSM", "challanHOD", "challanEAO"],
+  },
+}
 
+const ECHALLANAUCTION = {
+  label: {
+    labelName: "Auction",
+    labelKey: "EC_AUCTION_CARD"
   },
-  {
-    label: {
-      labelName: "Auction",
-      labelKey: ""
-    },
-    icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      class="material-icons module-page-icon">
-      gavel
-      </i>,
-    route: "../auction/home",
-    id: "eAuction",
-    pendingCount: '', //localStorageGet("auctionCount") === null ? "" : localStorageGet("auctionCount"),
-    color: 'lightgreen',
-    roleDefination: {
-      rolePath: "user-info.roles",
-      roles: ["challanSM", "challanHOD"],
-    },
-    // {
-    //   screenKey: "citizenMainLanding",
-    //   jsonPath: "components.adhocDialog"
-    // }
+  icon: <i
+    viewBox="0 -8 35 42"
+    color="primary"
+    font-size="40px"
+    class="material-icons module-page-icon" style={{ fontSize: "40px" }}>
+    gavel
+</i>,
+  route: "../egov-echallan-auction/home",
+  id: "eAuction",
+  roleDefination: {
+    rolePath: "user-info.roles",
+    roles: ["challanSM", "challanHOD", "challanEAO"],
   },
-  {
-    label: {
-      labelKey: "",
-      labelName: "Fine Master"
-    },
-    icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      class="material-icons module-page-icon">
-      grading
-      </i>,
-    route: "../fine-master/search",
-    id: "fine-Master",
-    pendingCount: '', //localStorageGet("fineCount") === null ? "" : localStorageGet("fineCount"),
-    roleDefination: {
-      rolePath: "user-info.roles",
-      roles: ["challanHOD"],
-    },
-    color: 'darkturquoise',
-  },
-  {
-    label: {
-      labelKey: "",
-      labelName: "Item Master"
-    },
-    icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      class="material-icons module-page-icon">
-      picture_in_picture
-      </i>,
-    route: "../item-master/search",
-    pendingCount: '', //localStorageGet("itemCount") === null ? "" : localStorageGet("itemCount"),
-    id: "Item-Master",
-    roleDefination: {
-      rolePath: "user-info.roles",
-      roles: [""],
-    },
-    color: 'burlywood',
-  },
-];
+}
 
-cardItems = cardlist;
+const ECFINEMASTER = {
+  label: {
+    labelName: "FINE MASTEr",
+    labelKey: "EC_FINE_MASTER"
+  },
+  icon: <i
+    viewBox="0 -8 35 42"
+    color="primary"
+    font-size="40px"
+    class="material-icons module-page-icon" style={{ fontSize: "40px" }}>
+    grading
+</i>,
+  route: "../egov-echallan-fine-master/search",
+  id: "fine-Master",
+  roleDefination: {
+    rolePath: "user-info.roles",
+    roles: ["challanHOD"],
+  },
+}
 
-const geteChallanCount = async (action, state, dispatch) => {
-  try {
-    let payload = null;
-    payload = await getDashboardChallanCount();
-    dispatch(prepareFinalObject("eChallanDashboardCount", payload.ResponseBody));
-    return payload.ResponseBody[0];
-  } catch (e) {
-    console.log(e);
-  }
-};
+
+let allCardList = [
+  { "code": "ECHALLAN", "value": ECHALLAN },
+  { "code": "ECHALLANAUCTION", "value": ECHALLANAUCTION },
+  { "code": "ECFINEMASTER", "value": ECFINEMASTER }]
+
+
+const setcardList = (state, dispatch) => {
+  let mdmsCardList = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.cardList",
+    []
+  );
+  let moduleCardList = []
+  let roles = JSON.parse(getUserInfo()).roles;
+  mdmsCardList.map((item, index) => {
+    roles.some(r => {
+      if (item.roles.includes(r.code)) {
+        if (moduleCardList.length > 0) {
+          if (!moduleCardList.find((x) => x.code == item.code)) {
+            if (allCardList[index] !== undefined) {
+              moduleCardList.push(allCardList[index])
+            }
+          }
+        } else {
+          if (allCardList[index] !== undefined) {
+            moduleCardList.push(allCardList[index])
+          }
+        }
+      }
+    })
+  });
+
+  const cards = moduleCardList.map((item, index) => {
+    return item.value
+  });
+
+  dispatch(
+    handleField(
+      "home",
+      "components.div.children.applyCard",
+      "props.items",
+      cards
+    )
+  );
+}
 
 
 const eChallanPermissionManagement = {
@@ -140,32 +142,8 @@ const eChallanPermissionManagement = {
   name: "home",
   beforeInitScreen: (action, state, dispatch) => {
     setapplicationType("egov-echallan");
-    geteChallanCount(action, state, dispatch).then(response => {
-      let countDetails = get(state, 'screenConfiguration.preparedFinalObject.eChallanDashboardCount[0]', {});
-      let userInfo = JSON.parse(getUserInfo());
-      const roles = get(userInfo, "roles")
-      if (checkForRole(roles, 'challanSI') || checkForRole(roles, 'challanHOD') || checkForRole(roles, 'challanSM')) {
-        dispatch(
-          handleField('home', 'components.div.children.applyCard.props.items[0]',
-            'pendingCount',
-            get(state, 'screenConfiguration.preparedFinalObject.eChallanDashboardCount[0].challanCount', ''))
-        );
-      }
-
-      if (checkForRole(roles, 'challanHOD') || checkForRole(roles, 'challanSM')) {
-        dispatch(
-          handleField('home', 'components.div.children.applyCard.props.items[1]',
-            'pendingCount',
-            get(state, 'screenConfiguration.preparedFinalObject.eChallanDashboardCount[0].auctionCount', ''))
-        );
-      }
-      if (checkForRole(roles, 'challanHOD')) {
-        dispatch(
-          handleField('home', 'components.div.children.applyCard.props.items[2]',
-            'pendingCount',
-            get(state, 'screenConfiguration.preparedFinalObject.eChallanDashboardCount[0].fineCount', ''))
-        );
-      }
+    getMdmsEncroachmentSectorData(action, state, dispatch).then(response => {
+      setcardList(state, dispatch);
     });
     return action;
   },
@@ -177,12 +155,13 @@ const eChallanPermissionManagement = {
         header: header,
         headerChallan: headerChallan,
         applyCard: {
-          uiFramework: "custom-molecules-local",
+          uiFramework: "custom-molecules", //"custom-molecules-local",
           moduleName: "egov-echallan",
-          componentPath: "CustomizedLandingPage",
+          componentPath: "LandingPage",
           props: {
-            items: cardItems,
-            history: {}
+            items: [],
+            history: {},
+            module: "egov-echallan"
           }
         },
         // listCard: {

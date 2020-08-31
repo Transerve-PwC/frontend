@@ -19,7 +19,7 @@ import {
   import jp from "jsonpath";
   import get from "lodash/get";
   import set from "lodash/set";
-  import { getSearchResults } from "../../../../ui-utils/commons";
+ 
   import { LocalityWiseReport } from "./searchResource/Report";
   import { LocalityReportSearchResults } from "./searchResource/searchResults";
   

@@ -14,6 +14,7 @@ import {
   import set from "lodash/set";
   import { getPaymentGateways } from "../../../../ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC } from "../../../../ui-constants";
 
   const header = getCommonContainer({
     header: getCommonHeader({
@@ -51,15 +52,15 @@ import {
         { key: "businessServices", value: businessService }
       ];
       setPaymentMethods(action, state, dispatch)
-      setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+      // setBusinessServiceDataToLocalStorage(queryObject, dispatch);
       await fetchBill(action, state, dispatch, businessService);
       let sourceJsonPath;
       switch(businessService) {
-        case "OwnershipTransferRP" : {
+        case BILLING_BUSINESS_SERVICE_OT : {
           sourceJsonPath = "OwnersTemp[0].estimateCardData"
           break
         }
-        case "DuplicateCopyOfAllotmentLetterRP": {
+        case BILLING_BUSINESS_SERVICE_DC: {
           sourceJsonPath = "DuplicateTemp[0].estimateCardData"
           break
         }

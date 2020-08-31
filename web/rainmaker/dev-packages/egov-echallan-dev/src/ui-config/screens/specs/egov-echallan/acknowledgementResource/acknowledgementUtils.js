@@ -4,7 +4,7 @@ import {
   getCommonParagraph,
   getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-
+import "./index.css";
 
 const style = {
   bodyBox: {
@@ -21,7 +21,7 @@ const style = {
     fontWeight: 500
   },
   tailBox: {
-    textAlign: "right",
+    textAlign: "left",
     justifyContent: "center",
     flex: 1
   },
@@ -29,7 +29,7 @@ const style = {
     marginTop: "8px",
     marginBottom: "0px",
     color: "rgba(0, 0, 0, 0.60)",
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",    
   },
   container: {
     display: "flex",
@@ -37,6 +37,7 @@ const style = {
     justifyContent: "center",
     alignItems: "center"
   }
+  
 };
 
 const acknowledgementCard = ({
@@ -103,7 +104,11 @@ const acknowledgementCard = ({
           },
           props: {
             style: style.bodyBox
-          }
+          },
+          gridDefination: {
+            xs: 10,
+            sm: 8
+          },
         },
         tail: tail
       },

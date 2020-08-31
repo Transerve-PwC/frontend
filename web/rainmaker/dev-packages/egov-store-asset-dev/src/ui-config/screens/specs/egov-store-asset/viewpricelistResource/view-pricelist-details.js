@@ -30,58 +30,7 @@ const getHeader = label => {
     type: "array"
   };
 };
-const storeCard = {
-  uiFramework: "custom-containers",
-  componentPath: "MultiItem",
-  props: {
-    className: "review-hr",
-    scheama: getCommonGrayCard({
-      storeCardContainer: getCommonContainer({
-        materialcode: getLabelWithValue(
-          {
-            labelName: "Material Code",
-              labelKey: "STORE_MATERIAL_CODE"
-          },
-          { jsonPath: "priceLists[0].priceListDetails[0].material.code",          
-        }
-        ),
-        quantity: getLabelWithValue(
-          {
-            labelName: "quantity",
-                  labelKey: "STORE_DETAILS_QUANTITY"
-          },
-          { jsonPath: "priceLists[0].priceListDetails[0].quantity"
-          
-         }
-        ),
-        ratePerUnit: getLabelWithValue(
-          { labelName: "Rate",
-          labelKey: "STORE_DETAILS_RATE"},
-          {
-            jsonPath: "priceLists[0].priceListDetails[0].ratePerUnit"
-           
-          }
-        ),
-        uomcode: getLabelWithValue(
-          {  labelName: "Store Name", labelKey: "STORE_DETAILS_STORE_NAME" },
-          {
-            jsonPath: "priceLists[0].priceListDetails[0].uom.code",
-           
-          }
-        )
-      })
-    }),
 
-    items: [],
-    hasAddItem: false,
-    isReviewPage: true,
-    sourceJsonPath: "materials[0].storeMapping",
-    prefixSourceJsonPath:
-      "children.cardContent.children.storeCardContainer.children",
-    afterPrefixJsonPath: "children.value.children.key"
-  },
-  type: "array"
-};
 
 export const getPriceListDetailsView = (isReview = true) => {
   return getCommonGrayCard({
@@ -99,7 +48,7 @@ export const getPriceListDetailsView = (isReview = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Material Details",
-            labelKey: "STORE_MATERIAL_DETAILS"
+            labelKey: "STORE_MATERIAL_SUPPLIER_DETAILS"
           })
         },
         editSection: {
@@ -202,8 +151,7 @@ export const getPriceListDetailsView = (isReview = true) => {
         }
       )
     }),
-    // break2: getBreak(),
-    // Viewtwo: storeCard
+   
 
   });
 };

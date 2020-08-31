@@ -6,23 +6,23 @@ import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
-    case "Material Name":
+    case "MRN Number":
       return getLocaleLabels(
-        "Material Name",
-        "STORE_MATERIAL_NAME",
+        "MRN Number",
+        "STORE_MATERIAL_COMMON_MRN_NUMBER",
         localisationLabels
       );
 
-      case "Material Type Name":
+      case "Store Name":
         return getLocaleLabels(
-          "Material Type Name",
-          "STORE_COMMON_TABLE_COL_MATERIAL_TYPE_NAME",
+          "Store Name",
+          "STORE_DETAILS_STORE_NAME",
           localisationLabels
         );
-    case "Material Type Description":
+    case "Financial Year":
       return getLocaleLabels(
-        "Material Type Description",
-        "STORE_COMMON_TABLE_COL_MATERIAL_DESC",
+        "Financial Year",
+        "STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR",
         localisationLabels
       );
       case "Parent Material Type Name":
@@ -43,10 +43,10 @@ export const getTextToLocalMapping = (label) => {
         "STORE_COMMON_TABLE_COL_ACTIVE",
         localisationLabels
       );
-    case "Search Results for Material Master":
+    case "Search Results for Opening Balence":
       return getLocaleLabels(
-        "Search Results for Material Master",
-        "STORE_MATERIAL_MASTER_SEARCH_RESULTS_TABLE_HEADING",
+        "Search Results for Opening Balence",
+        "STORE_MATERIAL_OPENING_BALANCE_SEARCH_RESULTS_TABLE_HEADING",
         localisationLabels
       );
   }
@@ -58,18 +58,18 @@ export const searchResults = {
   visible: false,
   props: {
     columns: [
-      getTextToLocalMapping("Material Name"),
-      getTextToLocalMapping("Material Type Name"),
+      getTextToLocalMapping("MRN Number"),
+      //getTextToLocalMapping("Material Type Name"),
       getTextToLocalMapping("Store Name"),     
-      getTextToLocalMapping("Active"),
+      getTextToLocalMapping("Financial Year"),
       {
-        name: "code",
+        name: "id",
         options: {
           display: false
         }
       },
     ],
-    title: getTextToLocalMapping("Search Results for Material Master"),
+    title: getTextToLocalMapping("Search Results for Opening Balence"),
     options: {
       filter: false,
       download: false,
@@ -86,7 +86,8 @@ export const searchResults = {
 
 const onRowClick = (rowData) => {
   let tenantId = getTenantId();
-  window.location.href = `view-material-master?code=${rowData[4]}&tenantId=${tenantId}`;
+ // window.location.href = `view-opening-balence?id=${rowData[3]}&tenantId=${tenantId}`;
+  window.location.href = `createopeningbalence?id=${rowData[3]}&tenantId=${tenantId}`;
 };
 
 

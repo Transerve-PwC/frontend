@@ -10,7 +10,6 @@ import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/a
 // import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 
 
-
 const role_name = JSON.parse(getUserInfo()).roles[0].code
 
 
@@ -26,10 +25,12 @@ export const getLocaleLabelsforTL = (label, labelKey, localizationLabels) => {
     return label;
   }
 };
+
 export const getSearchResultsEmployeeRequestFilter = async (data) => {
   // debugger
   
   try {
+    store.dispatch(toggleSpinner());
     const response = await httpRequest(
       "post",
       "/hc-services/serviceRequest/_get",
@@ -37,9 +38,10 @@ export const getSearchResultsEmployeeRequestFilter = async (data) => {
       [],
       data
     );
-
+    store.dispatch(toggleSpinner());
     return response;
   } catch (error) {
+    store.dispatch(toggleSpinner());
     store.dispatch(
       toggleSnackbar(
         true,
@@ -49,6 +51,7 @@ export const getSearchResultsEmployeeRequestFilter = async (data) => {
     );
   }
 };
+
 export const getSearchResults = async queryObject => {
   let data = {
     "iscitizen" : 1
@@ -61,10 +64,11 @@ export const getSearchResults = async queryObject => {
       [],
       data
     );
-    
+    store.dispatch(toggleSpinner())
     return response;
 
   } catch (error) {
+    store.dispatch(toggleSpinner())
     store.dispatch(
       toggleSnackbar(
         true,
@@ -93,33 +97,32 @@ export const getCurrentAssigneeUserNameAndRole = async (dispatch,userId) => {
     console.log(e);
   }};
 
-export const getSearchResultsForFilters = async (filterdata) => {
+  export const getSearchResultsForFilters = async (filterdata) => {
   
-  let data = filterdata
-
-  try {
-    const response = await httpRequest(
-      "post",
-      "/hc-services/serviceRequest/_get",
-      "",
-      [],
-      data
-    );
-
-    return response;
-
-  } catch (error) {
-    store.dispatch(
-      toggleSnackbar(
-        true,
-        { labelName: error.message, labelCode: error.message },
-        "error"
-      )
-    );
-  }
-
-};
-
+    let data = filterdata
+    try {
+      const response = await httpRequest(
+        "post",
+        "/hc-services/serviceRequest/_get",
+        "",
+        [],
+        data
+      );
+      store.dispatch(toggleSpinner);
+      return response;
+  
+    } catch (error) {
+      store.dispatch(toggleSpinner);
+      store.dispatch(
+        toggleSnackbar(
+          true,
+          { labelName: error.message, labelCode: error.message },
+          "error"
+        )
+      );
+    }
+  
+  };
 
 export const getSearchResultsView = async queryObject => {
   try {
@@ -149,21 +152,7 @@ export const furnishServiceRequestDetailResponse = response => {
   let serviceRequestDetail = response.ResponseBody[0].length > 0 ? JSON.parse(response.ResponseBody[0]) : '';
 
   let serviceType
-//   if (response.ResponseBody[0].service_type == "PRUNING OF TREES GIRTH LESS THAN OR EQUAL TO 90 CMS"){
-//     serviceType = "Pruning of Trees Girth less than or equal to 90 cms"
-//   }
-//  else if(response.ResponseBody[0].service_type == "PRUNING OF TREES GIRTH GREATER THAN 90 CMS"){
-//   serviceType = "Pruning of Trees Girth greater than 90 cms"
-//   }
-//   else if(response.ResponseBody[0].service_type == "REMOVAL OF OVERGROWN/GREEN TREES"){
-//     serviceType = "Removal of Overgrown/Green Trees"
-//   }
-//   else if(response.ResponseBody[0].service_type == "REMOVAL OF DEAD/DANGEROUS/DRY TREES"){
-//     serviceType = "Removal of Dead/Dangerous/Dry Trees"
-//   }
-//   else{
-//     serviceType = ""
-//   }
+
   set(refurnishresponse, "contactNumber", response.ResponseBody[0].contact_number);
   // set(refurnishresponse, "mohalla", response.ResponseBody[0].street_name);
   set(refurnishresponse, "description", response.ResponseBody[0].description);
@@ -184,7 +173,30 @@ export const furnishServiceRequestDetailResponse = response => {
   set(refurnishresponse, "isEditState", 1);
   return refurnishresponse;
 };
+export const furnishServiceRequestDetailResponseForEdit = response => {
 
+  let refurnishresponse = {};
+ 
+
+  set(refurnishresponse, "contactNumber", response.contactNumber);
+  set(refurnishresponse, "description", response.description);
+  set(refurnishresponse, "ownerName", response.ownerName);
+  set(refurnishresponse, "tenantId", response.tenantId);
+  set(refurnishresponse, "email", response.email);
+  set(refurnishresponse, "mohalla", {value:"", label:response.mohalla});
+  set(refurnishresponse, "houseNoAndStreetName", response.houseNoAndStreetName);
+  set(refurnishresponse, "landmark", response.landmark);
+  set(refurnishresponse, "latitude", response.latitude);
+  set(refurnishresponse, "longitude", response.longitude);
+  set(refurnishresponse, "address", response.address);
+  set(refurnishresponse, "serviceType", {value:"", label: response.serviceType});
+  set(refurnishresponse, "treeCount", response.treeCount);
+  set(refurnishresponse, "service_request_id", response.service_request_id);
+  // set(refurnishresponse, "media", JSON.parse(response.media));
+  
+  set(refurnishresponse, "isEditState", 1);
+  return refurnishresponse;
+};
 export const setApplicationNumberBox = (state, dispatch) => {
 
   let applicationNumber = get(state, "state.screenConfiguration.preparedFinalObject.SERVICEREQUEST.service_request_id", null);
@@ -210,6 +222,7 @@ export const setApplicationNumberBox = (state, dispatch) => {
 };
 
 export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
+  // debugger
   for (let i = 0; i < arr.length; i++) {
     if (conditionCheckerFn(arr[i])) {
       return arr[i];
@@ -217,78 +230,9 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
   }
 };
 
-export const getOPMSCards = async () => {
-  
-  let queryObject = [];
-  var requestBody = {
-
-  }
-
-  try {
-    const payload = await httpRequest(
-      "post",
-      "/egov-mdms-service/v1/_get?moduleName=egpm&masterName=ApplicationType&tenantId="`${getTenantId()}`,
-      "",
-      queryObject,
-      requestBody
-    );
-    return payload;
-  } catch (error) {
-    store.dispatch(toggleSnackbar(true, error.message, "error"));
-  }
-
-
-
-
-};
 
 
 export const EditServiceRequest = async (state, dispatch, status) => {
-    let response = '';
-    
-    let method = "CREATE";
-  
-    try {
-      
-      let payload = get(state.screenConfiguration.preparedFinalObject, "SERVICEREQUEST", []);
-      console.log("payload",payload)
-      let service_request_id_for_edit
-      try{
-        service_request_id_for_edit = payload.service_request_id
-      }
-      catch(e){
-        service_request_id_for_edit= "";
-      }
-      let response = '';
-      setapplicationMode(status);
-      let arraypayload=[]
-      arraypayload.push(payload);
-  
-      if (method === "CREATE") {
-        
-        dispatch(toggleSpinner());
-        response = await httpRequest("post", "hc-services/serviceRequest/_create", "", [], {services: arraypayload });
- 
-        if (response.ResponseInfo.status === 'successful') {
-          dispatch(prepareFinalObject("SERVICES", response));
-          setapplicationNumber(service_request_id_for_edit);
-
-          setApplicationNumberBox(state, dispatch);
-          dispatch(toggleSpinner());
-          return { status: "successful", message: response };
-        } else {
-          dispatch(toggleSpinner());
-          return { status: "fail", message: response };
-        }
-      } 
-  
-    } catch (error) {
-      dispatch(toggleSpinner());
-      dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
-
-    }
-  };
-export const createServiceRequest = async (state, dispatch, status) => {
   let response = '';
   
   let method = "CREATE";
@@ -296,8 +240,15 @@ export const createServiceRequest = async (state, dispatch, status) => {
   try {
     
     let payload = get(state.screenConfiguration.preparedFinalObject, "SERVICEREQUEST", []);
-    console.log("payload",payload)
-
+    // console.log("payload"+payload)
+   
+    let service_request_id_for_edit
+    try{
+      service_request_id_for_edit = payload.service_request_id
+    }
+    catch(e){
+      service_request_id_for_edit= "";
+    }
     let response = '';
     setapplicationMode(status);
     let arraypayload=[]
@@ -306,20 +257,15 @@ export const createServiceRequest = async (state, dispatch, status) => {
     if (method === "CREATE") {
       
       dispatch(toggleSpinner());
-
       response = await httpRequest("post", "hc-services/serviceRequest/_create", "", [], {services: arraypayload });
-      
-      
-      if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
+
+      if (response.ResponseInfo.status === 'successful') {
         dispatch(prepareFinalObject("SERVICES", response));
-      
-        setapplicationNumber(response.services[0].service_request_id);
-        
-      
-        
+        setapplicationNumber(service_request_id_for_edit);
+
         setApplicationNumberBox(state, dispatch);
         dispatch(toggleSpinner());
-        return { status: "success", message: response };
+        return { status: "successful", message: response };
       } else {
         dispatch(toggleSpinner());
         return { status: "fail", message: response };
@@ -330,9 +276,54 @@ export const createServiceRequest = async (state, dispatch, status) => {
     dispatch(toggleSpinner());
     dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
 
-    
-    
-    return { status: "failure", message: error };
   }
+};
+
+export const createServiceRequest = async (state, dispatch, status) => {
+let response = '';
+
+let method = "CREATE";
+
+try {
+  
+  let payload = get(state.screenConfiguration.preparedFinalObject, "SERVICEREQUEST", []);
+  console.log("payload",payload)
+
+  let response = '';
+  setapplicationMode(status);
+  let arraypayload=[]
+  arraypayload.push(payload);
+
+  if (method === "CREATE") {
+    
+    dispatch(toggleSpinner());
+
+    response = await httpRequest("post", "hc-services/serviceRequest/_create", "", [], {services: arraypayload });
+    
+    
+    if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
+      dispatch(prepareFinalObject("SERVICES", response));
+    
+      setapplicationNumber(response.services[0].service_request_id);
+      
+    
+      
+      setApplicationNumberBox(state, dispatch);
+      dispatch(toggleSpinner());
+      return { status: "success", message: response };
+    } else {
+      dispatch(toggleSpinner());
+      return { status: "fail", message: response };
+    }
+  } 
+
+} catch (error) {
+  dispatch(toggleSpinner());
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+
+  
+  
+  return { status: "failure", message: error };
+}
 };
 

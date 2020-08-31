@@ -173,7 +173,7 @@ class InboxData extends React.Component {
                   return (
                     <TableCell className={classNames}>
                       {index === 4 ? (
-                        <div className = "rainmaker-displayInline">
+                        <div className = "rainmaker-displayInline sortstyle">
                           {sortOrder === "desc" && (
                             <div className="arrow-icon-style" onClick={() => this.sortingTable("asc")}>
                               <Label label={item} labelStyle={{ fontWeight: "500" }} color="#000000" />
@@ -251,20 +251,20 @@ class InboxData extends React.Component {
         <Hidden only={["sm", "md", "lg", "xl"]} implementation="css">
           <div class="sort-icon-flex">
               {sortOrder === "asc" && (
-                <div className = "rainmaker-displayInline" onClick={() => this.sortingTable("desc")}>
+                <div className = "rainmaker-displayInline sortstyle" onClick={() => this.sortingTable("desc")}>
                   <ImportExportIcon />
                   <Label className="sort-icon" label={"INBOX_SORT_ICON"} />
                 </div>
               )}
               {sortOrder === "desc" && (
-                <div className = "rainmaker-displayInline" onClick={() => this.sortingTable("asc")}>
+                <div className = "rainmaker-displayInline sortstyle" onClick={() => this.sortingTable("asc")}>
                   <ImportExportIcon />
                   <Label className="sort-icon" label={"INBOX_SORT_ICON"} />
                 </div>
               )}            
           </div>
           {data.rows.length === 0 ? (
-            <Card textChildren={<Label labelClassName="" label="COMMON_INBOX_NO_DATA" />} />
+            <Card textChildren={<Label labelClassName="NodataFound" label="COMMON_INBOX_NO_DATA" />} />
           ) : (
             <div>
               {data.rows.map((row, index) => {

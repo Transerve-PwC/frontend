@@ -1,0 +1,13 @@
+div#custom-atoms-employeeFooter.addpadding {
+  padding-bottom: 66px;
+  background: transparent;
+  box-shadow: none; }
+
+div#custom-atoms-employeeFooter {
+  display: none; }
+
+  @media only screen and (max-width: 768px) {         
+    div#custom-atoms-employeeFooter.addpadding {
+      padding-bottom: 45px !important;
+    }    
+  }

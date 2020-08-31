@@ -109,7 +109,7 @@ class ProfileSection extends React.Component {
               bold={true}
             />
           )}
-          {process.env.REACT_APP_NAME === "Employee" && (
+       {/* {process.env.REACT_APP_NAME === "Employee" && (
             <DropDown
               className="tenant-dropdown"
               onChange={this.onTenantChange}
@@ -123,6 +123,7 @@ class ProfileSection extends React.Component {
             />
           )}
           {process.env.REACT_APP_NAME === "Citizen" && location && <Label id="profile-location" className="loc-Profile" labelPosition="after" label={location} style={locationStyle} />}
+       */}
           {emailId && <Label id="profile-emailid" className="loc-Profile" label={emailId} style={emailIdStyle} />}
           <LogoutDialog
             logoutPopupOpen={open}

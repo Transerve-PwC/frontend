@@ -32,13 +32,13 @@ const getAcknowledgementCard = (
             icon: "done",
             backgroundColor: "#39CB74",
             header: {
-              labelName: "Thank You",
-              labelKey: "HC_SERVICE_REQUEST_SUCCESS_MESSAGE_MAIN"
-            },
-            body: {
-              labelName:"Service Request Updated Successfully",
+              labelName: "Service Request Updated Successfully",
               labelKey: "HC_SERVICE_REQUEST_UPDATE_MESSAGE"
             },
+            // body: {
+            //   labelName:"Service Request Updated Successfully",
+            //   labelKey: "HC_SERVICE_REQUEST_UPDATE_MESSAGE"
+            // },
             tailText: {
               labelName: "Service Request ID",
               labelKey: "HC_SERVICE_REQUEST_ID"

@@ -5,6 +5,7 @@ import TradeLicenseIcon from "../../../../ui-atoms-local/Icons/TradeLicenseIcon"
 import "../utils/index.css";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
+import { WORKFLOW_BUSINESS_SERVICE_OT } from "../../../../ui-constants";
 
 const tenantId = getTenantId();
 
@@ -40,7 +41,7 @@ const cardItems = [{
 
 const getData = async (action, state, dispatch) => {
   const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "OwnershipTransferRP" }]
+                      { key: "businessServices", value: WORKFLOW_BUSINESS_SERVICE_OT }]
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
 }
 

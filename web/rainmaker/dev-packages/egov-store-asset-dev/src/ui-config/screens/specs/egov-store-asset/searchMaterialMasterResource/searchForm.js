@@ -15,7 +15,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["materialTypeName","materialName","storeName", "storeMappingInfo", "active"];
+  const textFields = ["materialName","materialType","store","storeMappingInfo","active"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-material-master.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -43,7 +43,7 @@ export const searchForm = getCommonCard({
     labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
   }),
   searchFormContainer: getCommonContainer({
-    materialName: getTextField({
+    materialName: getSelectField({
       label: { labelName: "Material  Name", labelKey: "STORE_MATERIAL_NAME" },
       placeholder: {
         labelName: "Select Materila  Name",
@@ -55,15 +55,12 @@ export const searchForm = getCommonCard({
         xs: 12,
         sm: 4,
       },
-      // sourceJsonPath: "searchScreenMdmsData.common-masters.materialName",
-      // props: {
-      //   optionValue: "code",
-      //   optionLabel: "name",
-      // },
-      // localePrefix: {
-      //   moduleName: "common-store",
-      //   masterName: "materialName",
-      // },
+      sourceJsonPath: "searchScreenMdmsData.store-asset.Material",
+      props: {
+        optionValue: "code",
+        optionLabel: "name",
+      },
+     
     }),
     materialType: getSelectField({
       label: { labelName: "Material Type Name", labelKey: "STORE_MATERIAL_TYPE_NAME" },
@@ -101,7 +98,7 @@ export const searchForm = getCommonCard({
       },
       sourceJsonPath: "store.stores",
       props: {
-        optionValue: "id",
+        optionValue: "code",
         optionLabel: "name",
       },
       
@@ -118,7 +115,7 @@ export const searchForm = getCommonCard({
       required: false,
 
       props: {
-        content: "MATERIAL_TYPE_STORE_MAP",
+        content: "STORE_MATERIAL_TYPE_STORE_MAP",
         jsonPath: "searchScreen.storeMappingInfo",
         screenName: "search-material-master",
         checkBoxPath:
@@ -137,7 +134,7 @@ export const searchForm = getCommonCard({
       required: false,
 
       props: {
-        content: "MATERIAL_TYPE_ACTIVE",
+        content: "STORE_MATERIAL_TYPE_ACTIVE",
         jsonPath: "searchScreen.active",
         screenName: "search-material-master",
         checkBoxPath:

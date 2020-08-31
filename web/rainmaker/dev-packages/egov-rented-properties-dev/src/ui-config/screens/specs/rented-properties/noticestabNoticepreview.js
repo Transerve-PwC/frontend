@@ -9,10 +9,9 @@ import { getImages } from "./property-transitImages";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { set } from "lodash";
-import {downloadPrintContainer} from "./applyResource/footer"
+import {downloadNoticeContainer} from "./applyResource/footer"
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getNoticeReviewProperty, getNoticeViolationPreviewReviewRentDetails, getNoticeRecoveryPreviewReviewRentDetails} from "./applyResource/review-property";
-import {downloadNoticeForm} from '../utils/index'
 
 const reviewNoticePropertyDetails = getNoticeReviewProperty(false);
 const reviewNoticeViolationRentDetails = getNoticeViolationPreviewReviewRentDetails(false);
@@ -36,7 +35,7 @@ const getData = async(action, state, dispatch) => {
         "Properties[0]",
         []);
     let singleNoticeDetails = propertyArr.notices.filter(item => item.memoNumber === NoticeId)
-  
+      
     let notices = await getImages(singleNoticeDetails);
     notices = notices.map(item => {
       let { applicationDocuments, urls } = item;
@@ -73,7 +72,6 @@ const getData = async(action, state, dispatch) => {
             )
       
     }
-    
 
     if(singleNoticeDetails[0].noticeType === "Violation"){
         let path = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeRecoveryRentDetails"
@@ -107,6 +105,19 @@ const getData = async(action, state, dispatch) => {
             )
           );
     }
+    
+    const printCont = downloadNoticeContainer(
+      action,
+      state,
+      dispatch,
+      status,
+    );
+
+    set(
+      action,
+      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+      printCont
+    );
 
     
 }
@@ -138,58 +149,73 @@ const NoticedetailsPreview = {
                     uiFramework: "custom-atoms",
                     componentPath: "Container",
                     children: {
-                        header: {
+                        header1: {
                             gridDefination: {
                               xs: 12,
-                              sm: 10
+                              sm: 8
                             },
                             ...header
+                          },
+                          helpSection: {
+                            uiFramework: "custom-atoms",
+                            componentPath: "Container",
+                            props: {
+                              color: "primary",
+                              style: { justifyContent: "flex-end" }
+                            },
+                            gridDefination: {
+                              xs: 12,
+                              sm: 4,
+                              align: "right"
+                            }
                           }
                     },
                   
                 },
-                rightdiv: {
-                    uiFramework: "custom-atoms",
-                    componentPath: "Container",
-                    props: {
-                      style: { justifyContent: "flex-end", marginTop: 10 }
-                    },
-                    children: {
-                      downloadMenu: {
-                        uiFramework: "custom-atoms-local",
-                        moduleName: "egov-rented-properties",
-                        componentPath: "MenuButton",
-                        props: {
-                          data: {
-                            label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
-                             leftIcon: "cloud_download",
-                            rightIcon: "arrow_drop_down",
-                            props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
-                            // menu: downloadMenu
-                          }
-                        }
-                      },
-                      printMenu: {
-                        uiFramework: "custom-atoms-local",
-                        moduleName: "egov-rented-properties",
-                        componentPath: "MenuButton",
-                        props: {
-                          data: {
-                            label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
-                            leftIcon: "print",
-                            rightIcon: "arrow_drop_down",
-                            props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
-                            // menu: printMenu
-                          }
-                        }
-                      }
+                // rightdiv: {
+                //     uiFramework: "custom-atoms",
+                //     componentPath: "Container",
+                //     props: {
+                //       style: { justifyContent: "flex-end", marginTop: 10 }
+                //     },
+                //     visible:true,
+                //     children:{}
+                //     // children: {
+                //     //   downloadMenu: {
+                //     //     uiFramework: "custom-atoms-local",
+                //     //     moduleName: "egov-rented-properties",
+                //     //     componentPath: "MenuButton",
+                //     //     props: {
+                //     //       data: {
+                //     //         label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                //     //          leftIcon: "cloud_download",
+                //     //         rightIcon: "arrow_drop_down",
+                //     //         props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+                //     //         menu: downloadMenu
+                //     //       }
+                //     //     }
+                //     //   },
+                //     //   printMenu: {
+                //     //     uiFramework: "custom-atoms-local",
+                //     //     moduleName: "egov-rented-properties",
+                //     //     componentPath: "MenuButton",
+                //     //     props: {
+                //     //       data: {
+                //     //         label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                //     //         leftIcon: "print",
+                //     //         rightIcon: "arrow_drop_down",
+                //     //         props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+                //     //         // menu: printMenu
+                //     //       }
+                //     //     }
+                //     //   }
               
-                    },
-                    // gridDefination: {
-                    //   xs: 12,
-                    //   sm: 6
-                    // }
-                  },
+                //     // },
+                //     // gridDefination: {
+                //     //   xs: 12,
+                //     //   sm: 6
+                //     // }
+                //   },
                 
                 formwizardFirstStep: noticeDocumentDetails
             }

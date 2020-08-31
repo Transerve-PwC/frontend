@@ -246,20 +246,20 @@ if(businessService === WFConfig().businessServiceRRP)
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}lg={3} style={{ marginTop: 10, paddingRight: 20 }}>
                     <Typography variant="caption">
-                    <LabelContainer labelName="ltc" labelKey="PENSION_EMPLOYEE_PENSION_LTC" />
+                    <LabelContainer labelName="bankIfsc" labelKey="PENSION_BANK_IFSC" />
                     </Typography>
                     <Typography variant="body2">
-                    <LabelContainer labelName={get(currentObj, "PensionersBasicData[0].ltc")} />
+                    <LabelContainer labelName={get(currentObj, "PensionersBasicData[0].bankIfsc")} />
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}lg={3} style={{ marginTop: 10, paddingRight: 20 }}>
+                  {/* <Grid item xs={12} sm={6} md={4}lg={3} style={{ marginTop: 10, paddingRight: 20 }}>
                     <Typography variant="caption">
                     <LabelContainer labelName="wef" labelKey="PENSION_EMPLOYEE_PENSION_WEF" />
                     </Typography>
                     <Typography variant="body2">
                     <LabelContainer labelName={convertEpochToDate(get(currentObj, "PensionersBasicData[0].wef"))} />
                     </Typography>
-                  </Grid>
+                  </Grid> */}
                   {
                      (DOP_INFO_VISIBLE || DOE_INFO_VISIBLE) &&(
                   <Grid item xs={12} sm={6} md={4}lg={3} style={{ marginTop: 10, paddingRight: 20 }}>

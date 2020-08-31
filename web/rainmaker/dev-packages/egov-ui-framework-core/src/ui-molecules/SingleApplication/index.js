@@ -152,9 +152,9 @@ class SingleApplication extends React.Component {
     } else if (moduleName === "EGOV-ECHALLAN") {
       switch (item.status) {
         case "INITIATED":
-          setRoute(`/egov-echallan/apply?challanNumber=${item.challanId}&tenantId=${item.tenantId}`);
+          setRoute(`/egov-echallan/apply?applicationNumber=${item.challanId}&tenantId=${item.tenantId}`);
         default:
-          setRoute(`/egov-echallan/search-preview?challanNumber=${item.challanId}&tenantId=${item.tenantId}`);
+          setRoute(`/egov-echallan/search-preview?applicationNumber=${item.challanId}&tenantId=${item.tenantId}`);
       }
     } else if(moduleName === "OWNERSHIPTRANSFERRP") {
       switch (item.applicationState) {

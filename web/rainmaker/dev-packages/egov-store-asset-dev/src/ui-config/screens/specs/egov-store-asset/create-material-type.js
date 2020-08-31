@@ -61,8 +61,8 @@ const MaterialTypeRelationDetailsCard = {
 
                 const storeObj = stores.filter(item => item.code === action.value);
 
-                let materialDeptPath = action.componentJsonpath.replace(".storeName", ".department");
-                //  dispatch(handleField("create-material-type", materialDeptPath,"props.value", storeObj[0].department));
+                let materialDeptPath = action.componentJsonpath.replace(".storeName", ".departmentName");
+                 dispatch(handleField("create-material-type", materialDeptPath,"props.value", storeObj[0].department.name));
 
               }
             }
@@ -78,35 +78,35 @@ const MaterialTypeRelationDetailsCard = {
             },
             //pattern: getPattern("non-empty-alpha-numeric"),
             errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-            jsonPath: "materialTypes[0].storeMapping[0].department",
+            jsonPath: "materialTypes[0].storeMapping[0].store.department.name",
           }),
-          chartofAccount: {
-            ...getSelectField({
-              label: {
-                labelName: "Stock-In-Hand Code",
-                labelKey: "STORE_DETAILS_STORE_STCK_HAND"
-              },
-              placeholder: {
-                labelName: "Select Stock-In-Hand Code",
-                labelKey: "STORE_DETAILS_STORE_STCK_HAND_SELECT"
-              },
-              // required: true,
-              jsonPath: "materialTypes[0].storeMapping[0].chartofAccount.glcode",
-              sourceJsonPath: "createScreenMdmsData.store-asset.Location",
-              props: {
-                className: "hr-generic-selectfield",
-                optionValue: "value",
-                optionLabel: "label",
-                data: [
-                  {
-                    value: "46130",
-                    label: "46130"
-                  },
+          // chartofAccount: {
+          //   ...getSelectField({
+          //     label: {
+          //       labelName: "Stock-In-Hand Code",
+          //       labelKey: "STORE_DETAILS_STORE_STCK_HAND"
+          //     },
+          //     placeholder: {
+          //       labelName: "Select Stock-In-Hand Code",
+          //       labelKey: "STORE_DETAILS_STORE_STCK_HAND_SELECT"
+          //     },
+          //     // required: true,
+          //     jsonPath: "materialTypes[0].storeMapping[0].chartofAccount.glcode",
+          //     sourceJsonPath: "createScreenMdmsData.store-asset.Location",
+          //     props: {
+          //       className: "hr-generic-selectfield",
+          //       optionValue: "value",
+          //       optionLabel: "label",
+          //       data: [
+          //         {
+          //           value: "46130",
+          //           label: "46130"
+          //         },
 
-                ],
-              }
-            }),
-          },
+          //       ],
+          //     }
+          //   }),
+          // },
           active: {
             uiFramework: "custom-containers-local",
             moduleName: "egov-store-asset",
@@ -215,7 +215,7 @@ const callBackForUpdate = async (state, dispatch) =>{
         requestBody
       );
        if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=materialType&mode=update&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=materialType&mode=update&code=${materialTypes[0].name}`));
        }
 
     } catch (error) {
@@ -302,7 +302,7 @@ const callBackForSubmit = async (state, dispatch) => {
         requestBody
       );
        if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=materialType&mode=create&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=materialType&mode=create&code=${materialTypes[0].name}`));
        }
 
     } catch (error) {
@@ -466,54 +466,56 @@ export const formwizardFirstStep = {
       break: getBreak(),
 
       addMaterialTypeDetails: getCommonContainer({
-        code: getSelectField({
+        name: getSelectField({
           label: {
-            labelName: "Material Type Code",
-            labelKey: "STORE_MATERIAL_TYPE_CODE",
+            labelName: "Material Type name",
+            labelKey: "STORE_MATERIAL_TYPE_NAME", 
           },
           props: {
             className: "applicant-details-error",
+            optionValue: "name",
+            optionLabel: "name"
           },
           placeholder: {
-            labelName: "Select Material Type Code",
-            labelKey: "STORE_MATERIAL_TYPE_CODE_PLACEHOLDER",
+            labelName: "Enter Material Type Name",  
+            labelKey: "STORE_MATERIAL_TYPE_NAME_PLACEHOLDER",
           },
-          jsonPath: "materialTypes[0].code",
+          jsonPath: "materialTypes[0].name",
           sourceJsonPath: "createScreenMdmsData.store-asset.MaterialType",
           required: true,
           beforeFieldChange: (action, state, dispatch) => {
             if (action.value) {
               const { MaterialType } = state.screenConfiguration.preparedFinalObject.createScreenMdmsData['store-asset'];
 
-              const materialObj = MaterialType.filter(item => item.code === action.value);
+              const materialObj = MaterialType.filter(item => item.name === action.value);
 
-              let materialNamePath = action.componentJsonpath.replace(".code", ".name");
-              let materialDescPath = action.componentJsonpath.replace(".code", ".description");
-              dispatch(handleField("create-material-type", materialNamePath, "props.value", materialObj[0].name));
+              let materialNamePath = action.componentJsonpath.replace(".name", ".code");
+              let materialDescPath = action.componentJsonpath.replace(".name", ".description");
+              dispatch(handleField("create-material-type", materialNamePath, "props.value", materialObj[0].code));
               dispatch(handleField("create-material-type", materialDescPath, "props.value", materialObj[0].description));
               //  dispatch(prepareFinalObject("materialTypes[0].name",materialObj.name));
               //  dispatch(prepareFinalObject("materialTypes[0].description",materialObj.description));
             }
           }
         }),
-        name: getTextField({
+        code: getTextField({
           label: {
-            labelName: "Material Type Name",
-            labelKey: "STORE_MATERIAL_TYPE_NAME",
+            labelName: "Material Type code",
+            labelKey: "STORE_MATERIAL_TYPE_CODE",
           },
           props: {
             className: "applicant-details-error",
             disabled: true,
           },
           placeholder: {
-            labelName: "Enter Material Type Name",
-            labelKey: "STORE_MATERIAL_TYPE_NAME_PLACEHOLDER",
+            labelName: "Select Material Type Code",
+            labelKey: "STORE_MATERIAL_TYPE_CODE_PLACEHOLDER", 
           },
           required: true,
           //   pattern: getPattern("alpha-only"),
           errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
 
-          jsonPath: "materialTypes[0].name",
+          jsonPath: "materialTypes[0].code",
         }),
         description: getTextField({
           label: {
@@ -660,6 +662,10 @@ const screenConfig = {
       .then(response =>{
         dispatch(prepareFinalObject("materialTypes", [...response.materialTypes]));
       });
+    }
+    else {
+      dispatch(prepareFinalObject("materialTypes[0].active", true));
+      dispatch(prepareFinalObject("materialTypes[0].storeMapping[0].active", true));
     }
 
     return action;

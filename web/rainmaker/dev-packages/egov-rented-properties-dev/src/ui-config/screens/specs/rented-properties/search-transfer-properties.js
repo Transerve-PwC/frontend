@@ -8,6 +8,7 @@ import { searchTransferProperties } from "./searchResource/functions"
 import { transferSearchResults } from "./searchResource/searchResults";
 import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getStatusList } from "./search";
+import { WORKFLOW_BUSINESS_SERVICE_OT } from "../../../../ui-constants";
 
   const header = getCommonHeader({
     labelName: "Transfer Properties",
@@ -19,7 +20,7 @@ import { getStatusList } from "./search";
     name: "search-transfer-properties",
     beforeInitScreen: (action, state, dispatch) => {
       const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "OwnershipTransferRP" }]
+                      { key: "businessServices", value: WORKFLOW_BUSINESS_SERVICE_OT }]
       dispatch(prepareFinalObject("searchScreen", {}))
       searchTransferProperties(state, dispatch, true)
       getStatusList(action, state, dispatch, queryObject, "search-transfer-properties", "components.div.children.ownerShipTransferApplication.children.cardContent.children.statusContainer.children.status")

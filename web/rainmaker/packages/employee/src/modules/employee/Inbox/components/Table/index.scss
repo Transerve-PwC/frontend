@@ -102,7 +102,7 @@
 
 .inbox-taskboard {
   display: flex;
-  margin-left: -5px;
+  // margin-left: -5px;
   margin-right: -5px;
   margin-bottom: 10px;
 }
@@ -275,5 +275,10 @@
   display: inline-block;
   width: 40%;
 }
+.NodataFound{
+  text-align: center;
+}
 
-
+.sortstyle{
+  padding-right: 10px;
+}

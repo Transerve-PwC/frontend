@@ -6,47 +6,42 @@ import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
-    case "Suplier Name":
+    case "Indent No.":
       return getLocaleLabels(
-        "Suplier Name",
-        "STORE_SUPLIER_NAME",
+        "Indent No.",
+        "STORE_MATERIAL_INDENT_NUMBER",
         localisationLabels
       );
 
-      case "rate Type":
+      case "Indent Date":
         return getLocaleLabels(
-          "rate Type",
-          "STORE_PRICE_RATE_TYPE",
+          "Indent Date",
+          "STORE_MATERIAL_INDENT_INDENT_DATE",
           localisationLabels
         );
-    case "Material Type Description":
+    case "Indenting Store Name":
       return getLocaleLabels(
-        "Material Type Description",
-        "STORE_COMMON_TABLE_COL_MATERIAL_DESC",
+        "Indenting Store Name",
+        "STORE_MATERIAL_INDENT_STORE_NAME",
         localisationLabels
       );
-      case "Parent Material Type Name":
+      case "Indent Purpose":
         return getLocaleLabels(
-          "Parent Material Type Name",
-          "HR_COMMON_TABLE_COL_PRNT_MATERIAL_NAME",
+          "Indent Purpose",
+          "STORE_MATERIAL_INDENT_INDENT_PURPOSE",
           localisationLabels
         );
-        case "Store Name":
+        case "Indent Status":
           return getLocaleLabels(
-            "Store Name",
-            "STORE_COMMON_TABLE_COL_STORE_NAME",
+            "Indent Status",
+            "STORE_MATERIAL_INDENT_INDENT_STATUS",
             localisationLabels
           );
-    case "Active":
+   
+    case "Search Results for Material Indent":
       return getLocaleLabels(
-        "Active",
-        "STORE_COMMON_TABLE_COL_ACTIVE",
-        localisationLabels
-      );
-    case "Search Results for Material Master":
-      return getLocaleLabels(
-        "Search Results for Material Master",
-        "STORE_MATERIAL_MASTER_SEARCH_RESULTS_TABLE_HEADING",
+        "Search Results for Material Indent",
+        "STORE_MATERIAL_INDENT_SEARCH_RESULTS_TABLE_HEADING",
         localisationLabels
       );
   }
@@ -58,18 +53,19 @@ export const searchResults = {
   visible: false,
   props: {
     columns: [
-      getTextToLocalMapping("Material Name"),
-      getTextToLocalMapping("Material Type Name"),
-      getTextToLocalMapping("Store Name"),     
-      getTextToLocalMapping("Active"),
+      getTextToLocalMapping("Indent No."),
+      getTextToLocalMapping("Indent Date"),
+      getTextToLocalMapping("Indenting Store Name"),     
+      getTextToLocalMapping("Indent Purpose"),
+      getTextToLocalMapping("Indent Status"),
       {
-        name: "code",
+        name: "id",
         options: {
           display: false
         }
       },
     ],
-    title: getTextToLocalMapping("Search Results for Material Master"),
+    title: getTextToLocalMapping("Search Results for Material Indent"),
     options: {
       filter: false,
       download: false,
@@ -86,7 +82,7 @@ export const searchResults = {
 
 const onRowClick = (rowData) => {
   let tenantId = getTenantId();
-  window.location.href = `view-material-master?code=${rowData[4]}&tenantId=${tenantId}`;
+  window.location.href = `view-indent?id=${rowData[5]}&tenantId=${tenantId}&indentNumber=${rowData[0]}&Status=${rowData[4]}`;
 };
 
 

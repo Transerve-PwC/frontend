@@ -286,7 +286,7 @@ export const paymentFailureFooter = (applicationNumber, tenant) => {
       },
       onClickDefination: {
         action: "page_change",
-        path: `/egov-echallan/citizen-pay?challanNumber=${applicationNumber}&tenantId=${tenant}`
+        path: `/egov-echallan/citizen-pay?applicationNumber=${applicationNumber}&tenantId=${tenant}`
       }
     }
   });

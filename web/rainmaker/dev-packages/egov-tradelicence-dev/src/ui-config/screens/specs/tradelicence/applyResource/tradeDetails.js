@@ -974,9 +974,12 @@ const dateOfBirthField = {
   pattern: getPattern("Date"),
   jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].dob",
   props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
+    inputProps: {
+        max: getTodaysDateInYMD(),
+        style: {
+            lineHeight: "initial"
+        }
+    }
   },
   beforeFieldChange: (action, state, dispatch) => {
     if (action.value) {

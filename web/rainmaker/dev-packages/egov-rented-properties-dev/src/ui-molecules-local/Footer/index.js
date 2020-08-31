@@ -14,6 +14,8 @@ import set from "lodash/set";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { WORKFLOW_BUSINESS_SERVICE_OT, WORKFLOW_BUSINESS_SERVICE_DC } from "../../ui-constants";
 
 class Footer extends React.Component {
   state = {
@@ -84,7 +86,7 @@ class Footer extends React.Component {
           }
           break
         }
-        case "OwnershipTransferRP": {
+        case WORKFLOW_BUSINESS_SERVICE_OT: {
           if(!!action && dataPath[0].applicationState !== "OT_PENDINGCLVERIFICATION") {
             const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
@@ -92,7 +94,7 @@ class Footer extends React.Component {
           break
         }
         case "PermissionToMortgage":
-        case "DuplicateCopyOfAllotmentLetterRP": {
+        case WORKFLOW_BUSINESS_SERVICE_DC: {
           if(!!action && (dataPath[0].state !== "DC_PENDINGCLVERIFICATION" || dataPath[0].state !== "MG_PENDINGCLVERIFICATION")) {
             const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
@@ -188,9 +190,15 @@ class Footer extends React.Component {
       dataPath,
       moduleName,
       state,
-      dispatch
+      dispatch,
+      setRoute
     } = this.props;
     const { open, data, employeeList } = this.state;
+    const transitNumber = getQueryArg(
+      window.location.href,
+      "transitNumber"
+    );
+    const tenant = getQueryArg(window.location.href, "tenantId");
     const downloadMenu =
       contractData &&
       contractData.map(item => {
@@ -198,7 +206,9 @@ class Footer extends React.Component {
         return {
           labelName: { buttonLabel },
           labelKey: `WF_${moduleName.toUpperCase()}_${buttonLabel}`,
-          link: () => {
+          link: moduleName === "MasterRP" && buttonLabel === "MODIFY" ? 
+            () => setRoute(`/rented-properties/apply?transitNumber=${transitNumber}&tenantId=${tenant}`)
+            : () => {
             this.openActionDialog(item);
           }
         };

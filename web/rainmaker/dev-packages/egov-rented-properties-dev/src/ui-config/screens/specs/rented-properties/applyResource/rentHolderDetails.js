@@ -106,7 +106,7 @@ export const getRelationshipRadioButton = {
           ...getRelationshipRadioButton.props,
           label: {
             name: "Relationship with deceased",
-            key: "TL_COMMON_RELATIONSHIP_WITH_DECEASED_LABEL"
+            key: "RP_COMMON_RELATIONSHIP_WITH_DECEASED_LABEL"
           },
           buttons: [
             {
@@ -578,7 +578,7 @@ const ownerShipRelationShipduplicate = {
         ...getRelationshipRadioButton.props,
         label: {
             name: "Relationship with deceased",
-            key: "TL_COMMON_RELATIONSHIP_WITH_DECEASED_LABEL"
+            key: "RP_COMMON_RELATIONSHIP_WITH_DECEASED_LABEL"
           },
           buttons: [
             {

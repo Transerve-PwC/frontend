@@ -43,3 +43,57 @@ export const documentDetails = getCommonCard({
   } 
 
 });
+
+export const MultipleDocumentDetails = getCommonCard({
+  header: getCommonParagraph(
+    {
+      labelName: "Email Attachment",
+      labelKey: "PR_EMAIL_ATTACHMENT_HEADER"
+    },
+    {
+      style: {
+        marginBottom: 18
+      }
+    }
+  ),
+  subText: getCommonParagraph({
+    labelName:
+      "Only image and .pdf files can be uploaded.Max file size 2MB each and 8 files can be uploaded.",
+    labelKey: "PR_EVENTDOCUMENT_DETAILS_SUBTEXT"
+  
+  }),
+  break: getBreak(),
+  upload: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        marginLeft: 8
+      }
+    },
+    required: false,
+    children: {
+       uploadButton: {
+        uiFramework: "custom-molecules",
+        componentPath: "UploadMultipleFiles",
+        props: {
+          maxFiles: 8,
+          jsonPath: "PressNoteDocuments",
+          inputProps: {
+            //accept: ".pdf,.png,.jpeg,.zip,.WAV,.AIFF,.AU,.PCM,.BWF,.mp3,.mpeg,.mp4"
+       accept: ".pdf,.png,.jpeg"
+          },
+          buttonLabel: {
+            labelName: "UPLOAD FILE",
+      labelKey: "PR_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
+          },
+          maxFileSize: 2000,
+          moduleName: "egov-pr",
+          hasLocalization: false
+        }
+      }
+    }
+  }
+
+
+});

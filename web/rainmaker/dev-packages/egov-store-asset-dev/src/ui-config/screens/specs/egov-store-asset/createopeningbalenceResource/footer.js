@@ -38,7 +38,7 @@ export const footer = () => {
          children: {
            buttonLabel: getLabel({
              labelName: "searchppr",
-             labelKey: "STORE_COMMON_BUTTON_SUBMIT"
+             labelKey: "STORE_SUBMIT_LABEL"
            })
          },
          onClickDefination: {

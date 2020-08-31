@@ -401,17 +401,17 @@ export const changeStep = (
       value: activeStep
     },
     {
-      path: "components.div.children.footer.children.previousButton",
+      path: "components.div.children.EventFooter.children.previousButton",
       property: "visible",
       value: isPreviousButtonVisible
     },
     {
-      path: "components.div.children.footer.children.nextButton",
+      path: "components.div.children.EventFooter.children.nextButton",
       property: "visible",
       value: isNextButtonVisible
     },
     {
-      path: "components.div.children.footer.children.payButton",
+      path: "components.div.children.EventFooter.children.payButton",
       property: "visible",
       value: isPayButtonVisible
     }
@@ -502,7 +502,7 @@ export const callBackForPrevious = (state, dispatch) => {
   changeStep(state, dispatch, "previous");
 };
 
-export const footer = getCommonApplyFooter({
+export const EventFooter = getCommonApplyFooter({
   previousButton: {
     componentPath: "Button",
     props: {

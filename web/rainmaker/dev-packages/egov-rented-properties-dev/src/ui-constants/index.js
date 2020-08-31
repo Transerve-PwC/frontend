@@ -13,3 +13,9 @@ export const RP_ASSESSMENT_AMOUNT = getLocaleLabels("RP_ASSESSMENT_AMOUNT", "RP_
 export const RP_REALIZATION_AMOUNT = getLocaleLabels("RP_REALIZATION_AMOUNT", "RP_REALIZATION_AMOUNT")
 export const RP_RECEIPT_NO = getLocaleLabels("RP_RECEIPT_NO", "RP_RECEIPT_NO")
 export const RP_PAYMENT_DATE = getLocaleLabels("RP_PAYMENT_DATE", "RP_PAYMENT_DATE")
+
+export const BILLING_BUSINESS_SERVICE_OT = "RentedProperties.OwnershipTransfer";
+export const BILLING_BUSINESS_SERVICE_DC = "RentedProperties.DuplicateAllotmentLetter";
+
+export const WORKFLOW_BUSINESS_SERVICE_OT = "OwnershipTransferRP";
+export const WORKFLOW_BUSINESS_SERVICE_DC = "DuplicateCopyOfAllotmentLetterRP";

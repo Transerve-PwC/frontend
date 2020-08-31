@@ -8,6 +8,7 @@ import get from "lodash/get";
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { WORKFLOW_BUSINESS_SERVICE_OT } from "../../../../ui-constants";
 
 const header = getCommonHeader(
   {
@@ -191,7 +192,7 @@ const screenConfig = {
   name: "ownership-my-applications",
   beforeInitScreen: (action, state, dispatch) => {
     const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-    { key: "businessServices", value: "OwnershipTransferRP" }]
+    { key: "businessServices", value: WORKFLOW_BUSINESS_SERVICE_OT }]
     dispatch(prepareFinalObject("actualResults", []));
     dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);

@@ -5,7 +5,6 @@ import { getAccessToken, getapplicationNumber, getLocale, getTenantId, getUserIn
 import store from "../ui-redux/store";
 
 const instance = axios.create({
-  //baseURL: window.location.origin,
   baseURL: window.location.origin,
   headers: {
     "Content-Type": "application/json",

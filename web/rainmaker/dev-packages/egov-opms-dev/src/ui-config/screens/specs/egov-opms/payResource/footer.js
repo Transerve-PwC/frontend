@@ -64,9 +64,10 @@ export const callPGService = async (state, dispatch) => {
     //let callbackUrl=`${window.origin}/egov-opms/paymentRedirectPage`;
     let callbackUrl = `${
       process.env.NODE_ENV === "production"
-        ? `${window.origin}/citizen`
-        : window.origin
+        ? `${window.location.origin}/citizen`
+        : window.location.origin
       }/egov-opms/paymentRedirectPage`;
+
     try {
       const queryObj = [
         { key: "tenantId", value: tenantId },
@@ -80,6 +81,8 @@ export const callPGService = async (state, dispatch) => {
       const billId = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].id");
       const consumerCode = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].consumerCode");
       const Accountdetails = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].billDetails[0].billAccountDetails");
+      const roadcutBusinessServiceCode = get(state, "screenConfiguration.preparedFinalObject.OPMS.RODCUTNOC.BusinessServiceCode");
+
       localStorageSet("amount", 0);
       localStorageSet("gstAmount", 0);
       localStorageSet("performanceBankGuaranteeCharges", 0);
@@ -87,14 +90,21 @@ export const callPGService = async (state, dispatch) => {
       for (let index = 0; index < Accountdetails.length; index++) {
         const element = Accountdetails[index];
         if (element.taxHeadCode === `PETNOC_FEE` ||
-          element.taxHeadCode === `ROADCUTNOC_FEE` ||
+          element.taxHeadCode === `ROADCUTNOC_FEE_RD1` ||
+          element.taxHeadCode === `ROADCUTNOC_FEE_RD2` ||
+          element.taxHeadCode === `ROADCUTNOC_FEE_RD3` ||
           element.taxHeadCode === `ADVERTISEMENTNOC_FEE`) {
           localStorageSet("amount", element.amount);
         } else if (element.taxHeadCode === `PETNOC_TAX` ||
-          element.taxHeadCode === `ROADCUTNOC_TAX` ||
+          element.taxHeadCode === `ROADCUTNOC_TAX_RD1` ||
+          element.taxHeadCode === `ROADCUTNOC_TAX_RD2` ||
+          element.taxHeadCode === `ROADCUTNOC_TAX_RD3` ||
           element.taxHeadCode === `ADVERTISEMENTNOC_TAX`) {
           localStorageSet("gstAmount", element.amount);
-        } else if (element.taxHeadCode === `ROADCUTNOC_FEE_BANK`) {
+        } else if (element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD1`
+          || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD2`
+          || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD3`
+        ) {
           localStorageSet("performanceBankGuaranteeCharges", element.amount);
         }
       }
@@ -114,7 +124,7 @@ export const callPGService = async (state, dispatch) => {
             tenantId,
             billId: billId, // get(billPayload, "Bill[0].id"),
             txnAmount: taxAmount, //get(billPayload, "Bill[0].totalAmount"),
-            module: `OPMS.${getapplicationType()}`,
+            module: getapplicationType() == "ROADCUTNOC" ? roadcutBusinessServiceCode : `OPMS.${getapplicationType()}`,
             taxAndPayments,
             consumerCode: consumerCode, // get(billPayload, "Bill[0].consumerCode"),
             productInfo: getapplicationType(),

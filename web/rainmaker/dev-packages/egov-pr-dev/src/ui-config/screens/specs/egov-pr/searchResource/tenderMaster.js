@@ -89,10 +89,10 @@ export const tenderMSWordTemplate = getCommonCard({
     TenderDetails: {
       
     },
-    subHeader: getCommonParagraph({
-      labelName: "Note",
-      labelKey: "PR_TENDER_NOTICE_NOTE"
-    }),
+    // subHeader: getCommonParagraph({
+    //   labelName: "Note",
+    //   labelKey: "PR_TENDER_NOTICE_NOTE"
+    // }),
 
     
 }),	

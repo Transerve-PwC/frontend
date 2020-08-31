@@ -8,6 +8,7 @@ import { searchDuplicateCopyApplication } from "./searchResource/rentedPropertyA
 import { searchDuplicateCopy } from "./searchResource/functions"
 import { getStatusList } from "./search";
 import { duplicateCopySearchResult } from "./searchResource/searchResults";
+import { WORKFLOW_BUSINESS_SERVICE_DC } from "../../../../ui-constants";
 
   const header = getCommonHeader({
     labelName: "Duplicate copy of Allotment letter",
@@ -18,7 +19,7 @@ import { duplicateCopySearchResult } from "./searchResource/searchResults";
     name: "search-duplicate-copy",
     beforeInitScreen: (action, state, dispatch) => {
       const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "DuplicateCopyOfAllotmentLetterRP" }]
+                      { key: "businessServices", value: WORKFLOW_BUSINESS_SERVICE_DC }]
       dispatch(prepareFinalObject("searchScreen", {}))
       searchDuplicateCopy(state, dispatch, true)
       getStatusList(action, state, dispatch, queryObject, "search-duplicate-copy", "components.div.children.searchDuplicateCopyApplication.children.cardContent.children.statusContainer.children.status")

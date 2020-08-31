@@ -75,7 +75,16 @@ const getMdmsData = async (action, state, dispatch) => {
     );
     
 	let responsedata = payload.MdmsRes['RAINMAKER-PR'].eventScheduledStatus;
-	responsedata.splice(0, 1);
+  responsedata.splice(0, 1);
+  
+  let obj1={}
+  let obj2={}
+
+  obj1['name']="Select Schedule Status"
+  payload.MdmsRes["RAINMAKER-PR"].eventScheduledStatus.unshift(obj1)
+  obj2['name']="Select Event Status"
+  payload.MdmsRes["RAINMAKER-PR"].eventStatus.unshift(obj2)
+
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {
     console.log(e);

@@ -52,6 +52,7 @@ const formConfig = {
       floatingLabelText: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS",
       hintText: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_PLACEHOLDER",
       errorMessage: "Landmark should be less than 300 characters",
+      maxlength: "500"
     },
     latitude: {
       id: "latitude",

@@ -12,7 +12,7 @@ import {
   import { searchResults } from "./searchPriceListResource/searchResults";
   import { getTenantId , getOPMSTenantId} from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-  
+  import { getSearchResults } from "../../../../ui-utils/commons";
   const hasButton = getQueryArg(window.location.href, "hasButton");
   let enableButton = true;
   //enableButton = hasButton && hasButton === "false" ? false : true;
@@ -36,6 +36,7 @@ import {
             moduleName: "store-asset",
             masterDetails: [
               { name: "Material" },
+              { name: "RateType", },
               { name: "MaterialType"},
             ],
           },
@@ -68,8 +69,8 @@ import {
         value: tenantId
       }];
     try {
-      let response = await getStoresSearchResults(queryObject, dispatch);
-      dispatch(prepareFinalObject("store", response));
+      let response = await getSearchResults(queryObject, dispatch,"supplier");
+      dispatch(prepareFinalObject("suppliers", response));
     } catch (e) {
       console.log(e);
     }
@@ -77,7 +78,7 @@ import {
   
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
-   // await getstoreData(action,state, dispatch);
+   await getstoreData(action,state, dispatch);
   };
   
   const materialMasterSearchAndResult = {
@@ -85,6 +86,8 @@ import {
     name: "search-price-list",
     beforeInitScreen: (action, state, dispatch) => {
       getData(action, state, dispatch);
+      //set search param blank
+dispatch(prepareFinalObject("searchScreen",{}));
       return action;
     },
     components: {

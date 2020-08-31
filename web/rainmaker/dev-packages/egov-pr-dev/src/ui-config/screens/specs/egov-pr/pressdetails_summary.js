@@ -27,9 +27,7 @@ import {
   getUserInfo,
   getapplicationNumber
 } from "egov-ui-kit/utils/localStorageUtils";
-import {
-  createUpdateRoadCutNocApplication
-} from "../../../../ui-utils/commons";
+
 import { presssummaryfooter } from './applyResource/presssummaryfooter'
 
 export const callBackForDelete = async (state, dispatch) => {

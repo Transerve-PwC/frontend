@@ -130,7 +130,7 @@ export const servicerequestdetailsEdit = getCommonCard({
         },
         required: true,
         pattern: getPattern("NoOfTree"),
-        errorMessage: "ERR_INVALID_NUMBER_OF_TREES_FIELD_MSG ",
+        errorMessage: "ERR_INVALID_NUMBER_OF_TREES_FIELD_MSG",
         jsonPath: "SERVICEREQUEST.treeCount"
       })
     },

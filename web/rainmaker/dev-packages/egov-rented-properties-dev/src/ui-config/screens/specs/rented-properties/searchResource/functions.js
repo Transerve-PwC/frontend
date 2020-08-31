@@ -13,7 +13,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE, ACCOUNT_BALANCE } from "./searchResults";
 import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
 import moment from "moment";
 
@@ -226,17 +226,10 @@ export const searchAccountStatement = async (state, dispatch) => {
     "search-account-statement"
   );
 
-  const isSearchBoxSecondRowValid = validateFields(
-    "components.div.children.accountStatementFilterForm.children.cardContent.children.dateContainer.children",
-    state,
-    dispatch,
-    "search-account-statement"
-  );
-
-  if(!!isSearchBoxFirstRowValid && !!isSearchBoxSecondRowValid) {
+  if(!!isSearchBoxFirstRowValid) {
     let Criteria = {
-      fromdate: convertDateToEpoch(searchScreenObject.fromDate),
-      todate: convertDateToEpoch(searchScreenObject.toDate)
+      fromdate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+      todate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
     }
     const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
       if(!!propertyId) {
@@ -254,9 +247,10 @@ export const searchAccountStatement = async (state, dispatch) => {
             [DATE]: moment(new Date(item.date)).format("DD/MM/YYYY") || "-",
             [AMOUNT]: item.amount.toFixed(2) || "-",
             [TYPE]: item.type || "-",
-            [REMAINING_INTEREST]: !!item.remainingInterest ? item.remainingInterest.toFixed(2) : "-",
-            [REMAINING_PRINCIPAL]: !!item.remainingPrincipal ? item.remainingPrincipal.toFixed(2) : "-",
-            [TOTAL_DUE]: !!item.dueAmount ? item.dueAmount.toFixed(2) : "-"
+            [REMAINING_INTEREST]: item.remainingInterest.toFixed(2),
+            [REMAINING_PRINCIPAL]: item.remainingPrincipal.toFixed(2),
+            [TOTAL_DUE]: item.dueAmount.toFixed(2),
+            [ACCOUNT_BALANCE]: item.remainingBalance.toFixed(2)
           }));
           dispatch(
             handleField(

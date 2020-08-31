@@ -17,7 +17,7 @@ import {
 import { sampleGetBill } from "../../../../ui-utils/sampleResponses";
 import set from "lodash/set";
 import { lSRemoveItem, lSRemoveItemlocal } from "egov-ui-kit/utils/localStorageUtils";
-import { getUserDetailsOnMobile, fetchMdmsData, sendPaymentReceiptOverMail } from "../../../../ui-utils/commons";
+import { getUserDetailsOnMobile, fetchMdmsData, sendPaymentReceiptOverMail, fetchSIName } from "../../../../ui-utils/commons";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -230,6 +230,35 @@ export const showHideAdhocPopup = (state, dispatch, screenKey) => {
   );
   dispatch(
     handleField(screenKey, "components.adhocDialog", "props.open", !toggle)
+  );
+};
+
+export const showHideAdhocPopupTrue = (state, dispatch, screenKey) => {
+  dispatch(
+    handleField("search", "components.adhocDialog", "props.open", true)
+  );
+};
+
+export const showHideDeleteConfirmation = (state, dispatch, screenKey) => {
+  let toggle = get(
+    state.screenConfiguration.screenConfig[screenKey],
+    "components.deleteConfirmation.props.open",
+    false
+  );
+  dispatch(
+    handleField(screenKey, "components.deleteConfirmation", "props.open", !toggle)
+  );
+};
+
+
+export const showHideChallanConfirmation = (state, dispatch, screenKey) => {
+  let toggle = get(
+    state.screenConfiguration.screenConfig[screenKey],
+    "components.deleteConfirmation.props.open",
+    false
+  );
+  dispatch(
+    handleField(screenKey, "components.deleteConfirmation", "props.open", !toggle)
   );
 };
 
@@ -1205,6 +1234,12 @@ export const getTextToLocalMappingVendorDetail = label => {
         'EC_MODE_OF_TRANSPORT',
         localisationLabels
       )
+      case "isActive":
+        return getLocaleLabels(
+          'Active',
+          'EC_IS_ACTIVE',
+          localisationLabels
+        )
     case "remark":
       return getLocaleLabels(
         'Remark',
@@ -1332,6 +1367,7 @@ export const clearlocalstorageAppDetails = (state) => {
   lSRemoveItemlocal('ecroachmentType');
   lSRemoveItemlocal('FineMasterGrid');
   lSRemoveItemlocal('ItemMasterGrid');
+  lSRemoveItemlocal('EChallanPaymentMailSent');
   //lSRemoveItemlocal('eChallanMasterGrid');
 
   lSRemoveItem('applicationType');
@@ -1341,6 +1377,7 @@ export const clearlocalstorageAppDetails = (state) => {
   lSRemoveItem('ecroachmentType');
   lSRemoveItem('FineMasterGrid');
   lSRemoveItem('ItemMasterGrid');
+  lSRemoveItem('EChallanPaymentMailSent');
   //lSRemoveItem('eChallanMasterGrid');
 }
 
@@ -1530,6 +1567,12 @@ export const getTextToLocalMappingPaymentDetail = label => {
       return getLocaleLabels(
         "Amount",
         "EC_COMMON_TABLE_COL_PAYMENT_MAPPING_AMOUNT",
+        localisationLabels
+      );
+    case "challanStatus":
+      return getLocaleLabels(
+        "Challan Status",
+        "EC_COMMON_TABLE_COL_VIEW_SEIZURE_CHALLAN_STATUS",
         localisationLabels
       );
   }
@@ -1877,7 +1920,7 @@ export const fetchRoleCode = (iscalledforInnerGrid, appstatus) => {
   }
 
   return si_Counter > 1 ? iscalledforInnerGrid
-    ? (appstatus === 'CLOSED' || appstatus === 'CHALLAN ISSUED') ? 'challanSI'
+    ? (appstatus === ('RELEASED FROM STORE' || 'RELEASED ON GROUND' || 'CLOSED') || appstatus === 'CHALLAN ISSUED') ? 'challanSI'
       : 'challanSM' : 'challanSI' : rolecode;
 }
 
@@ -1918,11 +1961,11 @@ export const sendReceiptBymail = async (state, dispatch, ReceiptLink, violatorDe
     let payload = violatorDetails;
     if (isReceipt) {
       notificationTemplate = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.NotificationTemplate[1]", {});
-      body = notificationTemplate.body.replace('<ChallanId>', payload.challanId);
+      body = notificationTemplate.body.replace('<violator>',payload.violatorName).replace('<ChallanId>', payload.challanId);
       notificationTemplate.attachments[0].url = ReceiptLink;
     } else {
       notificationTemplate = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.NotificationTemplate[0]", {});
-      body = notificationTemplate.body.replace('<ChallanId>', payload.challanId).replace('<EnchroachmentType>', payload.encroachmentType).replace('<Date and Time>', payload.violationDate + " " + payload.violationTime).replace('<Link>', '<Link>');
+      body = notificationTemplate.body.replace('<violator>',payload.violatorName).replace('<ChallanId>', payload.challanId).replace('<EnchroachmentType>', payload.encroachmentType).replace('<Date and Time>', payload.violationDate + " " + payload.violationTime).replace('<Link>', '<Link>');
       notificationTemplate.attachments[0].url = ReceiptLink
     }
 
@@ -1984,6 +2027,12 @@ export const getMdmsEncroachmentSectorData = async (action, state, dispatch) => 
             },
             {
               name: "VehicleType"
+            },
+            {
+              name: "ChallanStatus"
+            },
+            {
+              name: "cardList"
             }
           ]
         },
@@ -2008,3 +2057,35 @@ export const truncData = (str, length, ending) => {
     return str;
   }
 };
+
+
+export const getSiNameDetails = async (action, state, dispatch) => {
+  //http://192.168.12.114:8096/egov-hrms/employees/_search?roles=challanSM&tenantId=ch.chandigarh
+  try {
+    const queryStr = [
+      { key: "tenantId", value: getTenantId() },
+      { key: "roles", value: "challanSI" },
+    ];
+    await fetchSIName(state, dispatch, queryStr);
+
+
+  } catch (e) {
+    console.log(e);
+  }
+
+};
+
+export const integer_to_roman = (num) => {
+  if (typeof num !== 'number')
+    return false;
+
+  var digits = String(+num).split(""),
+    key = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM",
+      "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC",
+      "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
+    roman_num = "",
+    i = 3;
+  while (i--)
+    roman_num = (key[+digits.pop() + (i * 10)] || "") + roman_num;
+  return Array(+digits.join("") + 1).join("M") + roman_num;
+}

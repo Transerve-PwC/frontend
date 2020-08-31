@@ -10,30 +10,30 @@ import {
   const gotoCreatePage = (state, dispatch) => {
     const createUrl =
     process.env.REACT_APP_SELF_RUNNING === "true"
-    ? `/egov-ui-framework/egov-store-asset/createpricelist?step=0`
-    : `/egov-store-asset/createpricelist?step=0`;
+    ? `/egov-ui-framework/egov-store-asset/createpricelist?step=1`
+    : `/egov-store-asset/createpricelist?step=1`;
     dispatch(setRoute(createUrl));
   };
   
-  const storeCard = {
+  const pricestoreCard = {
     uiFramework: "custom-containers",
     componentPath: "MultiItem",
     props: {
       className: "review-hr",
       scheama: getCommonGrayCard({
-        storeCardContainer: getCommonContainer({
+        pricestoreCardContainer: getCommonContainer({
           materialcode: getLabelWithValue(
             {
               labelName: "Material Code",
-                labelKey: "STORE_MATERIAL_CODE"
+                labelKey: "STORE_MATERIAL_NAME"
             },
-            { jsonPath: "priceLists[0].priceListDetails[0].material.code",          
+            { jsonPath: "priceLists[0].priceListDetails[0].material.name",          
           }
           ),
           quantity: getLabelWithValue(
             {
               labelName: "quantity",
-                    labelKey: "STORE_DETAILS_QUANTITY"
+                    labelKey: "STORE_PRICE_QUANTITY"
             },
             { jsonPath: "priceLists[0].priceListDetails[0].quantity"
             
@@ -41,16 +41,16 @@ import {
           ),
           ratePerUnit: getLabelWithValue(
             { labelName: "Rate",
-            labelKey: "STORE_DETAILS_RATE"},
+            labelKey: "STORE_PRICE_RATE_PER_UNIT"},
             {
               jsonPath: "priceLists[0].priceListDetails[0].ratePerUnit"
              
             }
           ),
           uomcode: getLabelWithValue(
-            {  labelName: "Store Name", labelKey: "STORE_DETAILS_STORE_NAME" },
+            {  labelName: "UOM Name", labelKey: "STORE_MATERIAL_INDENT_NOTE_UOM_NAME" },
             {
-              jsonPath: "priceLists[0].priceListDetails[0].uom.code",
+              jsonPath: "priceLists[0].priceListDetails[0].uom.name",
              
             }
           )
@@ -60,9 +60,10 @@ import {
       items: [],
       hasAddItem: false,
       isReviewPage: true,
+     // screenKey:"view-price-list",
       sourceJsonPath: "priceLists[0].priceListDetails",
       prefixSourceJsonPath:
-        "children.cardContent.children.storeCardContainer.children",
+        "children.cardContent.children.pricestoreCardContainer.children",
       afterPrefixJsonPath: "children.value.children.key"
     },
     type: "array"
@@ -117,7 +118,7 @@ import {
           }
         }
       },
-      viewOne: storeCard
+      viewOne: pricestoreCard
     });
   };
   

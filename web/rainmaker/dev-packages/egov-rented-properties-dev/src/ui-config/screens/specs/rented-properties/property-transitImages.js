@@ -56,7 +56,7 @@ import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
           images = images.map(item => {
             let { applicationDocuments, urls } = item;
             applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: urls[index].split("?")[0].split("/").pop().slice(13) }));
-            return { ...item, applicationDocuments,transitNotices };
+            return { ...item, applicationDocuments };
           });
         }
         else{

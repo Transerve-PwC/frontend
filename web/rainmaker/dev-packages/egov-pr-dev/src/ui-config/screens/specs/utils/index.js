@@ -93,6 +93,7 @@ export const validateFields = (
   dispatch,
   screen = "apply"
 ) => {
+  
   const fields = get(
     state.screenConfiguration.screenConfig[screen],
     objectJsonPath,
@@ -125,7 +126,52 @@ export const validateFields = (
   }
   return isFormValid;
 };
-
+export const validateFieldsForGenPress = (
+  objectJsonPath,
+  state,
+  dispatch,
+  screen = "apply"
+) => {
+  
+  const fields = get(
+    state.screenConfiguration.screenConfig[screen],
+    objectJsonPath,
+    {}
+  );
+  
+  let isFormValid = true;
+  //subjectemail break headeremail EmailContent headersms
+  for (var variable in fields) {
+    if(variable==="documentsSummary" || variable==="MultipleDocumentDetails" || variable==="subjectemail" || variable==="break" || variable==="headeremail" || variable==="EmailContent" || variable==="headersms")
+{
+}
+else{
+    if (fields.hasOwnProperty(variable)) {
+      if (
+        fields[variable] &&
+        fields[variable].props &&
+        (fields[variable].props.disabled === undefined ||
+          !fields[variable].props.disabled) &&
+        !validate(
+          screen,
+          {
+            ...fields[variable],
+            value: get(
+              state.screenConfiguration.preparedFinalObject,
+              fields[variable].jsonPath
+            )
+          },
+          dispatch,
+          true
+        )
+      ) {
+        isFormValid = false;
+      }
+    }
+  }
+}
+  return isFormValid;
+};
 export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   //example input format : "2018-10-02"
   try {
@@ -1772,7 +1818,20 @@ export const showHideAdhocPopupopmsReject = (state, dispatch, screenKey, type) =
 		dispatch(
 		  handleField(screenKey, "components.adhocDialogexternal", "props.open", !toggle)
 		);
-	}
+  }
+  else if(type == "pressMaster")
+  {
+   let toggle = get(
+     state.screenConfiguration.screenConfig[screenKey],
+     "components.adhocDialog.props.open",
+     false
+   );
+   console.log("togglllllllllllllleeeeeeeee");
+   console.log(toggle);
+   dispatch(
+     handleField(screenKey, "components.adhocDialog", "props.open", !toggle)
+   );
+ }
 	else
    {
 		let toggle = get(

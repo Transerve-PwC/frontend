@@ -10,8 +10,9 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { getTodaysDateInYMD } from "../../utils";
   import get from "lodash/get";
-  import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  
+  import set from "lodash/set";
+  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import{getmaterialissuesSearchResults,GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
   const arrayCrawler = (arr, n) => {
     if (n == 1) {
       return arr.map(item => {
@@ -30,7 +31,8 @@ import {
       scheama: getCommonGrayCard({
         storeDetailsCardContainer: getCommonContainer(
           {
-            materialcode: getSelectField({
+            materialcode:{            
+            ...getSelectField({
               label: {  labelName: " Material Name",
               labelKey: "STORE_MATERIAL_NAME" },
               placeholder: {
@@ -39,20 +41,23 @@ import {
               },
               required: true,
               jsonPath: "priceLists[0].priceListDetails[0].material.code",            
-              
-               props: {
-                data: [
-                  {
-                    value: "MAT02",
-                    label: "MAT02"
-                  },
-                  
-                ],
-                optionValue: "value",
-                optionLabel: "label"
+              sourceJsonPath: "createScreenMdmsData.store-asset.Material",
+              props: {
+                optionValue: "code",
+                optionLabel: "name",
               },
-              
             }),
+            beforeFieldChange: (action, state, dispatch) => {
+              let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0];
+              let Material = get(state, "screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.Material",[]) 
+              let MaterialType = Material.filter(x=>x.code == action.value)//.materialType.code
+              let matname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",action.value) 
+              let UomName = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.UOM",MaterialType[0].baseUom.code) 
+              dispatch(prepareFinalObject(`priceLists[0].priceListDetails[${cardIndex}].material.name`,matname));
+              dispatch(prepareFinalObject(`priceLists[0].priceListDetails[${cardIndex}].uom.code`,MaterialType[0].baseUom.code));
+              dispatch(prepareFinalObject(`priceLists[0].priceListDetails[${cardIndex}].uom.name`,UomName));
+            }
+          },
             fromDate: {
               ...getDateField({
                 label: {
@@ -105,7 +110,7 @@ import {
                   labelName: "Enter Rate Per Unit",
                   labelKey: "STORE_PRICE_RATE_PER_UNIT_PLACEHOLDER"
                 },
-                required: false,
+                required: true,
                 pattern: getPattern("Amount") || null,
                 jsonPath: "priceLists[0].priceListDetails[0].ratePerUnit"
               })
@@ -120,17 +125,17 @@ import {
                   labelName: "Enter quantity",
                   labelKey: "STORE_PRICE_QUANTITY_PLACEHOLDER"
                 },
-                required: false,
+                required: true,
                 pattern: getPattern("Amount") || null,
                 jsonPath: "priceLists[0].priceListDetails[0].quantity"
               })
             },          
 
             uomcode: getSelectField({
-              label: { labelName: "UOM ", labelKey: "STORE_PRICE_UOM" },
+              label: { labelName: "UOM ", labelKey: "STORE_MATERIAL_INDENT_NOTE_UOM_NAME" },
               placeholder: {
                 labelName: "Select UOM",
-                labelKey: "STORE_PRICE_UOM_SELECT",
+                labelKey: "STORE_MATERIAL_INDENT_NOTE_UOM_NAME",
               },
               required: true,
               jsonPath: "priceLists[0].priceListDetails[0].uom.code",
@@ -140,6 +145,7 @@ import {
               },
               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
             props: {
+              disabled:true,
               optionLabel: "name",
               optionValue: "code"
             },
@@ -159,6 +165,7 @@ import {
               props: {
                 content: "STORE_PRICE_ACTIVE",
                 screenName: "createpricelist",
+                jsonPath: "priceLists[0].priceListDetails[0].active",
                 checkBoxPath:
                   "components.div.children.searchForm.children.cardContent.children.searchFormContainer.children.active",
               },
@@ -171,15 +178,29 @@ import {
           }
         )
       }),
+      // set active true
+      onMultiItemAdd: (state, muliItemContent) => {          
+          let preparedFinalObject = get(
+            state,
+            "screenConfiguration.preparedFinalObject",
+            {}
+          );
+          let cardIndex = get(muliItemContent, "materialcode.index");
+        if(preparedFinalObject){
+          set(preparedFinalObject.priceLists[0],`priceListDetails[${cardIndex}].active` , true);
+        } 
+          //console.log("click on add");
+        return muliItemContent;
+      },
       items: [],
       addItemLabel: {
         labelName: "ADD STORE",
-        labelKey: "STORE_MATERIAL_MAP_ADD"
+        labelKey: "STORE_COMMON_ADD_BUTTON"
       },
       headerName: "Store",
       headerJsonPath:
         "children.cardContent.children.header.children.head.children.Accessories.props.label",
-      sourceJsonPath: "priceLists[0].jurisdictions",
+      sourceJsonPath: "priceLists[0].priceListDetails",
       prefixSourceJsonPath:
         "children.cardContent.children.storeDetailsCardContainer.children"
     },
@@ -189,8 +210,8 @@ import {
   export const MaterialPriceDetails = getCommonCard({
     header: getCommonTitle(
       {
-        labelName: "Material Map to Stpre Details",
-        labelKey: "STORE_MATERIAL_MAP_STORE_DETAILS"
+        labelName: "Price List for Material Name Details",
+        labelKey: "STORE_PRICE_PRICE_LIST_FOR_MATERIAL_NAME_DETAILS"
       },
       {
         style: {
