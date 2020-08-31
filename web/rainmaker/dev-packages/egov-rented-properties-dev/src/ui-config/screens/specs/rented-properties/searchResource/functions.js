@@ -13,7 +13,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE , BALANCE } from "./searchResults";
 import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
 import moment from "moment";
 
@@ -256,7 +256,8 @@ export const searchAccountStatement = async (state, dispatch) => {
             [TYPE]: item.type || "-",
             [REMAINING_INTEREST]: !!item.remainingInterest ? item.remainingInterest.toFixed(2) : "-",
             [REMAINING_PRINCIPAL]: !!item.remainingPrincipal ? item.remainingPrincipal.toFixed(2) : "-",
-            [TOTAL_DUE]: !!item.dueAmount ? item.dueAmount.toFixed(2) : "-"
+            [TOTAL_DUE]: !!item.dueAmount ? item.dueAmount.toFixed(2) : "-",
+            [BALANCE]: !!item.remainingBalance ? item.remainingBalance.toFixed(2) : "-"
           }));
           dispatch(
             handleField(
