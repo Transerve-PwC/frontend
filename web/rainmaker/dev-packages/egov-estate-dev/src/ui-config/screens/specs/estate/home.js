@@ -53,6 +53,14 @@ const cardItems = [
     },
     icon: < FormIcon / > ,
     route: "search"
+  },
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_DUES_HEADER",
+      labelName: "Dues"
+    },
+    icon: < FormIcon / > ,
+    route: "dues"
   }
 ]
 
