@@ -13,7 +13,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
 import "./index.css";
 import { get } from "lodash";
 import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
-import { WORKFLOW_BUSINESS_SERVICE_DC } from "../../ui-constants";
+import { WORKFLOW_BUSINESS_SERVICE_DC, WORKFLOW_BUSINESS_SERVICE_OT } from "../../ui-constants";
 
 const styles = theme => ({
   root: {
