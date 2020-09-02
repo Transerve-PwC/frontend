@@ -32,8 +32,16 @@ const cardItems = [
   },
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_ALLOTMENT_CANCELLATION_HEADER",
-      labelName: "Allotment/Cancellation"
+      labelKey: "EST_PROPERTY_MASTER_ALLOTMENT_HEADER",
+      labelName: "Allotment"
+    },
+    icon: < FormIcon / > ,
+    route: "search"
+  },
+  {
+    label: {
+      labelKey: "EST_PROPERTY_MASTER_CANCELLATION_HEADER",
+      labelName: "Cancellation"
     },
     icon: < FormIcon / > ,
     route: "search"
