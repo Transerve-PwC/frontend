@@ -80,7 +80,7 @@ const tradeLicenseSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
   beforeInitScreen: (action, state, dispatch) => {
-    state.screenConfiguration.preparedFinalObject.searchScreen = {}
+    dispatch(prepareFinalObject("searchScreen", {}))
     getMdmsData(dispatch);
     getStatusList(state, dispatch, "search", "components.div.children.tradeLicenseApplication.children.cardContent.children.appStatusContainer.children.applicationNo")
     searchApiCall(state, dispatch, true)

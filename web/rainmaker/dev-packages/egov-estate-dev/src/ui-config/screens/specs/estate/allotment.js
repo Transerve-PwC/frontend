@@ -122,8 +122,8 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
     );
   dispatch(
     handleField(
-      "apply",
-      `components.div.children.formwizardSixthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      "allotment",
+      `components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -133,8 +133,8 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
 }
 
 const header = getCommonHeader({
-  labelName: "Add Estate",
-  labelKey: "EST_COMMON_ESTATES_ADD"
+  labelName: "Allotment of Site",
+  labelKey: "EST_ALLOTMENT_OF_SITE"
 });
 
 const getData = async (action, state, dispatch) => {
@@ -177,7 +177,7 @@ const applyAllotment = {
   uiFramework: "material-ui",
   name: "allotment",
   beforeInitScreen: (action, state, dispatch) => {
-    // getData(action, state, dispatch)
+    getData(action, state, dispatch)
     return action;
   },
   components: {

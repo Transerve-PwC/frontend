@@ -36,6 +36,9 @@ import {
   licenseFeeDetails,
   otherPaymentDetails
 } from './paymentDetailsAllotment';
+import {
+  reviewAllotmentDetails
+} from './reviewAllotmentDetails'
 import {AllotmentAuctionDetails} from './auction-details'
 
 const documentCardConfig = {
@@ -209,16 +212,16 @@ export const stepsDataAllotment = [{
   labelKey: "EST_COMMON_OWNER_DETAILS"
 },
 {
+  labelName: "Documents",
+  labelKey: "EST_COMMON_DOCUMENTS"
+},
+{
   labelName: "Court Case",
   labelKey: "EST_COMMON_COURT_CASE_DETAILS"
 },
 {
   labelName: "Payment Details",
   labelKey: "EST_COMMON_PAYMENT_DETAILS"
-},
-{
-  labelName: "Documents",
-  labelKey: "EST_COMMON_DOCUMENTS"
 },
 {
   labelName: "Summary",
@@ -277,7 +280,7 @@ export const formwizardFourthStepAllotment = {
     id: "apply_form4"
   },
   children: {
-    courtCaseDetails
+    ownerDocumentDetails_0
   },
   visible: false
 };
@@ -289,10 +292,7 @@ export const formwizardFifthStepAllotment = {
     id: "apply_form5"
   },
   children: {
-    premiumAmountDetails,
-    groundRentDetails,
-    licenseFeeDetails,
-    otherPaymentDetails
+    courtCaseDetails
   },
   visible: false
 };
@@ -304,7 +304,10 @@ export const formwizardSixthStepAllotment = {
     id: "apply_form6"
   },
   children: {
-    ownerDocumentDetails_0
+    premiumAmountDetails,
+    groundRentDetails,
+    licenseFeeDetails,
+    otherPaymentDetails
   },
   visible: false
 }
@@ -316,6 +319,7 @@ export const formwizardSeventhStepAllotment = {
     id: "apply_form7"
   },
   children: {
+    reviewAllotmentDetails
   },
   visible: false
 }

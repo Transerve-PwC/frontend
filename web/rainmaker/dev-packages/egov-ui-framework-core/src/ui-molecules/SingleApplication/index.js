@@ -156,7 +156,35 @@ class SingleApplication extends React.Component {
         default:
           setRoute(`/egov-echallan/search-preview?applicationNumber=${item.challanId}&tenantId=${item.tenantId}`);
       }
+    } else if(moduleName === "OWNERSHIPTRANSFERRP") {
+      switch (item.applicationState) {
+        case "OT_DRAFTED": 
+        case "OT_PENDINGCLARIFICATION": 
+          setRoute(`/rented-properties-citizen/ownership-apply?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
+          break;
+        default:
+          setRoute(`/rented-properties/ownership-search-preview?applicationNumber=${item.ownerDetails.applicationNumber}&tenantId=${item.tenantId}`)
+      }
     }
+    else if(moduleName === "DUPLICATECOPYOFALLOTMENTLETTERRP") {
+      switch (item.state) {
+        case "DC_DRAFTED":
+        case "DC_PENDINGCLARIFICATION": 
+        setRoute(`/rented-properties-citizen/duplicate-copy-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+          break;
+        default:
+          setRoute(`/rented-properties/search-duplicate-copy-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+      }
+    } else if(moduleName === "MORTGAGERP") {
+      switch(item.state) {
+        case "MG_DRAFTED":
+        case "MG_PENDINGCLARIFICATION":  
+        setRoute(`/rented-properties-citizen/mortage-apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+        break;
+        default:
+          setRoute(`/rented-properties/mortgage-search-preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+    }
+   } 
   };
 
   onButtonCLick = () => {
@@ -230,6 +258,36 @@ class SingleApplication extends React.Component {
                         </Grid>
                       );
                     })}
+                    {moduleName === "OWNERSHIPTRANSFERRP" && item.applicationState === "OT_APPROVED" && (
+                      <div>
+                      <Grid container style={{ marginBottom: 12 }}>
+                        <Grid item xs={6}>
+                          <Label
+                            labelKey="RP_ALLOTMENT_NUMBER"
+                            fontSize={14}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.60"
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Label
+                            labelKey={this.generateLabelKey(
+                              { label: "RP_ALLOTMENT_NUMBER",
+                                jsonPath: "allotmenNumber",
+                              }, item)}
+                            fontSize={14}
+                            checkValueForNA={checkValueForNA}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.87"
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </div>
+                    )}
                     {moduleName === "TL" &&
                       <div>
                         <Grid container style={{ marginBottom: 12 }}>

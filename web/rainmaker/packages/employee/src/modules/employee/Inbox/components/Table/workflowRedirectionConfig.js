@@ -128,10 +128,54 @@ else if (businessService == "Engineering" || businessService == "IT" || business
   else {
     switch (module.toUpperCase()) {
       case "TL-SERVICES":
+      if(businessService === "MasterRP") {
+        return {
+          INITIATED: "/rented-properties/apply",
+          DEFAULT: "/rented-properties/search-preview",
+        };
+      } else if(businessService === "OwnershipTransferRP") {
+        return {
+          INITIATED: "/rented-properties/ownership-search-preview",
+          DEFAULT: "/rented-properties/ownership-search-preview",
+        };
+      } else if(businessService === "DuplicateCopyOfAllotmentLetterRP") {
+        return {
+          INITIATED: "/rented-properties/search-duplicate-copy-preview",
+          DEFAULT: "/rented-properties/search-duplicate-copy-preview",
+        };
+      } else if(businessService === "PermissionToMortgage") {
+        return {
+          INITIATED: "/rented-properties/mortgage-search-preview",
+          DEFAULT: "/rented-properties/mortgage-search-preview",
+        };
+      } else {
         return {
           INITIATED: "/tradelicence/apply",
           DEFAULT: "/tradelicence/search-preview",
         };
+      }
+    case "RENTEDPROPERTIES": 
+      if(businessService === "MasterRP") {
+      return {
+        INITIATED: "/rented-properties/apply",
+        DEFAULT: "/rented-properties/search-preview",
+      };
+    } else if(businessService === "OwnershipTransferRP") {
+      return {
+        INITIATED: "/rented-properties/ownership-search-preview",
+        DEFAULT: "/rented-properties/ownership-search-preview",
+      };
+    } else if(businessService === "DuplicateCopyOfAllotmentLetterRP") {
+      return {
+        INITIATED: "/rented-properties/search-duplicate-copy-preview",
+        DEFAULT: "/rented-properties/search-duplicate-copy-preview",
+      };
+    } else if(businessService === "PermissionToMortgage") {
+      return {
+        INITIATED: "/rented-properties/mortgage-search-preview",
+        DEFAULT: "/rented-properties/mortgage-search-preview",
+      };
+    }
      case "WS-SERVICES":
       return {
         INITIATED: "/wns/search-preview",
@@ -147,11 +191,6 @@ else if (businessService == "Engineering" || businessService == "IT" || business
           INITIATED: "/fire-noc/apply",
           DEFAULT: "/fire-noc/search-preview",
         };
-        case "HORTICULTURE":
-          return {
-            INITIATED: "/egov-hc/search-preview",
-            DEFAULT: "/egov-hc/search-preview",
-          };
       case "BPA-SERVICES":
         return {
           INITIATED: "/egov-bpa/search-preview",

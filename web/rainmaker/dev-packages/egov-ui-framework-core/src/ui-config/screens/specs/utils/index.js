@@ -563,6 +563,8 @@ export const getPattern = type => {
       return /^[a-zA-Z ]{1,180}$/;
     case "AlphaNumValidation":
       return /^[a-zA-Z0-9 ]{1,180}$/i;
+    case "TransitNumberValidation":
+        return /^([1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|10000)$/i;
     case "EventDescription":
       return /^[a-zA-Z0-9-!%:;“”‘’*=@\n\r#?\\\\~`$&^<>?{}[\]|()\\-`.+,/\"' ]{1,500}$/i;
     case "EventTitle":

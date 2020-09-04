@@ -33,15 +33,6 @@ const getMdmsData = async (dispatch, body) => {
 };
 
 export const getTradeTypes = async (action, state, dispatch) => {
-  const tradeTypePayload = [{
-    moduleName: "TradeLicense",
-    masterDetails: [{name: "TradeType"}]
-  }]
-  const tradeRes = await getMdmsData(dispatch, tradeTypePayload);
-  const {TradeLicense} = tradeRes.MdmsRes || {}
-  const tradeTypes = TradeLicense.TradeType || [] 
-  set(state.common, "tradeTypes", tradeTypes);
-
   const cityPayload = [{
     moduleName: "tenant", 
     masterDetails: [{name: "citymodule"}]

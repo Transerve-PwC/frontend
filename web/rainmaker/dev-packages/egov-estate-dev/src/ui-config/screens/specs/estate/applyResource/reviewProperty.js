@@ -880,3 +880,55 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
     })
   })
 }
+
+const premiumAmountHeader = getCommonTitle({
+  labelName: "Premium Details",
+  labelKey: "EST_PREMIUM_AMOUNT_DETAILS_HEADER"
+}, {
+  style: {
+    marginBottom: 18,
+    marginTop: 18,
+    width: "100%"
+  }
+})
+export const getReviewPaymentInfoAllotment = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Payment Details",
+            labelKey: "EST_PAYMENT_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 5)
+      }
+    },
+    viewPremiumAmount: getCommonContainer({
+      header: premiumAmountHeader,
+      premiumAmount: getLabelWithValue(
+        {
+          labelName: "Premium Amount",
+          labelKey: "EST_PREMIUM_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      noOfInstallmentsForPremiumAmount: getLabelWithValue(
+        {
+          labelName: "No. of Installments for Premium Amount",
+          labelKey: "EST_NUMBER_OF_INSTALLMENTS_FOR_PREMIUM_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      )
+    })
+  })
+}

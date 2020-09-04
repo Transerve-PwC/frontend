@@ -181,6 +181,8 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "my-applications",
   beforeInitScreen: (action, state, dispatch) => {
+    dispatch(prepareFinalObject("actualResults", []));
+    dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);
     fetchData(action, state, dispatch);
     getStatusList(state, dispatch, "my-applications", "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status")

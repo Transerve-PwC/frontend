@@ -1,0 +1,58 @@
+.radio-button-group {
+    padding: 0;
+  }
+  
+  .checkbox-root {
+    width: 16px;
+    margin-right: 11px;
+  }
+  
+  .fontSize12 {
+    font-size: 12px;
+  }
+  
+  .city-picker-dialog-style {
+    min-height: 180px;
+    min-width: 365px;
+  }
+  // .common-header-cont{
+  //   padding: 44px 0px 0px 12px;
+  // }
+  @media only screen and (max-width: 551px) {
+    .apply-wizard-footer {
+      background-color: #ffffff;
+      -webkit-box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
+      box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
+      /* padding: 8px; */
+      position: fixed !important;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      text-align: right;
+      display: block;
+      padding: initial;
+      overflow: auto;
+    }
+  
+    .apply-wizard-footer button {
+      width: 100% !important;
+      margin: initial;
+      border: none;
+      margin: 0 !important;
+      border-radius: none !important;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .city-picker-dialog-style {
+      min-width: 250px;
+    }
+  
+  }
+  @media only screen and (min-width: 768px){
+    .common-header-cont{
+      padding: 44px 0px 0px 12px;
+    }
+    .apply-wizard-footer{
+      width: 100%;
+    }
+  }

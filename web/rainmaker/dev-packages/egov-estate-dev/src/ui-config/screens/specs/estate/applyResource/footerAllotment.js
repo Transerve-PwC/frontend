@@ -41,9 +41,9 @@ export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
 export const AUCTION_DETAILS_STEP = 1;
 export const OWNER_DETAILS_STEP = 2;
-export const COURT_CASE_DETAILS_STEP = 3;
-export const PAYMENT_DETAILS_STEP = 4;
-export const DOCUMENT_UPLOAD_STEP = 5;
+export const DOCUMENT_UPLOAD_STEP = 3;
+export const COURT_CASE_DETAILS_STEP = 4;
+export const PAYMENT_DETAILS_STEP = 5;
 export const SUMMARY_STEP = 6;
 
 export const moveToSuccess = (estatesData, dispatch, type) => {
@@ -99,14 +99,14 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === OWNER_DETAILS_STEP) {
-/*     var propertyOwners = get(
+    var propertyOwners = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.owners"
     );
 
     let propertyOwnersItems = get(
       state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardSecondStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+      "screenConfiguration.screenConfig.apply.components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
@@ -115,10 +115,10 @@ const callBackForNext = async (state, dispatch) => {
           continue;
         }
         var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardSecondStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+          `components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
           state,
           dispatch,
-          "apply"
+          "allotment"
         )
 
         var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
@@ -126,110 +126,24 @@ const callBackForNext = async (state, dispatch) => {
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSixthStep.children.ownerDocumentDetails_0`, {}
+            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_0`, {}
           ))
           var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
           newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
           var documentDetailsObj = JSON.parse(newDocumentDetailsString);
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSixthStep.children.ownerDocumentDetails_${i}`,
+            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}`,
             documentDetailsObj
           )
 
           setDocumentData("", state, dispatch, i)
-
-          var groundRentString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_0`, {}
-          ))
-          var newGroundRentString = groundRentString.replace(/_0/g, `_${i}`);
-          newGroundRentString = newGroundRentString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var groundRentObj = JSON.parse(newGroundRentString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_${i}`,
-            groundRentObj
-          )
-
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dueDateOfPayment.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
-            getPattern("Date")
-          )
-
-          var serviceTaxString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.serviceTaxDetails_0`, {}
-          ))
-          var newServiceTaxString = serviceTaxString.replace(/_0/g, `_${i}`);
-          newServiceTaxString = newServiceTaxString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var serviceTaxObj = JSON.parse(newServiceTaxString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.serviceTaxDetails_${i}`,
-            serviceTaxObj
-          )
-
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
-            getPattern("Date")
-          )
-
-          var paymentMadeByString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.paymentMadeBy_0`, {}
-          ))
-          var newPaymentMadeByString = paymentMadeByString.replace(/_0/g, `_${i}`)
-          newPaymentMadeByString = newPaymentMadeByString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var paymentMadeByObj = JSON.parse(newPaymentMadeByString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFifthStep.children.paymentMadeBy_${i}`,
-            paymentMadeByObj
-          )
         }
 
-        dispatch(
-          handleField(
-            "apply",
-            `components.div.children.formwizardFifthStep.children.paymentMadeBy_${i}.children.cardContent.children.detailsContainer.children.paymentMadeBy`,
-            "props.value",
-            ownerName
-          )
-        );
-
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardFifthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `apply.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Douments - ${ownerName}`
-        )
-
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardFifthStep.children.groundRentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Ground Rent Details - ${ownerName}`
-        )
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardFifthStep.children.serviceTaxDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Service Tax Details - ${ownerName}`
         )
 
         const reviewOwnerDetails = getReviewOwner(true, i);
@@ -240,25 +154,13 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+          `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
           reviewOwnerDetails
-        )
-
-        const reviewPaymentDetails = getReviewPayment(true, i);
-        set(
-          reviewPaymentDetails,
-          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Payment Details - ${ownerName}`
-        )
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
-          reviewPaymentDetails
         )
       }
     }
 
-    if (isOwnerDetailsValid) {
+    /* if (isOwnerDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
@@ -269,13 +171,13 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === COURT_CASE_DETAILS_STEP) {
-    /* const courtCases = get(
+    const courtCases = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.courtCases"
     )
     let courtCaseItems = get(
       state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardFourthStep.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+      "screenConfiguration.screenConfig.apply.components.div.children.formwizardFourthStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
     if (courtCaseItems && courtCaseItems.length > 0) {
@@ -284,7 +186,7 @@ const callBackForNext = async (state, dispatch) => {
           continue;
         }
         var isCourtCaseDetailsValid = validateFields(
-          `components.div.children.formwizardFourthStep.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.courtCaseCard.children`,
+          `components.div.children.formwizardFifthStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.courtCaseCard.children`,
           state,
           dispatch
         )
@@ -292,13 +194,13 @@ const callBackForNext = async (state, dispatch) => {
         const reviewCourtCaseDetails = getReviewCourtCase(true, i);
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
+          `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
           reviewCourtCaseDetails
         )
       }
     }
 
-    if (isCourtCaseDetailsValid) {
+    /* if (isCourtCaseDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
@@ -309,38 +211,7 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
-/*     let propertyOwnersItems = get(
-      state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardSecondStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
-    );
-
-    for (var i = 0; i < propertyOwnersItems.length; i++) {
-      if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
-        continue;
-      }
-      var isGroundRentDetailsValid = validateFields(
-        `components.div.children.formwizardFifthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children`,
-        state,
-        dispatch,
-        "apply"
-      )
-
-      var isServiceTaxDetailsValid = validateFields(
-        `components.div.children.formwizardFifthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children`,
-        state,
-        dispatch,
-        "apply"
-      )
-    }
-
-    if (isGroundRentDetailsValid && isServiceTaxDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
-      if (!res) {
-        return
-      }
-    } else {
-      isFormValid = false;
-    } */
+    
   }
 
   if (activeStep === DOCUMENT_UPLOAD_STEP) {
@@ -480,17 +351,17 @@ export const changeStep = (
       value: activeStep
     },
     {
-      path: "components.div.children.footer.children.previousButton",
+      path: "components.div.children.footerAllotment.children.previousButton",
       property: "visible",
       value: isPreviousButtonVisible
     },
     {
-      path: "components.div.children.footer.children.nextButton",
+      path: "components.div.children.footerAllotment.children.nextButton",
       property: "visible",
       value: isNextButtonVisible
     },
     {
-      path: "components.div.children.footer.children.submitButton",
+      path: "components.div.children.footerAllotment.children.submitButton",
       property: "visible",
       value: isSubmitButtonVisible
     }
@@ -528,16 +399,16 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
+    case DOCUMENT_UPLOAD_STEP:
+    dispatchMultipleFieldChangeAction(
+      screenName,
+      getActionDefinationForStepper(
+        "components.div.children.formwizardFourthStepAllotment"
+      ),
+      dispatch
+    );
+    break;
     case COURT_CASE_DETAILS_STEP:
-      dispatchMultipleFieldChangeAction(
-        screenName,
-        getActionDefinationForStepper(
-          "components.div.children.formwizardFourthStepAllotment"
-        ),
-        dispatch
-      );
-      break;
-    case PAYMENT_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
@@ -546,7 +417,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    case DOCUMENT_UPLOAD_STEP:
+    case PAYMENT_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
@@ -555,6 +426,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
+    
     default:
       dispatchMultipleFieldChangeAction(
         screenName,
