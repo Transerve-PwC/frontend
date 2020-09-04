@@ -34,7 +34,7 @@ import {
   premiumAmountDetails,
   groundRentDetails,
   licenseFeeDetails,
-  otherPaymentDetails
+  securityDetails
 } from './paymentDetailsAllotment';
 import {
   reviewAllotmentDetails
@@ -307,7 +307,7 @@ export const formwizardSixthStepAllotment = {
     premiumAmountDetails,
     groundRentDetails,
     licenseFeeDetails,
-    otherPaymentDetails
+    securityDetails
   },
   visible: false
 }
