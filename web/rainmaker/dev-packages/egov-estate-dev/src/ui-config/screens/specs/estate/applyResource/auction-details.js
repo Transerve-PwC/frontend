@@ -105,6 +105,23 @@ const emdAmount = {
   jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
 }
 
+const emdAmountDate = {
+  label: {
+    labelName: "EMD Amount Date",
+    labelKey: "EST_EMD_AMOUNT_DATE_LABEL"
+  },
+  placeholder: {
+    labelName: "Enter EMD Amount Date",
+    labelKey: "EST_EMD_AMOUNT_DATE_PLACEHOLDER"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+  maxLength: 250,
+  jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
+}
+
 const buttonItem = {
   firstCont: {
     uiFramework: "custom-atoms",
@@ -154,7 +171,8 @@ const commonAuctionInformation = () => {
       estateOfficerCourt: getTextField(schemeName),
       commissionersCourt: getDateField(dateOfAuction),
       chiefAdministratorsCourt: getTextField(modeOfAuction),
-      advisorToAdminCourt: getTextField(emdAmount)
+      advisorToAdminCourt: getTextField(emdAmount),
+      emdAmountDate: getDateField(emdAmountDate)
     })
   });
 };
