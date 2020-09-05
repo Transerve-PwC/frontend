@@ -4,7 +4,6 @@
     "dev-packages/egov-workflow-dev",
     "dev-packages/egov-tradelicence-dev",
     "dev-packages/egov-common-dev",
-    "dev-packages/egov-rented-properties-dev",
     "dev-packages/egov-estate-dev",
     "packages/citizen",
     "packages/employee",
