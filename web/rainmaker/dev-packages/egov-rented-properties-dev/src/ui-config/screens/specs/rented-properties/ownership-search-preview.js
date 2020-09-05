@@ -37,10 +37,9 @@ const headerrow = getCommonContainer({
   });
 
 const reviewApplicantDetails = getReviewApplicantDetails(false);
-const reviewPropertyAddressDetails = getreviewPropertyAddressDetails(false)
 const reviewFreshLicenceDocuments = getReviewDocuments(false, "ownership-apply", "OwnersTemp[0].reviewDocData")
 const getreviewCharges=getreviewChargesDetails(false)
-//const reviewPropertyDetailsWithoutAllotmentNumber = getReviewPropertyDetailsWithoutAllotmentNumber(false)
+const reviewPropertyDetailsWithoutAllotmentNumber = getReviewPropertyDetailsWithoutAllotmentNumber(false)
 
 const estimate = getCommonGrayCard({
   estimateSection: getFeesEstimateCard({
@@ -50,8 +49,7 @@ const estimate = getCommonGrayCard({
 
 const transferReviewDetails = getCommonCard({
     estimate,
-    reviewPropertyAddressDetails,
-    //reviewPropertyDetailsWithoutAllotmentNumber,
+    reviewPropertyDetailsWithoutAllotmentNumber,
     reviewApplicantDetails,
     getreviewCharges,
     reviewFreshLicenceDocuments

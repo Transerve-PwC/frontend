@@ -172,6 +172,44 @@ export const applicationSuccessFooter = (
           path: redirectionURL
         },
       },
+      downloadFormButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px"
+          }
+        },
+        children: {
+          downloadFormButtonLabel: getLabel({
+            labelName: "DOWNLOAD CONFIRMATION FORM",
+            labelKey: (type == "NOTICE_GENERATION") ? "TL_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_RECEIPT"
+          })
+        },
+        visible : (type == "NOTICE_GENERATION") ? true : false
+      },
+      printFormButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px"
+          }
+        },
+        children: {
+          printFormButtonLabel: getLabel({
+            labelName: "PRINT CONFIRMATION FORM",
+            labelKey: (type == "NOTICE_GENERATION") ? "TL_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
+          })
+        },
+        visible: (type == "NOTICE_GENERATION") ? true : false
+      }
     });
   }
 };
