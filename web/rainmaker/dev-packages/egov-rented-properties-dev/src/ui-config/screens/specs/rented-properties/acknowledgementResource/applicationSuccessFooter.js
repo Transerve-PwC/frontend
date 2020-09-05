@@ -9,7 +9,8 @@ import set from "lodash/set";
 import get from "lodash/get"
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-
+import {getSearchResults} from '../../../../../ui-utils/commons'
+import { prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 const userInfo = JSON.parse(getUserInfo());
 const getCommonApplyFooter = children => {
   return {
@@ -75,7 +76,7 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
+          callBack: async() => {
             switch (type) {
               case "OWNERSHIPTRANSFERRP":
                 const {
@@ -85,6 +86,7 @@ export const applicationSuccessFooter = (
                 set(Owners[0], "additionalDetails.documents", documentsOT)
                 downloadAcknowledgementFormForCitizen(Owners, OwnersTemp[0].estimateCardData, type, "ownership-transfer");
                 break;
+
               case "DUPLICATECOPYOFALLOTMENTLETTERRP":
                 const {
                   DuplicateCopyApplications, DuplicateTemp
@@ -93,6 +95,7 @@ export const applicationSuccessFooter = (
                 set(DuplicateCopyApplications[0], "additionalDetails.documents", documents)
                 downloadAcknowledgementFormForCitizen(DuplicateCopyApplications, DuplicateTemp[0].estimateCardData, type, "duplicate-copy");
                 break;
+
               case "PERMISSIONTOMORTGAGE":
                 const {
                   MortgageApplications, MortgageApplicationsTemp
@@ -103,15 +106,39 @@ export const applicationSuccessFooter = (
                 break;
 
               default:
-                const data = []
-                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
-                let tenantId = getQueryArg(window.location.href, "tenantId");
-                  const OwnersData = [];
-                  const receiptQueryString = [
-                    { key: "consumerCodes", value:consumerCodes},
-                    { key: "tenantId", value: tenantId }
-                  ]
-                  download(receiptQueryString, OwnersData,data, userInfo.name);                
+                  let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                  if(consumerCodes.startsWith('SITE')){
+                    let transitNumber = consumerCodes.split('-')[1]
+                    let queryObject = [
+                      { key: "transitNumber", value: transitNumber }
+                    ];
+                    let payload =  await getSearchResults(queryObject);
+                     let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),
+                        balanceInterest: Number(item.rentSummary.balanceInterest.toFixed(2)),
+                        balancePrincipal: Number(item.rentSummary.balancePrincipal.toFixed(2))
+                      }}))
+                      dispatch(prepareFinalObject("Properties", properties))
+                    let { Properties} = state.screenConfiguration.preparedFinalObject;
+                    let codes = getQueryArg(window.location.href, "applicationNumber");
+                    let id = getQueryArg(window.location.href, "tenantId");
+                      const receiptQuery = [
+                        { key: "consumerCodes", value:codes},
+                        { key: "tenantId", value: id }
+                    ]
+                      download(receiptQuery, Properties,[], userInfo.name,'online-payment');
+                  }
+                  else{
+                    let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                    let tenantId = getQueryArg(window.location.href, "tenantId");
+                    const OwnersData = [];
+                    const receiptQueryString = [
+                      { key: "consumerCodes", value:consumerCodes},
+                      { key: "tenantId", value: tenantId }
+                    ]
+                    download(receiptQueryString, OwnersData,[], userInfo.name,'payment');             
+                  }
+             
+                
                 break;
             }
           }
@@ -135,20 +162,81 @@ export const applicationSuccessFooter = (
             labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "TL_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
           })
         },
-        // onClickDefination: {
-        //   action: "condition",
-        //   callBack: () => {
-        //   const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-        //   const documents = LicensesTemp[0].reviewDocData;
-        //   set(Licenses[0],"additionalDetails.documents",documents)
-        //   downloadAcknowledgementForm(Licenses, LicensesTemp[0].estimateCardData,'print');
-        //   }
-        // },
+        onClickDefination: {
+          action: "condition",
+          callBack: async() => {
+            switch (type) {
+              case "OWNERSHIPTRANSFERRP":
+                const {
+                  Owners, OwnersTemp
+                } = state.screenConfiguration.preparedFinalObject;
+                const documentsOT = OwnersTemp[0].reviewDocData;
+                set(Owners[0], "additionalDetails.documents", documentsOT)
+                downloadAcknowledgementFormForCitizen(Owners, OwnersTemp[0].estimateCardData, type, "ownership-transfer",'print');
+                break;
+
+              case "DUPLICATECOPYOFALLOTMENTLETTERRP":
+                const {
+                  DuplicateCopyApplications, DuplicateTemp
+                } = state.screenConfiguration.preparedFinalObject;
+                let documents = DuplicateTemp[0].reviewDocData;
+                set(DuplicateCopyApplications[0], "additionalDetails.documents", documents)
+                downloadAcknowledgementFormForCitizen(DuplicateCopyApplications, DuplicateTemp[0].estimateCardData, type, "duplicate-copy",'print');
+                break;
+
+              case "PERMISSIONTOMORTGAGE":
+                const {
+                  MortgageApplications, MortgageApplicationsTemp
+                } = state.screenConfiguration.preparedFinalObject;
+                let documentsMG = MortgageApplicationsTemp[0].reviewDocData;
+                set(MortgageApplications[0], "additionalDetails.documents", documentsMG)
+                downloadAcknowledgementFormForCitizen(MortgageApplications, MortgageApplicationsTemp[0].estimateCardData, type, "mortgage",'print');
+                break;
+
+              default:
+                  let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                  if(consumerCodes.startsWith('SITE')){
+                    let transitNumber = consumerCodes.split('-')[1]
+                    let queryObject = [
+                      { key: "transitNumber", value: transitNumber }
+                    ];
+                    let payload =  await getSearchResults(queryObject);
+                      let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),
+                        balanceInterest: Number(item.rentSummary.balanceInterest.toFixed(2)),
+                        balancePrincipal: Number(item.rentSummary.balancePrincipal.toFixed(2))
+                      }}))
+                      dispatch(prepareFinalObject("Properties", properties))
+                    let { Properties} = state.screenConfiguration.preparedFinalObject;
+                    let codes = getQueryArg(window.location.href, "applicationNumber");
+                    let id = getQueryArg(window.location.href, "tenantId");
+                      const receiptQuery = [
+                        { key: "consumerCodes", value:codes},
+                        { key: "tenantId", value: id }
+                    ]
+                      download(receiptQuery, Properties,[], userInfo.name,'online-payment','print');
+                  }
+                  else{
+                    let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                    let tenantId = getQueryArg(window.location.href, "tenantId");
+                    const OwnersData = [];
+                    const receiptQueryString = [
+                      { key: "consumerCodes", value:consumerCodes},
+                      { key: "tenantId", value: tenantId }
+                    ]
+                    download(receiptQueryString, OwnersData,[], userInfo.name,'payment','print');             
+                  }
+              
+                
+                break;
+            }
+          }
+        },
         visible: true
       }
 
     });
   } else {
+    debugger
     return getCommonApplyFooter({
       gotoHome: {
         componentPath: "Button",
@@ -186,10 +274,37 @@ export const applicationSuccessFooter = (
         children: {
           downloadFormButtonLabel: getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: (type == "NOTICE_GENERATION") ? "TL_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "TL_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_RECEIPT"
           })
         },
-        visible : (type == "NOTICE_GENERATION") ? true : false
+        onClickDefination: {
+          action: "condition",
+          callBack: async() => {
+             switch(type){
+               case 'RentedProperties.Rent':
+                  let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+              let transitNumber = consumerCodes.split('-')[1]
+              let queryObject = [
+                { key: "transitNumber", value: transitNumber }
+              ];
+              let payload =  await getSearchResults(queryObject);
+                let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),
+                  balanceInterest: Number(item.rentSummary.balanceInterest.toFixed(2)),
+                  balancePrincipal: Number(item.rentSummary.balancePrincipal.toFixed(2))
+                }}))
+                dispatch(prepareFinalObject("Properties", properties))
+              let { Properties} = state.screenConfiguration.preparedFinalObject;
+            let tenantId = getQueryArg(window.location.href, "tenantId");
+              const receiptQueryString = [
+                { key: "consumerCodes", value:consumerCodes},
+                { key: "tenantId", value: tenantId }
+            ]
+              download(receiptQueryString, Properties,[], userInfo.name,'online-payment');
+            break  
+             }   
+          }
+        },
+      visible: (type == "NOTICE_GENERATION" || type == "RentedProperties.Rent") ? true : false
       },
       printFormButton: {
         componentPath: "Button",
@@ -205,10 +320,23 @@ export const applicationSuccessFooter = (
         children: {
           printFormButtonLabel: getLabel({
             labelName: "PRINT CONFIRMATION FORM",
-            labelKey: (type == "NOTICE_GENERATION") ? "TL_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "TL_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
           })
         },
-        visible: (type == "NOTICE_GENERATION") ? true : false
+        onClickDefination: {
+          action: "condition",
+          callBack: () => {
+            // const { Properties} = state.screenConfiguration.preparedFinalObject;
+            // let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+            // let tenantId = getQueryArg(window.location.href, "tenantId");
+            //   const receiptQueryString = [
+            //     { key: "consumerCodes", value:consumerCodes},
+            //     { key: "tenantId", value: tenantId }
+            // ]
+            //   download(receiptQueryString, Properties,[], userInfo.name,'online-payment','print');   
+          }
+        },
+        visible: (type == "NOTICE_GENERATION" || type == "RentedProperties.Rent") ? true : false
       }
     });
   }

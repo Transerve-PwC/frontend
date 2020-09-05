@@ -247,7 +247,8 @@ const goToPayment = async (state, dispatch, type) => {
             )
           ) : dispatch(
             setRoute(
-             `/rented-properties/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}`
+            `/rented-properties/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${BILLING_BUSINESS_SERVICE_RENT}`
+             
             )
           )
         dispatch(prepareFinalObject("Properties", response.Properties))

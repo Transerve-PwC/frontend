@@ -1487,7 +1487,7 @@ try {
 }
 }
 
-export const download = (receiptQueryString, Owners, data, generateBy, mode = "download") => {
+export const download = (receiptQueryString, Properties, data, generatedBy,type, mode = "download") => {
   const FETCHRECEIPT = {
     GET: {
       URL: "/collection-services/payments/_search",
@@ -1502,15 +1502,25 @@ export const download = (receiptQueryString, Owners, data, generateBy, mode = "d
   };
   try {
     httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
+      // const queryStr = [{
+      //     key: "key",
+      //     value: "rp-payment-receipt"
+      //   },
+      //   {
+      //     key: "tenantId",
+      //     value: receiptQueryString[1].value.split('.')[0]
+      //   }
+      // ]
+
       const queryStr = [{
-          key: "key",
-          value: "rp-payment-receipt"
-        },
-        {
-          key: "tenantId",
-          value: receiptQueryString[1].value.split('.')[0]
-        }
-      ]
+        key: "key",
+        value: `rp-${type}-receipt`
+      },
+      {
+        key: "tenantId",
+        value: receiptQueryString[1].value.split('.')[0]
+      }
+    ]
       if (payloadReceiptDetails && payloadReceiptDetails.Payments && payloadReceiptDetails.Payments.length == 0) {
         console.log("Could not find any receipts");
         return;
@@ -1543,7 +1553,8 @@ export const download = (receiptQueryString, Owners, data, generateBy, mode = "d
       }]
       httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
           Payments,
-          generateBy
+          Properties,
+          generatedBy
         }, {
           'Accept': 'application/json'
         }, {
