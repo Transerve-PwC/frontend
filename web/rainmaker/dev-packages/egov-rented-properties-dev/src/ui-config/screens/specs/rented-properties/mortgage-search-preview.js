@@ -83,15 +83,20 @@ const beforeInitFn = async(action, state, dispatch) => {
       applicationNumber,
       tenantId,"mortgage","MG"
     );
-    const CitizenprintCont=footerReviewTop(
+    set(
       action,
-      state,
-      dispatch,
-      status,
-      applicationNumber,
-      tenantId,
-      //financialYear
+      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+      printCont
     );
+    // const CitizenprintCont=footerReviewTop(
+    //   action,
+    //   state,
+    //   dispatch,
+    //   status,
+    //   applicationNumber,
+    //   tenantId,
+    //   //financialYear
+    // );
 
 
     // process.env.REACT_APP_NAME === "Citizen"
@@ -106,11 +111,6 @@ const beforeInitFn = async(action, state, dispatch) => {
     //       printCont
     //     );
 
-    set(
-      action,
-      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-      printCont
-    );
       }
      
     }

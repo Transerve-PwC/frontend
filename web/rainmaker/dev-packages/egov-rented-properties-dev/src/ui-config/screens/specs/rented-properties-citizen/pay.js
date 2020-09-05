@@ -32,7 +32,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
   });
   
   const setPaymentMethods = async (action, state, dispatch) => {
-    const businessService = getQueryArg(window.location.href, "businessService")
+    const businessService = getQueryArg(window.location.href, "businessService") || BILLING_BUSINESS_SERVICE_RENT
     const response = await getPaymentGateways();
     if(!!response.length) {
       const paymentMethods = response.map(item => ({
@@ -55,18 +55,32 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
       setPaymentMethods(action, state, dispatch)
       // setBusinessServiceDataToLocalStorage(queryObject, dispatch);
       await fetchBill(action, state, dispatch, businessService);
-      let sourceJsonPath;
+      let sourceJsonPath, header;
       switch(businessService) {
         case BILLING_BUSINESS_SERVICE_OT : {
           sourceJsonPath = "OwnersTemp[0].estimateCardData"
+          header = getCommonHeader({
+            labelName: "Application for Ownership Transfer",
+            labelKey: "COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+          })
           break
         }
         case BILLING_BUSINESS_SERVICE_DC: {
           sourceJsonPath = "DuplicateTemp[0].estimateCardData"
+          header = getCommonHeader({
+            labelName: "Application for Ownership Transfer",
+            labelKey: "COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+          })
           break
         }
-        case BILLING_BUSINESS_SERVICE_RENT: {
+        case BILLING_BUSINESS_SERVICE_RENT:
+        default:  
+        {
           sourceJsonPath = "PropertiesTemp[0].estimateCardData"
+          header = getCommonHeader({
+            labelName: "Online Rent Payment",
+            labelKey: "COMMON_PAY_ONLINE_RENT_SCREEN_HEADER"
+          })
           break
         }
       }
@@ -78,6 +92,14 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
             estimateDetails(sourceJsonPath)
         )
     );
+    dispatch(
+      handleField(
+        "pay",
+        "components.div.children.headerDiv.children.header.children",
+        "header",
+         header
+      )
+    )
     dispatch(
       handleField(
         "pay",

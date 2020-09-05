@@ -132,7 +132,7 @@ const getData = async(action, state, dispatch) => {
 
 const beforeInitFn =async(action, state, dispatch)=>{
   set(state, 'form.newapplication.files.media', []);
-  set(state,'screenConfiguration.preparedFinalObject.SingleImage',[]);
+  // set(state,'screenConfiguration.preparedFinalObject.SingleImage',[]);
   set(state,'screenConfiguration.preparedFinalObject.Properties[0].owners[0].ownerDetails.editor',"")
   const transitImagesPayload = [{
     moduleName: "RentedProperties",

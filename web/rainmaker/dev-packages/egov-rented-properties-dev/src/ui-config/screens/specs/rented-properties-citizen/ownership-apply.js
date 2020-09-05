@@ -11,7 +11,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getOwnershipSearchResults, setDocsForEditFlow, setDocumentData } from "../../../../ui-utils/commons";
 import {applicationNumber} from '../rented-properties/apply'
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
-
+import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Apply for Ownership Transfer",
@@ -20,8 +20,8 @@ const header = getCommonContainer({
 applicationNumber
 })
 
-
 const getData = async(action, state, dispatch) => {
+  getColonyTypes(action, state, dispatch)
   dispatch(
     prepareFinalObject(
       "Owners",

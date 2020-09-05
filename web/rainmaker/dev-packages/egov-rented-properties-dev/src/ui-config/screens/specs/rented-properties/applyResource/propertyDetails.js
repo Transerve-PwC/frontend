@@ -38,13 +38,12 @@ export const colonyFieldConfig = {
     },
     errorMessage: "RP_ERR_COLONY_FIELD",
 }
-const colonyFieldDup = {
+export const colonyFieldDup = {
   ...colonyFieldConfig,
   required:false,
   props: {
     disabled: true
   },
-  jsonPath: "DuplicateCopyApplications[0].property.colony",
   beforeFieldChange: (action, state, dispatch) => {
       const rentedPropertyColonies = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.rentedPropertyColonies") || []
       const findItem = rentedPropertyColonies.find(item => item.code === action.value)
@@ -360,8 +359,7 @@ const getTransitSiteDetails = () => {
         header: transitSiteHeader,
         detailsContainer: getCommonContainer({
             transitNumber: getTextField(duplicateCopyTransitField),
-            // colony:getSelectField(colonyFieldDup),
-            colony: getTextField({...colonyNameFielddata,jsonPath: "DuplicateCopyApplications[0].property.colony", required: false, props: {...colonyNameFielddata.props, disabled: true}}),
+            colony:getSelectField({...colonyFieldDup,jsonPath:"DuplicateCopyApplications[0].property.colony"}),
             pincode: getTextField({...pincodeField, jsonPath: "DuplicateCopyApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
         })
     }

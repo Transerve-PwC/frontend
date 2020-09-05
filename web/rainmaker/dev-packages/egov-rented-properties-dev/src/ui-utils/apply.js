@@ -300,7 +300,8 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
       const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
       const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
       const noticeType = str
-      const properyImageId = noticeType === "Violation" ? filedata[0].id : null
+      const propertyImageId = (noticeType === "Violation" && !!propertyIdTransitNumber) ? filedata[0].id : null
+      console.log(propertyImageId)
       const tenantId = getTenantId()
       let response;
  
@@ -330,7 +331,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         "demandNoticeFrom": convertDateToEpoch(demandNoticeFrom),
         "demandNoticeTo" : convertDateToEpoch(demandNoticeTo),
         "amount" : amount,
-        "propertyImageId": properyImageId,
+        "propertyImageId": propertyImageId,
         "property": {
           "id": id,
           "transitNumber": transitNumber,

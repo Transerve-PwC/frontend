@@ -1870,7 +1870,7 @@ export const createEstimateData = async (
       value: businessService
     }
   ];
-  const currentStatus = data.applicationState || data.state;
+  const currentStatus = !!data && (data.applicationState || data.state);
   const isPAID = isApplicationPaid(currentStatus, workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
   const payload = isPAID ?
@@ -2128,14 +2128,16 @@ export const fetchBill = async (action, state, dispatch, businessService) => {
         dispatch(prepareFinalObject("DuplicateCopyApplications[0]", response.DuplicateCopyApplications[0]));
       break
     }
-    case BILLING_BUSINESS_SERVICE_RENT: {
+    case BILLING_BUSINESS_SERVICE_RENT:
+    default:  
+    {
       const response = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
       payload = await createEstimateData(
         response,
         "PropertiesTemp[0].estimateCardData",
         dispatch,
         window.location.href,
-        businessService
+        BILLING_BUSINESS_SERVICE_RENT
       )
       break
     }

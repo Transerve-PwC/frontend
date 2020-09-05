@@ -68,8 +68,9 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-    // properties = properties[0].owners.filter(itemdat => itemdat.permanent === true)
-    properties[0].owners = properties[0].owners.reverse()
+    let owners = properties[0].owners
+    owners = owners.map(item => ({...item , ownerDetails: {...item.ownerDetails, posessionStartdate: !!item.isPrimaryOwner ? 
+       item.ownerDetails.posessionStartdate : parseInt(item.ownerDetails.allotmentStartdate)}}))
     const grandDetails=properties[0].grantDetails
     let state = properties[0].masterDataState;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
@@ -86,7 +87,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
     properties[0].propertyDetails.rentIncrementPercentage = (properties[0].propertyDetails.rentIncrementPercentage).toString()
     properties[0].propertyDetails.rentIncrementPeriod = (properties[0].propertyDetails.rentIncrementPeriod).toString()
 
-    properties = [{...properties[0], rentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+    properties = [{...properties[0], owners, rentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(
       prepareFinalObject(
@@ -284,7 +285,7 @@ const handleClose = (state,dispatch) => {
 const update = async (state, dispatch) => {
   const {Properties} = state.screenConfiguration.preparedFinalObject
   try {
-  await httpRequest(
+  const response = await httpRequest(
     "post",
     "/rp-services/property/_update",
     "",
@@ -297,8 +298,9 @@ const update = async (state, dispatch) => {
     "props.open",
     false
   ))
-
-  await searchResults(action, state, dispatch, transitNumber) 
+  if(!!response && !!response.Properties.length) {
+    dispatch(prepareFinalObject("Properties", response.Properties))
+  }
 } catch (error) {
   dispatch(
     toggleSnackbar(

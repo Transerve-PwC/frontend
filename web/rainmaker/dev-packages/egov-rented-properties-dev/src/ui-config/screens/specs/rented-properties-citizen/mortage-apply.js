@@ -8,11 +8,11 @@ import { getMdmsData } from "../rented-properties/apply";
 import { getOwnershipSearchResults, setDocsForEditFlow ,getMortgageSearchResults, setDocumentData} from "../../../../ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { get } from "lodash";
+import { get, fromPairs } from "lodash";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import {applicationNumber} from '../rented-properties/apply'
-
+import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
   const header = getCommonContainer({
         header: getCommonHeader({
           labelName: "Apply Mortage License",
@@ -22,6 +22,7 @@ import {applicationNumber} from '../rented-properties/apply'
   });
   
   const getData = async(action, state, dispatch) => {
+    getColonyTypes(action, state, dispatch);
     dispatch(
       prepareFinalObject(
         "MortgageApplications",

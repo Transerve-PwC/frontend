@@ -40,7 +40,12 @@ const findItem = roles.find(item => item.code === "RP_CLERK");
           }));
           return { ...item, applicationDocuments };
         });
-        properties = [{...properties[0], notices}]
+        notices.sort(function(a, b) {
+          let dateA = new Date(a.auditDetails.createdTime), dateB = new Date(b.auditDetails.createdTime);
+          return dateA - dateB;
+      });
+      notices = notices.reverse()
+      properties = [{...properties[0], notices}]
       }
       dispatch(prepareFinalObject("Properties[0]", properties[0]));     
   }

@@ -73,6 +73,16 @@ const fieldConfig = {
       labelKey: "WF_APPLICATION_CHARGES_PLACEHOLDER"
     }
   },
+  duplicateCopyCharges: {
+    label: {
+      labelName: "Duplicate Copy Charges",
+      labelKey: "WF_DUPLICATE_COPY_CHARGES"
+    },
+    placeholder: {
+      labelName: "Enter Duplicate Copy Charges",
+      labelKey: "WF_DUPLICATE_COPY_CHARGES_PLACEHOLDER"
+    }
+  },
   publicationCharges: {
     label: {
       labelName: "Publication Charges",
@@ -293,6 +303,7 @@ return
       dataPath = `${dataPath}[0]`;
     }
 
+    const mastrerstate=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).masterDataState
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
     const duplicateCopyApplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).state
     return (
@@ -339,7 +350,8 @@ return
                   >
                     <CloseIcon />
                   </Grid>
-                  {showEmployeeList && !!dropDownData.length && (
+                  {(moduleName==="MasterRP" && mastrerstate ==="PM_PENDINGJAVERIFICATION" && (buttonLabel==="SENDBACK"))?"":
+                  showEmployeeList && !!dropDownData.length && (
                     <Grid
                       item
                       sm="12"
@@ -403,12 +415,12 @@ return
                       required={true}
                       style={{ width: "90%" }}
                       InputLabelProps={{ shrink: true }}
-                      label={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
+                      label={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.duplicateCopyCharges.label : fieldConfig.publicationCharges.label}
                       onChange={e =>
                         handleFieldChange(duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? `${dataPath}.applicant[0].feeAmount` : `${dataPath}.applicant[0].aproCharge` , e.target.value)
                       }
                       jsonPath={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? `${dataPath}.applicant[0].feeAmount` : `${dataPath}.applicant[0].aproCharge`}
-                      placeholder={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.placeholder : fieldConfig.publicationCharges.placeholder}
+                      placeholder={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.duplicateCopyCharges.placeholder : fieldConfig.publicationCharges.placeholder}
                     />
                   </Grid>
                   )}

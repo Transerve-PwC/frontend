@@ -9,7 +9,7 @@ import set from "lodash/set";
 import get from "lodash/get";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../ui-utils";
-
+import {getColonyTypes} from "../rented-properties/apply"
 const getMdmsData = async (dispatch, body) => {
   let mdmsBody = {
         MdmsCriteria: {
@@ -36,6 +36,7 @@ const header = getCommonHeader({
     labelKey: "RP_TRANSIT_SITE_IMAGES"
 });
 const beforeInitFn =async(action, state, dispatch)=>{
+  getColonyTypes(action, state, dispatch);
     set(state, 'form.newapplication.files.media', []);
     set(state,'screenConfiguration.preparedFinalObject.PropertyImagesApplications',[]);
     

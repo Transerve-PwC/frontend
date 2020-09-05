@@ -1,5 +1,5 @@
 import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTitle, getPattern, getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { transitNumberLookUp, propertyHeader, pincodeField } from '../applyResource/propertyDetails'
+import { transitNumberLookUp, propertyHeader, pincodeField,colonyFieldDup } from '../applyResource/propertyDetails'
 import { getDetailsFromProperty,getDetailsFromPropertyMortgage,getDetailsFromPropertyTransit } from "../../../../../ui-utils/apply";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
@@ -46,6 +46,7 @@ placeholder: {
     required: true,
     errorMessage: "RP_ERR_AREA_FIELD",
   }
+
 
   export const colonyField = {
     label: {
@@ -222,7 +223,7 @@ const getOwnershipAddressDetails = () => {
         header: propertyHeader,
         detailsContainer: getCommonContainer({
             ownershipTransitNumber: getTextField(ownershipTransitNumberField),
-            areaName: getTextField({...colonyNameField, jsonPath: "Owners[0].property.colony", required: false, props: {...colonyNameField.props, disabled: true}}),
+            colony:getSelectField({...colonyFieldDup,jsonPath:"Owners[0].property.colony"}),
             pincode: getTextField({...pincodeField, jsonPath: "Owners[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
         })
     }
@@ -233,8 +234,8 @@ const getOwnershipAddressDetailsMortgage = () => {
       header: propertyHeader,
       detailsContainer: getCommonContainer({
           ownershipTransitNumber: getTextField(mortgageTransitNumberField),
-          areaName: getTextField({...colonyNameField, jsonPath: "MortgageApplications[0].property.colony", required: false, props: {...colonyNameField.props, disabled: true}}),
-          pincode: getTextField({...pincodeField, jsonPath: "MortgageApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         colony:getSelectField({...colonyFieldDup,jsonPath:"MortgageApplications[0].property.colony"}),
+         pincode: getTextField({...pincodeField, jsonPath: "MortgageApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }
@@ -243,8 +244,8 @@ const getTransitSitePropertyDetails = () => {
       header: propertyHeader,
       detailsContainer: getCommonContainer({
           transitNumber: getTextField(TransitsiteTransitNumberField),
-          areaName: getTextField({...colonyNameField,jsonPath: "PropertyImagesApplications[0].property.colony", required: false, props: {...colonyNameField.props, disabled: true}}),
-          pincode: getTextField({...pincodeField, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         colony:getSelectField({...colonyFieldDup,jsonPath:"PropertyImagesApplications[0].property.colony"}),
+         pincode: getTextField({...pincodeField, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }
