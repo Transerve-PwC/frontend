@@ -94,7 +94,11 @@
     "go_estate": "yarn && yarn run build-css-common-estate && yarn run transpile-common-modules-estate && lerna bootstrap",
     "build-css-common-estate": "run-p build-css-egov-ui-kit build-css-egov-ui-framework-core build-css-egov-workflow build-css-egov-estate",
     "transpile-common-modules-estate": "run-p egov-ui-kit egov-ui-framework egov-workflow egov-estate",
-    "watch_estate": "babel dev-packages/egov-estate-dev/src --out-dir packages/lib/egov-estate --copy-files --watch"
+    "watch_estate": "babel dev-packages/egov-estate-dev/src --out-dir packages/lib/egov-estate --copy-files --watch",
+    "go_rp_est": "yarn && yarn run build-css-common-rp-est && yarn run transpile-common-modules-rp-est && lerna bootstrap",
+    "build-css-common-rp-est": "run-p build-css-egov-ui-kit build-css-egov-ui-framework-core build-css-egov-workflow build-css-egov-tradelicence build-css-egov-rented-properties build-css-egov-estate",
+    "transpile-common-modules-rp-est": "run-p egov-ui-kit egov-ui-framework egov-workflow egov-tradelicence egov-rented-properties egov-estate",
+    "watch_rp_est": "babel dev-packages/egov-rented-properties-dev/src --out-dir packages/lib/egov-rented-properties --out-dir packages/lib/egov-estate --copy-files --watch"
     },
   "devDependencies": {
     "babel-cli": "^6.26.0",
