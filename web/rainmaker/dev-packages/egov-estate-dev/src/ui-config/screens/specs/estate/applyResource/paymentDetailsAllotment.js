@@ -13,7 +13,7 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getTodaysDateInYMD, getTransformedStatus
+  getTodaysDateInYMD
 } from "../../utils";
 import get from "lodash/get";
 import { set } from "lodash";
