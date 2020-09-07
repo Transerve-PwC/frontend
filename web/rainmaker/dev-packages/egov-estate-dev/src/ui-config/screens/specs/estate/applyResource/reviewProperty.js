@@ -13,6 +13,10 @@ import {
 import {
   changeStep
 } from "./footer";
+import {
+  changeStep as changeStepAllotment
+}
+from "./footerAllotment"
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
@@ -108,13 +112,21 @@ export const editSection = {
   }
 }
 
-const masterEntryEditSection = (isEditable, step = 0) => ({
+const masterEntryEditSection = (isEditable, step = 0, screenkey = "apply") => ({
   ...editSection,
   visible: isEditable,
   onClickDefination: {
     action: "condition",
     callBack: (state, dispatch) => {
-      changeStep(state, dispatch, "apply", "", step);
+      if (screenkey == "apply") {
+        changeStep(state, dispatch, screenkey, "", step);
+      }
+      else if (screenkey == "allotment") {
+        changeStepAllotment(state, dispatch, screenkey, "", step)
+      }
+      else {
+        
+      }
     }
   }
 })
@@ -129,7 +141,7 @@ export const headerDiv = {
   }
 }
 
-export const getReviewPropertyInfo = (isEditable = true) => {
+export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -144,7 +156,7 @@ export const getReviewPropertyInfo = (isEditable = true) => {
             labelKey: "EST_PROPERTY_INFO_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
       }
     },
     viewFour: getCommonContainer({
@@ -236,7 +248,7 @@ export const getReviewAuction = (isEditable = true) => {
   })
 }
 
-export const getReviewAdditional = (isEditable = true) => {
+export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -251,7 +263,7 @@ export const getReviewAdditional = (isEditable = true) => {
             labelKey: "EST_NOC_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
       }
     },
     viewFour: getCommonContainer({
@@ -906,7 +918,7 @@ export const getReviewPaymentInfoAllotment = (isEditable = true) => {
             labelKey: "EST_PAYMENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5)
+        editSection: masterEntryEditSection(isEditable, 6, "allotment")
       }
     },
     viewPremiumAmount: getCommonContainer({
@@ -929,6 +941,29 @@ export const getReviewPaymentInfoAllotment = (isEditable = true) => {
           jsonPath: ``
         }
       )
+    })
+  })
+}
+
+export const getReviewAuctionAllotment = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Auction Details",
+            labelKey: "EST_AUCTION_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+      }
+    },
+    viewAuctionDetails: getCommonContainer({
     })
   })
 }
