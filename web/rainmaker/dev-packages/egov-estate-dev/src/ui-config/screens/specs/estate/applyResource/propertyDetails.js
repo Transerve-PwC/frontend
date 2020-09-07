@@ -290,7 +290,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     true
                 )
@@ -300,7 +300,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     false
                 )

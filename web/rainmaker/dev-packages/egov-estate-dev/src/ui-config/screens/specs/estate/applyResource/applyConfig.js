@@ -34,7 +34,8 @@ import {
   premiumAmountDetails,
   groundRentDetails,
   licenseFeeDetails,
-  securityDetails
+  securityDetails,
+  demandSelect
 } from './paymentDetailsAllotment';
 import {
   reviewAllotmentDetails
@@ -305,6 +306,7 @@ export const formwizardSixthStepAllotment = {
   },
   children: {
     premiumAmountDetails,
+    demandSelect,
     groundRentDetails,
     licenseFeeDetails,
     securityDetails
