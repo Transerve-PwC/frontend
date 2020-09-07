@@ -236,7 +236,6 @@ export const applicationSuccessFooter = (
 
     });
   } else {
-    debugger
     return getCommonApplyFooter({
       gotoHome: {
         componentPath: "Button",
@@ -281,8 +280,8 @@ export const applicationSuccessFooter = (
           action: "condition",
           callBack: async() => {
              switch(type){
-               case 'RentedProperties.Rent':
-                  let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+        case 'RentedProperties.Rent':
+              let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
               let transitNumber = consumerCodes.split('-')[1]
               let queryObject = [
                 { key: "transitNumber", value: transitNumber }
@@ -300,7 +299,9 @@ export const applicationSuccessFooter = (
                 { key: "tenantId", value: tenantId }
             ]
               download(receiptQueryString, Properties,[], userInfo.name,'online-payment');
-            break  
+            break 
+        default:
+          break;     
              }   
           }
         },
@@ -325,15 +326,31 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
-            // const { Properties} = state.screenConfiguration.preparedFinalObject;
-            // let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
-            // let tenantId = getQueryArg(window.location.href, "tenantId");
-            //   const receiptQueryString = [
-            //     { key: "consumerCodes", value:consumerCodes},
-            //     { key: "tenantId", value: tenantId }
-            // ]
-            //   download(receiptQueryString, Properties,[], userInfo.name,'online-payment','print');   
+          callBack: async() => {
+             switch(type){
+        case 'RentedProperties.Rent':
+              let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+              let transitNumber = consumerCodes.split('-')[1]
+              let queryObject = [
+                { key: "transitNumber", value: transitNumber }
+              ];
+              let payload =  await getSearchResults(queryObject);
+                let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),
+                  balanceInterest: Number(item.rentSummary.balanceInterest.toFixed(2)),
+                  balancePrincipal: Number(item.rentSummary.balancePrincipal.toFixed(2))
+                }}))
+                dispatch(prepareFinalObject("Properties", properties))
+              let { Properties} = state.screenConfiguration.preparedFinalObject;
+            let tenantId = getQueryArg(window.location.href, "tenantId");
+              const receiptQueryString = [
+                { key: "consumerCodes", value:consumerCodes},
+                { key: "tenantId", value: tenantId }
+            ]
+              download(receiptQueryString, Properties,[], userInfo.name,'online-payment','print');
+            break 
+        default:
+          break;     
+             }   
           }
         },
         visible: (type == "NOTICE_GENERATION" || type == "RentedProperties.Rent") ? true : false

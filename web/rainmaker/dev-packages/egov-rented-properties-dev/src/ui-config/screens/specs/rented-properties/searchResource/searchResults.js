@@ -118,6 +118,7 @@ export const accountStatementResults = {
       ACCOUNT_BALANCE 
     ],
     options: {...searchResults.props.options,
+      onRowClick: () => {},
       pagination: false,
       filter: false,
       download: true,

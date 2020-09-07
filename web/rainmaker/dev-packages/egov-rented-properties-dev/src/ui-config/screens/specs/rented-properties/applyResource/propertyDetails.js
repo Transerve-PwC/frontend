@@ -41,6 +41,10 @@ export const colonyFieldConfig = {
 
 export const colonyFieldDup = {
   ...colonyFieldConfig,
+  placeholder: {
+    labelName: "",
+    labelKey: ""
+  },
   required:false,
   props: {
     disabled: true

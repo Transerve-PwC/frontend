@@ -265,7 +265,6 @@ export const searchAccountStatement = async (state, dispatch) => {
               response.RentAccountStatements
             )
           );
-  
           let data = response.RentAccountStatements.map(item => ({
             [DATE]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
             [AMOUNT]: 'Rs ' + formatAmount(item.amount.toFixed(2)) || "-",
@@ -275,7 +274,10 @@ export const searchAccountStatement = async (state, dispatch) => {
             [TOTAL_DUE]: 'Rs ' + formatAmount(item.dueAmount.toFixed(2)),
             [ACCOUNT_BALANCE]: 'Rs ' + formatAmount(item.remainingBalance.toFixed(2))
           }));
-         
+          let lastElement=data.pop();
+          lastElement.Date = "Total as on "+lastElement.Date
+          lastElement.Type= 0
+          data.push(lastElement)
           dispatch(
             handleField(
               "search-account-statement",
@@ -295,7 +297,7 @@ export const searchAccountStatement = async (state, dispatch) => {
         dispatch(
         handleField(
           "search-account-statement",
-          "components.div.children.accountStatementFilterForm.children.cardContent.children.button.children.pdf.children.pdfButton",
+          "components.div.children.searchButton",
           "visible",
           true
       ),

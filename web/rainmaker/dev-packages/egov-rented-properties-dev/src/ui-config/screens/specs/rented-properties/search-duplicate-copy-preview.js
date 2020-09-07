@@ -166,7 +166,7 @@ const duplicateCopySearchPreview = {
                 uiFramework: "custom-atoms",
                 componentPath: "Container",
                 children: {
-                  header1: {
+                  header: {
                     gridDefination: {
                       xs: 12,
                       sm: 8

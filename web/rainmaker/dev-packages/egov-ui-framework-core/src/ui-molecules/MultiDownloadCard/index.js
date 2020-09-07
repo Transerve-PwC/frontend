@@ -60,13 +60,6 @@ function MultiCardDownloadGrid(props) {
                 style={documentTitle}
               />
             </Grid>
-              <Grid xs={12}>
-              <LabelContainer
-                  labelName= {item.documentType}
-                  // labelKey={content.id}
-                  style={documentTitle}
-              />
-            </Grid>
             <Grid container>
               <Grid xs={6} className={classes.subtext}>
                 <Typography className={classes.body2}>{item.name}</Typography>

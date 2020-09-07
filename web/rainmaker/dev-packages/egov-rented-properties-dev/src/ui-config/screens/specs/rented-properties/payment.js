@@ -49,6 +49,10 @@ const propertyDetails = getCommonCard({
     transitNumber: getTextField(transitNumberField),
     colony: getSelectField({
       ...colonyFieldConfig,
+      placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
       props: {
         ...colonyFieldConfig.props,
         disabled: true
@@ -127,8 +131,8 @@ const amountField = {
     sm: 6
   },
   required: true,
-  minLength: 4,
-  maxLength: 40,
+  minLength: 3,
+  maxLength: 7,
   jsonPath: "paymentInfo.amount",
 }
 

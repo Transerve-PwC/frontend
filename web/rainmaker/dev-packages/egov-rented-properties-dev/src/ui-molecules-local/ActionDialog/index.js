@@ -249,6 +249,64 @@ return
 return
     }
   }
+  else if(this.props.moduleName === "PermissionToMortgage" && (duplicateCopyApplicationState === "MG_PENDINGGRANTDETAIL" )){
+    let mortgageApplication = get(state.screenConfiguration.preparedFinalObject,dataPath)
+    
+    if(mortgageApplication.mortgageApprovedGrantDetails === null){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
+        "error"
+      );
+return
+    }
+    const bankName = (!!mortgageApplication.mortgageApprovedGrantDetails[0].bankName) ? mortgageApplication.mortgageApprovedGrantDetails[0].bankName : ""
+    const mortgageAmountValid = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageAmount) ? mortgageApplication.mortgageApprovedGrantDetails[0].mortgageAmount : ""
+    const sanctionLetterNumber = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber) ? mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber : ""
+    const sanctionDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) : ""
+    const mortgageEndDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) : ""
+
+    if(!bankName && !mortgageAmountValid && ! sanctionLetterNumber && !sanctionDateEpoch && !mortageEndDate){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
+        "error"
+      );
+return
+    }
+    else if(!(bankName.length > 1 && bankName.length < 25)) {
+      toggleSnackbar(
+              true,
+              { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "ERR_BANKNAME_RANGE"},
+              "error"
+            );
+      return
+    }
+    else if(!(mortgageAmountValid.length >= 3 && mortgageAmountValid.length <= 8)){
+      toggleSnackbar(
+        true,
+        { labelName: "Enter Mortgage Amount between 3 and 8 digits only", labelKey: "ERR_MORTGAGEAMOUNT_RANGE"},
+        "error"
+      );
+      return
+    }
+    else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 15) ){
+      toggleSnackbar(
+        true,
+        { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "ERR_SANCTION_LETTER_NUMBER_RANGE"},
+        "error"
+      );
+      return
+    }
+    else if((sanctionDateEpoch - mortgageEndDateEpoch) > 0){
+      toggleSnackbar(
+        true,
+        { labelName: "Date of sanctioning should not be greater than mortgage end date", labelKey: "DATE_OF_SANCTION_GREATER_THAN_MORTGAGE_END_DATE"},
+        "error"
+      );
+      return
+    }
+  }
     this.props.onButtonClick(buttonLabel, isDocRequired)
  }
 

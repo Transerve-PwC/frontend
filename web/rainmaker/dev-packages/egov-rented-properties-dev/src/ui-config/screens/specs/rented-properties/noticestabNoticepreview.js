@@ -99,6 +99,19 @@ const getData = async(action, state, dispatch) => {
             )
       
     }
+
+    const printCont = downloadNoticeContainer(
+      action,
+      state,
+      dispatch,
+      status,
+    );
+
+    set(
+      action,
+      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+      printCont
+    );
     
     if(singleNoticeDetails[0].noticeType === "Violation"){
         let path = "components.div.children.formwizardFirstStep.children.cardContent.children.reviewNoticeRecoveryRentDetails"
@@ -167,21 +180,6 @@ const getData = async(action, state, dispatch) => {
         NoticeId
       )
     ); 
-    
-    const printCont = downloadNoticeContainer(
-      action,
-      state,
-      dispatch,
-      status,
-    );
-
-    set(
-      action,
-      "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-      printCont
-    );
-
-
     
 }
 

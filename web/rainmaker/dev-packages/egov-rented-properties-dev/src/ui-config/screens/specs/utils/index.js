@@ -1001,7 +1001,7 @@ const getStatementForDocType = docType => {
   }
 };
 
-export const downloadAcknowledgementForm = (Owners, feeEstimate, status, pdfkey, applicationType, payloadName, mode = "download") => {
+export const downloadAcknowledgementForm = (Owners, feeEstimate, status, pdfkey, applicationType, mode = "download") => {
   let queryStr = []
   switch (applicationType) {
     case 'MG':

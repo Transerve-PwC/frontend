@@ -246,7 +246,7 @@ const screenConfig = {
     beforeInitScreen: (action, state, dispatch) => {
       const purpose = getQueryArg(window.location.href, "purpose");
       const status = getQueryArg(window.location.href, "status");
-      const transitNumber = getQueryArg(
+      let transitNumber = getQueryArg(
         window.location.href,
         "transitNumber"
       );
@@ -254,6 +254,7 @@ const screenConfig = {
         window.location.href,
         "applicationNumber"
       );
+      transitNumber = !!applicationNumber && applicationNumber.startsWith("SITE") ? applicationNumber.split("-")[1] : transitNumber
       const tenant = getQueryArg(window.location.href, "tenantId");
       const type = getQueryArg(window.location.href , "type")
       const businessService = getQueryArg(window.location.href, "businessService")

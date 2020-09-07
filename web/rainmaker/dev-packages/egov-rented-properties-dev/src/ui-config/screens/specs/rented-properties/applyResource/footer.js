@@ -914,6 +914,18 @@ export const footer = getCommonApplyFooter({
       );
       return {...data1, ...data2, ...data3, ...data4}
     }
+
+    let applicationPrintObjectForOT = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = OwnersTemp[0].reviewDocData;
+        set(Owners[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData,status,pdfkey,applicationType,'print');
+      },
+      leftIcon: "assignment"
+    };
+
     let applicationDownloadObjectForOT = {
       label: { labelName: "Application", labelKey: "TL_APPLICATION" },
       link: () => {
@@ -936,28 +948,40 @@ export const footer = getCommonApplyFooter({
       leftIcon: "assignment"
     };
 
+    let applicationPrintObjectForMG = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        const { MortgageApplications,MortgageApplicationsTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = MortgageApplicationsTemp[0].reviewDocData;
+        set(MortgageApplications[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(MortgageApplications, MortgageApplicationsTemp[0].estimateCardData,status,pdfkey,applicationType,'print');
+      },
+      leftIcon: "assignment"
+    };
+
     let applicationDownloadObjectForDC = {
       label: { labelName: "Application", labelKey: "TL_APPLICATION" },
       link: () => {
         const { DuplicateCopyApplications,DuplicateTemp } = state.screenConfiguration.preparedFinalObject;
         const documents = DuplicateTemp[0].reviewDocData;
         set(DuplicateCopyApplications[0],"additionalDetails.documents",documents)
-        downloadAcknowledgementForm(DuplicateCopyApplications, DuplicateTemp[0].estimateCardData,status,pdfkey,applicationType,payloadName);
-      },
-      leftIcon: "assignment"
-    };
-    let applicationPrintObject = {
-      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
-      link: () => {
-        const { Owners,OwnersTemp } = state.screenConfiguration.preparedFinalObject;
-        const documents = OwnersTemp[0].reviewDocData;
-        set(Owners[0],"additionalDetails.documents",documents)
-        downloadAcknowledgementForm(Owners, OwnersTemp[0].estimateCardData, "print");
+        downloadAcknowledgementForm(DuplicateCopyApplications, DuplicateTemp[0].estimateCardData,status,pdfkey,applicationType);
       },
       leftIcon: "assignment"
     };
 
-    let receiptDownloadObject = {
+    let applicationPrintObjectForDC = {
+      label: { labelName: "Application", labelKey: "TL_APPLICATION" },
+      link: () => {
+        const { DuplicateCopyApplications,DuplicateTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = DuplicateTemp[0].reviewDocData;
+        set(DuplicateCopyApplications[0],"additionalDetails.documents",documents)
+        downloadAcknowledgementForm(DuplicateCopyApplications, DuplicateTemp[0].estimateCardData,status,pdfkey,applicationType,'print');
+      },
+      leftIcon: "assignment"
+    };
+
+    let receiptDownloadObjectForOT = {
       label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
       link: () => {
 
@@ -966,7 +990,21 @@ export const footer = getCommonApplyFooter({
           { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.Owners[0].ownerDetails, "applicationNumber") },
           { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.Owners[0], "tenantId") }
         ]
-        download(receiptQueryString, Owners, data(), userInfo.name);
+        download(receiptQueryString, Owners, data(), userInfo.name,'payment');
+      },
+      leftIcon: "receipt"
+    };
+
+    let receiptPrintObjectForOT = {
+      label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
+      link: () => {
+
+        const Owners = get(state.screenConfiguration.preparedFinalObject, "Owners", []);
+        const receiptQueryString = [
+          { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.Owners[0].ownerDetails, "applicationNumber") },
+          { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.Owners[0], "tenantId") }
+        ]
+        download(receiptQueryString, Owners, data(), userInfo.name,'payment','print');
       },
       leftIcon: "receipt"
     };
@@ -980,7 +1018,21 @@ export const footer = getCommonApplyFooter({
           { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "applicationNumber") },
           { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "tenantId") }
         ]
-        download(receiptQueryString, Owners, data(), userInfo.name);
+        download(receiptQueryString, Owners, data(), userInfo.name,'payment');
+      },
+      leftIcon: "receipt"
+    };
+
+    let receiptPrintObjectForDC = {
+      label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
+      link: () => {
+
+        const Owners = get(state.screenConfiguration.preparedFinalObject, "DuplicateCopyApplications", []);
+        const receiptQueryString = [
+          { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "applicationNumber") },
+          { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.DuplicateCopyApplications[0], "tenantId") }
+        ]
+        download(receiptQueryString, Owners, data(), userInfo.name,'payment','print');
       },
       leftIcon: "receipt"
     };
@@ -996,6 +1048,17 @@ export const footer = getCommonApplyFooter({
       leftIcon: "book"
     };
 
+    let certificatePrintObjectDC = {
+      label: { labelName: "Duplicate copy Letter", labelKey: "RP_DUPLICATE_COPY_LETTER" },
+      link: () => {
+        const { DuplicateCopyApplications, DuplicateTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = DuplicateTemp[0].reviewDocData;
+        set(DuplicateCopyApplications[0],"additionalDetails.documents",documents)
+        downloadCertificateForm(DuplicateCopyApplications, data(),'dc',tenantId,'print');
+      },
+      leftIcon: "book"
+    };
+
     let certificateDownloadObjectOT = {
       label: { labelName: "Ownership transfer Letter", labelKey: "RP_OWNERSHIP_TRANSFER_LETTER" },
       link: () => {
@@ -1003,6 +1066,17 @@ export const footer = getCommonApplyFooter({
         const documents = OwnersTemp[0].reviewDocData;
         set(Owners[0],"additionalDetails.documents",documents)
         downloadCertificateForm(Owners, data(),'ot',tenantId);
+      },
+      leftIcon: "book"
+    };
+
+    let certificatePrintObjectOT = {
+      label: { labelName: "Ownership transfer Letter", labelKey: "RP_OWNERSHIP_TRANSFER_LETTER" },
+      link: () => {
+        const { Owners, OwnersTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = OwnersTemp[0].reviewDocData;
+        set(Owners[0],"additionalDetails.documents",documents)
+        downloadCertificateForm(Owners, data(),'ot',tenantId,'print');
       },
       leftIcon: "book"
     };
@@ -1018,35 +1092,54 @@ export const footer = getCommonApplyFooter({
       leftIcon: "book"
     };
 
+    let certificatePrintObjectMG = {
+      label: { labelName: "Mortgage Letter", labelKey: "RP_MORTGAGE_LETTER" },
+      link: () => {
+        const { MortgageApplications, MortgageApplicationsTemp } = state.screenConfiguration.preparedFinalObject;
+        const documents = MortgageApplicationsTemp[0].reviewDocData;
+        set(MortgageApplications[0],"additionalDetails.documents",documents)
+        downloadCertificateForm(MortgageApplications, data(),'mg',tenantId,'print');
+      },
+      leftIcon: "book"
+    };
+
     switch (status) {
       case "OT_APPROVED":
           if(process.env.REACT_APP_NAME === "Citizen"){
             downloadMenu = [
-              receiptDownloadObject,
+              receiptDownloadObjectForOT,
               applicationDownloadObjectForOT,
             ];
             printMenu = [
-              applicationPrintObject
+              receiptPrintObjectForOT,
+              applicationPrintObjectForOT,
             ];
           }else{
             downloadMenu = [
-              receiptDownloadObject,
+              receiptDownloadObjectForOT,
               applicationDownloadObjectForOT,
               certificateDownloadObjectOT
               
             ];
             printMenu = [
-              applicationPrintObject
+              receiptPrintObjectForOT,
+              applicationPrintObjectForOT,
+              certificatePrintObjectOT
             ];
           }
       break;    
       case "OT_PENDINGCLAPPROVAL": 
       case "OT_REJECTEDPAID":  
           downloadMenu = [
-              receiptDownloadObject,
+            receiptDownloadObjectForOT,
               applicationDownloadObjectForOT              
             ];
-       
+
+            printMenu = [
+              receiptPrintObjectForOT,
+              applicationPrintObjectForOT,
+            ];
+
         break;
       case "DC_APPROVED":
           if(process.env.REACT_APP_NAME === "Citizen"){
@@ -1055,11 +1148,14 @@ export const footer = getCommonApplyFooter({
               applicationDownloadObjectForDC,
             ];
             printMenu = [
-              applicationPrintObject
+              receiptPrintObjectForDC,
+              applicationPrintObjectForDC,
             ];
           }else{
             printMenu = [
-              applicationPrintObject
+              receiptPrintObjectForDC,
+              applicationPrintObjectForDC,
+              certificatePrintObjectDC
             ];
             downloadMenu = [
               receiptDownloadObjectForDC,
@@ -1077,7 +1173,8 @@ export const footer = getCommonApplyFooter({
             applicationDownloadObjectForDC,
           ];
           printMenu = [
-            applicationPrintObject
+            receiptPrintObjectForDC,
+            applicationPrintObjectForDC,
           ];    
         break;
 
@@ -1086,10 +1183,18 @@ export const footer = getCommonApplyFooter({
         downloadMenu = [
           applicationDownloadObjectForMG,
         ];
+        printMenu = [
+          applicationPrintObjectForMG,
+
+        ]
        }else{
         downloadMenu = [
           applicationDownloadObjectForMG,
           certificateDownloadObjectMG
+        ];
+        printMenu = [
+          applicationPrintObjectForMG,
+          certificatePrintObjectMG
         ];
        }
           break;  
@@ -1103,6 +1208,9 @@ export const footer = getCommonApplyFooter({
     
           downloadMenu = [
             applicationDownloadObjectForMG          
+          ];
+          printMenu = [
+            applicationPrintObjectForMG          
           ];
         
         break;    
@@ -1120,6 +1228,10 @@ export const footer = getCommonApplyFooter({
           downloadMenu = [
             applicationDownloadObjectForDC
           ];
+
+          printMenu = [
+            applicationPrintObjectForDC
+          ];
           
       break; 
           case "OT_PENDINGCLVERIFICATION":
@@ -1135,6 +1247,10 @@ export const footer = getCommonApplyFooter({
 
               downloadMenu = [
                 applicationDownloadObjectForOT
+              ];
+
+              printMenu = [
+                applicationPrintObjectForOT
               ];
       break; 
     default:
@@ -1206,8 +1322,21 @@ export const footer = getCommonApplyFooter({
       },
       leftIcon: "book"
     };
+
+    let noticePrintFormObject = {
+      label: { labelName: "Notice", labelKey: "RP_NOTICE" },
+      link: () => {
+        const { SingleProperties } = state.screenConfiguration.preparedFinalObject;
+        downloadNoticeForm(SingleProperties,'print');
+      },
+      leftIcon: "book"
+    };
+
       downloadMenu = [
         noticeFormObject,
+      ];
+      printMenu = [
+        noticePrintFormObject,
       ];
     return {
       rightdiv: {

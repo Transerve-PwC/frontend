@@ -262,7 +262,6 @@ const buttonComponent = (label) => ({
   onClickDefination: {
     action: "condition",
     callBack: (state, dispatch) => {
-      debugger
       const { Properties, PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
       const documents = PropertiesTemp[0].reviewDocData;
       set(Properties[0],"additionalDetails.documents",documents)

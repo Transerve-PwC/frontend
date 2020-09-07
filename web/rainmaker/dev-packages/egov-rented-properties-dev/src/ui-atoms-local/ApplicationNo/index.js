@@ -16,7 +16,7 @@ function ApplicationNoContainer(props) {
   </div>
 } else if(props.notice==="ALLOTMENT"){
   return <div className="application-no-container"><LabelContainer labelName="Allotment No." labelKey ={"RP_COMMOM_ALLOTMENT_NUMBER"}/>
-  {number}
+  {" "}{number}
   </div>;
 }{
   return <div className="application-no-container"><LabelContainer labelName="Application No." labelKey ={"TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"}/>
