@@ -1,0 +1,34 @@
+{
+    "header": "EST_DOCUMENT_DETAILS_HEADER",
+    "jsonPath": "Owners[0].ownerDetails.ownershipTransferDocuments",
+    "documentList": [
+        {
+            "code": "CERTIFIED_COPY_OF_LEASE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CERTIFIED_COPY_OF_LEASE_DESCRIPTION"
+        },
+        {
+            "code": "NOTARISED_COPY_OF_SALE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NOTARISED_COPY_OF_SALE_DESCRIPTION"
+        },
+        {
+            "code": "SELF_ATTESTED_PHOTO",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_DESCRIPTION"
+        },
+        {
+            "code": "IDEMINITY_BOND_OF_TRANSFEREE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "IDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
+        }
+    ]
+}

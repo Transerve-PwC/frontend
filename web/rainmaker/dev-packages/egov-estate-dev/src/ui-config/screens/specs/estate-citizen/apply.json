@@ -1,0 +1,203 @@
+{
+    "steps": [
+        {
+            "order": 1,
+            "type": "FORM",
+            "sections": [
+                {
+                "header": "EST_PROPERTY_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_FILE_NUMBER_LABEL",
+                        "placeholder": "EST_FILENUMBER_PLACEHOLDER",
+                        "jsonPath": "Owners.property.fileNumber",
+                        "type": "TEXT_FIELD",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_CATEGORY_LABEL",
+                        "placeholder": "EST_CATEGORY_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.category",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_SUB_CATEGORY_LABEL",
+                        "placeholder": "EST_SUB_CATEGORY_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.subCategory",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_SITE_NO_LABEL",
+                        "placeholder": "EST_SITE_NO_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.siteNo",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_SECTOR_NO_LABEL",
+                        "placeholder": "EST_SECTOR_NO_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.sectorNo",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_SECTOR_NO_LABEL",
+                        "placeholder": "EST_SECTOR_NO_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.sectorNo",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_PROPERTY_TYPE_LABEL",
+                        "placeholder": "EST_PROPERTY_TYPE_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.propertyType",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_LAST_NOC_DATE_LABEL",
+                        "placeholder": "EST_LAST_NOC_DATE_PLACEHOLDER",
+                        "type": "DATE_FIELD",
+                        "jsonPath": "Owners.property.lastNocDate",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                        "placeholder": "EST_PROPERTY_APPLICATION_NUMBER_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.propertyApplicationNumber",
+                        "editable": false
+                    },
+                    {
+                        "label": "EST_DUE_AMOUNT_LABEL",
+                        "placeholder": "EST_DUE_AMOUNT_PLACEHOLDER",
+                        "type": "TEXT_FIELD",
+                        "jsonPath": "Owners.property.dueAmount",
+                        "editable": false
+                    }
+                ]
+            },
+            {
+            "header": "EST_PURCHASER_DETAILS_HEADER",
+            "fields": [
+                {
+                    "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
+                    "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "Owners.purchaserDetails.name",
+                    "editable": true,
+                    "requried": true
+                },
+                {
+                    "label": "EST_PURCHASER_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
+                    "placeholder": "EST_PURCHASER_TRANSFEREE_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "Owners.purchaserDetails.fatherOrHusbandName",
+                    "editable": true,
+                    "requried": true
+                },
+                {
+                    "label": "EST_PURCHASER_TRANSFEREE_ADDRESS_LABEL",
+                    "placeholder": "EST_PURCHASER_TRANSFEREE_ADDRESS_PLACEHOLDER",
+                    "type": "TEXT_AREA",
+                    "jsonPath": "Owners.purchaserDetails.address",
+                    "editable": true,
+                    "requried": true
+                },
+                {
+                    "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
+                    "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "Owners.purchaserDetails.mobileNo",
+                    "editable": true,
+                    "requried": false,
+                    "pattern": "MobileNo"
+                },
+                {
+                    "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
+                    "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
+                    "type": "DROP_DOWN",
+                    "jsonPath": "Owners.ownerDetails.name",
+                    "editable": true,
+                    "requried": true
+                },
+                {
+                    "label": "EST_PERCENTAGE_SHARED_LABEL",
+                    "placeholder": "EST_PERCENTAGE_SHARED_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "Owners.percentageShared",
+                    "editable": true,
+                    "requried": true,
+                    "pattern": "Amount"
+                },
+                {
+                    "label": "EST_MODE_OF_TRANSFER_LABEL",
+                    "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
+                    "type": "DROP_DOWN",
+                    "jsonPath": "Owners.modeOfTransfer",
+                    "editable": true,
+                    "requried": true
+                },
+                {
+                    "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
+                    "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "Owners.property.registrationNo",
+                    "editable": true,
+                    "requried": false
+                },
+                {
+                    "label": "EST_DATE_OF_REGISTRATION_LABEL",
+                    "placeholder": "EST_DATE_OF_REGISTRATION_PLACEHOLDER",
+                    "type": "DATE_FIELD",
+                    "jsonPath": "Owners.property.dateOfRegistration",
+                    "editable": true,
+                    "requried": false
+                }
+            ]    
+            }
+        ]
+        },
+        {
+            "order": 2,
+            "type": "DOCUMENTS",
+            "sections": [
+                {
+                    "header": "EST_DOCUMENT_DETAILS_HEADER",
+                    "documentList": [
+                        {
+                            "code": "CERTIFIED_COPY_OF_LEASE",
+                            "required": true,
+                            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+                            "fileType": "ALLTYPES",
+                            "description": "CERTIFIED_COPY_OF_LEASE_DESCRIPTION"
+                        },
+                        {
+                            "code": "NOTARISED_COPY_OF_SALE",
+                            "required": true,
+                            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+                            "fileType": "ALLTYPES",
+                            "description": "NOTARISED_COPY_OF_SALE_DESCRIPTION"
+                        },
+                        {
+                            "code": "SELF_ATTESTED_PHOTO",
+                            "required": true,
+                            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+                            "fileType": "ALLTYPES",
+                            "description": "SELF_ATTESTED_PHOTO_DESCRIPTION"
+                        },
+                        {
+                            "code": "IDEMINITY_BOND_OF_TRANSFEREE",
+                            "required": true,
+                            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+                            "fileType": "ALLTYPES",
+                            "description": "IDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
