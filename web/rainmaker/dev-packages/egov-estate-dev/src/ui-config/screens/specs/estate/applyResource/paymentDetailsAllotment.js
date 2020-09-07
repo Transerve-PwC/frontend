@@ -5,7 +5,8 @@ import {
   getDateField,
   getCommonTitle,
   getPattern,
-  getCommonContainer
+  getCommonContainer,
+  getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
@@ -17,6 +18,43 @@ import {
 import get from "lodash/get";
 import { set } from "lodash";
 
+/***************** Common fields to Ground rent and License fee *********************/
+const advancedRentField = {
+  label: {
+      labelName: "Advanced Rent",
+      labelKey: "EST_ADVANCED_RENT_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Advanced Rent",
+      labelKey: "EST_ADVANCED_RENT_PLACEHOLDER"
+  },
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  maxLength: 100,
+  jsonPath: ""
+}
+
+const dateOfPaymentOfAdvanceRentField = {
+  label: {
+      labelName: "Date of Payment of Advance Rent",
+      labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Date of Payment of Advance Rent",
+      labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
+  },
+  pattern: getPattern("Date"),
+  jsonPath: "",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+
+/************************ Premium Amount Deatails *******************/
 const premiumAmountField = {
   label: {
       labelName: "Premium Amount",
@@ -34,174 +72,187 @@ const premiumAmountField = {
   jsonPath: ""
 }
 
-const noOfInstallmentsForPremiumAmountField = {
+const installmentField = {
   label: {
-      labelName: "No. of Installments for Premium Amount",
-      labelKey: "EST_NUMBER_OF_INSTALLMENTS_FOR_PREMIUM_AMOUNT_LABEL"
+      labelName: "Installment",
+      labelKey: "EST_INSTALLMENT_LABEL"
   },
   placeholder: {
-      labelName: "Enter No. of Installments for Premium Amount",
-      labelKey: "EST_NUMBER_OF_INSTALLMENTS_FOR_PREMIUM_AMOUNT_PLACEHOLDER"
+      labelName: "Enter Installment",
+      labelKey: "EST_INSTALLMENT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].allotment.noOfInstallments",
-  props: {
-    data: [
-      {code: 2},
-      {code: 3}
-    ]
-  },
-  beforeFieldChange: (action, state, dispatch) => {
-    if (action.value == 2) {
-      let itemsArrShow = ["installment1", "installment2", "dueDateForInstallment2"];
-      let itemsArrHide = ["installment3", "dueDateForInstallment3"];
+  jsonPath: "Properties[0].propertyDetails.premiumAmount.installments[0].installemntAmount"
+}
 
-      itemsArrShow.map(item => {
-        dispatch(
-          handleField(
-            "allotment",
-            `components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.${item}`,
-            "visible",
-            true
-          )
-        )
-      })
-      itemsArrHide.map(item => {
-        dispatch(
-          handleField(
-            "allotment",
-            `components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.${item}`,
-            "visible",
-            false
-          )
-        )
-      })
-    }
-    else if (action.value == 3) {
-      let itemsArr = ["installment1", "installment2", "dueDateForInstallment2", "installment3", "dueDateForInstallment3"];
-      itemsArr.map(item => {
-        dispatch(
-          handleField(
-            "allotment",
-            `components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.${item}`,
-            "visible",
-            true
-          )
-        )
-      })
-    }
-    else {
-      let itemsArr = ["installment1", "installment2", "dueDateForInstallment2", "installment3", "dueDateForInstallment3"];
-      itemsArr.map(item => {
-        dispatch(
-          handleField(
-            "allotment",
-            `components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.${item}`,
-            "visible",
-            false
-          )
-        )
-      })
-    }
+const dueDateForInstallmentField = {
+  label: {
+      labelName: "Due Date for Installment",
+      labelKey: "EST_DUE_DATE_INSTALLMENT_LABEL"
+  },
+  placeholder: {
+      labelName: "Due Date for Installment",
+      labelKey: "EST_DUE_DATE_INSTALLMENT_PLACEHOLDER"
+  },
+  pattern: getPattern("Date"),
+  jsonPath: "Properties[0].propertyDetails.premiumAmount.installments[0].dueDate",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
   }
 }
 
-const installment1Field = {
-  label: {
-      labelName: "Installment 1",
-      labelKey: "EST_INSTALLMENT1_LABEL"
-  },
-  placeholder: {
-      labelName: "Enter Installment 1",
-      labelKey: "EST_INSTALLMENT1_PLACEHOLDER"
-  },
+const getDemandRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
   gridDefination: {
-      xs: 12,
-      sm: 6
+    xs: 12,
+    sm: 6,
   },
-  visible: false,
-  maxLength: 100,
-  jsonPath: ""
-}
-
-const installment2Field = {
-  label: {
-      labelName: "Installment 2",
-      labelKey: "EST_INSTALLMENT2_LABEL"
-  },
-  placeholder: {
-      labelName: "Enter Installment 2",
-      labelKey: "EST_INSTALLMENT2_PLACEHOLDER"
-  },
-  gridDefination: {
-      xs: 12,
-      sm: 6
-  },
-  visible: false,
-  maxLength: 100,
-  jsonPath: ""
-}
-
-const dueDateForInstallment2Field = {
-  label: {
-      labelName: "Due Date for Installment 2",
-      labelKey: "EST_DUE_DATE_INSTALLMENT2_LABEL"
-  },
-  placeholder: {
-      labelName: "Due Date for Installment 2",
-      labelKey: "EST_DUE_DATE_INSTALLMENT2_PLACEHOLDER"
-  },
-  pattern: getPattern("Date"),
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.demand",
   props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
+    label: {
+      name: "Demand",
+      key: "EST_DEMAND_LABEL"
+    },
+    buttons: [{
+        labelName: "Ground Rent",
+        labelKey: "EST_GROUND_RENT_LABEL",
+        value: "GROUNDRENT"
+      },
+      {
+        label: "License Fee",
+        labelKey: "EST_LICENSE_FEE_LABEL",
+        value: "LICENSEFEE"
       }
+    ],
+    jsonPath: "Properties[0].propertyDetails.demand",
+    required: true
   },
-  visible: false
-}
-
-const installment3Field = {
-  label: {
-      labelName: "Installment 3",
-      labelKey: "EST_INSTALLMENT3_LABEL"
-  },
-  placeholder: {
-      labelName: "Enter Installment 3",
-      labelKey: "EST_INSTALLMENT3_PLACEHOLDER"
-  },
-  gridDefination: {
-      xs: 12,
-      sm: 6
-  },
+  required: true,
+  type: "array",
   visible: false,
-  maxLength: 100,
-  jsonPath: ""
-}
+  beforeFieldChange: (action, state, dispatch) => {
+    if (action.value == "GROUNDRENT") {
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "visible",
+          true
+        )
+      )
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "visible",
+          false
+        )
+      )
+    }
+    else {
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "visible",
+          true
+        )
+      )
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "visible",
+          false
+        )
+      )
+    }
+  }
+};
 
-const dueDateForInstallment3Field = {
-  label: {
-      labelName: "Due Date for Installment 3",
-      labelKey: "EST_DUE_DATE_INSTALLMENT3_LABEL"
-  },
-  placeholder: {
-      labelName: "Due Date for Installment 3",
-      labelKey: "EST_DUE_DATE_INSTALLMENT3_PLACEHOLDER"
-  },
-  pattern: getPattern("Date"),
-  jsonPath: "",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
+const commonInstallmentInformation = () => {
+  return getCommonGrayCard({
+    header: getCommonTitle({
+      labelName: "Installment",
+      labelKey: "EST_INSTALLMENT"
+    }, {
+      style: {
+        marginBottom: 18
       }
-  },
-  visible: false
-}
+    }),
+    installmentCard: getCommonContainer({
+      installment: getTextField(installmentField),
+      dueDateForInstallment: getDateField(dueDateForInstallmentField),
+    })
+  });
+};
 
+export const installmentDetails = getCommonCard({
+  detailsContainer: getCommonContainer({
+    multipleInstallmentContainer: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      children: {
+        multipleInstallmentInfo: {
+          uiFramework: "custom-containers",
+          componentPath: "MultiItem",
+          props: {
+            scheama: commonInstallmentInformation(),
+            items: [],
+            addItemLabel: {
+              labelName: "Add Installment",
+              labelKey: "EST_COMMON_ADD_INSTALLMENT_LABEL"
+            },
+            headerName: "Installment",
+            headerJsonPath:
+              "children.cardContent.children.header.children.key.props.labelKey",
+            sourceJsonPath: "Properties[0].propertyDetails.premiumAmount.installments",
+            prefixSourceJsonPath: "children.cardContent.children.installmentCard.children",
+            onMultiItemAdd: (state, muliItemContent) => {
+              console.log(muliItemContent);
+              // muliItemContent["dueDateForInstallment"]["visible"] = true;
+              return muliItemContent;
+            }
+          },
+          type: "array"
+        }
+      }
+    }
+  })
+})
+
+const premiumAmountHeader = getCommonTitle({
+  labelName: "Premium Amount Details",
+  labelKey: "EST_PREMIUM_AMOUNT_HEADER"
+}, {
+  style: {
+      marginBottom: 18,
+      marginTop: 18
+  }
+})
+
+export const premiumAmountDetails = getCommonCard({
+  header: premiumAmountHeader,
+  detailsContainer: getCommonContainer({
+    demand: getDemandRadioButton,
+    premiumAmount: getTextField(premiumAmountField)
+  }),
+  installmentContainer: installmentDetails
+})
+
+/****************** Ground Rent Details **********************/
 const groundRentField = {
   label: {
       labelName: "Ground Rent",
@@ -233,7 +284,35 @@ const groundRentGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.groundRentGenerationType",
+  props: {
+    data: [
+      {code: "Monthly"},
+      {code: "Annually"}
+    ]
+  },
+  beforeFieldChange: (action, state, dispatch) => {
+    if (action.value == "Monthly") {
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "visible",
+          true
+        )
+      )
+    }
+    else {
+      dispatch(
+        handleField(
+          "allotment",
+          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "visible",
+          true
+        )
+      )
+    }
+  }
 }
 
 const startingDateForGroundRentField = {
@@ -254,57 +333,205 @@ const startingDateForGroundRentField = {
   }
 }
 
-const rentRevision1to33Field = {
+const billingStartDateField = {
   label: {
-      labelName: "Rent Revision for 1-33 Years",
-      labelKey: "EST_RENT_REVISION_1TO33_YEARS_LABEL"
+      labelName: "Billing Start Date",
+      labelKey: "EST_BILLING_START_DATE_LABEL"
   },
   placeholder: {
-      labelName: "Enter Rent Revision for 1-33 Years",
-      labelKey: "EST_RENT_REVISION_1TO33_YEARS_PLACEHOLDER"
+      labelName: "Enter Billing Start Date",
+      labelKey: "EST_BILLING_START_DATE_PLACEHOLDER"
+  },
+  pattern: getPattern("Date"),
+  jsonPath: "",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+
+const dateToGenerateDemandRentField = {
+  label: {
+    labelName: "Date to Generate the Demand/Rent",
+    labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
+  },
+  placeholder: {
+    labelName: "Select Date to Generate the Demand/Rent",
+    labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_PLACEHOLDER"
+  },
+  jsonPath: "",
+  gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+  props: {
+      data: [
+        {code: "1"},
+        {code: "2"},
+        {code: "3"},
+        {code: "4"},
+        {code: "5"},
+        {code: "6"},
+        {code: "7"},
+        {code: "8"},
+        {code: "9"},
+        {code: "10"},
+        {code: "11"},
+        {code: "12"},
+        {code: "13"},
+        {code: "14"},
+        {code: "15"},
+        {code: "16"},
+        {code: "17"},
+        {code: "18"},
+        {code: "19"},
+        {code: "20"},
+        {code: "21"},
+        {code: "22"},
+        {code: "23"},
+        {code: "24"},
+        {code: "25"},
+        {code: "26"},
+        {code: "27"},
+        {code: "28"}
+      ]
+  },
+  visible: false
+}
+
+const rentAmountField = {
+  label: {
+      labelName: "Rent Amount",
+      labelKey: "EST_RENT_AMOUNT_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Rent Amount",
+      labelKey: "EST_RENT_AMOUNT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 6
+      sm: 4
   },
   maxLength: 100,
   jsonPath: ""
 }
 
-const rentRevision34to66Field = {
+const startYearField = {
   label: {
-      labelName: "Rent Revision for 34-66 Years",
-      labelKey: "EST_RENT_REVISION_34TO66_YEARS_LABEL"
+      labelName: "Start Year",
+      labelKey: "EST_START_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter Rent Revision for 34-66 Years",
-      labelKey: "EST_RENT_REVISION_34TO66_YEARS_PLACEHOLDER"
+      labelName: "Enter Start Year",
+      labelKey: "EST_START_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 6
+      sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.groundRent.rent[0].startYear"
 }
 
-const rentRevision67to99Field = {
+const endYearField = {
   label: {
-      labelName: "Rent Revision for 67-99 Years",
-      labelKey: "EST_RENT_REVISION_67TO99_YEARS_LABEL"
+      labelName: "End Year",
+      labelKey: "EST_END_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter Rent Revision for 67-99 Years",
-      labelKey: "EST_RENT_REVISION_67TO99_YEARS_PLACEHOLDER"
+      labelName: "Enter End Year",
+      labelKey: "EST_END_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 6
+      sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.groundRent.rent[0].endYear"
 }
 
+const commonRentInformation = () => {
+  return getCommonGrayCard({
+    header: getCommonTitle({
+      labelName: "Rent",
+      labelKey: "EST_RENT"
+    }, {
+      style: {
+        marginBottom: 18
+      }
+    }),
+    rentCard: getCommonContainer({
+      rentAmount: getTextField(rentAmountField),
+      startYear: getTextField(startYearField),
+      endYear: getTextField(endYearField)
+    })
+  });
+};
+
+export const rentDetails = getCommonCard({
+  detailsContainer: getCommonContainer({
+    multipleRentContainer: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      children: {
+        multipleRentInfo: {
+          uiFramework: "custom-containers",
+          componentPath: "MultiItem",
+          props: {
+            scheama: commonRentInformation(),
+            items: [],
+            addItemLabel: {
+              labelName: "Add Rent",
+              labelKey: "EST_COMMON_ADD_RENT_LABEL"
+            },
+            headerName: "Rent",
+            headerJsonPath:
+              "children.cardContent.children.header.children.key.props.labelKey",
+            sourceJsonPath: "Properties[0].propertyDetails.groundRent.rent",
+            prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
+            onMultiItemAdd: (state, muliItemContent) => {
+              console.log(muliItemContent);
+              return muliItemContent;
+            }
+          },
+          type: "array"
+        }
+      }
+    }
+  })
+})
+const groundRentHeader = getCommonTitle({
+  labelName: "Ground Rent Details",
+  labelKey: "EST_GROUND_RENT_HEADER"
+}, {
+  style: {
+      marginBottom: 18,
+      marginTop: 18
+  }
+})
+
+export const groundRentDetails = getCommonCard({
+  header: groundRentHeader,
+  detailsContainer: getCommonContainer({
+    groundRentGenerationType: getSelectField(groundRentGenerationTypeField),
+    groundRent: getTextField(groundRentField),
+    startingDateForGroundRent: getDateField(startingDateForGroundRentField),
+    billingStartDate: getDateField(billingStartDateField),
+    dateToGenerateDemandRent: getSelectField(dateToGenerateDemandRentField),
+    advanceRent: getTextField(advancedRentField),
+    dateOfPaymentOfAdvanceRent: getDateField(dateOfPaymentOfAdvanceRentField)
+  }),
+  rentContainer: rentDetails
+})
+
+
+/*********************** License Fee Details ************************/
 const licenseFeeField = {
   label: {
       labelName: "License Fee",
@@ -331,76 +558,23 @@ const startingDateForLicenseFeeField = {
       labelName: "Enter Starting Date for License Fee",
       labelKey: "EST_STARTING_DATE_LICENSE_FEE_PLACEHOLDER"
   },
-  gridDefination: {
-      xs: 12,
-      sm: 6
-  },
-  maxLength: 100,
-  jsonPath: ""
-}
-
-const leasePeriodField = {
-  label: {
-      labelName: "Lease Period",
-      labelKey: "EST_LEASE_PERIOD_LABEL"
-  },
-  placeholder: {
-      labelName: "Enter Lease Period",
-      labelKey: "EST_LEASE_PERIOD_PLACEHOLDER"
-  },
-  gridDefination: {
-      xs: 12,
-      sm: 6
-  },
-  maxLength: 100,
-  jsonPath: "Properties[0].allotment.leasePeriod",
+  pattern: getPattern("Date"),
+  jsonPath: "",
   props: {
-    data: [
-      {code: 1},
-      {code: 2},
-      {code: 3},
-      {code: 4},
-      {code: 5},
-      {code: 6},
-      {code: 7},
-      {code: 8},
-      {code: 9},
-      {code: 10}
-    ]
-  },
-  beforeFieldChange: async (action, state, dispatch) => {
-    let leasePeriod = action.value;
-    let licenseFeeObj = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.licenseFee",
-      {}
-    )
-
-    for (var i=0; i < leasePeriod; i++) {
-      let licenseFeeObjCopy = JSON.parse(JSON.stringify(licenseFeeObj));
-      let componentJsonPath = licenseFeeObjCopy.componentJsonpath + i;
-      licenseFeeObjCopy.componentJsonpath = componentJsonPath;
-
-      licenseFeeObjCopy.props.label.labelKey = `LICENSE_FEE_YEAR${i+1}_LABEL`
-      licenseFeeObjCopy.props.placeholder.labelKey = `LICENSE_FEE_YEAR${i+1}_PLACEHOLDER`
-
-      set(
-        state.screenConfiguration.screenConfig,
-        `allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.licenseFee${i}`,
-        licenseFeeObjCopy
-      )
-    }
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
   }
 }
 
-const advancedRentField = {
+const licenseFeeForYearField = {
   label: {
-      labelName: "Advanced Rent",
-      labelKey: "EST_ADVANCED_RENT_LABEL"
+      labelName: "License Fee",
+      labelKey: "EST_LICENSE_FEE_LABEL"
   },
   placeholder: {
-      labelName: "Enter Advanced Rent",
-      labelKey: "EST_ADVANCED_RENT_PLACEHOLDER"
+      labelName: "Enter License Fee",
+      labelKey: "EST_LICENSE_FEE_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -410,49 +584,57 @@ const advancedRentField = {
   jsonPath: ""
 }
 
-const premiumAmountHeader = getCommonTitle({
-  labelName: "Premium Amount Details",
-  labelKey: "EST_PREMIUM_AMOUNT_HEADER"
-}, {
-  style: {
-      marginBottom: 18,
-      marginTop: 18
-  }
-})
+const commonLicenseInformation = () => {
+  return getCommonGrayCard({
+    header: getCommonTitle({
+      labelName: "License Fee for Year",
+      labelKey: "EST_LICENSE_FEE_FOR_YEAR"
+    }, {
+      style: {
+        marginBottom: 18
+      }
+    }),
+    licenseCard: getCommonContainer({
+      licenseFeeForYear: getTextField(licenseFeeForYearField)
+    })
+  });
+};
 
-export const premiumAmountDetails = getCommonCard({
-  header: premiumAmountHeader,
+export const licenseFeeForYearDetails = getCommonCard({
   detailsContainer: getCommonContainer({
-      premiumAmount: getTextField(premiumAmountField),
-      noOfInstallmentsForPremiumAmount: getSelectField(noOfInstallmentsForPremiumAmountField),
-      installment1: getTextField(installment1Field),
-      installment2: getTextField(installment2Field),
-      dueDateForInstallment2: getDateField(dueDateForInstallment2Field),
-      installment3: getTextField(installment3Field),
-      dueDateForInstallment3: getDateField(dueDateForInstallment3Field)
-  })
-})
-
-const groundRentHeader = getCommonTitle({
-  labelName: "Ground Rent Details",
-  labelKey: "EST_GROUND_RENT_HEADER"
-}, {
-  style: {
-      marginBottom: 18,
-      marginTop: 18
-  }
-})
-
-export const groundRentDetails = getCommonCard({
-  header: groundRentHeader,
-  detailsContainer: getCommonContainer({
-      groundRent: getTextField(groundRentField),
-      groundRentGenerationType: getSelectField(groundRentGenerationTypeField),
-      startingDateForGroundRent: getDateField(startingDateForGroundRentField),
-      startingDateForGroundRent: getDateField(startingDateForGroundRentField),
-      rentRevision1to33: getTextField(rentRevision1to33Field),
-      rentRevision34to66: getTextField(rentRevision34to66Field),
-      rentRevision67to99: getTextField(rentRevision67to99Field),
+    multipleRentContainer: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      children: {
+        multipleLicenseInfo: {
+          uiFramework: "custom-containers",
+          componentPath: "MultiItem",
+          props: {
+            scheama: commonLicenseInformation(),
+            items: [],
+            addItemLabel: {
+              labelName: "Add License Fee",
+              labelKey: "EST_COMMON_LICENSE_FEE_LABEL"
+            },
+            headerName: "License Fee for Year",
+            headerJsonPath:
+              "children.cardContent.children.header.children.key.props.labelKey",
+            sourceJsonPath: "Properties[0].propertyDetails.LicenseDetails.licenseFees",
+            prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
+            onMultiItemAdd: (state, muliItemContent) => {
+              console.log(muliItemContent);
+              return muliItemContent;
+            }
+          },
+          type: "array"
+        }
+      }
+    }
   })
 })
 
@@ -471,13 +653,52 @@ export const licenseFeeDetails = getCommonCard({
   detailsContainer: getCommonContainer({
       licenseFee: getTextField(licenseFeeField),
       startingDateForLicenseFee: getDateField(startingDateForLicenseFeeField),
-      leasePeriod: getSelectField(leasePeriodField),
-  })
+      advanceRent: getTextField(advancedRentField),
+      dateOfPaymentOfAdvanceRent: getDateField(dateOfPaymentOfAdvanceRentField)
+  }),
+  licenseFeeForYearContainer: licenseFeeForYearDetails
 })
 
-const otherPaymentDetailsHeader = getCommonTitle({
-  labelName: "Other Payment Details",
-  labelKey: "EST_OTHER_PAYMENT_DETAILS_HEADER"
+
+/******************** Security Fee Details ********************/ 
+const securityFeeAmountField = {
+  label: {
+      labelName: "Security Fee Amount",
+      labelKey: "EST_SECURITY_FEE_AMOUNT_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Security Fee Amount",
+      labelKey: "EST_SECURITY_FEE_AMOUNT_PLACEHOLDER"
+  },
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  maxLength: 100,
+  jsonPath: ""
+}
+
+const dateOfPaymentField = {
+  label: {
+      labelName: "Date of Payment",
+      labelKey: "EST_DATE_OF_PAYMENT_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Date of Payment",
+      labelKey: "EST_DATE_OF_PAYMENT_PLACEHOLDER"
+  },
+  pattern: getPattern("Date"),
+  jsonPath: "",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+
+const securityDetailsHeader = getCommonTitle({
+  labelName: "Security Details",
+  labelKey: "EST_SECURITY_DETAILS_HEADER"
 }, {
   style: {
       marginBottom: 18,
@@ -485,9 +706,10 @@ const otherPaymentDetailsHeader = getCommonTitle({
   }
 })
 
-export const otherPaymentDetails = getCommonCard({
-  header: otherPaymentDetailsHeader,
+export const securityDetails = getCommonCard({
+  header: securityDetailsHeader,
   detailsContainer: getCommonContainer({
-      advanceRent: getTextField(advancedRentField)
+      securityFeeAmount: getTextField(securityFeeAmountField),
+      securityFeeDateOfPayment: getDateField(dateOfPaymentField)
   })
 })

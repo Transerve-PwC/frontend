@@ -38,14 +38,14 @@ const cardItems = [
     icon: < FormIcon / > ,
     route: "allotment"
   },
-  {
-    label: {
-      labelKey: "EST_PROPERTY_MASTER_CANCELLATION_HEADER",
-      labelName: "Cancellation"
-    },
-    icon: < FormIcon / > ,
-    route: ""
-  },
+  // {
+  //   label: {
+  //     labelKey: "EST_PROPERTY_MASTER_CANCELLATION_HEADER",
+  //     labelName: "Cancellation"
+  //   },
+  //   icon: < FormIcon / > ,
+  //   route: ""
+  // },
   {
     label: {
       labelKey: "EST_PROPERTY_MASTER_REFUND_HEADER",

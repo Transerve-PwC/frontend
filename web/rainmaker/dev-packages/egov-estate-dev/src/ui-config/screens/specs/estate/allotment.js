@@ -171,6 +171,31 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+      "visible",
+      false
+    )
+  )
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+      "visible",
+      false
+    )
+  )
+  // dispatch(
+  //   handleField(
+  //     "allotment",
+  //     "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.scheama.children.cardContent.children.installmentCard.children.dueDateForInstallment",
+  //     "visible", 
+  //     false
+  //   )
+  // )
 }
 
 const applyAllotment = {

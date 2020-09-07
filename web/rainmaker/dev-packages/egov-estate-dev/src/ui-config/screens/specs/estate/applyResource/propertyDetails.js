@@ -284,6 +284,28 @@ const propertyTypeField = {
     gridDefination: {
         xs: 12,
         sm: 6
+    },
+    beforeFieldChange: (action, state, dispatch) => {
+        if (action.value == "PROPERTY_TYPE.LEASEHOLD") {
+            dispatch(
+                handleField(
+                    "allotment",
+                    "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.demand",
+                    "visible",
+                    true
+                )
+            )
+        }
+        else {
+            dispatch(
+                handleField(
+                    "allotment",
+                    "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children.demand",
+                    "visible",
+                    false
+                )
+            )
+        }
     }
 }
 
