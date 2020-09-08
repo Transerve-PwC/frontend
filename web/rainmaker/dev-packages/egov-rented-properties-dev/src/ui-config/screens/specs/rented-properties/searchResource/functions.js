@@ -315,13 +315,13 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
   const data = RentAccountStatements.map(item =>
     ({
       ...item,
-      date: moment(new Date(item.date)).format("DD/MM/YYYY") || "-",
-      amount : item.amount.toFixed(2) || "-",
-      type : item.type || "-",
-      remainingInterest : item.remainingInterest.toFixed(2),
-      remainingPrincipal : item.remainingPrincipal.toFixed(2),
-      dueAmount : item.dueAmount.toFixed(2),
-      remainingBalance : item.remainingBalance.toFixed(2)
+      date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+      amount : 'Rs '  + formatAmount(item.amount.toFixed(2)) || "-",
+      type : changeType(item.type || "-"),
+      remainingInterest : 'Rs '  +formatAmount(item.remainingInterest.toFixed(2)),
+      remainingPrincipal : 'Rs '  +formatAmount(item.remainingPrincipal.toFixed(2)),
+      dueAmount : 'Rs '  +formatAmount(item.dueAmount.toFixed(2)),
+      remainingBalance : 'Rs '  +formatAmount(item.remainingBalance.toFixed(2))
     })
   )
   const mode = "download"

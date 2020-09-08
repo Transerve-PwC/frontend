@@ -74,8 +74,8 @@ cardItems = !!isSurveyor ? [...cardItems, {
   route: "transit-site-images"
 }] : !!isClerk ? [...cardItems, {
   label: {
-      labelKey: "RP_OFFLINE_RENT_AMOUNT_PAYMENT_HEADER",
-      labelName: "Offline rent amount"
+      labelKey: "RP_OFFLINE_RENT_PAYMENT_HEADER",
+      labelName: "Offline Rent Payment"
   },
   icon: <FormIcon />,
   route: "payment"
