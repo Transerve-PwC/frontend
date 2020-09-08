@@ -89,7 +89,7 @@ const callBackForNext = async (state, dispatch) => {
       "apply"
     )
 
-    if (isPropertyInfoValid && isAuctionValid && isAdditionalValid) {
+    if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
