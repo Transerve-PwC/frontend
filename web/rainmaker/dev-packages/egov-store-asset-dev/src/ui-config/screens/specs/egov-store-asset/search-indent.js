@@ -8,22 +8,24 @@ import {
   import set from "lodash/set";
   import { httpRequest,getsto } from "../../../../ui-utils";
   import { getstoreTenantId,getStoresSearchResults } from "../../../../ui-utils/storecommonsapi";
-  import { searchForm } from "./searchPriceListResource/searchForm";
-  import { searchResults } from "./searchPriceListResource/searchResults";
+  import { searchForm } from "./searchindentResource/searchForm";
+  import { searchResults } from "./searchindentResource/searchResults";
   import { getTenantId , getOPMSTenantId} from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-  
+  import{UserRoles} from '../../../../ui-utils/sampleResponses'
   const hasButton = getQueryArg(window.location.href, "hasButton");
   let enableButton = true;
   //enableButton = hasButton && hasButton === "false" ? false : true;
-  
+  let roles = UserRoles().UserRoles;
+  console.log(roles)
+  console.log("roles")
   const header = getCommonHeader({
-    labelName: "Price List",
-    labelKey: "STORE_VIEW_PRICE_LIST",
+    labelName: "Materisl Indent Note",
+    labelKey: "STORE_MATERIAL_INDENT_MATERIAL_INDENT_NOTE",
   });
   
-  const createPriceListHandle = async (state, dispatch) => {
-    dispatch(setRoute(`/egov-store-asset/create-price-list`));
+  const createMaterialIndentHandle = async (state, dispatch) => {
+    dispatch(setRoute(`/egov-store-asset/creatindent`));
   };
   
   const getMDMSData = async (action, state, dispatch) => {
@@ -36,7 +38,8 @@ import {
             moduleName: "store-asset",
             masterDetails: [
               { name: "Material" },
-              { name: "MaterialType"},
+              { name: "InventoryType"},
+              { name: "IndentPurpose"},// filter: "[?(@.active == true)]" },
             ],
           },
          
@@ -74,7 +77,7 @@ import {
       console.log(e);
     }
   };
-  
+
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
    // await getstoreData(action,state, dispatch);
@@ -82,9 +85,12 @@ import {
   
   const materialMasterSearchAndResult = {
     uiFramework: "material-ui",
-    name: "search-price-list",
+    name: "search-indent",
     beforeInitScreen: (action, state, dispatch) => {
       getData(action, state, dispatch);
+      const storedata = getstoreData(action,state, dispatch);
+      //set search param blank
+dispatch(prepareFinalObject("searchScreen",{}));
       return action;
     },
     components: {
@@ -140,14 +146,18 @@ import {
                   },
   
                   buttonLabel: getLabel({
-                    labelName: "Add Price List",
-                    labelKey: "STORE_ADD_NEW_PRICE_LIST_BUTTON",
+                    labelName: "Add Material Indent",
+                    labelKey: "STORE_MATERIAL_INDENT_NOTE_ADD_MATERIAL_INDENT",//
                   }),
                 },
                 onClickDefination: {
                   action: "condition",
-                  callBack: createPriceListHandle,
+                  callBack: createMaterialIndentHandle,
                 },
+                roleDefination: {
+                  rolePath: "user-info.roles",
+                  roles: roles
+                }
               },
             },
           },

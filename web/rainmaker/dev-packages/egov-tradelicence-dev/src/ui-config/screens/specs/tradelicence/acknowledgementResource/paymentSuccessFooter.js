@@ -104,9 +104,9 @@ export const paymentSuccessFooter = (
   return getCommonApplyFooter({
     container: {
       uiFramework: "custom-atoms",
-      componentPath: "Container",
+      componentPath: "Div",
       children: {
-        leftdiv: {
+        /*leftdiv: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           props: {
@@ -148,11 +148,46 @@ export const paymentSuccessFooter = (
             xs: 12,
             sm: 4
           }
-        },
+        },*/
         rightdiv: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
+          props: {
+            style: {
+              display: "inline-flex"
+            }
+          },
           children: {
+            downloadMenu: {
+              uiFramework: "custom-atoms-local",
+              moduleName: "egov-tradelicence",
+              componentPath: "MenuButton",
+              props: {
+                data: {
+                  label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                  // label: "Download",
+                  leftIcon: "cloud_download",
+                  rightIcon: "arrow_drop_down",
+                  props: { variant: "outlined", style: { height: "48px", color : "#FE7A51", marginRight: "10px" }, className: "tl-download-button" },
+                  menu: downloadMenu
+                }
+              }
+            },
+            printMenu: {
+              uiFramework: "custom-atoms-local",
+              moduleName: "egov-tradelicence",
+              componentPath: "MenuButton",
+              props: {
+                data: {
+                  label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                  // label: "Print",
+                  leftIcon: "print",
+                  rightIcon: "arrow_drop_down",
+                  props: { variant: "outlined", style: { height: "48px", color : "#FE7A51", marginRight: "10px" }, className: "tl-print-button" },
+                  menu: printMenu
+                }
+              }
+            },
             gotoHome: {
               componentPath: "Button",
               props: {

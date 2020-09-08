@@ -4,19 +4,23 @@ import { searchUser } from "egov-ui-kit/redux/auth/actions";
 import { fetchComplaintCategories ,fetchComplaintDepartment , fetchComplaintSector } from "egov-ui-kit/redux/complaints/actions";
 import { fetchpgrConstants } from "egov-ui-kit/redux/common/actions";
 import { fetchUiCommonConfig, fetchUiCommonConstants } from "egov-ui-kit/redux/app/actions";
-import { getAccessToken } from "egov-ui-kit/utils/localStorageUtils";
+import { getAccessToken, getModule } from "egov-ui-kit/utils/localStorageUtils";
 
 const withData = (Component) => {
   class Wrapper extends React.Component {
     componentDidMount() {
       const { searchUser, fetchComplaintCategories ,fetchComplaintDepartment , fetchComplaintSector , authenticated, fetchpgrConstants, fetchUiCommonConfig, fetchUiCommonConstants } = this.props;
       if (getAccessToken()) {
-        fetchComplaintCategories();
-        fetchComplaintDepartment();
-        fetchComplaintSector();
+
+        if(getModule() ==="rainmaker-pgr"){
+          fetchComplaintCategories();
+          fetchComplaintDepartment();
+          fetchComplaintSector();
+          fetchpgrConstants();
+          fetchUiCommonConfig();
+        }
+        
         searchUser();
-        fetchpgrConstants();
-        fetchUiCommonConfig();
         fetchUiCommonConstants();
       }
     }

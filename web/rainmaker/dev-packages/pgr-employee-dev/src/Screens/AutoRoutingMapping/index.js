@@ -359,10 +359,13 @@ class AutoRoutingMapping extends Component {
                 onChange={(chosendepartment, index) => {
 
                   let filterCategory = categories.filter ( cat => cat.dept === chosendepartment.value);
-                    this.setState({categoriesArr : filterCategory ,category:"",officerlevel1:[],officerlevel2:[],autoRouting:[{id: new Date().getTime() ,sector:[],employee:""}]})
+                    this.setState({categoriesArr : filterCategory ,category:"",officerlevel1:[],officerlevel2:[],unAllocatedSector:[],autoRouting:[{id: new Date().getTime() ,sector:[],employee:""}]})
                //   prepareFinalObject("AutoroutingEscalationMap.category", chosenCity.label);
                 }}
                 {...this.department}
+                floatingLabelText = {this.getLocalizedLabel("CS_ADDCOMPLAINT_DEPARTMENT")}
+                hintText={this.getLocalizedLabel("HR_DEPARTMENT_PLACEHOLDER")}
+                errorMessage={this.getLocalizedLabel("HR_DEPARTMENT_PLACEHOLDER")}
                 dataSource={departmentName}
                 />
                 </div>
@@ -378,6 +381,9 @@ class AutoRoutingMapping extends Component {
                 
                 }}
                 {...this.category}
+                floatingLabelText={this.getLocalizedLabel("PGR_AUTOROUTE_MAPPING_CATEGORY")}
+                hintText={this.getLocalizedLabel("PGR_AUTOROUTE_MAPPING_CATEGORY_PLACEHOLDER")}
+                errorMessage={this.getLocalizedLabel("PGR_AUTOROUTE_MAPPING_CATEGORY_PLACEHOLDER")}
                 dataSource={categoriesArr}
                 value = {category}
                 />

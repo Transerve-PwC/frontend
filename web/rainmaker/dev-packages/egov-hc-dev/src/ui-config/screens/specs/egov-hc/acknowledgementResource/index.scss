@@ -34,3 +34,10 @@
     margin-right:20px !important;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .ack-body, .ack-tail {
+  display: contents;
+  text-align: center !important;
+  word-break: break-all
+  }}

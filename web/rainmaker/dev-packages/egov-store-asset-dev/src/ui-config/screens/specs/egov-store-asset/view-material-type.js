@@ -53,7 +53,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId");
   };
   //Edit Button
   const callBackForEdit = async (state, dispatch) => {
-    window.location.href = `/egov-store-asset/create-material-type?tenantId=${tenantId}&code=${materialTypeCode}&edited=true`;
+    window.location.href = `/employee/egov-store-asset/create-material-type?tenantId=${tenantId}&code=${materialTypeCode}&edited=true`;
   };
   export const footer = getCommonApplyFooter({
     editButton: {
@@ -81,13 +81,13 @@ const tenantId = getQueryArg(window.location.href, "tenantId");
   });
   export const renderService = () => {
     return getCommonContainer({
-        code: getLabelWithValue(
-        { labelKey: "STORE_MATERIAL_TYPE_CODE" },
-        { jsonPath: "materialTypes[0].code" }
-      ),
       materialTypeName: getLabelWithValue(
         { labelKey: "STORE_MATERIAL_TYPE_NAME" },
         { jsonPath: "materialTypes[0].name" }
+      ),
+        code: getLabelWithValue(
+        { labelKey: "STORE_MATERIAL_TYPE_CODE" },
+        { jsonPath: "materialTypes[0].code" }
       ),
       description: getLabelWithValue(
         { labelKey: "STORE_MATERIAL_TYPE_DESCRIPTION" },
@@ -106,7 +106,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId");
         required: false,
   
         props: {
-          content: "MATERIAL_TYPE_ACTIVE",
+          content: "STORE_DETAILS_ACTIVE",
           jsonPath: "materialTypes[0].active",
           disabled: true,
           screenName: "view-material-type",

@@ -87,6 +87,12 @@
   border-radius: 4px;
 }
 
+.dropdown-menu {
+  left: unset!important;
+  display: block!important;
+  right: 0;
+}
+
 .report_filters {
   margin-bottom: 8px;
 }

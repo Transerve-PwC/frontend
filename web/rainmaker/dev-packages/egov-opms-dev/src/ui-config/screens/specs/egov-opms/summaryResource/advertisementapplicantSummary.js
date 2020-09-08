@@ -626,6 +626,24 @@ export const detailSummary = getCommonGrayCard({
           }
         }
       }
+    ),
+    withdrawapprovaltaxamount: getLabelWithValue(
+      {
+        labelName: "withdrawapprovaltaxamount",
+        labelKey: "NOC_ADV_WITHDRAWAPPROVALTAXAMOUNT"
+      },
+      {
+        jsonPath: "nocApplicationDetail[0].applicationdetail",
+        callBack: value => {
+          if (value != undefined) {
+            let withdrawapprovaltaxamount = JSON.parse(value).hasOwnProperty('withdrawapprovaltaxamount') ? JSON.parse(value)['withdrawapprovaltaxamount'] : '';
+            //return withdrawapprovalamount > 0 ? withdrawapprovalamount : '';
+            return withdrawapprovaltaxamount;
+          } else {
+            return '';
+          }
+        }
+      }
     )
   })
 });

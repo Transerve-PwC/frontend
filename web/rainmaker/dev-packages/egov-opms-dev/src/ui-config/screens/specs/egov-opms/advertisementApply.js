@@ -203,6 +203,9 @@ export const prepareEditFlow = async (state, dispatch, applicationNumber, tenant
       { key: "tenantId", value: tenantId },
       { key: "applicationNumber", value: applicationNumber }
     ]);
+    console.log('response*********************')
+
+    console.log(response)
     let Refurbishresponse = furnishAdvertisementNocResponse(response);
     dispatch(prepareFinalObject("ADVERTISEMENTNOC", Refurbishresponse));
 

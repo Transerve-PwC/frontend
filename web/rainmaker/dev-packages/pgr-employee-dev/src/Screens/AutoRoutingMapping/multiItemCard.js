@@ -40,6 +40,9 @@ const MultiItemCard = (props) => {
                 }}
                 {...employee}
                 dataSource={empDetails}
+                floatingLabelText={getLocalizedLabel("PGR_AUTOROUTE_MAPPING_EMPLOYEE")}
+                hintText={getLocalizedLabel("PGR_AUTOROUTE_MAPPING_EMPLOYEE_PLACEHOLDER")}
+                errorMessage={getLocalizedLabel("PGR_AUTOROUTE_MAPPING_EMPLOYEE_PLACEHOLDER")}
                 value = {item.employee.label}
                 />
                 </div>

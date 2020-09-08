@@ -4,3 +4,9 @@ div#material-ui-form {
 div#material-ui-ServiceRequestFilterFormForEmployee {
     overflow: visible !important;
 }
+
+@media only screen and (max-width: 768px) {
+    .ack-body, .ack-tail {
+        display: contents;
+        text-align: center !important;
+    }}

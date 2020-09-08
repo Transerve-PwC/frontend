@@ -19,19 +19,21 @@ import "./index.css";
 const state = store.getState();
 import { Link } from "react-router-dom";
 
+import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
+import {convertTime} from "../../../../../ui-utils/commons";
+
+// const convertTime =(time)=> {
+//   // Check correct time format and split into components
+//   //time=time+":00"
+//   time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
   
-const convertTime =(time)=> {
-  // Check correct time format and split into components
-  //time=time+":00"
-  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
-  
-  if (time.length > 1) { // If time format correct
-  time = time.slice(1); // Remove full string match value
-  time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
-  time[0] = +time[0] % 12 || 12; // Adjust hours
-  }
-  return time.join(''); // return adjusted time or original string
-  }
+//   if (time.length > 1) { // If time format correct
+//   time = time.slice(1); // Remove full string match value
+//   time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+//   time[0] = +time[0] % 12 || 12; // Adjust hours
+//   }
+//   return time.join(''); // return adjusted time or original string
+//   }
   
   
 
@@ -231,19 +233,28 @@ const EventDetails =  getCommonGrayCard({
       // }
     }
   ),
-  committiee: getLabelWithValue(
+  // committiee: getLabelWithValue(
+  //   {
+  //     labelName: "Committiee",
+  //     labelKey: "PR_COMMITTEE_LABEL"
+  //   },
+  //   {
+  //     jsonPath: "eventDetails[0].committeeName"
+  //     // callBack: value => {
+  //     //   return value.split(".")[1];
+  //     // }
+  //   }
+  // )
+  committiee:localStorageGet("modulecode")==="SCP"?{}: getLabelWithValue(
     {
       labelName: "Committiee",
       labelKey: "PR_COMMITTEE_LABEL"
     },
     {
       jsonPath: "eventDetails[0].committeeName"
-      // callBack: value => {
-      //   return value.split(".")[1];
-      // }
+      
     }
   )
-
 
 })
 })

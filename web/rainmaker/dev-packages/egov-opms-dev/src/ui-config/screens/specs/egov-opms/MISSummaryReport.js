@@ -34,7 +34,6 @@ import {
     labelKey: "NOC_SUMMERY_REPORT"
   });
   
-  //alert('in update rate')
   const NOCSearchAndResult = {
     uiFramework: "material-ui",
     name: "MISSummaryReport",
@@ -45,7 +44,6 @@ import {
             "pricebookid"
           );
 
-    //  getUpdatePriceBook(action, state, dispatch,pricebookid);
   
     getCategory(action, state, dispatch);
     getSubCategory(action, state, dispatch);

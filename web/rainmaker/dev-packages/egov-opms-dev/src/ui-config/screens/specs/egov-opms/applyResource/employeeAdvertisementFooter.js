@@ -271,7 +271,6 @@ export const footer = getCommonApplyFooter({
     },
     visible: false
   },
-
   nextButton: {
     componentPath: "Button",
     props: {
@@ -338,7 +337,8 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsReject(state, dispatch, "advertisementnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'COMMISSIONER') ? true : false
+    visible: false
+    //checkForRole(roles, 'COMMISSIONER') ? true : false
   },
   reassign: {
     componentPath: "Button",
@@ -410,7 +410,7 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsApprove(state, dispatch, "advertisementnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'COMMISSIONER') ? true : false
+    visible: false//checkForRole(roles, 'COMMISSIONER') ? true : false
   },
   withdrawapprove: {
     componentPath: "Button",

@@ -2,6 +2,7 @@
   background: #d8d8d8;
   padding: 37px 8px;
   text-align: center;
+  overflow-y: auto;
 }
 
 .upload-icon-cont {
@@ -60,4 +61,8 @@
 
 .upload-photo-text {
   width: 80%;
+}
+
+.upload-image-cont img {
+  width: 100% !important;
 }

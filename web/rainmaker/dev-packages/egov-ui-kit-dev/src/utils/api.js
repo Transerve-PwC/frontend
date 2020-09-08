@@ -17,11 +17,9 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.data && error.response.data.location) {
-      window.location = error.response.data.location;
-    } else {
+   
       return Promise.reject(error);
-    }
+    
   }
 );
 

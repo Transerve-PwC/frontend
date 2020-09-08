@@ -56,11 +56,19 @@ export const serachReportPaymentDetailGrid = {
         label: getTextToLocalMappingPaymentDetail("siName"),
         options: {
           filter: true,
+          display: false,
         }
       },
       {
         name: getTextToLocalMappingPaymentDetail("paymentMode"),
         label: getTextToLocalMappingPaymentDetail("paymentMode"),
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: getTextToLocalMappingPaymentDetail("challanStatus"),
+        label: getTextToLocalMappingPaymentDetail("challanStatus"),
         options: {
           filter: true,
         }
@@ -77,18 +85,20 @@ export const serachReportPaymentDetailGrid = {
         label: getTextToLocalMappingPaymentDetail("sector"),
         options: {
           filter: true,
+          display: false,
         }
       },
+
     ],
-   title: getTextToLocalMappingPaymentDetail(
-     "EC_VIEW_PAYMENT_REPORT_TITLE_HEADER" 
-   ),
+    title: getTextToLocalMappingPaymentDetail(
+      "EC_VIEW_PAYMENT_REPORT_TITLE_HEADER"
+    ),
     options: {
       filter: true,
       print: true,
       download: true,
       viewColumns: true,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       disableToolbarSelect: true,
       resizableColumns: false,
@@ -175,6 +185,7 @@ export const searchViewSeizureReport = {
         label: getTextToLocalMappingViewSeizure("sector"),
         options: {
           filter: true,
+          display: false,
         }
       },
       {
@@ -190,10 +201,17 @@ export const searchViewSeizureReport = {
         options: {
           filter: true,
         }
+      },
+      {
+        name: getTextToLocalMappingViewSeizure("paymentStatus"),
+        label: getTextToLocalMappingViewSeizure("paymentStatus"),
+        options: {
+          filter: true,
+        }
       }
     ],
     title: getTextToLocalMappingViewSeizure("EC_VIEW_SEIZURE_REPORT_TITLE_HEADER"),
- 
+
 
     options: {
       filter: true,
@@ -201,7 +219,7 @@ export const searchViewSeizureReport = {
       print: true,
       // responsive: "scrollMaxHeight",
       viewColumns: true,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
@@ -291,15 +309,15 @@ export const serachReportInventoryDetailGrid = {
     title: getTextToLocalMappingInventoryDetail(
       "Inventoy_Report_Header"
     ),
-    
-  
+
+
     options: {
       filter: true,
       download: true,
       print: true,
       // responsive: "scrollMaxHeight",
       viewColumns: true,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],

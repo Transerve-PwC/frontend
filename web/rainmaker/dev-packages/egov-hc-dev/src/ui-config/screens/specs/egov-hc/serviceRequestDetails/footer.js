@@ -3,7 +3,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getapplicationNumber, getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
-import { createServiceRequest } from "../../../../../ui-utils/commons";
+import { createServiceRequest, commonConfig } from "../../../../../ui-utils/commons";
 import { getCommonApplyFooter } from "../../utils";
 import "./index.css";
 import {  handleScreenConfigurationFieldChange as handleField} from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -85,8 +85,14 @@ const callBackForNext = async (state, dispatch) => {
     let flagValidField = true;
 
    
-
-    if(! /^[0-9][0-9]{0,1}$/.test(treeCount))
+    // ^(0?[1-9]|[1-9][0-9])$
+    // ^(\d?[1-9]|[1-9]0)$
+    if(! /^(0?[1-9]|[1-9][0-9])$/.test(treeCount))
+    {
+      validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
+      flagValidField = false;
+    }
+    else if(parseInt(treeCount)===0)
     {
       validationErrorMsg = { labelName: "ERROR", labelKey: "HC_TREE_COUNT_ERROR" };
       flagValidField = false;
@@ -145,11 +151,16 @@ const callBackForNext = async (state, dispatch) => {
 
       if (typeOfService != undefined && locality != undefined )
     {if (activeStep === 1) { 
-      // "custom-containers-nextButtonLabel"
-      // debugger
+      var tenantIdCommonConfig
+      if (getTenantId() != commonConfig.tenantId){
+          tenantIdCommonConfig = JSON.parse(getUserInfo()).permanentCity
+      }
+      else{
+        tenantIdCommonConfig = getTenantId()
+      }
       let status = 'INITIATED'
-      serviceRequest['city']= JSON.parse(getUserInfo()).permanentCity,
-      serviceRequest['tenantId']= getTenantId(),
+      serviceRequest['city']= tenantIdCommonConfig,
+      serviceRequest['tenantId']= tenantIdCommonConfig,
       serviceRequest['media'] = media,
       // serviceRequest['address'] = 'hardcoded value',
       serviceRequest['isEditState'] = 0
@@ -280,7 +291,6 @@ export const footer = getCommonApplyFooter({
 
 
 export const validatestepform = (state, dispatch, isFormValid, hasFieldToaster) => {
-
   if(window.NodeList && !NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach;
     }

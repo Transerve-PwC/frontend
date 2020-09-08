@@ -284,19 +284,176 @@ const ValidateFormData = async (state, dispatch, apply) => {
   }
 
 }
+
 const otherFieldDisabled = (dispatch, isRequired, isdisabled) => {
+  let screenKey = "apply";
+  if (!isRequired) {
+    dispatch(
+      handleField(
+        screenKey,
+        "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+        "props.value", ""));
+    dispatch(
+      handleField(
+        screenKey,
+        "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+        "props.error",
+        false
+      )
+    );
+    dispatch(
+      handleField(
+        screenKey,
+        "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+        "isFieldValid",
+        true
+      )
+    );
+    dispatch(
+      handleField(
+        screenKey,
+        "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+        "props.helperText",
+        ""
+      )
+    );
+    //screenConfiguration.screenConfig.apply.components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others.
+  }
   dispatch(
     handleField(
-      "apply",
+      screenKey,
       "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
       "props.required", isRequired));
   //disabled
   dispatch(
     handleField(
-      "apply",
+      screenKey,
       "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
       "props.disabled", isdisabled));
 }
+
+const clearFields = (dispatch) => {
+  let screenKey = "apply";
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Remark",
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Remark",
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Remark",
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Remark",
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+      "props.helperText",
+      ""
+    )
+  );
+};
 
 const AddArticletoGrid = async (state, dispatch) => {
   let obj = []
@@ -377,7 +534,7 @@ const articleDetailData = () => {
         },
         sourceJsonPath: "applyScreenMdmsData.egec.ViolationItemList",
         jsonPath: "articleSeizedDetails.ItemName",
-        optionValue:"label",
+        optionValue: "label",
         labelsFromLocalisation: true,
         // setDataInField: true,
         // suggestions: [],
@@ -390,59 +547,20 @@ const articleDetailData = () => {
       beforeFieldChange: (action, state, dispatch) => {
         try {
           dispatch(prepareFinalObject("articleSeizedDetails", {}));
+
           let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
           if (action.value === 'Other' || encroachmentType === 'Seizure of Vehicles') {
             otherFieldDisabled(dispatch, true, false);
           } else {
             otherFieldDisabled(dispatch, false, true);
           }
+          clearFields(dispatch);
+
         } catch (e) {
           console.log(e);
         }
       }
     },
-    // ArticleDetils: {
-    //   ...getSelectField({
-    //     label: {
-    //       labelName: "Item Name / Vehicle Type",
-    //       labelKey: "EC_SEIZED_ITEM_NAME_VEHICLE_TYPE_LIST_LABEL"
-    //     },
-    //     optionLabel: "name",
-    //     optionValue: "name",
-    //     placeholder: {
-    //       labelName: "Select Article / Item",
-    //       labelKey: "EC_SELECT_ITEM_NAME_LIST_PLACEHOLDER"
-    //     },
-    //     sourceJsonPath: "applyScreenMdmsData.egec.ViolationItemList",
-    //     jsonPath: "articleSeizedDetails.ItemName",
-    //     required: true,
-    //     //  pattern: getPattern("VillageName"),
-
-    //     errorMessage: "EC_ERR_SEIZED_ITEM_NAME_VEHICLE_TYPE_LIST_DEFAULT_INPUT_FIELD_MSG",
-    //     gridDefination: {
-    //       xs: 12,
-    //       sm: 12,
-    //       md: 6
-    //     },
-    //     props: {
-    //       className: "applicant-details-error"
-    //     },
-    //     beforeFieldChange: (action, state, dispatch) => {
-    //       try {
-    //         dispatch(prepareFinalObject("articleSeizedDetails", {}));
-    //         let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
-    //         if (action.value === 'Other' || encroachmentType === 'Seizure of Vehicles') {
-    //           otherFieldDisabled(dispatch, true, false);
-    //         } else {
-    //           otherFieldDisabled(dispatch, false, true);
-    //         }
-    //       } catch (e) {
-    //         console.log(e);
-    //       }
-    //     }
-
-    //   })
-    // },
 
     Others: {
       ...getTextField({
@@ -540,8 +658,13 @@ const articleDetailData = () => {
           md: 6
         },
         props: {
-          className: "applicant-details-error"
-        }
+          className: "textfield-enterable-selection",
+          multiline: true,
+          rows: "4"
+        },
+        // props: {
+        //   className: "applicant-details-error"
+        // }
       })
     }
 

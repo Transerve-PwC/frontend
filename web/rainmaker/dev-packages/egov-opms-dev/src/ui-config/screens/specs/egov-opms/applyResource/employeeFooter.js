@@ -273,7 +273,6 @@ export const footer = getCommonApplyFooter({
     },
     visible: false
   },
-
   nextButton: {
     componentPath: "Button",
     props: {
@@ -303,8 +302,7 @@ export const footer = getCommonApplyFooter({
       action: "condition",
       callBack: (state, dispatch) => showHideAdhocPopupopms(state, dispatch, "search-preview", "nextButton")
     },
-    visible: checkForRole(roles, 'SI') ? true : false
-
+    visible: false //checkForRole(roles, 'SI') ? true : false
   },
   reject: {
     componentPath: "Button",
@@ -335,12 +333,10 @@ export const footer = getCommonApplyFooter({
       action: "condition",
 
       callBack: (state, dispatch) => {
-
-
         showHideAdhocPopupopmsReject(state, dispatch, "search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
+    visible: false //checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
   },
   reassign: {
     componentPath: "Button",
@@ -376,7 +372,7 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsReassign(state, dispatch, "search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? true : checkForRole(roles, 'MOH') ? true : false
+    visible: false //checkForRole(roles, 'SI') ? true : checkForRole(roles, 'MOH') ? true : false
   },
   approve: {
     componentPath: "Button",
@@ -412,9 +408,8 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsApprove(state, dispatch, "search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
-  }
-  ,
+    visible: false //checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
+  },
   submitButton: {
     componentPath: "Button",
     props: {

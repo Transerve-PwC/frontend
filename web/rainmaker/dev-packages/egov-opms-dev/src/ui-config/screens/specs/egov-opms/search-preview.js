@@ -13,7 +13,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   localStorageGet, localStorageSet, setapplicationNumber, getOPMSTenantId, setapplicationType,
-  getAccessToken, getLocale, getUserInfo, getapplicationType, getapplicationNumber
+  getAccessToken, getLocale, getUserInfo, getapplicationType, getapplicationNumber, setOPMSTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
 import {
   getFileUrlFromAPI,
@@ -43,9 +43,10 @@ import { immunizationSummary } from "./summaryResource/immunizationSummary";
 import { taskStatusSummary } from "./summaryResource/taskStatusSummary";
 import {
   getSearchResultsView, getSearchResultsForNocCretificate,
-  getSearchResultsForNocCretificateDownload, preparepopupDocumentsUploadData, prepareDocumentsUploadData
+  getSearchResultsForNocCretificateDownload, preparepopupDocumentsUploadData, prepareDocumentsUploadData, checkVisibility, setCurrentApplicationProcessInstance
 } from "../../../../ui-utils/commons";
 import { citizenFooter } from "./searchResource/citizenFooter";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 
 let roles = JSON.parse(getUserInfo()).roles
@@ -296,26 +297,29 @@ const setSearchResponse = async (state, dispatch, action, applicationNumber, ten
     { key: "tenantId", value: tenantId },
     { key: "applicationNumber", value: applicationNumber }
   ]);
-
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
-  dispatch(prepareFinalObject("nocApplicationReceiptDetail", get(response, "nocApplicationDetail", [])));
-  dispatch(prepareFinalObject("nocApplicationCertificateDetail", get(response, "nocApplicationDetail", [])));
-
-  dispatch(prepareFinalObject("PetNoc[0].PetNocDetails.Approve.badgeNumber", JSON.parse(response.nocApplicationDetail[0].applicationdetail).badgeNumber));
-
-  let nocStatus = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationstatus", {});
-  localStorageSet("app_noc_status", nocStatus);
-
-  HideshowEdit(action, nocStatus);
-
-
-  prepareDocumentsView(state, dispatch);
-
-  if (checkForRole(roles, 'CITIZEN')) {
-
-    setSearchResponseForNocCretificate(state, dispatch, action, applicationNumber, tenantId);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
   }
+  else {
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
+    dispatch(prepareFinalObject("nocApplicationReceiptDetail", get(response, "nocApplicationDetail", [])));
+    dispatch(prepareFinalObject("nocApplicationCertificateDetail", get(response, "nocApplicationDetail", [])));
 
+    dispatch(prepareFinalObject("PetNoc[0].PetNocDetails.Approve.badgeNumber", JSON.parse(response.nocApplicationDetail[0].applicationdetail).badgeNumber));
+
+    let nocStatus = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationstatus", {});
+    localStorageSet("app_noc_status", nocStatus);
+    await setCurrentApplicationProcessInstance(state);
+    HideshowEdit(state, action, nocStatus);
+
+
+    prepareDocumentsView(state, dispatch);
+
+    if (checkForRole(roles, 'CITIZEN')) {
+
+      setSearchResponseForNocCretificate(state, dispatch, action, applicationNumber, tenantId);
+    }
+  }
 
 };
 
@@ -323,7 +327,7 @@ let httpLinkPET;
 let httpLinkPET_RECEIPT;
 
 const HideshowEdit
-  = (action, nocStatus) => {
+  = (state, action, nocStatus) => {
 
     let showEdit = false;
     if (nocStatus === "REASSIGN" || nocStatus === "DRAFT") {
@@ -382,6 +386,13 @@ const HideshowEdit
           : false
         : false
     );
+
+    set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
+    checkVisibility(state, "REJECTED", "reject", action, "screenConfig.components.div.children.footer.children.reject.visible", null)
+    checkVisibility(state, "APPROVED", "approve", action, "screenConfig.components.div.children.footer.children.approve.visible", null)
+    checkVisibility(state, "REASSIGN,REASSIGNTOSI", "reassign", action, "screenConfig.components.div.children.footer.children.reassign.visible", null)
+    checkVisibility(state, "FORWARD", "nextButton", action, "screenConfig.components.div.children.footer.children.nextButton.visible", null)
+
 
   }
 const setSearchResponseForNocCretificate = async (state, dispatch, action, applicationNumber, tenantId) => {
@@ -523,6 +534,18 @@ const screenConfig = {
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     setapplicationNumber(applicationNumber);
     const tenantId = getQueryArg(window.location.href, "tenantId");
+    setOPMSTenantId(tenantId);
+    if (JSON.parse(getUserInfo()).type === "EMPLOYEE") {
+      set(state,
+        "screenConfiguration.preparedFinalObject.documentsUploadRedux[0]",
+        ""
+      )
+      set(state.screenConfiguration.preparedFinalObject, "PetNoc[0].PetNocDetails.additionalDetail.remarks", "");
+      set(state.screenConfiguration.preparedFinalObject, "PetNoc[0].PetNocDetails.Reaasign.remarks", "");
+      set(state.screenConfiguration.preparedFinalObject, "PetNoc[0].PetNocDetails.Reject.remarks", "");
+      set(state.screenConfiguration.preparedFinalObject, "PetNoc[0].PetNocDetails.Approve.remarks", "");
+    }
+
     dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
     searchBill(dispatch, applicationNumber, tenantId);
     setSearchResponse(state, dispatch, action, applicationNumber, tenantId);

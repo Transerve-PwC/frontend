@@ -152,6 +152,7 @@ const searchResults = async (action, state, dispatch, applicationNo) => {
 };
 
 const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
+  dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   //Search details for given application Number
   if (applicationNumber) {
     !getQueryArg(window.location.href, "edited") &&
@@ -363,6 +364,9 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
         visible: licenseNumber? true : false,
         props: {
           number: licenseNumber,
+          style: {
+            "margin-top": "5px"
+           }
         }
       }
     })

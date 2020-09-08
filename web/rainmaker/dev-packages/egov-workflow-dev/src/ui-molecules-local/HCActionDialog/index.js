@@ -1,37 +1,32 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Grid, Typography, Button } from "@material-ui/core";
-import { Container } from "egov-ui-framework/ui-atoms";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { httpRequest } from "egov-ui-framework/ui-utils/api";
-
-import { Item } from "egov-ui-framework/ui-atoms";
-import set from "lodash/set";
-import isEmpty from "lodash/isEmpty";
-import get from "lodash/get";
-import store from "../../ui-redux/store";
-import ImageUpload from "egov-ui-kit/common/common/ImageUpload";
-import {
-  LabelContainer,
-  TextFieldContainer,
-} from "egov-ui-framework/ui-containers";
-import { Dialog, DialogContent } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Button, Dialog, DialogContent, Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+import { Container } from "egov-ui-framework/ui-atoms";
+import { LabelContainer, TextFieldContainer } from "egov-ui-framework/ui-containers";
 import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { httpRequest } from "egov-ui-framework/ui-utils/api";
+import ImageUpload from "egov-ui-kit/common/common/ImageUpload";
+import { getTenantId ,getHCRoles, getUserInfo, getapplicationNumber } from "egov-ui-kit/utils/localStorageUtils";
+import get from "lodash/get";
+import React from "react";
+import store from "../../ui-redux/store";
+
+// import Autocomplete from '@material-ui/lab';
+// import TextField from '@material-ui/core';
+
 import "./index.css";
-import {
-  prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 const styles = theme => ({
   root: {
     marginTop: 24,
     width: "100%"
   }
 });
-
+export const commonConfigHcActionDialog = {
+  
+  tenantId: "ch.chandigarh"
+};
 const fieldConfig = {
   approverName: {
     label: {
@@ -51,7 +46,8 @@ const fieldConfig = {
     placeholder: {
       labelName: "Enter Comments",
       labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
-    }
+    },
+    required:true
   },
   roleName: {
     label: {
@@ -61,7 +57,8 @@ const fieldConfig = {
     placeholder: {
       labelName: "Select Role",
       labelKey: "WF_ROLE_PLACEHOLDER"
-    }
+    },
+    required:true
   },
 };
  
@@ -73,16 +70,37 @@ class HCActionDialog extends React.Component {
     allEmployeeList:[],
     allEmployeeListOfSDO:[],
     allEmployeeListOfJE:[],
+    allRoleListOfJE:[],
+    allRoleListOfSDO:[],
+    allEmployeeListOfCompletedStage:[],
+    allRoleListOfApproveStage:[],
+    allRoleListrequestClarification:[],
+
+    
     handleChange: this.props.handleFieldChange,
     path: this.props.dataPath,
     
     
   };
-  
+    
   componentDidMount(){
-  this.getEmployeeListSDO("SDO")
-  this.getEmployeeListJE("JE")
+    
+    
+  
+  var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData"))
+   this.getProcessInstanceDataForServiceRequest()
+ 
+  // var finalRequestClarificationRoles = this.getCommonValuesFromHCRoles(requestClarificationRoleArrayFromProcessInstance, HCRoles)
+  
+  var HCRoles = [JSON.parse(getHCRoles())]
+  this.setAllRoleListAsPerAction(businessServiceData,['VERIFIED AND FORWARDED TO SDO', 'EDITED AT VERIFIED AND FORWARDED TO SDO'], 'FORWARD FOR INSPECTION', HCRoles)
+  this.setAllRoleListAsPerAction(businessServiceData, ['INSPECTION', 'EDITED AT INSPECTION'], 'INSPECT', HCRoles)
+  this.setAllRoleListAsPerAction(businessServiceData, ['APPROVED'], 'COMPLETE', HCRoles)
 }
+
+
+  
+
   getButtonLabelName = label => {
     
      switch (label) {
@@ -107,49 +125,165 @@ class HCActionDialog extends React.Component {
         return label;
     }
   };
-  
-  getEmployeeListJE = async (rolename)=>  {
-    // alert("inside getEmployeeListSDO")
-    let employeeListData = [];
-    // console.log("^^^^^^^^^^^^^^^^^^savita inside getEmployeeList")
-    const tenantId = getTenantId();
+ 
+  getProcessInstanceDataForServiceRequest = async ()=>  {
+
+    var tenantIdCommonConfig
+    
+      if (getTenantId() != commonConfigHcActionDialog.tenantId){
+          tenantIdCommonConfig = JSON.parse(getUserInfo()).permanentCity
+      }
+      else{
+        tenantIdCommonConfig = getTenantId()
+      }
     const queryObj = [
       {
-        key: "roles",
-        value: rolename
+        key: "businessIds",
+        value: getapplicationNumber()
       },
       {
         key: "tenantId",
-        value: tenantId
-      }
+        value: tenantIdCommonConfig
+      },
+      {
+        key: "history",
+        value: true
+      },
     ];
-    const payload = await httpRequest(
+    var payload = await httpRequest(
       "post",
-      "/egov-hrms/employees/_search",
+      "/egov-workflow-v2/egov-wf/process/_search",
       "",
       queryObj
     );
-    // debugger;
-    
-
-    var dropdownEmployeeListJE = []
-    dropdownEmployeeListJE=
+      //sorting process instance data by time
+    var SortedProcessInstanceBylastModifiedTimeOfEachObject = []
+    var RoleListProcessInstance = []
+    SortedProcessInstanceBylastModifiedTimeOfEachObject=
       payload &&
-      payload.Employees.map((item, index) => {
-        const name = get(item, "user.name")     
-        return {
-        value: item.id,
-        label: name
-      };
-      });
-      this.setState({ allEmployeeListOfJE:dropdownEmployeeListJE  });
-      // console.log("RRRRRrr",employeeListData)
-       
+      payload.ProcessInstances.sort(function(a, b) {
+        var valueA, valueB;        
+
+        valueA = a.auditDetails.lastModifiedTime; 
+        valueB = b.auditDetails.lastModifiedTime;
+        if (valueA < valueB) {
+            return -1;
+        }
+        else if (valueA > valueB) {
+            return 1;
+        }
+        return 0;
+    })
+      
+    RoleListProcessInstance = SortedProcessInstanceBylastModifiedTimeOfEachObject.map(item => item.assigner.roles)
+    var RoleListSingleArray = []
+    RoleListProcessInstance.forEach(RoleObject => {
+      if(RoleObject.length>1){
+        RoleObject.forEach(insideRoleObject => {
+          RoleListSingleArray.push(insideRoleObject.code)
+        });
+      }
+      else if(RoleObject.length===1){
+        RoleListSingleArray.push(RoleObject[0].code)
+      }
+    });
+    // console.log("###@$$#@#$@#$@#$23", RoleListSingleArray)
+    // var finalRoleListSingleArray = RoleListSingleArray.map(role => role.code);
+    var HCRoles = [JSON.parse(getHCRoles())]
+    var finalRequestClarificationRoles = this.getCommonValuesFromHCRoles(RoleListSingleArray, HCRoles)
+    var reversedfinalRequestClarificationRoles = finalRequestClarificationRoles.reverse()
+    var finalMappedValues = reversedfinalRequestClarificationRoles.map((item, index) => {
+      // const name = get(item, "user.name")     
+      return {
+      value: item.code,
+      label: item.name
+    };
+    });
+    this.setState({allRoleListrequestClarification:finalMappedValues})
+    // return finalRoleListSingleArray
+    
   }
-  getEmployeeListSDO = async (rolename)=>  {
-    // alert("inside getEmployeeListSDO")
-    let employeeListData = [];
-    // console.log("^^^^^^^^^^^^^^^^^^savita inside getEmployeeList")
+  
+  getCommonValuesFromHCRoles = (roleArray, HCRoles)=> {
+    var commonRoles =[]
+    roleArray.map(function (element) {
+       HCRoles[0].map(function (elementHCRole) {
+        if(elementHCRole.code === element)
+
+        {
+          if (!commonRoles.includes(elementHCRole))
+         { 
+           commonRoles.push(elementHCRole)
+         }
+       }
+       })
+      });
+
+  //   roleArray.forEach(element => {
+  //     HCRoles[0].forEach(elementHCRole => {
+  //      if(elementHCRole.code === element)
+
+  //      {
+  //        if (!commonRoles.includes(elementHCRole))
+  //       { commonRoles.push(elementHCRole)
+  //       }
+  //     }
+  //    });
+  //  });
+  //   var commonRoles = HCRoles[0].filter(function (element) {
+  //     if (roleArray.includes(element.code))
+  //     return element 
+  // });
+  return commonRoles
+  }
+  parseJSONBasedOnActionToReturnRoleList =  (businessServiceData, applicationStatusArray, actionToBeChecked)=>  {
+    
+    // console.log(businessServiceData)
+      var inspectionStates = businessServiceData[0].states.filter(function (state) {
+        if (applicationStatusArray.includes(state.applicationStatus) )
+        return state 
+    });
+    var allRoleListInspection = []
+    var allActionsListInspection = []
+    
+    allActionsListInspection = inspectionStates.map(element => element.actions )
+  //   inspectionStates.forEach(element => {
+  //     allActionsListInspection.push(element.actions)
+  //  });
+   var roleList = []
+   allActionsListInspection.map(function (ActionsElement) {
+    ActionsElement.map(function (eachActionsElement) {
+      if (eachActionsElement.action == actionToBeChecked){
+        roleList = eachActionsElement.roles
+        allRoleListInspection.push(...roleList)
+      }
+     })
+    });
+  //  for (var actions = 0; actions< allActionsListInspection.length; actions++ ) //it will give length 2
+  //  {
+  //    for (var singleAction = 0; singleAction< allActionsListInspection[actions].length; singleAction++ ){ //it will give length 3
+  //      if (allActionsListInspection[actions][singleAction].action == actionToBeChecked){
+  //         roleList = allActionsListInspection[actions][singleAction].roles
+  //         allRoleListInspection.push(...roleList)
+  //         roleList = []
+  //      }
+  //    }
+  //  }
+
+    var uniqueRoleList =  allRoleListInspection.filter((a, b) => allRoleListInspection.indexOf(a) === b)
+   return uniqueRoleList
+ 
+  } 
+  setAllRoleListAsPerAction=  (businessServiceData,applicationStatusList,action, HCRoles)=>  {
+    var roleArray = this.parseJSONBasedOnActionToReturnRoleList(businessServiceData,applicationStatusList,action)
+    var commonRoleList = this.getCommonValuesFromHCRoles(roleArray, HCRoles);
+    if(action === "COMPLETE"){
+      this.setState({ allRoleListOfApproveStage : commonRoleList  });
+    }
+    var roleListForAction = commonRoleList.map(role => role.code);
+    this.setEmployeeListInStateAsPerAction(roleListForAction, action)
+  }
+  setEmployeeListInStateAsPerAction = async (rolename, roleAction)=>  {
     const tenantId = getTenantId();
     const queryObj = [
       {
@@ -170,8 +304,8 @@ class HCActionDialog extends React.Component {
     // debugger;
     
 
-    var dropdownEmployeeListSDO = []
-    dropdownEmployeeListSDO=
+    var dropdownEmployeeList = []
+    dropdownEmployeeList=
       payload &&
       payload.Employees.map((item, index) => {
         const name = get(item, "user.name")     
@@ -180,13 +314,19 @@ class HCActionDialog extends React.Component {
         label: name
       };
       });
-      this.setState({ allEmployeeListOfSDO:dropdownEmployeeListSDO  });
-      // console.log("RRRRRrr",employeeListData)
-       
+
+      if (roleAction === 'FORWARD FOR INSPECTION')
+     { this.setState({ allEmployeeListOfSDO :dropdownEmployeeList  });
+    }
+    if (roleAction === 'COMPLETE')
+    { this.setState({ allEmployeeListOfCompletedStage :dropdownEmployeeList  });
+   }
+     else if (roleAction === 'INSPECT')
+     { 
+       this.setState({ allEmployeeListOfJE :dropdownEmployeeList  });}
   }
   getEmployeeList = async (rolename)=>  {
-    let employeeListData = [];
-    // console.log("^^^^^^^^^^^^^^^^^^savita inside getEmployeeList")
+
     const tenantId = getTenantId();
     const queryObj = [
       {
@@ -221,11 +361,6 @@ class HCActionDialog extends React.Component {
       // console.log("RRRRRrr",employeeListData)
        
   } 
-// componentDidMount(){
-//   // 
-// }
-
- 
   render() {
     
     let {
@@ -247,14 +382,27 @@ class HCActionDialog extends React.Component {
       
       // dispatch
     } = dialogData;
+
+    
+    const defaultProps = {
+      options: this.state.allEmployeeListOfSDO,
+      getOptionLabel: (option) => option.label,
+    };
     const { getButtonLabelName } = this;
-    const {getEmployeeList}=this;
+    
     let{state} = this.props
- 
+    var allRoleListApproval = []
+    
+    this.state.allRoleListOfApproveStage.map((item) => {
+      allRoleListApproval.push({value: item.code,
+      label:item.name
+      })
+  
+    });
     try{
     let servicerequestmedia = get(state, "form.workflow.files.wfDocuments");
     let media = []
-  
+      
 
     servicerequestmedia.map((item, index) => {
       media.push({fileName: item.file.name || "document",
@@ -263,13 +411,12 @@ class HCActionDialog extends React.Component {
       })
   
     });
-
-
+    
     store.dispatch(prepareFinalObject("services[0].wfDocuments",media ));
     }
     catch(e){
       // alert("$$$$$")
-      console.log("error initially")
+      // console.log("error initially")
     }
     let fullscreen = false;
     if (window.innerWidth <= 768) {
@@ -283,6 +430,7 @@ class HCActionDialog extends React.Component {
         onClose={onClose}
         maxWidth={false}
         // style={{zIndex:2000}}
+        style={{top:"10%"}}
       >
         <DialogContent
           children={
@@ -297,7 +445,8 @@ class HCActionDialog extends React.Component {
                   <Grid
                     style={{
                       alignItems: "center",
-                      display: "flex"
+                      display: "flex",
+                      maxWidth: "80%"
                     }}
                     item
                     sm={10}
@@ -322,8 +471,35 @@ class HCActionDialog extends React.Component {
                     <CloseIcon />
                   </Grid>
                     
-                      {/* in all buttons except VERIFY AND FORWARD TO SDO,FORWARD FOR INSPECTION, Inspect, Complete, Reject,a role list need to be shown which is mandatory to be selected, so below code is done for that & mandatory code is done in workflow container*/}
-                  { ( buttonLabel==="REQUEST CLARIFICATION" || buttonLabel==="VERIFY AND FORWARD"  ) &&  showEmployeeList && (
+                      {/* mandatory role  list*/}
+                      { ( buttonLabel==="REQUEST CLARIFICATION") &&  showEmployeeList && (
+                    <Grid
+                      item
+                      sm="12"
+                      style={{
+                        marginTop: 16
+                      }}
+                    >
+                      
+                      <TextFieldContainer
+                        select={true}
+                        style={{ marginRight: "15px", width: "100%" }}
+                        label={fieldConfig.roleName.label}
+                        placeholder={fieldConfig.roleName.placeholder}
+                        data={this.state.allRoleListrequestClarification}
+                        
+                        optionValue="value"
+                        optionLabel="label"
+                        // value = {this.state.allRoleListrequestClarification[0].value}
+                        hasLocalization={false}
+                        onChange={e => { handleFieldChange(`${dataPath}.roleList`,[e.target.value]); handleFieldChange(`${dataPath}.assignee`,[]);this.getEmployeeList(e.target.value) }}
+                      
+                      // onChange={this.props.onChange; this.handleChange}
+                        jsonPath={`${dataPath}.roleList[0]`}
+                      />
+                    </Grid>
+                  )}
+                  { ( buttonLabel==="VERIFY AND FORWARD"  ) &&  showEmployeeList && (
                     <Grid
                       item
                       sm="12"
@@ -347,7 +523,9 @@ class HCActionDialog extends React.Component {
                       />
                     </Grid>
                   )}
-                  {/* in all buttons except VERIFY AND FORWARD TO SDO, FORWARD FOR INSPECTION, Inspect, Complete, Reject,an assignee list need to be shown which is not mandatory to be selected, so below code is done for that */}
+
+
+                  {/* non mandatory assignee*/}
                   {(buttonLabel==="REQUEST CLARIFICATION" || buttonLabel==="VERIFY AND FORWARD") &&  showEmployeeList && (
                     <Grid
                       item
@@ -373,7 +551,64 @@ class HCActionDialog extends React.Component {
                     </Grid>
                   
                   )}
-                {/* in button VERIFY AND FORWARD TO SDO, Inspect, Complete, Reject,only an assignee list need to be shown which is not mandatory to be selected, so below code is done for that */}
+
+
+                   {/* non mandatory role list */}
+
+                  { ( buttonLabel==="APPROVE"  ) &&  showEmployeeList && (
+                    <Grid
+                      item
+                      sm="12"
+                      style={{
+                        marginTop: 16
+                      }}
+                    >
+                      <TextFieldContainer
+                        select={true}
+                        style={{ marginRight: "15px", width: "100%" }}
+                        label={fieldConfig.roleName.label}
+                        placeholder={fieldConfig.roleName.placeholder}
+                        data={allRoleListApproval}
+                        optionValue="value"
+                        optionLabel="label"
+                        hasLocalization={false}
+                        onChange={e => { handleFieldChange(`${dataPath}.roleList`,[e.target.value]); handleFieldChange(`${dataPath}.assignee`,[]);this.getEmployeeList(e.target.value) }}
+                      
+                      // onChange={this.props.onChange; this.handleChange}
+                        jsonPath={`${dataPath}.roleList[0]`}
+                      />
+                    </Grid>
+                  )}
+
+                  {/* non mandatory assignee*/}
+                  {(buttonLabel==="APPROVE") &&  showEmployeeList && (
+                    <Grid
+                      item
+                      sm="12"
+                      style={{
+                        marginTop: 16
+                      }}
+                    >
+                      <TextFieldContainer
+                        select={true}
+                        style={{ marginRight: "15px", width: "100%" }}
+                        label={fieldConfig.approverName.label}
+                        placeholder={fieldConfig.approverName.placeholder}
+                        data={this.state.allEmployeeList}
+                        optionValue="value"
+                        optionLabel="label"
+                        hasLocalization={false}
+                        //onChange={e => this.onEmployeeClick(e)}
+                        onChange={e =>handleFieldChange(`${dataPath}.assignee`,[e.target.value])}
+                        jsonPath={`${dataPath}.assignee[0]`}
+                        // jsonPath={`${dataPath}.isRoleSpecific`}
+                      />
+                    </Grid>
+                  
+                  )}
+
+
+                {/* non mandatory assignee list */}
 
                 {(buttonLabel==="FORWARD FOR INSPECTION") &&  showEmployeeList && (
                     <Grid
@@ -392,19 +627,15 @@ class HCActionDialog extends React.Component {
                          optionValue="value"
                         optionLabel="label"
                         hasLocalization={false}
-                        // onClose={handleFieldChange(`${dataPath}.assignee`,[""])}
-                        //onChange={e => this.onEmployeeClick(e)}
                         onChange={e =>{handleFieldChange(`${dataPath}.assignee`,[e.target.value])}}
                         jsonPath={`${dataPath}.assignee[0]`}
-                        // jsonPath={`${dataPath}.isRoleSpecific`}
                       />
                     </Grid>)}
                   
-                    
-                  {/* non mandatory assignee list of SDO*/}
-                  {(buttonLabel==="VERIFY AND FORWARD TO SDO") &&  showEmployeeList && (
-                    <Grid
-                      item
+
+                  {/* non mandatory role list of SDO
+                    {(buttonLabel==="VERIFY AND FORWARD TO SDO") &&  showEmployeeList && (
+                    <Grid item
                       sm="12"
                       style={{
                         marginTop: 16
@@ -415,22 +646,50 @@ class HCActionDialog extends React.Component {
                         style={{ marginRight: "15px", width: "100%" }}
                         label={fieldConfig.approverName.label}
                         placeholder={fieldConfig.approverName.placeholder}
+                        data={this.state.allRoleListOfJE}
+                         optionValue="value"
+                        optionLabel="label"
+                        hasLocalization={false}
+                        onChange={e => { handleFieldChange(`${dataPath}.roleList`,[e.target.value]); handleFieldChange(`${dataPath}.assignee`,[]);this.getEmployeeList(e.target.value) }}
+                        jsonPath={`${dataPath}.roleList[0]`}
+                      />
+                    </Grid>)} */}
+                    
+                  {/* non mandatory assignee list of SDO*/}
+                  {(buttonLabel==="VERIFY AND FORWARD TO SDO") &&  showEmployeeList && (
+                    <Grid
+                      item
+                      sm="12"
+                      style={{
+                        marginTop: 16
+                      }}
+                    >
+                      {/* <div style={{ width: 300 }}>
+                     <Autocomplete
+                                {...defaultProps}
+                                id="select-on-focus"
+                                selectOnFocus
+                                renderInput={(params) => <TextField {...params} label="selectOnFocus" margin="normal" />}
+                        />
+                      </div> */}
+                      <TextFieldContainer
+                        select={true}
+                        style={{ marginRight: "15px", width: "100%" }}
+                        label={fieldConfig.approverName.label}
+                        placeholder={fieldConfig.approverName.placeholder}
                         data={this.state.allEmployeeListOfSDO}
                          optionValue="value"
                         optionLabel="label"
                         hasLocalization={false}
-                        // onClose={handleFieldChange(`${dataPath}.assignee`,[""])}
-                        //onChange={e => this.onEmployeeClick(e)}
                         onChange={e =>{handleFieldChange(`${dataPath}.assignee`,[e.target.value])}}
                         jsonPath={`${dataPath}.assignee[0]`}
-                        // jsonPath={`${dataPath}.isRoleSpecific`}
                       />
                     </Grid>)}
                 
                 
                 {/* code for comments is just here not anywhere else, after this, button code starts */}
                     <Grid item sm="12">
-                    <TextFieldContainer
+                    {/* <TextFieldContainer
                     style={{ marginRight: "15px", width: "100%" }}
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
@@ -439,7 +698,9 @@ class HCActionDialog extends React.Component {
                       }
                       jsonPath={`${dataPath}.comment`}
                       placeholder={fieldConfig.comments.placeholder}
-                    />
+                    /> */}
+                       <label className="commentsLabel">{fieldConfig.comments.label.labelName} *</label>
+                    <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}  maxLength = {250}/>
                   </Grid>
                     
                   {/*button and image code starts */}
@@ -497,7 +758,8 @@ class HCActionDialog extends React.Component {
                         color={"primary"}
                         style={{
                           minWidth: "200px",
-                          height: "48px"
+                          height: "48px",
+                          marginBottom: "8px",
                         }}
                         className="bottom-button"
                         onClick={() =>
@@ -559,7 +821,8 @@ class HCActionDialog extends React.Component {
                         color={"primary"}
                         style={{
                           minWidth: "200px",
-                          height: "48px"
+                          height: "48px",
+                          marginBottom: "8px",
                         }}
                         className="bottom-button"
                         onClick={() =>

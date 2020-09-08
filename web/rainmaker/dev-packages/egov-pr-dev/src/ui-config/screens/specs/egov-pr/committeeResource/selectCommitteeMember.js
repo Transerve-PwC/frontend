@@ -116,7 +116,7 @@ const GetEmployees = async (action, state, dispatch,deptvalue) => {
 				},  
 			  required: false,
 			  pattern: getPattern("Name"),
-			  errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+			  errorMessage: "PR_EMPLOYEE_NAME_INVALID",
 			  jsonPath: "CreateInvite.employeename",
 			})
 		  },

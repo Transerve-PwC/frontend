@@ -1,4 +1,4 @@
-import Grid from "@material-ui/core/Grid";
+import {Grid,Button} from "@material-ui/core";
 import Icon from "@material-ui/core/Icon";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -237,7 +237,7 @@ class DocumentList extends Component {
     return (
       <Grid container={true}>
         <Grid item={true} xs={2} sm={1} className={classes.iconDiv}>
-          {documentsUploadRedux[key] && documentsUploadRedux[key].documents ? (
+          {documentsUploadRedux[key] && documentsUploadRedux[key].documents ||  card.url.length>0? (
             <div className={classes.documentSuccess}>
               <Icon>
                 <i class="material-icons">done</i>
@@ -263,7 +263,7 @@ class DocumentList extends Component {
           />
           {card.required && requiredIcon}
         </Grid>
-        <Grid item={true} xs={12} sm={6} md={4}>
+        {/* <Grid item={true} xs={12} sm={6} md={4}>
           {card.dropdown && (
             <TextFieldContainer
               select={true}
@@ -277,6 +277,26 @@ class DocumentList extends Component {
               jsonPath={jsonPath}
             />
           )}
+        </Grid> */}
+        <Grid
+          item={true}
+          xs={12}
+          sm={12}
+          md={3}
+          className={classes.fileUploadDiv}
+        >
+           {
+               card.url.length>0 &&(
+                <Button href={card.url} color="primary">
+                   <LabelContainer
+                          labelName="Download"
+                          labelKey="VIEW"
+                          color="#FE7A51"/>
+                
+              </Button>
+              )
+            } 
+         
         </Grid>
         <Grid
           item={true}
@@ -285,24 +305,26 @@ class DocumentList extends Component {
           md={3}
           className={classes.fileUploadDiv}
         >
-          <UploadSingleFile
-            classes={this.props.classes}
-            handleFileUpload={e =>
-              handleFileUpload(e, this.handleDocument, this.props)
-            }
-            uploaded={
-              documentsUploadRedux[key] && documentsUploadRedux[key].documents
-                ? true
-                : false
-            }
-            removeDocument={() => this.removeDocument(key)}
-            documents={
-              documentsUploadRedux[key] && documentsUploadRedux[key].documents
-            }
-            onButtonClick={() => this.onUploadClick(key)}
-            inputProps={this.props.inputProps}
-            buttonLabel={this.props.buttonLabel}
-          />
+        
+              <UploadSingleFile
+              classes={this.props.classes}
+              handleFileUpload={e =>
+                handleFileUpload(e, this.handleDocument, this.props)
+              }
+              uploaded={
+                documentsUploadRedux[key] && documentsUploadRedux[key].documents
+                  ? true
+                  : false
+              }
+              removeDocument={() => this.removeDocument(key)}
+              documents={
+                documentsUploadRedux[key] && documentsUploadRedux[key].documents
+              }
+              onButtonClick={() => this.onUploadClick(key)}
+              inputProps={this.props.inputProps}
+              buttonLabel={this.props.buttonLabel}
+            />
+         
         </Grid>
       </Grid>
     );

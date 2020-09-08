@@ -1,11 +1,13 @@
 import { getBreak, getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { handleScreenConfigurationFieldChange as handleField, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, setHCRoles } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils";
 import { ServiceRequestFilterFormForEmployee } from "./searchResource/EmployeeServiceRequestsSearchForm";
 import { searchResultsServiceRequest } from "./searchResource/searchResults";
 import { resetFieldsForEmployeeFilter } from "./searchResource/citizenSearchFunctions";
+import get from "lodash/get";
 import "./index.css";
   
   const hasButton = getQueryArg(window.location.href, "hasButton");
@@ -17,20 +19,10 @@ import "./index.css";
     labelName: "Service Requests",
     labelKey: "HC_SERVICE_REQUEST_HEADER"
   },
-  // {
-  //   style : {
-  //     padding: 20
-  //   }
-  // },
-  
+
   );
   
-  const pageResetAndChange = (state, dispatch) => {
-    dispatch(
-      prepareFinalObject("services", [{ "services.service_request_id": "NEW" }])
-    );
-    
-  };
+
 
   const getMdmsData = async (dispatch) => {
   
@@ -55,9 +47,13 @@ import "./index.css";
               },
               {
                 name: "ServiceStatus"
+              },
+              {
+                name: "roles"
               }
             ]
           },
+          
           {
             moduleName: "RAINMAKER-PGR",
             masterDetails: [
@@ -69,7 +65,7 @@ import "./index.css";
         ]
       }
     };
-    try {
+    try{
       let payload = null;
       payload = await httpRequest(
         "post",
@@ -78,11 +74,17 @@ import "./index.css";
         [],
         mdmsBody
       );
-      
       dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
-    } catch (e) {
-      console.log(e);
-    }};
+
+      //setting horticulture roles into mdms
+      var roleList = []
+      roleList = payload &&
+      payload.MdmsRes["eg-horticulture"].roles
+      setHCRoles(JSON.stringify(roleList))}
+      catch(e){
+        console.log(e);
+      }
+    };
 
   
   const EmployeeServiceRequestsFilter = {
@@ -92,9 +94,19 @@ import "./index.css";
       
       resetFieldsForEmployeeFilter(state, dispatch);
       dispatch(prepareFinalObject("serviceRequests", {}));
+
       getMdmsData(dispatch).then(response => {  
       }) 
 
+      dispatch(
+        handleField(
+          "employeeServiceRequestsFilter",
+          "components.div.children.searchResultsServiceRequest",
+          "visible",
+          false
+        )
+      );
+      
       return action;
     },
     components: {

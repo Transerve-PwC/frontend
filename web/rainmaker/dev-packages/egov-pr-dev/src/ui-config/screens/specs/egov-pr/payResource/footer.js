@@ -152,7 +152,7 @@ const updatePayAction = async (
   receiptNumber
 ) => {
   try {
-    let response = await getSearchResults([
+    let response = await ([
       {
         key: "tenantId",
         value: tenantId

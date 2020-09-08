@@ -161,8 +161,8 @@ class Header extends Component {
     } = this.props;
     const tenantId = role.toLowerCase() === "citizen" ? userInfo.permanentCity : getTenantId();
     const currentCity = cities.filter((item) => item.code === tenantId);
-    const ulbLogo =
-      currentCity.length > 0 ? get(currentCity[0], "logoId") : "https://mcdigitdevdigitdevsouthe.blob.core.windows.net/digit-dev/mc-chandigardh-logo.png";
+    const ulbLogo ="";
+    //  currentCity.length > 0 ? get(currentCity[0], "logoId") : "https://mcdigitdevdigitdevsouthe.blob.core.windows.net/digit-dev/mc-chandigardh-logo.png";
     return (
       <div>
         <AppBar

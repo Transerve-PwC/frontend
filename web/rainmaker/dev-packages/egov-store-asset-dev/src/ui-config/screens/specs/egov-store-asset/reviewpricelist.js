@@ -8,8 +8,8 @@ import {
   
   export const header = getCommonContainer({
     header: getCommonHeader({
-      labelName: "Material Mater - Summary",
-      labelKey: "STORE_MATERIAL_MASTER_SUMMARY_HEADER"
+      labelName: "Price List - Summary",
+      labelKey: "STORE_PRICE_LIST_SUMMARY_HEADER"
     })
   });
   
@@ -25,7 +25,7 @@ import {
   
   const screenConfig = {
     uiFramework: "material-ui",
-    name: "reviewmaterialmaster",
+    name: "reviewpricelist",
     beforeInitScreen: (action, state, dispatch) => {
       // COMMA SEPARATED ROLES IN REVIEW SCREEN
       setRolesList(state, dispatch);

@@ -31,3 +31,43 @@
 .MUIDataTableSelectCell-headerCell-5581{
 	padding-left: 24px !important;
 }  
+
+
+
+
+div#custom-atoms-tenderApplyfooter.addpadding {
+  padding-bottom: 66px;
+  background: transparent;
+  box-shadow: none; }
+
+div#custom-atoms-tenderApplyfooter {
+  display: none; }
+  @media only screen and (max-width: 768px) {
+     
+    div#custom-atoms-tenderApplyfooter.addpadding {
+      padding-bottom: 45px;
+     
+    
+    
+    }
+  
+      }
+
+
+      div#custom-atoms-pressapplyfooter.addpadding {
+        padding-bottom: 66px;
+        background: transparent;
+        box-shadow: none; }
+      
+      div#custom-atoms-pressapplyfooter {
+        display: none; }
+        @media only screen and (max-width: 768px) {
+           
+          div#custom-atoms-pressapplyfooter.addpadding {
+            padding-bottom: 45px;
+           
+          
+          
+          }
+        
+            }

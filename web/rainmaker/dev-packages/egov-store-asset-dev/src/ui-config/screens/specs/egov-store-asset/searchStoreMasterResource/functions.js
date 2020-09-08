@@ -45,7 +45,7 @@ export const searchApiCall = async (state, dispatch) => {
     );
   } else if (
     Object.keys(searchScreenObject).length == 0 ||
-    Object.values(searchScreenObject).every((x) => x.trim() === "")
+    Object.values(searchScreenObject).every((x) => (typeof x === "string") && x.trim() === "")
   ) {
     dispatch(
       toggleSnackbar(
@@ -77,7 +77,7 @@ export const searchApiCall = async (state, dispatch) => {
     
         return {
           [getTextToLocalMapping("Store Name")]: get(item, "name", "-") || "-",
-          [getTextToLocalMapping("Department")]: get(item, "department", "-") || "-",
+          [getTextToLocalMapping("Department")]: get(item, "department.name", "-") || "-",
           [getTextToLocalMapping("Central Store")]: get(item, "isCentralStore",false) ? "Yes": "No",
           [getTextToLocalMapping("Active")]: get(item, "active",false) ? "Yes": "No",
         };         

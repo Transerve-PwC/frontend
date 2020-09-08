@@ -1001,11 +1001,11 @@ const generateReceipt = async (state, dispatch, type) => {
     tenantId: "ch"
   };
 
-  let ulbLogo = _.get(
-    state.screenConfiguration.preparedFinalObject,
-    "base64UlbLogo",
-    ""
-  );
+  // let ulbLogo = _.get(
+  //   state.screenConfiguration.preparedFinalObject,
+  //   "base64UlbLogo",
+  //   ""
+  // );
   if (_.isEmpty(data1)) {
     console.log("Error in application data");
     return;
@@ -1018,10 +1018,11 @@ const generateReceipt = async (state, dispatch, type) => {
   } else if (_.isEmpty(data4)) {
     console.log("Error in auditor user data");
     return;
-  } else if (_.isEmpty(ulbLogo)) {
-    console.log("Error in image data");
-    return;
   }
+  // } else if (_.isEmpty(ulbLogo)) {
+  //   console.log("Error in image data");
+  //   return;
+  // }
   let transformedData = {
     ...data1,
     ...data2,

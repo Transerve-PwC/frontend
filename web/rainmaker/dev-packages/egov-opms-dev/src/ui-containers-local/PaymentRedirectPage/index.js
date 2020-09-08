@@ -7,9 +7,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getSearchResults } from "../../ui-utils/commons";
 import {
-  getAccessToken,  getOPMSTenantId,  getLocale,  getUserInfo,
-  localStorageGet,  setapplicationNumber,  getapplicationNumber,  getapplicationType,
-  lSRemoveItem} from "egov-ui-kit/utils/localStorageUtils";
+  getAccessToken, getOPMSTenantId, getLocale, getUserInfo,
+  localStorageGet, setapplicationNumber, getapplicationNumber, getapplicationType,
+  lSRemoveItem
+} from "egov-ui-kit/utils/localStorageUtils";
 
 class PaymentRedirect extends Component {
   componentDidMount = async () => {
@@ -19,36 +20,32 @@ class PaymentRedirect extends Component {
         "post", "pg-service/transaction/v1/_update" + search, "_update", [],
         {}
       );
-      
+
       let consumerCode = get(pgUpdateResponse, "Transaction[0].consumerCode");
       let tenantId = get(pgUpdateResponse, "Transaction[0].tenantId");
       if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
-	  
-	  if(getapplicationType() === 'PETNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
-        );
-	  }
-      else if(getapplicationType() === 'SELLMEATNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-sellmeat?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
-        );
-	  }
-		else if(getapplicationType() === 'ROADCUTNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-roadcut?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
-        );
-	  }
-	  else
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-adv?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
-        );
-	  }
-	  
+
+        if (getapplicationType() === 'PETNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
+          );
+        }
+        else if (getapplicationType() === 'SELLMEATNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-sellmeat?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
+          );
+        }
+        else if (getapplicationType() === 'ROADCUTNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-roadcut?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
+          );
+        }
+        else {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-adv?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
+          );
+        }
+
       } else {
         let data =
         {
@@ -56,6 +53,7 @@ class PaymentRedirect extends Component {
           "tenantId": getOPMSTenantId(),
           "applicationStatus": "PAID",
           "applicationId": consumerCode,
+          "currentState": getapplicationType() == "ROADCUTNOC" ? "APPROVED" : "INITIATED",
           "dataPayload": {
             "amount": localStorageGet(`amount`),
             "gstAmount": localStorageGet(`gstAmount`),
@@ -82,36 +80,32 @@ class PaymentRedirect extends Component {
 
         let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
         // this.props.setRoute(
-          // `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
+        // `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
         // );
-		
-		if(getapplicationType() === 'PETNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
-        );
-	  }
-      else if(getapplicationType() === 'SELLMEATNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-sellmeat?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
-        );
-	  }
-		else if(getapplicationType() === 'ROADCUTNOC')
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-roadcut?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
-        );
-	  }
-	  else
-	  {
-        this.props.setRoute(
-          `/egov-opms/acknowledgement-adv?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
-        );
-	  }
-		
-		
-		
+
+        if (getapplicationType() === 'PETNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
+          );
+        }
+        else if (getapplicationType() === 'SELLMEATNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-sellmeat?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
+          );
+        }
+        else if (getapplicationType() === 'ROADCUTNOC') {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-roadcut?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
+          );
+        }
+        else {
+          this.props.setRoute(
+            `/egov-opms/acknowledgement-adv?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
+          );
+        }
+
+
+
       }
     } catch (e) {
       //alert(e);

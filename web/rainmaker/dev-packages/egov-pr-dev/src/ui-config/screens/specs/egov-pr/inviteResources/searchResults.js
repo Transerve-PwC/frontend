@@ -32,12 +32,13 @@ import {
   getLocaleLabels,
   getTransformedLocalStorgaeLabels
 } from "egov-ui-framework/ui-utils/commons";
+
 const getLocalTextFromCode = localCode => {
   return JSON.parse(getLocalization("localization_en_IN")).find(
     item => item.code === localCode
   );
 };
-import { showinvitelist, deleteguestbyid } from "../searchResource/citizenSearchFunctions"
+import { showinvitelist, deleteguestbyid,InviteDeleteConfirm } from "../searchResource/citizenSearchFunctions"
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 
@@ -51,8 +52,8 @@ const onRowDelete = async (rowData, allrowdata) => {
   //console.log("Deleteeeeeeeeeeeeeeeeeee");
   //console.log(rowData)
   //console.log(allrowdata)
-
-  deleteguestbyid(rowData)
+  InviteDeleteConfirm(rowData)
+  // deleteguestbyid(rowData)
 }
 
 // const load_invite_summary(row)= async (rowData, allrowdata) => {

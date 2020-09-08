@@ -69,9 +69,10 @@ class App extends Component {
       },
     };
     // can be combined into one mdms call
-      setDefaultLocale(getDefaultLocale())
-
-    fetchLocalizationLabel(getLocale() || "en_IN");
+      setDefaultLocale(getDefaultLocale());
+      const urlPath = window.location.pathname;
+    if(pathname.includes("/user/otp") || pathname.includes("/user/login") || pathname.includes("/user/register")|| pathname.includes("/language-selection") )
+   fetchLocalizationLabel(getLocale() || "en_IN");
     // current location
     fetchCurrentLocation();
     fetchMDMSData(requestBody);
@@ -133,6 +134,19 @@ class App extends Component {
     );
   }
 }
+function QueryStringToJSON() {            
+  var pairs = window.location.search.slice(1).split('&');
+  
+  var result = {};
+  pairs.forEach(function(pair) {
+      pair = pair.split('=');
+      result[pair[0]] = decodeURIComponent(pair[1] || '');
+  });
+
+  return JSON.parse(JSON.stringify(result));
+}
+
+
 
 const mapStateToProps = (state, ownProps) => {
   const { app, auth, common } = state;
@@ -146,7 +160,24 @@ const mapStateToProps = (state, ownProps) => {
     hasLocalisation = stateInfoById[0].hasLocalisation;
     defaultUrl = stateInfoById[0].defaultUrl;
   }
-   defaultUrl = "/user/login";
+ if(window.location.pathname === "/" || window.location.pathname === "/user/login" ||  window.location.pathname === "/user/register"){
+  
+   if(window.location.search){
+    var queryString = QueryStringToJSON();
+    if(queryString.mobileno){
+      defaultUrl = "/user/otp"
+      window.location.href=`/user/otp${window.location.search}`
+    }
+    else{
+      defaultUrl = "/user/login";
+    }
+   }
+   else{
+    defaultUrl = "/user/login";
+   }
+ 
+ }
+   
   const props = {};
   const loading = ownProps.loading || spinner;
   if (route && route.length) {

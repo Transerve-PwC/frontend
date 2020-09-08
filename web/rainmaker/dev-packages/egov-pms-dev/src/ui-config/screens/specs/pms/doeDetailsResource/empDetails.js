@@ -883,6 +883,46 @@ const dependentUnitcard = {
             pattern: getPMSPattern("Amount"),
             jsonPath: "ProcessInstances[0].dependents[0].bankAccountNumber"
           }),
+          bankCode: getTextField({
+            label: {
+              labelName: "Bank Code",
+              labelKey: "PENSION_BANK_CODE"
+            },
+            props:{
+              className:"applicant-details-error"
+            }, 
+            placeholder: {
+              labelName: "Bank Code",
+              labelKey: "PENSION_BANK_CODE"
+            },
+            required:false,
+            maxLength:18,
+            props: {
+              disabled: data[0].employeeOtherDetailsUpdate,      
+            },
+            pattern: getPMSPattern("Name"),
+            jsonPath: "ProcessInstances[0].dependents[0].bankCode"
+          }),
+          bankIfsc: getTextField({
+            label: {
+              labelName: "Bank IFSC Code",
+              labelKey: "PENSION_BANK_IFSC"
+            },
+            props:{
+              className:"applicant-details-error"
+            }, 
+            placeholder: {
+              labelName: "Bank IFSC Code",
+              labelKey: "PENSION_BANK_IFSC"
+            },
+            maxLength:18,
+            required:false,
+            props: {
+              disabled: data[0].employeeOtherDetailsUpdate,      
+            },
+            pattern: getPMSPattern("Name"),
+            jsonPath: "ProcessInstances[0].dependents[0].bankIfsc"
+          }),
           Phone: getTextField({
             label: {
               labelName: "Phone",

@@ -42,7 +42,7 @@ export const getTextToLocalMapping = (label) => {
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
-  visible: true,
+  visible: false,
   props: {
     columns: [
       getTextToLocalMapping("Material Type Name"),

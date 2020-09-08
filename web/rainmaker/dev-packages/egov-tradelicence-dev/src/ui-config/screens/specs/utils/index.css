@@ -20,6 +20,10 @@
   .city-picker-dialog-style {
     min-width: 250px;
   }
+  .citizen-payment-confirmation .apply-wizard-footer div:first-child{
+    flex: 0 0 100%;
+    display: block;
+  }
 }
 
 /* #search  [class^="MuiPaper-root"] {

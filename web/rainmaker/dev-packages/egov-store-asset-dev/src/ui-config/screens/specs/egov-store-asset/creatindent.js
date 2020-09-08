@@ -8,7 +8,7 @@ import {
   import { getSearchResults} from "../../../../ui-utils/commons";
   import { MaterialIndentDetails } from "./createindentResource/Material-Indent"; 
   import { MaterialIndentMapDetails } from "./createindentResource/Material-indent-map"; 
-  
+  import {totalValue} from './createindentResource/totalValue';
   import set from "lodash/set";
   import get from "lodash/get";
   import map from "lodash/map";
@@ -17,7 +17,7 @@ import {
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   //import { getEmployeeData } from "./viewResource/functions";
-  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+  import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
   import {
     prepareDocumentsUploadData,
     
@@ -60,7 +60,8 @@ export const header = getCommonContainer({
       id: "apply_form2"
     },
     children: {     
-      MaterialIndentMapDetails
+      MaterialIndentMapDetails,
+     totalValue
     },
     visible: false
   };
@@ -77,8 +78,9 @@ export const header = getCommonContainer({
           {
             moduleName: "store-asset",
             masterDetails: [
-              { name: "Material" },
-              { name: "InventoryType", },
+              { name: "Material" }, //filter: "[?(@.active == true)]" },
+              { name: "InventoryType", filter: "[?(@.active == true)]" },
+              { name: "IndentPurpose"},// filter: "[?(@.active == true)]" },
               
             ],
           },
@@ -150,6 +152,32 @@ export const header = getCommonContainer({
       dispatch(prepareFinalObject("store", response));
        response = await getSearchResults(queryObject, dispatch,"materials");
       dispatch(prepareFinalObject("materials", response));
+            // fetching employee designation
+    const userInfo = JSON.parse(getUserInfo());
+    if(userInfo){
+      dispatch(prepareFinalObject("indents[0].createdByName", userInfo.name));
+      const queryParams = [{ key: "codes", value: userInfo.userName },{ key: "tenantId", value:  getTenantId() }];
+      try { 
+        const payload = await httpRequest(
+          "post",
+          "/egov-hrms/employees/_search",
+          "_search",
+          queryParams
+        );
+        if(payload){
+          const {designationsById} = state.common;
+          const empdesignation = payload.Employees[0].assignments[0].designation;
+          if(designationsById){
+          const desgnName = Object.values(designationsById).filter(item =>  item.code === empdesignation )
+         
+          dispatch(prepareFinalObject("indents[0].designation", desgnName[0].name));
+          }
+        }
+        
+      } catch (e) {
+        console.log(e);
+      }
+    }
     } catch (e) {
       console.log(e);
     }
@@ -207,9 +235,14 @@ export const header = getCommonContainer({
       //   state.screenConfiguration.preparedFinalObject,
       //   "Employee[0].tenantId"
       // );
-      const tenantId = getstoreTenantId();
+      let tenantId = getstoreTenantId();
       const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
       const storedata = getstoreData(action,state, dispatch);
+      const step = getQueryArg(window.location.href, "step");
+       tenantId = getQueryArg(window.location.href, "tenantId");
+      if(!step && !tenantId){
+        dispatch(prepareFinalObject("indents[0]",null));
+      }
        // Set MDMS Data
     // getMdmsData(action, state, dispatch).then(response => {
     //   prepareDocumentsUploadData(state, dispatch, 'pricelist');
@@ -252,6 +285,7 @@ export const header = getCommonContainer({
       //       "PERMANENT"
       //     );
       //   });
+
   
       return action;
     },

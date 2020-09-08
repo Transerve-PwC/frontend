@@ -12,6 +12,14 @@
 
 export const getResultUrl = (moduleName,reportName) => {
   let reportResultUrl = `/report/${moduleName}/${reportName}/_get`;
+  // case for pension
+  if(moduleName ==="rainmaker-pension")
+  {
+    if(reportName==="MonthlyPensionDrawn")
+    {
+       reportResultUrl = `/pension-services/v1/_searchPensionDisbursement`;
+    }
+  }
   return reportResultUrl;
 }
 

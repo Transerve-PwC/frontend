@@ -93,7 +93,7 @@ export const applicantDetails = getCommonCard({
             }
           },
           pattern: getPattern("Name"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          errorMessage: "PR_EMPLOYEE_NAME_INVALID",
           jsonPath: "CreateInvite.employeename",
         })
       },
@@ -392,7 +392,7 @@ export const EmailSmsContent = getCommonCard({
   SMSContent: {
     ...getTextField({
       label: {
-        labelName: "Subject",
+        labelName: "sms",
         labelKey: "PR_SMS_TEMPLATE"
       },
       placeholder: {
@@ -400,7 +400,7 @@ export const EmailSmsContent = getCommonCard({
         labelKey: ""
       },
       pattern: getPattern("subjectvalidation"),
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      errorMessage: "PR_SMS_INVALID",
       required: true,
       jsonPath: "CreateInvite.SMSContent",
       props: {

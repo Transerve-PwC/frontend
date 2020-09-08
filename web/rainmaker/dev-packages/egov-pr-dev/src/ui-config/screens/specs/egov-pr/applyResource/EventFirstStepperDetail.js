@@ -33,7 +33,11 @@ import {
       )
     );
   };
-  
+  const toTitleCase=(str)=> {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
   
   
   // GET EMPLOYEES
@@ -55,6 +59,9 @@ import {
       {
         if(payload.Employees[i].user!==null)
         {
+          
+          payload.Employees[i].user.userName=toTitleCase(payload.Employees[i].user.userName)
+          payload.Employees[i].user.name=toTitleCase(payload.Employees[i].user.name)
           user.push(payload.Employees[i].user) 
           
         }
@@ -198,7 +205,7 @@ import {
         width: "100%",
         cursor: "pointer"
         },
-       
+        maxLength:10,
         className: "citizen-city-picker",
         label: { labelName: "Area", labelKey: "PR_AREA_LABEL" },
         placeholder: {
@@ -207,14 +214,20 @@ import {
         }, 
         sourceJsonPath: "applyScreenMdmsData.[RAINMAKER-PR].localityAreaName",
         jsonPath: "PublicRelation[0].CreateEventDetails.area",
-       
-        labelsFromLocalisation: false,
+        setDataInField: true,
+      //  labelsFromLocalisation: true,
+        // localePrefix: {
+        // moduleName: "TRADELICENSE",
+        // masterName: "TRADETYPE"
+        // },
+        labelsFromLocalisation: true,
         suggestions: [],
         fullwidth: true,
         required: true,
         inputLabelProps: {
           shrink: true
         },
+     
         isMulti: false,
       labelName: "name",
        valueName: "name"
@@ -320,9 +333,25 @@ import {
      valueName: "name"
       },
     },
-      committiee: {
-        ...getSelectField({
-          label: { labelName: "Committiee", labelKey: "PR_COMMITTEE_LABEL" },
+    committiee: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-pr",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "PublicRelation[0].CreateEventDetails.committeeUuid",
+      
+            required: false,
+   gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+    props: {
+    style: {
+    width: "100%",
+    cursor: "pointer"
+    },
+   
+    className: "citizen-city-picker",
+    label: { labelName: "Committiee", labelKey: "PR_COMMITTEE_LABEL" },
          
          
           placeholder: {
@@ -331,17 +360,42 @@ import {
           },
           sourceJsonPath: "committieeData",
           jsonPath: "PublicRelation[0].CreateEventDetails.committeeUuid",
-          required: false,
-          props: {
-            className:"applicant-details-error",
-            required: false,
-         disabled:false,
-         optionLabel: "committeeName",
-         optionValue:"committeeUuid",
-          }
-        }),
+    labelsFromLocalisation: false,
+    suggestions: [],
+    fullwidth: true,
+    required: false,
+    inputLabelProps: {
+      shrink: true
+    },
+    isMulti: false,
+  labelName: "name",
+   valueName: "name"
+    },
+  },
+//       committiee: {
+        
+//         ...getSelectField({
+//           label: { labelName: "Committiee", labelKey: "PR_COMMITTEE_LABEL" },
+         
+         
+//           placeholder: {
+//             labelName: "Select Committiee",
+//             labelKey: "PR_COMMITTEE_PLACEHOLDER"
+//           },
+//           sourceJsonPath: "committieeData",
+//           jsonPath: "PublicRelation[0].CreateEventDetails.committeeUuid",
+//           required: false,
+//           props: {
+//             className:"applicant-details-error",
+//             required: false,
+//          disabled:false,
+//          optionLabel: "committeeName",
+//          optionValue:"committeeUuid",
+// //visible:false
+//           }
+//         }),
       
-      },
+//       },
     
       
     

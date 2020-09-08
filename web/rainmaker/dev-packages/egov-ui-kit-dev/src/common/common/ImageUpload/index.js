@@ -7,7 +7,7 @@ import Label from "egov-ui-kit/utils/translationNode";
 import { fileUpload, removeFile } from "egov-ui-kit/redux/form/actions";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import "./index.css";
-import { getapplicationType } from "../../../../../../packages/lib/egov-ui-kit/utils/localStorageUtils";
+import { getapplicationType } from "egov-ui-kit/utils/localStorageUtils";
 const iconStyle = {
   width: "19px",
   height: "19px",
@@ -41,16 +41,17 @@ const Placeholder = ({ className, onFilePicked, inputProps, hide }) => {
 
 class ImageUpload extends Component {
   fillPlaceholder = (images, onFilePicked, inputProps) => {
+    const {imageLength = 3} = this.props
     const placeholders = [];
-    if(getapplicationType() === "HORTICULTURE")
+    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF")
     {
       for (let i = 0; i < 5 - images.length; i++) {
         placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={i === 1 ? false : false} />);
       }
     }
     else{
-      for (let i = 0; i < 3 - images.length; i++) {
-        placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={i === 1 ? true : false} />);
+      for (let i = 0; i < imageLength - images.length; i++) {
+        placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={this.props.hasOwnProperty("hide") ? this.props.hide : i === 1 ? true : false} />);
       }
     }
     return placeholders;
@@ -62,21 +63,20 @@ class ImageUpload extends Component {
   };
 
   onFilePicked = (file, imageUri) => {
-    const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText } = this.props;
-    const MAX_IMAGE_SIZE = 5000;
+    const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText, MAX_IMAGE_SIZE = 5000, imageLength = 3,labelKey = "ERR_FILE_MORE_THAN_FIVEMB" } = this.props;
     const fileSize = getFileSize(file);
     const isImage = isFileImage(file);
     if (!isImage) {
       toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "ERR_NOT_VALID_IMAGE" }, "error");
     } else if (fileSize > MAX_IMAGE_SIZE) {
-      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: "ERR_FILE_MORE_THAN_FIVEMB" },"error");
+      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: labelKey },"error");
     } else {
-      if(getapplicationType() === "HORTICULTURE"){
+      if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF"){
         if (images.length < 5) {
           fileUpload(formKey, fieldKey, { module, file, imageUri });
         }
       }else{
-        if (images.length < 3) {
+        if (images.length < imageLength) {
           fileUpload(formKey, fieldKey, { module, file, imageUri });
         }
       }
@@ -85,9 +85,9 @@ class ImageUpload extends Component {
 
   render() {
     const { onFilePicked, removeImage } = this;
-    const { images, loading } = this.props;
-    let imageLength = 3 ;
-    if(getapplicationType() === "HORTICULTURE"){
+    const { images, loading , labelKey = "ERR_FILE_MORE_THAN_FIVEMB"} = this.props;
+    let {imageLength =  3} = this.props ;
+    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF"){
       imageLength = 5 ;
     }
     const inputProps = { accept: "image/*", maxFiles: imageLength, multiple: true };
@@ -120,7 +120,7 @@ class ImageUpload extends Component {
           </div>
           </div>
         )}
-        <Label label="ERR_FILE_MORE_THAN_FIVEMB" labelStyle={inlineLabelStyle} fontSize="12px" />
+        <Label label={labelKey} labelStyle={inlineLabelStyle} fontSize="12px" />
       </div>
       
     );

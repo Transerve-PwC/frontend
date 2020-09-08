@@ -25,9 +25,15 @@ export const searchResultViewSeizureApiResponse = async (state, dispatch) => {
   let encroachmentType = get(
     state.screenConfiguration.preparedFinalObject,
     "searchViewSeizureReport[0].EncroachmentType", ''
+  ) === '0' ? '' : get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchViewSeizureReport[0].EncroachmentType", ''
   ).trim();
 
   let sector = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchViewSeizureReport[0].sector", ''
+  ) === '0' ? '' : get(
     state.screenConfiguration.preparedFinalObject,
     "searchViewSeizureReport[0].sector", ''
   ).trim();
@@ -35,7 +41,19 @@ export const searchResultViewSeizureApiResponse = async (state, dispatch) => {
   let siName = get(
     state.screenConfiguration.preparedFinalObject,
     "searchViewSeizureReport[0].SIName", ''
-  )
+  ) === '0' ? '' : get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchViewSeizureReport[0].SIName", ''
+  ).trim();
+
+  let challanStatus = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchViewSeizureReport[0].Status", ''
+  ) === '0' ? '' : get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchViewSeizureReport[0].Status", ''
+  ).trim();
+
   if ((fromdate === undefined || fromdate === '')) {
     dispatch(
       toggleSnackbar(
@@ -80,7 +98,8 @@ export const searchResultViewSeizureApiResponse = async (state, dispatch) => {
         "toDate": Todate,
         "encroachmentType": encroachmentType,
         "sector": sector,
-        "siName": siName
+        "siName": siName,
+        "challanStatus": challanStatus,
       }
     }
 
@@ -114,16 +133,18 @@ export const searchResultViewSeizureApiResponse = async (state, dispatch) => {
           let __FOUNDENCROACH = encroachValue.find(function (encroachRecord, index) {
             if (encroachRecord.code == item['encroachmentType'])
               return true;
-          });    
-    
+          });
+          let paymentStatus = item.paymentStatus === 'PENDING' ? 'UNPAID' : 'PAID';
+
           temp[0] = item['challanId'];
-          temp[1] = truncData(item['violatorName'],25);
+          temp[1] = truncData(item['violatorName'], 25);
           temp[2] = convertEpochToDate(item['violationDate']);
           temp[3] = __FOUNDENCROACH.name;
           temp[4] = item['siName'];
           temp[5] = __FOUND.name;
-          temp[6] = item['paymentAmount'];
+          temp[6] = item['paymentAmount'].toString();
           temp[7] = item['challanStatus'];
+          temp[8] = paymentStatus;
           data.push(temp);
         });
 
@@ -138,13 +159,6 @@ export const searchResultViewSeizureApiResponse = async (state, dispatch) => {
       );
       showHideViewSeizureTable(true, dispatch);
 
-      // const objectJsonPath = `components.div.children.searchTextViewSeizureReport.children.cardContent.children`;
-      // const children = get(
-      //   state.screenConfiguration.screenConfig["reportSearchViewSeizure"],
-      //   objectJsonPath,
-      //   {}
-      // );
-      // resetAllFields(children, dispatch, state, 'reportSearchViewSeizure');
 
     } catch (error) {
       dispatch(
@@ -221,7 +235,7 @@ export const searchResultPaymentDetailsApiResponse = async (state, dispatch) => 
     }
     try {
       let sectorValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.sector', []);
-    
+
       const response = await fetchReportData(dataReq)
       let data = [];
       if (response.ResponseBody === null) {
@@ -249,13 +263,14 @@ export const searchResultPaymentDetailsApiResponse = async (state, dispatch) => 
 
           temp[0] = item['challanId'] || "-";
           temp[1] = item['encroachmentType'] || "-";
-          temp[2] = truncData(item['violatorName'],25) || "-";
-          temp[3] = item['paymentAmount'] || "-";
+          temp[2] = truncData(item['violatorName'], 25) || "-";
+          temp[3] = item['paymentAmount'].toString() || "-";
           temp[4] = convertEpochToDate(item['violationDate']) || "-";
           temp[5] = item['siName'] || "-";
           temp[6] = item['paymentMode'] || "NA";
-          temp[7] = item['paymentStatus'] === 'PENDING' ? 'UNPAID' : 'PAID' || "-";
-          temp[8] = __FOUND.name || "-";
+          temp[7] = item['challanStatus'] || "NA";
+          temp[8] = item['paymentStatus'] === 'PENDING' ? 'UNPAID' : 'PAID' || "-";
+          temp[9] = __FOUND.name || "-";
           data.push(temp);
         });
 
@@ -358,11 +373,11 @@ export const searchResultInventoryDetailApiResponse = async (state, dispatch) =>
         InventoryReport.map(function (item, index) {
           let temp = [];
           temp[0] = item['challanId'] || "-";
-          temp[1] = truncData(item['itemName'],25) || "-";
-          temp[2] = item['itemQuantity'] || "0";
+          temp[1] = truncData(item['itemName'], 25) || "-";
+          temp[2] = item['itemQuantity'].toString() || "0";
           temp[3] = convertEpochToDate(item['itemStoreDepositDate']) || "-";
           temp[4] = item['challanStatus'] || "-";
-          temp[5] = item['age'] || "0";
+          temp[5] = item['age'].toString() || "0";
           data.push(temp);
         });
       }

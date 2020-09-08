@@ -7,7 +7,7 @@ import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import store from "redux/store";
-import { convertDateToEpoch, getCheckBoxJsonpath, getCurrentFinancialYear, getHygeneLevelJson, getLocalityHarmedJson, getSafetyNormsJson, getTradeTypeDropdownData, getTranslatedLabel, ifUserRoleExists, setFilteredTradeTypes, updateDropDowns, searchBill, fetchBill, searchdemand, createDemandForAdvNOC } from "../ui-config/screens/specs/utils";
+import { convertDateToEpoch, getCheckBoxJsonpath, getCurrentFinancialYear, getHygeneLevelJson, getLocalityHarmedJson, getSafetyNormsJson, getTradeTypeDropdownData, getTranslatedLabel, ifUserRoleExists, setFilteredTradeTypes, updateDropDowns, searchBill, fetchBill, searchdemand, createDemandForAdvNOC, checkForRole } from "../ui-config/screens/specs/utils";
 import { httpRequest } from "./api";
 import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
@@ -614,13 +614,46 @@ export const prepareDocumentsUploadData = async (state, dispatch, type) => {
   dispatch(prepareFinalObject("documentsContract", documentsContract));
 
 };
+const getStatus = (status) => {
+  switch (status) {
+    case "DRAFT": return {
+      "dataPayload": {},
+      "currentState": "DRAFT"
+    };
+      break;
+    case "REASSIGN":
+      return {
+        "dataPayload": {},
+        "currentState": "REASSIGN"
+      };
+      break;
+    case "INITIATED":
+      return {
+        "dataPayload": {},
+        "currentState": "DRAFT"
+      };
+      break;
+    case "INITIATEDEXC":
+      return {
+        "dataPayload": {},
+        "currentState": "DRAFT"
+      };
+      break;
+    case "RESENT":
+      return {
+        "dataPayload": {},
+        "currentState": "REASSIGN"
+      };
+      break;
+  }
+}
 
 export const updateAppStatus = async (state, dispatch, status) => {
   let response = '';
   let response_updatestatus = '';
   try {
     setapplicationMode(status);
-    response_updatestatus = await httpRequest("post", "/pm-services/noc/_updateappstatus", "", [], { dataPayload: {} });
+    response_updatestatus = await httpRequest("post", "/pm-services/noc/_updateappstatus", "", [], getStatus(status));
     if (response_updatestatus.ResponseInfo.status == "success") {
       return { status: "success" };
     } else {
@@ -891,7 +924,7 @@ export const furnishRoadcutNocResponse = response => {
   set(refurnishresponse, "division", applicationdetail.division);
   set(refurnishresponse, "uploadDocuments", applicationdetail.uploadDocuments);
   set(refurnishresponse, "remarks", applicationdetail.remarks);
-
+  set(refurnishresponse, "gstin", applicationdetail.gstin);
   return refurnishresponse;
 };
 
@@ -1075,6 +1108,27 @@ export const getGridDataAdvertisement1 = async () => {
 
     }
 
+  }
+  try {
+    const payload = await httpRequest(
+      "post",
+      "/pm-services/noc/_get",
+      "",
+      queryObject,
+      requestBody
+    );
+    return payload;
+  } catch (error) {
+  }
+};
+
+export const getGridDataForSearchFilter = async (data) => {
+  let queryObject = [];
+  var requestBody = {
+    "tenantId": `${getOPMSTenantId()}`,
+    "applicationType": getapplicationType(),
+
+    "dataPayload": data
   }
   try {
     const payload = await httpRequest(
@@ -1276,7 +1330,7 @@ export const createUpdateRoadCutNocApplication = async (state, dispatch, status)
         roadcutdocuments.push(temp)
       }
     });
-    
+
     payload.hasOwnProperty("roadCutType") === false ? set(payload, "roadCutType", "") : ''
     payload.hasOwnProperty("requestedLocation") === false ? set(payload, "requestedLocation", "") : ''
 
@@ -1733,10 +1787,233 @@ export const callBackForRefund = async data => {
   }
 
 };
+export const getWFStatus = (actions, state) => {
+  let processInstances = get(state, "screenConfiguration.preparedFinalObject.workflow.ProcessInstances", []);
+  let length = processInstances.length;
+  let currentState = processInstances[length-1].state
+  // let currentState = processInstances.pop().state
+  let status = "";
+  let roles = JSON.parse(getUserInfo()).roles
+  currentState.actions.map(item => {
+    if (actions.indexOf(item.action) != -1) {
+      roles.some(r => {
+        if (item.roles.includes(r.code)) {
+          status = item.action
+        }
+      })
+    }
+  });
+  return status;
+}
 
-export const UpdateStatus = async (dispatch, url, queryObject, code) => {
+export const checkVisibility = async (state, actions, button, action, buttonPath, extraCondtion) => {
+  let processInstanceData = get(state, "screenConfiguration.preparedFinalObject.OPMS.WF.ProcessInstanceData", []);
+  if (processInstanceData.length != 0) {
+    let currentState = processInstanceData.ProcessInstances[0];
+    let found = false;
+    let roles = JSON.parse(getUserInfo()).roles
+
+    currentState.nextActions.map(item => {
+      if (actions.split(',').indexOf(item.action) != -1) {
+        roles.some(r => {
+          if (item.roles.includes(r.code)) {
+            found = true
+            let wfstatus = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
+            wfstatus.push({ "buttonName": button, "status": item.action })
+            set(state, 'screenConfiguration.preparedFinalObject.WFStatus', wfstatus);
+          }
+        })
+      }
+    });
+    if (getapplicationType() == "ADVERTISEMENTNOC" && currentState.state.state == "PENDINGAPPROVAL") {
+      let wfstatus = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
+      if (localStorageGet('pms_iswithdrawn') === "yes") {
+        wfstatus.push({ "buttonName": "approve", "status": "APPROVEFORWITHDRAW" })
+        wfstatus.push({ "buttonName": "reject", "status": "REJECTEFORWITHDRAW" })
+      }
+      wfstatus = wfstatus.filter(function (obj) {
+        return obj.buttonName !== 'reassign';
+      });
+      wfstatus.push({ "buttonName": "reassign", "status": getReassignStatus(processInstanceData) })
+      set(state, 'screenConfiguration.preparedFinalObject.WFStatus', wfstatus);
+    }
+    if (extraCondtion != null) {
+      set(
+        action,
+        buttonPath,
+        extraCondtion && found
+      );
+    } else {
+      set(
+        action,
+        buttonPath,
+        found
+      );
+    }
+  }
+}
+
+const getReassignStatus = (processInstanceData) => {
+  let data = processInstanceData.ProcessInstances[1];
+  let status = "";
+  switch (data.state.state) {
+    case "REVIEWOFJC":
+      status = "REASSIGNTOJC";
+      break;
+    case "REVIEWOFAC":
+      status = "REASSIGNTOAC";
+      break;
+    case "REVIEWOFSC":
+      status = "REASSIGNTOSC";
+      break;
+    case "REVIEWOFSEC":
+      status = "REASSIGNTOSEC";
+      break;
+    default: break;
+  }
+
+  return status;
+}
+
+// export const checkVisibility = async (state, actions, button, action, buttonPath, extraCondtion) => {
+//   
+//   let currentState = await getCurrentWFState();
+//   let found = false;
+//   //alert(JSON.stringify(currentState))
+//   let roles = JSON.parse(getUserInfo()).roles
+
+//   currentState.nextActions.map(item => {
+//     if (actions.split(',').indexOf(item.action) != -1) {
+//       roles.some(r => {
+//         if (item.roles.includes(r.code)) {
+//           found = true
+//           let wfstatus = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
+//           wfstatus.push({ "buttonName": button, "status": item.action })
+//           set(state, 'screenConfiguration.preparedFinalObject.WFStatus', wfstatus);
+//         }
+//       })
+//     }
+//   });
+//   if (extraCondtion != null) {
+//     set(
+//       action,
+//       buttonPath,
+//       extraCondtion && found
+//     );
+//   } else {
+//     set(
+//       action,
+//       buttonPath,
+//       found
+//     );
+//   }
+//   return found;
+//   //take current state
+//   //check for actions
+//   //check for role
+//   //set visbility
+// }
+
+const getCurrentWFState = async () => {
+  try {
+    const applicationNumber = getQueryArg(
+      window.location.href,
+      "applicationNumber"
+    );
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const queryObject = [
+      { key: "businessIds", value: applicationNumber },
+      { key: "history", value: true },
+      { key: "tenantId", value: tenantId }
+    ];
+
+    const payload = await httpRequest(
+      "post",
+      "egov-workflow-v2/egov-wf/process/_search",
+      "",
+      queryObject
+    );
+    if (payload && payload.ProcessInstances.length > 0) {
+      return payload.ProcessInstances[0]
+
+    } else {
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Workflow returned empty object !",
+          labelKey: "WRR_WORKFLOW_ERROR"
+        },
+        "error"
+      );
+    }
+  } catch (e) {
+    toggleSnackbar(
+      true,
+      {
+        labelName: "Workflow returned empty object !",
+        labelKey: "WRR_WORKFLOW_ERROR"
+      },
+      "error"
+    );
+  }
+
+}
+export const setCurrentApplicationProcessInstance = async (state) => {
+  try {
+    const applicationNumber = getQueryArg(
+      window.location.href,
+      "applicationNumber"
+    );
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const queryObject = [
+      { key: "businessIds", value: applicationNumber },
+      { key: "history", value: true },
+      { key: "tenantId", value: tenantId }
+    ];
+
+    const payload = await httpRequest(
+      "post",
+      "egov-workflow-v2/egov-wf/process/_search",
+      "",
+      queryObject
+    );
+    if (payload && payload.ProcessInstances.length > 0) {
+      set(state, 'screenConfiguration.preparedFinalObject.OPMS.WF.ProcessInstanceData', payload);
+    } else {
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Workflow returned empty object !",
+          labelKey: "WRR_WORKFLOW_ERROR"
+        },
+        "error"
+      );
+    }
+  } catch (e) {
+    toggleSnackbar(
+      true,
+      {
+        labelName: "Workflow returned empty object !",
+        labelKey: "WRR_WORKFLOW_ERROR"
+      },
+      "error"
+    );
+  }
+
+}
+const getCurrentWFStateNameForCitizen = (state) => {
+  let processInstanceData = get(state, "screenConfiguration.preparedFinalObject.OPMS.WF.ProcessInstanceData", []);
+  let currentState = processInstanceData.ProcessInstances[0].state.state;
+  return currentState;
+}
+
+
+export const UpdateStatus = async (state, dispatch, url, queryObject, code) => {
   try {
     //    dispatch(toggleSpinner());
+    let processInstances = get(state, "screenConfiguration.preparedFinalObject.workflow.ProcessInstances", []);
+    let length = processInstances.length;
+    code.currentState = checkForRole(JSON.parse(getUserInfo()).roles, 'CITIZEN') ? getCurrentWFStateNameForCitizen(state) : processInstances[length-1].state.state;
     const response = await httpRequest(
       "post", "/pm-services/noc/_updateappstatus", "", [], code
     );
@@ -1749,7 +2026,6 @@ export const UpdateStatus = async (dispatch, url, queryObject, code) => {
           { labelName: 'Success', labelCode: 'Success' },
           "success"
         ));
-
       dispatch(setRoute(url))
       if (code.applicationStatus == "APPROVEFORWITHDRAW" || code.applicationStatus == "WITHDRAW") {
         callBackForRefund(code);

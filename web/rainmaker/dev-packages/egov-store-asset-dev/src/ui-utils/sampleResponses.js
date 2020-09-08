@@ -471,3 +471,298 @@ export const sampleGetBill = () => {
     }
   };
 };
+export const IndentConfiguration =()=>{
+
+  return{
+    IssueType:{
+      
+      INDENTISSUE:"INDENTISSUE",
+      NONINDENTISSUE:"NONINDENTISSUE",
+      MATERIALOUTWARD:"MATERIALOUTWARD",
+  },
+  materialIssueStatus:"CREATED",
+    
+  }
+}
+
+export const NonIndentConfiguration =()=>{
+  return{
+    IssueType:{
+      
+      INDENTISSUE:"INDENTISSUE",
+      NONINDENTISSUE:"NONINDENTISSUE",
+      MATERIALOUTWARD:"MATERIALOUTWARD",
+  },
+  materialIssueStatus:"CREATED",
+  issuePurpose :"RETURNTOSUPPLIER"
+    
+  }
+}
+
+export const WorkFllowStatus = () => {
+  return {
+    
+    WorkFllowStatus: [
+      {
+        code:"CREATED",
+        value:"CREATED",
+      },
+      // {
+      //   code:"REJECTED",
+      //   value:"REJECTED",
+      // },
+      {
+        code:"APPROVED",
+        value:"APPROVED",
+      }
+
+    ]
+  }
+}
+
+export const UserRoles = () => {
+  return {
+    
+    UserRoles: [
+     "SACP",
+     "SAJE",
+     "SACT",
+     "MOH",
+     "SASP",
+     "SASO",
+     "SACSI"
+
+    ]
+  }
+}
+
+export const ReceiptType = () => {
+  return {
+    
+    StoreReceiptType: 
+      {
+        PURCHASE_RECEIPT_TYPE:"PURCHASE RECEIPT",
+        MISCELLANEOUS_RECEIPT_TYPE:"MISCELLANEOUS RECEIPT",
+        INWARDRECEIPT_RECEIPT_TYPE:"INWARD RECEIPT",
+        OPENINGBALANCE_RECEIPT_TYPE:"OPENING BALANCE",
+      },
+  }
+}
+
+export const IndentConfigType = () => {
+  return {
+    
+    IndntType: 
+      {
+        INEDENT:"Indent",
+        INDENT_TFR:"Transfer Indent",
+        
+      },
+      indentStatus:"APPROVED"
+  }
+}
+
+export const InventoryData = () => {
+  let Inventory = {
+    ResponseInfo: {
+      apiId: "Rainmaker",
+      ver: ".01",
+      ts: null,
+      resMsgId: "uief87324",
+      msgId: "20170310130900|en_IN",
+      status: "successful"
+    },
+    InventoryHeaderData: [
+      {
+        Title:
+        {
+          key:"MUNICIPAL_CORPORATION_CHANDIGARH",
+          value:"MUNICIPAL CORPORATION CHANDIGARH",
+        },
+        SubTitle:
+        {
+          key:"STORE_INVENTORY_REGISTER",
+          value:"Inventory Register",
+        },
+        StoreName:
+        {
+          key:"STORE_DETAILS_STORE_NAME",
+          value:"Store 01",
+        },
+        DepartmentName:
+        {
+          key:"STORE_DETAILS_DEPARTMENT_NAME",
+          value:"Department 01",
+        },
+        MaterialName:
+        {
+          key:"STORE_MATERIAL_NAME",
+          value:"Cemment",
+        },
+        Rowdata:[
+          {
+            key:"STORE_COL_SL_NUMBER",
+            value:"Sr No.",
+           
+          },
+          {
+            key:"STORE_COL_OPENNING_BALENCE",
+            value:"Opening Balance",
+            data:[
+              {
+                key:"",
+                value:"Qty.",
+              },
+              {
+                key:"",
+                value:"Unit",
+              },
+              {
+                key:"",
+                value:"Value",
+              },
+            ],
+          },
+          {
+            key:"STORE_COL_RECEIPT",
+            value:"Receipt",
+            data:[
+              {
+                key:"",
+                value:"Receipt Date",
+              },
+              {
+                key:"",
+                value:"Material Receipt No.",
+              },
+              {
+                key:"",
+                value:"Department",
+              },
+              {
+                key:"",
+                value:"Purchase Qty.",
+              },
+              {
+                key:"",
+                value:"Purchase Unit",
+              },
+              {
+                key:"",
+                value:"Rate per Unit",
+              },
+              {
+                key:"",
+                value:"Total value of Inventory",
+              },
+              
+            ],
+          },
+          {
+            key:"STORE_COL_RECEIPT",
+            value:"Issue",
+            data:[
+              {
+                key:"",
+                value:"Issue Date",
+              },
+              {
+                key:"",
+                value:"Issue No.",
+              },
+              {
+                key:"",
+                value:"Issued Department Name",
+              },
+              {
+                key:"",
+                value:"Issued Qty.",
+              },
+              {
+                key:"",
+                value:"Issued Qty Unit",
+              },
+              {
+                key:"",
+                value:"Rate per Unit",
+              },
+              {
+                key:"",
+                value:"Total Value",
+              },
+            ],
+          },
+          {
+            key:"STORE_COL_BALENCE",
+            value:"Balance",
+            data:[
+              {
+                key:"",
+                value:"Qty.",
+              },
+              {
+                key:"",
+                value:"Unit",
+              },
+              {
+                key:"",
+                value:"Value",
+              },
+            ],
+          },
+        ]     
+
+      }
+     
+    ],
+    InventoryRowdata: [
+      {
+        srNo:"1",
+     openingQty:"500.00",
+     openingUom:"NOS",
+     openingRate:"35.00",   
+     receiptDate:"01-01-1970",
+     receiptNo:"R1",
+     receiptDepartment:"DEP_03",
+     receiptPurchaseQty:"0",
+     receiptPurchaseUom:"",
+     receiptPurchaseUnitRate:"0",
+     receiptTotalValue:"0",
+     issuedDate:"25-08-2020",
+     issuedNo:"MRIN-2020-106",
+     issuedToDepartment:"DEP_03",
+     issuedQty:"5.00",
+     issuedUom:"TON",
+     issuedUnitRate:"35.00",
+     issuedTotalValue:"175.0000",
+     balanceQty:"495.00",
+     balanceUom:"NOS",
+     balanceTotalValue:"17325.0000"
+    },
+    {
+      srNo:"2",
+      openingQty:"500.00",
+      openingUom:"NOS",
+      openingRate:"35.00",   
+      receiptDate:"01-01-1970",
+      receiptNo:"R2",
+      receiptDepartment:"DEP_03",
+      receiptPurchaseQty:"0",
+      receiptPurchaseUom:"",
+      receiptPurchaseUnitRate:"0",
+      receiptTotalValue:"0",
+      issuedDate:"25-08-2020",
+      issuedNo:"MRIN-2020-106",
+      issuedToDepartment:"DEP_03",
+      issuedQty:"5.00",
+      issuedUom:"TON",
+      issuedUnitRate:"35.00",
+      issuedTotalValue:"175.0000",
+      balanceQty:"495.00",
+      balanceUom:"NOS",
+      balanceTotalValue:"17325.0000"
+    }
+    ]
+  };
+  return Inventory;
+}

@@ -7,16 +7,82 @@ import {
   convertEpochToDate
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getSearchResultsForSewerage, getDescriptionFromMDMS } from "../../../../ui-utils/commons";
-
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { connectionDetailsFooter } from "./connectionDetailsResource/connectionDetailsFooter";
 import { getServiceDetails } from "./connectionDetailsResource/service-details";
 import { getPropertyDetails } from "./connectionDetailsResource/property-details";
-import { getOwnerDetails } from "./connectionDetailsResource/owner-deatils";
+import { getOwnerDetails, connHolderDetailsSummary, connHolderDetailsSameAsOwnerSummary } from "./connectionDetailsResource/owner-deatils";
 const tenantId = getQueryArg(window.location.href, "tenantId")
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
 const service = getQueryArg(window.location.href, "service")
+
+const getApplicationNumber = (dispatch,connectionsObj) => {
+  let appNos = "";
+  if(connectionsObj.length > 1){
+    for(var i=0; i< connectionsObj.length; i++){
+      appNos += connectionsObj[i].applicationNo +",";
+    }
+    appNos = appNos.slice(0,-1);
+  }else{
+    appNos = connectionsObj[0].applicationNo;
+  }
+  dispatch(prepareFinalObject("applicationNos", appNos));
+}
+const showHideConnectionHolder = (dispatch,connectionHolders) => {
+  if(connectionHolders && connectionHolders != 'NA' && connectionHolders.length > 0){
+        dispatch(
+          handleField(
+            "connection-details",
+            "components.div.children.connectionDetails.children.cardContent.children.connectionHolders",
+            "visible",
+            true
+          )
+        );
+        dispatch(
+          handleField(
+            "connection-details",
+            "components.div.children.connectionDetails.children.cardContent.children.connectionHoldersSameAsOwner",
+            "visible",
+            false
+          )
+        );
+      }else{
+        dispatch(
+          handleField(
+            "connection-details",
+            "components.div.children.connectionDetails.children.cardContent.children.connectionHolders",
+            "visible",
+            false
+          )
+        );
+        dispatch(
+          handleField(
+            "connection-details",
+            "components.div.children.connectionDetails.children.cardContent.children.connectionHoldersSameAsOwner",
+            "visible",
+            true
+          )
+        );
+      }
+}
+const sortpayloadDataObj = (connectionObj) => {
+  return connectionObj.sort((a,b) => (a.additionalDetails.appCreatedDate < b.additionalDetails.appCreatedDate)?1:-1)
+}
+
+const getActiveConnectionObj = (connectionsObj) => {
+  let getActiveConnectionObj = "";
+  for(var i=0; i< connectionsObj.length; i++){
+    if(connectionsObj[i] &&
+       connectionsObj[i].applicationStatus === 'CONNECTION_ACTIVATED' || 
+       connectionsObj[i].applicationStatus === 'APPROVED')
+    {
+      getActiveConnectionObj = connectionsObj[i];
+      break;
+    }
+  }
+  return getActiveConnectionObj;
+}
 
 const searchResults = async (action, state, dispatch, connectionNumber) => {
   /**
@@ -57,7 +123,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
           payloadData.SewerageConnections[0].property.propertyTypeData = "NA"
         }
       }*/
-
+      showHideConnectionHolder(dispatch,payloadData.SewerageConnections[0].connectionHolders); 
       dispatch(prepareFinalObject("WaterConnection[0]", payloadData.SewerageConnections[0]))
     }
   } else if (service === "WATER") {
@@ -93,7 +159,7 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
           payloadData.WaterConnection[0].property.propertyTypeData = "NA"
         }
       }*/
-
+      showHideConnectionHolder(dispatch,payloadData.WaterConnection[0].connectionHolders);     
       dispatch(prepareFinalObject("WaterConnection[0]", payloadData.WaterConnection[0]));
     }
   }
@@ -124,7 +190,10 @@ const propertyDetails = getPropertyDetails(false);
 
 const ownerDetails = getOwnerDetails(false);
 
-export const connectionDetails = getCommonCard({ serviceDetails, propertyDetails, ownerDetails });
+const connectionHolders = connHolderDetailsSummary();
+
+const connectionHoldersSameAsOwner = connHolderDetailsSameAsOwnerSummary();
+export const connectionDetails = getCommonCard({ serviceDetails, propertyDetails, ownerDetails, connectionHolders, connectionHoldersSameAsOwner});
 
 const screenConfig = {
   uiFramework: "material-ui",

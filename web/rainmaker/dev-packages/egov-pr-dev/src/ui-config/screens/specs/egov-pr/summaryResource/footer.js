@@ -1,19 +1,18 @@
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
-import { createUpdateNocApplication,cancelEventApplication } from "../../../../../ui-utils/commons";
+import { cancelEventApplication } from "../../../../../ui-utils/commons";
 import { getCommonApplyFooter } from "../../utils";
 import "./index.scss";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId } from "../../../../../../../../packages/lib/egov-ui-kit/utils/localStorageUtils/index";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { getQueryArg ,getFileUrlFromAPI} from "egov-ui-framework/ui-utils/commons";
-
+import {  showHideAdhocPopupopmsReject } from "../../utils";
 
 
 const cancelTohome = async (state, dispatch) => {
   
-
   setTimeout(function(){  
     
     const acknowledgementUrl =localStorageGet("modulecode")==="PR"?`/egov-pr/home?modulecode=`+localStorageGet("modulecode"):
@@ -111,8 +110,8 @@ const setInvitePageRoutecreateinvite = async (state, dispatch) =>{
 
 
 
-export const footer = getCommonApplyFooter({
-  testButton: {
+export const EventSummaryFooter = getCommonApplyFooter({
+  cancelEventButton: {
     componentPath: "Button",
     props: {
       variant: "contained",
@@ -136,13 +135,17 @@ export const footer = getCommonApplyFooter({
         }
       }
     },
+    
     onClickDefination: {
       action: "condition",
-      callBack: cancelNocApplication
+       callBack: (state, dispatch) =>{
+        
+            showHideAdhocPopupopmsReject(state, dispatch, "summary", "pressMaster")
+    }
     },
-    visible:getQueryArg(window.location.href,"status")==="EXPIRED"  || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?false:true
+    ///visible:getQueryArg(window.location.href,"status")==="EXPIRED"  || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?false:true
 
-   
+    visible:false
 
 
   },
@@ -174,11 +177,11 @@ export const footer = getCommonApplyFooter({
       action: "condition",
       callBack: updateNocApplication
     },
-    visible:getQueryArg(window.location.href,"status")==="EXPIRED"  || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?false:true
+  //  visible:getQueryArg(window.location.href,"status")==="EXPIRED"  || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?false:true
     
-
+  visible:false
   },
-  cancelbth: {
+  cancelbtn: {
     componentPath: "Button",
     props: {
       variant: "contained",
@@ -206,8 +209,8 @@ export const footer = getCommonApplyFooter({
       action: "condition",
       callBack: cancelTohome
     },
-    visible:getQueryArg(window.location.href, "status")==="EXPIRED" || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?true:false
-
+   // visible:getQueryArg(window.location.href, "status")==="EXPIRED" || getQueryArg(window.location.href, "eventstatus")==="CANCELLED" ?true:false
+   visible:false
    
 
 

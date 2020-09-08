@@ -28,7 +28,7 @@ let activeStepforbtn = 0;
 // toggleactionmenu
 const toggleactionmenu = (state, dispatch) => {
 	
-  var x = document.getElementById("custom-atoms-footer");
+  var x = document.getElementById("custom-atoms-Invitefooter");
  	 // if (x.style.display === "none") {
    if(window.getComputedStyle(x).display === "none") {   
     x.style.display = "block";
@@ -38,6 +38,40 @@ const toggleactionmenu = (state, dispatch) => {
     x.classList.remove("addpadding");
 	  }
 }
+
+
+const invitationtoguest= (state, dispatch) => {
+  
+  let subject=get(state.screenConfiguration.preparedFinalObject, "CreateInvite.subjectemail")
+let sms=get(state.screenConfiguration.preparedFinalObject, "CreateInvite.SMSContent")
+let email=localStorage.getItem('email')
+if(subject!=null)
+{
+  if((subject.length>0 && subject.length<=180) && (sms.length>0 && sms.length<=180)&& email!=="<p><br></p>")
+  {
+  invitationtoguests(state, dispatch)
+  }
+  else{
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Please fill all mandatory field!", labelKey: "PR_MANDATORY_FIELDS" },
+        "warning"
+      )
+    );
+  }
+}
+  else{
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Please fill all mandatory field!", labelKey: "PR_MANDATORY_FIELDS" },
+        "warning"
+      )
+    );
+  }
+}
+
 
 const setReviewPageRoute = (state, dispatch) => {
   let tenantId = get(
@@ -53,6 +87,11 @@ const setReviewPageRoute = (state, dispatch) => {
   const reviewUrl = `${appendUrl}/egov-pr/summary?applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
   dispatch(setRoute(reviewUrl));
 };
+
+
+
+
+
 
 const moveTosummary = (state, dispatch) => {
 
@@ -149,8 +188,7 @@ const getMdmsData = async (state, dispatch) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
-  
- // dispatch(prepareFinalObject("documentsUploadRedux", {}));
+ // toggleactionmenu(state, dispatch)
  let doc =localStorageGet("EmaildAttachment")
 if(doc!=="null" )
 {
@@ -192,8 +230,10 @@ if(doc!=="null" )
       dispatch(prepareFinalObject("documentsUploadRedux[0].documents", documentsPreview));
     }
   }
-    //  screenConfiguration.screenConfig.createInvite.
-      //dispatch(prepareFinalObject("documentsUploadRedux[0].documents", documentsPreview));
+  // if(get(state.screenConfiguration.preparedFinalObject, "CreateInvite.SMSContent")===undefined)
+  // {
+      if( localStorageGet("EmailTemplatesubject")!==null)
+      {
       dispatch(
         handleField(
           "createInvite",
@@ -202,7 +242,9 @@ if(doc!=="null" )
           localStorageGet("EmailTemplatesubject")
         )
       );
-  var x = document.getElementById("custom-atoms-footer");
+        }
+
+  var x = document.getElementById("custom-atoms-Invitefooter");
   x.classList.remove("addpadding");
 
   let activeStep = get(
@@ -214,6 +256,8 @@ if(doc!=="null" )
   
   let isFormValid = true;
   let hasFieldToaster = false;
+  if(get(state.screenConfiguration.preparedFinalObject, "CreateInvite.SMSContent")===undefined)
+  {
   dispatch(
     handleField(
       "createInvite",
@@ -222,6 +266,7 @@ if(doc!=="null" )
       localStorageGet("smsTemplate")
     )
   );
+    }
   if (activeStep === 1) {
 
    
@@ -413,42 +458,42 @@ export const changeStep = (
       value: activeStep
     },
     {
-      path: "components.div.children.footer.children.previousButton",
+      path: "components.div.children.Invitefooter.children.previousButton",
       property: "visible",
       value: isPreviousButtonVisible
     },
     {
-      path: "components.div.children.footer.children.nextButton",
+      path: "components.div.children.Invitefooter.children.nextButton",
       property: "visible",
       value: isNextButtonVisible
     },
     {
-      path: "components.div.children.footer.children.payButton",
+      path: "components.div.children.Invitefooter.children.payButton",
       property: "visible",
       value: isPayButtonVisible
     },
 	{
-      path: "components.div.children.footer.children.pressguestbutton",
+      path: "components.div.children.Invitefooter.children.pressguestbutton",
       property: "visible",
       value: ispressinviteVisible
     },
 	{
-      path: "components.div.children.footer.children.internalguestbutton",
+      path: "components.div.children.Invitefooter.children.internalguestbutton",
       property: "visible",
       value: isinviteVisible
     },
 	{
-      path: "components.div.children.footer.children.externalguestbutton",
+      path: "components.div.children.Invitefooter.children.externalguestbutton",
       property: "visible",
       value: isinviteVisible 
     },
 	{
-      path: "components.div.children.footer.children.nextButton",
+      path: "components.div.children.Invitefooter.children.nextButton",
       property: "visible",
       value: isinviteVisible 
     },
 	{
-      path: "components.div.children.footer.children.InviteEmployeebtn",
+      path: "components.div.children.Invitefooter.children.InviteEmployeebtn",
       property: "visible",
       value: sendinviteVisible
     },
@@ -543,13 +588,14 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
-  var x = document.getElementById("custom-atoms-footer");
+  toggleactionmenu(state, dispatch)
+  var x = document.getElementById("custom-atoms-Invitefooter");
   x.classList.add("addpadding");
   changeStep(state, dispatch, "previous");
 };
 
 
-export const footer = getCommonApplyFooter({
+export const Invitefooter = getCommonApplyFooter({
   pressguestbutton: {
     componentPath: "Button",
     props: {
@@ -559,7 +605,11 @@ export const footer = getCommonApplyFooter({
         height: "48px",
         marginRight: "16px",
         // width: "30%"
-        minWidth: "220px"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
     },
     gridDefination: {
@@ -599,7 +649,10 @@ export const footer = getCommonApplyFooter({
         height: "48px",
         marginRight: "16px",
         // width: "30%"
-        minWidth: "220px"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
       }
     },
     gridDefination: {
@@ -640,7 +693,10 @@ export const footer = getCommonApplyFooter({
         height: "48px",
         marginRight: "16px",
         // width: "30%"
-        minWidth: "220px"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
       }
     },
     gridDefination: {
@@ -677,7 +733,8 @@ export const footer = getCommonApplyFooter({
       color: "primary",
       style: {
         height: "48px",
-        marginRight: "16px" 
+        marginRight: "16px" ,
+
       }
     },
     children: {
@@ -708,7 +765,10 @@ export const footer = getCommonApplyFooter({
         height: "48px",
         marginRight: "16px",
         // width: "30%"
-        minWidth: "220px"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
       }
     },
     gridDefination: {
@@ -742,7 +802,8 @@ export const footer = getCommonApplyFooter({
       color: "primary",
       style: {
         height: "48px",
-        marginRight: "45px"
+        marginRight: "45px",
+
       }
     },
    
@@ -772,7 +833,8 @@ export const footer = getCommonApplyFooter({
 			  color: "primary",
 			  style: {
 			  height: "48px",
-				marginRight: "45px"
+        marginRight: "45px",
+
 			  }
       },
 			children: {
@@ -791,7 +853,9 @@ export const footer = getCommonApplyFooter({
 			},
 			onClickDefination: {
 			  action: "condition",
-			  callBack: (state, dispatch) => {invitationtoguests(state, dispatch) }
+        //callBack: (state, dispatch) => {invitationtoguests(state, dispatch) }
+        callBack: invitationtoguest
+
 			},
 			visible : false
 		},
@@ -833,3 +897,5 @@ export const takeactionfooter = getCommonApplyFooter({
     visible: true
   }
 });  
+
+

@@ -45,10 +45,10 @@ export const searchForm = getCommonCard({
   searchFormContainer: getCommonContainer({
 
     financialYear: getSelectField({
-      label: { labelName: "Material Type Name", labelKey: "STORE_MATERIAL_TYPE_NAME" },
+      label: { labelName: "Financial Year", labelKey: "STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR"},
       placeholder: {
-        labelName: "Select Materila Type Name",
-        labelKey: "STORE_MATERIAL_TYPE_NAME_SELECT",
+        labelName: "Select Financial Year",
+              labelKey: "STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR_SELECT"
       },
       required: false,
       jsonPath: "searchScreen.financialYear",
@@ -56,7 +56,7 @@ export const searchForm = getCommonCard({
         xs: 12,
         sm: 4,
       },
-      sourceJsonPath: "searchScreenMdmsData.store-asset.MaterialType",
+      sourceJsonPath: "searchScreenMdmsData.egf-master.FinancialYear",
       props: {
         optionValue: "code",
         optionLabel: "name",
@@ -80,7 +80,7 @@ export const searchForm = getCommonCard({
       },
       sourceJsonPath: "store.stores",
       props: {
-        optionValue: "id",
+        optionValue: "code",
         optionLabel: "name",
       },
       

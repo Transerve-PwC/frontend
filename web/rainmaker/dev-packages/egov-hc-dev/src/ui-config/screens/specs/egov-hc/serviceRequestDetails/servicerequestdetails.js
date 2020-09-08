@@ -69,7 +69,7 @@ export const servicerequestdetails = getCommonCard({
     },
     sourceJsonPath: "applyScreenMdmsData.eg-horticulture.ServiceType",
     jsonPath: "SERVICEREQUEST.serviceType",
-   
+    maxLength:5,
     labelsFromLocalisation: false,
     suggestions: [],
     fullwidth: true,

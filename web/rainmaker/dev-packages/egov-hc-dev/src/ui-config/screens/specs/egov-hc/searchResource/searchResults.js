@@ -13,16 +13,15 @@ const onRowClickServiceRequestsSearch = rowData => {
     default:
       window.location.href = `search-preview?applicationNumber=${
         rowData[0]
-      }&tenantId=${getTenantId()}&serviceType=${
-        rowData[3]
-      }`;
+      }&tenantId=${getTenantId()}`;
       break;
   }
 };
+
 export const searchResultsServiceRequest ={
   uiFramework: "custom-molecules",
   componentPath: "Table",
-  visible: true,
+  visible: false,
   props: {
     data:[],
     columns: [

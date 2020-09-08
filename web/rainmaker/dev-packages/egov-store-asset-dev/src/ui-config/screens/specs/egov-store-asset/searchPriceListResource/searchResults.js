@@ -38,6 +38,24 @@ export const getTextToLocalMapping = (label) => {
               "STORE_COMMON_TABLE_COL_STORE_NAME",
               localisationLabels
             );
+            case "Agrement No":
+              return getLocaleLabels(
+                "Agrement No",
+                "STORE_PRICE_AGREMENT_NO",
+                localisationLabels
+              );
+              case "Agrement Start Date":
+                return getLocaleLabels(
+                  "Agrement Start Date",
+                  "STORE_PRICE_AGREMENT_START_DATE",
+                  localisationLabels
+                );
+                case "Agrement End Date":
+                  return getLocaleLabels(
+                    "Agrement End Date",
+                    "STORE_PRICE_AGREMENT_END_DATE",
+                    localisationLabels
+                  );
             case "Rate Type":
         return getLocaleLabels(
           "Rate Type",
@@ -67,6 +85,9 @@ export const searchResults = {
     columns: [
       getTextToLocalMapping("Suplier Name"),
      // getTextToLocalMapping("Material Name"),
+     getTextToLocalMapping("Agrement No"), 
+     getTextToLocalMapping("Agrement Start Date"), 
+     getTextToLocalMapping("Agrement End Date"), 
       getTextToLocalMapping("Rate Type"),     
       getTextToLocalMapping("Active"),
       {
@@ -94,7 +115,7 @@ export const searchResults = {
 const onRowClick = (rowData) => {
   let tenantId = getTenantId();
  console.log(rowData);
- window.location.href = `view-price-list?id=${rowData[3]}&tenantId=${tenantId}&code=${rowData[3]}`;
+ window.location.href = `view-price-list?id=${rowData[6]}&tenantId=${tenantId}`;
 };
 
 

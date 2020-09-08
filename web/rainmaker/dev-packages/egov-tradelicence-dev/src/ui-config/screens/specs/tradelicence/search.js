@@ -26,6 +26,9 @@ const pageResetAndChange = (state, dispatch) => {
   dispatch(setRoute(`/tradelicence/apply?tenantId=${tenant}`));
 };
 
+const howItworks = (state, dispatch) => {
+  dispatch(setRoute('/tradelicence/how-it-works'));
+}
 
 const getMdmsData = async (dispatch) => {
   let mdmsBody = {
@@ -77,7 +80,7 @@ const tradeLicenseSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
   beforeInitScreen: (action, state, dispatch) => {
-    state.screenConfiguration.preparedFinalObject.searchScreen = {}
+    dispatch(prepareFinalObject("searchScreen", {}))
     getMdmsData(dispatch);
     getStatusList(state, dispatch, "search", "components.div.children.tradeLicenseApplication.children.cardContent.children.appStatusContainer.children.applicationNo")
     searchApiCall(state, dispatch, true)
@@ -104,6 +107,31 @@ const tradeLicenseSearchAndResult = {
                 sm: 6
               },
               ...header
+            },
+            howItWorksLink: {
+              componentPath: "Button",
+              gridDefination: {
+                xs: 12,
+                sm: 6,
+                align: "right"
+              },
+              props: {
+                style: {
+                  color: "red",
+                }
+              },
+              children: {
+                buttonLabel: getLabel({
+                  labelName: "How It Works",
+                  labelKey: "TL_HOW_IT_WORKS"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: (state, dispatch) => {
+                  howItworks(state, dispatch);
+                }
+              },
             },
             newApplicationButton: {
               componentPath: "Button",

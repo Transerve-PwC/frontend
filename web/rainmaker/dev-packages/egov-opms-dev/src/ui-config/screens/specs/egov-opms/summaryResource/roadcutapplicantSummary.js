@@ -93,6 +93,24 @@ export const roadcutapplicantSummary = getCommonGrayCard({
 
             }
           ),
+          gstNumber: getLabelWithValue(
+            {
+              labelName: "Applicant Name",
+              labelKey: "ROADCUT_GSTNO_LABEL_NOC"
+            },
+            {
+              jsonPath:
+                "nocApplicationDetail[0].applicationdetail",
+              callBack: value => {
+                if (value != undefined) {
+                  let gstin = JSON.parse(value).hasOwnProperty('gstin') ? JSON.parse(value)['gstin'] : '';
+                  return gstin;
+                } else {
+                  return '';
+                }
+              }
+            }
+          ),
           applicanttype: getLabelWithValue(
             {
               labelName: "applicanttype",

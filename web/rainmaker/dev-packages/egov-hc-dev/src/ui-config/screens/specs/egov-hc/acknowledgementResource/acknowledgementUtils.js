@@ -4,6 +4,7 @@ import {
   getCommonParagraph,
   getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import "./index.css";
 
 const style = {
   bodyBox: {
@@ -29,7 +30,9 @@ const style = {
     marginTop: "8px",
     marginBottom: "0px",
     color: "rgba(0, 0, 0, 0.60)",
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",
+    fontSize: 24,
+    fontWeight: 500
   },
   container: {
     display: "flex",

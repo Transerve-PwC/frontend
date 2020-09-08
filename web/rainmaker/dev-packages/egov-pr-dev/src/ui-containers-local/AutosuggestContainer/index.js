@@ -19,6 +19,7 @@ class AutoSuggestor extends Component {
     //Storing multiSelect values not handled yet
     onChange({ target: { value: value } });
   };
+  
 
   render() {
     const {
@@ -62,7 +63,7 @@ const getLocalisedSuggestions = suggestions => {
     suggestions.map((option, key) => {
       option.name = getLocaleLabels(
         option.code,
-        `TL_${option.code}`,
+        `${option.code}`,
         transfomedKeys
       );
       return option;

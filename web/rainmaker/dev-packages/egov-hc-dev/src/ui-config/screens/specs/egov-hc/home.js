@@ -30,7 +30,7 @@ if (role_name === 'CITIZEN' || role_name === "EE") {
         viewBox="0 -8 35 42"
         color="primary"
         font-size="40px"
-        class="material-icons module-page-icon" style={{ fontSize: "42px" }}>
+        class="material-icons module-page-icon" style={{ fontSize: "42px", height: "unset", width: "unset" }}>
         nature
     </i>,
       route: "servicerequest"
@@ -46,7 +46,7 @@ if (role_name === 'CITIZEN' || role_name === "EE") {
         viewBox="0 -8 35 42"
         color="primary"
         font-size="40px"
-        class="material-icons module-page-icon" style={{ fontSize: "42px" }}>
+        class="material-icons module-page-icon" style={{ fontSize: "42px", height: "unset", width: "unset" }}>
         library_books
     </i>,
       route: "myServiceRequests"
@@ -63,7 +63,6 @@ const horticultureSearchAndResult = {
   name: "serviceRequestLanding",
   beforeInitScreen: (action, state, dispatch) => {
     clearlocalstorageAppDetails(state);
-    setapplicationType('HORTICULTURE');
     return action;
   },
   components: {

@@ -818,6 +818,25 @@ return getCommonCard({
         pattern: getPMSPattern("Amount"),
         jsonPath: "ProcessInstances[0].employeeOtherDetails.ltc"
       }),
+      bankAddress: getTextField({
+        label: {
+          labelName: "Bank address",
+          labelKey: "PENSION_EMPLOYEE_PENSION_BA"
+        },
+        props:{
+          className:"applicant-details-error"
+        }, 
+        placeholder: {
+          labelName: "Bank address",
+          labelKey: "PENSION_EMPLOYEE_PENSION_BA"
+        },
+        required:false,
+        props: {
+          disabled: data[0].employeeOtherDetailsUpdate,      
+        },
+        pattern: getPMSPattern("Address"),
+        jsonPath: "ProcessInstances[0].employeeOtherDetails.bankAddress"
+      }),
       noDuesForAvailGovtAccomodation: {
         uiFramework: "custom-containers-local",
         moduleName: "egov-pms",
@@ -857,45 +876,6 @@ return getCommonCard({
         pattern: getPMSPattern("Amount"),
         jsonPath: "ProcessInstances[0].employeeOtherDetails.pensionArrear"
       }),
-     
-      bankAddress: getTextField({
-        label: {
-          labelName: "Bank address",
-          labelKey: "PENSION_EMPLOYEE_PENSION_BA"
-        },
-        props:{
-          className:"applicant-details-error"
-        }, 
-        placeholder: {
-          labelName: "Bank address",
-          labelKey: "PENSION_EMPLOYEE_PENSION_BA"
-        },
-        required:false,
-        props: {
-          disabled: data[0].employeeOtherDetailsUpdate,      
-        },
-        pattern: getPMSPattern("Address"),
-        jsonPath: "ProcessInstances[0].employeeOtherDetails.bankAddress"
-      }),
-      diesInExtremistsDacoitsSmugglerAntisocialAttack: {
-        uiFramework: "custom-containers-local",
-        moduleName: "egov-pms",
-        componentPath: "CheckboxContainer",
-        gridDefination: {
-          xs: 6
-        },
-        isFieldValid: true,
-        required:false,
-        visible:true,
-        props: {
-          //content: "any Misconduct, Insolvency or Inefficiency",
-          content: "PENSION_EMPLOYEE_EXTRMISTS_DIES_SMUGLER",
-          jsonPath: "ProcessInstances[0].employeeOtherDetails.diesInExtremistsDacoitsSmugglerAntisocialAttack",
-         disabled: data[0].employeeOtherDetailsUpdate,
-         
-        }
-    
-      },
       accountNumber: getTextField({
         label: {
           labelName: "A/C No.",
@@ -917,7 +897,8 @@ return getCommonCard({
         pattern: getPMSPattern("Amount"),
         jsonPath: "ProcessInstances[0].employeeOtherDetails.accountNumber"
       }),
-      isEmployeeDiesInTerroristAttack: {
+ 
+      diesInExtremistsDacoitsSmugglerAntisocialAttack: {
         uiFramework: "custom-containers-local",
         moduleName: "egov-pms",
         componentPath: "CheckboxContainer",
@@ -925,17 +906,17 @@ return getCommonCard({
           xs: 6
         },
         isFieldValid: true,
-        visible:true,
         required:false,
+        visible:true,
         props: {
-          //content: "Employee Dies in Terrorist Attack",
-          content: "PENSION_EMPLOYEE_DIES_TERRORIST_ATTACK",
-          jsonPath: "ProcessInstances[0].employeeOtherDetails.isEmployeeDiesInTerroristAttack",
+          //content: "any Misconduct, Insolvency or Inefficiency",
+          content: "PENSION_EMPLOYEE_EXTRMISTS_DIES_SMUGLER",
+          jsonPath: "ProcessInstances[0].employeeOtherDetails.diesInExtremistsDacoitsSmugglerAntisocialAttack",
          disabled: data[0].employeeOtherDetailsUpdate,
+         
         }
     
       },
-     
       wef: getDateField({
         label: {
           labelName: "wef",
@@ -957,6 +938,65 @@ return getCommonCard({
         pattern: getPattern("Date"),
         jsonPath: "ProcessInstances[0].employeeOtherDetails.wef"
       }), 
+      isEmployeeDiesInTerroristAttack: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-pms",
+        componentPath: "CheckboxContainer",
+        gridDefination: {
+          xs: 6
+        },
+        isFieldValid: true,
+        visible:true,
+        required:false,
+        props: {
+          //content: "Employee Dies in Terrorist Attack",
+          content: "PENSION_EMPLOYEE_DIES_TERRORIST_ATTACK",
+          jsonPath: "ProcessInstances[0].employeeOtherDetails.isEmployeeDiesInTerroristAttack",
+         disabled: data[0].employeeOtherDetailsUpdate,
+        }
+    
+      },
+      bankCode: getTextField({
+        label: {
+          labelName: "Bank Code",
+          labelKey: "PENSION_BANK_CODE"
+        },
+        props:{
+          className:"applicant-details-error"
+        }, 
+        placeholder: {
+          labelName: "Bank Code",
+          labelKey: "PENSION_BANK_CODE"
+        },
+        required:false,
+        maxLength:18,
+        props: {
+          disabled: data[0].employeeOtherDetailsUpdate,      
+        },
+        pattern: getPMSPattern("Name"),
+        jsonPath: "ProcessInstances[0].employeeOtherDetails.bankCode"
+      }),
+      bankIfsc: getTextField({
+        label: {
+          labelName: "Bank IFSC Code",
+          labelKey: "PENSION_BANK_IFSC"
+        },
+        props:{
+          className:"applicant-details-error"
+        }, 
+        placeholder: {
+          labelName: "Bank IFSC Code",
+          labelKey: "PENSION_BANK_IFSC"
+        },
+        maxLength:18,
+        required:false,
+        props: {
+          disabled: data[0].employeeOtherDetailsUpdate,      
+        },
+        pattern: getPMSPattern("Name"),
+        jsonPath: "ProcessInstances[0].employeeOtherDetails.bankIfsc"
+      }),
+
      
       // isEmploymentActive: {
       //   uiFramework: "custom-containers-local",

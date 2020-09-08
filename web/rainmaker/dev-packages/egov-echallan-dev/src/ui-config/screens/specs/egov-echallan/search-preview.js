@@ -11,19 +11,19 @@ import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
-import { searchBill, generateBill, createDemandForChallan, numWords, getTextToLocalMapping, getDiffernceBetweenTodayDate, checkForRole, generateReceiptNumber, getTextToLocalMappingChallanSummary, fetchRoleCode, convertEpochToDate, getMdmsEncroachmentSectorData, truncData } from "../utils/index";
+import { searchBill, generateBill, createDemandForChallan, numWords, getTextToLocalMapping, getDiffernceBetweenTodayDate, checkForRole, generateReceiptNumber, getTextToLocalMappingChallanSummary, fetchRoleCode, convertEpochToDate, getMdmsEncroachmentSectorData, truncData, integer_to_roman } from "../utils/index";
 import { violatorSummary } from "./summaryResource/violatorSummary";
 import { violationsSummary } from "./summaryResource/violationsSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary } from "./summaryResource/estimateSummary";
 import { searchResultsSummary, serachResultGridSM, searchResultsSummaryHOD, searchVehicleResultsSummary } from "./summaryResource/summaryGrid";
-import { footer} from "./summaryResource/footer";
-import {titlebarfooter} from "./summaryResource/citizenFooter";
-import { getSearchResultsView, getSearchResultsForNocCretificate, getSearchResultsForNocCretificateDownload, fetchStoreItemHODMasterChallanData, fetchMdmsData } from "../../../../ui-utils/commons";
+import { footer, takeactionfooter } from "./summaryResource/footer";
+import { titlebarfooter } from "./summaryResource/citizenFooter";
+import { getSearchResultsView, getSearchResultsForNocCretificate, getSearchResultsForNocCretificateDownload, fetchStoreItemHODMasterChallanData, fetchMdmsData, setCurrentApplicationProcessInstance, checkVisibility } from "../../../../ui-utils/commons";
 import { setEncroachmentType, getAccessToken, setapplicationType, getTenantId, getLocale, getUserInfo, localStorageGet, localStorageSet, setapplicationNumber } from "egov-ui-kit/utils/localStorageUtils";
 import store from "ui-redux/store";
 import "./index.css";
-import { adhocPopupReceivePayment, adhocPopupStockViolationForwardHOD } from "./payResource/adhocPopup";
+import { adhocPopupReceivePayment, adhocPopupStockViolationForwardHOD, challanDeletionPopup } from "./payResource/adhocPopup";
 
 let roles = JSON.parse(getUserInfo()).roles;
 
@@ -59,7 +59,7 @@ const titlebar = getCommonContainer({
     moduleName: "egov-echallan",
     componentPath: "ApplicationNoContainer",
     props: {
-      number: getQueryArg(window.location.href, "challanNumber")
+      number: getQueryArg(window.location.href, "applicationNumber")
     }
   },
   applicationStatus: {
@@ -67,7 +67,7 @@ const titlebar = getCommonContainer({
     moduleName: "egov-echallan",
     componentPath: "ApplicationStatusContainer",
     props: {
-      status: "Status : " + getQueryArg(window.location.href, "challanNumber")
+      status: "Status : " + ""
     }
   },
   paymentStatus: {
@@ -107,14 +107,13 @@ const prepareDocumentsView = async (state, dispatch) => {
     "screenConfiguration.preparedFinalObject.eChallanDetail[0].document",
     {}
   );
-
-  if (eChallanDocs.length > 0) {
+  if (eChallanDocs[0].documentUuid !== null) {
     eChallanDocs.forEach(element => {
       let docType = element.documentType.search('-') !== -1 ? element.documentType.split('-')[0].trim() : element.documentType
       documentsPreview.push({
         title: getTextToLocalMapping("EC_" + docType),
         fileStoreId: element.fileStoreId,
-        linkText: "View"
+        linkText: "Download"
       })
     });
   }
@@ -150,151 +149,216 @@ const prepareItemSeizedDetails = async (state, dispatch, encroachmentType, appst
     "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationItem",
     {}
   );
+  let processInstanceData = get(state, "screenConfiguration.preparedFinalObject.ECHALLAN.WF.ProcessInstanceData.ProcessInstances[0]", []);
+  const challanUuid = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].challanUuid", "");
+  let showstoredDetails = false;
+  let showSeizureOfVehicle = false;
+  if (challanUuid !== "") {
 
-  let rolecode = fetchRoleCode(true, appstatus);
-
-  if (SeizedItemDetailList.length > 0) {
-    const challanUuid = getQueryArg(window.location.href, "Key");
-    let dataarray = [];
-    let showstoredDetails = false;
-    let showSeizureOfVehicle = false;
-    let siarray = [];
-    if (rolecode === 'challanSI' || rolecode === 'CITIZEN') {
-      if (encroachmentType === 'Seizure of Vehicles') {
-        showSeizureOfVehicle = true;
-      } else {
-        showSeizureOfVehicle = false;
-      }
-    } else if (checkForRole(roles, 'challanHOD') && (appstatus === 'ADDED TO STORE' || appstatus === 'PENDING FOR AUCTION' || appstatus === 'PENDING FOR APPROVAL')) {
-      showstoredDetails = true;
-    } else if (rolecode === 'challanSM' && appstatus !== 'SENT TO STORE') {
-      showstoredDetails = true;
+    let rolecode = fetchRoleCode(true, appstatus);
+    switch (processInstanceData.action) {
+      case "CHALLAN ISSUED":
+      case "CITIZEN":
+      case "CLOSED":
+      case "RELEASED ON GROUND":
+      case "SENT TO STORE":
+        if (encroachmentType === 'Seizure of Vehicles') {
+          showSeizureOfVehicle = true;
+        } else {
+          showSeizureOfVehicle = false;
+        }
+        break;
+      case "RELEASED FROM STORE":
+      case "ADDED TO STORE":
+      case "PENDING FOR AUCTION":
+      case "PENDING FOR APPROVAL":
+        showstoredDetails = true;
+        break;
     }
 
-    if (showstoredDetails) {
-      let requestBody = {
-        "tenantId": getTenantId(),
-        "action": "",
-        "offset": 1,
-        "limit": -1,
-        "orderDir": "DESC",
-        "orderColumn": "",
-        "searchText": challanUuid
-      }
-      let response = await fetchStoreItemHODMasterChallanData(requestBody);
+    if (SeizedItemDetailList.length > 0) {
+      //const challanUuid = getQueryArg(window.location.href, "Key");
+      let dataarray = [];
+      let siarray = [];
 
-      for (let storedItemIndex = 0; storedItemIndex < response.length; storedItemIndex++) {
-        const item = response[storedItemIndex];
-        for (let seizedItemList = 0; seizedItemList < SeizedItemDetailList.length; seizedItemList++) {
-          const element = SeizedItemDetailList[seizedItemList];
-          let temp = [];
-          if (item['violationItemUuid'] === element['violationItemUuid']) {
-            let defectqty = parseInt(element['quantity']) - parseInt(item['quantity']);
+      if (showstoredDetails) {
+        let requestBody = {
+          "tenantId": getTenantId(),
+          "action": "",
+          "offset": 1,
+          "limit": -1,
+          "orderDir": "DESC",
+          "orderColumn": "",
+          "searchText": challanUuid
+        }
+        let response = await fetchStoreItemHODMasterChallanData(requestBody);
 
-            temp[0] = truncData(item['itemName'],25);
-            temp[1] = element['quantity'];
-            temp[2] = element['remark'];
-            temp[3] = item['quantity'];
-            temp[4] = defectqty === 0 ? '0' : defectqty;
-            temp[5] = item['remark'];
-            if (rolecode === 'challanHOD') {
-              temp[6] = item['isVerified'];
-              temp[7] = item['isAuctioned'];
-              temp[8] = item['isReturned'];
-              temp[9] = item['violationItemUuid'];
-              temp[10] = item['violationUuid'];
-            } else if (rolecode === 'challanSM') {
-              temp[6] = item['violationItemUuid'];
-              temp[7] = item['violationUuid'];
+        for (let storedItemIndex = 0; storedItemIndex < response.length; storedItemIndex++) {
+          const item = response[storedItemIndex];
+          for (let seizedItemList = 0; seizedItemList < SeizedItemDetailList.length; seizedItemList++) {
+            const element = SeizedItemDetailList[seizedItemList];
+            let temp = [];
+            if (item['violationItemUuid'] === element['violationItemUuid']) {
+              let defectqty = parseInt(element['quantity']) - parseInt(item['quantity']);
+              let intactQty = parseInt(item['quantity']) - parseInt(item['damagedQuantity']);
+              temp[0] = truncData(item['itemName'], 25);
+              temp[1] = element['quantity'];
+              temp[2] = element['remark'];
+              temp[3] = intactQty;
+              temp[4] = item['damagedQuantity'];
+              temp[5] = item['remark'];
+              if (rolecode === 'challanHOD') {
+                temp[6] = item['isVerified'];
+                temp[7] = item['isAuctioned'];
+                temp[8] = item['isReturned'];
+                temp[9] = item['violationItemUuid'];
+                temp[10] = item['violationUuid'];
+              } else if (rolecode === 'challanSM') {
+                temp[6] = item['violationItemUuid'];
+                temp[7] = item['violationUuid'];
+              }
+              dataarray.push(temp);
             }
-            dataarray.push(temp);
+
           }
-
         }
-      }
-    } else {
-      SeizedItemDetailList.map(function (item, index) {
-        let temp = [];
-        temp[0] = truncData(item['itemName'],25);
-        temp[1] = item['quantity'];
-        temp[2] = item['remark'];
-        temp[3] = '';
-        temp[4] = '';
-        temp[5] = '';
-        temp[6] = item['violationItemUuid'];
-        temp[7] = item['violationUuid'];
-        dataarray.push(temp);
-        let temp1 = [];
-        temp1[0] = item['itemName'];
-        if (encroachmentType === 'Seizure of Vehicles' && showSeizureOfVehicle) {
-          temp1[1] = item['itemType'];
-          temp1[2] = item['vehicleNumber'];
-          temp1[3] = item['quantity'];
-          temp1[4] = item['remark'];
-        } else if (encroachmentType !== 'Seizure of Vehicles' && (!showSeizureOfVehicle)) {
-          temp1[1] = item['quantity'];
-          temp1[2] = item['remark'];
-        }
-        siarray.push(temp1);
-      });
-    }
-
-    dispatch(prepareFinalObject('eChallanSMSeizedList', dataarray));
-
-    if (rolecode === 'challanSI' || rolecode === 'CITIZEN') // (role_name !== 'challanSM') && (role_name !== 'challanHOD'))
-    {
-      if (encroachmentType === 'Seizure of Vehicles' && showSeizureOfVehicle) {
-        dispatch(
-          handleField(
-            "search-preview",
-            "components.div.children.body.children.cardContent.children.searchVehicleResultsSummary",
-            "props.data",
-            siarray
-          )
-        );
       } else {
-        dispatch(
-          handleField(
-            "search-preview",
-            "components.div.children.body.children.cardContent.children.searchResultsSummary",
-            "props.data",
-            siarray
-          )
-        );
-      }
-    } else {
-      if (rolecode === 'challanSM') {
-        dispatch(
-          handleField(
-            "search-preview",
-            "components.div.children.body.children.cardContent.children.searchResultsSummarySM",
-            "props.data",
-            dataarray
-            // dataarray
-          )
-        );
-      } else if (rolecode === 'challanHOD') {
-        dispatch(
-          handleField(
-            "search-preview",
-            "components.div.children.body.children.cardContent.children.searchResultsSummaryHOD",
-            "props.data",
-            dataarray
-            // dataarray
-          )
-        );
+        SeizedItemDetailList.map(function (item, index) {
+          let temp = [];
+          temp[0] = truncData(item['itemName'], 25);
+          temp[1] = item['quantity'];
+          temp[2] = item['remark'];
+          temp[3] = '';
+          temp[4] = '';
+          temp[5] = '';
+          temp[6] = item['violationItemUuid'];
+          temp[7] = item['violationUuid'];
+          dataarray.push(temp);
+          let temp1 = [];
+          temp1[0] = item['itemName'];
+          if (encroachmentType === 'Seizure of Vehicles' && showSeizureOfVehicle) {
+            temp1[1] = item['itemType'];
+            temp1[2] = item['vehicleNumber'];
+            temp1[3] = item['quantity'];
+            temp1[4] = item['remark'];
+          } else if (encroachmentType !== 'Seizure of Vehicles' && (!showSeizureOfVehicle)) {
+            temp1[1] = item['quantity'];
+            temp1[2] = item['remark'];
+          }
+          siarray.push(temp1);
+        });
       }
 
+      dispatch(prepareFinalObject('eChallanSMSeizedList', dataarray));
+
+
+      switch (processInstanceData.action) {
+        case "CHALLAN ISSUED":
+        case "CITIZEN":
+        case "CLOSED":
+          if (encroachmentType === 'Seizure of Vehicles' && showSeizureOfVehicle) {
+            dispatch(
+              handleField(
+                "search-preview",
+                "components.div.children.body.children.cardContent.children.searchVehicleResultsSummary",
+                "props.data",
+                siarray
+              )
+            );
+          } else {
+            dispatch(
+              handleField(
+                "search-preview",
+                "components.div.children.body.children.cardContent.children.searchResultsSummary",
+                "props.data",
+                siarray
+              )
+            );
+          }
+          break;
+        case "RELEASED ON GROUND":
+        case "SENT TO STORE":
+          dispatch(
+            handleField(
+              "search-preview",
+              "components.div.children.body.children.cardContent.children.searchResultsSummarySM",
+              "props.data",
+              dataarray
+              // dataarray
+            )
+          );
+          break;
+        case "RELEASED FROM STORE":
+        case "ADDED TO STORE":
+        case "PENDING FOR AUCTION":
+        case "PENDING FOR APPROVAL":
+          dispatch(
+            handleField(
+              "search-preview",
+              "components.div.children.body.children.cardContent.children.searchResultsSummaryHOD",
+              "props.data",
+              dataarray
+              // dataarray
+            )
+          );
+          break;
+        // case "PENDING FOR AUCTION":
+        //   break;
+
+        default:
+          break;
+      }
     }
   }
 }
 
-
+const setAuctionButtonVisibleTrueFalse = (isVisible, dispatch, appstatus) => {
+  switch (appstatus) {
+    case "CHALLAN ISSUED":
+    case "SENT TO STORE":
+    case "CLOSED":
+    case "RELEASED ON GROUND":
+    case "RELEASED FROM STORE":
+    case "ADDED TO STORE":
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.employeeFooter.children.auctionButton",
+          "visible",
+          false
+        )
+      );
+      break;
+    case "PENDING FOR AUCTION":
+      if (checkForRole(roles, 'challanSM')) {
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.employeeFooter.children.auctionButton",
+            "visible",
+            isVisible
+          )
+        );
+      } else {
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.employeeFooter.children.auctionButton",
+            "visible",
+            false
+          )
+        );
+      }
+      break;
+  }
+}
 const setReceiveButtonVisibleTrueFalse = (isVisible, dispatch, appstatus) => {
   switch (appstatus) {
     case "CHALLAN ISSUED":
     case "SENT TO STORE":
     case "CLOSED":
+    case "RELEASED ON GROUND":
+    case "RELEASED FROM STORE":
       dispatch(
         handleField(
           "search-preview",
@@ -305,7 +369,6 @@ const setReceiveButtonVisibleTrueFalse = (isVisible, dispatch, appstatus) => {
       );
       break;
     case "ADDED TO STORE":
-    case "PENDING FOR AUCTION":
       if (checkForRole(roles, 'challanSM')) {
         dispatch(
           handleField(
@@ -324,8 +387,20 @@ const setReceiveButtonVisibleTrueFalse = (isVisible, dispatch, appstatus) => {
             false
           )
         );
+
       }
       break;
+    case "PENDING FOR AUCTION":
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.employeeFooter.children.StoreManagerReceivePaymentProcess",
+          "visible",
+          false
+        )
+      );
+      break;
+
   }
 
   dispatch(
@@ -333,7 +408,7 @@ const setReceiveButtonVisibleTrueFalse = (isVisible, dispatch, appstatus) => {
       "search-preview",
       "components.div.children.citizenFooter.children.submitButton",
       "visible",
-      appstatus === 'CLOSED' ? false : isVisible
+      (appstatus === 'RELEASED FROM STORE' || appstatus === 'RELEASED ON GROUND' || appstatus === 'CLOSED') ? false : isVisible
 
     )
   );
@@ -394,7 +469,7 @@ const setSendtoSoreButtonVisibleTrueFalse = (isVisible, dispatch) => {
   );
 }
 
-const setGridVisibleTrueFalse = (encroachmentType, appstatus, dispatch) => {
+const setGridVisibleTrueFalse = (state, encroachmentType, appstatus, dispatch) => {
 
   //#region Visible false all Search
   dispatch(
@@ -433,28 +508,31 @@ const setGridVisibleTrueFalse = (encroachmentType, appstatus, dispatch) => {
     )
   );
   //#region 
-
-  let rolecode = fetchRoleCode(true, appstatus);
-  if (rolecode === 'challanSI' || rolecode === 'CITIZEN') {
-    if (encroachmentType === 'Seizure of Vehicles') {
-      dispatch(
-        handleField(
-          "search-preview",
-          "components.div.children.body.children.cardContent.children.searchVehicleResultsSummary",
-          "visible",
-          true)
-      );
-    } else {
-      dispatch(
-        handleField(
-          "search-preview",
-          "components.div.children.body.children.cardContent.children.searchResultsSummary",
-          "visible",
-          true)
-      );
-    }
-  } else if (rolecode === 'challanSM') {
-    if (checkForRole(roles, 'challanSM') && appstatus !== 'CHALLAN ISSUED') {
+  let processInstanceData = get(state, "screenConfiguration.preparedFinalObject.ECHALLAN.WF.ProcessInstanceData.ProcessInstances[0]", []);
+  switch (processInstanceData.action) {
+    case "CHALLAN ISSUED":
+    case "CITIZEN":
+    case "CLOSED":
+      if (encroachmentType === 'Seizure of Vehicles') {
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.body.children.cardContent.children.searchVehicleResultsSummary",
+            "visible",
+            true)
+        );
+      } else {
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.body.children.cardContent.children.searchResultsSummary",
+            "visible",
+            true)
+        );
+      }
+      break;
+    case "RELEASED ON GROUND":
+    case "SENT TO STORE":
       dispatch(
         handleField(
           "search-preview",
@@ -463,23 +541,27 @@ const setGridVisibleTrueFalse = (encroachmentType, appstatus, dispatch) => {
           true
         )
       );
-    }
-  } else if (rolecode === 'challanHOD') {
-    if (checkForRole(roles, 'challanHOD') && (appstatus === 'ADDED TO STORE' || appstatus === 'PENDING FOR AUCTION' || appstatus === 'PENDING FOR APPROVAL')) {
+      break;
+    case "RELEASED FROM STORE":
+    case "ADDED TO STORE":
+    case "PENDING FOR AUCTION":
+    case "PENDING FOR APPROVAL":
       dispatch(
         handleField(
           "search-preview",
           "components.div.children.body.children.cardContent.children.searchResultsSummaryHOD",
           "visible",
-          rolecode === 'challanHOD' ? true : false
+          true
         )
       );
-    }
+      break;
+    // case "PENDING FOR AUCTION":
+    //   break;
+
+    default:
+      break;
   }
 }
-
-
-
 
 const setModulesVisibleTrueFalse = (isVisible, dispatch) => {
   dispatch(
@@ -545,6 +627,36 @@ const setEditVisibleTrueFalse = (action) => {
 
 };
 
+const HideshowEdit = (state, action, dispatch) => {
+  let processInstanceData = get(state, "screenConfiguration.preparedFinalObject.ECHALLAN.WF.ProcessInstanceData.ProcessInstances[0]", []);
+  let encroachmentType = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", '');
+  set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
+
+  checkVisibility(state, "SENT TO STORE", "sendtoSoreButton", action, "screenConfig.components.div.children.employeeFooter.children.sendtoSoreButton.visible", false);
+  checkVisibility(state, "ADDED TO STORE", "StoreManagerAddToStoreProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerAddToStoreProcess.visible", false);
+  //checkVisibility(state, "SENT TO STORE", "StoreManagerHODApprovalProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerHODApprovalProcess.visible", null)
+  if (encroachmentType !== 'Unauthorized/Unregistered Vendor') {
+    processInstanceData.action !== 'PENDING FOR AUCTION' ?
+      processInstanceData.action !== 'CHALLAN ISSUED' ?
+        checkVisibility(state, "CLOSED", "StoreManagerReturnandCloseProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerReturnandCloseProcess.visible", false)
+        : "" : "";
+    processInstanceData.action === 'ADDED TO STORE' ? checkVisibility(state, "PAID", "StoreManagerReceivePaymentProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerReceivePaymentProcess.visible", true) : "";
+    processInstanceData.action === 'CHALLAN ISSUED' ?
+      setOnGroundButtonVisibleTrueFalse(true, dispatch) : "";
+  }
+  if (processInstanceData.action === 'PENDING FOR AUCTION') {
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.employeeFooter.children.auctionButton",
+        "visible",
+        true
+      )
+    );
+  }
+
+
+};
 
 const setSearchResponse = async (
   state,
@@ -564,133 +676,102 @@ const setSearchResponse = async (
   await getMdmsEncroachmentSectorData(action, state, dispatch);
   const response = await getSearchResultsView(RequestBody);
   //
-  dispatch(prepareFinalObject("eChallanDetail", get(response, "ResponseBody", [])));
-  let sectorval = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', []);
-  let sectorValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.sector', []);
-  let __FOUND = sectorValue.find(function (sectorRecord, index) {
-    if (sectorRecord.code == sectorval.sector)
-      return true;
-  });
+  if (response.ResponseBody.length > 0) {
 
-  set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].sector', __FOUND.name);
+    dispatch(prepareFinalObject("eChallanDetail", get(response, "ResponseBody", [])));
 
-  let encroachValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.EncroachmentType', []);
-  let __FOUNDENCROACH = encroachValue.find(function (encroachRecord, index) {
-    if (encroachRecord.code == sectorval.encroachmentType)
-      return true;
-  });    
+    await setCurrentApplicationProcessInstance(state, false);
+    await setCurrentApplicationProcessInstance(state, true);
 
-  set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentTypeName', __FOUNDENCROACH.name);
+    let sectorval = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', []);
+    let sectorValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.sector', []);
+    let __FOUND = sectorValue.find(function (sectorRecord, index) {
+      if (sectorRecord.code == sectorval.sector)
+        return true;
+    });
+    set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].sector', __FOUND.name);
 
-  let processedViolationTime = sectorval.violationTime.split(':')[0] + ":" + sectorval.violationTime.split(':')[1];
-  set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].violationTime', processedViolationTime);
+    let encroachValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.EncroachmentType', []);
+    let __FOUNDENCROACH = encroachValue.find(function (encroachRecord, index) {
+      if (encroachRecord.code == sectorval.encroachmentType)
+        return true;
+    });
 
-
-
-  // Set Institution/Applicant info card visibility
-  let formatedDate = convertEpochToDate(get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate", new Date()));
-  set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate', formatedDate);
-
-  let appstatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].status", '');
-  let paystatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", '') === 'PENDING' ? 'UNPAID' : 'PAID';
-
-  dispatch(
-    handleField(
-      "search-preview",
-      "components.div.children.headerDiv.children.header.children.applicationStatus",
-      "props.status",
-      "Status : " + appstatus
-    )
-  );
-  dispatch(
-    handleField(
-      "search-preview",
-      "components.div.children.headerDiv.children.header.children.paymentStatus",
-      "props.status",
-      "Payment Status : " +
-      paystatus
-    )
-  );
-
-  setEncroachmentType(get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", ''));
-  let encroachmentType = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", '');
-  let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
-  let appstatusVisible = appstatus === 'CLOSED' ? false : true;
-  let receiveVisible = appstatus === "PENDING FOR AUCTION" ? false : paymentStatus === 'PAID' ? false : true;
-  let onGroundPaymentVisible = appstatus !== 'CHALLAN ISSUED' ? false : true;
-  let SentToStoreVisible = appstatus !== 'CHALLAN ISSUED' ? false : paymentStatus === 'PAID' ? false : true;
-
-  setGridVisibleTrueFalse(encroachmentType, appstatus, dispatch);
-  setReceiveButtonVisibleTrueFalse(receiveVisible, dispatch, appstatus);
-
-  setReturnCloseButtonVisibleTrueFalse(false, dispatch);
-  setAddToStoreButtonVisibleTrueFalse(false, dispatch);
-  setHodApprovalButtonVisibleTrueFalse(false, dispatch);
-  setOnGroundButtonVisibleTrueFalse(false, dispatch);
-  setSendtoSoreButtonVisibleTrueFalse(false, dispatch);
-
-  switch (appstatus) {
-    case "CLOSED":
-      setReturnCloseButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setAddToStoreButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setHodApprovalButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setOnGroundButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setSendtoSoreButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      break;
-    case "CHALLAN ISSUED":
-      setSendtoSoreButtonVisibleTrueFalse(SentToStoreVisible, dispatch);
-      if (encroachmentType === 'Unauthorized/Unregistered Vendor') {
-        setOnGroundButtonVisibleTrueFalse(false, dispatch);
-      } else {
-        setOnGroundButtonVisibleTrueFalse(onGroundPaymentVisible, dispatch);
-      }
-      break;
-    case "SENT TO STORE":
-      //setReceiveButtonVisibleTrueFalse(false, dispatch);
-      setAddToStoreButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setHodApprovalButtonVisibleTrueFalse(appstatusVisible, dispatch);
-      setSendtoSoreButtonVisibleTrueFalse(onGroundPaymentVisible, dispatch);
-      setReturnCloseButtonVisibleTrueFalse(false, dispatch);
-      setOnGroundButtonVisibleTrueFalse(false, dispatch);
-      break;
-    case "ADDED TO STORE":
-    case "PENDING FOR AUCTION":
-      setAddToStoreButtonVisibleTrueFalse(!appstatusVisible, dispatch);
-      setHodApprovalButtonVisibleTrueFalse(!appstatusVisible, dispatch);
-      setOnGroundButtonVisibleTrueFalse(false, dispatch);
-      setSendtoSoreButtonVisibleTrueFalse(onGroundPaymentVisible, dispatch);
-      if (encroachmentType === 'Unauthorized/Unregistered Vendor') {
-        setReturnCloseButtonVisibleTrueFalse(false, dispatch);
-      } else {
-        if (paymentStatus === 'PAID') {
-          setReturnCloseButtonVisibleTrueFalse(appstatusVisible, dispatch);
-        } else if (paymentStatus === 'UNPAID' || paymentStatus === 'PENDING') {
-          setReturnCloseButtonVisibleTrueFalse(!appstatusVisible, dispatch);
-        }
-      }
-      break;
-  }
+    set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentTypeName', __FOUNDENCROACH.name);
+    setEncroachmentType(get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", ''));
 
 
-  setModulesVisibleTrueFalse(true, dispatch);
-  prepareDocumentsView(state, dispatch);
-  prepareItemSeizedDetails(state, dispatch, encroachmentType, appstatus);
+    let processedViolationTime = sectorval.violationTime.split(':')[0] + ":" + sectorval.violationTime.split(':')[1];
+    set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].violationTime', processedViolationTime);
 
-  createDemandforChallanCertificate(state, dispatch, tenantId);
+    // Set Institution/Applicant info card visibility
+    let formatedDate = convertEpochToDate(get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate", new Date()));
+    set(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate', formatedDate);
+
+    let appstatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].status", '');
+    let paystatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", '') === 'PENDING' ? 'UNPAID' : 'PAID';
+    let appnumber = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].challanId", '');
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.headerDiv.children.header.children.applicationNumber",
+        "props.number",
+        appnumber
+      )
+    );
+
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.headerDiv.children.header.children.applicationStatus",
+        "props.status",
+        "Status : " + appstatus
+      )
+    );
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.headerDiv.children.header.children.paymentStatus",
+        "props.status",
+        "Payment Status : " +
+        paystatus
+      )
+    );
 
 
-  if (checkForRole(roles, 'challanSM') || checkForRole(roles, 'challanSI') || checkForRole(roles, 'CITIZEN')) {
-    setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
-  }
+    let encroachmentType = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", '');
+    let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
+    let receiveVisible = appstatus === "PENDING FOR AUCTION" ? false : paymentStatus === 'PAID' ? false : true;
 
-  let violationDate = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate", new Date());
+    setGridVisibleTrueFalse(state, encroachmentType, appstatus, dispatch);
 
-  if (getDiffernceBetweenTodayDate(violationDate) > 30 && encroachmentType !== "Seizure of Vehicles") {
+    setReceiveButtonVisibleTrueFalse(receiveVisible, dispatch, appstatus);
+    setAuctionButtonVisibleTrueFalse(false, dispatch, appstatus);
     setReturnCloseButtonVisibleTrueFalse(false, dispatch);
     setAddToStoreButtonVisibleTrueFalse(false, dispatch);
     setHodApprovalButtonVisibleTrueFalse(false, dispatch);
     setOnGroundButtonVisibleTrueFalse(false, dispatch);
     setSendtoSoreButtonVisibleTrueFalse(false, dispatch);
+
+    HideshowEdit(state, action, dispatch);
+
+    setModulesVisibleTrueFalse(true, dispatch);
+    prepareDocumentsView(state, dispatch);
+    prepareItemSeizedDetails(state, dispatch, encroachmentType, appstatus);
+
+    createDemandforChallanCertificate(state, dispatch, tenantId);
+    if (checkForRole(roles, 'challanSM') || checkForRole(roles, 'challanSI') || checkForRole(roles, 'CITIZEN')) {
+      setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
+    }
+
+    let violationDate = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate", new Date());
+    if (getDiffernceBetweenTodayDate(violationDate) > 30 && encroachmentType !== "Seizure of Vehicles") {
+      setReturnCloseButtonVisibleTrueFalse(false, dispatch);
+      setAddToStoreButtonVisibleTrueFalse(false, dispatch);
+      setHodApprovalButtonVisibleTrueFalse(false, dispatch);
+      setOnGroundButtonVisibleTrueFalse(false, dispatch);
+      setSendtoSoreButtonVisibleTrueFalse(false, dispatch);
+    }
   }
 };
 
@@ -716,6 +797,13 @@ const setSearchResponseForNocCretificate = async (
   let pdfCreateKey = '';
   let tenant = tenantId.length > 2 ? tenantId.split('.')[0] : tenantId;
 
+  let encroachValue = get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.EncroachmentType', []);
+  let violationEncroached = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", "NA")
+
+  let __FOUNDENCROACH = encroachValue.find(function (encroachRecord, index) {
+    if (encroachRecord.code == violationEncroached)
+      return true;
+  });
 
   if (nocRemarks !== "") {
     let data = {};
@@ -736,11 +824,9 @@ const setSearchResponseForNocCretificate = async (
       //)
     );
 
-    data.encroachmentType = nullToNa(
-      get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", "NA")
-    );
+    data.encroachmentType = nullToNa(__FOUNDENCROACH.name);
 
-    switch (data.encroachmentType) {
+    switch (violationEncroached) {
       case "Unauthorized/Unregistered Vendor":
         encorachmentvalue = "unregisteredEchallan";
         pdfCreateKey = "unregistered-ec";
@@ -805,13 +891,26 @@ const setSearchResponseForNocCretificate = async (
       get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].siName", "NA")
     );
 
+    let article = []
     if (data.encroachmentType !== "Seizure of Vehicles") {
       let violationitemList = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].violationItem", [])
       for (let index = 0; index < violationitemList.length; index++) {
         const element = violationitemList[index];
-        let articleobj = "article" + [index + 1];
-        data[articleobj] = element.itemName + " - " + element.quantity + " - " + element.remark;
+        // let articleobj = "article" + [index + 1];
+        let artilceName = "(" + integer_to_roman(index + 1) + ")  " + truncData(element.itemName, 25) + " - " + element.quantity + " - " + truncData(element.remark, 25);
+        if (artilceName.length < 80) {
+          while (artilceName.length < 160) {
+            artilceName = artilceName + " ";
+          }
+        }
+        article.push(artilceName);
       }
+      let art = "";
+      article.forEach(element => {
+        art += element;
+      });
+
+      data.article = art;
     }
 
     data.placeTime = nullToNa(
@@ -852,23 +951,28 @@ const setSearchResponseForNocCretificate = async (
   }
   if (paymentStatus === 'PAID') {
     let violatorDetails = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', []);
-
-    let numbertowords = numWords(violatorDetails.challanAmount) + ' ' + 'only.'
+    let paydetails = get(state, 'screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].billDetails[0].billAccountDetails', []);
+    let numbertowords = numWords(violatorDetails.totalChallanAmount) + ' ' + 'only'
     //NOC_Receipts
     let paymentdata = {
       "receiptNo": generateReceiptNumber(violatorDetails.challanId),
       "dated": convertEpochToDate(violatorDetails.paymentDetails.lastModifiedTime),
       "violatorName": violatorDetails.violatorName, // get(state, 'screenConfiguration.preparedFinalObject.echallanDetail.violatorName', ''),
-      "amount": violatorDetails.challanAmount, //get(state, 'screenConfiguration.preparedFinalObject.echallanDetail.challanAmount', '0'),
+      "amount": violatorDetails.totalChallanAmount, //get(state, 'screenConfiguration.preparedFinalObject.echallanDetail.challanAmount', '0'),
       "amountInWord": numbertowords,
       "paymentMode": violatorDetails.paymentDetails.paymentMode,
       "memoNo": violatorDetails.challanId,
+      "fineAmount": violatorDetails.challanAmount,//paydetails[0].taxHeadCode === 'EC_ECHALLAN_FEE' ? paydetails[0].amount : paydetails[1].amount,
+      "storageAmount": violatorDetails.penaltyAmount, //paydetails[1].taxHeadCode === 'EC_ECHALLAN_PENALTY' ? paydetails[1].amount : paydetails[0].amount,
       //"smName" : nullToNa(JSON.parse(getUserInfo()).name, 'NA')
     }
 
     let getFileStoreIdFor_RECEIPT = { "paymentEchallan": [paymentdata] }
 
     let pdfCreateKey = "challanReceipt-ec";
+    if (violatorDetails.encroachmentType === "Seizure of Vehicles") {
+      pdfCreateKey = "challanReceiptVehicle-ec"
+    }
 
     const response1_RECEIPT = await getSearchResultsForNocCretificate([
       { key: "tenantId", value: tenantId },
@@ -895,8 +999,6 @@ const setSearchResponseForNocCretificate = async (
       },
       leftIcon: "book"
     };
-
-
   }
   let isassigned = false;
 
@@ -938,9 +1040,7 @@ const createDemandforChallanCertificate = async (state, dispatch, tenantId) => {
   let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
 
   if (response) {
-
     response.Calculations[0].taxHeadEstimates.forEach(element => {
-
       if (element.taxHeadCode === 'EC_ECHALLAN_FEE' && element.estimateAmount > 0) {
         searchBill(dispatch, applicationNumber, tenantId, paymentStatus);
         //generateBill(dispatch, applicationNumber, getTenantId());
@@ -955,7 +1055,7 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "search-preview",
   beforeInitScreen: (action, state, dispatch) => {
-    const applicationNumber = getQueryArg(window.location.href, "challanNumber");
+    const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     const tenantId = getQueryArg(window.location.href, "tenantId");
     setapplicationType("egov-echallan");
     dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
@@ -990,18 +1090,6 @@ const screenConfig = {
             }
           }
         },
-
-        // body: checkForRole(roles, 'challanSM') ? getCommonCard({
-        //   estimateSummary: estimateSummary,
-        //   violationsSummary: violationsSummary,
-        //   violatorSummary: violatorSummary,
-        //   documentsSummary: documentsSummary
-        // }) : checkForRole(roles, 'challanHOD') ? getCommonCard({
-        //   estimateSummary: estimateSummary,
-        //   violationsSummary: violationsSummary,
-        //   violatorSummary: violatorSummary,
-        //   documentsSummary: documentsSummary
-        // }) :
         body: getCommonCard({
           estimateSummary: estimateSummary,
           violationsSummary: violationsSummary,
@@ -1018,6 +1106,8 @@ const screenConfig = {
           process.env.REACT_APP_NAME === "Citizen" ? titlebarfooter : {},
         employeeFooter:
           process.env.REACT_APP_NAME === "Employee" ? footer : {},
+        employeeTakeActionFooter:
+          process.env.REACT_APP_NAME === "Employee" ? takeactionfooter : {},
 
       }
     },
@@ -1047,6 +1137,20 @@ const screenConfig = {
       children: {
         popup: adhocPopupStockViolationForwardHOD
       }
+    },
+    deleteConfirmation: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-echallan",
+      componentPath: "DeleteConfirmationContainer",
+      props: {
+        open: false,
+        maxWidth: "sm",
+        screenKey: "search-preview"
+      },
+      children: {
+        popup: challanDeletionPopup
+      },
+      visible: true
     },
   }
 };

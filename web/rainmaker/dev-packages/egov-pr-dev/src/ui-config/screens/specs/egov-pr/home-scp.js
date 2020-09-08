@@ -1,29 +1,23 @@
 import React from "react";
 import { getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
-import MyApplicationIcon from "../../../../ui-atoms-local/Icons/MyApplicationIcon";
-import TodayIcon from "../../../../ui-atoms-local/Icons/TodayIcon";
-import LibraryIcon from "../../../../ui-atoms-local/Icons/LibraryIcon"
-import { getRequiredDocData } from "../utils";
 import get from "lodash/get";
-import set from "lodash/set";
-import { getRequiredDocuments } from "./requiredDocuments/reqDocs";
 import {
-  getFileUrlFromAPI,
+  
   getQueryArg,
-  getTransformedLocale,
-  setBusinessServiceDataToLocalStorage
+ 
 } from "egov-ui-framework/ui-utils/commons";
 
-import {localStorageGet, localStorageSet,getUserInfo} from "egov-ui-kit/utils/localStorageUtils";
+import { localStorageSet,getUserInfo} from "egov-ui-kit/utils/localStorageUtils";
 import "../../../../customstyle.scss";
-
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { checkForRole } from "../../../../ui-utils/commons";
 
+import { httpRequest } from "../../../../ui-utils";
+import commonConfig from '../../../../config/common';
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
- const header = getCommonHeader(
+const header = getCommonHeader(
   {
     labelName: "",
     labelKey:"PR_SPORTS_AND_CULTURE",
@@ -41,118 +35,154 @@ import { checkForRole } from "../../../../ui-utils/commons";
   }
 )
 
-
-
-let cardItems=[]
-if(checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER'))
-{
-const cardList = [
-  
-  {
-    label: {
-      labelKey: "Library",
-      labelName: "LIBRARY"
-    },
-    icon: <i
-    viewBox="0 -8 35 42"
-    color="primary"
-    font-size="40px"
-    class="material-icons module-page-icon" style={{fontSize:"50px"}}>
-   local_library
-  </i>, 
-    
-    route: "library-search"
+const LIBRARY= {
+  label: {
+    labelKey: "Library",
+    labelName: "LIBRARY"
   },
-
-];
-cardItems = cardList;
+  icon: <i
+  viewBox="0 -8 35 42"
+  color="primary"
+  font-size="40px"
+  class="material-icons module-page-icon" style={{fontSize:"50px", height: "unset", width: "unset"}}>
+ local_library
+</i>, 
+  route: "library-search"
 }
-else{
+const CREATE_EVENT={
+  label: {
+    labelName: "Create Event",
+    labelKey: "PR_CREATE EVENT"
+  },
+  icon: <i
+  viewBox="0 -8 35 42"
+  color="primary"
+  font-size="40px"
+  class="material-icons module-page-icon" style={{fontSize:"50px", height: "unset", width: "unset"}}>
+ event
+</i>,
+  route: "apply"
+}
+const MANAGE_EVENT={
+  label: {
+    labelName: "Manage Events",
+    labelKey: "PR_MANAGE_EVENT"
+  },
+  icon: <i
+  viewBox="0 -8 35 42"
+  color="primary"
+  font-size="40px"
+  class="material-icons module-page-icon" style={{fontSize:"50px", height: "unset", width: "unset"}}>
+ library_books
+</i>,
 
-  const cardList = [
-    {
-      label: {
-        labelName: "Create Event",
-        labelKey: "PR_CREATE EVENT"
-      },
-      icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      font-size="40px"
-      class="material-icons module-page-icon" style={{fontSize:"50px"}}>
-     event
-    </i>,
-   
-      route: "apply"
-    },
-    {
-      label: {
-        labelName: "Manage Events",
-        labelKey: "PR_MANAGE_EVENT"
-      },
-      icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      font-size="40px"
-      class="material-icons module-page-icon" style={{fontSize:"50px"}}>
-     library_books
-    </i>,
-   
-    
-    
-      route: "search"
-    },
-    {
-      label: {
-        labelName: "Invite Guest",
-        labelKey: "PR_INVITE_GUEST"
-      },
-      icon:<i
-      viewBox="0 -8 35 42"
-      color="primary"
-      font-size="40px"
-      class="material-icons module-page-icon" style={{fontSize:"50px"}}>
-     contact_mail
-    </i>,
-      route: "eventList"
-    },
-    {
-      label: {
-        labelKey: "Library",
-        labelName: "LIBRARY"
-      },
-      icon: <i
-      viewBox="0 -8 35 42"
-      color="primary"
-      font-size="40px"
-      class="material-icons module-page-icon" style={{fontSize:"50px"}}>
-     local_library
-    </i>, 
+
+  route: "search"
+}
+const INVITEGUEST= {
+  label: {
+    labelName: "Invite Guest",
+    labelKey: "PR_INVITE_GUEST"
+  },
+  icon:<i
+  viewBox="0 -8 35 42"
+  color="primary"
+  font-size="40px"
+  class="material-icons module-page-icon" style={{fontSize:"50px", height: "unset", width: "unset"}}>
+ contact_mail
+</i>,
+  route: "eventList"
+}
+
+let allCardList = [{ "code": "CREATE_EVENT", "value": CREATE_EVENT },
+ { "code": "MANAGE_EVENT", "value": MANAGE_EVENT },
+{ "code": "INVITEGUEST", "value": INVITEGUEST },
+{ "code": "LIBRARY", "value": LIBRARY }]
+
+const getMdmsData = async (action, state, dispatch) => {
+
+ 
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+        {
+          moduleName: "RAINMAKER-PR",
+          masterDetails: [ { name: "cardList" }
+          
+        ]
+        },
+       
+
      
-      route: "library-search"
-    },
-  
-  ];
-  cardItems = cardList;
-  
+      ]
+    }
+  };
+  try {
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
 
+
+    dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+  } catch (e) {
+    console.log(e);
+  }
+};
+const setcardList = (state, dispatch) => {
+  let mdmsCardList = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData['RAINMAKER-PR'].cardList",
+    []
+  );
+  let employeeCardList = []
+  let roles = JSON.parse(getUserInfo()).roles
+  mdmsCardList.map((item, index) => {
+    roles.some(r => {
+      if (item.roles.includes(r.code)) {
+        if (employeeCardList.length > 0) {
+          if (!employeeCardList.find((x) => x.code == item.code)) {
+           if(allCardList[index]!==undefined)
+           {
+            employeeCardList.push(allCardList[index])
+           }
+              
+            
+          }
+        } else {
+          if(allCardList[index]!==undefined)
+           {
+            employeeCardList.push(allCardList[index])
+           }
+        }
+      }
+    })
+  });
+
+  const cards = employeeCardList.map((item, index) => {
+    return item.value
+  });
+
+  dispatch(
+    handleField(
+      "home-scp",
+      "components.div.children.applyCard",
+      "props.items",
+      cards
+    )
+  );
 }
 const PRSCPSearchAndResult = {
   uiFramework: "material-ui",
-  name: "home",
+  name: "home-scp",
   beforeInitScreen: (action, state, dispatch) => {
+  
    
-    getRequiredDocData(action, state, dispatch).then(() => {
-      let documents = get(
-        state,
-        "screenConfiguration.preparedFinalObject.searchScreenMdmsData.PublicRelation.Documents",
-        []
-      );
-      set(
-        action,
-        "screenConfig.components.adhocDialog.children.popup",
-        getRequiredDocuments(documents)
-      );
+    getMdmsData(action, state, dispatch).then(response => {
+      setcardList(state, dispatch)
     });
 	
 	
@@ -177,7 +207,7 @@ const PRSCPSearchAndResult = {
           uiFramework: "custom-molecules",
           componentPath: "LandingPage",
           props: {
-            items: cardItems,
+            items: [],
             history: {},
             module:"PRSCP"
           }

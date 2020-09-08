@@ -72,7 +72,18 @@
   }
 
   .employee-complaints-tab {
-    padding-top: 60px;
+    padding-top: 105px;
+  }
+  .gro-search {
+   // margin-top: 60px;
+   margin-top: 65px;
+   position: fixed;
+   width: 100%;
+   Z-INDEX: 99999999999;
+   background-color: #fff;
+   display: inline-flex;
+   right: 0;
+   text-align: right;
   }
 
   // .gro-screen {

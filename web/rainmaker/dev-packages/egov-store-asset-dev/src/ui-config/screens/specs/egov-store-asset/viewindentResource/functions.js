@@ -9,7 +9,9 @@ import {
   createMaterialIndent,
   getMaterialIndentSearchResults,
   getPriceListSearchResults,
-  updateMaterialIndent
+  GetMdmsNameBycode,
+  updateMaterialIndent,
+  getWFPayload
 } from "../../../../../ui-utils/storecommonsapi";
 import {
   convertDateToEpoch,
@@ -147,13 +149,13 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
   set(jsonObject, jsonPath, modifiedArray);
 };
 
-export const furnishmaterialsData = (state, dispatch) => {
+export const furnishindentData = (state, dispatch) => {
   let indents = get(
     state.screenConfiguration.preparedFinalObject,
     "indents",
     []
   );
-  // setDateInYmdFormat(indents[0], ["dateOfAppointment", "user.dob"]);
+   setDateInYmdFormat(indents[0], ["indentDate", "expectedDeliveryDate"]);
   // setAllDatesInYmdFormat(indents[0], [
   //   { object: "assignments", values: ["fromDate", "toDate"] },
   //   { object: "priceListDetails", values: ["serviceFrom", "serviceTo"] }
@@ -167,20 +169,21 @@ export const furnishmaterialsData = (state, dispatch) => {
   dispatch(prepareFinalObject("indents", indents));
 };
 
-export const handleCreateUpdatePriceList = (state, dispatch) => {
-  let uuid = get(
+export const handleCreateUpdateIndent = (state, dispatch) => {
+  let id = get(
     state.screenConfiguration.preparedFinalObject,
-    "Employee[0].uuid",
+    "indents[0].id",
     null
   );
-  if (uuid) {
-    createUpdatePriceList(state, dispatch, "UPDATE");
+  if (id) {
+    
+    createUpdateIndent(state, dispatch, "UPDATE");
   } else {
-    createUpdatePriceList(state, dispatch, "CREATE");
+    createUpdateIndent(state, dispatch, "CREATE");
   }
 };
 
-export const createUpdatePriceList = async (state, dispatch, action) => {
+export const createUpdateIndent = async (state, dispatch, action) => {
   const pickedTenant = get(
     state.screenConfiguration.preparedFinalObject,
     "indents[0].tenantId"
@@ -209,13 +212,31 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
   let expectedDeliveryDate =
   get(state, "screenConfiguration.preparedFinalObject.indents[0].expectedDeliveryDate",0) 
   expectedDeliveryDate = convertDateToEpoch(expectedDeliveryDate);
-  set(indents[0],"expectedDeliveryDate", agreementDate);
+  set(indents[0],"expectedDeliveryDate", expectedDeliveryDate);
 
   //set defailt value
-  set(indents[0],"indentNumber", "");
-  set(indents[0],"indentType", "Indent");
-  set(indents[0],"materialHandOverTo", "Test");
-  set(indents[0],"designation", "");
+  let id = get(
+    state.screenConfiguration.preparedFinalObject,
+    "indents[0].id",
+    null
+  );
+  if(id === null)
+  {
+    set(indents[0],"indentNumber", "");
+    set(indents[0],"indentType", "Indent");
+    set(indents[0],"materialHandOverTo", "Test");
+    set(indents[0],"designation", "");
+  }
+  else
+  {
+    //
+    //set mrn_number
+    //IND/248430/STORECODE1/2020-21/00001 indentNumber
+    if(Number(id)===3)
+    set(indents[0],"indentNumber", "IND/248430/STORECODE1/2020-21/00001");
+  }
+
+
 
   // set date to epoch in  price list material name
   let priceListDetails = returnEmptyArrayIfNull(
@@ -231,21 +252,23 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
 
   if (action === "CREATE") {
     try {
+      let wfobject = getWFPayload(state, dispatch)
+
       console.log(queryObject)
       console.log("queryObject")
       let response = await createMaterialIndent(
         queryObject,        
         indents,
-        dispatch
+        dispatch,
+        wfobject
       );
-      // let employeeId = get(response, "Employees[0].code");
-      // const acknowledgementUrl =
-      //   process.env.REACT_APP_SELF_RUNNING === "true"
-      //     ? `/egov-ui-framework/hrms/acknowledgement?purpose=create&status=success&applicationNumber=${employeeId}`
-      //     : `/hrms/acknowledgement?purpose=create&status=success&applicationNumber=${employeeId}`;
-      // dispatch(setRoute(acknowledgementUrl));
+      if(response){
+        let indentNumber = response.indents[0].indentNumber
+       // dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=MATERIALINDENT&mode=create&code=${indentNumber}`));
+       dispatch(setRoute(`/egov-store-asset/view-indent?applicationNumber=${indentNumber}&tenantId=${response.indents[0].tenantId}&Status=${response.indents[0].indentStatus}`));
+      }
     } catch (error) {
-      furnishmaterialsData(state, dispatch);
+      furnishindentData(state, dispatch);
     }
   } else if (action === "UPDATE") {
     try {
@@ -254,29 +277,33 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
         indents,
         dispatch
       );
-      // let employeeId = response && get(response, "Employees[0].code");
-      // const acknowledgementUrl =
-      //   process.env.REACT_APP_SELF_RUNNING === "true"
-      //     ? `/egov-ui-framework/hrms/acknowledgement?purpose=update&status=success&applicationNumber=${employeeId}`
-      //     : `/hrms/acknowledgement?purpose=update&status=success&applicationNumber=${employeeId}`;
-      // dispatch(setRoute(acknowledgementUrl));
+      if(response){
+        let indentNumber = response.indents[0].indentNumber
+//        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=MATERIALINDENT&mode=update&code=${indentNumber}`));
+          dispatch(setRoute(`/egov-store-asset/view-indent?applicationNumber=${indentNumber}&tenantId=${response.indents[0].tenantId}&Status=${response.indents[0].indentStatus}`));
+      }
     } catch (error) {
-      furnishmaterialsData(state, dispatch);
+      furnishindentData(state, dispatch);
     }
   }
 
 };
 
-export const getMaterialmasterData = async (
+export const getMaterialIndentData = async (
   state,
   dispatch,
-  code,
-  tenantId
+  id,
+  tenantId,
+  applicationNumber
 ) => {
   let queryObject = [
+    // {
+    //   key: "ids",
+    //   value: id
+    // },
     {
-      key: "code",
-      value: code
+      key: "indentNumber",
+      value: applicationNumber
     },
     {
       key: "tenantId",
@@ -284,19 +311,26 @@ export const getMaterialmasterData = async (
     }
   ];
 
- let response = await getMaterialMasterSearchResults(queryObject, dispatch);
+ let response = await getMaterialIndentSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
-  dispatch(prepareFinalObject("materials", get(response, "materials")));
-  dispatch(
-    handleField(
-      "create",
-      "components.div.children.headerDiv.children.header.children.header.children.key",
-      "props",
-      {
-        labelName: "Edit Material Maste",
-        labelKey: "STORE_EDITMATERIAL_MASTER_HEADER"
-      }
-    )
-  );
- // furnishmaterialsData(state, dispatch);
+//response = response.indents.filter(x=>x.id === id)
+response = response.indents.filter(x => x.indentNumber === applicationNumber)
+//dispatch(prepareFinalObject("priceLists", get(response, "priceLists")));
+
+let TotalQty = 0;
+if(response && response[0])
+{
+  for (let index = 0; index < response[0].indentDetails.length; index++) {
+    const element = response[0].indentDetails[index];
+   let Uomname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",element.uom.code)   
+   set(response[0], `indentDetails[${index}].uom.name`, Uomname);
+   TotalQty = TotalQty + Number(element.indentQuantity)
+  }
+}
+set(response[0], `totalQty`, TotalQty);
+//dispatch(prepareFinalObject(`indents[0].totalQty`, TotalQty));
+dispatch(prepareFinalObject("indents", response));
+  //dispatch(prepareFinalObject("indents", get(response, "indents")));
+ 
+  furnishindentData(state, dispatch);
 };

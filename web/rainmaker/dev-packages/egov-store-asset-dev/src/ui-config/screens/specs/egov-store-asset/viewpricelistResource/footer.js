@@ -5,12 +5,12 @@ import { showHideAdhocPopup } from "../../utils";
 import { handleCreateUpdatePriceList } from "./functions";
 
 const gotoCreateFlow = (state, dispatch) => {
-  const employeeCode = getQueryArg(window.location.href, "employeeID");
+  const id = getQueryArg(window.location.href, "id");
   const tenantId = getQueryArg(window.location.href, "tenantId");
   const createUrl =
     process.env.REACT_APP_SELF_RUNNING === "true"
-      ? `/egov-ui-framework/hrms/create?employeeCode=${employeeCode}&tenantId=${tenantId}`
-      : `/hrms/create?employeeCode=${employeeCode}&tenantId=${tenantId}`;
+      ? `/egov-ui-framework/egov-store-asset/createpricelist?id=${id}&tenantId=${tenantId}`
+      : `/egov-store-asset/createpricelist?id=${id}&tenantId=${tenantId}`;
   dispatch(setRoute(createUrl));
 };
 

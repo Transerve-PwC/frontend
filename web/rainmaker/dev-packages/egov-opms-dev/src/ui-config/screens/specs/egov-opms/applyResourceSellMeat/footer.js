@@ -41,7 +41,7 @@ const setReviewPageRoute = (state, dispatch, applnid) => {
 };
 
 // const moveToReview = (state, dispatch, applnid) => {
-  
+
 //   if(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")!==undefined)
 //   {
 //   const documentsFormat = Object.values(
@@ -107,72 +107,72 @@ const setReviewPageRoute = (state, dispatch, applnid) => {
 //       "warning"
 //     )
 //   );
- 
+
 // }
 // };
 const moveToReview = (state, dispatch, applnid) => {
-  
-  
-    //alert(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux"))
-    if (get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux") !== undefined) {
-      const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
-      );
-  
-      let validateDocumentField = false;
-      for (let i = 0; i < 1; i++) {
-        let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
-        let isDocumentTypeRequired = get(
-          documentsFormat[i], "isDocumentTypeRequired");
-  
-        let documents = get(documentsFormat[i], "documents");
-        // if (isDocumentRequired) {
-        if (documents && documents.length > 0) {
-          if (isDocumentTypeRequired) {
-            if (get(documentsFormat[i], "dropdown.value")) {
-              validateDocumentField = true;
-            } else {
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  { labelName: "Please select type of Document!", labelKey: "" },
-                  "warning"
-                )
-              );
-              validateDocumentField = false;
-              break;
-            }
-          } else {
+
+
+  //alert(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux"))
+  if (get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux") !== undefined) {
+    const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
+    );
+
+    let validateDocumentField = false;
+    for (let i = 0; i < 1; i++) {
+      let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
+      let isDocumentTypeRequired = get(
+        documentsFormat[i], "isDocumentTypeRequired");
+
+      let documents = get(documentsFormat[i], "documents");
+      // if (isDocumentRequired) {
+      if (documents && documents.length > 0) {
+        if (isDocumentTypeRequired) {
+          if (get(documentsFormat[i], "dropdown.value")) {
             validateDocumentField = true;
+          } else {
+            dispatch(
+              toggleSnackbar(
+                true,
+                { labelName: "Please select type of Document!", labelKey: "" },
+                "warning"
+              )
+            );
+            validateDocumentField = false;
+            break;
           }
         } else {
-          dispatch(
-            toggleSnackbar(
-              true,
-              { labelName: "Please uplaod mandatory documents!", labelKey: "" },
-              "warning"
-            )
-          );
-          validateDocumentField = false;
-          break;
+          validateDocumentField = true;
         }
-        // } else {
-        //   validateDocumentField = true;
-        // }
+      } else {
+        dispatch(
+          toggleSnackbar(
+            true,
+            { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+            "warning"
+          )
+        );
+        validateDocumentField = false;
+        break;
       }
-  
-      //validateDocumentField = true;
-  
-      return validateDocumentField;
+      // } else {
+      //   validateDocumentField = true;
+      // }
     }
-    else {
-      dispatch(
-        toggleSnackbar(
-          true,
-          { labelName: "Please uplaod mandatory documents!", labelKey: "" },
-          "warning"
-        ))
-    }
-  };
+
+    //validateDocumentField = true;
+
+    return validateDocumentField;
+  }
+  else {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+        "warning"
+      ))
+  }
+};
 const getMdmsData = async (state, dispatch) => {
   let tenantId = getOPMSTenantId();
   /** get(
@@ -215,28 +215,22 @@ const callBackForNext = async (state, dispatch) => {
     "components.div.children.stepper.props.activeStep",
     0
   );
-  
-  //alert("activestepsss asd : " + (activeStep+1))
-  // validatestepform(activeStep+1)
-  // console.log(activeStep);
-  let isFormValid = true;
+
+  let isFormValid = false;
   let hasFieldToaster = false;
-  
-  let validatestepformflag = validatestepform(activeStep + 1)
-  
-  isFormValid = validatestepformflag[0];
-  hasFieldToaster = validatestepformflag[1];
-  // alert('activeStep final :'+activeStep)
+
+
   if (activeStep === 0) {
-    let isapplicantnamevalid = validateFields(
-      "components.div.children.formwizardSecondStep.children.nocDetails.children.cardContent.children",
+    isFormValid = validateFields(
+      "components.div.children.formwizardFirstStep.children.nocDetails.children.cardContent.children.nocDetailsContainer.children",
       state,
-      dispatch
+      dispatch,
+      'applysellmeat'
     );
 
   }
   if (activeStep === 1) {
-  
+
     isFormValid = moveToReview(state, dispatch);
   }
   if (activeStep !== 2) {
@@ -262,12 +256,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch(toggleSnackbar(true, errorMessage, "success"));
 
         } else {
-          // let errorMessage = {
-          //   labelName:
-          //     "Submission Falied, Try Again!",
-          //   labelKey: "UPLOAD_FILES_TOAST"
-          // };
-          // dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
           let errorMessage = {
             labelName: "Submission Falied, Try Again later!",
             labelKey: "" //UPLOAD_FILE_TOAST
@@ -276,27 +265,11 @@ const callBackForNext = async (state, dispatch) => {
         }
       }
       responseStatus === "success" && changeStep(state, dispatch);
-    } else if (hasFieldToaster) {
+    } else {
       let errorMessage = {
         labelName: "Please fill all mandatory fields !",
         labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST"
       };
-      switch (activeStep) {
-        case 1:
-          errorMessage = {
-            labelName:
-              "Please check the Missing/Invalid field for Property Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_PROPERTY_TOAST"
-          };
-          break;
-        case 2:
-          errorMessage = {
-            labelName:
-              "Please fill all mandatory fields for Applicant Details, then proceed!",
-            labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_TOAST"
-          };
-          break;
-      }
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
@@ -507,52 +480,3 @@ export const footer = getCommonApplyFooter({
   }
 });
 
-export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
-  let allAreFilled = true;
-  if (activeStep == 1) {
-    document.getElementById("apply_form" + activeStep).querySelectorAll("[required]").forEach(function (i) {
-      //  alert(i+"::::"+i.value)
-      //  alert(i.getAttribute("aria-invalid"))
-      if (!i.value) {
-        i.focus();
-        allAreFilled = false;
-        i.parentNode.classList.add("MuiInput-error-853");
-        i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      }
-      if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
-        i.parentNode.classList.add("MuiInput-error-853");
-        i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-        allAreFilled = false;
-        isFormValid = false;
-        hasFieldToaster = true;
-      }
-    })
-
-
-    document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
-      // alert("hidden "+i+"::::"+i.value)
-      //  alert(i.getAttribute("aria-invalid"))
-      if (i.value == i.placeholder) {
-        //	 alert(" inside hidden "+i+"::"+i.placeholder+"::"+i.value)
-        i.focus();
-        allAreFilled = false;
-        i.parentNode.classList.add("MuiInput-error-853");
-        i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-        allAreFilled = false;
-        isFormValid = false;
-        hasFieldToaster = true;
-      }
-
-    })
-  } 
-  if (allAreFilled == false) {
-    //alert('Fill all fields')
-    isFormValid = false;
-    hasFieldToaster = true;
-  }
-  else {
-    isFormValid = true;
-    hasFieldToaster = false;
-  }
-  return [isFormValid, hasFieldToaster]
-};

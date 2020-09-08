@@ -51,6 +51,11 @@
     div#custom-atoms-rightdiv {
       width: 100%;
     }
+    #material-ui-applicationSuccessContainer #custom-atoms-body #material-ui-header {
+      display: flex;
+      align-items: center;
+      padding-left: 5px;
+    }
   }
 
   textarea#custom-containers-fullAddress, textarea#custom-containers-permanentAddress, textarea#custom-containers-completeResidentialAddress, textarea#custom-containers-particularsOfArea {

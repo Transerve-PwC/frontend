@@ -39,7 +39,7 @@ else{
         border: "1px solid rgba(5, 5, 5, 0.11999999731779099)",
         // minWidth: 300,
         minWidth: "auto",
-        
+          wordBreak: "break-all",
         justifyContent: "space-between"
       }}
     >

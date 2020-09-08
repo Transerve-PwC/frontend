@@ -3,29 +3,13 @@ import { searchViewSeizureReport } from "./searchReportResource/serachResultGrid
 import { searchTextViewSeizureReport } from "./searchReportResource/searchTextViewSeizureReport"
 import { setapplicationType, getTenantId } from "egov-ui-kit/utils/localStorageUtils/";
 import { fetchMdmsData, fetchSIName } from "../../../../ui-utils/commons";
-import { resetAllFields, getMdmsEncroachmentSectorData } from "../utils";
+import { resetAllFields, getMdmsEncroachmentSectorData, getSiNameDetails } from "../utils";
 import get from "lodash/get";
 
 const header = getCommonHeader({
   labelName: "Search/View Seizure Report",
   labelKey: "EC_SEARCH_VIEW_SEIZURE_REPORT_HEADER"
 });
-
-const getSiNameDetails = async (action, state, dispatch) => {
-  //http://192.168.12.74:8096/egov-hrms/employees/_search?roles=challanSM&tenantId=ch.chandigarh
-  try {
-    const queryStr = [
-      { key: "tenantId", value: getTenantId() },
-      { key: "roles", value: "challanSI" },
-    ];
-    await fetchSIName(state, dispatch, queryStr);
-
-
-  } catch (e) {
-    console.log(e);
-  }
-
-};
 
 
 const VIEWSIZURESearchAndResult = {

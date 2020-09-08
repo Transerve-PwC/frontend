@@ -71,7 +71,19 @@ const DynamicTableContainer = Loadable({
   loader: () => import("./DynamicTableContainer"),
   loading: () => <Loading />
 })
+const MultiItem = Loadable({
+  loader: () => import("./MultiItem"),
+  loading: () => <Loading />
+});
 
+const WorkFlowContainer = Loadable({
+  loader: () => import("./WorkFlowContainer"),
+  loading: () => <Loading />
+})
+const InventoryContainer = Loadable({
+  loader: () => import("./InventoryContainer"),
+  loading: () => <Loading />
+})
 export {
   CustomTabContainer,
   LabelContainer,
@@ -88,5 +100,8 @@ export {
   ReassignContainer,
   ForwardContainer,
   UnderTakingContainer,
-  DynamicTableContainer
+  DynamicTableContainer,
+  MultiItem,
+  WorkFlowContainer,
+  InventoryContainer
 };

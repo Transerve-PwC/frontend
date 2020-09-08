@@ -27,4 +27,10 @@ const HCActionDialog = Loadable({
   loader: () => import("./HCActionDialog"),
   loading: () => <Loading />
 });
-export { Footer, ActionDialog, TaskDialog, TaskStatusComponents, HCActionDialog };
+
+const StoreAssetActionDialog = Loadable({
+  loader: () => import("./StoreAssestActionDialog"),
+  loading: () => <Loading />
+});
+
+export { Footer, ActionDialog, TaskDialog, TaskStatusComponents, HCActionDialog,StoreAssetActionDialog };

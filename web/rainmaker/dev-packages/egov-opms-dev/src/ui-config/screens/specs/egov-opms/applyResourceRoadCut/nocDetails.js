@@ -114,22 +114,25 @@ export const nocDetails = getCommonCard({
         jsonPath: "ROADCUTNOC.applicantName"
       })
     },
-    // division: {
-    //   ...getTextField({
-    //     label: {
-    //       labelName: "Division",
-    //       labelKey: "ROADCUT_DIVISION_NOC"
-    //     },
-    //     placeholder: {
-    //       labelName: "Enter Division",
-    //       labelKey: "ROADCUT_DIVISION_PLACEHOLDER"
-    //     },
-    //     required: true,
-    //     pattern: getOPMSPattern("Division"),
-    //     errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-    //     jsonPath: "ROADCUTNOC.division"
-    //   })
-    // },
+    gstin: {
+      ...getTextField({
+        label: {
+          labelName: "GSTIN",
+          labelKey: "ROADCUT_GSTIN_NOC"
+        },
+        placeholder: {
+          labelName: "GSTIN",
+          labelKey: "ROADCUT_GSTIN_NOC_PLACEHOLDER"
+        },
+        props: {
+          className: "TAN-CIN-GSTIN"
+        },
+        required: false,
+        pattern: getPattern("GSTNo"),
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+        jsonPath: "ROADCUTNOC.gstin",
+      })
+    },
       applicantDivision: {
       ...getSelectField({
         

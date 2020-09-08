@@ -45,7 +45,7 @@ export const searchApiCall = async (state, dispatch) => {
     );
   } else if (
     Object.keys(searchScreenObject).length == 0 ||
-    Object.values(searchScreenObject).every((x) => x.trim() === "")
+    Object.values(searchScreenObject).every((x) => (typeof x === "string") && x.trim() === "")
   ) {
     dispatch(
       toggleSnackbar(

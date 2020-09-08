@@ -15,7 +15,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["supplierMasterName","supplierMasterType", "active"];
+  const textFields = ["name","type", "active"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-supplier-master.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -43,23 +43,40 @@ export const searchForm = getCommonCard({
     labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
   }),
   searchFormContainer: getCommonContainer({
-    name: getSelectField({
-      label: { labelName: "Supplier Name", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
-      placeholder: {
-        labelName: "Select Supplier Name",
-        labelKey: "STORE_SUPPLIER_MASTER_NAME_SELECT",
+    // name: getSelectField({
+    //   label: { labelName: "Supplier Name", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
+    //   placeholder: {
+    //     labelName: "Select Supplier Name",
+    //     labelKey: "STORE_SUPPLIER_MASTER_NAME_SELECT",
+    //   },
+    //   required: false,
+    //   jsonPath: "searchScreen.name",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 4,
+    //   },
+    //   sourceJsonPath: "searhSupplierMaster.supplierName",
+    //   props: {
+    //     optionValue: "code",
+    //     optionLabel: "name",
+    //   },
+    // }),
+    name: getTextField({
+      label: {
+        labelName: "Supplier Name",
+        labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME",
       },
-      required: false,
-      jsonPath: "searchScreen.name",
-      gridDefination: {
-        xs: 12,
-        sm: 4,
-      },
-      sourceJsonPath: "searhSupplierMaster.supplierName",
       props: {
-        optionValue: "code",
-        optionLabel: "name",
+        className: "applicant-details-error",
       },
+      placeholder: {
+        labelName: "Enter Supplier Name",
+        labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME_PLACEHOLDER",
+      },
+      pattern: getPattern("Name"),
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+
+      jsonPath: "searchScreen.name",
     }),
     type: getSelectField({
       label: {

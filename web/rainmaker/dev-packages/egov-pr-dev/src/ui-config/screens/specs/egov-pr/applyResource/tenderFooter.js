@@ -8,19 +8,14 @@ import { getTenantId,localStorageGet } from "egov-ui-kit/utils/localStorageUtils
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getAccessToken,
  
-  getLocale,
-  getapplicationType,
   getUserInfo,
-  getapplicationMode,
-  getapplicationNumber
+  
 } from "egov-ui-kit/utils/localStorageUtils";
-import { getFileUrlFromAPI, getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import {  getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 import {resendinvitationtender} from "../../egov-pr/searchResource/citizenSearchFunctions"
  
-import { checkForRole } from "../../../../../ui-utils/commons";
 
 
 const RouteToPage = async (state, dispatch) => {
@@ -180,6 +175,7 @@ export const tenderFooter = getCommonApplyFooter({
           marginRight: "45px"
         }
       },
+     
       children: {
         submitButtonLabel: getLabel({
           labelName: "SUBMIT",
@@ -230,7 +226,7 @@ export const tenderSummaryfooter = getCommonApplyFooter({
       action: "condition",
       callBack: resendinvitationtender
     },
-    visible:checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER') || getQueryArg(window.location.href, "Status")=="CREATED"?false:true
+    visible:false
   },
 publishedButton: {
     componentPath: "Button",
@@ -253,7 +249,8 @@ publishedButton: {
       action: "condition",
       callBack: RouteToPage
     },
-     visible:checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER') ||  getQueryArg(window.location.href, "Status")=="PUBLISHED" ?false: true,
+    visible:false
+
    
   },
   cancelButton: {

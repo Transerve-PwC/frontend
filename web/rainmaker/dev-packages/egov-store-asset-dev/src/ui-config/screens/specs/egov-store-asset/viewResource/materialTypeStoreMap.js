@@ -20,7 +20,7 @@ import {
               labelName: "Store Name",
               labelKey: "STORE_DETAILS_STORE_NAME"
             },
-            { jsonPath: "materialTypes[0].storeMapping[0].store.code",
+            { jsonPath: "materialTypes[0].storeMapping[0].store.name",
             }
           ),
           departmentName: getLabelWithValue(
@@ -28,15 +28,15 @@ import {
               labelName: "Department Name",
               labelKey: "STORE_DETAILS_DEPARTMENT_NAME"
             },
-            { jsonPath: "materialTypes[0].storeMapping[0].department",
+            { jsonPath: "materialTypes[0].storeMapping[0].store.department.name",
             }
           ),
-          stckInHand: getLabelWithValue(
-            { labelName: "Stock-In-Hand Code", labelKey: "STORE_DETAILS_STORE_STCK_HAND" },
-            {
-              jsonPath: "materialTypes[0].storeMapping[0].chartofAccount.glcode",
-            }
-          ),
+          // stckInHand: getLabelWithValue(
+          //   { labelName: "Stock-In-Hand Code", labelKey: "STORE_DETAILS_STORE_STCK_HAND" },
+          //   {
+          //     jsonPath: "materialTypes[0].storeMapping[0].chartofAccount.glcode",
+          //   }
+          // ),
         }),
       }),
   

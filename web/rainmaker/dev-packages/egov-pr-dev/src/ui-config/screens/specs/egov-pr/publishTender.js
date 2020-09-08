@@ -1,5 +1,5 @@
 import {getCommonContainer,getCommonHeader,getStepperObject,getCommonTitle ,getBreak} from "egov-ui-framework/ui-config/screens/specs/utils";
-import { tenderApplyfooter } from "./applyResource/tenderApplyfooter";
+import { tenderApplyfooter,takeactionfooter } from "./applyResource/tenderApplyfooter";
 import jp from "jsonpath";
 import {localStorageSet} from "egov-ui-kit/utils/localStorageUtils";
 import { tenderDetails, EmailSmsContent} from "./tenderResources/tenderDetails";
@@ -15,6 +15,8 @@ import {getPressGridDatatender} from "./searchResource/citizenSearchFunctions";
 import { PressMasterListForTender,searchGridSecondstep } from "./searchResource/searchResults";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import './publishtender.css';
+import { getSearchResultsforTenderView } from "./searchResource/citizenSearchFunctions";
+
 import commonConfig from '../../../../config/common';
 
 export const stepsData = [
@@ -271,13 +273,14 @@ const screenConfig = {
     );
     const tenantId = getQueryArg(window.location.href, "tenantId");
     const step = getQueryArg(window.location.href, "step");
-	
+	//TenderDocuments
 	 // Get Sample email tmplate for event 
       localStorageSet("eventifforinvitatoin", "");
       localStorageSet("templateMappedUuid", "");
       localStorageSet("templateType", "TENDER_NOTICE");
       localStorageSet("templateModuleName", "TENDER");
       localStorageSet("subject", []);
+      dispatch(prepareFinalObject("TenderDocuments",[]));
 
 
       localStorageSet("sms", "");
@@ -293,6 +296,26 @@ const screenConfig = {
     getPressGridDatatender(action, state, dispatch);
     // Set MDMS Data
     // Set MDMS Data
+
+
+    let payload1 = {
+      "RequestBody": {
+        "tenantId": getTenantId(),
+        "moduleCode": localStorageGet("modulecode"),
+       
+        "tenderNoticeUuid": getQueryArg(window.location.href, "tenderuuId"),
+        "tenderNoticeId": getQueryArg(window.location.href, "tenderId"),
+        "fileNumber":"",
+        "tenderSubject":"",
+        "tenderNoticeStatus":"",
+        "fromDate":"",
+        "toDate":"",
+         "defaultGrid":false
+        
+      }
+    }
+    getSearchResultsforTenderView(state, dispatch, payload1)
+
     getMdmsData(action, state, dispatch).then(response => {
       prepareDocumentsUploadData(state, dispatch, 'create_pressnote');
     });
@@ -374,7 +397,8 @@ const screenConfig = {
         formwizardSecondStep,
        formwizardThirdStep,
        
-        tenderApplyfooter
+        tenderApplyfooter,
+        takeactionfooter
       }
     }
   }

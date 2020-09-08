@@ -16,6 +16,7 @@ import {
   getTodaysDateInYMD,
   getStartDateValue
   }  from "../../utils";
+  import "./index.css";
  
   export const ResetEventField = async (state, dispatch) => {
     //Event
@@ -32,7 +33,7 @@ import {
         "search",
         "components.div.children.EventFilter.children.cardContent.children.eventFilterContainer.children.eventStatus",
         "props.value",
-        ""
+        undefined
       )
     );
     
@@ -57,7 +58,7 @@ import {
         "search",
         "components.div.children.EventFilter.children.cardContent.children.eventFilterContainer.children.scheduleStatus",
         "props.value",
-        ""
+        undefined
       )
     );
     dispatch(
@@ -88,7 +89,7 @@ import {
         "eventList",
         "components.div.children.InviteGuestFilter.children.cardContent.children.eventFilterContainer.children.eventStatus",
         "props.value",
-        ""
+        undefined
       )
     );
     
@@ -113,7 +114,7 @@ import {
         "eventList",
         "components.div.children.InviteGuestFilter.children.cardContent.children.eventFilterContainer.children.scheduleStatus",
         "props.value",
-        ""
+        undefined
       )
     );
     dispatch(
@@ -190,7 +191,7 @@ import {
                 "pressNoteList",
                 "components.div.children.PressNoteFilter.children.cardContent.children.pressNoteFilterContainer.children.fromDate",
                 "props.value",
-                ""
+                undefined
               )
             );
 
@@ -199,7 +200,7 @@ import {
                 "pressNoteList",
                 "components.div.children.PressNoteFilter.children.cardContent.children.pressNoteFilterContainer.children.toDate",
                 "props.value",
-                ""
+                undefined
               )
             );
 
@@ -232,7 +233,7 @@ import {
                     "pressGrid",
                     "components.div.children.pressMasterFilter.children.cardContent.children.pressMasterFilterContainer.children.typeOfPress",
                     "props.value",
-                    ""
+                    undefined
                   )
                 );
     
@@ -374,50 +375,132 @@ export const EventFilter = getCommonCard({
       errorMessage: "PR_END_DATE_INVALID",
       required: false,
     }),
-    scheduleStatus: getSelectField({
-      label: {
-        labelName: "Schedule Status",
-        labelKey: "PR_SCHEDULE_STATUS_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Schedule Status",
-        labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
-      },
-      optionValue:"name",
-      optionLabel:"name"
- ,   
+//     scheduleStatus: getSelectField({
+//       label: {
+//         labelName: "Schedule Status",
+//         labelKey: "PR_SCHEDULE_STATUS_LABEL"
+//       },
+//       placeholder: {
+//         labelName: "Select Schedule Status",
+//         labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
+//       },
+//       optionValue:"name",
+//       optionLabel:"name"
+//  ,   
      
-      jsonPath: "PublicRelation[0].filterEvent.Scedulestatus",
-      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
-      required: false,
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
+//       jsonPath: "PublicRelation[0].filterEvent.Scedulestatus",
+//       sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
+//       required: false,
+//       gridDefination: {
+//         xs: 12,
+//         sm: 4
+//       }
     
-    }),
-    eventStatus: getSelectField({
-      label: {
-        labelName: "Event status",
-        labelKey: "PR_EVENT_STATUS_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Event status",
-        labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
-      },
-      optionValue:"name",
-      optionLabel:"name"
- ,   
+//     }),
+//     eventStatus: getSelectField({
+//       label: {
+//         labelName: "Event status",
+//         labelKey: "PR_EVENT_STATUS_LABEL"
+//       },
+//       placeholder: {
+//         labelName: "Select Event status",
+//         labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
+//       },
+//       optionValue:"name",
+//       optionLabel:"name"
+//  ,   
  
-      jsonPath: "PublicRelation[0].filterEvent.Eventstatus",
-      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
-      required: false,
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
+//       jsonPath: "PublicRelation[0].filterEvent.Eventstatus",
+//       sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
+//       required: false,
+//       gridDefination: {
+//         xs: 12,
+//         sm: 4
+//       }
     
-    }),
+//     }),
+
+    scheduleStatus: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-pr",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "PublicRelation[0].filterEvent.Scedulestatus",
+      
+            required: false,
+   gridDefination: {
+    xs: 12,
+    sm: 4
+  },
+    props: {
+    style: {
+    width: "100%",
+    cursor: "pointer"
+    },
+   
+    className:"basic-multi-select",
+    label: {
+      labelName: "Schedule Status",
+      labelKey: "PR_SCHEDULE_STATUS_LABEL"
+    },
+    placeholder: {
+      labelName: "Select Schedule Status",
+      labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
+    },
+    jsonPath: "PublicRelation[0].filterEvent.Scedulestatus",
+      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
+    labelsFromLocalisation: false,
+    suggestions: [],
+    fullwidth: true,
+    required: false,
+    inputLabelProps: {
+      shrink: true
+    },
+    isMulti: false,
+  labelName: "name",
+   valueName: "name"
+    },
+  },
+
+  eventStatus: {
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-pr",
+    componentPath: "AutosuggestContainer",
+    jsonPath: "PublicRelation[0].filterEvent.Eventstatus",
+    
+          required: false,
+ gridDefination: {
+  xs: 12,
+  sm: 4
+},
+  props: {
+  style: {
+  width: "100%",
+  cursor: "pointer"
+  },
+ 
+  className:"basic-multi-select",
+  label: {
+    labelName: "Event status",
+    labelKey: "PR_EVENT_STATUS_LABEL"
+  },
+  placeholder: {
+    labelName: "Select Event status",
+    labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
+  },
+  jsonPath: "PublicRelation[0].filterEvent.Eventstatus",
+      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
+  labelsFromLocalisation: false,
+  suggestions: [],
+  fullwidth: true,
+  required: false,
+  inputLabelProps: {
+    shrink: true
+  },
+  isMulti: false,
+labelName: "name",
+ valueName: "name"
+  },
+},
   }),
   
 
@@ -443,6 +526,7 @@ export const EventFilter = getCommonCard({
             borderRadius: "2px",
             width: "80%",
             height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -475,7 +559,8 @@ export const EventFilter = getCommonCard({
             border: "1px solid rgb(254, 122, 81)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -590,50 +675,203 @@ export const InviteGuestFilter = getCommonCard({
       errorMessage: "PR_END_DATE_INVALID",
       required: false,
     }),
-    scheduleStatus: getSelectField({
-      label: {
-        labelName: "Schedule Status",
-        labelKey: "PR_SCHEDULE_STATUS_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Schedule Status",
-        labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
-      },
 
-     optionValue:"name",
-     optionLabel:"name"
-,     
-      jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
-      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
-      required: false,
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
-    
-    }),
-    eventStatus: getSelectField({
-      label: {
-        labelName: "Event status",
-        labelKey: "PR_EVENT_STATUS_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Event status",
-        labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
-      },
+//   scheduleStatus: {
+//       uiFramework: "custom-containers-local",
+//       moduleName: "egov-pr",
+//       className:"basic-multi-select",
+//       jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
+      
+//             required: false,
+//    gridDefination: {
+//     xs: 12,
+//     sm: 6
+//   },
+//     props: {
+//     style: {
+//     width: "100%",
+//     cursor: "pointer"
+//     },
+   
+//     className: "citizen-city-picker",
+//     label: {
+//       labelName: "Schedule Status",
+//       labelKey: "PR_SCHEDULE_STATUS_LABEL"
+//     },
+//     placeholder: {
+//       labelName: "Select Schedule Status",
+//       labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
+//     },
+//     jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
+//     sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
+//     labelsFromLocalisation: false,
+//     suggestions: [],
+//     fullwidth: true,
+//     required: false,
+//     inputLabelProps: {
+//       shrink: true
+//     },
+//     isMulti: false,
+//   labelName: "name",
+//    valueName: "name"
+//     },
+//   },
 
-      optionValue:"name",
-      optionLabel:"name"
- ,   
-      jsonPath: "PublicRelation[0].filterInviteEvent.Eventstatus",
-      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
-      required: false,
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
+//   eventStatus: {
+//     uiFramework: "custom-containers-local",
+//     moduleName: "egov-pr",
+//     //className:"basic-multi-select",
+//     jsonPath: "PublicRelation[0].filterInviteEvent.Eventstatus",
     
-    }),
+//           required: false,
+//  gridDefination: {
+//   xs: 12,
+//   sm: 6
+// },
+//   props: {
+//   style: {
+//   width: "100%",
+//   cursor: "pointer"
+//   },
+ 
+//   className: "citizen-city-picker",
+//   label: {
+//     labelName: "Event status",
+//     labelKey: "PR_EVENT_STATUS_LABEL"
+//   },
+//   placeholder: {
+//     labelName: "Select Event status",
+//     labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
+//   },
+//   jsonPath: "PublicRelation[0].filterInviteEvent.Eventstatus",
+//   sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
+//   labelsFromLocalisation: false,
+//   suggestions: [],
+//   fullwidth: true,
+//   required: false,
+//   inputLabelProps: {
+//     shrink: true
+//   },
+//   isMulti: false,
+// labelName: "name",
+//  valueName: "name"
+//   },
+// },
+
+
+
+
+//     scheduleStatus: getSelectField({
+//       label: {
+//         labelName: "Schedule Status",
+//         labelKey: "PR_SCHEDULE_STATUS_LABEL"
+//       },
+//       placeholder: {
+//         labelName: "Select Schedule Status",
+//         labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
+//       },
+
+//      jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
+//       sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
+//       optionValue:"name",
+//       optionLabel:"name"
+//  ,     
+   
+//       required: false,
+//       gridDefination: {
+//         xs: 12,
+//         sm: 4
+//       }
+    
+//     }),
+
+
+  
+
+scheduleStatus: {
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-pr",
+  componentPath: "AutosuggestContainer",
+  jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
+  
+        required: false,
+gridDefination: {
+xs: 12,
+sm: 4
+},
+props: {
+style: {
+width: "100%",
+cursor: "pointer"
+},
+
+className:"basic-multi-select",
+label: {
+  labelName: "Schedule Status",
+  labelKey: "PR_SCHEDULE_STATUS_LABEL"
+},
+placeholder: {
+  labelName: "Select Schedule Status",
+  labelKey: "PR_SCHEDULE_STATUS_PLACEHOLDER"
+},
+
+jsonPath: "PublicRelation[0].filterInviteEvent.Scedulestatus",
+sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventScheduledStatus",
+labelsFromLocalisation: false,
+suggestions: [],
+fullwidth: true,
+required: false,
+inputLabelProps: {
+  shrink: true
+},
+isMulti: false,
+labelName: "name",
+valueName: "name"
+},
+},
+
+eventStatus: {
+uiFramework: "custom-containers-local",
+moduleName: "egov-pr",
+componentPath: "AutosuggestContainer",
+jsonPath: "PublicRelation[0].filterInviteEvent.Eventstatus",
+
+      required: false,
+gridDefination: {
+xs: 12,
+sm: 4
+},
+props: {
+style: {
+width: "100%",
+cursor: "pointer"
+},
+
+className:"basic-multi-select",
+label: {
+  labelName: "Event status",
+  labelKey: "PR_EVENT_STATUS_LABEL"
+},
+placeholder: {
+  labelName: "Select Event status",
+  labelKey: "PR_EVENT_STATUS_PLACEHOLDER"
+},
+
+
+jsonPath: "PublicRelation[0].filterInviteEvent.Eventstatus",
+sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].eventStatus",
+labelsFromLocalisation: false,
+suggestions: [],
+fullwidth: true,
+required: false,
+inputLabelProps: {
+shrink: true
+},
+isMulti: false,
+labelName: "name",
+valueName: "name"
+},
+},
   }),
   
 
@@ -656,7 +894,8 @@ export const InviteGuestFilter = getCommonCard({
             backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -689,7 +928,8 @@ export const InviteGuestFilter = getCommonCard({
             border: "1px solid rgb(254, 122, 81)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -747,7 +987,7 @@ export const LibraryFilter = getCommonCard({
       required: false,
       pattern:getPattern("EventTitle"),
       
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      errorMessage: "PR_EVENT_TITLE_INVALID",
       jsonPath: "PublicRelation[0].filterLibraryEvent.eventTitle"
     }),
     fromDate: getDateField({
@@ -823,7 +1063,8 @@ export const LibraryFilter = getCommonCard({
             backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -857,7 +1098,8 @@ export const LibraryFilter = getCommonCard({
             border: "1px solid rgb(254, 122, 81)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -974,7 +1216,8 @@ export const PressNoteFilter = getCommonCard({
             backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -1008,7 +1251,8 @@ export const PressNoteFilter = getCommonCard({
           border: "1px solid rgb(254, 122, 81)",
           borderRadius: "2px",
           width: "80%",
-          height: "48px"
+          height: "48px",
+          marginBottom: "8px",
         }
       },
       children: {
@@ -1073,11 +1317,11 @@ export const TenderFilter = getCommonCard({
     Subject: getTextField({
       label: {
         labelName: "Subject",
-        labelKey: "PR_SUBJECT"
+        labelKey: "PR_TENDER_DETAILS_SUBJECT"
       },
       placeholder: {
         labelName: "Enter Subject",
-        labelKey: "PR_SUBJECT_PLACEHOLDER"
+        labelKey: "PR_TENDER_DETAILS_SUBJECT_PLACEHOLDER"
       },
       gridDefination: {
         xs: 12,
@@ -1143,7 +1387,8 @@ export const TenderFilter = getCommonCard({
             backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -1177,7 +1422,8 @@ export const TenderFilter = getCommonCard({
           border: "1px solid rgb(254, 122, 81)",
           borderRadius: "2px",
           width: "80%",
-          height: "48px"
+          height: "48px",
+          marginBottom: "8px",
         }
       },
       children: {
@@ -1223,28 +1469,69 @@ export const pressMasterFilter = getCommonCard({
       errorMessage: "PR_PUBLICATION_NAME_INVALID",
       jsonPath: "PublicRelation[0].filterpressMaster.publicationname"
     }),
-    typeOfPress: getSelectField({
-      label: {
-        labelName: "Event Type Of Press",
-        labelKey: "PR_TYPEOFTHEPRESS"
-      },
-      placeholder: {
-        labelName: "Select Type Of Press",
-        labelKey: "PR_TYPEOFTHEPRESS_PLACEHOLDER"
-      },
-      optionValue:"name",
-      optionLabel:"name"
- ,   
+//     typeOfPress: getSelectField({
+//       label: {
+//         labelName: "Event Type Of Press",
+//         labelKey: "PR_TYPEOFTHEPRESS"
+//       },
+//       placeholder: {
+//         labelName: "Select Type Of Press",
+//         labelKey: "PR_TYPEOFTHEPRESS_PLACEHOLDER"
+//       },
+//       optionValue:"name",
+//       optionLabel:"name"
+//  ,   
  
-      jsonPath: "PublicRelation[0].filterpressMaster.typeofpress",
-      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].pressType",
-      required: false,
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
+//       jsonPath: "PublicRelation[0].filterpressMaster.typeofpress",
+//       sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].pressType",
+//       required: false,
+//       gridDefination: {
+//         xs: 12,
+//         sm: 4
+//       }
     
-    }),
+//    }),
+    typeOfPress: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-pr",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "PublicRelation[0].filterpressMaster.typeofpress",
+
+      
+            required: false,
+   gridDefination: {
+    xs: 12,
+    sm: 4
+  },
+    props: {
+    style: {
+    width: "100%",
+    cursor: "pointer"
+    },
+   
+    className:"basic-multi-select",
+    label: {
+      labelName: "Event Type Of Press",
+      labelKey: "PR_TYPEOFTHEPRESS"
+    },
+    placeholder: {
+      labelName: "Select Type Of Press",
+      labelKey: "PR_TYPEOFTHEPRESS_PLACEHOLDER"
+    },
+    jsonPath: "PublicRelation[0].filterpressMaster.typeofpress",
+      sourceJsonPath: "applyScreenMdmsData['RAINMAKER-PR'].pressType",
+    labelsFromLocalisation: false,
+    suggestions: [],
+    fullwidth: true,
+    required: false,
+    inputLabelProps: {
+      shrink: true
+    },
+    isMulti: false,
+  labelName: "name",
+   valueName: "name"
+    },
+  },
     PersonnelName: getTextField({
       label: {
         labelName: "Personnel Name",
@@ -1288,7 +1575,8 @@ export const pressMasterFilter = getCommonCard({
             backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -1322,7 +1610,8 @@ export const pressMasterFilter = getCommonCard({
             border: "1px solid rgb(254, 122, 81)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px",
         }
       },
       children: {

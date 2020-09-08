@@ -21,19 +21,19 @@ tbody {
 
 @media only screen and (max-width: 960px) {
   table tbody tr td {
-    width: 50% !important;
-    padding:4px 8px 4px 10px !important;
+    // width: 50% !important;
+    // padding:4px 8px 4px 10px !important;
     font-size: 14px !important;
     height: auto !important;
     white-space: pre-wrap !important;
     word-break: break-all !important;
-    border: unset !important;
-    vertical-align: top !important;
+    // border: unset !important;
+    // vertical-align: top !important;
 
   }
 }
-@media only screen and (max-width: 900px) {
-    span[class*="MUIDataTableBody-emptyTitle"] {
-    margin-left: -100% !important;
-    margin-top: 8% !important;
-  }}
+// @media only screen and (max-width: 900px) {
+//     span[class*="MUIDataTableBody-emptyTitle"] {
+//     margin-left: -100% !important;
+//     margin-top: 8% !important;
+//   }}

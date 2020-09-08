@@ -658,6 +658,8 @@ const mapStateToProps = (state, ownProps) => {
         action.status === "reassignrequested"
       ) {
         let assignee = action.by.split(":")[0];
+        action.employeeName =
+        assignee && getPropertyFromObj(employeeById, assignee, "name", "");
         action.employeeMobileNumber =
           assignee &&
           getPropertyFromObj(employeeById, assignee, "mobileNumber", "");

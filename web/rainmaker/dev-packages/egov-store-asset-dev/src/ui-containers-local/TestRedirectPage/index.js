@@ -118,10 +118,6 @@ class TestRedirect extends Component {
     }
     );
 
-    function changeText() {
-      var y = document.getElementById("file-upload").value;
-      document.getElementById("upload").innerHTML = y;
-    }
   }
 
 

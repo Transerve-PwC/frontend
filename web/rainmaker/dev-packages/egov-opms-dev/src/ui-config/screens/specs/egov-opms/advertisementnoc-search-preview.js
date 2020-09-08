@@ -17,12 +17,13 @@ import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import { searchBill, createDemandForAdvNOC } from "../utils/index";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 import { footer } from "./applyResource/employeeAdvertisementFooter";
 //import { footer ,footerReview} from "./applyResource/footer";
 import { adhocPopupAdvertisementWithdraw, adhocPopupAdvertisementwithdrawApproval, adhocPopupAdvertisementForward, adhocPopupAdvertisementReassign, adhocPopupAdvertisementReject, adhocPopupAdvertisementApprove } from "./payResource/adhocPopup";
 import { getRequiredDocuments } from "./requiredDocuments/reqDocs";
-import { preparepopupDocumentsADVUploadData, prepareDocumentsUploadData } from "../../../../ui-utils/commons";
+import { preparepopupDocumentsADVUploadData, prepareDocumentsUploadData, checkVisibility, setCurrentApplicationProcessInstance } from "../../../../ui-utils/commons";
 import { httpRequest } from "../../../../ui-utils";
 
 import {
@@ -34,7 +35,7 @@ import { estimateSummary } from "./summaryResource/estimateSummary";
 import { taskStatusSummary } from "./summaryResource/taskStatusSummary";
 import { showHideAdhocPopup, checkForRole } from "../utils";
 
-import { getAccessToken, getOPMSTenantId, getLocale, getUserInfo, localStorageGet, localStorageSet, setapplicationType, setapplicationNumber, getapplicationNumber } from "egov-ui-kit/utils/localStorageUtils";
+import { getAccessToken, getOPMSTenantId, getLocale, getUserInfo, localStorageGet, localStorageSet, setapplicationType, setapplicationNumber, getapplicationNumber, setOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getSearchResultsView, getSearchResultsForNocCretificate, getSearchResultsForNocCretificateDownload } from "../../../../ui-utils/commons";
 
 
@@ -87,6 +88,9 @@ const getMdmsData = async (action, state, dispatch) => {
             {
               name: "typeOfAdvertisement"
             },
+            {
+              name: "AdvertisementEmployeeList"
+            }
           ]
         },
         { moduleName: "AdvertisementNOC", masterDetails: [{ name: "AdvertisementNOCRemarksDocuments" }] }
@@ -123,6 +127,14 @@ const titlebar = getCommonContainer({
       number: getapplicationNumber()
     }
   },
+  withdrawRequest: {
+    uiFramework: "custom-atoms-local",
+    moduleName: "egov-opms",
+    componentPath: "WithdrawRequestContainer",
+    props: {
+      isVisible: false
+    }
+  },
   downloadMenu: {
     uiFramework: "custom-atoms",
     componentPath: "MenuButton",
@@ -150,6 +162,11 @@ const titlebar = getCommonContainer({
   //   }
   // }
 });
+const withdrawRequest={
+  uiFramework: "custom-atoms-local",
+  moduleName: "egov-opms",
+  componentPath: "WithdrawRequestContainer"
+}
 
 const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
@@ -220,7 +237,7 @@ const setDownloadMenu = (state, dispatch) => {
   /** END */
 };
 
-const HideshowEdit = (action, nocStatus, exemptedcategory, dispatch) => {
+const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
   let showEdit = false;
 
   if (nocStatus === "REASSIGN" || nocStatus === "DRAFT") {
@@ -253,17 +270,36 @@ const HideshowEdit = (action, nocStatus, exemptedcategory, dispatch) => {
     "screenConfig.components.div.children.body.children.cardContent.children.taskStatusSummary.children.cardContent.children.header.children.editSection.visible",
     false);
 
+  set(
+    action,
+    "screenConfig.components.adhocDialogForward.children.popup.children.adhocPopupAdvertisementForwardRemarkCard.children.advertisementForwardRemarkContainer.children.employeeList.visible",
+    checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
+  //advertisementOSDWithdraApprovalAmountField
+  set(
+    action,
+    "screenConfig.components.adhocDialog.children.popup.children.adhocPopupAdvertisementOSDWithdraApprovalAmountCard.children.advertisementOSDWithdraApprovalAmountContainer.children.employeeList.visible",
+    checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
 
   set(
     action,
-    "screenConfig.components.div.children.footer.children.withdrawapprove.visible",
-    checkForRole(roles, 'OSD') || checkForRole(roles, 'JEX')
-      ? localStorageGet('pms_iswithdrawn') === "yes"
-        ? exemptedcategory == 0
-          ? true
-          : false
-        : false
-      : false);
+    "screenConfig.components.adhocDialogForward.children.popup.children.adhocPopupAdvertisementForwardRemarkCard.children.advertisementForwardRemarkContainer.children.employeeList.required",
+    checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
+  //advertisementOSDWithdraApprovalAmountField
+  set(
+    action,
+    "screenConfig.components.adhocDialog.children.popup.children.adhocPopupAdvertisementOSDWithdraApprovalAmountCard.children.advertisementOSDWithdraApprovalAmountContainer.children.employeeList.required",
+    checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
+
+  // set(
+  //   action,
+  //   "screenConfig.components.div.children.footer.children.withdrawapprove.visible",
+  //   checkForRole(roles, 'OSD') || checkForRole(roles, 'JEX')
+  //     ? localStorageGet('pms_iswithdrawn') === "yes"
+  //       ? exemptedcategory == 0
+  //         ? true
+  //         : false
+  //       : false
+  //     : false);
 
 
   set(
@@ -282,33 +318,58 @@ const HideshowEdit = (action, nocStatus, exemptedcategory, dispatch) => {
       : false
   );
 
-  set(
-    action,
-    "screenConfig.components.div.children.footer.children.nextButton.visible",
-    checkForRole(roles, 'JEX') || checkForRole(roles, 'OSD')
-      ? localStorageGet('pms_iswithdrawn') !== "yes"
-        ? true
-        : false
-      : checkForRole(roles, 'SUPERINTENDENT')
-        ? true
-        : false
-  );
+  // set(
+  //   action,
+  //   "screenConfig.components.div.children.footer.children.nextButton.visible",
+  //   checkForRole(roles, 'JEX') || checkForRole(roles, 'OSD')
+  //     ? localStorageGet('pms_iswithdrawn') !== "yes"
+  //       ? true
+  //       : false
+  //     : checkForRole(roles, 'SUPERINTENDENT')
+  //       ? true
+  //       : false
+  // );
 
-  set(
-    action,
-    "screenConfig.components.div.children.footer.children.reassign.visible",
-    checkForRole(roles, 'SUPERINTENDENT') || checkForRole(roles, 'OSD') || checkForRole(roles, 'COMMISSIONER')
-      ? true
-      : checkForRole(roles, 'JEX')
-        ? localStorageGet('pms_iswithdrawn') !== "yes"
-          ? true
-          : false
-        : false
-  );
+  // set(
+  //   action,
+  //   "screenConfig.components.div.children.footer.children.reassign.visible",
+  //   checkForRole(roles, 'SUPERINTENDENT') || checkForRole(roles, 'OSD') || checkForRole(roles, 'CA')
+  //     ? true
+  //     : checkForRole(roles, 'JEX')
+  //       ? localStorageGet('pms_iswithdrawn') !== "yes"
+  //         ? true
+  //         : false
+  //       : false
+  // );
+  //fwd
+  set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
+  if (localStorageGet('pms_iswithdrawn') !== "yes") {
+    checkVisibility(state, "REVIEWOFSUPERINTENDENT,REVIEWOFOSD,REVIEWOFJC,REVIEWOFAC,REVIEWOFSC,REVIEWOFSEC,PENDINGAPPROVAL", "nextButton", action, "screenConfig.components.div.children.footer.children.nextButton.visible", null)
+    checkVisibility(state, "REASSIGN,REASSIGNTOJEX,REASSIGNTOSUPERINTENDENT,REASSIGNTOOSD,REASSIGNTOJC,REASSIGNTOAC,REASSIGNTOSC,REASSIGNTOSEC", "reassign", action, "screenConfig.components.div.children.footer.children.reassign.visible", null)
+  }
+  else if (localStorageGet('pms_iswithdrawn') === "yes") {
+    checkVisibility(state, "REVIEWOFOSD,PENDINGAPPROVAL", "nextButton", action, "screenConfig.components.div.children.footer.children.nextButton.visible", null)
+    checkVisibility(state, "REASSIGNTOJEX,REASSIGNTOSUPERINTENDENT,REASSIGNTOOSD,REASSIGNTOJC,REASSIGNTOAC,REASSIGNTOSC,REASSIGNTOSEC", "reassign", action, "screenConfig.components.div.children.footer.children.reassign.visible", null)
+    //withdrawapprove
+    checkVisibility(state, "REVIEWOFACFORWITHDRAW,REVIEWOFJCFORWITHDRAW,REVIEWOFSCFORWITHDRAW,REVIEWOFSECFORWITHDRAW,REVIEWOFSPAFTERWITHDRAW", "withdrawapprove", action, "screenConfig.components.div.children.footer.children.withdrawapprove.visible", exemptedcategory == 0)
+  }
+  //approve
+  checkVisibility(state, "APPROVED", "approve", action, "screenConfig.components.div.children.footer.children.approve.visible", null)
+  //reject
+  checkVisibility(state, "REJECTED", "reject", action, "screenConfig.components.div.children.footer.children.reject.visible", null)
+
+
+
+
 
   set(
     action,
     "screenConfig.components.div.children.body.children.cardContent.children.detailSummary.children.cardContent.children.body.children.withdrawapprovalamount.visible",
+    localStorageGet('pms_iswithdrawn') === "yes" ? true : false
+  );
+  set(
+    action,
+    "screenConfig.components.div.children.body.children.cardContent.children.detailSummary.children.cardContent.children.body.children.withdrawapprovaltaxamount.visible",
     localStorageGet('pms_iswithdrawn') === "yes" ? true : false
   );
 
@@ -338,93 +399,117 @@ const setSearchResponse = async (state, action, dispatch, applicationNumber, ten
     { key: "tenantId", value: tenantId },
     { key: "applicationNumber", value: applicationNumber }
   ]);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else {
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
+    // Set Institution/Applicant info card visibility
+    let nocStatus = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationstatus", {});
+    localStorageSet("app_noc_status", nocStatus);
+    let remarksData = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].remarks", []);
 
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
-  // Set Institution/Applicant info card visibility
-  let nocStatus = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationstatus", {});
-  localStorageSet("app_noc_status", nocStatus);
-  let remarksData = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].remarks", []);
+    remarksData.forEach(doc => {
+      if (doc.applicationstatus == 'WITHDRAWAFTERAPRROVAL' || doc.applicationstatus == 'WITHDRAW') {
+        localStorageSet("pms_iswithdrawn", "yes");
+      }
+    });
 
-  remarksData.forEach(doc => {
-    if (doc.applicationstatus == 'WITHDRAWAFTERAPRROVAL' || doc.applicationstatus == 'WITHDRAW') {
-      localStorageSet("pms_iswithdrawn", "yes");
+    if (localStorageGet('pms_iswithdrawn') === "yes") {
+      dispatch(
+        handleField(
+          "advertisementnoc-search-preview",
+          "components.div.children.headerDiv.children.header.children.withdrawRequest",
+          "props.isVisible",
+          true
+        )
+      );
     }
-  });
+  
+    let applicationStatus = get(response, "nocApplicationDetail.[0].applicationstatus");
+    localStorageSet("footerApplicationStatus", applicationStatus);
+    let exampted = get(state.screenConfiguration.preparedFinalObject, 'nocApplicationDetail[0].applicationdetail');
+    let exemptedcategory = JSON.parse(exampted)['exemptedCategory'];
+    await setCurrentApplicationProcessInstance(state);
 
-  let applicationStatus = get(response, "nocApplicationDetail.[0].applicationstatus");
-  localStorageSet("footerApplicationStatus", applicationStatus);
-  let exampted = get(state.screenConfiguration.preparedFinalObject, 'nocApplicationDetail[0].applicationdetail');
-  let exemptedcategory = JSON.parse(exampted)['exemptedCategory'];
-  HideshowEdit(action, nocStatus, exemptedcategory, dispatch);
+    HideshowEdit(state, action, nocStatus, exemptedcategory, dispatch);
 
-  if (JSON.parse(exampted).hasOwnProperty('withdrawapprovalamount'))
-    dispatch(prepareFinalObject("advertisement[0].WithdraApproval.Amount", JSON.parse(exampted)['withdrawapprovalamount']));
+    if (JSON.parse(exampted).hasOwnProperty('withdrawapprovalamount'))
+      dispatch(prepareFinalObject("advertisement[0].WithdraApproval.Amount", JSON.parse(exampted)['withdrawapprovalamount']));
 
-  dispatch(
-    handleField(
-      "advertisementnoc-search-preview",
-      "components.div.children.body.children.cardContent.children.advertisementapplicantSummary",
-      "visible",
-      true
-    )
-  );
+    if (JSON.parse(exampted).hasOwnProperty('withdrawapprovaltaxamount'))
+      dispatch(prepareFinalObject("advertisement[0].WithdraApproval.Tax", JSON.parse(exampted)['withdrawapprovaltaxamount']));
 
-  dispatch(
-    handleField(
-      "advertisementnoc-search-preview",
-      "components.div.children.body.children.cardContent.children.detailSummary",
-      "visible",
-      true
-    )
-  );
-
-
-  prepareDocumentsView(state, dispatch);
-  if (checkForRole(roles, 'CITIZEN'))
-    setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
-
-
-  getMdmsData(action, state, dispatch).then(response => {
-    //JSON.Parse(nocApplicationDetail[0].applicationdetail).typeOfAdvertisement
-
-    let advertisementtypeselected = '';
-    let advertisementsubtypeselected = '';
-    let advt = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationdetail",
-      {}
+    
+    dispatch(
+      handleField(
+        "advertisementnoc-search-preview",
+        "components.div.children.body.children.cardContent.children.advertisementapplicantSummary",
+        "visible",
+        true
+      )
     );
 
-    //if (advertisementtypeselected !== null && advertisementtypeselected !== '' && advertisementtypeselected !== 'undefined') {
-    if (advt !== null && advt !== '' && advt !== 'undefined') {
-      advertisementtypeselected = JSON.parse(advt).typeOfAdvertisement;
-      advertisementsubtypeselected = JSON.parse(advt).subTypeOfAdvertisement;
+    dispatch(
+      handleField(
+        "advertisementnoc-search-preview",
+        "components.div.children.body.children.cardContent.children.detailSummary",
+        "visible",
+        true
+      )
+    );
 
-      let advertisementtypeid = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egpm.typeOfAdvertisement",
-        []
+
+    prepareDocumentsView(state, dispatch);
+    if (checkForRole(roles, 'CITIZEN'))
+      setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
+
+
+    getMdmsData(action, state, dispatch).then(response => {
+      //JSON.Parse(nocApplicationDetail[0].applicationdetail).typeOfAdvertisement
+
+      let advertisementtypeselected = '';
+      let advertisementsubtypeselected = '';
+      let advt = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].applicationdetail",
+        {}
       );
-      let adv_id = advertisementtypeid.filter(item => {
-        if (item.name == advertisementtypeselected) {
-          localStorageSet("this_adv_code", item.code);
-          localStorageSet("this_adv_id", item.id);
-          item.subTypeOfAdvertisement.filter(subitem => {
-            if (subitem.name === advertisementsubtypeselected) {
-              localStorageSet("this_sub_adv_code", subitem.code);
-              localStorageSet("this_sub_adv_id", subitem.id);
-            }
-          });
 
-       //   createDemandForAdvNOC(state, dispatch, applicationNumber, tenantId);
-        }
-      });
+      //if (advertisementtypeselected !== null && advertisementtypeselected !== '' && advertisementtypeselected !== 'undefined') {
+      if (advt !== null && advt !== '' && advt !== 'undefined') {
+        advertisementtypeselected = JSON.parse(advt).typeOfAdvertisement;
+        advertisementsubtypeselected = JSON.parse(advt).subTypeOfAdvertisement;
+
+        let advertisementtypeid = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egpm.typeOfAdvertisement",
+          []
+        );
+        let adv_id = advertisementtypeid.filter(item => {
+          if (item.name == advertisementtypeselected) {
+            localStorageSet("this_adv_code", item.code);
+            localStorageSet("this_adv_id", item.id);
+            item.subTypeOfAdvertisement.filter(subitem => {
+              if (subitem.name === advertisementsubtypeselected) {
+                localStorageSet("this_sub_adv_code", subitem.code);
+                localStorageSet("this_sub_adv_id", subitem.id);
+              }
+            });
+
+            //   createDemandForAdvNOC(state, dispatch, applicationNumber, tenantId);
+          }
+        });
 
 
-    }
-    else {
-      alert("Error Fetching advertisement code. Reload!")
-    }
+      }
+      else {
+        alert("Error Fetching advertisement code. Reload!")
+      }
 
 
-  });
+    });
+
+  }
+
 };
+
 
 let httpLinkPET;
 
@@ -584,6 +669,23 @@ const screenConfig = {
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     setapplicationNumber(applicationNumber);
     const tenantId = getQueryArg(window.location.href, "tenantId");
+    setOPMSTenantId(tenantId);
+
+    if (JSON.parse(getUserInfo()).type === "EMPLOYEE") {
+      set(state,
+        "screenConfiguration.preparedFinalObject.documentsUploadRedux[0]",
+        ""
+      )
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].Forward.Remark", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].Approve.Remark", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].Reject.Remark", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].Reassign.Remark", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].WithdraApproval.Amount", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].WithdraApproval.Tax", "");
+      set(state.screenConfiguration.preparedFinalObject, "advertisement[0].WithdraApproval.Remark", "");
+      set(state.screenConfiguration.preparedFinalObject, "OPMS.AdvertisementNOC.typeOfCommissioner", "");
+    }
+
     dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
     searchBill(dispatch, applicationNumber, tenantId);
     //localStorage.setItem('ApplicationNumber', applicationNumber); , applicationNumber)
@@ -593,8 +695,6 @@ const screenConfig = {
     if (checkForRole(roles, 'CITIZEN')) {
       set(action, "screenConfig.components.adhocDialog.children.popup", adhocPopupAdvertisementWithdraw);
     }
-
-
     localStorageSet("pms_iswithdrawn", "no")
     setSearchResponse(state, action, dispatch, applicationNumber, tenantId);
 

@@ -3,10 +3,12 @@ import {
   getCommonHeader,
   getStepperObject,
   getBreak,
-  getCommonParagraph 
+  getCommonParagraph ,
+  getLabel,
+  getCommonCard 
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getCurrentFinancialYear } from "../utils";
-import { footer, takeactionfooter } from "./inviteResources/footer";
+import { Invitefooter, takeactionfooter } from "./inviteResources/footer";
 import { eventDetails } from "./applyResource/eventDetails";
 import { eventDescription } from "./applyResource/eventDescription";
 import { propertyDetails } from "./applyResource/propertyDetails";
@@ -24,6 +26,7 @@ import { getTenantId, localStorageGet, localStorageSet,lSRemoveItemlocal,lSRemov
 import { httpRequest } from "../../../../ui-utils";
 import "../../../../customstyle.css";
   import commonConfig from '../../../../config/common';
+  import {  deleteguestbyid} from "./searchResource/citizenSearchFunctions"
 
 import {
   sampleSearch,
@@ -34,7 +37,7 @@ import set from "lodash/set";
 import get from "lodash/get";
 import {
   prepareDocumentsUploadData,
-  getSearchResults,
+ 
   furnishNocResponse,
   setApplicationNumberBox,
   getsampleemailtemplate
@@ -50,6 +53,88 @@ export const stepper = getStepperObject(
   stepsData
 );
 
+export const ConfirmMsg = getCommonContainer({
+   
+  msgContainer: getCommonContainer({
+    subText: getCommonParagraph({
+      labelName: "Are you sure you want to remove this guest?",
+      
+      labelKey: "PR_CONFIRM_MSG"
+    }
+    ,
+      
+      {
+        style: {
+          wordBreak:"break-all"
+        }
+      }
+    ),
+  }),
+    break: getBreak(),
+    btnContainer: getCommonContainer({
+
+    cancel: {
+      componentPath: "Button",
+      props: {
+        variant: "outlined",
+      //  color: "primary",
+        style: {
+          color: "rgb(254, 122, 81)",
+          border: "1px solid rgb(254, 122, 81)",
+          borderRadius: "2px",
+          height: "38px",
+          marginRight: "16px",
+          marginTop: "40px",
+          minWidth:"80px",
+
+        }
+      },
+      children: {
+        nextButtonLabel: getLabel({
+          labelName: "Cancel",
+          labelKey: "PR_BUTTON_CANCEL"
+        }),
+  
+      },
+      onClickDefination: {
+
+
+        action: "condition",
+        callBack: (action, state, dispatch) => { window.location.reload(); }
+      }
+    },
+    submit: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+       color: "primary",
+        style: {
+         
+            borderRadius: "2px",
+            height: "38px",
+            marginRight: "16px",
+            marginTop: "40px",
+            minWidth:"80px",
+
+        }
+      },
+      children: {
+        nextButtonLabel: getLabel({
+          labelName: "Ok",
+          labelKey: "PR_OK_BUTTON"
+        }),
+        
+      },
+      onClickDefination: {
+
+
+        action: "condition",
+        callBack:deleteguestbyid
+      }
+    }
+
+  })
+});
 const eventifforinvitatoin = getQueryArg(
     window.location.href,
     "id"
@@ -286,34 +371,34 @@ const getFirstListFromDotSeparated = list => {
 };
 
 
-export const prepareEditFlow = async (
-  state,
-  dispatch,
-  applicationNumber,
-  tenantId
-) => {
-  const buildings = get(
-    state,
-    "screenConfiguration.preparedFinalObject.PublicRelations[0].PublicRelationDetails.buildings",
-    []
-  );
-  if (applicationNumber && buildings.length == 0) {
-    let response = await getSearchResults([
-      {
-        key: "tenantId",
-        value: tenantId
-      },
-      { key: "applicationNumber", value: applicationNumber }
-    ]);
+// export const prepareEditFlow = async (
+//   state,
+//   dispatch,
+//   applicationNumber,
+//   tenantId
+// ) => {
+//   const buildings = get(
+//     state,
+//     "screenConfiguration.preparedFinalObject.PublicRelations[0].PublicRelationDetails.buildings",
+//     []
+//   );
+//   if (applicationNumber && buildings.length == 0) {
+//     let response = await getSearchResults([
+//       {
+//         key: "tenantId",
+//         value: tenantId
+//       },
+//       { key: "applicationNumber", value: applicationNumber }
+//     ]);
    
-    response = furnishNocResponse(response);
+//     response = furnishNocResponse(response);
 
-    dispatch(prepareFinalObject("PublicRelations", get(response, "PublicRelations", [])));
-    if (applicationNumber) {
-      setApplicationNumberBox(state, dispatch, applicationNumber);
-    }
-  }
-};
+//     dispatch(prepareFinalObject("PublicRelations", get(response, "PublicRelations", [])));
+//     if (applicationNumber) {
+//       setApplicationNumberBox(state, dispatch, applicationNumber);
+//     }
+//   }
+// };
 
 const screenConfig = {
   uiFramework: "material-ui",
@@ -354,10 +439,9 @@ const screenConfig = {
     });
  
       GetDepartments(action, state, dispatch).then(response => {
-			  //alert("Get Depaartemnts")
 	  });
 	  
-	  prepareEditFlow(state, dispatch, applicationNumber, tenantId);
+	 // prepareEditFlow(state, dispatch, applicationNumber, tenantId);
 
     // Code to goto a specific step through URL
     if (step && step.match(/^\d+$/)) {
@@ -379,7 +463,7 @@ const screenConfig = {
         );
         set(
           action.screenConfig,
-          `components.div.children.footer.children.previousButton.visible`,
+          `components.div.children.Invitefooter.children.previousButton.visible`,
           step != 0
         );
       }
@@ -443,7 +527,7 @@ const screenConfig = {
         stepper,
         formwizardFirstStep,
         formwizardSecondStep,
-        footer,
+        Invitefooter,
 		takeactionfooter
       }
     },
@@ -514,11 +598,11 @@ const screenConfig = {
       componentPath: "DialogContainer",
       props: {
         open: false,
-        maxWidth: "md",
-        screenKey: "search-preview"
+        maxWidth: "xs",
+        screenKey: "createInvite"
       },
       children: {
-
+        popup: ConfirmMsg
       }
     },
   }

@@ -41,6 +41,10 @@ const MyApplicationIcon = Loadable({
   loader: () => import("./Icons/MyApplicationIcon"),
   loading: () => <Loading />
 });
+const WithdrawRequestContainer = Loadable({
+  loader: () => import("./withdrawRequest"),
+  loading: () => <Loading />
+});
 
 export {
   ApplicationNoContainer,
@@ -48,7 +52,7 @@ export {
   MapLocation,
   AutoSuggest,
   Asteric,
-  MenuButton,
-  
-  MyApplicationIcon
+  MenuButton,  
+  MyApplicationIcon,
+  WithdrawRequestContainer
 };

@@ -16,7 +16,7 @@ const styles = {
     paddingRight: 0,
     paddingTop: 11,
     paddingBottom: 0,
-    marginRight: 16,
+    marginRight: 10,
     marginTop: 16
   },
   subtext: {
@@ -58,6 +58,13 @@ function MultiCardDownloadGrid(props) {
                 labelName={item.title}
                 labelKey={item.title}
                 style={documentTitle}
+              />
+            </Grid>
+              <Grid xs={12}>
+              <LabelContainer
+                  labelName= {item.documentType}
+                  // labelKey={content.id}
+                  style={documentTitle}
               />
             </Grid>
             <Grid container>

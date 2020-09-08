@@ -21,7 +21,7 @@ const getLocalTextFromCode = localCode => {
 };
 
 export const ArticleGridDetails = {
-  uiFramework: "custom-molecules",
+  uiFramework: "custom-molecules-local",
   moduleName: "egov-echallan",
   componentPath: "Table",
   visible: true,
@@ -105,7 +105,7 @@ export const ArticleGridDetails = {
       download: false,
       // responsive: "scrollMaxHeight",
       viewColumns: false,
-      responsive: 'stacked',
+      responsive: 'scroll',
       // responsive: "stack"
       selectableRows: false,
       disableToolbarSelect: true,

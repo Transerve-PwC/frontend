@@ -13,6 +13,10 @@ import {
 import {
   changeStep
 } from "./footer";
+import {
+  changeStep as changeStepAllotment
+}
+from "./footerAllotment"
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
@@ -108,13 +112,21 @@ export const editSection = {
   }
 }
 
-const masterEntryEditSection = (isEditable, step = 0) => ({
+const masterEntryEditSection = (isEditable, step = 0, screenkey = "apply") => ({
   ...editSection,
   visible: isEditable,
   onClickDefination: {
     action: "condition",
     callBack: (state, dispatch) => {
-      changeStep(state, dispatch, "apply", "", step);
+      if (screenkey == "apply") {
+        changeStep(state, dispatch, screenkey, "", step);
+      }
+      else if (screenkey == "allotment") {
+        changeStepAllotment(state, dispatch, screenkey, "", step)
+      }
+      else {
+        
+      }
     }
   }
 })
@@ -129,7 +141,7 @@ export const headerDiv = {
   }
 }
 
-export const getReviewPropertyInfo = (isEditable = true) => {
+export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -144,7 +156,7 @@ export const getReviewPropertyInfo = (isEditable = true) => {
             labelKey: "EST_PROPERTY_INFO_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
       }
     },
     viewFour: getCommonContainer({
@@ -236,7 +248,7 @@ export const getReviewAuction = (isEditable = true) => {
   })
 }
 
-export const getReviewAdditional = (isEditable = true) => {
+export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -251,7 +263,7 @@ export const getReviewAdditional = (isEditable = true) => {
             labelKey: "EST_NOC_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
       }
     },
     viewFour: getCommonContainer({
@@ -877,6 +889,81 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
           jsonPath: `Properties[0].propertyDetails.courtCases[${owner}].honorableSupremeCourt`
         }
       )
+    })
+  })
+}
+
+const premiumAmountHeader = getCommonTitle({
+  labelName: "Premium Details",
+  labelKey: "EST_PREMIUM_AMOUNT_DETAILS_HEADER"
+}, {
+  style: {
+    marginBottom: 18,
+    marginTop: 18,
+    width: "100%"
+  }
+})
+export const getReviewPaymentInfoAllotment = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Payment Details",
+            labelKey: "EST_PAYMENT_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 6, "allotment")
+      }
+    },
+    viewPremiumAmount: getCommonContainer({
+      header: premiumAmountHeader,
+      premiumAmount: getLabelWithValue(
+        {
+          labelName: "Premium Amount",
+          labelKey: "EST_PREMIUM_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      noOfInstallmentsForPremiumAmount: getLabelWithValue(
+        {
+          labelName: "No. of Installments for Premium Amount",
+          labelKey: "EST_NUMBER_OF_INSTALLMENTS_FOR_PREMIUM_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      )
+    })
+  })
+}
+
+export const getReviewAuctionAllotment = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Auction Details",
+            labelKey: "EST_AUCTION_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+      }
+    },
+    viewAuctionDetails: getCommonContainer({
     })
   })
 }

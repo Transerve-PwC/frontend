@@ -12,6 +12,7 @@ const PasswordForm = ({ handleFieldChange, toggleSnackbarAndSetText, form }) => 
       <div className="employee-change-password">
         <TextField
           className="emp-change-passwd-field"
+          style = {{marginTop:30}}
           onChange={(e, value) => handleFieldChange("existingPassword", value)}
           {...fields.existingPassword}
         />

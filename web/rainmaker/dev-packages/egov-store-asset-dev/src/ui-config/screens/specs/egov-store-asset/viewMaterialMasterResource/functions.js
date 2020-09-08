@@ -8,8 +8,10 @@ import set from "lodash/set";
 import {
   createMaterial,
   getMaterialMasterSearchResults,
-  updateMaterial
+  updateMaterial,
+  GetMdmsNameBycode
 } from "../../../../../ui-utils/storecommonsapi";
+
 import {
   convertDateToEpoch,
   epochToYmdDate,
@@ -167,12 +169,12 @@ export const furnishmaterialsData = (state, dispatch) => {
 };
 
 export const handleCreateUpdateMaterialMaster = (state, dispatch) => {
-  let uuid = get(
+  let id = get(
     state.screenConfiguration.preparedFinalObject,
-    "Employee[0].uuid",
+    "materials[0].id",
     null
   );
-  if (uuid) {
+  if (id) {
     createUpdateMaterialMaster(state, dispatch, "UPDATE");
   } else {
     createUpdateMaterialMaster(state, dispatch, "CREATE");
@@ -198,7 +200,38 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
     []
   );
   set(materialsObject[0], "tenantId", tenantId);
-  set(materialsObject[0], "status", true);
+  set(materialsObject[0], "status", "CREATED");
+
+ const stckInfo = ["materialClass","stockingUom","minQuantity","maxQuantity","reorderLevel","reorderQuantity"];
+
+    stckInfo.forEach(ele => {
+     const present = materialsObject[0].hasOwnProperty(ele);
+      if(!present){
+        if(ele ==="stockingUom"){
+          materialsObject[0][ele] = null;
+        }
+        else if(ele ==="minQuantity" ||ele ==="maxQuantity"){
+          materialsObject[0][ele] = "0";
+        }
+          else{
+            materialsObject[0][ele] = null;
+          }
+        
+      }
+    })
+
+  //set default glcode
+  //materials[0].storeMapping[0].chartofAccount.glCode
+  let storeMapping = get(state, "screenConfiguration.preparedFinalObject.materials[0].storeMapping",[]) 
+  let materials = get(
+    state.screenConfiguration.preparedFinalObject,
+    "materials",
+    []
+  );
+  for (let i = 0; i < storeMapping.length; i++) {
+    set(materials[0],`storeMapping[${i}].chartofAccount.glCode`, "46130");
+  }
+  
   //handleDeletedCards(materialsObject[0], "storeMapping", "id");
  
 
@@ -207,6 +240,9 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
 
 
   if (action === "CREATE") {
+    for (let i = 0; i < storeMapping.length; i++) {
+      set(materials[0],`storeMapping[${i}].active`, true);
+    }
     try {
       console.log(queryObject)
       console.log("queryObject")
@@ -222,7 +258,7 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
       //     : `/hrms/acknowledgement?purpose=create&status=success&applicationNumber=${employeeId}`;
       // dispatch(setRoute(acknowledgementUrl));
       if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=create&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=MaterialMaster&mode=create&code=`));
        }
     } catch (error) {
       furnishmaterialsData(state, dispatch);
@@ -241,7 +277,7 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
       //     : `/hrms/acknowledgement?purpose=update&status=success&applicationNumber=${employeeId}`;
       // dispatch(setRoute(acknowledgementUrl));
       if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=update&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=MaterialMaster&mode=update&code=`));
        }
     } catch (error) {
       furnishmaterialsData(state, dispatch);
@@ -269,6 +305,19 @@ export const getMaterialmasterData = async (
 
  let response = await getMaterialMasterSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
+let uomcode = get(response, "materials[0].baseUom.code")
+if(uomcode)
+{
+uomcode = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",uomcode) 
+set(response.materials[0], "baseUom.name", uomcode);
+}
+
+let stockingUomuomcode = get(response, "materials[0].stockingUom.code")
+if(stockingUomuomcode)
+{
+  stockingUomuomcode = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",stockingUomuomcode) 
+set(response.materials[0], "stockingUom.name", stockingUomuomcode);
+}
   dispatch(prepareFinalObject("materials", get(response, "materials")));
   dispatch(
     handleField(

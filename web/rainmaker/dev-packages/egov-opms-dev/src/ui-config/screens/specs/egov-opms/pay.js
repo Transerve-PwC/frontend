@@ -12,9 +12,9 @@ import { paymentGatewaySelectionPopup } from "./payResource/adhocPopup";
 import estimateDetails from "./payResource/estimate-details";
 import { footer } from "./payResource/footer";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults } from "../../../../ui-utils/commons";
+import { getSearchResults,getSearchResultsView } from "../../../../ui-utils/commons";
 import { httpRequest } from "../../../../ui-utils";
-
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getUserInfo, getOPMSTenantId, getapplicationType, localStorageGet, lSRemoveItem, lSRemoveItemlocal } from "egov-ui-kit/utils/localStorageUtils";
 const header = getCommonContainer({
   header: getCommonHeader({
@@ -58,15 +58,30 @@ const fetchBill = async (state, dispatch, applicationNumber, tenantId) => {
 };
 
 const loadNocData = async (dispatch, applicationNumber, tenantId) => {
-  const response = await getSearchResults([
+  
+  
+ 
+  const viewResponse = await getSearchResultsView([
     {
       key: "tenantId",
       value: tenantId
     },
     { key: "applicationNumber", value: applicationNumber }
   ]);
-  // const response = sampleSingleSearch();
+ 
+  if (viewResponse === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else{
+    const response = await getSearchResults([
+      {
+        key: "tenantId",
+        value: tenantId
+      },
+      { key: "applicationNumber", value: applicationNumber }
+    ]);
   dispatch(prepareFinalObject("OpmsNOCs", get(response, "OpmsNOCs", [])));
+  }
 };
 
 
@@ -77,6 +92,7 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "pay",
   beforeInitScreen: (action, state, dispatch) => {
+    
     let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     let tenantId = getQueryArg(window.location.href, "tenantId");
     loadNocData(dispatch, applicationNumber, tenantId);

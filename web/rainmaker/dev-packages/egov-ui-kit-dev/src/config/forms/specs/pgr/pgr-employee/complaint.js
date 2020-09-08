@@ -162,6 +162,7 @@ const formConfig = {
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
       value: "",
       errorText: "",
+      maxlength: "500"
     },
     tenantId: {
       id: "add-complaint-tenantid",

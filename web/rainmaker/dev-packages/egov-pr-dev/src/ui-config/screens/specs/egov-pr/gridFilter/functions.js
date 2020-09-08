@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults ,getEventFilterResults,getPressMasterFilterResults,getPressFilterResults,getTenderFilterResults} from "../../../../../ui-utils/commons";
+import {convertTime, getEventFilterResults,getPressMasterFilterResults,getPressFilterResults,getTenderFilterResults,truncData} from "../../../../../ui-utils/commons";
 import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields, getTextToLocalMapping } from "../../utils";
@@ -11,40 +11,20 @@ import {  getUserInfo  } from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from '../../../../../config/common';
 
 
-import { checkForRole } from "../../../../../ui-utils/commons";
-
-
  
-const convertTime =(time)=> {
-  // Check correct time format and split into components
-  
-  //time=time+":00"
-  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
-  
-  if (time.length > 1) { // If time format correct
-  time = time.slice(1); // Remove full string match value
-  time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
-  time[0] = +time[0] % 12 || 12; // Adjust hours
-  }
-  return time.join(''); // return adjusted time or original string
-  }
-  const truncTime=(str, length, ending)=> {
-    if (length == null) {
-      length = 20;
-    }
-    if (ending == null) {
-      ending = '...';
-    }
-    if (str.length > length) {
-      return str.substring(0, length - ending.length) + ending;
-    } else {
-      return str;
-    }
-  };
+
+
 ///eventFilter
 
 export const searchEventApiCall = async (state, dispatch) => {
-
+ let eventStatus=get(
+    state.screenConfiguration.preparedFinalObject,
+    "PublicRelation[0].filterEvent.Eventstatus"
+  ) 
+  let status=get(
+    state.screenConfiguration.preparedFinalObject,
+    "PublicRelation[0].filterEvent.Scedulestatus")
+  
   let tenantId = getTenantId();
   let startDate=get(
     state.screenConfiguration.preparedFinalObject,
@@ -54,7 +34,8 @@ export const searchEventApiCall = async (state, dispatch) => {
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterEvent.toDate"
   )
-  if(endDate<startDate)
+  
+  if((startDate!="" && endDate!="") && endDate<startDate)
   {
     dispatch(
       toggleSnackbar(
@@ -77,20 +58,8 @@ let data= {"requestBody":{
   "PublicRelation[0].filterEvent.eventTitle"
 ) || "",
  
-  "eventStatus":get(
-    state.screenConfiguration.preparedFinalObject,
-    "PublicRelation[0].filterEvent.Eventstatus"
-  )==="ALL"?"":get(
-    state.screenConfiguration.preparedFinalObject,
-    "PublicRelation[0].filterEvent.Eventstatus"
-  ) || "",
-  "status":get(
-    state.screenConfiguration.preparedFinalObject,
-    "PublicRelation[0].filterEvent.Scedulestatus"
-  )==="ALL"?"":get(
-    state.screenConfiguration.preparedFinalObject,
-    "PublicRelation[0].filterEvent.Scedulestatus"
-  ) || "",
+  "eventStatus":eventStatus===undefined?"":eventStatus.label==="ALL"?"":eventStatus.label|| "",
+  "status":status===undefined?"":status.label==="ALL"?"":status.label || "",
   "startDate":get(
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterEvent.fromDate"
@@ -175,7 +144,7 @@ response.ResponseBody[j]['EmpName']=payload.MdmsRes["common-masters"].Department
           [getTextToLocalMapping("Event Id")]:
           item.eventId || "-",
           [getTextToLocalMapping("Event Title")]:
-          truncTime(item.eventTitle) || "-",
+          truncData(item.eventTitle) || "-",
           [getTextToLocalMapping("Organizer Department")]:
           item.EmpName|| "-",
           [getTextToLocalMapping("Organizer Employee")]:
@@ -216,7 +185,7 @@ export const searchLibraryApiCall = async (state, dispatch) => {
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterLibraryEvent.toDate"
   )
-  if(endDate<startDate)
+  if((startDate!="" && endDate!="") && endDate<startDate)
   {
     dispatch(
       toggleSnackbar(
@@ -331,7 +300,7 @@ export const searchLibraryApiCall = async (state, dispatch) => {
         [getTextToLocalMapping("Event Id")]:
         item.eventId || "-",
         [getTextToLocalMapping("Event Title")]:
-        truncTime(item.eventTitle) || "-",
+        truncData(item.eventTitle) || "-",
         [getTextToLocalMapping("Organizer Department")]:
         item.EmpName|| "-",
         [getTextToLocalMapping("Organizer Employee")]:
@@ -371,7 +340,10 @@ export const searchInviteApiCall = async (state, dispatch) => {
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterInviteEvent.Scedulestatus"
   )
-
+let eventStatus=get(
+  state.screenConfiguration.preparedFinalObject,
+  "PublicRelation[0].filterInviteEvent.Eventstatus"
+)
   let tenantId = getTenantId();
   let startDate=get(
     state.screenConfiguration.preparedFinalObject,
@@ -381,7 +353,7 @@ export const searchInviteApiCall = async (state, dispatch) => {
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterInviteEvent.toDate"
   )
-  if(endDate<startDate)
+  if((startDate!="" && endDate!="") && endDate<startDate)
   {
     dispatch(
       toggleSnackbar(
@@ -404,20 +376,8 @@ let data= {"requestBody":{
   "PublicRelation[0].filterInviteEvent.eventTitle"
 ),
   
-"eventStatus":get(
-  state.screenConfiguration.preparedFinalObject,
-  "PublicRelation[0].filterInviteEvent.Eventstatus"
-)==="ALL"?"":get(
-  state.screenConfiguration.preparedFinalObject,
-  "PublicRelation[0].filterInviteEvent.Eventstatus"
-),
-"status":get(
-  state.screenConfiguration.preparedFinalObject,
-  "PublicRelation[0].filterInviteEvent.Scedulestatus"
-)==="ALL"?"":get(
-  state.screenConfiguration.preparedFinalObject,
-  "PublicRelation[0].filterInviteEvent.Scedulestatus"
-),
+"eventStatus":eventStatus===undefined?"":eventStatus.label==="ALL"?"":eventStatus.label,
+"status":scheduledStatus===undefined?"":scheduledStatus.label==="ALL"?"":scheduledStatus.label,
   "startDate":get(
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filterInviteEvent.fromDate"
@@ -501,7 +461,7 @@ response.ResponseBody[j]['EmpName']=payload.MdmsRes["common-masters"].Department
     [getTextToLocalMapping("Event Id")]:
    item.eventId || "-",
    [getTextToLocalMapping("Event Title")]:
-   truncTime(item.eventTitle) || "-",
+   truncData(item.eventTitle) || "-",
    [getTextToLocalMapping("Organizer Department")]:
    item.EmpName|| "-",
    [getTextToLocalMapping("Organizer Employee")]:
@@ -568,7 +528,7 @@ let toDate=get(
  {
   var date1 = new Date(fromDate);
   var date2 = new Date(toDate);
-   if(fromDate<=toDate)
+   if( fromDate<=toDate)
    {
 const response = await getPressFilterResults(data);
 let data1 = response.ResponseBody.map(item => ({
@@ -577,7 +537,7 @@ let data1 = response.ResponseBody.map(item => ({
     [getTextToLocalMapping("File Number")]:
     item.fileNumber || "-",
     [getTextToLocalMapping("Subject")]:
-    truncTime(item.pressNoteSubject) || "-",
+    truncData(item.pressNoteSubject) || "-",
     [getTextToLocalMapping("Press Note List UUID")]:
     item.pressNoteUuid || "-",
   
@@ -614,7 +574,7 @@ let data1 = response.ResponseBody.map(item => ({
     [getTextToLocalMapping("File Number")]:
     item.fileNumber || "-",
     [getTextToLocalMapping("Subject")]:
-    truncTime(item.pressNoteSubject) || "-",
+    truncData(item.pressNoteSubject) || "-",
     [getTextToLocalMapping("Press Note List UUID")]:
     item.pressNoteUuid || "-",
   
@@ -642,6 +602,42 @@ let data1 = response.ResponseBody.map(item => ({
 
 
 export const searchTenderApiCall = async (state, dispatch) => {
+let Status=''
+  
+  
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+        {
+          moduleName: "RAINMAKER-PR",
+          masterDetails: [ { name: "TenderStatusCheck" }
+          
+        ]
+        },
+       
+
+     
+      ]
+    }
+  };
+ 
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+        let role=JSON.parse(getUserInfo()).roles
+        payload.MdmsRes["RAINMAKER-PR"].TenderStatusCheck.map(res => {
+      role.map(roleName=>{
+        if( roleName.code === res.isRole )
+        {
+        //  getGridDataPublishTender(action, state, dispatch,res.TenderListStatus);
+        Status=res.TenderListStatus
+        }})})
   let startDate=get(
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filtertender.fromDate"
@@ -650,7 +646,7 @@ export const searchTenderApiCall = async (state, dispatch) => {
     state.screenConfiguration.preparedFinalObject,
     "PublicRelation[0].filtertender.toDate"
   )
-  if(endDate<startDate)
+  if((startDate!="" && endDate!="") && endDate<startDate)
   {
     dispatch(
       toggleSnackbar(
@@ -685,7 +681,7 @@ export const searchTenderApiCall = async (state, dispatch) => {
       "PublicRelation[0].filtertender.toDate"
     ) ||"",
    
-    "tenderNoticeStatus":checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER')?"CREATED":"",
+    "tenderNoticeStatus":Status,
     "tenderNoticeUuid":"",
     "tenderNoticeId":get(
       state.screenConfiguration.preparedFinalObject,
@@ -705,7 +701,7 @@ export const searchTenderApiCall = async (state, dispatch) => {
     [getTextToLocalMapping("Tender Notice ID")]:item.tenderNoticeId || "-",
     [getTextToLocalMapping("Date")]:item.tenderDate.split(" ")[0] || "-",
     [getTextToLocalMapping("File Number")]:item.fileNumber || "-",
-    [getTextToLocalMapping("Subject")]:truncTime(item.tenderSubject)|| "-",
+    [getTextToLocalMapping("Subject")]:truncData(item.tenderSubject)|| "-",
     [getTextToLocalMapping("Department User")]:item.createdByName || "-",
     [getTextToLocalMapping("tenderNoticeUuid")]:item.tenderNoticeUuid || "-",
     [getTextToLocalMapping("tenderNoticeStatus")]:item.tenderNoticeStatus || "-"
@@ -731,7 +727,10 @@ export const searchTenderApiCall = async (state, dispatch) => {
 
 export const searchPressMasterApiCall = async (state, dispatch) => {
   
-  
+  let pressType=get(
+    state.screenConfiguration.preparedFinalObject,
+    "PublicRelation[0].filterpressMaster.typeofpress"
+  )
 let data= {
   "RequestBody":{ 
     "tenantId":getTenantId(),
@@ -744,13 +743,7 @@ let data= {
       state.screenConfiguration.preparedFinalObject,
       "PublicRelation[0].filterpressMaster.publicationname"
     ),
-    "pressType": get(
-      state.screenConfiguration.preparedFinalObject,
-      "PublicRelation[0].filterpressMaster.typeofpress"
-    )==="ALL"?"":get(
-      state.screenConfiguration.preparedFinalObject,
-      "PublicRelation[0].filterpressMaster.typeofpress"
-    ),
+    "pressType":pressType==undefined?"":pressType.label ==="ALL"?"":pressType.label,
     "moduleCode":localStorageGet("modulecode")
    },
 }
@@ -762,11 +755,11 @@ let data1 = response.ResponseBody.map(item => ({
   [getTextToLocalMapping("Press Id")]:
   item.pressMasterUuid || "-",
   [getTextToLocalMapping("Publication name")]:
-  truncTime(item.publicationName) || "-",
+  truncData(item.publicationName) || "-",
   [getTextToLocalMapping("Type of the press")]:
   item.pressType || "-",
   [getTextToLocalMapping("Personnel Name")]:
-  truncTime(item.personnelName) || "-",
+  truncData(item.personnelName) || "-",
   
 
   [getTextToLocalMapping("Email Id")]:

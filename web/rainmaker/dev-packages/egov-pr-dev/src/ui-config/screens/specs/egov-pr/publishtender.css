@@ -37,16 +37,16 @@
   font-size: 14px; }
 
 div#material-ui-pressnotedata {
-  overflow: unset !important; }
+  overflow: visible !important; }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
   z-index: 102 !important; }
 
 div#material-ui-EmailSmsContent {
-  overflow: unset !important; }
+  overflow: visible !important; }
 
 div#material-ui-tenderMSWordTemplate {
-  overflow: unset !important; }
+  overflow: visible !important; }
 
 #TimeSeriesReport .MuiPaper-root-550.MuiPaper-elevation4-556.MuiPaper-rounded-551 {
   overflow: auto !important; }
@@ -65,3 +65,15 @@ form#TimeSeriesReport > div:last-child {
 
 .MuiGrid-container-86.MuiGrid-item-87.MuiGrid-grid-xs-12-126.MuiGrid-grid-sm-4-132.background-grey > div:nth-child(4) {
   margin-right: 10% !important; }
+
+div#custom-atoms-footer.addpadding {
+  padding-bottom: 66px;
+  background: transparent;
+  box-shadow: none; }
+
+div#custom-atoms-footer {
+  display: none; }
+
+@media only screen and (max-width: 768px) {
+  div#custom-atoms-footer.addpadding {
+    padding-bottom: 45px; } }

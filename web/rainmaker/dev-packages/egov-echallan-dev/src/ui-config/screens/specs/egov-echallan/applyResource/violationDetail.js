@@ -35,6 +35,159 @@ const showHideMapPopup = (state, dispatch) => {
   );
 };
 
+const clearFields = (dispatch) => {
+  let screenKey = "apply";
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.NameofViolator',
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.NameofViolator',
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.NameofViolator',
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.NameofViolator',
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.FatherName',
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.FatherName',
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.FatherName',
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.FatherName',
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.ContactNo',
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.ContactNo',
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.ContactNo',
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.ContactNo',
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.EmailId',
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.EmailId',
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.EmailId',
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.EmailId',
+      "props.helperText",
+      ""
+    )
+  );
+
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.Address',
+      "props.value", ""));
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.Address',
+      "props.error",
+      false
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.Address',
+      "isFieldValid",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.Address',
+      "props.helperText",
+      ""
+    )
+  );
+};
+
 const getMapLocator = textSchema => {
   return {
     uiFramework: "custom-molecules-local",
@@ -113,182 +266,189 @@ export const violationsDetails = getCommonCard({
         errorMessage: "EC_ERR_DEFAULT_INPUT_ENCROACHMENT_TYPE_FIELD_MSG",
         beforeFieldChange: (action, state, dispatch) => {
           try {
-            let isEncroachmentchanged = false;
-            dispatch(prepareFinalObject("articleSeizedDetails", []));
-            let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
-            if (action.value !== encroachmentType) {
-              isEncroachmentchanged = true;
-              dispatch(prepareFinalObject("articleSeizedGridDetails", []));
-              dispatch(
-                handleField(
-                  "apply", "components.div.children.formwizardSecondStep.children.ArticleGridDetails",
-                  "props.data", [])
-              );
-              const objectJsonPath = `components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children`;
-              const children = get(
-                state.screenConfiguration.screenConfig["apply"],
-                objectJsonPath,
-                {}
-              );
-            resetAllFields(children, dispatch, state, 'apply');            
-              if (action.value === 'Registered Street Vendors') {
+            if (action.value !== "") {
+
+
+              let isEncroachmentchanged = false;
+              dispatch(prepareFinalObject("articleSeizedDetails", []));
+              let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
+
+              if (action.value !== encroachmentType) {
+                isEncroachmentchanged = true;
+                dispatch(prepareFinalObject("articleSeizedGridDetails", []));
+                dispatch(
+                  handleField(
+                    "apply", "components.div.children.formwizardSecondStep.children.ArticleGridDetails",
+                    "props.data", [])
+                );
+                if (action.value === 'Registered Street Vendors') {
+                  const objectJsonPath = `components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children`;
+                  const children = get(
+                    state.screenConfiguration.screenConfig["apply"],
+                    objectJsonPath,
+                    {}
+                  );
+                  //resetAllFields(children, dispatch, state, 'apply');
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "required", true));
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "props.required", true));                //hidden
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "visible", true));
+                } else {
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "props.value", ""));
+
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "required", false));
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "props.required", false));
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                      "visible", false));
+                  dispatch(prepareFinalObject("eChallan.licenseNoCov", ''));
+
+                }
+                clearFields(dispatch)
+              }
+
+              
+              dispatch(prepareFinalObject("articleSeizedDetails.Others", ''));
+              dispatch(prepareFinalObject("articleSeizedDetails.Quantity", ''));
+              dispatch(prepareFinalObject("articleSeizedDetails.VehicleNumber", ''));
+              dispatch(prepareFinalObject("articleSeizedDetails.Remark", ''));
+
+
+              if (action.value === 'Seizure of Vehicles') {
+                let dataNumberOfViolation = [];
+                dataNumberOfViolation.push({ 'code': "1", 'tenantId': "ch.chandigarh", 'name': "First violation ", 'active': true })
+                dispatch(
+                  prepareFinalObject(
+                    "applyScreenMdmsData.egec.Numberofvioalation-new",
+                    dataNumberOfViolation
+                  )
+                );
+                dispatch(
+                  prepareFinalObject(
+                    "applyScreenMdmsData.egec.ViolationItemList",
+                    get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.VehicleType', [])
+                  )
+                );
+                ///Others
                 dispatch(
                   handleField(
                     "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
-                    "required", true));
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+                    "props.required", false));
+                //disabled
                 dispatch(
                   handleField(
                     "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
-                    "props.required", true));                //hidden
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+                    "props.disabled", true));
+
+                ///Quantity
                 dispatch(
                   handleField(
                     "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                    "props.required", false));
+                //hidden
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                    "visible", false));
+                ///Vehicle Regis
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+                    "props.required", true));
+                //hidden
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
                     "visible", true));
               } else {
+                getArticleData();
                 dispatch(
-                  handleField(
-                    "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
-                    "props.value", ""));
+                  prepareFinalObject(
+                    "applyScreenMdmsData.egec.Numberofvioalation-new",
+                    get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.NumberOfViolation', [])
+                  )
+                );
+
+                dispatch(
+                  prepareFinalObject(
+                    "applyScreenMdmsData.egec.ViolationItemList",
+                    get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.ItemList', [])
+                  )
+                );
 
                 dispatch(
                   handleField(
                     "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
-                    "required", false));
-                dispatch(
-                  handleField(
-                    "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
                     "props.required", false));
+                //disabled
                 dispatch(
                   handleField(
                     "apply",
-                    "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.LicenseNo",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
+                    "props.disabled", true));
+
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                    "props.required", true));
+                //hidden
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                    "visible", true));
+
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
+                    "props.required", false));
+                //hidden
+                dispatch(
+                  handleField(
+                    "apply",
+                    "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
                     "visible", false));
-                dispatch(prepareFinalObject("eChallan.licenseNoCov", ''));
 
               }
-            }
-
-            dispatch(prepareFinalObject("articleSeizedDetails.Others", ''));
-            dispatch(prepareFinalObject("articleSeizedDetails.Quantity", ''));
-            dispatch(prepareFinalObject("articleSeizedDetails.VehicleNumber", ''));
-            dispatch(prepareFinalObject("articleSeizedDetails.Remark", ''));
-
-
-            if (action.value === 'Seizure of Vehicles') {
-              let dataNumberOfViolation = [];
-              dataNumberOfViolation.push({ 'code': "1", 'tenantId': "ch.chandigarh", 'name': "First violation ", 'active': true })
-              dispatch(
-                prepareFinalObject(
-                  "applyScreenMdmsData.egec.Numberofvioalation-new",
-                  dataNumberOfViolation
-                )
-              );
-              dispatch(
-                prepareFinalObject(
-                  "applyScreenMdmsData.egec.ViolationItemList",
-                  get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.VehicleType', [])
-                )
-              );
-              ///Others
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
-                  "props.required", false));
-              //disabled
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
-                  "props.disabled", true));
-
-              ///Quantity
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
-                  "props.required", false));
-              //hidden
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
-                  "visible", false));
-              ///Vehicle Regis
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
-                  "props.required", true));
-              //hidden
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
-                  "visible", true));
-            } else {
-              getArticleData();
-              dispatch(
-                prepareFinalObject(
-                  "applyScreenMdmsData.egec.Numberofvioalation-new",
-                  get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.NumberOfViolation', [])
-                )
-              );
-
-              dispatch(
-                prepareFinalObject(
-                  "applyScreenMdmsData.egec.ViolationItemList",
-                  get(state, 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.ItemList', [])
-                )
-              );
-
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
-                  "props.required", false));
-              //disabled
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Others",
-                  "props.disabled", true));
-
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
-                  "props.required", true));
-              //hidden
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
-                  "visible", true));
-
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
-                  "props.required", false));
-              //hidden
-              dispatch(
-                handleField(
-                  "apply",
-                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.VehicleNumber",
-                  "visible", false));
-
-            }
-            if(isEncroachmentchanged){
-              set(state, 'form.apply_Violator_Image.files.echallanViolaterImage', []);
-              set(state, 'form.apply_Violator_ID_PROOF.files.echallanViolaterIDProofImage', []);
-              set(state, 'form.apply_Violations_Image.files.echallanViolationImage', []);
+              if (isEncroachmentchanged) {
+                set(state, 'form.apply_Violator_Image.files.echallanViolaterImage', []);
+                set(state, 'form.apply_Violator_ID_PROOF.files.echallanViolaterIDProofImage', []);
+                set(state, 'form.apply_Violations_Image.files.echallanViolationImage', []);
+              }
             }
             // dispatch(pFO("Licenses[0].tradeLicenseDetail.structureType", null));
           } catch (e) {
@@ -468,6 +628,11 @@ export const violationsDetails = getCommonCard({
         errorMessage: "EC_ERR_DEFAULT_INPUT_NATURE_OF_VIOLATION_FIELD_MSG",
         required: true,
         jsonPath: "eChallan.natureOfViolation",
+        props: {
+          className: "textfield-enterable-selection",
+          multiline: true,
+          rows: "4"
+        },
       })
     },
     SILocationDetailsConatiner: getCommonContainer({
@@ -576,35 +741,7 @@ export const violatorDetails = getCommonCard(
         errorMessage: "EC_ERR_DEFAULT_INPUT_VIOLATOR_NAME_FIELD_MSG",
         required: true,
         jsonPath: "eChallan.violatorName",
-        beforeFieldChange: (action, state, dispatch) => {
 
-          let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
-          let licenseNo = get(state, 'screenConfiguration.preparedFinalObject.eChallan.licenseNoCov', '');
-          if (encroachmentType === 'Registered Street Vendors') {
-            if (licenseNo === '') {
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  {
-                    labelName: "Please select License Number to Proceed",
-                    labelKey: ''//"EC_FINE_MASTER_SUCCESS_TOASTER"
-                  },
-                  "warning"
-                )
-              );
-              // dispatch(
-              //   handleField(
-              //     "apply",
-              //     'components.div.children.formwizardFirstStep.children.violatorDetails.children.cardContent.children.violatorDetailsConatiner.children.NameofViolator',
-              //     "props.value", ''
-              //   )
-              // );
-              // dispatch(prepareFinalObject("eChallan.violatorName", ''));
-
-            }
-          }
-
-        }
       }),
 
       FatherName: getTextField({
@@ -698,7 +835,11 @@ export const violatorDetails = getCommonCard(
           labelName: "Enter Address",
           labelKey: "EC_VIOLATOR_ADDRESS_PLACEHOLDER"
         },
-
+        props: {
+          className: "textfield-enterable-selection",
+          multiline: true,
+          rows: "4"
+        },
         pattern: getPattern("ECViolatorAddress"),
         errorMessage: "EC_ERR_DEFAULT_INPUT_ADDRESS_FIELD_MSG",
         required: true,

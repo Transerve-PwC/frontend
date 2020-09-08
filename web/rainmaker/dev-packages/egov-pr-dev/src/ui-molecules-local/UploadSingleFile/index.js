@@ -30,11 +30,13 @@ const UploadSingleFile = ({
         <div>
           {documents &&
             documents.map((document, documentIndex) => {
+              
               return (
                 <div key={documentIndex}>
                   <UploadedDocument
                     document={document}
                     removeDocument={removeDocument}
+                    moduleName="PR"
                   />
                 </div>
               );

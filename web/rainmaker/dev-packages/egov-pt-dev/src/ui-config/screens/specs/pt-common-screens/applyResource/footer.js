@@ -235,13 +235,12 @@ const callBackForApply = async (state, dispatch) => {
       );
       if (payload) {
         store.dispatch(handleField(screenKey, "components.adhocDialog", "props.open", true));
-        setTimeout(() => {
-          window.location.href=window.location.origin + '/'+process.env.REACT_APP_NAME.toLowerCase() +`${redirectUrl}?propertyId=${payload.Properties[0].propertyId}&tenantId=${propertyPayload.tenantId}`
-          /*store.dispatch(
+        setTimeout(() => {         
+          store.dispatch(
             setRoute(
               `${redirectUrl}?propertyId=${payload.Properties[0].propertyId}&tenantId=${propertyPayload.tenantId}`
             )
-          );*/
+          );
         }, 3000);
       }
       else {

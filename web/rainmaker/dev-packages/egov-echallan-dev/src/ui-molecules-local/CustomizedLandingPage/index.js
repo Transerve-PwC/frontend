@@ -22,7 +22,7 @@ const styles = () => ({
     //height: 80,
     alignItems: "center",
     justifyContent: "center",
-    display: "flex",
+    //display: "flex",
     cursor: "pointer"
   },
   icon: {
@@ -37,7 +37,7 @@ const styles = () => ({
     height: 30,
     alignItems: "center",
     justifyContent: "center",
-    display: "flex",
+    //display: "flex",
     cursor: "pointer"
   }
 });
@@ -71,73 +71,68 @@ class CustomizedLandingPage extends React.Component {
       handleField(route.screenKey, route.jsonPath, "props.open", !toggle);
     }
   };
- rolescheck = roleDefination => {
-   let hide = true;
-   let userRoleInfo = JSON.parse(getUserInfo()).roles;
-   roleDefination != "" ? 
-  roleDefination.roles.forEach(element => {
-    userRoleInfo.forEach(roleelement => {
-      if(roleelement.code === element){
-        if(hide){
-          hide = false
-        }
-    
-      } 
-    });
-  }) : hide = true;
-  return hide
- }
+  rolescheck = roleDefination => {
+    let hide = true;
+    let userRoleInfo = JSON.parse(getUserInfo()).roles;
+    roleDefination != "" ?
+      roleDefination.roles.forEach(element => {
+        userRoleInfo.forEach(roleelement => {
+          if (roleelement.code === element) {
+            if (hide) {
+              hide = false
+            }
+
+          }
+        });
+      }) : hide = true;
+    return hide
+  }
   render() {
     const { classes, items, applicationCount } = this.props;
+    
     return (
       <Grid container className="landing-page-main-grid">
         {
-         items.map(obj => {
-          let objrole = obj.roleDefination === undefined ? '' : obj.roleDefination;
-          return !this.rolescheck(objrole) ? (
-        // <Grid
-        //   className={classes.item}
-        //   item
-        //   xs={12 / items.length}
-        //   sm={12 / items.length}
-        //   align="center"
-        // >
-        <Grid
-        className={classes.item}
-        item
-        xs={6}
-        sm={4}
-        align="center"
-        style={{width:"100%"}}
-      >
-          <Card
-            className={`${classes.paper} module-card-style`}
-            onClick={() => this.onCardCLick(obj.route)}
-            style={{
-              background: obj.color
-            }}
-          >
-            <CardContent classes={{ root: "card-content-style" }}>
-              {obj.icon}
-              <div>
-                <LabelContainer
-                  labelKey={obj.label.labelKey}
-                  labelName={obj.label.labelName}
+          items.map(obj => {
+            let objrole = obj.roleDefination === undefined ? '' : obj.roleDefination;
+            return !this.rolescheck(objrole) ? (
+              <Grid
+                className={classes.item}
+                item
+                xs={6}
+                sm={4}
+                // xs={12 / items.length}
+                // sm={12 / items.length}
+                align="center"
+              >
+                <Card
+                  className={`${classes.paper} module-card-style`}
+                  onClick={() => this.onCardCLick(obj.route)}
                   style={{
-                    fontSize: 14,
-                    color: "rgba(0, 0, 0, 0.8700000047683716)"
+                    background: obj.color
                   }}
-                  dynamicArray={applicationCount ? [applicationCount] : [0]}
-                />
-              </div>
-              <div className={`${classes.pendingCount}`}>
-                {obj.pendingCount}
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-          ) : null;
-        })}
+                >
+                  <CardContent classes={{ root: "card-content-style" }}>
+                    {obj.icon}
+                    <div>
+                      <LabelContainer
+                        labelKey={obj.label.labelKey}
+                        labelName={obj.label.labelName}
+                        style={{
+                          fontSize: 14,
+                          color: "rgba(0, 0, 0, 0.8700000047683716)"
+                        }}
+                        dynamicArray={applicationCount ? [applicationCount] : [0]}
+                      />
+                    </div>
+                    <div className={`${classes.pendingCount}`}>
+                      {obj.pendingCount}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ) : null;
+          })}
       </Grid>
     );
   }

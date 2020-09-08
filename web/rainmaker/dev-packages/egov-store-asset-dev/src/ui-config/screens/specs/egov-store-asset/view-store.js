@@ -16,7 +16,8 @@ import {
 import { getCommonApplyFooter, validateFields } from "../utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { httpRequest } from "../../../../ui-utils/api";
 const storeName = getQueryArg(window.location.href, "name");
 const tenantId = getQueryArg(window.location.href, "tenantId");
 const headerrow = getCommonContainer({
@@ -53,7 +54,7 @@ export const getLabelWithValue = (label, value, props = {}) => {
 };
 //Edit Button
 const callBackForEdit = async (state, dispatch) => {
-  window.location.href = `/egov-store-asset/createStore?tenantId=${tenantId}&name=${storeName}&edited=true`;
+  window.location.href = `/employee/egov-store-asset/createStore?tenantId=${tenantId}&name=${storeName}&edited=true`;
 };
 export const footer = getCommonApplyFooter({
   editButton: {
@@ -81,15 +82,15 @@ export const footer = getCommonApplyFooter({
 });
 export const renderService = () => {
   return getCommonContainer({
-    code: getLabelWithValue(
-      { labelKey: "STORE_DETAILS_STORE_CODE" },
-      { jsonPath: "stores[0].code" }
-    ),
     name: getLabelWithValue(
       { labelKey: "STORE_DETAILS_STORE_NAME" },
       {
         jsonPath: "stores[0].name",
       }
+    ),
+    code: getLabelWithValue(
+      { labelKey: "STORE_DETAILS_STORE_CODE" },
+      { jsonPath: "stores[0].code" }
     ),
     department: getLabelWithValue(
       { labelKey: "STORE_DETAILS_DEPARTMENT_NAME" },
@@ -99,13 +100,17 @@ export const renderService = () => {
       { labelKey: "STORE_DETAILS_STORE_DESCRIPTION" },
       { jsonPath: "stores[0].description" }
     ),
+    divisionName: getLabelWithValue(
+      { labelKey: "STORE_DETAILS_DIVISION_NAME" },
+      { jsonPath: "stores[0].divisionName" }
+    ),
     isCentralStore: {
       uiFramework: "custom-containers-local",
       moduleName: "egov-store-asset",
       componentPath: "CheckboxContainer",
       jsonPath: "stores[0].isCentralStore",
       gridDefination: {
-        xs: 12,
+        xs: 6,
       },
       isFieldValid: true,
       required: false,
@@ -212,6 +217,35 @@ export const getStoreDetails = () => {
     viewOne: renderService(),
   });
 };
+
+const getEmployeeDetails = async (action, state, dispatch) => {
+  try {
+    //fecthing employee details 
+    const queryParams = [{ key: "roles", value: "EMPLOYEE" },{ key: "tenantId", value:  getTenantId() }];
+    const payload = await httpRequest(
+      "post",
+      "/egov-hrms/employees/_search",
+      "_search",
+      queryParams,
+    );
+    if(payload){
+      if (payload.Employees) {
+        const {screenConfiguration} = state;
+          const {stores} = screenConfiguration.preparedFinalObject;
+        const empDetails =
+        payload.Employees.filter((item, index) =>  stores[0].storeInCharge.code === item.code);
+      
+        if(empDetails){
+          dispatch(prepareFinalObject("stores[0].storeInCharge.name",empDetails[0].user.name));  
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
 const storeView = getStoreDetails();
 const screenConfig = {
   uiFramework: "material-ui",
@@ -223,6 +257,7 @@ const screenConfig = {
     getSearchResults(queryObject, dispatch,"storeMaster")
     .then(response =>{
       dispatch(prepareFinalObject("stores", [...response.stores]));
+      getEmployeeDetails(action, state, dispatch);
     });
      return action;
   },

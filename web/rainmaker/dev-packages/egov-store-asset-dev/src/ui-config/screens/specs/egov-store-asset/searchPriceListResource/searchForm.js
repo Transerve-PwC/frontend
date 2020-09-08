@@ -43,7 +43,7 @@ export const searchForm = getCommonCard({
     labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
   }),
   searchFormContainer: getCommonContainer({
-    supplierName: getTextField({
+    supplierName: getSelectField({
       label: { labelName: "supplier Name", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
       placeholder: {
         labelName: "supplier Name",
@@ -55,21 +55,18 @@ export const searchForm = getCommonCard({
         xs: 12,
         sm: 4,
       },
-      // sourceJsonPath: "searchScreenMdmsData.common-masters.materialName",
-      // props: {
-      //   optionValue: "code",
-      //   optionLabel: "name",
-      // },
-      // localePrefix: {
-      //   moduleName: "common-store",
-      //   masterName: "materialName",
-      // },
+      sourceJsonPath: "suppliers.suppliers",
+      props: {
+        optionValue: "code",
+        optionLabel: "name",
+      },
+      
     }),
-    materialCode: getTextField({
-      label: { labelName: "material Code", labelKey: "STORE_MATERIAL_CODE" },
+    materialCode: getSelectField({
+      label: { labelName: "material Code", labelKey: "STORE_MATERIAL_NAME" },
       placeholder: {
         labelName: "material Code",
-        labelKey: "STORE_MATERIAL_CODE",
+        labelKey: "STORE_MATERIAL_NAME_SELECT",
       },
       required: false,
       jsonPath: "searchScreen.materialCode",
@@ -77,15 +74,11 @@ export const searchForm = getCommonCard({
         xs: 12,
         sm: 4,
       },
-      // sourceJsonPath: "searchScreenMdmsData.common-masters.materialName",
-      // props: {
-      //   optionValue: "code",
-      //   optionLabel: "name",
-      // },
-      // localePrefix: {
-      //   moduleName: "common-store",
-      //   masterName: "materialName",
-      // },
+      sourceJsonPath: "searchScreenMdmsData.store-asset.Material",
+          props: {
+            optionValue: "code",
+            optionLabel: "name",
+          },
     }),
     RateType: {
       ...getSelectField({
@@ -96,17 +89,14 @@ export const searchForm = getCommonCard({
         },
         required: false,
         jsonPath: "searchScreen.rateType",
-         // sourceJsonPath: "searchScreenMdmsData.store-asset.inventoryType",
-         props: {
-          data: [
-            {
-              value: "DOT/DGS$ND/Tender/Quatation",
-              label: "DOT/DGS$ND/Tender/Quatation"
-            },
-           
-          ],
-          optionValue: "value",
-          optionLabel: "label"
+        gridDefination: {
+          xs: 12,
+          sm: 4,
+        },
+        sourceJsonPath: "searchScreenMdmsData.store-asset.RateType",
+        props: {          
+          optionValue: "code",
+          optionLabel: "name",
         },
       })
     },    
@@ -122,7 +112,7 @@ export const searchForm = getCommonCard({
       required: false,
 
       props: {
-        content: "STORE_MATERIAL_MASTER_ACTIVE",
+        content: "STORE_MATERIAL_TYPE_ACTIVE",
         jsonPath: "searchScreen.active",
         screenName: "search-price-list",
         checkBoxPath:

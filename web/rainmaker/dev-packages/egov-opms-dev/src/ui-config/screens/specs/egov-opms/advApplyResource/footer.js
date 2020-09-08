@@ -5,7 +5,7 @@ import {
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
-import { getCommonApplyFooter, validateFields } from "../../utils";
+import { getCommonApplyFooter, validateFields ,validateFieldsAdv} from "../../utils";
 import "./index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { httpRequest } from "../../../../../ui-utils";
@@ -145,17 +145,21 @@ const callBackForNext = async (state, dispatch) => {
     "components.div.children.stepper.props.activeStep",
     0
   );
-  //  alert("activestepsss1 : " + (activeStep + 1))
-  let isFormValid = true;
+  let isFormValid = false;
   let hasFieldToaster = false;
-  let validatestepformflag = validatestepform(activeStep + 1)
+ 
+  if (activeStep === 0) {
 
-  isFormValid = validatestepformflag[0];
-  hasFieldToaster = validatestepformflag[1];
-
+     isFormValid = validateFields(
+      "components.div.children.formwizardFirstStep.children.AdvtDetails.children.cardContent.children.AdvtApplicatantContainer.children",
+      state,
+      dispatch,
+      "advertisementApply"
+    );
+  }
   if (activeStep === 1) {
 
-    let test = validateFields(
+     isFormValid = validateFieldsAdv(
       "components.div.children.formwizardSecondStep.children.immunizationDetails.children.cardContent.children.immunizationDetailsConatiner.children.buildingDataCard.children.singleBuildingContainer.children.singleBuilding.children.cardContent.children.singleBuildingCard.children",
       state,
       dispatch,
@@ -204,7 +208,7 @@ const callBackForNext = async (state, dispatch) => {
       }
 
       responseStatus === "success" && changeStep(state, dispatch);
-    } else if (hasFieldToaster) {
+    } else {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents!",
         labelKey: "ERR_FILL_ALL_MANDATORY_FIELDS_APPLICANT_PET_TOAST"
@@ -453,51 +457,3 @@ export const footer = getCommonApplyFooter({
 });
 
 
-export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
-
-  let allAreFilled = true;
-  document.getElementById("apply_form" + activeStep).querySelectorAll("[required]").forEach(function (i) {
-    i.parentNode.classList.remove("MuiInput-error-853");
-    i.parentNode.parentNode.classList.remove("MuiFormLabel-error-844");
-    if (!i.value) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-    }
-    if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-  })
-
-  document.getElementById("apply_form" + activeStep).querySelectorAll("input[type='hidden']").forEach(function (i) {
-    i.parentNode.classList.remove("MuiInput-error-853");
-    i.parentNode.parentNode.parentNode.classList.remove("MuiFormLabel-error-844");
-    if (i.value == i.placeholder) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-
-  })
-  if (!allAreFilled) {
-    //  alert('Fill all fields1')
-    isFormValid = false;
-    hasFieldToaster = true;
-  }
-  else {
-    // alert('Submit1')
-
-    isFormValid = true;
-    hasFieldToaster = false;
-  }
-  return [isFormValid, hasFieldToaster]
-}; 

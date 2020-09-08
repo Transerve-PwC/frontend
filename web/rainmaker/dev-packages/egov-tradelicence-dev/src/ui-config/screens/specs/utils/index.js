@@ -454,7 +454,7 @@ export const getButtonVisibility = (status, button) => {
   if(status === "INITIATED" && button === "SUBMISSION") {
     return true;
   }
-  if(status==="CITIZENACTIONREQUIRED" && button ==="RESUBMIT")
+  if(status==="PENDINGCLARIFICATION" && button ==="EDIT")
   return true;
   if (status === "PENDINGPAYMENT" && button === "PROCEED TO PAYMENT")
     return true;
@@ -1487,6 +1487,16 @@ export const getTodaysDateInYMD = () => {
   let date = new Date();
   //date = date.valueOf();
   let month = date.getMonth() + 1;
+  let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  date = `${date.getFullYear()}-${month}-${day}`;
+  // date = epochToYmdDate(date);
+  return date;
+};
+
+export const _getTodaysDateInYMD = () => {
+  let date = new Date();
+  //date = date.valueOf();
+  let month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   date = `${date.getFullYear()}-${month}-${day}`;
   // date = epochToYmdDate(date);

@@ -4,17 +4,20 @@ import { AutoSuggest } from "../../ui-atoms-local";
 import { findItemInArrayOfObject } from "../../ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
+  transformById,
   getLocaleLabels,
   appendModulePrefix
 } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
+import { getLocalization } from "egov-ui-kit/utils/localStorageUtils";
+const localizationLabels = JSON.parse(getLocalization("localization_en_IN"));
+const transfomedKeys = transformById(localizationLabels, "code");
 
 class AutoSuggestor extends Component {
   onSelect = value => {
     const { onChange } = this.props;
-    //Storing multiSelect values not handled yet
-    onChange({ target: { value: value.value } });
+    onChange({ target: { value: value } });
   };
 
   render() {
@@ -38,14 +41,14 @@ class AutoSuggestor extends Component {
       placeholder.labelKey,
       localizationLabels
     );
-    //For multiSelect to be enabled, pass isMultiSelect=true in props.
+    //For multiSelect to be enabled, pass "isMulti: true" in props.
     return (
       <div>
         <AutoSuggest
           onSelect={this.onSelect}
           suggestions={suggestions}
-          value={value}
           className={className}
+          value={value}
           label={translatedLabel}
           placeholder={translatedPlaceholder}
           {...rest}
@@ -80,7 +83,9 @@ const mapStateToProps = (state, ownprops) => {
     sourceJsonPath,
     labelsFromLocalisation,
     data,
-    localePrefix
+    localePrefix,
+    labelName,
+    valueName
   } = ownprops;
   let suggestions =
     data && data.length > 0
@@ -90,6 +95,7 @@ const mapStateToProps = (state, ownprops) => {
     ? value
     : get(state.screenConfiguration.preparedFinalObject, jsonPath);
   //To fetch corresponding labels from localisation for the suggestions, if needed.
+
   if (labelsFromLocalisation) {
     suggestions = getLocalisedSuggestions(
       JSON.parse(JSON.stringify(suggestions)),

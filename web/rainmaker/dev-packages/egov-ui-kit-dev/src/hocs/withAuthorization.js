@@ -10,7 +10,8 @@ import Label from "egov-ui-kit/utils/translationNode";
 import { getQueryArg,getModuleName } from "egov-ui-kit/utils/commons";
 import { logout } from "egov-ui-kit/redux/auth/actions";
 import SortDialog from "../common/common/Header/components/SortDialog";
-import { setModule} from "../utils/localStorageUtils";
+import {  setModule, getTenantId, getLocale, getUserInfo} from "../utils/localStorageUtils";
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 const withAuthorization = (options = {}) => (Component) => {
   class Wrapper extends React.Component {
     constructor(props) {
@@ -40,8 +41,23 @@ const withAuthorization = (options = {}) => (Component) => {
         this.props.history.replace(redirectionUrl || baseUrl);
       }
     }
+    citizenTenantId = () => {
+      const userInfo = JSON.parse(getUserInfo());
+      return userInfo.permanentCity || userInfo.tenantId;
+    }
+
+    fetchLocale = () => {
+      const { localeFetched } = this.state;
+      if (!localeFetched) {
+        setModule(getModuleName());
+        const tenantId = process.env.REACT_APP_NAME === "Citizen" ? this.citizenTenantId(): getTenantId();
+        this.props.fetchLocalizationLabel(getLocale(), tenantId, tenantId);
+        this.setState({localeFetched:true});
+      }
+    }
     componentWillReceiveProps() {
-      setModule(getModuleName());
+   //   setModule(getModuleName());
+      this.fetchLocale();
     }
 
     roleFromUserInfo = (userInfo, role) => {
@@ -269,6 +285,7 @@ const withAuthorization = (options = {}) => (Component) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       logout: () => dispatch(logout()),
+      fetchLocalizationLabel: (locale, moduleName, tenantId)=> dispatch(fetchLocalizationLabel(locale, moduleName, tenantId))
     };
   };
   return compose(

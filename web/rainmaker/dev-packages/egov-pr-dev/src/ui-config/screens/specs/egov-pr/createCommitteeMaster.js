@@ -4,10 +4,10 @@ import {
     getStepperObject,
     getBreak
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { getCurrentFinancialYear,getTextToLocalMapping } from "../utils";
-  import { footer } from "./committeeResource/footer";
+  import { getTextToLocalMapping } from "../utils";
+  import { footer,takeactionfooter } from "./committeeResource/footer";
   import { searchDepartmentEmployeesResults_committee1,searchDepartmentEmployeesResults,searchDepartmentEmployeesResults_committee,searchDepartmentEmployeesResults1, searchInvitedEmployeesResults } from "./committeeResource/searchResults";
-  import { getEventInviteeList,GetCommiteeEmployees} from "./searchResource/citizenSearchFunctions";
+  import { GetCommiteeEmployees} from "./searchResource/citizenSearchFunctions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import {
     prepareFinalObject,
@@ -15,19 +15,14 @@ import {
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getTenantId, localStorageGet, localStorageSet,lSRemoveItemlocal,lSRemoveItem } from "egov-ui-kit/utils/localStorageUtils";
   import { httpRequest } from "../../../../ui-utils";
-  import {
-    sampleSearch,
-    sampleSingleSearch,
-    sampleDocUpload
-  } from "../../../../ui-utils/sampleResponses";
+  
   import set from "lodash/set";
   import get from "lodash/get";
   import {
     prepareDocumentsUploadData,
-    getSearchResults,
+    
     furnishResponse_Committee,
-    setApplicationNumberBox,
-    getsampleemailtemplate,
+   
     getCommittiee
   } from "../../../../ui-utils/commons";
   import { createCommittee } from "./committeeResource/createCommittee";
@@ -315,8 +310,9 @@ dispatch(
       const step = getQueryArg(window.location.href, "step");
       localStorageSet("committeelist",[]);
       localStorageSet("committeelistAll",[]);
-	  
-      
+     
+  lSRemoveItem("selectedDepartmentsInvite");
+  lSRemoveItemlocal("selectedDepartmentsInvite");
       //Set Module Name
       set(state, "screenConfiguration.moduleName", "PublicRelations");
   
@@ -390,7 +386,9 @@ dispatch(
           stepper,
           formwizardFirstStep,
           formwizardSecondStep,
-          footer
+        
+          footer,
+          takeactionfooter
         }
       },
       

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ActionDialog, HCActionDialog } from "../";
+import { ActionDialog, HCActionDialog,StoreAssetActionDialog } from "../";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
@@ -70,7 +70,7 @@ class Footer extends React.Component {
       const applicationNumberHC = get(
         state.screenConfiguration.preparedFinalObject.workflow,
         `ProcessInstances[0].businessId`);
-      
+      let tenantId = getTenantId().split(".")[0];
       handleFieldChange(`${dataPath}[0].comment`, "");
       handleFieldChange(`${dataPath}[0].assignee`, []);
       handleFieldChange(`${dataPath}[0].roleList`, []); // this line I chnages from array to "" just remember so evr time got it?
@@ -78,9 +78,9 @@ class Footer extends React.Component {
       handleFieldChange(`${dataPath}[0].serviceType`, item.moduleName);
       handleFieldChange(`${dataPath}[0].service_request_id`, applicationNumberHC);
       handleFieldChange(`${dataPath}[0].wfDocuments`, []);
-
+	  handleFieldChange(`${dataPath}[0].locality`, tenantId);
       if (item.showEmployeeList) {
-      let tenantId = getTenantId().split(".")[0];
+      
       let mdmsBody = {
         MdmsCriteria: {
           tenantId: tenantId,
@@ -124,7 +124,30 @@ class Footer extends React.Component {
         
       }
      
-    } 
+    }
+    if (dataPath === "indents" || dataPath === "materialIssues" || dataPath === "purchaseOrders" || dataPath === "materialReceipt" || dataPath === "transferInwards") {
+      var { state } = this.props;
+      const applicationNumberStoreAsset = get(
+        state.screenConfiguration.preparedFinalObject.workflow,
+        `ProcessInstances[0].businessId`);
+
+      // indents[0].workflowDetails.assigneewfupdate
+      if (item.buttonLabel === "SENDTOCREATOR") {
+        let jeuuid = get(
+          state.screenConfiguration.preparedFinalObject.workflow,
+          `ProcessInstances[0].assigner.uuid`);
+
+        handleFieldChange(`${dataPath}[0].workFlowDetails.assignee[0]`, jeuuid);
+      }
+      handleFieldChange(`${dataPath}[0].workFlowDetails.action`, item.buttonLabel);
+      handleFieldChange(`${dataPath}[0].workFlowDetails.businessService`, item.moduleName);
+      handleFieldChange(`${dataPath}[0].workFlowDetails.comments`, "");
+      handleFieldChange(`${dataPath}[0].workFlowDetails.businessId`, applicationNumberStoreAsset);
+      handleFieldChange(`${dataPath}[0].workFlowDetails.wfDocuments`, []);
+
+
+    }
+	
     else {
       handleFieldChange(`${dataPath}[0].comment`, "");
       handleFieldChange(`${dataPath}[0].assignee`, []);
@@ -173,10 +196,10 @@ class Footer extends React.Component {
 
   onClose = () => {
     var {state} = this.props;
-    set(state, "form.workflow.files.wfDocuments", []),
     this.setState({
       open: false
     });
+    set(state, "form.workflow.files.wfDocuments", "")
   };
 
   renewTradelicence = async (financialYear, tenantId) => {
@@ -333,7 +356,33 @@ class Footer extends React.Component {
           
         </div>
       );}
-  
+      else if ((dataPath === "indents" || dataPath === "materialIssues" || dataPath === "purchaseOrders" || dataPath === "materialReceipt" || dataPath === "transferInwards") && data.length != 0) {
+      return (
+        <div className="apply-wizard-footer" id="custom-atoms-footer">
+          {!isEmpty(downloadMenu) && (
+            <Container>
+              <Item xs={12} sm={12} className="wf-footer-container">
+                <MenuButton data={buttonItems} />
+              </Item>
+            </Container>
+          )}
+
+          <StoreAssetActionDialog
+            open={open}
+            onClose={this.onClose}
+            dialogData={data}
+            dropDownData={employeeList}
+            handleFieldChange={handleFieldChange}
+            onButtonClick={onDialogButtonClick}
+            dataPath={dataPath}
+            state={state}
+          />
+
+
+
+        </div>
+      );
+    }
     else {return (
       <div className="apply-wizard-footer" id="custom-atoms-footer">
         {!isEmpty(downloadMenu) && (

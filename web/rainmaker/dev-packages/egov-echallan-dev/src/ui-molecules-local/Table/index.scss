@@ -13,22 +13,27 @@ div[class^=MUIDataTableHeadCell-data] {
 
 table tbody  tr  td {
   padding:4px 8px 4px 24px !important;
-  word-break: break-all !important;
+}
+
+tbody {
+  word-wrap:break-all !important;
 }
 
 @media only screen and (max-width: 960px) {
   table tbody tr td {
-    width: 50% !important;
-    padding:4px 8px 4px 10px !important;
+    // width: 50% !important;
+    // padding:4px 8px 4px 10px !important;
     font-size: 14px !important;
     height: auto !important;
     white-space: pre-wrap !important;
     word-break: break-all !important;
+    // border: unset !important;
+    // vertical-align: top !important;
+
   }
 }
-td.MuiTableCell-root-11907.MuiTableCell-body-11909.MUIDataTableBodyCell-root-11974.MUIDataTableBodyCell-responsiveStacked-11977 {
-  word-break: break-all !important;
-}
-.MuiPaper-root-7149.MuiPaper-elevation4-7155.MuiPaper-rounded-7150 {
-  overflow: auto;
-}
+// @media only screen and (max-width: 900px) {
+//     span[class*="MUIDataTableBody-emptyTitle"] {
+//     margin-left: -100% !important;
+//     margin-top: 8% !important;
+//   }}

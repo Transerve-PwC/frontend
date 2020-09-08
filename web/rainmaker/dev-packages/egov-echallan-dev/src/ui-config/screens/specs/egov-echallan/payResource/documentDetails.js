@@ -21,7 +21,7 @@ export const documentDetails = getCommonCard({
   subText: getCommonParagraph({
     labelName:
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "EC_VIOLATION_UPLOAD_SUBHEAD"
+    labelKey: "EC_VIOLATION_BULK_UPLOAD_SUBHEAD"
   }),
   // subText_format: getCommonParagraph(
   //   {

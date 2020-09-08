@@ -176,10 +176,28 @@ const screenConfig = {
     });
 
     let dateString = new Date();
+    let dateTimeHourString = dateString.getHours().toString() 
+    let dateTimeSecString = dateString.getMinutes().toString();
+    dateTimeHourString = (dateTimeHourString > 9 ? "" : "0") + dateTimeHourString;
 
+    dateTimeSecString = (dateTimeSecString > 9 ? "" : "0") + dateTimeSecString;
+  
     //getEpochForDate(convertDateToEpoch(getTodaysDateInYMD()))
     dispatch(prepareFinalObject("eChallan.violationDate", convertEpochToDate(dateString)));
-    dispatch(prepareFinalObject("eChallan.violationTime", dateString.getHours() + ":" + dateString.getMinutes()));
+    dispatch(prepareFinalObject("eChallan.violationTime", dateTimeHourString + ":" + dateTimeSecString));
+    // dispatch(
+    //   handleField(
+    //     "apply",
+    //     "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.Time",
+    //     "props.value",
+    //     dateTimeString
+    //   )
+    // );
+    // set(
+    //   action.screenConfig,
+    //   "components.div.children.formwizardFirstStep.children.violationsDetails.children.cardContent.children.violationsDetailsContainer.children.Time.props.value",
+    //   dateTimeHourString + ":" + dateTimeSecString
+    // );
     //dispatch(prepareFinalObject("eChallan.licenseNoCov", ""));
     set(
       action.screenConfig,

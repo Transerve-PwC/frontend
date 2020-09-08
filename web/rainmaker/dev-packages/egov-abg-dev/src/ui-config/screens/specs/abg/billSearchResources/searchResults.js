@@ -82,7 +82,7 @@ export const searchResults = {
                         }&tenantId=${tableMeta.rowData[7]}&businessService=${
                           tableMeta.rowData[0].split("-")[0]
                         }`;
-                  document.location.href = `${document.location.origin}${url}`;
+                 
                 }
               }}
             >

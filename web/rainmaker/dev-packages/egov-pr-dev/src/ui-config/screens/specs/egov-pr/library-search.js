@@ -25,6 +25,10 @@ import { getlibraryGridData } from "./searchResource/citizenSearchFunctions";
 import { LibraryFilter } from "./gridFilter/Filter";
 import { httpRequest } from "../../../../ui-utils";
 import commonConfig from '../../../../config/common';
+import { checkLibraryVisibility } from "../../../../ui-utils/commons";
+import {
+  getUserInfo
+ } from "egov-ui-kit/utils/localStorageUtils";
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
@@ -50,7 +54,7 @@ const getMdmsData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "RAINMAKER-PR",
-          masterDetails: [{ name: "eventStatus" }, { name: "eventScheduledStatus" }]
+          masterDetails: [{ name: "eventStatus" }, { name: "eventScheduledStatus" },{ name: "LibraryRoleCheck" }]
         },
        
         {
@@ -95,7 +99,14 @@ const LibrarySearchAndResult = {
     dispatch(prepareFinalObject("LocalityReport", {}));
     dispatch(prepareFinalObject("eventReport", {}));
     getlibraryGridData(action, state, dispatch);
-    getMdmsData(action, state, dispatch)
+    getMdmsData(action, state, dispatch).then(response => {
+      let mdmsresponse=  get(
+        state,
+        "screenConfiguration.preparedFinalObject.applyScreenMdmsData",
+        {}
+      );
+      checkLibraryVisibility(action, state, dispatch,mdmsresponse,JSON.parse(getUserInfo()).roles)
+    })
     
 
     const tenantId = getTenantId();

@@ -66,8 +66,14 @@ const ImageUploadViolationMolecule = Loadable({
   loader: () => import("./ImageUploadViolation"),
   loading: () => <Loading />
 });
+
 const CustomizeTable = Loadable({
   loader: () => import("./CustomizeTable"),
+  loading: () => <Loading />
+});
+
+const Table = Loadable({
+  loader: () => import("./Table"),
   loading: () => <Loading />
 });
 
@@ -104,4 +110,5 @@ export {
   CustomizeTable,
   CustomizedLandingPage,
   SampleDownload,
+  Table
 };

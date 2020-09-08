@@ -62,7 +62,9 @@ class App extends Component {
       },
     };
     // can be combined into one mdms call
-    setDefaultLocale(getDefaultLocale())
+    setDefaultLocale(getDefaultLocale());
+    const { pathname } = window.location;
+    if(pathname.includes("/user/otp") || pathname.includes("/user/login") || pathname.includes("/user/register")|| pathname.includes("/language-selection")|| pathname.includes("/forgot-password")  )
     fetchLocalizationLabel(getLocale() || "en_IN");
 
     // current location

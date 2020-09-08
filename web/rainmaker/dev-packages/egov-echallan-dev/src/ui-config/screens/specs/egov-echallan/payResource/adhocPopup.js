@@ -4,30 +4,31 @@ import {
 
 import {
   resetAllFields,
-   showHideAdhocPopup, showHideAdhocPopupReceivePayment, showHideAdhocPopupForwardUploadDocs, callbackforsearchPreviewAction, generateReceiptNumber
+  showHideAdhocPopup, showHideAdhocPopupReceivePayment, showHideAdhocPopupForwardUploadDocs, 
+  callbackforsearchPreviewAction, generateReceiptNumber, showHideDeleteConfirmation,
+  showHideChallanConfirmation
 } from "../../utils";
 import get from "lodash/get";
 import { httpRequest } from "../../../../../ui-utils/api";
-import cloneDeep from "lodash/cloneDeep";
-import { createEstimateData } from "../../utils";
 import { prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import jp from "jsonpath";
 import set from "lodash/set";
-import { UpdateStatus, addToStoreViolationData } from "../../../../../ui-utils/commons";
+import { UpdateStatus, addToStoreViolationData, UpdateChallanStatus } from "../../../../../ui-utils/commons";
 import { documentDetails } from "./documentDetails";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import store from "redux/store";
-import { createDemandForRoadCutNOCPOPup } from "../../utils/index";
-import {
-  localStorageGet, localStorageSet
-} from "egov-ui-kit/utils/localStorageUtils";
 import { callPGService } from "./footer";
+
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getDateInEpoch } from "egov-ui-framework/ui-utils/commons";
 import {
   toggleSpinner,
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { onItemMasterRowClick } from "../../egov-echallan-item-master/searchResource/serachResultGrid";
+
+const ItemMasterDeleteRowClick = async(state,dispatch) => {
+ let rowdata =   get(state, 'screenConfiguration.preparedFinalObject.tableMetarowData', {});
+ onItemMasterRowClick(rowdata,true);
+};
 
 const callBackForwardAddToStore = async (state, dispatch) => {
 
@@ -35,7 +36,7 @@ const callBackForwardAddToStore = async (state, dispatch) => {
   let isdamageqtyavailable = true;
   let isIntactqtyavailable = true;
   let isremarkavailable = true;
-  
+
   if (isdamageqtyavailable && isIntactqtyavailable && isremarkavailable) {
     dispatch(toggleSpinner());
     let response = await addToStoreViolationData(state, dispatch, false);
@@ -204,6 +205,28 @@ const createOfflinePaymentObj = async (state, dispatch) => {
   return responses;
 }
 
+const challanCloseOnGround = async (state,dispatch)=> {
+  let response = await UpdateChallanStatus(state, dispatch, "CLOSED");
+  if (response.status === 'success') {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Challan has been closed", labelKey: "EC_TOASTER_ON_GROUND_PAYMENT_SUCCESS" },
+        "success"
+      )
+    );
+    callbackforsearchPreviewAction(state, dispatch);
+  }
+  else {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Please try after sometime", labelKey: "EC_TOASTER_ON_GROUND_PAYMENT_ERROR" },
+        "error"
+      )
+    );
+  }
+}
 
 const receivePaymentUpdateStatus = async (state, dispatch) => {
   let isFormValid = get(state, 'screenConfiguration.preparedFinalObject.eChallanReceivePayament[0].paymentMode', '') === '' ? false : true;
@@ -295,8 +318,8 @@ export const paymentGatewaySelectionPopup = getCommonContainer({
         children: {
           div: getCommonHeader(
             {
-              labelName: "Select Gateway"
-              // labelKey: "NOC_SELECT_GATEWAY_BOX"
+              labelName: "Select Gateway",
+              labelKey: "EC_SELECT_GATEWAY_POPUP_HEADER"
             },
             {
               style: {
@@ -306,48 +329,6 @@ export const paymentGatewaySelectionPopup = getCommonContainer({
           )
         }
       },
-      // div2: {
-      //   uiFramework: "custom-atoms",
-      //   componentPath: "Div",
-      //   gridDefination: {
-      //     xs: 2,
-      //     sm: 2
-      //   },
-      //   props: {
-      //     style: {
-      //       width: "100%",
-      //       float: "right",
-      //       cursor: "pointer"
-      //     }
-      //   },
-      //   children: {
-      //     closeButton: {
-      //       componentPath: "Button",
-      //       props: {
-      //         style: {
-      //           float: "right",
-      //           color: "rgba(0, 0, 0, 0.60)"
-      //         }
-      //       },
-      //       children: {
-      //         previousButtonIcon: {
-      //           uiFramework: "custom-atoms",
-      //           componentPath: "Icon",
-      //           props: {
-      //             iconName: "close"
-      //           }
-      //         }
-      //       },
-      //       onClickDefination: {
-      //         action: "condition",
-      //         callBack: (state, dispatch) => {
-
-      //           showHideAdhocPopup(state, dispatch, "pay")
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
     }
   },
   adhocPenaltyCard: getCommonContainer(
@@ -355,12 +336,12 @@ export const paymentGatewaySelectionPopup = getCommonContainer({
       CitizenPaymentGatewayContainer: getCommonContainer({
         CitizenPaymentGatewayCard: getSelectField({
           label: {
-            labelName: "Select Gateway"
-            // labelKey: "NOC_SELECT_GATEWAY"
+            labelName: "Select Gateway",
+            labelKey: "EC_SELECT_GATEWAY_POPUP_HEADER"
           },
           placeholder: {
-            labelName: "Select Gateway"
-            //labelKey: "NOC_SELECT_GATEWAY"
+            labelName: "Select Gateway",
+            labelKey: "EC_SELECT_GATEWAY_POPUP_HEADER"
           },
           gridDefination: {
             xs: 12,
@@ -400,9 +381,10 @@ export const paymentGatewaySelectionPopup = getCommonContainer({
           variant: "outlined",
           color: "primary",
           style: {
-            minWidth: "200px",
+            minWidth: "180px",
             height: "48px",
-            marginRight: "16px"
+            marginRight: "16px",
+            marginBottom: "8px",
           }
         },
         children: {
@@ -426,14 +408,15 @@ export const paymentGatewaySelectionPopup = getCommonContainer({
           variant: "contained",
           color: "primary",
           style: {
-            minWidth: "200px",
-            height: "48px"
+            minWidth: "180px",
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {
           previousButtonLabel: getLabel({
-            labelName: "Submit"
-            //labelKey: "NOC_SUBMIT"
+            labelName: "Submit",
+            labelKey: "EC_ECHALLAN_PAYMENT_GATEWAY_POPUP_BUTTON_SUBMIT"
           })
         },
         onClickDefination: {
@@ -483,7 +466,7 @@ export const adhocPopupStockViolationForwardHOD = getCommonContainer({
             }
           )
         }
-      },      
+      },
     }
   },
 
@@ -518,7 +501,8 @@ export const adhocPopupStockViolationForwardHOD = getCommonContainer({
           style: {
             minWidth: "180px",
             height: "48px",
-            marginRight: "16px"
+            marginRight: "16px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -531,7 +515,7 @@ export const adhocPopupStockViolationForwardHOD = getCommonContainer({
           action: "condition",
           callBack: (state, dispatch) => {
             showHideAdhocPopupForwardUploadDocs(state, dispatch, "search-preview")
-            set(state,'form',{});
+            set(state, 'form', {});
             set(state,
               "screenConfiguration.preparedFinalObject.violationDocuments",
               ""
@@ -546,7 +530,8 @@ export const adhocPopupStockViolationForwardHOD = getCommonContainer({
           color: "primary",
           style: {
             minWidth: "180px",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -773,7 +758,8 @@ export const adhocPopupReceivePayment = getCommonContainer({
           style: {
             minWidth: "180px",
             height: "48px",
-            marginRight: "16px"
+            marginRight: "16px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -786,7 +772,7 @@ export const adhocPopupReceivePayment = getCommonContainer({
           action: "condition",
           callBack: (state, dispatch) => {
             showHideAdhocPopupReceivePayment(state, dispatch, "search-preview");
-            set(state,'form',{});
+            set(state, 'form', {});
             resetField(state, dispatch);
             //  const objectJsonPath = `components.receivePayment.children.popup`;
 
@@ -805,7 +791,8 @@ export const adhocPopupReceivePayment = getCommonContainer({
           color: "primary",
           style: {
             minWidth: "180px",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -823,3 +810,289 @@ export const adhocPopupReceivePayment = getCommonContainer({
   }
 });
 
+export const ItemMasterDeletionPopup = getCommonContainer({
+  header: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div1: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonHeader(
+            {
+              labelName: "Item Master",
+              labelKey: "EC_ITEM_MASTER_HEADER"
+            },
+            {
+              style: {
+                fontSize: "16px"
+              }
+            }
+          )
+        }
+      },      
+    }
+  },
+  subheader: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div2: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonSubHeader(
+            {
+              labelName: "Are you sure you want to delete Record?",
+              labelKey: "EC_DELETE_ITEM_MASTER_POPUP_CONFIRMATION_MESSAGE"
+            },
+            {
+              style: {
+                fontSize: "16px",
+                marginTop:"20px",
+                marginBottom:"20px",
+                wordbreak:"break-word !important"
+              }
+            }
+          )
+        }
+      },
+
+    }
+  },
+  div: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    props: {
+      style: {
+        width: "100%",
+        // textAlign: "right"
+      }
+    },
+    children: {
+      cancelButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "CANCEL",
+            labelKey: "EC_DELETE_ITEM_MASTER_POPUP_BUTTON_CANCEL"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: (state, dispatch) => {
+            showHideDeleteConfirmation(state, dispatch, "search")
+          }
+        }
+      },
+      addButton: {
+        componentPath: "Button",
+        props: {
+          variant: "contained",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "Yes",
+            labelKey: "EC_DELETE_ITEM_MASTER_POPUP_BUTTON_YES"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: ItemMasterDeleteRowClick
+        }
+      }
+    }
+  }
+});
+
+export const challanDeletionPopup = getCommonContainer({
+  header: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div1: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonHeader(
+            {
+              labelName: "Manage Challan",
+              labelKey: "EC_MANAGE_CHALLAN"
+            },
+            {
+              style: {
+                fontSize: "16px"
+              }
+            }
+          )
+        }
+      },      
+    }
+  },
+  subheader: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div2: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonSubHeader(
+            {
+              labelName: "Are you sure you want to Return & Close the Challan?",
+              labelKey: "EC_CHALLAN_RETURN_CLOSE_POPUP_CONFIRMATION_MESSAGE"
+            },
+            {
+              style: {
+                fontSize: "16px",
+                marginTop:"20px",
+                marginBottom:"20px",
+              }
+            }
+          )
+        }
+      },
+
+    }
+  },
+  div: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    props: {
+      style: {
+        width: "100%",
+        // textAlign: "right"
+      }
+    },
+    children: {
+      cancelButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "CANCEL",
+            labelKey: "EC_CHALLAN_POPUP_BUTTON_CANCEL"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: (state, dispatch) => {
+            showHideChallanConfirmation(state, dispatch, "search-preview")
+          }
+        }
+      },
+      addButton: {
+        componentPath: "Button",
+        props: {
+          variant: "contained",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "Yes",
+            labelKey: "EC_CHALLAN_POPUP_BUTTON_YES"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: challanCloseOnGround
+        }
+      }
+    }
+  }
+});

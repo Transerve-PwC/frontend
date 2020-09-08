@@ -9,9 +9,9 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
 const gotoCreatePage = (state, dispatch) => {
   const createUrl =
-    process.env.REACT_APP_SELF_RUNNING === "true"
-      ? `/egov-ui-framework/hrms/create?step=1`
-      : `/hrms/create?step=1`;
+  process.env.REACT_APP_SELF_RUNNING === "true"
+    ? `/egov-ui-framework/egov-store-asset/creatematerialmaster?step=1`
+    : `/egov-store-asset/creatematerialmaster?step=1`;
   dispatch(setRoute(createUrl));
 };
 
@@ -40,13 +40,13 @@ const storeCard = {
           
          }
         ),
-        reviewAccountCode: getLabelWithValue(
-          { labelName: "Account Code", labelKey: "STORE_MATERIAL_ACCOUNT_CODE" },
-          {
-            jsonPath: "materials[0].storeMapping[0].chartofAccount.glcode",
+        // reviewAccountCode: getLabelWithValue(
+        //   { labelName: "Account Code", labelKey: "STORE_MATERIAL_ACCOUNT_CODE" },
+        //   {
+        //     jsonPath: "materials[0].storeMapping[0].chartofAccount.glcode",
             
-          }
-        ),
+        //   }
+        // ),
         Active: getLabelWithValue(
           { labelName: "Active", labelKey: "MATERIAL_TYPE_ACTIVE" },
           {

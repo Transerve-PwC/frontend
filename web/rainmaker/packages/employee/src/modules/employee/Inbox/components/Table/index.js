@@ -102,11 +102,13 @@ class InboxData extends React.Component {
     const status = row[2].text && row[2].text.props.defaultLabel;
     const taskId = index === 0 && item.text;
     const tenantId = getTenantId();
+	    const wfStatus = row[2].text.props.label.substring(row[2].text.props.label.lastIndexOf('_') + 1);
+
     // const processInstances = await this.getProcessIntanceData(row[0].text);
     // if (processInstances && processInstances.length > 0) {
     //   await addWflowFileUrl(processInstances, prepareFinalObject);
     // }
-    let contextPath = status === "Initiated" ? getWFConfig(row[0].hiddenText,row[0].subtext).INITIATED : getWFConfig(row[0].hiddenText,row[0].subtext).DEFAULT;
+    let contextPath = status === "Initiated" ? getWFConfig(row[0].hiddenText,row[0].subtext,taskId).INITIATED : getWFConfig(row[0].hiddenText,row[0].subtext,taskId).DEFAULT;
     let queryParams = `applicationNumber=${taskId}&tenantId=${tenantId}`;
     //for only pension module
     if(row[0].subtext.toUpperCase()==='RRP_SERVICE' ||row[0].subtext.toUpperCase()=='DOE_SERVICE'||row[0].subtext.toUpperCase()=='DOP_SERVICE')
@@ -118,6 +120,8 @@ class InboxData extends React.Component {
     }
     else  if(row[0].subtext=="ASMT"){
       queryParams+='&type=assessment';
+    } else if(row[0].subtext === "MasterRP") {
+      queryParams = `transitNumber=${taskId}&tenantId=${tenantId}`
     }
     else if (row[0].subtext === "NewWS1") {
       queryParams += '&history=true&service=WATER';
@@ -125,6 +129,10 @@ class InboxData extends React.Component {
     else if (row[0].subtext === "NewSW1") {
       queryParams += '&history=true&service=SEWERAGE';
     }
+    else if (row[0].subtext == "Engineering" || row[0].subtext == "IT" || row[0].subtext == "Caretaker" || row[0].subtext == "MOH") {
+      queryParams += `&Status=${wfStatus}`;
+    }
+	
     this.props.setRoute(`${contextPath}?${queryParams}`);
   };
 
@@ -171,7 +179,7 @@ class InboxData extends React.Component {
                   return (
                     <TableCell className={classNames}>
                       {index === 4 ? (
-                        <div className = "rainmaker-displayInline">
+                        <div className = "rainmaker-displayInline sortstyle">
                           {sortOrder === "desc" && (
                             <div className="arrow-icon-style" onClick={() => this.sortingTable("asc")}>
                               <Label label={item} labelStyle={{ fontWeight: "500" }} color="#000000" />
@@ -249,20 +257,20 @@ class InboxData extends React.Component {
         <Hidden only={["sm", "md", "lg", "xl"]} implementation="css">
           <div class="sort-icon-flex">
               {sortOrder === "asc" && (
-                <div className = "rainmaker-displayInline" onClick={() => this.sortingTable("desc")}>
+                <div className = "rainmaker-displayInline sortstyle" onClick={() => this.sortingTable("desc")}>
                   <ImportExportIcon />
                   <Label className="sort-icon" label={"INBOX_SORT_ICON"} />
                 </div>
               )}
               {sortOrder === "desc" && (
-                <div className = "rainmaker-displayInline" onClick={() => this.sortingTable("asc")}>
+                <div className = "rainmaker-displayInline sortstyle" onClick={() => this.sortingTable("asc")}>
                   <ImportExportIcon />
                   <Label className="sort-icon" label={"INBOX_SORT_ICON"} />
                 </div>
               )}            
           </div>
           {data.rows.length === 0 ? (
-            <Card textChildren={<Label labelClassName="" label="COMMON_INBOX_NO_DATA" />} />
+            <Card textChildren={<Label labelClassName="NodataFound" label="COMMON_INBOX_NO_DATA" />} />
           ) : (
             <div>
               {data.rows.map((row, index) => {
@@ -355,7 +363,8 @@ export const Taskboard = ({ data }) => {
     </div>
   );
 };
-
+// this method not in use
 const onModuleCardClick = (route) => {
-  window.location.href = document.location.origin + route;
+
+ 
 };

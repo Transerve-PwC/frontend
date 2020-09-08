@@ -8,11 +8,12 @@ import {
   import set from "lodash/set";
   import { httpRequest,getsto } from "../../../../ui-utils";
   import { getstoreTenantId,getStoresSearchResults } from "../../../../ui-utils/storecommonsapi";
-  import { searchForm } from "./searchMaterialMasterResource/searchForm";
-  import { searchResults } from "./searchMaterialMasterResource/searchResults";
+
   import { getTenantId , getOPMSTenantId} from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-  
+  import { OpeningBalanceReviewDetails } from "./viewopeningbalenceResource/openingbalance-review";
+import { masterViewFooter } from "./viewopeningbalenceResource/footer";
+import { getOpeningBalanceData } from "./viewopeningbalenceResource/functions";
   const hasButton = getQueryArg(window.location.href, "hasButton");
   let enableButton = true;
   //enableButton = hasButton && hasButton === "false" ? false : true;
@@ -21,9 +22,9 @@ import {
     labelName: "Opening Balance",
     labelKey: "STORE_OPENING_BALANCE",
   });
-  
+  const masterView = OpeningBalanceReviewDetails(false);
   const createMaterialMasterHandle = async (state, dispatch) => {
-    dispatch(setRoute(`/egov-store-asset/create-material-master`));
+    dispatch(setRoute(`/egov-store-asset/createopeningbalence`));
   };
   
   const getMDMSData = async (action, state, dispatch) => {
@@ -78,86 +79,48 @@ import {
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
     await getstoreData(action,state, dispatch);
+   
   };
   
-  const materialMasterSearchAndResult = {
+  const screenConfig = {
     uiFramework: "material-ui",
-    name: "search-material-master",
+    name: "view-opening-balence",
     beforeInitScreen: (action, state, dispatch) => {
       getData(action, state, dispatch);
+      let id = getQueryArg(window.location.href, "id");
+      let tenantId = getQueryArg(window.location.href, "tenantId");     
+      getOpeningBalanceData(state, dispatch, id, tenantId);
       return action;
     },
     components: {
       div: {
         uiFramework: "custom-atoms",
-        componentPath: "Form",
+        componentPath: "Div",
         props: {
-          className: "common-div-css",
-          id: "search",
+          className: "common-div-css"
         },
         children: {
           headerDiv: {
             uiFramework: "custom-atoms",
             componentPath: "Container",
-  
             children: {
               header: {
                 gridDefination: {
                   xs: 12,
-                  sm: 6,
+                  sm: 10
                 },
-                ...header,
-              },
-              newApplicationButton: {
-                componentPath: "Button",
-                gridDefination: {
-                  xs: 12,
-                  sm: 6,
-                  align: "right",
-                },
-                visible: enableButton,
-                props: {
-                  variant: "contained",
-                  color: "primary",
-                  style: {
-                    color: "white",
-                    borderRadius: "2px",
-                    width: "250px",
-                    height: "48px",
-                  },
-                },
-  
-                children: {
-                  plusIconInsideButton: {
-                    uiFramework: "custom-atoms",
-                    componentPath: "Icon",
-                    props: {
-                      iconName: "add",
-                      style: {
-                        fontSize: "24px",
-                      },
-                    },
-                  },
-  
-                  buttonLabel: getLabel({
-                    labelName: "Add Material Master",
-                    labelKey: "STORE_ADD_NEW_MATERIAL_MASTER_BUTTON",
-                  }),
-                },
-                onClickDefination: {
-                  action: "condition",
-                  callBack: createMaterialMasterHandle,
-                },
-              },
-            },
+                ...header
+              }
+            }
           },
-          searchForm,
-          breakAfterSearch: getBreak(),
-          searchResults,
-        },
+          masterView,
+          footer: masterViewFooter()
+        }
       },
-    },
+     
+      
+    }
   };
   
-  export default materialMasterSearchAndResult;
+  export default screenConfig;
   

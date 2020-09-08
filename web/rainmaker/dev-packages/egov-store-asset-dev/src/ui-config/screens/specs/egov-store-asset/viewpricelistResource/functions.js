@@ -9,7 +9,9 @@ import {
   createPriceList,
   getMaterialMasterSearchResults,
   getPriceListSearchResults,
-  UpdatePriceList
+  UpdatePriceList,
+  GetMdmsNameBycode,
+  getCommonFileUrl
 } from "../../../../../ui-utils/storecommonsapi";
 import {
   convertDateToEpoch,
@@ -17,6 +19,7 @@ import {
   showHideAdhocPopup,
   validateFields
 } from "../../utils";
+import { getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";  
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {  
@@ -147,33 +150,33 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
   set(jsonObject, jsonPath, modifiedArray);
 };
 
-export const furnishmaterialsData = (state, dispatch) => {
+export const furnishPriceListData = (state, dispatch) => {
   let priceLists = get(
     state.screenConfiguration.preparedFinalObject,
-    "Employee",
+    "priceLists",
     []
   );
-  setDateInYmdFormat(priceLists[0], ["dateOfAppointment", "user.dob"]);
-  setAllDatesInYmdFormat(priceLists[0], [
-    { object: "assignments", values: ["fromDate", "toDate"] },
-    { object: "priceListDetails", values: ["serviceFrom", "serviceTo"] }
-  ]);
-  setAllYears(priceLists[0], [
-    { object: "education", values: ["yearOfPassing"] },
-    { object: "tests", values: ["yearOfPassing"] }
-  ]);
-  setRolesData(priceLists[0]);
-  setRolesList(state, dispatch);
-  dispatch(prepareFinalObject("Employee", priceLists));
+  setDateInYmdFormat(priceLists[0], ["agreementDate", "agreementEndDate","agreementStartDate","rateContractDate"]);
+  // setAllDatesInYmdFormat(priceLists[0], [
+  //   { object: "assignments", values: ["fromDate", "toDate"] },
+   
+  // ]);
+  // setAllYears(priceLists[0], [
+  //   { object: "education", values: ["yearOfPassing"] },
+  //   { object: "tests", values: ["yearOfPassing"] }
+  // ]);
+  // setRolesData(priceLists[0]);
+  // setRolesList(state, dispatch);
+  dispatch(prepareFinalObject("priceLists", priceLists));
 };
 
 export const handleCreateUpdatePriceList = (state, dispatch) => {
-  let uuid = get(
+  let id = get(
     state.screenConfiguration.preparedFinalObject,
-    "Employee[0].uuid",
+    "priceLists[0].id",
     null
   );
-  if (uuid) {
+  if (id) {
     createUpdatePriceList(state, dispatch, "UPDATE");
   } else {
     createUpdatePriceList(state, dispatch, "CREATE");
@@ -225,8 +228,8 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
   let UOMList = get(state, "screenConfiguration.preparedFinalObject.createScreenMdmsData.common-masters.UOM",[]) 
   let UOM =  get(state, "screenConfiguration.preparedFinalObject.priceLists[0].priceListDetails[0].uom.code",'') 
 
-  let conversionFactor = UOMList.filter(x=> x.code === UOM)
-  set(priceLists[0],"priceListDetails[0].uom.conversionFactor", conversionFactor[0].conversionFactor);
+  // let conversionFactor = UOMList.filter(x=> x.code === UOM)
+  // set(priceLists[0],"priceListDetails[0].uom.conversionFactor", conversionFactor[0].conversionFactor);
   let fileStoreId =
   get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux[0].documents[0].fileStoreId",0)  
   set(priceLists[0],"fileStoreId", fileStoreId);
@@ -234,24 +237,16 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
   let priceListDetails = returnEmptyArrayIfNull(
     get(priceLists[0], "priceListDetails", [])
   );
-  // for (let i = 0; i < priceListDetails.length; i++) {
-  //   set(
-  //     priceLists[0],
-  //     `priceListDetails[${i}].fromDate`,
-  //     convertDateToEpoch(
-  //       get(priceLists[0], `priceListDetails[${i}].fromDate`),
-  //       "dayStart"
-  //     )
-  //   );
-  //   set(
-  //     priceLists[0],
-  //     `priceListDetails[${i}].toDate`,
-  //     convertDateToEpoch(
-  //       get(priceLists[0], `priceListDetails[${i}].toDate`),
-  //       "dayStart"
-  //     )
-  //   );
-  // }
+  for (let i = 0; i < priceListDetails.length; i++) {
+    const element = priceListDetails[i];
+    let conversionFactor = UOMList.filter(x=> x.code === element.uom.code)
+    set(
+      priceLists[0],
+      `priceListDetails[${i}].uom.conversionFactor`,
+      conversionFactor[0].conversionFactor
+    );
+    
+  }
   //handleDeletedCards(priceLists[0], "storeMapping", "id");
  
 
@@ -275,10 +270,10 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
       //     : `/hrms/acknowledgement?purpose=create&status=success&applicationNumber=${employeeId}`;
       // dispatch(setRoute(acknowledgementUrl));
       if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=create&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=PRICELIST&mode=create&code=`));
        }
     } catch (error) {
-      furnishmaterialsData(state, dispatch);
+      furnishPriceListData(state, dispatch);
     }
   } else if (action === "UPDATE") {
     try {
@@ -294,10 +289,10 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
       //     : `/hrms/acknowledgement?purpose=update&status=success&applicationNumber=${employeeId}`;
       // dispatch(setRoute(acknowledgementUrl));
       if(response){
-        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=storeMaster&mode=update&code=123456`));
+        dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=priceList&mode=update&code=`));
        }
     } catch (error) {
-      furnishmaterialsData(state, dispatch);
+      furnishPriceListData(state, dispatch);
     }
   }
 
@@ -334,9 +329,38 @@ export const getMaterialmasterData = async (
       }
     )
   );
- // furnishmaterialsData(state, dispatch);
+ // furnishPriceListData(state, dispatch);
 };
+const getFileUrl = async (dispatch,tenantId,fileStoreId)=>{
 
+  //fileStoreId = "242e3bc6-7f42-444e-b562-6f23468f6e72"
+  if(tenantId.includes("."))
+  {
+ 
+    var vStr = tenantId.split('.');
+
+    tenantId = vStr[0];
+  }
+  //tenantId = 
+  let FileURL = "";
+  getFileUrlFromAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    console.log(fileRes)
+    console.log("fileRes")
+    FileURL = fileRes.fileStoreIds[0].url
+    FileURL = getCommonFileUrl(FileURL)
+    let  documentsPreview= [
+      {
+        title: "STORE_DOCUMENT_TYPE_MATERIAL_RECEIPT_NOTE",
+        linkText: "VIEW", 
+        link:FileURL,//"https://chstage.blob.core.windows.net/fileshare/ch/undefined/July/15/1594826295177document.pdf?sig=R3nzPxT9MRMfROREe6LHEwuGfeVxB%2FKneAeWrDJZvOs%3D&st=2020-07-15T15%3A21%3A01Z&se=2020-07-16T15%3A21%3A01Z&sv=2016-05-31&sp=r&sr=b",
+          
+      },]     
+    dispatch(
+      prepareFinalObject("documentsPreview", documentsPreview)
+    );
+  });  
+ 
+}
 export const getPriceLstData = async (
   state,
   dispatch,
@@ -355,8 +379,29 @@ export const getPriceLstData = async (
   ];
 
  let response = await getPriceListSearchResults(queryObject, dispatch);
-// let response = samplematerialsSearch();
-  dispatch(prepareFinalObject("priceLists", get(response, "priceLists")));
+ response = response.priceLists.filter(x=>x.id === id)
+  //dispatch(prepareFinalObject("priceLists", get(response, "priceLists")));
+  if(response && response[0])
+  {
+  for (let index = 0; index < response[0].priceListDetails.length; index++) {
+    const element = response[0].priceListDetails[index];
+   let Uomname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",element.uom.code) 
+   let matname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.store-asset.Material",element.material.code) 
+      // dispatch(
+      //   prepareFinalObject(
+      //     `priceLists[0].priceListDetails[${index}].uom.name`,
+      //     uonname,
+      //   )
+      // );
+
+      set(response[0], `priceListDetails[${index}].uom.name`, Uomname);
+      set(response[0], `priceListDetails[${index}].material.name`, matname);    
+    
+  }
+}
+
+getFileUrl(dispatch,tenantId,response[0].fileStoreId);
+  dispatch(prepareFinalObject("priceLists", response));
   // dispatch(
   //   handleField(
   //     "create",
@@ -368,5 +413,5 @@ export const getPriceLstData = async (
   //     }
   //   )
   // );
- // furnishmaterialsData(state, dispatch);
+  furnishPriceListData(state, dispatch);
 };

@@ -1,4 +1,4 @@
-import {getEmployeeByUUidHRMS ,getEmployeeByUUid,getLibraryGridData,getPressNoteGridData,getSearchResultsViewPressnotedata,getPressMasterGridData1,getCommittiee,getSearchResultsViewEvent,getSearchResultsViewLI, getSearchResults ,getEventGridData,getInviteGuestGridData,getTenderGridData,getBillingGrid,getPublishTenderGrid , getEventeelistGridData, getSearchResultsForTenderSummary, getPressMasterSearchResultsViewMain} from "../../../../../ui-utils/commons";
+import {getEmployeeByUUidHRMS, truncData,toTitleCase,convertTime,getEmployeeByUUid,getLibraryGridData,getPressNoteGridData,getSearchResultsViewPressnotedata,getPressMasterGridData1,getCommittiee,getSearchResultsViewEvent,getSearchResultsViewLI, getSearchResults ,getEventGridData,getInviteGuestGridData,getTenderGridData,getBillingGrid,getPublishTenderGrid , getEventeelistGridData, getSearchResultsForTenderSummary, getPressMasterSearchResultsViewMain} from "../../../../../ui-utils/commons";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -9,8 +9,10 @@ import { showHidesearchDepartmentEmployeesResults } from "./functions";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
-import store from "redux/store";
+//import store from "redux/store";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import {  showHideAdhocPopupopmsReject } from "../../utils";
+import store from "ui-redux/store";
 import {
   getFileUrlFromAPI,
   getQueryArg,
@@ -18,48 +20,52 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from '../../../../../config/common';
 
-export const fetchData = async (action, state, dispatch) => {
-  const response = await getSearchResults();
+// export const fetchData = async (action, state, dispatch) => {
+//   const response = await getSearchResults();
  
-  try {
-    if (response && response.PublicRelations && response.PublicRelations.length > 0) {
-      dispatch(prepareFinalObject("searchResults", response.PublicRelations));
-      dispatch(
-        prepareFinalObject("myApplicationsCount", response.PublicRelations.length)
-      );
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+//   try {
+//     if (response && response.PublicRelations && response.PublicRelations.length > 0) {
+//       dispatch(prepareFinalObject("searchResults", response.PublicRelations));
+//       dispatch(
+//         prepareFinalObject("myApplicationsCount", response.PublicRelations.length)
+//       );
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
- 
-const convertTime =(time)=> {
-  // Check correct time format and split into components
+// const toTitleCase=(str)=> {
+//   return str.replace(/\w\S*/g, function(txt){
+//       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//   });
+// } 
+// const convertTime =(time)=> {
+//   // Check correct time format and split into components
   
-  //time=time+":00"
-  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
+//   //time=time+":00"
+//   time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
   
-  if (time.length > 1) { // If time format correct
-  time = time.slice(1); // Remove full string match value
-  time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
-  time[0] = +time[0] % 12 || 12; // Adjust hours
-  }
-  return time.join(''); // return adjusted time or original string
-  }
-  const truncTime=(str, length, ending)=> {
-    if (length == null) {
-      length = 20;
-    }
-    if (ending == null) {
-      ending = '...';
-    }
-    if (str.length > length) {
-      return str.substring(0, length - ending.length) + ending;
-    } else {
-      return str;
-    }
-  };
+//   if (time.length > 1) { // If time format correct
+//   time = time.slice(1); // Remove full string match value
+//   time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+//   time[0] = +time[0] % 12 || 12; // Adjust hours
+//   }
+//   return time.join(''); // return adjusted time or original string
+//   }
+  // const truncData=(str, length, ending)=> {
+  //   if (length == null) {
+  //     length = 20;
+  //   }
+  //   if (ending == null) {
+  //     ending = '...';
+  //   }
+  //   if (str.length > length) {
+  //     return str.substring(0, length - ending.length) + ending;
+  //   } else {
+  //     return str;
+  //   }
+  // };
 export const getGridData = async (action, state, dispatch) => {
   const response = await getEventGridData();
   try {
@@ -134,7 +140,7 @@ if(response.ResponseBody[j].organizerDepartmentName===payload.MdmsRes["common-ma
       [getTextToLocalMapping("Event Id")]:
       item.eventId || "-",
       [getTextToLocalMapping("Event Title")]:
-      truncTime(item.eventTitle) || "-",
+      truncData(item.eventTitle) || "-",
       [getTextToLocalMapping("Organizer Department")]:
       item.EmpName|| "-",
       [getTextToLocalMapping("Organizer Employee")]:
@@ -239,7 +245,7 @@ if(response.ResponseBody[j].organizerDepartmentName===payload.MdmsRes["common-ma
       [getTextToLocalMapping("Event Id")]:
       item.eventId || "-",
       [getTextToLocalMapping("Event Title")]:
-      truncTime(item.eventTitle) || "-",
+      truncData(item.eventTitle) || "-",
       [getTextToLocalMapping("Organizer Department")]:
       item.EmpName|| "-",
       [getTextToLocalMapping("Organizer Employee")]:
@@ -284,9 +290,9 @@ export const getPressGridData = async (action, state, dispatch) => {
       [getTextToLocalMapping("Date")]:
       item.pressNoteDate || "-",
       [getTextToLocalMapping("File Number")]:
-      item.fileNumber || "-",
+      truncData(item.fileNumber) || "-",
       [getTextToLocalMapping("Subject")]:
-      truncTime(item.pressNoteSubject) || "-",
+      truncData(item.pressNoteSubject) || "-",
       [getTextToLocalMapping("Press Note List UUID")]:
       item.pressNoteUuid || "-",
     
@@ -330,11 +336,11 @@ export const getPressGridDatanote = async (action, state, dispatch) => {
     let data = response.ResponseBody.map(item => ({
 		
       [getTextToLocalMapping("Publication Name")]:
-      truncTime(item.publicationName) || "-",
+      truncData(item.publicationName) || "-",
       [ getTextToLocalMapping("Type of the Press")]:
       item.pressType || "-",
       [getTextToLocalMapping("Personnel Name")]:
-      truncTime(item.personnelName) || "-",
+      truncData(item.personnelName) || "-",
       [getTextToLocalMapping("Email Id")]:
       item.email || "-",
       [getTextToLocalMapping("Mobile Number")]:
@@ -386,7 +392,7 @@ export const getPressGridDatatender = async (action, state, dispatch) => {
       [ getTextToLocalMapping("Type of the Press")]:
       item.pressType || "-",
       [getTextToLocalMapping("Personnel Name")]:
-      truncTime(item.personnelName) || "-",
+      truncData(item.personnelName) || "-",
       [getTextToLocalMapping("Email Id")]:
       item.email || "-",
       [getTextToLocalMapping("Mobile Number")]:
@@ -443,11 +449,11 @@ export const getPressGridDataforview = async (action, state, dispatch) => {
 
       
       [getTextToLocalMapping("Publication Name")]:
-      truncTime(item.publicationName) || "-",
+      truncData(item.publicationName) || "-",
       [ getTextToLocalMapping("Type of the Press")]:
       item.pressType || "-",
       [ getTextToLocalMapping("Personnel Name")]:
-      truncTime(item.personnelName) || "-",
+      truncData(item.personnelName) || "-",
       [ getTextToLocalMapping("Email Id")]:
       item.email || "-",
       [getTextToLocalMapping("Mobile Number")]:
@@ -612,8 +618,8 @@ export const getGridDataBilling = async (action, state, dispatch) => {
   }
 };
 
-export const getGridDataPublishTender = async (action, state, dispatch) => {
-  const response = await getPublishTenderGrid();
+export const getGridDataPublishTender = async (action, state, dispatch,status) => {
+  const response = await getPublishTenderGrid(status);
   
   try {
     if (response && response.ResponseBody && response.ResponseBody.length > 0) {
@@ -622,8 +628,8 @@ export const getGridDataPublishTender = async (action, state, dispatch) => {
     let data = response.ResponseBody.map(item => ({
        [getTextToLocalMapping("Tender Notice ID")]:item.tenderNoticeId || "-",
        [getTextToLocalMapping("Date")]:item.tenderDate.split(" ")[0] || "-",
-       [getTextToLocalMapping("File Number")]:item.fileNumber || "-",
-       [getTextToLocalMapping("Subject")]:truncTime(item.tenderSubject) || "-",
+       [getTextToLocalMapping("File Number")]:truncData(item.fileNumber) || "-",
+       [getTextToLocalMapping("Subject")]:truncData(item.tenderSubject) || "-",
        [getTextToLocalMapping("Department User")]:item.createdByName || "-",
        [getTextToLocalMapping("tenderNoticeUuid")]:item.tenderNoticeUuid || "-",
        [getTextToLocalMapping("tenderNoticeStatus")]:item.tenderNoticeStatus || "-"
@@ -939,10 +945,19 @@ console.log(preSelectedRows)
 }
   export const setCommittiee = async (action, state, dispatch,data) => {
   const response = await getCommittiee(data);
+ // toTitleCase(response.ResponseBody[0].committeeName)
 
   try {
     if (response) {
+      for(let i=0;i<response.ResponseBody.length;i++)
+{
+  //toTitleCase(response.ResponseBody[i].committeeName)
 
+  let obj={}
+  obj['code']=response.ResponseBody[i].committeeUuid
+  obj['name']=toTitleCase(response.ResponseBody[i].committeeName)
+  response.ResponseBody[i]=obj
+}
      
       dispatch(prepareFinalObject("committieeData", response.ResponseBody));
       
@@ -1177,9 +1192,7 @@ dispatch(prepareFinalObject("eventDetails", response.ResponseBody));
       // Get all documents from response
       let PublicRelation = get(state, "screenConfiguration.preparedFinalObject.eventDetails[0]", {});
       let doc=JSON.parse(PublicRelation.eventString)
-      console.log("uploaded docccccccccccccccccc");
-      console.log(doc);
-      console.log(doc.length)
+   
       let doctitle = [];
       if(doc.length>0)
       {
@@ -1332,9 +1345,7 @@ documentsPreview6.push(document);
 }
 export const getSearchResultsViewPressnote= async (state, dispatch,data) => {
   const response = await getSearchResultsViewPressnotedata(data);
-  
-  console.log("*******************");
-  console.log(response);
+ ;
   
  
   
@@ -1361,41 +1372,43 @@ dispatch(prepareFinalObject("ResponseBody", response.ResponseBody));
   localStorageSet("notesmsContent",PublicRelation.smsContent)
 
   //let doc=JSON.parse(PublicRelation.documentAttachment)
+ // let doc=JSON.parse(PublicRelation.eventString)
+  
   let doc=PublicRelation.documentAttachment
 console.log(doc.length)
+
+let doctitle = [];
 if(doc.length>0)
 {
-let pressDoc =  PublicRelation.hasOwnProperty('documentAttachment')?doc[0]['fileStoreId']:''
+  for(let i=0; i<doc.length; i++) {
+let eventDoc = PublicRelation.hasOwnProperty('documentAttachment')?doc[0]['fileStoreId']:''
+    doctitle.push(doc[i]['fileName:']);
 
-if (pressDoc !== '' || pressDoc!==undefined) {
+if (eventDoc !== '' || eventDoc!==undefined) {
   documentsPreview.push({
-    title: "PR_PRESSNOTE_PRESSNOTE_FILE_DOCUMENT",
-    fileStoreId: pressDoc,
+    title: doc[i]['fileName:'],
+  // title: doc[i]['fileName'],
+    fileStoreId: eventDoc,
     linkText: "View"
   })
-}  let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
-let fileUrls =
-  fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
-documentsPreview = documentsPreview.map(function (doc, index) {
+  let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+  let fileUrls =
+    fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+
+  documentsPreview = documentsPreview.map(function (doc, index) {
 
 doc["link"] = fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
-//  doc["name"] = `Document - ${index + 1}`
-  doc["name"] =
-    (fileUrls[doc.fileStoreId] &&
-      decodeURIComponent(
-        fileUrls[doc.fileStoreId]
-          .split(",")[0]
-          .split("?")[0]
-          .split("/")
-          .pop()
-          .slice(13)
-      )) ||
-    `Document - ${index + 1}`;
-  return doc;
-});
+
+    return doc;
+  });
+}
+}
 }
 
-dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+
+  dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+
+
 	
 }
 const getfile= async (documentsPreview1,dispatch,count) =>{
@@ -1433,12 +1446,24 @@ dispatch(prepareFinalObject("documentsPreview"+count, documentsPreview1));
 }
 }
 }
+export const InviteDeleteConfirm = async (data, state, dispatch) => {
+  store.dispatch(prepareFinalObject("RowDataForInvite",data));
 
+  showHideAdhocPopupopmsReject(store.getState(), store.dispatch, "createInvite", "pressMaster")
+
+}
 // Delete a guest from invitation list grid
-export const deleteguestbyid = async (data, state, dispatch) => {
+export const deleteguestbyid = async ( state, dispatch) => {
+
  
-	if(confirm("Are you sure you want to remove this guest?"))
-	{
+      let data=get(
+        state.screenConfiguration.preparedFinalObject,
+        "RowDataForInvite"
+      )
+  
+ 
+	// if(confirm("Are you sure you want to remove this guest?"))
+	// {
 		let tenantId = getTenantId();
 		let invitedGuestlist = [];
 		var data_result="";
@@ -1481,10 +1506,10 @@ export const deleteguestbyid = async (data, state, dispatch) => {
 	  } catch (e) {
 		console.log(e);
 	  }
-	}
-	else{
-		return false;
-	}		
+	// }
+	// else{
+	// 	return false;
+	// }		
 }	
 
 
@@ -1670,7 +1695,7 @@ if(response.ResponseBody[j].organizerDepartmentName===payload.MdmsRes["common-ma
 			   [getTextToLocalMapping("Event Id")]:
 			  item.eventId || "-",
 			  [getTextToLocalMapping("Event Title")]:
-        truncTime(item.eventTitle) || "-",
+        truncData(item.eventTitle) || "-",
 			  [getTextToLocalMapping("Organizer Department")]:
 			  item.EmpName|| "-",
 			  [getTextToLocalMapping("Organizer Employee")]:
@@ -1803,7 +1828,37 @@ export const getSearchResultsforTenderView= async (state, dispatch,data) => {
   }
   
 
-  
+ // let PublicRelation = get(state, "screenConfiguration.preparedFinalObject.eventDetails[0]", {});
+//   let doc=response.ResponseBody[0].tenderDocument
+
+//   let doctitle = [];
+//   if(doc.length>0)
+//   {
+//     for(let i=0; i<doc.length; i++) {
+//   let eventDoc =  doc[i]['fileStoreId']
+//       doctitle.push(doc[i]['fileName:']);
+ 
+//   if (eventDoc !== '' || eventDoc!==undefined) {
+//     documentsPreview.push({
+//       title: doc[i]['fileName:'],
+//       title: doc[i]['fileName:'],
+//       fileStoreId: eventDoc,
+//       linkText: "View"
+//     })
+//     let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+//     let fileUrls =
+//       fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+
+//     documentsPreview = documentsPreview.map(function (doc, index) {
+
+//   doc["link"] = fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
+//   doc['fileUrl']=fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
+
+//       return doc;
+//     });
+//   }
+//   }
+// }
 
 
     dispatch(prepareFinalObject("documentsPreview", documentsPreview));
@@ -1828,11 +1883,11 @@ export const getSearchResultsforTenderView= async (state, dispatch,data) => {
    response.ResponseBody[0].publicationList.map(item => ({
  
       [getTextToLocalMapping("Publication Name")]:
-      truncTime(item.publicationName) || "-",
+      truncData(item.publicationName) || "-",
       [ getTextToLocalMapping("Type of the Press")]:
       item.pressType || "-",
       [ getTextToLocalMapping("Personnel Name")]:
-      truncTime(item.personnelName) || "-",
+      truncData(item.personnelName) || "-",
       [ getTextToLocalMapping("Email Id")]:
       item.email || "-",
       [getTextToLocalMapping("Mobile Number")]:
@@ -1972,11 +2027,11 @@ export const getPressMasterGridData = async (action, state, dispatch) => {
       [getTextToLocalMapping("Press Id")]:
       item.pressMasterUuid || "-",
       [getTextToLocalMapping("Publication name")]:
-      truncTime(item.publicationName) || "-",
+      truncData(item.publicationName) || "-",
       [getTextToLocalMapping("Type of the press")]:
       item.pressType || "-",
       [getTextToLocalMapping("Personnel Name")]:
-      truncTime(item.personnelName) || "-",
+      truncData(item.personnelName) || "-",
       
     
       [getTextToLocalMapping("Email Id")]:
@@ -2527,7 +2582,7 @@ export const getCommitieeGridData = async (action, state, dispatch) => {
       [getTextToLocalMapping("Committee Id")]:
       item.committeeUuid || "-",
       [getTextToLocalMapping("Committee Name")]:
-      truncTime(item.committeeName) || "-",
+      truncData(item.committeeName) || "-",
       [getTextToLocalMapping("PR_CREATEDON")]:
       item.createdOn || "-",
       [getTextToLocalMapping("PR_CREATORNAME")]:

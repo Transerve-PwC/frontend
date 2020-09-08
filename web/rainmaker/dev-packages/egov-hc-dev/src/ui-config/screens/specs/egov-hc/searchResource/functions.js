@@ -20,6 +20,7 @@ dispatch(
 
 export const searchApiCallForEmployeeFilter = async (state, dispatch) =>{
   var flag_for_api_call = true
+
   showHideTable(false, dispatch);
   let queryObject = [
     {
@@ -156,11 +157,20 @@ export const searchApiCallForEmployeeFilter = async (state, dispatch) =>{
         "service_request_id":servicerequestid,
         "serviceType":servicetype,
         "serviceRequestStatus":servicestatus,
-        "streetName":mohalla,
+        "houseNoAndStreetName":mohalla,
         "ownerContactNumber":contactNumber}
     
     // debugger
     const response = await getSearchResultsEmployeeRequestFilter(data);
+
+    // dispatch(
+    //   handleField(
+    //     "employeeServiceRequestsFilter",
+    //     "components.div.children.searchResultsServiceRequest",
+    //     "visible",
+    //     true
+    //   )
+    // );
 
     try {
       if (response.services.length >0 ){
@@ -174,20 +184,29 @@ export const searchApiCallForEmployeeFilter = async (state, dispatch) =>{
       }));
     
     // console.log("data",data)
-    dispatch(
-      handleField(
-        "employeeServiceRequestsFilter",
-        "screenConfiguration.screenConfig.employeeServiceRequestsFilter.components.div.children.ServiceRequestFilterFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestStatus",
-        "props.value",
-        servicestatus
-      )
-    );
+    // dispatch(
+    //   handleField(
+    //     "employeeServiceRequestsFilter",
+    //     "screenConfiguration.screenConfig.employeeServiceRequestsFilter.components.div.children.ServiceRequestFilterFormForEmployee.children.cardContent.children.StatusLocalityAndFromToDateContainer.children.ServiceRequestStatus",
+    //     "props.value",
+    //     servicestatus
+    //   )
+    // );
       dispatch(
         handleField(
           "employeeServiceRequestsFilter",
           "components.div.children.searchResultsServiceRequest",
           "props.data",
           data_response
+        )
+      );
+
+      dispatch(
+        handleField(
+          "employeeServiceRequestsFilter",
+          "components.div.children.searchResultsServiceRequest",
+          "visible",
+          true
         )
       );
         }
@@ -203,12 +222,21 @@ export const searchApiCallForEmployeeFilter = async (state, dispatch) =>{
           );
 
           dispatch(
-            toggleSnackbar(
-              true,
-              { labelName: "No Records Found", labelKey: "ERR_NO_RECORDS_FOUND" },
-              "warning"
+            handleField(
+              "employeeServiceRequestsFilter",
+              "components.div.children.searchResultsServiceRequest",
+              "visible",
+              true
             )
           );
+
+        //   dispatch(
+        //     toggleSnackbar(
+        //       true,
+        //       { labelName: "No Records Found", labelKey: "ERR_NO_RECORDS_FOUND" },
+        //       "warning"
+        //     )
+        //   );
         }
 
       showHideTable(true, dispatch);

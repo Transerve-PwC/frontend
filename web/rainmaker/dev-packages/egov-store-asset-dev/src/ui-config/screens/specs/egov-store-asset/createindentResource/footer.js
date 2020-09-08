@@ -8,21 +8,23 @@ import {
 } from "../../../../../ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getButtonVisibility,
   getCommonApplyFooter,
   ifUserRoleExists,
   validateFields,
-  epochToYmd
+  epochToYmd,
+  getLocalizationCodeValue
 } from "../../utils";
+import {ValidateCard} from '../../../../../ui-utils/storecommonsapi'
 // import "./index.css";
 
 const moveToReview = dispatch => {
   const reviewUrl =
     process.env.REACT_APP_SELF_RUNNING === "true"
-      ? `/egov-ui-framework/egov-store-asset/reviewpricelist`
-      : `/egov-store-asset/reviewpricelist`;
+      ? `/egov-ui-framework/egov-store-asset/reviewindent`
+      : `/egov-store-asset/reviewindent`;
   dispatch(setRoute(reviewUrl));
 };
 
@@ -73,7 +75,51 @@ export const callBackForNext = async (state, dispatch) => {
     }
     if(isFormValid)
     {
+          //validate duplicate card
+  let cardJsonPath =
+  "components.div.children.formwizardSecondStep.children.MaterialIndentMapDetails.children.cardContent.children.MaterialIndentDetailsCard.props.items";
+  let pagename = "creatindent";
+  let jasonpath =  "indents[0].indentDetails";
+  let value = "material.code";
+  let DuplicatItem = ValidateCard(state,dispatch,cardJsonPath,pagename,jasonpath,value)
+  if(DuplicatItem && DuplicatItem[0])
+  {
+    const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+    if(!DuplicatItem[0].IsDuplicatItem)
+            {
+
+              // refresh card item
+              var storeMappingTemp = [];
+          let  storeMapping =  get(
+            state.screenConfiguration.preparedFinalObject,
+            `indents[0].indentDetails`,
+            []
+          );
+          for(var i = 0; i < storeMapping.length; i++){
+              if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
+                storeMappingTemp.push(storeMapping[i]);
+              }
+          }
+          storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+          if(storeMappingTemp.length>0)
+          {
+            dispatch(prepareFinalObject("indents[0].indentDetails",storeMappingTemp)
+          );
+            }
+            moveToReview(dispatch);
+          }
+          else{
+            const errorMessage = {
+              labelName: "Duplicate Material Added",
+              //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+              labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          }
+  }
+  else{
       moveToReview(dispatch);
+  }
   }
     else{
 
@@ -134,9 +180,9 @@ export const callBackForNext = async (state, dispatch) => {
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
-   else{      
-     
-      changeStep(state, dispatch);
+   else{  
+    changeStep(state, dispatch);
+      
    }
   
    

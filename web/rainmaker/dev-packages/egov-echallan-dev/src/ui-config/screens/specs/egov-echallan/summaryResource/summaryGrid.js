@@ -30,7 +30,7 @@ export const searchResultsSummary = {
       filter: false,
       download: false,
       viewColumns: false,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       hover: true,
       print: false,
@@ -63,7 +63,7 @@ export const searchVehicleResultsSummary = {
       filter: false,
       download: false,
       viewColumns: false,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       hover: true,
       print: false,
@@ -287,7 +287,7 @@ export const serachResultGridSM = {
       download: false,
       // responsive: "scrollMaxHeight",
       viewColumns: false,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       disableToolbarSelect: true,
       resizableColumns: false,
@@ -344,12 +344,12 @@ const onRowClick = rowData => {
 
   switch (rowData[5]) {
     case "INITIATED":
-      window.location.href = `apply?challanNumber=${rowData[0]}&tenantId=${
+      window.location.href = `apply?applicationNumber=${rowData[0]}&tenantId=${
         rowData[5]
         }`;
       break;
     default:
-      window.location.href = `search-preview?challanNumber=${
+      window.location.href = `search-preview?applicationNumber=${
         rowData[0]
         }&tenantId=${rowData[8]}`;
       break;
@@ -498,7 +498,7 @@ export const searchResultsSummaryHOD = {
       print: false,
       download: false,
       viewColumns: false,
-      responsive: 'stacked',
+      responsive: 'scroll',
       selectableRows: false,
       disableToolbarSelect: true,
       resizableColumns: false,

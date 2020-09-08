@@ -143,9 +143,15 @@ export const logout = () => {
          } 
          else {
         clearUserDetails();
-        process.env.REACT_APP_NAME === "Citizen"
-          ? window.location.replace(`${window.basename}/user/register`)
-          : window.location.replace(`${window.basename}/user/login`);
+        if(window.location.search.includes("mobileno")|| window.location.search.includes("ecno")){
+           //do nothing
+        }
+          else{
+            process.env.REACT_APP_NAME === "Citizen"
+            ? window.location.replace(`${window.basename}/user/login`)
+            : window.location.replace(`${window.basename}/user/login`);
+          }
+        
         return;
       }
     } catch (error) {
@@ -157,6 +163,15 @@ export const logout = () => {
     // let userRole=get(userInfo,"roles[0].code");
     clearUserDetails();
     // window.location.replace(`${window.basename}/user/login`)
-    window.location.replace(`${window.basename}/user/login`);
+
+    //for handling e-challan routing
+    if(window.location.search.includes("mobileno")|| window.location.search.includes("ecno")){
+        //do nothing
+    }
+    else{
+      window.location.replace(`${window.basename}/user/login`);
+    }
+
+   
   };
 };

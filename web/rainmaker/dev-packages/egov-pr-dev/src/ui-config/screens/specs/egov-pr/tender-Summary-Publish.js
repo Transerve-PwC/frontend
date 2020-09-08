@@ -16,7 +16,12 @@ import {
 import set from "lodash/set";
 import "../../../../customstyle.css";
 import "./publishtender.css";
-import { checkForRole } from "../../../../ui-utils/commons";
+import { checkForRole,checkTenderVisibility } from "../../../../ui-utils/commons";
+import { httpRequest } from "../../../../ui-utils";
+import commonConfig from '../../../../config/common';
+import get from "lodash/get";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import store from "ui-redux/store";
 
 const titlebar = getCommonContainer({
   header: getCommonHeader({
@@ -35,12 +40,60 @@ const titlebar = getCommonContainer({
 
   
 });
+const getMdmsData = async (action, state, dispatch) => {
 
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+        {
+          moduleName: "RAINMAKER-PR",
+          masterDetails: [ { name: "TenderStatusCheck" }
+          
+        ]
+        },
+       
+
+     
+      ]
+    }
+  };
+  try {
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+  
+      
+    dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const screenConfig = {
   uiFramework: "material-ui",
   name: "tender-Summary-Publish",
   beforeInitScreen: (action, state, dispatch) => {
+    set(
+      action,
+      "screenConfig.components.div.children.body.children.cardContent.children.tenderPublishSummary.children.cardContent.children.header.children.editSection.visible",
+      false
+    );
+    getMdmsData(action, state, dispatch).then(response => {
+      let mdmsresponse=  get(
+        state,
+        "screenConfiguration.preparedFinalObject.applyScreenMdmsData",
+        {}
+      );
+      checkTenderVisibility(action, state, dispatch,mdmsresponse,getQueryArg(window.location.href, "Status"),JSON.parse(getUserInfo()).roles)
+    })
+
+
 	localStorageSet("resendmodule", "TENDER");
   localStorageSet("eventifforinvitatoin",getQueryArg(window.location.href, "tenderuuId"));
   localStorageSet("ResendInvitelist", []);	
@@ -66,11 +119,7 @@ const screenConfig = {
     getSearchResultsforTenderView(state, dispatch, payload)
 
 
-    set(
-      action,
-      "screenConfig.components.div.children.body.children.cardContent.children.tenderPublishSummary.children.cardContent.children.header.children.editSection.visible",
-      checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER') ||  getQueryArg(window.location.href, "Status")=="PUBLISHED"  ? false : true
-    );
+    
     
 
     return action;
@@ -100,19 +149,14 @@ const screenConfig = {
           tenderPublishSummary: tenderPublishSummary,
           documentsSummary: documentsSummary,
         }),
-		Resendbody:checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER') || getQueryArg(window.location.href, "Status")=="CREATED" ?{}: getCommonCard({
-		   headerresend: getCommonHeader({
-					labelName: "Invited Press List",
-					labelKey: "PR_INVITED_PRESS_LIST"
-      },
-      {
-        style: {
-          marginBottom: 18,
-        }
-      }
-      ),	
-          ResendTenderInviteGrid:checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER') || getQueryArg(window.location.href, "Status")=="CREATED" ?{}: ResendTenderInviteGrid,
-         
+    Resendbody:
+    // checkForRole(JSON.parse(getUserInfo()).roles, 'DEPARTMENTUSER')
+    //  || getQueryArg(window.location.href, "Status")=="CREATED" ?{}: 
+     getCommonCard({
+		   headerresend: {},	
+       
+        ResendTenderInviteGrid:{}
+
         }),
         
        tenderSummaryfooter:tenderSummaryfooter

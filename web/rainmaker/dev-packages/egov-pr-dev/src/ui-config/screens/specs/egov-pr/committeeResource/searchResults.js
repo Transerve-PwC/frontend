@@ -110,7 +110,7 @@ const onEmployeeselect = async (type, rowData, state,dispatch,action,index,allRo
 	else
 	{	
     console.log('index')
-    console.log(index.rowIndex)
+    console.log(index.dataIndex)
     console.log(allRowsSelected)
 		
 		let selectedrows = [];
@@ -166,7 +166,7 @@ if(checked===false){
       obj['Employee ID']=rowData[6]
       obj['Designation']=rowData[1]
       obj['DepartmentName']=rowData[7]
-      obj['index']=index.rowIndex
+      obj['index']=index.dataIndex
       selectedrows.push(obj)
       
     localStorageSet("committeelist", JSON.stringify(selectedrows));
@@ -269,7 +269,7 @@ if(checked===false){
   obj['Employee ID']=rowData[6]
   obj['Designation']=rowData[1]
   obj['DepartmentName']=rowData[7]
-  obj['index']=index.rowIndex
+  obj['index']=index.dataIndex
   selectedrows.push(obj)
   localStorageSet("committeelist", JSON.stringify(selectedrows));	
   

@@ -162,7 +162,11 @@ const index = response.ProcessInstances[0].pensionRevision.length;
         finalCalculatedPension:response.ProcessInstances[0].pensionRevision[index-1].finalCalculatedPension,
 
         woundExtraordinaryPension:response.ProcessInstances[0].pensionRevision[index-1].woundExtraordinaryPension,
-        attendantAllowance:response.ProcessInstances[0].pensionRevision[index-1].attendantAllowance,
+        attendantAllowance:response.ProcessInstances[0].pensionRevision[index-1].attendantAllowance,        
+
+        pensionDeductions:response.ProcessInstances[0].pensionRevision[index-1].pensionDeductions,
+        interimRelief:response.ProcessInstances[0].pensionRevision[index-1].interimRelief,
+
         remarks:"",
 
 

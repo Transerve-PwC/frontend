@@ -64,6 +64,10 @@ const prepareDocumentsView = async (state, dispatch) => {
 
 
         dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+
+
+
+        
         
 }
 
@@ -90,7 +94,7 @@ const screenConfig = {
 		localStorageSet("eventifforinvitatoin",getQueryArg(window.location.href, "pressnoteuuId"));
 			
 			
-            getPressGridDataforview(action, state, dispatch);
+    getPressGridDataforview(action, state, dispatch);
 
     getSearchResultsViewPressnote(state, dispatch,payload)
    

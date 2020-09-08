@@ -18,9 +18,10 @@ import {
   applyForWater,
   validateFeildsForBothWaterAndSewerage,
   validateFeildsForWater,
-  validateFeildsForSewerage
+  validateFeildsForSewerage,
+  validateConnHolderDetails,
 } from "../../../../../ui-utils/commons";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import set from 'lodash/set';
 import { getTenantIdCommon } from "egov-ui-kit/utils/localStorageUtils";
 
@@ -130,7 +131,29 @@ const callBackForNext = async (state, dispatch) => {
       dispatch(prepareFinalObject("applyScreen.reviewDocData", reviewDocData));
       let applyScreenObject = findAndReplace(get(state.screenConfiguration.preparedFinalObject, "applyScreen", {}), "NA", null);
       let applyScreenObj = findAndReplace(applyScreenObject, 0, null);
-      dispatch(prepareFinalObject("applyScreen", applyScreenObj));
+       //connectionholdercode
+       let connectionHolderObj = get(state.screenConfiguration.preparedFinalObject, "connectionHolders");
+       let holderData = connectionHolderObj[0];
+        if (holderData !== null && holderData !== undefined) {
+          if (holderData.sameAsPropertyAddress === true) {
+            holderData = null
+          }
+        }
+        if (holderData == null) {
+          applyScreenObject.connectionHolders = holderData;
+       } else {
+          let arrayHolderData = [];
+          arrayHolderData.push(holderData);
+          applyScreenObj.connectionHolders = arrayHolderData;
+        }
+
+      if(!isActiveProperty(applyScreenObj.property)){
+        dispatch(toggleSnackbar(true, { labelKey: `ERR_WS_PROP_STATUS_${applyScreenObj.property.status}`, labelName: `Property Status is ${applyScreenObj.property.status}` }, "warning"));     
+        showHideFieldsFirstStep(dispatch,"",false);        
+        dispatch(prepareFinalObject("applyScreen", applyScreenObj));
+        return false;
+      }
+
     } else {
       const water = get(
         state.screenConfiguration.preparedFinalObject,
@@ -145,7 +168,26 @@ const callBackForNext = async (state, dispatch) => {
         "searchScreen.propertyIds"
       )
       let applyScreenObject = get(state.screenConfiguration.preparedFinalObject, "applyScreen");
+      //connectionholdercode
+
+     let connectionHolderObj = get(state.screenConfiguration.preparedFinalObject, "connectionHolders");
+     let holderData = connectionHolderObj[0];
+      if (holderData !== null && holderData !== undefined) {
+        if (holderData.sameAsPropertyAddress === true) {
+          holderData = null
+        }
+      }
+      if (holderData == null) {
+        applyScreenObject.connectionHolders = holderData;
+     } else {
+        let arrayHolderData = [];
+        arrayHolderData.push(holderData);
+        applyScreenObject.connectionHolders = arrayHolderData;
+      }
       if (searchPropertyId !== undefined && searchPropertyId !== "") {
+        if (validateConnHolderDetails(applyScreenObject)) {
+                   isFormValid = true;
+                   hasFieldToaster = false;
         if (applyScreenObject.water || applyScreenObject.sewerage) {
           if (
             applyScreenObject.hasOwnProperty("property") &&
@@ -271,7 +313,19 @@ const callBackForNext = async (state, dispatch) => {
           isFormValid = false;
           hasFieldToaster = true;
         }
-      } else {
+      }else{
+           isFormValid = false;
+                dispatch(
+                  toggleSnackbar(
+                    true, {
+                    labelKey: "WS_FILL_REQUIRED_HOLDER_FIELDS",
+                    labelName: "Please fill Required details"
+                  },
+                    "warning"
+                  )
+                )
+              }
+            }else {
         isFormValid = false;
         dispatch(
           toggleSnackbar(
@@ -526,6 +580,19 @@ export const changeStep = (
   } else {
     activeStep = defaultActiveStep;
   }
+  if(activeStep === 0){
+    let conHolders = get(state, "screenConfiguration.preparedFinalObject.applyScreen.connectionHolders");
+    let isCheckedSameAsProperty = (conHolders && conHolders.length > 0 && !conHolders[0].sameAsPropertyAddress)?false:true;
+    dispatch(
+      handleField(
+        "apply",
+        "components.div.children.formwizardFirstStep.children.connectionHolderDetails.children.cardContent.children.sameAsOwner.children.sameAsOwnerDetails",
+        "props.isChecked",
+        isCheckedSameAsProperty
+      )
+    )
+  }
+  
   const isPreviousButtonVisible = activeStep > 0 ? true : false;
   const isNextButtonVisible = isNextButton(activeStep);
   const isPayButtonVisible = activeStep === 3 ? true : false;

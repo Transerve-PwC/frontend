@@ -832,7 +832,7 @@ export const getModuleName = () => {
   else if (pathName.indexOf("pt-common-screens") > -1 || pathName.indexOf("public-search") > -1) { return "rainmaker-pt"; }
   else if (pathName.indexOf("complaint") > -1 || pathName.indexOf("request-reassign") > -1 || pathName.indexOf("reassign-success") > -1) { return "rainmaker-pgr"; }
   else if (pathName.indexOf("wns") > -1) { return "rainmaker-ws"; }
-  else if (pathName.indexOf("tradelicense") > -1 || pathName.indexOf("tradelicence") > -1 || pathName.indexOf("tradelicense-citizen") > -1) { return "rainmaker-tl"; }
+  else if (pathName.indexOf("tradelicense") > -1 || pathName.indexOf("tradelicence") > -1 || pathName.indexOf("tradelicense-citizen") > -1 || pathName.indexOf("rainmaker-tl") > -1 ) { return "rainmaker-tl"; }
   else if (pathName.indexOf("hrms") > -1) { return "rainmaker-hr"; }
   else if (pathName.indexOf("fire-noc") > -1) { return "rainmaker-noc,rainmaker-pgr"; }
   else if (pathName.indexOf("dss/home") > -1) { return "rainmaker-dss"; }
@@ -840,10 +840,18 @@ export const getModuleName = () => {
   else if (pathName.indexOf("login") > -1) { return "rainmaker-common"; }
   else if (pathName.indexOf("pay") > -1) { return "rainmaker-noc"; }
   else if (pathName.indexOf("abg") > -1) { return "rainmaker-abg"; }
-  else if (pathName.indexOf("uc") > -1) { return "rainmaker-uc"; }
-  else if (pathName.indexOf("pgr-home") > -1 || pathName.indexOf("rainmaker-pgr") > -1) { return "rainmaker-pgr"; }
+  else if (pathName.indexOf("pgr-home") > -1 || pathName.indexOf("rainmaker-pgr") > -1 ||pathName.indexOf("master/auto-routing") > -1) { return "rainmaker-pgr"; }
   else if (pathName.indexOf("bpastakeholder") > -1 || pathName.indexOf("edcrscrutiny") > -1 ||
     pathName.indexOf("egov-bpa") > -1 || pathName.indexOf("oc-bpa") > -1) { return "rainmaker-bpa,rainmaker-bpareg"; }
+    else if (pathName.indexOf("egov-opms") > -1) { return "rainmaker-pm"; }
+    else if (pathName.indexOf("egov-hc") > -1) { return "rainmaker-hc"; }
+    else if (pathName.indexOf("egov-echallan") > -1) { return "rainmaker-ec"; }
+    else if (pathName.indexOf("pms") > -1) { return "rainmaker-pension"; }
+    else if (pathName.indexOf("egov-store-asset") > -1) { return "rainmaker-store-asset"; }
+    else if (pathName.indexOf("egov-nulm") > -1) { return "rainmaker-nulm"; }
+    else if (pathName.indexOf("egov-pr") > -1) { return "rainmaker-pr"; }
+    else if (pathName.indexOf("uc") > -1) { return "rainmaker-uc"; }
+    else if (pathName.indexOf("estate") > -1) { return "rainmaker-rp,rainmaker-tl,rainmaker-est, rainmaker-pgr"}
   else {
     return "rainmaker-common";
   }

@@ -37,23 +37,23 @@ export const stepper = getStepperObject(
   stepsData
 );
 import {
-  
+
   getCommonApplyFooter,
- 
+
 } from "../utils";
 
 
 const undertakingsellmeatButton = getCommonContainer({
-  
-          downloadcard: {
-          uiFramework: "custom-molecules-local",
-              moduleName: "egov-opms",
-              componentPath: "SampleDownloadForSellMeat",
-      
-      visible: true,
-    },
-   
-  });
+
+  downloadcard: {
+    uiFramework: "custom-molecules-local",
+    moduleName: "egov-opms",
+    componentPath: "SampleDownloadForSellMeat",
+
+    visible: true,
+  },
+
+});
 
 let roles = JSON.parse(getUserInfo()).roles
 
@@ -253,10 +253,15 @@ const setSearchResponse = async (
     },
     { key: "applicationNumber", value: applicationNumber }
   ]);
+  if (response === undefined) {
+    dispatch(setRoute(`/egov-opms/invalidIdErrorPage?applicationNumber=${applicationNumber}&tenantId=${tenantId}`))
+  }
+  else {
 
-  dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
+    dispatch(prepareFinalObject("nocApplicationDetail", get(response, "nocApplicationDetail", [])));
 
-  prepareDocumentsView(state, dispatch);
+    prepareDocumentsView(state, dispatch);
+  }
 };
 
 
@@ -324,7 +329,7 @@ const screenConfig = {
         body: checkForRole(roles, 'CITIZEN') ? getCommonCard({
           sellmeatapplicantSummary: sellmeatapplicantSummary,
           documentsSummary: documentsSummary,
-          undertakingsellmeatButton:undertakingsellmeatButton
+          undertakingsellmeatButton: undertakingsellmeatButton
           //taskStatusSummary:taskStatusSummary
 
         }) : getCommonCard({

@@ -7,7 +7,7 @@ import {
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import set from "lodash/set";
   import { httpRequest,getsto } from "../../../../ui-utils";
-  import { getstoreTenantId,getMaterialMasterSearchResults,getStoresSearchResults } from "../../../../ui-utils/storecommonsapi";
+  import { getstoreTenantId,getMaterialMasterSearchResults,getStoresSearchResults,getOpeningBalanceSearchResults } from "../../../../ui-utils/storecommonsapi";
   import { OpeningBalanceDetails } from "./createopeningbalenceResource/OpeningBalance-Details";
   import { footer } from "./createopeningbalenceResource/footer";
   import { getTenantId , getOPMSTenantId} from "egov-ui-kit/utils/localStorageUtils";
@@ -75,10 +75,39 @@ import {
       console.log(e);
     }
   };
+  const getOpeningBalanceData = async (action, state, dispatch,id) => {
+    const tenantId = getTenantId();
+    let queryObject = [
+      {
+        key: "id",
+        value: id
+      }];
+      queryObject.push({
+        key: "tenantId",
+        value: tenantId
+      });
+    try {
+      let response = await getOpeningBalanceSearchResults(queryObject, dispatch);        
+     let  materialReceipt = response.materialReceipt
+     materialReceipt = materialReceipt.filter(x=>x.id === id)
+      dispatch(prepareFinalObject("materialReceipt", materialReceipt));
+       
+    } catch (e) {
+      console.log(e);
+    }
+  };
   
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
     await getstoreData(action,state, dispatch);
+    const id = getQueryArg(
+      window.location.href,
+      "id"
+    );
+    if(id)
+    {
+      await getOpeningBalanceData(action,state, dispatch,id);
+    }
   };
   
   const materialMasterSearchAndResult = {

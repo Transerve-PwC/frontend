@@ -86,7 +86,7 @@ function FeesEstimateCard(props) {
   const totalHeadClassName = "tl-total-amount-value " + classes.bigheader;
   return (
     <Grid container>
-      <Grid xs={12} sm={7}>
+      <Grid xs={12} sm={6}>
         <LabelContainer
           labelName={estimate.header.labelName}
           labelKey={estimate.header.labelKey}
@@ -159,7 +159,16 @@ function FeesEstimateCard(props) {
           </Grid>
         </div>
       </Grid>
-      <Grid xs={12} sm={5}>
+      <Grid xs={12} sm={2}>
+      <Typography className={totalHeadClassName} align="right">
+      <LabelContainer
+            labelName=""
+            labelKey=""
+          />
+        </Typography>
+
+      </Grid>
+      <Grid xs={12} sm={4}>
         <Typography
           variant="body2"
           align="right"

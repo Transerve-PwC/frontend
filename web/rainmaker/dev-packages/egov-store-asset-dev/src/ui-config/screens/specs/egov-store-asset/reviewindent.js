@@ -3,13 +3,17 @@ import {
     getCommonContainer,
     getCommonSubHeader
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { PriceListReviewDetails } from "./viewpricelistResource/pricelist-review";
+  import { IndentListReviewDetails } from "./viewindentResource/indent-review";
   import { setRolesList } from "./viewMaterialMasterResource/functions";
-  
+  import { httpRequest } from "../../../../ui-utils/api";
+  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import get from "lodash/get";
+  import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
+    
   export const header = getCommonContainer({
     header: getCommonHeader({
-      labelName: "Material Mater - Summary",
-      labelKey: "STORE_MATERIAL_MASTER_SUMMARY_HEADER"
+      labelName: "Material Indent - Summary",
+      labelKey: "STORE_MATERIAL_INDENT_SUMMARY_HEADER"
     })
   });
   
@@ -21,14 +25,44 @@ import {
     })
   });
   
-  const PriceListReview = PriceListReviewDetails(true);
-  
+  const PriceListReview = IndentListReviewDetails(true);
+  const getMdmsData = async (action, state, dispatch) => {
+    let mdmsBody = {
+      MdmsCriteria: {
+        tenantId: getstoreTenantId(),
+        moduleDetails: [
+          {
+            moduleName: "store-asset",
+            masterDetails: [
+              { name: "businessService" },
+            ]
+          }
+        ]
+      }
+    };
+    try {
+      const response = await httpRequest(
+        "post",
+        "/egov-mdms-service/v1/_search",
+        "_search",
+        [],
+        mdmsBody
+      );
+      dispatch(prepareFinalObject("businessServiceTypeData", get(response, "MdmsRes")));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getData = async (action, state, dispatch) => {
+    await getMdmsData(action, state, dispatch);
+  }  
   const screenConfig = {
     uiFramework: "material-ui",
-    name: "reviewmaterialmaster",
+    name: "reviewindent",
     beforeInitScreen: (action, state, dispatch) => {
       // COMMA SEPARATED ROLES IN REVIEW SCREEN
       setRolesList(state, dispatch);
+      getData(action, state, dispatch);
       return action;
     },
     components: {

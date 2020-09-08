@@ -5,37 +5,55 @@ import {
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
-import { getCommonApplyFooter, validateFields, getTextToLocalMapping } from "../../utils";
+import { getCommonApplyFooter, validateFields, validateFieldsForGenPress,getTextToLocalMapping } from "../../utils";
 import "./index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { httpRequest } from "../../../../../ui-utils";
 import {
   createUpdateNocApplication,
   prepareDocumentsUploadData
-,createPressNote,updatePressNote} from "../../../../../ui-utils/commons";
+,createPressNote,updatePressNote,truncData} from "../../../../../ui-utils/commons";
 
 import { prepareFinalObject,  handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId } from "../../../../../../../../packages/lib/egov-ui-kit/utils/localStorageUtils/index";
-import {  localStorageGet} from "egov-ui-kit/utils/localStorageUtils";
+import { localStorageGet} from "egov-ui-kit/utils/localStorageUtils";
 import store from "../../../../../ui-redux/store";
 import commonConfig from '../../../../../config/common';
+import { getFileUrlFromAPI} from "egov-ui-framework/ui-utils/commons";
+import jp from "jsonpath";
 
 const state = store.getState();
 
-const truncTime=(str, length, ending)=> {
-  if (length == null) {
-    length = 20;
-  }
-  if (ending == null) {
-    ending = '...';
-  }
-  if (str.length > length) {
-    return str.substring(0, length - ending.length) + ending;
-  } else {
-    return str;
-  }
-};
+// const truncData=(str, length, ending)=> {
+//   if (length == null) {
+//     length = 20;
+//   }
+//   if (ending == null) {
+//     ending = '...';
+//   }
+//   if (str.length > length) {
+//     return str.substring(0, length - ending.length) + ending;
+//   } else {
+//     return str;
+//   }
+// };
 
+
+
+
+// toggleactionmenu
+const toggleactionmenu = (state, dispatch) => {
+	
+  var x = document.getElementById("custom-atoms-pressapplyfooter");
+ 	 // if (x.style.display === "none") {
+   if(window.getComputedStyle(x).display === "none") {   
+    x.style.display = "block";
+    x.classList.add("addpadding");
+	  } else {
+    x.style.display = "none";
+    x.classList.remove("addpadding");
+	  }
+}
 const setReviewPageRoute = (state, dispatch) => {
 	             let id=getQueryArg(window.location.href, "eventuuId")            
 
@@ -69,7 +87,57 @@ const setReviewPageRoute = (state, dispatch) => {
 
 
 const callBackForSubmit = async (state, dispatch) => {
+//  let validatestepformflag = validatestepform(3)
+  let email=localStorageGet("email")
+//alert(isFormValid)
 
+let isFormValid = validateFieldsForGenPress(
+  "components.div.children.formwizardThirdStep.children.EmailSmsContent.children.cardContent.children",
+  state,
+  dispatch,
+  "generatepressNote"
+);
+isFormValid=true
+  let sms=get(state.screenConfiguration.preparedFinalObject, "pressnote.SMSContent")
+// let isFormValid = validatestepformflag[0];
+  //hasFieldToaster = validatestepformflag[1];
+  let reduxDocuments = get(state, "screenConfiguration.preparedFinalObject.PressNoteDocuments", {});
+  let press_documents = [];
+//let documentAttachment =get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux[0].documents[0].fileStoreId")
+  jp.query(reduxDocuments, "$.*").forEach(doc => {
+    if (doc.documents && doc.documents.length > 0) {
+      if (doc.documentCode === "EVENT.EVENT_FILE_DOCUMENT") {
+        ownerDocuments = [
+          ...ownerDocuments,
+          {
+
+            fileStoreId: doc.documents[0].fileStoreId
+          }
+        ];
+      } else if (!doc.documentSubCode) {
+
+        otherDocuments = [
+          ...otherDocuments,
+          {
+
+            fileStoreId: doc.documents[0].fileStoreId
+          }
+        ];
+      }
+    }
+    else {
+      let temp = { "fileStoreId": doc.fileStoreId, "fileName:": doc.fileName }
+      press_documents.push(temp)
+    }
+  });
+
+
+
+
+  if(isFormValid)
+  {
+if(email!=="<p><br></p>" && (sms.length>0 && sms.length<=180))
+{
   let pressnoteuuId=getQueryArg(window.location.href, "pressnoteuuId");
   let pressdata=''
   
@@ -112,8 +180,9 @@ const callBackForSubmit = async (state, dispatch) => {
         }],
     "moduleCode":localStorageGet("modulecode"),
     "templateType":"PRESS_RELEASE",
-    "documentAttachment":[{"fileStoreId":get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux[0].documents[0].fileStoreId"),
-    }],
+    "documentAttachment":press_documents,
+    // [{"fileStoreId":get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux[0].documents[0].fileStoreId"),
+    // }],
    "moduleCode": localStorageGet("modulecode"),
   "publicationList":arr,
   "pressNoteUuid":get(state.screenConfiguration.preparedFinalObject, "pressnote.pressnote"),
@@ -171,8 +240,9 @@ const callBackForSubmit = async (state, dispatch) => {
             }],
         "moduleCode":localStorageGet("modulecode"),
         "templateType":"PRESS_RELEASE",
-        "documentAttachment":[{"fileStoreId":get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux[0].documents[0].fileStoreId"),
-        }],
+        "documentAttachment":press_documents,
+        "noteDocument": [{"fileStoreId":get(state.screenConfiguration.preparedFinalObject, "Pressdoc"),
+        "fileName:":get(state.screenConfiguration.preparedFinalObject, "PressdocName") }],
        "moduleCode": localStorageGet("modulecode"),
       "publicationList":arr
       }
@@ -189,6 +259,30 @@ const callBackForSubmit = async (state, dispatch) => {
       )
     );
   }}
+}
+else{
+  dispatch(
+    toggleSnackbar(
+      true,
+      { labelName: "Please fill all mandatory field!", labelKey: "PR_MANDATORY_FIELDS"
+
+    },
+      "warning"
+    )
+  );
+}
+}
+else{
+  dispatch(
+    toggleSnackbar(
+      true,
+      { labelName: "Please fill all mandatory field!", labelKey: "PR_MANDATORY_FIELDS"
+
+    },
+      "warning"
+    )
+  );
+}
   };
   
 const moveToReview = (state, dispatch) => {
@@ -255,6 +349,7 @@ const getMdmsData = async (state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "RAINMAKER-PR",
+
           masterDetails: [{ name: "eventType" }, { name: "eventStatus" },{ name: "eventDocuments" }, { name: "eventSector" }]
         },
       ]
@@ -282,22 +377,45 @@ const getMdmsData = async (state, dispatch) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+  toggleactionmenu(state, dispatch)
   let activeStep = get(
     state.screenConfiguration.screenConfig["generatepressNote"],
     "components.div.children.stepper.props.activeStep",
     0
   );
  
-
-  let isFormValid = true;
+ 
+  let isFormValid = false;
   let hasFieldToaster = false;
-
-  let validatestepformflag = validatestepform(activeStep+1)
+  let isFirstCardValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.pressnotedetails.children.cardContent.children.appStatusAndToFromDateContainer.children",
+    state,
+    dispatch,
+    "generatepressNote"
+  );
+  let isSecondCardValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.pressnotedata.children.cardContent.children.appStatusAndToFromDateContainer.children",
+    state,
+    dispatch,
+    "generatepressNote"
+  );
+   isFormValid =isFirstCardValid & isSecondCardValid
+  //  hasFieldToaster = validatestepformflag[1];
+if(isFormValid===1)
+{
+  isFormValid=true
+}
+else if(isFormValid===0)
+{
+  isFormValid=false
+}
+if (activeStep === 2) {
+  dispatch(prepareFinalObject("documentsUploadRedux[0]", {}));
   
-    isFormValid = validatestepformflag[0];
-    hasFieldToaster = validatestepformflag[1];
-	
+}
   if (activeStep === 0) {
+    if(get(state.screenConfiguration.preparedFinalObject, "pressnote.SMSContent")===undefined)
+    {
 		 dispatch(
        handleField(
          "generatepressNote",
@@ -306,15 +424,65 @@ const callBackForNext = async (state, dispatch) => {
          localStorageGet("smsTemplate")
        )
      );
-  
+    }
+    if(localStorageGet("PressNoteList") === null && localStorageGet("PressNoteListAll")===null){
+      isFormValid=false
+      hasFieldToaster = true;
+    }
+    
 		let data1= localStorageGet("PressNoteList") === null ? JSON.parse( localStorageGet("PressNoteListAll")) : JSON.parse( localStorageGet("PressNoteList"))
 		if(localStorageGet("PressNoteList")!=="[]")
     {
-		if( isFormValid === true && hasFieldToaster === false && (localStorageGet("PressNoteList") !== null || localStorageGet("PressNoteListAll") !== null))
+		if( isFormValid === true  && (localStorageGet("PressNoteList") !== null || localStorageGet("PressNoteListAll") !== null))
 	{	
     
- 
+    let documentsPreview = [];
     
+    let doc =get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux[0].documents")
+    let doctitle = [];
+    if(doc.length>0)
+    {
+      for(let i=0; i<doc.length; i++) {
+    let eventDoc = doc[0]['fileStoreId']
+        doctitle.push(doc[i]['fileName:']);
+    
+    if (eventDoc !== '' || eventDoc!==undefined) {
+      documentsPreview.push({
+        title: doc[i]['fileName:'],
+        title: doc[i]['fileName:'],
+        fileStoreId: eventDoc,
+        linkText: "View"
+      })
+      let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+      let fileUrls =
+        fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+    
+      documentsPreview = documentsPreview.map(function (doc, index) {
+    
+    doc["link"] = fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
+      doc["name"] =
+    (fileUrls[doc.fileStoreId] &&
+      decodeURIComponent(
+        fileUrls[doc.fileStoreId]
+          .split(",")[0]
+          .split("?")[0]
+          .split("/")
+          .pop()
+          .slice(13)
+      )) ||
+    `Document - ${index + 1}`;
+        return doc;
+      });
+    }
+    }
+    }
+    
+    dispatch(prepareFinalObject("Pressdoc", doc[0]['fileStoreId']));
+    dispatch(prepareFinalObject("PressdocName", doc[0]['fileName']));
+
+    
+      dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+      
 
     let data1='';
     if(localStorageGet("PressNoteList")!== null){
@@ -328,11 +496,11 @@ const callBackForNext = async (state, dispatch) => {
 
       
       [getTextToLocalMapping("Publication Name")]:
-      truncTime(item['Publication Name']) || "-",
+      truncData(item['Publication Name']) || "-",
       [ getTextToLocalMapping("Type of the Press")]:
       item['Type of the Press'] || "-",
       [ getTextToLocalMapping("Personnel Name")]:
-      truncTime(item['Personnel Name']) || "-",
+      truncData(item['Personnel Name']) || "-",
       [ getTextToLocalMapping("Email Id")]:
       item['Email Id'] || "-",
       [getTextToLocalMapping("Mobile Number")]:
@@ -356,6 +524,14 @@ const callBackForNext = async (state, dispatch) => {
 	}
 	else
 	{
+    dispatch(
+      handleField(
+        "generatepressNote",
+        "components.div.children.formwizardFirstStep.children.searchResultsPressMasterList",
+        "props.options.rowsSelected",
+        []
+      )
+    );
 		dispatch(
               toggleSnackbar(
                 true,
@@ -367,6 +543,15 @@ const callBackForNext = async (state, dispatch) => {
   }
 }
 else{
+
+  dispatch(
+    handleField(
+      "generatepressNote",
+      "components.div.children.formwizardFirstStep.children.searchResultsPressMasterList",
+      "props.options.rowsSelected",
+      []
+    )
+  );
   dispatch(
     toggleSnackbar(
       true,
@@ -442,18 +627,24 @@ export const changeStep = (
     activeStep = defaultActiveStep;
   }
 
+  const isPreviousButtonVisible = activeStep >0 ? true : false;
 
   const isNextButtonVisible = activeStep < 2 ? true : false;
   const isPayButtonVisible = activeStep === 2 ? true : false;
   const iscancleButtonVisible = activeStep === 2 ? true : false; 
- 
+ // const isactionButtonVisible = activeStep === 3 ? true : false;
+
   const actionDefination = [
     {
       path: "components.div.children.stepper.props",
       property: "activeStep",
       value: activeStep
     },
-    
+    {
+      path: "components.div.children.pressapplyfooter.children.previousButton",
+      property: "visible",
+      value: isPreviousButtonVisible
+    },
     {
       path: "components.div.children.pressapplyfooter.children.nextButton",
       property: "visible",
@@ -469,6 +660,12 @@ export const changeStep = (
       property: "visible",
       value: iscancleButtonVisible
     }
+    // {
+      
+    //   path: "components.div.children.takeactionfooter",
+    //   property: "visible",
+    //   value: false
+    // },
   ];
   dispatchMultipleFieldChangeAction("generatepressNote", actionDefination, dispatch);
   renderSteps(activeStep, dispatch);
@@ -560,6 +757,7 @@ export const redirectfunction = async (state, dispatch) => {
 }
 
 export const callBackForPrevious = (state, dispatch) => {
+  toggleactionmenu(state, dispatch)
   changeStep(state, dispatch, "previous");
 };
 
@@ -570,19 +768,23 @@ export const pressapplyfooter = getCommonApplyFooter({
       variant: "outlined",
       color: "primary",
       style: {
-       // minWidth: "200px",
         height: "48px",
-        marginRight: "16px" 
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
     },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
     children: {
-      previousButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_left"
-        }
-      },
+     
       previousButtonLabel: getLabel({
         labelName: "Previous Step",
         labelKey: "PR_COMMON_BUTTON_PREV_STEP"
@@ -601,82 +803,61 @@ export const pressapplyfooter = getCommonApplyFooter({
       variant: "contained",
       color: "primary",
       style: {
-       // minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
     },
     children: {
       nextButtonLabel: getLabel({
         labelName: "Next Step",
         labelKey: "PR_COMMON_BUTTON_NXT_STEP"
       }),
-      nextButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+     
     },
     onClickDefination: {
       action: "condition",
       callBack: callBackForNext
     }
   },
-  cancleButton: {
-    componentPath: "Button",
-    props: {
-      variant: "contained",
-      color: "primary",
-      style: {
-       
-        height: "48px",
-        marginRight: "45px"
-      }
-    },
-    children: {
-      submitButtonLabel: getLabel({
-        labelName: "UPLOAD",
-        labelKey: "PR_COMMON_BUTTON_CANCLE"
-      }),
-      submitButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
-    },
-    onClickDefination: {
-      action: "condition",
-      callBack: redirectfunction
-    },
-    visible: false
-  },
+ 
   payButton: {
     componentPath: "Button",
     props: {
       variant: "contained",
       color: "primary",
       style: {
-        //minWidth: "200px",
         height: "48px",
-        marginRight: "45px"
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
       }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
     },
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
         labelKey: "PR_COMMON_BUTTON_SUBMIT"
       }),
-      submitButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
+     
     },
     onClickDefination: {
       action: "condition",
@@ -684,7 +865,40 @@ export const pressapplyfooter = getCommonApplyFooter({
     },
 visible:false
   },
- 
+  cancleButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px",
+        // width: "30%"
+        minWidth: "220px",
+        background:"#fff",
+        border: "1px solid #ddd" ,
+        color: "#000"
+        
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12
+    },
+    children: {
+      submitButtonLabel: getLabel({
+        labelName: "UPLOAD",
+        labelKey: "PR_COMMON_BUTTON_CANCLE"
+      }),
+    
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: redirectfunction
+    },
+    visible: false
+  },
 });
 
 
@@ -741,3 +955,38 @@ export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
   }
   return [isFormValid, hasFieldToaster]
 }; 
+
+export const takeactionfooter = getCommonApplyFooter({
+  actionbutton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        height: "48px",
+        marginRight: "16px" 
+      }
+    },
+    children: {
+       
+      pressguestbuttonLabel: getLabel({
+        labelName: "Take Action",
+        labelKey: "PR_TAKE_ACTION"
+      }),
+	  nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_up"
+        }
+      },
+    },
+    onClickDefination: {
+      action: "condition",
+       callBack: (state, dispatch) =>{
+           toggleactionmenu(state, dispatch)
+    }
+    },
+    visible: true
+  }
+});  

@@ -171,6 +171,51 @@ const getAcknowledgementCard = (
             },
             number: applicationNumber
           })
+        }
+      },
+      applicationSuccessFooter: applicationSuccessFooter(
+        state,
+        dispatch,
+        applicationNumber,
+        tenant
+      )
+    };
+  }
+  else if (purpose === "renewApply" && status === "success") {
+    return {
+      header: getCommonHeader({
+        labelName: `Application for Renew Trade License (${financialYearText})`,
+        labelKey: "TL_COMMON_APPLICATION_RENEW_LICENSE",
+        dynamicArray: [financialYearText]
+      }),
+      applicationSuccessCard: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        props: {
+          // style: {
+          //   position: "absolute",
+          //   width: "95%"
+          // }
+        },
+        children: {
+          card: acknowledgementCard({
+            icon: "done",
+            backgroundColor: "#39CB74",
+            header: {
+              labelName: "Application Submitted Successfully",
+              labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_MAIN"
+            },
+            body: {
+              labelName:
+                "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+              labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
+            },
+            tailText: {
+              labelName: "Application No.",
+              labelKey: "TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+            },
+            number: applicationNumber
+          })
         },
         iframeForPdf: {
           uiFramework: "custom-atoms",
@@ -187,92 +232,6 @@ const getAcknowledgementCard = (
         uiFramework: "custom-atoms",
         componentPath: "Div",
         children: {
-          /* downloadFormButton: {
-            uiFramework: "custom-atoms",
-            componentPath: "Div",
-            children: {
-
-              div1: {
-                uiFramework: "custom-atoms",
-                componentPath: "Icon",
-
-                props:{
-                  iconName: "cloud_download",
-                style:{
-                  marginTop: "7px",
-                  marginRight: "8px",
-                }
-              },
-                onClick: {
-                  action: "condition",
-                  callBack: () => {
-                    const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                    const documents = LicensesTemp[0].reviewDocData;
-                    set(Licenses[0],"additionalDetails.documents",documents)
-                    downloadAcknowledgementForm(Licenses);
-                  }
-                },
-              },
-              div2: getLabel({
-                labelName: "DOWNLOAD CONFIRMATION FORM",
-                labelKey: "TL_APPLICATION_BUTTON_DOWN_CONF"
-              })
-
-            },
-            onClickDefination: {
-              action: "condition",
-              callBack: () => {
-                const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                const documents = LicensesTemp[0].reviewDocData;
-                set(Licenses[0],"additionalDetails.documents",documents)
-                downloadAcknowledgementForm(Licenses);
-              }
-            },
-          },
-          PrintFormButton: {
-            uiFramework: "custom-atoms",
-            componentPath: "Div",
-            children: {
-              div1: {
-                uiFramework: "custom-atoms",
-                componentPath: "Icon",
-
-                props:{
-                  iconName: "local_printshop",
-                  style:{
-                    marginTop: "7px",
-                    marginRight: "8px",
-                    marginLeft:"10px",
-                  }
-              },
-               onClick: {
-                action: "condition",
-                callBack: () => {
-                  const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                  const documents = LicensesTemp[0].reviewDocData;
-                  set(Licenses[0],"additionalDetails.documents",documents)
-                  downloadAcknowledgementForm(Licenses,'print');
-                }
-              },
-
-              },
-              div2: getLabel({
-                labelName: "PRINT CONFIRMATION FORM",
-                labelKey: "TL_APPLICATION_BUTTON_PRINT_CONF"
-              })
-
-            },
-            onClickDefination: {
-              action: "condition",
-              callBack: () => {
-                const { Licenses,LicensesTemp } = state.screenConfiguration.preparedFinalObject;
-                const documents = LicensesTemp[0].reviewDocData;
-                set(Licenses[0],"additionalDetails.documents",documents)
-                downloadAcknowledgementForm(Licenses,'print');
-              }
-            },
-          }
- */
         },
         props: {
           style: {
@@ -281,8 +240,6 @@ const getAcknowledgementCard = (
           }
         },
       },
-    
-  
       iframeForPdf: {
         uiFramework: "custom-atoms",
         componentPath: "Div"
@@ -294,7 +251,8 @@ const getAcknowledgementCard = (
         tenant
       )
     };
-  } else if (purpose === "resubmit" && status === "success") {
+  }
+  else if (purpose === "resubmit" && status === "success") {
     return {
       header: getCommonHeader({
         labelName: `Application for New Trade License (${financialYearText})`,
@@ -486,6 +444,11 @@ const getAcknowledgementCard = (
               labelName: "Application is sent back Successfully",
               labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_HEAD"
             },
+            body: {
+              labelName:
+                "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
+              labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
+            },
             tailText: {
               labelName: "Application No.",
               labelKey: "TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"
@@ -566,11 +529,11 @@ const getAcknowledgementCard = (
               labelName: "Application is sent back to Citizen Successfully",
               labelKey: "TL_SENDBACK_TOCITIZEN_CHECKLIST_MESSAGE_HEAD"
             },
-            // body: {
-            //   labelName:
-            //     "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
-            //   labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
-            // },
+            body: {
+              labelName:
+                "A notification regarding above application status has been sent to trade owner at registered Mobile No.",
+              labelKey: "TL_SENDBACK_CHECKLIST_MESSAGE_SUB"
+            },
             tailText: {
               labelName: "Trade License No.",
               labelKey: "TL_HOME_SEARCH_RESULTS_TL_NO_LABEL"

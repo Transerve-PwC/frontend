@@ -103,26 +103,6 @@ export const searchTextViewSeizureReport = getCommonCard({
       },
 
     },
-    // Sector: getSelectField({
-    //   label: {
-    //     labelName: "Sector",
-    //     labelKey: "EC_REPORT_SEIZURE_SECTOR_LABEL"
-    //   },
-    //   optionLabel: "name",
-    //   optionValue: "code",
-    //   placeholder: {
-    //     labelName: "Sector",
-    //     labelKey: "EC_REPORT_SEIZURE_SECTOR_PLACEHOLDER"
-    //   },
-    //   gridDefination: {
-    //     xs: 12,
-    //     sm: 4,
-    //     md: 4
-    //   },
-    //   sourceJsonPath: "applyScreenMdmsData.egec.sector",
-    //   jsonPath: "searchViewSeizureReport[0].sector",
-    //   required: false
-    // }),
     SINameSelection: {
       uiFramework: "custom-containers-local",
       moduleName: "egov-echallan",
@@ -163,26 +143,6 @@ export const searchTextViewSeizureReport = getCommonCard({
       },
 
     },
-    // SINameSelection: getSelectField({
-    //   label: {
-    //     labelName: "SI Name",
-    //     labelKey: "EC_REPORT_SEIZURE_SI_NAME_LABEL"
-    //   },
-    //   optionLabel: "name",
-    //   optionValue: "name",
-    //   placeholder: {
-    //     labelName: "Select SI Name",
-    //     labelKey: "EC_REPORT_SEIZURE_SI_NAME_PLACEHOLDER"
-    //   },
-    //   gridDefination: {
-    //     xs: 12,
-    //     sm: 4,
-    //     md: 4
-    //   },
-    //   sourceJsonPath: "applyScreenMdmsData.egec.SINameList",
-    //   jsonPath: "searchViewSeizureReport[0].SIName",
-    //   required: false
-    // }),
     StartDate: getDateField({
       label: { labelName: "Start Date", labelKey: "EC_REPORT_SEIZURE_START_DATE_LABEL" },
       placeholder: {
@@ -218,6 +178,47 @@ export const searchTextViewSeizureReport = getCommonCard({
       required: true,
       errorMessage: "EC_ERR_DEFAULT_INPUT_END_FIELD_MSG"
     }),
+    ChallanSelection: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-echallan",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "searchViewSeizureReport[0].Status",
+      errorMessage: "EC_ERR_DEFAULT_INPUT_STATUS_FIELD_MSG",
+      required: true,
+      // visible: true,
+      gridDefination: {
+        xs: 12,
+        sm: 6,
+        md: 4,
+      },
+      props: {
+        style: {
+          width: "100%",
+          cursor: "pointer"
+        },
+        label: { labelName: "Status", labelKey: "EC_REPORT_SEIZURE_STATUS_LABEL" },
+        placeholder: {
+          labelName: "select SI Name",
+          labelKey: "EC_REPORT_SEIZURE_STATUS_PLACEHOLDER"
+        },
+        jsonPath: "searchViewSeizureReport[0].Status",
+        sourceJsonPath: "applyScreenMdmsData.egec.ChallanStatus",
+        labelsFromLocalisation: true,
+        // setDataInField: true,
+        // suggestions: [],
+        fullwidth: true,
+        required: false,
+        inputLabelProps: {
+          shrink: true
+        },
+        // localePrefix: {
+        //   moduleName: "ACCESSCONTROL_ROLES",
+        //   masterName: "ROLES"
+        // },
+      },
+
+    },
+
   }),
 
   button: getCommonContainer({
@@ -233,11 +234,11 @@ export const searchTextViewSeizureReport = getCommonCard({
           variant: "contained",
           style: {
             color: "white",
-            // margin: "8px",
-            backgroundColor: "rgb(249, 122, 81)",
+            backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {
@@ -267,7 +268,8 @@ export const searchTextViewSeizureReport = getCommonCard({
             border: "1px solid rgb(254, 122, 81)",
             borderRadius: "2px",
             width: "80%",
-            height: "48px"
+            height: "48px",
+            marginBottom: "8px"
           }
         },
         children: {

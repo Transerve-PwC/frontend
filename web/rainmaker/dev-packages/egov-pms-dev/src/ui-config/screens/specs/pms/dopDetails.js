@@ -584,44 +584,7 @@ export const prepareEditFlow = async (
     );  
      
    }
-   //get set department and degignation
-  let department =
-  get(response, "ProcessInstances[0].employee.assignments[0].department",'') 
-  let degignation =
-  get(response, "ProcessInstances[0].employee.assignments[0].designation",'') 
 
-  if(department)
-  {
-    let deptMdmsData = get(
-      state.screenConfiguration.preparedFinalObject,
-      "applyScreenMdmsData.common-masters.Department",
-      []
-    );
-    let codeNames = deptMdmsData.filter(x=>x.code ===department)
-    
-    if(codeNames && codeNames[0])
-    codeNames = codeNames[0].name;
-    else
-    codeNames =department;
-
-    set(state,"screenConfiguration.preparedFinalObject.ProcessInstances[0].employee.assignments[0].department", codeNames);
-  }
-  if(degignation)
-  {
-    let desigMdmsData = get(
-      state.screenConfiguration.preparedFinalObject,
-      "applyScreenMdmsData.common-masters.Designation",
-      []
-    );
-    let codeNames = desigMdmsData.filter(x=>x.code ===degignation)
-    if(codeNames && codeNames[0])
-    codeNames = codeNames[0].name;
-    else
-    codeNames =degignation;
-  
-    set(state,"screenConfiguration.preparedFinalObject.ProcessInstances[0].employee.assignments[0].designation", codeNames);
-    
-  }
 //set default value for due function
 
 // set(state,"screenConfiguration.preparedFinalObject.ProcessInstances[0].employeeOtherDetails.isDuesPresent", false);
@@ -670,6 +633,44 @@ for (let index = 0; index < dependents.length; index++) {
   else 
   dispatch(prepareFinalObject("IsCalculated", false));
   dispatch(prepareFinalObject("IsCalculatedWarning", false));
+     //get set department and degignation
+     let department =
+     get(response, "ProcessInstances[0].employee.assignments[0].department",'') 
+     let degignation =
+     get(response, "ProcessInstances[0].employee.assignments[0].designation",'') 
+   
+     if(department)
+     {
+       let deptMdmsData = get(
+         state.screenConfiguration.preparedFinalObject,
+         "applyScreenMdmsData.common-masters.Department",
+         []
+       );
+       let codeNames = deptMdmsData.filter(x=>x.code ===department)
+       
+       if(codeNames && codeNames[0])
+       codeNames = codeNames[0].name;
+       else
+       codeNames =department;
+   
+       set(state,"screenConfiguration.preparedFinalObject.ProcessInstances[0].employee.assignments[0].department", codeNames);
+     }
+     if(degignation)
+     {
+       let desigMdmsData = get(
+         state.screenConfiguration.preparedFinalObject,
+         "applyScreenMdmsData.common-masters.Designation",
+         []
+       );
+       let codeNames = desigMdmsData.filter(x=>x.code ===degignation)
+       if(codeNames && codeNames[0])
+       codeNames = codeNames[0].name;
+       else
+       codeNames =degignation;
+     
+       set(state,"screenConfiguration.preparedFinalObject.ProcessInstances[0].employee.assignments[0].designation", codeNames);
+       
+     }
   prepareDocumentsUploadData(state, dispatch);
 };
 export const pmsfooter = footer(response) ;

@@ -3,6 +3,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import set from "lodash/set";
 import acknowledgementCard from "./acknowledgementResource/acknowledgementUtils";
 import { gotoHomeFooter } from "./acknowledgementResource/gotoHomeFooter";
+import "./index.css";
 
 
 

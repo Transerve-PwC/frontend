@@ -304,7 +304,8 @@ export const footer = getCommonApplyFooter({
       action: "condition",
       callBack: (state, dispatch) => showHideAdhocPopupopmsForward(state, dispatch, "sellmeatnoc-search-preview", "nextButton")
     },
-    visible: checkForRole(roles, 'SI') ? true : checkForRole(roles, 'SUPERINTENDENT') ? true : false
+    visible: false
+    // checkForRole(roles, 'SI') ? true : checkForRole(roles, 'SUPERINTENDENT') ? true : false
 
   },
   reject: {
@@ -341,7 +342,8 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsReject(state, dispatch, "sellmeatnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
+    visible: false
+    //checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
   },
   reassign: {
     componentPath: "Button",
@@ -377,7 +379,8 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsReassign(state, dispatch, "sellmeatnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? true : checkForRole(roles, 'MOH') ? true : checkForRole(roles, 'SUPERINTENDENT') ? true : false
+    visible: false
+    //checkForRole(roles, 'SI') ?true: checkForRole(roles, 'MOH') ? true : checkForRole(roles, 'SUPERINTENDENT') ? true : false
   },
   approve: {
     componentPath: "Button",
@@ -413,7 +416,8 @@ export const footer = getCommonApplyFooter({
         showHideAdhocPopupopmsApprove(state, dispatch, "sellmeatnoc-search-preview", "reject")
       }
     },
-    visible: checkForRole(roles, 'SI') ? false : checkForRole(roles, 'MOH') ? true : false
+    visible: false
+    //checkForRole(roles, 'SI') ?false: checkForRole(roles, 'MOH') ? true : false
   },
   submitButton: {
     componentPath: "Button",

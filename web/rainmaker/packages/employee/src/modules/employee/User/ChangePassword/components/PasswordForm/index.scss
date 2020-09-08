@@ -1,5 +1,6 @@
 .emp-change-passwd-field {
   background-color: transparent !important;
+  padding: 0px 20px;
 }
 
 .employee-change-passwd-submit {
@@ -9,6 +10,12 @@
 
 .employee-change-passwd-screen {
   padding-bottom: 0px !important;
+}
+
+.employee-change-password{
+  background-color: white;
+  margin-top: 100px;
+  height: 320px;
 }
 
 @media only screen and (min-width: 768px) {

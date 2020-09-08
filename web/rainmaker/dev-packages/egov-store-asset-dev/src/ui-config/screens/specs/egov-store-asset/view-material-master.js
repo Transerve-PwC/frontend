@@ -33,6 +33,13 @@ const getMdmsData = async (action, state, dispatch, tenantId) => {
               filter: "[?(@.active == true)]"
             }
           ]
+        },
+        {
+          moduleName: "common-masters",
+          masterDetails: [
+            { name: "UOM", filter: "[?(@.active == true)]" },
+           
+          ]
         }
       ]
     }
@@ -57,9 +64,10 @@ const screenConfig = {
   beforeInitScreen: (action, state, dispatch) => {
     let code = getQueryArg(window.location.href, "code");
     let tenantId = getQueryArg(window.location.href, "tenantId");
-    getMaterialmasterData(state, dispatch, code, tenantId);
+   
    // showHideAdhocPopup(state, dispatch);
     getMdmsData(action, state, dispatch, tenantId);
+    getMaterialmasterData(state, dispatch, code, tenantId);
     return action;
   },
   components: {
