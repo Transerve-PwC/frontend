@@ -167,11 +167,11 @@ const commonAuctionInformation = () => {
         marginBottom: 18
       }
     }),
-    courtCaseCard: getCommonContainer({
-      estateOfficerCourt: getTextField(schemeName),
-      commissionersCourt: getDateField(dateOfAuction),
-      chiefAdministratorsCourt: getTextField(modeOfAuction),
-      advisorToAdminCourt: getTextField(emdAmount),
+    auctionCard: getCommonContainer({
+      schemeName: getTextField(schemeName),
+      dateOfAuction: getDateField(dateOfAuction),
+      modeOfAuction: getTextField(modeOfAuction),
+      emdAmount: getTextField(emdAmount),
       emdAmountDate: getDateField(emdAmountDate)
     })
   });
@@ -201,5 +201,5 @@ const UploadButtonContainer = getCommonGrayCard({
 export const AllotmentAuctionDetails = getCommonCard({
   header: auctionDetailsHeader,
   uploadButton:UploadButtonContainer,
-  detailsContainer: commonAuctionInformation(),
+  detailsContainer: commonAuctionInformation()
 })
