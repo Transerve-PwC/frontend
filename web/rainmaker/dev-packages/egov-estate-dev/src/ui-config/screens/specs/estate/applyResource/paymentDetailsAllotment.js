@@ -263,23 +263,6 @@ export const demandSelect = getCommonCard({
 })
 
 /****************** Ground Rent Details **********************/
-const groundRentField = {
-  label: {
-      labelName: "Ground Rent",
-      labelKey: "EST_GROUND_RENT_LABEL"
-  },
-  placeholder: {
-      labelName: "Enter Ground Rent",
-      labelKey: "EST_GROUND_RENT_PLACEHOLDER"
-  },
-  gridDefination: {
-      xs: 12,
-      sm: 6
-  },
-  maxLength: 100,
-  jsonPath: ""
-}
-
 const groundRentGenerationTypeField = {
   label: {
       labelName: "Ground Rent Generation Type",
@@ -318,7 +301,7 @@ const groundRentGenerationTypeField = {
           "allotment",
           "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
           "visible",
-          true
+          false
         )
       )
     }
@@ -483,7 +466,6 @@ export const groundRentDetails = getCommonCard({
   header: groundRentHeader,
   detailsContainer: getCommonContainer({
     groundRentGenerationType: getSelectField(groundRentGenerationTypeField),
-    groundRent: getTextField(groundRentField),
     billingStartDate: getDateField(billingStartDateField),
     dateToGenerateDemandRent: getSelectField(dateToGenerateDemandRentField),
     advanceRent: getTextField(advancedRentField),
@@ -532,7 +514,7 @@ const licenseFeeGenerationTypeField = {
           "allotment",
           "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
           "visible",
-          true
+          false
         )
       )
     }
