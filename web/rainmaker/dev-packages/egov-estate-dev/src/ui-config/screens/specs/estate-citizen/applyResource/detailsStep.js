@@ -22,6 +22,13 @@ export const getRelationshipRadioButton = {
     type: "array"
   };
 
+  Array.prototype.aReduce = async function (cb, initial) {
+    var result = initial;
+    for(var i = 0; i < this.length; i++) {
+      result = await cb(result, this[i]);
+    }
+    return result
+  }
 
 const getField = async (item, fieldData = {}, dataSource, state) => {
 
@@ -116,7 +123,7 @@ const getField = async (item, fieldData = {}, dataSource, state) => {
 
 const getDetailsContainer = async (section, data_config, dataSources, state) => {
     const {fields = []} = section;
-    const values = await fields.reduce(async (acc, field) => {
+    const values = await fields.aReduce(async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
       const dataSource = dataSources[field.dataSource]
       return {...acc, [field.label]: await getField(field, findFieldData, dataSource, state)}
@@ -143,7 +150,7 @@ const expansionSection = (section) => {
 
 export const setFirstStep = async (state, dispatch, {data_config, format_config, dataSources}) => {
     let {sections = []} = format_config
-    sections = await sections.reduce(async (acc, section) => {
+    sections = await sections.aReduce(async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
