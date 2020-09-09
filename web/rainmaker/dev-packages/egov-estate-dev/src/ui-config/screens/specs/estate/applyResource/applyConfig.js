@@ -77,6 +77,10 @@ export const stepsData = [{
     labelKey: "EST_COMMON_PROPERTY_DETAILS"
   },
   {
+    labelName: "Auction Details",
+    labelKey: "EST_COMMON_AUCTION_DETAILS"
+  },
+  {
     labelName: "Owner Details",
     labelKey: "EST_COMMON_OWNER_DETAILS"
   },
@@ -119,7 +123,7 @@ export const formwizardFirstStep = {
   },
   children: {
     propertyInfoDetails,
-    auctionDetails,
+    // auctionDetails,
     // allotmentDetails,
     additionalDetails
   }
@@ -132,7 +136,7 @@ export const formwizardSecondStep = {
     id: "apply_form2"
   },
   children: {
-    ownerDetails
+    AllotmentAuctionDetails
   },
   visible: false
 };
@@ -144,7 +148,7 @@ export const formwizardThirdStep = {
     id: "apply_form3"
   },
   children: {
-    purchaserDetails
+    ownerDetails
   },
   visible: false
 };
@@ -156,7 +160,7 @@ export const formwizardFourthStep = {
     id: "apply_form4"
   },
   children: {
-    courtCaseDetails
+    purchaserDetails
   },
   visible: false
 };
@@ -168,9 +172,7 @@ export const formwizardFifthStep = {
     id: "apply_form5"
   },
   children: {
-    groundRentDetails_0,
-    serviceTaxDetails_0,
-    paymentMadeBy_0
+    courtCaseDetails
   },
   visible: false
 };
@@ -182,16 +184,30 @@ export const formwizardSixthStep = {
     id: "apply_form6"
   },
   children: {
-    ownerDocumentDetails_0
+    groundRentDetails_0,
+    serviceTaxDetails_0,
+    paymentMadeBy_0
   },
   visible: false
-}
+};
 
 export const formwizardSeventhStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
     id: "apply_form7"
+  },
+  children: {
+    ownerDocumentDetails_0
+  },
+  visible: false
+}
+
+export const formwizardEighthStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form8"
   },
   children: {
     reviewDetails

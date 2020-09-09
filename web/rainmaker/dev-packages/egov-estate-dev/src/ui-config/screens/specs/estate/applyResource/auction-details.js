@@ -37,6 +37,23 @@ export const biddersListHeader = getCommonTitle({
   }
 })
 
+const auctionIdField = {
+  label: {
+    labelName: "Auction Id",
+    labelKey: "EST_AUCTION_ID_LABEL"
+  },
+  placeholder: {
+    labelName: "Enter Auction Id",
+    labelKey: "EST_AUCTION_ID_PLACEHOLDER"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+  maxLength: 250,
+  jsonPath: "Properties[0].propertyDetails.auctionId"
+}
+
 const schemeName = {
   label: {
     labelName: "Scheme Name",
@@ -51,7 +68,7 @@ const schemeName = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].estateOfficerCourt"
+  jsonPath: "Properties[0].propertyDetails.schemeName"
 }
 
 const dateOfAuction = {
@@ -68,7 +85,7 @@ const dateOfAuction = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].commissionersCourt"
+  jsonPath: "Properties[0].propertyDetails.dateOfAuction"
 }
 
 const modeOfAuction = {
@@ -85,7 +102,7 @@ const modeOfAuction = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].chiefAdministartorsCourt"
+  jsonPath: "Properties[0].propertyDetails.modeOfAuction"
 }
 
 const emdAmount = {
@@ -102,7 +119,7 @@ const emdAmount = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
+  jsonPath: "Properties[0].propertyDetails.emdAmount"
 }
 
 const emdAmountDate = {
@@ -119,7 +136,7 @@ const emdAmountDate = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
+  jsonPath: "Properties[0].propertyDetails.emdAmountDate"
 }
 
 const buttonItem = {
@@ -167,11 +184,12 @@ const commonAuctionInformation = () => {
         marginBottom: 18
       }
     }),
-    courtCaseCard: getCommonContainer({
-      estateOfficerCourt: getTextField(schemeName),
-      commissionersCourt: getDateField(dateOfAuction),
-      chiefAdministratorsCourt: getTextField(modeOfAuction),
-      advisorToAdminCourt: getTextField(emdAmount),
+    auctionCard: getCommonContainer({
+      auctionId: getTextField(auctionIdField),
+      schemeName: getTextField(schemeName),
+      dateOfAuction: getDateField(dateOfAuction),
+      modeOfAuction: getTextField(modeOfAuction),
+      emdAmount: getTextField(emdAmount),
       emdAmountDate: getDateField(emdAmountDate)
     })
   });
@@ -201,5 +219,5 @@ const UploadButtonContainer = getCommonGrayCard({
 export const AllotmentAuctionDetails = getCommonCard({
   header: auctionDetailsHeader,
   uploadButton:UploadButtonContainer,
-  detailsContainer: commonAuctionInformation(),
+  detailsContainer: commonAuctionInformation()
 })
