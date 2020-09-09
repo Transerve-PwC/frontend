@@ -608,6 +608,9 @@ const ownerShipRelationShipduplicate = {
 
 const applicantEmailField = {
     ...emailConfig,
+    props: {
+        value:userInfo.emailId
+      },
     jsonPath: "Owners[0].ownerDetails.email",
     required: false
 }
@@ -615,6 +618,7 @@ const applicantEmailField = {
 const applicantEmailFieldduplicate = {
     ...emailConfig,
     props: {
+        value:userInfo.emailId,
         disabled: true
       },
     jsonPath: "DuplicateCopyApplications[0].applicant[0].email",
@@ -624,6 +628,7 @@ const applicantEmailFieldduplicate = {
 const applicantEmailFieldMortgage = {
     ...emailConfig,
     props: {
+        value:userInfo.emailId,
         disabled: true
       },
     jsonPath: "MortgageApplications[0].applicant[0].email",

@@ -16,12 +16,12 @@ export const OWNER_NAME = getTextToLocalMapping("RP_COMMON_TABLE_COL_APPLICANT_N
 export const STATUS = getTextToLocalMapping("RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 export const LAST_MODIFIED_ON = getTextToLocalMapping("RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
 export const DATE = getTextToLocalMapping("RP_COMMON_TABLE_COL_DATE")
-export const AMOUNT = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_AMOUNT")
-export const REMAINING_INTEREST = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_INTEREST")
-export const REMAINING_PRINCIPAL = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL")
-export const TOTAL_DUE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TOTAL_DUE")
+export const AMOUNT = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_AMOUNT") + " (₹)"
+export const REMAINING_INTEREST = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_INTEREST") + " (₹)"
+export const REMAINING_PRINCIPAL = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_REMAINING_PRINCIPAL") + " (₹)"
+export const TOTAL_DUE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TOTAL_DUE") + " (₹)"
 export const TYPE = getTextToLocalMapping("RP_COMMON_TABLE_COL_AS_TYPE")
-export const ACCOUNT_BALANCE = getTextToLocalMapping("RP_COMMON_TABLE_ACCOUNT_BALANCE")
+export const ACCOUNT_BALANCE = getTextToLocalMapping("RP_COMMON_TABLE_ACCOUNT_BALANCE") + " (₹)"
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",

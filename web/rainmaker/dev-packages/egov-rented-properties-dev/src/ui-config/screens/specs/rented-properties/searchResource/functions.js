@@ -267,16 +267,16 @@ export const searchAccountStatement = async (state, dispatch) => {
           );
           let data = response.RentAccountStatements.map(item => ({
             [DATE]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
-            [AMOUNT]: 'Rs ' + formatAmount(item.amount.toFixed(2)) || "-",
+            [AMOUNT]:  formatAmount(item.amount.toFixed(2)) || "-",
             [TYPE]: changeType(item.type) || "-",
-            [REMAINING_INTEREST]: 'Rs ' + formatAmount(item.remainingInterest.toFixed(2)),
-            [REMAINING_PRINCIPAL]: 'Rs ' + formatAmount(item.remainingPrincipal.toFixed(2)),
-            [TOTAL_DUE]: 'Rs ' + formatAmount(item.dueAmount.toFixed(2)),
-            [ACCOUNT_BALANCE]: 'Rs ' + formatAmount(item.remainingBalance.toFixed(2))
+            [REMAINING_INTEREST]:  formatAmount(item.remainingInterest.toFixed(2)),
+            [REMAINING_PRINCIPAL]: formatAmount(item.remainingPrincipal.toFixed(2)),
+            [TOTAL_DUE]: formatAmount(item.dueAmount.toFixed(2)),
+            [ACCOUNT_BALANCE]: formatAmount(item.remainingBalance.toFixed(2))
           }));
-          let lastElement=data.pop();
+          let lastElement = data.pop();
           lastElement.Date = "Total as on "+lastElement.Date
-          lastElement.Type= 0
+          lastElement.Type = 0
           data.push(lastElement)
           dispatch(
             handleField(
@@ -316,14 +316,21 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
     ({
       ...item,
       date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
-      amount : 'Rs '  + formatAmount(item.amount.toFixed(2)) || "-",
+      amount : formatAmount(item.amount.toFixed(2)) || "-",
       type : changeType(item.type || "-"),
-      remainingInterest : 'Rs '  +formatAmount(item.remainingInterest.toFixed(2)),
-      remainingPrincipal : 'Rs '  +formatAmount(item.remainingPrincipal.toFixed(2)),
-      dueAmount : 'Rs '  +formatAmount(item.dueAmount.toFixed(2)),
-      remainingBalance : 'Rs '  +formatAmount(item.remainingBalance.toFixed(2))
+      remainingInterest : formatAmount(item.remainingInterest.toFixed(2)),
+      remainingPrincipal :formatAmount(item.remainingPrincipal.toFixed(2)),
+      dueAmount :formatAmount(item.dueAmount.toFixed(2)),
+      remainingBalance : formatAmount(item.remainingBalance.toFixed(2))
     })
   )
+
+  let lastElement = data.pop();
+  lastElement.date = "Total as on "+ lastElement.date
+  lastElement.type = '-'
+  lastElement.amount = '-'
+  data.push(lastElement)
+  
   const mode = "download"
   let   queryStr = [{
     key: "key",
