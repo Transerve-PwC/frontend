@@ -30,7 +30,7 @@ export const getRelationshipRadioButton = {
     return result
   }
 
-const getField = async (item, fieldData = {}, dataSource, state) => {
+const getField = async (item, fieldData = {}, state) => {
 
     const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
     const {required = true, validations} = fieldData
@@ -61,7 +61,7 @@ const getField = async (item, fieldData = {}, dataSource, state) => {
       })
       }
       case "DROP_DOWN": {
-        const values = !!dataSource ? await getOptions(dataSource) : []
+        const values = !!fieldData.dataSource ? await getOptions(fieldData.dataSource) : []
         return getSelectField({
           ...fieldProps,
           ...rest,
@@ -121,12 +121,11 @@ const getField = async (item, fieldData = {}, dataSource, state) => {
     }
   }
 
-const getDetailsContainer = async (section, data_config, dataSources, state) => {
+const getDetailsContainer = async (section, data_config, state) => {
     const {fields = []} = section;
     const values = await fields.aReduce(async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
-      const dataSource = dataSources[field.dataSource]
-      return {...acc, [field.label]: await getField(field, findFieldData, dataSource, state)}
+      return {...acc, [field.label]: await getField(field, findFieldData, state)}
     }, {})
     return getCommonContainer(values);
 }
@@ -148,14 +147,14 @@ const expansionSection = (section) => {
   // }
 }
 
-export const setFirstStep = async (state, dispatch, {data_config, format_config, dataSources}) => {
+export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
     let {sections = []} = format_config
     sections = await sections.aReduce(async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, dataSources, state)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, state)
         })
     }
     }, {})

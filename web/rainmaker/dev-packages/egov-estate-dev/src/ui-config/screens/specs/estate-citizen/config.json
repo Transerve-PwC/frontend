@@ -2,18 +2,33 @@
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_SaleDeed": {
-    "dataSources" : {
-      "typesOfOwner": {
+    "dataSources" : [
+      {
           "name": "typesOfOwner",
           "type": "local",
+          "cacheable" : true,
+          "lazyload" : true,
           "values": [{"code": "New"}, {"code": "Existing"}]
       },
-      "modesOfTransfer": {
+      {
           "name": "modesOfTransfer",
           "type": "local",
+          "cacheable" : true,
+          "lazyload" : true,
           "values": [{"code": "online"}, {"code": "offline"}]
-      }
-  },
+      },
+      {
+        "name": "applicationDocuments",
+        "type": "mdms",
+        "lazyload" : true,
+        "cacheable" : true,
+        "options" : {
+          "moduleName" : "EstateProperties",
+          "masterName" : "applicationDocuments",
+          "filter" : "[?(@.code=='MasterRP')]"
+        }
+    }
+    ],
     "fields": [
       {
         "path": "modeOfTransfer",
