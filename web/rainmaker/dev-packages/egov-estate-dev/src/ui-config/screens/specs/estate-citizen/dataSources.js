@@ -1,14 +1,6 @@
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils/api";
 
-var dataSources = {
-    "modesOfTransfer": {
-        name: "modesOfTransfer",
-        type: "local",
-        values: [{code: "online"}, {code: "offline"}]
-    }
-}
-
 const getMdmsDataSourceValue = async (item) => {
     if(!!item.values.cacheable && !!dataSources[item.name] && !!dataSources[item.name].values) {
         return dataSources[item.name].values
@@ -32,13 +24,6 @@ const getMdmsDataSourceValue = async (item) => {
             "_search",
             [],
             payload)
-            if(!!item.values.cacheable) {
-                dataSources[item.name] = {
-                    name: item.name,
-                    type: "mdms",
-                    values: response.MdmsRes[item.values.masterName]
-                }
-            }
             return response.MdmsRes[item.values.masterName]
         } catch (error) {
             console.log(error)
@@ -48,7 +33,7 @@ const getMdmsDataSourceValue = async (item) => {
 
 
 const getLocalDataSourceValue = (item) => {
-    return dataSources[item.name].values
+    return item.values
 }
 
 

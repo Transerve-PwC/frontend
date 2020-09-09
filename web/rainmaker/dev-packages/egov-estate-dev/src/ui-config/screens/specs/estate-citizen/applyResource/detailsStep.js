@@ -23,10 +23,10 @@ export const getRelationshipRadioButton = {
   };
 
 
-const getField = async (item, fieldData, state) => {
+const getField = (item, fieldData = {}, dataSource, state) => {
 
     const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
-    const {required, validations} = fieldData
+    const {required = true, validations} = fieldData
     let fieldProps = {
       label : {
         labelName: labelItem,
@@ -54,11 +54,11 @@ const getField = async (item, fieldData, state) => {
       })
       }
       case "DROP_DOWN": {
-        const values = await getDataSourceValues(field.values)
+        const values = !!dataSource ? getDataSourceValues(dataSource) : []
         return getSelectField({
           ...fieldProps,
           ...rest,
-          data: values
+          data:values
         })
       }
       case "DATE_FIELD": {
@@ -114,39 +114,41 @@ const getField = async (item, fieldData, state) => {
     }
   }
 
-const getDetailsContainer = (section, data_config, state) => {
+const getDetailsContainer = (section, data_config, dataSources, state) => {
     const {fields = []} = section;
     const values = fields.reduce((acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
-      return {...acc, [field.label]: getField(field, findFieldData, state)}
+      const dataSource = dataSources[field.dataSource]
+      return {...acc, [field.label]: getField(field, findFieldData, dataSource, state)}
     }, {})
     return getCommonContainer(values);
 }
 
 const expansionSection = (section) => {
   const {fields =[], path, valueJsonPath, sourceJsonPath, header} = section;
-  return {
-    uiFramework: "custom-containers-local",
-    moduleName: "egov-estate",
-    componentPath: "ExpansionPanelContainer",
-    props: {
-      sourceJsonPath,
-      jsonPath: path,
-      valueJsonPath,
-      contents: fields,
-      header
-    }
-  }
+  return {}
+  // return {
+  //   uiFramework: "custom-containers-local",
+  //   moduleName: "egov-estate",
+  //   componentPath: "ExpansionPanelContainer",
+  //   props: {
+  //     sourceJsonPath,
+  //     jsonPath: path,
+  //     valueJsonPath,
+  //     contents: fields,
+  //     header
+  //   }
+  // }
 }
 
-export const setFirstStep = (state, dispatch, {data_config, format_config}) => {
+export const setFirstStep = (state, dispatch, {data_config, format_config, dataSources}) => {
     let {sections = []} = format_config
     sections = sections.reduce((acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config, state)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config, dataSources, state)
         })
     }
     }, {})

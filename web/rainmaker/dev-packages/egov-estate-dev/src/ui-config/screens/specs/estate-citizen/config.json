@@ -2,6 +2,18 @@
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_SaleDeed": {
+    "dataSources" : {
+      "typesOfOwner": {
+          "name": "typesOfOwner",
+          "type": "local",
+          "values": [{"code": "New"}, {"code": "Existing"}]
+      },
+      "modesOfTransfer": {
+          "name": "modesOfTransfer",
+          "type": "local",
+          "values": [{"code": "online"}, {"code": "offline"}]
+      }
+  },
     "fields": [
       {
         "path": "modeOfTransfer",
@@ -226,6 +238,14 @@
           "type": "FORM",
           "fields": [
             {
+              "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.applicationDetails.purchaser.type",
+              "path": "purchaser.type",
+              "dataSource": "typesOfOwner"
+            },
+            {
               "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
@@ -266,11 +286,7 @@
               "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
               "type": "DROP_DOWN",
               "jsonPath": "payload.owner.id",
-              "path": "owner.id",
-              "values": {
-                "type": "local",
-                "name": "modesOfTransfer"
-              }
+              "path": "owner.id"
             },
             {
               "label": "EST_PERCENTAGE_SHARED_LABEL",
@@ -285,7 +301,8 @@
               "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
               "type": "DROP_DOWN",
               "jsonPath": "payload.modeOfTransfer",
-              "path": "modeOfTransfer"
+              "path": "modeOfTransfer",
+              "dataSource": "modesOfTransfer"
             },
             {
               "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",

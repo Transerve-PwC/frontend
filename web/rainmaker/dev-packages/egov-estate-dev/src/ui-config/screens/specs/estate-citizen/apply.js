@@ -32,8 +32,8 @@ const getData = async (action, state, dispatch) => {
     })
     const applicationType = getQueryArg(window.location.href, "applicationType");
     const dataConfig = require("./config.json")
-    const {fields: data_config, first_step, second_step} = dataConfig[applicationType]
-    const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
+    let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType]
+    const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step, dataSources})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
     const third_step = await setThirdStep(state, dispatch)
     inputProps.push(...second_step_sections);
