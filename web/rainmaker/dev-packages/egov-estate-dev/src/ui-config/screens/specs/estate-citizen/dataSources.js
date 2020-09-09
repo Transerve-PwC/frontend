@@ -5,7 +5,7 @@ var dataSources = {
     "modesOfTransfer": {
         name: "modesOfTransfer",
         type: "local",
-        values: ["online", "offline"]
+        values: [{code: "online"}, {code: "offline"}]
     }
 }
 

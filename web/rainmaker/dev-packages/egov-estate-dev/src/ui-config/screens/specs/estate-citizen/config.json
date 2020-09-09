@@ -266,7 +266,11 @@
               "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
               "type": "DROP_DOWN",
               "jsonPath": "payload.owner.id",
-              "path": "owner.id"
+              "path": "owner.id",
+              "values": {
+                "type": "local",
+                "name": "modesOfTransfer"
+              }
             },
             {
               "label": "EST_PERCENTAGE_SHARED_LABEL",

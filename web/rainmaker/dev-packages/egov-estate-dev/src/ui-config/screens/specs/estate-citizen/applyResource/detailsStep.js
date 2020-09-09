@@ -2,6 +2,7 @@ import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getText
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import get from "lodash/get";
+import { getDataSourceValues } from "../dataSources";
 
 const headerObj = value => {
     return getCommonHeader({
@@ -22,7 +23,7 @@ export const getRelationshipRadioButton = {
   };
 
 
-const getField = (item, fieldData, state) => {
+const getField = async (item, fieldData, state) => {
 
     const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
     const {required, validations} = fieldData
@@ -53,9 +54,11 @@ const getField = (item, fieldData, state) => {
       })
       }
       case "DROP_DOWN": {
+        const values = await getDataSourceValues(field.values)
         return getSelectField({
           ...fieldProps,
-          ...rest
+          ...rest,
+          data: values
         })
       }
       case "DATE_FIELD": {
