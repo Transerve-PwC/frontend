@@ -802,7 +802,7 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
       }
       if (!isSizeValid) {
         stopLoading()
-        alert(`Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`);
+        // alert(`Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`);
         uploadDocument = false;
       }
       if (uploadDocument) {

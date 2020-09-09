@@ -124,7 +124,7 @@ class ShowField extends Component {
         extend: "excel",
         text: "XLS",
         filename: _this.state.reportName,
-        title: reportTitle,
+        title: Array.isArray(reportTitle) ? reportTitle.join("") : reportTitle,
         messageTop: tabLabel,
         footer: true,
         className: "report-excel-button",
