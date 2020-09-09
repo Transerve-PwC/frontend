@@ -22,12 +22,12 @@ export const getRelationshipRadioButton = {
     type: "array"
   };
 
-  Array.prototype.aReduce = async function (cb, initial) {
+  const arrayReduce = async function(arr, cb, initial) {
     var result = initial;
-    for(var i = 0; i < this.length; i++) {
-      result = await cb(result, this[i]);
-    }
-    return result
+      for(var i = 0; i < arr.length; i++) {
+        result = await cb(result, arr[i]);
+      }
+      return result
   }
 
 const getField = async (item, fieldData = {}, state) => {
@@ -61,7 +61,7 @@ const getField = async (item, fieldData = {}, state) => {
       })
       }
       case "DROP_DOWN": {
-        const values = !!fieldData.dataSource ? await getOptions(fieldData.dataSource) : []
+        const values = !!item.dataSource ? await getOptions(item.dataSource) : []
         return getSelectField({
           ...fieldProps,
           ...rest,
@@ -123,7 +123,7 @@ const getField = async (item, fieldData = {}, state) => {
 
 const getDetailsContainer = async (section, data_config, state) => {
     const {fields = []} = section;
-    const values = await fields.aReduce(async (acc, field) => {
+    const values = await arrayReduce(fields, async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
       return {...acc, [field.label]: await getField(field, findFieldData, state)}
     }, {})
@@ -149,7 +149,7 @@ const expansionSection = (section) => {
 
 export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
     let {sections = []} = format_config
-    sections = await sections.aReduce(async (acc, section) => {
+    sections = await arrayReduce(sections, async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({

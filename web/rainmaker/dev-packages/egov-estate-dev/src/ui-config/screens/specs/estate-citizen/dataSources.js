@@ -56,9 +56,9 @@ class MDMSDatasource {
  }
   
  class LocalDatasource {
-    _values;
+    values;
     constructor(values) {
-        this._values = values;
+        this.values = values;
     }
     async get() {
         return this.values;
@@ -71,11 +71,11 @@ class MDMSDatasource {
     registerDatasource(config) {
         switch(config.type) {
             case "local" : {
-                this.datasources[config.key] = new LocalDatasource(config.values);
+                this.datasources[config.name] = new LocalDatasource(config.values);
                 break;
             }
             case "mdms" : {
-                this.datasources[config.key] = new MDMSDatasource(config.options, config.cacheable, config.lazyload);
+                this.datasources[config.name] = new MDMSDatasource(config.options, config.cacheable, config.lazyload);
                 break;
             }
         }
@@ -93,7 +93,7 @@ class MDMSDatasource {
 const datasourceManager = new DatasourceManager();
 
 export const getOptions = async (datasourceName) => {
-    return await datasourceManager.datasources(datasourceName).get();
+    return await datasourceManager.getDatasource(datasourceName).get();
 }
 
 export const registerDatasource = (config) => {
