@@ -1130,6 +1130,7 @@ export const footer = getCommonApplyFooter({
       break;    
       case "OT_PENDINGCLAPPROVAL": 
       case "OT_REJECTEDPAID":  
+      case "OT_PENDINGSAREJECTION":
           downloadMenu = [
             receiptDownloadObjectForOT,
               applicationDownloadObjectForOT              
@@ -1167,7 +1168,8 @@ export const footer = getCommonApplyFooter({
 
       case "DC_REJECTEDPAID": 
       case "DC_PENDINGCLAPPROVAL":  
-        
+      case "DC_PENDINGSAREJECTION":
+
           downloadMenu = [
             receiptDownloadObjectForDC,
             applicationDownloadObjectForDC,

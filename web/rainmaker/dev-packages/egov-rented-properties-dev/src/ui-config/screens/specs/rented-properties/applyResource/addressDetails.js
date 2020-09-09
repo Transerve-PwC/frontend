@@ -1,5 +1,5 @@
 import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTitle, getPattern, getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { transitNumberLookUp, propertyHeader, pincodeField,colonyFieldDup } from '../applyResource/propertyDetails'
+import { transitNumberLookUp, propertyHeader, pincodeField,colonyFieldDup, pincodeFieldTransitSite } from '../applyResource/propertyDetails'
 import { getDetailsFromProperty,getDetailsFromPropertyMortgage,getDetailsFromPropertyTransit } from "../../../../../ui-utils/apply";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
@@ -245,7 +245,7 @@ const getTransitSitePropertyDetails = () => {
       detailsContainer: getCommonContainer({
           transitNumber: getTextField(TransitsiteTransitNumberField),
          colony:getSelectField({...colonyFieldDup,jsonPath:"PropertyImagesApplications[0].property.colony"}),
-         pincode: getTextField({...pincodeField, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         pincode: getTextField({...pincodeFieldTransitSite, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }

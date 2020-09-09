@@ -190,7 +190,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
             set(queryObject[0], "applicationAction", "SUBMIT")
           }
           let ownershipTransferDocuments = get(queryObject[0], "ownerDetails.ownershipTransferDocuments") || [];
-          ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item && !!item.fileStoreId).map(item => ({...item, active: true}))
+          ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item && !!item.fileStoreId).filter((item, index, arr) => (arr.findIndex((arrItem) => arrItem.fileStoreId === item.fileStoreId)) === index).map(item => ({...item, active: true}))
           const removedDocs = get(state.screenConfiguration.preparedFinalObject, "OwnersTemp[0].removedDocs") || [];
           ownershipTransferDocuments = [...ownershipTransferDocuments, ...removedDocs]
           set(queryObject[0], "ownerDetails.ownershipTransferDocuments", ownershipTransferDocuments)
@@ -299,6 +299,9 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
       const demandNoticeTo = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.demandlastdate")
       const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
       const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
+      const allotmentNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].notices[0].allotmentNumber")
+      const colony = get(state.screenConfiguration.preparedFinalObject, "Properties[0].colony")
+      const ownername = get(state.screenConfiguration.preparedFinalObject, " Properties[0].owners[0].ownerDetails.name")
       const noticeType = str
       const propertyImageId = (noticeType === "Violation" && !!propertyIdTransitNumber) ? filedata[0].id : null
       console.log(propertyImageId)
@@ -320,7 +323,9 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
       );
       
       const NoticeApplications = [{
+        "ownerName":ownername,
         "tenantId": tenantId,
+        "allotmentNumber":allotmentNumber,
         "memoDate" : convertDateToEpoch(memoDate),
         "violations": violations,
         "noticeType" : noticeType,
@@ -336,7 +341,8 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
           "id": id,
           "transitNumber": transitNumber,
           "pincode": pincode,
-          "area": area
+          "area": area,
+          "colony":colony
         },
 
         "applicationDocuments": output
@@ -349,6 +355,9 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         "",
         [],
         { NoticeApplications }
+      );
+      dispatch(
+        prepareFinalObject("notices", response.NoticeApplications)
       );
       return response;
   } catch (error) {
@@ -373,7 +382,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         let response;
         set(queryObject[0], "tenantId", tenantId);
         set(queryObject[0], "propertyDetails", "null");
-        set(queryObject[0], "applicant[0].phone", userInfo.userName);
+        set(queryObject[0], "applicant[0].phone",queryObject[0].applicant[0].phone);
         set(queryObject[0], "applicant[0].adhaarNumber", queryObject[0].applicant[0].adhaarNumber);
         if(!id) {
           set(queryObject[0], "state", "");
@@ -445,7 +454,7 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
         let response;
         set(queryObject[0], "tenantId", tenantId);
         set(queryObject[0], "propertyDetails", "null");
-        set(queryObject[0], "applicant[0].phone", userInfo.userName);
+        set(queryObject[0], "applicant[0].phone", queryObject[0].applicant[0].phone);
         set(queryObject[0], "applicant[0].adhaarNumber", queryObject[0].applicant[0].adhaarNumber);
         
         if(!id) {
@@ -752,12 +761,31 @@ export const getDetailsFromPropertyMortgage = async (state, dispatch) => {
               findOwner.ownerDetails.fatherOrHusband
             )
           )
-          dispatch(
-            prepareFinalObject(
-              "MortgageApplications[0].applicant[0].relationship",
-              findOwner.ownerDetails.relation
+
+          if(!!findOwner.ownerDetails.relationWithDeceasedAllottee && findOwner.ownerDetails.relationWithDeceasedAllottee === "LEGAL_HEIR"){
+            dispatch(
+              prepareFinalObject(
+                "MortgageApplications[0].applicant[0].relationship",
+                "FATHER"
+              )
             )
-          )
+          }
+          else if(!!findOwner.ownerDetails.relationWithDeceasedAllottee && findOwner.ownerDetails.relationWithDeceasedAllottee === "SPOUSE"){
+            dispatch(
+              prepareFinalObject(
+                "MortgageApplications[0].applicant[0].relationship",
+                "HUSBAND"
+              )
+            )
+          }
+          else{
+            dispatch(
+              prepareFinalObject(
+                "MortgageApplications[0].applicant[0].relationship",
+                findOwner.ownerDetails.relation
+              )
+            )
+          }
           dispatch(
             prepareFinalObject(
               "MortgageApplications[0].applicant[0].adhaarNumber",
@@ -879,12 +907,31 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
               findOwner.ownerDetails.fatherOrHusband
             )
           )
-          dispatch(
-            prepareFinalObject(
-              "DuplicateCopyApplications[0].applicant[0].relationship",
-              findOwner.ownerDetails.relation
+          if(!!findOwner.ownerDetails.relationWithDeceasedAllottee && findOwner.ownerDetails.relationWithDeceasedAllottee === "LEGAL_HEIR"){
+            dispatch(
+              prepareFinalObject(
+                "DuplicateCopyApplications[0].applicant[0].relationship",
+                "FATHER"
+              )
             )
-          )
+          }
+          else if(!!findOwner.ownerDetails.relationWithDeceasedAllottee && findOwner.ownerDetails.relationWithDeceasedAllottee === "SPOUSE"){
+            dispatch(
+              prepareFinalObject(
+                "DuplicateCopyApplications[0].applicant[0].relationship",
+                "HUSBAND"
+              )
+            )
+          }
+          else{
+            dispatch(
+              prepareFinalObject(
+                "DuplicateCopyApplications[0].applicant[0].relationship",
+                findOwner.ownerDetails.relation
+              )
+            )
+          }
+         
           dispatch(
             prepareFinalObject(
               "DuplicateCopyApplications[0].applicant[0].adhaarNumber",
@@ -895,6 +942,12 @@ export const getDuplicateDetailsFromProperty = async (state, dispatch) => {
             prepareFinalObject(
               "DuplicateCopyApplications[0].applicant[0].email",
               findOwner.ownerDetails.email
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "DuplicateCopyApplications[0].applicant[0].phone",
+              findOwner.ownerDetails.phone
             )
           )
           return true

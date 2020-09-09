@@ -13,7 +13,7 @@ import { getTodaysDateInYMD } from "../../utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage, searchAccountStatement ,downloadAccountStatementPdf} from "./functions";
 import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
-
+import{colonyFieldDup} from "../../rented-properties/applyResource/propertyDetails"
 const colonyField = {
   label: {
       labelName: "Colony",
@@ -573,7 +573,7 @@ const accountStatementTransitNumber = {
   beforeFieldChange: (action, state, dispatch) => {
     dispatch(
         prepareFinalObject(
-          "searchScreen.area",
+          "searchScreen.colony",
           ""
         )
       )
@@ -599,7 +599,7 @@ export const accountStatementFilterForm = getCommonCard({
   }),
   applicationNoContainer: getCommonContainer({
     transitNumber: getTextField(accountStatementTransitNumber),
-    area:getTextField({...areaField})
+    colony:getSelectField({...colonyFieldDup,jsonPath:"searchScreen.colony"})
   }),
   statusContainer: getCommonContainer({
     pincode:getTextField(pincodeField),

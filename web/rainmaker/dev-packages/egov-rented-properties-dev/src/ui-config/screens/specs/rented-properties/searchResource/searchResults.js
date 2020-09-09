@@ -110,12 +110,58 @@ export const accountStatementResults = {
   props: {...searchResults.props, 
     columns: [
       DATE,
-      AMOUNT,
+      {
+        name: AMOUNT,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      // AMOUNT,
       TYPE, 
-      REMAINING_INTEREST,
-      REMAINING_PRINCIPAL,
-      TOTAL_DUE,
-      ACCOUNT_BALANCE 
+      {
+        name: REMAINING_PRINCIPAL,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: REMAINING_INTEREST,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      }, 
+      {
+        name: TOTAL_DUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: ACCOUNT_BALANCE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      }
     ],
     options: {...searchResults.props.options,
       onRowClick: () => {},

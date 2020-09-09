@@ -3,7 +3,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   ifUserRoleExists,download,
-  downloadAcknowledgementFormForCitizen
+  downloadAcknowledgementFormForCitizen,downloadNoticeForm
 } from "../../utils";
 import set from "lodash/set";
 import get from "lodash/get"
@@ -299,7 +299,10 @@ export const applicationSuccessFooter = (
                 { key: "tenantId", value: tenantId }
             ]
               download(receiptQueryString, Properties,[], userInfo.name,'online-payment');
-            break 
+            break
+            case 'NOTICE_GENERATION':
+                const { notices } = state.screenConfiguration.preparedFinalObject;
+                downloadNoticeForm(notices);  
         default:
           break;     
              }   
@@ -347,7 +350,10 @@ export const applicationSuccessFooter = (
                 { key: "tenantId", value: tenantId }
             ]
               download(receiptQueryString, Properties,[], userInfo.name,'online-payment','print');
-            break 
+            break
+        case 'NOTICE_GENERATION':
+            const { notices } = state.screenConfiguration.preparedFinalObject;
+            downloadNoticeForm(notices,'print');     
         default:
           break;     
              }   

@@ -7,15 +7,19 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { accountStatementFilterForm } from "./searchResource/rentedPropertyApplication";
 import { accountStatementResults } from "./searchResource/searchResults";
 import {downloadAccountStatementPdf} from "./searchResource/functions"
+import {getColonyTypes} from "../rented-properties/apply"
   const header = getCommonHeader({
     labelName: "Account Statement Generation",
     labelKey: "RP_COMMON_ACCOUNT_STATEMENT_GENERATION_APPLICATION"
   });
-
+  const beforeInitFn =async(action, state, dispatch)=>{
+    getColonyTypes(action, state, dispatch);
+  }
   const accountStatementSearchResult = {
     uiFramework: "material-ui",
     name: "search-account-statement",
     beforeInitScreen: (action, state, dispatch) => {
+      beforeInitFn(action, state, dispatch);
       dispatch(prepareFinalObject("searchScreen", {}))
       return action
     },

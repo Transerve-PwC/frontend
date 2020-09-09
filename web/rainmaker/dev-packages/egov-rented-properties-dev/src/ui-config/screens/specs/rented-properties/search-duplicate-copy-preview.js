@@ -60,6 +60,7 @@ const duplicateReviewDetails = getCommonCard({
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
         DuplicateCopyApplications = [{...DuplicateCopyApplications[0], applicationDocuments}]
+        DuplicateCopyApplications = [{...DuplicateCopyApplications[0], property: {...DuplicateCopyApplications[0].property, rentSummary:{...DuplicateCopyApplications[0].property.rentSummary , balanceAmount : DuplicateCopyApplications[0].property.rentSummary.balanceAmount.toString() }}}]
         const status = DuplicateCopyApplications[0].state
         dispatch(prepareFinalObject("DuplicateCopyApplications", DuplicateCopyApplications))
         dispatch(

@@ -191,8 +191,9 @@ export const callBackForNext = async (state, dispatch) => {
           dispatch
       )
       if (!!isTradeDetailsValid && !!isOwnerDetailsValid) {
-          const age = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].tradeLicenseDetail.owners[0].age")
-          if(age < 18) {
+          const age = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].tradeLicenseDetail.owners[0].age");
+          let tradeType = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].businessService");
+          if(age < 18 && tradeType != "CTL.OLD_BOOK_MARKET") {
             isFormValid = false;
             ageFieldError = true
           } 

@@ -134,6 +134,7 @@ const amountField = {
   minLength: 3,
   maxLength: 7,
   jsonPath: "paymentInfo.amount",
+  errorMessage: "RP_ERR_AMOUNT_FIELD",
 }
 
 const bankNameField = {
