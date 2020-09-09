@@ -14,7 +14,10 @@ import {
 import {
     getTodaysDateInYMD
 } from "../../utils";
+import {CompanyDetails} from './company-details'
 import get from "lodash/get";
+import set from "lodash/set";
+
 
 const typeOfAllocationField = {
     label: {
@@ -141,6 +144,7 @@ const categoryField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
+        
         if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
             dispatch(
                 handleField(
@@ -165,6 +169,16 @@ const categoryField = {
                     filteredCategory[0].SubCategory
                 )
             )
+
+            // if(action.value == "CAT.COMMERCIAL"){
+            //     console
+            //         set(
+            //             "apply",
+            //             "components.div.children.formwizardThirdStep",
+            //             "children",
+            //             AllotmentAuctionDetails
+            //         )
+            // }
         }
         else {
             dispatch(

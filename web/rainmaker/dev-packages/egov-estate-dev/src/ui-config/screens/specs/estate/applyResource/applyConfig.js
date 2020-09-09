@@ -41,6 +41,8 @@ import {
   reviewAllotmentDetails
 } from './reviewAllotmentDetails'
 import {AllotmentAuctionDetails} from './auction-details'
+import {CompanyDetails} from './company-details'
+// import {} from ''
 
 const documentCardConfig = {
   header: getCommonTitle({
@@ -148,7 +150,7 @@ export const formwizardThirdStep = {
     id: "apply_form3"
   },
   children: {
-    ownerDetails
+    CompanyDetails
   },
   visible: false
 };
