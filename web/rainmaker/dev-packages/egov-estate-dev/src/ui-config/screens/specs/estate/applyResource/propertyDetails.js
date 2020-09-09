@@ -14,9 +14,13 @@ import {
 import {
     getTodaysDateInYMD
 } from "../../utils";
+<<<<<<< HEAD
 import {
     CompanyDetails
 } from './company-details'
+=======
+import {CompanyDetails} from './company-details'
+>>>>>>> b721a860... company details init
 import get from "lodash/get";
 import set from "lodash/set";
 
@@ -146,7 +150,20 @@ const categoryField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
+<<<<<<< HEAD
         let screenKeys = ["apply", "allotment"];
+=======
+        
+        if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
+                    "visible",
+                    true
+                )
+            );
+>>>>>>> b721a860... company details init
 
         screenKeys.map(item => {
             let step = item == "apply" ? "formwizardFirstStep" : "formwizardFirstStepAllotment";
@@ -164,6 +181,7 @@ const categoryField = {
                     state.screenConfiguration.preparedFinalObject,
                     "applyScreenMdmsData.EstatePropertyService.categories"
                 )
+<<<<<<< HEAD
 
                 const filteredCategory = categories.filter(item => item.code === action.value)
                 dispatch(
@@ -173,6 +191,27 @@ const categoryField = {
                         "props.data",
                         filteredCategory[0].SubCategory
                     )
+=======
+            )
+
+            // if(action.value == "CAT.COMMERCIAL"){
+            //     console
+            //         set(
+            //             "apply",
+            //             "components.div.children.formwizardThirdStep",
+            //             "children",
+            //             AllotmentAuctionDetails
+            //         )
+            // }
+        }
+        else {
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
+                    "visible",
+                    false
+>>>>>>> b721a860... company details init
                 )
             } else {
                 dispatch(
