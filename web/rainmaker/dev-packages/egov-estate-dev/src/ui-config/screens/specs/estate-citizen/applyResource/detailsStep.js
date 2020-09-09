@@ -2,7 +2,7 @@ import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getText
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import get from "lodash/get";
-import { getDataSourceValues } from "../dataSources";
+import {getOptions} from '../dataSources'
 
 const headerObj = value => {
     return getCommonHeader({
@@ -23,7 +23,7 @@ export const getRelationshipRadioButton = {
   };
 
 
-const getField = (item, fieldData = {}, dataSource, state) => {
+const getField = async (item, fieldData = {}, dataSource, state) => {
 
     const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
     const {required = true, validations} = fieldData
@@ -54,7 +54,7 @@ const getField = (item, fieldData = {}, dataSource, state) => {
       })
       }
       case "DROP_DOWN": {
-        const values = !!dataSource ? getDataSourceValues(dataSource) : []
+        const values = !!dataSource ? await getOptions(dataSource) : []
         return getSelectField({
           ...fieldProps,
           ...rest,
@@ -114,12 +114,12 @@ const getField = (item, fieldData = {}, dataSource, state) => {
     }
   }
 
-const getDetailsContainer = (section, data_config, dataSources, state) => {
+const getDetailsContainer = async (section, data_config, dataSources, state) => {
     const {fields = []} = section;
-    const values = fields.reduce((acc, field) => {
+    const values = await fields.reduce(async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
       const dataSource = dataSources[field.dataSource]
-      return {...acc, [field.label]: getField(field, findFieldData, dataSource, state)}
+      return {...acc, [field.label]: await getField(field, findFieldData, dataSource, state)}
     }, {})
     return getCommonContainer(values);
 }
@@ -141,14 +141,14 @@ const expansionSection = (section) => {
   // }
 }
 
-export const setFirstStep = (state, dispatch, {data_config, format_config, dataSources}) => {
+export const setFirstStep = async (state, dispatch, {data_config, format_config, dataSources}) => {
     let {sections = []} = format_config
-    sections = sections.reduce((acc, section) => {
+    sections = await sections.reduce(async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config, dataSources, state)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, dataSources, state)
         })
     }
     }, {})
