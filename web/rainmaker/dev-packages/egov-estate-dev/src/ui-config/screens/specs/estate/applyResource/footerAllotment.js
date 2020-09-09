@@ -26,7 +26,7 @@ import {
 import "./index.css";
 import {
   setDocumentData
-} from '../apply'
+} from '../allotment'
 import {
   getReviewOwner,
   getReviewPurchaser,
@@ -69,33 +69,46 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
-    /* const isPropertyInfoValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
+    const isPropertyInfoValid = validateFields(
+      "components.div.children.formwizardFirstStepAllotment.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "apply"
+      "allotment"
     )
-    const isAuctionValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.auctionDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "apply"
-    )
+    
     const isAdditionalValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.additionalDetails.children.cardContent.children.detailsContainer.children",
+      "components.div.children.formwizardFirstStepAllotment.children.additionalDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "apply"
+      "allotment"
     )
 
-    if (isPropertyInfoValid && isAuctionValid && isAdditionalValid) {
+    if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
+  }
+
+  if (activeStep == AUCTION_DETAILS_STEP) {
+    const isAuctionValid = validateFields(
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    
+    if (isAuctionValid) {
+      const res = await applyEstates(state, dispatch, activeStep);
+      if (!res) {
+        return
+      }
+    } else {
+      isFormValid = false;
+    }
   }
 
   if (activeStep === OWNER_DETAILS_STEP) {
@@ -142,7 +155,7 @@ const callBackForNext = async (state, dispatch) => {
 
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Douments - ${ownerName}`
         )
 
@@ -160,14 +173,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isOwnerDetailsValid) {
+    if (isOwnerDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === COURT_CASE_DETAILS_STEP) {
@@ -176,8 +189,8 @@ const callBackForNext = async (state, dispatch) => {
       "Properties[0].propertyDetails.courtCases"
     )
     let courtCaseItems = get(
-      state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardFourthStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardFourthStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
     if (courtCaseItems && courtCaseItems.length > 0) {
