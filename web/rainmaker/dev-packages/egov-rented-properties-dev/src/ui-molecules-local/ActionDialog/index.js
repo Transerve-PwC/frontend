@@ -292,7 +292,7 @@ return
       );
       return
     }
-    else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 25) || sanctionLetterNumber.charAt(0) === " "){
+    else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 25)){
       toggleSnackbar(
         true,
         { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "ERR_SANCTION_LETTER_NUMBER_RANGE"},
