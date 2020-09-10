@@ -600,8 +600,8 @@ export const getAccountStatementProperty = async (state, dispatch) => {
         const findOwner = owners.find(item => !!item.activeState) || {}
         dispatch(
           prepareFinalObject(
-            "searchScreen.area",
-            Properties[0].propertyDetails.address.area
+            "searchScreen.colony",
+            Properties[0].propertyDetails.address.colony
           )
         )
         dispatch(
