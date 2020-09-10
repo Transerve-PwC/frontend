@@ -1,6 +1,6 @@
 import { getCommonSubHeader, getCommonGrayCard, getLabelWithValue, getCommonContainer, getCommonCard, getCommonTitle, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { changeStep } from "../footer";
-import {preview} from '../preview.json'
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const headerDiv = (isEditable = true, label, index) => {
   return {
@@ -85,8 +85,9 @@ export const viewFour = (section) => {
   }
 }
 
-
 export const setThirdStep = async (state, dispatch) => {
+    const applicationType = getQueryArg(window.location.href, "applicationType");
+    const {preview} = require(`../${applicationType}_preview.json`);
     const {sections = []} = preview;
     const details = sections.reduce((acc, section, index) => {
       return {

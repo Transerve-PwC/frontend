@@ -32,11 +32,11 @@ const getData = async (action, state, dispatch) => {
         setTimeout(resolve, 0)
     })
     const applicationType = getQueryArg(window.location.href, "applicationType");
-    const dataConfig = require("./config.json")
+    const dataConfig = require(`./${applicationType}.json`);
     let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType];
     
     //Register all the datasources in the config.
-    dataSources.forEach(dataSource => registerDatasource(dataSource));
+    !!dataSources && dataSources.forEach(dataSource => registerDatasource(dataSource));
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})

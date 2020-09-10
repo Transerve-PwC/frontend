@@ -12,10 +12,13 @@
       },
       {
           "name": "modesOfTransfer",
-          "type": "local",
+          "type": "mdms",
           "cacheable" : true,
           "lazyload" : true,
-          "values": [{"code": "online"}, {"code": "offline"}]
+          "options" : {
+            "moduleName" : "EstatePropertyService",
+            "masterName" : "modeOfTransfer"
+          }
       },
       {
         "name": "applicationDocuments",

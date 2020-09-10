@@ -23,17 +23,18 @@ class MDMSDatasource {
         this.values = [];
         const { moduleName, masterName, filter } = this.options;
         const payload = {
+
             MdmsCriteria: {
                 tenantId: getTenantId(),
                 moduleDetails: [
-                    {
-                        moduleName: moduleName,
-                        masterDetails: [
-                            {name: masterName, filter: masterName}
-                        ]
-                    }
+                  {
+                    moduleName: moduleName,
+                    masterDetails: [
+                      { name: masterName, filter }
+                    ]
+                  }
                 ]
-            }
+              }
         }
         try {
             const response = await httpRequest("post",
@@ -41,7 +42,9 @@ class MDMSDatasource {
             "_search",
             [],
             payload)
-            this.values = response.MdmsRes[masterName];
+            if(!!response && !!response.MdmsRes) {
+                this.values = response.MdmsRes[moduleName][masterName];
+            }
         } catch (error) {
             console.log(error);
         }
