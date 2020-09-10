@@ -245,7 +245,7 @@ const getTransitSitePropertyDetails = () => {
       detailsContainer: getCommonContainer({
           transitNumber: getTextField(TransitsiteTransitNumberField),
          colony:getSelectField({...colonyFieldDup,jsonPath:"PropertyImagesApplications[0].property.colony"}),
-         pincode: getTextField({...pincodeFieldTransitSite, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         pincode: getTextField({...pincodeField, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }
