@@ -1,6 +1,8 @@
 import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
+import get from "lodash/get";
+import {getOptions} from '../dataSources'
 
 const headerObj = value => {
     return getCommonHeader({
@@ -20,11 +22,18 @@ export const getRelationshipRadioButton = {
     type: "array"
   };
 
+  const arrayReduce = async function(arr, cb, initial) {
+    var result = initial;
+      for(var i = 0; i < arr.length; i++) {
+        result = await cb(result, arr[i]);
+      }
+      return result
+  }
 
-const getField = (item, fieldData) => {
+const getField = async (item, fieldData = {}, state) => {
 
-    const {label: labelItem, placeholder, type, pattern, editable = true, ...rest } = item
-    const {required, validations} = fieldData
+    const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
+    const {required = true, validations} = fieldData
     let fieldProps = {
       label : {
         labelName: labelItem,
@@ -38,7 +47,7 @@ const getField = (item, fieldData) => {
         xs: 12,
         sm: 6
       },
-      props: { disabled: !editable },
+      props: { disabled: eval(disabled) },
       required
     }
   
@@ -52,9 +61,11 @@ const getField = (item, fieldData) => {
       })
       }
       case "DROP_DOWN": {
+        const values = !!item.dataSource ? await getOptions(item.dataSource) : []
         return getSelectField({
           ...fieldProps,
-          ...rest
+          ...rest,
+          data:values
         })
       }
       case "DATE_FIELD": {
@@ -110,39 +121,40 @@ const getField = (item, fieldData) => {
     }
   }
 
-const getDetailsContainer = (section, data_config) => {
+const getDetailsContainer = async (section, data_config, state) => {
     const {fields = []} = section;
-    const values = fields.reduce((acc, field) => {
+    const values = await arrayReduce(fields, async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
-      return {...acc, [field.label]: getField(field, findFieldData)}
+      return {...acc, [field.label]: await getField(field, findFieldData, state)}
     }, {})
     return getCommonContainer(values);
 }
 
 const expansionSection = (section) => {
   const {fields =[], path, valueJsonPath, sourceJsonPath, header} = section;
-  return {
-    uiFramework: "custom-containers-local",
-    moduleName: "egov-estate",
-    componentPath: "ExpansionPanelContainer",
-    props: {
-      sourceJsonPath,
-      jsonPath: path,
-      valueJsonPath,
-      contents: fields,
-      header
-    }
-  }
+  return {}
+  // return {
+  //   uiFramework: "custom-containers-local",
+  //   moduleName: "egov-estate",
+  //   componentPath: "ExpansionPanelContainer",
+  //   props: {
+  //     sourceJsonPath,
+  //     jsonPath: path,
+  //     valueJsonPath,
+  //     contents: fields,
+  //     header
+  //   }
+  // }
 }
 
-export const setFirstStep = (state, dispatch, {data_config, format_config}) => {
+export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
     let {sections = []} = format_config
-    sections = sections.reduce((acc, section) => {
+    sections = await arrayReduce(sections, async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : getDetailsContainer(section, data_config)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, state)
         })
     }
     }, {})

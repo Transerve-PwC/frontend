@@ -62,6 +62,11 @@ const ExpansionPanelContainer = Loadable({
   loading: () => <Loading />
 })
 
+const UpdateContainer = Loadable({
+  loader: () => import("./UpdateContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -75,5 +80,6 @@ export {
   DialogContainer,
   ResubmitActionContainer,
   WorkFlowContainer,
-  ExpansionPanelContainer
+  ExpansionPanelContainer,
+  UpdateContainer
 };
