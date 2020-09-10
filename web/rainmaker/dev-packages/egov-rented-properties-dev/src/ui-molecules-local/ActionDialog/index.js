@@ -260,9 +260,11 @@ return
       );
 return
     }
-    const bankName = (!!mortgageApplication.mortgageApprovedGrantDetails[0].bankName) ? mortgageApplication.mortgageApprovedGrantDetails[0].bankName : ""
+    let bankName = (!!mortgageApplication.mortgageApprovedGrantDetails[0].bankName) ? mortgageApplication.mortgageApprovedGrantDetails[0].bankName : ""
+    bankName = bankName.trim()
     const mortgageAmountValid = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageAmount) ? mortgageApplication.mortgageApprovedGrantDetails[0].mortgageAmount : ""
-    const sanctionLetterNumber = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber) ? mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber : ""
+    let sanctionLetterNumber = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber) ? mortgageApplication.mortgageApprovedGrantDetails[0].sanctionLetterNumber : ""
+    sanctionLetterNumber = sanctionLetterNumber.trim()
     const sanctionDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) : ""
     const mortgageEndDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) : ""
 
@@ -274,7 +276,7 @@ return
       );
 return
     }
-    else if(!(bankName.length > 1 && bankName.length < 25)) {
+    else if(!(bankName.length >= 3 && bankName.length <= 25)) {
       toggleSnackbar(
               true,
               { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "ERR_BANKNAME_RANGE"},
@@ -290,7 +292,7 @@ return
       );
       return
     }
-    else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 15) ){
+    else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 25)){
       toggleSnackbar(
         true,
         { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "ERR_SANCTION_LETTER_NUMBER_RANGE"},
