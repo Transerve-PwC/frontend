@@ -196,7 +196,7 @@ class ActionDialog extends React.Component {
                       jsonPath={`${dataPath}.comment`}
                       placeholder={fieldConfig.comments.placeholder}
                     /> */}
-                    { buttonLabel == "APPROVE" ? <div style={{height: "10px"}}></div> : <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label>
+                    { (buttonLabel == "APPROVE" || buttonLabel == "REJECT" || buttonLabel == "SENDBACK") ? <div style={{height: "10px"}}></div> : <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label>
                     }
                     <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/>
                   </Grid>

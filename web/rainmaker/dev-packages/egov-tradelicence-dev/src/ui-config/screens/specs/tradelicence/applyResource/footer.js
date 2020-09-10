@@ -139,6 +139,8 @@ export const callBackForNext = async (state, dispatch) => {
   let isFormValid = true;
   let hasFieldToaster = true;
   let ageFieldError = false;
+  let businessStartDateFieldError = false;
+
   if (activeStep === TRADE_DETAILS_STEP) {
       const data = get(state.screenConfiguration, "preparedFinalObject");
       // setOwnerShipDropDownFieldChange(state, dispatch, data);
@@ -193,10 +195,18 @@ export const callBackForNext = async (state, dispatch) => {
       if (!!isTradeDetailsValid && !!isOwnerDetailsValid) {
           const age = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].tradeLicenseDetail.owners[0].age");
           let tradeType = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].businessService");
+          let businessStartDate = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].tradeLicenseDetail.additionalDetail.businessStartDate");
+          businessStartDate = new Date(businessStartDate);
+          let todaysDate = new Date();
+
           if(age < 18 && tradeType != "CTL.OLD_BOOK_MARKET") {
             isFormValid = false;
             ageFieldError = true
           } 
+          else if (businessStartDate > todaysDate) {
+            isFormValid = false;
+            businessStartDateFieldError = true;
+          }
            else {
             let isRenewable;
             const applicationType = get(state.screenConfiguration.preparedFinalObject, "Licenses[0].applicationType");
@@ -348,13 +358,21 @@ export const callBackForNext = async (state, dispatch) => {
                   "Please fill all mandatory fields and upload the documents !",
               labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
           };
-          if(!!ageFieldError) {
+          if (!!businessStartDateFieldError) {
+            errorMessage = {
+              labelName:
+                  "Business start date should not be greater than today's date",
+              labelKey: "ERR_BUSINESS_START_DATE_FIELD"
+            }
+          }
+          else if(!!ageFieldError) {
             errorMessage = {
               labelName:
                   "Age should not be less than 18",
               labelKey: "ERR_AGE_FIELD"
-          };
-          } else {
+          }
+          } 
+          else {
             switch (activeStep) {
                 case TRADE_DETAILS_STEP:
                     errorMessage = {
