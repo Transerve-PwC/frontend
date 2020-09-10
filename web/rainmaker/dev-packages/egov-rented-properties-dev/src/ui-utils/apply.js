@@ -281,9 +281,8 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
   }
 
   export const applynoticegeneration = async (state, dispatch, str, propertyIdTransitNumber) => {
-    try {
-
-      
+    debugger
+    try { 
       const transitNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].transitNumber")
       const id = get(state.screenConfiguration.preparedFinalObject, "Properties[0].id")
       const pincode = get(state.screenConfiguration.preparedFinalObject, "Properties[0].pincode")
@@ -299,9 +298,9 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
       const demandNoticeTo = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.demandlastdate")
       const recoveryType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.recoveryType")
       const amount = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.payment[0].amountPaid")
-      const allotmentNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].notices[0].allotmentNumber")
+      const allotmentNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].allotmenNumber")
       const colony = get(state.screenConfiguration.preparedFinalObject, "Properties[0].colony")
-      const ownername = get(state.screenConfiguration.preparedFinalObject, " Properties[0].owners[0].ownerDetails.name")
+      const ownername = get(state.screenConfiguration.preparedFinalObject, "Properties[0].owners[0].ownerDetails.name")
       const noticeType = str
       const propertyImageId = (noticeType === "Violation" && !!propertyIdTransitNumber) ? filedata[0].id : null
       console.log(propertyImageId)
@@ -323,7 +322,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
       );
       
       const NoticeApplications = [{
-        "ownerName":ownername,
+        "OwnerName":ownername,
         "tenantId": tenantId,
         "allotmentNumber":allotmentNumber,
         "memoDate" : convertDateToEpoch(memoDate),
@@ -356,8 +355,10 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         [],
         { NoticeApplications }
       );
+      let pdfPayload = response.NoticeApplications
+      pdfPayload[0].OwnerName = ownername
       dispatch(
-        prepareFinalObject("notices", response.NoticeApplications)
+        prepareFinalObject("notices", pdfPayload)
       );
       return response;
   } catch (error) {
