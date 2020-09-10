@@ -281,7 +281,6 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
   }
 
   export const applynoticegeneration = async (state, dispatch, str, propertyIdTransitNumber) => {
-    debugger
     try { 
       const transitNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].transitNumber")
       const id = get(state.screenConfiguration.preparedFinalObject, "Properties[0].id")
