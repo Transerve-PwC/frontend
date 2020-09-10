@@ -53,7 +53,7 @@ class MDMSDatasource {
         if (this.cacheable && !!this.values) {
             return this.values;
         }
-        this.loadValues();
+        await this.loadValues();
         return this.values;
     }
  }
