@@ -136,11 +136,12 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
         "padding": "6px 16px",
         "width": "83px"
       }
+
       let data = response.Properties.map(item => ({
         [getTextToLocalMapping("Action")]: React.createElement('div', {style: applyButtonStyle}, "SELECT"),
         [getTextToLocalMapping("File No")]: item.fileNumber || "-",
         [getTextToLocalMapping("Site Number")]: item.siteNumber,
-        [getTextToLocalMapping("Owner Name")]: item.propertyDetails ? item.propertyDetails.owners.map(item => item.ownerDetails.ownerName).join(",") || "-" : "-",
+        [getTextToLocalMapping("Owner Name")]: !!item.propertyDetails.owners ? item.propertyDetails.owners.map(item => item.ownerDetails.ownerName).join(",") || "-" : "-",
       }));
 
       

@@ -2,6 +2,36 @@
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_SaleDeed": {
+    "dataSources" : [
+      {
+          "name": "typesOfOwner",
+          "type": "local",
+          "cacheable" : true,
+          "lazyload" : true,
+          "values": [{"code": "New"}, {"code": "Existing"}]
+      },
+      {
+          "name": "modesOfTransfer",
+          "type": "mdms",
+          "cacheable" : true,
+          "lazyload" : true,
+          "options" : {
+            "moduleName" : "EstatePropertyService",
+            "masterName" : "modeOfTransfer"
+          }
+      },
+      {
+        "name": "applicationDocuments",
+        "type": "mdms",
+        "lazyload" : true,
+        "cacheable" : true,
+        "options" : {
+          "moduleName" : "EstateProperties",
+          "masterName" : "applicationDocuments",
+          "filter" : "[?(@.code=='MasterRP')]"
+        }
+    }
+    ],
     "fields": [
       {
         "path": "modeOfTransfer",
@@ -206,7 +236,7 @@
           "path": "payload.owner.id",
           "valueJsonPath": "ownerDetails.ownerId",
           "sourceJsonPath": "property.propertyDetails.owners",
-          "fields":[
+          "fields": [
             {
               "label": "EST_OWNER_NAME_LABEL",
               "jsonPath": "ownerDetails.ownerName"
@@ -226,6 +256,14 @@
           "type": "FORM",
           "fields": [
             {
+              "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.applicationDetails.purchaser.type",
+              "path": "purchaser.type",
+              "dataSource": "typesOfOwner"
+            },
+            {
               "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
@@ -237,7 +275,8 @@
               "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
               "jsonPath": "payload.applicationDetails.purchaser.fatherOrHusbandName",
-              "path": "purchaser.fatherOrHusbandName"
+              "path": "purchaser.fatherOrHusbandName",
+              "disabled": "!!state.screenConfiguration.preparedFinalObject.payload && !!state.screenConfiguration.preparedFinalObject.payload.purchaser && !!state.screenConfiguration.preparedFinalObject.payload.purchaser.name"
             },
             {
               "label": "EST_RELATION_SHIP_LABEL",
@@ -280,7 +319,8 @@
               "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
               "type": "DROP_DOWN",
               "jsonPath": "payload.modeOfTransfer",
-              "path": "modeOfTransfer"
+              "path": "modeOfTransfer",
+              "dataSource": "modesOfTransfer"
             },
             {
               "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
