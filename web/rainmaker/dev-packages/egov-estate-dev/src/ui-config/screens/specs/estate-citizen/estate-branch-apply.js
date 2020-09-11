@@ -42,7 +42,7 @@ const cardItems = [{
       labelName: "Transfer of Ownership on the basis of Un-registered Will"
     },
     icon: < EstateIcon / > ,
-    route: "ownership-transfer?type=unregisteredWill",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_UnRegisteredWill",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"

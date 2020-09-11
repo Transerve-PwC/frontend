@@ -1,0 +1,433 @@
+{
+  "tenantId": "ch",
+  "moduleName": "EstatePropertyService",
+  "EstateBranch_OwnershipTransfer_UnRegisteredWill": {
+    "dataSources" : [
+      {
+          "name": "typesOfOwner",
+          "type": "local",
+          "cacheable" : true,
+          "lazyload" : true,
+          "values": [{"code": "New"}, {"code": "Existing"}]
+      },
+      {
+          "name": "modesOfTransfer",
+          "type": "mdms",
+          "cacheable" : true,
+          "lazyload" : true,
+          "options" : {
+            "moduleName" : "EstatePropertyService",
+            "masterName" : "modeOfTransfer"
+          }
+      },
+      {
+        "name": "applicationDocuments",
+        "type": "mdms",
+        "lazyload" : true,
+        "cacheable" : true,
+        "options" : {
+          "moduleName" : "EstateProperties",
+          "masterName" : "applicationDocuments",
+          "filter" : "[?(@.code=='MasterRP')]"
+        }
+    }
+    ],
+    "fields": [
+      {
+        "path": "modeOfTransfer",
+        "required": true,
+        "validations": [
+          {
+            "type": "mdms",
+            "params": {
+              "moduleName": "EstatePropertyService",
+              "masterName": "modeOfTransfer",
+              "filter": "modeOfTransfer..code"
+            }
+          }
+        ]
+      },
+      {
+        "path": "registrationNumber",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 100
+            }
+          }
+        ]
+      },
+      {
+        "path": "dateOfRegistration",
+        "required": false,
+        "validations": [
+          {
+            "type": "date-range",
+            "params": {
+              "start": {
+                "unit": "year",
+                "value": -40
+              },
+              "end": {
+                "unit": "second",
+                "value": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "path": "owner",
+        "required": true,
+        "validations": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "path": "owner.id",
+        "required": true,
+        "validations": [
+          {
+            "type": "owner"
+          }
+        ]
+      },
+      {
+        "path": "purchaser",
+        "required": true,
+        "validations": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "path": "purchaser.name",
+        "required": true,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 5,
+              "max": 150
+            }
+          }
+        ]
+      },
+      {
+        "path": "purchaser.fatherOrHusbandName",
+        "required": true,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 5,
+              "max": 150
+            }
+          }
+        ]
+      },
+      {
+        "path": "purchaser.relation",
+        "required": true,
+        "validations": [
+          {
+            "type": "enum",
+            "params": {
+              "values": [
+                "FATHER",
+                "HUSBAND"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "purchaser.address",
+        "required": true,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 5,
+              "max": 150
+            }
+          }
+        ]
+      },
+      {
+        "path": "purchaser.mobileNo",
+        "required": false,
+        "validations": [
+          {
+            "type": "phonenumber"
+          }
+        ]
+      },
+      {
+        "path": "purchaser.percentageOfShareTransferred",
+        "required": true,
+        "validations": [
+          {
+            "type": "numeric"
+          },
+          {
+            "type": "minmax",
+            "params": {
+              "min": 0,
+              "max": 100
+            }
+          }
+        ]
+      }
+    ],
+    "first_step": {
+      "sections": [
+        {
+          "header": "EST_PROPERTY_DETAILS_HEADER",
+          "type": "CARD_DETAIL",
+          "fields": [
+            {
+              "label": "EST_FILE_NUMBER_LABEL",
+              "jsonPath": "property.fileNumber"
+            },
+            {
+              "label": "EST_CATEGORY_LABEL",
+              "jsonPath": "property.category"
+            },
+            {
+              "label": "EST_SUB_CATEGORY_LABEL",
+              "jsonPath": "property.subCategory"
+            },
+            {
+              "label": "EST_SITE_NO_LABEL",
+              "jsonPath": "property.siteNumber"
+            },
+            {
+              "label": "EST_SECTOR_NO_LABEL",
+              "jsonPath": "property.sectorNumber"
+            },
+            {
+              "label": "EST_PROPERTY_TYPE_LABEL",
+              "jsonPath": "property.propertyDetails.propertyType"
+            },
+            {
+              "label": "EST_LAST_NOC_DATE_LABEL",
+              "jsonPath": "property.propertyDetails.lastNocDate"
+            },
+            {
+              "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+              "jsonPath": "property.propertyDetails.propertyApplicationNumber"
+            },
+            {
+              "label": "EST_DUE_AMOUNT_LABEL",
+              "jsonPath": "property.propertyDetails.dueAmount"
+            }
+          ]
+        },
+        {
+          "header": "EST_OWNER_DETAILS_HEADER",
+          "type": "EXPANSION_DETAIL",
+          "path": "payload.owner.id",
+          "valueJsonPath": "ownerDetails.ownerId",
+          "sourceJsonPath": "property.propertyDetails.owners",
+          "fields": [
+            {
+              "label": "EST_OWNER_NAME_LABEL",
+              "jsonPath": "ownerDetails.ownerName"
+            },
+            {
+              "label": "EST_OWNER_SHARE_LABEL",
+              "jsonPath": "share"
+            },
+            {
+              "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+              "jsonPath": "ownerDetails.mobileNumber"
+            }
+          ]
+        },
+        {
+          "header": "EST_PURCHASER_DETAILS_HEADER",
+          "type": "FORM",
+          "fields": [
+            {
+              "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.applicationDetails.purchaser.type",
+              "path": "purchaser.type",
+              "dataSource": "typesOfOwner"
+            },
+            {
+              "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
+              "type": "TEXT_FIELD",
+              "jsonPath": "payload.applicationDetails.purchaser.name",
+              "path": "purchaser.name"
+            },
+            {
+              "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+              "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
+              "type": "TEXT_FIELD",
+              "jsonPath": "payload.applicationDetails.purchaser.fatherOrHusbandName",
+              "path": "purchaser.fatherOrHusbandName",
+              "disabled": "!!state.screenConfiguration.preparedFinalObject.payload && !!state.screenConfiguration.preparedFinalObject.payload.purchaser && !!state.screenConfiguration.preparedFinalObject.payload.purchaser.name"
+            },
+            {
+              "label": "EST_RELATION_SHIP_LABEL",
+              "type": "RADIO_BUTTON",
+              "jsonPath": "payload.applicationDetails.purchaser.relation",
+              "path": "purchaser.relation"
+            },
+            {
+              "label": "EST_ADDRESS_LABEL",
+              "placeholder": "EST_ADDRESS_PLACEHOLDER",
+              "type": "TEXT_AREA",
+              "jsonPath": "payload.applicationDetails.purchaser.address",
+              "path": "purchaser.address"
+            },
+            {
+              "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
+              "type": "TEXT_FIELD",
+              "jsonPath": "payload.applicationDetails.purchaser.mobileNo",
+              "path": "purchaser.mobileNo",
+              "pattern": "MobileNo"
+            },
+            {
+              "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
+              "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.owner.id",
+              "path": "owner.id"
+            },
+            {
+              "label": "EST_PERCENTAGE_SHARED_LABEL",
+              "placeholder": "EST_PERCENTAGE_SHARED_PLACEHOLDER",
+              "type": "TEXT_FIELD",
+              "jsonPath": "payload.applicationDetails.purchaser.percentageOfShareTransferred",
+              "path": "purchaser.percentageOfShareTransferred",
+              "pattern": "Amount"
+            },
+            {
+              "label": "EST_MODE_OF_TRANSFER_LABEL",
+              "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.modeOfTransfer",
+              "path": "modeOfTransfer",
+              "dataSource": "modesOfTransfer"
+            },
+            {
+              "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
+              "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+              "type": "TEXT_FIELD",
+              "jsonPath": "payload.registrationNumber",
+              "path": "registrationNumber"
+            },
+            {
+              "label": "EST_DATE_OF_REGISTRATION_LABEL",
+              "type": "DATE_FIELD",
+              "jsonPath": "payload.dateOfRegistration",
+              "path": "dateOfRegistration"
+            }
+          ]
+        }
+      ]
+    },
+    "second_step": {
+      "header": "EST_DOCUMENT_DETAILS_HEADER",
+      "jsonPath": "payload.documents",
+      "documentList": [
+        {
+          "code": "CERTIFIED_COPY_OF_LEASE_RIGHT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CERTIFIED_COPY_OF_LEASE_RIGHT_DESCRIPTION"
+        },
+        {
+          "code": "NOTARIZED_COPY_OF_SALE_DEED",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "NOTARISED_COPY_OF_SALE_DEED_DESCRIPTION"
+        },
+        {
+          "code": "SELF_ATTESTED_PHOTO",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SELF_ATTESTED_PHOTO_TRANSFEREE_DESCRIPTION"
+        },
+        {
+          "code": "IDEMINITY_BOND",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "IDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
+        },
+        {
+          "code": "SELF_ATTESTED_PHOTO_WITNESSES",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SELF_ATTESTED_PHOTO_WITNESSES_DESCRIPTION"
+        },
+        {
+          "code": "CLEARANCE_OF_PREVIOUS_LOANS",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CLEARANCE_OF_PREVIOUS_DESCRIPTION"
+        },
+        {
+          "code": "SEWERAGE_CONNECTION_OCCUPATION_CERTIFICATE_FURNISH_PROOF",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SEWERAGE_CONNECTION_OCCUPATION_CERTIFICATE_FURNISH_PROOF_DESCRIPTION"
+        },
+        {
+          "code": "AN_UNDERTAKING_BY_WAY_INDEMITY_BOND",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "AN_UNDERTAKING_BY_WAY_INDEMITY_BOND_DESCRIPTION"
+        },
+        {
+          "code": "NOTARIZED_COPY_GPA_SPA",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "NOTARIZED_COPY_GPA_SPA_DESCRIPTION"
+        },
+        {
+          "code": "AFFIDAVIT_REGARDING_GPA_SPA",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "AFFIDAVIT_REGARDING_GPA_SPA_DESCRIPTION"
+        },
+        {
+          "code": "AFFIDAVIT_EFFECT_UNDER_HAND_SALE",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "AFFIDAVIT_EFFECT_UNDER_HAND_SALE_DESCRIPTION"
+        },
+        {
+          "code": "NO_DUE_CERTIFICATE",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "NO_DUE_CERTIFICATE_DESCRIPTION"
+        }
+      ]
+    }
+  }
+}
