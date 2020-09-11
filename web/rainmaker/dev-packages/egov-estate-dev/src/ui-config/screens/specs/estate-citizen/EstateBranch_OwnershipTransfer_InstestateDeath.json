@@ -471,12 +471,34 @@
             "description": "SEWERAGE_CONNECTION_DESCRIPTION"
           },  
           {
-            "code": "UNDERTAKING_OF_IDEMINITY_BOND",
+            "code": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "UNDERTAKING_OF_IDEMINITY_BOND_DESCRIPTION"
+            "description": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA"
           },
+          {
+            "code": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA"
+          },
+          {
+            "code": "OCCUPATION_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "OCCUPATION_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "REMOVAL_REGULARIZATION_OF_BUILDING_VIOLATION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "REMOVAL_REGULARIZATION_OF_BUILDING_VIOLATION_DESCRIPTION"
+          },
+       
           {
             "code": "UNDERTAKING_BY_WAY_OF_AFFIDAVIT",
             "required": true,
@@ -484,6 +506,21 @@
             "fileType": "ALLTYPES",
             "description": "UNDERTAKING_BY_WAY_OF_AFFIDAVIT_DESCRIPTION"
           },
+          {
+            "code": "COPY_OF_GPA_SPA",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "COPY_OF_GPA_SPA_DESCRIPTION"
+          },
+          {
+            "code": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA"
+          },
+       
           {
             "code": "CLEARANCE_AGAINST_PROERTY_TAX",
             "required": true,
