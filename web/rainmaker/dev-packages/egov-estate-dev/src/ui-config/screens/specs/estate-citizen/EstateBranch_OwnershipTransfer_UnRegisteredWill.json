@@ -252,88 +252,44 @@
           ]
         },
         {
-          "header": "EST_PURCHASER_DETAILS_HEADER",
+          "header": "EST_DECEASED_DETAILS_HEADER",
           "type": "FORM",
           "fields": [
             {
-              "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
-              "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
+              "label": "EST_DECEASED_NAME_LABEL",
+              "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "payload.applicationDetails.purchaser.type",
-              "path": "purchaser.type",
-              "dataSource": "typesOfOwner"
+              "jsonPath": "payload.applicationDetails.deceased.name",
+              "path": "deceased.name",
+              "dataSource": ""
             },
             {
-              "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
-              "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
+              "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
+              "placeholder": "EST_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.name",
-              "path": "purchaser.name"
+              "jsonPath": "payload.applicationDetails.deceased.fatherHusbandName",
+              "path": "deceased.fatherHusbandName"
             },
             {
-              "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-              "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
-              "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.fatherOrHusbandName",
-              "path": "purchaser.fatherOrHusbandName",
-              "disabled": "!!state.screenConfiguration.preparedFinalObject.payload && !!state.screenConfiguration.preparedFinalObject.payload.purchaser && !!state.screenConfiguration.preparedFinalObject.payload.purchaser.name"
-            },
-            {
-              "label": "EST_RELATION_SHIP_LABEL",
-              "type": "RADIO_BUTTON",
-              "jsonPath": "payload.applicationDetails.purchaser.relation",
-              "path": "purchaser.relation"
-            },
-            {
-              "label": "EST_ADDRESS_LABEL",
-              "placeholder": "EST_ADDRESS_PLACEHOLDER",
+              "label": "EST_DECEASED_ADDRESS_LABEL",
+              "placeholder": "EST_DECEASED_ADDRESS_PLACEHOLDER",
               "type": "TEXT_AREA",
-              "jsonPath": "payload.applicationDetails.purchaser.address",
-              "path": "purchaser.address"
+              "jsonPath": "payload.applicationDetails.deceased.address",
+              "path": "deceased.address"
             },
             {
-              "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
-              "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
+              "label": "EST_PERCENTAGE_SHARE_LABEL",
+              "placeholder": "EST_PERCENTAGE_SHARE_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.mobileNo",
-              "path": "purchaser.mobileNo",
-              "pattern": "MobileNo"
-            },
-            {
-              "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
-              "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
-              "type": "DROP_DOWN",
-              "jsonPath": "payload.owner.id",
-              "path": "owner.id"
-            },
-            {
-              "label": "EST_PERCENTAGE_SHARED_LABEL",
-              "placeholder": "EST_PERCENTAGE_SHARED_PLACEHOLDER",
-              "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.percentageOfShareTransferred",
-              "path": "purchaser.percentageOfShareTransferred",
+              "jsonPath": "payload.applicationDetails.deceased.percentageShare",
+              "path": "deceased.percentageShare",
               "pattern": "Amount"
             },
             {
-              "label": "EST_MODE_OF_TRANSFER_LABEL",
-              "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
-              "type": "DROP_DOWN",
-              "jsonPath": "payload.modeOfTransfer",
-              "path": "modeOfTransfer",
-              "dataSource": "modesOfTransfer"
-            },
-            {
-              "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
-              "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
-              "type": "TEXT_FIELD",
-              "jsonPath": "payload.registrationNumber",
-              "path": "registrationNumber"
-            },
-            {
-              "label": "EST_DATE_OF_REGISTRATION_LABEL",
+              "label": "EST_DATE_OF_DEATH_LABEL",
               "type": "DATE_FIELD",
-              "jsonPath": "payload.dateOfRegistration",
-              "path": "dateOfRegistration"
+              "jsonPath": "payload.applicationDetails.deceased.dateOfDeath",
+              "path": "deceased.dateOfDeath"
             }
           ]
         }
