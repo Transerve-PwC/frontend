@@ -135,6 +135,10 @@ export const transitNumberConfig = {
 
 export const transitNumberLookUp = {
     ...transitNumberConfig,
+    placeholder: {
+        labelName: "Enter Transit site/Plot Number and click on search icon",
+        labelKey: "RP_SITE_PLOT_SEARCH_PLACEHOLDER"
+    },
     iconObj: {
       iconName: "search",
       position: "end",
@@ -146,6 +150,7 @@ export const transitNumberLookUp = {
       key: "If you have already assessed your property, then please search your property by your transit Number"
     },
     infoIcon: "info_circle",
+    errorMessage: "RP_SITE_PLOT_SEARCH_PLACEHOLDER"
 }
 
 const duplicateCopyTransitField = {
@@ -309,10 +314,10 @@ export const transitSiteHeader = getCommonTitle(
         labelName: "Owner Name",
         labelKey: "RP_OWNER_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Owner Name",
-        labelKey: "RP_OWNER_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Owner Name",
+    //     labelKey: "RP_OWNER_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -355,7 +360,10 @@ const getTransitSiteDetails = () => {
         detailsContainer: getCommonContainer({
             transitNumber: getTextField(duplicateCopyTransitField),
             colony:getSelectField({...colonyFieldDup,jsonPath:"DuplicateCopyApplications[0].property.colony"}),
-            pincode: getTextField({...pincodeField, jsonPath: "DuplicateCopyApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+            pincode: getTextField({...pincodeField, placeholder: {
+                labelName: "",
+                labelKey: ""
+              }, jsonPath: "DuplicateCopyApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
         })
     }
 }

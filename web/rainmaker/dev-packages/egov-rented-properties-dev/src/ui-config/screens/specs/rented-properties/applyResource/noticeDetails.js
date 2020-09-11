@@ -33,10 +33,10 @@ const fatherOrHusbandsNameField = {
         labelName: "Father/ Husband's Name",
         labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Father/ Husband's Name",
+    //     labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -77,10 +77,10 @@ const originalAllotteField = {
         labelName: "Owner Name",
         labelKey: "RP_OWNER_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Owner Name",
-        labelKey: "RP_OWNER_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Owner Name",
+    //     labelKey: "RP_OWNER_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -135,6 +135,10 @@ const getViolationField = {
 
 const transitNumberField = {
     ...transitNumberConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         disabled: true
       },
@@ -145,10 +149,10 @@ const transitNumberField = {
         labelName: "Allotment Number",
         labelKey: "RP_ALLOTMENT_NUMBER_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Allotment Number",
-        labelKey: "RP_ALLOTMENT_NUMBER_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Allotment Number",
+    //     labelKey: "RP_ALLOTMENT_NUMBER_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -168,10 +172,10 @@ const transitNumberField = {
         labelName: "Date of Allotment",
         labelKey: "RP_ALLOTMENT_DATE_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Date of Allotment",
-        labelKey: "RP_ALLOTMENT_DATE_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Date of Allotment",
+    //     labelKey: "RP_ALLOTMENT_DATE_PLACEHOLDER"
+    // },
     required: true,
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].owners[0].ownerDetails.allotmentStartdate",

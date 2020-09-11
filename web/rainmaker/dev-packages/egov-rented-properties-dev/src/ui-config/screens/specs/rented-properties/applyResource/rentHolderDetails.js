@@ -398,10 +398,10 @@ const applicantNameFieldMortgage = {
         labelName: "Applicant Name",
         labelKey: "RP_APPLICANT_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Applicant Name",
-        labelKey: "RP_APPLICANT_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Applicant Name",
+    //     labelKey: "RP_APPLICANT_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -436,6 +436,10 @@ const applicantNameFieldname = {
 }
 const duplicateapplicantNameFieldname = {
     ...applicantNameFieldname,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         disabled: true
       },
@@ -444,6 +448,10 @@ const duplicateapplicantNameFieldname = {
 
 const applicantphoneNumberField = {
     ...phoneNumberConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         value: userInfo.userName,
         disabled: true
@@ -453,6 +461,10 @@ const applicantphoneNumberField = {
 
 const applicantphoneNumberFieldMortgage = {
     ...phoneNumberConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         // value: userInfo.userName,
         disabled: true
@@ -509,10 +521,10 @@ const fatherOrHusbandsName = {
         labelName: "Father/ Husband's Name",
         labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Father/ Husband's Name",
+    //     labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -532,10 +544,10 @@ const fatherOrHusbandsNameMortgage = {
         labelName: "Father/ Husband's Name",
         labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
-    placeholder: {
-        labelName: "Enter Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
-    },
+    // placeholder: {
+    //     labelName: "Enter Father/ Husband's Name",
+    //     labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
+    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -617,6 +629,10 @@ const applicantEmailField = {
 
 const applicantEmailFieldduplicate = {
     ...emailConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         // value:userInfo.emailId,
         disabled: true
@@ -643,6 +659,10 @@ const applicantAadharField = {
 
 const applicantAadharFieldduplicate = {
     ...aadharFieldConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         disabled: true
       },
@@ -651,6 +671,10 @@ const applicantAadharFieldduplicate = {
 
 const applicantAadharFieldMortgage = {
     ...aadharFieldConfig,
+    placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
     props: {
         disabled: true
       },
