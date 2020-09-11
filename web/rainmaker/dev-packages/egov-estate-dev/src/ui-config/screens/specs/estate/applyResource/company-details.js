@@ -25,14 +25,14 @@ import {
   })
   
   
-  const auctionIdField = {
+  const companyNameField = {
     label: {
-      labelName: "Auction Id",
-      labelKey: "EST_AUCTION_ID_LABEL"
+      labelName: "Company Name",
+      labelKey: "EST_COMPANY_NAME_LABEL"
     },
     placeholder: {
-      labelName: "Enter Auction Id",
-      labelKey: "EST_AUCTION_ID_PLACEHOLDER"
+      labelName: "Enter Company Name",
+      labelKey: "EST_COMPANY_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -42,14 +42,14 @@ import {
     jsonPath: "Properties[0].propertyDetails.auctionId"
   }
   
-  const schemeName = {
+  const companyAddressField = {
     label: {
-      labelName: "Scheme Name",
-      labelKey: "EST_ESTATE_SCHEME_NAME_LABEL"
+      labelName: "Company Address",
+      labelKey: "EST_ESTATE_COMPANY_ADDRESS_LABEL"
     },
     placeholder: {
-      labelName: "Enter Scheme Name",
-      labelKey: "EST_ESTATE_SCHEME_NAME_LACEHOLDER"
+      labelName: "Enter Company Address",
+      labelKey: "EST_ESTATE_COMPANY_ADDRESS_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -59,48 +59,48 @@ import {
     jsonPath: "Properties[0].propertyDetails.schemeName"
   }
   
-  const dateOfAuction = {
+  const companyRegNoField = {
     label: {
-      labelName: "Date Of Aunction",
-      labelKey: "EST_DATE_OF_AUCTION_LABEL"
+      labelName: "Company Registration Number",
+      labelKey: "EST_COMPANY_REG_NO_LABEL"
     },
     placeholder: {
-      labelName: "Enter Date Of Aunction",
-      labelKey: "EST_DATE_OF_AUCTION_PLACEHOLDER"
+      labelName: "Enter Company Registration Number",
+      labelKey: "EST_COMPANY_REG_NO_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.dateOfAuction"
+    jsonPath: "Properties[0].propertyDetails.companyRegNoField"
   }
   
-  const modeOfAuction = {
+  const companyTypeField = {
     label: {
-      labelName: "Mode Of Auction",
-      labelKey: "EST_MODE_OF_AUCTION_LABEL"
+      labelName: "Company Type",
+      labelKey: "EST_COMPANY_TYPE_LABEL"
     },
     placeholder: {
-      labelName: "Enter Mode Of Auction",
-      labelKey: "EST_MODE_OF_AUCTION_PLACEHOLDER"
+      labelName: "Enter Company Type",
+      labelKey: "EST_COMPANY_TYPE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.modeOfAuction"
+    jsonPath: "Properties[0].propertyDetails.companyTypeField"
   }
   
-  const emdAmount = {
+  const CompanyShareholderNameField = {
     label: {
-      labelName: "EMD Amount",
-      labelKey: "EST_EMD_AMOUNT_LABEL"
+      labelName: "Company Shareholder Name",
+      labelKey: "EST_COMPANY_SHAREHOLDER_NAME_LABEL"
     },
     placeholder: {
-      labelName: "Enter EMD Amount",
-      labelKey: "EST_EMD_AMOUNT_PLACEHOLDER"
+      labelName: "Enter Company Shareholder Name",
+      labelKey: "EST_COMPANY_SHAREHOLDER_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -110,23 +110,124 @@ import {
     jsonPath: "Properties[0].propertyDetails.emdAmount"
   }
   
-  const emdAmountDate = {
+  const companyShare = {
     label: {
-      labelName: "EMD Amount Date",
-      labelKey: "EST_EMD_AMOUNT_DATE_LABEL"
+      labelName: "Company Share %",
+      labelKey: "EST_COMPANY_SHARE_LABEL"
     },
     placeholder: {
-      labelName: "Enter EMD Amount Date",
-      labelKey: "EST_EMD_AMOUNT_DATE_PLACEHOLDER"
+      labelName: "Enter Company Share %",
+      labelKey: "EST_COMPANY_SHARE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.emdAmountDate"
+    jsonPath: "Properties[0].propertyDetails.companyShare"
+  }
+
+  const PartnerName = {
+    label: {
+      labelName: "Partner Name",
+      labelKey: "EST_PARTNER_NAME_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Partner Name",
+      labelKey: "EST_PARTNER_NAME_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
+  }
+
+  const PartnerHusbandFatherName = {
+    label: {
+      labelName: "Father/Husband Name",
+      labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Father/Husband Name",
+      labelKey: "EST_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
+  }
+
+  const partnerAddress = {
+    label: {
+      labelName: "Partner Address",
+      labelKey: "EST_PARTNER_ADDRESS_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Partner Address",
+      labelKey: "EST_PARTNER_ADDRESS_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
+  }
+
+  const partnerMobileNumber = {
+    label: {
+      labelName: "Partner Mobile Number",
+      labelKey: "EST_PARTNER_MOBILE_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Partner Mobile Number",
+      labelKey: "EST_PARTNER_MOBILE_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
   }
   
+  const partnerShare = {
+    label: {
+      labelName: "Partner Share",
+      labelKey: "EST_PARTNER_SHARE_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Partner Share",
+      labelKey: "EST_PARTNER_SHARE_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
+  }
+
+  const partnerCPNumber = {
+    label: {
+      labelName: "Partner CP Number",
+      labelKey: "EST_PARTNER_CP_NUMBER_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Partner CP Number",
+      labelKey: "EST_PARTNER_CP_NUMBER_PLACEHOLDER"
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    },
+    maxLength: 250,
+    jsonPath: "Properties[0].propertyDetails.auctionId"
+  }
   
   const commonCompanyDetails = () => {
     return getCommonGrayCard({
@@ -139,12 +240,33 @@ import {
         }
       }),
       auctionCard: getCommonContainer({
-        auctionId: getTextField(auctionIdField),
-        schemeName: getTextField(schemeName),
-        dateOfAuction: getDateField(dateOfAuction),
-        modeOfAuction: getTextField(modeOfAuction),
-        emdAmount: getTextField(emdAmount),
-        emdAmountDate: getDateField(emdAmountDate)
+        auctionId: getTextField(companyNameField),
+        companyAddressField: getTextField(companyAddressField),
+        companyRegNoField: getTextField(companyRegNoField),
+        companyTypeField: getTextField(companyTypeField),
+        CompanyShareholderNameField: getTextField(CompanyShareholderNameField),
+        companyShare: getTextField(companyShare)
+      })
+    });
+  };
+
+  const CompanyPartnerDetails = () => {
+    return getCommonGrayCard({
+      header: getCommonTitle({
+        labelName: "partner Details",
+        labelKey: "EST_PARTNER_DETAILS"
+      }, {
+        style: {
+          marginBottom: 18
+        }
+      }),
+      auctionCard: getCommonContainer({
+        PartnerName: getTextField(PartnerName),
+        PartnerHusbandFatherName: getTextField(PartnerHusbandFatherName),
+        partnerAddress: getTextField(partnerAddress),
+        partnerMobileNumber: getTextField(partnerMobileNumber),
+        partnerShare: getTextField(partnerShare),
+        partnerCPNumber: getTextField(partnerCPNumber)
       })
     });
   };
@@ -163,7 +285,7 @@ import {
           uiFramework: "custom-containers",
           componentPath: "MultiItem",
           props: {
-            scheama: commonCompanyDetails(),
+            scheama: CompanyPartnerDetails(),
             items: [],
             addItemLabel: {
               labelName: "Add Partner",
