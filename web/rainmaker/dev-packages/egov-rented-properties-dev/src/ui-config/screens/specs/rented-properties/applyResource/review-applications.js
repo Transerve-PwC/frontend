@@ -254,7 +254,7 @@ export const getReviewPropertyDetailsWithoutAllotmentNumber = (isEditable = true
                         labelKey: "RP_DUE_AMOUNT_LABEL_ALLOTEE"
                     },
                     {
-                        jsonPath: "Owners[0].property.rentSummary.balanceAmount"
+                        jsonPath: "Owners[0].property.rentSummary.totalDue"
                     }
                 )
             })
@@ -376,7 +376,7 @@ export const getDuplicateCopyReviewPropertyAddressDetails = (isEditable = true) 
                     labelKey: "RP_DUE_AMOUNT_LABEL_ALLOTEE"
                 },
                 {
-                    jsonPath: "DuplicateCopyApplications[0].property.rentSummary.balanceAmount" 
+                    jsonPath: "DuplicateCopyApplications[0].property.rentSummary.totalDue" 
                 }
             )
         })
