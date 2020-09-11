@@ -1,0 +1,540 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_OwnershipTransfer_FamilySettlement": {
+      "fields": [
+        {
+          "path": "modeOfTransfer",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": ["FAMILY_SETTLEMENT", "COURT_DECREE"]
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferor",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "transferor.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "transferor"
+            }
+          ]
+        },
+        {
+          "path": "registrationNumber",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "dateOfRegistration",
+          "required": true,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "transferee.id",
+          "required": false,
+          "validations": [
+            {
+              "type": "transferee"
+            }
+          ]
+        },
+        {
+          "path": "transferee.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.fatherOrHusbandName",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.relation",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": ["FATHER", "HUSBAND"]
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "mobile"
+            }
+          ]
+        },
+        {
+          "path": "transferee.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "documentsReceivedDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -1
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "courtCases.estateOfficerCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.commissionersCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        }
+      ],
+      "first_step": {
+        "sections": [
+            {
+                "header": "EST_OWNER_DETAILS_HEADER",
+                "type": "CARD_DETAIL",
+                "fields": [
+                  {
+                    "label": "EST_OWNER_NAME_LABEL",
+                    "jsonPath": "property.propertyDetails.owners[0].ownerDetails.ownerName"
+                  },
+                  {
+                    "label": "EST_ADDRESS_LABEL",
+                    "jsonPath":"property.propertyDetails.owners[0].ownerDetails.address"
+                  },
+                  {
+                    "label": "EST_SHARE_LABEL",
+                    "jsonPath": "property.propertyDetails.owners[0].share"
+                  }
+                ]
+              },
+         
+          {
+            "header": "EST_TRANSFEREE_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+                {
+                    "label": "EST_TRANSFEREE_TYPE_LABEL",
+                    "placeholder": "EST_TRANSFEREE_TYPE_PLACEHOLDER",
+                    "type": "DROP_DOWN",
+                    "jsonPath": "payload.applicationDetails.transferee.type",
+                    "path": "type"
+                  },
+                  {
+                    "label": "EST_EXISTING_OWNERS_LABEL",
+                    "placeholder": "EST_EXISTING_OWNERS_PLACEHOLDER",
+                    "type": "DROP_DOWN",
+                    "jsonPath": "payload.applicationDetails.transferee.owners",
+                    "path": "owners"
+                  },
+                  {
+                    "label": "EST_SELLERORTRANFERROR_NAME_LABEL",
+                    "placeholder": "EST_SELLERORTRANFERROR_NAME_PLACEHOLDER",
+                    "type": "DROP_DOWN",
+                    "jsonPath": "payload.applicationDetails.transferee.sellerortransferrorname",
+                    "path": "sellerortransferrorname"
+                  },
+              {
+                "label": "EST_TRANSFEREE_NAME_LABEL",
+                "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.transferee.name",
+                "path": "transferee.name"
+              },
+              {
+                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.transferee.fatherOrHusbandName",
+                "path": "transferee.fatherOrHusbandName"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "type": "TEXT_AREA",
+                "jsonPath": "payload.applicationDetails.transferee.address",
+                "path": "transferee.address"
+              },
+              {
+                "label": "EST_TRANSFEREE_MOBILENUMBER_LABEL",
+                "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.transferee.mobileNo",
+                "path": "transferee.mobileNo",
+                "pattern": "MobileNo"
+              },
+              {
+                "label": "EST_PERCENTAGE_SHARE_LABEL",
+                "placeholder": "EST_PERCENTAGE_SHARE_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.transferee.percentageOfShareTransferred",
+                "path": "transferee.percentageOfShareTransferred",
+                "pattern": "Amount"
+              },
+              {
+                "label": "EST_REGISTRATION_NUMBER_LABEL",
+                "placeholder": "EST_REGISTRATION_NUMBER_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.registrationNumber",
+                "path": "registrationNumber"
+              },
+              {
+                "label": "EST_DATE_OF_REGISTRATION_LABEL",
+                "type": "DATE_FIELD",
+                "jsonPath": "payload.dateOfRegistration",
+                "path": "dateOfRegistration"
+              }
+            ]
+          },
+          {
+            "header": "EST_MODE_OF_TRANSFER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_FAMILILY_SETTLEMENT",
+                "placeholder": "EST_FAMILILY_SETTLEMENT_PLACEHOLDER",
+                "type": "RADIO_BUTTON",
+                "jsonPath": "payload.modeOfTransfer",
+                "path": "modeOfTransfer"
+              }
+            ]
+          },
+          {
+            "header": "EST_SETTLEMENT_OR_DECREE_DETAIL_HEADER",
+            "type": "FORM",
+            "fields": [
+                {
+                    "label": "EST_FAMILY_SETTLEMENT_DATE_LABEL",
+                    "type": "DATE_FIELD",
+                    "jsonPath": "payload.familysettlementdate",
+                    "path": "familysettlementdate"
+                  },
+                  {
+                    "label": "EST_PASSED_BY_COURT_LABEL",
+                    "placeholder": "EST_PASSED_BY_COURT_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "payload.applicationDetails.purchaser.passedbycourt",
+                    "path": "passedbycourt"
+                  },
+                  {
+                    "label": "EST_IN_CIVIL_SUIT_TITLE_LABEL",
+                    "placeholder": "EST_IN_CIVIL_SUIT_TITLE_PLACEHOLDER",
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "payload.applicationDetails.purchaser.civilsuittitle",
+                    "path": "civilsuittitle"
+                  }
+            ]
+          }
+        ]
+      },
+      "second_step": {
+        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "jsonPath": "payload.documents",
+        "documentList": [
+          {
+            "code": "LIABILITY_AFFIDAVIT_OF_APPLICANT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "LIABILITY_AFFIDAVIT_OF_APPLICANT_DESCRIPTION"
+          },
+          {
+            "code": "INDEMNITY_BOND_OF_TRANSFEREE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "INDEMNITY_BOND_OF_TRANSFEREE_DESCRIPTION"
+          },
+          {
+            "code": "SETTING_ALL_TYPES_OF_COURT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SETTING_ALL_TYPES_OF_COURT_DESCRIPTION"
+          },
+          {
+            "code": "EXECUTION_OF_CONVEYANCE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "EXECUTION_OF_CONVEYANCE_DESCRIPTION"
+          },
+          {
+            "code": "OCCUPATION_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "OCCUPATION_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "REMOVAL_REGULARIZATION_OF_BUILDING_VIOLATION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "REMOVAL_REGULARIZATION_OF_BUILDING_VIOLATION_DESCRIPTION"
+          },
+          {
+            "code": "AFFIDAVIT_OF_ATTESTING_WITNESS_TO_FAMILY_SETTLEMENT_DEED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVIT_OF_ATTESTING_WITNESS_TO_FAMILY_SETTLEMENT_DEED_DESCRIPTION"
+          },
+          {
+            "code": "NO_OBJECTION_AFFIDAVIT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NO_OBJECTION_AFFIDAVIT_DESCRIPTION"
+          },
+          {
+            "code": "CERTIFIED_COPY_OF_COURT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CERTIFIED_COPY_OF_COURT_DESCRIPTION"
+          },
+          {
+            "code": "NOTARISED_COPY_OF_COURT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NOTARISED_COPY_OF_COURT_DESCRIPTION"
+          },
+          {
+            "code": "ATTESTED_COPY_OF_CIVIL_SUIT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "ATTESTED_COPY_OF_CIVIL_SUIT_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_OF_TRANSFEREE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_OF_TRANSFEREE_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_OF_WITNESS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_OF_WITNESS_DESCRIPTION"
+          },
+          {
+            "code": "SEWERAGE_CONNECTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SEWERAGE_CONNECTION_DESCRIPTION"
+          },
+          {
+            "code": "CLEARENCE_OF_PREVIOUS_MORTAGAGE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARENCE_OF_PREVIOUS_MORTAGAGE_DOCUMENTS"
+          },
+          {
+            "code": "CLEARENCE_CERTIFICATE_OF_PPROPERTY_TAX",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARENCE_CERTIFICATE_OF_PPROPERTY_TAX_DESCRIPTION"
+          }
+        ]
+      }
+    }
+  }

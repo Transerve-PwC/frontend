@@ -78,7 +78,7 @@ const cardItems = [{
       labelName: "Transfer of Property on the basis of Court Decree/Family Settlement"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_FamilySettlement",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
