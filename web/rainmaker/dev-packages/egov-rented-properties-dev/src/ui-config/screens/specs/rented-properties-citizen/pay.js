@@ -46,7 +46,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
 
   const beforeScreenInit = async (action, state, dispatch) => {
     const tenantId = getQueryArg(window.location.href, "tenantId");
-    const consumerCode = getQueryArg(window.location.href, "consumerCode");
+    let consumerCode = getQueryArg(window.location.href, "consumerCode");
       const businessService = getQueryArg(window.location.href, "businessService")
       const queryObject = [
         { key: "tenantId", value: tenantId },
@@ -81,6 +81,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
             labelName: "Online Rent Payment",
             labelKey: "COMMON_PAY_ONLINE_RENT_SCREEN_HEADER"
           })
+          consumerCode = consumerCode.split("-")[1]
           break
         }
       }
@@ -106,6 +107,14 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
         "components.div.children.headerDiv.children.header.children.applicationNumber.props",
         "number",
         consumerCode
+      )
+    )
+    businessService === BILLING_BUSINESS_SERVICE_RENT && dispatch(
+      handleField(
+        "pay",
+        "components.div.children.headerDiv.children.header.children.applicationNumber.props",
+        "type",
+        "RP_MASTER"
       )
     )
   }

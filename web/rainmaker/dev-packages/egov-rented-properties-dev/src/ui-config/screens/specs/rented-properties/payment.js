@@ -62,6 +62,10 @@ const propertyDetails = getCommonCard({
     }),
     pincode: getTextField({
       ...pincodeField,
+      placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
       props: {
         ...pincodeField.props,
         disabled: true
@@ -70,6 +74,10 @@ const propertyDetails = getCommonCard({
       jsonPath: "Properties[0].propertyDetails.address.pincode"
     }),
     ownername: getTextField({...ownerNameField,
+      placeholder: {
+        labelName: "",
+        labelKey: ""
+      },
       props: {
         ...ownerNameField.props,
         disabled: true

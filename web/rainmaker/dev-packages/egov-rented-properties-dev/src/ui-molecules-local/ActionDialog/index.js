@@ -214,6 +214,14 @@ return
       );
 return
     }
+    else if((value.toString().length)<2 || (value.toString().length)>4){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter numbers greater than 2 and less then 4", labelKey: "Please enter only numbers"},
+        "error"
+      );
+return
+    }
   } else if(this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_DC && (duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" || duplicateCopyApplicationState === "DC_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT")) {
     const value = duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? data.applicant[0].feeAmount : data.applicant[0].aproCharge
     if(!value) {
@@ -244,6 +252,14 @@ return
       toggleSnackbar(
         true,
         { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
+        "error"
+      );
+return
+    }
+    else if((value.toString().length)<2 || (value.toString().length)>4){
+      toggleSnackbar(
+        true,
+        { labelName: "Please enter numbers greater than 2 and less then 4", labelKey: "Please enter only numbers"},
         "error"
       );
 return

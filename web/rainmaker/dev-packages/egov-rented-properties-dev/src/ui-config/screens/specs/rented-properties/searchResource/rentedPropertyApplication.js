@@ -208,10 +208,10 @@ const areaField = {
     labelName: "Area",
     labelKey: "RP_AREA",
   },
-  placeholder: {
-    labelName: "Enter Area",
-    labelKey: "RP_AREA_PLACEHOLDER"
-  },
+  // placeholder: {
+  //   labelName: "Enter Area",
+  //   labelKey: "RP_AREA_PLACEHOLDER"
+  // },
   gridDefination: {
     xs: 12,
     sm: 6
@@ -227,10 +227,10 @@ const pincodeField = {
       labelName: "Pincode",
       labelKey: "RP_PINCODE_LABEL"
   },
-  placeholder: {
-      labelName: "Enter Pincode",
-      labelKey: "RP_PINCODE_PLACEHOLDER"
-  },
+  // placeholder: {
+  //     labelName: "Enter Pincode",
+  //     labelKey: "RP_PINCODE_PLACEHOLDER"
+  // },
   gridDefination: {
       xs: 12,
       sm: 6
@@ -247,10 +247,10 @@ const ownernameField = {
       labelName: "Owner Name",
       labelKey: "RP_OWNER_NAME_LABEL"
   },
-  placeholder: {
-      labelName: "Enter Owner Name.",
-      labelKey: "RP_OWNER_NAME_PLACEHOLDER"
-  },
+  // placeholder: {
+  //     labelName: "Enter Owner Name.",
+  //     labelKey: "RP_OWNER_NAME_PLACEHOLDER"
+  // },
   gridDefination: {
       xs: 12,
       sm: 6
