@@ -471,18 +471,18 @@
             "description": "SEWERAGE_CONNECTION_DESCRIPTION"
           },  
           {
-            "code": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA",
+            "code": "SETTING_ALL_TYPES_OF_COURT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA"
+            "description": "SETTING_ALL_TYPES_OF_COURT_DESCRIPTION"
           },
           {
-            "code": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA",
+            "code": "EXECUTION_OF_CONVEYANCE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "AFFIDAVIT_REGARDING_VALIDITY_GPA_SPA"
+            "description": "EXECUTION_OF_CONVEYANCE_DESCRIPTION"
           },
           {
             "code": "OCCUPATION_CERTIFICATE",
