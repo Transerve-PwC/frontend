@@ -215,6 +215,12 @@ const TransitsiteTransitNumberField = {
             ""
           )
         )
+        dispatch(
+          prepareFinalObject(
+            "PropertyImagesApplications[0].property.colony",
+            ""
+          )
+        )
     }
 }
 
