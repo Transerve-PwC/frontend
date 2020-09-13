@@ -14,7 +14,9 @@ import {
 import {
     getTodaysDateInYMD
 } from "../../utils";
-import {CompanyDetails} from './company-details'
+import {
+    CompanyDetails
+} from './company-details'
 import get from "lodash/get";
 import set from "lodash/set";
 
@@ -144,8 +146,8 @@ const categoryField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
-        
-        if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
+
+        if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
             dispatch(
                 handleField(
                     "apply",
@@ -170,17 +172,27 @@ const categoryField = {
                 )
             )
 
-            // if(action.value == "CAT.COMMERCIAL"){
-            //     console
-            //         set(
-            //             "apply",
-            //             "components.div.children.formwizardThirdStep",
-            //             "children",
-            //             AllotmentAuctionDetails
-            //         )
-            // }
-        }
-        else {
+
+                // dispatch(
+                //     handleField(
+                //         "apply",
+                //         "components.div.children.formwizardThirdStep.children.CompanyDetails",
+                //         "visible",
+                //         action.value === "CAT.COMMERCIAL"
+                //     )
+                // )
+
+                // dispatch(
+                //     handleField(
+                //         "apply",
+                //         "components.div.children.formwizardThirdStep.children.ownerDetails",
+                //         "visible",
+                //         action.value !== "CAT.COMMERCIAL"
+                //     )
+                // )
+            
+
+        } else {
             dispatch(
                 handleField(
                     "apply",
@@ -309,8 +321,7 @@ const propertyTypeField = {
                     true
                 )
             )
-        }
-        else {
+        } else {
             dispatch(
                 handleField(
                     "allotment",

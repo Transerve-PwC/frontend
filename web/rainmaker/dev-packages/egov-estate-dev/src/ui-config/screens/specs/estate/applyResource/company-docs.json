@@ -1,0 +1,25 @@
+ {
+     "companyDocumentList": [{
+             "code": "CERTIFIED_COPY_LEASE",
+             "required": false,
+             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+             "fileType": "ALLTYPES",
+             "description": "CERTIFIED_COPY_LEASE_DESCRIPTION"
+         },
+         {
+             "code": "NOTARIZED_COPY_DEED",
+             "required": false,
+             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+             "fileType": "ALLTYPES",
+             "description": "NOTARIZED_COPY_DEED_DESCRIPTION"
+         },
+         {
+             "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF",
+             "required": false,
+             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+             "fileType": "ALLTYPES",
+             "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_DESCRIPTION"
+         }
+
+     ]
+ }
