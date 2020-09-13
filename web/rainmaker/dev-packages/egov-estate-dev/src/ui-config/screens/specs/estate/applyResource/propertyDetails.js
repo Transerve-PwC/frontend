@@ -14,7 +14,9 @@ import {
 import {
     getTodaysDateInYMD
 } from "../../utils";
-import {CompanyDetails} from './company-details'
+import {
+    CompanyDetails
+} from './company-details'
 import get from "lodash/get";
 import set from "lodash/set";
 

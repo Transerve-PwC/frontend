@@ -292,9 +292,9 @@ import {
               labelKey: "EST_COMMON_ADD_PARTNER_LABEL"
             },
             headerName: "Partner Information",
-            headerJsonPath: "children.cardContent.children.header.children.Owner Information.props.label",
+            headerJsonPath: "children.cardContent.children.header.children.Partner Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.partners",
-            prefixSourceJsonPath: "children.cardContent.children.ownerCard.children"
+            prefixSourceJsonPath: "children.cardContent.children.auctionCard.children"
           },
           type: "array"
         }

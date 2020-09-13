@@ -40,8 +40,12 @@ import {
 import {
   reviewAllotmentDetails
 } from './reviewAllotmentDetails'
-import {AllotmentAuctionDetails} from './auction-details'
-import {CompanyDetails} from './company-details'
+import {
+  AllotmentAuctionDetails
+} from './auction-details'
+import {
+  CompanyDetails
+} from './company-details'
 // import {} from ''
 
 const documentCardConfig = {
