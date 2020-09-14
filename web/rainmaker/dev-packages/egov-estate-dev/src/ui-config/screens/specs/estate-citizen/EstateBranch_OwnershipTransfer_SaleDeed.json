@@ -1,7 +1,8 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OwnershipTransfer_SaleDeed": {
+  "EstateBranch_OwnershipTransfer_SaleDeed": [
+   {
     "dataSources" : [
       {
           "name": "typesOfOwner",
@@ -430,4 +431,5 @@
       ]
     }
   }
+]
 }

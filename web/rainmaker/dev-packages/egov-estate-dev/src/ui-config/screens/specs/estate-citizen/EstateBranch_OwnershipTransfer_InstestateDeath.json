@@ -1,7 +1,8 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_InstestateDeath": {
+    "EstateBranch_OwnershipTransfer_InstestateDeath": [
+      {
       "fields": [
         {
           "path": "transferor",
@@ -530,5 +531,5 @@
           }
         ]
       }
-    }
+    }]
   }
