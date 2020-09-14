@@ -310,6 +310,58 @@ export const searchAccountStatement = async (state, dispatch) => {
   }
 }
 
+export const getFileUrlAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	//{ key: "tenantId", value: tenantId||commonConfig.tenantId },
+    { key: "tenantId", value: tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const downloadCSVFromFilestoreID=(fileStoreId,mode,tenantId)=>{
+  getFileUrlAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    if (mode === 'download') {
+      var win = window.open(fileRes[fileStoreId], '_blank');
+      if(win){
+        win.focus();
+      }
+    }
+    else {
+     // printJS(fileRes[fileStoreId])
+      var response =await axios.get(fileRes[fileStoreId], {
+        //responseType: "blob",
+        responseType: "arraybuffer",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf"
+        }
+      });
+      console.log("responseData---",response);
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      var myWindow = window.open(fileURL);
+      if (myWindow != undefined) {
+        myWindow.addEventListener("load", event => {
+          myWindow.focus();
+          myWindow.print();
+        });
+      }
+    
+    }
+  });
+}
+
 export const downloadAccountStatementXLS = async (state, dispatch) => {
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
@@ -342,7 +394,10 @@ export const downloadAccountStatementXLS = async (state, dispatch) => {
 
         try {
           if (res && res[0].fileStoreId) {
-              downloadReceiptFromFilestoreID(res[0].fileStoreId, 'download' ,res[0].tenantId)
+            console.log(res[0].fileStoreId)
+            console.log(res[0].tenantId)
+
+            downloadCSVFromFilestoreID(res[0].fileStoreId, 'download' ,res[0].tenantId)
           }
         
         } catch (error) {
