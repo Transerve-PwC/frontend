@@ -302,6 +302,58 @@ export const searchAccountStatement = async (state, dispatch) => {
           true
       ),
     );
+    dispatch(
+      handleField(
+        "search-account-statement",
+        "components.div.children.downloadXLSButton",
+        "visible",
+        true
+    ),
+  );
+    
+        } catch (error) {
+          dispatch(toggleSnackbar(true, error.message, "error"));
+        }
+    }
+  }
+}
+
+export const downloadAccountStatementXLS = async (state, dispatch) => {
+  debugger
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.accountStatementFilterForm.children.cardContent.children.applicationNoContainer.children",
+    state,
+    dispatch,
+    "search-account-statement"
+  );
+
+  if(!!isSearchBoxFirstRowValid) {
+    let Criteria = {
+      fromDate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+      toDate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+    }
+    const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
+      if(!!propertyId) {
+        Criteria = {...Criteria, propertyid: propertyId}
+        const res = await httpRequest(
+          "post",
+          '/rp-services/property/_accountstatementxlsx',
+          "",
+          [],
+          {Criteria}
+        )
+
+        try {
+          if (res && res[0].fileStoreId) {
+              downloadReceiptFromFilestoreID(res[0].fileStoreId, 'download' ,res[0].tenantId)
+          }
+        
         } catch (error) {
           dispatch(toggleSnackbar(true, error.message, "error"));
         }
