@@ -72,7 +72,7 @@ export const paymentDocumentsDetails = getCommonCard({
        documentsJsonPath: "PropertiesTemp[0].applicationPaymentDocuments",
        uploadedDocumentsJsonPath: "PropertiesTemp[0].uploadedPaymentInRedux",
        tenantIdJsonPath: "Properties[0].tenantId",
-       getUrl: "/rp-services/v1/excel/read",
+      //  getUrl: "/rp-services/v1/excel/read",
        screenKey: "apply",
        componentJsonPath: "components.div.children.formwizardThirdStep.children.paymentDetailsTable",
       // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"

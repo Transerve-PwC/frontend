@@ -53,6 +53,7 @@ export const colonyFieldDup = {
 const colonyField = {
     ...colonyFieldConfig,
     beforeFieldChange: (action, state, dispatch) => {
+        debugger
         const rentedPropertyColonies = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.rentedPropertyColonies") || []
         const findItem = rentedPropertyColonies.find(item => item.code === action.value)
         const propertyAreas = !!findItem ? findItem.area.map(item => ({
@@ -65,6 +66,7 @@ const colonyField = {
 
         rentedPropertyColonies.map(item => {
             if (action.value === item.code) {
+                console.log(item.code)
                 dispatch(
                     handleField(
                         "apply",
@@ -91,6 +93,26 @@ const colonyField = {
                 )
             }
         })
+
+        if(action.value === 'COLONY.KUMHAR' || action.value === 'COLONY.MILK'){
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                    "props.getUrl",
+                    "/rp-services/v1/excel/read?fileFormat=0"
+                )
+            );
+        }else{
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                    "props.getUrl",
+                    "/rp-services/v1/excel/read?fileFormat=1"
+                )
+            );
+        }
       }
 }
 
