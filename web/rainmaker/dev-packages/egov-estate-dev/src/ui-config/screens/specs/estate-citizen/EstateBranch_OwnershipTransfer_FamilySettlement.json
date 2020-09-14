@@ -1,7 +1,8 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_FamilySettlement": {
+    "EstateBranch_OwnershipTransfer_FamilySettlement": [
+      {
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -537,4 +538,5 @@
         ]
       }
     }
+    ]
   }
