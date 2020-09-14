@@ -1,7 +1,8 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_DuplicateCopy": {
+    "EstateBranch_OtherCitizen_DuplicateCopy": [
+      {
       "fields": [
         {
           "path": "owner",
@@ -246,4 +247,5 @@
         ]
       }
     }
+    ]
   }
