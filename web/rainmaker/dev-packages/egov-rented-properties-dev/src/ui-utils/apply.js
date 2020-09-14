@@ -986,7 +986,7 @@ export const getRecoveryValueProperty = async (action,state, dispatch) => {
             "notice-recovry",
             "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
             "props.value",
-            monthlyRent
+            monthlyRent.toFixed(2)
           )
         )
        
@@ -998,7 +998,7 @@ export const getRecoveryValueProperty = async (action,state, dispatch) => {
             "notice-recovry",
             "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
             "props.value",
-            onlyInterest
+            onlyInterest.toFixed(2)
           )
         )
       }
@@ -1009,7 +1009,7 @@ export const getRecoveryValueProperty = async (action,state, dispatch) => {
             "notice-recovry",
             "components.div.children.formwizardFirstStep.children.paymentDetailsNotice.children.cardContent.children.detailsContainer.children.paymentAmount",
             "props.value",
-            totalDues
+            totalDues.toFixed(2)
           )
         )
       }
