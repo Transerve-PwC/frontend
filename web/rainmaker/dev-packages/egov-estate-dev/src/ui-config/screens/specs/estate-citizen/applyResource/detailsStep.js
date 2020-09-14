@@ -65,7 +65,9 @@ const getField = async (item, fieldData = {}, state) => {
         return getSelectField({
           ...fieldProps,
           ...rest,
-          data:values
+          data:values,
+          optionValue: "code",
+          optionLabel: "label",
         })
       }
       case "DATE_FIELD": {
