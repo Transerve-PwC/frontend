@@ -39,7 +39,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.companyName"
   }
   
   const companyAddressField = {
@@ -56,7 +56,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.schemeName"
+    jsonPath: "Properties[0].propertyDetails.companyAddress"
   }
   
   const companyRegNoField = {
@@ -107,7 +107,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.emdAmount"
+    jsonPath: "Properties[0].propertyDetails.companyShareHolderName"
   }
   
   const companyShare = {
@@ -141,7 +141,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerName"
   }
 
   const PartnerHusbandFatherName = {
@@ -158,7 +158,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerFatherHusbandName"
   }
 
   const partnerAddress = {
@@ -175,7 +175,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerAddress"
   }
 
   const partnerMobileNumber = {
@@ -192,7 +192,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerMobileNumber"
   }
   
   const partnerShare = {
@@ -209,7 +209,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerShare"
   }
 
   const partnerCPNumber = {
@@ -226,7 +226,7 @@ import {
       sm: 6
     },
     maxLength: 250,
-    jsonPath: "Properties[0].propertyDetails.auctionId"
+    jsonPath: "Properties[0].propertyDetails.partners[0].partnerCpNumber"
   }
   
   const commonCompanyDetails = () => {

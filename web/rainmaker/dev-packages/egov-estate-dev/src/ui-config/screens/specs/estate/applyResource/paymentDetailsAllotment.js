@@ -221,7 +221,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails",
           "visible",
           true
         )
@@ -229,7 +229,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails",
           "visible",
           false
         )
@@ -239,7 +239,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails",
           "visible",
           true
         )
@@ -247,7 +247,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails",
           "visible",
           false
         )
@@ -289,7 +289,7 @@ const groundRentGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
           "visible",
           true
         )
@@ -299,7 +299,7 @@ const groundRentGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
           "visible",
           false
         )
@@ -502,7 +502,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
           "visible",
           true
         )
@@ -512,7 +512,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
           "visible",
           false
         )
@@ -635,7 +635,7 @@ const commonLicenseInformation = () => {
 
 export const licenseFeeForYearDetails = getCommonCard({
   detailsContainer: getCommonContainer({
-    multipleRentContainer: {
+    multipleLicenseContainer: {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
