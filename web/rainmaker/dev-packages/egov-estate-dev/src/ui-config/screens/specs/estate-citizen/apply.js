@@ -33,7 +33,7 @@ const getData = async (action, state, dispatch) => {
     })
     const applicationType = getQueryArg(window.location.href, "applicationType");
     const dataConfig = require(`./${applicationType}.json`);
-    let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType];
+    let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType][0];
     
     //Register all the datasources in the config.
     !!dataSources && dataSources.forEach(dataSource => registerDatasource(dataSource));
