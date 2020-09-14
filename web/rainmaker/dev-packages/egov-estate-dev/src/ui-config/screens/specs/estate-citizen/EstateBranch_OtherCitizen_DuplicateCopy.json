@@ -153,7 +153,7 @@
                     "jsonPath": "property.propertyDetails.owners[0].ownerDetails.ownerName"
                   },
                   {
-                    "label": "EST_FATHER_OR_HUSBAND_NAME_LABEL",
+                    "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                     "jsonPath": "property.propertyDetails.owners[0].ownerDetails.guardianName"
                   },
                   {
@@ -216,7 +216,7 @@
               },
               {
                 "label": "EST_SHARE_LABEL",
-                "placeholder": "EST_SHAREL_PLACEHOLDER",
+                "placeholder": "EST_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "payload.applicationDetails.duplicate.percentageOfShareTransferred",
                 "path": "duplicate.percentageOfShareTransferred",
@@ -228,6 +228,19 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "payload.applicationDetails.duplicate.cpnumber",
                 "path": "cpnumber"
+              }
+            ]
+          },
+          {
+            "header": "EST_TYPE_OF_LETTER_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_TYPE_OF_LETTER_LABEL",
+                "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.duplicate.typeofletters",
+                "path": "typeofletters"
               }
             ]
           }
