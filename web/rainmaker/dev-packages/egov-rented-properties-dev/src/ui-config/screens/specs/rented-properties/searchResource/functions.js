@@ -297,19 +297,11 @@ export const searchAccountStatement = async (state, dispatch) => {
         dispatch(
         handleField(
           "search-account-statement",
-          "components.div.children.searchButton",
+          "components.div.children.downloadButton",
           "visible",
           true
       ),
     );
-    dispatch(
-      handleField(
-        "search-account-statement",
-        "components.div.children.downloadXLSButton",
-        "visible",
-        true
-    ),
-  );
     
         } catch (error) {
           dispatch(toggleSnackbar(true, error.message, "error"));
@@ -319,7 +311,6 @@ export const searchAccountStatement = async (state, dispatch) => {
 }
 
 export const downloadAccountStatementXLS = async (state, dispatch) => {
-  debugger
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
     "searchScreen",
