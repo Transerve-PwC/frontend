@@ -1074,6 +1074,22 @@ import {
         : [];
     return documentsArr;
   };
+
+  export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
+    let documentsArr =
+      documents.length > 0
+        ? documents.reduce((documentsArr, item, ind) => {
+          documentsArr.push({
+            name: item.code,
+            required: item.required,
+            jsonPath: `Properties[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments[${ind}]`,
+            statement: item.description
+          });
+          return documentsArr;
+        }, [])
+        : [];
+    return documentsArr;
+  };
   
   //Common functions for Estimate card
   

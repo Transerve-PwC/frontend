@@ -134,7 +134,7 @@ const callBackForNext = async (state, dispatch) => {
           continue;
         }
         var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+          `components.div.children.formwizardThirdStep.children.ownerDetails.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
           state,
           dispatch,
           "apply"

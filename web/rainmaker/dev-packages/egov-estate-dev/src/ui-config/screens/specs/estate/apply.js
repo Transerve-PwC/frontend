@@ -27,7 +27,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareDocumentTypeObj,
-  prepareDocumentTypeObjMaster
+  prepareDocumentTypeObjMaster,
+  prepareCompanyDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -38,6 +39,9 @@ import {
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
+import {
+  companyDocumentList
+} from './applyResource/company-docs.json'
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
 
@@ -134,6 +138,68 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
+const getCompanyDocs = async  (state,dispatch) => {
+  const {
+    documents = []
+  } =  {}
+  const masterDocuments = companyDocumentList || [];
+  const estateMasterDocuments = masterDocuments.map(item => ({
+    type: item.code,
+    description: {
+      labelName: "Only .jpg and .pdf files. 6MB max file size.",
+      labelKey: item.fileType
+    },
+    formatProps: {
+      accept: item.accept || "image/*, .pdf, .png, .jpeg",
+    },
+    maxFileSize: 6000,
+    downloadUrl: item.downloadUrl,
+    moduleName: "Estate",
+    statement: {
+      labelName: "Allowed documents are Aadhar Card / Voter ID Card / Driving License",
+      labelKey: item.description
+    }
+  }))
+  var documentTypes;
+  var applicationDocs;
+  documentTypes = prepareCompanyDocumentTypeObjMaster(masterDocuments, 0);
+  applicationDocs = get(
+    state.screenConfiguration.preparedFinalObject,
+    `Properties[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`,
+    []
+  ) || [];
+
+
+  applicationDocs = applicationDocs.filter(item => !!item)
+  let applicationDocsReArranged =
+    applicationDocs &&
+    applicationDocs.length &&
+    documentTypes.map(item => {
+      const index = applicationDocs.findIndex(
+        i => i.documentType === item.name
+      );
+      return applicationDocs[index];
+    }).filter(item => !!item)
+  applicationDocsReArranged &&
+    dispatch(
+      prepareFinalObject(
+        `Properties[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`,
+        applicationDocsReArranged
+      )
+    );
+  dispatch(
+    handleField(
+      "apply",
+      `components.div.children.formwizardSeventhStep.children.companyDocuments_0.children.cardContent.children.documentList`,
+      "props.inputProps",
+      estateMasterDocuments
+    )
+  );
+  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`, documentTypes))
+  dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
+
+}
+
 const header = getCommonHeader({
   labelName: "Add Estate",
   labelKey: "EST_COMMON_ESTATES_ADD"
@@ -153,14 +219,22 @@ const getData = async (action, state, dispatch) => {
     )
   }
   setDocumentData(action, state, dispatch);
+  getCompanyDocs(state,dispatch)
 
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
-    masterDetails: [
-      { name: "categories" },
-      { name: "propertyType" }, 
-      { name: "modeOfTransfer" },
-      { name: "allocationType" }
+    masterDetails: [{
+        name: "categories"
+      },
+      {
+        name: "propertyType"
+      },
+      {
+        name: "modeOfTransfer"
+      },
+      {
+        name: "allocationType"
+      }
     ]
   }]
 
