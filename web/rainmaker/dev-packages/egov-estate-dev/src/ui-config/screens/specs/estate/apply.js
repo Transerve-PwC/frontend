@@ -6,10 +6,12 @@ import {
   formwizardFirstStep,
   formwizardSecondStep,
   formwizardThirdStep,
+  formwizardStepFour,
   formwizardFourthStep,
   formwizardFifthStep,
   formwizardSixthStep,
   formwizardSeventhStep,
+  formwizardStepEight,
   formwizardEighthStep
 } from './applyResource/applyConfig'
 import {
@@ -274,10 +276,12 @@ const applyEstate = {
         formwizardFirstStep,
         formwizardSecondStep,
         formwizardThirdStep,
+        formwizardStepFour,
         formwizardFourthStep,
         formwizardFifthStep,
         formwizardSixthStep,
         formwizardSeventhStep,
+        formwizardStepEight,
         formwizardEighthStep,
         footer
       }

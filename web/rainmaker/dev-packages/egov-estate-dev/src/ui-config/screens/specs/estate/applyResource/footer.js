@@ -47,10 +47,12 @@ export const PROPERTY_DETAILS_STEP = 0;
 export const AUCTION_DETAILS_STEP = 1;
 export const OWNER_DETAILS_STEP = 2;
 export const PURCHASER_DETAILS_STEP = 3;
-export const COURT_CASE_DETAILS_STEP = 4;
-export const PAYMENT_DETAILS_STEP = 5;
-export const DOCUMENT_UPLOAD_STEP = 6;
-export const SUMMARY_STEP = 7;
+export const COMPANY_DETAILS_STEP = 4;
+export const COURT_CASE_DETAILS_STEP = 5;
+export const PAYMENT_DETAILS_STEP = 6;
+export const DOCUMENT_UPLOAD_STEP = 7;
+export const COMPANY_DOCUMENT_UPLOAD_STEP = 8;
+export const SUMMARY_STEP = 9;
 
 export const moveToSuccess = (estatesData, dispatch, type) => {
   const id = get(estatesData, "id");
@@ -81,7 +83,7 @@ const callBackForNext = async (state, dispatch) => {
       dispatch,
       "apply"
     )
-    
+
     const isAdditionalValid = validateFields(
       "components.div.children.formwizardFirstStep.children.additionalDetails.children.cardContent.children.detailsContainer.children",
       state,
@@ -134,14 +136,14 @@ const callBackForNext = async (state, dispatch) => {
           continue;
         }
         var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardThirdStep.children.ownerDetails.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+          `components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
           state,
           dispatch,
           "apply"
         )
 
         var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
-        
+
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
@@ -333,6 +335,11 @@ const callBackForNext = async (state, dispatch) => {
       isFormValid = false;
     }
   }
+
+  if (activeStep === COMPANY_DETAILS_STEP) {
+    
+  }
+
   if (activeStep === COURT_CASE_DETAILS_STEP) {
     const courtCases = get(
       state.screenConfiguration.preparedFinalObject,
@@ -472,6 +479,10 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
+  if (activeStep === COMPANY_DOCUMENT_UPLOAD_STEP) {
+
+  }
+
   if (activeStep === SUMMARY_STEP) {
     isFormValid = await applyEstates(state, dispatch);
     if (isFormValid) {
@@ -540,25 +551,25 @@ export const changeStep = (
   const isNextButtonVisible = activeStep < SUMMARY_STEP ? true : false;
   const isSubmitButtonVisible = activeStep === SUMMARY_STEP ? true : false;
   const actionDefination = [{
-      path: "components.div.children.stepper.props",
-      property: "activeStep",
-      value: activeStep
-    },
-    {
-      path: "components.div.children.footer.children.previousButton",
-      property: "visible",
-      value: isPreviousButtonVisible
-    },
-    {
-      path: "components.div.children.footer.children.nextButton",
-      property: "visible",
-      value: isNextButtonVisible
-    },
-    {
-      path: "components.div.children.footer.children.submitButton",
-      property: "visible",
-      value: isSubmitButtonVisible
-    }
+    path: "components.div.children.stepper.props",
+    property: "activeStep",
+    value: activeStep
+  },
+  {
+    path: "components.div.children.footer.children.previousButton",
+    property: "visible",
+    value: isPreviousButtonVisible
+  },
+  {
+    path: "components.div.children.footer.children.nextButton",
+    property: "visible",
+    value: isNextButtonVisible
+  },
+  {
+    path: "components.div.children.footer.children.submitButton",
+    property: "visible",
+    value: isSubmitButtonVisible
+  }
   ];
   dispatchMultipleFieldChangeAction(screenName, actionDefination, dispatch);
   renderSteps(activeStep, dispatch, screenName);
@@ -602,6 +613,15 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
+    case COMPANY_DETAILS_STEP:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardStepFour"
+        ),
+        dispatch
+      );
+      break;
     case COURT_CASE_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
@@ -629,6 +649,15 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
+    case COMPANY_DOCUMENT_UPLOAD_STEP:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardStepEight"
+        ),
+        dispatch
+      );
+      break;
     default:
       dispatchMultipleFieldChangeAction(
         screenName,
@@ -642,45 +671,55 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
 
 export const getActionDefinationForStepper = path => {
   const actionDefination = [{
-      path: "components.div.children.formwizardFirstStep",
-      property: "visible",
-      value: true
-    },
-    {
-      path: "components.div.children.formwizardSecondStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardThirdStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardFourthStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardFifthStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardSixthStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardSeventhStep",
-      property: "visible",
-      value: false
-    },
-    {
-      path: "components.div.children.formwizardEighthStep",
-      property: "visible",
-      value: false
-    }
+    path: "components.div.children.formwizardFirstStep",
+    property: "visible",
+    value: true
+  },
+  {
+    path: "components.div.children.formwizardSecondStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardThirdStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardStepFour",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardFourthStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardFifthStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardSixthStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardSeventhStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardStepEight",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardEighthStep",
+    property: "visible",
+    value: false
+  }
   ];
   for (var i = 0; i < actionDefination.length; i++) {
     actionDefination[i] = {
