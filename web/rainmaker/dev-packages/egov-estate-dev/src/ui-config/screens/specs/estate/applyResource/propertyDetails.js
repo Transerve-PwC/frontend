@@ -14,7 +14,12 @@ import {
 import {
     getTodaysDateInYMD
 } from "../../utils";
+import {
+    CompanyDetails
+} from './company-details'
 import get from "lodash/get";
+import set from "lodash/set";
+
 
 const typeOfAllocationField = {
     label: {
@@ -141,41 +146,45 @@ const categoryField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
-        if (action.value == "CAT.RESIDENTIAL"  || action.value == "CAT.COMMERCIAL") {
-            dispatch(
-                handleField(
-                    "apply",
-                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
-                    "visible",
-                    true
-                )
-            );
+        let screenKeys = ["apply", "allotment"];
 
-            const categories = get(
-                state.screenConfiguration.preparedFinalObject,
-                "applyScreenMdmsData.EstatePropertyService.categories"
-            )
+        screenKeys.map(item => {
+            let step = item == "apply" ? "formwizardFirstStep" : "formwizardFirstStepAllotment";
+            if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
+                dispatch(
+                    handleField(
+                        item,
+                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                        "visible",
+                        true
+                    )
+                );
 
-            const filteredCategory = categories.filter(item => item.code === action.value)
-            dispatch(
-                handleField(
-                    "apply",
-                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
-                    "props.data",
-                    filteredCategory[0].SubCategory
+                const categories = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    "applyScreenMdmsData.EstatePropertyService.categories"
                 )
-            )
-        }
-        else {
-            dispatch(
-                handleField(
-                    "apply",
-                    "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory",
-                    "visible",
-                    false
+
+                const filteredCategory = categories.filter(item => item.code === action.value)
+                dispatch(
+                    handleField(
+                        item,
+                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                        "props.data",
+                        filteredCategory[0].SubCategory
+                    )
                 )
-            );
-        }
+            } else {
+                dispatch(
+                    handleField(
+                        item,
+                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                        "visible",
+                        false
+                    )
+                );
+            }
+        })
     }
 }
 
@@ -290,17 +299,16 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     true
                 )
             )
-        }
-        else {
+        } else {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     false
                 )
