@@ -480,7 +480,67 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === COMPANY_DOCUMENT_UPLOAD_STEP) {
+    // const propertyOwners = get(
+    //   state.screenConfiguration.preparedFinalObject,
+    //   "Properties[0].propertyDetails.owners"
+    // );
 
+    // const propertyOwnersTemp = get(
+    //   state.screenConfiguration.preparedFinalObject,
+    //   "PropertiesTemp[0].propertyDetails.owners"
+    // );
+
+    // for (var i = 0; i < propertyOwnersTemp.length; i++) {
+    //   const uploadedDocData = get(
+    //     state.screenConfiguration.preparedFinalObject,
+    //     `Properties[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
+    //     []
+    //   );
+
+    //   const uploadedTempDocData = get(
+    //     state.screenConfiguration.preparedFinalObject,
+    //     `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
+    //     []
+    //   );
+
+    //   for (var y = 0; y < uploadedTempDocData.length; y++) {
+    //     if (
+    //       uploadedTempDocData[y].required &&
+    //       !some(uploadedDocData, {
+    //         documentType: uploadedTempDocData[y].name
+    //       })
+    //     ) {
+    //       isFormValid = false;
+    //     }
+    //   }
+    //   if (isFormValid) {
+    //     const reviewDocData =
+    //       uploadedDocData &&
+    //       uploadedDocData.map(item => {
+    //         return {
+    //           title: `EST_${item.documentType}`,
+    //           link: item.fileUrl && item.fileUrl.split(",")[0],
+    //           linkText: "View",
+    //           name: item.fileName
+    //         };
+    //       });
+    //     dispatch(
+    //       prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
+    //     );
+
+    //     const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
+    //     set(
+    //       reviewDocuments,
+    //       "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+    //       `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : ""}`
+    //     )
+    //     set(
+    //       state.screenConfiguration.screenConfig,
+    //       `apply.components.div.children.formWizardStepEight.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+    //       reviewDocuments
+    //     )
+    //   }
+    // }
   }
 
   if (activeStep === SUMMARY_STEP) {
@@ -617,7 +677,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
-          "components.div.children.formwizardStepFour"
+          "components.div.children.formwizardStepEight"
         ),
         dispatch
       );

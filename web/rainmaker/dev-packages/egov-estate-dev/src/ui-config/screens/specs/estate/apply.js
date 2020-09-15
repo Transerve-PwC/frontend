@@ -41,9 +41,8 @@ import {
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
-import {
-  companyDocumentList
-} from './applyResource/company-docs.json'
+import * as companyDocsData from './applyResource/company-docs.json'
+
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
 
@@ -140,11 +139,16 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
-const getCompanyDocs = async  (state,dispatch) => {
+const getCompanyDocs = (state, dispatch) => {
+  const {
+    EstatePropertyService
+  } = companyDocsData && companyDocsData.MdmsRes ? companyDocsData.MdmsRes : {}
   const {
     documents = []
-  } =  {}
-  const masterDocuments = companyDocumentList || [];
+  } = EstatePropertyService || {}
+  const findMasterItem = documents.find(item => item.code === "MasterEst")
+  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+
   const estateMasterDocuments = masterDocuments.map(item => ({
     type: item.code,
     description: {
@@ -192,13 +196,13 @@ const getCompanyDocs = async  (state,dispatch) => {
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardSeventhStep.children.companyDocuments_0.children.cardContent.children.documentList`,
+      `components.div.children.formwizardStepEight.children.companyDocuments_0.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
   );
   dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`, documentTypes))
-  dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
+  dispatch(prepareFinalObject("applyScreenMdmsData.estateApplicationsCompanyDocs", documents))
 
 }
 
@@ -221,27 +225,28 @@ const getData = async (action, state, dispatch) => {
     )
   }
   setDocumentData(action, state, dispatch);
-  getCompanyDocs(state,dispatch)
 
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
     masterDetails: [{
-        name: "categories"
-      },
-      {
-        name: "propertyType"
-      },
-      {
-        name: "modeOfTransfer"
-      },
-      {
-        name: "allocationType"
-      }
+      name: "categories"
+    },
+    {
+      name: "propertyType"
+    },
+    {
+      name: "modeOfTransfer"
+    },
+    {
+      name: "allocationType"
+    }
     ]
   }]
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+  getCompanyDocs(state, dispatch)
+
 }
 
 const applyEstate = {

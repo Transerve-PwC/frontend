@@ -152,8 +152,7 @@ export const formwizardFirstStep = {
     propertyInfoDetails,
     // auctionDetails,
     // allotmentDetails,
-    additionalDetails,
-    companyDocuments_0
+    additionalDetails
   }
 };
 
@@ -247,7 +246,7 @@ export const formwizardStepEight = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form7"
+    id: "apply_form8a"
   },
   children: {
     companyDocuments_0
