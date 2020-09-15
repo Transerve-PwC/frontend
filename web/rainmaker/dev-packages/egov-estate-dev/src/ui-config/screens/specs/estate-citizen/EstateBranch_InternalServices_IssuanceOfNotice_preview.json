@@ -1,0 +1,53 @@
+{
+    "preview": {
+        "sections": [
+            {
+                "header": "EST_OWNER_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_OWNER_NAME_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.ownerName"
+                    },
+                    {
+                        "label": "EST_FATHER_OR_HUSBAND_NAME_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.guardianName"
+                    },
+                    {
+                        "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.mobileNumber"
+                    },
+                    {
+                        "label": "EST_ADDRESS_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.address"
+                    },
+                    {
+                        "label": "EST_SHARE_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].share"
+                    },
+                    {
+                        "label": "EST_CP_NUMBER_LABEL",
+                        "jsonPath": "property.propertyDetails.owners[0].cpNumber"
+                    }
+                ]
+            },
+            {
+                "header": "EST_VIOLATION_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_DETAILS_OF_VIOLATION_LABEL",
+                        "jsonPath": "payload.applicationDetails.violationDetails"
+                    },
+                    {
+                        "label": "EST_VIOLATION_REPORT_RECIEVED_DATE_LABEL",
+                        "jsonPath": "payload.applicationDetails.violationDate"
+                    }
+                ]    
+                },
+            {
+                "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "type": "DOCUMENTS",
+                "sourceJsonPath": "temp[0].reviewDocData"
+            }
+        ]
+    }
+}
