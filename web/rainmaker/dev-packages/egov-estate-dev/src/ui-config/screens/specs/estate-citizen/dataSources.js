@@ -1,10 +1,6 @@
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils/api";
-
-const DataSourceTypes = {
-    MDMS: "mdms",
-    LOCAL: "local"
-  }
+import { get } from "lodash";
 
 class MDMSDatasource {
     options;
@@ -67,6 +63,20 @@ class MDMSDatasource {
         return this.values;
     }
  }
+
+ class PathDatasource {
+     values;
+     constructor(data, jsonPath, code, label) {
+         this.values = (get(data, jsonPath) || []).map(item => ({
+             code: get(item, code),
+             label: get(item, label)
+         }))
+     }
+
+     async get() {
+         return this.values
+     }
+ }
   
  class DatasourceManager {
    datasources = {};
@@ -80,6 +90,9 @@ class MDMSDatasource {
             case "mdms" : {
                 this.datasources[config.name] = new MDMSDatasource(config.options, config.cacheable, config.lazyload);
                 break;
+            }
+            case "path" : {
+                this.datasources[config.name] = new PathDatasource(config.data, config.jsonPath, config.code, config.label);
             }
         }
     }

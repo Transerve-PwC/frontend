@@ -28,6 +28,16 @@ const getPropertyData = async (action, state, dispatch) => {
 }
 
 const getData = async (action, state, dispatch) => {
+
+  const fileNumber = getQueryArg(window.location.href, "fileNumber")
+  const queryObject = [
+    {key: "fileNumber", value: fileNumber}
+  ]
+  const response = await getSearchResults(queryObject)
+  if(!!response.Properties && !!response.Properties.length) {
+    dispatch(prepareFinalObject("property", response.Properties[0]));
+    dispatch(prepareFinalObject("payload.property.id", response.Properties[0].propertyDetails.propertyId ))
+  }
     await new Promise((resolve) => {
         setTimeout(resolve, 0)
     })
@@ -36,7 +46,9 @@ const getData = async (action, state, dispatch) => {
     let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType][0];
     
     //Register all the datasources in the config.
-    !!dataSources && dataSources.forEach(dataSource => registerDatasource(dataSource));
+    !!dataSources && dataSources.forEach(dataSource => dataSource.type === "path" ?
+      registerDatasource({...dataSource, data: response.Properties[0]})
+    : registerDatasource(dataSource));
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
@@ -111,7 +123,7 @@ const commonApply = {
     hasBeforeInitAsync: true,
     beforeInitScreen: async (action, state, dispatch) => {
         dispatch(toggleSpinner())
-        await getPropertyData(action, state, dispatch)
+        // await getPropertyData(action, state, dispatch)
         const components = await getData(action, state, dispatch)
         dispatch(toggleSpinner())
         return {

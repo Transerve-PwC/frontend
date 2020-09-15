@@ -31,6 +31,13 @@
           "masterName" : "applicationDocuments",
           "filter" : "[?(@.code=='MasterRP')]"
         }
+    },
+    {
+      "name": "owners",
+      "type": "path",
+      "jsonPath": "propertyDetails.owners",
+      "code": "ownerDetails.ownerId",
+      "label": "ownerDetails.ownerName"
     }
     ],
     "fields": [
@@ -265,6 +272,14 @@
               "dataSource": "typesOfOwner"
             },
             {
+              "label": "EST_PURCHASER_TRANSFEREE_ID",
+              "placeholder": "EST_PURCHASER_TRANSFEREE_ID_PLACEHOLDER",
+              "type": "DROP_DOWN",
+              "jsonPath": "payload.applicationDetails.purchaser.id",
+              "path": "purchaser.id",
+              "dataSource": "owners"
+            },
+            {
               "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
@@ -305,7 +320,8 @@
               "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
               "type": "DROP_DOWN",
               "jsonPath": "payload.owner.id",
-              "path": "owner.id"
+              "path": "owner.id",
+              "dataSource": "owners"
             },
             {
               "label": "EST_PERCENTAGE_SHARED_LABEL",
