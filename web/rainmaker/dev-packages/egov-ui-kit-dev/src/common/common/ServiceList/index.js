@@ -65,6 +65,18 @@ class ServiceList extends React.Component {
     }else{
       list = menu && menu.filter((item) => item.url === "card");
     }
+    list = [...list, { 
+      displayName: "Estate",
+      enabled: true,
+      id: 1775,
+      leftIcon: "action:announcement",
+      name: "rainmaker-common-estate",
+      navigationURL: "estate/home",
+      orderNumber: 2,
+      tenantId: "ch",
+      url: "card"
+      }
+    ]
     this.setState({
       actionList: list,
     });

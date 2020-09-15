@@ -1,0 +1,450 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_OwnershipTransfer_PatnershipDeed": [{
+      "fields": [
+        {
+          "path": "modeOfTransfer",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "modeOfTransfer",
+                "filter": "modeOfTransfer..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "registrationNumber",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "dateOfRegistration",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "owner.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "purchaser",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.fatherOrHusbandName",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.relation",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "phonenumber"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        }
+      ],
+      "first_step": {
+        "sections": [
+          {
+            "header": "EST_OWNER_DETAILS_HEADER",
+            "type": "CARD_DETAIL",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields": [
+                {
+                    "label": "EST_OWNER_NAME_LABEL",
+                    "jsonPath": "ownerDetails.ownerName"
+                  },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "jsonPath": "ownerDetails.address"
+              },
+              {
+                "label": "EST_OWNER_SHARE_LABEL",
+                "jsonPath": "share"
+              }
+            ]
+          },
+          {
+            "header": "EST_TRANSFEREE_DETAILS_HEADER",
+            "type": "FORM",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields":[
+                {
+                    "label": "EST_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
+                    "placeholder": "EST_TRANSFEREE_TYPE_RADIO_BTN_PLACEHOLDER",
+                    "required": true,
+                    "type": "RADIO_BUTTON",
+                    "jsonPath": "payload.applicationDetails.ownerDetails.transfereeType",
+                    "path": "ownerDetails.transfereeType"
+                  },
+                  {
+                    "label": "EST_SELECT_OWNER_LABEL",
+                    "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                    "required": false,
+                    "type": "DROP_DOWN",
+                    "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                    "path": "ownerDetails.ownerName"
+                  },
+              {
+                
+                "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
+                "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.purchaser.sellerOrTransferor",
+                "path": "purchaser.sellerOrTransferor"
+              },
+              {
+                "label": "EST_TRANSFEREE_NAME_LABEL",
+                "placeholder": "EST_TRANSFEREE_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.transfereefatherOrHusband",
+                "jsonPath": "payload.applicationDetails.transfereename"
+              },
+              {
+                "label": "EST_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST_TRANSFEREE_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.transfereefatherOrHusband",
+                "jsonPath": "payload.applicationDetails.transfereefatherOrHusband"
+              },
+              {
+                "label": "EST_TRANSFEREE_ADDRESS_LABEL",
+                "placeholder": "EST_TRANSFEREE_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.deceasedfatherOrHusband",
+                "jsonPath": "payload.applicationDetails.ownerDetails.transfereeAddress"
+              },
+              {
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.phone",
+                "path": "ownerDetails.phone"
+              },
+              {
+                "label": "EST_PERCENT_SHARE_LABEL",
+                "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.percentShare",
+                "jsonPath": "payload.applicationDetails.percentShare"
+              }
+            ]
+          },
+          {
+            "header": "EST_COMPANY_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
+                "placeholder": "EST_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.regNumberOfPartnership",
+                "path": "ownerDetails.regNumberOfPartnership"
+              },
+              {
+                "label": "EST_REGISTRATION_DATE",
+                "required": true,
+                "type": "DATE_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.registrationDate",
+                "path": "ownerDetails.registrationDate"
+              },
+              {
+                "label": "EST_PRIVATE_LIMITED_COMPANY_NAME",
+                "placeholder": "EST_PRIVATE_LIMITED_COMPANY_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.companyName",
+                "path": "ownerDetails.companyName"
+              },
+              {
+                "label": "EST_COMPANY_ADDRESS",
+                "placeholder": "EST_COMPANY_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_BUTTON",
+                "jsonPath": "payload.applicationDetails.ownerDetails.companyAddress",
+                "path": "ownerDetails.companyAddress"
+              },
+              {
+                "label": "EST_COMPANY_REGISTRATION_NUMBER",
+                "placeholder": "EST_COMPANY_REGISTRATION_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_DOWN",
+                "jsonPath": "payload.applicationDetails.ownerDetails.companyRegNumber",
+                "path": "ownerDetails.companyRegNumber"
+              }
+            ]
+          },
+          {
+            "header": "EST_MODE_OF_TRANSFER_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_MODE_OF_TRANSFER_LABEL",
+                "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
+                "required": true,
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.ownerDetails.modeOfTransfer",
+                "path": "ownerDetails.modeOfTransfer"
+              }
+            ]
+          }
+        ]
+      },
+      "second_step": {
+        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "jsonPath": "payload.documents",
+        "documentList": [
+          {
+            "code": "CERTIFIED_COPY_OR_NOTARIZED_COPY_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CERTIFIED_COPY_OR_NOTARIZED_COPY_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED_DESCRIPTION"
+          },
+          {
+            "code": "LIABILITY_AFFIDAVIT_OF_APPLICANTS_OR_INTENDING_PARTNERS_OR_DIRECTOR",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "LIABILITY_AFFIDAVIT_OF_APPLICANTS_OR_INTENDING_PARTNERS_OR_DIRECTOR_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_INTENDING_PARTNERS_OR_DIRECTORS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_INTENDING_PARTNERS_OR_DIRECTORS_DESCRIPTION"
+          },
+          {
+            "code": "INDEMNITY_BOND_OF_INTENDING_PARTNERS_OR_DIRECTORS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "INDEMNITY_BOND_OF_INTENDING_PARTNERS_OR_DIRECTORS_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOFS_OF_WITNESSES_OF_INDEMNITY_BOND",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOFS_OF_WITNESSES_OF_INDEMNITY_BOND_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_OF_PREVIOUS_MORTGAGE_OR_LOAN_OR_REDEMPTION_DEED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PREVIOUS_MORTGAGE_OR_LOAN_OR_REDEMPTION_DEED_DESCRIPTION"
+          },
+          {
+            "code": "SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "PROOF_OF_CONSTRUCTION_SUPPORTED_WITH_A_CERTIFICATE_ISSUED_BY_THE_REGISTERED_ARCHITECT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "PROOF_OF_CONSTRUCTION_SUPPORTED_WITH_A_CERTIFICATE_ISSUED_BY_THE_REGISTERED_ARCHITECT_DESCRIPTION"
+          },
+          {
+            "code": "AN_UNDERTAKING_BY_WAY_OF_AN_INDEMNITY_BOND",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AN_UNDERTAKING_BY_WAY_OF_AN_INDEMNITY_BOND_DESCRIPTION"
+          },
+          {
+            "code": "AFFIDAVIT_PROVING_THAT_THERE_IS_NO_UNDERHAND_SALE_INVOLVED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVIT_PROVING_THAT_THERE_IS_NO_UNDERHAND_SALE_INVOLVED_DESCRIPTION"
+          },
+          {
+            "code": "AFFIDAVITS_OF_ATTESTING_WITNESS_TO_PARTNERSHIP_DEED_ALONG_WITH_THEIR_PHOTO_IDENTITY_PROOFS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVITS_OF_ATTESTING_WITNESS_TO_PARTNERSHIP_DEED_ALONG_WITH_THEIR_PHOTO_IDENTITY_PROOFS_DESCRIPTION"
+          },
+          {
+            "code": "ORIGINAL_DEATH_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "ORIGINAL_DEATH_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "NOC_FROM_OTHER_LEGAL_HEIRS_OF_DECEASED_PARTNER_ALONG_WITH_PHOTOGRAPH_AND_IDENTITY_PROOF",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NOC_FROM_OTHER_LEGAL_HEIRS_OF_DECEASED_PARTNER_ALONG_WITH_PHOTOGRAPH_AND_IDENTITY_PROOF_DESCRIPTION"
+          },
+          {
+            "code": "RESOLUTION_OF_DIRECTORS_FOR_AUTHORIZATION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "RESOLUTION_OF_DIRECTORS_FOR_AUTHORIZATION_DESCRIPTION"
+          },
+          {
+            "code": "FORM_NO_32",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "FORM_NO_32_DESCRIPTION"
+          },
+          {
+            "code": "CERTIFICATE_OF_REGISTRAR_OF_COMPANY",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CERTIFICATE_OF_REGISTRAR_OF_COMPANY_DESCRIPTION"
+          },
+          {
+            "code": "CERTIFICATE_OF_CA",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CERTIFICATE_OF_CA_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
+          }
+        ]
+      }
+    }]
+  }

@@ -1,0 +1,240 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_OtherCitizen_ChangeInTrade": [{
+      "fields": [
+        {
+          "path": "modeOfTransfer",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "modeOfTransfer",
+                "filter": "modeOfTransfer..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "registrationNumber",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "dateOfRegistration",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "owner.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "purchaser",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.fatherOrHusbandName",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.relation",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "phonenumber"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        }
+      ],
+      "first_step": {
+        "sections": [
+          {
+            "header": "EST_OWNER_DETAILS_HEADER",
+            "type": "CARD_DETAIL",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields": [
+              {
+                "label": "EST_OWNER_NAME_LABEL",
+                "jsonPath": "ownerDetails.ownerName"
+              },
+              {
+                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                "jsonPath": "ownerDetails.fatherOrHusband"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "jsonPath": "ownerDetails.address"
+              },
+              {
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "jsonPath": "ownerDetails.phone"
+              },
+              {
+                "label": "EST_OWNER_SHARE_LABEL",
+                "jsonPath": "share"
+              },
+              {
+                "label": "EST_CP_NUMBER_LABEL",
+                "jsonPath": "ownerDetails.cpNumber"
+              }
+            ]
+          },
+          {
+            
+                "header": "EST_TRADE_DETAILS_HEADER",
+                "type": "FORM",
+                "fields": [
+                  {
+                    "label": "EST_CURRENT_TRADE_LABEL",
+                    "placeholder": "EST_CURRENT_TRADE_PLACEHOLDER",
+                    "required": true,
+                    "type": "TEXT_FIELD",
+                    "jsonPath": "payload.applicationDetails.ownerDetails.currentTrade",
+                    "path": "ownerDetails.currentTrade"
+                  },
+                  {
+                    "label": "EST_TRADE_OPTED_FOR_CHANGE_LABEL",
+                    "placeholder": "EST_TRADE_OPTED_FOR_CHANGE_PLACEHOLDER",
+                    "required": true,
+                    "type": "DROP_DOWN",
+                    "jsonPath": "payload.applicationDetails.ownerDetails.tradeOptedForChange",
+                    "path": "ownerDetails.tradeOptedForChange"
+                  }
+                ]
+          }
+        ]
+      },
+      "second_step": {
+        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "jsonPath": "payload.documents",
+        "documentList": [
+          {
+            "code": "CLEARANCE_OF_PROPERTY_TAX",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
+          },
+          {
+            "code": "LATEST_WATER_BILL_ALONG_WITH_RECEIPT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "LATEST_WATER_BILL_ALONG_WITH_RECEIPT_DESCRIPTION"
+          }
+        ]
+      }
+    }]
+  }

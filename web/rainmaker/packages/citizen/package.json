@@ -3,8 +3,8 @@
   "version": "0.0.2",
   "license": "egov",
   "private": true,
-  "homepage": "https://egov-dev.chandigarhsmartcity.in/citizen/",
-  "proxy": "https://egov-dev.chandigarhsmartcity.in/",
+  "homepage": "https://egov.transerve.com/citizen/",
+  "proxy": "https://egov.transerve.com/",
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "@material-ui/core": "^1.5.1",
@@ -28,6 +28,7 @@
     "egov-wns": "1.1.0",
     "egov-abg": "0.0.1",
     "egov-rented-properties": "0.0.1",
+    "egov-estate": "0.0.1",
     "egov-ui-framework": "0.1.41",
     "egov-ui-kit": "^0.0.1",
     "egov-workflow": "0.0.1",

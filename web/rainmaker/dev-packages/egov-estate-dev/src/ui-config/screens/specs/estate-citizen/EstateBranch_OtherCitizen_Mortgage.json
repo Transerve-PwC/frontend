@@ -1,0 +1,375 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_OtherCitizen_Mortgage": [{
+      "fields": [
+        {
+          "path": "modeOfTransfer",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "modeOfTransfer",
+                "filter": "modeOfTransfer..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "registrationNumber",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "dateOfRegistration",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "owner.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "purchaser",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.fatherOrHusbandName",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.relation",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "purchaser.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "phonenumber"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        }
+      ],
+      "first_step": {
+        "sections": [
+          {
+            "header": "EST_OWNER_DETAILS_HEADER",
+            "type": "CARD_DETAIL",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields": [
+                {
+                    "label": "EST_OWNER_NAME_LABEL",
+                    "jsonPath": "ownerDetails.ownerName"
+                  },
+                  {
+                    "label": "EST_ADDRESS_LABEL",
+                    "jsonPath": "ownerDetails.address"
+                  },
+                  {
+                    "label": "EST_OWNER_SHARE_LABEL",
+                    "jsonPath": "share"
+                  }
+            ]
+          },
+          {
+            "header": "EST_APPLICANT_DETAILS_HEADER",
+            "type": "FORM",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields":[
+              {
+                "label": "EST_SELECT_OWNER_LABEL",
+                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
+                },
+              {
+                
+                "label": "EST_OWNER_NAME_LABEL",
+                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
+              },
+              {
+                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.fatherOrHusband",
+                "jsonPath": "payload.applicationDetails.fatherOrHusband"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.address",
+                "jsonPath": "payload.applicationDetails.ownerDetails.address"
+              },
+              {
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.phone",
+                "path": "ownerDetails.phone"
+              },
+              {
+                "label": "EST_OWNER_SHARE_LABEL",
+                "placeholder": "EST_OWNER_SHARE_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.share",
+                "jsonPath": "payload.applicationDetails.share"
+              },
+              {
+                "label": "EST_CP_NUMBER_LABEL",
+                "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.cpNumber",
+                "jsonPath": "payload.applicationDetails.cpNumber"
+              }
+            ]
+          },
+          {
+            "header": "EST_LOAN_DETAILS_HEADER",
+            "type": "FORM",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields":[
+              {
+                "label": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
+                "placeholder": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.ownerDetails.nameOfBankOrFinancialInstitution",
+                "path": "ownerDetails.nameOfBankOrFinancialInstitution"
+                },
+              {
+                
+                "label": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
+                "placeholder": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.purposeOfMortgageOrLoan",
+                "path": "ownerDetails.purposeOfMortgageOrLoan"
+              },
+              {
+                "label": "EST_LOAN_AMOUNT_LABEL",
+                "placeholder": "EST_LOAN_AMOUNT_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.loanAmount",
+                "jsonPath": "payload.applicationDetails.loanAmount"
+              }
+            ]
+          }
+        ]
+      },
+      "second_step": {
+        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "jsonPath": "payload.documents",
+        "documentList": [
+          {
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS_DESCRIPTION"
+          },
+          {
+            "code": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN_DESCRIPTION"
+          },
+          {
+            "code": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT_DESCRIPTION"
+          },
+          {
+            "code": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND_DESCRIPTION"
+          },
+          {
+            "code": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+          },
+          {
+            "code": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "PROOF_OF_CONSTRUCTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "PROOF_OF_CONSTRUCTION_DESCRIPTION"
+          },
+          {
+            "code": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+          },
+          {
+            "code": "ATTESTED_COPY_OF_PARTNERSHIP_DEED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "ATTESTED_COPY_OF_PARTNERSHIP_DEED_DESCRIPTION"
+          },
+          {
+            "code": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
+          }
+        ]
+      }
+    }]
+  }
