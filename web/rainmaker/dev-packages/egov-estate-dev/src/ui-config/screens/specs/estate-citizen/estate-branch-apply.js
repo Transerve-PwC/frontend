@@ -150,7 +150,7 @@ const cardItems = [{
       labelName: "Duplicate Allotment Letter/Possession Letter"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_DuplicateCopy",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
