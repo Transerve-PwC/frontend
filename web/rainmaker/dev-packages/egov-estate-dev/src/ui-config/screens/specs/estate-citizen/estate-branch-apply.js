@@ -54,7 +54,7 @@ const cardItems = [{
       labelName: "Transfer of Ownership on the basis of Intestate Death (without will)"
     },
     icon: < EstateIcon / > ,
-    route: "ownership-transfer?type=intestateDeath",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_InstestateDeath",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -78,7 +78,7 @@ const cardItems = [{
       labelName: "Transfer of Property on the basis of Court Decree/Family Settlement"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_FamilySettlement",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -150,7 +150,7 @@ const cardItems = [{
       labelName: "Duplicate Allotment Letter/Possession Letter"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_DuplicateCopy",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"

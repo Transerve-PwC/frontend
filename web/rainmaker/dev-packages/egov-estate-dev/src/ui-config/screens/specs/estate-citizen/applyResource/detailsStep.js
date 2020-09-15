@@ -33,7 +33,7 @@ export const getRelationshipRadioButton = {
 const getField = async (item, fieldData = {}, state) => {
 
     const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
-    const {required = true, validations} = fieldData
+    const {required = true, validations = []} = fieldData
     let fieldProps = {
       label : {
         labelName: labelItem,
