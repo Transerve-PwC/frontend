@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_LeaseDeed": [{
+    "EstateBranch_OtherCitizen_LeaseholdToFreehold": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -169,14 +169,26 @@
                     "label": "EST_OWNER_NAME_LABEL",
                     "jsonPath": "ownerDetails.ownerName"
                   },
-              {
-                "label": "EST_ADDRESS_LABEL",
-                "jsonPath": "ownerDetails.address"
-              },
-              {
-                "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "share"
-              }
+                  {
+                    "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                    "jsonPath": "ownerDetails.fatherOrHusband"
+                  },
+                  {
+                    "label": "EST_ADDRESS_LABEL",
+                    "jsonPath": "ownerDetails.address"
+                  },
+                  {
+                    "label": "EST_MOBILE_NUMBER_LABEL",
+                    "jsonPath": "ownerDetails.phone"
+                  },
+                  {
+                    "label": "EST_OWNER_SHARE_LABEL",
+                    "jsonPath": "share"
+                  },
+                  {
+                    "label": "EST_CP_NUMBER_LABEL",
+                    "jsonPath": "ownerDetails.cpNumber"
+                  }
             ]
           },
           {
@@ -252,25 +264,53 @@
         "jsonPath": "payload.documents",
         "documentList": [
           {
-            "code": "CONVEYANCE_OR_LEASE_DEED",
+            "code": "AFFIDAVIT_ON_THE_PRESCRIBED_PROFORMA_DULY_ATTESTED_BY_THE_EXECUTIVE_MAGISTRATE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CONVEYANCE_OR_LEASE_DEED_DESCRIPTION"
+            "description": "AFFIDAVIT_ON_THE_PRESCRIBED_PROFORMA_DULY_ATTESTED_BY_THE_EXECUTIVE_MAGISTRATE_DESCRIPTION"
           },
           {
-            "code": "CLEARENCE_OF_PROPERTY_TAX",
+            "code": "ATTESTED_COPY_OF_THE_GPA_OR_SUB_GPA",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CLEARENCE_OF_PROPERTY_TAX_DESCRIPTION"
+            "description": "ATTESTED_COPY_OF_THE_GPA_OR_SUB_GPA_DESCRIPTION"
           },
           {
-            "code": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT",
+            "code": "AGREEMENT_TO_SELL",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
+            "description": "AGREEMENT_TO_SELL_DESCRIPTION"
+          },
+          {
+            "code": "NOC_FROM_THE_MORTGAGE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NOC_FROM_THE_MORTGAGE_DESCRIPTION"
+          },
+          {
+            "code": "OCCUPATION_CERTIFICATE_OF_THE_BUILDING",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "OCCUPATION_CERTIFICATE_OF_THE_BUILDING_DESCRIPTION"
+          },
+          {
+            "code": "NDC_ISSUED_BY_THE_CHANDIGARH_HOUSING_BOARD",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NDC_ISSUED_BY_THE_CHANDIGARH_HOUSING_BOARD_DESCRIPTION"
+          },
+          {
+            "code": "THREE_RECENT_PASSPORT_SIZE_PHOTOGRAPHS_OF_THE_APPLICANT_DULY_ATTESTED_BY_THE_GAZETTED_OFFICER",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "THREE_RECENT_PASSPORT_SIZE_PHOTOGRAPHS_OF_THE_APPLICANT_DULY_ATTESTED_BY_THE_GAZETTED_OFFICER_DESCRIPTION"
           }
         ]
       }

@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_LeaseDeed": [{
+    "EstateBranch_OtherCitizen_Mortgage": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -169,14 +169,14 @@
                     "label": "EST_OWNER_NAME_LABEL",
                     "jsonPath": "ownerDetails.ownerName"
                   },
-              {
-                "label": "EST_ADDRESS_LABEL",
-                "jsonPath": "ownerDetails.address"
-              },
-              {
-                "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "share"
-              }
+                  {
+                    "label": "EST_ADDRESS_LABEL",
+                    "jsonPath": "ownerDetails.address"
+                  },
+                  {
+                    "label": "EST_OWNER_SHARE_LABEL",
+                    "jsonPath": "share"
+                  }
             ]
           },
           {
@@ -244,6 +244,40 @@
                 "jsonPath": "payload.applicationDetails.cpNumber"
               }
             ]
+          },
+          {
+            "header": "EST_LOAN_DETAILS_HEADER",
+            "type": "FORM",
+            "path": "payload.owner.id",
+            "valueJsonPath": "ownerDetails.ownerId",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields":[
+              {
+                "label": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
+                "placeholder": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "payload.applicationDetails.ownerDetails.nameOfBankOrFinancialInstitution",
+                "path": "ownerDetails.nameOfBankOrFinancialInstitution"
+                },
+              {
+                
+                "label": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
+                "placeholder": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "payload.applicationDetails.ownerDetails.purposeOfMortgageOrLoan",
+                "path": "ownerDetails.purposeOfMortgageOrLoan"
+              },
+              {
+                "label": "EST_LOAN_AMOUNT_LABEL",
+                "placeholder": "EST_LOAN_AMOUNT_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.loanAmount",
+                "jsonPath": "payload.applicationDetails.loanAmount"
+              }
+            ]
           }
         ]
       },
@@ -252,25 +286,88 @@
         "jsonPath": "payload.documents",
         "documentList": [
           {
-            "code": "CONVEYANCE_OR_LEASE_DEED",
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CONVEYANCE_OR_LEASE_DEED_DESCRIPTION"
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS_DESCRIPTION"
           },
           {
-            "code": "CLEARENCE_OF_PROPERTY_TAX",
+            "code": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CLEARENCE_OF_PROPERTY_TAX_DESCRIPTION"
+            "description": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN_DESCRIPTION"
           },
           {
-            "code": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT",
+            "code": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
+            "description": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT_DESCRIPTION"
+          },
+          {
+            "code": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT_DESCRIPTION"
+          },
+          {
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND_DESCRIPTION"
+          },
+          {
+            "code": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+          },
+          {
+            "code": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DESCRIPTION"
+          },
+          {
+            "code": "PROOF_OF_CONSTRUCTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "PROOF_OF_CONSTRUCTION_DESCRIPTION"
+          },
+          {
+            "code": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+          },
+          {
+            "code": "ATTESTED_COPY_OF_PARTNERSHIP_DEED",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "ATTESTED_COPY_OF_PARTNERSHIP_DEED_DESCRIPTION"
+          },
+          {
+            "code": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
           }
         ]
       }
