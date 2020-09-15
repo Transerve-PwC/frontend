@@ -42,7 +42,7 @@ const cardItems = [{
       labelName: "Transfer of Ownership on the basis of Un-registered Will"
     },
     icon: < EstateIcon / > ,
-    route: "ownership-transfer?type=unregisteredWill",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_UnRegisteredWill",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -66,7 +66,7 @@ const cardItems = [{
       labelName: "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company"
     },
     icon: < EstateIcon / > ,
-    route: "ownership-transfer?type=partnershipDeed",
+    route: "property-search?type=EstateBranch_OwnershipTransfer_PatnershipDeed",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -90,7 +90,7 @@ const cardItems = [{
       labelName: "No Objection Certificate for Transfer of Lease Rights by way of Sale/Gift/Family Transfer Deed/Exchange Deed"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_NOC",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -102,7 +102,7 @@ const cardItems = [{
       labelName: "Execution of Lease Deed/Deed of Conveyance"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_LeaseDeed",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -114,7 +114,7 @@ const cardItems = [{
       labelName: "No Dues Certificate"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_NDC",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"

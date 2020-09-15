@@ -1,0 +1,57 @@
+{
+    "preview": {
+        "sections": [
+            {
+                "header": "EST_OWNER_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_OWNER_NAME_LABEL",
+                        "jsonPath": "ownerDetails.ownerName"
+                      },
+                    {
+                        "label": "EST_ADDRESS_LABEL",
+                        "jsonPath": "ownerDetails.address"
+                    },
+                    {
+                        "label": "EST_OWNER_SHARE_LABEL",
+                        "jsonPath": "share"
+                    }
+                ]
+            },
+            {
+                "header": "EST_NOC_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_SELECT_OWNER_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.ownerName"
+                    },
+                    {
+                        "label": "EST_NOC_IN_FAVOUR_OF_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.nocInFavour"
+                    },
+                    {
+                        "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "payload.applicationDetails.fatherOrHusband"
+                    },
+                    {
+                        "label": "EST_ADDRESS_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.address"
+                    },
+                    {
+                        "label": "EST_MOBILE_NUMBER_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.phone"
+                    },
+                    {
+                        "label": "EST_OWNER_SHARE_LABEL",
+                        "jsonPath": "payload.applicationDetails.share"
+                    }
+                ]    
+            },
+            {
+                "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "type": "DOCUMENTS",
+                "sourceJsonPath": "temp[0].reviewDocData"
+            }
+        ]
+    }
+}
