@@ -126,7 +126,7 @@ const cardItems = [{
       labelName: "Permission to Mortgage"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_Mortgage",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -138,7 +138,7 @@ const cardItems = [{
       labelName: "Conversion from Leasehold to Freehold Property"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_LeaseholdToFreehold",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
@@ -174,7 +174,7 @@ const cardItems = [{
       labelName: "Change of Trade"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_ChangeInTrade",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
