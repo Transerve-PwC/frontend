@@ -621,7 +621,8 @@ const ownerShipRelationShipduplicate = {
 const applicantEmailField = {
     ...emailConfig,
     props: {
-        value:userInfo.emailId
+        value:userInfo.emailId,
+        disabled:true
       },
     jsonPath: "Owners[0].ownerDetails.email",
     required: false
