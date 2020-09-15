@@ -162,7 +162,7 @@ const cardItems = [{
       labelName: "Conversion of Property from residential to Commercial (SCF to SCO)"
     },
     icon: < EstateIcon / > ,
-    route: "",
+    route: "property-search?type=EstateBranch_OtherCitizen_ScfToSco",
     buttonLabel: getLabel({
       labelName: "Apply",
       labelKey: "EST_APPLY"
