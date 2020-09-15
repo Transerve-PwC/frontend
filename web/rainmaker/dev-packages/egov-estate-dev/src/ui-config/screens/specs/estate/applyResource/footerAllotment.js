@@ -31,7 +31,8 @@ import {
   getReviewOwner,
   getReviewPurchaser,
   getReviewPayment,
-  getReviewCourtCase
+  getReviewCourtCase,
+  getReviewAllotmentMultipleSectionDetails
 } from "./reviewProperty";
 import {
   getReviewDocuments
@@ -105,8 +106,8 @@ const callBackForNext = async (state, dispatch) => {
     );
 
     let propertyOwnersItems = get(
-      state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
@@ -154,7 +155,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
           reviewOwnerDetails
         )
       }
@@ -170,8 +171,72 @@ const callBackForNext = async (state, dispatch) => {
     } */
   }
 
-  if (activeStep === COURT_CASE_DETAILS_STEP) {
-    const courtCases = get(
+  if (activeStep === DOCUMENT_UPLOAD_STEP) {
+    let propertyOwners = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.owners"
+    );
+
+    let propertyOwnersTemp = get(
+      state.screenConfiguration.preparedFinalObject,
+      "PropertiesTemp[0].propertyDetails.owners"
+    );
+
+    for (var i = 0; i < propertyOwnersTemp.length; i++) {
+      const uploadedDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Properties[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
+        []
+      );
+
+      const uploadedTempDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
+        []
+      );
+
+      for (var y = 0; y < uploadedTempDocData.length; y++) {
+        if (
+          uploadedTempDocData[y].required &&
+          !some(uploadedDocData, {
+            documentType: uploadedTempDocData[y].name
+          })
+        ) {
+          isFormValid = false;
+        }
+      }
+      if (isFormValid) {
+        const reviewDocData =
+          uploadedDocData &&
+          uploadedDocData.map(item => {
+            return {
+              title: `EST_${item.documentType}`,
+              link: item.fileUrl && item.fileUrl.split(",")[0],
+              linkText: "View",
+              name: item.fileName
+            };
+          });
+        dispatch(
+          prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
+        );
+
+        const reviewDocuments = getReviewDocuments(true, "allotment", `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
+        set(
+          reviewDocuments,
+          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+          `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : ""}`
+        )
+        set(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewDocuments_${i}`,
+          reviewDocuments
+        )
+      }
+    }
+  }
+
+  if (activeStep == COMPANY_DETAILS_STEP) {
+    var propertyPartners = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.courtCases"
     )
@@ -271,11 +336,147 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
       }
+    }
+  }
+
+  if (activeStep === COURT_CASE_DETAILS_STEP) {
+    const courtCases = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.courtCases"
+    )
+    let courtCaseItems = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardSeventhStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+    );
+
+    if (courtCaseItems && courtCaseItems.length > 0) {
+      for (var i = 0; i < courtCaseItems.length; i++) {
+        if (typeof courtCaseItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isCourtCaseDetailsValid = validateFields(
+          `components.div.children.formwizardSeventhStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.courtCaseCard.children`,
+          state,
+          dispatch
+        )
+
+        const reviewCourtCaseDetails = getReviewCourtCase(true, i);
+        set(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
+          reviewCourtCaseDetails
+        )
+      }
+    }
+
+    /* if (isCourtCaseDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep);
+      if (!res) {
+        return
+      }
+    } else {
+      isFormValid = false;
     } */
+  }
+
+  if (activeStep === PAYMENT_DETAILS_STEP) {
+    const isPremiumAmountValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isGroundRentValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isLicenseFeeValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isSecurityDetailsValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.securityDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+
+    let installmentItems = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardEighthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items"
+    );
+
+    if (installmentItems && installmentItems.length > 0) {
+      for (var i = 0; i < installmentItems.length; i++) {
+        if (typeof installmentItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isInstallmentDetailsValid = validateFields(
+          `allotment.components.div.children.formwizardEighthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items[${i}].item${i}.children.cardContent.children.installmentCard.children`,
+          state,
+          dispatch
+        )
+
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewPremiumAmount.children.cardContent.children.viewInstallments`, "premiumAmount", installmentItems.length);
+      }
+    }
+
+    let rentItems = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
+    );
+
+    if (rentItems && rentItems.length > 0) {
+      for (var i = 0; i < rentItems.length; i++) {
+        if (typeof rentItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isRentDetailsValid = validateFields(
+          `allotment.components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${i}].item${i}.children.cardContent.children.rentCard.children`,
+          state,
+          dispatch
+        )
+
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents`, "groundRent", rentItems.length);
+      }
+    }
+
+    let licenseFeeItems = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
+    );
+
+    if (licenseFeeItems && licenseFeeItems.length > 0) {
+      for (var i = 0; i < licenseFeeItems.length; i++) {
+        if (typeof licenseFeeItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isLicenseFeeDetailsForYearValid = validateFields(
+          `allotment.components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${i}].item${i}.children.cardContent.children.licenseCard.children`,
+          state,
+          dispatch
+        )
+
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
+      }
+    }
+    
+    if (isPremiumAmountValid && isGroundRentValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isLicenseFeeDetailsForYearValid) {
+      const res = await applyEstates(state, dispatch, activeStep);
+      if (!res) {
+        return
+      }
+    } else {
+      isFormValid = false;
+    }
   }
 
   if (activeStep === SUMMARY_STEP) {
