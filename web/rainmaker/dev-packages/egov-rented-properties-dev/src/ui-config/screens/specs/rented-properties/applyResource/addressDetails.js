@@ -215,6 +215,12 @@ const TransitsiteTransitNumberField = {
             ""
           )
         )
+        dispatch(
+          prepareFinalObject(
+            "PropertyImagesApplications[0].property.colony",
+            ""
+          )
+        )
     }
 }
 
@@ -224,7 +230,10 @@ const getOwnershipAddressDetails = () => {
         detailsContainer: getCommonContainer({
             ownershipTransitNumber: getTextField(ownershipTransitNumberField),
             colony:getSelectField({...colonyFieldDup,jsonPath:"Owners[0].property.colony"}),
-            pincode: getTextField({...pincodeField, jsonPath: "Owners[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+            pincode: getTextField({...pincodeField, placeholder: {
+              labelName: "",
+              labelKey: ""
+            }, jsonPath: "Owners[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
         })
     }
 }
@@ -235,7 +244,10 @@ const getOwnershipAddressDetailsMortgage = () => {
       detailsContainer: getCommonContainer({
           ownershipTransitNumber: getTextField(mortgageTransitNumberField),
          colony:getSelectField({...colonyFieldDup,jsonPath:"MortgageApplications[0].property.colony"}),
-         pincode: getTextField({...pincodeField, jsonPath: "MortgageApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         pincode: getTextField({...pincodeField,placeholder: {
+          labelName: "",
+          labelKey: ""
+        }, jsonPath: "MortgageApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }
@@ -245,7 +257,10 @@ const getTransitSitePropertyDetails = () => {
       detailsContainer: getCommonContainer({
           transitNumber: getTextField(TransitsiteTransitNumberField),
          colony:getSelectField({...colonyFieldDup,jsonPath:"PropertyImagesApplications[0].property.colony"}),
-         pincode: getTextField({...pincodeFieldTransitSite, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
+         pincode: getTextField({...pincodeField, placeholder: {
+          labelName: "",
+          labelKey: ""
+        }, jsonPath: "PropertyImagesApplications[0].property.pincode", required: false, props: {...pincodeField.props, disabled: true}}),
       })
   }
 }

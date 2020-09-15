@@ -12,6 +12,10 @@ import { getOwnershipSearchResults, setDocsForEditFlow, setDocumentData } from "
 import {applicationNumber} from '../rented-properties/apply'
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+let userInfo = JSON.parse(getUserInfo());
+
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Apply for Ownership Transfer",
@@ -28,6 +32,13 @@ const getData = async(action, state, dispatch) => {
       []
       )
       )
+   dispatch(
+    prepareFinalObject(
+      "Owners[0].ownerDetails.email",
+      userInfo.emailId
+      )
+    )
+     
   dispatch(
     prepareFinalObject(
       "OwnersTemp",
