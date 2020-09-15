@@ -366,18 +366,18 @@
           "description": "SELF_ATTESTED_PHOTO_TRANSFEREE_DESCRIPTION"
         },
         {
-          "code": "IDEMINITY_BOND",
+          "code": "IDEMINITY_BOND_OF_TRANSFEREE",
           "required": true,
           "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
           "fileType": "ALLTYPES",
           "description": "IDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
         },
         {
-          "code": "SELF_ATTESTED_PHOTO_WITNESSES",
+          "code": "SELF_ATTESTED_PHOTO_OF_WITNESSES",
           "required": true,
           "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
           "fileType": "ALLTYPES",
-          "description": "SELF_ATTESTED_PHOTO_WITNESSES_DESCRIPTION"
+          "description": "SELF_ATTESTED_PHOTO_OF_WITNESSES_DESCRIPTION"
         },
         {
           "code": "CLEARANCE_OF_PREVIOUS_LOANS",
@@ -387,11 +387,11 @@
           "description": "CLEARANCE_OF_PREVIOUS_DESCRIPTION"
         },
         {
-          "code": "SEWERAGE_CONNECTION_OCCUPATION_CERTIFICATE_FURNISH_PROOF",
+          "code": "SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_FURNISH_PROOF",
           "required": true,
           "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
           "fileType": "ALLTYPES",
-          "description": "SEWERAGE_CONNECTION_OCCUPATION_CERTIFICATE_FURNISH_PROOF_DESCRIPTION"
+          "description": "SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_FURNISH_PROOF_DESCRIPTION"
         },
         {
           "code": "AN_UNDERTAKING_BY_WAY_INDEMITY_BOND",

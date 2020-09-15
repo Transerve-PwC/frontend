@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_RegisteredWill": [{
+    "EstateBranch_OwnershipTransfer_UnRegisteredWill": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -255,8 +255,8 @@
                 "placeholder": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_PLACEHOLDER",
                 "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiary",
-                "path": "ownerDetails.isLegalHeirOrBeneficiary"
+                "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiaryOwner",
+                "path": "ownerDetails.isLegalHeirOrBeneficiaryOwner"
               },
               {
                 "label": "EST_SELECT_OWNER_LABEL",

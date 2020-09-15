@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_LeaseDeed": {
+    "EstateBranch_OtherCitizen_LeaseDeed": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -274,5 +274,5 @@
           }
         ]
       }
-    }
+    }]
   }

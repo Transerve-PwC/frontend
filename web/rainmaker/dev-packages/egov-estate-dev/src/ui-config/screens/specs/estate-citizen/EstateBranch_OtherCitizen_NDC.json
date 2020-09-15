@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_NDC": {
+    "EstateBranch_OtherCitizen_NDC": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -317,5 +317,5 @@
           }
         ]
       }
-    }
+    }]
   }

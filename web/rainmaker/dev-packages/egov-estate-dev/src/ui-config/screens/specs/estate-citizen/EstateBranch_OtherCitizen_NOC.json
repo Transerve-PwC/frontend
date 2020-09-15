@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OtherCitizen_NOC": {
+    "EstateBranch_OtherCitizen_NOC": [{
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -251,25 +251,25 @@
             "description": "INDEMNITY_BOND_OF_SELLER_DONOR_TRANSFEROR_DESCRIPTION"
           },
           {
-            "code": "SELF-ATTESTED PHOTO IDENTITY PROOF OF BOTH THE WITNESSES OF INDEMNITY BOND",
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_OF_INDEMNITY_BOND",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "SELF-ATTESTED PHOTO IDENTITY PROOF OF BOTH THE WITNESSES OF INDEMNITY BOND_DESCRIPTION"
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_OF_INDEMNITY_BOND_DESCRIPTION"
           },
           {
             "code": "AFFIDAVIT_FROM_SELLER_DONOR_TRANSFEROR",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "AFFIDAVIT_FROM_SELLER_DONOR_TRANSFER_OR_DESCRIPTION"
+            "description": "AFFIDAVIT_FROM_SELLER_DONOR_TRANSFEROR_DESCRIPTION"
           },
           {
-            "code": "SELF-ATTESTED_PHOTO_IDENTITY_PROOF_OF_APPLICANT",
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_APPLICANT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "SELF-ATTESTED_PHOTO_IDENTITY_PROOF_OF_APPLICANT_DESCRIPTION"
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_APPLICANT_DESCRIPTION"
           },
           {
             "code": "LIABILITY_AFFIDAVIT_OF_PURCHASER_DONOR_TRANSFEREE",
@@ -279,32 +279,32 @@
             "description": "LIABILITY_AFFIDAVIT_OF_PURCHASER_DONOR_TRANSFEREE_DESCRIPTION"
           },
           {
-            "code": "SELF-ATTESTED_PHOTO_IDENTITY_PROOF_OF_PURCHASER",
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_PURCHASER",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "SELF-ATTESTED_PHOTO_IDENTITY_PROOF_OF_PURCHASER_DESCRIPTION"
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_PURCHASER_DESCRIPTION"
           },
           {
-            "code": "DETAIL_OF_LEGAL_HEIRS_OF_THE_PURCHASER_AND_THEIR_PHOTOGRAPHS_DULY_ATTESTED_BY_GAZETTED_OFFICER/MAGISTRATE",
+            "code": "DETAIL_OF_LEGAL_HEIRS_OF_THE_PURCHASER_AND_THEIR_PHOTOGRAPHS_DULY_ATTESTED_BY_GAZETTED_OFFICER_OR_MAGISTRATE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "DETAIL_OF_LEGAL_HEIRS_OF_THE_PURCHASER_AND_THEIR_PHOTOGRAPHS_DULY_ATTESTED_BY_GAZETTED_OFFICER/MAGISTRATE_DESCRIPTION"
+            "description": "DETAIL_OF_LEGAL_HEIRS_OF_THE_PURCHASER_AND_THEIR_PHOTOGRAPHS_DULY_ATTESTED_BY_GAZETTED_OFFICER_OR_MAGISTRATE_DESCRIPTION"
           },
           {
-            "code": "CLEARANCE_AGAINST_LOAN/MORTGAGE",
+            "code": "CLEARANCE_AGAINST_LOAN_OR_MORTGAGE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CLEARANCE_AGAINST_LOAN/MORTGAGE_DESCRIPTION"
+            "description": "CLEARANCE_AGAINST_LOAN_OR_MORTGAGE_DESCRIPTION"
           },
           {
-            "code": "COPY_OF_SEWERAGE_CONNECTION/OCCUPATION_CERTIFICATE_DULY_ATTESTED",
+            "code": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DULY_ATTESTED",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "COPY_OF_SEWERAGE_CONNECTION/OCCUPATION_CERTIFICATE_DULY_ATTESTED_DESCRIPTION"
+            "description": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DULY_ATTESTED_DESCRIPTION"
           },
           {
             "code": "UNDERTAKING_BY_WAY_OF_AN_INDEMNITY_BOND",
@@ -343,5 +343,5 @@
           }
         ]
       }
-    }
+    }]
   }

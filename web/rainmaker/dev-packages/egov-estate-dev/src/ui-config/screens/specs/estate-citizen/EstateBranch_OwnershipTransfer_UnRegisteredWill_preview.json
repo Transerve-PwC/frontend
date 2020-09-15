@@ -44,23 +44,19 @@
                 ]    
             },
             {
-                "header": "EST_REGISTERED_WILL_DETAILS_HEADER",
+                "header": "EST_UNREGISTERED_WILL_DETAILS_HEADER",
                 "fields": [
                     {
-                        "label": "EST_DATE_OF_EXECUTION_OF_WILL_LABEL",
+                        "label": "EST_DATE_OF_EXECUTION_OF_UNREGISTERED_WILL_LABEL",
                         "jsonPath": "payload.applicationDetails.ownerDetails.dateOfExecutionOfWill"
-                    },
-                    {
-                        "label": "EST_REGISTRATION_NUMBER_OF_WILL_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.registrationNumberOfWill"
-                    },
-                    {
-                        "label": "EST_DATE_OF_REGISTRATION_OF_WILL_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.dateOfRegistrationOfWill"
                     },
                     {
                         "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                         "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiary"
+                    },
+                    {
+                        "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiaryOwner"
                     },
                     {
                         "label": "EST_SELECT_OWNER_LABEL",
@@ -82,6 +78,10 @@
                     {
                         "label": "EST_ADDRESS_LABEL",
                         "jsonPath": "payload.applicationDetails.ownerDetails.address"
+                    },
+                    {
+                        "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.relationWithDeceased"
                     }
                 ]    
             },
@@ -99,11 +99,15 @@
                     {
                         "label": "EST_ADDRESS_LABEL",
                         "jsonPath": "payload.applicationDetails.ownerDetails.address"
+                    },
+                    {
+                        "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                        "jsonPath": "payload.applicationDetails.ownerDetails.relationWithDeceased"
                     }
                 ]    
             },
             {
-                "header": "EST_BENEFICIARY_DETAILS_HEADER",
+                "header": "EST_WITNESS_DETAILS_HEADER",
                 "fields": [
                     {
                         "label": "EST_WITNESS_NAME_LABEL",
