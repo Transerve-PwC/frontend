@@ -263,20 +263,20 @@ export const stepsDataAllotment = [{
     labelKey: "EST_COMMON_AUCTION_DETAILS"
   },
   {
-    labelName: "Owner Details",
-    labelKey: "EST_COMMON_OWNER_DETAILS"
-  },
-  {
-    labelName: "Owner Documents",
-    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
-  },
-  {
     labelName: "Company Details",
     labelKey: "EST_COMMON_COMPANY_DETAILS"
   },
   {
     labelName: "Company Documents",
     labelKey: "EST_COMMON_COMPANY_DOCUMENTS"
+  },
+  {
+    labelName: "Owner Details",
+    labelKey: "EST_COMMON_OWNER_DETAILS"
+  },
+  {
+    labelName: "Owner Documents",
+    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
   },
   {
     labelName: "Court Case",
@@ -331,7 +331,7 @@ export const formwizardThirdStepAllotment = {
     id: "apply_form3"
   },
   children: {
-    ownerDetails
+    CompanyDetails
   },
   visible: false
 };
@@ -343,7 +343,7 @@ export const formwizardFourthStepAllotment = {
     id: "apply_form4"
   },
   children: {
-    ownerDocumentDetails_0
+    companyDocuments_0
   },
   visible: false
 };
@@ -355,7 +355,7 @@ export const formwizardFifthStepAllotment = {
     id: "apply_form5"
   },
   children: {
-    CompanyDetails
+    ownerDetails
   },
   visible: false
 };
@@ -367,7 +367,7 @@ export const formwizardSixthStepAllotment = {
     id: "apply_form6"
   },
   children: {
-    companyDocuments_0
+    ownerDocumentDetails_0
   },
   visible: false
 };

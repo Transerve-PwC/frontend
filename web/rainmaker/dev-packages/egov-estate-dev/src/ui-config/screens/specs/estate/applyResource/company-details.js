@@ -24,6 +24,36 @@ export const auctionDetailsHeader = getCommonTitle({
   }
 })
 
+const getIsCompanyRegisteredRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
+  gridDefination: {
+    xs: 12,
+    sm: 6,
+  },
+  jsonPath: "Properties[0].propertyDetails.isCompanyRegistered",
+  props: {
+    label: {
+      name: "Is Company Registered",
+      key: "EST_IS_COMPANY_REGISTERED_LABEL"
+    },
+    buttons: [{
+        labelName: "YES",
+        labelKey: "COMMON_YES",
+        value: "YES"
+      },
+      {
+        label: "NO",
+        labelKey: "COMMON_NO",
+        value: "NO"
+      }
+    ],
+    jsonPath: "Properties[0].propertyDetails.isCompanyRegistered",
+    required: true
+  },
+  required: true,
+  type: "array"
+};
 
 const companyNameField = {
   label: {
@@ -240,6 +270,7 @@ const commonCompanyDetails = () => {
       }
     }),
     auctionCard: getCommonContainer({
+      isCompanyRegistered: getIsCompanyRegisteredRadioButton,
       auctionId: getTextField(companyNameField),
       companyAddressField: getTextField(companyAddressField),
       companyRegNoField: getTextField(companyRegNoField),
