@@ -104,6 +104,26 @@ export const getSearchResults = async queryObject => {
   }
 };
 
+export const searchApplications = async queryObject => {
+  try {
+    const response = await httpRequest(
+      "post",
+      "/est-services/application/_search",
+      "",
+      queryObject
+    )
+    return response;
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+  }
+}
+
 export const getCount = async queryObject => {
   try {
     const response = await httpRequest(

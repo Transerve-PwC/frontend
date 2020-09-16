@@ -3,6 +3,8 @@ import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import get from "lodash/get";
 import {getOptions} from '../dataSources'
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { convertDateToEpoch } from "../../utils";
 
 const headerObj = value => {
     return getCommonHeader({
@@ -71,7 +73,7 @@ const getField = async (item, fieldData = {}, state) => {
         })
       }
       case "DATE_FIELD": {
-        return getDateField({
+        return {...getDateField({
           ...fieldProps,
           ...rest,
           props: {...fieldProps.props, inputProps: {
@@ -79,7 +81,13 @@ const getField = async (item, fieldData = {}, state) => {
         }
         },
           pattern: getPattern("Date")
-        })
+        }),
+        afterFieldChange: (action, state, dispatch) => {
+          dispatch(prepareFinalObject(
+            rest.jsonPath, convertDateToEpoch(action.value)
+          ))
+        }
+      }
       }
       case "TEXT_AREA": {
         return getTextField({

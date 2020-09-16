@@ -2,58 +2,125 @@ import {
   httpRequest
 } from "./api";
 import {
-  convertDateToEpoch,
-  getCurrentFinancialYear,
-  addYears,
+  convertDateToEpoch
 } from "../ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {
-  getTranslatedLabel,
-  updateDropDowns,
-  ifUserRoleExists,
-  convertEpochToDate,
-  calculateAge
-} from "../ui-config/screens/specs/utils";
-import {
-  handleScreenConfigurationFieldChange as handleField
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import store from "redux/store";
 import get from "lodash/get";
 import set from "lodash/set";
 import {
   getQueryArg,
-  getFileUrl,
-  getFileUrlFromAPI
 } from "egov-ui-framework/ui-utils/commons";
-import {
-  getTenantId
-} from "egov-ui-kit/utils/localStorageUtils";
-import {
-  setBusinessServiceDataToLocalStorage,
-  getMultiUnits,
-  acceptedFiles,
-} from "egov-ui-framework/ui-utils/commons";
-import commonConfig from "config/common.js";
-import {
-  localStorageGet
-} from "egov-ui-kit/utils/localStorageUtils";
-import {
-  getSearchResults,
-  getMortgageSearchResults
-} from "./commons";
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
-import {
-  setDocsForEditFlow
-} from "./commons";
-import {
-  getLocaleLabels
-} from "egov-ui-framework/ui-utils/commons";
 let userInfo = JSON.parse(getUserInfo());
+
+export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destinationJsonPath) => {
+  let applicationDocuments = get(
+    state.screenConfiguration.preparedFinalObject,
+    sourceJsonPath,
+    []
+  ) || []
+  applicationDocuments = applicationDocuments.filter(item => !!item.active)
+  let uploadedDocuments = {};
+  let fileStoreIds =
+    applicationDocuments &&
+    applicationDocuments.map(item => item.fileStoreId).join(",");
+  const fileUrlPayload =
+    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+  applicationDocuments &&
+    applicationDocuments.forEach((item, index) => {
+      uploadedDocuments[index] = [
+        {
+          fileName:
+            (fileUrlPayload &&
+              fileUrlPayload[item.fileStoreId] &&
+              decodeURIComponent(
+                getFileUrl(fileUrlPayload[item.fileStoreId])
+                  .split("?")[0]
+                  .split("/")
+                  .pop()
+                  .slice(13)
+              )) ||
+            `Document - ${index + 1}`,
+          fileStoreId: item.fileStoreId,
+          fileUrl: Object.values(fileUrlPayload)[index],
+          documentType: item.documentType,
+          tenantId: item.tenantId,
+          id: item.id
+        }
+      ];
+    });
+  dispatch(
+    prepareFinalObject(destinationJsonPath, uploadedDocuments)
+  );
+};
+
+
+export const applyforApplication = async (state, dispatch, activeIndex) => {
+  try {
+    let queryObject = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Applications", {})))
+    const tenantId = userInfo.permanentCity;
+    set(queryObject[0], "tenantId", tenantId);
+
+    const id = get(queryObject[0], "id");
+    let response;
+    if(!id) {
+      set(queryObject[0], "state", "");
+      set(queryObject[0], "action", "");
+      response = await httpRequest(
+        "post",
+        "/est-services/application/_create",
+        "",
+        [],
+        { Applications : queryObject }
+      );
+    } else {
+        if(activeIndex === 0) {
+          set(queryObject[0], "action", "MODIFY")
+        } else {
+          set(queryObject[0], "action", "SUBMIT")
+          }
+        let applicationDocuments = get(queryObject[0], "applicationDocuments") || [];
+        applicationDocuments = applicationDocuments.filter(item => !!item && !!item.fileStoreId).filter((item, index, arr) => (arr.findIndex((arrItem) => arrItem.fileStoreId === item.fileStoreId)) === index).map(item => ({...item, active: true}))
+          const removedDocs = get(state.screenConfiguration.preparedFinalObject, "temp[0].removedDocs") || [];
+          applicationDocuments = [...applicationDocuments, ...removedDocs]
+          set(queryObject[0], "applicationDocuments", applicationDocuments)
+          response = await httpRequest(
+            "post",
+            "/est-services/application/_update",
+            "",
+            [],
+            { Applications: queryObject }
+          );
+      }
+        let {Applications} = response
+        let applicationDocuments = Applications[0].applicationDocuments || [];
+        const removedDocs = applicationDocuments.filter(item => !item.active)
+        applicationDocuments = applicationDocuments.filter(item => !!item.active)
+        Applications = [{...Applications[0], applicationDocuments }]
+        dispatch(prepareFinalObject("Applications", Applications));
+        dispatch(
+          prepareFinalObject(
+            "temp[0].removedDocs",
+            removedDocs
+          )
+        );
+        // const applicationNumber = Owners[0].ownerDetails.applicationNumber
+        await setDocsForEditFlow(state, dispatch, "Applications[0].applicationDocuments", "temp[0].uploadedDocsInRedux");
+        // setApplicationNumberBox(state, dispatch, applicationNumber, "apply")
+        return true;
+  } catch (error) {
+    dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    console.log(error);
+    return false;
+  }
+}
+
+
 
 export const applyEstates = async (state, dispatch, activeIndex) => {
   try {

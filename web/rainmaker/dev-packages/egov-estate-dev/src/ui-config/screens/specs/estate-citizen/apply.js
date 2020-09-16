@@ -23,7 +23,7 @@ const getPropertyData = async (action, state, dispatch) => {
   const response = await getSearchResults(queryObject)
   if(!!response.Properties && !!response.Properties.length) {
     dispatch(prepareFinalObject("property", response.Properties[0]));
-    dispatch(prepareFinalObject("payload.property.id", response.Properties[0].propertyDetails.propertyId ))
+    dispatch(prepareFinalObject("Applications[0].property.id", response.Properties[0].propertyDetails.propertyId ))
   }
 }
 
@@ -36,7 +36,7 @@ const getData = async (action, state, dispatch) => {
   const response = await getSearchResults(queryObject)
   if(!!response.Properties && !!response.Properties.length) {
     dispatch(prepareFinalObject("property", response.Properties[0]));
-    dispatch(prepareFinalObject("payload.property.id", response.Properties[0].propertyDetails.propertyId ))
+    dispatch(prepareFinalObject("Applications[0].property.id", response.Properties[0].propertyDetails.propertyId ))
   }
     await new Promise((resolve) => {
         setTimeout(resolve, 0)
@@ -44,7 +44,10 @@ const getData = async (action, state, dispatch) => {
     const applicationType = getQueryArg(window.location.href, "applicationType");
     const dataConfig = require(`./${applicationType}.json`);
     let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType][0];
-    
+    const values = applicationType.split("_")
+    dispatch(prepareFinalObject("Applications[0].branchType", values[0] ))
+    dispatch(prepareFinalObject("Applications[0].moduleType", values[1] ))
+    dispatch(prepareFinalObject("Applications[0].applicationType", values[2] ))
     //Register all the datasources in the config.
     !!dataSources && dataSources.forEach(dataSource => dataSource.type === "path" ?
       registerDatasource({...dataSource, data: response.Properties[0]})
@@ -52,7 +55,7 @@ const getData = async (action, state, dispatch) => {
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
-    const third_step = await setThirdStep(state, dispatch)
+    const third_step = await setThirdStep(state, dispatch, applicationType)
     inputProps.push(...second_step_sections);
     return {
       div: {
