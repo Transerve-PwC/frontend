@@ -143,6 +143,14 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         const {transitNumber} = Properties[0]
         setApplicationNumberBox(state, dispatch, transitNumber, "apply")
         dispatch(toggleSpinner())
+        dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+            "props.disabled",
+            true
+          )
+        )
         return true;
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));

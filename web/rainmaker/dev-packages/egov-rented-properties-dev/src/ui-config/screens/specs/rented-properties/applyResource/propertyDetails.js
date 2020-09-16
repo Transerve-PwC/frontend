@@ -91,6 +91,25 @@ const colonyField = {
                 )
             }
         })
+        if(action.value === 'COLONY.KUMHAR' || action.value === 'COLONY.MILK'){
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                    "props.getUrl",
+                    "/rp-services/v1/excel/read?fileFormat=0"
+                )
+            );
+        }else{
+            dispatch(
+                handleField(
+                    "apply",
+                    "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                    "props.getUrl",
+                    "/rp-services/v1/excel/read?fileFormat=1"
+                )
+            );
+        }
       }
 }
 

@@ -6,8 +6,8 @@ let userInfo = JSON.parse(getUserInfo());
 
 const rentHolderHeader = getCommonTitle(
     {
-        labelName: "Rent holder Particulars",
-        labelKey: "RP_RENT_HOLDER_PARTICULAR_HEADER"
+        labelName: "Owner Details",
+        labelKey: "RP_OWNER_DETAILS_HEADER"
     },
     {
         style: {

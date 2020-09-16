@@ -888,7 +888,7 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
               S3_BUCKET.endPoint,
               moduleName,
               file,
-              commonConfig.tenantId
+              getTenantId()
             );
             handleDocument(file, fileStoreId);
           } else {
@@ -896,7 +896,7 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
               S3_BUCKET.endPoint,
               moduleName,
               file,
-              commonConfig.tenantId
+              getTenantId()
             );
             handleDocument(file, fileStoreId);
           }
@@ -971,7 +971,7 @@ export const setXLSTableData = async({demands, payments, componentJsonPath, scre
 
 export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStoreId) => {
   const queryObject = [
-    {key: "tenantId", value: "ch"},
+    {key: "tenantId", value: getTenantId()},
     {key: "fileStoreId", value: fileStoreId}
   ]
   try {
