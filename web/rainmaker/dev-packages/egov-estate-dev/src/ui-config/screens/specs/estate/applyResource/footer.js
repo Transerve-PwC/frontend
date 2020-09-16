@@ -677,7 +677,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
-          "components.div.children.formwizardStepEight"
+          "components.div.children.formwizardStepFour"
         ),
         dispatch
       );
