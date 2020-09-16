@@ -79,7 +79,7 @@ export const searchApplicationResults = {
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
       onRowClick: (row, index) => {
-        // onRowClick(row);
+        onApplicationRowClick(row);
       }
     },
     customSortColumn: {
@@ -99,6 +99,10 @@ export const searchApplicationResults = {
     }
   }
 };
+
+const onApplicationRowClick = rowData => {
+  window.location.href = `preview?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
+}
 
 const onRowClick = rowData => {
   const {roles = []} = userInfo

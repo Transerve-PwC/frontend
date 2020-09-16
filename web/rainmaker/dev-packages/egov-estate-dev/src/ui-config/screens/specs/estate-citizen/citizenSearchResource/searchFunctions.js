@@ -142,9 +142,8 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
         [getTextToLocalMapping("File No")]: item.fileNumber || "-",
         [getTextToLocalMapping("Site Number")]: item.siteNumber,
         [getTextToLocalMapping("Owner Name")]: !!item.propertyDetails.owners ? item.propertyDetails.owners.map(item => item.ownerDetails.ownerName).join(",") || "-" : "-",
+        ["propertyId"]: item.propertyDetails.propertyId
       }));
-
-      
 
       dispatch(
         handleField(

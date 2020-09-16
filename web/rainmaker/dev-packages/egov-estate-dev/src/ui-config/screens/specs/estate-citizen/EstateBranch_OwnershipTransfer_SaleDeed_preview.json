@@ -7,39 +7,39 @@
                 "fields": [
                     {
                         "label": "EST_FILE_NUMBER_LABEL",
-                        "jsonPath": "property.fileNumber"
+                        "jsonPath": "Applications[0].property.fileNumber"
                     },
                     {
                         "label": "EST_CATEGORY_LABEL",
-                        "jsonPath": "property.category"
+                        "jsonPath": "Applications[0].property.category"
                     },
                     {
                         "label": "EST_SUB_CATEGORY_LABEL",
-                        "jsonPath": "property.subCategory"
+                        "jsonPath": "Applications[0].property.subCategory"
                     },
                     {
                         "label": "EST_SITE_NO_LABEL",
-                        "jsonPath": "property.siteNumber"
+                        "jsonPath": "Applications[0].property.siteNumber"
                     },
                     {
                         "label": "EST_SECTOR_NO_LABEL",
-                        "jsonPath": "property.sectorNumber"
+                        "jsonPath": "Applications[0].property.sectorNumber"
                     },
                     {
                         "label": "EST_PROPERTY_TYPE_LABEL",
-                        "jsonPath": "property.propertyDetails.propertyType"
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyType"
                     },
                     {
                         "label": "EST_LAST_NOC_DATE_LABEL",
-                        "jsonPath": "property.propertyDetails.lastNocDate"
+                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
                     },
                     {
                         "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
-                        "jsonPath": "property.propertyDetails.propertyApplicationNumber"
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyApplicationNumber"
                     },
                     {
                         "label": "EST_DUE_AMOUNT_LABEL",
-                        "jsonPath": "property.propertyDetails.dueAmount"
+                        "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
                     }
                 ]
             },

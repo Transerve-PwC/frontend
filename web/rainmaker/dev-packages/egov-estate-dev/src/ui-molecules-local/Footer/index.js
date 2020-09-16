@@ -13,6 +13,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
+import { WF_PROPERTY_MASTER } from "../../ui-constants";
 
 class Footer extends React.Component {
   state = {
@@ -76,7 +77,7 @@ class Footer extends React.Component {
     }
     let assignee = [];
     switch(moduleName) {
-      case "PropertyMaster": {
+      case WF_PROPERTY_MASTER: {
         if(!!action && dataPath[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
           const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
           assignee = !!assigner.uuid ? [assigner.uuid] : []

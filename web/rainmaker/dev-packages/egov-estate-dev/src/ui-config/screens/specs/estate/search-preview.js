@@ -10,6 +10,7 @@ import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails } from "./preview-resource/preview-properties";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
 
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
@@ -173,7 +174,7 @@ const estateDetailPreview = {
             componentPath: "WorkFlowContainer",
             props: {
               dataPath: "Properties",
-              moduleName: "PropertyMaster",
+              moduleName: WF_PROPERTY_MASTER,
               updateUrl: "/est-services/property-master/_update",
               style: {
                 wordBreak: "break-word"
