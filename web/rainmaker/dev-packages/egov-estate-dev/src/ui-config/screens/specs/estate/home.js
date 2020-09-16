@@ -60,7 +60,7 @@ const cardItems = [
       labelName: "Issuing Notice"
     },
     icon: < FormIcon / > ,
-    route: "search"
+    route: "/estate-citizen/property-search?type=EstateBranch_InternalServices_IssuanceOfNotice"
   }
 ]
 
