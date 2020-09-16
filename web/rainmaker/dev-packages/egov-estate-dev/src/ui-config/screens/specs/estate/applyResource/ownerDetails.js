@@ -56,9 +56,12 @@ const ownerNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 150,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
+  props: {
+    disabled: true
+  }
 }
 
 const fatherHusbandNameField = {
@@ -74,9 +77,12 @@ const fatherHusbandNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName"
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
+  props: {
+    disabled: true
+  }
 }
 
 const getRelationshipRadioButton = {
@@ -95,19 +101,21 @@ const getRelationshipRadioButton = {
     buttons: [{
         labelName: "Father",
         labelKey: "COMMON_RELATION_FATHER",
-        value: "FATHER"
+        value: "FATHER",
+        disabled: true
       },
       {
         label: "Husband",
         labelKey: "COMMON_RELATION_HUSBAND",
-        value: "HUSBAND"
+        value: "HUSBAND",
+        disabled: true
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianRelation",
-    required: true
+    required: false,
   },
-  required: true,
-  type: "array"
+  required: false,
+  type: "array",
 };
 
 const addressField = {
@@ -123,13 +131,16 @@ const addressField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   props: {
     multiline: true,
     rows: 2
   },
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
+  props: {
+    disabled: true
+  }
 }
 
 const mobileNumberField = {
@@ -147,6 +158,9 @@ const mobileNumberField = {
   //   disabled: true
   // },
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber",
+  props: {
+    disabled: true
+  }
 }
 
 const shareField = {
@@ -162,9 +176,12 @@ const shareField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  required: false,
   maxLength: 5,
-  jsonPath: "Properties[0].propertyDetails.owners[0].share"
+  jsonPath: "Properties[0].propertyDetails.owners[0].share",
+  props: {
+    disabled: true
+  }
 }
 
 const cpNumberField = {
@@ -181,7 +198,10 @@ const cpNumberField = {
     sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber"
+  jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber",
+  props: {
+    disabled: true
+  }
 }
 
 const possessionDateField = {
@@ -194,12 +214,13 @@ const possessionDateField = {
     labelKey: "EST_POSSESSION_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  required: true,
+  required: false,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
-    }
+    },
+    disabled: true
   }
 }
 
@@ -217,7 +238,8 @@ const dateOfAllotmentField = {
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
-    }
+    },
+    disabled: true
   }
 }
 
@@ -235,7 +257,10 @@ const allotmentNumberField = {
     sm: 6
   },
   maxLength: 50,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber"
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber",
+  props: {
+    disabled: true
+  }
 }
 
 const commonOwnerInformation = () => {
@@ -296,3 +321,182 @@ export const ownerDetails = getCommonCard({
     }
   })
 })
+
+export const getActionDefinationForOwnerDetailsFields = (disabled = true, noOfItems) => {
+  const actionDefination = [{
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.address",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.address",
+    property: "props.required",
+    value: !disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.allotmentNumber",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.cpNumber",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.dateOfAllotment",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.fatherHusbandName",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.fatherHusbandName",
+    property: "props.required",
+    value: !disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.mobileNumber",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.ownerName",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.ownerName",
+    property: "props.required",
+    value: !disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.possessionDate",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.possessionDate",
+    property: "props.required",
+    value: !disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.relationship.props.buttons[0]",
+    property: "disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.relationship.props.buttons[1]",
+    property: "disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.relationship",
+    property: "props.required",
+    value: !disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.share",
+    property: "props.disabled",
+    value: disabled
+  },
+  {
+    path: "components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.share",
+    property: "props.required",
+    value: !disabled
+  }
+];
+
+  for (var i=0; i<noOfItems; i++) {
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.address`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.address`,
+      property: "props.required",
+      value: !disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.allotmentNumber`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.cpNumber`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.dateOfAllotment`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.fatherHusbandName`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.fatherHusbandName`,
+      property: "props.required",
+      value: !disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.mobileNumber`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.ownerName`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.ownerName`,
+      property: "props.required",
+      value: !disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.possessionDate`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.possessionDate`,
+      property: "props.required",
+      value: !disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.relationship.props.buttons[0]`,
+      property: "disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.relationship.props.buttons[1]`,
+      property: "disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.relationship`,
+      property: "props.required",
+      value: !disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.share`,
+      property: "props.disabled",
+      value: disabled
+    })
+    actionDefination.push({
+      path: `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.share`,
+      property: "props.required",
+      value: !disabled
+    })
+  }
+  
+  return actionDefination;
+}

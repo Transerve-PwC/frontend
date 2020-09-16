@@ -1,6 +1,6 @@
 const { getCommonContainer, getCommonHeader } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { getQueryArg } = require("egov-ui-framework/ui-utils/commons");
-const { searchApplications } = require("../../../../ui-utils/commons");
+const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
 
 
@@ -20,7 +20,7 @@ const getData = async (action, state, dispatch) => {
     const queryObject = [
         {key: "applicationNumber", value: applicationNumber}
       ]
-    const response = await searchApplications(queryObject)
+    const response = await getSearchApplicationsResults(queryObject)
     try {
        const {Applications = []} = response;
        const {branchType, moduleType, applicationType} = Applications[0];

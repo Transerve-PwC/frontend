@@ -60,7 +60,7 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
 };
 
 
-export const applyforApplication = async (state, dispatch, activeIndex) => {
+export const applyforApplication = async (state, dispatch, activeIndex, screenName = "apply") => {
   try {
     let queryObject = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Applications", {})))
     const tenantId = userInfo.permanentCity;
@@ -202,7 +202,11 @@ export const applyEstates = async (state, dispatch, activeIndex) => {
         }
       );
     } else {
-      if ([0,1,2,3,4,5,6,7].indexOf(activeIndex) !== -1) {
+      let tabsArr = [0,1,2,3,4,5,6,7,8];
+      if (screenName == "allotment") {
+        tabsArr.pop();
+      }
+      if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")
       } else {
         set(queryObject[0], "action", "SUBMIT")

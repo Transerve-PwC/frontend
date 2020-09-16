@@ -46,7 +46,6 @@ import {
 import {
   CompanyDetails
 } from './company-details'
-// import {} from ''
 
 const documentCardConfig = {
   header: getCommonTitle({
@@ -93,44 +92,52 @@ export const companyDocuments_0 = getCommonCard({
 
 
 export const stepsData = [{
-    labelName: "Property Details",
-    labelKey: "EST_COMMON_PROPERTY_DETAILS"
-  },
-  {
-    labelName: "Auction Details",
-    labelKey: "EST_COMMON_AUCTION_DETAILS"
-  },
-  {
-    labelName: "Owner Details",
-    labelKey: "EST_COMMON_OWNER_DETAILS"
-  },
-  {
-    labelName: "Purchaser Details",
-    labelKey: "EST_COMMON_PURCHASER_DETAILS"
-  },
-  {
-    labelName: "Court Case",
-    labelKey: "EST_COMMON_COURT_CASE_DETAILS"
-  },
-  {
-    labelName: "Payment Details",
-    labelKey: "EST_COMMON_PAYMENT_DETAILS"
-  },
-  {
-    labelName: "Documents",
-    labelKey: "EST_COMMON_DOCUMENTS"
-  },
-  {
-    labelName: "Summary",
-    labelKey: "EST_COMMON_SUMMARY"
-  }
+  labelName: "Property Details",
+  labelKey: "EST_COMMON_PROPERTY_DETAILS"
+},
+{
+  labelName: "Auction Details",
+  labelKey: "EST_COMMON_AUCTION_DETAILS"
+},
+{
+  labelName: "Owner Details",
+  labelKey: "EST_COMMON_OWNER_DETAILS"
+},
+{
+  labelName: "Purchaser Details",
+  labelKey: "EST_COMMON_PURCHASER_DETAILS"
+},
+{
+  labelName: "Company Details",
+  labelKey: "EST_COMMON_COMPANY_DETAILS"
+},
+{
+  labelName: "Court Case",
+  labelKey: "EST_COMMON_COURT_CASE_DETAILS"
+},
+{
+  labelName: "Payment Details",
+  labelKey: "EST_COMMON_PAYMENT_DETAILS"
+},
+{
+  labelName: "Documents",
+  labelKey: "EST_COMMON_DOCUMENTS"
+},
+{
+  labelName: "Company Documents",
+  labelKey: "EST_COMMON_DOCUMENTS_DETAILS"
+},
+{
+  labelName: "Summary",
+  labelKey: "EST_COMMON_SUMMARY"
+}
 ];
 
 export const stepper = getStepperObject({
-    props: {
-      activeStep: 0
-    }
-  },
+  props: {
+    activeStep: 0
+  }
+},
   stepsData
 );
 
@@ -169,23 +176,18 @@ export const formwizardThirdStep = {
   },
   children: {
     ownerDetails
+  },
+  visible: false
+};
 
-    // ownerDetails: {
-    //   uiFramework: "custom-atoms",
-    //   componentPath: "Div",
-    //   children: {
-    //     ownerDetails
-    //   },
-    //   visible: true
-    // },
-    // CompanyDetails: {
-    //   uiFramework: "custom-atoms",
-    //   componentPath: "Div",
-    //   children: {
-    //     CompanyDetails
-    //   },
-    //   visible: false
-    // },
+export const formwizardStepFour = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_4form"
+  },
+  children: {
+    CompanyDetails
   },
   visible: false
 };
@@ -235,7 +237,18 @@ export const formwizardSeventhStep = {
     id: "apply_form7"
   },
   children: {
-    // ownerDocumentDetails_0
+    ownerDocumentDetails_0
+  },
+  visible: false
+}
+
+export const formwizardStepEight = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form8a"
+  },
+  children: {
     companyDocuments_0
   },
   visible: false
@@ -263,20 +276,20 @@ export const stepsDataAllotment = [{
     labelKey: "EST_COMMON_AUCTION_DETAILS"
   },
   {
-    labelName: "Owner Details",
-    labelKey: "EST_COMMON_OWNER_DETAILS"
-  },
-  {
-    labelName: "Owner Documents",
-    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
-  },
-  {
     labelName: "Company Details",
     labelKey: "EST_COMMON_COMPANY_DETAILS"
   },
   {
     labelName: "Company Documents",
     labelKey: "EST_COMMON_COMPANY_DOCUMENTS"
+  },
+  {
+    labelName: "Owner Details",
+    labelKey: "EST_COMMON_OWNER_DETAILS"
+  },
+  {
+    labelName: "Owner Documents",
+    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
   },
   {
     labelName: "Court Case",
@@ -293,10 +306,10 @@ export const stepsDataAllotment = [{
 ];
 
 export const stepperAllotment = getStepperObject({
-    props: {
-      activeStep: 0
-    }
-  },
+  props: {
+    activeStep: 0
+  }
+},
   stepsDataAllotment
 );
 
@@ -331,7 +344,7 @@ export const formwizardThirdStepAllotment = {
     id: "apply_form3"
   },
   children: {
-    ownerDetails
+    CompanyDetails
   },
   visible: false
 };
@@ -343,7 +356,7 @@ export const formwizardFourthStepAllotment = {
     id: "apply_form4"
   },
   children: {
-    ownerDocumentDetails_0
+    companyDocuments_0
   },
   visible: false
 };
@@ -355,7 +368,7 @@ export const formwizardFifthStepAllotment = {
     id: "apply_form5"
   },
   children: {
-    CompanyDetails
+    ownerDetails
   },
   visible: false
 };
@@ -367,7 +380,7 @@ export const formwizardSixthStepAllotment = {
     id: "apply_form6"
   },
   children: {
-    companyDocuments_0
+    ownerDocumentDetails_0
   },
   visible: false
 };

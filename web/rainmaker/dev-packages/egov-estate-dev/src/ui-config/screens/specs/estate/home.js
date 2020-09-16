@@ -28,7 +28,7 @@ const cardItems = [
       labelName: "Search Applications"
     },
     icon: < FormIcon / > ,
-    route: "search"
+    route: "search-application"
   },
   {
     label: {

@@ -104,14 +104,14 @@ export const getSearchResults = async queryObject => {
   }
 };
 
-export const searchApplications = async queryObject => {
+export const getSearchApplicationsResults = async queryObject => {
   try {
     const response = await httpRequest(
       "post",
       "/est-services/application/_search",
       "",
       queryObject
-    )
+    );
     return response;
   } catch (error) {
     store.dispatch(
@@ -122,7 +122,7 @@ export const searchApplications = async queryObject => {
       )
     );
   }
-}
+};
 
 export const getCount = async queryObject => {
   try {

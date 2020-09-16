@@ -9,7 +9,7 @@ import {
     getDateField,
     getLabel
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage} from "./functions";
+  import { searchApiCall, searchTransferProperties,searchDuplicateCopy, searchMortgage,searchApplicationApiCall} from "./functions";
   
   const colonyField = {
     label: {
@@ -116,6 +116,23 @@ import {
     jsonPath: "searchScreen.SECTORNumber"
   }
 
+  const applicationNumberField = {
+    label: {
+        labelName: "Application Number",
+        labelKey: "ESTATE_APPLICATION_NUMBER_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Application Number",
+        labelKey: "ESTATE_APPLICATION_NUMBER_PLACEHOLDER"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    required: false,
+    jsonPath: "searchScreen.applicationNumber"
+  }
+
   const FileNameField = {
     label: {
         labelName: "File Name",
@@ -124,6 +141,23 @@ import {
     placeholder: {
         labelName: "Enter File Name",
         labelKey: "ESTATE_FILE_NAME_PLACEHOLDER"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    required: false,
+    jsonPath: "searchScreen.fileNumber"
+  }
+
+  const FileNumberField = {
+    label: {
+        labelName: "File Number",
+        labelKey: "ESTATE_FILE_NUMBER_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter File Name",
+        labelKey: "ESTATE_FILE_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -289,6 +323,37 @@ import {
           onClickDefination: {
             action: "condition",
             callBack: searchApiCall
+          }
+        }, lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
+        }
+      })
+    })
+  });
+
+  export const estateApplicationSearch = getCommonCard({
+    subParagraph: getCommonParagraph({
+      labelName: "Please provide atleast one parameter to search Property",
+      labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_PROPERTY_LABEL"
+    }),
+    colonyContainer: getCommonContainer({
+      fileNumber: getTextField(FileNumberField),
+      status: getSelectField(statusField)
+    }),
+    transitNumberContainer: getCommonContainer({
+        sectorNumber: getTextField(applicationNumberField),
+    }),
+    button: getCommonContainer({
+      buttonContainer: getCommonContainer(
+        {...buttonItem, searchButton: {...buttonItem.searchButton, 
+          onClickDefination: {
+            action: "condition",
+            callBack: searchApplicationApiCall
           }
         }, lastCont: {
           uiFramework: "custom-atoms",

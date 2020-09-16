@@ -502,7 +502,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandLf",
           "visible",
           true
         )
@@ -512,7 +512,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandLf",
           "visible",
           false
         )
@@ -635,7 +635,7 @@ const commonLicenseInformation = () => {
 
 export const licenseFeeForYearDetails = getCommonCard({
   detailsContainer: getCommonContainer({
-    multipleRentContainer: {
+    multipleLicenseContainer: {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {

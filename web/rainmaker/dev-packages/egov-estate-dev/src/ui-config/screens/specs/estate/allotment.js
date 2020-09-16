@@ -126,7 +126,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(
     handleField(
       "allotment",
-      `components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardSixthStepAllotment.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -265,7 +265,7 @@ export const setCompanyDocs = async  (action, state ,dispatch, partner = 0) => {
   dispatch(
     handleField(
       "allotment",
-      `components.div.children.formwizardSixthStepAllotment.children.companyDocuments_${partner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardFourthStepAllotment.children.companyDocuments_${partner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
