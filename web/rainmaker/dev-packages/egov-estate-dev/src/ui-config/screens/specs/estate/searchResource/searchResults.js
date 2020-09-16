@@ -60,6 +60,46 @@ export const searchResults = {
   }
 };
 
+export const searchApplicationResults = {
+  uiFramework: "custom-molecules",
+  componentPath: "Table",
+  visible: true,
+  props: {
+    columns: [
+      getTextToLocalMapping("File Number"),
+      getTextToLocalMapping("Application Number"),
+      getTextToLocalMapping("Status"),
+      LAST_MODIFIED_ON
+    ],
+    options: {
+      filter: false,
+      download: false,
+      responsive: "stacked",
+      selectableRows: false,
+      hover: true,
+      rowsPerPageOptions: [10, 15, 20],
+      onRowClick: (row, index) => {
+        // onRowClick(row);
+      }
+    },
+    customSortColumn: {
+      column: "Application Date",
+      sortingFn: (data, i, sortDateOrder) => {
+        const epochDates = data.reduce((acc, curr) => {
+          acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
+          return acc;
+        }, []);
+        const order = sortDateOrder === "asc" ? true : false;
+        const finalData = sortByEpoch(epochDates, !order).map(item => {
+          item.pop();
+          return item;
+        });
+        return { data: finalData, currentOrder: !order ? "asc" : "desc" };
+      }
+    }
+  }
+};
+
 const onRowClick = rowData => {
   const {roles = []} = userInfo
   const findItem = roles.find(item => item.code === "CTL_CLERK");
