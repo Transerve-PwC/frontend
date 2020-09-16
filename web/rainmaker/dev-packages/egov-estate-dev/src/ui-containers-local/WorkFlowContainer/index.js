@@ -144,108 +144,27 @@ class WorkFlowContainer extends React.Component {
             ...removedDocs
           ]);
         })
-        
-
-        // Accessories issue fix by Gyan
-        // let accessories = get(data[0], "tradeLicenseDetail.accessories");
-        // let tradeUnits = get(data[0], "tradeLicenseDetail.tradeUnits");
-        // set(
-        //   data[0],
-        //   "tradeLicenseDetail.tradeUnits",
-        //   getMultiUnits(tradeUnits)
-        // );
-        // set(
-        //   data[0],
-        //   "tradeLicenseDetail.accessories",
-        //   getMultiUnits(accessories)
-        // );
       }
     }
-    if (dataPath === "BPA") {
-      data.assignees = [];
-      if (data.assignee) {
-        data.assignee.forEach(assigne => {
-          data.assignees.push({
-            uuid: assigne
-          });
-        });
-      }
-      if (data.wfDocuments) {
-        for (let i = 0; i < data.wfDocuments.length; i++) {
-          data.wfDocuments[i].fileStore = data.wfDocuments[i].fileStoreId
-        }
-      }
-    }
-
-    const fileNumber = getQueryArg(
-      window.location.href,
-      "filenumber"
-    );
-
-    /* if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-      data = data[0];
-    }
-
-    if (moduleName === "NewSW1") {
-      dataPath = "SewerageConnection";
-    } */
-
     try {
       const payload = await httpRequest("post", updateUrl, "", [], {
         [dataPath]: data
       });
-
       this.setState({
         open: false
       });
-
       if (payload) {
         let path = "";
-
-        if (moduleName == "PT.CREATE" || moduleName == "ASMT") {
-          this.props.setRoute(`/pt-mutation/acknowledgement?${this.getPurposeString(
-            label
-          )}&moduleName=${moduleName}&applicationNumber=${get(payload, 'Properties[0].acknowldgementNumber', "")}&tenantId=${get(payload, 'Properties[0].tenantId', "")}`);
-          return;
+        switch(this.props.moduleName) {
+          case "PropertyMaster": {
+            path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
+          }
         }
-
-        if (moduleName == "PropertyMaster") path = "Properties[0].fileNumber";
-        else if (moduleName === "NewTL") path = "Licenses[0].licenseNumber";
-        else if (moduleName === "FIRENOC") path = "FireNOCs[0].fireNOCNumber";
-        else path = "Licenses[0].licenseNumber";
-        const fileNumber = get(payload, path, "");
         window.location.href = `acknowledgement?${this.getPurposeString(
           label
-        )}&fileNumber=${fileNumber}&tenantId=${tenant}`;
-
-        if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-          window.location.href = `acknowledgement?${this.getPurposeString(label)}&applicationNumber=${applicationNumber}&tenantId=${tenant}`;
-        }
-
+        )}${path}`;
       }
     } catch (e) {
-      if (moduleName === "BPA") {
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Documents Required",
-            labelKey: e.message
-          },
-          "error"
-        );
-      } else {
-
-        if (e.message) {
-          toggleSnackbar(
-            true,
-            {
-              labelName: `We could not process your request right now. Please try after sometime` + e.message,
-              labelKey: `We could not process your request right now. Please try after sometime` + e.message
-            },
-            "error"
-          );
-          
-        } else {
           toggleSnackbar(
             true,
             {
@@ -255,9 +174,7 @@ class WorkFlowContainer extends React.Component {
             "error"
           );
         }
-      }
     }
-  };
 
   createWorkFLow = async (label, isDocRequired) => {
     const { toggleSnackbar, dataPath, preparedFinalObject } = this.props;

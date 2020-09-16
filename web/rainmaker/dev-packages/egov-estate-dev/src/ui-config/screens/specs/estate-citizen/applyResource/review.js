@@ -1,8 +1,17 @@
-import { getCommonSubHeader, getCommonGrayCard, getLabelWithValue, getCommonContainer, getCommonCard, getCommonTitle, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonSubHeader, getCommonGrayCard, getLabelWithValue as _getLabelWithValue, getCommonContainer, getCommonCard, getCommonTitle, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { changeStep } from "../footer";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { convertEpochToDate } from "../../utils";
 
-const headerDiv = (isEditable = true, label, index) => {
+function getLabelWithValue(labelName, path, visible) {
+  const label = _getLabelWithValue(labelName, path);
+  label.visible = visible
+  // label.gridDefination.xs = 12;
+  return label;
+}
+
+
+const headerDiv = (isEditable = true, label, step) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -47,7 +56,7 @@ const headerDiv = (isEditable = true, label, index) => {
         onClickDefination: {
         action: "condition",
         callBack: (state, dispatch) => {
-            changeStep(state, dispatch, "apply", "", index);
+            changeStep(state, dispatch, "apply", "", step);
         }
     }
     }
@@ -55,7 +64,7 @@ const headerDiv = (isEditable = true, label, index) => {
   }
 }
 
-export const viewFour = (section) => {
+export const viewFour = (section, data) => {
   const {fields = [], type} = section
   switch(type) {
     case "DOCUMENTS" : {
@@ -71,13 +80,16 @@ export const viewFour = (section) => {
     }
     default: {
       const field_types = fields.reduce((acc, field) => {
+        const visible = !!field.visibility && !!data ? eval(field.visibility) : true
         return {
         ...acc, 
         [field.label]: getLabelWithValue({
           labelName: field.label,
           labelKey: field.label
         },
-        { jsonPath: field.jsonPath })
+        { jsonPath: field.jsonPath,
+          callBack: field.type === "date" ? convertEpochToDate : null
+        }, visible)
         }
       }, {})
       return getCommonContainer(field_types)
@@ -85,16 +97,16 @@ export const viewFour = (section) => {
   }
 }
 
-export const setThirdStep = async (state, dispatch) => {
-    const applicationType = getQueryArg(window.location.href, "applicationType");
+export const setThirdStep = async (state, dispatch, applicationType, data, isEdit = true) => {
     const {preview} = require(`../${applicationType}_preview.json`);
     const {sections = []} = preview;
     const details = sections.reduce((acc, section, index) => {
+      const {step, header, isEditable = true} = section
       return {
         ...acc,
         [section.header]: getCommonGrayCard({
-          headerDiv: headerDiv(true, section.header, index),
-          viewFour: viewFour(section)
+          headerDiv: headerDiv(isEdit && isEditable , header, step),
+          viewFour: viewFour(section, data)
         })
       }
     }, {})

@@ -1,6 +1,8 @@
 import { getLabel, getStepperObject, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils"
 import { getCommonApplyFooter } from "../utils";
-import { get } from "lodash";
+import { get, some } from "lodash";
+import { applyforApplication } from "../../../../ui-utils/apply";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -223,9 +225,13 @@ export const previousButton = {
   };
 
 
-  const callBackForPrevious = (state, dispatch) => {
+  const callBackForPrevious = async (state, dispatch) => {
     changeStep(state, dispatch, "apply", "previous");
   };
+
+  const moveToSuccess = async(data, dispatch) => {
+    console.log("=====data", data)
+  }
 
   const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
@@ -233,8 +239,64 @@ export const previousButton = {
         "components.div.children.stepper.props.activeStep",
         0
     );
+    let isFormValid = true;
+    if(activeStep === DETAILS_STEP) {
+    const res =  await applyforApplication(state, dispatch, activeStep)
+      if(!res) {
+        return
+      }
+    }
+    if(activeStep === DOCUMENT_UPLOAD_STEP) {
+      const uploadedDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Applications[0].applicationDocuments",
+        []
+    );
+
+    const uploadedTempDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "temp[0].documents",
+        []
+    );
+
+    for (var y = 0; y < uploadedTempDocData.length; y++) {
+      if (
+          uploadedTempDocData[y].required &&
+          !some(uploadedDocData, { documentType: uploadedTempDocData[y].name })
+      ) {
+          isFormValid = false;
+      }
+    }
+    if(isFormValid) {
+      const reviewDocData =
+              uploadedDocData &&
+              uploadedDocData.map(item => {
+                  return {
+                      title: `EST_${item.documentType}`,
+                      link: item.fileUrl && item.fileUrl.toString().split(",")[0],
+                      linkText: "Download",
+                      name: item.fileName
+                  };
+              }).filter(item => !!item.link && !!item.name);
+              dispatch(
+                prepareFinalObject("temp[0].reviewDocData", reviewDocData)
+            );
+    }
+    }
+    if(activeStep === SUMMARY_STEP) {
+      isFormValid = await applyforApplication(state, dispatch);
+        if (isFormValid) {
+          const data = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Applications[0]"
+        );
+            moveToSuccess(data, dispatch);
+        }
+      }
     if(activeStep !== SUMMARY_STEP) {
+      if(!!isFormValid) {
         changeStep(state, dispatch, "apply");
+      }
     }
   }
 
