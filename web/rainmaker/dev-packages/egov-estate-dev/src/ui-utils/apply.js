@@ -80,12 +80,12 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
       );
     } else {
         if(activeIndex === 0) {
-          set(queryObject[0], "action", "MODIFY")
+          set(queryObject[0], "action", "")
         } else {
           set(queryObject[0], "action", "SUBMIT")
           }
         let applicationDocuments = get(queryObject[0], "applicationDocuments") || [];
-        applicationDocuments = applicationDocuments.filter(item => !!item && !!item.fileStoreId).filter((item, index, arr) => (arr.findIndex((arrItem) => arrItem.fileStoreId === item.fileStoreId)) === index).map(item => ({...item, active: true}))
+        applicationDocuments = applicationDocuments.filter(item => !!item && !!item.fileStoreId).filter((item, index, arr) => (arr.findIndex((arrItem) => arrItem.fileStoreId === item.fileStoreId)) === index).map(item => ({...item, isActive: true}))
           const removedDocs = get(state.screenConfiguration.preparedFinalObject, "temp[0].removedDocs") || [];
           applicationDocuments = [...applicationDocuments, ...removedDocs]
           set(queryObject[0], "applicationDocuments", applicationDocuments)
@@ -99,8 +99,8 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
       }
         let {Applications} = response
         let applicationDocuments = Applications[0].applicationDocuments || [];
-        const removedDocs = applicationDocuments.filter(item => !item.active)
-        applicationDocuments = applicationDocuments.filter(item => !!item.active)
+        const removedDocs = applicationDocuments.filter(item => !item.isActive)
+        applicationDocuments = applicationDocuments.filter(item => !!item.isActive)
         Applications = [{...Applications[0], applicationDocuments }]
         dispatch(prepareFinalObject("Applications", Applications));
         dispatch(

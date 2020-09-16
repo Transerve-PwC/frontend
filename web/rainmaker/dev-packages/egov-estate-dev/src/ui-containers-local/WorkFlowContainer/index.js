@@ -22,6 +22,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import orderBy from "lodash/orderBy";
+import { WF_PROPERTY_MASTER } from "../../ui-constants";
 
 class WorkFlowContainer extends React.Component {
   state = {
@@ -35,12 +36,27 @@ class WorkFlowContainer extends React.Component {
       window.location.href,
       "filenumber"
     );
+    const applicationNumber = getQueryArg(
+      window.location.href, "applicationNumber"
+    )
     const tenantId = getQueryArg(window.location.href, "tenantId");
-    const queryObject = [
-      { key: "businessIds", value: fileNumber },
+    let queryObject = [
       { key: "history", value: true },
       { key: "tenantId", value: tenantId }
     ];
+    switch(this.props.moduleName) {
+      case WF_PROPERTY_MASTER : {
+        queryObject = [...queryObject,
+          { key: "businessIds", value: fileNumber }
+      ]
+      }
+      default: {
+        queryObject = [
+          ...queryObject,
+          {key: "businessIds", value: applicationNumber}
+        ]
+      }
+    }
     try {
       const payload = await httpRequest(
         "post",
@@ -119,7 +135,7 @@ class WorkFlowContainer extends React.Component {
     } = this.props;
     const tenant = getQueryArg(window.location.href, "tenantId");
     let data = get(preparedFinalObject, dataPath, []);
-    if (moduleName === "PropertyMaster") {
+    if (moduleName === WF_PROPERTY_MASTER) {
       if (getQueryArg(window.location.href, "edited")) {
         // let owners = get(
         //   preparedFinalObject
@@ -156,7 +172,7 @@ class WorkFlowContainer extends React.Component {
       if (payload) {
         let path = "";
         switch(this.props.moduleName) {
-          case "PropertyMaster": {
+          case WF_PROPERTY_MASTER: {
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
           }
         }
@@ -227,20 +243,7 @@ class WorkFlowContainer extends React.Component {
     }
     let baseUrl = "";
     let bservice = "";
-    if (moduleName === "FIRENOC") {
-      baseUrl = "fire-noc";
-    } else if (moduleName === "BPA") {
-      baseUrl = "egov-bpa";
-      bservice = ((applicationStatus == "PENDING_APPL_FEE") ? "BPA.NC_APP_FEE" : "BPA.NC_SAN_FEE");
-    } else if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-      baseUrl = "wns"
-    } 
-    else if (moduleName == "PropertyMaster"){
-      baseUrl = "estate"
-    }
-    else {
-      baseUrl = "tradelicence";
-    }
+    baseUrl = "estate"
     const payUrl = `/egov-common/pay?consumerCode=${businessId}&tenantId=${tenant}`;
     switch (action) {
       case "PAY": return bservice ? `${payUrl}&businessService=${bservice}` : payUrl;
@@ -349,7 +352,8 @@ class WorkFlowContainer extends React.Component {
       checkIfDocumentRequired,
       getEmployeeRoles
     } = this;
-    let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
+    let businessService = moduleName
+    // let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];
 

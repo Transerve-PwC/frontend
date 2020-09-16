@@ -41,6 +41,7 @@ import {
 import {
   getReviewDocuments
 } from "./reviewDocuments";
+import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -54,14 +55,22 @@ export const DOCUMENT_UPLOAD_STEP = 7;
 export const COMPANY_DOCUMENT_UPLOAD_STEP = 8;
 export const SUMMARY_STEP = 9;
 
-export const moveToSuccess = (estatesData, dispatch, type) => {
-  const id = get(estatesData, "id");
-  const tenantId = get(estatesData, "tenantId");
-  const fileNumber = get(estatesData, "fileNumber");
+export const moveToSuccess = (data, dispatch, type) => {
+  const id = get(data, "id");
+  const tenantId = get(data, "tenantId");
+  const fileNumber = get(data, "fileNumber");
+  const applicationNumber = get(data, "applicationNumber")
   const purpose = "apply";
   const status = "success";
-
-  const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}`
+  let path = "";
+  switch(type) {
+    case WF_PROPERTY_MASTER : {
+      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`
+    }
+    default : {
+      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+    }
+  }
   dispatch(
     setRoute(path)
   );
@@ -550,7 +559,7 @@ const callBackForNext = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
-      moveToSuccess(estatesData, dispatch);
+      moveToSuccess(estatesData, dispatch, WF_PROPERTY_MASTER);
     }
   }
 

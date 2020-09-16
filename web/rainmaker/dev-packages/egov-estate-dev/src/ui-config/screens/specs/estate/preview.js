@@ -1,5 +1,6 @@
 const { getCommonContainer, getCommonHeader } = require("egov-ui-framework/ui-config/screens/specs/utils");
-const { getQueryArg } = require("egov-ui-framework/ui-utils/commons");
+const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redux/screen-configuration/actions");
+const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
 
@@ -12,7 +13,8 @@ const headerrow = getCommonContainer({
   });
 
 const getData = async (action, state, dispatch) => {
-    const applicationNumber = getQueryArg(window.location.href, "appliationNumber");
+    dispatch(prepareFinalObject("workflow.ProcessInstances", []))
+    const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     if(!applicationNumber) {
         return {}
     }
@@ -22,12 +24,23 @@ const getData = async (action, state, dispatch) => {
       ]
     const response = await getSearchApplicationsResults(queryObject)
     try {
-       const {Applications = []} = response;
+       let {Applications = []} = response;
+       let {applicationDocuments = []} = Applications[0];
+       const removedDocs = applicationDocuments.filter(item => !item.isActive)
+       applicationDocuments = applicationDocuments.filter(item => !!item.isActive)
+       Applications = [{...Applications[0], applicationDocuments}]
+       dispatch(prepareFinalObject("Applications", Applications))
+       dispatch(prepareFinalObject("temp[0].removedDocs", removedDocs))
+       await setDocuments(
+        response,
+        "Applications[0].applicationDocuments",
+        "temp[0].reviewDocData",
+        dispatch,'EST'
+      );
        const {branchType, moduleType, applicationType} = Applications[0];
        const type = `${branchType}_${moduleType}_${applicationType}`;
        const reviewDetails = await setThirdStep(state, dispatch, type, Applications[0], false);
         return {
-            components: {
                 div: {
                     uiFramework: "custom-atoms",
                     componentPath: "Div",
@@ -67,21 +80,19 @@ const getData = async (action, state, dispatch) => {
                           componentPath: "WorkFlowContainer",
                           props: {
                             dataPath: "Applications",
-                            moduleName: moduleType,
+                            moduleName: "SaleGift",
                             updateUrl: "/est-services/application/_update"
                           }
                         },
                         reviewDetails
                     }
                   }
-            }
         }
     } catch (error) {
+      console.log("=====error", error)
         return {}
     }
  }
-
-
 
 const commonPreview = {
     uiFramework: "material-ui",
@@ -102,3 +113,5 @@ const commonPreview = {
         }
     }
 }
+
+export default commonPreview;

@@ -9,16 +9,16 @@ import {
 } from "../../utils/index";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
 import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON } from "./searchResults";
+import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 
-export const getStatusList = async (state, dispatch, screen, path) => {
-  const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "PropertyMaster" }]
-  const businessServices = await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
+  await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+  const businessServices = JSON.parse(localStorageGet("businessServiceData"));
   if(!!businessServices) {
     const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
     dispatch(
@@ -367,7 +367,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
     }
     const response = await getSearchResults(queryObject);
     try {
-      let data = response.Applications.map(item => ({
+      let data = response.Properties.map(item => ({
         [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
         [getTextToLocalMapping("Sector Number")]: item.sectorNumber || "-",
         [getTextToLocalMapping("Status")]: getLocaleLabels(item.state, item.state) || "-",
@@ -375,13 +375,13 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
       }));
       dispatch(
         handleField(
-          "search-application",
+          "search",
           "components.div.children.searchResults",
           "props.data",
           data
         )
       );
-      !!hideTable && showHideTable(true, dispatch, "search-application");
+      !!hideTable && showHideTable(true, dispatch, "search");
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
       console.log(error);
@@ -467,7 +467,7 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
       dispatch(
         handleField(
           "search-application",
-          "components.div.children.searchResults",
+          "components.div.children.searchApplicationResults",
           "props.data",
           data
         )

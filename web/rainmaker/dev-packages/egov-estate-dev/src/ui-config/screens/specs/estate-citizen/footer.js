@@ -3,6 +3,7 @@ import { getCommonApplyFooter } from "../utils";
 import { get, some } from "lodash";
 import { applyforApplication } from "../../../../ui-utils/apply";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { moveToSuccess } from "../estate/applyResource/footer";
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -228,10 +229,6 @@ export const previousButton = {
   const callBackForPrevious = async (state, dispatch) => {
     changeStep(state, dispatch, "apply", "previous");
   };
-
-  const moveToSuccess = async(data, dispatch) => {
-    console.log("=====data", data)
-  }
 
   const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
