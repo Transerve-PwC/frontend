@@ -87,14 +87,14 @@ const callBackForNext = async (state, dispatch) => {
       "allotment"
     )
 
-    /* if (isPropertyInfoValid && isAdditionalValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if (isPropertyInfoValid && isAdditionalValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep == AUCTION_DETAILS_STEP) {
@@ -106,7 +106,7 @@ const callBackForNext = async (state, dispatch) => {
     )
     
     if (isAuctionValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
@@ -184,14 +184,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isCompanyDetailsValid && isPartnerDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if (isCompanyDetailsValid && isPartnerDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep == COMPANY_DOCUMENTS_STEP) {
@@ -208,13 +208,13 @@ const callBackForNext = async (state, dispatch) => {
     for (var i = 0; i < propertyPartnersTemp.length; i++) {
       let uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
-        `Properties[0].propertyDetails.partners[${i}].partnerDetails.ownerDocuments`,
+        `Properties[0].propertyDetails.partners[${i}].partnerDetails.partnerDocuments`,
         []
       );
 
       let uploadedTempDocData = get(
         state.screenConfiguration.preparedFinalObject,
-        `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.ownerDocuments`,
+        `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.partnerDocuments`,
         []
       );
 
@@ -247,11 +247,11 @@ const callBackForNext = async (state, dispatch) => {
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].partnerName : "" : ""}`
+          `Documents - ${propertyPartners ? propertyPartners[i] ? propertyPartners[i].partnerName : "" : ""}`
         )
         set(
           state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
       }
@@ -320,14 +320,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isOwnerDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if (isOwnerDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === DOCUMENT_UPLOAD_STEP) {
@@ -424,14 +424,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isCourtCaseDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if (isCourtCaseDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
@@ -455,6 +455,12 @@ const callBackForNext = async (state, dispatch) => {
     )
     const isSecurityDetailsValid = validateFields(
       "components.div.children.formwizardEighthStepAllotment.children.securityDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isDemandValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
       "allotment"
@@ -519,26 +525,45 @@ const callBackForNext = async (state, dispatch) => {
         getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
       }
     }
-    
-    /* if (isPremiumAmountValid && isGroundRentValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isLicenseFeeDetailsForYearValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
-      if (!res) {
-        return
+
+    let selectedDemand = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
+    )
+
+    if (selectedDemand == "GROUNDRENT") {
+      if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
       }
-    } else {
-      isFormValid = false;
-    } */
+    }
+    else {
+      if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    
+    
   }
 
   if (activeStep === SUMMARY_STEP) {
-/*     isFormValid = await applyEstates(state, dispatch);
+    isFormValid = await applyEstates(state, dispatch, "", "allotment");
     if (isFormValid) {
       const estatesData = get(
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
       moveToSuccess(estatesData, dispatch);
-    } */
+    }
   }
 
   if (activeStep !== SUMMARY_STEP) {
