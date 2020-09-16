@@ -25,7 +25,7 @@ new Array(28).fill(undefined).map((val,idx) => {
 /***************** Common fields to Ground rent and License fee *********************/
 const advancedRentField = {
   label: {
-      labelName: "Advanced Rent",
+      labelName: "Advance Rent",
       labelKey: "EST_ADVANCED_RENT_LABEL"
   },
   placeholder: {
@@ -37,7 +37,7 @@ const advancedRentField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].advanceRent"
 }
 
 const dateOfPaymentOfAdvanceRentField = {
@@ -50,7 +50,7 @@ const dateOfPaymentOfAdvanceRentField = {
       labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateOfPaymentOfAdvanceRent",
   props: {
       inputProps: {
           max: getTodaysDateInYMD()
@@ -73,7 +73,7 @@ const premiumAmountField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].premiumAmount"
 }
 
 const installmentField = {
@@ -90,7 +90,7 @@ const installmentField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.premiumAmount.installments[0].installemntAmount"
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].installmentAmount"
 }
 
 const dueDateForInstallmentField = {
@@ -103,7 +103,7 @@ const dueDateForInstallmentField = {
       labelKey: "EST_DUE_DATE_INSTALLMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.premiumAmount.installments[0].dueDate",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].dueDate",
   props: {
       inputProps: {
           max: getTodaysDateInYMD()
@@ -152,7 +152,7 @@ export const installmentDetails = getCommonCard({
             headerName: "Installment",
             headerJsonPath:
               "children.cardContent.children.header.children.key.props.labelKey",
-            sourceJsonPath: "Properties[0].propertyDetails.premiumAmount.installments",
+            sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments",
             prefixSourceJsonPath: "children.cardContent.children.installmentCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
               console.log(muliItemContent);
@@ -193,7 +193,7 @@ const getDemandRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Properties[0].propertyDetails.demand",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].demand",
   props: {
     label: {
       name: "Demand",
@@ -210,7 +210,7 @@ const getDemandRadioButton = {
         value: "LICENSEFEE"
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.demand",
+    jsonPath: "Properties[0].propertyDetails.paymentDetails[0].demand",
     required: true
   },
   required: true,
@@ -221,7 +221,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails",
           "visible",
           true
         )
@@ -229,7 +229,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails",
           "visible",
           false
         )
@@ -239,7 +239,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails",
           "visible",
           true
         )
@@ -247,7 +247,7 @@ const getDemandRadioButton = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails",
           "visible",
           false
         )
@@ -277,7 +277,7 @@ const groundRentGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.groundRentGenerationType",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].groundRentGenerationType",
   props: {
     data: [
       {code: "Monthly"},
@@ -289,7 +289,7 @@ const groundRentGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
           "visible",
           true
         )
@@ -299,7 +299,7 @@ const groundRentGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
           "visible",
           false
         )
@@ -318,7 +318,7 @@ const billingStartDateField = {
       labelKey: "EST_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDate",
   props: {
       inputProps: {
           max: getTodaysDateInYMD()
@@ -335,7 +335,7 @@ const dateToGenerateDemandRentField = {
     labelName: "Select Date to Generate the Demand/Rent",
     labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_PLACEHOLDER"
   },
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandRent",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -360,7 +360,7 @@ const rentAmountField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].rentAmount"
 }
 
 const startYearField = {
@@ -377,7 +377,7 @@ const startYearField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.groundRent.rent[0].startYear"
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].startYear"
 }
 
 const endYearField = {
@@ -394,7 +394,7 @@ const endYearField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.groundRent.rent[0].endYear"
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear"
 }
 
 const commonRentInformation = () => {
@@ -439,7 +439,7 @@ export const rentDetails = getCommonCard({
             headerName: "Rent",
             headerJsonPath:
               "children.cardContent.children.header.children.key.props.labelKey",
-            sourceJsonPath: "Properties[0].propertyDetails.groundRent.rent",
+            sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent",
             prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
               console.log(muliItemContent);
@@ -490,7 +490,7 @@ const licenseFeeGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.licenseFeeGenerationType",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFeeGenerationType",
   props: {
     data: [
       {code: "Monthly"},
@@ -502,7 +502,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
           "visible",
           true
         )
@@ -512,7 +512,7 @@ const licenseFeeGenerationTypeField = {
       dispatch(
         handleField(
           "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
+          "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemand",
           "visible",
           false
         )
@@ -530,7 +530,7 @@ const dateToGenerateDemandLicenseFeeField = {
     labelName: "Select Date to Generate the Demand/License Fee",
     labelKey: "EST_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_PLACEHOLDER"
   },
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandLf",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -551,7 +551,7 @@ const billingStartDateLicenseFeeField = {
       labelKey: "EST_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDateLf",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -577,7 +577,7 @@ const licenseFeeField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].licenseFee"
 }
 
 const startYearLfField = {
@@ -594,7 +594,7 @@ const startYearLfField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].startYear"
 }
 
 const endYearLfField = {
@@ -611,7 +611,7 @@ const endYearLfField = {
       sm: 4
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].endYear"
 }
 
 
@@ -657,7 +657,7 @@ export const licenseFeeForYearDetails = getCommonCard({
             headerName: "License Fee for Year",
             headerJsonPath:
               "children.cardContent.children.header.children.key.props.labelKey",
-            sourceJsonPath: "Properties[0].propertyDetails.LicenseDetails.licenseFees",
+            sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
               console.log(muliItemContent);
@@ -684,9 +684,9 @@ const licenseFeeHeader = getCommonTitle({
 export const licenseFeeDetails = getCommonCard({
   header: licenseFeeHeader,
   detailsContainer: getCommonContainer({
-      demandDenerationType: getSelectField(licenseFeeGenerationTypeField),
-      dateToGenerateDemand: getSelectField(dateToGenerateDemandLicenseFeeField),
-      billingStartDate: getDateField(billingStartDateLicenseFeeField),
+      demandGenerationType: getSelectField(licenseFeeGenerationTypeField),
+      dateToGenerateDemandLf: getSelectField(dateToGenerateDemandLicenseFeeField),
+      billingStartDateLf: getDateField(billingStartDateLicenseFeeField),
       advanceRent: getTextField(advancedRentField),
       dateOfPaymentOfAdvanceRent: getDateField(dateOfPaymentOfAdvanceRentField)
   }),
@@ -709,7 +709,7 @@ const securityFeeAmountField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: ""
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeAmount"
 }
 
 const dateOfPaymentField = {
@@ -722,7 +722,7 @@ const dateOfPaymentField = {
       labelKey: "EST_DATE_OF_PAYMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "",
+  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeDateOfPayment",
   props: {
       inputProps: {
           max: getTodaysDateInYMD()
