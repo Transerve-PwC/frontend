@@ -40,17 +40,8 @@ import {
 import {
   reviewAllotmentDetails
 } from './reviewAllotmentDetails'
-<<<<<<< HEAD
-import {
-  AllotmentAuctionDetails
-} from './auction-details'
-import {
-  CompanyDetails
-} from './company-details'
-=======
 import {AllotmentAuctionDetails} from './auction-details'
 import {CompanyDetails} from './company-details'
->>>>>>> b721a860... company details init
 // import {} from ''
 
 const documentCardConfig = {
@@ -173,7 +164,6 @@ export const formwizardThirdStep = {
     id: "apply_form3"
   },
   children: {
-<<<<<<< HEAD
     ownerDetails
 
     // ownerDetails: {
@@ -192,9 +182,6 @@ export const formwizardThirdStep = {
     //   },
     //   visible: false
     // },
-=======
-    CompanyDetails
->>>>>>> b721a860... company details init
   },
   visible: false
 };
