@@ -239,7 +239,7 @@ import {
           marginBottom: 18
         }
       }),
-      auctionCard: getCommonContainer({
+      companyDetails: getCommonContainer({
         auctionId: getTextField(companyNameField),
         companyAddressField: getTextField(companyAddressField),
         companyRegNoField: getTextField(companyRegNoField),
@@ -260,7 +260,7 @@ import {
           marginBottom: 18
         }
       }),
-      auctionCard: getCommonContainer({
+      partnerCard: getCommonContainer({
         PartnerName: getTextField(PartnerName),
         PartnerHusbandFatherName: getTextField(PartnerHusbandFatherName),
         partnerAddress: getTextField(partnerAddress),

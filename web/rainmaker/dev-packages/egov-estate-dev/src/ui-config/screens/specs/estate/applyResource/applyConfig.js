@@ -100,16 +100,16 @@ export const stepsData = [{
   labelKey: "EST_COMMON_AUCTION_DETAILS"
 },
 {
+  labelName: "Company Details",
+  labelKey: "EST_COMMON_COMPANY_DETAILS"
+},
+{
   labelName: "Owner Details",
   labelKey: "EST_COMMON_OWNER_DETAILS"
 },
 {
   labelName: "Purchaser Details",
   labelKey: "EST_COMMON_PURCHASER_DETAILS"
-},
-{
-  labelName: "Company Details",
-  labelKey: "EST_COMMON_COMPANY_DETAILS"
 },
 {
   labelName: "Court Case",
@@ -125,7 +125,7 @@ export const stepsData = [{
 },
 {
   labelName: "Company Documents",
-  labelKey: "EST_COMMON_DOCUMENTS_DETAILS"
+  labelKey: "EST_COMPANY_DOCUMENTS_DETAILS"
 },
 {
   labelName: "Summary",
