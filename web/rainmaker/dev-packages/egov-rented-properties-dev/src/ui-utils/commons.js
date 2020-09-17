@@ -26,6 +26,7 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
 import store from "redux/store";
 import get from "lodash/get";
 import set from "lodash/set";
+import axios from "axios";
 import {
   getQueryArg,
   getFileUrl,
@@ -37,13 +38,54 @@ import {
   getMultiUnits,
   acceptedFiles,
 } from "egov-ui-framework/ui-utils/commons";
-import { uploadFile } from "egov-ui-framework/ui-utils/api";
+// import { uploadFile } from "egov-ui-framework/ui-utils/api";
+import { prepareForm } from "egov-ui-framework/ui-utils/api";
+
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
 import {RP_DEMAND_GENERATION_DATE, RP_PAYMENT_DATE, RP_ASSESSMENT_AMOUNT, RP_REALIZATION_AMOUNT, RP_RECEIPT_NO} from '../ui-constants'
 import moment from "moment";
 import { setApplicationNumberBox } from "./apply";
+
+export const uploadFile = async (endPoint, module, file, ulbLevel) => {
+  // Bad idea to fetch from local storage, change as feasible
+  store.dispatch(toggleSpinner());
+  const tenantId = getTenantId()
+
+  const uploadInstance = axios.create({
+    baseURL: window.location.origin,
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+
+  const requestParams = {
+    tenantId,
+    module,
+    file
+  };
+  const requestBody = prepareForm(requestParams);
+
+  try {
+    const response = await uploadInstance.post(endPoint, requestBody);
+    const responseStatus = parseInt(response.status, 10);
+    let fileStoreIds = [];
+    store.dispatch(toggleSpinner());
+    if (responseStatus === 201) {
+      const responseData = response.data;
+      const files = responseData.files || [];
+      fileStoreIds = files.map(f => f.fileStoreId);
+      return fileStoreIds[0];
+    }
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+      let FileExceedMessage = "File size exceeded the limit in service";
+      store.dispatch(toggleSnackbar(true, { labelName: FileExceedMessage }, "warning"));
+     // alert(FileExceedMessage); 
+  }
+};
+
 
 export const updateTradeDetails = async requestBody => {
   try {
