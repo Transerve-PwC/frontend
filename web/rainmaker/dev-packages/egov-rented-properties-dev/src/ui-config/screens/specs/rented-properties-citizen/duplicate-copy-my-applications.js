@@ -12,7 +12,7 @@ import { WORKFLOW_BUSINESS_SERVICE_DC } from "../../../../ui-constants";
 const header = getCommonHeader(
   {
     labelName: "My Applications",
-    labelKey: "TL_MY_APPLICATIONS_HEADER"
+    labelKey: "RP_MY_APPLICATIONS_HEADER"
   },
   {
     classes: {
@@ -71,17 +71,17 @@ const searchCard = getCommonCard({
   }),
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for an application",
-    labelKey: "TL_HOME_SEARCH_RESULTS_DESC"
+    labelKey: "RP_HOME_SEARCH_RESULTS_DESC"
   }),
   statusApplicationNumberContainer: getCommonContainer({
     applicationNo: getTextField({
       label: {
         labelName: "Application No.",
-        labelKey: "TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+        labelKey: "RP_HOME_SEARCH_RESULTS_APP_NO_LABEL"
       },
       placeholder: {
         labelName: "Enter Application No.",
-        labelKey: "TL_HOME_SEARCH_RESULTS_APP_NO_PLACEHOLDER"
+        labelKey: "RP_HOME_SEARCH_RESULTS_APP_NO_PLACEHOLDER"
       },
       gridDefination: {
         xs: 12,
@@ -95,11 +95,11 @@ const searchCard = getCommonCard({
     status: getSelectField({
       label: {
         labelName: "Application status",
-        labelKey: "TL_HOME_SEARCH_RESULTS_APP_STATUS_LABEL"
+        labelKey: "RP_HOME_SEARCH_RESULTS_APP_STATUS_LABEL"
       },
       placeholder: {
         labelName: "Select Application Status",
-        labelKey: "TL_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
+        labelKey: "RP_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
       },
       required: false,
       jsonPath: "searchScreen.status",
@@ -130,7 +130,7 @@ const searchCard = getCommonCard({
       children: {
         buttonLabel: getLabel({
           labelName: "Search",
-          labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+          labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
         })
       },
       onClickDefination: {

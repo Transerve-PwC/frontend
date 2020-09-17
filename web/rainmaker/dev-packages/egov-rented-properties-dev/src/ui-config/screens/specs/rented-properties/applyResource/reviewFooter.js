@@ -56,7 +56,7 @@ import {
                 children: {
                   submitButtonLabel: getLabel({
                     labelName: "MAKE PAYMENT",
-                    labelKey: "COMMON_MAKE_PAYMENT"
+                    labelKey: "RP_COMMON_MAKE_PAYMENT"
                   })
                 },
                 onClickDefination: {
@@ -135,7 +135,7 @@ import {
                 children: {
                   submitButtonLabel: getLabel({
                     labelName: "Edit",
-                    labelKey: "EDIT_PROPERTY_DETAILS"
+                    labelKey: "RP_EDIT_PROPERTY_DETAILS"
                   })
                 },
                 onClickDefination: {
@@ -188,7 +188,7 @@ import {
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                label: {labelName : "DOWNLOAD" , labelKey :"RP_DOWNLOAD"},
                  leftIcon: "cloud_download",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginLeft:"10px" }, className: "tl-download-button" },
@@ -202,7 +202,7 @@ import {
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                label: {labelName : "PRINT" , labelKey :"RP_PRINT"},
                 leftIcon: "print",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginLeft:"5px" }, className: "tl-print-button" },
@@ -247,7 +247,7 @@ import {
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                label: {labelName : "DOWNLOAD" , labelKey :"RP_DOWNLOAD"},
                  leftIcon: "cloud_download",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
@@ -261,7 +261,7 @@ import {
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                label: {labelName : "PRINT" , labelKey :"RP_PRINT"},
                 leftIcon: "print",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },

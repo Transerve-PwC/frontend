@@ -1036,7 +1036,7 @@ export const getRecoveryValueProperty = async (action,state, dispatch) => {
 
   }
  catch (error) {
-  console.log(e);
+  console.log(error);
   }
 }
 
@@ -1130,6 +1130,6 @@ export const getOfflineRentPaymentDetailsFromProperty = async (state, dispatch) 
     }
   }
  } catch (error) {
-  console.log(e);
+  console.log(error);
   }
 }

@@ -31,7 +31,7 @@ export const propertyHeader = getCommonTitle(
 const fatherOrHusbandsNameField = {
     label: {
         labelName: "Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
     // placeholder: {
     //     labelName: "Enter Father/ Husband's Name",

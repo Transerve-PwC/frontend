@@ -56,7 +56,7 @@ export const getReviewApplicantDetails = (isEditable = true) => {
             relationship: getLabelWithValue(
                 {
                     labelName: "Relationship",
-                    labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
+                    labelKey: "RP_COMMON_RELATIONSHIP_LABEL"
                 },
                 { jsonPath: "Owners[0].ownerDetails.relationWithDeceasedAllottee" }
             ),
@@ -301,14 +301,14 @@ export const getDuplicateCopyPreviewApplicantDetails = (isEditable = true) => {
             relationship: getLabelWithValue(
                 {
                     labelName: "Relationship",
-                    labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
+                    labelKey: "RP_COMMON_RELATIONSHIP_LABEL"
                 },
                 { jsonPath: "DuplicateCopyApplications[0].applicant[0].relationship" }
             ),
             fatherOrHusband: getLabelWithValue(
                 {
                     labelName: "Father/ Husband's Name",
-                    labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                    labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
                 },
                 { jsonPath: "DuplicateCopyApplications[0].applicant[0].guardian" }
             ),

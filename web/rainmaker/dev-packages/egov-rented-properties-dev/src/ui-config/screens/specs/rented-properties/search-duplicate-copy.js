@@ -12,7 +12,7 @@ import { WORKFLOW_BUSINESS_SERVICE_DC } from "../../../../ui-constants";
 
   const header = getCommonHeader({
     labelName: "Duplicate copy of Allotment letter",
-    labelKey: "DUPLICATE_COPY_HEADER"
+    labelKey: "RP_DUPLICATE_COPY_HEADER"
   });
   const duplicateCopySearchAndResult = {
     uiFramework: "material-ui",

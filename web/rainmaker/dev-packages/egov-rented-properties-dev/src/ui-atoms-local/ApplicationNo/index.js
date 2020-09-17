@@ -19,7 +19,7 @@ function ApplicationNoContainer(props) {
   {" "}{number}
   </div>;
 }{
-  return <div className="application-no-container"><LabelContainer labelName="Application No." labelKey ={"TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"}/>
+  return <div className="application-no-container"><LabelContainer labelName="Application No." labelKey ={"RP_HOME_SEARCH_RESULTS_APP_NO_LABEL"}/>
   {number}
   </div>;
 }

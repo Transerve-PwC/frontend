@@ -48,7 +48,7 @@ export const getReviewApplicantDetailsMortgage = (isEditable = true) => {
             relationship: getLabelWithValue(
                 {
                     labelName: "Relationship",
-                    labelKey: "TL_COMMON_RELATIONSHIP_LABEL"
+                    labelKey: "RP_COMMON_RELATIONSHIP_LABEL"
                 },
                 { jsonPath: "MortgageApplications[0].applicant[0].relationship" }
             ),
@@ -64,7 +64,7 @@ export const getReviewApplicantDetailsMortgage = (isEditable = true) => {
             guardian: getLabelWithValue(
                 {
                     labelName: "Father/ Husband's Name",
-                    labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                    labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
                 },
                 {
                     jsonPath: "MortgageApplications[0].applicant[0].guardian" 
@@ -160,35 +160,35 @@ export const getreviewGrantDetailsMortgage = () => {
             bankname: getLabelWithValue(
                 {
                     labelName: "Name of the bank (Text field)",
-                    labelKey: "WF_BANK_NAME"
+                    labelKey: "RP_WF_BANK_NAME"
                 },
                 { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].bankName" }
             ),
             mortagageAmount: getLabelWithValue(
                 {
                     labelName: "Enter mortgage amount",
-                    labelKey: "WF_MORTAGE_AMOUNT"
+                    labelKey: "RP_WF_MORTAGE_AMOUNT"
                 },
                 {jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].mortgageAmount"}
             ),
             mortagageEndDate: getLabelWithValue(
                 {
                     labelName: "Mortgage end date ",
-                        labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
+                        labelKey: "RP_WF_MORTAGAGEEND_DATE_LABEL"
                 },
                 { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
             ),
             sanctionDate: getLabelWithValue(
                 {
                     labelName: "Date of sanctioning",
-                        labelKey: "WF_SANCTIONING_DATE_LABEL"
+                        labelKey: "RP_WF_SANCTIONING_DATE_LABEL"
                 },
                 { jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].sanctionDate", callBack: convertEpochToDate }
             ),
             sanctionLetterNumber: getLabelWithValue(
                 {
                     labelName: "Sanction letter number",
-                    labelKey: "WF_SANCTION_LETTER_LABEL"
+                    labelKey: "RP_WF_SANCTION_LETTER_LABEL"
                 },
                 {jsonPath: "MortgageApplications[0].mortgageApprovedGrantDetails[0].sanctionLetterNumber"}
             ),

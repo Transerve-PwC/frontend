@@ -40,7 +40,7 @@ const header = getCommonHeader(
   },
   {
     label: {
-        labelKey: "DUPLICATE_COPY_HEADER",
+        labelKey: "RP_DUPLICATE_COPY_HEADER",
         labelName: "Duplicate copy of Allotment letter"
     },
     icon: <FormIcon />,
@@ -56,7 +56,7 @@ const header = getCommonHeader(
   },
   {
     label: {
-        labelKey: "ACCOUNT_STATEMENT_GENERATION_HEADER",
+        labelKey: "RP_ACCOUNT_STATEMENT_GENERATION_HEADER",
         labelName: "Account Statement Generation"
     },
     icon: <FormIcon />,
@@ -93,7 +93,7 @@ cardItems = !!isSurveyor ? [...cardItems, {
 const citizenCardItems = [{
   label: {
     labelName: "Transfer of Transit site In case of Legal Heir (Ownership Transfer)",
-    labelKey: "OWNER_SHIP_TRANSFER_HEADER"
+    labelKey: "RP_OWNER_SHIP_TRANSFER_HEADER"
   },
   icon: <TradeLicenseIcon />,
   route: `/rented-properties-citizen/ownership-transfer`
@@ -101,7 +101,7 @@ const citizenCardItems = [{
   {
     label: {
       labelName: "Duplicate copy of Allotment letter",
-      labelKey: "DUPLICATE_COPY_HEADER"
+      labelKey: "RP_DUPLICATE_COPY_HEADER"
     },
     icon: <TradeLicenseIcon />,
     route: `/rented-properties-citizen/duplicate-copy`
@@ -109,7 +109,7 @@ const citizenCardItems = [{
     {
       label: {
         labelName: "Mortgage",
-        labelKey: "MORTAGE_HEADER"
+        labelKey: "RP_MORTAGE_HEADER"
       },
       icon: <TradeLicenseIcon />,
       route: `/rented-properties-citizen/mortage`

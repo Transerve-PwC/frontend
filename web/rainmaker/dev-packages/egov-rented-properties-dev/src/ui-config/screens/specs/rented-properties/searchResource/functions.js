@@ -13,7 +13,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE, ACCOUNT_BALANCE } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE,TYPES, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE, ACCOUNT_BALANCE } from "./searchResults";
 import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
 import moment from "moment";
 import {
@@ -225,8 +225,16 @@ export const changeType = (type) => {
       return "Payment"
       }else
       {
-        return "Rent"
+        return "-"
   }
+}
+export const changePType=(type)=>{
+  if(type==='D'){
+    return "Rent"
+  }else
+  {
+    return "-"
+}
 }
 export const searchAccountStatement = async (state, dispatch) => {
   let searchScreenObject = get(
@@ -269,6 +277,7 @@ export const searchAccountStatement = async (state, dispatch) => {
             [DATE]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
             [AMOUNT]:  formatAmount(item.amount.toFixed(2)) || "-",
             [TYPE]: changeType(item.type) || "-",
+            [TYPES]: changePType(item.type) || "-",
             [REMAINING_INTEREST]:  formatAmount(item.remainingInterest.toFixed(2)),
             [REMAINING_PRINCIPAL]: formatAmount(item.remainingPrincipal.toFixed(2)),
             [TOTAL_DUE]: formatAmount(item.dueAmount.toFixed(2)),

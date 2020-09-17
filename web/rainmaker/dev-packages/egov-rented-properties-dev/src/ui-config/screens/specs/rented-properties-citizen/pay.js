@@ -154,7 +154,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
               paymentDetails: getCommonCard({
                 header: getCommonTitle({
                   labelName: "Please review your fee and proceed to payment",
-                  labelKey: "NOC_PAYMENT_HEAD"
+                  labelKey: "RP_PAYMENT_HEAD"
                 }),
                 // estimateDetails
               })

@@ -8,7 +8,7 @@ import {
   export const cityPicker = getCommonContainer({
     header: getCommonHeader({
       labelName: "Pick your city.",
-      labelKey: "TL_PICK_YOUR_CITY_CITIZEN"
+      labelKey: "RP_PICK_YOUR_CITY_CITIZEN"
     }),
     cityPicker: getCommonContainer({
       cityDropdown: {
@@ -33,9 +33,9 @@ import {
           className: "citizen-city-picker",
           label: {
             labelName: "City",
-            labelKey: "TL_NEW_TRADE_DETAILS_CITY_LABEL"
+            labelKey: "RP_NEW_TRADE_DETAILS_CITY_LABEL"
           },
-          placeholder: { labelName: "Select City", labelKey: "TL_SELECT_CITY" },
+          placeholder: { labelName: "Select City", labelKey: "RP_SELECT_CITY" },
           jsonPath: "citiesByModule.citizenTenantId",
           sourceJsonPath:
             "applyScreenMdmsData.common-masters.citiesByModule.TL.tenants",
@@ -66,7 +66,7 @@ import {
             children: {
               previousButtonLabel: getLabel({
                 labelName: "SELECT",
-                labelKey: "TL_CITIZEN_SELECT"
+                labelKey: "RP_CITIZEN_SELECT"
               })
             },
             onClickDefination: {
@@ -91,7 +91,7 @@ import {
             children: {
               previousButtonLabel: getLabel({
                 labelName: "CANCEL",
-                labelKey: "TL_ADD_HOC_CHARGES_POPUP_BUTTON_CANCEL"
+                labelKey: "RP_ADD_HOC_CHARGES_POPUP_BUTTON_CANCEL"
               })
             },
             onClickDefination: {
