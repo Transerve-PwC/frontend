@@ -2439,14 +2439,14 @@ export const getTextToLocalMapping = label => {
     case "Application No":
       return getLocaleLabels(
         "Application No",
-        "TL_COMMON_TABLE_COL_APP_NO",
+        "TL_TABLE_COL_APP_NO",
         localisationLabels
       );
 
     case "License No":
       return getLocaleLabels(
         "License No",
-        "TL_COMMON_TABLE_COL_LIC_NO",
+        "TL_TABLE_COL_LIC_NO",
         localisationLabels
       );
 
@@ -2460,35 +2460,35 @@ export const getTextToLocalMapping = label => {
     case "Service Type":
     return getLocaleLabels(
       "Service Type",
-      "TL_SERVICE_TYPE_LABEL",
+      "TL_TABLE_SERVICE_TYPE_LABEL",
       localisationLabels
     );
 
     case "License Type":
     return getLocaleLabels(
       "License Type",
-      "TL_TRADE_TYPE_LABEL",
+      "TL_TABLE_TRADE_TYPE_LABEL",
       localisationLabels
     );
 
     case "Owner Name":
       return getLocaleLabels(
         "Owner Name",
-        "TL_COMMON_TABLE_COL_OWN_NAME",
+        "TL_TABLE_COL_OWN_NAME",
         localisationLabels
       );
 
     case "Application Date":
       return getLocaleLabels(
         "Application Date",
-        "TL_COMMON_TABLE_COL_APP_DATE",
+        "TL_TABLE_COL_APP_DATE",
         localisationLabels
       );
 
     case "Status":
       return getLocaleLabels(
         "Status",
-        "TL_COMMON_TABLE_COL_STATUS",
+        "TL_TABLE_COL_STATUS",
         localisationLabels
       );
     case "INITIATED":
@@ -2531,13 +2531,13 @@ export const getTextToLocalMapping = label => {
       case "Financial Year":
       return getLocaleLabels(
         "Financial Year",
-        "TL_COMMON_TABLE_COL_FIN_YEAR",
+        "TL_TABLE_COL_FIN_YEAR",
         localisationLabels
       );
       case "Application Type":
       return getLocaleLabels(
         "Application Type",
-        "TL_COMMON_TABLE_COL_APP_TYPE",
+        "TL_TABLE_COL_APP_TYPE",
         localisationLabels
       );
       case "Renew":
