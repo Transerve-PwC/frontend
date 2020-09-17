@@ -374,7 +374,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
           marginBottom: 18
         }
       }),
-      auctionCard: getCommonContainer({
+      partnerCard: getCommonContainer({
         PartnerName: getTextField(PartnerName),
         PartnerHusbandFatherName: getTextField(PartnerHusbandFatherName),
         relationship: getRelationshipRadioButton,
