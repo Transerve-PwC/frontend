@@ -148,6 +148,15 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
                 pincodeLabel,
                 { jsonPath: "Owners[0].property.pincode" }
             ),
+            dueAmount: getLabelWithValue(
+                {
+                    labelName: "Due Amount",
+                    labelKey: "RP_DUE_AMOUNT_LABEL_ALLOTEE"
+                },
+                {
+                    jsonPath: "Owners[0].property.rentSummary.totalDue" 
+                }
+            )
         })
     })
 }

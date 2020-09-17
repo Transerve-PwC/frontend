@@ -42,10 +42,10 @@ import {
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
 export const AUCTION_DETAILS_STEP = 1;
-export const OWNER_DETAILS_STEP = 2;
-export const DOCUMENT_UPLOAD_STEP = 3;
-export const COMPANY_DETAILS_STEP = 4;
-export const COMPANY_DOCUMENTS_STEP = 5;
+export const COMPANY_DETAILS_STEP = 2;
+export const COMPANY_DOCUMENTS_STEP = 3;
+export const OWNER_DETAILS_STEP = 4;
+export const DOCUMENT_UPLOAD_STEP = 5;
 export const COURT_CASE_DETAILS_STEP = 6;
 export const PAYMENT_DETAILS_STEP = 7;
 export const SUMMARY_STEP = 8;
@@ -88,7 +88,7 @@ const callBackForNext = async (state, dispatch) => {
     )
 
     if (isPropertyInfoValid && isAdditionalValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
@@ -106,12 +106,155 @@ const callBackForNext = async (state, dispatch) => {
     )
     
     if (isAuctionValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
+    }
+  }
+
+  if (activeStep == COMPANY_DETAILS_STEP) {
+    var propertyPartners = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.partners"
+    );
+
+    let propertyPartnersItems = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+    );
+
+    var isCompanyDetailsValid = validateFields(
+      `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children`,
+      state,
+      dispatch,
+      "allotment"
+    )
+
+    if (propertyPartnersItems && propertyPartnersItems.length > 0) {
+      for (var i = 0; i < propertyPartnersItems.length; i++) {
+        if (typeof propertyPartnersItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isPartnerDetailsValid = validateFields(
+          `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.auctionCard.children`,
+          state,
+          dispatch,
+          "allotment"
+        )
+
+        var partnerName = propertyPartners ? propertyPartners[i] ? propertyPartners[i].partnerName : "" : "";
+        
+        if (i > 0) {
+          let documentDetailsString = JSON.stringify(get(
+            state.screenConfiguration.screenConfig,
+            `allotment.components.div.children.formwizardFourthStepAllotment.children.companyDocuments_0`, {}
+          ))
+          let newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
+          newDocumentDetailsString = newDocumentDetailsString.replace(/partners\[0\]/g, `partners[${i}]`)
+          let documentDetailsObj = JSON.parse(newDocumentDetailsString);
+          set(
+            state.screenConfiguration.screenConfig,
+            `allotment.components.div.children.formwizardFourthStepAllotment.children.companyDocuments_${i}`,
+            documentDetailsObj
+          )
+
+          setCompanyDocs("", state, dispatch, i)
+        }
+
+        set(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardFourthStepAllotment.children.companyDocuments_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `Partner Documents - ${partnerName}`
+        )
+
+        // const reviewPartnerDetails = getReviewPartner(true, i);
+        // set(
+        //   reviewPartnerDetails,
+        //   "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+        //   `Owner Details - ${partnerName}`
+        // )
+        // set(
+        //   state.screenConfiguration.screenConfig,
+        //   `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewDetails.children.cardContent.children.reviewPartnerDetails_${i}`,
+        //   reviewPartnerDetails
+        // )
+      }
+    }
+
+    if (isCompanyDetailsValid && isPartnerDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
+      if (!res) {
+        return
+      }
+    } else {
+      isFormValid = false;
+    }
+  }
+
+  if (activeStep == COMPANY_DOCUMENTS_STEP) {
+    let propertyPartners = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.partners"
+    );
+
+    let propertyPartnersTemp = get(
+      state.screenConfiguration.preparedFinalObject,
+      "PropertiesTemp[0].propertyDetails.partners"
+    );
+
+    for (var i = 0; i < propertyPartnersTemp.length; i++) {
+      let uploadedDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Properties[0].propertyDetails.partners[${i}].partnerDetails.partnerDocuments`,
+        []
+      );
+
+      let uploadedTempDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.partnerDocuments`,
+        []
+      );
+
+      for (var y = 0; y < uploadedTempDocData.length; y++) {
+        if (
+          uploadedTempDocData[y].required &&
+          !some(uploadedDocData, {
+            documentType: uploadedTempDocData[y].name
+          })
+        ) {
+          isFormValid = false;
+        }
+      }
+      if (isFormValid) {
+        const reviewDocData =
+          uploadedDocData &&
+          uploadedDocData.map(item => {
+            return {
+              title: `EST_${item.documentType}`,
+              link: item.fileUrl && item.fileUrl.split(",")[0],
+              linkText: "View",
+              name: item.fileName
+            };
+          });
+        dispatch(
+          prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.reviewDocData`, reviewDocData)
+        );
+
+        const reviewDocuments = getReviewDocuments(true, "allotment", `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.reviewDocData`);
+        set(
+          reviewDocuments,
+          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+          `Documents - ${propertyPartners ? propertyPartners[i] ? propertyPartners[i].partnerName : "" : ""}`
+        )
+        set(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          reviewDocuments
+        )
+      }
     }
   }
 
@@ -123,7 +266,7 @@ const callBackForNext = async (state, dispatch) => {
 
     let propertyOwnersItems = get(
       state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+      "allotment.components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
@@ -132,7 +275,7 @@ const callBackForNext = async (state, dispatch) => {
           continue;
         }
         var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+          `components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
           state,
           dispatch,
           "allotment"
@@ -143,14 +286,14 @@ const callBackForNext = async (state, dispatch) => {
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_0`, {}
+            `allotment.components.div.children.formwizardSixthStepAllotment.children.ownerDocumentDetails_0`, {}
           ))
           var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
           newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
           var documentDetailsObj = JSON.parse(newDocumentDetailsString);
           set(
             state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}`,
+            `allotment.components.div.children.formwizardSixthStepAllotment.children.ownerDocumentDetails_${i}`,
             documentDetailsObj
           )
 
@@ -159,7 +302,7 @@ const callBackForNext = async (state, dispatch) => {
 
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `allotment.components.div.children.formwizardSixthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Douments - ${ownerName}`
         )
 
@@ -178,7 +321,7 @@ const callBackForNext = async (state, dispatch) => {
     }
 
     if (isOwnerDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
@@ -251,149 +394,6 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
-  if (activeStep == COMPANY_DETAILS_STEP) {
-    var propertyPartners = get(
-      state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.partners"
-    );
-
-    let propertyPartnersItems = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardFifthStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
-    );
-
-    var isCompanyDetailsValid = validateFields(
-      `components.div.children.formwizardFifthStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children`,
-      state,
-      dispatch,
-      "allotment"
-    )
-
-    if (propertyPartnersItems && propertyPartnersItems.length > 0) {
-      for (var i = 0; i < propertyPartnersItems.length; i++) {
-        if (typeof propertyPartnersItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isPartnerDetailsValid = validateFields(
-          `components.div.children.formwizardFifthStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.auctionCard.children`,
-          state,
-          dispatch,
-          "allotment"
-        )
-
-        var partnerName = propertyPartners ? propertyPartners[i] ? propertyPartners[i].partnerName : "" : "";
-        
-        if (i > 0) {
-          let documentDetailsString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardSixthStepAllotment.children.companyDocuments_0`, {}
-          ))
-          let newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
-          newDocumentDetailsString = newDocumentDetailsString.replace(/partners\[0\]/g, `partners[${i}]`)
-          let documentDetailsObj = JSON.parse(newDocumentDetailsString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardSixthStepAllotment.children.companyDocuments_${i}`,
-            documentDetailsObj
-          )
-
-          setCompanyDocs("", state, dispatch, i)
-        }
-
-        set(
-          state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardSixthStepAllotment.children.companyDocuments_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Partner Documents - ${partnerName}`
-        )
-
-        // const reviewPartnerDetails = getReviewPartner(true, i);
-        // set(
-        //   reviewPartnerDetails,
-        //   "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-        //   `Owner Details - ${partnerName}`
-        // )
-        // set(
-        //   state.screenConfiguration.screenConfig,
-        //   `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewDetails.children.cardContent.children.reviewPartnerDetails_${i}`,
-        //   reviewPartnerDetails
-        // )
-      }
-    }
-
-    if (isCompanyDetailsValid && isPartnerDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
-      if (!res) {
-        return
-      }
-    } else {
-      isFormValid = false;
-    }
-  }
-
-  if (activeStep == COMPANY_DOCUMENTS_STEP) {
-    let propertyPartners = get(
-      state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.partners"
-    );
-
-    let propertyPartnersTemp = get(
-      state.screenConfiguration.preparedFinalObject,
-      "PropertiesTemp[0].propertyDetails.partners"
-    );
-
-    for (var i = 0; i < propertyPartnersTemp.length; i++) {
-      let uploadedDocData = get(
-        state.screenConfiguration.preparedFinalObject,
-        `Properties[0].propertyDetails.partners[${i}].partnerDetails.ownerDocuments`,
-        []
-      );
-
-      let uploadedTempDocData = get(
-        state.screenConfiguration.preparedFinalObject,
-        `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.ownerDocuments`,
-        []
-      );
-
-      for (var y = 0; y < uploadedTempDocData.length; y++) {
-        if (
-          uploadedTempDocData[y].required &&
-          !some(uploadedDocData, {
-            documentType: uploadedTempDocData[y].name
-          })
-        ) {
-          isFormValid = false;
-        }
-      }
-      if (isFormValid) {
-        const reviewDocData =
-          uploadedDocData &&
-          uploadedDocData.map(item => {
-            return {
-              title: `EST_${item.documentType}`,
-              link: item.fileUrl && item.fileUrl.split(",")[0],
-              linkText: "View",
-              name: item.fileName
-            };
-          });
-        dispatch(
-          prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.reviewDocData`, reviewDocData)
-        );
-
-        const reviewDocuments = getReviewDocuments(true, "allotment", `PropertiesTemp[0].propertyDetails.partners[${i}].partnerDetails.reviewDocData`);
-        set(
-          reviewDocuments,
-          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].partnerName : "" : ""}`
-        )
-        set(
-          state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
-          reviewDocuments
-        )
-      }
-    }
-  }
-
   if (activeStep === COURT_CASE_DETAILS_STEP) {
     const courtCases = get(
       state.screenConfiguration.preparedFinalObject,
@@ -424,14 +424,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isCourtCaseDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if (isCourtCaseDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
@@ -455,6 +455,12 @@ const callBackForNext = async (state, dispatch) => {
     )
     const isSecurityDetailsValid = validateFields(
       "components.div.children.formwizardEighthStepAllotment.children.securityDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isDemandValid = validateFields(
+      "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
       "allotment"
@@ -519,26 +525,45 @@ const callBackForNext = async (state, dispatch) => {
         getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
       }
     }
-    
-    if (isPremiumAmountValid && isGroundRentValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isLicenseFeeDetailsForYearValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
-      if (!res) {
-        return
+
+    let selectedDemand = get(
+      state.screenConfiguration.screenConfig,
+      "allotment.components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
+    )
+
+    if (selectedDemand == "GROUNDRENT") {
+      if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
       }
-    } else {
-      isFormValid = false;
     }
+    else {
+      if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    
+    
   }
 
   if (activeStep === SUMMARY_STEP) {
-/*     isFormValid = await applyEstates(state, dispatch);
+    isFormValid = await applyEstates(state, dispatch, "", "allotment");
     if (isFormValid) {
       const estatesData = get(
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
       moveToSuccess(estatesData, dispatch);
-    } */
+    }
   }
 
   if (activeStep !== SUMMARY_STEP) {
@@ -643,7 +668,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    case OWNER_DETAILS_STEP:
+    case COMPANY_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
@@ -652,25 +677,25 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    case DOCUMENT_UPLOAD_STEP:
-    dispatchMultipleFieldChangeAction(
-      screenName,
-      getActionDefinationForStepper(
-        "components.div.children.formwizardFourthStepAllotment"
-      ),
-      dispatch
-    );
-    break;
-    case COMPANY_DETAILS_STEP:
-    dispatchMultipleFieldChangeAction(
-      screenName,
-      getActionDefinationForStepper(
-        "components.div.children.formwizardFifthStepAllotment"
-      ),
-      dispatch
-    );
-    break;
     case COMPANY_DOCUMENTS_STEP:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardFourthStepAllotment"
+        ),
+        dispatch
+      );
+      break;
+    case OWNER_DETAILS_STEP:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardFifthStepAllotment"
+        ),
+        dispatch
+      );
+      break;
+    case DOCUMENT_UPLOAD_STEP:
     dispatchMultipleFieldChangeAction(
       screenName,
       getActionDefinationForStepper(

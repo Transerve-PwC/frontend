@@ -57,7 +57,7 @@
       },
       {
         "path": "registrationNumber",
-        "required": false,
+        "required": true,
         "validations": [
           {
             "type": "length",
@@ -70,7 +70,7 @@
       },
       {
         "path": "dateOfRegistration",
-        "required": false,
+        "required": true,
         "validations": [
           {
             "type": "date-range",
@@ -88,7 +88,7 @@
         ]
       },
       {
-        "path": "owner",
+        "path": "transferor",
         "required": true,
         "validations": [
           {
@@ -97,8 +97,26 @@
         ]
       },
       {
-        "path": "owner.id",
+        "path": "transferor.id",
         "required": true,
+        "validations": [
+          {
+            "type": "onwer"
+          }
+        ]
+      },
+      {
+        "path": "transferee",
+        "required": true,
+        "validations": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "path": "transferee.id",
+        "required": false,
         "validations": [
           {
             "type": "owner"
@@ -106,16 +124,7 @@
         ]
       },
       {
-        "path": "purchaser",
-        "required": true,
-        "validations": [
-          {
-            "type": "object"
-          }
-        ]
-      },
-      {
-        "path": "purchaser.name",
+        "path": "transferee.name",
         "required": true,
         "validations": [
           {
@@ -128,7 +137,7 @@
         ]
       },
       {
-        "path": "purchaser.fatherOrHusbandName",
+        "path": "transferee.fatherOrHusbandName",
         "required": true,
         "validations": [
           {
@@ -141,22 +150,19 @@
         ]
       },
       {
-        "path": "purchaser.relation",
+        "path": "transferee.relation",
         "required": true,
         "validations": [
           {
             "type": "enum",
             "params": {
-              "values": [
-                "FATHER",
-                "HUSBAND"
-              ]
+              "values": ["FATHER", "HUSBAND"]
             }
           }
         ]
       },
       {
-        "path": "purchaser.address",
+        "path": "transferee.address",
         "required": true,
         "validations": [
           {
@@ -169,16 +175,16 @@
         ]
       },
       {
-        "path": "purchaser.mobileNo",
+        "path": "transferee.mobileNo",
         "required": false,
         "validations": [
           {
-            "type": "phonenumber"
+            "type": "mobile"
           }
         ]
       },
       {
-        "path": "purchaser.percentageOfShareTransferred",
+        "path": "transferee.percentageOfShareTransferred",
         "required": true,
         "validations": [
           {
@@ -189,6 +195,125 @@
             "params": {
               "min": 0,
               "max": 100
+            }
+          }
+        ]
+      },
+      {
+        "path": "documentsReceivedDate",
+        "required": false,
+        "validations": [
+          {
+            "type": "date-range",
+            "params": {
+              "start": {
+                "unit": "year",
+                "value": -1
+              },
+              "end": {
+                "unit": "second",
+                "value": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases",
+        "required": false,
+        "validations": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "path": "courtCases.estateOfficerCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.commissionersCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.chiefAdministratorsCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.advisorToAdminCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.honbleDistrictCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.honbleHighCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
+            }
+          }
+        ]
+      },
+      {
+        "path": "courtCases.honbleSupremeCourt",
+        "required": false,
+        "validations": [
+          {
+            "type": "length",
+            "params": {
+              "min": 0,
+              "max": 250
             }
           }
         ]
@@ -239,27 +364,6 @@
           ]
         },
         {
-          "header": "EST_OWNER_DETAILS_HEADER",
-          "type": "EXPANSION_DETAIL",
-          "path": "payload.owner.id",
-          "valueJsonPath": "ownerDetails.ownerId",
-          "sourceJsonPath": "property.propertyDetails.owners",
-          "fields": [
-            {
-              "label": "EST_OWNER_NAME_LABEL",
-              "jsonPath": "ownerDetails.ownerName"
-            },
-            {
-              "label": "EST_OWNER_SHARE_LABEL",
-              "jsonPath": "share"
-            },
-            {
-              "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-              "jsonPath": "ownerDetails.mobileNumber"
-            }
-          ]
-        },
-        {
           "header": "EST_PURCHASER_DETAILS_HEADER",
           "type": "FORM",
           "fields": [
@@ -267,75 +371,75 @@
               "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "payload.applicationDetails.purchaser.type",
-              "path": "purchaser.type",
+              "jsonPath": "Applications[0]applicationDetails.transferee.type",
+              "path": "transferee.type",
               "dataSource": "typesOfOwner"
             },
             {
               "label": "EST_PURCHASER_TRANSFEREE_ID",
               "placeholder": "EST_PURCHASER_TRANSFEREE_ID_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "payload.applicationDetails.purchaser.id",
-              "path": "purchaser.id",
+              "jsonPath": "Applications[0].applicationDetails.transferee.id",
+              "path": "transferee.id",
               "dataSource": "owners"
             },
             {
               "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.name",
-              "path": "purchaser.name"
+              "jsonPath": "Applications[0].applicationDetails.transferee.name",
+              "path": "transferee.name"
             },
             {
               "label": "EST_FATHER_HUSBAND_NAME_LABEL",
               "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.fatherOrHusbandName",
-              "path": "purchaser.fatherOrHusbandName",
-              "disabled": "!!state.screenConfiguration.preparedFinalObject.payload && !!state.screenConfiguration.preparedFinalObject.payload.purchaser && !!state.screenConfiguration.preparedFinalObject.payload.purchaser.name"
+              "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
+              "path": "transferee.fatherOrHusbandName",
+              "disabled": "!!state.screenConfiguration.preparedFinalObject.payload && !!state.screenConfiguration.preparedFinalObject.Applications[0].purchaser && !!state.screenConfiguration.preparedFinalObject.Applications[0].transferee.name"
             },
             {
               "label": "EST_RELATION_SHIP_LABEL",
               "type": "RADIO_BUTTON",
-              "jsonPath": "payload.applicationDetails.purchaser.relation",
-              "path": "purchaser.relation"
+              "jsonPath": "Applications[0].applicationDetails.transferee.relation",
+              "path": "transferee.relation"
             },
             {
               "label": "EST_ADDRESS_LABEL",
               "placeholder": "EST_ADDRESS_PLACEHOLDER",
               "type": "TEXT_AREA",
-              "jsonPath": "payload.applicationDetails.purchaser.address",
-              "path": "purchaser.address"
+              "jsonPath": "Applications[0].applicationDetails.transferee.address",
+              "path": "transferee.address"
             },
             {
               "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.mobileNo",
-              "path": "purchaser.mobileNo",
+              "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
+              "path": "transferee.mobileNo",
               "pattern": "MobileNo"
             },
             {
               "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
               "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "payload.owner.id",
-              "path": "owner.id",
+              "jsonPath": "Applications[0].applicationDetails.transferor.id",
+              "path": "transferor.id",
               "dataSource": "owners"
             },
             {
               "label": "EST_PERCENTAGE_SHARED_LABEL",
               "placeholder": "EST_PERCENTAGE_SHARED_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.applicationDetails.purchaser.percentageOfShareTransferred",
-              "path": "purchaser.percentageOfShareTransferred",
+              "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+              "path": "transferee.percentageOfShareTransferred",
               "pattern": "Amount"
             },
             {
               "label": "EST_MODE_OF_TRANSFER_LABEL",
               "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "payload.modeOfTransfer",
+              "jsonPath": "Applications[0].applicationDetails.modeOfTransfer",
               "path": "modeOfTransfer",
               "dataSource": "modesOfTransfer"
             },
@@ -343,13 +447,13 @@
               "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
               "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
               "type": "TEXT_FIELD",
-              "jsonPath": "payload.registrationNumber",
+              "jsonPath": "Applications[0].applicationDetails.registrationNumber",
               "path": "registrationNumber"
             },
             {
               "label": "EST_DATE_OF_REGISTRATION_LABEL",
               "type": "DATE_FIELD",
-              "jsonPath": "payload.dateOfRegistration",
+              "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
               "path": "dateOfRegistration"
             }
           ]
@@ -358,7 +462,7 @@
     },
     "second_step": {
       "header": "EST_DOCUMENT_DETAILS_HEADER",
-      "jsonPath": "payload.documents",
+      "jsonPath": "Applications[0].applicationDocuments",
       "documentList": [
         {
           "code": "CERTIFIED_COPY_OF_LEASE_RIGHT",

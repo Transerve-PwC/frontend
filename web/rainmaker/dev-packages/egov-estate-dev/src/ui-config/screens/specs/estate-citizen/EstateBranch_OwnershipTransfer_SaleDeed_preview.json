@@ -3,93 +3,97 @@
         "sections": [
             {
                 "header": "EST_PROPERTY_DETAILS_HEADER",
+                "isEditable": false,
                 "fields": [
                     {
                         "label": "EST_FILE_NUMBER_LABEL",
-                        "jsonPath": "property.fileNumber"
+                        "jsonPath": "Applications[0].property.fileNumber"
                     },
                     {
                         "label": "EST_CATEGORY_LABEL",
-                        "jsonPath": "property.category"
+                        "jsonPath": "Applications[0].property.category"
                     },
                     {
                         "label": "EST_SUB_CATEGORY_LABEL",
-                        "jsonPath": "property.subCategory"
+                        "jsonPath": "Applications[0].property.subCategory"
                     },
                     {
                         "label": "EST_SITE_NO_LABEL",
-                        "jsonPath": "property.siteNumber"
+                        "jsonPath": "Applications[0].property.siteNumber"
                     },
                     {
                         "label": "EST_SECTOR_NO_LABEL",
-                        "jsonPath": "property.sectorNumber"
+                        "jsonPath": "Applications[0].property.sectorNumber"
                     },
                     {
                         "label": "EST_PROPERTY_TYPE_LABEL",
-                        "jsonPath": "property.propertyDetails.propertyType"
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyType"
                     },
                     {
                         "label": "EST_LAST_NOC_DATE_LABEL",
-                        "jsonPath": "property.propertyDetails.lastNocDate"
+                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
                     },
                     {
                         "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
-                        "jsonPath": "property.propertyDetails.propertyApplicationNumber"
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyApplicationNumber"
                     },
                     {
                         "label": "EST_DUE_AMOUNT_LABEL",
-                        "jsonPath": "property.propertyDetails.dueAmount"
+                        "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
                     }
                 ]
             },
             {
                 "header": "EST_PURCHASER_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.name"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
                         "label": "EST_PURCHASER_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
                     },
                     {
                         "label": "EST_RELATION_SHIP_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.relation"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.relation"
                     },
                     {
                         "label": "EST_PURCHASER_TRANSFEREE_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.address"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
                         "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.mobileNo"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
                     },
                     {
                         "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
-                        "jsonPath": "payload.owner.id"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "EST_PERCENTAGE_SHARED_LABEL",
-                        "jsonPath": "payload.applicationDetails.purchaser.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     },
                     {
                         "label": "EST_MODE_OF_TRANSFER_LABEL",
-                        "jsonPath": "payload.modeOfTransfer"
+                        "jsonPath": "Applications[0].applicationDetails.modeOfTransfer"
                     },
                     {
                         "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
-                        "jsonPath": "payload.registrationNumber"
+                        "jsonPath": "Applications[0].applicationDetails.registrationNumber"
                     },
                     {
                         "label": "EST_DATE_OF_REGISTRATION_LABEL",
-                        "jsonPath": "payload.dateOfRegistration"
+                        "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
+                        "type": "date"
                     }
                 ]    
                 },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",
                 "type": "DOCUMENTS",
+                "step": 1,
                 "sourceJsonPath": "temp[0].reviewDocData"
             }
         ]

@@ -1,7 +1,7 @@
 import get from "lodash/get";
 import set from "lodash/set";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults, getCount, getDuplicateCopySearchResults , getOwnershipSearchResults, getMortgageSearchResults} from "../../../../..//ui-utils/commons";
+import { getSearchResults, getCount, getDuplicateCopySearchResults , getOwnershipSearchResults, getMortgageSearchResults,getSearchApplicationsResults} from "../../../../..//ui-utils/commons";
 import {
   convertEpochToDate,
   convertDateToEpoch,
@@ -9,16 +9,16 @@ import {
 } from "../../utils/index";
 import { toggleSnackbar, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
 import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON } from "./searchResults";
+import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 
-export const getStatusList = async (state, dispatch, screen, path) => {
-  const queryObject = [{ key: "tenantId", value: getTenantId() }, 
-                      { key: "businessServices", value: "PropertyMaster" }]
-  const businessServices = await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
+  await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+  const businessServices = JSON.parse(localStorageGet("businessServiceData"));
   if(!!businessServices) {
     const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
     dispatch(
@@ -315,6 +315,8 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
     {}
   );
 
+  
+
   const isSearchBoxFirstRowValid = validateFields(
     "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children",
     state,
@@ -369,7 +371,6 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
         [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
         [getTextToLocalMapping("Sector Number")]: item.sectorNumber || "-",
         [getTextToLocalMapping("Status")]: getLocaleLabels(item.state, item.state) || "-",
-        // [getTextToLocalMapping("Status")]: getLocaleLabels(item.masterDataState, item.masterDataState) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(
@@ -387,6 +388,98 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
     }
   }
 };
+
+export const searchApplicationApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
+  !!hideTable && showHideTable(false, dispatch, "search-application");
+  let queryObject = [
+    // {
+    //   key: "tenantId",
+    //   value: getTenantId()
+    // },
+    { key: "offset", value: offset },
+    { key: "limit", value: limit }
+  ];
+  queryObject = queryObject.filter(({value}) => !!value)
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  
+
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.estateApplicationSearch.children.cardContent.children.colonyContainer.children",
+    state,
+    dispatch,
+    "search-application"
+  );
+
+  const isSearchBoxSecondRowValid = validateFields(
+    "components.div.children.estateApplicationSearch.children.cardContent.children.transitNumberContainer.children",
+    state,
+    dispatch,
+    "search-application"
+  );
+
+  if (!(isSearchBoxFirstRowValid && isSearchBoxSecondRowValid) && typeof onInit != "boolean") {
+    dispatch(
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please fill valid fields to start search",
+          labelKey: "ERR_FILL_VALID_FIELDS"
+        },
+        "warning"
+      )
+    );
+  } else if (
+    (Object.keys(searchScreenObject).length == 0 ||
+    Object.values(searchScreenObject).every(x => x === "")) && typeof onInit != "boolean"
+  ) {
+    dispatch(
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please fill at least one field to start search",
+          labelKey: "ERR_FILL_ONE_FIELDS"
+        },
+        "warning"
+      )
+    );
+  } else {
+      for (var key in searchScreenObject) {
+        if (
+          searchScreenObject.hasOwnProperty(key) &&
+          searchScreenObject[key].trim() !== ""
+        ) {
+            queryObject.push({ key: key, value: searchScreenObject[key].trim() });
+        }
+    }
+    const response = await getSearchApplicationsResults(queryObject);
+    try {
+      let data = response.Applications.map(item => ({
+        [getTextToLocalMapping("File Number")]: item.property.fileNumber || "-",
+        [getTextToLocalMapping("Application Number")]: item.applicationNumber || "-",
+        [getTextToLocalMapping("Status")]: getLocaleLabels(item.property.state, item.property.state) || "-",
+        [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
+      }));
+      dispatch(
+        handleField(
+          "search-application",
+          "components.div.children.searchApplicationResults",
+          "props.data",
+          data
+        )
+      );
+      !!hideTable && showHideTable(true, dispatch, "search-application");
+    } catch (error) {
+      dispatch(toggleSnackbar(true, error.message, "error"));
+      console.log(error);
+    }
+  }
+};
+
 const showHideTable = (booleanHideOrShow, dispatch, screenKey) => {
   dispatch(
     handleField(

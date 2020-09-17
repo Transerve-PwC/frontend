@@ -16,7 +16,14 @@ export const searchResults = {
       getTextToLocalMapping("Action"),
       getTextToLocalMapping("File No"),
       getTextToLocalMapping("Site Number"), 
-      getTextToLocalMapping("Owner Name")
+      getTextToLocalMapping("Owner Name"),
+      {
+        name: "propertyId",
+        options: {
+          display: false,
+          viewColumns: false
+        }
+      }
     ],
     options: {
       filter: false,
@@ -34,5 +41,5 @@ export const searchResults = {
 
 const onRowClick = rowData => {
   const type = getQueryArg(window.location.href, "type")
-  window.location.href = `apply?fileNumber=${rowData[1]}&applicationType=${type}`;
+  window.location.href = `apply?propertyId=${rowData[4]}&applicationType=${type}`;
 };

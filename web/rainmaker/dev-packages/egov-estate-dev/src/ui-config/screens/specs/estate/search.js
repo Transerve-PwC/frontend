@@ -25,12 +25,13 @@ import {
 import find from "lodash/find";
 import get from "lodash/get";
 import { estateApplication } from './searchResource/estateApplication';
-import {searchApiCall} from './searchResource/functions';
+import {getStatusList, searchApiCall} from './searchResource/functions';
 import {searchResults} from './searchResource/searchResults';
 
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
+import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
 
 const userInfo = JSON.parse(getUserInfo());
 const {
@@ -43,26 +44,6 @@ const header = getCommonHeader({
   labelKey: "EST_SEARCH_PROPERTY_MASTER_HEADER"
 });
 
-export const getStatusList = async (action, state, dispatch, queryObject, screenkey, path, businessService) => {
-  await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
-  const businessServices = JSON.parse(localStorageGet("businessServiceData"));
-  if (!!businessServices) {
-    const status = businessServices[0].states.filter(item => !!businessService ? !!item.state : !!item.state && (item.state !== "OT_DRAFTED" && item.state !== "DC_DRAFTED" && item.state !== "MG_DRAFTED")).map(({
-      state
-    }) => ({
-      code: state
-    }))
-    dispatch(
-      handleField(
-        screenkey,
-        path,
-        "props.data",
-        status
-      )
-    );
-  }
-}
-
 const estateSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
@@ -73,12 +54,12 @@ const estateSearchAndResult = {
       },
       {
         key: "businessServices",
-        value: "PropertyMaster"
+        value: WF_PROPERTY_MASTER
       }
     ]
     dispatch(prepareFinalObject("searchScreen", {}))
       searchApiCall(state, dispatch, true)
-      getStatusList(action, state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", "PropertyMaster")
+      getStatusList( state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", WF_PROPERTY_MASTER)
     return action
   },
   components: {

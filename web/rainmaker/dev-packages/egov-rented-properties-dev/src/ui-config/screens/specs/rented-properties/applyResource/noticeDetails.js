@@ -202,7 +202,8 @@ const demandNoticeFromDate = {
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
-        }
+        },
+        disabled:true
     },
     errorMessage:"RP_ERR_DEMAND_NOTICE_FROM_DATE_FIELD"
   }
@@ -222,7 +223,8 @@ const demandNoticeFromDate = {
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
-        }
+        },
+        disabled:true
     },
     errorMessage:"RP_ERR_DEMAND_NOTICE_LAST_DATE_FIELD"
   }

@@ -51,8 +51,8 @@ const setDocumentTypes = (state, code) => {
     "New"
   );
   const documentTypes = tradeType.find(item => item.code === code)
-  .applicationDocument.find(item => item.applicationType === applicationType)
-  .documentList;
+    .applicationDocument.find(item => item.applicationType === applicationType)
+    .documentList;
   return documentTypes;
 }
 
@@ -120,7 +120,7 @@ export const getUploadFilesMultiple = jsonPath => {
       inputProps: {
         accept: "image/*, .pdf, .png, .jpeg"
       },
-      buttonLabel: {labelName: "UPLOAD FILES",labelKey : "TL_UPLOAD_FILES_BUTTON"},
+      buttonLabel: { labelName: "UPLOAD FILES", labelKey: "TL_UPLOAD_FILES_BUTTON" },
       maxFileSize: 5000,
       moduleName: "TL"
     }
@@ -450,11 +450,11 @@ export const showHideAdhocPopup = (state, dispatch) => {
 };
 
 export const getButtonVisibility = (status, button) => {
-  if(status === "INITIATED" && button === "SUBMISSION") {
+  if (status === "INITIATED" && button === "SUBMISSION") {
     return true;
   }
-  if(status==="CITIZENACTIONREQUIRED" && button ==="RESUBMIT")
-  return true;
+  if (status === "CITIZENACTIONREQUIRED" && button === "RESUBMIT")
+    return true;
   if (status === "PENDINGPAYMENT" && button === "PROCEED TO PAYMENT")
     return true;
   if (status === "PENDINGAPPROVAL" && button === "APPROVE") return true;
@@ -959,17 +959,17 @@ const getStatementForDocType = docType => {
 };
 
 
-export const downloadAcknowledgementForm = (Licenses,mode="download") => {
+export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
   const queryStr = [
     { key: "key", value: `tlapplication_${Licenses[0].businessService}` },
     { key: "tenantId", value: "ch" }
   ]
-  let {documents} = Licenses[0].additionalDetails;
+  let { documents } = Licenses[0].additionalDetails;
   const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  const ownerDocument = findIndex !== -1 ? documents[findIndex] : {link : `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`};
+  const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
   // documents = findIndex !== -1 ? [...documents.slice(0, findIndex), ...documents.slice(findIndex+1)] : documents
   const length = documents.length % 4
-  documents = [...documents, ...new Array(length > 2 ? 4 - length : length).fill({title: "", name: ""})]
+  documents = [...documents, ...new Array(length > 2 ? 4 - length : length).fill({ title: "", name: "" })]
   const myDocuments = documents.map((item) => ({
     ...item, title: getLocaleLabels(item.title, item.title)
   })).reduce((splits, i) => {
@@ -979,7 +979,7 @@ export const downloadAcknowledgementForm = (Licenses,mode="download") => {
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
   let licenses = Licenses[0];
-  licenses = {...licenses, additionalDetails: {documents: myDocuments}, ownerDocument}
+  licenses = { ...licenses, additionalDetails: { documents: myDocuments }, ownerDocument }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -992,7 +992,7 @@ export const downloadAcknowledgementForm = (Licenses,mode="download") => {
         res.filestoreIds[0]
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
           res.filestoreIds.map(fileStoreId => {
-            downloadReceiptFromFilestoreID(fileStoreId,mode)
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
           })
         } else {
           console.log("Error In Acknowledgement form Download");
@@ -1003,17 +1003,17 @@ export const downloadAcknowledgementForm = (Licenses,mode="download") => {
   }
 }
 
-export const downloadCertificateForm = (Licenses, data, mode='download') => {
- const applicationType= Licenses &&  Licenses.length >0 ? get(Licenses[0],"applicationType") : "NEW";
+export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
+  const applicationType = Licenses && Licenses.length > 0 ? get(Licenses[0], "applicationType") : "NEW";
   const queryStr = [
-    { key: "key", value:applicationType==="RENEWAL"?"tlrenewalcertificate": "tlcertificate" },
+    { key: "key", value: applicationType === "RENEWAL" ? "tlrenewalcertificate" : "tlcertificate" },
     { key: "tenantId", value: "ch" }
   ]
-  let {documents} = Licenses[0].additionalDetails;
+  let { documents } = Licenses[0].additionalDetails;
   const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  const ownerDocument = findIndex !== -1 ? documents[findIndex] : {link : `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`};
+  const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
   let licenses = Licenses[0];
-  licenses = {...licenses, ownerDocument}
+  licenses = { ...licenses, ownerDocument }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -1026,7 +1026,7 @@ export const downloadCertificateForm = (Licenses, data, mode='download') => {
         res.filestoreIds[0]
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
           res.filestoreIds.map(fileStoreId => {
-            downloadReceiptFromFilestoreID(fileStoreId,mode)
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
           })
         } else {
           console.log("Error In Acknowledgement form Download");
@@ -1141,8 +1141,8 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               labelKey: item.accountDescription.split("-")[0]
             },
             // value: getTaxValue(item)  
-            order: item.order,          
-            value : item.amount,
+            order: item.order,
+            value: item.amount,
             info: getToolTipInfo(
               item.accountDescription.split("-")[0],
               LicenseData
@@ -1157,7 +1157,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
                 )
               }
           });
-          item.taxHeadCode &&
+        item.taxHeadCode &&
           result.push({
             name: {
               labelName: item.taxHeadCode,
@@ -1165,7 +1165,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
             },
             order: item.order,
             // value: getTaxValue(item),
-            value : item.amount,
+            value: item.amount,
             info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
               value: getToolTipInfo(item.taxHeadCode, LicenseData),
               key: getToolTipInfo(item.taxHeadCode, LicenseData)
@@ -1178,8 +1178,8 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               labelName: item.taxHeadCode,
               labelKey: item.taxHeadCode
             },
-            order: item.order,          
-            value : item.amount,
+            order: item.order,
+            value: item.amount,
             // value: getTaxValue(item),
             // value : get(ResponseData , "totalAmount"),
             info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
@@ -1192,7 +1192,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
     }, []);
     transformedData = transformedData.sort((a, b) => {
       return a.order < b.order ? -1 : a.order > b.order ? 1 : a.value > b.value ? -1 : 0
-    }).map(item => ({...item, value: item.value.toFixed(2)}))
+    }).map(item => ({ ...item, value: item.value.toFixed(2) }))
     return [
       ...transformedData.filter(item => item.name.labelKey === "TL_TAX"),
       ...transformedData.filter(item => item.name.labelKey !== "TL_TAX"),
@@ -1308,16 +1308,16 @@ const getBillingSlabData = async (
   }
 };
 
-const isApplicationPaid = (currentStatus,workflowCode) => {
-let isPAID = false;
-if(currentStatus==="CITIZENACTIONREQUIRED" || currentStatus === "PENDING Payment"){
-  return isPAID;
-}
-const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
+const isApplicationPaid = (currentStatus, workflowCode) => {
+  let isPAID = false;
+  if (currentStatus === "CITIZENACTIONREQUIRED" || currentStatus === "PENDING Payment") {
+    return isPAID;
+  }
+  const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
 
   if (!isEmpty(businessServiceData)) {
     const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
-    const states = tlBusinessService && tlBusinessService.length > 0 &&tlBusinessService[0].states;
+    const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
     for (var i = 0; i < states.length; i++) {
       if (states[i].state === currentStatus) {
         break;
@@ -1344,7 +1344,7 @@ export const createEstimateData = async (
   href = {},
   getFromReceipt
 ) => {
-  const workflowCode = get(LicenseData , "workflowCode") ? get(LicenseData , "workflowCode") : "NewTL"
+  const workflowCode = get(LicenseData, "workflowCode") ? get(LicenseData, "workflowCode") : "NewTL"
   const applicationNo =
     get(LicenseData, "applicationNumber") ||
     getQueryArg(href, "applicationNumber");
@@ -1374,7 +1374,7 @@ export const createEstimateData = async (
     }
   ];
   const currentStatus = LicenseData.status;
-  const isPAID = isApplicationPaid(currentStatus,workflowCode);
+  const isPAID = isApplicationPaid(currentStatus, workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
   const payload = isPAID
     ? await getReceipt(queryObj.filter(item => item.key !== "businessService"))
@@ -1451,9 +1451,9 @@ export const getCurrentFinancialYear = () => {
 };
 
 export const getnextFinancialYear = (year) => {
-  const nextFY=   year.substring(0, 2) + (parseInt(year.substring(2 ,4)) + 1)  + year.substring(4, 5) + (parseInt(year.substring(5 ,7)) + 1) ;
-   return nextFY;
- };
+  const nextFY = year.substring(0, 2) + (parseInt(year.substring(2, 4)) + 1) + year.substring(4, 5) + (parseInt(year.substring(5, 7)) + 1);
+  return nextFY;
+};
 
 export const validateFields = (
   objectJsonPath,
@@ -1917,28 +1917,28 @@ export const getDocList = (state, dispatch, tradeLicenseType) => {
   //     state.screenConfiguration.preparedFinalObject,
   //     "Licenses[0].tradeLicenseDetail.tradeUnits"
   //   );
-  
+
   //   const tradeSubCategories = get(
   //     state.screenConfiguration.preparedFinalObject,
   //     "applyScreenMdmsData.TradeLicense.MdmsTradeType"
   //   );
-    let selectedTypes = [];
-  
-    const documentTypes = setDocumentTypes(state,tradeLicenseType);
-    // const documentTypes = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.common-masters.DocumentType").map(item => item.code);
-  
-    /* tradeSubTypes.forEach(tradeSubType => {
-      selectedTypes.push(
-        filter(tradeSubCategories, {
-          code: tradeSubType.tradeType
-        })
-      );
-    }); */
-    
-    // selectedTypes[0] &&
-    //
+  let selectedTypes = [];
+
+  const documentTypes = setDocumentTypes(state, tradeLicenseType);
+  // const documentTypes = get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.common-masters.DocumentType").map(item => item.code);
+
+  /* tradeSubTypes.forEach(tradeSubType => {
+    selectedTypes.push(
+      filter(tradeSubCategories, {
+        code: tradeSubType.tradeType
+      })
+    );
+  }); */
+
+  // selectedTypes[0] &&
+  //
   //   let applicationDocArray = [];
-  
+
   //   selectedTypes.forEach(tradeSubTypeDoc => {
   //     applicationDocArray = [
   //       ...applicationDocArray,
@@ -1949,39 +1949,39 @@ export const getDocList = (state, dispatch, tradeLicenseType) => {
   //     return self.indexOf(value) === index;
   //   }
   //   applicationDocArray = applicationDocArray.filter(onlyUnique);
-    let applicationDocument = prepareDocumentTypeObj(documentTypes);
+  let applicationDocument = prepareDocumentTypeObj(documentTypes);
+  dispatch(
+    prepareFinalObject(
+      "LicensesTemp[0].applicationDocuments",
+      applicationDocument
+    )
+  );
+
+  //REARRANGE APPLICATION DOCS FROM TL SEARCH IN EDIT FLOW
+  let applicationDocs = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].ownerDetails.applicationDocuments",
+    []
+  ) || [];
+  applicationDocs = applicationDocs.filter(item => !!item)
+  let applicationDocsReArranged =
+    applicationDocs &&
+    applicationDocs.length &&
+    applicationDocument.map(item => {
+      const index = applicationDocs.findIndex(
+        i => i.documentType === item.name
+      );
+      return applicationDocs[index];
+    }).filter(item => !!item)
+  applicationDocsReArranged &&
     dispatch(
       prepareFinalObject(
-        "LicensesTemp[0].applicationDocuments",
-        applicationDocument
+        "Properties[0].ownerDetails.applicationDocuments",
+        applicationDocsReArranged
       )
     );
-  
-    //REARRANGE APPLICATION DOCS FROM TL SEARCH IN EDIT FLOW
-    let applicationDocs = get(
-      state.screenConfiguration.preparedFinalObject,
-      "Properties[0].ownerDetails.applicationDocuments",
-      []
-    ) || [];
-    applicationDocs = applicationDocs.filter(item => !!item)
-    let applicationDocsReArranged =
-      applicationDocs &&
-      applicationDocs.length &&
-      applicationDocument.map(item => {
-        const index = applicationDocs.findIndex(
-          i => i.documentType === item.name
-        );
-        return applicationDocs[index];
-      }).filter(item => !!item)
-    applicationDocsReArranged &&
-      dispatch(
-        prepareFinalObject(
-          "Properties[0].ownerDetails.applicationDocuments",
-          applicationDocsReArranged
-        )
-      );
-  };
-  
+};
+
 
 export const setOwnerShipDropDownFieldChange = (state, dispatch, payload) => {
   let tradeSubOwnershipCat = get(
@@ -2425,25 +2425,25 @@ export const getTextToLocalMapping = label => {
 
     case "PENDINGL3VERIFICATION":
       return getLocaleLabels("Initiated,", "WF_NEWTL_PENDINGL3VERIFICATION", localisationLabels);
-    
+
     case "PENDINGAPPROVAL":
       return getLocaleLabels("Initiated,", "WF_NEWTL_PENDINGLAPPROVAL", localisationLabels);
 
     case "PENDINGPAYMENT":
       return getLocaleLabels("Initiated,", "WF_NEWTL_PENDINGPAYMENT", localisationLabels);
 
-      case "Registration Certificate For Pedal Rickshaw/ Loading Rehri":
-        return getLocaleLabels("Initiated,", "WF_NEWTL_RegistrationCertificateForPedalRickshaw/LoadingRehri", localisationLabels);
-  
-      case "Driving License For Pedal Rickshaw/ Loading Rehri":
-        return getLocaleLabels("Initiated,", "WF_NEWTL_DrivingLicenseForPedalRickshaw/LoadingRehri", localisationLabels);
-  
-      case "License For Dhobi Ghat":
-        return getLocaleLabels("Initiated,", "WF_NEWTL_LicenseForDhobiGhat", localisationLabels);
-      
-      case "Renewal of Rent Deed of Platform/Shop at Old Book Market":
-        return getLocaleLabels("Initiated,", "WF_NEWTL_RenewalofRentDeedofPlatform/ShopatOldBookMarket", localisationLabels);
-    
+    case "Registration Certificate For Pedal Rickshaw/ Loading Rehri":
+      return getLocaleLabels("Initiated,", "WF_NEWTL_RegistrationCertificateForPedalRickshaw/LoadingRehri", localisationLabels);
+
+    case "Driving License For Pedal Rickshaw/ Loading Rehri":
+      return getLocaleLabels("Initiated,", "WF_NEWTL_DrivingLicenseForPedalRickshaw/LoadingRehri", localisationLabels);
+
+    case "License For Dhobi Ghat":
+      return getLocaleLabels("Initiated,", "WF_NEWTL_LicenseForDhobiGhat", localisationLabels);
+
+    case "Renewal of Rent Deed of Platform/Shop at Old Book Market":
+      return getLocaleLabels("Initiated,", "WF_NEWTL_RenewalofRentDeedofPlatform/ShopatOldBookMarket", localisationLabels);
+
     case "Application No":
       return getLocaleLabels(
         "Application No",
@@ -2466,18 +2466,18 @@ export const getTextToLocalMapping = label => {
       );
 
     case "Service Type":
-    return getLocaleLabels(
-      "Service Type",
-      "TL_SERVICE_TYPE_LABEL",
-      localisationLabels
-    );
+      return getLocaleLabels(
+        "Service Type",
+        "TL_SERVICE_TYPE_LABEL",
+        localisationLabels
+      );
 
     case "License Type":
-    return getLocaleLabels(
-      "License Type",
-      "TL_TRADE_TYPE_LABEL",
-      localisationLabels
-    );
+      return getLocaleLabels(
+        "License Type",
+        "TL_TRADE_TYPE_LABEL",
+        localisationLabels
+      );
 
     case "Application Date":
       return getLocaleLabels(
@@ -2529,42 +2529,48 @@ export const getTextToLocalMapping = label => {
         "TL_MY_APPLICATIONS",
         localisationLabels
       );
-      case "Financial Year":
+    case "Financial Year":
       return getLocaleLabels(
         "Financial Year",
         "TL_COMMON_TABLE_COL_FIN_YEAR",
         localisationLabels
       );
-      case "Application Type":
+    case "Application Type":
       return getLocaleLabels(
         "Application Type",
         "TL_COMMON_TABLE_COL_APP_TYPE",
         localisationLabels
       );
-      case "Renew":
+    case "Renew":
       return getLocaleLabels(
         "Renew",
         "TL_TYPE_RENEWAL",
         localisationLabels
       );
-      case "New":
+    case "New":
       return getLocaleLabels(
         "New",
         "TL_TYPE_NEW",
         localisationLabels
       );
-      case "File Number":
-        return getLocaleLabels(
-          "File Number",
-          "ESTATE_COMMON_TABLE_COL_FILE_NO",
-          localisationLabels
-        );
-    case "Sector Number": 
-          return getLocaleLabels(
-            "Sector Number",
-            "ESTATE_COMMON_TABLE_COL_SECTOR_NO",
-            localisationLabels
-          )
+    case "File Number":
+      return getLocaleLabels(
+        "File Number",
+        "ESTATE_COMMON_TABLE_COL_FILE_NO",
+        localisationLabels
+      );
+    case "Sector Number":
+      return getLocaleLabels(
+        "Sector Number",
+        "ESTATE_COMMON_TABLE_COL_SECTOR_NO",
+        localisationLabels
+      )
+    case "Application Number":
+      return getLocaleLabels(
+        "Application Number",
+        "ESTATE_COMMON_TABLE_COL_APPLICATION_NO",
+        localisationLabels
+      )
     case "Action":
       return getLocaleLabels(
         "Action",
