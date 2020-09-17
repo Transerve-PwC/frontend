@@ -170,17 +170,7 @@ const callBackForNext = async (state, dispatch) => {
           `Partner Documents - ${partnerName}`
         )
 
-        // const reviewPartnerDetails = getReviewPartner(true, i);
-        // set(
-        //   reviewPartnerDetails,
-        //   "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-        //   `Owner Details - ${partnerName}`
-        // )
-        // set(
-        //   state.screenConfiguration.screenConfig,
-        //   `allotment.components.div.children.formwizardNinthStepAllotment.children.reviewDetails.children.cardContent.children.reviewPartnerDetails_${i}`,
-        //   reviewPartnerDetails
-        // )
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardNinthStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewCompanyDetails.children.cardContent.children.viewPartners`, "partners", propertyPartners.length)
       }
     }
 
