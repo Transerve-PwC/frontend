@@ -46,9 +46,9 @@ import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
 export const AUCTION_DETAILS_STEP = 1;
-export const OWNER_DETAILS_STEP = 2;
-export const PURCHASER_DETAILS_STEP = 3;
-export const COMPANY_DETAILS_STEP = 4;
+export const COMPANY_DETAILS_STEP = 2;
+export const OWNER_DETAILS_STEP = 3;
+export const PURCHASER_DETAILS_STEP = 4;
 export const COURT_CASE_DETAILS_STEP = 5;
 export const PAYMENT_DETAILS_STEP = 6;
 export const DOCUMENT_UPLOAD_STEP = 7;
@@ -346,7 +346,15 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === COMPANY_DETAILS_STEP) {
-    
+    var companyPartners = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.owners"
+    );
+
+    let companyPartnerItems = get(
+      state,
+      "components.div.children.formwizardStepFour.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+    );
   }
 
   if (activeStep === COURT_CASE_DETAILS_STEP) {
@@ -686,7 +694,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
-          "components.div.children.formwizardStepEight"
+          "components.div.children.formwizardStepFour"
         ),
         dispatch
       );
