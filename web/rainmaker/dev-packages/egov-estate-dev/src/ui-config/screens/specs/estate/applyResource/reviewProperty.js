@@ -1188,6 +1188,84 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
   })
 }
 
+export const getReviewCompanyDetails = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Company Details",
+            labelKey: "EST_COMPANY_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+      }
+    },
+    viewCompanyDetails: getCommonContainer({
+      companyName: getLabelWithValue(
+        {
+          labelName: "Company Name",
+          labelKey: "EST_COMPANY_NAME_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyName`
+        }
+      ),
+      companyAddress: getLabelWithValue(
+        {
+          labelName: "Company Address",
+          labelKey: "EST_ESTATE_COMPANY_ADDRESS_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyAddress`
+        }
+      ),
+      companyRegNo: getLabelWithValue(
+        {
+          labelName: "Company Registration Number",
+          labelKey: "EST_COMPANY_REG_NO_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyRegNo`
+        }
+      ),
+      companyType: getLabelWithValue(
+        {
+          labelName: "Company Type",
+          labelKey: "EST_COMPANY_TYPE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyType`
+        }
+      ),
+      companyShareholderName: getLabelWithValue(
+        {
+          labelName: "Company Shareholder Name",
+          labelKey: "EST_COMPANY_SHAREHOLDER_NAME_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyShareHolderName`
+        }
+      ),
+      companyShare: getLabelWithValue(
+        {
+          labelName: "Company Share %",
+          labelKey: "EST_COMPANY_SHARE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyShare`
+        }
+      )
+    }),
+    viewPartners: getCommonContainer({})
+  })
+}
+
 export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screenName, screenpath, type, count) => {
   var detailsObj = {};
   
@@ -1210,19 +1288,10 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
             labelKey: "EST_DUE_DATE_INSTALLMENT_LABEL"
           }, 
           {
-            jsonPath: `Properties[0].propertyDetails.paymentDetails[${i}].installments[0].dueDate`
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].installments[${i}].dueDate`
           }
         )
       }
-
-      dispatch(
-        handleField(
-          screenName,
-          screenpath,
-          "children",
-          detailsObj
-        )
-      )
       break;
     case "groundRent":
       for (var i=0; i<count; i++) {
@@ -1242,7 +1311,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
             labelKey: "EST_START_YEAR_LABEL"
           }, 
           {
-            jsonPath: `Properties[0].propertyDetails.paymentDetails[${i}].rent[${i}].startYear`
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].startYear`
           }
         )
 
@@ -1252,19 +1321,10 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
             labelKey: "EST_END_YEAR_LABEL"
           }, 
           {
-            jsonPath: `Properties[0].propertyDetails.paymentDetails[${i}].rent[${i}].endYear`
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].endYear`
           }
         )
       }
-
-      dispatch(
-        handleField(
-          screenName,
-          screenpath,
-          "children",
-          detailsObj
-        )
-      )
       break;
 
     case "licenseFee":
@@ -1285,7 +1345,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
             labelKey: "EST_START_YEAR_LABEL"
           }, 
           {
-            jsonPath: `Properties[0].propertyDetails.paymentDetails[${i}].licenseFee[${i}].startYear`
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].startYear`
           }
         )
 
@@ -1295,19 +1355,103 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
             labelKey: "EST_END_YEAR_LABEL"
           }, 
           {
-            jsonPath: `Properties[0].propertyDetails.paymentDetails[${i}].licenseFee[${i}].endYear`
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].endYear`
           }
         )
       }
-
-      dispatch(
-        handleField(
-          screenName,
-          screenpath,
-          "children",
-          detailsObj
-        )
-      )
       break;
+
+    case "partners":
+      for (var i=0; i<count; i++) {
+        detailsObj[`partnerName_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Name",
+            labelKey: "EST_PARTNER_NAME_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.partnerName`
+          }
+        );
+      
+        detailsObj[`guardianName_${i}`] = getLabelWithValue(
+          {
+            labelName: "Father/Husband Name",
+            labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianName`
+          }
+        )
+
+        detailsObj[`guardianRelation_${i}`] = getLabelWithValue(
+          {
+            labelName: "Relationship",
+            labelKey: "EST_RELATIONSHIP_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianRelation`
+          }
+        )
+
+        detailsObj[`partnerAddress_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Address",
+            labelKey: "EST_PARTNER_ADDRESS_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.address`
+          }
+        )
+
+        detailsObj[`partnerMobileNumber_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Mobile Number",
+            labelKey: "EST_PARTNER_MOBILE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.mobileNumber`
+          }
+        )
+
+        detailsObj[`partnerShare_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Share",
+            labelKey: "EST_PARTNER_SHARE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
+          }
+        )
+        
+        detailsObj[`partnerShare_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Share",
+            labelKey: "EST_PARTNER_SHARE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
+          }
+        )
+
+        detailsObj[`partnerCPNumber_${i}`] = getLabelWithValue(
+          {
+            labelName: "PPartner CP Number",
+            labelKey: "EST_PARTNER_CP_NUMBER_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.cpNumber`
+          }
+        )
+      }
+      break;
+
   }
+  dispatch(
+    handleField(
+      screenName,
+      screenpath,
+      "children",
+      detailsObj
+    )
+  )
 }
