@@ -268,6 +268,16 @@ class SingleApplication extends React.Component {
           }
       }
   }
+    else if (moduleName == "EST") {
+      switch(item.state) {
+        case "DRAFTED":
+        case "PENDING_CLARIFICATION":  
+        setRoute(`/estate-citizen/apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+        break;
+        default:
+          setRoute(`/estate/preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+      }
+    }
   };
 
   onButtonCLick = () => {
