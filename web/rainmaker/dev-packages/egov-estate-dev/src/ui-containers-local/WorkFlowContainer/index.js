@@ -175,6 +175,9 @@ class WorkFlowContainer extends React.Component {
           case WF_PROPERTY_MASTER: {
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
           }
+          default: {
+            path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}`
+          }
         }
         window.location.href = `acknowledgement?${this.getPurposeString(
           label

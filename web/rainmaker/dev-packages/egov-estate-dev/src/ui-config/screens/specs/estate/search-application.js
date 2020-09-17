@@ -1,29 +1,14 @@
 import {
     getCommonHeader,
-    getLabel,
     getBreak,
-    getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {
-    setRoute
-} from "egov-ui-framework/ui-redux/app/actions";
-import {
-    getQueryArg,
-    setBusinessServiceDataToLocalStorage
-} from "egov-ui-framework/ui-utils/commons";
 import {
     prepareFinalObject,
     handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-    localStorageGet,
     getTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
-import {
-    httpRequest
-} from "../../../../ui-utils";
-import find from "lodash/find";
-import get from "lodash/get";
 import { estateApplicationSearch } from './searchResource/estateApplication';
 import { getStatusList, searchApplicationApiCall } from './searchResource/functions';
 import { searchApplicationResults } from './searchResource/searchResults';
@@ -31,13 +16,11 @@ import { searchApplicationResults } from './searchResource/searchResults';
 import {
     getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
-import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
 
 const userInfo = JSON.parse(getUserInfo());
 const {
     roles = []
 } = userInfo
-console.log(roles);
 const findItem = roles.find(item => item.code === "ES_EB_DISPATCH_OFFICER");
 const header = getCommonHeader({
     labelName: "Search Property Master",
