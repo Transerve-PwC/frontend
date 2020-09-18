@@ -418,11 +418,11 @@
             "description": "INDEMNITY_BOND_FROM_THE_BENEFICIARIES_OF_WILL_DESCRIPTION"
           },
           {
-            "code": "Self_attested_photo_identity_proof_of_both_the_witnesses_to_Indemnity_bond",
+            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "Self_attested_photo_identity_proof_of_both _the_witnesses_to_Indemnity_bond_DESCRIPTION"
+            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND_DESCRIPTION"
           },
           {
             "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANT",
@@ -443,7 +443,7 @@
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LEGAL_HEIR_ORIGINAL_DEATH _CERTIFICATE_DESCRIPTION"
+            "description": "LEGAL_HEIR_ORIGINAL_DEATH_CERTIFICATE_DESCRIPTION"
           },
           {
             "code": "TRANSLATED_COPY_OF_DEATH_CERTIFICATE_OF_ENGLISH_LANGUAGE",
@@ -502,7 +502,7 @@
             "description": "CLEARANCE_OF_PREVIOUS_MORTGAGE_BANK_LOAN_FINANCIAL_INSTITUTION_REDEMPTION_DEED_DESCRIPTION"
           },
           {
-            "code": "SEWERAGE_CONNECTION_OR _OCCUPATION_CERTIFICATE",
+            "code": "SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
