@@ -3,6 +3,7 @@
         "sections": [
             {
                 "header": "EST_OWNER_DETAILS_HEADER",
+                "isEditable" : false,
                 "fields": [
                     {
                         "label": "EST_OWNER_NAME_LABEL",
@@ -35,31 +36,31 @@
                 "fields": [
                     {
                         "label": "EST_OWNERS_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.owners"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.owners"
                     },
                     {
                         "label": "EST_OWNER_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.name"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.name"
                     },
                     {
                         "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.fatherOrHusbandName"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.address"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.address"
                     },
                     {
                         "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.mobileNo"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.mobileNo"
                     },
                     {
                         "label": "EST_SHARE_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.percentageOfShareTransferred"
                     },
                     {
                         "label": "EST_CP_NUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.duplicate.cpnumber"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.cpnumber"
                     }
                 ]    
                 },
@@ -68,7 +69,7 @@
                     "fields": [
                         {
                             "label": "EST_TYPE_OF_LETTER_LABEL",
-                            "jsonPath": "payload.applicationDetails.duplicate.typeofletters"
+                            "jsonPath": "Applications[0].applicationDetails.duplicate.typeofletters"
                         }
                     ]    
                     },

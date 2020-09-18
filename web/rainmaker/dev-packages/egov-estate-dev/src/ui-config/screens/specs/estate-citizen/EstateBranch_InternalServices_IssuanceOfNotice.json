@@ -158,52 +158,145 @@
       "first_step": {
         "sections": [
             {
-                "header": "EST_OWNER_DETAILS_HEADER",
-                "type": "CARD_DETAIL",
-                "fields": [
-                    {
-                        "label": "EST_OWNER_NAME_LABEL",
-                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.ownerName"
-                      },
-                      {
-                        "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "property.propertyDetails.owners[0].ownerDetails.guardianName"
-                      },
-                      {
-                        "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                        "jsonPath":"property.propertyDetails.owners[0].ownerDetails.mobileNumber"
-                      },
-                      {
-                        "label": "EST_ADDRESS_LABEL",
-                        "jsonPath":"property.propertyDetails.owners[0].ownerDetails.address"
-                      },
-                      {
-                        "label": "EST_SHARE_LABEL",
-                        "jsonPath": "property.propertyDetails.owners[0].share"
-                      },
-                      {
-                        "label": "EST_CP_NUMBER_LABEL",
-                        "jsonPath": "property.propertyDetails.owners[0].cpNumber"
-                      }
-                ]
-              },
-          {
-            "header": "EST_VIOLATION_DETAILS_HEADER",
+            "header": "EST_TYPE_OF_NOTICE_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_DETAILS_OF_VIOLATION_LABEL",
-                "placeholder": "EST_DETAILS_OF_VIOLATION_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.violationDetails",
-                "path": "violationDetails"
+                "label": "EST_TYPE_OF_NOTICE_LABEL",
+                "placeholder": "EST_TYPE_OF_NOTICE_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.noticeType",
+                "path": "noticeType"
+              }
+            ]
               },
               {
-                "label": "EST_VIOLATION_REPORT_RECIEVED_DATE_LABEL",
-                "placeholder": "EST_VIOLATION_REPORT_RECIEVED_DATE_PLACEHOLDER",
+              "header": "EST_OWNER_DETAILS_HEADER",
+              "type": "FORM",
+              "path": "Applications[0].owner.id",
+              "valueJsonPath": "ownerDetails.ownerId",
+              "sourceJsonPath": "property.propertyDetails.owners",
+              "fields":[
+                {
+                  "label": "EST_SELECT_OWNER_LABEL",
+                  "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                  "required": false,
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                  "path": "ownerDetails.ownerName"
+                  },
+                {
+                  
+                  "label": "EST_OWNER_NAME_LABEL",
+                  "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                  "path": "ownerDetails.ownerName"
+                },
+                {
+                  "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                  "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "path": "ownerDetails.fatherOrHusband",
+                  "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                },
+                {
+                  "label": "EST_ADDRESS_LABEL",
+                  "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "path": "ownerDetails.address",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                }
+                  ]
+              },
+          {
+            "header": "EST_NON_PAYMENT_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_GROUND_RENT_LABEL",
+                "placeholder": "EST_GROUND_RENT_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.groundRent ",
+                "path": "groundRent"
+              },
+              {
+                "label": "EST_INTEREST_LABEL",
+                "placeholder": "EST_INTEREST_PLACEHOLDER",
                 "type": "DATE_FIELD",
-                "jsonPath": "payload.applicationDetails.violationDate",
-                "path": "violationDate"
+                "jsonPath": "Applications[0].applicationDetails.Interest",
+                "path": "Interest"
+              },
+              {
+                "label": "EST_SERVICE_TAX_OR_GST_LABEL",
+                "placeholder": "EST_SERVICE_TAX_OR_GST_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.serviceTaxOrGst",
+                "path": "serviceTaxOrGst"
+              },
+              {
+                "label": "EST_OUTSTANDING_AMOUNT_LABEL",
+                "placeholder": "EST_OUTSTANDING_AMOUNT_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.outstandingAmount",
+                "path": "outstandingAmount"
+              },
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
+              }
+            ]
+          },
+          {
+            "header": "EST_VIOLATION_NOTICE_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
+              }
+            ]
+          },
+          {
+            "header": "EST_OCCUPATION_NOTICE_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
               }
             ]
           }
@@ -211,7 +304,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "DOCUMENTS_UPLOAD",

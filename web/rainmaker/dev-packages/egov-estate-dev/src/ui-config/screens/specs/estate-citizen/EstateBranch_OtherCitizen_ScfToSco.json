@@ -243,35 +243,35 @@
                     "label": "EST_OWNERS_LABEL",
                     "placeholder": "EST_OWNERS_PLACEHOLDER",
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.applicant.owners",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.owners",
                     "path": "applicant.owners"
                   },
                   {
                     "label": "EST_OWNER_NAME_LABEL",
                     "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.applicant.name",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.name",
                     "path": "applicant.name"
                   },
                   {
                     "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                     "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.applicant.fatherOrHusbandName",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.fatherOrHusbandName",
                     "path": "applicant.fatherOrHusbandName"
                   },
                   {
                     "label": "EST_ADDRESS_LABEL",
                     "placeholder": "EST_ADDRESS_PLACEHOLDER",
                     "type": "TEXT_AREA",
-                    "jsonPath": "payload.applicationDetails.applicant.address",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.address",
                     "path": "applicant.address"
                   },
                   {
                     "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
                     "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.applicant.mobileNo",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo",
                     "path": "applicant.mobileNo",
                     "pattern": "MobileNo"
                   },
@@ -279,7 +279,7 @@
                     "label": "EST_SHARE_LABEL",
                     "placeholder": "EST_SHARE_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.applicant.percentageOfShareTransferred",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.percentageOfShareTransferred",
                     "path": "duplicate.percentageOfShareTransferred",
                     "pattern": "Amount"
                   },
@@ -287,7 +287,7 @@
                     "label": "EST_CP_NUMBER_LABEL",
                     "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.applicant.cpnumber",
+                    "jsonPath": "Applications[0].applicationDetails.applicant.cpnumber",
                     "path": "cpnumber"
                   }
                 ]
@@ -300,28 +300,28 @@
                         "label": "EST_NAME_LABEL",
                         "placeholder": "EST_NAME_PLACEHOLDER",
                         "type": "TEXT_FIELD",
-                        "jsonPath": "payload.applicationDetails.company.name",
+                        "jsonPath": "Applications[0].applicationDetails.company.name",
                         "path": "company.name"
                       },
                       {
                         "label": "EST_ADDRESS_LABEL",
                         "placeholder": "EST_ADDRESS_PLACEHOLDER",
                         "type": "TEXT_AREA",
-                        "jsonPath": "payload.applicationDetails.duplicate.company.address",
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.company.address",
                         "path": "company.address"
                       },
                       {
                         "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
                         "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
                         "type": "TEXT_FIELD",
-                        "jsonPath": "payload.applicationDetails.company.registrationNumber",
+                        "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
                         "path": "company.registrationNumber"
                       },
                   {
                     "label": "EST_TYPE_OF_LETTER_LABEL",
                     "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.company.type",
+                    "jsonPath": "Applications[0].applicationDetails.company.type",
                     "path": "company.type"
                   }
                 ]
@@ -330,7 +330,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "AFFIDAVIT_COPY_OF_CONVERSION_SCF_TO_SCO",

@@ -309,49 +309,49 @@
                     "label": "EST_TRANSFEREE_TYPE_LABEL",
                     "placeholder": "EST_TRANSFEREE_TYPE_PLACEHOLDER",
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.transferee.type",
+                    "jsonPath": "Applications[0].applicationDetails.transferee.type",
                     "path": "type"
                   },
                   {
                     "label": "EST_EXISTING_OWNERS_LABEL",
                     "placeholder": "EST_EXISTING_OWNERS_PLACEHOLDER",
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.transferee.owners",
+                    "jsonPath": "Applications[0].applicationDetails.transferee.owners",
                     "path": "owners"
                   },
                   {
                     "label": "EST_SELLERORTRANFERROR_NAME_LABEL",
                     "placeholder": "EST_SELLERORTRANFERROR_NAME_PLACEHOLDER",
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.transferee.sellerortransferrorname",
+                    "jsonPath": "Applications[0].applicationDetails.transferee.sellerortransferrorname",
                     "path": "sellerortransferrorname"
                   },
               {
                 "label": "EST_TRANSFEREE_NAME_LABEL",
                 "placeholder": "EST_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.name",
+                "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.fatherOrHusbandName",
+                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
                 "path": "transferee.fatherOrHusbandName"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
-                "jsonPath": "payload.applicationDetails.transferee.address",
+                "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address"
               },
               {
                 "label": "EST_TRANSFEREE_MOBILENUMBER_LABEL",
                 "placeholder": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.mobileNo",
+                "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
                 "path": "transferee.mobileNo",
                 "pattern": "MobileNo"
               },
@@ -359,7 +359,7 @@
                 "label": "EST_PERCENTAGE_SHARE_LABEL",
                 "placeholder": "EST_PERCENTAGE_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred",
                 "pattern": "Amount"
               },
@@ -367,13 +367,13 @@
                 "label": "EST_REGISTRATION_NUMBER_LABEL",
                 "placeholder": "EST_REGISTRATION_NUMBER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.registrationNumber",
+                "jsonPath": "Applications[0].registrationNumber",
                 "path": "registrationNumber"
               },
               {
                 "label": "EST_DATE_OF_REGISTRATION_LABEL",
                 "type": "DATE_FIELD",
-                "jsonPath": "payload.dateOfRegistration",
+                "jsonPath": "Applications[0].dateOfRegistration",
                 "path": "dateOfRegistration"
               }
             ]
@@ -386,7 +386,7 @@
                 "label": "EST_FAMILILY_SETTLEMENT",
                 "placeholder": "EST_FAMILILY_SETTLEMENT_PLACEHOLDER",
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.modeOfTransfer",
+                "jsonPath": "Applications[0].modeOfTransfer",
                 "path": "modeOfTransfer"
               }
             ]
@@ -398,21 +398,21 @@
                 {
                     "label": "EST_FAMILY_SETTLEMENT_DATE_LABEL",
                     "type": "DATE_FIELD",
-                    "jsonPath": "payload.familysettlementdate",
+                    "jsonPath": "Applications[0].familysettlementdate",
                     "path": "familysettlementdate"
                   },
                   {
                     "label": "EST_PASSED_BY_COURT_LABEL",
                     "placeholder": "EST_PASSED_BY_COURT_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.purchaser.passedbycourt",
+                    "jsonPath": "Applications[0].applicationDetails.purchaser.passedbycourt",
                     "path": "passedbycourt"
                   },
                   {
                     "label": "EST_IN_CIVIL_SUIT_TITLE_LABEL",
                     "placeholder": "EST_IN_CIVIL_SUIT_TITLE_PLACEHOLDER",
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.purchaser.civilsuittitle",
+                    "jsonPath": "Applications[0].applicationDetails.purchaser.civilsuittitle",
                     "path": "civilsuittitle"
                   }
             ]
@@ -421,7 +421,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "LIABILITY_AFFIDAVIT_OF_APPLICANT",

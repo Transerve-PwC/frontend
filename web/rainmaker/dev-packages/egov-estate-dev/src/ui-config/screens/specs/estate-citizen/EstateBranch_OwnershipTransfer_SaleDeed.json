@@ -371,7 +371,7 @@
               "label": "EST_PURCHASER_TRANSFEREE_TYPE_LABEL",
               "placeholder": "EST_PURCHASER_TRANSFEREE_TYPE_PLACEHOLDER",
               "type": "DROP_DOWN",
-              "jsonPath": "Applications[0]applicationDetails.transferee.type",
+              "jsonPath": "Applications[0].applicationDetails.transferee.type",
               "path": "transferee.type",
               "dataSource": "typesOfOwner"
             },

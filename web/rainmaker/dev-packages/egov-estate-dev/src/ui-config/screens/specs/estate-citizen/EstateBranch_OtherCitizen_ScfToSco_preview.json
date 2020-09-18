@@ -3,6 +3,7 @@
         "sections": [
             {
                 "header": "EST_OWNER_DETAILS_HEADER",
+                "isEditable" : false,
                 "fields": [
                     {
                         "label": "EST_OWNER_NAME_LABEL",
@@ -35,31 +36,31 @@
                 "fields": [
                     {
                         "label": "EST_OWNERS_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.owners"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.owners"
                     },
                     {
                         "label": "EST_OWNER_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.name"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.name"
                     },
                     {
                         "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.fatherOrHusbandName"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.address"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.address"
                     },
                     {
                         "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.mobileNo"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo"
                     },
                     {
                         "label": "EST_SHARE_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.percentageOfShareTransferred"
                     },
                     {
                         "label": "EST_CP_NUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.applicant.cpnumber"
+                        "jsonPath": "Applications[0].applicationDetails.applicant.cpnumber"
                     }
                 ]    
                 },
@@ -68,19 +69,19 @@
                     "fields": [
                         {
                             "label": "EST_NAME_LABEL",
-                            "jsonPath": "payload.applicationDetails.company.name"
+                            "jsonPath": "Applications[0].applicationDetails.company.name"
                         },
                         {
                             "label": "EST_ADDRESS_LABEL",
-                            "jsonPath": "payload.applicationDetails.duplicate.company.address"
+                            "jsonPath": "Applications[0].applicationDetails.duplicate.company.address"
                         },
                         {
                             "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
-                            "jsonPath": "payload.applicationDetails.company.registrationNumber"
+                            "jsonPath": "Applications[0].applicationDetails.company.registrationNumber"
                         },
                         {
                             "label": "EST_TYPE_OF_LETTER_LABEL",
-                            "jsonPath": "payload.applicationDetails.company.type"
+                            "jsonPath": "Applications[0].applicationDetails.company.type"
                         }
                     ]    
                     },

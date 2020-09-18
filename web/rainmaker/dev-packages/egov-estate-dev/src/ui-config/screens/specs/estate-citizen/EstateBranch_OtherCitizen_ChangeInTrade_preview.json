@@ -3,6 +3,7 @@
         "sections": [
             {
                 "header": "EST_OWNER_DETAILS_HEADER",
+                "isEditable" : false,
                 "fields": [
                     {
                         "label": "EST_OWNER_NAME_LABEL",
@@ -35,11 +36,11 @@
                 "fields": [
                     {
                         "label": "EST_CURRENT_TRADE_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.currentTrade"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.currentTrade"
                     },
                     {
                         "label": "EST_TRADE_OPTED_FOR_CHANGE_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.tradeOptedForChange"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.tradeOptedForChange"
                     }
                 ]    
             },

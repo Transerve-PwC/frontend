@@ -161,7 +161,7 @@
           {
             "header": "EST_OWNER_DETAILS_HEADER",
             "type": "CARD_DETAIL",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
@@ -182,7 +182,7 @@
           {
             "header": "EST_NOC_DETAILS_HEADER",
             "type": "FORM",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields":[
@@ -191,7 +191,7 @@
                 "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
                 "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
                 "path": "ownerDetails.ownerName"
                 },
               {
@@ -200,7 +200,7 @@
                 "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.nocInFavour",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.nocInFavour",
                 "path": "ownerDetails.ownerName"
               },
               {
@@ -209,7 +209,7 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.fatherOrHusband",
-                "jsonPath": "payload.applicationDetails.fatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
@@ -217,14 +217,14 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.address",
-                "jsonPath": "payload.applicationDetails.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
               },
               {
                 "label": "EST_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
                 "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.phone",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
                 "path": "ownerDetails.phone"
               },
               {
@@ -233,7 +233,7 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.share",
-                "jsonPath": "payload.applicationDetails.share"
+                "jsonPath": "Applications[0].applicationDetails.share"
               }
             ]
           }
@@ -241,7 +241,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "INDEMNITY_BOND_OF_SELLER_DONOR_TRANSFEROR",

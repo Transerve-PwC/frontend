@@ -161,7 +161,7 @@
           {
             "header": "EST_OWNER_DETAILS_HEADER",
             "type": "CARD_DETAIL",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
@@ -182,7 +182,7 @@
           {
             "header": "EST_TRANSFEREE_DETAILS_HEADER",
             "type": "FORM",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields":[
@@ -191,7 +191,7 @@
                     "placeholder": "EST_TRANSFEREE_TYPE_RADIO_BTN_PLACEHOLDER",
                     "required": true,
                     "type": "RADIO_BUTTON",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.transfereeType",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.transfereeType",
                     "path": "ownerDetails.transfereeType"
                   },
                   {
@@ -199,7 +199,7 @@
                     "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
                     "required": false,
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
                     "path": "ownerDetails.ownerName"
                   },
               {
@@ -208,7 +208,7 @@
                 "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
                 "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.purchaser.sellerOrTransferor",
+                "jsonPath": "Applications[0].applicationDetails.purchaser.sellerOrTransferor",
                 "path": "purchaser.sellerOrTransferor"
               },
               {
@@ -217,7 +217,7 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.transfereefatherOrHusband",
-                "jsonPath": "payload.applicationDetails.transfereename"
+                "jsonPath": "Applications[0].applicationDetails.transfereename"
               },
               {
                 "label": "EST_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
@@ -225,7 +225,7 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.transfereefatherOrHusband",
-                "jsonPath": "payload.applicationDetails.transfereefatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.transfereefatherOrHusband"
               },
               {
                 "label": "EST_TRANSFEREE_ADDRESS_LABEL",
@@ -233,14 +233,14 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "payload.applicationDetails.ownerDetails.transfereeAddress"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.transfereeAddress"
               },
               {
                 "label": "EST_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
                 "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.phone",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
                 "path": "ownerDetails.phone"
               },
               {
@@ -249,7 +249,7 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.percentShare",
-                "jsonPath": "payload.applicationDetails.percentShare"
+                "jsonPath": "Applications[0].applicationDetails.percentShare"
               }
             ]
           },
@@ -262,14 +262,14 @@
                 "placeholder": "EST_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.regNumberOfPartnership",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.regNumberOfPartnership",
                 "path": "ownerDetails.regNumberOfPartnership"
               },
               {
                 "label": "EST_REGISTRATION_DATE",
                 "required": true,
                 "type": "DATE_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.registrationDate",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.registrationDate",
                 "path": "ownerDetails.registrationDate"
               },
               {
@@ -277,7 +277,7 @@
                 "placeholder": "EST_PRIVATE_LIMITED_COMPANY_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.companyName",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyName",
                 "path": "ownerDetails.companyName"
               },
               {
@@ -285,7 +285,7 @@
                 "placeholder": "EST_COMPANY_ADDRESS_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.companyAddress",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyAddress",
                 "path": "ownerDetails.companyAddress"
               },
               {
@@ -293,7 +293,7 @@
                 "placeholder": "EST_COMPANY_REGISTRATION_NUMBER_PLACEHOLDER",
                 "required": false,
                 "type": "TEXT_DOWN",
-                "jsonPath": "payload.applicationDetails.ownerDetails.companyRegNumber",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyRegNumber",
                 "path": "ownerDetails.companyRegNumber"
               }
             ]
@@ -307,7 +307,7 @@
                 "placeholder": "EST_MODE_OF_TRANSFER_PLACEHOLDER",
                 "required": true,
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.ownerDetails.modeOfTransfer",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.modeOfTransfer",
                 "path": "ownerDetails.modeOfTransfer"
               }
             ]
@@ -316,7 +316,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "CERTIFIED_COPY_OR_NOTARIZED_COPY_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
