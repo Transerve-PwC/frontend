@@ -18,6 +18,7 @@ import {
     getTodaysDateInYMD
   } from "../../utils";
   import get from "lodash/get";
+  import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
   
   export const ownerHeader = getCommonTitle({
     labelName: "Owner Details",
@@ -99,6 +100,16 @@ import {
   const allotmentNumberField = {
       labelName: "Allotment Number",
       labelKey: "EST_ALLOTMENT_NUMBER_LABEL",
+  }
+
+  const modeOfTransferField = {
+      labelName: "Mode Of Transfer",
+      labelKey: "EST_MODE_OF_TRANSFER_LABEL",
+  }
+
+  const applicationNumberField = {
+      labelName: "Application Number",
+      labelKey: "EST_APPLICATION_NUMBER_LABEL",
   }
 
   export const editSection = {
@@ -243,4 +254,34 @@ export const headerDiv = {
         )        
       })
     })
+  }
+
+  export const getModeOfTransferDetailsForApprovedProperty = () => {
+    let modeOfTransferObj = {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-estate",
+      componentPath: "MultipleDocumentsContainer",
+      props: {
+        sourceJsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.modeOfTransfer`,
+        btnhide: false,
+        businessService:"EST",
+        className: "review-documents",
+        contents: [
+          {
+            label: "EST_APPLICATION_NUMBER",
+            jsonPath: "applicationNumber",
+            url: `/estate/preview?tenantId=${getTenantId()}`
+          },
+          {
+            label: "EST_MODE_OF_TRANSFER",
+            jsonPath: "applicationType"
+          },
+          {
+            label: "EST_APPROVAL_DATE",
+            jsonPath: ""
+          }
+        ]
+      }
+    }
+    return modeOfTransferObj;
   }
