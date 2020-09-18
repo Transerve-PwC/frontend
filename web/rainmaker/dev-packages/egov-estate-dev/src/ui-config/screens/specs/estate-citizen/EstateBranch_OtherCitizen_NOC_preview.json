@@ -23,27 +23,27 @@
                 "fields": [
                     {
                         "label": "EST_SELECT_OWNER_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.ownerName"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
                     },
                     {
                         "label": "EST_NOC_IN_FAVOUR_OF_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.nocInFavour"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.nocInFavour"
                     },
                     {
                         "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.fatherOrHusband"
+                        "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.address"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
                     },
                     {
                         "label": "EST_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "payload.applicationDetails.ownerDetails.phone"
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone"
                     },
                     {
                         "label": "EST_OWNER_SHARE_LABEL",
-                        "jsonPath": "payload.applicationDetails.share"
+                        "jsonPath": "Applications[0].applicationDetails.share"
                     }
                 ]    
             },

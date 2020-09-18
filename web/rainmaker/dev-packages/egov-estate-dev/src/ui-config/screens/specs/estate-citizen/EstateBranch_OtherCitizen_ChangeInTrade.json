@@ -161,7 +161,7 @@
           {
             "header": "EST_OWNER_DETAILS_HEADER",
             "type": "CARD_DETAIL",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
@@ -201,7 +201,7 @@
                     "placeholder": "EST_CURRENT_TRADE_PLACEHOLDER",
                     "required": true,
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.currentTrade",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.currentTrade",
                     "path": "ownerDetails.currentTrade"
                   },
                   {
@@ -209,7 +209,7 @@
                     "placeholder": "EST_TRADE_OPTED_FOR_CHANGE_PLACEHOLDER",
                     "required": true,
                     "type": "DROP_DOWN",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.tradeOptedForChange",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.tradeOptedForChange",
                     "path": "ownerDetails.tradeOptedForChange"
                   }
                 ]
@@ -218,7 +218,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "CLEARANCE_OF_PROPERTY_TAX",

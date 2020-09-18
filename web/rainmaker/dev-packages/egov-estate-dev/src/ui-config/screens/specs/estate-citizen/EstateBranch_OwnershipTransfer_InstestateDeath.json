@@ -312,56 +312,56 @@
                 "label": "EST_DECEASED_NAME_TYPE_LABEL",
                 "placeholder": "EST_DECEASED_NAME_TYPE_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.transferor.name",
+                "jsonPath": "Applications[0].applicationDetails.transferor.name",
                 "path": ""
               },
               {
                 "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.fatherOrHusbandName",
+                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
                 "path": "transferee.fatherOrHusbandName"
               },
               {
                 "label": "EST_DECEASED_ADDRESS_LABEL",
                 "placeholder": "EST_DECEASED_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.address",
+                "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address"
               },
               {
                 "label": "EST_PERCENT_SHARE_LABEL",
                 "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred"
               },
               {
                 "label": "EST_DATE_OF_DEATH_LABEL",
                 "placeholder": "EST_DATE_OF_DEATH_PLACEHOLDER",
                 "type": "DATE_FIELD",
-                "jsonPath": "payload.applicationDetails.transferor.dateOfDeath",
+                "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath",
                 "path": "transferor.dateOfDeath"
               },
               {
                 "label": "EST_IS_LEGAL_HEIR_LABEL",
                 "placeholder": "EST_IS_LEGAL_HEIR_PLACEHOLDER",
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.transferor.legalHeir",
+                "jsonPath": "Applications[0].applicationDetails.transferor.legalHeir",
                 "path": ""
               },
               {
                 "label": "EST_IS_EXISTING_OWNER_LABEL",
                 "placeholder": "EST_IS_EXISTING_OWNER_PLACEHOLDER",
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.transferor.existing",
+                "jsonPath": "Applications[0].applicationDetails.transferor.existing",
                 "path": ""
               },
               {
                 "label": "EST_SELECT_OWNER_LABEL",
                 "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.typesOfOwner",
+                "jsonPath": "Applications[0].applicationDetails.typesOfOwner",
                 "dataSource":""
               }
              
@@ -375,7 +375,7 @@
                 "label": "EST_LEGAL_HEIR_NAME_LABEL",
                 "placeholder": "EST_LEGAL_HEIR_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.name",
+                "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
                 "dataSource": "typesOfOwner"
               },
@@ -383,21 +383,21 @@
                 "label": "EST_LEGAL_HEIR_AGE_LABEL",
                 "placeholder": "EST_LEGAL_HEIR_AGE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.age",
+                "jsonPath": "Applications[0].applicationDetails.transferee.age",
                 "path": "transferee.age"
               },
               {
                 "label": "EST_LEGAL_HEIR_ADDRESS_LABEL",
                 "placeholder": "EST_LEGAL_HEIR_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.transferee.address",
+                "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address"
               },
               {
                 "label": "EST_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_LABEL",
                 "placeholder": "EST_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_PLACEHOLDER",
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.transferee.relationWithDeceased",
+                "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "path": "transferee.relationWithDeceased"
               }
             ]
@@ -406,7 +406,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "APPLICATION_FOR_TRANSFER",

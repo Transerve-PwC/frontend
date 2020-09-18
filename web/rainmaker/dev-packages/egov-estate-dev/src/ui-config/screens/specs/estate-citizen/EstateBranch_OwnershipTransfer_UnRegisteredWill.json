@@ -161,7 +161,7 @@
           {
             "header": "EST_OWNER_DETAILS_HEADER",
             "type": "CARD_DETAIL",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
@@ -182,7 +182,7 @@
           {
             "header": "EST_DECEASED_DETAILS_HEADER",
             "type": "FORM",
-            "path": "payload.owner.id",
+            "path": "Applications[0].owner.id",
             "valueJsonPath": "ownerDetails.ownerId",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields":[
@@ -192,7 +192,7 @@
                 "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.purchaser.deceasedName",
+                "jsonPath": "Applications[0].applicationDetails.purchaser.deceasedName",
                 "path": "purchaser.deceasedName"
               },
               {
@@ -202,7 +202,7 @@
                 "disabled": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "payload.applicationDetails.deceasedfatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.deceasedfatherOrHusband"
               },
               {
                 "label": "EST_DECEASED_ADDRESS_LABEL",
@@ -211,7 +211,7 @@
                 "disabled": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "payload.applicationDetails.ownerDetails.deceasedAddress"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.deceasedAddress"
               },
               {
                 "label": "EST_PERCENT_SHARE_LABEL",
@@ -220,14 +220,14 @@
                 "disabled": true,
                 "type": "TEXT_FIELD",
                 "path": "ownerDetails.percentShare",
-                "jsonPath": "payload.applicationDetails.percentShare"
+                "jsonPath": "Applications[0].applicationDetails.percentShare"
               },
               {
                 "label": "EST_DATE_OF_DEATH_LABEL",
                 "required": true,
                 "type": "DATE_FIELD",
                 "path": "ownerDetails.dateOfDeath",
-                "jsonPath": "payload.applicationDetails.dateOfDeath"
+                "jsonPath": "Applications[0].applicationDetails.dateOfDeath"
               }
             ]
           },
@@ -239,7 +239,7 @@
                 "label": "EST_DATE_OF_EXECUTION_OF_UNREGISTERED_WILL_LABEL",
                 "required": true,
                 "type": "DATE_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.dateOfExecutionOfWill",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.dateOfExecutionOfWill",
                 "path": "ownerDetails.dateOfExecutionOfWill"
               },
               {
@@ -247,7 +247,7 @@
                 "placeholder": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_PLACEHOLDER",
                 "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiary",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.isLegalHeirOrBeneficiary",
                 "path": "ownerDetails.isLegalHeirOrBeneficiary"
               },
               {
@@ -255,7 +255,7 @@
                 "placeholder": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_PLACEHOLDER",
                 "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.isLegalHeirOrBeneficiaryOwner",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.isLegalHeirOrBeneficiaryOwner",
                 "path": "ownerDetails.isLegalHeirOrBeneficiaryOwner"
               },
               {
@@ -263,7 +263,7 @@
                 "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
                 "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.ownerDetails.ownerName",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
                 "path": "ownerDetails.ownerName"
               }
             ]
@@ -277,7 +277,7 @@
                 "placeholder": "EST_LEGAL_HEIR_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.legalHeirName",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.legalHeirName",
                 "path": "ownerDetails.legalHeirName"
               },
               {
@@ -285,7 +285,7 @@
                 "placeholder": "EST_AGE_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.age",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
                 "path": "ownerDetails.age"
               },
               {
@@ -293,7 +293,7 @@
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.address",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
                 "path": "ownerDetails.address"
               },
               {
@@ -301,7 +301,7 @@
                 "placeholder": "EST_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.relationWithDeceased",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
                 "path": "ownerDetails.relationWithDeceased"
               }
             ]
@@ -315,7 +315,7 @@
                 "placeholder": "EST_BENEFICIARY_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.beneficiaryName",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.beneficiaryName",
                 "path": "ownerDetails.beneficiaryName"
               },
               {
@@ -323,7 +323,7 @@
                 "placeholder": "EST_AGE_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.age",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
                 "path": "ownerDetails.age"
               },
               {
@@ -331,7 +331,7 @@
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.ownerDetails.address",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
                 "path": "ownerDetails.address"
               },
               {
@@ -339,7 +339,7 @@
                 "placeholder": "EST_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "payload.applicationDetails.ownerDetails.relationWithDeceased",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
                 "path": "ownerDetails.relationWithDeceased"
               }
             ]
@@ -354,7 +354,7 @@
                     "placeholder": "EST_WITNESS_NAME_PLACEHOLDER",
                     "required": true,
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.witnessName",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.witnessName",
                     "path": "ownerDetails.beneficiaryName"
                   },
                   {
@@ -362,7 +362,7 @@
                     "placeholder": "EST_AGE_PLACEHOLDER",
                     "required": true,
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.age",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
                     "path": "ownerDetails.age"
                   },
                   {
@@ -370,7 +370,7 @@
                     "placeholder": "EST_ADDRESS_PLACEHOLDER",
                     "required": true,
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.address",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
                     "path": "ownerDetails.address"
                   },
                   {
@@ -378,7 +378,7 @@
                     "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
                     "required": false,
                     "type": "TEXT_FIELD",
-                    "jsonPath": "payload.applicationDetails.ownerDetails.phone",
+                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
                     "path": "ownerDetails.phone"
                   }
                 ]
@@ -387,7 +387,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "NOTARIZED_COPY_OF_WILL_ALONG_WITH_ITS_ORIGINAL_COPY",

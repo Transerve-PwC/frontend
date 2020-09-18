@@ -3,6 +3,7 @@
         "sections": [
             {
                 "header": "EST_OWNERS_DETAILS_HEADER",
+                "isEditable" : false,
                 "fields": [
                     {
                         "label": "EST_OWNER_NAME_LABEL",
@@ -23,35 +24,35 @@
                 "fields": [
                     {
                         "label": "EST_DECEASED_NAME_TYPE_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferor.name"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.name"
                     },
                     {
                         "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
                     },
                     {
                         "label": "EST_DECEASED_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.address"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
                         "label": "EST_PERCENT_SHARE_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     },
                     {
                         "label": "EST_DATE_OF_DEATH_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferor.dateOfDeath"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath"
                     },
                     {
                         "label": "EST_IS_LEGAL_HEIR_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferor.legalHeir"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.legalHeir"
                     },
                     {
                         "label": "EST_IS_EXISTING_OWNER_LABEL",
-                        "jsonPath": "payload.owner.transferor.existing"
+                        "jsonPath": "Applications[0].owner.transferor.existing"
                     },
                     {
                         "label": "EST_SELECT_OWNER_LABEL",
-                        "jsonPath": "payload.applicationDetails.typesOfOwner"
+                        "jsonPath": "Applications[0].applicationDetails.typesOfOwner"
                     }
                 ]    
             },
@@ -60,19 +61,19 @@
                 "fields": [
                     {
                         "label": "EST_LEGAL_HEIR_NAME_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.name"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
                         "label": "EST_LEGAL_HEIR_AGE_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.age"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.age"
                     },
                     {
                         "label": "EST_LEGAL_HEIR_ADDRESS_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.address"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
                         "label": "EST_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_LABEL",
-                        "jsonPath": "payload.applicationDetails.transferee.relationWithDeceased"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased"
                     }
                 ]    
                 },

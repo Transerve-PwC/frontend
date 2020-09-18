@@ -182,35 +182,35 @@
                 "label": "EST_OWNERS_LABEL",
                 "placeholder": "EST_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.duplicate.owners",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.owners",
                 "path": "owners"
               },
               {
                 "label": "EST_OWNER_NAME_LABEL",
                 "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.duplicate.name",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.name",
                 "path": "duplicate.name"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.duplicate.fatherOrHusbandName",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.fatherOrHusbandName",
                 "path": "duplicate.fatherOrHusbandName"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
-                "jsonPath": "payload.applicationDetails.duplicate.address",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.address",
                 "path": "duplicate.address"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.duplicate.mobileNo",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.mobileNo",
                 "path": "duplicate.mobileNo",
                 "pattern": "MobileNo"
               },
@@ -218,7 +218,7 @@
                 "label": "EST_SHARE_LABEL",
                 "placeholder": "EST_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.duplicate.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.percentageOfShareTransferred",
                 "path": "duplicate.percentageOfShareTransferred",
                 "pattern": "Amount"
               },
@@ -226,7 +226,7 @@
                 "label": "EST_CP_NUMBER_LABEL",
                 "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "payload.applicationDetails.duplicate.cpnumber",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.cpnumber",
                 "path": "cpnumber"
               }
             ]
@@ -239,7 +239,7 @@
                 "label": "EST_TYPE_OF_LETTER_LABEL",
                 "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "payload.applicationDetails.duplicate.typeofletters",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.typeofletters",
                 "path": "typeofletters"
               }
             ]
@@ -248,7 +248,7 @@
       },
       "second_step": {
         "header": "EST_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "payload.documents",
+        "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
             "code": "DDR_COPY",

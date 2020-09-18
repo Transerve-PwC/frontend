@@ -1,0 +1,97 @@
+{
+    "preview": {
+        "sections": [
+            {
+                "header": "EST_TYPE_OF_NOTICE_HEADER",
+                "isEditable" : false,
+                "fields": [
+                    {
+                        "label": "EST_TYPE_OF_NOTICE_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.noticeTyp"
+                    }
+                ]
+            },
+            {
+                "header": "EST_OWNER_DETAILS_HEADER",
+                "fields": [
+                    {
+                        "label": "EST_SELECT_OWNER_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
+                    },
+                    {
+                        "label": "EST_OWNER_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
+                    },
+                    {
+                        "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                    },
+                    {
+                        "label": "EST_ADDRESS_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                    }
+                ]    
+                },
+                {
+                    "header": "EST_NON_PAYMENT_DETAILS_HEADER",
+                    "fields": [
+                        {
+                            "label": "EST_GROUND_RENT_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.groundRent"
+                        },
+                        {
+                            "label": "EST_INTEREST_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.Interest"
+                        },
+                        {
+                            "label": "EST_SERVICE_TAX_OR_GST_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.serviceTaxOrGst"
+                        },
+                        {
+                            "label": "EST_OUTSTANDING_AMOUNT_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.outstandingAmount"
+                        },
+                        {
+                            "label": "EST_DATE_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.dateOfHearing"
+                        },
+                        {
+                            "label": "EST_TIME_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.timeOfHearing"
+                        }
+                    ]    
+                },
+                {
+                    "header": "EST_VIOLATION_NOTICE_DETAILS_HEADER",
+                    "fields": [
+                        {
+                            "label": "EST_DATE_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.dateOfHearing"
+                        },
+                        {
+                            "label": "EST_TIME_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.timeOfHearing"
+                        }
+                    ]    
+                },
+                {
+                    "header": "EST_OCCUPATION_NOTICE_DETAILS_HEADER",
+                    "fields": [
+                        {
+                            "label": "EST_DATE_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.dateOfHearing"
+                        },
+                        {
+                            "label": "EST_TIME_OF_HEARING_LABEL",
+                            "jsonPath": "Applications[0].applicationDetails.ownerDetails.timeOfHearing"
+                        }
+                    ]    
+                },
+            {
+                "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "type": "DOCUMENTS",
+                "sourceJsonPath": "temp[0].reviewDocData"
+            }
+        ]
+    }
+} 

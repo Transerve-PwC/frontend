@@ -1,0 +1,320 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_InternalServices_IssuanceOfNotice": [
+     {
+        "fields": [
+            {
+              "path": "transferor",
+              "required": true,
+              "validations": [
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            {
+              "path": "transferor.id",
+              "required": true,
+              "validations": [
+                {
+                  "type": "owner"
+                }
+              ]
+            },
+            {
+              "path": "violationDetails",
+              "required": true,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 5,
+                    "max": 150
+                  }
+                }
+              ]
+            },
+            {
+              "path": "violationDate",
+              "required": false,
+              "validations": [
+                {
+                  "type": "date-range",
+                  "params": {
+                    "start": {
+                      "unit": "year",
+                      "value": -10
+                    },
+                    "end": {
+                      "unit": "second",
+                      "value": 0
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases",
+              "required": false,
+              "validations": [
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            {
+              "path": "courtCases.estateOfficerCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.commissionersCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.chiefAdministratorsCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.advisorToAdminCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.honbleDistrictCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.honbleHighCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            },
+            {
+              "path": "courtCases.honbleSupremeCourt",
+              "required": false,
+              "validations": [
+                {
+                  "type": "length",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              ]
+            }
+          ],
+      "first_step": {
+        "sections": [
+            {
+            "header": "EST_TYPE_OF_NOTICE_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_TYPE_OF_NOTICE_LABEL",
+                "placeholder": "EST_TYPE_OF_NOTICE_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.noticeType",
+                "path": "noticeType"
+              }
+            ]
+              },
+              {
+              "header": "EST_OWNER_DETAILS_HEADER",
+              "type": "FORM",
+              "path": "Applications[0].owner.id",
+              "valueJsonPath": "ownerDetails.ownerId",
+              "sourceJsonPath": "property.propertyDetails.owners",
+              "fields":[
+                {
+                  "label": "EST_SELECT_OWNER_LABEL",
+                  "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                  "required": false,
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                  "path": "ownerDetails.ownerName"
+                  },
+                {
+                  
+                  "label": "EST_OWNER_NAME_LABEL",
+                  "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                  "path": "ownerDetails.ownerName"
+                },
+                {
+                  "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                  "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "path": "ownerDetails.fatherOrHusband",
+                  "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                },
+                {
+                  "label": "EST_ADDRESS_LABEL",
+                  "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                  "required": true,
+                  "type": "TEXT_FIELD",
+                  "path": "ownerDetails.address",
+                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                }
+                  ]
+              },
+          {
+            "header": "EST_NON_PAYMENT_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_GROUND_RENT_LABEL",
+                "placeholder": "EST_GROUND_RENT_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.groundRent ",
+                "path": "groundRent"
+              },
+              {
+                "label": "EST_INTEREST_LABEL",
+                "placeholder": "EST_INTEREST_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.Interest",
+                "path": "Interest"
+              },
+              {
+                "label": "EST_SERVICE_TAX_OR_GST_LABEL",
+                "placeholder": "EST_SERVICE_TAX_OR_GST_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.serviceTaxOrGst",
+                "path": "serviceTaxOrGst"
+              },
+              {
+                "label": "EST_OUTSTANDING_AMOUNT_LABEL",
+                "placeholder": "EST_OUTSTANDING_AMOUNT_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.outstandingAmount",
+                "path": "outstandingAmount"
+              },
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
+              }
+            ]
+          },
+          {
+            "header": "EST_VIOLATION_NOTICE_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
+              }
+            ]
+          },
+          {
+            "header": "EST_OCCUPATION_NOTICE_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_DATE_OF_HEARING_LABEL",
+                "placeholder": "EST_DATE_OF_HEARING_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
+                "path": "dateOfHearing "
+              },
+              {
+                "label": "EST_TIME_OF_HEARING_LABEL",
+                "placeholder": "EST_TIME_OF_HEARING_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
+                "path": "timeOfHearing"
+              }
+            ]
+          }
+        ]
+      },
+      "second_step": {
+        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "jsonPath": "Applications[0].applicationDocuments",
+        "documentList": [
+          {
+            "code": "DOCUMENTS_UPLOAD",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "DOCUMENTS_UPLOAD_DESCRIPTION"
+          }
+        ]
+      }
+    }
+  ]
+  } 
