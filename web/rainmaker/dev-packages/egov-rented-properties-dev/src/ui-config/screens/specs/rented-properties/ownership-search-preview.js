@@ -21,7 +21,7 @@ let NoticedetailsId
 const headerrow = getCommonContainer({
     header: getCommonHeader({
       labelName: "Ownership Transfer Application",
-      labelKey: "OWNER_SHIP_TRANSFER_APPLICATION_HEADER"
+      labelKey: "RP_OWNER_SHIP_TRANSFER_APPLICATION_HEADER"
     }),
     applicationNumber,
     allotmentNumber: {

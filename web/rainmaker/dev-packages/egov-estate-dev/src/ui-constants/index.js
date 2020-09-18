@@ -1,0 +1,1 @@
+export const WF_PROPERTY_MASTER = "PropertyMaster"

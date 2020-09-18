@@ -233,7 +233,7 @@ class WorkFlowContainer extends React.Component {
       } else {
         toggleSnackbar(
           true,
-          { labelName: "Please Upload file !", labelKey: "ERR_UPLOAD_FILE" },
+          { labelName: "Please Upload file !", labelKey: "RP_ERR_UPLOAD_FILE" },
           "error"
         );
       }

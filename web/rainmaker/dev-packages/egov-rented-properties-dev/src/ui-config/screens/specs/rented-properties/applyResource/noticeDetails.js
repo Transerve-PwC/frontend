@@ -31,7 +31,7 @@ export const propertyHeader = getCommonTitle(
 const fatherOrHusbandsNameField = {
     label: {
         labelName: "Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
     // placeholder: {
     //     labelName: "Enter Father/ Husband's Name",
@@ -202,7 +202,8 @@ const demandNoticeFromDate = {
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
-        }
+        },
+        disabled:true
     },
     errorMessage:"RP_ERR_DEMAND_NOTICE_FROM_DATE_FIELD"
   }
@@ -222,7 +223,8 @@ const demandNoticeFromDate = {
     props: {
         inputProps: {
             max: getTodaysDateInYMD()
-        }
+        },
+        disabled:true
     },
     errorMessage:"RP_ERR_DEMAND_NOTICE_LAST_DATE_FIELD"
   }

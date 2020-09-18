@@ -19,7 +19,7 @@ import { getStatusList } from "./search";
 
   const header = getCommonHeader({
     labelName: "Mortgage",
-    labelKey: "MORTAGE_HEADER"
+    labelKey: "RP_MORTAGE_HEADER"
   });
   const mortagageSearchAndResult = {
     uiFramework: "material-ui",

@@ -19,7 +19,7 @@ import {
             },
             ...getCommonSubHeader({
               labelName: "Images",
-              labelKey: screenKey == "notice-violation" ? "RP_COMMON_VIOLATION_NOTICE_DOCS" :"TL_COMMON_DOCS"
+              labelKey: screenKey == "notice-violation" ? "RP_COMMON_VIOLATION_NOTICE_DOCS" :"RP_COMMON_DOCS"
             })
           },
           editSection: {
@@ -43,7 +43,7 @@ import {
               },
               buttonLabel: getLabel({
                 labelName: "Edit",
-                labelKey: "TL_SUMMARY_EDIT"
+                labelKey: "RP_SUMMARY_EDIT"
               })
             },
             onClickDefination: {
@@ -105,7 +105,7 @@ import {
               },
               buttonLabel: getLabel({
                 labelName: "Edit",
-                labelKey: "TL_SUMMARY_EDIT"
+                labelKey: "RP_SUMMARY_EDIT"
               })
             },
             onClickDefination: {

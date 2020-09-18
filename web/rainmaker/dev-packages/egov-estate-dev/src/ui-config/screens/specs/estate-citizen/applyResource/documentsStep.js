@@ -83,7 +83,7 @@ const documentList = {
       documentTypePrefix: "EST_",
       documentsJsonPath: "temp[0].documents",
       uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
-      tenantIdJsonPath: "payload.tenantId",
+      tenantIdJsonPath: "Applications[0].tenantId",
       removedJsonPath: "temp[0].removedDocs"
     }
   };

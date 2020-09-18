@@ -22,6 +22,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import orderBy from "lodash/orderBy";
+import { WF_PROPERTY_MASTER } from "../../ui-constants";
 
 class WorkFlowContainer extends React.Component {
   state = {
@@ -35,12 +36,27 @@ class WorkFlowContainer extends React.Component {
       window.location.href,
       "filenumber"
     );
+    const applicationNumber = getQueryArg(
+      window.location.href, "applicationNumber"
+    )
     const tenantId = getQueryArg(window.location.href, "tenantId");
-    const queryObject = [
-      { key: "businessIds", value: fileNumber },
+    let queryObject = [
       { key: "history", value: true },
       { key: "tenantId", value: tenantId }
     ];
+    switch(this.props.moduleName) {
+      case WF_PROPERTY_MASTER : {
+        queryObject = [...queryObject,
+          { key: "businessIds", value: fileNumber }
+      ]
+      }
+      default: {
+        queryObject = [
+          ...queryObject,
+          {key: "businessIds", value: applicationNumber}
+        ]
+      }
+    }
     try {
       const payload = await httpRequest(
         "post",
@@ -119,7 +135,7 @@ class WorkFlowContainer extends React.Component {
     } = this.props;
     const tenant = getQueryArg(window.location.href, "tenantId");
     let data = get(preparedFinalObject, dataPath, []);
-    if (moduleName === "PropertyMaster") {
+    if (moduleName === WF_PROPERTY_MASTER) {
       if (getQueryArg(window.location.href, "edited")) {
         // let owners = get(
         //   preparedFinalObject
@@ -144,108 +160,30 @@ class WorkFlowContainer extends React.Component {
             ...removedDocs
           ]);
         })
-        
-
-        // Accessories issue fix by Gyan
-        // let accessories = get(data[0], "tradeLicenseDetail.accessories");
-        // let tradeUnits = get(data[0], "tradeLicenseDetail.tradeUnits");
-        // set(
-        //   data[0],
-        //   "tradeLicenseDetail.tradeUnits",
-        //   getMultiUnits(tradeUnits)
-        // );
-        // set(
-        //   data[0],
-        //   "tradeLicenseDetail.accessories",
-        //   getMultiUnits(accessories)
-        // );
       }
     }
-    if (dataPath === "BPA") {
-      data.assignees = [];
-      if (data.assignee) {
-        data.assignee.forEach(assigne => {
-          data.assignees.push({
-            uuid: assigne
-          });
-        });
-      }
-      if (data.wfDocuments) {
-        for (let i = 0; i < data.wfDocuments.length; i++) {
-          data.wfDocuments[i].fileStore = data.wfDocuments[i].fileStoreId
-        }
-      }
-    }
-
-    const fileNumber = getQueryArg(
-      window.location.href,
-      "filenumber"
-    );
-
-    /* if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-      data = data[0];
-    }
-
-    if (moduleName === "NewSW1") {
-      dataPath = "SewerageConnection";
-    } */
-
     try {
       const payload = await httpRequest("post", updateUrl, "", [], {
         [dataPath]: data
       });
-
       this.setState({
         open: false
       });
-
       if (payload) {
         let path = "";
-
-        if (moduleName == "PT.CREATE" || moduleName == "ASMT") {
-          this.props.setRoute(`/pt-mutation/acknowledgement?${this.getPurposeString(
-            label
-          )}&moduleName=${moduleName}&applicationNumber=${get(payload, 'Properties[0].acknowldgementNumber', "")}&tenantId=${get(payload, 'Properties[0].tenantId', "")}`);
-          return;
+        switch(this.props.moduleName) {
+          case WF_PROPERTY_MASTER: {
+            path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
+          }
+          default: {
+            path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}`
+          }
         }
-
-        if (moduleName == "PropertyMaster") path = "Properties[0].fileNumber";
-        else if (moduleName === "NewTL") path = "Licenses[0].licenseNumber";
-        else if (moduleName === "FIRENOC") path = "FireNOCs[0].fireNOCNumber";
-        else path = "Licenses[0].licenseNumber";
-        const fileNumber = get(payload, path, "");
         window.location.href = `acknowledgement?${this.getPurposeString(
           label
-        )}&fileNumber=${fileNumber}&tenantId=${tenant}`;
-
-        if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-          window.location.href = `acknowledgement?${this.getPurposeString(label)}&applicationNumber=${applicationNumber}&tenantId=${tenant}`;
-        }
-
+        )}${path}`;
       }
     } catch (e) {
-      if (moduleName === "BPA") {
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Documents Required",
-            labelKey: e.message
-          },
-          "error"
-        );
-      } else {
-
-        if (e.message) {
-          toggleSnackbar(
-            true,
-            {
-              labelName: `We could not process your request right now. Please try after sometime` + e.message,
-              labelKey: `We could not process your request right now. Please try after sometime` + e.message
-            },
-            "error"
-          );
-          
-        } else {
           toggleSnackbar(
             true,
             {
@@ -255,9 +193,7 @@ class WorkFlowContainer extends React.Component {
             "error"
           );
         }
-      }
     }
-  };
 
   createWorkFLow = async (label, isDocRequired) => {
     const { toggleSnackbar, dataPath, preparedFinalObject } = this.props;
@@ -310,20 +246,7 @@ class WorkFlowContainer extends React.Component {
     }
     let baseUrl = "";
     let bservice = "";
-    if (moduleName === "FIRENOC") {
-      baseUrl = "fire-noc";
-    } else if (moduleName === "BPA") {
-      baseUrl = "egov-bpa";
-      bservice = ((applicationStatus == "PENDING_APPL_FEE") ? "BPA.NC_APP_FEE" : "BPA.NC_SAN_FEE");
-    } else if (moduleName === "NewWS1" || moduleName === "NewSW1") {
-      baseUrl = "wns"
-    } 
-    else if (moduleName == "PropertyMaster"){
-      baseUrl = "estate"
-    }
-    else {
-      baseUrl = "tradelicence";
-    }
+    baseUrl = "estate"
     const payUrl = `/egov-common/pay?consumerCode=${businessId}&tenantId=${tenant}`;
     switch (action) {
       case "PAY": return bservice ? `${payUrl}&businessService=${bservice}` : payUrl;
@@ -432,7 +355,8 @@ class WorkFlowContainer extends React.Component {
       checkIfDocumentRequired,
       getEmployeeRoles
     } = this;
-    let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
+    let businessService = moduleName
+    // let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];
 

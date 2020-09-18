@@ -7,6 +7,6 @@ import "./index.css";
 function licenceNoContainer(props) {
   
   const { number } = props;
-  return <div className="application-no-container"><LabelContainer labelName="License No." labelKey ={"TL_LICENSE_NO_CODE"} />{number}</div>;
+  return <div className="application-no-container"><LabelContainer labelName="License No." labelKey ={"RP_LICENSE_NO_CODE"} />{number}</div>;
 }
 export default licenceNoContainer;

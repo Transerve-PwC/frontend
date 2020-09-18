@@ -11,7 +11,7 @@ const tenantId = getTenantId();
 const header = getCommonHeader(
     {
       labelName: "Mortgage",
-      labelKey: "MORTAGE_HEADER"
+      labelKey: "RP_MORTAGE_HEADER"
     },
     {
       classes: {

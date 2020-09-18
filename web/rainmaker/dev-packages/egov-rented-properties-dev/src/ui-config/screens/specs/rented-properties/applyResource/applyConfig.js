@@ -19,7 +19,7 @@ const documentCardConfig = {
   header: getCommonTitle(
     {
       labelName: "Required Documents",
-      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+      labelKey: "RP_NEW-UPLOAD-DOCS_HEADER"
     },
     {
       style: {
@@ -30,7 +30,7 @@ const documentCardConfig = {
   paragraph: getCommonParagraph({
     labelName:
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER"
+    labelKey: "RP_NEW-UPLOAD-DOCS_SUBHEADER"
   }),
 }
 
@@ -38,7 +38,7 @@ const documentHeaderConfig = {
   header: getCommonTitle(
     {
       labelName: "Required Documents",
-      labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+      labelKey: "RP_NEW-UPLOAD-DOCS_HEADER"
     },
     {
       style: {
@@ -72,7 +72,7 @@ export const paymentDocumentsDetails = getCommonCard({
        documentsJsonPath: "PropertiesTemp[0].applicationPaymentDocuments",
        uploadedDocumentsJsonPath: "PropertiesTemp[0].uploadedPaymentInRedux",
        tenantIdJsonPath: "Properties[0].tenantId",
-       getUrl: "/rp-services/v1/excel/read",
+      //  getUrl: "/rp-services/v1/excel/read",
        screenKey: "apply",
        componentJsonPath: "components.div.children.formwizardThirdStep.children.paymentDetailsTable",
       // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"
@@ -162,14 +162,14 @@ export const ownershipTransferDuplicateDocumentsDetails = getCommonCard({
 
 export const stepsData = [
     { labelName: "Details", labelKey: "RP_COMMON_TR_DETAILS" },
-    { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
-    { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
+    { labelName: "Documents", labelKey: "RP_COMMON_DOCS" },
+    { labelName: "Summary", labelKey: "RP_COMMON_SUMMARY" }
   ];
   export const steps = [
     { labelName: "Details", labelKey: "RP_COMMON_TR_DETAILS" },
-    { labelName: "Documents", labelKey: "TL_COMMON_DOCS" },
+    { labelName: "Documents", labelKey: "RP_COMMON_DOCS" },
     { labelName: "Rent History", labelKey: "RP_COMMON_RENT_HISTORY" },
-    { labelName: "Summary", labelKey: "TL_COMMON_SUMMARY" }
+    { labelName: "Summary", labelKey: "RP_COMMON_SUMMARY" }
   ];
 
 export const stepper = getStepperObject(

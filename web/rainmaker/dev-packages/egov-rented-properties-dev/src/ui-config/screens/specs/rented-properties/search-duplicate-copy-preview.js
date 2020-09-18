@@ -21,7 +21,7 @@ import {applicationNumber} from './apply'
 const headerrow = getCommonContainer({
     header: getCommonHeader({
       labelName: "Duplicate Copy Application",
-      labelKey: "DUPLICATE_COPY_APPLICATION_HEADER"
+      labelKey: "RP_DUPLICATE_COPY_APPLICATION_HEADER"
     }),
     applicationNumber
 });

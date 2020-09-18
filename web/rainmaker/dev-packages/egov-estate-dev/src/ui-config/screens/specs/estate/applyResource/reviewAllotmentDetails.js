@@ -5,12 +5,24 @@ import {
 import {
   getReviewPropertyInfo,
   getReviewAdditional,
-  getReviewAuctionAllotment
+  getReviewAuctionAllotment,
+  getReviewCompanyDetails,
+  getReviewPremiumAmount,
+  getReviewGroundRent, 
+  getReviewLicenseFee,
+  getReviewAdvanceRent,
+  getReviewSecurity
 } from "./reviewProperty";
 
 var reviewPropertyInfo = getReviewPropertyInfo(true, "allotment");
 var reviewAdditional = getReviewAdditional(true, "allotment");
-var reviewAuctionAllotment = getReviewAuctionAllotment()
+var reviewAuctionAllotment = getReviewAuctionAllotment();
+var reviewPremiumAmount = getReviewPremiumAmount();
+var reviewGroundRent = getReviewGroundRent();
+var reviewLicenseFee = getReviewLicenseFee();
+var reviewAdvanceRent = getReviewAdvanceRent();
+var reviewSecurity = getReviewSecurity();
+var reviewCompanyDetails = getReviewCompanyDetails();
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
@@ -21,5 +33,11 @@ export const reviewAllotmentDetails = getCommonCard({
   header,
   reviewPropertyInfo,
   reviewAdditional,
-  reviewAuctionAllotment
+  reviewAuctionAllotment,
+  reviewCompanyDetails,
+  reviewPremiumAmount,
+  reviewGroundRent,
+  reviewLicenseFee,
+  reviewAdvanceRent,
+  reviewSecurity
 })

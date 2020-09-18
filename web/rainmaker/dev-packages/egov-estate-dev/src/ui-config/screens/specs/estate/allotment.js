@@ -9,7 +9,9 @@ import {
   formwizardFourthStepAllotment,
   formwizardFifthStepAllotment,
   formwizardSixthStepAllotment,
-  formwizardSeventhStepAllotment
+  formwizardSeventhStepAllotment,
+  formwizardEighthStepAllotment,
+  formwizardNinthStepAllotment
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -25,7 +27,8 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import {
-  prepareDocumentTypeObjMaster
+  prepareDocumentTypeObjMaster,
+  prepareCompanyDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -123,7 +126,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(
     handleField(
       "allotment",
-      `components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardSixthStepAllotment.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -151,6 +154,7 @@ const getData = async (action, state, dispatch) => {
     )
   }
   setDocumentData(action, state, dispatch);
+  setCompanyDocs(action, state, dispatch);
 
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
@@ -175,7 +179,7 @@ const getData = async (action, state, dispatch) => {
   dispatch(
     handleField(
       "allotment",
-      "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails",
+      "components.div.children.formwizardEighthStepAllotment.children.groundRentDetails",
       "visible",
       false
     )
@@ -183,7 +187,7 @@ const getData = async (action, state, dispatch) => {
   dispatch(
     handleField(
       "allotment",
-      "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
+      "components.div.children.formwizardEighthStepAllotment.children.licenseFeeDetails",
       "visible",
       false
     )
@@ -196,6 +200,78 @@ const getData = async (action, state, dispatch) => {
   //     false
   //   )
   // )
+}
+
+export const setCompanyDocs = async  (action, state ,dispatch, partner = 0) => {
+  const documentTypePayload = [{
+    moduleName: "EstatePropertyService",
+    masterDetails: [{
+      name: "documents"
+    }]
+  }]
+  const documentRes = await getMdmsData(dispatch, documentTypePayload);
+  const {
+    EstatePropertyService
+  } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
+  const {
+    documents = []
+  } = EstatePropertyService || {}
+  const findMasterItem = documents.find(item => item.code === "MasterEst")
+  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+  const estateMasterDocuments = masterDocuments.map(item => ({
+    type: item.code,
+    description: {
+      labelName: "Only .jpg and .pdf files. 6MB max file size.",
+      labelKey: item.fileType
+    },
+    formatProps: {
+      accept: item.accept || "image/*, .pdf, .png, .jpeg",
+    },
+    maxFileSize: 6000,
+    downloadUrl: item.downloadUrl,
+    moduleName: "Estate",
+    statement: {
+      labelName: "Allowed documents are Aadhar Card / Voter ID Card / Driving License",
+      labelKey: item.description
+    }
+  }))
+  var documentTypes;
+  var applicationDocs;
+  documentTypes = prepareCompanyDocumentTypeObjMaster(masterDocuments, partner);
+  applicationDocs = get(
+    state.screenConfiguration.preparedFinalObject,
+    `Properties[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments`,
+    []
+  ) || [];
+
+
+  applicationDocs = applicationDocs.filter(item => !!item)
+  let applicationDocsReArranged =
+    applicationDocs &&
+    applicationDocs.length &&
+    documentTypes.map(item => {
+      const index = applicationDocs.findIndex(
+        i => i.documentType === item.name
+      );
+      return applicationDocs[index];
+    }).filter(item => !!item)
+  applicationDocsReArranged &&
+    dispatch(
+      prepareFinalObject(
+        `Properties[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments`,
+        applicationDocsReArranged
+      )
+    );
+  dispatch(
+    handleField(
+      "allotment",
+      `components.div.children.formwizardFourthStepAllotment.children.companyDocuments_${partner}.children.cardContent.children.documentList`,
+      "props.inputProps",
+      estateMasterDocuments
+    )
+  );
+  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments`, documentTypes))
+  dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
 const applyAllotment = {
@@ -234,6 +310,8 @@ const applyAllotment = {
         formwizardFifthStepAllotment,
         formwizardSixthStepAllotment,
         formwizardSeventhStepAllotment,
+        formwizardEighthStepAllotment,
+        formwizardNinthStepAllotment,
         footerAllotment
       }
     }

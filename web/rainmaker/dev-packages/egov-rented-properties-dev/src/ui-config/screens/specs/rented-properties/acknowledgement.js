@@ -202,7 +202,7 @@ const getAcknowledgementCard = (
               body: {
                 labelName:
                   "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
-                labelKey: "TL_APPLICATION_SUCCESS_MESSAGE_SUB"
+                labelKey: "RP_APPLICATION_SUCCESS_MESSAGE_SUB"
               },
               tailText: {
                 labelName: "Application Number",

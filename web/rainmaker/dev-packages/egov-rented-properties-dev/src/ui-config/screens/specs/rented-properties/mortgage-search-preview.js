@@ -19,7 +19,7 @@ import {applicationNumber} from './apply'
 const headerrow = getCommonContainer({
   header: getCommonHeader({
     labelName: "Mortgage Application",
-    labelKey: "MORTGAGE_APPLICATION_HEADER"
+    labelKey: "RP_MORTGAGE_APPLICATION_HEADER"
   }),
   applicationNumber
 });

@@ -17,6 +17,7 @@ import {
   changeStep as changeStepAllotment
 }
 from "./footerAllotment"
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
@@ -893,17 +894,7 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
   })
 }
 
-const premiumAmountHeader = getCommonTitle({
-  labelName: "Premium Details",
-  labelKey: "EST_PREMIUM_AMOUNT_DETAILS_HEADER"
-}, {
-  style: {
-    marginBottom: 18,
-    marginTop: 18,
-    width: "100%"
-  }
-})
-export const getReviewPaymentInfoAllotment = (isEditable = true) => {
+export const getReviewPremiumAmount = (isEditable = true) => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -914,15 +905,14 @@ export const getReviewPaymentInfoAllotment = (isEditable = true) => {
             sm: 10
           },
           ...getCommonSubHeader({
-            labelName: "Payment Details",
-            labelKey: "EST_PAYMENT_DETAILS_HEADER"
+            labelName: "Premium Amount Details",
+            labelKey: "EST_PREMIUM_AMOUNT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 6, "allotment")
+        editSection: masterEntryEditSection(isEditable, 8, "allotment")
       }
     },
     viewPremiumAmount: getCommonContainer({
-      header: premiumAmountHeader,
       premiumAmount: getLabelWithValue(
         {
           labelName: "Premium Amount",
@@ -931,11 +921,187 @@ export const getReviewPaymentInfoAllotment = (isEditable = true) => {
         {
           jsonPath: ``
         }
-      ),
-      noOfInstallmentsForPremiumAmount: getLabelWithValue(
+      )
+    }),
+    viewInstallments: getCommonContainer({})
+  })
+}
+
+export const getReviewGroundRent = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Ground Rent Details",
+            labelKey: "EST_GROUND_RENT_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+      }
+    },
+    viewGroundRent: getCommonContainer({
+      groundRentGenerationType: getLabelWithValue(
         {
-          labelName: "No. of Installments for Premium Amount",
-          labelKey: "EST_NUMBER_OF_INSTALLMENTS_FOR_PREMIUM_AMOUNT_LABEL"
+          labelName: "Ground Rent Generation Type",
+          labelKey: "EST_GROUND_RENT_GENERATION_TYPE_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      billingStartDate: getLabelWithValue(
+        {
+          labelName: "Billing Start Date",
+          labelKey: "EST_BILLING_START_DATE_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      dateToGenerateDemandRent: getLabelWithValue(
+        {
+          labelName: "Date to Generate the Demand/Rent",
+          labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      )
+    }),
+    viewRents: getCommonContainer({})
+  })
+}
+
+export const getReviewAdvanceRent = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Advance Rent Details",
+            labelKey: "EST_ADVANCE_RENT_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+      }
+    },
+    viewAdvanceRent: getCommonContainer({
+      advanceRent: getLabelWithValue(
+        {
+          labelName: "Advance Rent",
+          labelKey: "EST_ADVANCED_RENT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      dateOfPaymentOfAdvanceRent: getLabelWithValue(
+        {
+          labelName: "Date of Payment of Advance Rent",
+          labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      )
+    })
+  })
+}
+
+export const getReviewLicenseFee = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "License Fee Details",
+            labelKey: "EST_LICENSE_FEE_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+      }
+    },
+    viewLicenseFee: getCommonContainer({
+      demandDenerationType: getLabelWithValue(
+        {
+          labelName: "License Fee Generation Type",
+          labelKey: "EST_LICENSE_FEE_GENERATION_TYPE_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      dateToGenerateDemand: getLabelWithValue(
+        {
+          labelName: "Date to Generate the Demand/License Fee",
+          labelKey: "EST_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      billingStartDate: getLabelWithValue(
+        {
+          labelName: "Billing Start Date",
+          labelKey: "EST_BILLING_START_DATE_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      )
+    }),
+    viewLicenses: getCommonContainer({})
+  })
+}
+
+export const getReviewSecurity = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Security Details",
+            labelKey: "EST_SECURITY_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+      }
+    },
+    viewSecurity: getCommonContainer({
+      securityFeeAmount: getLabelWithValue(
+        {
+          labelName: "Security Fee Amount",
+          labelKey: "EST_SECURITY_FEE_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: ``
+        }
+      ),
+      securityFeeDateOfPayment: getLabelWithValue(
+        {
+          labelName: "Date of Payment",
+          labelKey: "EST_DATE_OF_PAYMENT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -964,6 +1130,328 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       }
     },
     viewAuctionDetails: getCommonContainer({
+      auctionId: getLabelWithValue(
+        {
+          labelName: "Auction Id",
+          labelKey: "EST_AUCTION_ID_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.auctionId`
+        }
+      ),
+      schemeName: getLabelWithValue(
+        {
+          labelName: "Scheme Name",
+          labelKey: "EST_ESTATE_SCHEME_NAME_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.schemeName`
+        }
+      ),
+      dateOfAuction: getLabelWithValue(
+        {
+          labelName: "Date Of Auction",
+          labelKey: "EST_DATE_OF_AUCTION_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.dateOfAuction`
+        }
+      ),
+      modeOfAuction: getLabelWithValue(
+        {
+          labelName: "Mode Of Auction",
+          labelKey: "EST_MODE_OF_AUCTION_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.modeOfAuction`
+        }
+      ),
+      emdAmount: getLabelWithValue(
+        {
+          labelName: "EMD Amount",
+          labelKey: "EST_EMD_AMOUNT_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.emdAmount`
+        }
+      ),
+      emdAmountDate: getLabelWithValue(
+        {
+          labelName: "EMD Amount Date",
+          labelKey: "EST_EMD_AMOUNT_DATE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.emdAmountDate`
+        }
+      )
     })
   })
+}
+
+export const getReviewCompanyDetails = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Company Details",
+            labelKey: "EST_COMPANY_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+      }
+    },
+    viewCompanyDetails: getCommonContainer({
+      companyName: getLabelWithValue(
+        {
+          labelName: "Company Name",
+          labelKey: "EST_COMPANY_NAME_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyName`
+        }
+      ),
+      companyAddress: getLabelWithValue(
+        {
+          labelName: "Company Address",
+          labelKey: "EST_ESTATE_COMPANY_ADDRESS_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyAddress`
+        }
+      ),
+      companyRegNo: getLabelWithValue(
+        {
+          labelName: "Company Registration Number",
+          labelKey: "EST_COMPANY_REG_NO_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyRegNo`
+        }
+      ),
+      companyType: getLabelWithValue(
+        {
+          labelName: "Company Type",
+          labelKey: "EST_COMPANY_TYPE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyType`
+        }
+      ),
+      companyShareholderName: getLabelWithValue(
+        {
+          labelName: "Company Shareholder Name",
+          labelKey: "EST_COMPANY_SHAREHOLDER_NAME_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyShareHolderName`
+        }
+      ),
+      companyShare: getLabelWithValue(
+        {
+          labelName: "Company Share %",
+          labelKey: "EST_COMPANY_SHARE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.companyShare`
+        }
+      )
+    }),
+    viewPartners: getCommonContainer({})
+  })
+}
+
+export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screenName, screenpath, type, count) => {
+  var detailsObj = {};
+  
+  switch(type) {
+    case "premiumAmount": 
+      for (var i=0; i<count; i++) {
+        detailsObj[`installment_${i}`] = getLabelWithValue(
+          {
+            labelName: "Installment",
+            labelKey: "EST_INSTALLMENT_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].installments[${i}].installmentAmount`
+          }
+        );
+      
+        detailsObj[`dueDateForInstallment_${i}`] = getLabelWithValue(
+          {
+            labelName: "Due Date for Installment",
+            labelKey: "EST_DUE_DATE_INSTALLMENT_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].installments[${i}].dueDate`
+          }
+        )
+      }
+      break;
+    case "groundRent":
+      for (var i=0; i<count; i++) {
+        detailsObj[`rentAmount_${i}`] = getLabelWithValue(
+          {
+            labelName: "Rent Amount",
+            labelKey: "EST_RENT_AMOUNT_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].rentAmount`
+          }
+        );
+      
+        detailsObj[`startYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "Start Year",
+            labelKey: "EST_START_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].startYear`
+          }
+        )
+
+        detailsObj[`endYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "End Year",
+            labelKey: "EST_END_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].endYear`
+          }
+        )
+      }
+      break;
+
+    case "licenseFee":
+      for (var i=0; i<count; i++) {
+        detailsObj[`licenseFee_${i}`] = getLabelWithValue(
+          {
+            labelName: "License Fee",
+            labelKey: "EST_LICENSE_FEE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].licenseFee`
+          }
+        );
+      
+        detailsObj[`startYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "Start Year",
+            labelKey: "EST_START_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].startYear`
+          }
+        )
+
+        detailsObj[`endYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "End Year",
+            labelKey: "EST_END_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].endYear`
+          }
+        )
+      }
+      break;
+
+    case "partners":
+      for (var i=0; i<count; i++) {
+        detailsObj[`partnerName_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Name",
+            labelKey: "EST_PARTNER_NAME_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.partnerName`
+          }
+        );
+      
+        detailsObj[`guardianName_${i}`] = getLabelWithValue(
+          {
+            labelName: "Father/Husband Name",
+            labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianName`
+          }
+        )
+
+        detailsObj[`guardianRelation_${i}`] = getLabelWithValue(
+          {
+            labelName: "Relationship",
+            labelKey: "EST_RELATIONSHIP_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianRelation`
+          }
+        )
+
+        detailsObj[`partnerAddress_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Address",
+            labelKey: "EST_PARTNER_ADDRESS_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.address`
+          }
+        )
+
+        detailsObj[`partnerMobileNumber_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Mobile Number",
+            labelKey: "EST_PARTNER_MOBILE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.mobileNumber`
+          }
+        )
+
+        detailsObj[`partnerShare_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Share",
+            labelKey: "EST_PARTNER_SHARE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
+          }
+        )
+        
+        detailsObj[`partnerShare_${i}`] = getLabelWithValue(
+          {
+            labelName: "Partner Share",
+            labelKey: "EST_PARTNER_SHARE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
+          }
+        )
+
+        detailsObj[`partnerCPNumber_${i}`] = getLabelWithValue(
+          {
+            labelName: "PPartner CP Number",
+            labelKey: "EST_PARTNER_CP_NUMBER_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.cpNumber`
+          }
+        )
+      }
+      break;
+
+  }
+  dispatch(
+    handleField(
+      screenName,
+      screenpath,
+      "children",
+      detailsObj
+    )
+  )
 }

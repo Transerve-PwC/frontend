@@ -15,7 +15,7 @@ import { prepareFinalObject, toggleSnackbar,handleScreenConfigurationFieldChange
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { editFooter,footerReviewTop } from "./applyResource/reviewFooter";
 import { httpRequest } from "egov-ui-framework/ui-utils/api.js";
-
+import{formatAmount} from "./searchResource/functions"
 import set from "lodash/set"
 import {applicationNumber} from './apply'
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
@@ -77,17 +77,17 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
     let {rentSummary} = properties[0]
-    rentSummary = {
-      balancePrincipal: !!rentSummary ? rentSummary.balancePrincipal.toFixed(2) : 0,
-      balanceInterest: !!rentSummary ? rentSummary.balanceInterest.toFixed(2) : 0,
-      balanceAmount: !!rentSummary ? rentSummary.balanceAmount.toFixed(2) : 0
+    let formatrentSummary = {
+      balancePrincipal: !!rentSummary ? formatAmount(rentSummary.balancePrincipal.toFixed(2)) : 0,
+      balanceInterest: !!rentSummary ? formatAmount(rentSummary.balanceInterest.toFixed(2)) : 0,
+      balanceAmount: !!rentSummary ? formatAmount(rentSummary.balanceAmount.toFixed(2)) : 0
     }
     
     properties[0].propertyDetails.interestRate = (properties[0].propertyDetails.interestRate).toString()
     properties[0].propertyDetails.rentIncrementPercentage = (properties[0].propertyDetails.rentIncrementPercentage).toString()
     properties[0].propertyDetails.rentIncrementPeriod = (properties[0].propertyDetails.rentIncrementPeriod).toString()
 
-    properties = [{...properties[0], owners, rentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+    properties = [{...properties[0], owners, formatrentSummary, propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(
       prepareFinalObject(
@@ -348,13 +348,13 @@ const pincodeField = {
 
 const areaField = {
   label: {
-    labelName: "Area",
-    labelKey: "RP_COMMON_AREA_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Area",
-    labelKey: "RP_COMMON_AREA_LABEL_PLACEHOLDER"
-  },
+    labelName: "Locality",
+    labelKey: "RP_LOCALITY_LABEL"
+},
+placeholder: {
+    labelName: "Enter Locality",
+    labelKey: "RP_LOCALITY_PLACEHOLDER"
+},
   gridDefination: {
     xs: 12,
     sm: 12
@@ -391,7 +391,7 @@ export const editPopup = getCommonContainer({
           div: getCommonHeader(
             {
               labelName: "Edit Fine Master",
-              labelKey: "TL_FINE_MASTER_EDIT_HEADER"
+              labelKey: "RP_FINE_MASTER_EDIT_HEADER"
             },
             {
               style: {
@@ -478,7 +478,7 @@ export const editPopup = getCommonContainer({
           children: {
             previousButtonLabel: getLabel({
               labelName: "UPDATE",
-              labelKey: "TL_COMMON_UPDATE_BUTTON"
+              labelKey: "RP_COMMON_UPDATE_BUTTON"
             })
           },
           onClickDefination: {
@@ -543,7 +543,7 @@ const rentedPropertiesDetailPreview = {
               align: "right",
             },
             children: {
-              allotmentButton: buttonComponent("Download Original Allotment Letter"),
+              allotmentButton: buttonComponent("Download Allotment Letter"),
             }
           },
           taskStatus: {

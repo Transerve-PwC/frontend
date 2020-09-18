@@ -73,7 +73,7 @@ const schemeName = {
 
 const dateOfAuction = {
   label: {
-    labelName: "Date Of Aunction",
+    labelName: "Date Of Auction",
     labelKey: "EST_DATE_OF_AUCTION_LABEL"
   },
   placeholder: {

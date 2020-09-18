@@ -21,7 +21,7 @@ const colonyField = {
   },
   placeholder: {
       labelName: "Enter Colony",
-      labelKey: "TL_COMMON_TABLE_COL_COLONY_PLACEHOLDER"
+      labelKey: "RP_COMMON_TABLE_COL_COLONY_PLACEHOLDER"
   },
   required: false,
   jsonPath: "searchScreen.colony",
@@ -175,11 +175,11 @@ placeholder: {
 const statusField = {
   label: {
     labelName: "Status",
-    labelKey: "TL_COMMON_TABLE_COL_STATUS"
+    labelKey: "RP_COMMON_TABLE_COL_STATUS"
   },
   placeholder: {
     labelName: "Select Status",
-    labelKey: "TL_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
+    labelKey: "RP_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
   },
   required: false,
   jsonPath: "searchScreen.state",
@@ -198,7 +198,7 @@ const ownershipStatusField = {
   },
   placeholder: {
     labelName: "Select Status",
-    labelKey: "TL_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
+    labelKey: "RP_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
   },
   jsonPath: "searchScreen.status"
 }
@@ -327,7 +327,7 @@ const buttonItem = {
     children: {
       buttonLabel: getLabel({
         labelName: "Reset",
-        labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_RESET"
+        labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_RESET"
       })
     },
     // onClickDefination: {
@@ -363,7 +363,7 @@ const buttonItem = {
     children: {
       buttonLabel: getLabel({
         labelName: "Search",
-        labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+        labelKey: "RP_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
       })
     }
   }

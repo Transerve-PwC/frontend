@@ -6,8 +6,8 @@ let userInfo = JSON.parse(getUserInfo());
 
 const rentHolderHeader = getCommonTitle(
     {
-        labelName: "Rent holder Particulars",
-        labelKey: "RP_RENT_HOLDER_PARTICULAR_HEADER"
+        labelName: "Owner Details",
+        labelKey: "RP_OWNER_DETAILS_HEADER"
     },
     {
         style: {
@@ -42,17 +42,17 @@ export const getGenderLabel = {
     props: {
       label: {
         name: "Gender",
-        key: "TL_COMMON_GENDER_LABEL"
+        key: "RP_COMMON_GENDER_LABEL"
       },
       buttons: [
         {
             labelName: "Male",
-            labelKey: "COMMON_MALE",
+            labelKey: "RP_COMMON_MALE",
             value: "MALE"
         },
         {
             label: "Female",
-            labelKey: "COMMON_FEMALE",
+            labelKey: "RP_COMMON_FEMALE",
             value: "FEMALE"
         }
       ],
@@ -77,17 +77,17 @@ export const getRelationshipRadioButton = {
     props: {
       label: {
         name: "Relationship",
-        key: "TL_COMMON_RELATIONSHIP_LABEL"
+        key: "RP_COMMON_RELATIONSHIP_LABEL"
       },
       buttons: [
         {
           labelName: "Father",
-          labelKey: "COMMON_RELATION_FATHER",
+          labelKey: "RP_COMMON_RELATION_FATHER",
           value: "FATHER"
         },
         {
           label: "Husband",
-          labelKey: "COMMON_RELATION_HUSBAND",
+          labelKey: "RP_COMMON_RELATION_HUSBAND",
           value: "HUSBAND"
         }
       ],
@@ -111,12 +111,12 @@ export const getRelationshipRadioButton = {
           buttons: [
             {
               labelName: "Legal Heir",
-              labelKey: "COMMON_RELATION_LEGAL_HEIR",
+              labelKey: "RP_COMMON_RELATION_LEGAL_HEIR",
               value: "LEGAL_HEIR"
             },
             {
               label: "Spouse",
-              labelKey: "COMMON_RELATION_SPOUSE",
+              labelKey: "RP_COMMON_RELATION_SPOUSE",
               value: "SPOUSE"
             }
           ],
@@ -128,11 +128,11 @@ export const getRelationshipRadioButton = {
 const fatherOrHusbandsNameField = {
     label: {
         labelName: "Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
     placeholder: {
         labelName: "Enter Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -493,17 +493,17 @@ export const  applicantGenderLabel = {
     props: {
       label: {
         name: "Gender",
-        key: "TL_COMMON_GENDER_LABEL"
+        key: "RP_COMMON_GENDER_LABEL"
       },
       buttons: [
         {
             labelName: "Male",
-            labelKey: "COMMON_MALE",
+            labelKey: "RP_COMMON_MALE",
             value: "MALE"
         },
         {
             label: "Female",
-            labelKey: "COMMON_FEMALE",
+            labelKey: "RP_COMMON_FEMALE",
             value: "FEMALE"
         }
       ],
@@ -519,7 +519,7 @@ export const  applicantGenderLabel = {
 const fatherOrHusbandsName = {
     label: {
         labelName: "Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
     // placeholder: {
     //     labelName: "Enter Father/ Husband's Name",
@@ -542,7 +542,7 @@ const fatherOrHusbandsName = {
 const fatherOrHusbandsNameMortgage = {
     label: {
         labelName: "Father/ Husband's Name",
-        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
     // placeholder: {
     //     labelName: "Enter Father/ Husband's Name",
@@ -570,13 +570,13 @@ const ownerShipRelationShipduplicate = {
           buttons: [
             {
                 labelName: "Father",
-                labelKey: "COMMON_RELATION_FATHER",
+                labelKey: "RP_COMMON_RELATION_FATHER",
                 value: "FATHER",
                 disabled:true
               },
               {
                 label: "Husband",
-                labelKey: "COMMON_RELATION_HUSBAND",
+                labelKey: "RP_COMMON_RELATION_HUSBAND",
                 value: "HUSBAND",
                 disabled:true
               }
@@ -595,18 +595,18 @@ const ownerShipRelationShipduplicate = {
         ...getRelationshipRadioButton.props,
         label: {
             name: "Relationship",
-            key: "TL_COMMON_RELATIONSHIP_LABEL"
+            key: "RP_COMMON_RELATIONSHIP_LABEL"
           },
           buttons: [
             {
                 labelName: "Father",
-                labelKey: "COMMON_RELATION_FATHER",
+                labelKey: "RP_COMMON_RELATION_FATHER",
                 value: "FATHER",
                 disabled: true
               },
               {
                 label: "Husband",
-                labelKey: "COMMON_RELATION_HUSBAND",
+                labelKey: "RP_COMMON_RELATION_HUSBAND",
                 value: "HUSBAND",
                 disabled: true
               }

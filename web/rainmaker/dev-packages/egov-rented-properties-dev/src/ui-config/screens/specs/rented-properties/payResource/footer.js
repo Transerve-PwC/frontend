@@ -357,7 +357,7 @@ export const footer = getCommonApplyFooter({
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
-        labelKey: "TL_COMMON_BUTTON_SUBMIT"
+        labelKey: "RP_COMMON_BUTTON_SUBMIT"
       }),
       submitButtonIcon: {
         uiFramework: "custom-atoms",
@@ -384,7 +384,7 @@ export const footer = getCommonApplyFooter({
     componentPath: "MenuButton",
     props: {
       data: {
-        label: {labelName : "MAKE PAYMENT" , labelKey :"COMMON_MAKE_PAYMENT"},
+        label: {labelName : "MAKE PAYMENT" , labelKey :"RP_COMMON_MAKE_PAYMENT"},
         rightIcon: "arrow_drop_down",
         props: { variant: "outlined", 
         style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" } },

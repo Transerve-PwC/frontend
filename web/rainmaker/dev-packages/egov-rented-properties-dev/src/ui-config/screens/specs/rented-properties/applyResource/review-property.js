@@ -44,7 +44,7 @@ export const editSection = {
         },
         buttonLabel: getLabel({
             labelName: "Edit",
-            labelKey: "TL_SUMMARY_EDIT"
+            labelKey: "RP_SUMMARY_EDIT"
         })
     }
 }
@@ -220,7 +220,7 @@ export const getReviewOwner = (isEditable = true) => {
                     },
                     ...getCommonSubHeader({
                         labelName: "Owner Details",
-                        labelKey: "TL_OWNER_DETAILS_HEADER"
+                        labelKey: "RP_OWNER_DETAILS_HEADER"
                     })
                 },
                 editSection: propertyMasterEditSection(isEditable)
@@ -236,9 +236,9 @@ export const getReviewOwner = (isEditable = true) => {
                     jsonPath: "ownerDetails.name"},
                     {label: "RP_MOBILE_NO_LABEL",
                     jsonPath: "ownerDetails.phone"},
-                    {label: "TL_FATHER_OR_HUSBANDS_NAME_LABEL",
+                    {label: "RP_FATHER_OR_HUSBANDS_NAME_LABEL",
                     jsonPath: "ownerDetails.fatherOrHusband"},
-                    {label: "TL_COMMON_RELATIONSHIP_LABEL",
+                    {label: "RP_COMMON_RELATIONSHIP_LABEL",
                     jsonPath: "ownerDetails.relation"},
                     {label: "RP_OWNER_DETAILS_EMAIL_LABEL",
                     jsonPath: "ownerDetails.email"},
@@ -416,7 +416,7 @@ export const getNoticeViolationPreviewReviewRentDetails = (isEditable = true) =>
             fatherOrHusbandsName: getLabelWithValue(
                     {
                         labelName: "Father/ Husband's Name",
-                        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
                     },
                     { jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband" }
                 ),
@@ -495,7 +495,7 @@ export const getNoticeRecoveryPreviewReviewRentDetails = (isEditable = true) => 
             fatherOrHusbandsName: getLabelWithValue(
                     {
                         labelName: "Father/ Husband's Name",
-                        labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
+                        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
                     },
                     { jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband" },
                     {visible: false}
@@ -584,21 +584,21 @@ export const getReviewPaymentDetails = (isEditable = true) => {
                         labelName: "Balance Principal",
                         labelKey: "RP_BALANCE_PRINCIPAL_LABEL"
                     },
-                    { jsonPath: "Properties[0].rentSummary.balancePrincipal" }
+                    { jsonPath: "Properties[0].formatrentSummary.balancePrincipal" }
                 ),
                 paymentDate: getLabelWithValue(
                     {
                         labelName: "Date of Payment",
                         labelKey: "RP_BALANCE_INTEREST_LABEL"
                     },
-                    { jsonPath: "Properties[0].rentSummary.balanceInterest" }
+                    { jsonPath: "Properties[0].formatrentSummary.balanceInterest" }
                 ),
                 paymentMode: getLabelWithValue(
                     {
                         labelName: "Payment Mode",
                         labelKey: "RP_BALANCE_AMOUNT_LABEL"
                     },
-                    { jsonPath: "Properties[0].rentSummary.balanceAmount" }
+                    { jsonPath: "Properties[0].formatrentSummary.balanceAmount" }
                 ),
         })
     })
@@ -670,35 +670,35 @@ export const getReviewGrantDetails = () => {
                 nameOfTheBank: getLabelWithValue(
                     {
                         labelName: "Name of the bank (Text field)",
-                        labelKey: "WF_BANK_NAME"
+                        labelKey: "RP_WF_BANK_NAME"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].bankName" }
                 ),
                 mortageAmount: getLabelWithValue(
                     {
                         labelName: "Enter mortgage amount",
-                        labelKey: "WF_MORTAGE_AMOUNT"
+                        labelKey: "RP_WF_MORTAGE_AMOUNT"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].mortgageAmount" }
                 ),
                 sanctionLetterNo: getLabelWithValue(
                     {
                         labelName: "Sanction letter number",
-                        labelKey: "WF_SANCTION_LETTER_LABEL"
+                        labelKey: "RP_WF_SANCTION_LETTER_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].sanctionLetterNumber" }
                 ),
                 mortageEndDate: getLabelWithValue(
                     {
                         labelName: "Mortgage end date ",
-                        labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
+                        labelKey: "RP_WF_MORTAGAGEEND_DATE_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
                 ),
                 sanctioningDate: getLabelWithValue(
                     {
                         labelName: "Date of sanctioning",
-                        labelKey: "WF_SANCTIONING_DATE_LABEL"
+                        labelKey: "RP_WF_SANCTIONING_DATE_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].sanctionDate" , callBack: convertEpochToDate}
                 ),
