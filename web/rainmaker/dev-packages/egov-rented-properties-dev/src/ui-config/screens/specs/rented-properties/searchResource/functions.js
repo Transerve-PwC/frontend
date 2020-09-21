@@ -306,7 +306,7 @@ export const searchAccountStatement = async (state, dispatch) => {
         dispatch(
         handleField(
           "search-account-statement",
-          "components.div.children.searchButton",
+          "components.div.children.downloadButton",
           "visible",
           true
       ),
@@ -380,6 +380,103 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
     alert('Some Error Occured while downloading Acknowledgement form!');
   }
 }
+
+export const getFileUrlAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	//{ key: "tenantId", value: tenantId||commonConfig.tenantId },
+    { key: "tenantId", value: tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const downloadCSVFromFilestoreID=(fileStoreId,mode,tenantId)=>{
+  getFileUrlAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    if (mode === 'download') {
+      var win = window.open(fileRes[fileStoreId], '_blank');
+      if(win){
+        win.focus();
+      }
+    }
+    else {
+     // printJS(fileRes[fileStoreId])
+      var response =await axios.get(fileRes[fileStoreId], {
+        //responseType: "blob",
+        responseType: "arraybuffer",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf"
+        }
+      });
+      console.log("responseData---",response);
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      var myWindow = window.open(fileURL);
+      if (myWindow != undefined) {
+        myWindow.addEventListener("load", event => {
+          myWindow.focus();
+          myWindow.print();
+        });
+      }
+
+    }
+  });
+}
+
+export const downloadAccountStatementXLS = async (state, dispatch) => {
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.accountStatementFilterForm.children.cardContent.children.applicationNoContainer.children",
+    state,
+    dispatch,
+    "search-account-statement"
+  );
+
+  if(!!isSearchBoxFirstRowValid) {
+    let Criteria = {
+      fromDate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+      toDate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+    }
+    const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
+      if(!!propertyId) {
+        Criteria = {...Criteria, propertyid: propertyId}
+        const res = await httpRequest(
+          "post",
+          '/rp-services/property/_accountstatementxlsx',
+          "",
+          [],
+          {Criteria}
+        )
+
+        try {
+          if (res && res[0].fileStoreId) {
+            console.log(res[0].fileStoreId)
+            console.log(res[0].tenantId)
+
+            downloadCSVFromFilestoreID(res[0].fileStoreId, 'download' ,res[0].tenantId)
+          }
+        } catch (error) {
+          dispatch(toggleSnackbar(true, error.message, "error"));
+        }
+    }
+  }
+}
+
 
 export const searchDuplicateCopy = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
   !!hideTable && showHideTable(false, dispatch, "search-duplicate-copy");

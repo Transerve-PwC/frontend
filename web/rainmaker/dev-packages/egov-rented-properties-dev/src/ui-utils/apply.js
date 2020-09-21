@@ -214,7 +214,8 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         let ownershipTransferDocuments = Owners[0].ownerDetails.ownershipTransferDocuments || [];
         const removedDocs = ownershipTransferDocuments.filter(item => !item.active)
         ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item.active)
-        Owners = [{...Owners[0], ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments}}]
+        Owners = [{...Owners[0],property: {...Owners[0].property, rentSummary:{...Owners[0].property.rentSummary , totalDue : (Owners[0].property.rentSummary.balancePrincipal + 
+          Owners[0].property.rentSummary.balanceInterest).toFixed(2)}}, ownerDetails: {...Owners[0].ownerDetails, ownershipTransferDocuments}}]
         dispatch(prepareFinalObject("Owners", Owners));
         dispatch(
           prepareFinalObject(
@@ -498,7 +499,8 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
         let applicationDocuments = DuplicateCopyApplications[0].applicationDocuments || [];
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
-        DuplicateCopyApplications = [{...DuplicateCopyApplications[0], applicationDocuments}]
+        DuplicateCopyApplications = [{...DuplicateCopyApplications[0],property: {...DuplicateCopyApplications[0].property, rentSummary:{...DuplicateCopyApplications[0].property.rentSummary , totalDue : (DuplicateCopyApplications[0].property.rentSummary.balancePrincipal + 
+          DuplicateCopyApplications[0].property.rentSummary.balanceInterest).toFixed(2)}}, applicationDocuments}]
         dispatch(prepareFinalObject("DuplicateCopyApplications", DuplicateCopyApplications));
          dispatch(
           prepareFinalObject(
