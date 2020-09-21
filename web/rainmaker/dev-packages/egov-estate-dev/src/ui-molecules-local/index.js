@@ -76,6 +76,11 @@ const ExpansionPanelMolecule = Loadable({
   loading: () => <Loading />
 })
 
+const MultipleDocuments = Loadable({
+  loader: () => import("./MultipleDocuments"),
+  loading: () => <Loading />
+})
+
 export {
   TestMolecules,
   RadioButtonsGroup,

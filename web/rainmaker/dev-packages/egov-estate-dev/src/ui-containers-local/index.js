@@ -67,6 +67,11 @@ const UpdateContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const MultipleDocumentsContainer = Loadable({
+  loader: () => import("./MultipleDocumentsContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -81,5 +86,6 @@ export {
   ResubmitActionContainer,
   WorkFlowContainer,
   ExpansionPanelContainer,
-  UpdateContainer
+  UpdateContainer,
+  MultipleDocumentsContainer
 };
