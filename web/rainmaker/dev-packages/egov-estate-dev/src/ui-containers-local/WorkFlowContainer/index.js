@@ -45,11 +45,11 @@ class WorkFlowContainer extends React.Component {
       { key: "tenantId", value: tenantId }
     ];
     switch(this.props.moduleName) {
-      case WF_PROPERTY_MASTER : {
+      case WF_PROPERTY_MASTER : 
         queryObject = [...queryObject,
           { key: "businessIds", value: fileNumber }
       ]
-      }
+      break;
       default: {
         queryObject = [
           ...queryObject,
@@ -172,9 +172,9 @@ class WorkFlowContainer extends React.Component {
       if (payload) {
         let path = "";
         switch(this.props.moduleName) {
-          case WF_PROPERTY_MASTER: {
+          case WF_PROPERTY_MASTER: 
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
-          }
+            break;
           default: {
             path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}`
           }
