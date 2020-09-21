@@ -72,6 +72,11 @@ const MultipleDocumentsContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const NestedListContainer = Loadable({
+  loader: () => import("./NestedListContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -87,5 +92,6 @@ export {
   WorkFlowContainer,
   ExpansionPanelContainer,
   UpdateContainer,
-  MultipleDocumentsContainer
+  MultipleDocumentsContainer,
+  NestedListContainer
 };
