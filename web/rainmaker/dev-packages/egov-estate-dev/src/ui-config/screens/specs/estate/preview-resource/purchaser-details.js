@@ -15,6 +15,7 @@ import {
     prepareFinalObject
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
+    convertEpochToDate,
     getTodaysDateInYMD
   } from "../../utils";
   import get from "lodash/get";
@@ -192,7 +193,8 @@ export const headerDiv = {
           ),
           dateOfRegistration: getLabelWithValue(
             dateOfRegistrationField, {
-              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].dateOfRegistration`
+              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].dateOfRegistration`,
+              callback: convertEpochToDate
             }
           )
       })

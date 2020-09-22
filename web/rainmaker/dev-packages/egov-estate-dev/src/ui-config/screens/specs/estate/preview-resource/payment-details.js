@@ -15,6 +15,7 @@ import {
     prepareFinalObject
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
+    convertEpochToDate,
     getTodaysDateInYMD
   } from "../../utils";
   import get from "lodash/get";
@@ -212,7 +213,8 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         header: groundRentHeader,
         dueDateOfPayment: getLabelWithValue(
           dueDateOfPaymentLabel, {
-            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDueDateOfPayment`
+            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDueDateOfPayment`,
+            callback: convertEpochToDate
           }
         ),
         payable: getLabelWithValue(
@@ -232,7 +234,8 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         ),
         dateOfDeposit: getLabelWithValue(
           dateOfDepositLabel, {
-            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDateOfDeposit`
+            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDateOfDeposit`,
+            callback: convertEpochToDate
           }
         ),
         delayInPayment: getLabelWithValue(
@@ -282,7 +285,8 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         ),
         receiptDate : getLabelWithValue(
             receiptDateLabel,{
-                jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grReceiptDate`
+                jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grReceiptDate`,
+                callback: convertEpochToDate
             }
         )
       }),
@@ -305,7 +309,8 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         ),
         dateOfDeposit: getLabelWithValue(
           dateOfDepositLabel, {
-            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stDateOfDeposit`
+            jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stDateOfDeposit`,
+            callback: convertEpochToDate
           }
         ),
         delayInPayment: getLabelWithValue(
@@ -355,7 +360,8 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         ),
         receiptDate : getLabelWithValue(
             receiptDateLabel,{
-                jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stReceiptDate`
+                jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stReceiptDate`,
+                callback: convertEpochToDate
             }
         ),
         paymentMadeBy: getLabelWithValue(
