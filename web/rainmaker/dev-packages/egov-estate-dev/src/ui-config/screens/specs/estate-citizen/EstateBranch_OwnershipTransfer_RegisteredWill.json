@@ -1,7 +1,8 @@
 {
-    "tenantId": "ch",
-    "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_RegisteredWill": [{
+  "tenantId": "ch",
+  "moduleName": "EstatePropertyService",
+  "EstateBranch_OwnershipTransfer_RegisteredWill": [
+    {
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -159,35 +160,71 @@
       "first_step": {
         "sections": [
           {
-            "header": "EST_OWNER_DETAILS_HEADER",
+            "header": "EST_PROPERTY_DETAILS_HEADER",
             "type": "CARD_DETAIL",
-            "path": "Applications[0].owner.id",
-            "valueJsonPath": "ownerDetails.ownerId",
+            "fields": [
+              {
+                "label": "EST_FILE_NUMBER_LABEL",
+                "jsonPath": "property.fileNumber"
+              },
+              {
+                "label": "EST_CATEGORY_LABEL",
+                "jsonPath": "property.category"
+              },
+              {
+                "label": "EST_SUB_CATEGORY_LABEL",
+                "jsonPath": "property.subCategory"
+              },
+              {
+                "label": "EST_SITE_NO_LABEL",
+                "jsonPath": "property.siteNumber"
+              },
+              {
+                "label": "EST_SECTOR_NO_LABEL",
+                "jsonPath": "property.sectorNumber"
+              },
+              {
+                "label": "EST_PROPERTY_TYPE_LABEL",
+                "jsonPath": "property.propertyDetails.propertyType"
+              },
+              {
+                "label": "EST_LAST_NOC_DATE_LABEL",
+                "jsonPath": "property.propertyDetails.lastNocDate"
+              },
+              {
+                "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                "jsonPath": "property.propertyDetails.propertyApplicationNumber"
+              },
+              {
+                "label": "EST_DUE_AMOUNT_LABEL",
+                "jsonPath": "property.propertyDetails.dueAmount"
+              }
+            ]
+          },
+          {
+            "header": "EST_PROPERTY_OWNER_LIST_HEADER",
+            "type": "EXPANSION_DETAIL",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
-                {
-                    "label": "EST_OWNER_NAME_LABEL",
-                    "jsonPath": "ownerDetails.ownerName"
-                  },
               {
-                "label": "EST_ADDRESS_LABEL",
-                "jsonPath": "ownerDetails.address"
+                "label": "EST_OWNER_NAME_LABEL",
+                "jsonPath": "ownerDetails.ownerName"
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "share"
+                "jsonPath": "ownerDetails.share"
+              },
+              {
+                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+                "jsonPath": "ownerDetails.mobileNumber"
               }
             ]
           },
           {
             "header": "EST_DECEASED_DETAILS_HEADER",
             "type": "FORM",
-            "path": "Applications[0].owner.id",
-            "valueJsonPath": "ownerDetails.ownerId",
-            "sourceJsonPath": "property.propertyDetails.owners",
-            "fields":[
+            "fields": [
               {
-                
                 "label": "EST_DECEASED_NAME_LABEL",
                 "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
                 "required": true,
@@ -333,43 +370,42 @@
             ]
           },
           {
-            
-                "header": "EST_WITNESS_DETAILS_HEADER",
-                "type": "FORM",
-                "fields": [
-                  {
-                    "label": "EST_WITNESS_NAME_LABEL",
-                    "placeholder": "EST_WITNESS_NAME_PLACEHOLDER",
-                    "required": true,
-                    "type": "TEXT_FIELD",
-                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.witnessName",
-                    "path": "ownerDetails.beneficiaryName"
-                  },
-                  {
-                    "label": "EST_AGE_LABEL",
-                    "placeholder": "EST_AGE_PLACEHOLDER",
-                    "required": true,
-                    "type": "TEXT_FIELD",
-                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
-                    "path": "ownerDetails.age"
-                  },
-                  {
-                    "label": "EST_ADDRESS_LABEL",
-                    "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                    "required": true,
-                    "type": "TEXT_FIELD",
-                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
-                    "path": "ownerDetails.address"
-                  },
-                  {
-                    "label": "EST_MOBILE_NUMBER_LABEL",
-                    "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
-                    "required": false,
-                    "type": "TEXT_FIELD",
-                    "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
-                    "path": "ownerDetails.phone"
-                  }
-                ]
+            "header": "EST_WITNESS_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_WITNESS_NAME_LABEL",
+                "placeholder": "EST_WITNESS_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.witnessName",
+                "path": "ownerDetails.beneficiaryName"
+              },
+              {
+                "label": "EST_AGE_LABEL",
+                "placeholder": "EST_AGE_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
+                "path": "ownerDetails.age"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
+                "path": "ownerDetails.address"
+              },
+              {
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
+                "path": "ownerDetails.phone"
+              }
+            ]
           }
         ]
       },
@@ -484,5 +520,6 @@
           }
         ]
       }
-    }]
-  }
+    }
+  ]
+}

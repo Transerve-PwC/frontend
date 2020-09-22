@@ -88,8 +88,8 @@
                         "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
                         "type": "date"
                     }
-                ]    
-                },
+                ]
+            },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",
                 "type": "DOCUMENTS",

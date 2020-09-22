@@ -1,163 +1,224 @@
 {
-    "tenantId": "ch",
-    "moduleName": "EstatePropertyService",
-    "EstateBranch_InternalServices_IssuanceOfNotice": [
-     {
-        "fields": [
+  "tenantId": "ch",
+  "moduleName": "EstatePropertyService",
+  "EstateBranch_InternalServices_IssuanceOfNotice": [
+    {
+      "fields": [
+        {
+          "path": "transferor",
+          "required": true,
+          "validations": [
             {
-              "path": "transferor",
-              "required": true,
-              "validations": [
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            {
-              "path": "transferor.id",
-              "required": true,
-              "validations": [
-                {
-                  "type": "owner"
-                }
-              ]
-            },
-            {
-              "path": "violationDetails",
-              "required": true,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 5,
-                    "max": 150
-                  }
-                }
-              ]
-            },
-            {
-              "path": "violationDate",
-              "required": false,
-              "validations": [
-                {
-                  "type": "date-range",
-                  "params": {
-                    "start": {
-                      "unit": "year",
-                      "value": -10
-                    },
-                    "end": {
-                      "unit": "second",
-                      "value": 0
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases",
-              "required": false,
-              "validations": [
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            {
-              "path": "courtCases.estateOfficerCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.commissionersCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.chiefAdministratorsCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.advisorToAdminCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.honbleDistrictCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.honbleHighCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
-            },
-            {
-              "path": "courtCases.honbleSupremeCourt",
-              "required": false,
-              "validations": [
-                {
-                  "type": "length",
-                  "params": {
-                    "min": 0,
-                    "max": 250
-                  }
-                }
-              ]
+              "type": "object"
             }
-          ],
+          ]
+        },
+        {
+          "path": "transferor.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "violationDetails",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "violationDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -10
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "courtCases.estateOfficerCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.commissionersCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        }
+      ],
       "first_step": {
         "sections": [
-            {
+          {
+            "header": "EST_PROPERTY_DETAILS_HEADER",
+            "type": "CARD_DETAIL",
+            "fields": [
+              {
+                "label": "EST_FILE_NUMBER_LABEL",
+                "jsonPath": "property.fileNumber"
+              },
+              {
+                "label": "EST_CATEGORY_LABEL",
+                "jsonPath": "property.category"
+              },
+              {
+                "label": "EST_SUB_CATEGORY_LABEL",
+                "jsonPath": "property.subCategory"
+              },
+              {
+                "label": "EST_SITE_NO_LABEL",
+                "jsonPath": "property.siteNumber"
+              },
+              {
+                "label": "EST_SECTOR_NO_LABEL",
+                "jsonPath": "property.sectorNumber"
+              },
+              {
+                "label": "EST_PROPERTY_TYPE_LABEL",
+                "jsonPath": "property.propertyDetails.propertyType"
+              },
+              {
+                "label": "EST_LAST_NOC_DATE_LABEL",
+                "jsonPath": "property.propertyDetails.lastNocDate"
+              },
+              {
+                "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                "jsonPath": "property.propertyDetails.propertyApplicationNumber"
+              },
+              {
+                "label": "EST_DUE_AMOUNT_LABEL",
+                "jsonPath": "property.propertyDetails.dueAmount"
+              }
+            ]
+          },
+          {
+            "header": "EST_PROPERTY_OWNER_LIST_HEADER",
+            "type": "EXPANSION_DETAIL",
+            "sourceJsonPath": "property.propertyDetails.owners",
+            "fields": [
+              {
+                "label": "EST_OWNER_NAME_LABEL",
+                "jsonPath": "ownerDetails.ownerName"
+              },
+              {
+                "label": "EST_OWNER_SHARE_LABEL",
+                "jsonPath": "ownerDetails.share"
+              },
+              {
+                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+                "jsonPath": "ownerDetails.mobileNumber"
+              }
+            ]
+          },
+          {
             "header": "EST_TYPE_OF_NOTICE_HEADER",
             "type": "FORM",
             "fields": [
@@ -169,49 +230,45 @@
                 "path": "noticeType"
               }
             ]
+          },
+          {
+            "header": "EST_OWNER_DETAILS_HEADER",
+            "type": "FORM",
+           "fields": [
+              {
+                "label": "EST_SELECT_OWNER_LABEL",
+                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
               },
               {
-              "header": "EST_OWNER_DETAILS_HEADER",
-              "type": "FORM",
-              "path": "Applications[0].owner.id",
-              "valueJsonPath": "ownerDetails.ownerId",
-              "sourceJsonPath": "property.propertyDetails.owners",
-              "fields":[
-                {
-                  "label": "EST_SELECT_OWNER_LABEL",
-                  "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
-                  "required": false,
-                  "type": "DROP_DOWN",
-                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                  "path": "ownerDetails.ownerName"
-                  },
-                {
-                  
-                  "label": "EST_OWNER_NAME_LABEL",
-                  "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
-                  "required": true,
-                  "type": "TEXT_FIELD",
-                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                  "path": "ownerDetails.ownerName"
-                },
-                {
-                  "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                  "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
-                  "required": true,
-                  "type": "TEXT_FIELD",
-                  "path": "ownerDetails.fatherOrHusband",
-                  "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
-                },
-                {
-                  "label": "EST_ADDRESS_LABEL",
-                  "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                  "required": true,
-                  "type": "TEXT_FIELD",
-                  "path": "ownerDetails.address",
-                  "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
-                }
-                  ]
+                "label": "EST_OWNER_NAME_LABEL",
+                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
               },
+              {
+                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.fatherOrHusband",
+                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.address",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+              }
+            ]
+          },
           {
             "header": "EST_NON_PAYMENT_DETAILS_HEADER",
             "type": "FORM",
@@ -317,4 +374,4 @@
       }
     }
   ]
-  } 
+}

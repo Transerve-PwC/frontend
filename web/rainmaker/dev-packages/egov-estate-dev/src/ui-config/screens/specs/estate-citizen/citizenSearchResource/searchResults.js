@@ -40,6 +40,8 @@ export const searchResults = {
 };
 
 const onRowClick = rowData => {
-  const type = getQueryArg(window.location.href, "type")
-  window.location.href = `apply?propertyId=${rowData[4]}&applicationType=${type}`;
+  // const type = getQueryArg(window.location.href, "type")
+      {/* route: `/estate-citizen/estate-branch` */}
+  window.location.href = `estate-branch-apply?propertyId=${rowData[4]}`
+  // window.location.href = `apply?propertyId=${rowData[4]}&applicationType=${type}`;
 };
