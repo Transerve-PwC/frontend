@@ -217,17 +217,20 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         "propertyDetails.owners",
         []
       )
-      owners.map((item, index) => {
-        let ownerDocuments = get(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`) || [];
-        ownerDocuments = ownerDocuments.map(item => ({
-          ...item,
-          isActive: true
-        }))
 
-        const removedDocs = get(state.screenConfiguration.preparedFinalObject, `propertyDetails.owners[${index}].ownerDetails.removedDocs`) || [];
-        ownerDocuments = [...ownerDocuments, ...removedDocs]
-        set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, ownerDocuments)
-      })
+      if (owners) {
+        owners.map((item, index) => {
+          let ownerDocuments = get(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`) || [];
+          ownerDocuments = ownerDocuments.map(item => ({
+            ...item,
+            isActive: true
+          }))
+
+          const removedDocs = get(state.screenConfiguration.preparedFinalObject, `propertyDetails.owners[${index}].ownerDetails.removedDocs`) || [];
+          ownerDocuments = [...ownerDocuments, ...removedDocs]
+          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, ownerDocuments)
+        })
+      }
 
       
       /* let ownerDocuments = get(queryObject[0], "ownerDetails.ownerDocuments") || [];

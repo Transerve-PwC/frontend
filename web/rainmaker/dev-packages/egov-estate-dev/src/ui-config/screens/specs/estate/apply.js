@@ -39,12 +39,11 @@ import {
   get
 } from "lodash";
 import {
-  updatePFOforSearchResults
+  getSearchResults
 } from "../../../../ui-utils/commons";
-import * as companyDocsData from './applyResource/company-docs.json'
+import * as companyDocsData from './applyResource/company-docs.json';
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
-
-const propertyId = getQueryArg(window.location.href, "propertyId")
 
 export const getMdmsData = async (dispatch, body) => {
   let mdmsBody = {
@@ -211,11 +210,40 @@ const header = getCommonHeader({
   labelKey: "EST_COMMON_ESTATES_ADD"
 });
 
-const getData = async (action, state, dispatch) => {
-  const transitNumber = getQueryArg(window.location.href, "transitNumber");
+export const getPMDetailsByFileNumber = async (
+  action,
+  state,
+  dispatch,
+  fileNumber
+) => {
+  let queryObject = [
+    {
+      key: "tenantId",
+      value: getTenantId()
+    },
+    { 
+      key: "fileNumber", 
+      value: fileNumber 
+    }
+  ];
 
-  if (transitNumber) {
-    await updatePFOforSearchResults(action, state, dispatch, transitNumber)
+  const payload = await getSearchResults(queryObject);
+
+  if (payload) {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        payload.Properties
+      )
+    )
+  }
+}
+
+const getData = async (action, state, dispatch) => {
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+
+  if (fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber)
   } else {
     dispatch(
       prepareFinalObject(
