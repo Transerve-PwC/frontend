@@ -69,6 +69,18 @@ const getData = async(action, state, dispatch) => {
     setDocsForEditFlow(state, dispatch, "Owners[0].ownerDetails.ownershipTransferDocuments", "OwnersTemp[0].uploadedDocsInRedux");
   }
   setDocumentData(action, state, dispatch, {documentCode: "FRESHLICENSE", jsonPath: "Owners[0].ownerDetails.ownershipTransferDocuments", screenKey: "ownership-apply", screenPath: "components.div.children.formwizardSecondStep.children.ownershipTransferDocumentsDetails.children.cardContent.children.documentList", tempJsonPath:"OwnersTemp[0].ownershipTransferDocuments"})
+  const id=get(state.screenConfiguration.preparedFinalObject,"Owners[0].id")
+  if(id!=null){
+    dispatch(
+      handleField(
+        "ownership-apply",
+        "components.div.children.formwizardFirstStep.children.ownershipAddressDetails.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",
+        "props.disabled",
+        true
+      )
+    )
+  }
+
 }
 
 

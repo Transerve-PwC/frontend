@@ -128,7 +128,7 @@ const ownershipTransitNumberField = {
           }
         }
       },
-      beforeFieldChange: (action, state, dispatch) => {
+      afterFieldChange: (action, state, dispatch) => {
         dispatch(
             prepareFinalObject(
               "Owners[0].property.id",
@@ -137,13 +137,13 @@ const ownershipTransitNumberField = {
           )
         dispatch(
             prepareFinalObject(
-              "Properties[0].area",
+              "Owners[0].property.pincode",
               ""
             )
           )
           dispatch(
             prepareFinalObject(
-              "Properties[0].pincode",
+              "Owners[0].property.colony",
               ""
             )
           )
@@ -162,7 +162,7 @@ const mortgageTransitNumberField = {
         }
       }
     },
-    beforeFieldChange: (action, state, dispatch) => {
+    afterFieldChange: (action, state, dispatch) => {
       dispatch(
           prepareFinalObject(
             "MortgageApplications[0].property.id",
@@ -171,13 +171,37 @@ const mortgageTransitNumberField = {
         )
       dispatch(
           prepareFinalObject(
-            "Properties[0].area",
+            "MortgageApplications[0].property.pincode",
             ""
           )
         )
         dispatch(
           prepareFinalObject(
-            "Properties[0].pincode",
+            "MortgageApplications[0].property.colony",
+            ""
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "MortgageApplications[0].applicant[0].name",
+            ""
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "MortgageApplications[0].applicant[0].guardian",
+            ""
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "MortgageApplications[0].applicant[0].relationship",
+            ""
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "MortgageApplications[0].applicant[0].adhaarNumber",
             ""
           )
         )

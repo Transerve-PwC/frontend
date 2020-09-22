@@ -1,7 +1,7 @@
 import { getRentSummaryCard, getCommonApplyFooter } from "../utils";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { get } from "lodash";
-const { getCommonHeader, getCommonCard, getCommonContainer, getTextField, getSelectField, getCommonGrayCard, getCommonTitle, getLabel } = require("egov-ui-framework/ui-config/screens/specs/utils");
+const { getCommonHeader, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { transitSiteHeader, transitNumberLookUp, colonyFieldConfig, pincodeField } = require("./applyResource/propertyDetails");
 const { getRentPaymentPropertyDetails } = require("../../../../ui-utils/apply");
 const { ownerNameField } = require("./applyResource/rentHolderDetails");
@@ -138,6 +138,7 @@ const amountField = {
     xs: 12,
     sm: 6
   },
+  pattern: getPattern("numeric-only"),
   required: true,
   minLength: 3,
   maxLength: 7,
@@ -288,7 +289,7 @@ const paymentFooter = getCommonApplyFooter({
     children: {
       submitButtonLabel: getLabel({
         labelName: "MAKE PAYMENT",
-        labelKey: "RP_COMMON_MAKE_PAYMENT"
+        labelKey: "COMMON_MAKE_PAYMENT"
       })
     },
     onClickDefination: {
@@ -315,7 +316,7 @@ const paymentFooter = getCommonApplyFooter({
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
-        labelKey: "RP_COMMON_BUTTON_SUBMIT"
+        labelKey: "RP_BUTTON_MAKE_PAYEMENT"
       })
     },
     onClickDefination: {

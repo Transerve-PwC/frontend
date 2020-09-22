@@ -466,7 +466,7 @@ const applicantphoneNumberFieldMortgage = {
         labelKey: ""
       },
     props: {
-        // value: userInfo.userName,
+        value: userInfo.userName,
         disabled: true
       },
     jsonPath: "MortgageApplications[0].applicant[0].phone"
@@ -475,7 +475,7 @@ const applicantphoneNumberFieldMortgage = {
 const applicantphoneNumberFieldduplicate = {
     ...phoneNumberConfig,
     props: {
-        // value: userInfo.userName,
+        value: userInfo.userName,
         disabled: true
       },
     jsonPath: "DuplicateCopyApplications[0].applicant[0].phone"
@@ -635,7 +635,7 @@ const applicantEmailFieldduplicate = {
         labelKey: ""
       },
     props: {
-        // value:userInfo.emailId,
+        value:userInfo.emailId,
         disabled: true
       },
     jsonPath: "DuplicateCopyApplications[0].applicant[0].email",
@@ -645,7 +645,7 @@ const applicantEmailFieldduplicate = {
 const applicantEmailFieldMortgage = {
     ...emailConfig,
     props: {
-        // value:userInfo.emailId,
+        value:userInfo.emailId,
         disabled: true
       },
     jsonPath: "MortgageApplications[0].applicant[0].email",

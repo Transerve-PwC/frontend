@@ -13,6 +13,9 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import {applicationNumber} from '../rented-properties/apply'
 import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+let userInfo = JSON.parse(getUserInfo());
   const header = getCommonContainer({
         header: getCommonHeader({
           labelName: "Apply Mortage License",
@@ -29,6 +32,18 @@ import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
         []
         )
         )
+    dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].email",
+              userInfo.emailId
+            )
+          )
+          dispatch(
+            prepareFinalObject(
+              "MortgageApplications[0].applicant[0].phone",
+              userInfo.userName
+            )
+          )    
     dispatch(
       prepareFinalObject(
         "MortgageApplicationsTemp",
@@ -58,6 +73,17 @@ import{getColonyTypes} from "../rented-properties-citizen/duplicate-copy-apply"
       setDocsForEditFlow(state, dispatch, "MortgageApplications[0].applicationDocuments", "MortgageApplicationsTemp[0].uploadedDocsInRedux");
     }
     setDocumentData(action, state, dispatch, {documentCode: "MortgageRP", jsonPath: "MortgageApplications[0].applicationDocuments", screenKey: "mortage-apply", screenPath: "components.div.children.formwizardSecondStep.children.mortgageDocumentsDetails.children.cardContent.children.documentList", tempJsonPath:"MortgageApplicationsTemp[0].applicationDocuments"})
+    const id=get(state.screenConfiguration.preparedFinalObject,"MortgageApplications[0].id")
+    if(id!=null){
+      dispatch(
+        handleField(
+          "mortage-apply",
+          "components.div.children.formwizardFirstStep.children.ownershipAddressDetailsMortgage.children.cardContent.children.detailsContainer.children.ownershipTransitNumber",
+          "props.disabled",
+          true
+        )
+      )
+    }
   }
 
 const applyLicense = {
