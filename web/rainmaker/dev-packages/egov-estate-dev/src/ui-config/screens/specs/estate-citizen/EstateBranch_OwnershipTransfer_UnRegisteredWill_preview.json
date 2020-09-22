@@ -45,116 +45,90 @@
             },
             {
                 "header": "EST_DECEASED_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_DECEASED_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.purchaser.deceasedName"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.purchaser.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
                     },
                     {
                         "label": "EST_DECEASED_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.deceasedAddress"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
                     },
                     {
                         "label": "EST_PERCENT_SHARE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.percentShare"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     },
                     {
                         "label": "EST_DATE_OF_DEATH_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.dateOfDeath"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath",
+                        "type": "date"
                     }
                 ]
             },
             {
                 "header": "EST_UNREGISTERED_WILL_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_DATE_OF_EXECUTION_OF_UNREGISTERED_WILL_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.dateOfExecutionOfWill"
+                        "jsonPath": "Applications[0].applicationDetails.dateOfExecutionOfWill",
+                        "type": "date"
                     },
                     {
                         "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.isLegalHeirOrBeneficiary"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.legalHeirOrbeneficiary"
                     },
                     {
-                        "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.isLegalHeirOrBeneficiaryOwner"
-                    },
-                    {
-                        "label": "EST_SELECT_OWNER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
-                    }
-                ]
-            },
-            {
-                "header": "EST_LEGAL_HEIR_DETAILS_HEADER",
-                "fields": [
-                    {
-                        "label": "EST_LEGAL_HEIR_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.legalHeirName"
+                        "label": "EST_LEGAL_HEIR_BENEFICIARY_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
                         "label": "EST_AGE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.age"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.age"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
                         "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased"
-                    }
-                ]
-            },
-            {
-                "header": "EST_BENEFICIARY_DETAILS_HEADER",
-                "fields": [
-                    {
-                        "label": "EST_BENEFICIARY_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.beneficiaryName"
-                    },
-                    {
-                        "label": "EST_AGE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.age"
-                    },
-                    {
-                        "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
-                    },
-                    {
-                        "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased"
                     }
                 ]
             },
             {
                 "header": "EST_WITNESS_DETAILS_HEADER",
+                "step": 0,
+                "sourceJsonPath": "Applications[0].applicationDetails.witness",
+                "type": "LIST",
                 "fields": [
                     {
                         "label": "EST_WITNESS_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.witnessName"
+                        "jsonPath": "name"
                     },
                     {
                         "label": "EST_AGE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.age"
+                        "jsonPath": "age"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                        "jsonPath": "address"
                     },
                     {
                         "label": "EST_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone"
+                        "jsonPath": "phone"
                     }
                 ]
             },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",
                 "type": "DOCUMENTS",
+                "step": 1,
                 "sourceJsonPath": "temp[0].reviewDocData"
             }
         ]

@@ -172,36 +172,9 @@ class Footer extends React.Component {
       contractData,
       handleFieldChange,
       onDialogButtonClick,
-      dataPath,
-      moduleName,
-      state,
-      dispatch
+      dataPath
     } = this.props;
     const { open, data, employeeList } = this.state;
-    const status = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].status`
-    );
-    const applicationType = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].applicationType`
-    );
-    const applicationNumber = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].applicationNumber`
-    );
-    const tenantId = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].tenantId`
-    );
-    const financialYear = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].financialYear`
-    );
-    const licenseNumber = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses[0].licenseNumber`
-    );
 
     const downloadMenu =
       contractData &&

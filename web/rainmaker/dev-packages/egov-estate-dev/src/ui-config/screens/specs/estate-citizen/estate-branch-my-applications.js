@@ -230,7 +230,7 @@ const screenConfig = {
     dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);
     getData(action, state, dispatch)
-    getStatusList(state, dispatch, queryObject, "estate-branch-my-applications", "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status", "SaleGift")
+    // getStatusList(state, dispatch, queryObject, "estate-branch-my-applications", "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status", "SaleGift")
     return action
   },
   components: {

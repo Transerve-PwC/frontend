@@ -22,7 +22,4 @@ const mapStateToProps = (state, props) => {
   return {data }
 }
 
-
-
-
 export default connect(mapStateToProps, null)(MultipleDocumentsContainer)

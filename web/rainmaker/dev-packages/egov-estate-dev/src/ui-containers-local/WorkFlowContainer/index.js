@@ -355,8 +355,13 @@ class WorkFlowContainer extends React.Component {
       checkIfDocumentRequired,
       getEmployeeRoles
     } = this;
-    let businessService = moduleName
-    // let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
+    // let businessService = moduleName
+    let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
+    if(!moduleName) {
+      const {dataPath, preparedFinalObject} = this.props
+      let _data = get(preparedFinalObject, dataPath, []);
+      businessService = _data[0].businessService
+    }
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];
 

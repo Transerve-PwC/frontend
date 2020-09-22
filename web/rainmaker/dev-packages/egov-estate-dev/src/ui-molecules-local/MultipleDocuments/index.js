@@ -80,8 +80,6 @@ class MultipleDocuments extends Component {
           <Grid container>
           <Grid xs={12} sm={12} style={{display: "flex", justifyContent: "flex-end"}}>
           <Grid xs={12} sm={12} style={{textAlign: "center"}}>
-          
-        
           </Grid>
           </Grid>
           </Grid>

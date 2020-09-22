@@ -19,7 +19,7 @@ import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
-  if(!!businessServices) {
+  if(!!businessServices && !!screen && !!path) {
     const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
     dispatch(
       handleField(

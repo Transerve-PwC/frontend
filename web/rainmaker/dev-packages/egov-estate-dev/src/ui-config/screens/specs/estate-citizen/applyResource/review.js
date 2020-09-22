@@ -78,6 +78,17 @@ export const viewFour = (section, data) => {
         }
       }
     }
+    case "LIST": {
+      return {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-estate",
+        componentPath: "MultipleCardContainer",
+        props: {
+          sourceJsonPath: section.sourceJsonPath,
+          contents: section.fields
+        }
+      }
+    }
     default: {
       const field_types = fields.reduce((acc, field) => {
         const visible = !!field.visibility && !!data ? eval(field.visibility) : true
