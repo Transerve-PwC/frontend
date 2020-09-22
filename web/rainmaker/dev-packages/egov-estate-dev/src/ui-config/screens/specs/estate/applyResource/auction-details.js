@@ -57,11 +57,11 @@ const auctionIdField = {
 const schemeName = {
   label: {
     labelName: "Scheme Name",
-    labelKey: "EST_ESTATE_SCHEME_NAME_LABEL"
+    labelKey: "EST_SCHEME_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Scheme Name",
-    labelKey: "EST_ESTATE_SCHEME_NAME_LACEHOLDER"
+    labelKey: "EST_SCHEME_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -124,12 +124,12 @@ const emdAmount = {
 
 const emdAmountDate = {
   label: {
-    labelName: "EMD Amount Date",
-    labelKey: "EST_EMD_AMOUNT_DATE_LABEL"
+    labelName: "EMD Date",
+    labelKey: "EST_EMD_DATE_LABEL"
   },
   placeholder: {
-    labelName: "Enter EMD Amount Date",
-    labelKey: "EST_EMD_AMOUNT_DATE_PLACEHOLDER"
+    labelName: "Enter EMD Date",
+    labelKey: "EST_EMD_DATE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -167,8 +167,8 @@ const buttonItem = {
     },
     children: {
       buttonLabel: getLabel({
-        labelName: "Upload Bidders List",
-        labelKey: "ESTATE_ALLOCATION_UPLOAD_BIDDERS_LIST_BUTTON"
+        labelName: "Upload",
+        labelKey: "EST_UPLOAD_BUTTON"
       })
     }
   }
@@ -178,7 +178,7 @@ const commonAuctionInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Auction Details",
-      labelKey: "EST_ALLOTMENT_AUCTION_DETAILS"
+      labelKey: "EST_AUCTION_DETAILS_HEADER"
     }, {
       style: {
         marginBottom: 18
