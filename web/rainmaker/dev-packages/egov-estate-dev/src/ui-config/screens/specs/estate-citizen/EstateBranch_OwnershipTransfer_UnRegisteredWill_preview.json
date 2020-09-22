@@ -2,20 +2,44 @@
     "preview": {
         "sections": [
             {
-                "header": "EST_OWNER_DETAILS_HEADER",
+                "header": "EST_PROPERTY_DETAILS_HEADER",
                 "isEditable": false,
                 "fields": [
                     {
-                        "label": "EST_OWNER_NAME_LABEL",
-                        "jsonPath": "ownerDetails.ownerName"
-                      },
-                    {
-                        "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "ownerDetails.address"
+                        "label": "EST_FILE_NUMBER_LABEL",
+                        "jsonPath": "Applications[0].property.fileNumber"
                     },
                     {
-                        "label": "EST_OWNER_SHARE_LABEL",
-                        "jsonPath": "share"
+                        "label": "EST_CATEGORY_LABEL",
+                        "jsonPath": "Applications[0].property.category"
+                    },
+                    {
+                        "label": "EST_SUB_CATEGORY_LABEL",
+                        "jsonPath": "Applications[0].property.subCategory"
+                    },
+                    {
+                        "label": "EST_SITE_NO_LABEL",
+                        "jsonPath": "Applications[0].property.siteNumber"
+                    },
+                    {
+                        "label": "EST_SECTOR_NO_LABEL",
+                        "jsonPath": "Applications[0].property.sectorNumber"
+                    },
+                    {
+                        "label": "EST_PROPERTY_TYPE_LABEL",
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyType"
+                    },
+                    {
+                        "label": "EST_LAST_NOC_DATE_LABEL",
+                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
+                    },
+                    {
+                        "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                        "jsonPath": "Applications[0].property.propertyDetails.propertyApplicationNumber"
+                    },
+                    {
+                        "label": "EST_DUE_AMOUNT_LABEL",
+                        "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
                     }
                 ]
             },
@@ -42,7 +66,7 @@
                         "label": "EST_DATE_OF_DEATH_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.dateOfDeath"
                     }
-                ]    
+                ]
             },
             {
                 "header": "EST_UNREGISTERED_WILL_DETAILS_HEADER",
@@ -63,7 +87,7 @@
                         "label": "EST_SELECT_OWNER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
                     }
-                ]    
+                ]
             },
             {
                 "header": "EST_LEGAL_HEIR_DETAILS_HEADER",
@@ -84,7 +108,7 @@
                         "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased"
                     }
-                ]    
+                ]
             },
             {
                 "header": "EST_BENEFICIARY_DETAILS_HEADER",
@@ -105,7 +129,7 @@
                         "label": "EST_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased"
                     }
-                ]    
+                ]
             },
             {
                 "header": "EST_WITNESS_DETAILS_HEADER",
@@ -126,7 +150,7 @@
                         "label": "EST_MOBILE_NUMBER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone"
                     }
-                ]   
+                ]
             },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",

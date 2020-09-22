@@ -142,19 +142,18 @@ const getDetailsContainer = async (section, data_config, state) => {
 
 const expansionSection = (section) => {
   const {fields =[], path, valueJsonPath, sourceJsonPath, header} = section;
-  return {}
-  // return {
-  //   uiFramework: "custom-containers-local",
-  //   moduleName: "egov-estate",
-  //   componentPath: "ExpansionPanelContainer",
-  //   props: {
-  //     sourceJsonPath,
-  //     jsonPath: path,
-  //     valueJsonPath,
-  //     contents: fields,
-  //     header
-  //   }
-  // }
+  return {
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-estate",
+    componentPath: "ExpansionPanelContainer",
+    props: {
+      sourceJsonPath,
+      jsonPath: path,
+      valueJsonPath,
+      contents: fields,
+      header
+    }
+  }
 }
 
 export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {

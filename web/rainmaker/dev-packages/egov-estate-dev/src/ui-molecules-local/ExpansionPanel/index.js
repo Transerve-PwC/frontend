@@ -16,7 +16,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { checkValueForNA } from "egov-ui-framework/ui-config/screens/specs/utils";
 import Label from "egov-ui-framework/ui-containers/LabelContainer";
 import { get } from "lodash";
-import {ExpandLessRounded} from '@material-ui/icons';
+import {ExpandLessRounded, ExpandMoreRounded} from '@material-ui/icons';
 
 const styles = theme => ({
     root: {
@@ -31,9 +31,9 @@ const styles = theme => ({
 class ExpansionPanelMolecule extends Component {
 
     constructor(props) {
-        super(props)
+      super(props);
         this.state = {
-            open: !this.props.value
+            open: true
         }
     }
 
@@ -83,57 +83,33 @@ class ExpansionPanelMolecule extends Component {
         const {open} = this.state
         return(
             <div className={classes.root}>
-                <ExpansionPanel expanded={!!open}>
-                <ExpansionPanelSummary>
+                <ExpansionPanel expanded={!!open} onChange={this.changeExpansion}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreRounded />} >
                 <Grid xs={12} sm={12} container>
-                    <Grid xs={6} sm={8}>
-                    <div>
                         <Typography variant="headline">{header}</Typography>
-                    </div>
-                    </Grid>
-                    <Grid xs={6} sm={4} style={{textAlign: "right"}}>
-                    {!open ? (<Button
-                        variant={"contained"}
-                        color={"primary"}
-                        style={{
-                          minWidth: "200px",
-                          height: "48px"
-                        }}
-                        className="bottom-button"
-                        onClick={this.changeExpansion}
-                      >
-                        <LabelContainer
-                          labelName="Change"
-                          labelKey="Change"
-                        />
-                      </Button>) : !!this.props.value && (
-                          <ExpandLessRounded onClick={this.changeExpansion}/>
-                      )}
-                    </Grid>
                 </Grid>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
+                <Grid sm={12} xs={12} container> 
+                    {contents.map((content, index) => (
+                      <Grid content xs={4} sm={4}>
+                      <Grid xs={12} sm={12}>
+                      <Label
+                        labelKey={content.label}
+                        fontSize={14}
+                        style={{
+                          fontSize: 14,
+                          color: "rgba(0, 0, 0, 0.60"
+                        }}
+                      />
+                      </Grid>
+                      </Grid>
+                      ))
+                    }
                     {data.map((datum, index) => (
-                        <Grid sm={12} xs={12} key={index} container>
-                            <Grid content xs={2} sm={1}>
-                            <Checkbox
-                            color="primary"
-                            checked={this.props.value ===  get(datum, valueJsonPath)}
-                            onChange={this.changeValue(datum)}
-                            />
-                            </Grid>
+                      <React.Fragment>
                             {contents.map((content, ind) => (
-                                <Grid content xs={3} sm={3}>
-                                <Grid xs={12} sm={12}>
-                                <Label
-                                  labelKey={content.label}
-                                  fontSize={14}
-                                  style={{
-                                    fontSize: 14,
-                                    color: "rgba(0, 0, 0, 0.60"
-                                  }}
-                                />
-                                </Grid>
+                                <Grid content xs={4} sm={4}>
                                 <Grid xs={12} sm={12}>
                                 <Label
                                   labelKey={this.generateLabelKey(content, datum)}
@@ -147,8 +123,9 @@ class ExpansionPanelMolecule extends Component {
                                 </Grid>
                               </Grid>
                             ))}
-                        </Grid>
+                        </React.Fragment>
                     ))}
+                    </Grid>
                 </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>
