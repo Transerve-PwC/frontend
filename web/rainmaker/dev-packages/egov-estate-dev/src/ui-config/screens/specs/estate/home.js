@@ -61,6 +61,14 @@ const cardItems = [
     },
     icon: < FormIcon / > ,
     route: "/estate-citizen/property-search?type=EstateBranch_InternalServices_IssuanceOfNotice"
+  },
+  {
+    label: {
+      labelKey: "EST_ACCOUNT_STATEMENT_GENERATION_HEADER",
+      labelName: "Account Statement Generation"
+    },
+    icon: < FormIcon / > ,
+    route: "/estate-citizen/estate-search-account-statement"
   }
 ]
 
