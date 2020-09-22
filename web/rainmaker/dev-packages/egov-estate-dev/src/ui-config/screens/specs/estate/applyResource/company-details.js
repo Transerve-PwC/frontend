@@ -59,45 +59,53 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     required: true,
     type: "array",
     beforeFieldChange: (action, state, dispatch) => {
+      let screenName = "apply";
+      let companyDetailsStep = "formwizardThirdStep";
+      let ownerDetailsStep = "formwizardFourthStep";
+      if ((window.location.href.includes("allotment"))) {
+        screenName = "allotment";
+        companyDetailsStep = "formwizardThirdStepAllotment";
+        ownerDetailsStep = "formwizardFifthStepAllotment"
+      }
       let propertyPartnersItems = get(
         state.screenConfiguration.screenConfig,
-        "allotment.components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+        `${screenName}.components.div.children.${companyDetailsStep}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
       );
       let propertyOwnersItems = get(
         state.screenConfiguration.screenConfig,
-        "allotment.components.div.children.formwizardFifthStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
+        `${screenName}.components.div.children.${ownerDetailsStep}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
       );
       if (action.value == "NO") {
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForCompanyDetailsFields(true),
+          screenName,
+          getActionDefinationForCompanyDetailsFields(true, companyDetailsStep),
           dispatch
         );
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForPartnerDetailsFields(true, propertyPartnersItems.length),
+          screenName,
+          getActionDefinationForPartnerDetailsFields(true, propertyPartnersItems.length, companyDetailsStep),
           dispatch
         );
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForOwnerDetailsFields(false, propertyOwnersItems.length),
+          screenName,
+          getActionDefinationForOwnerDetailsFields(false, propertyOwnersItems.length, ownerDetailsStep),
           dispatch
         );
       }
       else {
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForCompanyDetailsFields(false),
+          screenName,
+          getActionDefinationForCompanyDetailsFields(false, companyDetailsStep),
           dispatch
         );
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForPartnerDetailsFields(false, propertyPartnersItems.length),
+          screenName,
+          getActionDefinationForPartnerDetailsFields(false, propertyPartnersItems.length, companyDetailsStep),
           dispatch
         );
         dispatchMultipleFieldChangeAction(
-          "allotment",
-          getActionDefinationForOwnerDetailsFields(true, propertyOwnersItems.length),
+          screenName,
+          getActionDefinationForOwnerDetailsFields(true, propertyOwnersItems.length, ownerDetailsStep),
           dispatch
         );
       }
@@ -409,7 +417,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
             headerName: "Partner Information",
             headerJsonPath: "children.cardContent.children.header.children.Partner Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.partners",
-            prefixSourceJsonPath: "children.cardContent.children.auctionCard.children"
+            prefixSourceJsonPath: "children.cardContent.children.partnerCard.children"
           },
           type: "array"
         }
@@ -424,78 +432,78 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     partnerDetails: partnersCotainer
   })
 
-  export const getActionDefinationForCompanyDetailsFields = (disabled = true) => {
+  export const getActionDefinationForCompanyDetailsFields = (disabled = true, stepName) => {
     const actionDefination = [{
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.CompanyShareholderNameField",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.CompanyShareholderNameField`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyAddressField",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyAddressField`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyName",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyName`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyRegNoField",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyRegNoField`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyShare",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyShare`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyTypeField",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.companyDetails.children.cardContent.children.auctionCard.children.companyTypeField`,
       property: "props.disabled",
       value: disabled
     }];
     return actionDefination;
   }
   
-  export const getActionDefinationForPartnerDetailsFields = (disabled = true, noOfItems) => {
+  export const getActionDefinationForPartnerDetailsFields = (disabled = true, noOfItems, stepName) => {
     const actionDefination = [{
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.PartnerHusbandFatherName",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.PartnerHusbandFatherName`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.PartnerName",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.PartnerName`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerAddress",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerAddress`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerCPNumber",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerCPNumber`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerMobileNumber",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerMobileNumber`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerShare",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.partnerShare`,
       property: "props.disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.relationship.props.buttons[0]",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.relationship.props.buttons[0]`,
       property: "disabled",
       value: disabled
     },
     {
-      path: "components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.relationship.props.buttons[1]",
+      path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.partnerCard.children.relationship.props.buttons[1]`,
       property: "disabled",
       value: disabled
     }
@@ -503,42 +511,42 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   
     for (var i=0; i<noOfItems; i++) {
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.PartnerHusbandFatherName`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.PartnerHusbandFatherName`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.PartnerName`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.PartnerName`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerAddress`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerAddress`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerCPNumber`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerCPNumber`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerMobileNumber`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerMobileNumber`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerShare`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.partnerShare`,
         property: "props.disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.relationship.props.buttons[0]`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.relationship.props.buttons[0]`,
         property: "disabled",
         value: disabled
       })
       actionDefination.push({
-        path: `components.div.children.formwizardThirdStepAllotment.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.relationship.props.buttons[1]`,
+        path: `components.div.children.${stepName}.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.partnerCard.children.relationship.props.buttons[1]`,
         property: "disabled",
         value: disabled
       })

@@ -5,14 +5,14 @@ import {
   stepper,
   formwizardFirstStep,
   formwizardSecondStep,
-  formwizardStepFour,
   formwizardThirdStep,
   formwizardFourthStep,
   formwizardFifthStep,
   formwizardSixthStep,
   formwizardSeventhStep,
-  formwizardStepEight,
-  formwizardEighthStep
+  formwizardEighthStep,
+  formwizardNinthStep,
+  formwizardTenthStep
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -130,7 +130,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardSeventhStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -196,7 +196,7 @@ const getCompanyDocs = (state, dispatch) => {
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardStepEight.children.companyDocuments_0.children.cardContent.children.documentList`,
+      `components.div.children.formwizardNinthStep.children.companyDocuments_0.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -281,13 +281,13 @@ const applyEstate = {
         formwizardFirstStep,
         formwizardSecondStep,
         formwizardThirdStep,
-        formwizardStepFour,
         formwizardFourthStep,
         formwizardFifthStep,
         formwizardSixthStep,
         formwizardSeventhStep,
-        formwizardStepEight,
         formwizardEighthStep,
+        formwizardNinthStep,
+        formwizardTenthStep,
         footer
       }
     }

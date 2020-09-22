@@ -175,18 +175,6 @@ export const formwizardThirdStep = {
     id: "apply_form3"
   },
   children: {
-    ownerDetails
-  },
-  visible: false
-};
-
-export const formwizardStepFour = {
-  uiFramework: "custom-atoms",
-  componentPath: "Form",
-  props: {
-    id: "apply_4form"
-  },
-  children: {
     CompanyDetails
   },
   visible: false
@@ -199,7 +187,7 @@ export const formwizardFourthStep = {
     id: "apply_form4"
   },
   children: {
-    purchaserDetails
+    ownerDetails
   },
   visible: false
 };
@@ -211,7 +199,7 @@ export const formwizardFifthStep = {
     id: "apply_form5"
   },
   children: {
-    courtCaseDetails
+    purchaserDetails
   },
   visible: false
 };
@@ -223,9 +211,7 @@ export const formwizardSixthStep = {
     id: "apply_form6"
   },
   children: {
-    groundRentDetails_0,
-    serviceTaxDetails_0,
-    paymentMadeBy_0
+    courtCaseDetails
   },
   visible: false
 };
@@ -237,19 +223,9 @@ export const formwizardSeventhStep = {
     id: "apply_form7"
   },
   children: {
-    ownerDocumentDetails_0
-  },
-  visible: false
-}
-
-export const formwizardStepEight = {
-  uiFramework: "custom-atoms",
-  componentPath: "Form",
-  props: {
-    id: "apply_form8a"
-  },
-  children: {
-    companyDocuments_0
+    groundRentDetails_0,
+    serviceTaxDetails_0,
+    paymentMadeBy_0
   },
   visible: false
 }
@@ -259,6 +235,30 @@ export const formwizardEighthStep = {
   componentPath: "Form",
   props: {
     id: "apply_form8"
+  },
+  children: {
+    ownerDocumentDetails_0
+  },
+  visible: false
+}
+
+export const formwizardNinthStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form9"
+  },
+  children: {
+    companyDocuments_0
+  },
+  visible: false
+}
+
+export const formwizardTenthStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form10"
   },
   children: {
     reviewDetails
