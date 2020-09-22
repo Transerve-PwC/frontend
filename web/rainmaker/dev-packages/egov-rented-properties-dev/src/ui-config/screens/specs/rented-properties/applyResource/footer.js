@@ -367,7 +367,7 @@ dispatch(toggleSnackbar(true, errorMessage, "warning"));
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
-
+  let imageupload= true;
   let isFormValid = true;
   let propertyIdTransit = getQueryArg(window.location.href, "propertyIdTransit");
 
@@ -384,8 +384,15 @@ const isRentHolderValid = validateFields(
   dispatch,
   "notice-violation"
 )
+const images=get(
+  state, 'form.newapplication.files.media', []
+)
+console.log(images)
+if(images.length===0){
+  imageupload=false
+}
 let res = [];
-if(isOwnerDetailsValid && isRentHolderValid) {
+if(isOwnerDetailsValid && isRentHolderValid && !!imageupload) {
   res = await applynoticegeneration(state, dispatch, "Violation",propertyIdTransit)
   if(!res) {
    return
@@ -408,7 +415,7 @@ if (!isFormValid) {
   let errorMessage = {
     labelName:
         "Please fill all mandatory fields, then do next !",
-    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+    labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -1343,9 +1350,9 @@ export const footer = getCommonApplyFooter({
     return {
       rightdiv: {
         uiFramework: "custom-atoms",
-        componentPath: "Container",
+        componentPath: "Div",
         props: {
-          style: { justifyContent: "flex-end", marginTop: 10 }
+          style: { textAlign: "right", display: "flex" }
         },
         children: {
           downloadMenu: {
@@ -1357,7 +1364,7 @@ export const footer = getCommonApplyFooter({
                 label: {labelName : "DOWNLOAD" , labelKey :"RP_DOWNLOAD"},
                  leftIcon: "cloud_download",
                 rightIcon: "arrow_drop_down",
-                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-download-button" },
+                props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" ,marginRight: "10px"}, className: "tl-download-button" },
                 menu: downloadMenu
               }
             }

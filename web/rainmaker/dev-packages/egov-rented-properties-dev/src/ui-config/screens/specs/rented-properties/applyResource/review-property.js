@@ -670,35 +670,35 @@ export const getReviewGrantDetails = () => {
                 nameOfTheBank: getLabelWithValue(
                     {
                         labelName: "Name of the bank (Text field)",
-                        labelKey: "RP_WF_BANK_NAME"
+                        labelKey: "WF_BANK_NAME"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].bankName" }
                 ),
                 mortageAmount: getLabelWithValue(
                     {
                         labelName: "Enter mortgage amount",
-                        labelKey: "RP_WF_MORTAGE_AMOUNT"
+                        labelKey: "WF_MORTAGE_AMOUNT"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].mortgageAmount" }
                 ),
                 sanctionLetterNo: getLabelWithValue(
                     {
                         labelName: "Sanction letter number",
-                        labelKey: "RP_WF_SANCTION_LETTER_LABEL"
+                        labelKey: "WF_SANCTION_LETTER_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].sanctionLetterNumber" }
                 ),
                 mortageEndDate: getLabelWithValue(
                     {
                         labelName: "Mortgage end date ",
-                        labelKey: "RP_WF_MORTAGAGEEND_DATE_LABEL"
+                        labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].mortgageEndDate" , callBack: convertEpochToDate}
                 ),
                 sanctioningDate: getLabelWithValue(
                     {
                         labelName: "Date of sanctioning",
-                        labelKey: "RP_WF_SANCTIONING_DATE_LABEL"
+                        labelKey: "WF_SANCTIONING_DATE_LABEL"
                     },
                     { jsonPath: "Properties[0].grantDetails[0].sanctionDate" , callBack: convertEpochToDate}
                 ),

@@ -46,83 +46,83 @@ const fieldConfig = {
   approverName: {
     label: {
       labelName: "Assignee Name",
-      labelKey: "RP_WF_ASSIGNEE_NAME_LABEL"
+      labelKey: "WF_ASSIGNEE_NAME_LABEL"
     },
     placeholder: {
       labelName: "Select assignee Name",
-      labelKey: "RP_WF_ASSIGNEE_NAME_PLACEHOLDER"
+      labelKey: "WF_ASSIGNEE_NAME_PLACEHOLDER"
     }
   },
   comments: {
     label: {
       labelName: "Comments",
-      labelKey: "RP_WF_COMMON_COMMENTS"
+      labelKey: "WF_COMMON_COMMENTS"
     },
     placeholder: {
       labelName: "Enter Comments",
-      labelKey: "RP_WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
+      labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
     }
   },
   applicationCharges: {
     label: {
       labelName: "Application Charges",
-      labelKey: "RP_WF_APPLICATION_CHARGES"
+      labelKey: "WF_APPLICATION_CHARGES"
     },
     placeholder: {
       labelName: "Enter Application Charges",
-      labelKey: "RP_WF_APPLICATION_CHARGES_PLACEHOLDER"
+      labelKey: "WF_APPLICATION_CHARGES_PLACEHOLDER"
     }
   },
   duplicateCopyCharges: {
     label: {
       labelName: "Duplicate Copy Charges",
-      labelKey: "RP_WF_DUPLICATE_COPY_CHARGES"
+      labelKey: "WF_DUPLICATE_COPY_CHARGES"
     },
     placeholder: {
       labelName: "Enter Duplicate Copy Charges",
-      labelKey: "RP_WF_DUPLICATE_COPY_CHARGES_PLACEHOLDER"
+      labelKey: "WF_DUPLICATE_COPY_CHARGES_PLACEHOLDER"
     }
   },
   publicationCharges: {
     label: {
       labelName: "Publication Charges",
-      labelKey: "RP_WF_PUBLICATION_CHARGES"
+      labelKey: "WF_PUBLICATION_CHARGES"
     },
     placeholder: {
       labelName: "Enter Publication Charges",
-      labelKey: "RP_WF_PUBLICATION_CHARGES_PLACEHOLDER"
+      labelKey: "WF_PUBLICATION_CHARGES_PLACEHOLDER"
     }
   },
   nameOfTheBank:{
     label: {
       labelName: "Name of the bank (Text field)",
-      labelKey: "RP_WF_BANK_NAME"
+      labelKey: "WF_BANK_NAME"
     },
     placeholder: {
       labelName: "Enter Bank Name",
-      labelKey: "RP_WF_BANK_NAME_PLACEHOLDER"
+      labelKey: "WF_BANK_NAME_PLACEHOLDER"
     },
     required: true
   },
   mortageAmount:{
     label: {
       labelName: "Enter mortgage amount",
-      labelKey: "RP_WF_MORTAGE_AMOUNT"
+      labelKey: "WF_MORTAGE_AMOUNT"
     },
     placeholder: {
       labelName: "Enter mortgage amount",
-      labelKey: "RP_WF_MORTAGE_AMOUNT"
+      labelKey: "WF_MORTAGE_AMOUNT"
     },
     required: true,
   },
   sanctionLetterNo:{
     label: {
       labelName: "Sanction letter number",
-      labelKey: "RP_WF_SANCTION_LETTER_LABEL"
+      labelKey: "WF_SANCTION_LETTER_LABEL"
     },
     placeholder: {
       labelName: "Enter Sanction letter number",
-      labelKey: "RP_WF_SANCTION_LETTER_PLACEHOLDER"
+      labelKey: "WF_SANCTION_LETTER_PLACEHOLDER"
     },
     required: true,
   },
@@ -130,22 +130,22 @@ const fieldConfig = {
     datepicker: true,
     label: {
       labelName: "Mortgage end date ",
-      labelKey: "RP_WF_MORTAGAGEEND_DATE_LABEL"
+      labelKey: "WF_MORTAGAGEEND_DATE_LABEL"
     },
     placeholder: {
       labelName: "Enter Mortgage end date",
-      labelKey: "RP_WF_MORTAGAGEEND_DATE_PLACEHOLDER"
+      labelKey: "WF_MORTAGAGEEND_DATE_PLACEHOLDER"
     },
     required: true
   },
   sanctioningDate:{
     label: {
       labelName: "Date of sanctioning",
-      labelKey: "RP_WF_SANCTIONING_DATE_LABEL"
+      labelKey: "WF_SANCTIONING_DATE_LABEL"
     },
     placeholder: {
       labelName: "Enter Date of sanctioning",
-      labelKey: "RP_WF_SANCTIONING_DATE_PLACEHOLDER"
+      labelKey: "WF_SANCTIONING_DATE_PLACEHOLDER"
     },
     required: true
   }

@@ -9,7 +9,7 @@ import { getTextField, getCommonContainer, getCommonHeader, getLabel, getPattern
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 
 
-const APPLICATION_TYPE = getLocaleLabels("Application Type","TL_COMMON_TABLE_COL_APP_TYPE")
+const APPLICATION_TYPE = getLocaleLabels("Application Type","TL_TABLE_COL_APP_TYPE")
 const FEE_TYPE = getLocaleLabels("Fee Type", "TL_COMMON_TABLE_COL_FEE_TYPE")
 const FROM_UOM = getLocaleLabels("From UOM", "TL_COMMON_TABLE_COL_FROM_UOM")
 const TO_UOM = getLocaleLabels("To UOM", "TL_COMMON_TABLE_COL_TO_UOM")

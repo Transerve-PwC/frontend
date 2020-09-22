@@ -48,7 +48,7 @@ const header = getCommonHeader(
   },
   {
     label: {
-        labelKey: "MORTAGE_HEADER",
+        labelKey: "RP_MORTAGE_HEADER",
         labelName: "Mortgage"
     },
     icon: <FormIcon />,

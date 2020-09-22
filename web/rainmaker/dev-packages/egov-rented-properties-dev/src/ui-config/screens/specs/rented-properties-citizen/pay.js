@@ -19,7 +19,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
   const header = getCommonContainer({
     header: getCommonHeader({
       labelName: "Application for Ownership Transfer",
-      labelKey: "COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+      labelKey: "RP_COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
     }),
     applicationNumber: {
       uiFramework: "custom-atoms-local",
@@ -61,7 +61,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
           sourceJsonPath = "OwnersTemp[0].estimateCardData"
           header = getCommonHeader({
             labelName: "Application for Ownership Transfer",
-            labelKey: "COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+            labelKey: "RP_COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
           })
           break
         }
@@ -69,7 +69,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
           sourceJsonPath = "DuplicateTemp[0].estimateCardData"
           header = getCommonHeader({
             labelName: "Application for Ownership Transfer",
-            labelKey: "COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+            labelKey: "RP_COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
           })
           break
         }
@@ -79,7 +79,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
           sourceJsonPath = "PropertiesTemp[0].estimateCardData"
           header = getCommonHeader({
             labelName: "Online Rent Payment",
-            labelKey: "COMMON_PAY_ONLINE_RENT_SCREEN_HEADER"
+            labelKey: "RP_COMMON_PAY_ONLINE_RENT_SCREEN_HEADER"
           })
           consumerCode = consumerCode.split("-")[1]
           break
