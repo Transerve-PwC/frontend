@@ -146,45 +146,57 @@ const categoryField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
-        let screenKeys = ["apply", "allotment"];
+        let screenName = "apply";
+        let step = "formwizardFirstStep";
+        
+        if ((window.location.href).includes("allotment")) {
+            screenName = "allotment";
+            step = "formwizardFirstStepAllotment";
+        }
 
-        screenKeys.map(item => {
-            let step = item == "apply" ? "formwizardFirstStep" : "formwizardFirstStepAllotment";
-            if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
-                dispatch(
-                    handleField(
-                        item,
-                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
-                        "visible",
-                        true
-                    )
-                );
-
-                const categories = get(
-                    state.screenConfiguration.preparedFinalObject,
-                    "applyScreenMdmsData.EstatePropertyService.categories"
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                "props.value",
+                ""
+            )
+        )
+        
+        if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
+            dispatch(
+                handleField(
+                    screenName,
+                    `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                    "visible",
+                    true
                 )
+            );
 
-                const filteredCategory = categories.filter(item => item.code === action.value)
-                dispatch(
-                    handleField(
-                        item,
-                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
-                        "props.data",
-                        filteredCategory[0].SubCategory
-                    )
+            const categories = get(
+                state.screenConfiguration.preparedFinalObject,
+                "applyScreenMdmsData.EstatePropertyService.categories"
+            )
+
+            const filteredCategory = categories.filter(item => item.code === action.value)
+            dispatch(
+                handleField(
+                    screenName,
+                    `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                    "props.data",
+                    filteredCategory[0].SubCategory
                 )
-            } else {
-                dispatch(
-                    handleField(
-                        item,
-                        `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
-                        "visible",
-                        false
-                    )
-                );
-            }
-        })
+            )
+        } else {
+            dispatch(
+                handleField(
+                    screenName,
+                    `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                    "visible",
+                    false
+                )
+            );
+        }
     }
 }
 
