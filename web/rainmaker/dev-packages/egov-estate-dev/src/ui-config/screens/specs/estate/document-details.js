@@ -104,7 +104,7 @@ const DocumentReviewDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 4,
+              activeIndex: 5,
               onTabChange
             },
             type: "array",

@@ -1177,11 +1177,11 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       ),
       emdAmountDate: getLabelWithValue(
         {
-          labelName: "EMD Amount Date",
-          labelKey: "EST_EMD_AMOUNT_DATE_LABEL"
+          labelName: "EMD Date",
+          labelKey: "EST_EMD_DATE_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.emdAmountDate`
+          jsonPath: `Properties[0].propertyDetails.emdDate`
         }
       )
     })

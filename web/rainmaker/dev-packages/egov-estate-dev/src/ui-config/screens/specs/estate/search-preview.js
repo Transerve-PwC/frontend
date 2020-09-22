@@ -25,7 +25,7 @@ export const headerrow = getCommonContainer({
     labelKey: "ESTATE_COMMON_ESTATE"
   })
 });
-const reviewAuctionDetails = getReviewAuction(false);
+// const reviewAuctionDetails = getReviewAuction(false);
 const reviewPropertyDetails = getPropertyDetails(false);
 const reviewAllotmentDetails = getAllotmentDetails(false);
 const additionalDetails = getAdditionalDetails(false)
@@ -33,7 +33,7 @@ const additionalDetails = getAdditionalDetails(false)
 
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
-  reviewAuctionDetails,
+  // reviewAuctionDetails,
   reviewAllotmentDetails,
   additionalDetails
 });
@@ -82,21 +82,24 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
         path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 1:
-        path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/auction-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 2:
-        path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 3:
-        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 4:
-        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 5:
-        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 6:
+        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+        break
+      case 7:
         path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
 
@@ -107,6 +110,9 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
 export const tabs = [
   {
     tabButton: { labelName: "Property Details", labelKey: "ESTATE_PROPERTY_DETAILS" },
+  },
+  {
+    tabButton: { labelName: "Auction Details", labelKey: "ESTATE_AUCTION_DETAILS" },
   },
   {
     tabButton: { labelName: "Owner Details", labelKey: "ESTATE_OWNER_DETAILS" },

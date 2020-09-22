@@ -111,7 +111,7 @@ const EstatePaymentDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 3,
+              activeIndex: 4,
               onTabChange
             },
             type: "array",

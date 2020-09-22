@@ -15,6 +15,10 @@ const allocationTypeLabel = {
   labelName: "Type of Allocation",
   labelKey: "EST_ALLOCATION_TYPE_LABEL"
 }
+const auctionIdLabel = {
+  labelName: "Auction Id",
+  labelKey: "EST_AUCTION_ID_LABEL"
+}
 const modeOfAuctionLabel = {
   labelName: "Mode Of Auction",
   labelKey: "EST_MODE_OF_AUCTION_LABEL"
@@ -26,6 +30,14 @@ const schemeNameLabel = {
 const dateOfAuctionLabel = {
   labelName: "Date of Auction",
   labelKey: "EST_DATE_OF_AUCTION_LABEL"
+}
+const emdAmountLabel = {
+  labelName: "EMD Amount",
+  labelKey: "EST_EMD_AMOUNT_LABEL"
+}
+const emdDateLabel = {
+  labelName: "EMD Date",
+  labelKey: "EST_EMD_DATE_LABEL"
 }
 const dateOfAllotmentLabel = {
   labelName: "Date of Allotment",
@@ -211,6 +223,11 @@ export const getPropertyDetails = (isEditable = true) => {
         }
       },
       viewFour: getCommonContainer({
+        auctionId: getLabelWithValue(
+          auctionIdLabel, {
+            jsonPath: `Properties[0].propertyDetails.auctionId`
+          }
+        ),
         modeOfAuction: getLabelWithValue(
           modeOfAuctionLabel, {
             jsonPath: "Properties[0].propertyDetails.modeOfAuction"
@@ -223,9 +240,21 @@ export const getPropertyDetails = (isEditable = true) => {
         ),
         dateOfAuction: getLabelWithValue(
           dateOfAuctionLabel, {
-            jsonPath: "Properties[0].propertyDetails.dateOfAuction"
+            jsonPath: "Properties[0].propertyDetails.dateOfAuction",
+            callBack: convertEpochToDate
           }
-        )
+        ),
+        emdAmount: getLabelWithValue(
+          emdAmountLabel, {
+            jsonPath: `Properties[0].propertyDetails.emdAmount`,
+          }
+        ),
+        emdDate: getLabelWithValue(
+          emdDateLabel, {
+            jsonPath: "Properties[0].propertyDetails.emdDate",
+            callBack: convertEpochToDate
+          }
+        ),
       })
     })
   }

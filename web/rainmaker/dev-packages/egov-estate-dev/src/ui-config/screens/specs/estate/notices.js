@@ -93,7 +93,7 @@ const EstateNotices = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 5,
+              activeIndex: 6,
               onTabChange
             },
             type: "array",
