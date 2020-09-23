@@ -89,7 +89,6 @@
                         "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
                     },
-                    
                     {
                         "label": "EST_PERCENTAGE_SHARED_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"

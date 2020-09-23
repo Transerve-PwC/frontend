@@ -386,8 +386,8 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
-                "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
+                "label": "EST_SELECT_SELLER_OR_TRANSFEROR_LABEL",
+                "placeholder": "EST_SELECT_SELLER_OR_TRANSFEROR_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferor.id",
                 "path": "transferor.id",

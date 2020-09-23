@@ -44,36 +44,60 @@
                 ]
             },
             {
-                "header": "EST_NOC_DETAILS_HEADER",
+                "header": "EST_OWNER_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_SELECT_OWNER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
-                    },
-                    {
-                        "label": "EST_NOC_IN_FAVOUR_OF_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.nocInFavour"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
                     },
                     {
                         "label": "EST_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
                     },
                     {
                         "label": "EST_OWNER_SHARE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.share"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                    }
+                ]
+            },
+            {
+                "header": "EST_PURCHASER_DETAILS_HEADER",
+                "step": 0,
+                "fields": [
+                    {
+                        "label": "EST_PURCHASER_TRANSFEREE_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.name"
+                    },
+                    {
+                        "label": "EST_PURCHASER_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
+                    },
+                    {
+                        "label": "EST_RELATION_SHIP_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.relation"
+                    },
+                    {
+                        "label": "EST_PURCHASER_TRANSFEREE_ADDRESS_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
+                    },
+                    {
+                        "label": "EST_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
                     }
                 ]
             },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "step": 1,
                 "type": "DOCUMENTS",
                 "sourceJsonPath": "temp[0].reviewDocData"
             }

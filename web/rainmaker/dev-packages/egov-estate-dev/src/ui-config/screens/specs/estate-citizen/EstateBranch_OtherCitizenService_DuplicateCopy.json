@@ -3,6 +3,24 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OtherCitizenService_DuplicateCopy": [
     {
+      "dataSources": [
+        {
+          "name": "typeOfLetter",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "typeOfLetter"
+          }
+        },
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "label": "ownerDetails.ownerName"
+        }
+      ],
       "fields": [
         {
           "path": "owner",
@@ -19,6 +37,20 @@
           "validations": [
             {
               "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "typeOfLetter",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "typeOfLetter",
+                "filter": "typeOfLetter..code"
+              }
             }
           ]
         },
@@ -210,55 +242,47 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_OWNERS_LABEL",
-                "placeholder": "EST_OWNERS_PLACEHOLDER",
+                "label": "EST_SELECT_OWNERS_LABEL",
+                "placeholder": "EST_SELECT_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.owners",
-                "path": "owners"
-              },
-              {
-                "label": "EST_OWNER_NAME_LABEL",
-                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.name",
-                "path": "duplicate.name"
+                "jsonPath": "Applications[0].applicationDetails.owner",
+                "path": "owner",
+                "dataSource": "owners"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.fatherOrHusbandName",
-                "path": "duplicate.fatherOrHusbandName"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName",
+                "disabled": true
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.address",
-                "path": "duplicate.address"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address",
+                "disabled": true
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.mobileNo",
-                "path": "duplicate.mobileNo",
-                "pattern": "MobileNo"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
+                "disabled": true
               },
               {
                 "label": "EST_SHARE_LABEL",
                 "placeholder": "EST_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.percentageOfShareTransferred",
-                "path": "duplicate.percentageOfShareTransferred",
-                "pattern": "Amount"
+                "jsonPath": "Applications[0].applicationDetails.owner.share",
+                "disabled": true
               },
               {
                 "label": "EST_CP_NUMBER_LABEL",
                 "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.cpnumber",
-                "path": "cpnumber"
+                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber",
+                "disabled": true
               }
             ]
           },
@@ -270,8 +294,9 @@
                 "label": "EST_TYPE_OF_LETTER_LABEL",
                 "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.typeofletters",
-                "path": "typeofletters"
+                "jsonPath": "Applications[0].applicationDetails.typeOfLetter",
+                "path": "typeOfLetter",
+                "dataSource": "typeOfLetter"
               }
             ]
           }
