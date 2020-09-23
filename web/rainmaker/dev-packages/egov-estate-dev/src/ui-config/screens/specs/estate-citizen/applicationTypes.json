@@ -1,0 +1,111 @@
+{
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "ApplicationTypes": [
+        {
+            "name": "Ownership Transfer",
+            "code": "EST_OWNERSHIP_TRANSFER",
+            "active": true,
+            "SubTypes": [
+                {
+                    "name": "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
+                    "type": "EstateBranch_OwnershipTransfer_SaleDeed",
+                    "active": true
+                },
+                {
+                    "name": "Transfer of Ownership on the basis of Registered Will",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_WILL",
+                    "type": "EstateBranch_OwnershipTransfer_RegisteredWill",
+                    "active": true
+                },
+                {
+                    "name": "Transfer of Ownership on the basis of Un-registered Will",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_UNREGISTERED_WILL",
+                    "type": "EstateBranch_OwnershipTransfer_UnRegisteredWill",
+                    "active": true
+                },
+                {
+                    "name": "Transfer of Ownership on the basis of Registered Will",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_INTESTATE_DEATH",
+                    "type": "EstateBranch_OwnershipTransfer_InstestateDeath",
+                    "active": true
+                },
+                {
+                    "name": "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_PARTNERSHIP_DEED",
+                    "type": "EstateBranch_OwnershipTransfer_PatnershipDeed",
+                    "active": true
+                },
+                {
+                    "name": "Transfer of Ownership on the basis of Court Decree/Family Settlement",
+                    "code": "EST_TRANSFER_OF_OWNERSHIP_COURT_DECREE",
+                    "type": "EstateBranch_OwnershipTransfer_FamilySettlement",
+                    "active": true
+                }
+            ]
+        },
+        {
+            "name": "No Objection/ No Due Certificate",
+            "code": "EST_NO_OBJECTION_NO_DUE_CERTIFICATE",
+            "active": true,
+            "SubTypes": [
+                {
+                    "name": "No Objection Certificate for Transfer of Lease Rights by way of Sale/Gift/Family Transfer Deed/Exchange Deed",
+                    "code": "EST_NO_OBJECTION_CERTIFICATE",
+                    "type": "EstateBranch_OtherCitizenService_NOC",
+                    "active": true
+                },
+                {
+                    "name": "No Dues Certificate",
+                    "code": "EST_NO_DUES_CERTIFICATE",
+                    "type": "EstateBranch_OtherCitizenService_NDC",
+                    "active": true
+                }
+            ]
+        },
+        {
+            "name": "Conversion of Property",
+            "code": "EST_CONVERSION_OF_PROPERTY",
+            "active": true,
+            "SubTypes": [
+                {
+                    "name": "Conversion of Property from residential to Commercial (SCF to SCO)",
+                    "code": "EST_CONVERSION_OF_PROPERTY_RES_TO_COMM",
+                    "type": "EstateBranch_OtherCitizenService_ScfToSco",
+                    "active": true
+                },
+                {
+                    "name": "Conversion from Leasehold to Freehold Property",
+                    "code": "EST_CONVERSION_FROM_LEASEHOLD_TO_FREEHOLD",
+                    "type": "EstateBranch_OtherCitizenService_LeaseholdToFreehold",
+                    "active": true
+                }
+            ]
+        },
+        {
+            "name": "Duplicate Allotment Letter/Possession Letter",
+            "code": "EST_DUPLICATE_ALLOTMENT_POSSESSION_LETTER",
+            "type": "EstateBranch_OtherCitizenService_DuplicateCopy",
+            "active": true
+        },
+        {
+            "name": "Execution of Lease Deed/Deed of Conveyance",
+            "code": "EST_EXECUTION_OF_LEASE_DEED",
+            "type": "EstateBranch_OtherCitizenService_LeaseDeed",
+            "active": true
+        },
+        {
+            "name": "Permission to Mortgage",
+            "code": "EST_PERMISSION_TO_MORTGAGE",
+            "type": "EstateBranch_OtherCitizenService_Mortgage",
+            "active": true
+        },
+        {
+            "name": "Change of Trade",
+            "code": "EST_CHANGE_OF_TRADE",
+            "type": "EstateBranch_OtherCitizenService_ChangeInTrade",
+            "active": true
+        }
+    ]
+  }

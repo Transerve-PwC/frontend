@@ -1,51 +1,37 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OtherCitizen_Mortgage": [
+  "EstateBranch_OtherCitizenService_Mortgage": [
     {
+      "dataSources": [
+        {
+          "name": "typesOfMortgage",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "PermissionToMortagage"
+          }
+        },
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "label": "ownerDetails.ownerName"
+        }
+      ],
       "fields": [
         {
-          "path": "modeOfTransfer",
+          "path": "mortgageType",
           "required": true,
           "validations": [
             {
               "type": "mdms",
               "params": {
                 "moduleName": "EstatePropertyService",
-                "masterName": "modeOfTransfer",
-                "filter": "modeOfTransfer..code"
-              }
-            }
-          ]
-        },
-        {
-          "path": "registrationNumber",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 100
-              }
-            }
-          ]
-        },
-        {
-          "path": "dateOfRegistration",
-          "required": false,
-          "validations": [
-            {
-              "type": "date-range",
-              "params": {
-                "start": {
-                  "unit": "year",
-                  "value": -40
-                },
-                "end": {
-                  "unit": "second",
-                  "value": 0
-                }
+                "masterName": "permissionToMortagage",
+                "filter": "permissionToMortagage..code"
               }
             }
           ]
@@ -69,8 +55,62 @@
           ]
         },
         {
-          "path": "purchaser",
+          "path": "bankName",
           "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "reasonForMortgage",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "loanAmount",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            }
+          ]
+        },
+        {
+          "path": "documentsReceivedDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -1
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
           "validations": [
             {
               "type": "object"
@@ -78,80 +118,92 @@
           ]
         },
         {
-          "path": "purchaser.name",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.fatherOrHusbandName",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.relation",
-          "required": true,
-          "validations": [
-            {
-              "type": "enum",
-              "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.address",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.mobileNo",
+          "path": "courtCases.estateOfficerCourt",
           "required": false,
           "validations": [
             {
-              "type": "phonenumber"
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
             }
           ]
         },
         {
-          "path": "purchaser.percentageOfShareTransferred",
-          "required": true,
+          "path": "courtCases.commissionersCourt",
+          "required": false,
           "validations": [
             {
-              "type": "numeric"
-            },
-            {
-              "type": "minmax",
+              "type": "length",
               "params": {
                 "min": 0,
-                "max": 100
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
               }
             }
           ]
@@ -225,92 +277,81 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_SELECT_OWNER_LABEL",
-                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
-                "required": false,
+                "label": "EST_SELECT_TYPE_OF_MORTGAGE_LABEL",
+                "placeholder": "EST_SELECT_TYPE_OF_MORTGAGE_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
+                "jsonPath": "Applications[0].applicationDetails.mortgageType",
+                "path": "mortgageType",
+                "dataSource": "typesOfMortgage"
               },
               {
-                "label": "EST_OWNER_NAME_LABEL",
-                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
+                "label": "EST_SELECT_OWNER_LABEL",
+                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.owner",
+                "path": "owner",
+                "dataSource": "owners"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.fatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.address",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
               },
               {
                 "label": "EST_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
-                "required": false,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
-                "path": "ownerDetails.phone"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
                 "placeholder": "EST_OWNER_SHARE_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.share",
-                "jsonPath": "Applications[0].applicationDetails.share"
+                "jsonPath": "Applications[0].applicationDetails.owner.share"
               },
               {
                 "label": "EST_CP_NUMBER_LABEL",
                 "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
-                "required": false,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.cpNumber",
-                "jsonPath": "Applications[0].applicationDetails.cpNumber"
+                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
               }
             ]
           },
           {
             "header": "EST_LOAN_DETAILS_HEADER",
             "type": "FORM",
-            "path": "Applications[0].owner.id",
-            "valueJsonPath": "ownerDetails.ownerId",
-            "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
                 "label": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
                 "placeholder": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
-                "required": false,
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.nameOfBankOrFinancialInstitution",
-                "path": "ownerDetails.nameOfBankOrFinancialInstitution"
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.bankName",
+                "path": "bankName"
               },
               {
                 "label": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
                 "placeholder": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.purposeOfMortgageOrLoan",
-                "path": "ownerDetails.purposeOfMortgageOrLoan"
+                "jsonPath": "Applications[0].applicationDetails.reasonForMortgage",
+                "path": "reasonForMortgage"
               },
               {
                 "label": "EST_LOAN_AMOUNT_LABEL",
                 "placeholder": "EST_LOAN_AMOUNT_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.loanAmount",
+                "path": "loanAmount",
                 "jsonPath": "Applications[0].applicationDetails.loanAmount"
               }
             ]

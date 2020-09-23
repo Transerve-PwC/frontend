@@ -1,7 +1,7 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OtherCitizen_NOC": [
+  "EstateBranch_OtherCitizenService_NOC": [
     {
       "fields": [
         {

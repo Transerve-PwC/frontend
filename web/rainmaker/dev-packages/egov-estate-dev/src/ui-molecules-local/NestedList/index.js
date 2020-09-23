@@ -51,8 +51,7 @@ class NestedList extends Component {
         const {
             setRoute
           } = this.props;
-        const propertyId = getQueryArg(window.location.href, "propertyId")
-        setRoute(datum.route + `&propertyId=${propertyId}`);
+        setRoute(datum.route);
     }
 
     render() {
@@ -62,25 +61,25 @@ class NestedList extends Component {
                 <List>
                     {items.map((item, index) => (
                         <div className={classes.root}>
-                            <ListItem className={classes.listItem} button onClick={this.handleClick(index)}>
+                            <ListItem className={classes.listItem} button onClick={!!item.type ? this.goToScreen(item) : this.handleClick(index)}>
                                 <LabelContainer
-                                    labelKey={item.label.labelKey}
-                                    labelName={item.label.labelName}
+                                    labelKey={item.code}
+                                    labelName={item.name}
                                     style={{
                                         fontSize: 14,
                                         color: "rgba(0, 0, 0, 0.8700000047683716)"
                                     }}
                                 />
-                                <div style= {{textAlign: "right"}}>
+                                {!!item.SubTypes && !!item.SubTypes.length && (<div style= {{textAlign: "right"}}>
                                 {this.state.open === index ? <ExpandLess /> : <ExpandMore />}
-                                </div>
+                                </div>)}
                             </ListItem>
-                            <Collapse in={this.state.open === index} timeout="auto" unmountOnExit>
+                            {!!item.SubTypes && !!item.SubTypes.length && (<Collapse in={this.state.open === index} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                {item.list.map((datum) => (<ListItem button className={classes.nested} onClick={this.goToScreen(datum)}>
+                                {item.SubTypes.map((datum) => (<ListItem button className={classes.nested} onClick={this.goToScreen(datum)}>
                                     <LabelContainer
-                                    labelKey={datum.label.labelKey}
-                                    labelName={datum.label.labelName}
+                                    labelKey={datum.code}
+                                    labelName={datum.name}
                                     style={{
                                         fontSize: 14,
                                         color: "rgba(0, 0, 0, 0.8700000047683716)"
@@ -88,7 +87,7 @@ class NestedList extends Component {
                                     />
                                 </ListItem>))}
                                 </List>
-                            </Collapse>
+                            </Collapse>)}
                         </div>
                     ))}
                 </List>    
