@@ -1,90 +1,38 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OtherCitizen_ScfToSco": [
+  "EstateBranch_OtherCitizenService_NDC": [
     {
       "fields": [
         {
-          "path": "transferor",
+          "path": "modeOfTransfer",
           "required": true,
           "validations": [
             {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "transferor.id",
-          "required": true,
-          "validations": [
-            {
-              "type": "owner"
-            }
-          ]
-        },
-        {
-          "path": "company",
-          "required": true,
-          "validations": [
-            {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "company.name",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
+              "type": "mdms",
               "params": {
-                "min": 5,
-                "max": 150
+                "moduleName": "EstatePropertyService",
+                "masterName": "modeOfTransfer",
+                "filter": "modeOfTransfer..code"
               }
             }
           ]
         },
         {
-          "path": "company.address",
-          "required": true,
+          "path": "registrationNumber",
+          "required": false,
           "validations": [
             {
               "type": "length",
               "params": {
-                "min": 5,
-                "max": 150
+                "min": 0,
+                "max": 100
               }
             }
           ]
         },
         {
-          "path": "company.registrationNumber",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 50
-              }
-            }
-          ]
-        },
-        {
-          "path": "company.type",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 50
-              }
-            }
-          ]
-        },
-        {
-          "path": "documentsReceivedDate",
+          "path": "dateOfRegistration",
           "required": false,
           "validations": [
             {
@@ -92,7 +40,7 @@
               "params": {
                 "start": {
                   "unit": "year",
-                  "value": -1
+                  "value": -40
                 },
                 "end": {
                   "unit": "second",
@@ -103,8 +51,8 @@
           ]
         },
         {
-          "path": "courtCases",
-          "required": false,
+          "path": "owner",
+          "required": true,
           "validations": [
             {
               "type": "object"
@@ -112,92 +60,98 @@
           ]
         },
         {
-          "path": "courtCases.estateOfficerCourt",
-          "required": false,
+          "path": "owner.id",
+          "required": true,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "purchaser",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "purchaser.name",
+          "required": true,
           "validations": [
             {
               "type": "length",
               "params": {
-                "min": 0,
-                "max": 250
+                "min": 5,
+                "max": 150
               }
             }
           ]
         },
         {
-          "path": "courtCases.commissionersCourt",
-          "required": false,
+          "path": "purchaser.fatherOrHusbandName",
+          "required": true,
           "validations": [
             {
               "type": "length",
               "params": {
-                "min": 0,
-                "max": 250
+                "min": 5,
+                "max": 150
               }
             }
           ]
         },
         {
-          "path": "courtCases.chiefAdministratorsCourt",
-          "required": false,
+          "path": "purchaser.relation",
+          "required": true,
           "validations": [
             {
-              "type": "length",
+              "type": "enum",
               "params": {
-                "min": 0,
-                "max": 250
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
         },
         {
-          "path": "courtCases.advisorToAdminCourt",
-          "required": false,
+          "path": "purchaser.address",
+          "required": true,
           "validations": [
             {
               "type": "length",
               "params": {
-                "min": 0,
-                "max": 250
+                "min": 5,
+                "max": 150
               }
             }
           ]
         },
         {
-          "path": "courtCases.honbleDistrictCourt",
+          "path": "purchaser.mobileNo",
           "required": false,
           "validations": [
             {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
-              }
+              "type": "phonenumber"
             }
           ]
         },
         {
-          "path": "courtCases.honbleHighCourt",
-          "required": false,
+          "path": "purchaser.percentageOfShareTransferred",
+          "required": true,
           "validations": [
             {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
-              }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.honbleSupremeCourt",
-          "required": false,
-          "validations": [
+              "type": "numeric"
+            },
             {
-              "type": "length",
+              "type": "minmax",
               "params": {
                 "min": 0,
-                "max": 250
+                "max": 100
               }
             }
           ]
@@ -271,89 +225,68 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_OWNERS_LABEL",
-                "placeholder": "EST_OWNERS_PLACEHOLDER",
+                "label": "EST_SELECT_OWNER_LABEL",
+                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.applicant.owners",
-                "path": "applicant.owners"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
               },
               {
                 "label": "EST_OWNER_NAME_LABEL",
                 "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.applicant.name",
-                "path": "applicant.name"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.applicant.fatherOrHusbandName",
-                "path": "applicant.fatherOrHusbandName"
+                "path": "ownerDetails.fatherOrHusband",
+                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.applicant.address",
-                "path": "applicant.address"
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.address",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
               },
               {
-                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
+                "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo",
-                "path": "applicant.mobileNo",
-                "pattern": "MobileNo"
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
+                "path": "ownerDetails.phone"
               },
               {
-                "label": "EST_SHARE_LABEL",
-                "placeholder": "EST_SHARE_PLACEHOLDER",
+                "label": "EST_OWNER_SHARE_LABEL",
+                "placeholder": "EST_OWNER_SHARE_PLACEHOLDER",
+                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.applicant.percentageOfShareTransferred",
-                "path": "duplicate.percentageOfShareTransferred",
-                "pattern": "Amount"
+                "path": "ownerDetails.share",
+                "jsonPath": "Applications[0].applicationDetails.share"
               },
               {
                 "label": "EST_CP_NUMBER_LABEL",
                 "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
+                "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.applicant.cpnumber",
-                "path": "cpnumber"
-              }
-            ]
-          },
-          {
-            "header": "EST_COMPANY_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "EST_NAME_LABEL",
-                "placeholder": "EST_NAME_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.company.name",
-                "path": "company.name"
+                "path": "ownerDetails.cpNumber",
+                "jsonPath": "Applications[0].applicationDetails.cpNumber"
               },
               {
-                "label": "EST_ADDRESS_LABEL",
-                "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.company.address",
-                "path": "company.address"
-              },
-              {
-                "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
-                "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+                "label": "EST_REASON_FOR_NO_DUE_CERTIFICATE_LABEL",
+                "placeholder": "EST_REASON_FOR_NO_DUE_CERTIFICATE_PLACEHOLDER",
+                "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
-                "path": "company.registrationNumber"
-              },
-              {
-                "label": "EST_TYPE_OF_LETTER_LABEL",
-                "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.company.type",
-                "path": "company.type"
+                "path": "ownerDetails.reasonForNoDue",
+                "jsonPath": "Applications[0].applicationDetails.reasonForNoDue"
               }
             ]
           }
@@ -364,25 +297,60 @@
         "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
-            "code": "AFFIDAVIT_COPY_OF_CONVERSION_SCF_TO_SCO",
+            "code": "ALLOTMENT_LETTER",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "AFFIDAVIT_COPY_OF_CONVERSION_SCF_TO_SCO_DESCRIPTION"
+            "description": "ALLOTMENT_LETTER_DESCRIPTION"
           },
           {
-            "code": "CLEARANCE_OF_PROPERTY_TAX",
+            "code": "POSSESSION_LETTER",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
+            "description": "POSSESSION_LETTER_DESCRIPTION"
           },
           {
-            "code": "LEASE_WATER_BILL",
+            "code": "GPA/SALE_AGREEMENT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LEASE_WATER_BILL_DESCRIPTION"
+            "description": "GPA/SALE_AGREEMENT_DESCRIPTION"
+          },
+          {
+            "code": "DEED_OF_TRANSFER_RIGHTS",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "DEED_OF_TRANSFER_RIGHTS_DESCRIPTION"
+          },
+          {
+            "code": "NOC_ISSUED_BY_AWHO",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "NOC_ISSUED_BY_AWHO_DESCRIPTION"
+          },
+          {
+            "code": "TRANSFER_LETTER",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "TRANSFER_LETTER_DESCRIPTION"
+          },
+          {
+            "code": "WATER_BILL",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "WATER_BILL_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_AGAINST_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_AGAINST_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
           }
         ]
       }

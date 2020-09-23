@@ -1,11 +1,11 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OtherCitizen_DuplicateCopy": [
+  "EstateBranch_OtherCitizenService_ScfToSco": [
     {
       "fields": [
         {
-          "path": "owner",
+          "path": "transferor",
           "required": true,
           "validations": [
             {
@@ -14,11 +14,72 @@
           ]
         },
         {
-          "path": "owner.id",
+          "path": "transferor.id",
           "required": true,
           "validations": [
             {
               "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "company",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "company.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.registrationNumber",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 50
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.type",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 50
+              }
             }
           ]
         },
@@ -213,43 +274,43 @@
                 "label": "EST_OWNERS_LABEL",
                 "placeholder": "EST_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.owners",
-                "path": "owners"
+                "jsonPath": "Applications[0].applicationDetails.applicant.owners",
+                "path": "applicant.owners"
               },
               {
                 "label": "EST_OWNER_NAME_LABEL",
                 "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.name",
-                "path": "duplicate.name"
+                "jsonPath": "Applications[0].applicationDetails.applicant.name",
+                "path": "applicant.name"
               },
               {
                 "label": "EST_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.fatherOrHusbandName",
-                "path": "duplicate.fatherOrHusbandName"
+                "jsonPath": "Applications[0].applicationDetails.applicant.fatherOrHusbandName",
+                "path": "applicant.fatherOrHusbandName"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.address",
-                "path": "duplicate.address"
+                "jsonPath": "Applications[0].applicationDetails.applicant.address",
+                "path": "applicant.address"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.mobileNo",
-                "path": "duplicate.mobileNo",
+                "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo",
+                "path": "applicant.mobileNo",
                 "pattern": "MobileNo"
               },
               {
                 "label": "EST_SHARE_LABEL",
                 "placeholder": "EST_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.applicant.percentageOfShareTransferred",
                 "path": "duplicate.percentageOfShareTransferred",
                 "pattern": "Amount"
               },
@@ -257,21 +318,42 @@
                 "label": "EST_CP_NUMBER_LABEL",
                 "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.cpnumber",
+                "jsonPath": "Applications[0].applicationDetails.applicant.cpnumber",
                 "path": "cpnumber"
               }
             ]
           },
           {
-            "header": "EST_TYPE_OF_LETTER_HEADER",
+            "header": "EST_COMPANY_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
+              {
+                "label": "EST_NAME_LABEL",
+                "placeholder": "EST_NAME_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.company.name",
+                "path": "company.name"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "type": "TEXT_AREA",
+                "jsonPath": "Applications[0].applicationDetails.duplicate.company.address",
+                "path": "company.address"
+              },
+              {
+                "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
+                "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
+                "path": "company.registrationNumber"
+              },
               {
                 "label": "EST_TYPE_OF_LETTER_LABEL",
                 "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.typeofletters",
-                "path": "typeofletters"
+                "jsonPath": "Applications[0].applicationDetails.company.type",
+                "path": "company.type"
               }
             ]
           }
@@ -282,11 +364,25 @@
         "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
-            "code": "DDR_COPY",
+            "code": "AFFIDAVIT_COPY_OF_CONVERSION_SCF_TO_SCO",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "DDR_COPY_DESCRIPTION"
+            "description": "AFFIDAVIT_COPY_OF_CONVERSION_SCF_TO_SCO_DESCRIPTION"
+          },
+          {
+            "code": "CLEARANCE_OF_PROPERTY_TAX",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
+          },
+          {
+            "code": "LEASE_WATER_BILL",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "LEASE_WATER_BILL_DESCRIPTION"
           }
         ]
       }
