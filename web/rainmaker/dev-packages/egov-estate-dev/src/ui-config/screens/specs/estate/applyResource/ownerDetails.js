@@ -26,23 +26,6 @@ export const ownerHeader = getCommonTitle({
   }
 })
 
-const serialNumberField = {
-  label: {
-    labelName: "Sr No",
-    labelKey: "EST_SERIAL_NUMBER_LABEL"
-  },
-  required: true,
-  jsonPath: "Properties[0].ownerDetails[0].serialNumber",
-  props: {
-    value: 1,
-    disabled: true
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  }
-}
-
 const ownerNameField = {
   label: {
     labelName: "Owner Name",
@@ -56,12 +39,10 @@ const ownerNameField = {
     xs: 12,
     sm: 6
   },
-  required: false,
+  required: true,
+  minLength: 2,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName"
 }
 
 const fatherHusbandNameField = {
@@ -77,12 +58,10 @@ const fatherHusbandNameField = {
     xs: 12,
     sm: 6
   },
-  required: false,
+  required: true,
+  minLength: 2,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName"
 }
 
 const getRelationshipRadioButton = {
@@ -112,9 +91,9 @@ const getRelationshipRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianRelation",
-    required: false,
+    required: true,
   },
-  required: false,
+  required: true,
   type: "array",
 };
 
@@ -131,16 +110,13 @@ const addressField = {
     xs: 12,
     sm: 6
   },
-  required: false,
+  required: true,
   props: {
     multiline: true,
     rows: 2
   },
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
 }
 
 const mobileNumberField = {
@@ -157,10 +133,7 @@ const mobileNumberField = {
   //   value: userInfo.userName,
   //   disabled: true
   // },
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
 }
 
 const shareField = {
@@ -176,12 +149,10 @@ const shareField = {
     xs: 12,
     sm: 6
   },
-  required: false,
+  required: true,
+  minLength: 1,
   maxLength: 5,
-  jsonPath: "Properties[0].propertyDetails.owners[0].share",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].share"
 }
 
 const cpNumberField = {
@@ -199,9 +170,6 @@ const cpNumberField = {
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber",
-  props: {
-    disabled: true
-  }
 }
 
 const possessionDateField = {
@@ -214,13 +182,12 @@ const possessionDateField = {
     labelKey: "EST_POSSESSION_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  required: false,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
-    },
-    disabled: true
+    }
   }
 }
 
@@ -238,8 +205,7 @@ const dateOfAllotmentField = {
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
-    },
-    disabled: true
+    }
   }
 }
 
@@ -257,11 +223,39 @@ const allotmentNumberField = {
     sm: 6
   },
   maxLength: 50,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber",
-  props: {
-    disabled: true
-  }
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber"
 }
+
+const getIsDirectorRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
+  gridDefination: {
+    xs: 12,
+    sm: 6,
+  },
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.isDirector",
+  props: {
+    label: {
+      name: "Is Director",
+      key: "EST_IS_DIRECTOR_LABEL"
+    },
+    buttons: [{
+        labelName: "Yes",
+        labelKey: "EST_COMMON_YES",
+        value: "YES"
+      },
+      {
+        label: "No",
+        labelKey: "EST_COMMON_NO",
+        value: "NO"
+      }
+    ],
+    jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.isDirector",
+    required: true,
+  },
+  required: true,
+  type: "array",
+};
 
 const commonOwnerInformation = () => {
   return getCommonGrayCard({
@@ -283,7 +277,8 @@ const commonOwnerInformation = () => {
       cpNumber: getTextField(cpNumberField),
       possessionDate: getDateField(possessionDateField),
       dateOfAllotment: getDateField(dateOfAllotmentField),
-      allotmentNumber: getTextField(allotmentNumberField)
+      allotmentNumber: getTextField(allotmentNumberField),
+      isDirector: getIsDirectorRadioButton
     })
   });
 };
@@ -322,7 +317,7 @@ export const ownerDetails = getCommonCard({
   })
 })
 
-export const getActionDefinationForOwnerDetailsFields = (disabled = true, noOfItems, stepName) => {
+/* export const getActionDefinationForOwnerDetailsFields = (disabled = true, noOfItems, stepName) => {
   const actionDefination = [{
     path: `components.div.children.${stepName}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.address`,
     property: "props.disabled",
@@ -499,4 +494,4 @@ export const getActionDefinationForOwnerDetailsFields = (disabled = true, noOfIt
   }
   
   return actionDefination;
-}
+} */
