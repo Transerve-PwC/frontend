@@ -8,18 +8,15 @@ import {
     getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-    prepareFinalObject,
     handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
     getTodaysDateInYMD
 } from "../../utils";
-import {
-    CompanyDetails
-} from './company-details'
 import get from "lodash/get";
-import set from "lodash/set";
-
+import {
+    companyDetails
+} from "./entityDetails"
 
 const typeOfAllocationField = {
     label: {
@@ -346,6 +343,131 @@ const serviceCategoryField = {
     jsonPath: "Properties[0].propertyDetails.serviceCategory"
 }
 
+const getPropertyRegisteredToRadioButton = {
+    uiFramework: "custom-containers",
+    componentPath: "RadioGroupContainer",
+    gridDefination: {
+        xs: 12,
+        sm: 6,
+    },
+    jsonPath: "Properties[0].propertyDetails.propertyRegisteredTo",
+    props: {
+        label: {
+            name: "Property Registered To",
+            key: "EST_PROPERTY_REGISTERED_TO_LABEL"
+        },
+        buttons: [{
+            labelName: "Entity",
+            labelKey: "EST_COMMON_ENTITY",
+            value: "ENTITY"
+        },
+        {
+            label: "Individual",
+            labelKey: "EST_COMMON_INDIVIDUAL",
+            value: "INDIVIDUAL"
+        }],
+        jsonPath: "Properties[0].propertyDetails.propertyRegisteredTo",
+        required: true,
+    },
+    required: true,
+    type: "array",
+    beforeFieldChange: (action, state, dispatch) => {
+        let screenName = "apply";
+        let stepName = "formwizardFirstStep";
+
+        if ((window.location.href.includes("allotment"))) {
+            screenName = "allotment";
+            stepName = "formwizardFirstStepAllotment";
+        }
+
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepName}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
+                `visible`,
+                !!(action.value === "ENTITY")
+            )
+        )
+    }
+};
+
+const entityTypeField = {
+    label: {
+        labelName: "Entity Type",
+        labelKey: "EST_ENTITY_TYPE_LABEL"
+    },
+    placeholder: {
+        labelName: "Select Entity Type",
+        labelKey: "EST_ENTITY_TYPE_PLACEHOLDER"
+    },
+    required: true,
+    jsonPath: "Properties[0].propertyDetails.entityType",
+    // sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.entityType",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    props: {
+        data: [
+            { code: "ET.PUBLIC_LIMITED_COMPANY", name: "Public ltd company" },
+            { code: "ET.PRIVATE_LIMITED_COMPANY", name: "Private ltd company"},
+            { code: "ET.PARTNERSHIP_FIRM", name: "Partnership firm"},
+            { code: "ET.PROPRIETORSHIP", name: "Proprietorship" }
+        ]
+    },
+    visible: false,
+    beforeFieldChange: (action, state, dispatch) => {
+        let screenName = "apply";
+        let stepName = "formwizardThirdStep";
+
+        if ((window.location.href.includes("allotment"))) {
+            screenName = "allotment";
+            stepName = "formwizardThirdStepAllotment";
+        }
+
+        dispatch(
+            handleField(
+                screenName,
+                "components.div.children.formwizardThirdStep.children.companyDetails",
+                "visible",
+                !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                "components.div.children.formwizardThirdStep.children.ownerDetails",
+                "visible",
+                !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                "components.div.children.formwizardThirdStep.children.firmDetails",
+                "visible",
+                !!(action.value == "ET.PARTNERSHIP_FIRM")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                "components.div.children.formwizardThirdStep.children.partnerDetails",
+                "visible",
+                !!(action.value == "ET.PARTNERSHIP_FIRM")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                "components.div.children.formwizardThirdStep.children.proprietorshipDetails",
+                "visible",
+                !!(action.value == "ET.PROPRIETORSHIP")
+            )
+        )
+    }
+}
+
 const propertyInfoHeader = getCommonTitle({
     labelName: "Property Info",
     labelKey: "EST_PROPERTY_INFO_HEADER"
@@ -366,7 +488,9 @@ export const propertyInfoDetails = getCommonCard({
         sectorNumber: getSelectField(sectorNumberField),
         areaOfProperty: getTextField(areaOfPropertyField),
         rate: getTextField(rateField),
-        typeOfAllocation: getSelectField(typeOfAllocationField)
+        typeOfAllocation: getSelectField(typeOfAllocationField),
+        propertyRegisteredTo: getPropertyRegisteredToRadioButton,
+        entityType: getSelectField(entityTypeField)
     })
 })
 
@@ -387,23 +511,6 @@ export const auctionDetails = getCommonCard({
         dateOfAuction: getDateField(dateOfAuctionField)
     })
 })
-
-/* const allotmentDetailsHeader = getCommonTitle({
-    labelName: "Allotment Details",
-    labelKey: "EST_ALLOTMENT_DETAILS_HEADER"
-}, {
-    style: {
-        marginBottom: 18,
-        marginTop: 18
-    }
-})
-export const allotmentDetails = getCommonCard({
-    header: allotmentDetailsHeader,
-    detailsContainer: getCommonContainer({
-        dateOfAllotment: getDateField(dateOfAllotmentField),
-        allotmentNumber: getTextField(allotmentNumberField)
-    })
-}) */
 
 const additionalDetailsHeader = getCommonTitle({
     labelName: "NOC Details",

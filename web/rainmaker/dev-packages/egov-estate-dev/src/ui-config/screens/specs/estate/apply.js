@@ -11,8 +11,7 @@ import {
   formwizardSixthStep,
   formwizardSeventhStep,
   formwizardEighthStep,
-  formwizardNinthStep,
-  formwizardTenthStep
+  formwizardNinthStep
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -129,7 +128,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      `components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
@@ -138,7 +137,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
-const getCompanyDocs = (state, dispatch) => {
+const getCompanyDocs = (action, state, dispatch, owner = 0) => {
   const {
     EstatePropertyService
   } = companyDocsData && companyDocsData.MdmsRes ? companyDocsData.MdmsRes : {}
@@ -167,10 +166,10 @@ const getCompanyDocs = (state, dispatch) => {
   }))
   var documentTypes;
   var applicationDocs;
-  documentTypes = prepareCompanyDocumentTypeObjMaster(masterDocuments, 0);
+  documentTypes = prepareDocumentTypeObjMaster(masterDocuments, owner);
   applicationDocs = get(
     state.screenConfiguration.preparedFinalObject,
-    `Properties[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`,
+    `Properties[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`,
     []
   ) || [];
 
@@ -188,19 +187,19 @@ const getCompanyDocs = (state, dispatch) => {
   applicationDocsReArranged &&
     dispatch(
       prepareFinalObject(
-        `Properties[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`,
+        `Properties[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`,
         applicationDocsReArranged
       )
     );
   dispatch(
     handleField(
       "apply",
-      `components.div.children.formwizardNinthStep.children.companyDocuments_0.children.cardContent.children.documentList`,
+      `components.div.children.formwizardFourthStep.children.companyDocuments_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
   );
-  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.partnerDocuments`, documentTypes))
+  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`, documentTypes))
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplicationsCompanyDocs", documents))
 
 }
@@ -273,7 +272,7 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
-  getCompanyDocs(state, dispatch)
+  // getCompanyDocs(state, dispatch)
 
 }
 
@@ -315,7 +314,6 @@ const applyEstate = {
         formwizardSeventhStep,
         formwizardEighthStep,
         formwizardNinthStep,
-        formwizardTenthStep,
         footer
       }
     }

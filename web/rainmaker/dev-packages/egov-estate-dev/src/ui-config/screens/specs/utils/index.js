@@ -1059,14 +1059,14 @@ export const prepareDocumentTypeObj = documents => {
   return documentsArr;
 };
 
-export const prepareDocumentTypeObjMaster = (documents, owner) => {
+export const prepareDocumentTypeObjMaster = (documents, ownerIndex) => {
   let documentsArr =
     documents.length > 0
       ? documents.reduce((documentsArr, item, ind) => {
         documentsArr.push({
           name: item.code,
           required: item.required,
-          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments[${ind}]`,
+          jsonPath: `Properties[0].propertyDetails.owners[${ownerIndex}].ownerDetails.ownerDocuments[${ind}]`,
           statement: item.description
         });
         return documentsArr;
@@ -1075,7 +1075,7 @@ export const prepareDocumentTypeObjMaster = (documents, owner) => {
   return documentsArr;
 };
 
-export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
+/* export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
   let documentsArr =
     documents.length > 0
       ? documents.reduce((documentsArr, item, ind) => {
@@ -1089,7 +1089,7 @@ export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
       }, [])
       : [];
   return documentsArr;
-};
+}; */
 
 //Common functions for Estimate card
 

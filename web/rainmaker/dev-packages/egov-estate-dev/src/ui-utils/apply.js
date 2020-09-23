@@ -202,7 +202,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         }
       );
     } else {
-      let tabsArr = [0,1,2,3,4,5,6,7,8];
+      let tabsArr = [0,1,2,3,4,5,6,7];
       if (screenName == "allotment") {
         tabsArr.pop();
       }

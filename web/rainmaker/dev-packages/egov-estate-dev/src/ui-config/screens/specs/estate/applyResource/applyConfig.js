@@ -45,7 +45,13 @@ import {
 } from './auction-details'
 import {
   CompanyDetails
-} from './company-details'
+} from './company-details';
+import {
+  companyDetails,
+  firmDetails,
+  partnerDetails,
+  proprietorshipDetails
+} from './entityDetails'
 
 const documentCardConfig = {
   header: getCommonTitle({
@@ -90,6 +96,20 @@ export const companyDocuments_0 = getCommonCard({
   }
 });
 
+export const previousOwnerDocuments_0 = getCommonCard({
+  ...documentCardConfig,
+  documentList: {
+    ...documentList,
+    props: {
+      ...documentList.props,
+      documentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].purchaserDetails.purchaserDocuments",
+      uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].purchaserDetails.uploadedDocsInRedux",
+      // tenantIdJsonPath: "Properties[0].tenantId",
+      removedJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].purchaserDetails.removedDocs"
+    }
+  }
+});
+
 
 export const stepsData = [{
   labelName: "Property Details",
@@ -100,16 +120,20 @@ export const stepsData = [{
   labelKey: "EST_COMMON_AUCTION_DETAILS"
 },
 {
-  labelName: "Company Details",
-  labelKey: "EST_COMMON_COMPANY_DETAILS"
+  labelName: "Entity/Owner Details",
+  labelKey: "EST_COMMON_ENTITY_OWNER_DETAILS"
 },
 {
-  labelName: "Owner Details",
-  labelKey: "EST_COMMON_OWNER_DETAILS"
+  labelName: "Entity/Owner Documents",
+  labelKey: "EST_COMMON_ENTITY_OWNER_DOCUMENTS"
 },
 {
-  labelName: "Purchaser Details",
-  labelKey: "EST_COMMON_PURCHASER_DETAILS"
+  labelName: "Previous Owner Details",
+  labelKey: "EST_COMMON_PREVIOUS_OWNER_DETAILS"
+},
+{
+  labelName: "Previous Owner Documents",
+  labelKey: "EST_COMMON_PREVIOUS_OWNER_DOCUMENTS"
 },
 {
   labelName: "Court Case",
@@ -118,14 +142,6 @@ export const stepsData = [{
 {
   labelName: "Payment Details",
   labelKey: "EST_COMMON_PAYMENT_DETAILS"
-},
-{
-  labelName: "Documents",
-  labelKey: "EST_COMMON_DOCUMENTS"
-},
-{
-  labelName: "Company Documents",
-  labelKey: "EST_COMPANY_DOCUMENTS_DETAILS"
 },
 {
   labelName: "Summary",
@@ -150,8 +166,6 @@ export const formwizardFirstStep = {
   },
   children: {
     propertyInfoDetails,
-    // auctionDetails,
-    // allotmentDetails,
     additionalDetails
   }
 };
@@ -175,7 +189,11 @@ export const formwizardThirdStep = {
     id: "apply_form3"
   },
   children: {
-    CompanyDetails
+    companyDetails,
+    ownerDetails,
+    firmDetails,
+    partnerDetails,
+    proprietorshipDetails
   },
   visible: false
 };
@@ -187,7 +205,7 @@ export const formwizardFourthStep = {
     id: "apply_form4"
   },
   children: {
-    ownerDetails
+    ownerDocumentDetails_0
   },
   visible: false
 };
@@ -211,7 +229,7 @@ export const formwizardSixthStep = {
     id: "apply_form6"
   },
   children: {
-    courtCaseDetails
+    
   },
   visible: false
 };
@@ -223,9 +241,7 @@ export const formwizardSeventhStep = {
     id: "apply_form7"
   },
   children: {
-    groundRentDetails_0,
-    serviceTaxDetails_0,
-    paymentMadeBy_0
+    courtCaseDetails
   },
   visible: false
 }
@@ -237,7 +253,9 @@ export const formwizardEighthStep = {
     id: "apply_form8"
   },
   children: {
-    ownerDocumentDetails_0
+    groundRentDetails_0,
+    serviceTaxDetails_0,
+    paymentMadeBy_0
   },
   visible: false
 }
@@ -246,19 +264,7 @@ export const formwizardNinthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
-    id: "apply_form9"
-  },
-  children: {
-    companyDocuments_0
-  },
-  visible: false
-}
-
-export const formwizardTenthStep = {
-  uiFramework: "custom-atoms",
-  componentPath: "Form",
-  props: {
-    id: "apply_form10"
+    id: "apply_form8"
   },
   children: {
     reviewDetails
