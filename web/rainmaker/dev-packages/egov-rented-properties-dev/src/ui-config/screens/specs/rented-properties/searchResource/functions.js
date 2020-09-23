@@ -1,7 +1,7 @@
 import get from "lodash/get";
 import set from "lodash/set";
 import { handleScreenConfigurationFieldChange as handleField ,prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults, getCount, getDuplicateCopySearchResults , getOwnershipSearchResults, getMortgageSearchResults} from "../../../../..//ui-utils/commons";
+import { getSearchResults, getDuplicateCopySearchResults , getOwnershipSearchResults, getMortgageSearchResults} from "../../../../..//ui-utils/commons";
 import {
   convertEpochToDate,
   convertDateToEpoch,

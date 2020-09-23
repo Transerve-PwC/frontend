@@ -834,6 +834,7 @@ export const getModuleName = () => {
   else if (pathName.indexOf("wns") > -1) { return "rainmaker-ws"; }
   else if (pathName.indexOf("report/rainmaker-tl") > -1) { return "rainmaker-pgr,rainmaker-tl"; }
   else if (pathName.indexOf("tradelicense") > -1 || pathName.indexOf("tradelicence") > -1 || pathName.indexOf("tradelicense-citizen") > -1 || pathName.indexOf("rainmaker-tl") > -1 || pathName.indexOf("fine-master") > -1 ) { return "rainmaker-tl"; }
+  else if (pathName.indexOf("report/rainmaker-rp") > -1) { return "rainmaker-pgr,rainmaker-rp"; }
   else if (pathName.indexOf("rented-properties") > -1) { return "rainmaker-rp"}
   else if (pathName.indexOf("estate") > -1) { return "rainmaker-est"}
   else if (pathName.indexOf("hrms") > -1) { return "rainmaker-hr"; }

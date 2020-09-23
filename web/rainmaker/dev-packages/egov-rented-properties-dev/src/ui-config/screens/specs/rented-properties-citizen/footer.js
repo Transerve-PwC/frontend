@@ -223,7 +223,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         state, 'form.newapplication.files.media', []
       )
       console.log(images)
-      if(images.length===0){
+      if(images.length<2){
         imageupload=false
       }
       if(!!isOwnerDetailsValid  && !!isDetailsValid && !!imageupload) {
@@ -258,7 +258,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         
         let errorMessage = {
           labelName:
-              "Please fill all mandatory fields and upload at least one the images !",
+              "Please fill all mandatory fields and upload at least two the images !",
           labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));

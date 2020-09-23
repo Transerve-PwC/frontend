@@ -10,7 +10,7 @@ import { getDuplicateCopySearchResults} from "../../../../ui-utils/commons";
 import { getDuplicateCopyReviewPropertyAddressDetails , getDuplicateCopyPreviewApplicantDetails,getduplicatereviewChargesDetails} from "./applyResource/review-applications";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { footerReview,footerReviewTop } from "./applyResource/reviewFooter";
-import { getFeesEstimateCard, createEstimateData, getButtonVisibility } from "../utils";
+import { getFeesEstimateCard, createEstimateData } from "../utils";
 import { set } from "lodash";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {downloadPrintContainer} from "./applyResource/footer"

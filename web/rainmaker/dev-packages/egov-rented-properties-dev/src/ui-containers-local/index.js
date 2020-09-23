@@ -47,10 +47,6 @@ const DialogContainer = Loadable({
   loading: () => <Loading />
 });
 
-const ViewBreakupContainer = Loadable({
-  loader: () => import("./ViewbreakupDialogContainer"),
-  loading: () => <Loading />
-});
 const ResubmitActionContainer = Loadable({
   loader: () => import("./ResubmitActionContainer"),
   loading: () => <Loading />
@@ -86,7 +82,6 @@ export {
   AutosuggestContainer,
   DocumentListContainer,
   PaymentRedirectPage,
-  ViewBreakupContainer,
   DialogContainer,
   ResubmitActionContainer,
   WorkFlowContainer,

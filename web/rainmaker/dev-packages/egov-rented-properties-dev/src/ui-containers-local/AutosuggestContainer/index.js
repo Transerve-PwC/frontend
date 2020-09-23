@@ -4,16 +4,12 @@ import { AutoSuggest } from "../../ui-atoms-local";
 import { findItemInArrayOfObject } from "../../ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  transformById,
   getLocaleLabels,
   appendModulePrefix
 } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import { getLocalization } from "egov-ui-kit/utils/localStorageUtils";
 
-// const localizationLabels = JSON.parse(getLocalization("localization_en_IN"));
-// const transfomedKeys = transformById(localizationLabels, "code");
 class AutoSuggestor extends Component {
   onSelect = value => {
     const { onChange } = this.props;

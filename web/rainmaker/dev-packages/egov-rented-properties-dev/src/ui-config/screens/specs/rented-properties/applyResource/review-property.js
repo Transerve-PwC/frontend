@@ -362,20 +362,6 @@ export const getNoticeReviewRentDetails = (isEditable = true) => {
             }
         },
         viewFour: getCommonContainer({
-            // fatherOrHusbandsName: getLabelWithValue(
-            //         {
-            //             labelName: "Father/ Husband's Name",
-            //             labelKey: "TL_FATHER_OR_HUSBANDS_NAME_LABEL"
-            //         },
-            //         { jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband" }
-            //     ),
-            //     originalAllotte: getLabelWithValue(
-            //         {
-            //             labelName: "Original Allottee",
-            //             labelKey: "RP_ORIGINAL_ALLOTTEE_LABEL"
-            //         },
-            //         { jsonPath: "Properties[0].owners[0].ownerDetails.orignalAllottee" }
-            //     ),
                 violations: getLabelWithValue(
                     {
                         labelName: "Violations",

@@ -521,10 +521,6 @@ const fatherOrHusbandsName = {
         labelName: "Father/ Husband's Name",
         labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
-    // placeholder: {
-    //     labelName: "Enter Father/ Husband's Name",
-    //     labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
-    // },
     gridDefination: {
         xs: 12,
         sm: 6
@@ -544,10 +540,6 @@ const fatherOrHusbandsNameMortgage = {
         labelName: "Father/ Husband's Name",
         labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
     },
-    // placeholder: {
-    //     labelName: "Enter Father/ Husband's Name",
-    //     labelKey: "TL_FATHER_OR_HUSBANDS_NAME_NAME_PLACEHOLDER"
-    // },
     gridDefination: {
         xs: 12,
         sm: 6

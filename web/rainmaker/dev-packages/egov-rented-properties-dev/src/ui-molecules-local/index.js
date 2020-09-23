@@ -36,16 +36,6 @@ const DocumentList = Loadable({
   loading: () => <Loading />
 });
 
-// const AutoSelector = Loadable({
-//   loader: () => import("./AutoSelector"),
-//   loading: () => <Loading />
-// });
-
-const MapLocator = Loadable({
-  loader: () => import("./MapLocator"),
-  loading: () => <Loading />
-});
-
 const FeesEstimateCard = Loadable({
   loader: () => import("./FeesEstimateCard"),
   loading: () => <Loading />
@@ -100,7 +90,6 @@ export {
   CustomTab,
   UploadSingleFile,
   DocumentList,
-  MapLocator,
   FeesEstimateCard,
   HowItWorks,
   ActionDialog,

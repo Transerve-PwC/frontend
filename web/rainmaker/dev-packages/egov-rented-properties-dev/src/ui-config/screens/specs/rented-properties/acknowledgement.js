@@ -105,7 +105,7 @@ const getAcknowledgementCard = (
         labelKey: "RP_APPROVAL_REJ_MESSAGE_HEAD"
       } : purpose === "approve" ? {
         labelName: "Rented Property Master Entry is Approved Successfully",
-        labelKey: "RP_APPROVAL_SUCCESS_MESSAGE_HEAD"
+        labelKey: "RP_MASTER_ENTRY_APPROVAL_SUCCESS_MESSAGE_HEAD"
       } : purpose === "submit" ? {
         labelName: "Rented Property Master Entry is Submitted Successfully",
         labelKey: "RP_SUBMISSION_SUCCESS_MESSAGE_HEAD"
@@ -161,6 +161,9 @@ const getAcknowledgementCard = (
                   "A notification regarding notice has been sent to trade owner at registered Mobile No.",
                 labelKey: "RP_APPLICATION_NOTICE_SUCCESS_MESSAGE_SUB"
               } : type===TRANSITSITEIMAGES?{
+                labelName:"",
+                labelKey: ""
+              }: type===RP_MASTER_ENTRY?{
                 labelName:"",
                 labelKey: ""
               }

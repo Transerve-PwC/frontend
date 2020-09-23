@@ -1,7 +1,6 @@
 import { httpRequest } from "./api";
 import {
   convertDateToEpoch,
-  getCurrentFinancialYear,
   addYears,
 } from "../ui-config/screens/specs/utils";
 import {
@@ -9,15 +8,7 @@ import {
     toggleSnackbar,
     toggleSpinner
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  import {
-    getTranslatedLabel,
-    updateDropDowns,
-    ifUserRoleExists,
-    convertEpochToDate,
-    calculateAge
-  } from "../ui-config/screens/specs/utils";
   import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  import store from "redux/store";
   import get from "lodash/get";
   import set from "lodash/set";
   import {
@@ -26,18 +17,10 @@ import {
     getFileUrlFromAPI
   } from "egov-ui-framework/ui-utils/commons";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-  import {
-    setBusinessServiceDataToLocalStorage,
-    getMultiUnits,
-    acceptedFiles,
-  } from "egov-ui-framework/ui-utils/commons";
-  import commonConfig from "config/common.js";
-  import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
-import { getSearchResults,getMortgageSearchResults } from "./commons";
+import { getSearchResults } from "./commons";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { setDocsForEditFlow } from "./commons";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-let userInfo = JSON.parse(getUserInfo());
 
 
 export const setApplicationNumberBox = (state, dispatch, applicationNumber, screenKey) => {

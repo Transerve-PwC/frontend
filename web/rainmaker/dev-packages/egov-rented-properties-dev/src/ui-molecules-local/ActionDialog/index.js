@@ -426,7 +426,7 @@ return
                   >
                     <CloseIcon />
                   </Grid>
-                  {(moduleName==="MasterRP" && mastrerstate ==="PM_PENDINGJAVERIFICATION" && (buttonLabel==="SENDBACK"))?"":
+                  {(moduleName==="MasterRP" && ((mastrerstate ==="PM_PENDINGJAVERIFICATION" && buttonLabel==="SENDBACK") || buttonLabel === "REJECT"))?"":
                   showEmployeeList && !!dropDownData.length && (
                     <Grid
                       item

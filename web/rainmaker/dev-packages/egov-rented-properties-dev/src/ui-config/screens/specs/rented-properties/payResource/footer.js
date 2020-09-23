@@ -373,7 +373,6 @@ export const footer = getCommonApplyFooter({
     },
     roleDefination: {
       rolePath: "user-info.roles",
-      //roles: ["TL_CEMP"]
       action: "PAY"
     },
     visible: process.env.REACT_APP_NAME === "Citizen" ? false : true
