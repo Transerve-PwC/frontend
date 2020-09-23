@@ -2,13 +2,30 @@ import React from "react";
 import "../utils/index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getMdmsData } from "../utils";
 
 const getData = async (action, state, dispatch) => {
    await new Promise((resolve) => {
         setTimeout(resolve, 0)
     })
-  const {ApplicationTypes} = require("./applicationTypes.json"); //change to mdms
-  const listItems = ApplicationTypes.reduce((prev, curr) => {
+    const queryObject = {
+      MdmsCriteria: {
+        tenantId: getTenantId(),
+        moduleDetails: [
+          {
+            moduleName: "EstatePropertyService",
+            masterDetails: [
+              { name: "applicationTypes" }
+            ]
+          }
+        ]
+      }
+    }
+    const response = await getMdmsData(queryObject);
+    try {
+    const {applicationTypes = []} = !!response && !!response.MdmsRes && response.MdmsRes.EstatePropertyService ? response.MdmsRes.EstatePropertyService : {} 
+    const listItems = applicationTypes.reduce((prev, curr) => {
     const propertyId = getQueryArg(window.location.href, "propertyId")
     const item = !!curr.SubTypes && !!curr.SubTypes.length ?
       {...curr, SubTypes: curr.SubTypes.map(subType => ({
@@ -41,6 +58,10 @@ const getData = async (action, state, dispatch) => {
           }
         }
     }
+  } catch (error) {
+      console.log("error", error)
+      return {}
+  }
 }
 
 const estateBranchHome = {

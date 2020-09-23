@@ -45,48 +45,47 @@
             },
             {
                 "header": "EST_APPLICANT_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_OWNERS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.owners"
-                    },
-                    {
-                        "label": "EST_OWNER_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.name"
+                        "jsonPath": "Applications[0].applicationDetails.duplicate.owner.ownerDetails.ownerName"
                     },
                     {
                         "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.fatherOrHusbandName"
+                        "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
                     },
                     {
                         "label": "EST_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.address"
+                        "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
                     },
                     {
                         "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.mobileNo"
+                        "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
                     },
                     {
                         "label": "EST_SHARE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.owner.share"
                     },
                     {
                         "label": "EST_CP_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.cpnumber"
+                        "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
                     }
                 ]
             },
             {
                 "header": "EST_TYPE_OF_LETTER_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "EST_TYPE_OF_LETTER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.typeofletters"
+                        "jsonPath": "Applications[0].applicationDetails.typeOfLetter"
                     }
                 ]
             },
             {
                 "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "step": 1,
                 "type": "DOCUMENTS",
                 "sourceJsonPath": "temp[0].reviewDocData"
             }

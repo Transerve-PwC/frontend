@@ -19,7 +19,6 @@ class MDMSDatasource {
         this.values = [];
         const { moduleName, masterName, filter } = this.options;
         const payload = {
-
             MdmsCriteria: {
                 tenantId: getTenantId(),
                 moduleDetails: [
