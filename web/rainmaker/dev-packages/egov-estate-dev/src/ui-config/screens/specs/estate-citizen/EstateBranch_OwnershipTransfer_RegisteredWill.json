@@ -52,10 +52,16 @@
           "required": true,
           "validations": [
             {
-              "type": "length",
+              "type": "date-range",
               "params": {
-                "min": 0,
-                "max": 100
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
               }
             }
           ]
@@ -204,10 +210,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
+                "values": ["FATHER", "HUSBAND"]
               }
             }
           ]
