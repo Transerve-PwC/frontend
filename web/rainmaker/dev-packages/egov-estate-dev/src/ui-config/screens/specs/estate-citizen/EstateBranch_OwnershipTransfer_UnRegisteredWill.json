@@ -175,19 +175,6 @@
           ]
         },
         {
-          "path": "transferee.relationWithDeceased",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 3,
-                "max": 50
-              }
-            }
-          ]
-        },
-        {
           "path": "transferee.address",
           "required": false,
           "validations": [
@@ -568,7 +555,6 @@
                 "placeholder": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "path": "transferee.relationWithDeceased",
                 "dataSource": "legalHeirRelationWithDeceased"
               },
               {
@@ -576,7 +562,6 @@
                 "placeholder": "EST_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "path": "transferee.relationWithDeceased",
                 "dataSource": "benificiaryRelationwithDeceased"
               }
             ]

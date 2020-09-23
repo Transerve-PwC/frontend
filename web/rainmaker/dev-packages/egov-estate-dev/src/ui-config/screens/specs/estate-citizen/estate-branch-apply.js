@@ -1,349 +1,66 @@
 import React from "react";
-import {
-  getLabel
-} from "egov-ui-framework/ui-config/screens/specs/utils";
 import "../utils/index.css";
-import { EstateIcon } from "../../../../ui-atoms-local";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 
-const listItems = [
-    {
-      label: {
-        labelKey: "EST_OWNERSHIP_TRANSFER",
-        labelName: "Ownership Transfer"
-      },
-      list: [
-      {
-          label: {
-          labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
-          labelName: "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed"
-        },
-        icon: < EstateIcon / > ,
-        route: `apply?applicationType=EstateBranch_OwnershipTransfer_SaleDeed`,
-      },
-      {
-        label: {
-          labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_WILL",
-          labelName: "Transfer of Ownership on the basis of Registered Will"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OwnershipTransfer_RegisteredWill",
-      },
-      {
-        label: {
-          labelKey: "EST_TRANSFER_OF_OWNERSHIP_UNREGISTERED_WILL",
-          labelName: "Transfer of Ownership on the basis of Un-registered Will"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OwnershipTransfer_UnRegisteredWill",
-      },
-      {
-        label: {
-          labelKey: "EST_TRANSFER_OF_OWNERSHIP_INTESTATE_DEATH",
-          labelName: "Transfer of Ownership on the basis of Intestate Death (without will)"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OwnershipTransfer_InstestateDeath",
-      },
-      {
-        label: {
-          labelKey: "EST_TRANSFER_OF_OWNERSHIP_PARTNERSHIP_DEED",
-          labelName: "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OwnershipTransfer_PatnershipDeed",
-      },
-      {
-        label: {
-          labelKey: "EST_TRANSFER_OF_PROPERTY",
-          labelName: "Transfer of Property on the basis of Court Decree/Family Settlement"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OwnershipTransfer_FamilySettlement",
-      },
-      {
-        label: {
-          labelKey: "EST_NO_OBJECTION_CERTIFICATE",
-          labelName: "No Objection Certificate for Transfer of Lease Rights by way of Sale/Gift/Family Transfer Deed/Exchange Deed"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_NOC",
-      },
-      {
-        label: {
-          labelKey: "EST_EXECUTION_OF_LEASE_DEED",
-          labelName: "Execution of Lease Deed/Deed of Conveyance"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_LeaseDeed",
-      },
-      {
-        label: {
-          labelKey: "EST_NO_DUES_CERTIFICATE",
-          labelName: "No Dues Certificate"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_NDC",
-      },
-      {
-        label: {
-          labelKey: "EST_CONVERSION_FROM_LEASEHOLD_TO_FREEHOLD",
-          labelName: "Conversion from Leasehold to Freehold Property"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_LeaseholdToFreehold",
-      },
-      {
-        label: {
-          labelKey: "EST_CONVERSION_OF_PROPERTY_RES_TO_COMM",
-          labelName: "Conversion of Property from residential to Commercial (SCF to SCO)"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_ScfToSco",
-      },
-      {
-        label: {
-          labelKey: "EST_CHANGE_OF_TRADE",
-          labelName: "Change of Trade"
-        },
-        icon: < EstateIcon / > ,
-        route: "apply?applicationType=EstateBranch_OtherCitizen_ChangeInTrade",
-      }
-      ]
-    },
-    {
-      label: {
-        labelKey: "EST_DUPLICATE_COPY",
-        labelName: "Duplicate Copy"
-      },
-      list: [
-        {
-          label: {
-            labelKey: "EST_DUPLICATE_ALLOTMENT_POSSESSION_LETTER",
-            labelName: "Duplicate Allotment Letter/Possession Letter"
-          },
-          icon: < EstateIcon / > ,
-          route: "apply?applicationType=EstateBranch_OtherCitizen_DuplicateCopy",
+const getData = async (action, state, dispatch) => {
+   await new Promise((resolve) => {
+        setTimeout(resolve, 0)
+    })
+  const {ApplicationTypes} = require("./applicationTypes.json"); //change to mdms
+  const listItems = ApplicationTypes.reduce((prev, curr) => {
+    const propertyId = getQueryArg(window.location.href, "propertyId")
+    const item = !!curr.SubTypes && !!curr.SubTypes.length ?
+      {...curr, SubTypes: curr.SubTypes.map(subType => ({
+        ...subType, route: `apply?applicationType=${subType.type}&propertyId=${propertyId}`
+      }))}
+    : {...curr, route: `apply?applicationType=${curr.type}&propertyId=${propertyId}`} 
+    return [...prev, item]
+  }, [])
+    return {
+        div: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          children: {
+            applyCard: {
+              moduleName: "egov-estate",
+              uiFramework: "custom-containers-local",
+              componentPath: "NestedListContainer",
+              props: {
+                items: listItems,
+                history: {},
+                style: {
+                  width: "100%"
+                },
+                gridDefination: {
+                  xs: 12,
+                  sm: 12
+                }
+              }
+            }
+          }
         }
-      ]
-    },
-    {
-      label: {
-        labelKey: "EST_MORTGAGE",
-        labelName: "Mortgage"
-      },
-      list: [
-        {
-          label: {
-            labelKey: "EST_PERMISSION_TO_MORTGAGE",
-            labelName: "Permission to Mortgage"
-          },
-          icon: < EstateIcon / > ,
-          route: "apply?applicationType=EstateBranch_OtherCitizen_Mortgage",
-        }
-      ]
     }
-]
-
-
-
-
-const cardItems = [{
-    label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
-      labelName: "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed"
-    },
-    icon: < EstateIcon / > ,
-    route: `property-search?type=EstateBranch_OwnershipTransfer_SaleDeed`,
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_REGISTERED_WILL",
-      labelName: "Transfer of Ownership on the basis of Registered Will"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OwnershipTransfer_RegisteredWill",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_UNREGISTERED_WILL",
-      labelName: "Transfer of Ownership on the basis of Un-registered Will"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OwnershipTransfer_UnRegisteredWill",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_INTESTATE_DEATH",
-      labelName: "Transfer of Ownership on the basis of Intestate Death (without will)"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OwnershipTransfer_InstestateDeath",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_TRANSFER_OF_OWNERSHIP_PARTNERSHIP_DEED",
-      labelName: "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OwnershipTransfer_PatnershipDeed",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_TRANSFER_OF_PROPERTY",
-      labelName: "Transfer of Property on the basis of Court Decree/Family Settlement"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OwnershipTransfer_FamilySettlement",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_NO_OBJECTION_CERTIFICATE",
-      labelName: "No Objection Certificate for Transfer of Lease Rights by way of Sale/Gift/Family Transfer Deed/Exchange Deed"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_NOC",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_EXECUTION_OF_LEASE_DEED",
-      labelName: "Execution of Lease Deed/Deed of Conveyance"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_LeaseDeed",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_NO_DUES_CERTIFICATE",
-      labelName: "No Dues Certificate"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_NDC",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_PERMISSION_TO_MORTGAGE",
-      labelName: "Permission to Mortgage"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_Mortgage",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CONVERSION_FROM_LEASEHOLD_TO_FREEHOLD",
-      labelName: "Conversion from Leasehold to Freehold Property"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_LeaseholdToFreehold",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_DUPLICATE_ALLOTMENT_POSSESSION_LETTER",
-      labelName: "Duplicate Allotment Letter/Possession Letter"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_DuplicateCopy",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CONVERSION_OF_PROPERTY_RES_TO_COMM",
-      labelName: "Conversion of Property from residential to Commercial (SCF to SCO)"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_ScfToSco",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  },
-  {
-    label: {
-      labelKey: "EST_CHANGE_OF_TRADE",
-      labelName: "Change of Trade"
-    },
-    icon: < EstateIcon / > ,
-    route: "property-search?type=EstateBranch_OtherCitizen_ChangeInTrade",
-    buttonLabel: getLabel({
-      labelName: "Apply",
-      labelKey: "EST_APPLY"
-    })
-  }
-]
-
+}
 
 const estateBranchHome = {
   uiFramework: "material-ui",
   name: "estate-branch-apply",
-  components: {
-    div: {
-      uiFramework: "custom-atoms",
-      componentPath: "Div",
-      children: {
-        applyCard: {
-          moduleName: "egov-estate",
-          uiFramework: "custom-containers-local",
-          componentPath: "NestedListContainer",
-          props: {
-            items: listItems,
-            history: {},
-            style: {
-              width: "100%"
-            },
-            gridDefination: {
-              xs: 12,
-              sm: 12
-            }
+  hasBeforeInitAsync: true,
+  beforeInitScreen: async (action, state, dispatch) => {
+    dispatch(toggleSpinner())
+        // await getPropertyData(action, state, dispatch)
+        const components = await getData(action, state, dispatch)
+        dispatch(toggleSpinner())
+        return {
+          "type": "INIT_SCREEN",
+          "screenKey": "estate-branch-apply",
+          "screenConfig": {
+            "uiFramework": "material-ui",
+            "name": "estate-branch-apply",
+            components
           }
         }
-      }
-    }
   }
 }
 

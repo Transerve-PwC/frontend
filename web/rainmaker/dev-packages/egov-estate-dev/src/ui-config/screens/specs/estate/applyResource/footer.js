@@ -764,7 +764,7 @@ export const previousButton = {
     },
     previousButtonLabel: getLabel({
       labelName: "Previous Step",
-      labelKey: "TL_COMMON_BUTTON_PREV_STEP"
+      labelKey: "EST_COMMON_BUTTON_PREV_STEP"
     })
   },
   visible: false
@@ -785,7 +785,7 @@ export const nextButton = {
   children: {
     nextButtonLabel: getLabel({
       labelName: "Next Step",
-      labelKey: "TL_COMMON_BUTTON_NXT_STEP"
+      labelKey: "EST_COMMON_BUTTON_NXT_STEP"
     }),
     nextButtonIcon: {
       uiFramework: "custom-atoms",

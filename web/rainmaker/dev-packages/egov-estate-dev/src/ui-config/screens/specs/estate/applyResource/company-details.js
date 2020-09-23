@@ -43,12 +43,12 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
       },
       buttons: [{
           labelName: "YES",
-          labelKey: "COMMON_YES",
+          labelKey: "EST_COMMON_YES",
           value: "YES"
         },
         {
           label: "NO",
-          labelKey: "COMMON_NO",
+          labelKey: "EST_COMMON_NO",
           value: "NO"
         }
       ],
@@ -132,11 +132,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyAddressField = {
     label: {
       labelName: "Company Address",
-      labelKey: "EST_ESTATE_COMPANY_ADDRESS_LABEL"
+      labelKey: "EST_COMPANY_ADDRESS_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Address",
-      labelKey: "EST_ESTATE_COMPANY_ADDRESS_PLACEHOLDER"
+      labelKey: "EST_COMPANY_ADDRESS_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -332,12 +332,12 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
       },
       buttons: [{
           labelName: "Father",
-          labelKey: "COMMON_RELATION_FATHER",
+          labelKey: "EST_COMMON_RELATION_FATHER",
           value: "FATHER"
         },
         {
           label: "Husband",
-          labelKey: "COMMON_RELATION_HUSBAND",
+          labelKey: "EST_COMMON_RELATION_HUSBAND",
           value: "HUSBAND"
         }
       ],
@@ -352,7 +352,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     return getCommonGrayCard({
       header: getCommonTitle({
         labelName: "Company Details",
-        labelKey: "EST_COMPANY_DETAILS"
+        labelKey: "EST_COMPANY_DETAILS_HEADER"
       }, {
         style: {
           marginBottom: 18
@@ -375,7 +375,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const CompanyPartnerDetails = () => {
     return getCommonGrayCard({
       header: getCommonTitle({
-        labelName: "partner Details",
+        labelName: "Partner Details",
         labelKey: "EST_PARTNER_DETAILS"
       }, {
         style: {

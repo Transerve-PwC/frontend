@@ -52,10 +52,16 @@
           "required": true,
           "validations": [
             {
-              "type": "length",
+              "type": "date-range",
               "params": {
-                "min": 0,
-                "max": 100
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
               }
             }
           ]
@@ -151,10 +157,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "LEGALHEIR",
-                  "BENEFICIARY"
-                ]
+                "values": ["LEGALHEIR", "BENEFICIARY"]
               }
             }
           ]
@@ -204,23 +207,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "path": "transferee.relationWithDeceased",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 3,
-                "max": 50
+                "values": ["FATHER", "HUSBAND"]
               }
             }
           ]
@@ -619,7 +606,6 @@
                 "placeholder": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "path": "transferee.relationWithDeceased",
                 "dataSource": "legalHeirRelationWithDeceased"
               },
               {
@@ -627,7 +613,6 @@
                 "placeholder": "EST_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "path": "transferee.relationWithDeceased",
                 "dataSource": "benificiaryRelationwithDeceased"
               }
             ]

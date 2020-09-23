@@ -1,7 +1,7 @@
 {
   "tenantId": "ch",
   "moduleName": "EstatePropertyService",
-  "EstateBranch_OtherCitizen_ChangeInTrade": [
+  "EstateBranch_OtherCitizenService_LeaseDeed": [
     {
       "fields": [
         {
@@ -221,24 +221,64 @@
             ]
           },
           {
-            "header": "EST_TRADE_DETAILS_HEADER",
+            "header": "EST_APPLICANT_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_CURRENT_TRADE_LABEL",
-                "placeholder": "EST_CURRENT_TRADE_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.currentTrade",
-                "path": "ownerDetails.currentTrade"
+                "label": "EST_SELECT_OWNER_LABEL",
+                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "required": false,
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
               },
               {
-                "label": "EST_TRADE_OPTED_FOR_CHANGE_LABEL",
-                "placeholder": "EST_TRADE_OPTED_FOR_CHANGE_PLACEHOLDER",
+                "label": "EST_OWNER_NAME_LABEL",
+                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
                 "required": true,
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.tradeOptedForChange",
-                "path": "ownerDetails.tradeOptedForChange"
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
+                "path": "ownerDetails.ownerName"
+              },
+              {
+                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST__FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.fatherOrHusband",
+                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+              },
+              {
+                "label": "EST_ADDRESS_LABEL",
+                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.address",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+              },
+              {
+                "label": "EST_MOBILE_NUMBER_LABEL",
+                "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
+                "path": "ownerDetails.phone"
+              },
+              {
+                "label": "EST_OWNER_SHARE_LABEL",
+                "placeholder": "EST_OWNER_SHARE_PLACEHOLDER",
+                "required": true,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.share",
+                "jsonPath": "Applications[0].applicationDetails.share"
+              },
+              {
+                "label": "EST_CP_NUMBER_LABEL",
+                "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
+                "required": false,
+                "type": "TEXT_FIELD",
+                "path": "ownerDetails.cpNumber",
+                "jsonPath": "Applications[0].applicationDetails.cpNumber"
               }
             ]
           }
@@ -249,18 +289,25 @@
         "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {
-            "code": "CLEARANCE_OF_PROPERTY_TAX",
+            "code": "CONVEYANCE_OR_LEASE_DEED",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
+            "description": "CONVEYANCE_OR_LEASE_DEED_DESCRIPTION"
           },
           {
-            "code": "LATEST_WATER_BILL_ALONG_WITH_RECEIPT",
+            "code": "CLEARENCE_OF_PROPERTY_TAX",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LATEST_WATER_BILL_ALONG_WITH_RECEIPT_DESCRIPTION"
+            "description": "CLEARENCE_OF_PROPERTY_TAX_DESCRIPTION"
+          },
+          {
+            "code": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT",
+            "required": true,
+            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+            "fileType": "ALLTYPES",
+            "description": "LATEST_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
           }
         ]
       }
