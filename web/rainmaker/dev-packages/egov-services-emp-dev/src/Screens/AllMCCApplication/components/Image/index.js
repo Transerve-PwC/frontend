@@ -12,15 +12,9 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import jp from "jsonpath";
 class ImageList extends Component {
-
-
-
     componentDidMount = async () => {
  
     }
-
-
-
     render() {
         let style = {
             display: "inline-block",

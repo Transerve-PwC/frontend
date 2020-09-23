@@ -9,7 +9,7 @@ import {
     getPattern,
     getDateField
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  
+  import { getSTOREPattern} from "../../../../../ui-utils/commons"; 
  
   
   export const otherDetails = getCommonCard({
@@ -128,7 +128,7 @@ import {
               multiline: "multiline",
               rowsMax: 2,
             },
-            pattern: getPattern("Name") || null,
+            pattern: getSTOREPattern("Comment"),
             jsonPath: "materialIssues[0].ApprovalRemark"
           })
         },  

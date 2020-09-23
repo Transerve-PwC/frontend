@@ -132,7 +132,9 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
             ...keys
           }]
         }, [])
-        dispatch(prepareFinalObject("Properties", Properties));
+        let properties = Properties
+        properties[0].formatrentSummary = rentSummary
+        dispatch(prepareFinalObject("Properties", properties));
         dispatch(
           prepareFinalObject(
             "PropertiesTemp[0].removedDocs",

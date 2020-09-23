@@ -78,13 +78,13 @@ export const getSEPDetailsView = (isReview = true) => {
         },
         { jsonPath: "NULMSEPRequest.gender" }
       ),
-      age: getLabelWithValue(
-        {
-          labelName: "age",
-          labelKey: "NULM_SEP_AGE"
-        },
-        { jsonPath: "NULMSEPRequest.age" }
-      ),
+      // age: getLabelWithValue(
+      //   {
+      //     labelName: "age",
+      //     labelKey: "NULM_SEP_AGE"
+      //   },
+      //   { jsonPath: "NULMSEPRequest.age" }
+      // ),
       
       dateofbirth: getLabelWithValue(
         {
@@ -212,7 +212,7 @@ export const getSEPDetailsView = (isReview = true) => {
       previousExperience: getLabelWithValue(
         {
           labelName: "Previous experience in the line if any",
-          labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY_PLACEHOLDER"
+          labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY"
         },
         { jsonPath: "NULMSEPRequest.previousExperience" }
       ),
@@ -238,13 +238,13 @@ export const getSEPDetailsView = (isReview = true) => {
         },
         { jsonPath: "NULMSEPRequest.noOfFamilyMembers" }
       ),
-      projectCost: getLabelWithValue(
-        {
-          labelName: "Project Cost",
-          labelKey: "NULM_SEP_PROJECT_COST"
-        },
-        { jsonPath: "NULMSEPRequest.projectCost" }
-      ),
+      // projectCost: getLabelWithValue(
+      //   {
+      //     labelName: "Project Cost",
+      //     labelKey: "NULM_SEP_PROJECT_COST"
+      //   },
+      //   { jsonPath: "NULMSEPRequest.projectCost" }
+      // ),
       loanAmount: getLabelWithValue(
         {
           labelName: "Amount of Loan required",
@@ -252,13 +252,13 @@ export const getSEPDetailsView = (isReview = true) => {
         },
         { jsonPath: "NULMSEPRequest.loanAmount" }
       ),
-      recommendedAmount: getLabelWithValue(
-        {
-          labelName: "Amount Recommended by Task Force Committee",
-          labelKey: "NULM_SEP_AMOUNT_RECOMMENDED_BY_TASK_FORCE_COMMITTEE"
-        },
-        { jsonPath: "NULMSEPRequest.recommendedAmount" }
-      ),
+      // recommendedAmount: getLabelWithValue(
+      //   {
+      //     labelName: "Amount Recommended by Task Force Committee",
+      //     labelKey: "NULM_SEP_AMOUNT_RECOMMENDED_BY_TASK_FORCE_COMMITTEE"
+      //   },
+      //   { jsonPath: "NULMSEPRequest.recommendedAmount" }
+      // ),
 
       isLoanFromBankinginstitute: getLabelWithValue(
         {

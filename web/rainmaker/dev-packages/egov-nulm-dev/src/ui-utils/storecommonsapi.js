@@ -66,10 +66,15 @@ export const prepareDocumentsUploadData = async (state, dispatch, type) => {
 
   documents.forEach(doc => {
     // Handle the case for multiple muildings
-
+    const isHandicapped = get(state.screenConfiguration.preparedFinalObject, "NULMSEPRequest.isHandicapped");      
     let card = {};
     card["name"] = doc.code;
     card["code"] = doc.code;
+    if(isHandicapped ==='YES' && doc.code ==='NULM_DISABILITY_CERTIFICATE')
+    {
+      card["required"] = true ;
+    }
+    else
     card["required"] = doc.required ? true : false;
     if (doc.hasDropdown && doc.dropdownData) {
       let dropdown = {};

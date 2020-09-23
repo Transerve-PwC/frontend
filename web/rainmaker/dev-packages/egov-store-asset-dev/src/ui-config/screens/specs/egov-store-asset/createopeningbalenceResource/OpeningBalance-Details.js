@@ -9,7 +9,7 @@ import {
     getPattern
   } from "egov-ui-framework/ui-config/screens/specs/utils";
  import { getTodaysDateInYMD } from "../../utils";
-  
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
   export const OpeningBalanceDetails = getCommonCard({
     header: getCommonTitle(
       {
@@ -46,7 +46,8 @@ import {
               labelName: "Select Financial Year",
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR_SELECT"
             },
-            required: true,
+            required: true,           
+            errorMessage:"STORE_VALIDATION_FINANCIAL_YEAR",
             jsonPath: "materialReceipt[0].financialYear",
             sourceJsonPath: "searchScreenMdmsData.egf-master.FinancialYear",
             props: {
@@ -68,6 +69,7 @@ import {
               labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_STORE_SELECT",
             jsonPath: "materialReceipt[0].receivingStore.code",
             gridDefination: {
               xs: 12,
@@ -148,6 +150,7 @@ import {
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_LOT_NO"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_LOT_NUMBER",
             pattern: getPattern("Name") || null,
             jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].lotNo"
           })
@@ -163,6 +166,7 @@ import {
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_EXPIRY_DATE"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_EXPIRY_DATE_SELECT",
             pattern: getPattern("Date") || null,
             jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate",
             props: {
@@ -183,6 +187,7 @@ import {
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_OPENING_QTY"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_OPENING_QUANTITY",
             pattern: getPattern("Amount") || null,
             jsonPath: "materialReceipt[0].receiptDetails[0].userReceivedQty"
           })
@@ -198,11 +203,11 @@ import {
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_OPENING_RATE"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_OPENING_RATE",
             pattern: getPattern("Amount") || null,
             jsonPath: "materialReceipt[0].receiptDetails[0].unitRate"
           })
         },
-
         receiptNumber: {
           ...getTextField({
             label: {
@@ -229,6 +234,7 @@ import {
             labelKey: "STORE_MATERIAL_OPENNING_BALANCE_RECEIPT_DATE"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_RECEIPT_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate",
           props: {
@@ -249,12 +255,13 @@ import {
             labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_REMARK",
           props: {
             className: "applicant-details-error",
             multiline: "multiline",
             rowsMax: 2,
           },
-          pattern: getPattern("eventDescription") || null,
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialReceipt[0].receiptDetails[0].remarks"
         })
       }, 

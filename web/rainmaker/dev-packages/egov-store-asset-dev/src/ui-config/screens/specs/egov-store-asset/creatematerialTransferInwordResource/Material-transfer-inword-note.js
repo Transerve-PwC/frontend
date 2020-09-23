@@ -10,6 +10,7 @@ import {
  // import { getTodaysDateInYMD } from "../../utils";
  import set from "lodash/set";
  import get from "lodash/get";
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
  import {
   convertDateToEpoch,
@@ -116,6 +117,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_RECEIPT_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "transferInwards[0].receiptDate",
           props: {            
@@ -221,7 +223,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             rowsMax: 2,
           },
           required: false,
-          pattern: getPattern("eventDescription") || null,
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "transferInwards[0].inspectionRemarks"
         })
       }, 

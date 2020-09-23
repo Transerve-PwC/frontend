@@ -1910,3 +1910,59 @@ export const UpdateStatus = async (dispatch, url, queryObject, code) => {
     );
   }
 };
+export const getNULMPattern = type => {
+  switch (type) {
+    case "Name":
+      return /^[^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,.:;“”‘’]{1,50}$/i;
+    case "MobileNo":
+      return /^[6789][0-9]{9}$/i;
+    case "Percentage":
+      return /^[0-9]{0,3}$/i;
+      case "Year":
+        return /^\d+(?:\.\d{1,2})?$/i;
+    case "AmountLoan":
+      return /^[0-9]{0,6}$/i;
+    case "Amount":
+      return /^[0-9]{0,18}$/i;
+    case "Email":
+      return /^(?=^.{1,64}$)((([^<>()\[\]\\.,;:\s$*@'"]+(\.[^<>()\[\]\\.,;:\s@'"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$/i;
+    case "Address":
+      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;]{1,500}$/i;
+    case "PAN":
+      return /^[A-Za-z]{5}\d{4}[A-Za-z]{1}$/i;
+    case "TradeName":
+      return /^[^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,.:;“”‘’]{1,100}$/i;
+    case "Date":
+      return /^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/i;
+    case "UOMValue":
+      return /^(0)*[1-9][0-9]{0,3}$/i;
+    case "OperationalArea":
+      return /^(0)*[1-9][0-9]{0,6}$/i;
+    case "NoOfEmp":
+      return /^(0)*[1-9][0-9]{0,2}$/i;
+    case "GSTNo":
+      return /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/i;
+    case "DoorHouseNo":
+      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,50}$/i;
+    case "BuildingStreet":
+      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,100}$/i;
+    case "Pincode":
+      return /^[1-9][0-9]{5}$/i;
+    case "PropertyID":
+      return /^[a-zA-z0-9\s\\/\-]$/i;
+    case "ElectricityConnNo":
+      return /^[0-9]{15}$/i;
+    case "eventName":
+      return /^[^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,.:;“”‘’]{1,65}$/i;
+    case "eventDescription":
+      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,500}$/i;
+    case "FireNOCNo":
+      return /^[a-zA-Z0-9-]*$/i;
+    case "consumerNo":
+      return /^[a-zA-Z0-9/-]*$/i;
+      case "Comment":
+        return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,500}$/i;
+        case "WFComment":
+        return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,120}$/i;
+  }
+};

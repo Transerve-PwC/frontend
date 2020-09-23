@@ -36,7 +36,7 @@ import {
 	fetchApplications, fetchPayment, fetchHistory, fetchDataAfterPayment, downloadReceiptForPCC, downloadAppForPCC,
 	sendMessage,downloadPLForPCC,
 	sendMessageMedia
-} from "../../redux/bookings/actions";
+} from "egov-ui-kit/redux/bookings/actions";
 import { connect } from "react-redux";
 import DialogContainer from '../../modules/DialogContainer';
 import Footer from "../../modules/footer"
@@ -96,7 +96,8 @@ class ApplicationDetails extends Component {
 			{
 				"applicationNumber": match.params.applicationId, 'uuid': userInfo.uuid,
 				"applicationStatus": "",
-				"mobileNumber": "", "bookingType": ""
+				"mobileNumber": "", "bookingType": "",
+				"tenantId":userInfo.tenantId
 			}
 		);
 		fetchHistory([
@@ -835,9 +836,9 @@ const mapCitizenIdToMobileNumber = (citizenObjById, id) => {
 let gro = "";
 
 const mapStateToProps = (state, ownProps) => {
-	const { complaints, common, auth, form } = state;
-	const { applicationData } = complaints;
-	const { DownloadPaymentReceiptDetails,DownloadApplicationDetails,DownloadPermissionLetterDetails } = complaints;
+	const { bookings, common, auth, form } = state;
+	const { applicationData } = bookings;
+	const { DownloadPaymentReceiptDetails,DownloadApplicationDetails,DownloadPermissionLetterDetails } = bookings;
 	const { id } = auth.userInfo;
 
 	const { employeeById, departmentById, designationsById, cities } =
@@ -850,11 +851,11 @@ const mapStateToProps = (state, ownProps) => {
 	let bookingDocs;
 	console.log('state===>>>',state)
 	let documentMap = applicationData && applicationData.documentMap ? applicationData.documentMap : '';
-	const { HistoryData } = complaints;	
+	const { HistoryData } = bookings;	
 	let historyObject = HistoryData ? HistoryData : ''
-	const { paymentData } = complaints;
-	console.log('complaints===>>>',complaints,'paymentData',paymentData)
-	const { fetchPaymentAfterPayment } = complaints;
+	const { paymentData } = bookings;
+	console.log('bookings===>>>',bookings,'paymentData',paymentData)
+	const { fetchPaymentAfterPayment } = bookings;
 
 	let paymentDetailsForReceipt = fetchPaymentAfterPayment;
 	let paymentDetails;

@@ -4,11 +4,7 @@ import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 
-
-
 class BwtApplicantDetails extends Component {
-
-
   render() {
     const { status, applicantName, applicationNo, bkEmail, bkConstructionType, areaRequired, bkDuration, bkCategory, submittedDate, bkMobileNumber, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
 

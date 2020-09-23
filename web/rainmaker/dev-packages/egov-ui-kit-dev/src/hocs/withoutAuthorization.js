@@ -67,7 +67,7 @@ const withoutAuthorization = (redirectionUrl) => (Component) => {
 
     componentDidMount() {
       if (this.props.authenticated) {
-        if(window.location.pathname ==="/user/otp" && window.location.search.includes("mobileno") && window.location.search.includes("ecno")){
+        if(window.location.pathname.includes("/user/otp") && window.location.search.includes("mobileno") && window.location.search.includes("ecno")){
         }
         else{
           this.props.history.push(redirectionUrl);

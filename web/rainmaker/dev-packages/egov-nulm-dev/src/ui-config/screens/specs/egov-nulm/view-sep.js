@@ -121,7 +121,7 @@ import {
                                         if(viewScreenMdmsData && viewScreenMdmsData.NULM && viewScreenMdmsData.NULM.SEPDocuments){
 
                                           const {SEPDocuments} = viewScreenMdmsData.NULM;
-                                          const documentsDes = ["Bpl Yellow Card","voter card","Aadhar card","Pan Card","Photo copy of Applicant"]
+                                          const documentsDes = ["Copy of Ration card / Priority household card","Copy of Election commissioner id proof","Copy of Aadhar card","Copy of Pan Card","Photo of Applicant","Disability Certificate"]
                                           const indexOfDoc = documentsDes.findIndex(doc =>  doc === docInfo.documentType )
 
                                             documentsUploadRedux[indexOfDoc] = {                          

@@ -5,8 +5,7 @@ import get from "lodash/get";
 import MenuButton from "egov-ui-framework/ui-molecules/MenuButton";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import { SortDialog, Screen } from "modules/common";
-import { fetchApplications } from "../../redux/bookings/actions";
-import { fetchMccApplications } from "../../redux/bookings/actions";
+import { fetchApplications,fetchMccApplications } from "egov-ui-kit/redux/bookings/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { transformComplaintForComponent } from "egov-ui-kit/utils/commons";
@@ -44,7 +43,7 @@ class AllRequests extends Component {
     sortPopOpen: false,
     errorText: "",
     currency: '',
-    open: false, setOpen: false
+    open: false, setOpen: false,applicationList:[],
   };
   style = {
     iconStyle: {
@@ -68,53 +67,30 @@ class AllRequests extends Component {
     let {
       role,
       userInfo,
-      numCSRComplaint,
-      numEmpComplaint,
-      renderCustomTitle,
-      prepareFinalObject
     } = this.props;
 
     let rawRole =
       userInfo && userInfo.roles && userInfo.roles[0].code.toUpperCase();
-
-    if (rawRole === "PGR-ADMIN") {
-      this.props.history.push("/report/rainmaker-pgr/DepartmentWiseReport");
-    } else {
       let { fetchApplications, fetchMccApplications } = this.props;
-
-      let complaintCountRequest = [
-        { key: 'uuId', value: userInfo.uuid },
-
-        { key: "tenantId", value: getTenantId() },
-        {
-          key: "status",
-          value:
-            role === "csr"
-              ? "assigned,open,reassignrequested"
-              : role === "eo"
-                ? "escalatedlevel1pending,escalatedlevel2pending"
-                : "assigned,reassignrequested"
-        }
-      ];
       fetchMccApplications(
         {
           "uuid": userInfo.uuid, "applicationNumber": "",
           "applicationStatus": "",
-          "mobileNumber": "", "bookingType": ""
+          "mobileNumber": "", "bookingType": "",
+          "tenantId":userInfo.tenantId
         },
         true,
         true
       );
 
-    }
-    let inputType = document.getElementsByTagName("input");
-    for (let input in inputType) {
-      if (inputType[input].type === "number") {
-        inputType[input].addEventListener("mousewheel", function () {
-          this.blur();
-        });
-      }
-    }
+
+      // let appListFromAPI = await httpRequest(
+      //   "egov-workflow-v2/egov-wf/process/_search?",
+      //   "_search", [],
+      //   []
+      // );
+      // this.setState({applicationList:appListFromAPI&&appListFromAPI.ProcessInstances})
+      // console.log('appListFromAPI',appListFromAPI)
   };
 
   componentWillReceiveProps = nextProps => {
@@ -204,6 +180,7 @@ class AllRequests extends Component {
       queryObj.applicationStatus = "";
       queryObj.mobileNumber = "";
       queryObj.bookingType = "";
+      queryObj.tenantId=userInfo.tenantId;
 
     }
 
@@ -212,6 +189,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = '';
       queryObj.mobileNumber = "";
       queryObj.bookingType = "";
+      queryObj.tenantId=userInfo.tenantId;
 
     }
 
@@ -220,6 +198,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId=userInfo.tenantId;
 
     }
     if (bookingType) {
@@ -227,6 +206,7 @@ class AllRequests extends Component {
       queryObj.mobileNumber = "";
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
+      queryObj.tenantId=userInfo.tenantId;
     }
 
     if (fromDate) {
@@ -235,6 +215,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.fromDate = fromDate;
+      queryObj.tenantId=userInfo.tenantId;
     }
     if (toDate) {
       queryObj.bookingType = "";
@@ -242,6 +223,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.toDate = toDate;
+      queryObj.tenantId=userInfo.tenantId;
     }
 
     if (searchForm && searchForm.fromDate) {
@@ -250,6 +232,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId=userInfo.tenantId;
 
     }
 
@@ -259,6 +242,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId=userInfo.tenantId;
     }
 
     if (complaintNo) {
@@ -307,104 +291,8 @@ class AllRequests extends Component {
     }
     this.setState({ search: true });
   };
-  handleFormFields = () => {
+ 
 
-    let { metaData, searchForm, labels } = this.props;
-
-    if (!_.isEmpty(metaData) && metaData.reportDetails && metaData.reportDetails.searchParams && metaData.reportDetails.searchParams.length > 0) {
-      return metaData.reportDetails.searchParams.map((item, index) => {
-        item["value"] = !_.isEmpty(searchForm) ? (searchForm[item.name] ? searchForm[item.name] : "") : "";
-        if (item.type === "epoch" && item.minValue && item.maxValue && typeof item.minValue !== "object" && typeof item.maxValue !== "object") {
-          item.minValue = this.toDateObj(item.minValue);
-          item.maxValue = this.toDateObj(item.maxValue);
-        } else if (item.type === "epoch" && item.name == "fromDate" && item.maxValue === null) {
-          item.maxValue = new Date();
-        }
-        if (item.type === "singlevaluelist") {
-          item["searchText"] = !_.isEmpty(searchForm) ? (searchForm[item.name] ? searchForm[item.name] : "") : "";
-        }
-        return (
-          item.name !== "tenantId" && (
-            <ShowField
-              value={item["value"]}
-              key={index}
-              obj={item}
-              dateField={this.state.datefield}
-              dateError={this.state.dateError}
-              handler={this.handleChange}
-            />
-          )
-        );
-      });
-    }
-  };
-
-
-
-
-
-  checkDate = (value, name, required, pattern) => {
-    let e = {
-      target: {
-        value: value,
-      },
-    };
-
-    if (name == "fromDate") {
-      let startDate = value;
-      if (this.props.searchForm) {
-        try {
-          let endDate = this.props.searchForm.toDate;
-          this.props.handleChange(e, name, required, pattern);
-          this.validateDate(startDate, endDate, required, "fromDate");
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        this.props.handleChange(e, name, required, pattern);
-      }
-    } else {
-      let endDate = value;
-      if (this.props.searchForm) {
-        try {
-          let startDate = this.props.searchForm.fromDate;
-          this.props.handleChange(e, name, required, pattern);
-          this.validateDate(startDate, endDate, required, "toDate");
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    }
-  };
-
-  validateDate = (startDate, endDate, required, field) => {
-    if (startDate && endDate) {
-      let sD = new Date(startDate);
-      sD.setHours(0, 0, 0, 0);
-      let eD = new Date(endDate);
-      eD.setHours(0, 0, 0, 0);
-      if (eD >= sD) {
-        this.setState({ datefield: "" });
-        this.setState({ dateError: "" });
-      } else {
-        let e = {
-          target: {
-            value: "",
-          },
-        };
-        this.props.handleChange(e, field, required, "");
-        this.setState({ datefield: field });
-        this.setState({
-          dateError:
-            field === "toDate" ? (
-              <Label labelStyle={{ color: "rgb(244, 67, 54)" }} label="REPORT_SEARCHFORM_DATE_GREATER" />
-            ) : (
-                <Label labelStyle={{ color: "rgb(244, 67, 54)" }} label="REPORT_SEARCHFORM_DATE_LESSER" />
-              ),
-        });
-      }
-    }
-  };
 
   clearSearch = () => {
     const { metaData, resetForm, searchForm, setSearchParams, userInfo } = this.props;
@@ -439,7 +327,8 @@ class AllRequests extends Component {
       {
         "uuid": userInfo.uuid, "applicationNumber": "",
         "applicationStatus": "",
-        "mobileNumber": "", "bookingType": ""
+        "mobileNumber": "", "bookingType": "",
+        "tenantId":userInfo.tenantId
       },
     );
     this.setState({ mobileNo: "", complaintNo: "", bookingType: "", applicationStatus: "", fromDate: "", toDate: "", search: false });
@@ -1107,21 +996,18 @@ const roleFromUserInfo = (roles = [], role) => {
 
 
 const mapStateToProps = state => {
-  const { complaints, common, screenConfiguration = {} } = state || {};
-  const { categoriesById, byId, order } = complaints;
-  const { fetchSuccess, MccApplicationData } = complaints;
+  const { bookings, common, screenConfiguration = {} } = state || {};
+  // const { categoriesById, byId, order } = bookings;
+  const { fetchSuccess, MccApplicationData } = bookings;
   const { preparedFinalObject = {} } = screenConfiguration;
   const { pgrComplaintCount = {} } = preparedFinalObject;
-  const {
-    assignedTotalComplaints = 0,
-    unassignedTotalComplaints = 0,
-    employeeTotalComplaints = 0
-  } = pgrComplaintCount;
-  const loading = !isEmpty(categoriesById)
-    ? fetchSuccess
-      ? false
-      : true
-    : true;
+
+  const loading = false;
+  // !isEmpty(categoriesById)
+  //   ? fetchSuccess
+  //     ? false
+  //     : true
+  //   : true;
   const { citizenById, employeeById } = common || {};
   const { userInfo } = state.auth;
   const role =

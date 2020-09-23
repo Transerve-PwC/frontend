@@ -263,7 +263,7 @@ export const callBackForNext = async (state, dispatch) => {
         {
           let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
           let LocalizationCodeValueQty = getLocalizationCodeValue("STORE_MATERIAL_INVALID_RECEIPT_QTY_VALIDATION")
-          if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty )
+          if((!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty) &&  !InvaldQtyCard[0].IsZeroQty)
     {
 
             // refresh card item
@@ -285,7 +285,40 @@ export const callBackForNext = async (state, dispatch) => {
         );
           }
           if(activeStep ===1)
-          moveToReview(dispatch)
+          {
+            let id = get(
+              state.screenConfiguration.preparedFinalObject,
+              "materialReceipt[0].id",
+              null
+            );
+            if(id)
+            {
+              moveToReview(dispatch);           
+            }
+            else{
+              const documents = get(state.screenConfiguration.preparedFinalObject, "documentsContract");
+              const uploadedDocs = get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux");
+              const isDocRequired =  documents.map(doc => {
+                      return  doc.cards && doc.cards[0].required;
+                  })
+                  let docArray = new Array(isDocRequired.length)
+
+                  if( uploadedDocs[0] && uploadedDocs[0].documents){
+                   // isFormValid = true;
+                    moveToReview(dispatch);
+                  }
+                  else
+                  {
+                    dispatch(
+                      toggleSnackbar(
+                        true,
+                        { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+                        "warning"
+                      ))
+                  }
+            }
+          }
+         // moveToReview(dispatch)
           else
           changeStep(state, dispatch);
           }
@@ -318,6 +351,15 @@ export const callBackForNext = async (state, dispatch) => {
             //   changeStep(state, dispatch);
             // }
       
+            }
+            else if (InvaldQtyCard[0].IsZeroQty)
+            {
+              const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+              const errorMessage = {              
+                labelName: "Quantity can not be Zero for",
+                labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+              };
+              dispatch(toggleSnackbar(true, errorMessage, "warning")); 
             }
 
           }

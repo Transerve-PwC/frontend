@@ -393,7 +393,7 @@ export const SMIDDetails = getCommonCard({
       props: {
         required: false,
         jsonPath: "NulmShgMemberRequest.minority",
-        label: { name: "Minority Religion", key: "NULM_SMID_MINORITY_RELIGION" },
+        label: { name: "Minority Religion", key: "NULM_SEP_MINORITY_RELIGION_INPUT" },
         buttons: [
           {
             labelName: "MUSLIM",

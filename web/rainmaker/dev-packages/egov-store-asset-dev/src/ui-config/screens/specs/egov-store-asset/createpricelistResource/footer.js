@@ -129,7 +129,41 @@ export const callBackForNext = async (state, dispatch) => {
             dispatch(prepareFinalObject("priceLists[0].priceListDetails",storeMappingTemp)
           );
             }
-      moveToReview(dispatch);
+
+            let id = get(
+              state.screenConfiguration.preparedFinalObject,
+              "priceLists[0].id",
+              null
+            );
+            if(id)
+            {
+              moveToReview(dispatch);
+           
+            }
+            else{
+              const documents = get(state.screenConfiguration.preparedFinalObject, "documentsContract");
+              const uploadedDocs = get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux");
+              const isDocRequired =  documents.map(doc => {
+                      return  doc.cards && doc.cards[0].required;
+                  })
+                  let docArray = new Array(isDocRequired.length)
+
+                  if( uploadedDocs[0] && uploadedDocs[0].documents){
+                   // isFormValid = true;
+                    moveToReview(dispatch);
+                  }
+                  else
+                  {
+                    dispatch(
+                      toggleSnackbar(
+                        true,
+                        { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+                        "warning"
+                      ))
+                  }
+            }
+
+    //  moveToReview(dispatch);
           }
           else{
             const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
@@ -142,7 +176,33 @@ export const callBackForNext = async (state, dispatch) => {
           }
   }
   else{
-    moveToReview(dispatch);
+    //
+    let id = get(
+      state.screenConfiguration.preparedFinalObject,
+      "priceLists[0].id",
+      null
+    );
+    if(id)
+    {
+      moveToReview(dispatch);
+   
+    }
+    else{
+      if (get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux") !== undefined) {
+        moveToReview(dispatch);
+      }
+      else{
+        dispatch(
+          toggleSnackbar(
+            true,
+            { labelName: "Please uplaod mandatory documents!", labelKey: "" },
+            "warning"
+          ))
+
+      }
+     
+
+    }
   }
 }
 

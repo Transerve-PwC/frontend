@@ -782,17 +782,7 @@ export const redirectfunction = async (state, dispatch) => {
 
 export const callBackForPrevious = (state, dispatch) => {
   toggleactionmenu(state, dispatch)
-  // if(localStorageGet("AllIndex"))
-  // {
-  //   store.dispatch(
-  //     handleField(
-  //       "generatepressNote",
-  //       "components.div.children.formwizardFirstStep.children.searchResultsPressMasterList",
-  //       "props.options.rowsSelected",
-  //       JSON.parse(localStorageGet("AllIndex"))
-  //     )
-  //   );
-  //   }
+  
   let tempAll = JSON.parse(localStorageGet("PressNoteListAll"));
       
  

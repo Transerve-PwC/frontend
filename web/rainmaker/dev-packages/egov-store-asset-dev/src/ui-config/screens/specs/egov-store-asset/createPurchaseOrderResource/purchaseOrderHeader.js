@@ -37,6 +37,7 @@ export const purchaseOrderHeader = getCommonCard({
         },
        
         required: true,
+            errorMessage:"STORE_VALIDATION_PURCHASE_TYPE_SELECT",
         jsonPath: "purchaseOrders[0].purchaseType",
        // sourceJsonPath: "searchMaster.storeNames",
         props: {
@@ -65,6 +66,7 @@ export const purchaseOrderHeader = getCommonCard({
           labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
         },
         required: true,
+            errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
         jsonPath: "purchaseOrders[0].store.code",
         sourceJsonPath: "searchMaster.storeNames",
         props: {
@@ -194,6 +196,7 @@ export const purchaseOrderHeader = getCommonCard({
           labelKey: "STORE_PURCHASE_ORDER_DATE",
         },
         required: true,
+            errorMessage:"STORE_VALIDATION_PURCHASE_OREDER_DATE_SELECT",
         pattern: getPattern("Date"),
         jsonPath: "purchaseOrders[0].purchaseOrderDate",
         props: {
@@ -211,6 +214,7 @@ export const purchaseOrderHeader = getCommonCard({
           labelKey: "STORE_PURCHASE_ORDER_RATETYPE_SELECT"
         },
         required: true,
+            errorMessage:"STORE_VALIDATION_RATE_TYPE_SELECT",
         jsonPath: "purchaseOrders[0].rateType",
         sourceJsonPath: "createScreenMdmsData.store-asset.PORateType",
         props: {
@@ -243,6 +247,7 @@ export const purchaseOrderHeader = getCommonCard({
           labelKey: "STORE_SUPPLIER_MASTER_NAME_SELECT"
         },
         required: true,
+            errorMessage:"STORE_VALIDATION_SUPPLIER_NAME_SELECT",
         jsonPath: "purchaseOrders[0].supplier.code",
         sourceJsonPath: "searchMaster.supplierName",
         props: {
@@ -337,6 +342,7 @@ export const purchaseOrderHeader = getCommonCard({
           labelKey: "STORE_PURCHASE_ORDER_EXPCT_DLVRY_DT"
         },
         required: true,
+            errorMessage:"STORE_VALIDATION_EXPECTED_DELIVERY_DATE",
         pattern: getPattern("Date"),
         jsonPath: "purchaseOrders[0].expectedDeliveryDate",
         props: {
@@ -361,6 +367,7 @@ export const purchaseOrderHeader = getCommonCard({
         labelKey: "STORE_PURCHASE_ORDER_DLVRY_TERM_PLCEHLDER",
       },
       required: true,
+            errorMessage:"STORE_VALIDATION_DELIVERY_TERMS",
       pattern: getSTOREPattern("Comment"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "purchaseOrders[0].deliveryTerms",

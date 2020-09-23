@@ -144,8 +144,28 @@ export const header = getCommonContainer({
         mdmsBody
       );
       // document type 
-      let fileUrl =
-      get(state, "screenConfiguration.preparedFinalObject.documentsPreview[0].link",'') 
+      //let title =
+      let id = get(
+        state.screenConfiguration.preparedFinalObject,
+        "materialReceipt[0].id",
+        null
+      );
+      let fileUrl =''
+
+      const step = getQueryArg(window.location.href, "step");
+      const mrnNumber = getQueryArg(window.location.href, "mrnNumber");
+      if(!step && !mrnNumber){
+       fileUrl ='';
+       //documentsUploadRedux
+       dispatch(
+        prepareFinalObject("documentsUploadRedux[0].documents", null)
+        );
+     }
+     else{
+      fileUrl =
+      get(state, "screenConfiguration.preparedFinalObject.documentsPreview[0].link",'')
+
+     }      
      let  DocumentType_PriceList= [
       {
           code: "STORE_DOCUMENT_TYPE_MATERIAL_RECEIPT_NOTE",
@@ -156,11 +176,13 @@ export const header = getCommonContainer({
           active: true
       },]
       dispatch(
-        prepareFinalObject("createScreenMdmsData", get(response, "MdmsRes"))
-      );
-      dispatch(
         prepareFinalObject("DocumentType_MaterialReceipt", DocumentType_PriceList)
       );
+    
+      dispatch(
+        prepareFinalObject("createScreenMdmsData", get(response, "MdmsRes"))
+      );
+     
       prepareDocumentsUploadData(state, dispatch, 'materialReceipt');
       setRolesList(state, dispatch);
       setHierarchyList(state, dispatch);

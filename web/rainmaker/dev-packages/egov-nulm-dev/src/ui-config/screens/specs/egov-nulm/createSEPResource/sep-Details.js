@@ -8,7 +8,7 @@ import {
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "../../utils";
-
+import { getNULMPattern } from "../../../../../ui-utils/commons";
 export const SepDetails = getCommonCard({
   header: getCommonTitle(
     {
@@ -84,6 +84,7 @@ export const SepDetails = getCommonCard({
           labelName: "Enter age",
           labelKey: "NULM_SEP_AGE_PLACEHOLDER"
         },
+        visible:false,
         required: true,
         pattern: getPattern("age") || null,
         jsonPath: "NULMSEPRequest.age"
@@ -113,15 +114,16 @@ export const SepDetails = getCommonCard({
     adharNo: {
       ...getTextField({
         label: {
-          labelName: "Adhar Number",
-          labelKey: "NULM_SEP_ADHAR_NUMBER"
+          labelName: "Adhar Number(mentioned last four digits only)",
+          labelKey: "NULM_SEP_ADHAR_NUMBER_INPUT"
         },
         placeholder: {
           labelName: "Enter Adhar Number",
           labelKey: "NULM_SEP_ADHAR_NUMBER_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("aadhar") || null,
+        pattern: getPattern("UOMValue") || null,
+        errorMessage: "NULM_SEP_ADHAR_NUMBER_INPUT_VALIDATION",
         jsonPath: "NULMSEPRequest.adharNo"
       })
     },
@@ -201,7 +203,7 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_CONTACT_NUMBER_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("numeric-only") || null,
+        pattern: getPattern("MobileNo") || null,
         jsonPath: "NULMSEPRequest.contact"
       })
     },
@@ -217,13 +219,14 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_SINCE_HOW_LONG_IN_CHANDIGARH_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("numeric-only") || null,
+        //pattern: getPattern("numeric-only") || null,
+        pattern:getNULMPattern("Year"),
         jsonPath: "NULMSEPRequest.sinceHowLongInChandigarh"
       })
     },
 
     qualification: {
-      ...getTextField({
+      ...getSelectField({
         label: {
           labelName: "Qualification",
           labelKey: "NULM_SEP_QUALIFACATION"
@@ -234,7 +237,14 @@ export const SepDetails = getCommonCard({
         },
         required: true,
         pattern: getPattern("Address") || null,
-        jsonPath: "NULMSEPRequest.qualification"
+        //applyScreenMdmsData
+        sourceJsonPath:
+       "applyScreenMdmsData.NULM.Qualification",
+        jsonPath: "NULMSEPRequest.qualification",
+        props: {
+          optionValue: "code",
+          optionLabel: "name",
+        },
       })
     },
 
@@ -363,7 +373,7 @@ export const SepDetails = getCommonCard({
       props: {
         required: false,
         jsonPath: "NULMSEPRequest.minority",
-        label: { name: "Minority Religion", key: "NULM_SEP_MINORITY_RELIGION" },
+        label: { name: "Minority Religion", key: "NULM_SEP_MINORITY_RELIGION_INPUT" },
         buttons: [
           {
             labelName: "MUSLIM",
@@ -430,6 +440,34 @@ export const SepDetails = getCommonCard({
       },
       type: "array",    
     },
+    disabilityCertificate: {
+      uiFramework: "custom-containers",
+      componentPath: "RadioGroupContainer",
+      gridDefination: {
+        xs: 6
+      },
+      jsonPath: "NULMSEPRequest.disabilityCertificate",
+      type: "array",
+      props: {
+        required: true,
+        jsonPath: "NULMSEPRequest.disabilityCertificate",
+        label: { name: "Disability Certificate Available", key: "NULM_SEP_NULM_DISABILITY_CERTIFICATE" },
+        buttons: [
+          {
+            labelName: "YES",
+            labelKey: "NULM_SEP_YES",
+            value:"YES",           
+          },
+          {
+            label: "NO",
+            labelKey: "NULM_SEP_NO",
+            value:"NO",           
+          },        
+        ],      
+        defaultValue: "NO"
+      },
+      type: "array",    
+    },
 
     typeofbusiness: {
       ...getTextField({
@@ -451,14 +489,14 @@ export const SepDetails = getCommonCard({
       ...getTextField({
         label: {
           labelName: "Previous experience in the line if any",
-          labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY_PLACEHOLDER"
+          labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY"
         },
         placeholder: {
           labelName: "Enter Previous experience in the line if any",
           labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("numeric-only") || null,
+        pattern: getPattern("Address") || null,
         jsonPath: "NULMSEPRequest.previousExperience"
       })
     },
@@ -522,6 +560,7 @@ export const SepDetails = getCommonCard({
           labelName: "Enter Project Cost",
           labelKey: "NULM_SEP_PROJECT_COST_PLACEHOLDER"
         },
+        visible:false,
         required: false,
         pattern: getPattern("Amount") || null,
         jsonPath: "NULMSEPRequest.projectCost"
@@ -539,7 +578,8 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_AMOUNT_OF_LOAN_REQUIRED_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("Amount") || null,
+        pattern: getNULMPattern("AmountLoan") || null,
+        errorMessage: "NULM_SEP_AMOUNT_OF_LOAN_REQUIRED_VALIDATION",
         jsonPath: "NULMSEPRequest.loanAmount"
       })
     },
@@ -556,6 +596,7 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_AMOUNT_RECOMMENDED_BY_TASK_FORCE_COMMITTEE_PLACEHOLDER"
         },
         required: true,
+        visible:false,
         pattern: getPattern("Amount") || null,
         jsonPath: "NULMSEPRequest.recommendedAmount"
       })

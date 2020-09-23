@@ -47,7 +47,7 @@ import {
 	fetchApplications, fetchPayment, fetchHistory, fetchDataAfterPayment,
 	sendMessage,
 	sendMessageMedia,downloadReceiptforCG,downloadBWTApplication
-} from "../../redux/bookings/actions";
+} from "egov-ui-kit/redux/bookings/actions";
 import { connect } from "react-redux";
 
 import "./index.css";
@@ -121,7 +121,8 @@ class BwtApplicationDetails extends Component {
 			{
 				"applicationNumber": match.params.applicationId, 'uuid': userInfo.uuid,
 				"applicationStatus": "",
-				"mobileNumber": "", "bookingType": ""
+				"mobileNumber": "", "bookingType": "",
+      			"tenantId":userInfo.tenantId
 			}
 		);
 		fetchHistory([
@@ -886,57 +887,20 @@ const roleFromUserInfo = (roles = [], role) => {
 		: false;
 };
 
-const getLatestStatus = status => {
-	let transformedStatus = "";
-	switch (status.toLowerCase()) {
-		case "open":
-		case "new":
-			transformedStatus = "UNASSIGNED";
-			break;
-		case "resolved":
-		case "rejected":
-		case "closed":
-			transformedStatus = "CLOSED";
-			break;
-		case "assigned":
-			transformedStatus = "ASSIGNED";
-			break;
-		case "reassignrequested":
-			transformedStatus = "REASSIGN";
-			break;
-		case "escalatedlevel1pending":
-			transformedStatus = "ESCALATED";
-			break;
-		case "escalatedlevel2pending":
-			transformedStatus = "ESCALATED";
-			break;
-		default:
-			transformedStatus = "CLOSED";
-			break;
-	}
-	return transformedStatus;
-};
-const mapCitizenIdToName = (citizenObjById, id) => {
-	return citizenObjById && citizenObjById[id] ? citizenObjById[id].name : "";
-};
-const mapCitizenIdToMobileNumber = (citizenObjById, id) => {
-	return citizenObjById && citizenObjById[id]
-		? citizenObjById[id].mobileNumber
-		: "";
-};
+
 let gro = "";
 
 const mapStateToProps = (state, ownProps) => {
-	const { complaints, common, auth, form } = state;
-	const { applicationData } = complaints;
-	const { DownloadReceiptDetailsforCG,DownloadBWTApplicationDetails } = complaints;
+	const { bookings, common, auth, form } = state;
+	const { applicationData } = bookings;
+	const { DownloadReceiptDetailsforCG,DownloadBWTApplicationDetails } = bookings;
 	
 	const { id } = auth.userInfo;
 	const { citizenById } = common || {};
 
 	const { employeeById, departmentById, designationsById, cities } =
 		common || {};
-	const { categoriesById } = complaints;
+	// const { categoriesById } = bookings;
 	const { userInfo } = state.auth;
 
 
@@ -948,11 +912,11 @@ const mapStateToProps = (state, ownProps) => {
 
 
 	let documentMap = applicationData && applicationData.documentMap ? applicationData.documentMap : '';
-	const { HistoryData } = complaints;
+	const { HistoryData } = bookings;
 
 	let historyObject = HistoryData ? HistoryData : ''
-	const { paymentData } = complaints;
-	const { fetchPaymentAfterPayment } = complaints;
+	const { paymentData } = bookings;
+	const { fetchPaymentAfterPayment } = bookings;
 
 let paymentDetailsForReceipt = fetchPaymentAfterPayment;
 	let paymentDetails;

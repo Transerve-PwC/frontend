@@ -354,11 +354,11 @@ if(response && response[0])
    set(response[0], `materialIssueDetails[${index}].indentDetail.indentQuantity`, Number(response[0].indent.indentDetails[index].indentQuantity) );
    set(response[0], `materialIssueDetails[${index}].indentDetail.TotalValue`,  Number(element.value));
    totalvalue = totalvalue+ Number(element.value)
-   totalIndentQty = totalIndentQty+ Number(response[0].indent.indentDetails[index].indentQuantity)
+   //totalIndentQty = totalIndentQty+ Number(response[0].indent.indentDetails[index].indentQuantity)
    TotalQty = TotalQty + Number(element.quantityIssued)
   }
   let totalDeductionValue = response[0].totalDeductionValue
-  set(response[0],`totalIndentQty`, totalIndentQty);
+  set(response[0],`totalIndentQty`, Number(response[0].indent.indentDetails[0].indentQuantity));
   set(response[0],`totalQty`, TotalQty);
   set(response[0],`totalvalue`, totalvalue - totalDeductionValue);
   // set(prepareFinalObject(`materialIssues[0].indentQuantity`, totalIndentQty));

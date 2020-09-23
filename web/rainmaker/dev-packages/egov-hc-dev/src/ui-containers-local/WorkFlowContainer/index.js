@@ -9,7 +9,7 @@ import {
   orderWfProcessInstances,
   getMultiUnits
 } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { convertDateToEpoch, convertEpochToDate } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSnackbar, toggleSpinner  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -68,10 +68,36 @@ class WorkFlowContainer extends React.Component {
         queryObject
       );
       if (payload && payload.ProcessInstances.length > 0) {
+        
         const processInstances = orderWfProcessInstances(
           payload.ProcessInstances
         );
-        addWflowFileUrl(processInstances, prepareFinalObject);
+        var finalProcessInstances = processInstances.map(function(element, index) {
+          if(index == 0)
+          {
+          var o = Object.assign({}, element);
+          o.numberOfDaysToTakeAction = Math.ceil((element.auditDetails.lastModifiedTime - element.auditDetails.createdTime)/(1000 * 3600 * 24) )
+          return o;}
+          else{
+          var o = Object.assign({}, element);
+          var currentDateArray = []
+          var prevDateArray = []
+          var prevDateArray = ((convertEpochToDate(processInstances[index-1].auditDetails.lastModifiedTime)).toString()).split("/")
+          var currentDateArray =((convertEpochToDate(element.auditDetails.lastModifiedTime)).toString()).split("/")
+          var prevDate = new Date(prevDateArray[2], prevDateArray[1]-1, prevDateArray[0])
+          var currentDate = new Date(currentDateArray[2], currentDateArray[1]-1, currentDateArray[0])
+          var prevDateString =  new Date(prevDate.toString())
+          var currentDateString = new Date(currentDate.toString())
+          
+          
+          var diff =(currentDateString.getTime() - prevDateString.getTime()) / 1000;
+          diff /= (60 * 60 * 24);
+          o.numberOfDaysToTakeAction = Math.abs(Math.round(diff));
+          return o;
+          }
+        })
+        
+        addWflowFileUrl(finalProcessInstances, prepareFinalObject);
       } else {
         toggleSnackbar(
           true,
@@ -113,32 +139,22 @@ class WorkFlowContainer extends React.Component {
         return "purpose=complete&status=success";
     case "INSPECT":
         return "purpose=inspect&status=success";  
-      case "FORWARD FOR INSPECTION":
-            return "purpose=forwardForInspection&status=success";
+    case "FORWARD FOR INSPECTION":
+          return "purpose=forwardForInspection&status=success";
+    case "VERIFY FOR CLOSURE":
+      return "purpose=verifyForClosure&status=success";
+      case "FORWARD FOR COMPLETION":
+        return "purpose=forwardForCompletion&status=success";
       //cases for TL
-      case "APPLY":
-        return "purpose=apply&status=success";
-      case "FORWARD":
-      case "RESUBMIT":
-        return "purpose=forward&status=success";
-      case "MARK":
-        return "purpose=mark&status=success";
-      case "VERIFY":
-        return "purpose=verify&status=success";
+      
+      
       case "REJECT":
         return "purpose=application&status=rejected";
       case "CANCEL":
         return "purpose=application&status=cancelled";
       case "APPROVE":
         return "purpose=approve&status=success";
-      case "SENDBACK":
-        return "purpose=sendback&status=success";
-      case "REFER":
-        return "purpose=refer&status=success";
-      case "SENDBACKTOCITIZEN":
-        return "purpose=sendbacktocitizen&status=success";
-      case "SUBMIT_APPLICATION":
-        return "purpose=apply&status=success";
+      
     }
   };
   
@@ -305,15 +321,12 @@ class WorkFlowContainer extends React.Component {
       
       if(data.assignee.length> 0)
       {
-
         data.isRoleSpecific=false;
       }
       else{
         data.isRoleSpecific=true
       }
 
-      //data.comm
-      // debugger;
       var validated= true;
 
       if(data.comment.length=== 0)
@@ -336,7 +349,10 @@ class WorkFlowContainer extends React.Component {
         );
       }
  
-        if(data.action==="VERIFY AND FORWARD" ||data.action==="REQUEST CLARIFICATION" || data.action==="APPROVE"){
+        if(data.action==="VERIFY AND FORWARD" 
+        ||data.action==="REQUEST CLARIFICATION" 
+        || data.action==="VERIFY FOR CLOSURE"  
+        || data.action==="FORWARDED FOR COMPLETION" ){
           if(data.roleList.length==0)
           {
             validated= false;  

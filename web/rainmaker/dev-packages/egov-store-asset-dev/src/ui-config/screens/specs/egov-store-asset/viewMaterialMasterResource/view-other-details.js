@@ -171,13 +171,13 @@ export const getOtherDetailsView = (isReview = true) => {
       reviewManufracturerPartNo: getLabelWithValue(
         { labelName: "Manufracturer Part No", labelKey: "STORE_MATERIAL_MANUFRACTURER_PART_NO" },
         {
-          jsonPath: "materials[0].manufracturerPartNo"
+          jsonPath: "materials[0].manufacturePartNo"
         }
       ),
       reviewTechnicalSpecifications: getLabelWithValue(
         { labelName: "Technical Specifications", labelKey: "STORE_MATERIAL_TECHNICAL_SPECIFICATIONS" },
         {
-          jsonPath: "materials[0].technicalSpecifications",
+          jsonPath: "materials[0].techincalSpecs",
           
         }
       ),

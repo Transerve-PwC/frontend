@@ -322,8 +322,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_STORE_NAME_PLACEHOLDER",
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_STORE_NAME",
           pattern: getPattern("Name"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+         
 
           jsonPath: "stores[0].name",
         }),
@@ -340,9 +341,10 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_STORE_CODE_PLACEHOLDER",
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_STORE_CODE",
 
           pattern: getPattern("non-empty-alpha-numeric"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+         
           jsonPath: "stores[0].code",
         }),
         department: getSelectField({
@@ -362,6 +364,7 @@ export const formwizardFirstStep = {
           jsonPath: "stores[0].department.code",
           sourceJsonPath: "createScreenMdmsData.store-asset.Department",
           required: true,
+            errorMessage:"STORE_VALIDATION_DEPARTMENT_SELECT",
         }),
         description: getTextField({
           label: {
@@ -378,8 +381,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_STORE_DESCRIPTION_PLACEHOLDER",
           },
           required: true,
-          pattern: getPattern("alpha-numeric-with-space-and-newline"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+            errorMessage:"STORE_VALIDATION_DESCRIPTION",
+          pattern: getSTOREPattern("Comment"),
+         
           jsonPath: "stores[0].description",
         }),
         divisionName: getTextField({
@@ -395,8 +399,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_DIVISION_NAME_PLACEHOLDER",
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_DIVISION_NAME",
           pattern: getPattern("non-empty-alpha-numeric"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+         
           jsonPath: "stores[0].divisionName",
         }),
         isCentralStore: {
@@ -434,8 +439,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_BILLING_ADDRESS_PLACEHOLDER",
           },
           required: true,
-          pattern: getPattern("alpha-numeric-with-space-and-newline"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+            errorMessage:"STORE_VALIDATION_BILLING_ADDRESS",
+          pattern: getSTOREPattern("Comment"),
+         
           jsonPath: "stores[0].billingAddress",
         }),
         deliveryAddress: getTextField({
@@ -453,8 +459,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_DELIVERY_ADDRESS_PLACEHOLDER",
           },
           required: true,
-          pattern: getPattern("alpha-numeric-with-space-and-newline"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+            errorMessage:"STORE_VALIDATION_DELIVERY_ADDRESS",
+          pattern: getSTOREPattern("Comment"),
+         
           jsonPath: "stores[0].deliveryAddress",
         }),
         storeInCharge: getSelectField({
@@ -474,6 +481,7 @@ export const formwizardFirstStep = {
           sourceJsonPath: "createScreenMdmsData1.employee",
           jsonPath: "stores[0].storeInCharge.code",
           required: true,
+            errorMessage:"STORE_VALIDATION_STORE_INCHARGE_SELECT",
         }),
         contactNo1: getTextField({
           label: {
@@ -488,8 +496,9 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_CONTACT_NUMBER_PLACEHOLDER",
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_CONTACT_NUMBER",
           pattern: getPattern("MobileNo"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+         
           jsonPath: "stores[0].contactNo1",
         }),
         contactNo2: getTextField({
@@ -505,7 +514,7 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_CONTACT_NUMBER_PLACEHOLDER",
           },
           pattern: getPattern("MobileNo"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+         
 
           jsonPath: "stores[0].contactNo2",
         }),
@@ -522,7 +531,7 @@ export const formwizardFirstStep = {
             labelKey: "STORE_DETAILS_EMAIL_PLACEHOLDER",
           },
           pattern: getPattern("Email"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          errorMessage:"STORE_VALIDATION_EMAIL",
           jsonPath: "stores[0].email",
         }),
         officeLocation: getSelectField({
@@ -542,6 +551,7 @@ export const formwizardFirstStep = {
           jsonPath: "stores[0].officeLocation.code",
           sourceJsonPath: "createScreenMdmsData.store-asset.Location",
           required: true,
+            errorMessage:"STORE_VALIDATION_OFFICE_LOCATION",
         }),
         active: {
           uiFramework: "custom-containers-local",

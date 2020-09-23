@@ -15,7 +15,7 @@ import{getMaterialBalanceRateResults} from '../../../../../ui-utils/storecommons
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import {  handleScreenConfigurationFieldChange as handleField, prepareFinalObject  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import { httpRequest } from "../../../../../ui-utils/api";
-
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
  const getMaterialData = async (action, state, dispatch) => {
   const tenantId = getTenantId();
   let queryObject = [
@@ -164,7 +164,7 @@ console.log(matcodes)
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME_SELECT"
           },
           required: true,
-         
+          errorMessage: "STORE_VALIDATION_ISSUE_STORE_NAME_SELECT",
           jsonPath: "materialIssues[0].fromStore.code",
           sourceJsonPath: "store.stores",
             props: {
@@ -263,6 +263,7 @@ console.log(matcodes)
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_ISSUE_DATE_SELECT",
           pattern: getPattern("Date") ,
           jsonPath: "materialIssues[0].issueDate",
           // props: {           
@@ -354,7 +355,8 @@ console.log(matcodes)
             rowsMax: 2,
           },
           required: true,
-          pattern: getPattern("eventDescription") || null,
+          errorMessage: "STORE_VALIDATION_REMARK",
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialIssues[0].description"
         })
       },

@@ -9,6 +9,7 @@ import report from "../reports/report";
 import properties from "../properties/reducer";
 import workFlow from "../workFlow/reducer";
 import screenConfiguration from "egov-ui-framework/ui-redux/screen-configuration/reducer";
+import bookings from "../bookings/reducer";
 
 const rootReducer = {
   app,
@@ -21,6 +22,7 @@ const rootReducer = {
   report,
   properties,
   screenConfiguration,
+  bookings,
   workFlow,
 };
 

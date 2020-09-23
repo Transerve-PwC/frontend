@@ -13,7 +13,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE,TYPES, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE, ACCOUNT_BALANCE } from "./searchResults";
+import { APPLICATION_NO, PROPERTY_ID, OWNER_NAME, STATUS, LAST_MODIFIED_ON, DATE, AMOUNT, TYPE,TYPES, REMAINING_INTEREST, REMAINING_PRINCIPAL, TOTAL_DUE, ACCOUNT_BALANCE,RECIEPT_NO } from "./searchResults";
 import { getAccountStatementProperty } from "../../../../../ui-utils/apply";
 import moment from "moment";
 import {
@@ -281,7 +281,8 @@ export const searchAccountStatement = async (state, dispatch) => {
             [REMAINING_INTEREST]:  formatAmount(item.remainingInterest.toFixed(2)),
             [REMAINING_PRINCIPAL]: formatAmount(item.remainingPrincipal.toFixed(2)),
             [TOTAL_DUE]: formatAmount(item.dueAmount.toFixed(2)),
-            [ACCOUNT_BALANCE]: formatAmount(item.remainingBalance.toFixed(2))
+            [ACCOUNT_BALANCE]: formatAmount(item.remainingBalance.toFixed(2)),
+            [RECIEPT_NO]:item.receiptNo||"-"
           }));
           let lastElement = data.pop();
           lastElement.Date = "Total as on "+lastElement.Date
@@ -321,12 +322,16 @@ export const searchAccountStatement = async (state, dispatch) => {
 export const downloadAccountStatementPdf = async(state, dispatch) => {
   const { RentAccountStatements } = state.screenConfiguration.preparedFinalObject;
   const {Properties} = state.screenConfiguration.preparedFinalObject;
+  let properties = Properties
+  properties[0].demands[0].remainingPrincipal = properties[0].demands[0].remainingPrincipal.toFixed(2)
   const data = RentAccountStatements.map(item =>
     ({
       ...item,
       date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
       amount : formatAmount(item.amount.toFixed(2)) || "-",
-      type : changeType(item.type || "-"),
+      typeP: changeType(item.type || "-"),
+      typeR:changePType(item.type) || "-",
+      receiptNo: item.receiptNo || "-",
       remainingInterest : formatAmount(item.remainingInterest.toFixed(2)),
       remainingPrincipal :formatAmount(item.remainingPrincipal.toFixed(2)),
       dueAmount :formatAmount(item.dueAmount.toFixed(2)),
@@ -339,7 +344,6 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
   lastElement.type = '-'
   lastElement.amount = '-'
   data.push(lastElement)
-  
   const mode = "download"
   let   queryStr = [{
     key: "key",
@@ -359,7 +363,7 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
   };
   try {
         httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
-          Properties : Properties,RentAccountStatements: data 
+          Properties : properties,RentAccountStatements: data 
           }, {
             'Accept': 'application/json'
           }, {

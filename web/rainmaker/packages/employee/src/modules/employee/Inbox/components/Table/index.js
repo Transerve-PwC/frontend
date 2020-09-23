@@ -21,6 +21,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import "./index.css";
 import get from "lodash/get"
+import {  convertEpochToDate } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 class InboxData extends React.Component {
   state = {
@@ -73,7 +74,48 @@ class InboxData extends React.Component {
     ];
     const payload = await httpRequest("egov-workflow-v2/egov-wf/process/_search?", "", queryObject);
     const processInstances = payload && payload.ProcessInstances.length > 0 && orderWfProcessInstances(payload.ProcessInstances);
+    var horticultureBusinessServices =
+    ["PRUNING OF TREES GIRTH LESS THAN OR EQUAL TO 90 CMS",
+     "PRUNING OF TREES GIRTH GREATER THAN 90 CMS",
+     "REMOVAL OF GREEN TREES",
+     "REMOVAL OF DEAD/DANGEROUS/DRY TREES" ]
+     if(horticultureBusinessServices.includes(processInstances[0].businessService))
+    {
+      var finalProcessInstancesHorticulture = processInstances.map(function(element, index) {
+        if(index == 0)
+        {
+        var o = Object.assign({}, element);
+        o.numberOfDaysToTakeAction = Math.ceil((element.auditDetails.lastModifiedTime - element.auditDetails.createdTime)/(1000 * 3600 * 24) )
+        return o;
+      
+      }
+        else{
+        var o = Object.assign({}, element);
+        var currentDateArray = []
+        var prevDateArray = []
+        var prevDateArray = ((convertEpochToDate(processInstances[index-1].auditDetails.lastModifiedTime)).toString()).split("/")
+        var currentDateArray =((convertEpochToDate(element.auditDetails.lastModifiedTime)).toString()).split("/")
+        var prevDate = new Date(prevDateArray[2], prevDateArray[1]-1, prevDateArray[0])
+        var currentDate = new Date(currentDateArray[2], currentDateArray[1]-1, currentDateArray[0])
+        var prevDateString =  new Date(prevDate.toString())
+        var currentDateString = new Date(currentDate.toString())
+        
+        
+        var diff =(currentDateString.getTime() - prevDateString.getTime()) / 1000;
+        diff /= (60 * 60 * 24);
+        o.numberOfDaysToTakeAction = Math.abs(Math.round(diff));
+        return o;
+        }
+
+    })
+
+    return finalProcessInstancesHorticulture
+  }
+  else
+  {
     return processInstances;
+  
+  }
   };
 
   onHistoryClick = async (moduleNumber) => {

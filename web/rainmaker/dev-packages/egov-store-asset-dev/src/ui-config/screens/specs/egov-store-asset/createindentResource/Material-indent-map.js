@@ -43,7 +43,8 @@ import {
                   labelName: "Select Material Name",
                   labelKey: "STORE_MATERIAL_NAME_SELECT"
                 },
-                required: true,               
+                required: true,   
+                errorMessage: "STORE_VALIDATION_MATERIAL_NAME_SELECT",            
                 jsonPath: "indents[0].indentDetails[0].material.code",
                 sourceJsonPath: "materials.materials",
                 props: {
@@ -220,6 +221,8 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage: "STORE_VALIDATION_QUANTITY",
+                minValue:1,
                 pattern: getPattern("Amount") || null,
                 jsonPath: "indents[0].indentDetails[0].userQuantity"
               }),

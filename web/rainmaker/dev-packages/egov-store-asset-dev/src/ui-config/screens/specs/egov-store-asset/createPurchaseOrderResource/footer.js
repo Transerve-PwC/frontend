@@ -116,7 +116,7 @@ export const callBackForNext = async (state, dispatch) => {
   {
     let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
     let LocalizationCodeValueQty = getLocalizationCodeValue("STORE_MATERIAL_INVALID_PO_QTY_VALIDATION")
-    if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty )
+    if((!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty) &&  !InvaldQtyCard[0].IsZeroQty)
       {
 
         // refresh card item
@@ -137,7 +137,20 @@ export const callBackForNext = async (state, dispatch) => {
       dispatch(prepareFinalObject("purchaseOrders[0].purchaseOrderDetails",storeMappingTemp)
     );
       }
-      moveToReview(dispatch);
+        let totalIndentQty =  get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].totalIndentQty`,0)
+        let totalQty =  get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].totalQty`,0)
+        if(totalQty>totalIndentQty)
+        {
+          const errorMessage = {
+          
+            labelName: "Total issued quantity can not be greater than Indent quantity",
+            labelKey:   "STORE_TOTAL_QUANTITY_ISSUED_VALIDATION"
+          };
+          dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        }
+        else
+        moveToReview(dispatch)
+     // moveToReview(dispatch);
     }
     else{
       if(DuplicatItem[0].IsDuplicatItem)
@@ -161,6 +174,26 @@ export const callBackForNext = async (state, dispatch) => {
           //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
           // labelKey:   `${LocalizationCodeValue}` `${DuplicatItem[0].duplicates}`
           labelKey:   LocalizationCodeValueQty+' '+InvaldQtyCard[0].duplicates
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
+      else{
+        moveToReview(dispatch);
+      }
+
+      }
+      else if (InvaldQtyCard[0].IsZeroQty)
+      {
+        let indentNumber="";
+        const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+        indentNumber = getQueryArg(window.location.href, "indentNumber");
+        if(indentNumber){
+        const errorMessage = {
+        
+          labelName: "Quantity can not be Zero for",
+          //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+          // labelKey:   `${LocalizationCodeValue}` `${DuplicatItem[0].duplicates}`
+          labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
         };
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }

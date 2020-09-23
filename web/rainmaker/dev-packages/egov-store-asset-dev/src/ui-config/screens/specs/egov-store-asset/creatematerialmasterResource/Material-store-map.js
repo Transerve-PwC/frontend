@@ -37,6 +37,7 @@ import {
                 labelKey: "STORE_DETAILS_STORE_NAME_SELECT",
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
               jsonPath: "materials[0].storeMapping[0].store.code",
               gridDefination: {
                 xs: 12,
@@ -55,7 +56,11 @@ import {
               let store = get(state, "screenConfiguration.preparedFinalObject.store.stores",[]) 
               store = store.filter(x=>x.code == action.value)//.materialType.code
               if(store[0].department)
-              dispatch(prepareFinalObject(`materials[0].storeMapping[${cardIndex}].department.name`,store[0].department.name));
+              {
+                dispatch(prepareFinalObject(`materials[0].storeMapping[${cardIndex}].store.department.name`,store[0].department.name));
+                dispatch(prepareFinalObject(`materials[0].storeMapping[${cardIndex}].store.name`,store[0].name));
+              }
+              
               else
               dispatch(prepareFinalObject(`materials[0].storeMapping[${cardIndex}].department.name`,""));
             }
@@ -75,7 +80,7 @@ import {
                   disabled:true,
                 },
                 pattern: getPattern("Name") || null,
-                jsonPath: "materials[0].storeMapping[0].department.name"
+                jsonPath: "materials[0].storeMapping[0].store.department.name"
               })
             },
             AccountCode: getSelectField({

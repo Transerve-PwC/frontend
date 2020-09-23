@@ -350,7 +350,7 @@ const getFileUrl = async (dispatch,tenantId,fileStoreId)=>{
     FileURL = getCommonFileUrl(FileURL)
     let  documentsPreview= [
       {
-        title: "STORE_DOCUMENT_TYPE_MATERIAL_RECEIPT_NOTE",
+        title: "STORE_DOCUMENT_TYPE_RATE_CONTRACT_QUATION",
         linkText: "VIEW", 
         link:FileURL,//"https://chstage.blob.core.windows.net/fileshare/ch/undefined/July/15/1594826295177document.pdf?sig=R3nzPxT9MRMfROREe6LHEwuGfeVxB%2FKneAeWrDJZvOs%3D&st=2020-07-15T15%3A21%3A01Z&se=2020-07-16T15%3A21%3A01Z&sv=2016-05-31&sp=r&sr=b",
           

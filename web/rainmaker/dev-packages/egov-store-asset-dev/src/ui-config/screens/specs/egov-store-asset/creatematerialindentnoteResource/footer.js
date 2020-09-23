@@ -6,7 +6,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {ValidateCard, ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
+import {ValidateCard, ValidateCardUserQty,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
 import {
   getButtonVisibility,
   getCommonApplyFooter,
@@ -184,8 +184,9 @@ export const callBackForNext = async (state, dispatch) => {
           if((DuplicatItem && DuplicatItem[0])||(InvaldQtyCard &&InvaldQtyCard[0]))
           {
             let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+            const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
             let LocalizationCodeValueQty = getLocalizationCodeValue("STORE_MATERIAL_INVALID_INDENT_NOTE_QTY_VALIDATION")
-            if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty )
+            if((!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty ) && !InvaldQtyCard[0].IsZeroQty )
       {
 
               // refresh card item
@@ -207,9 +208,27 @@ export const callBackForNext = async (state, dispatch) => {
           );
             }
             if(activeStep ===1)
-            moveToReview(state,dispatch)
+            {
+              let totalIndentQty =  get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].totalIndentQty`,0)
+              let totalQty =  get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].totalQty`,0)
+              if(totalQty>totalIndentQty)
+              {
+                const errorMessage = {
+                
+                  labelName: "Total issued quantity can not be greater than Indent quantity",
+                  labelKey:   "STORE_TOTAL_QUANTITY_ISSUED_VALIDATION"
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+              }
+              else
+              moveToReview(state,dispatch)
+            }
+          
             else
-            changeStep(state, dispatch);            
+            {              
+             changeStep(state, dispatch);  
+            }
+                      
               
             }
             else{
@@ -221,24 +240,46 @@ export const callBackForNext = async (state, dispatch) => {
                 };
                 dispatch(toggleSnackbar(true, errorMessage, "warning"));
               }
-              else if (InvaldQtyCard[0].IsInvalidQty)
+              else if (InvaldQtyCard[0].IsZeroQty)// zero qty valudation
               {
                 
-                const errorMessage = {
-                
+                  const errorMessage = {                
+                    labelName: "Quantity can not be Zero for",
+                    labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+                  };
+                  dispatch(toggleSnackbar(true, errorMessage, "warning"));
+               
+              }
+              else  if(InvaldQtyCard[0].IsInvalidQty){
+                const errorMessage = {                
                   labelName: "Ordered Qty less then Indent Qty for",
                   labelKey:   LocalizationCodeValueQty+' '+InvaldQtyCard[0].duplicates
                 };
                 dispatch(toggleSnackbar(true, errorMessage, "warning"));
-             
-        
-              }
+              } 
 
             }
           }
         }
         else
-            changeStep(state, dispatch);  
+        {
+          let cardJsonPath =
+          "components.div.children.formwizardSecondStep.children.materialIssue.children.cardContent.children.materialIssueCard.props.items";
+         let pagename = `createMaterialIndentNote`;
+         let jasonpath =  "materialIssues[0].materialIssueDetails";
+         let InputQtyValue = "indentDetail.indentQuantity";
+         let TotalValue_ = "indentDetail.TotalValue";
+         let TotalQty ="indentDetail.userQuantity"
+         let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
+         if(Qty && Qty[0])
+         {
+         // dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, Qty[0].InputQtyValue));
+          dispatch(prepareFinalObject(`materialIssues[0].totalvalue`, Qty[0].TotalValue));
+          dispatch(prepareFinalObject(`materialIssues[0].totalQty`, Qty[0].TotalQty));
+
+         }
+         changeStep(state, dispatch);  
+        }
 
       }
      

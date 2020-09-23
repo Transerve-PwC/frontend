@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import formHOC from "egov-ui-kit/hocs/form";
 import { Screen } from "modules/common";
 import ApplicationResolvedForm from "./components/ApplicationResolvedForm";
-import { fetchApplications } from "egov-ui-kit/redux/complaints/actions";
+import { fetchApplications } from"egov-ui-kit/redux/bookings/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { handleFieldChange } from "egov-ui-kit/redux/form/actions";
@@ -25,17 +25,14 @@ class ApplicationResolved extends Component {
     fetchApplications(
       { 'uuid': userInfo.uuid, "applicationNumber": applicationNumber,
       "applicationStatus":"",
-      "mobileNumber":"","bookingType":"" }
+      "mobileNumber":"",
+      "bookingType":"",
+      "tenantId":userInfo.tenantId }
       
     );
   }
-
-  
-
   commentsValue = {};
-
   handleCommentsChange = (e, value) => {
-    
     this.commentsValue.textVal = e.target.value;
     this.setState({
       commentValue: e.target.value
@@ -79,8 +76,8 @@ class ApplicationResolved extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints = {} } = state || {};
-  const { applicationData } = complaints;
+  const { bookings = {} } = state || {};
+  const { applicationData } = bookings;
   let trasformData = applicationData.bookingsModelList[0];
   let businessServiceData = applicationData.businessService;
   return { trasformData, businessServiceData };
@@ -89,7 +86,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchApplications: criteria => dispatch(fetchApplications(criteria)),
+    fetchApplications: (criteria, hasUsers, overWrite) =>
+      dispatch(fetchApplications(criteria, hasUsers, overWrite)),
     handleFieldChange: (formKey, fieldKey, value) =>
       dispatch(handleFieldChange(formKey, fieldKey, value)),
     toggleSnackbarAndSetText: (open, message, error) =>

@@ -35,6 +35,7 @@ const applicationTypeFetchError = (error) => {
 
 const applicationFetchComplete = (payload, overWrite) => {
 	console.log('payload', payload, overWrite)
+	 console.log('actionTypes.APPLICATION_FETCH_COMPLETE',actionTypes)
 	return {
 		type: actionTypes.APPLICATION_FETCH_COMPLETE,
 		payload,
@@ -382,12 +383,12 @@ export const getComplaintDisplayOrder = (order) => {
 
 
 export const fetchApplications = (requestBody, hasUsers = true, overWrite) => {
-	requestBody.tenantId = "ch"
+	console.log('requestBody in own module',requestBody)
 	return async (dispatch, getState) => {
 		try {
 			let tenantId = "";
 			const payload = await httpRequest(APPLICATION.POST.URL, APPLICATION.POST.ACTION, [], requestBody);
-			console.log('payload1----2', payload)
+			console.log('payload in emp----2', payload)
 			dispatch(applicationFetchComplete(payload, overWrite));
 		} catch (error) {
 			dispatch(applicationFetchError(error.message));
@@ -556,7 +557,7 @@ export const fetchApplicaionSector = () => {
 	return async (dispatch) => {
 		try {
 			const payload = await httpRequest(CATEGORY.GET.URL, CATEGORY.GET.ACTION, [], requestBody);
-			
+			console.log('payload in fetch sector',payload)
 			dispatch(applicationSectorFetchSucess(payload));
 		} catch (error) {
 			dispatch(applicationSectorFetchError(error.message));
@@ -566,7 +567,6 @@ export const fetchApplicaionSector = () => {
 
 
 export const fetchMccApplications = (requestBody, hasUsers = true, overWrite) => {
-	requestBody.tenantId = "ch"
 	return async (dispatch, getState) => {
 		try {
 			let tenantId = "";

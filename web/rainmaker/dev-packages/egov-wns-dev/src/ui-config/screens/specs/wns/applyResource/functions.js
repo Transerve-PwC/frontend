@@ -82,7 +82,43 @@ export const propertySearchApiCall = async (state, dispatch) => {
               }
             }    
           }
-          dispatch(prepareFinalObject("applyScreen.property", propertyData))
+          dispatch(prepareFinalObject("applyScreen.property", propertyData));
+          const {preparedFinalObject} = state.screenConfiguration;
+          const {WaterConnection} = preparedFinalObject;
+
+          if(!(WaterConnection[0] && WaterConnection[0].waterProperty &&  WaterConnection[0].waterProperty.usageSubCategory)){
+          if(propertyData.usageCategory){
+            dispatch(
+              handleField(
+                "apply",
+                "components.div.children.formwizardFirstStep.children.propertyUsageDetails.children.cardContent.children.propertyUsage.children.PropertyUsageDetails.children.propertyUsageType", 
+                "props.value",
+                propertyData.usageCategory
+              )
+            )
+
+            let subTypeValues = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  "applyScreenMdmsData.PropertyTax.subUsageType"
+                );
+      
+              let subUsage=[];
+              subUsage = subTypeValues.filter(cur => {
+                          return (cur.code.startsWith(propertyData.usageCategory))
+                        });
+                  dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage));
+          }
+        }
+          // if(propertyData && propertyData.units && propertyData.units[0].usageCategory){
+          //   dispatch(
+          //     handleField(
+          //       "apply",
+          //       "components.div.children.formwizardFirstStep.children.propertyUsageDetails.children.cardContent.children.propertyUsage.children.PropertyUsageDetails.children.propertySubUsageType",
+          //       "props.value",
+          //       propertyData.units[0].usageCategory
+          //     )
+          //   )
+          // }
           showHideFields(dispatch, true);
         }
       } else {

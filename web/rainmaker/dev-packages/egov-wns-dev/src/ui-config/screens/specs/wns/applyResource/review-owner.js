@@ -321,4 +321,7 @@ export const renderService = () => {
   } else if (service === "SEWERAGE") {
     return getCommonContainer({ reviewConnectionType, reviewWaterClosets,reviewNoOfToilets })
   }
+  else{
+    return getCommonContainer({ reviewConnectionType, reviewNumberOfTaps, reviewWaterSource, reviewWaterSubSource, reviewPipeSize });
+  }
 }

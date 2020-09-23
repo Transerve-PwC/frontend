@@ -10,7 +10,6 @@ import {
   getMultiUnits
 } from "egov-ui-framework/ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
-
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
@@ -210,6 +209,7 @@ class WorkFlowContainer extends React.Component {
         action: data.action
       }
       data.waterSource = data.waterSource + "." + data.waterSubSource;
+    
     }
 
     if (moduleName === "NewSW1") {
@@ -349,6 +349,10 @@ class WorkFlowContainer extends React.Component {
       case "EDIT": return isAlreadyEdited
         ? `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit&edited=true`
         : `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit`;
+        case "WATERMODIFY":
+          return isAlreadyEdited
+          ? `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit&edited=true&service=WATER`
+          : `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit&service=WATER`;
     }
   };
 
@@ -435,7 +439,40 @@ class WorkFlowContainer extends React.Component {
     }
     return editAction;
   };
+  getWNSButtonForCitizen = (preparedFinalObject, status, businessId, moduleName) =>{   
+   // const btnName = ["Apply for Regular Connection","Reactivate Connection","Connection Conversion","Temporary Disconnection","Permanent Disconnection"]
+    const btnName = ["UPDATE_CONNECTION_HOLDER_INFO","APPLY_FOR_REGULAR_INFO","REACTIVATE_CONNECTION","CONNECTION_CONVERSION","TEMPORARY_DISCONNECTION","PERMANENT_DISCONNECTION"];
+      let actions  = btnName.map(btn => {
+              const buttonObj = {
+                buttonLabel: btn,
+                moduleName: moduleName,
+                tenantId: "ch.chandigarh",
+                isLast: true,
+                buttonUrl: this.getRedirectUrl("WATERMODIFY", businessId, moduleName)
+              }
 
+              return buttonObj;
+            });
+
+            //logic based on conditions  preparedFinalObject
+            const {WaterConnection} = preparedFinalObject;
+            let inWorkflow = false ;
+            inWorkflow = WaterConnection && WaterConnection[0].inWorkflow;
+            if(inWorkflow){
+              actions = [];
+            }
+            else if(status === "PENDING_FOR_REGULAR_CONNECTION"){
+              actions = actions.filter(item => item.buttonLabel === 'APPLY_FOR_REGULAR_INFO'); 
+            }
+            else if(status === "TEMPORARY_DISCONNECTED"){
+              actions = actions.filter(item => item.buttonLabel === 'REACTIVATE_CONNECTION'); 
+            }
+            else {
+              actions = actions.filter(item => item.buttonLabel !== 'REACTIVATE_CONNECTION' && item.buttonLabel !== 'APPLY_FOR_REGULAR_INFO'); 
+            }
+
+    return actions;
+}
   prepareWorkflowContract = (data, moduleName) => {
     const {
       getRedirectUrl,
@@ -443,7 +480,8 @@ class WorkFlowContainer extends React.Component {
       checkIfTerminatedState,
       getActionIfEditable,
       checkIfDocumentRequired,
-      getEmployeeRoles
+      getEmployeeRoles,
+      getWNSButtonForCitizen
     } = this;
     const {preparedFinalObject , prepareFinalObject} = this.props;
     let businessService = moduleName === data[0].businessService ? moduleName : data[0].businessService;
@@ -502,6 +540,16 @@ class WorkFlowContainer extends React.Component {
       });
     }
 
+    if(businessService=='NewWS1'){
+      const userRoles = JSON.parse(getUserInfo()).roles;
+      const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
+      const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;
+      if(roleIndex && !isButtonPresent ){
+        const buttonArray = getWNSButtonForCitizen(preparedFinalObject, applicationStatus, businessId,businessService);
+       actions = actions.concat(buttonArray);
+      }
+        
+    }
     let editAction = getActionIfEditable(
       applicationStatus,
       businessId,
@@ -510,6 +558,8 @@ class WorkFlowContainer extends React.Component {
     editAction.buttonLabel && actions.push(editAction);
     return actions;
   };
+
+
 
   convertOwnerDobToEpoch = owners => {
     let updatedOwners =

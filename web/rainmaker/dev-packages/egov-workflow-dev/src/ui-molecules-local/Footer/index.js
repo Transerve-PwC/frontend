@@ -170,6 +170,13 @@ class Footer extends React.Component {
         process.env.NODE_ENV === "development"
           ? item.buttonUrl
           : item.buttonUrl;
+        if(item.moduleName === "NewWS1"){
+          //need status check 
+        const btnName = ["UPDATE_CONNECTION_HOLDER_INFO","APPLY_FOR_REGULAR_INFO","REACTIVATE_CONNECTION","CONNECTION_CONVERSION","TEMPORARY_DISCONNECTION","PERMANENT_DISCONNECTION"];
+   
+          if(btnName.includes(item.buttonLabel))
+              window.localStorage.setItem("WNS_STATUS",item.buttonLabel);
+        }
       setRoute(url);
       return;
     }

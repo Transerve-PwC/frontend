@@ -15,6 +15,7 @@ import {
     getLocalizationCodeValue,
   
   } from "../../utils";
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -92,7 +93,8 @@ import {
                   labelName: "Select PO No",
                   labelKey: "STORE_MATERIAL_RECEIPT_PO_NUMBER_SELECT"
                 },
-                required: true,               
+                required: true,  
+                errorMessage:"STORE_VALIDATION_PURCHASE_OREDER_NUMBER",             
                 jsonPath: "materialReceipt[0].receiptDetails[0].purchaseOrderDetail.purchaseOrderNumber",
                 sourceJsonPath: "purchaseOrder.purchaseOrders",
                 props: {
@@ -195,7 +197,8 @@ import {
                   labelName: "Select Material Name",
                   labelKey: "STORE_MATERIAL_NAME_SELECT"
                 },
-                required: true,               
+                required: true,
+                errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",               
                 jsonPath: "materialReceipt[0].receiptDetails[0].material.code",
                 //sourceJsonPath: "createScreenMdmsData.store-asset.Material",
                 sourceJsonPath:"ReceiptMaterial",
@@ -354,6 +357,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_RECEIVED_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
               }),
@@ -374,6 +378,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_USER_RECEIVED_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty"
               }),
@@ -437,6 +442,7 @@ import {
                   disabled:true
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_REMARK",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].totalAcceptedvalue"
               }),
@@ -478,7 +484,7 @@ import {
                   rowsMax: 2,
                 },
                 required: false,
-                pattern: getPattern("eventDescription") || null,
+                pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].rejectionRemark"
               })
             },
@@ -496,6 +502,7 @@ import {
                   disabled:true
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_ABAILABLE_QUANTITY",
                 visible:false,
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].ValueofQtyaccepted"
@@ -523,6 +530,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_LOT_NUMBER",
                 pattern: getPattern("Name") || null,
                 //jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].lotNo"
                 jsonPath: "materialReceipt[0].receiptDetails[0].lotNo"
@@ -544,6 +552,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_SERIAL_NUMBER",
                 pattern: getPattern("Name") || null,
                 //jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].serialNo"
                 jsonPath: "materialReceipt[0].receiptDetails[0].serialNo"
@@ -565,6 +574,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_BATCH_NUMBER",
                 pattern: getPattern("Name") || null,
                 //jsonPath: "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].batchNo"
                 jsonPath: "materialReceipt[0].receiptDetails[0].batchNo"
@@ -583,6 +593,7 @@ import {
                   labelKey: "STORE_MATERIAL_RECEIPT_MANUFACTURER_DATE_PLACEHOLDER"
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_MANUFRACTURE_DATE_SELECT",
                 props: {
                   inputProps: {
                     max: new Date().toISOString().slice(0, 10),
@@ -604,6 +615,7 @@ import {
                   labelKey: "STORE_MATERIAL_RECEIPT_EXPIRY_DATE_PLACEHOLDER"
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_EXPIRY_DATE_SELECT",
                 props: {
                   inputProps: {
                     min: new Date().toISOString().slice(0, 10),

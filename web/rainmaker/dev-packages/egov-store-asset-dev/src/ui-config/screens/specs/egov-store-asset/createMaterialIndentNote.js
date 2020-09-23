@@ -184,6 +184,7 @@ export const header = getCommonContainer({
               { name: "Material", },
               { name: "InventoryType", },
               { name: "MaterialType", filter: "[?(@.active == true)]"},
+              { name: "businessService" }, 
             ],
           },
           {
@@ -245,6 +246,10 @@ export const header = getCommonContainer({
       }];
     try {
       let response = await getStoresSearchResults(queryObject, dispatch);
+      if(response)
+      {
+
+      }
       dispatch(prepareFinalObject("store", response));
     } catch (e) {
       console.log(e);
@@ -380,7 +385,38 @@ export const header = getCommonContainer({
     beforeInitScreen: (action, state, dispatch) => {
      
       const tenantId = getstoreTenantId();
-      const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
+     // const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
+      getMdmsData(state, dispatch, tenantId)
+      .then(response=>
+        {
+         if(response)
+         {
+          
+               const queryObject = [{ key: "tenantId", value: getTenantId()}];
+           getSearchResults(queryObject, dispatch,"storeMaster")
+           .then(response =>{
+           // let response = await getSearchResults(queryObject, dispatch,"storeMaster");
+           if(response)
+           {
+           const userInfo = JSON.parse(getUserInfo());
+           let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+           // filter store based on login user role and assign business service
+           let roles = userInfo.roles
+           for (let index = 0; index < roles.length; index++) {
+           const element = roles[index];
+           businessService = businessService.filter(x=>x.role === element.code)
+           if(businessService.length==1)
+           response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
+           break;        
+           }
+           dispatch(prepareFinalObject("store.stores", response));
+            }
+           });
+               
+        
+         }
+        }
+      )
       const storedata = getstoreData(action,state, dispatch);        
       const Indentdata = getUserData(action,state, dispatch);
       const step = getQueryArg(window.location.href, "step");

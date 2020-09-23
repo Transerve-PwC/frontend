@@ -131,11 +131,12 @@ printMenu = [receiptPrintObject];
      let totalIndentQty = 0;
      let totalvalue = 0
      let TotalQty = 0;
+     let indentQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${0}].purchaseIndentDetails[0].indentDetail.indentQuantity`,0)
      for (let index = 0; index < purchaseOrders[0].purchaseOrderDetails.length; index++) {
        const element = purchaseOrders[0].purchaseOrderDetails[index];
        let userQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].userQuantity`,0)
        let unitPrice = get(purchaseOrders[0], `purchaseOrderDetails[${index}].unitPrice`,0)
-       let indentQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].purchaseIndentDetails[0].indentDetail.indentQuantity`,0)
+       
        let poOrderedQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].purchaseIndentDetails[0].indentDetail.poOrderedQuantity`,0)
        let indentNumber = get(purchaseOrders[0], `purchaseOrderDetails[${index}].indentNumber`,'')
        let orderQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].orderQuantity`,0)
@@ -144,11 +145,11 @@ printMenu = [receiptPrintObject];
        set(purchaseOrders[0], `purchaseOrderDetails[${index}].poOrderedQuantity`,poOrderedQuantity);
       
        totalvalue = totalvalue+(unitPrice*userQuantity)
-       totalIndentQty = totalIndentQty+ indentQuantity
+       //totalIndentQty = totalIndentQty+ indentQuantity
        TotalQty = TotalQty+ orderQuantity
        set(purchaseOrders[0], `purchaseOrderDetails[${index}].totalValue`,totalvalue);
      } 
-     dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, totalIndentQty));
+     dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, indentQuantity));
      dispatch(prepareFinalObject(`purchaseOrders[0].totalvalue`, totalvalue));
      dispatch(prepareFinalObject(`purchaseOrders[0].totalQty`, TotalQty));
 

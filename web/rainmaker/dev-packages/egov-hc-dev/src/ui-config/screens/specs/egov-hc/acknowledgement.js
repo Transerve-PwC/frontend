@@ -50,6 +50,64 @@ const getAcknowledgementCard = (
       gotoHomeFooter
     }
   }
+  else if (purpose === "verifyForClosure" && status === "success") {
+    return {
+      header: getCommonHeader({
+        labelName: `Service Request`,
+        labelKey: "HC_SERVICE_REQUEST_HEADER",
+        // dynamicArray: [financialYearText]
+      }),
+      applicationSuccessCard: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        children: {
+          card: acknowledgementCard({
+            icon: "done",
+            backgroundColor: "#39CB74",
+            header: {
+              labelName: "Service Request Verified for closure Successfully",
+              labelKey: "HC_VERIFY_FOR_CLOSURE_SUCCESS_MESSAGE_MAIN"
+            },
+            tailText: {
+              labelName: "Service Request ID",
+              labelKey: "HC_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+            },
+            number: applicationNumber
+          })
+        }
+      },
+      gotoHomeFooter
+    }
+  } 
+  else if (purpose === "forwardForCompletion" && status === "success") {
+    return {
+      header: getCommonHeader({
+        labelName: `Service Request`,
+        labelKey: "HC_SERVICE_REQUEST_HEADER",
+        // dynamicArray: [financialYearText]
+      }),
+      applicationSuccessCard: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        children: {
+          card: acknowledgementCard({
+            icon: "done",
+            backgroundColor: "#39CB74",
+            header: {
+              labelName: "Service Request Forwarded for completion Successfully",
+              labelKey: "HC_FORWARD_FOR_COMPLETION_SUCCESS_MESSAGE_MAIN"
+            },
+            tailText: {
+              labelName: "Service Request ID",
+              labelKey: "HC_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+            },
+            number: applicationNumber
+          })
+        }
+      },
+      gotoHomeFooter
+    }
+  } 
   else if (purpose === "application" && status === "rejected") {
     return {
       header: getCommonHeader({

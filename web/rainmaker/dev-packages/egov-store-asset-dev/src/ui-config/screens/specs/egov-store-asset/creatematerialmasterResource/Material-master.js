@@ -12,7 +12,7 @@ import {
 import { filter } from "lodash";
 import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
  // import { getTodaysDateInYMD } from "../../utils";
-  
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
   export const MaterialMasterDetails = getCommonCard({
     header: getCommonTitle(
       {
@@ -137,7 +137,8 @@ import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
             rowsMax: 4,
           },
           required: true,
-          pattern: getPattern("eventDescription") || null,
+          errorMessage: "STORE_VALIDATIO_MATERIAL_DESCRIPTION",
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materials[0].description"
         })
       },
@@ -167,6 +168,7 @@ import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
             labelKey: "STORE_INVENTRY_TYPE_SELECT"
           },
           required: false,
+          errorMessage: "STORE_VALIDATION_INVENTRY_TYPE",
           jsonPath: "materials[0].inventoryType",
            sourceJsonPath: "createScreenMdmsData.store-asset.InventoryType",
           props: {

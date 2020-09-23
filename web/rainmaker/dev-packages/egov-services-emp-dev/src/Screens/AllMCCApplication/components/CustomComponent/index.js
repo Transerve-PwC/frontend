@@ -5,22 +5,6 @@ import { getDateFromEpoch } from "egov-ui-kit/utils/commons";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 
-const imageStyles = {
-  maxHeight: "100px",
-  minHeight: "100px",
-};
-
-const callIconStyle = {
-  marginLeft: "17px",
-  height: "17px",
-  width: "17px",
-  borderRadius: "50%",
-  position: "relative",
-  top: "2px",
-};
-
-
-
 export default class CustomComplaints extends React.Component{
     constructor(props){
         super(props);
@@ -49,8 +33,6 @@ convertEpochToDate = (dateEpoch) => {
           </div>
         ) : (
           complaints.map((complaint, complaintIndex) => {
-          
-            const { bkCompleteAddress, bkHouseNo, bkSector, bkAreaRequired, bkEmail } = complaint || "";
             const complaintHeader = complaint.header && "SERVICEDEFS." + complaint.header.toUpperCase();
             return (
               <div id={"complaint-" + complaintIndex} className="complaints-card-main-cont" key={`complaint-${complaintIndex}`}>
@@ -95,18 +77,6 @@ convertEpochToDate = (dateEpoch) => {
                         </div>
                       </div>
                      
-                 
-                     
-                
-
-{/* 
-                      <div className="complaint-number-cont row">
-                        <div className="complaint-number complaint-date">
-                          <Label fontSize="12px" className="col-md-6"  label={"BK_MYBK_APPLICANT_SECTOR"} />
-                          <Label fontSize="12px" className="col-md-6"  label={complaint.bkSector} className="complaint-complaint-number" />
-                        </div>
-                      </div> */}
-
                      <button style={{color:"#FE7A51",border: "none",fontWeight: "500",outline:"none", background: "white"}} onClick={(e) => {
                     onComplaintClick(encodeURIComponent(complaint.applicationNumber));
                   }}>VIEW DETAILS</button>

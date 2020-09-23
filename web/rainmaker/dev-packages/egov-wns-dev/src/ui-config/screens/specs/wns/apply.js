@@ -17,6 +17,9 @@ import { getHolderDetails, sameAsOwner, holderHeader } from "./applyResource/con
 import { ownerDetailsHeader, getOwnerDetails, ownershipType } from "./applyResource/ownerDetails";
 import { additionDetails } from "./applyResource/additionalDetails";
 import { OwnerInfoCard } from "./applyResource/connectionDetails";
+import {getCommentDetails,commentHeader} from './applyResource/comment';
+import {PropertyUsageHeader,getPropertyUsageDetails} from './applyResource/propertyUsageDetails'
+import {getConnectionConversionDetails , ConnectionConversionHeader} from './applyResource/connectionConversionDetails'
 import { httpRequest } from "../../../../ui-utils";
 import {
   prepareDocumentsUploadData,
@@ -43,10 +46,21 @@ export const stepperData = () => {
 }
 export const stepper = getStepperObject({ props: { activeStep: 0 } }, stepperData());
 
+const getLabelForWnsHeader = () => {
+  const wnsHeader =  window.localStorage.getItem("WNS_STATUS");
+
+  if(wnsHeader)
+    return `${wnsHeader}_HEADER`;
+  else if( process.env.REACT_APP_NAME === "Citizen")
+    return  "WS_APPLY_NEW_CONNECTION_HEADER"
+  else
+    return "WS_APPLICATION_NEW_CONNECTION_HEADER"
+}
+
 export const header = getCommonContainer({
   headerDiv: getCommonContainer({
     header: getCommonHeader({
-      labelKey: process.env.REACT_APP_NAME === "Citizen" ? "WS_APPLY_NEW_CONNECTION_HEADER" : "WS_APPLICATION_NEW_CONNECTION_HEADER"
+      labelKey: getLabelForWnsHeader()
     })
   }),
 
@@ -124,6 +138,12 @@ export const getMdmsData = async dispatch => {
         { moduleName: "sw-services-calculation", masterDetails: [{ name: "Documents" }, { name: "RoadType" }] },
         { moduleName: "ws-services-calculation", masterDetails: [{ name: "PipeSize" }] },
         {
+          moduleName: "PropertyTax",
+          masterDetails: [
+          {name: "UsageCategory"}
+          ]
+        },
+        {
           moduleName: "ws-services-masters", masterDetails: [
             { name: "Documents" },
             { name: "waterSource" },
@@ -138,6 +158,7 @@ export const getMdmsData = async dispatch => {
   try {
     let payload = null;
     payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
+    let UsageType=[] , subUsageType=[];
     if (payload.MdmsRes['ws-services-calculation'].PipeSize !== undefined && payload.MdmsRes['ws-services-calculation'].PipeSize.length > 0) {
       let pipeSize = [];
       payload.MdmsRes['ws-services-calculation'].PipeSize.forEach(obj => pipeSize.push({ code: obj.size, name: obj.id, isActive: obj.isActive }));
@@ -178,6 +199,31 @@ export const getMdmsData = async dispatch => {
       payload.MdmsRes['ws-services-masters'].GROUND = GROUND;
       payload.MdmsRes['ws-services-masters'].SURFACE = SURFACE;
       payload.MdmsRes['ws-services-masters'].BULKSUPPLY = BULKSUPPLY;
+    }
+    if( payload.MdmsRes['PropertyTax'].UsageCategory !== undefined){
+      payload.MdmsRes.PropertyTax.UsageCategory.forEach(item=>{
+        if(item.code.split(".").length<=1){
+            UsageType.push({
+              active:item.active,
+              name:item.name,
+              code:item.code,
+              fromFY:item.fromFY
+            })
+          }
+      });
+       payload.MdmsRes.PropertyTax.UsageType=UsageType;
+      
+       payload.MdmsRes.PropertyTax.UsageCategory.forEach(item=>{
+        if(item.code.split(".").length==2){
+          subUsageType.push({
+              active:item.active,
+              name:item.name,
+              code:item.code,
+              fromFY:item.fromFY
+            })
+          }
+      });
+      payload.MdmsRes.PropertyTax.subUsageType=subUsageType;
     }
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) { console.log(e); }
@@ -335,22 +381,48 @@ export const getData = async (action, state, dispatch) => {
   }
 };
 
+const getApplyScreenChildren = () => {
+ const wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+ 
+ if(wnsStatus){
+  switch(wnsStatus){
+    case "UPDATE_CONNECTION_HOLDER_INFO" : return {connectionHolderDetails }; 
+    case "REACTIVATE_CONNECTION":
+    case "TEMPORARY_DISCONNECTION":
+    case "PERMANENT_DISCONNECTION":
+       return {commentSectionDetails };  
+    case "CONNECTION_CONVERSION":
+    return {connConversionDetails};
+    case "APPLY_FOR_REGULAR_INFO":
+      return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
+    default :    return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
+  }
+ }
+ else {
+   return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
+ }
+
+}
 
 const propertyDetail = getPropertyDetails();
 const propertyIDDetails = getPropertyIDDetails();
 const ownerDetail = getOwnerDetails();
 const holderDetails = getHolderDetails();
-
+const commentDetails = getCommentDetails();
+ const connectionConversionDetails =getConnectionConversionDetails();
+ const propertyUsage = getPropertyUsageDetails();
 export const ownerDetails = getCommonCard({ ownerDetailsHeader, ownershipType, ownerDetail });
 export const IDDetails = getCommonCard({ propertyHeader, propertyID, propertyIDDetails });
 export const Details = getCommonCard({ propertyDetail });
 export const connectionHolderDetails = getCommonCard({ holderHeader, sameAsOwner, holderDetails })
-
+export const propertyUsageDetails = getCommonCard({PropertyUsageHeader,propertyUsage});
+export const commentSectionDetails = getCommonCard({commentHeader,commentDetails})
+export const connConversionDetails = getCommonCard({ ConnectionConversionHeader,connectionConversionDetails})
 export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: { id: "apply_form1" },
-  children: { IDDetails, Details, ownerDetails, connectionHolderDetails, OwnerInfoCard }
+  children: getApplyScreenChildren(),
 };
 
 export const formwizardSecondStep = {

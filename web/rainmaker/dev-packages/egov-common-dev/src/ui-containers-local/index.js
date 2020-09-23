@@ -48,6 +48,10 @@ const TestContainer = Loadable({
   loader: () => import("./TestContainer"),
   loading: () => <Loading />
 });
+const DashbordContainer = Loadable({
+  loader: () => import("./DashbordContainer"),
+  loading: () => <Loading />
+});
 
 export {
   CustomTabContainer,
@@ -59,5 +63,6 @@ export {
   PaymentRedirectPage,
   ViewBreakupContainer,
   DialogContainer,
-  TestContainer
+  TestContainer,
+  DashbordContainer
 };

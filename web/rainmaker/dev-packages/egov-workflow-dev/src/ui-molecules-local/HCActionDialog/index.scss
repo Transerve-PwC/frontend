@@ -10,6 +10,23 @@ div#menu- {
   resize: none;
   margin-bottom: 10px; }
 
+  .fix-for-layout-break {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .autosuggest.fix-for-layout-break{
+    height: auto !important;
+  }
+  .autosuggest.fix-for-layout-break input{
+    margin-bottom: 15px !important
+  
+  }
+  
+  svg{
+    top: 12px !important;
+  
+  }
 .commentsLabel {
   font-size: 16px;
   font-weight: 500;

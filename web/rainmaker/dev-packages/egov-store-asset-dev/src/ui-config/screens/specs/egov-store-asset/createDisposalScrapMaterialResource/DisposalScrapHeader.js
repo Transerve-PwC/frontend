@@ -110,7 +110,7 @@ export const DisposalScrapHeader = getCommonCard({
         labelKey: "STORE_DISPOSAL_SCRAP_DISPOSAL_RMK_PLCEHLDER",
       },
       required:true,
-      pattern: getPattern("alpha-numeric-with-space-and-newline"),
+      pattern: getSTOREPattern("Comment"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "disposals[0].description",
     }),

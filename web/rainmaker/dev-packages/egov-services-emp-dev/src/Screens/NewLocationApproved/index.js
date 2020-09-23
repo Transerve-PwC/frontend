@@ -36,7 +36,7 @@ class NewLocationApproved extends Component {
           <Button
             id="resolve-success-continue"
             primary={true}
-            label={<Label buttonLabel={true} label="CORE_COMMON_GOTOHOME" />}
+            label={<Label buttonLabel={true} label="BK_CORE_COMMON_GOTOHOME" />}
             fullWidth={true}
             onClick={this.continueComplaintSubmit}
             className="responsive-action-button"
@@ -47,8 +47,8 @@ class NewLocationApproved extends Component {
   }
 }
 const mapStateToProps = state => {
-  const { complaints, common, auth, form } = state;
-  const { MccApplicationData } = complaints;
+  const { bookings, common, auth, form } = state;
+  const { MccApplicationData } = bookings;
   let bookingDetails = MccApplicationData ? MccApplicationData.osujmNewLocationModelList[0] : '';
   console.log("bookingDetailsinResolveSuccess--",bookingDetails)
  

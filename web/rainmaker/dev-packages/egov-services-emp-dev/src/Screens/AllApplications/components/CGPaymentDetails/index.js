@@ -4,40 +4,9 @@ import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 
-
-
 class PayDetails extends Component {
-
-  navigateToComplaintType = () => {
-    this.props.history.push("/complaint-type");
-  };
-  getImageSource = (imageSource, size) => {
-    const images = imageSource.split(",");
-    if (!images.length) {
-      return null;
-    }
-    switch (size) {
-      case "small":
-        imageSource = images[2];
-        break;
-      case "medium":
-        imageSource = images[1];
-        break;
-      case "large":
-      default:
-        imageSource = images[0];
-    }
-    return imageSource || images[0];
-  };
-  onImageClick = (source) => {
-    window.open(this.getImageSource(source, "large"), 'Image');
-  };
-
   render() {
     const { bkPaymentDate,paymentDetails, perDayRupees, bkPaymentReceiptNumber, bkPaymentStatus } = this.props;
-
-   
-   
     const label1 = `Base Charges@ Rs.${perDayRupees}/day`
     const perRates = perDayRupees;
 

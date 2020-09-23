@@ -9,6 +9,7 @@ import {
   getPattern,
   getCommonSubHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -32,6 +33,7 @@ const MTONDetailsCard = {
                 labelKey: "STORE_MATERIAL_NAME_SELECT"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",
               jsonPath: "materialIssues[0].materialIssueDetails[0].material.code",
               sourceJsonPath: "indentsOutmaterial",
               props: {
@@ -144,6 +146,7 @@ const MTONDetailsCard = {
                 labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED_PLACEHOLDER"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
               pattern: getPattern("numeric-only"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].userQuantityIssued",
               props:{
@@ -187,6 +190,7 @@ const MTONDetailsCard = {
                 labelKey: "STORE_PURCHASE_ORDER_UOM"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_UOM_NAME",
               jsonPath: "materialIssues[0].materialIssueDetails[0].uom.name",
               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
               props: {
@@ -255,7 +259,7 @@ const MTONDetailsCard = {
                 labelName: "Enter Remark",
                 labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
               },
-              pattern: getPattern("Name"),
+              pattern: getSTOREPattern("Comment"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].description"
             })
           },

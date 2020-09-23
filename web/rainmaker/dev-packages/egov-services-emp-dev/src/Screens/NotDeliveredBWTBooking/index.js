@@ -28,7 +28,8 @@ class NotDeliveredBWTBooking extends Component {
     fetchApplications(
       { 'uuid': userInfo.uuid, "applicationNumber": match.params.applicationId,
       "applicationStatus":"",
-      "mobileNumber":"","bookingType":"" }
+      "mobileNumber":"","bookingType":"",
+      "tenantId":userInfo.tenantId}
       
     );
   }
@@ -98,8 +99,8 @@ class NotDeliveredBWTBooking extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints = {} } = state || {};
-  const { applicationData } = complaints;
+  const { bookings = {} } = state || {};
+  const { applicationData } = bookings;
   let trasformData = applicationData.bookingsModelList[0];
   let businessServiceData = applicationData.businessService;
   return { trasformData, businessServiceData };

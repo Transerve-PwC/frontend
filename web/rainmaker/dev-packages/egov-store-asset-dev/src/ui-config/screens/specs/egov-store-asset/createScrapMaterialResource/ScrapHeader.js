@@ -11,7 +11,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getSearchResults } from "../../../../../ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 export const ScrapHeader = getCommonCard({
   header: getCommonTitle(
     {
@@ -81,7 +81,7 @@ export const ScrapHeader = getCommonCard({
         labelKey: "STORE_SCRAP_REMARK_PLCEHLDER",
       },
       required:true,
-      pattern: getPattern("alpha-numeric-with-space-and-newline"),
+      pattern: getSTOREPattern("Comment"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "scraps[0].description",
     }),

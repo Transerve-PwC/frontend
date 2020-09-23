@@ -4,50 +4,7 @@ import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 
-const iconStyle = {
-  marginRight: "13px",
-  height: "24px",
-  width: "24px",
-};
-
-const imageStyles = {
-  maxHeight: "100px",
-  minHeight: "100px",
-};
-
-const mapIconStyle = {
-  marginRight: "7px",
-  height: "12px",
-  width: "14px",
-  borderRadius: "50%",
-};
-
 class CGBookingDetails extends Component {
-  navigateToComplaintType = () => {
-    this.props.history.push("/complaint-type");
-  };
-  getImageSource = (imageSource, size) => {
-    const images = imageSource.split(",");
-    if (!images.length) {
-      return null;
-    }
-    switch (size) {
-      case "small":
-        imageSource = images[2];
-        break;
-      case "medium":
-        imageSource = images[1];
-        break;
-      case "large":
-      default:
-        imageSource = images[0];
-    }
-    return imageSource || images[0];
-  };
-  onImageClick = (source) => {
-    window.open(this.getImageSource(source, "large"), 'Image');
-  };
-
   convertEpochToDate = (dateEpoch) => {
     const dateFromApi = new Date(dateEpoch);
     let month = dateFromApi.getMonth() + 1;
@@ -59,8 +16,6 @@ class CGBookingDetails extends Component {
   };
 
   render() {
-   
-
     const { status, bkBookingPurpose, bkFromDate, bkToDate, historyApiData, bkDuration, applicantName, applicationNo, submittedDate, bookingPurpose, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
     return (
       <div>

@@ -356,7 +356,7 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
   //approve
   checkVisibility(state, "APPROVED", "approve", action, "screenConfig.components.div.children.footer.children.approve.visible", null)
   //reject
-  checkVisibility(state, "REJECTED", "reject", action, "screenConfig.components.div.children.footer.children.reject.visible", null)
+  checkVisibility(state, "REJECTED", "reject", action, "screenConfig.components.div.children.footer.children.reject.visible", !get(state, "screenConfiguration.preparedFinalObject.OPMS.WithdrawBeforeApprovalFlag"))
 
 
 
@@ -414,6 +414,12 @@ const setSearchResponse = async (state, action, dispatch, applicationNumber, ten
         localStorageSet("pms_iswithdrawn", "yes");
       }
     });
+    remarksData.forEach(doc => {
+      if (doc.applicationstatus == 'WITHDRAW') {
+        dispatch(prepareFinalObject("OPMS.WithdrawBeforeApprovalFlag",true));
+      }
+    });
+
 
     if (localStorageGet('pms_iswithdrawn') === "yes") {
       dispatch(
@@ -696,6 +702,8 @@ const screenConfig = {
       set(action, "screenConfig.components.adhocDialog.children.popup", adhocPopupAdvertisementWithdraw);
     }
     localStorageSet("pms_iswithdrawn", "no")
+    dispatch(prepareFinalObject("OPMS.WithdrawBeforeApprovalFlag",false));
+
     setSearchResponse(state, action, dispatch, applicationNumber, tenantId);
 
     const queryObject = [

@@ -35,6 +35,7 @@ import {
             labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_STORE_NAME_SELECT",
           jsonPath: "indents[0].indentStore.code",         
           sourceJsonPath: "store.stores",
           props: {
@@ -99,6 +100,7 @@ import {
             labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_INDENT_DATE",
           pattern: getPattern("Date") || null,
           jsonPath: "indents[0].indentDate",
           props: {
@@ -117,6 +119,7 @@ import {
             labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_INDENT_PURPOSE",
           jsonPath: "indents[0].indentPurpose",
           sourceJsonPath: "createScreenMdmsData.store-asset.IndentPurpose",
         props: {
@@ -137,6 +140,7 @@ import {
             labelKey: "STORE_MATERIAL_TYPE_NAME_SELECT"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_INVENTRY_TYPE",
           jsonPath: "indents[0].inventoryType",
            sourceJsonPath: "createScreenMdmsData.store-asset.InventoryType",
           props: {
@@ -157,6 +161,7 @@ import {
             labelKey: "STORE_MATERIAL_INDENT_EXPECTED_DELIVERY_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_EXPECTED_DELIVERY_DATE",
           pattern: getPattern("Date") || null,
           jsonPath: "indents[0].expectedDeliveryDate",
           props: {
@@ -177,6 +182,7 @@ import {
             labelKey: "STORE_MATERIAL_INDENT_NARATION_PLACEHOLDER"
           },
           required: true,
+          errorMessage: "STORE_VALIDATION_NARATION",
           props: {
             className: "applicant-details-error",
             multiline: "multiline",

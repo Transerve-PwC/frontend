@@ -30,6 +30,7 @@ const MTIDetailsCard = {
                 labelKey: "STORE_MATERIAL_NAME_SELECT"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",
               jsonPath: "indents[0].indentDetails[0].material.code",
               sourceJsonPath: "createScreenMdmsData.store-asset.Material",
               props: {
@@ -63,6 +64,7 @@ const MTIDetailsCard = {
                 labelKey: "STORE_PURCHASE_ORDER_UOM"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_UOM_NAME",
               jsonPath: "indents[0].indentDetails[0].uom.code",
               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
               props: {

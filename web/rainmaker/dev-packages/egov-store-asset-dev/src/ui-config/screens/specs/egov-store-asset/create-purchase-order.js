@@ -97,6 +97,7 @@ import { getMaterialIndentSearchResults } from "../../../../ui-utils/storecommon
             moduleName: "store-asset",
             masterDetails: [
               { name: "PORateType", filter: "[?(@.active == true)]" },
+              { name: "Material" },
             ]
           },
           {

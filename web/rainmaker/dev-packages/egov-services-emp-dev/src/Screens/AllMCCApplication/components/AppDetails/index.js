@@ -23,15 +23,7 @@ class AppDetails extends Component {
                
              
                 <div className="complaint-detail-detail-section-status row">
-                  {/* <div className="col-md-4">
-                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_COMMON_APPLICATION_NO" />
-                    <Label
-                      labelStyle={{ color: "inherit" }}
-                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
-                      id="complaint-details-complaint-number"
-                      label={applicationNo}
-                    />
-                  </div> */}
+              
 
                   <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_NAME" />
@@ -71,16 +63,7 @@ class AppDetails extends Component {
                       label={address}
                     />
                   </div>
-                  {/* <div className="col-md-4">
-                    <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_HOUSENO" />
-                    <Label
-                      className="col-xs-12 col-sm-12 col-md-12  status-result-color"
-                    
-                      id="complaint-details-submission-date"
-                      labelStyle={{ color: "inherit" }}
-                      label={houseNo}
-                    />
-                  </div> */}
+               
                   <div className="col-md-4">
                     <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_SECTOR" />
                     <Label
@@ -91,105 +74,7 @@ class AppDetails extends Component {
                       label={sector}
                     />
                   </div>
-                  {/* <div className="col-md-4">
-                    <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_AREA_REQUIRED" />
-                    <Label
-                      className="col-xs-12 col-sm-12 col-md-12  status-result-color"
-                      id="complaint-details-submission-date"
-                      labelStyle={{ color: "inherit" }}
-                      label={areaRequired?areaRequired:'NA'}
-                    />
-                  </div> */}
-                
                 </div>
-
-
-
-                {/* <div style={{ marginTop: "16px" }} className="complaint-image-cont">
-                  {images &&
-                    images.map((image, index) => {
-                      return (
-                        image && (
-                          <div className="complaint-image-wrapper" key={index}>
-                            <Image
-                              style={imageStyles}
-                              size="medium"
-                              className="complaint-image"
-                              width="100%"
-                              height={46}
-                              source={image}
-                              onClick={() => this.onImageClick(image)}
-                            />
-                          </div>
-                        )
-                      );
-                    })}
-                </div> */}
-                {/* {address && !isEmpty(address) && ( */}
-                {/* <div className="rainmaker-displayInline">
-                    <Icon className="map-icon" action="maps" name="place" style={{ marginRight: 13 }} color={"#767676"} />
-                    <Label label="BK_MYBK_APPLICANT_DETAILS_ADDRESS_DETAILS" labelClassName="dark-heading" />
-                  </div> */}
-                {/* )} */}
-               
-                {/* {landmark && (
-                  <div className="complaint-detail-detail-section-status row">
-                    <Label className="col-xs-6  col-sm-4 col-md-2 status-color" label={"CS_COMPLAINTDETAILS_LANDMARK"} />
-                    <Label
-                      className="col-xs-6  col-sm-8 col-md-10  status-result-color"
-                      label={landmark}
-                      id="complaint-details-submission-date"
-                      labelStyle={{ color: "inherit" }}
-                    />
-                  </div>
-                )}  */}
-                {/* {address && isEmpty(addressDetail) && (
-                  <div className="rainmaker-displayInline">
-                    <Icon className="map-icon" action="maps" name="place" style={{ marginRight: "13px" }} color={"#767676"} />
-                    <Label
-                      label={address}
-                      className="status-result-color"
-                      id="complaint-details-complaint-location"
-                      labelStyle={{ color: "inherit" }}
-                    />
-                  </div>
-                )}  */}
-                {/* <div style={{ marginTop: 10 }}>
-                  {mapAction && complaintLoc.lat && (
-                    <Button
-                      className="employee-complaint-summary-mapBtn"
-                      primary={true}
-                      label={<Label buttonLabel={true} label={"ES_COMPLAINT_SUMMARY_MAP"} color="#ffffff" />}
-                      style={{
-                        height: "auto",
-                        lineHeight: "auto",
-                        minWidth: "inherit",
-                      }}
-                      labelStyle={{
-                        padding: "0 12px 0 0 ",
-                        letterSpacing: "0.6px",
-                        display: "inline-block",
-                        height: "22px",
-                        lineHeight: "22px",
-                      }}
-                      icon={<Icon action="maps" name="place" style={mapIconStyle} color={"#ffffff"} />}
-                      onClick={(e) => {
-                        this.props.redirectToMap(true);
-                      }}
-                    />
-                  )}
-                </div> */}
-                {/* {description && (
-                  <div className="rainmaker-displayInline">
-                    <Icon action="editor" name="format-quote" style={iconStyle} color={"#969696"} />
-                    <Label
-                      label={description}
-                      id="complaint-details-complaint-description"
-                      className="status-result-color"
-                      labelStyle={{ color: "inherit" }}
-                    />
-                  </div>
-                )} */}
               </div>
             </div>
           }

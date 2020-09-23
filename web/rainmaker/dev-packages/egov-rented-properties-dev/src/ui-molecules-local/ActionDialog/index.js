@@ -217,7 +217,7 @@ return
     else if((value.toString().length)<2 || (value.toString().length)>4){
       toggleSnackbar(
         true,
-        { labelName: "Please enter numbers greater than 2 and less then 4", labelKey: "Please enter only numbers"},
+        { labelName: "Please enter charges 2-4 digits", labelKey: "RP_ERR_CHARGES"},
         "error"
       );
 return
@@ -259,7 +259,7 @@ return
     else if((value.toString().length)<2 || (value.toString().length)>4){
       toggleSnackbar(
         true,
-        { labelName: "Please enter numbers greater than 2 and less then 4", labelKey: "Please enter only numbers"},
+        { labelName: "Please enter charges 2-4 digits", labelKey: "RP_ERR_CHARGES"},
         "error"
       );
 return

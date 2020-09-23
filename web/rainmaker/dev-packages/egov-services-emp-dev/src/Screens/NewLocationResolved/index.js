@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import formHOC from "egov-ui-kit/hocs/form";
 import { Screen } from "modules/common";
 import NewLocationResolvedForm from "./components/NewLocationResolvedForm";
-import { fetchMccApplications } from "../../redux/bookings/actions";
+import { fetchMccApplications } from "egov-ui-kit/redux/bookings/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { handleFieldChange } from "egov-ui-kit/redux/form/actions";
@@ -30,7 +30,7 @@ class NewLocationResolved extends Component {
     fetchMccApplications(
       { 'uuid': userInfo.uuid, "applicationNumber": applicationNumber,
       "applicationStatus":"",
-      "mobileNumber":"","bookingType":"" }
+      "mobileNumber":"","bookingType":"","tenantId":userInfo.tenantId }
     );
     let requestbody={"applicationNumber": applicationNumber, "sector":trasformData.sector, "action":trasformData.action}
     let AssigneeFromAPI = await httpRequest(
@@ -136,8 +136,8 @@ class NewLocationResolved extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints = {} } = state || {};
-  const { MccApplicationData } = complaints;
+  const { bookings = {} } = state || {};
+  const { MccApplicationData } = bookings;
  
   let trasformData = MccApplicationData?MccApplicationData.osujmNewLocationModelList[0]:'';
   let businessServiceData = MccApplicationData.businessService;

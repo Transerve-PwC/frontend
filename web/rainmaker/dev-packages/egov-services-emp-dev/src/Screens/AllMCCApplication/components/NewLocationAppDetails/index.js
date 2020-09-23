@@ -4,80 +4,11 @@ import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 
-const iconStyle = {
-  marginRight: "13px",
-  height: "24px",
-  width: "24px",
-};
 
-const imageStyles = {
-  maxHeight: "100px",
-  minHeight: "100px",
-};
-
-const mapIconStyle = {
-  marginRight: "7px",
-  height: "12px",
-  width: "14px",
-  borderRadius: "50%",
-};
 
 class AppDetails extends Component {
-  navigateToComplaintType = () => {
-    this.props.history.push("/complaint-type");
-  };
-  getImageSource = (imageSource, size) => {
-    const images = imageSource.split(",");
-    if (!images.length) {
-      return null;
-    }
-    switch (size) {
-      case "small":
-        imageSource = images[2];
-        break;
-      case "medium":
-        imageSource = images[1];
-        break;
-      case "large":
-      default:
-        imageSource = images[0];
-    }
-    return imageSource || images[0];
-  };
-  onImageClick = (source) => {
-    window.open(this.getImageSource(source, "large"), 'Image');
-    // this.props.history.push(`/image?source=${source}`);
-  };
-
-  render() {
+   render() {
     const { status, applicantName, applicationNo, bkEmail,bkConstructionType, areaRequired,bkDuration,bkCategory,submittedDate, bkMobileNumber, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
-
-   
-    // const { houseNoAndStreetName, landmark, mohalla, city, locality } = addressDetail || "";
-    // const icon = {};
-    // icon.name = "location";
-    // icon.style = {
-    //   display: "block",
-    // };
-    // let statusKey = "";
-
-    // if (status) {
-    //   if (status.toLowerCase() == "open") {
-    //     if (action && action === "reopen") {
-    //       statusKey = `CS_COMMON_REOPENED`;
-    //     } else {
-    //       statusKey = `CS_COMMON_SUBMITTED`;
-    //     }
-    //   } else if (status.toLowerCase() == "reassignrequested") {
-    //     if (role === "citizen") {
-    //       statusKey = `CS_COMMON_${status.toUpperCase()}`;
-    //     } else {
-    //       statusKey = `CS_COMMON_CITIZEN_REQUEST_REASSIGN`;
-    //     }
-    //   } else {
-    //     statusKey = `CS_COMMON_${status.toUpperCase()}`;
-    //   }
-    // }
     const titleKey = applicationNo.toUpperCase();
 
     return (

@@ -19,6 +19,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
  import { httpRequest } from "../../../../../ui-utils/api";
  import { getSearchResults } from "../../../../../ui-utils/commons";
  import {handleSearchMaterial} from './footer'
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
  const getMaterialData = async (action, state, dispatch) => {
   const tenantId = getTenantId();
   let queryObject = [
@@ -117,7 +118,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
           },
           required: true,
-         
+          errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
           jsonPath: "materialReceipt[0].receivingStore.code",
           sourceJsonPath: "store.stores",
             props: {
@@ -132,10 +133,19 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             `store.stores`,
             []
           ); 
-          store =  store.filter(x=> x.code === action.value)   
-          dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name));
           // call api to get mrnNumber List
           getmrnNumber(action,state, dispatch,action.value)
+          store =  store.filter(x=> x.code === action.value) 
+          if(store && store[0])  
+          {
+            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name));           
+           
+          }
+          else{
+
+
+          }
+         
           
         }
       },
@@ -150,6 +160,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_RECEIPT_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "materialReceipt[0].receiptDate",
           props: {
@@ -276,7 +287,8 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             rowsMax: 2,
           },
           required: true,
-          pattern: getPattern("eventDescription") || null,
+          errorMessage:"STORE_VALIDATION_REMARK",
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialReceipt[0].description"
         })
       },   
@@ -302,7 +314,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
           },
           required: false,
           pattern: getPattern("eventDescription") || null,
-          jsonPath: "materialReceiptSearch[0].issueNumber"
+          jsonPath: "materialReceipt[0].issueNumber"
         })
       }, 
       Break:getBreak(),

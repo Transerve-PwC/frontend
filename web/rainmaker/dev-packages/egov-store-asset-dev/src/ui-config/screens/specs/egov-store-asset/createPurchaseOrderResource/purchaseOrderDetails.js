@@ -34,6 +34,7 @@ const purchaseOrderDetailsCard = {
                 labelKey: "STORE_MATERIAL_NAME_SELECT"
               },
               required: true,
+            errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].material.code",
               sourceJsonPath: "searchMaster.materialNames",
               props: {
@@ -60,6 +61,7 @@ const purchaseOrderDetailsCard = {
                   }      
                   
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].indentQuantity`, matObj[0].indentQuantity));
+                  dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, matObj[0].indentQuantity));
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].issuedQuantity`, matObj[0].indentIssuedQuantity));
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].poOrderedQuantity`, matObj[0].poOrderedQuantity));
                  
@@ -104,6 +106,7 @@ const purchaseOrderDetailsCard = {
                 labelKey: "STORE_PURCHASE_ORDER_UOM"
               },
               required: true,
+            errorMessage:"STORE_VALIDATION_UOM_NAME",
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].uom.code",
               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
               props: {
@@ -215,7 +218,7 @@ const purchaseOrderDetailsCard = {
                  let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue,TotalQty)
                  if(Qty && Qty[0])
                  {
-                  dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, Qty[0].InputQtyValue));
+                 // dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, Qty[0].InputQtyValue));
                   dispatch(prepareFinalObject(`purchaseOrders[0].totalvalue`, Qty[0].TotalValue));
                   dispatch(prepareFinalObject(`purchaseOrders[0].totalQty`, Qty[0].TotalQty));
 
@@ -232,6 +235,7 @@ const purchaseOrderDetailsCard = {
                 labelKey: "STORE_PURCHASE_ORDER_UNIT_PRC"
               },
               required: true,
+            errorMessage:"STORE_VALIDATION_UNIT_RATE",
               placeholder: {
                 labelName: "Enter Unit Price",
                 labelKey: "STORE_PURCHASE_ORDER_UNIT_PRC_PLACEHOLDER"
@@ -257,7 +261,7 @@ const purchaseOrderDetailsCard = {
                   let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue,TotalQty)
                   if(Qty && Qty[0])
                   {
-                   dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, Qty[0].InputQtyValue));
+                   //dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, Qty[0].InputQtyValue));
                    dispatch(prepareFinalObject(`purchaseOrders[0].totalvalue`, Qty[0].TotalValue));
                    dispatch(prepareFinalObject(`purchaseOrders[0].totalQty`, Qty[0].TotalQty));
  

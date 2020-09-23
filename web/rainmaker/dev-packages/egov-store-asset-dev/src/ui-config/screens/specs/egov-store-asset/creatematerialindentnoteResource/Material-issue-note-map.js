@@ -13,7 +13,7 @@ import {
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import{getOpeningBalanceSearchResults} from '../../../../../ui-utils/storecommonsapi'
   import{getmaterialissuesSearchResults,GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
-
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   let IsEdit = false;
   let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
@@ -92,7 +92,8 @@ import {
                   labelName: "Select Material Name",
                   labelKey: "STORE_MATERIAL_NAME_SELECT"
                 },
-                required: true,               
+                required: true,  
+                errorMessage: "STORE_VALIDATION_MATERIAL_NAME_SELECT",             
                 jsonPath: "materialIssues[0].materialIssueDetails[0].receiptId",
                 //sourceJsonPath: "materials",
                 sourceJsonPath: "indentsmaterial",
@@ -170,7 +171,7 @@ import {
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.unitRate`,indentsmaterial[0].unitRate));
                 //set indent qty indentDetails
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentQuantity`,indentDetails[0].indentQuantity));
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.issuedQuantity`,indentDetails[0].issuedQuantity));
+                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.issuedQuantity`,indentDetails[0].indentIssuedQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.poOrderedQuantity`,indentDetails[0].poOrderedQuantity));
               //set total value on Qty Change
               let cardJsonPath =
@@ -183,12 +184,10 @@ import {
               let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
               if(Qty && Qty[0])
               {
-              dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, Qty[0].InputQtyValue));
+              dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, indentDetails[0].indentQuantity));
               dispatch(prepareFinalObject(`materialIssues[0].totalvalue`, Qty[0].TotalValue));
               dispatch(prepareFinalObject(`materialIssues[0].totalQty`, Qty[0].TotalQty));
-
-              }
-                
+              }                
               }
 
               }
@@ -210,6 +209,42 @@ import {
                 required: false,
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.indentQuantity"
+              })
+            },
+            indentIssuedQuantity: {
+              ...getTextField({
+                label: {
+                  labelName: "Indent Issued Quantity",
+                  labelKey: "STORE_MATERIAL_INDENT_ISSUED_QTY_READONLY"
+                },
+                placeholder: {
+                  labelName: "Total Indent Qty Required",
+                  labelKey: "STORE_MATERIAL_INDENT_ISSUED_QTY_READONLY"
+                },
+                props:{
+                  disabled:true
+                },
+                required: false,
+                pattern: getPattern("Amount") || null,
+                jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.issuedQuantity"
+              })
+            },
+            poOrderedQuantity: {
+              ...getTextField({
+                label: {
+                  labelName: "Total Indent Qty Required",
+                  labelKey: "STORE_MATERIAL_INDENT_PO_ISSUED_QTY_READONLY"
+                },
+                placeholder: {
+                  labelName: "Total Indent Qty Required",
+                  labelKey: "STORE_MATERIAL_INDENT_PO_ISSUED_QTY_READONLY"
+                },
+                props:{
+                  disabled:true
+                },
+                required: false,
+                pattern: getPattern("Amount") || null,
+                jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.poOrderedQuantity"
               })
             },
             balanceQty: {
@@ -245,6 +280,7 @@ import {
                   nin:1,
                 },
                 required: true,
+                errorMessage: "STORE_VALIDATION_QUANTITY_ISSUED",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.userQuantity"
               }),
@@ -282,7 +318,7 @@ import {
                let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
                if(Qty && Qty[0])
                {
-                dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, Qty[0].InputQtyValue));
+               // dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, Qty[0].InputQtyValue));
                 dispatch(prepareFinalObject(`materialIssues[0].totalvalue`, Qty[0].TotalValue));
                 dispatch(prepareFinalObject(`materialIssues[0].totalQty`, Qty[0].TotalQty));
 
@@ -408,7 +444,8 @@ import {
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
-                pattern: getPattern("Name") || null,
+                errorMessage: "STORE_VALIDATION_REMARK",
+                pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialIssues[0].materialIssueDetails[0].description"
               })
             },
@@ -438,7 +475,7 @@ import {
       sourceJsonPath: "materialIssues[0].materialIssueDetails",
        //Update Total value when delete any card configuration settings     
        cardtotalpropes:{
-        totalIndentQty:false,
+        totalIndentQty:true,
         pagename:`createMaterialIndentNote`,
         cardJsonPath:"components.div.children.formwizardSecondStep.children.materialIssue.children.cardContent.children.materialIssueCard.props.items",
         jasonpath:"materialIssues[0].materialIssueDetails",

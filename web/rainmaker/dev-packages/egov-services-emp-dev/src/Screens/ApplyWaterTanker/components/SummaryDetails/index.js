@@ -248,8 +248,8 @@ class SummaryDetails extends Component {
 
 const mapStateToProps = state => {
 
-    const { complaints, common, auth, form } = state;
-    const { createWaterTankerApplicationData } = complaints;
+    const { bookings, common, auth, form } = state;
+    const { createWaterTankerApplicationData } = bookings;
     return {
         createWaterTankerApplicationData
     }

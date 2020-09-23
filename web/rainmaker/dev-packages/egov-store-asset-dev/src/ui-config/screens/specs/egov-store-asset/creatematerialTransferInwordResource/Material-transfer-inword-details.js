@@ -127,6 +127,7 @@ import {
                   disabled:true
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_USER_RECEIVED_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "transferInwards[0].receiptDetails[0].userReceivedQty"
               }),
@@ -220,6 +221,7 @@ import {
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_REMARK",
                 pattern: getPattern("Name") || null,
                 jsonPath: "transferInwards[0].receiptDetails[0].rejectionRemark"
               })

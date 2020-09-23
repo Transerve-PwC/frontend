@@ -130,6 +130,15 @@ export const header = getCommonContainer({
 
       let fileUrl =
       get(state, "screenConfiguration.preparedFinalObject.documentsPreview[0].link",'') 
+
+      const step = getQueryArg(window.location.href, "step");
+      const id = getQueryArg(window.location.href, "id");
+      if(!step && !id){
+        fileUrl = '';
+        dispatch(
+          prepareFinalObject("documentsUploadRedux[0].documents", null)
+          );
+      }
      let  DocumentType_PriceList= [
         {
             code: "STORE_DOCUMENT_TYPE_RATE_CONTRACT_QUATION",
@@ -231,6 +240,8 @@ export const header = getCommonContainer({
       const id = getQueryArg(window.location.href, "id");
       if(!step && !id){
         dispatch(prepareFinalObject("priceLists[0]",null));
+        dispatch(prepareFinalObject("priceLists[0].active",true));
+
       }
       //let employeeCode = getQueryArg(window.location.href, "employeeCode");
      // employeeCode && getEmployeeData(state, dispatch, employeeCode, tenantId);

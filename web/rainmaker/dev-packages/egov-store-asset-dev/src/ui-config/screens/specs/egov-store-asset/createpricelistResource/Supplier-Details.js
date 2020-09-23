@@ -8,7 +8,15 @@ import {
     getPattern
   } from "egov-ui-framework/ui-config/screens/specs/utils";
  import { getTodaysDateInYMD } from "../../utils";
+ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
  import {  handleScreenConfigurationFieldChange as handleField, prepareFinalObject  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+let disabled =false;
+const step = getQueryArg(window.location.href, "step");
+const id = getQueryArg(window.location.href, "id");
+ if(!step && !id){
+  disabled = true;
+
+}
   export const SupplierDetails = getCommonCard({
     header: getCommonTitle(
       {
@@ -33,6 +41,7 @@ import {
             labelKey: "STORE_SUPPLIER_MASTER_NAME_SELECT"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_SUPPLIER_NAME_SELECT",
           jsonPath: "priceLists[0].supplier.code",
            sourceJsonPath: "supplier.suppliers",
            props: {
@@ -60,6 +69,7 @@ import {
             labelKey: "STORE_PRICE_RATE_TYPE_SELECT"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_RATE_TYPE_SELECT",
           jsonPath: "priceLists[0].rateType",
           sourceJsonPath: "createScreenMdmsData.store-asset.RateType",
         props: {
@@ -86,6 +96,7 @@ import {
             labelKey: "STORE_PRICE_RATE_CONTRACT_TENDER_QUATATION_NO"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_RATE_CONTRATC_NUMBER",
           pattern: getPattern("Name") || null,
           jsonPath: "priceLists[0].rateContractNumber"
         })
@@ -101,6 +112,7 @@ import {
             labelKey: "STORE_PRICE_RATE_CONTRACT_TENDER_QUATATION_DATE"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_RATE_CONTRATC_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "priceLists[0].rateContractDate",
           props: {
@@ -121,6 +133,7 @@ import {
             labelKey: "STORE_PRICE_AGREMENT_NO"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_AGREEMENT_NUMBER",
           pattern: getPattern("Name") || null,
           jsonPath: "priceLists[0].agreementNumber"
         })
@@ -136,6 +149,7 @@ import {
             labelKey: "STORE_PRICE_AGREMENT_DATE"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_AGREEMENT_DATE",
           pattern: getPattern("Date") || null,
           jsonPath: "priceLists[0].agreementDate",
           props: {
@@ -156,6 +170,7 @@ import {
             labelKey: "STORE_PRICE_AGREMENT_START_DATE"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_AGREEMENT_START_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "priceLists[0].agreementStartDate",
           props: {
@@ -189,6 +204,7 @@ import {
             labelKey: "STORE_PRICE_AGREMENT_END_DATE"
           },
           required: true,
+            errorMessage:"STORE_VALIDATION_AGREEMENT_END_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "priceLists[0].agreementEndDate",
           props: {
@@ -211,7 +227,8 @@ import {
   
         props: {
           content: "STORE_PRICE_ACTIVE",
-          jsonPath: "searchScreen.active",
+          disabled:disabled,
+          jsonPath: "priceLists[0].active",
           screenName: "createpricelist",
           checkBoxPath:
             "components.div.children.searchForm.children.cardContent.children.searchFormContainer.children.active",

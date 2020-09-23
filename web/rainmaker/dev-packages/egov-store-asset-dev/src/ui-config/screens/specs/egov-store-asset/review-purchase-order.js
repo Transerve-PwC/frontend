@@ -12,7 +12,7 @@ import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
 
 export const header = getCommonContainer({
   header: getCommonHeader({
-    labelName: "Puchase Order- Summary",
+    labelName: "Purchase Order- Summary",
     labelKey: "STORE_PURCHASE_ORDER_SUMMARY"
   })
 });

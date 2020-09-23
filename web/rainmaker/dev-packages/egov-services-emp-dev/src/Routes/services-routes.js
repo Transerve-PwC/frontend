@@ -2,7 +2,7 @@ import React from "react";
 import Loadable from "react-loadable";
 
 // pgr employee specific screens
-import { ReOpenComplaint, ReopenAcknowledgement } from "../modules/common";
+// import { ReOpenComplaint, ReopenAcknowledgement } from "../modules/common";
 
 const Loading = () => <div />;
 
@@ -32,8 +32,9 @@ const ParkAndCommunityCenterAppDetails=Loadable({
   loader: () => import("../Screens/ParkAndCommunityCenterAppDetails"),
   loading: Loading
 });
-const LocationSummary = Loadable({
-  loader: () => import("../Screens/LocationSummaryComponent"),
+
+const ApplicationSummary = Loadable({
+  loader: () => import("../Screens/ApplicationDetails"),
   loading: Loading
 });
 
@@ -94,10 +95,6 @@ const ApplicationRejected = Loadable({
   loader: () => import("../Screens/ApplicationRejected"),
   loading: Loading
 });
-// const ComplaintAssigned = Loadable({
-//   loader: () => import("../Screens/ComplaintAssigned"),
-//   loading: Loading
-// });
 const ResolveSuccess = Loadable({
   loader: () => import("../Screens/ResolveSuccess"),
   loading: Loading
@@ -219,12 +216,6 @@ const routes = [
       customTitle: "BK_MYBK_APPLY_PACC_REQUEST_HEADER"
     }
   },
-  // {
-  //   path: "search-complaint",
-  //   component: SearchScreen,
-  //   needsAuthentication: true,
-  //   options: { hideFooter: true, title: "CORE_COMMON_SEARCH_COMPLAINT" }
-  // },
   {
     path: "egov-services/booking-resolved/:applicationId?",
     component: ApplicationResolved,
@@ -236,16 +227,7 @@ const routes = [
       redirectionUrl
     }
   },
-  // {
-  //   path: "egov-services/application-details/:applicationId",
-  //   component: ApplicationSummary,
-  //   needsAuthentication: true,
-  //   options: {
-  //     hideFooter: true,
-  //     // title: "BK_CS_HEADER_APPLICATION_SUMMARY",
-  //     redirectionUrl
-  //   }
-  // },
+ 
   {
     path: "egov-services/park-and-community-center-appDetails-details/:applicationId",
     component: ParkAndCommunityCenterAppDetails,
@@ -258,16 +240,7 @@ const routes = [
   },
 
   
-  {
-    path: "egov-services/new-location-details/:applicationId",
-    component: LocationSummary,
-    needsAuthentication: true,
-    options: {
-      hideFooter: true,
-      // title: "BK_CS_HEADER_APPLICATION_SUMMARY",
-      redirectionUrl
-    }
-  },
+  
  
   {
     path: "egov-services/cg-application-details/:applicationId",
@@ -299,6 +272,16 @@ const routes = [
       redirectionUrl
     }
   },
+  {
+    path: "egov-services/application-details/:applicationId",
+    component: ApplicationSummary,
+    needsAuthentication: true,
+    options: {
+      hideFooter: true,
+      // title: "BK_CS_HEADER_APPLICATION_SUMMARY",
+      redirectionUrl
+    }
+  },
 
   {
     path: "egov-services/osmcc-application-details/:applicationId",
@@ -320,17 +303,6 @@ const routes = [
       redirectionUrl
     }
   },
-  // {
-  //   path: "egov-services/home123",
-  //   component: ApplicationSummary,
-  //   needsAuthentication: true,
-  //   options: {
-  //     hideFooter: true,
-  //     title: "BK_CS_HEADER_APPLICATION_SUMMARY",
-  //     redirectionUrl
-  //   }
-  // },
-
   {
     path: "egov-services/resolve-success",
     component: ResolveSuccess,
@@ -423,19 +395,6 @@ const routes = [
       redirectionUrl
     }
   },
-
-  // {
-  //   path: "complaint-assigned/:serviceRequestId?",
-  //   component: ComplaintAssigned,
-  //   needsAuthentication: true,
-  //   options: {
-  //     hideBackButton: true,
-  //     hideFooter: true,
-  //     hideTitle: true,
-  //     title: "ES_COMPLAINT_ASSIGNED_HEADER",
-  //     redirectionUrl
-  //   }
-  // },
   {
     path: "egov-services/application-rejected",
     component: ApplicationRejected,
@@ -448,17 +407,6 @@ const routes = [
       hideBackButton: true
     }
   },
- 
-  // {
-  //   path: "employee-directory",
-  //   component: EmployeeDirectory,
-  //   needsAuthentication: true,
-  //   options: {
-  //     title: "ES_EMPLOYEE_DIRECTORY_HEADER",
-  //     hideFooter: true,
-  //     redirectionUrl
-  //   }
-  // },
   {
     path: "egov-services/reject-booking/:applicationId?",
     component: RejectComplaint,

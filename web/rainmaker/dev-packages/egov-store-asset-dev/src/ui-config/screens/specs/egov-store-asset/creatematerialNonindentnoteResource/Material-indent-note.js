@@ -10,6 +10,7 @@ import {
  // import { getTodaysDateInYMD } from "../../utils";
  import set from "lodash/set";
  import get from "lodash/get";
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import{getMaterialBalanceRateResults, getStoresSearchResults} from '../../../../../ui-utils/storecommonsapi'
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -91,7 +92,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME_SELECT"
           },
           required: true,
-         
+          errorMessage:"STORE_VALIDATION_ISSUING_STORE_NAME_SELECT",
           jsonPath: "materialIssues[0].fromStore.code",
           sourceJsonPath: "store.stores",
             props: {
@@ -140,6 +141,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_ISSUE_DATE_SELECT",
           pattern: getPattern("Date") ,
           jsonPath: "materialIssues[0].issueDate",
           props: {
@@ -235,7 +237,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             rowsMax: 2,
           },
           required: false,
-          pattern: getPattern("eventDescription") || null,
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialIssues[0].description"
         })
       },
@@ -264,6 +266,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_PURPOSE_SELECT"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_PURPOSE_OF_ISSUE_SELECT",
           jsonPath: "materialIssues[0].issuePurpose",
           //sourceJsonPath: "createScreenMdmsData.store-asset.IndentPurpose",
         props: {

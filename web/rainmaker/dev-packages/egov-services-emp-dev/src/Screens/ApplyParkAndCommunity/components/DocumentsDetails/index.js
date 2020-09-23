@@ -202,7 +202,7 @@ class ApplicatInfo extends Component {
 
 
 const mapStateToProps = state => {
-  const { complaints, common, auth, form } = state;
+  const { bookings, common, auth, form } = state;
   return {
     
   }

@@ -31,9 +31,9 @@ WebFont.load({
     families: ["Material+Icons", "Roboto"]
   }
 });
-
+console.log('store in index file---',store)
 // move it to a env file
-window.basename = process.env.NODE_ENV === "production" ? "/citizen" : "";
+window.basename = process.env.NODE_ENV === "production" ? "/employee" : "";
 // hardcoded the base; to be changed soon!!!!!
 render(
   <Provider store={store}>

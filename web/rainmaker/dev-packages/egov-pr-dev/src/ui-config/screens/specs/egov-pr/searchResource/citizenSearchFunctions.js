@@ -1006,11 +1006,11 @@ let selectedrows = localStorageGet("Invitelist") === null ? localStorageGet("Inv
        invitedGuestlist[index] = {
 						"eventGuestType":"INTERNAL",
 						"departmentName":item[0],
-						"userUuid":"as45a4s5d5as", 
-						"pressMasterUuid":"asd5a5as",
+						"userUuid":item[4], 
+						"pressMasterUuid":"",
 						"guestName":item[1],
 						"guestEmail":item[3],
-						"guestMobile":item[2]
+						"guestMobile":item[2]?item[2]:0
 				}
 			
      }
@@ -1537,7 +1537,7 @@ if(selectedrows!==null)
        invitedGuestlist[index] = {
 						"eventGuestType":"PRESS",
 						"departmentName":item[0],
-						"userUuid":"as45a4s5d5as", 
+						"userUuid":"", 
 						"pressMasterUuid":item.pressMasterUuid,
 						"guestName":item.personnelName,
 						"guestEmail":item.email,
@@ -1748,7 +1748,7 @@ export const getEventInviteeList = async (action, state, dispatch) => {
 		  [getTextToLocalMapping("Guest Type")]:item["eventGuestType"] !== null ? item["eventGuestType"] : "-",
 		   [getTextToLocalMapping("Guest Name")]: item["guestName"] !== null ? item["guestName"] : "-",
 		   [getTextToLocalMapping("Guest Email")]:item["guestEmail"] !== null ? item["guestEmail"] : "-",
-		   [getTextToLocalMapping("Guest Mobile Number")]:item["guestMobile"] !== null ? item["guestMobile"] : "-",
+		   [getTextToLocalMapping("Guest Mobile Number")]:item["guestMobile"] === null ?'-':item["guestMobile"] === "0" ?'-': item["guestMobile"],
 		   [getTextToLocalMapping("Status")]: "Upcoming",	   
 		   [getTextToLocalMapping("Guest ID")]:  item["eventGuestUuid"] !== null ? item["eventGuestUuid"] : "-"
 		   

@@ -296,14 +296,14 @@ const screenConfig = {
 		  [getTextToLocalMapping("Guest Type")]:
 			 item.eventGuestType || "-",
 		   [getTextToLocalMapping("Guest Name")]: (item.guestName !== null ? item.guestName : "-") || "-",
-		   [getTextToLocalMapping("Guest Mobile Number")]: (item.guestMobile !== null ? item.guestMobile : "-") || "-",
+		   [getTextToLocalMapping("Guest Mobile Number")]: (item.guestMobile === null  ?'-': item.guestMobile ) || "-",
 		   [getTextToLocalMapping("Email ID")]: (item.guestEmail !== null ? item.guestEmail : "-") || "-",
 		   [getTextToLocalMapping("Guest UUID")]: (item.eventGuestUuid !== null ? item.eventGuestUuid : "-") || "-"
 		   
 		  
 		 }));
     	  
-    	  
+    	 //:item.guestMobile === "0"?'-'
 	  dispatch(
        handleField(
          "event_summary",	

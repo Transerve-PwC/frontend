@@ -5,7 +5,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
     prepareDocumentsUploadData
-} from "../../../../../ui-utils/commons";
+} from "../../../../../ui-utils/storecommonsapi";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -69,6 +69,16 @@ if(NULMSEPRequest && NULMSEPRequest.isUrbanPoor){
     return;
   }
 }
+if(NULMSEPRequest && NULMSEPRequest.isHandicapped){
+  if(NULMSEPRequest.isHandicapped =="YES" && (NULMSEPRequest.disabilityCertificate === undefined) ){
+    const errorMessage = {
+      labelName: "Please chose disability certificate available option",
+      labelKey: "ERR_NULM_FILL_DISABILITY_CERTIFICATE"
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    return;
+  }
+}
 
 if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPRequest.hasOwnProperty("category"))){
   isFormValid = false;
@@ -77,7 +87,8 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
 
 
     if (!isSepDetailsValid) {
-      isFormValid = false;
+      //isFormValid = false;
+      isFormValid = true;
     }
   }
   if (activeStep === 1) {
@@ -87,6 +98,10 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
     const isDocRequired =  documents.map(doc => {
             return  doc.cards && doc.cards[0].required;
         })
+        // Disability Certificate Available validation
+      //   const isDocRequiredDisability =  documents.map(doc => {
+      //     return  doc.cards && !doc.cards[0].required && doc.cards[0].code ==='NULM_BPL_YELLOW_RATION_CARD' ;
+      // })
 
       let docArray = new Array(isDocRequired.length)
         
@@ -120,6 +135,12 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
                   } 
           }
         }
+        //
+        // console.log(isDocRequiredDisability)
+        // console.log(isDocRequired)
+        // for(let i = 0 ; i < isDocRequiredDisability.length ; i++){
+          
+        // }
     }
 
     if(activeStep == 1 && !isFormValid){
@@ -148,6 +169,26 @@ else if(activeStep == 1 && isFormValid){
   moveToReview(dispatch);
 }
   else{
+    if(activeStep ===0)
+    {
+      let loanamount = 200000
+      const loanAmountInput = get(state.screenConfiguration.preparedFinalObject, "NULMSEPRequest.loanAmount");
+      if(loanAmountInput>loanamount)
+      {
+        const errorMessage = {
+          labelName: "Amount of Loan should not be more than 2Lacs",
+          labelKey: "NULM_SEP_AMOUNT_OF_LOAN_REQUIRED_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
+      else
+      {
+        // setting documents for conditional doc mandatory
+    prepareDocumentsUploadData(state, dispatch, 'SEPApplication');
+      changeStep(state, dispatch);
+      }
+    }
+    else
     changeStep(state, dispatch);
   }
 };

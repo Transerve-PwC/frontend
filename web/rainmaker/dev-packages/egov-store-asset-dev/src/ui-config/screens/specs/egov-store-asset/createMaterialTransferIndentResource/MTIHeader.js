@@ -12,6 +12,7 @@ import { getSearchResults } from "../../../../../ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 export const MTIHeader = getCommonCard({
   header: getCommonTitle(
     {
@@ -34,6 +35,7 @@ export const MTIHeader = getCommonCard({
         },
        
         required: true,
+        errorMessage:"STORE_VALIDATION_INDENTING_STORE_SELECT",
         jsonPath: "indents[0].indentStore.code",
         sourceJsonPath: "store.stores",
         props: {
@@ -59,6 +61,7 @@ export const MTIHeader = getCommonCard({
           labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE",
         },
         required: true,
+        errorMessage:"STORE_VALIDATION_INDENT_DATE",
         pattern: getPattern("Date"),
         jsonPath: "indents[0].indentDate",
         props: {
@@ -76,6 +79,7 @@ export const MTIHeader = getCommonCard({
           labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
         },
         required: true,
+        errorMessage:"STORE_VALIDATION_INDENT_PURPOSE",
         jsonPath: "indents[0].indentPurpose",
         sourceJsonPath: "createScreenMdmsData.store-asset.IndentPurpose",
         props: {
@@ -120,7 +124,7 @@ export const MTIHeader = getCommonCard({
         labelName: "Enter Remarks",
         labelKey: "STORE_PURCHASE_ORDER_REMARK_PLCEHLDER",
       },
-      pattern: getPattern("alpha-numeric-with-space-and-newline"),
+      pattern: getSTOREPattern("Comment"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "indents[0].narration",
     }),

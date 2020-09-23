@@ -81,6 +81,11 @@ const getMdmsData = async (state, dispatch) => {
           masterDetails: [
             {
               name: "SEPDocuments",
+
+            },
+            {
+              name: "Qualification",
+              
             }
           ]
         },
@@ -123,7 +128,7 @@ const screenConfig = {
 
       const {NULMSEPRequest} = state.screenConfiguration.preparedFinalObject ;
       if(NULMSEPRequest && NULMSEPRequest.applicationUuid){
-      const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute"];
+      const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute","disabilityCertificate"];
     
       radioButtonValue.forEach(value => {
         if(NULMSEPRequest[value] && NULMSEPRequest[value]=== true ){
@@ -134,6 +139,9 @@ const screenConfig = {
       })
 
       dispatch(prepareFinalObject(`NULMSEPRequest.dob`, NULMSEPRequest.dob.split(" ")[0] ));
+    }
+    else{
+      dispatch(prepareFinalObject(`NULMSEPRequest.disabilityCertificate`, "NO" ));
     }
   }
     return action;

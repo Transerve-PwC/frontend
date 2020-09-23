@@ -1,12 +1,25 @@
-import { createStore, applyMiddleware } from "redux"
-import { combineReducers } from "redux";
-import storeConfigs from "egov-ui-kit/redux/store"
-import citizenReducer from "./reducer"
+import rootReducer from "./reducer";
+import { createStore, applyMiddleware,combineReducers,compose } from "redux";
+import thunk from "redux-thunk";
+// import screenConfigurationMiddleware from "egov-ui-framework/ui-redux/screen-configuration/middlewares";
+import logger from 'redux-logger';
 
-const { rootReducer, middlewares } = storeConfigs
+ let middlewares = [];
+
+middlewares = middlewares.concat(thunk);
+
+if (process.env.NODE_ENV === "development") {
+  const { logger } = require("redux-logger");
+  middlewares = middlewares.concat(logger);
+}
+
 
 const store = createStore(combineReducers({
-  ...rootReducer,
-}), applyMiddleware(...middlewares))
+  ...rootReducer
+}),compose(
+   applyMiddleware(...middlewares, logger, thunk),
+   window.devToolsExtension ? window.devToolsExtension() : f => f
+ ))
+
 
 export default store

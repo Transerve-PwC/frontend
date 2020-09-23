@@ -59,23 +59,6 @@ const DialogContent = withStyles((theme) => ({
 
 
 
-// const iconStyle = {
-//   marginRight: "13px",
-//   height: "24px",
-//   width: "24px",
-// };
-
-// const imageStyles = {
-//   maxHeight: "100px",
-//   minHeight: "100px",
-// };
-
-// const mapIconStyle = {
-//   marginRight: "7px",
-//   height: "12px",
-//   width: "14px",
-//   borderRadius: "50%",
-// };
 
 class BookingDetails extends Component {
   state = {
@@ -123,31 +106,6 @@ class BookingDetails extends Component {
     return `${day}-${month}-${year}`;
   };
 
-  // navigateToComplaintType = () => {
-  //   this.props.history.push("/complaint-type");
-  // };
-  // getImageSource = (imageSource, size) => {
-  //   const images = imageSource.split(",");
-  //   if (!images.length) {
-  //     return null;
-  //   }
-  //   switch (size) {
-  //     case "small":
-  //       imageSource = images[2];
-  //       break;
-  //     case "medium":
-  //       imageSource = images[1];
-  //       break;
-  //     case "large":
-  //     default:
-  //       imageSource = images[0];
-  //   }
-  //   return imageSource || images[0];
-  // };
-  // onImageClick = (source) => {
-  //   window.open(this.getImageSource(source, "large"), 'Image');
-
-  // };
 
   render() {
     const { status, historyApiData, bkBookingVenue, bkFromDate, bkToDate, applicantName, applicationNo, submittedDate, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
@@ -216,7 +174,7 @@ class BookingDetails extends Component {
                 <div className="complaint-detail-detail-section-status row">
                   <div className="col-md-2">
                     <Typography variant="caption">
-                      <LabelContainer labelName="Date" labelKey="TL_DATE_LABEL" />
+                      <LabelContainer labelName="Date" labelKey="BK_DATE_LABEL" />
                     </Typography>
                     <Typography variant="body2">
                       {/* <LabelContainer  complaint && complaint.applicantName ? complaint.applicantName : 'NA',
@@ -234,7 +192,7 @@ class BookingDetails extends Component {
                     <Typography variant="caption">
                       <LabelContainer
                         labelName="Updated By"
-                        labelKey="TL_UPDATED_BY_LABEL"
+                        labelKey="BK_UPDATED_BY_LABEL"
                       />
                     </Typography>
                     <Typography variant="body2">
@@ -247,7 +205,7 @@ class BookingDetails extends Component {
                     <Typography variant="caption">
                       <LabelContainer
                         labelName="Status"
-                        labelKey="TL_COMMON_TABLE_COL_STATUS"
+                        labelKey="BK_COMMON_TABLE_COL_STATUS"
                       />
                     </Typography>
                     <Typography
@@ -292,7 +250,7 @@ class BookingDetails extends Component {
                     <Typography variant="caption">
                       <LabelContainer
                         labelName="Current Owner"
-                        labelKey="TL_CURRENT_OWNER_LABEL"
+                        labelKey="BK_CURRENT_OWNER_LABEL"
                       />
                     </Typography>
                     <Typography
@@ -313,7 +271,7 @@ class BookingDetails extends Component {
                     <Typography variant="caption">
                       <LabelContainer
                         labelName="Comments"
-                        labelKey="TL_APPROVAL_CHECKLIST_COMMENTS_LABEL"
+                        labelKey="BK_APPROVAL_CHECKLIST_COMMENTS_LABEL"
                       />
                     </Typography>
                     <Typography

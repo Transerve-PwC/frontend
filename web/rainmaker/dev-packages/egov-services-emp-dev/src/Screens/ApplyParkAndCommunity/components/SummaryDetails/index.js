@@ -304,8 +304,8 @@ class SummaryDetails extends Component {
 
 const mapStateToProps = state => {
 
-    const { complaints, common, auth, form } = state;
-    const { createPACCApplicationData } = complaints;
+    const { bookings, common, auth, form } = state;
+    const { createPACCApplicationData } = bookings;
     console.log('createPACCApplicationData', createPACCApplicationData)
     return {
         createPACCApplicationData

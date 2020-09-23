@@ -8,8 +8,17 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 //import { gotoApplyWithStep } from "../../utils/index";
 import { getapplicationType } from "egov-ui-kit/utils/localStorageUtils";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
-export const documentsSummary = getCommonGrayCard({
+const gotoCreatePage = (state, dispatch) => {
+  const createUrl =
+  process.env.REACT_APP_SELF_RUNNING === "true"
+  ? `/egov-ui-framework/egov-store-asset/createMaterialReceiptNote?step=1`
+  : `/egov-store-asset/createMaterialReceiptNote?step=1`;
+  dispatch(setRoute(createUrl));
+};
+export const getDocumentView = (isReview = true) => {
+  return getCommonGrayCard({
   header: {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -19,7 +28,8 @@ export const documentsSummary = getCommonGrayCard({
     children: {
       header: {
         gridDefination: {
-          xs: 8
+          xs: 12,
+          sm: 10
         },
         ...getCommonSubHeader({
           labelName: "Documents",
@@ -29,37 +39,30 @@ export const documentsSummary = getCommonGrayCard({
       editSection: {
         componentPath: "Button",
         props: {
-          color: "primary",
-          style: {
-            marginTop: "-10px",
-            marginRight: "-18px"
-          }
+          color: "primary"
         },
+        visible: isReview,
         gridDefination: {
-          xs: 4,
+          xs: 12,
+          sm: 2,
           align: "right"
         },
         children: {
           editIcon: {
-            // uiFramework: "custom-atoms",
-            // componentPath: "Icon",
-            // props: {
-            //   iconName: "edit"
-            // }
+            uiFramework: "custom-atoms",
+            componentPath: "Icon",
+            props: {
+              iconName: "edit"
+            }
           },
-          // buttonLabel: getLabel({
-          //   labelName: "Edit",
-          //   labelKey: "NOC_SUMMARY_EDIT"
-          // })
+          buttonLabel: getLabel({
+            labelName: "Edit",
+            labelKey: "STORE_SUMMARY_EDIT"
+          })
         },
         onClickDefination: {
           action: "condition",
-          // callBack: (state, dispatch) => {
-          //   let applicationType = getapplicationType(); 
-          //   let steplevel = 2;
-          //   steplevel =  applicationType === 'SELLMEATNOC' ? 1 :  applicationType === 'ROADCUTNOC' ? 1 : applicationType === 'ADVERTISEMENTNOC' ? 2 : steplevel;           
-          //   gotoApplyWithStep(state, dispatch, steplevel);
-          // }
+          callBack: gotoCreatePage
         }
       }
     }
@@ -74,3 +77,4 @@ export const documentsSummary = getCommonGrayCard({
     }
   }
 });
+}

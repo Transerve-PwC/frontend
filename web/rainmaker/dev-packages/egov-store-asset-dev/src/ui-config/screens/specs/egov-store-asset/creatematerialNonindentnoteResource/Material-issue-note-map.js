@@ -8,6 +8,7 @@ import {
     getDateField,
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import get from "lodash/get";
   import filter from "lodash/filter";
   import { prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -96,7 +97,8 @@ let mrnNumber = get(state,"screenConfiguration.preparedFinalObject.materialIssue
                   labelName: "Select Receipt No.",
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_RECEIPT_NO_SELECT"
                 },
-                required: true,               
+                required: true,  
+                errorMessage:"STORE_VALIDATION_RECEIPT_NUMBER_SELECT",             
                 jsonPath: "materialIssues[0].materialIssueDetails[0].mrnNumber",
                 sourceJsonPath: "mrnNumber",
                // sourceJsonPath: "indentsmaterial",
@@ -135,7 +137,8 @@ let mrnNumber = get(state,"screenConfiguration.preparedFinalObject.materialIssue
                   labelName: "Select Material Name",
                   labelKey: "STORE_MATERIAL_NAME_SELECT"
                 },
-                required: true,               
+                required: true, 
+                errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",              
                 jsonPath: "materialIssues[0].materialIssueDetails[0].receiptId",
                 //sourceJsonPath: "materials",
                 sourceJsonPath: "NonIndentsmaterial",
@@ -225,6 +228,7 @@ let mrnNumber = get(state,"screenConfiguration.preparedFinalObject.materialIssue
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialIssues[0].materialIssueDetails[0].userQuantityIssued"
               }),
@@ -339,7 +343,8 @@ let mrnNumber = get(state,"screenConfiguration.preparedFinalObject.materialIssue
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
-                pattern: getPattern("Name") || null,
+                errorMessage:"STORE_VALIDATION_REMARK",
+                pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialIssues[0].materialIssueDetails[0].description"
               })
             },           

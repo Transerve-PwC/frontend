@@ -642,6 +642,10 @@ const parserFunction = (obj) => {
     },
     noOfTaps: parseInt(obj.noOfTaps),
     proposedTaps: parseInt(obj.proposedTaps),
+    waterProperty :{
+    usageCategory: (obj.waterProperty.usageCategory === null || obj.waterProperty.usageCategory === "NA") ? "" : obj.waterProperty.usageCategory,
+    usageSubCategory: (obj.waterProperty.usageSubCategory === null || obj.waterProperty.usageSubCategory === "NA") ? "" : obj.waterProperty.usageSubCategory,
+    },
     waterApplicationType: (obj.waterApplicationType === null || obj.waterApplicationType === "NA") ? "" : obj.waterApplicationType,
     plumberInfo: (obj.plumberInfo === null || obj.plumberInfo === "NA") ? [] : obj.plumberInfo
   }

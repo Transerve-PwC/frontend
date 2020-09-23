@@ -1758,26 +1758,41 @@ export const getYear1 = async () => {
   }
 };
 
-export const callBackForRefund = async data => {
-  const response = await getSearchResultsView([
-    { key: "tenantId", value: data.tenantId },
-    { key: "applicationNumber", value: data.applicationId }
-  ]);
-  let nocApplicationDetail = get(response, "nocApplicationDetail", []);
+export const callBackForRefund = async (state,dispatch,data) => {
   try {
-    let withdrawType = data.applicationStatus === "APPROVEFORWITHDRAW" ? "partialRefund" : "fullRefund";
-    const response1 = await httpRequest(
+    let nocApplicationDetail = get(state.screenConfiguration.preparedFinalObject, "nocApplicationDetail[0].applicationdetail", {});
+    let amount = JSON.parse(nocApplicationDetail)['withdrawapprovalamount'];
+    let taxAmount = JSON.parse(nocApplicationDetail)['withdrawapprovaltaxamount'];
+    let finalAmount = Number(amount) + Number(taxAmount);
+    const transactionResponse = await httpRequest(
       "post",
-      "/pm-refund-services/v1/_refund",
+      "pg-service/transaction/v1/_search",
       "",
-      [{ key: "withdrawType", value: withdrawType }],
-      { "RequestBody": nocApplicationDetail[0] }
+      [{ key: "consumerCode", value: data.applicationId },
+      { key:"tenantId",value: data.tenantId }]
     );
-
-    return response1;
-
+    if (transactionResponse) {
+      const refundPayload = {
+        "RefundTransaction": {
+          "tenantId": data.tenantId,
+          "txnId": transactionResponse.Transaction[0].txnId,
+          "refundAmount":finalAmount,
+          "gateway": transactionResponse.Transaction[0].gateway,
+          "user": transactionResponse.Transaction[0].user
+        }
+      };
+      const response1 = await httpRequest(
+        "post",
+        "pg-service/transaction/v1/_refund",
+        "",
+        [],
+        refundPayload
+      );
+      return response1;
+    }
   } catch (error) {
-    store.dispatch(
+    dispatch(toggleSpinner());
+    dispatch(
       toggleSnackbar(
         true,
         { labelName: error.message, labelCode: error.message },
@@ -1787,6 +1802,43 @@ export const callBackForRefund = async data => {
   }
 
 };
+
+const callPMUpdateStatusAPI = async (code,url,dispatch) => {
+  try {
+    const response = await httpRequest(
+      "post", "/pm-services/noc/_updateappstatus", "", [], code
+    );
+    if (response.ResponseInfo.status == "success") {
+      dispatch(toggleSpinner());
+      store.dispatch(
+        toggleSnackbar(
+          true,
+          { labelName: 'Success', labelCode: 'Success' },
+          "success"
+        ));
+      dispatch(setRoute(url))
+    }
+    else {
+      dispatch(toggleSpinner());
+      dispatch(toggleSnackbar(
+        true,
+        { labelName: response.ResponseInfo.msgId, labelCode: response.ResponseInfo.msgId },
+        "warning"
+      ))
+    }
+  } catch (error) {
+    dispatch(toggleSpinner());
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+}
+
+
 export const getWFStatus = (actions, state) => {
   let processInstances = get(state, "screenConfiguration.preparedFinalObject.workflow.ProcessInstances", []);
   let length = processInstances.length;
@@ -2013,36 +2065,17 @@ export const UpdateStatus = async (state, dispatch, url, queryObject, code) => {
     //    dispatch(toggleSpinner());
     let processInstances = get(state, "screenConfiguration.preparedFinalObject.workflow.ProcessInstances", []);
     let length = processInstances.length;
-    code.currentState = checkForRole(JSON.parse(getUserInfo()).roles, 'CITIZEN') ? getCurrentWFStateNameForCitizen(state) : processInstances[length-1].state.state;
-    const response = await httpRequest(
-      "post", "/pm-services/noc/_updateappstatus", "", [], code
-    );
-    // return response;
-    if (response.ResponseInfo.status == "success") {
-      dispatch(toggleSpinner());
-      store.dispatch(
-        toggleSnackbar(
-          true,
-          { labelName: 'Success', labelCode: 'Success' },
-          "success"
-        ));
-      dispatch(setRoute(url))
-      if (code.applicationStatus == "APPROVEFORWITHDRAW" || code.applicationStatus == "WITHDRAW") {
-        callBackForRefund(code);
-      }
+    code.currentState = checkForRole(JSON.parse(getUserInfo()).roles, 'CITIZEN') ? getCurrentWFStateNameForCitizen(state) : processInstances[length - 1].state.state;
+    if (code.applicationStatus == "APPROVEFORWITHDRAW") {
+      let response1 = await callBackForRefund(state,dispatch,code);
+      if (response1 && response1.ResponseInfo.status == "SUCCESSFUL")
+        callPMUpdateStatusAPI(code, url,dispatch)
     }
     else {
-      dispatch(toggleSpinner());
-      dispatch(toggleSnackbar(
-        true,
-        { labelName: response.ResponseInfo.msgId, labelCode: response.ResponseInfo.msgId },
-        "warning"
-      ))
-
+      callPMUpdateStatusAPI(code,url,dispatch)
     }
   } catch (error) {
     dispatch(toggleSpinner());
-
     store.dispatch(
       toggleSnackbar(
         true,

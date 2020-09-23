@@ -40,6 +40,7 @@ import {
                 labelKey: "STORE_MATERIAL_NAME_SELECT"
               },
               required: true,
+            errorMessage:"STORE_VALIDATION_MATERIAL_NAME",
               jsonPath: "priceLists[0].priceListDetails[0].material.code",            
               sourceJsonPath: "createScreenMdmsData.store-asset.Material",
               props: {
@@ -111,6 +112,7 @@ import {
                   labelKey: "STORE_PRICE_RATE_PER_UNIT_PLACEHOLDER"
                 },
                 required: true,
+            errorMessage:"STORE_VALIDATION_RATER_PER_UNIT",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "priceLists[0].priceListDetails[0].ratePerUnit"
               })
@@ -126,6 +128,7 @@ import {
                   labelKey: "STORE_PRICE_QUANTITY_PLACEHOLDER"
                 },
                 required: true,
+            errorMessage:"STORE_VALIDATION_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "priceLists[0].priceListDetails[0].quantity"
               })
@@ -138,6 +141,7 @@ import {
                 labelKey: "STORE_MATERIAL_INDENT_NOTE_UOM_NAME",
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_UOM_NAME",
               jsonPath: "priceLists[0].priceListDetails[0].uom.code",
               gridDefination: {
                 xs: 12,

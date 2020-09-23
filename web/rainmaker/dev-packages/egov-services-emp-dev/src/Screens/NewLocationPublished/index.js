@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import formHOC from "egov-ui-kit/hocs/form";
 import { Screen } from "modules/common";
 import NewLocationPublishedForm from "./components/NewLocationPublishedForm";
-import { fetchMccApplications } from "../../redux/bookings/actions";
+import { fetchMccApplications } from "egov-ui-kit/redux/bookings/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { handleFieldChange } from "egov-ui-kit/redux/form/actions";
@@ -26,7 +26,8 @@ class NewLocationComment extends Component {
     fetchMccApplications(
       { 'uuid': userInfo.uuid, "applicationNumber": applicationNumber,
       "applicationStatus":"",
-      "mobileNumber":"","bookingType":"" }
+      "mobileNumber":"","bookingType":"","tenantId":userInfo.tenantId
+     }
       
     );
   }
@@ -107,8 +108,8 @@ class NewLocationComment extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints = {} } = state || {};
-  const { MccApplicationData } = complaints;
+  const { bookings = {} } = state || {};
+  const { MccApplicationData } = bookings;
   
   let trasformData = MccApplicationData?MccApplicationData.osujmNewLocationModelList[0]:'';
   let businessServiceData = MccApplicationData.businessService;

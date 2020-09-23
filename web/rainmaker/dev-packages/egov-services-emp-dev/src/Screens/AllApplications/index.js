@@ -5,7 +5,7 @@ import get from "lodash/get";
 import MenuButton from "egov-ui-framework/ui-molecules/MenuButton";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import { SortDialog, Screen } from "modules/common";
-import { fetchApplications,fetchApplicationType } from "../../redux/bookings/actions"//"egov-ui-kit/redux/complaints/actions";
+import { fetchApplications, fetchApplicationType } from "egov-ui-kit/redux/bookings/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { transformComplaintForComponent } from "egov-ui-kit/utils/commons";
@@ -40,7 +40,7 @@ class AllRequests extends Component {
     sortPopOpen: false,
     errorText: "",
     currency: '',
-    open: false, setOpen: false
+    open: false, setOpen: false, applicationList: [],appStatusArray:[],
   };
   style = {
     iconStyle: {
@@ -61,77 +61,33 @@ class AllRequests extends Component {
   };
   // const compainsData=[];
   componentDidMount = async () => {
+
     let {
       role,
-      userInfo,
-      numCSRComplaint,
-      numEmpComplaint,
-      renderCustomTitle,
-      prepareFinalObject
+      userInfo, fetchApplicationType,
     } = this.props;
     fetchApplicationType();
     let rawRole =
       userInfo && userInfo.roles && userInfo.roles[0].code.toUpperCase();
-    //const numberOfComplaints = role === "employee" ? numEmpComplaint : role === "csr" ? numCSRComplaint : 0;
-    if (rawRole === "PGR-ADMIN") {
-      this.props.history.push("/report/rainmaker-pgr/DepartmentWiseReport");
-    } else {
-      let { fetchApplications } = this.props;
-      
-      if (role === "ao") {
-        fetchApplications(
-          [
-            {
-              key: "status",
-              value: "assigned,escalatedlevel1pending,escalatedlevel2pending"
-            }
-          ],
-          true,
-          false
-        );
-        fetchApplications(
-          [
-            {
-              key: "status",
-              value: "open,reassignrequested"
-            }
-          ],
-          true,
-          false
-        );
-      } else if (role === "eo") {
-        fetchApplications(
-          [
-            {
-              key: "status",
-              value: "escalatedlevel1pending,escalatedlevel2pending"
-            }
-          ],
-          true,
-          true
-        );
-      }
-      else {
-        fetchApplications(
-          {
-            "uuid": userInfo.uuid, "applicationNumber": "",
-            "applicationStatus": "",
-            "mobileNumber": "", "bookingType": ""
-          },
+    let { fetchApplications } = this.props;
+    fetchApplications(
+      {
+        "uuid": userInfo.uuid, "applicationNumber": "",
+        "applicationStatus": "",
+        "mobileNumber": "", "bookingType": "",
+        "tenantId": userInfo.tenantId
+      },
+      true,
+      true
+    );
 
-          true,
-          true
-        );
-      }
-    }
-    let inputType = document.getElementsByTagName("input");
-    for (let input in inputType) {
-      if (inputType[input].type === "number") {
-        inputType[input].addEventListener("mousewheel", function () {
-          this.blur();
-        });
-      }
-    }
+    // let appListFromAPI = await httpRequest(
+    //   "egov-workflow-v2/egov-wf/process/_search?",
+    //   "_search", [],
+    //   []
+    // );
+    // this.setState({applicationList:appListFromAPI&&appListFromAPI.ProcessInstances})
+    // console.log('appListFromAPI',appListFromAPI)
   };
 
   componentWillReceiveProps = nextProps => {
@@ -163,7 +119,7 @@ class AllRequests extends Component {
       sortPopOpen: true
     });
   };
-  gotoPArkAndCommunityTanker= () => {
+  gotoPArkAndCommunityTanker = () => {
     this.props.history.push(`/egov-services/applyPark-community-center`);
   };
   gotoMcc = () => {
@@ -172,11 +128,11 @@ class AllRequests extends Component {
 
 
   onComplaintClick = (complaintNo, bookingType) => {
-
+   
     if (bookingType && bookingType == "WATER_TANKERS") {
       this.props.history.push(`/egov-services/bwt-application-details/${complaintNo}`);
     }
-    if (bookingType && bookingType == "OSBM") {
+    if (bookingType && bookingType == "OSBM" || bookingType == "Open Space to Store Building Material") {
       this.props.history.push(`/egov-services/application-details/${complaintNo}`);
     }
     if (bookingType && bookingType == "GROUND_FOR_COMMERCIAL_PURPOSE") {
@@ -227,8 +183,17 @@ class AllRequests extends Component {
   };
 
   onbookingChange = e => {
+    let {applicationType}=this.props;
+    let appStats;
     const inputValue = e.target.value;
     this.setState({ bookingType: inputValue });
+      applicationType&&applicationType.Status.forEach((item)=>{
+    if(e.target.value==item.code){
+        appStats=item.status}
+      })
+      console.log('appStats',appStats)
+      this.setState({ appStatusArray: appStats });
+
   };
   onApplicationStatusChange = e => {
     const inputValue = e.target.value;
@@ -236,7 +201,7 @@ class AllRequests extends Component {
   };
 
   onSearch = () => {
-    
+   
     const { complaintNo, mobileNo, bookingType, applicationStatus, fromDate, toDate } = this.state;
     const { fetchApplications, searchForm, userInfo, toggleSnackbarAndSetText } = this.props;
     let queryObj = {};
@@ -247,6 +212,7 @@ class AllRequests extends Component {
       queryObj.applicationStatus = "";
       queryObj.mobileNumber = "";
       queryObj.bookingType = "";
+      queryObj.tenantId = userInfo.tenantId;
 
     }
 
@@ -255,6 +221,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = '';
       queryObj.mobileNumber = "";
       queryObj.bookingType = "";
+      queryObj.tenantId = userInfo.tenantId;
 
     }
 
@@ -263,6 +230,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId = userInfo.tenantId;
 
     }
     if (bookingType) {
@@ -270,9 +238,15 @@ class AllRequests extends Component {
       queryObj.mobileNumber = "";
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
+      queryObj.tenantId = userInfo.tenantId;
+    }
 
-
-      
+    if (bookingType&&applicationStatus) {
+      queryObj.bookingType = bookingType;
+      queryObj.mobileNumber = "";
+      queryObj.applicationNumber = "";
+      queryObj.applicationStatus =applicationStatus;
+      queryObj.tenantId = userInfo.tenantId;
     }
 
     if (fromDate) {
@@ -281,8 +255,9 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.fromDate = fromDate;
+      queryObj.tenantId = userInfo.tenantId;
 
-      
+
     }
     if (toDate) {
       queryObj.bookingType = "";
@@ -290,8 +265,9 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.toDate = toDate;
+      queryObj.tenantId = userInfo.tenantId;
 
-      
+
     }
 
 
@@ -303,6 +279,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId = userInfo.tenantId;
 
     }
 
@@ -312,6 +289,7 @@ class AllRequests extends Component {
       queryObj.applicationNumber = "";
       queryObj.applicationStatus = "";
       queryObj.bookingType = "";
+      queryObj.tenantId = userInfo.tenantId;
 
     }
 
@@ -320,6 +298,7 @@ class AllRequests extends Component {
     // }
 
     if (complaintNo) {
+     
       if (complaintNo.length >= 23) {
         fetchApplications(queryObj, true, true);
       } else {
@@ -371,7 +350,7 @@ class AllRequests extends Component {
     const { metaData, setMetaData, handleChange, searchForm } = this.props;
     const selectedValue = e.target.value;
     //const selectedValue = e.target.value;
-   
+
     if (property === "fromDate" || property === "toDate") {
       // this.handleDateSelect(metaData, e, property);
       // this.checkDate(selectedValue, property, isRequired, pattern);
@@ -386,7 +365,7 @@ class AllRequests extends Component {
             metaData.reportDetails.searchParams[l].defaultValue = {};
           }
         }
-        
+
         setMetaData(metaData);
       } else {
         for (var i = 0; i < metaData.reportDetails.searchParams.length; i++) {
@@ -513,7 +492,8 @@ class AllRequests extends Component {
       {
         "uuid": userInfo.uuid, "applicationNumber": "",
         "applicationStatus": "",
-        "mobileNumber": "", "bookingType": ""
+        "mobileNumber": "", "bookingType": "",
+        "tenantId": userInfo.tenantId
       },
     );
     this.setState({ mobileNo: "", complaintNo: "", bookingType: "", applicationStatus: "", fromDate: "", toDate: "", search: false });
@@ -543,8 +523,9 @@ class AllRequests extends Component {
       top: "30px"
 
     };
-    
-    const { loading, histor, userInfo } = this.props;
+
+    const { loading, histor, userInfo, applicationType } = this.props;
+    console.log('applicationType in render file',applicationType)
     const {
       mobileNo,
       bookingType,
@@ -554,12 +535,12 @@ class AllRequests extends Component {
       sortPopOpen,
       errorText,
       fromDate,
-      toDate
+      toDate,appStatusArray
     } = this.state;
     const tabStyle = {
       letterSpacing: "0.6px"
     };
-    
+
 
     const { onComplaintClick, onSortClick, closeSortDialog, style } = this;
     const {
@@ -583,14 +564,14 @@ class AllRequests extends Component {
     const a = [{ displayName: "open space" }, { displayName: 'water tanker' }];
 
     const downloadMenu = a.map((obj, index) => {
-      
+
       return {
         labelName: obj.displayName,
         labelKey: `ACTION_TEST_${obj.displayName.toUpperCase().replace(/[._:-\s\/]/g, "_")}`,
       }
     })
 
-    
+
     const buttonItems = {
       label: { labelName: "Take Action", labelKey: "INBOX_QUICK_ACTION" },
       rightIcon: "arrow_drop_down",
@@ -601,7 +582,7 @@ class AllRequests extends Component {
     const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'MCC_APPROVER');
     const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'OSD_APPROVER');
     const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'ADMIN_APPROVER');
-    
+
     return role === "ao" ? (
       <div>
         <div
@@ -668,7 +649,7 @@ class AllRequests extends Component {
                     label={`ES_ALL_COMPLAINTS_UNASSIGNED_TAB_LABEL2`}
                     labelStyle={tabStyle}
                   />
-                  
+
                 </div>
               ),
               children: (
@@ -763,7 +744,7 @@ class AllRequests extends Component {
             onClick={() => this.gotoMcc()}
           /> : ''
         }
-{/* 
+        {/* 
           <Button
             className="responsive-action-button"
             label={<Label buttonLabel={true} label="BK_MYBK_WATER_TANKER_APPLY" />}
@@ -857,32 +838,7 @@ class AllRequests extends Component {
                   />
                 </div>
                 <div className="col-sm-4 col-xs-12" style={{ minHeight: '72px', marginTop: '10px' }}>
-                  <FormControl style={{ width: '100%' }}>
-                    <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Application Status</InputLabel>
-                    <Select
-                      maxWidth={false}
-                      labelId="demo-controlled-open-select-label"
-                      id="demo-controlled-open-select"
-                      open={this.state.SetOpen}
-                      onClose={() => this.handleClose()}
-                      onOpen={() => this.handleOpen()}
-                      value={this.state.applicationStatus}
-                      displayEmpty
-                      onChange={(e, value) => this.onApplicationStatusChange(e)}
-                    >
-                      <MenuItem value="" disabled>Application Status</MenuItem>
-                      <MenuItem value='PENDINGAPPROVAL'>Pending Approval</MenuItem>
-                      <MenuItem value='PENDINGPAYMENT'>Pending Payment</MenuItem>
-                      <MenuItem value='PENDINGUPDATE'>Pending Update</MenuItem>
-                      <MenuItem value='PENDINGASSIGNMENTDRIVER'>Pending Assignment Driver</MenuItem>
-                    </Select>
-                  </FormControl>
-                  
-                </div>
-                <div className="col-sm-4 col-xs-12" style={{ minHeight: '72px', paddingTop: "18px", paddingLeft: "8px" }}>
-                 
-
-                  <FormControl style={{ width: '100%' }}>
+                <FormControl style={{ width: '100%' }}>
                     <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Booking Type</InputLabel>
                     <Select
                       maxWidth={false}
@@ -895,13 +851,46 @@ class AllRequests extends Component {
                       value={bookingType}
                       onChange={(e, value) => this.onbookingChange(e)}
                     >
-                      <MenuItem value="" disabled>Booking Type</MenuItem>
+                      <MenuItem value=""disabled>Booking Type</MenuItem>
+                      {applicationType && applicationType.Status.map((item, index) => (
+                        <MenuItem value={item.code}>{item.name}</MenuItem>
+                      ))}
+                      {/* <MenuItem value="" disabled>Booking Type</MenuItem>
                       <MenuItem value='OSBM'>Open Space To Store Building Material</MenuItem>
                       <MenuItem value='WATER_TANKERS'>Water Tankers</MenuItem>
                       <MenuItem value='GROUND_FOR_COMMERCIAL_PURPOSE'>Commercial Ground</MenuItem>
-                      <MenuItem value='OSUJM'>Open Space WithIn MCC</MenuItem>
+                      <MenuItem value='OSUJM'>Open Space WithIn MCC</MenuItem> */}
                     </Select>
                   </FormControl>
+               
+                
+                </div>
+                <div className="col-sm-4 col-xs-12" style={{ minHeight: '72px', paddingTop: "18px", paddingLeft: "8px" }}>
+                <FormControl style={{ width: '100%' }}>
+                    <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Application Status</InputLabel>
+                    <Select
+                      maxWidth={false}
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
+                      open={this.state.SetOpen}
+                      onClose={() => this.handleClose()}
+                      onOpen={() => this.handleOpen()}
+                      value={this.state.applicationStatus}
+                      displayEmpty
+                      onChange={(e, value) => this.onApplicationStatusChange(e)}
+                    > 
+                    <MenuItem value="" disabled>Application Status</MenuItem>
+                    {appStatusArray && appStatusArray.map((item, index) => (
+                        <MenuItem value={item.code}>{item.name}</MenuItem>
+                      ))}
+                      {/* <MenuItem value="" disabled>Application Status</MenuItem>
+                      <MenuItem value='PENDINGAPPROVAL'>Pending Approval</MenuItem>
+                      <MenuItem value='PENDINGPAYMENT'>Pending Payment</MenuItem>
+                      <MenuItem value='PENDINGUPDATE'>Pending Update</MenuItem>
+                      <MenuItem value='PENDINGASSIGNMENTDRIVER'>Pending Assignment Driver</MenuItem> */}
+                    </Select>
+                  </FormControl>                           
+               
                 </div>
                 <div className="col-sm-4 col-xs-12" style={{ minHeight: '72px', paddingTop: "10px" }}>
                   <TextField
@@ -981,7 +970,7 @@ class AllRequests extends Component {
                     }}
                   />
                 </div>
-             
+
                 <div
                   className="col-sm-12 col-xs-12"
                   style={{ marginTop: 10, paddingRight: 8, marginLeft: "16%" }}
@@ -1185,7 +1174,7 @@ class AllRequests extends Component {
                 complaintLocation={true}
               />
             </div>
-         
+
           </Screen>
         );
   }
@@ -1201,23 +1190,10 @@ const roleFromUserInfo = (roles = [], role) => {
 };
 
 const mapStateToProps = state => {
-  console.log('state in all app',state)
-  const { complaints, common, screenConfiguration = {} } = state || {};
-  const { categoriesById, byId, order } = complaints;
-  const { fetchSuccess, applicationData } = complaints;
-  const { preparedFinalObject = {} } = screenConfiguration;
-  const { pgrComplaintCount = {} } = preparedFinalObject;
-  const {
-    assignedTotalComplaints = 0,
-    unassignedTotalComplaints = 0,
-    employeeTotalComplaints = 0
-  } = pgrComplaintCount;
-  const loading = !isEmpty(categoriesById)
-    ? fetchSuccess
-      ? false
-      : true
-    : true;
-  const { citizenById, employeeById } = common || {};
+  console.log('state in all app', state)
+  const { bookings, common, screenConfiguration = {} } = state || {};
+  const { fetchSuccess, applicationData,applicationType } = bookings;
+  const loading = false;
   const { userInfo } = state.auth;
   const role =
     roleFromUserInfo(userInfo.roles, "GRO") ||
@@ -1247,12 +1223,12 @@ const mapStateToProps = state => {
     assignedComplaints,
     unassignedComplaints,
     csrComplaints,
-   
+    applicationType,
     employeeComplaints,
     role,
     loading,
     transformedComplaints
-   
+
   };
 };
 
@@ -1278,8 +1254,8 @@ const mapDispatchToProps = dispatch => {
     },
     fetchApplications: (criteria, hasUsers, overWrite) =>
       dispatch(fetchApplications(criteria, hasUsers, overWrite)),
-      fetchApplicationType:(criteria) =>
-      dispatch(fetchApplicationType(criteria)),
+    fetchApplicationType: () =>
+      dispatch(fetchApplicationType()),
     toggleSnackbarAndSetText: (open, message, error) =>
       dispatch(toggleSnackbarAndSetText(open, message, error)),
     prepareFinalObject: (jsonPath, value) =>

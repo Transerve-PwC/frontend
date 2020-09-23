@@ -79,9 +79,9 @@ class Inbox extends Component {
             <Label className="landingPageHeader flex-child" label={"CS_LANDING_PAGE_WELCOME_TEXT"} />
             <Label className="landingPageUser flex-child" label={name} />,
           </div>
-          <div className="quick-action-button">
+          {/* <div className="quick-action-button">
             <MenuButton data={buttonItems} />
-          </div>
+          </div> */}
         </div>
         <div className={"inbox-service-list"}>
           <ServiceList history={history} />

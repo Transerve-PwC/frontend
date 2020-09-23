@@ -52,8 +52,7 @@ export const searchForm = getCommonCard({
       required: false,
       jsonPath: "searchScreen.code",
       gridDefination: {
-        xs: 12,
-        sm: 4,
+        xs: 6,
       },
       sourceJsonPath: "searchScreenMdmsData.store-asset.MaterialType",
       props: {
@@ -70,8 +69,7 @@ export const searchForm = getCommonCard({
       required: false,
       jsonPath: "searchScreen.store",
       gridDefination: {
-        xs: 12,
-        sm: 4,
+        xs: 6,
       },
       sourceJsonPath: "searchScreenMdmsData1.material-type.stores",
       props: {
@@ -93,6 +91,7 @@ export const searchForm = getCommonCard({
       props: {
         content: "STORE_MATERIAL_TYPE_STORE_MAP",
         jsonPath: "searchScreen.storeMappingInfo",
+       
         screenName: "search-material-type",
         checkBoxPath:
           "components.div.children.searchForm.children.cardContent.children.searchFormContainer.children.storeMappingInfo",
@@ -104,7 +103,7 @@ export const searchForm = getCommonCard({
       componentPath: "CheckboxContainer",
       jsonPath: "searchScreen.active",
       gridDefination: {
-        xs: 6,
+        xs: 4,
       },
       isFieldValid: true,
       required: false,

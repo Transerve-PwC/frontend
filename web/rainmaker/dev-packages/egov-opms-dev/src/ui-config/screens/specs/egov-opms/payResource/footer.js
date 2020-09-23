@@ -95,7 +95,7 @@ export const callPGService = async (state, dispatch) => {
           element.taxHeadCode === `ROADCUTNOC_FEE_RD3` ||
           element.taxHeadCode === `ADVERTISEMENTNOC_FEE`) {
           localStorageSet("amount", element.amount);
-        } else if (element.taxHeadCode === `PETNOC_TAX` ||
+        } else if (element.taxHeadCode === `PETNOC_POSTAL_CHARGES` ||
           element.taxHeadCode === `ROADCUTNOC_TAX_RD1` ||
           element.taxHeadCode === `ROADCUTNOC_TAX_RD2` ||
           element.taxHeadCode === `ROADCUTNOC_TAX_RD3` ||

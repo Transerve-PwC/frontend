@@ -14,6 +14,7 @@ import {
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import{getOpeningBalanceSearchResults} from '../../../../../ui-utils/storecommonsapi'
   import{GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   const getBalanceQty = async (action, state, dispatch) => {
     const tenantId = getTenantId();
     const storecode = get(state.screenConfiguration.preparedFinalObject,"materialIssues[0].fromStore.code", '' )
@@ -88,7 +89,8 @@ import {
                   labelName: "Select Material Name",
                   labelKey: "STORE_MATERIAL_NAME_SELECT"
                 },
-                required: true,               
+                required: true,  
+                errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",             
                 jsonPath: "materialReceipt[0].receiptDetails[0].material.code",
                 sourceJsonPath: "MiscMaterilList",
                 props: {
@@ -186,6 +188,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                errorMessage:"STORE_VALIDATION_RECEIVED_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
               }),
@@ -260,7 +263,8 @@ import {
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
-                pattern: getPattern("Name") || null,
+                errorMessage:"STORE_VALIDATION_REMARK",
+                pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].rejectionRemark"
               })
             },

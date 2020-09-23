@@ -59,26 +59,6 @@ const DialogContent = withStyles((theme) => ({
 
 }))(MuiDialogContent);
 
-
-
-const iconStyle = {
-  marginRight: "13px",
-  height: "24px",
-  width: "24px",
-};
-
-const imageStyles = {
-  maxHeight: "100px",
-  minHeight: "100px",
-};
-
-const mapIconStyle = {
-  marginRight: "7px",
-  height: "12px",
-  width: "14px",
-  borderRadius: "50%",
-};
-
 class BookingDetails extends Component {
   state = {
     open: false
@@ -97,33 +77,6 @@ class BookingDetails extends Component {
       open: false
     })
   };
-
-  navigateToComplaintType = () => {
-    this.props.history.push("/complaint-type");
-  };
-  getImageSource = (imageSource, size) => {
-    const images = imageSource.split(",");
-    if (!images.length) {
-      return null;
-    }
-    switch (size) {
-      case "small":
-        imageSource = images[2];
-        break;
-      case "medium":
-        imageSource = images[1];
-        break;
-      case "large":
-      default:
-        imageSource = images[0];
-    }
-    return imageSource || images[0];
-  };
-  onImageClick = (source) => {
-    window.open(this.getImageSource(source, "large"), 'Image');
-    // this.props.history.push(`/image?source=${source}`);
-  };
-
 
 
   render() {

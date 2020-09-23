@@ -368,7 +368,12 @@ export const createUpdateFineMaster = async (state, dispatch, status, isActive) 
 export const fetchItemListMasterData = async (action, state, dispatch) => {
   //
   try {
-    const response = await httpRequest("post", "/ec-services/item/_get", "", [], data);
+     let Reqdata = {
+      "RequestBody": {
+        tenantId: getTenantId()
+      }
+    }  
+    const response = await httpRequest("post", "/ec-services/item/_get", "", [], Reqdata);
     let data = response.ResponseBody.map(item => ({
       // alert(item)
       'id': item['itemUuid'] || "-",

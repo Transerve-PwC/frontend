@@ -31,7 +31,7 @@ import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
 
 const materialTypeCode = getQueryArg(window.location.href, "code");
 const tenantId = getQueryArg(window.location.href, "tenantId");
-const isEditMode = getQueryArg(window.location.href, "edited");
+let isEditMode = getQueryArg(window.location.href, "edited");
 const MaterialTypeRelationDetailsCard = {
   uiFramework: "custom-containers",
   componentPath: "MultiItem",
@@ -47,6 +47,7 @@ const MaterialTypeRelationDetailsCard = {
                 labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
               },
               required: true,
+              errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
               jsonPath: "materialTypes[0].storeMapping[0].store.code",
               sourceJsonPath: "createScreenMdmsData1.material-type.stores",
               props: {
@@ -483,6 +484,7 @@ export const formwizardFirstStep = {
           jsonPath: "materialTypes[0].name",
           sourceJsonPath: "createScreenMdmsData.store-asset.MaterialType",
           required: true,
+          errorMessage:"STORE_VALIDATION_MATERIAL_TYPE_SELECT",
           beforeFieldChange: (action, state, dispatch) => {
             if (action.value) {
               const { MaterialType } = state.screenConfiguration.preparedFinalObject.createScreenMdmsData['store-asset'];
@@ -513,7 +515,7 @@ export const formwizardFirstStep = {
           },
           required: true,
           //   pattern: getPattern("alpha-only"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          errorMessage: "STORE_VALIDATION_MATERIAL_TYPE_CODE",
 
           jsonPath: "materialTypes[0].code",
         }),
@@ -534,7 +536,7 @@ export const formwizardFirstStep = {
           },
           required: true,
           //  pattern: getPattern("alpha-numeric-with-space-and-newline"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          errorMessage: "STORE_VALIDATIO_MATERIAL_DESCRIPTION",
           jsonPath: "materialTypes[0].description",
         }),
         active: {
@@ -634,7 +636,7 @@ const screenConfig = {
   beforeInitScreen: (action, state, dispatch) => {
     // fetching store name for populating dropdown
     const queryObject = [{ key: "tenantId", value: getTenantId() }];
-
+    isEditMode = getQueryArg(window.location.href, "edited");
     getSearchResults(queryObject, dispatch,"storeMaster")
       .then(response => {
         const storeName = response.stores.map((store, index) => {
@@ -664,6 +666,7 @@ const screenConfig = {
       });
     }
     else {
+      dispatch(prepareFinalObject("materialTypes[0]", null));
       dispatch(prepareFinalObject("materialTypes[0].active", true));
       dispatch(prepareFinalObject("materialTypes[0].storeMapping[0].active", true));
     }

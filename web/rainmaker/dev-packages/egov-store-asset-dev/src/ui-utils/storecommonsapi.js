@@ -837,9 +837,9 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
     {
     let code = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${value}`,'') 
     code = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",code)  
-    let InputQtyValue_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0) 
-    let CompareQtyValue_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${CompareQtyValue}`,0) 
-    let balanceQuantity_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${balanceQuantity}`,0) 
+    let InputQtyValue_ = Number( get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0))
+    let CompareQtyValue_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${CompareQtyValue}`,0)) 
+    let balanceQuantity_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${balanceQuantity}`,0))
     if(doubleqtyCheck)
     {
      if(balanceQuantity_>CompareQtyValue_)
@@ -847,41 +847,184 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
       if(pagename ==='createMaterialIndentNote')
       {
 
-        let IssueQty = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.issuedQuantity`,0)
-        let poOrderedQuantity = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.poOrderedQuantity`,0)
+        let IssueQty = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.issuedQuantity`,0))
+        let poOrderedQuantity = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.poOrderedQuantity`,0))
         
         CompareQtyValue_ = CompareQtyValue_ - (IssueQty+poOrderedQuantity);
-        if(InputQtyValue_>CompareQtyValue_)       
-        matcode.push(code)
+        if(InputQtyValue_>CompareQtyValue_ || InputQtyValue_ === 0)  
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        }     
+        
       }
       else{
-        if(InputQtyValue_>CompareQtyValue_)       
-        matcode.push(code)
+        if(InputQtyValue_>CompareQtyValue_ || InputQtyValue_ === 0)       
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        } 
 
       }
      
      }
      else if (balanceQuantity_<=CompareQtyValue_)
      {
-      if(InputQtyValue_>balanceQuantity_)       
-      matcode.push(code)
+      if(InputQtyValue_>balanceQuantity_ || InputQtyValue_ === 0)       
+      {
+        if(InputQtyValue_ === 0)
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:0
+            }
+          )
+        }
+        else
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:1
+            }
+          )
+        }
+
+      } 
      }
 
     }
     else{
       if(pagename ==='create-purchase-order')
       {
-        let IssueQty = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].issuedQuantity`,0)
-        let poOrderedQuantity = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].poOrderedQuantity`,0)
+        let IssueQty = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].issuedQuantity`,0))
+        let poOrderedQuantity = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].poOrderedQuantity`,0))
         
         CompareQtyValue_ = CompareQtyValue_ - (IssueQty+poOrderedQuantity);
-        if(InputQtyValue_>CompareQtyValue_)       
-        matcode.push(code)
+        if(InputQtyValue_>CompareQtyValue_ || InputQtyValue_ === 0)  
+
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        } 
 
       }
+     else if(pagename ==='createMaterialIndentNote')
+      {
+        let IssueQty = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.issuedQuantity`,0))
+        let poOrderedQuantity = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.poOrderedQuantity`,0))
+        
+        CompareQtyValue_ = CompareQtyValue_ - (IssueQty+poOrderedQuantity);
+        if(InputQtyValue_>CompareQtyValue_ || InputQtyValue_ === 0)  
+
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        } 
+
+      }
+      else if(pagename ==='creatindent' || pagename ==='create-material-transfer-indent')
+      {
+        if(InputQtyValue_ === 0 )       
+        matcode.push(
+          {
+            code:code,
+            InputQtyValue:0
+          }
+        )
+      }
       else{
-        if(InputQtyValue_>CompareQtyValue_)       
-    matcode.push(code)
+        if(InputQtyValue_>CompareQtyValue_ || InputQtyValue_ === 0 )       
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        } 
 
       }
       
@@ -893,11 +1036,13 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
   .map((name) => {
     return {
       count: 1,
-      name: name
+      name: name.code,
+      Qty: name.InputQtyValue
     }
   })
   .reduce((a, b) => {
     a[b.name] = (a[b.name] || 0) + b.count
+    a[b.Qty] = (a[b.Qty] || 0) + b.count
     return a
   }, {})  
   var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 0)
@@ -908,18 +1053,36 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
     })
     .join() || "-"
    // IsDuplicatItem = true;  
+   if(duplicates.toLowerCase().indexOf("0,") !== -1)
+   {
+    duplicates =duplicates.replace('0,','')
     DuplicatItem.push(
       {
         duplicates: duplicates,
-        IsInvalidQty:true
+        IsInvalidQty:false,
+        IsZeroQty:true
       }      
-    )  
+    )
+   }
+   else
+   {
+    duplicates =duplicates.replace('1,','')
+    DuplicatItem.push(
+      {
+        duplicates: duplicates,
+        IsInvalidQty:true,
+        IsZeroQty:false
+      }      
+    )
+   }
+      
   } 
   else{
     DuplicatItem.push(
       {
         duplicates: duplicates,
-        IsInvalidQty:false
+        IsInvalidQty:false,
+        IsZeroQty:false
       });
 
   }
@@ -941,27 +1104,87 @@ export const ValidateCardQty = (state,dispatch,cardJsonPath,pagename,jasonpath,v
     {
     let code = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${value}`,'') 
     code = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",code)  
-    let InputQtyValue_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0) 
-    let InputQtyValue2_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue2}`,0) 
-    let CompareQtyValue_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${CompareQtyValue}`,0) 
-    let balanceQuantity_ = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${balanceQuantity}`,0) 
+    let InputQtyValue_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0))
+    let InputQtyValue2_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue2}`,0))
+    let CompareQtyValue_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${CompareQtyValue}`,0))
+    let balanceQuantity_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${balanceQuantity}`,0))
     if(doubleqtyCheck)
     {
      if(balanceQuantity_>CompareQtyValue_)
      {
-      if(InputQtyValue_>CompareQtyValue_)       
-      matcode.push(code)
+      if(InputQtyValue_>CompareQtyValue_ ||InputQtyValue_ === 0)       
+      {
+        if(InputQtyValue_ === 0)
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:0
+            }
+          )
+        }
+        else
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:1
+            }
+          )
+        }
+
+      } 
      }
      else if (balanceQuantity_<=CompareQtyValue_)
      {
-      if(InputQtyValue_>balanceQuantity_)       
-      matcode.push(code)
+      if(InputQtyValue_>balanceQuantity_ || InputQtyValue_ === 0)       
+      {
+        if(InputQtyValue_ === 0)
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:0
+            }
+          )
+        }
+        else
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:1
+            }
+          )
+        }
+
+      } 
      }
 
     }
     else{
-      if(InputQtyValue_>CompareQtyValue_ || InputQtyValue2_ > CompareQtyValue_)       
-    matcode.push(code)
+      if(InputQtyValue_>CompareQtyValue_ || InputQtyValue2_ > CompareQtyValue_ ||InputQtyValue_ === 0)       
+      {
+        if(InputQtyValue_ === 0)
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:0
+            }
+          )
+        }
+        else
+        {
+          matcode.push(
+            {
+              code:code,
+              InputQtyValue:1
+            }
+          )
+        }
+
+      } 
     }
     }
     
@@ -970,11 +1193,13 @@ export const ValidateCardQty = (state,dispatch,cardJsonPath,pagename,jasonpath,v
   .map((name) => {
     return {
       count: 1,
-      name: name
+      name: name.code,
+      Qty: name.InputQtyValue
     }
   })
   .reduce((a, b) => {
     a[b.name] = (a[b.name] || 0) + b.count
+    a[b.Qty] = (a[b.Qty] || 0) + b.count
     return a
   }, {})  
   var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 0)
@@ -985,18 +1210,35 @@ export const ValidateCardQty = (state,dispatch,cardJsonPath,pagename,jasonpath,v
     })
     .join() || "-"
    // IsDuplicatItem = true;  
+   if(duplicates.toLowerCase().indexOf("0,") !== -1)
+   {
+    duplicates =duplicates.replace('0,','')
     DuplicatItem.push(
       {
         duplicates: duplicates,
-        IsInvalidQty:true
+        IsInvalidQty:false,
+        IsZeroQty:true
       }      
-    )  
+    )
+   }
+   else
+   {
+    duplicates =duplicates.replace('1,','')
+    DuplicatItem.push(
+      {
+        duplicates: duplicates,
+        IsInvalidQty:true,
+        IsZeroQty:false
+      }      
+    )
+   } 
   } 
   else{
     DuplicatItem.push(
       {
         duplicates: duplicates,
-        IsInvalidQty:false
+        IsInvalidQty:false,
+        IsZeroQty:false
       });
 
   }
@@ -1019,10 +1261,24 @@ export const GetTotalQtyValue = (state,cardJsonPath,pagename,jasonpath,InputQtyV
     if(CardItem[index].isDeleted === undefined ||
     CardItem[index].isDeleted !== false)
     {   
-     InputQtyValue_ = InputQtyValue_+ get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0) 
-    TotalValue_  = TotalValue_+ get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${TotalValue}`,0)  
+     InputQtyValue_ = InputQtyValue_+Number( get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0) )
+    TotalValue_  = TotalValue_+ Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${TotalValue}`,0) )
     TotalQty_ = TotalQty_ + Number( get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${TotalQty}`,0))
     }
+  }
+  //Material Indent Issue Note: For engineering Dept. 3% amount should be deducted from Total amount
+  if(pagename ==='createMaterialIndentNote')
+  {
+    // if deptCategory is "Engineering"
+    let store = get(state, "screenConfiguration.preparedFinalObject.store.stores",[]) 
+    let storecode = get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].fromStore.code`,'')
+    let fromstore = store.filter(x=> x.code === storecode)
+    if(fromstore[0].department.deptCategory.toUpperCase() ==='ENGINEERING')
+    {
+      let deduction = TotalValue_ - (TotalValue_*3)/100;
+      TotalValue_ = deduction 
+    }
+    
   }
   CardTotalQty.push(
     {

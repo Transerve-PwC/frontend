@@ -4,7 +4,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getCommonApplyFooter } from "../../utils";
+import { getCommonApplyFooter,validateFields } from "../../utils";
 import "./index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
@@ -28,13 +28,16 @@ import {
 } from "../../../../../ui-utils/commons";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantIdCommon } from "egov-ui-kit/utils/localStorageUtils";
-
+ 
 const setReviewPageRoute = (state, dispatch) => {
+  const service = getQueryArg(window.location.href, "service");
   let tenantId = getTenantIdCommon();
   const applicationNumber = get(state, "screenConfiguration.preparedFinalObject.applyScreen.applicationNo");
   const appendUrl =
     process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
-  const reviewUrl = `${appendUrl}/wns/search-preview?applicationNumber=${applicationNumber}&tenantId=${tenantId}&edited="true"`;
+  const reviewUrl =  service ?
+  `${appendUrl}/wns/search-preview?applicationNumber=${applicationNumber}&tenantId=${tenantId}&edited="true"&service=${service}`
+  :`${appendUrl}/wns/search-preview?applicationNumber=${applicationNumber}&tenantId=${tenantId}&edited="true"`;
   dispatch(setRoute(reviewUrl));
 };
 const moveToReview = (state, dispatch) => {
@@ -111,16 +114,126 @@ const getMdmsData = async (state, dispatch) => {
     console.log(e);
   }
 };
+const removingDocumentsWorkFlow = (state, dispatch) =>{
+  const {screenConfiguration} = state;
+  const {preparedFinalObject} = screenConfiguration;
+  const {documentsUploadRedux} = preparedFinalObject;
 
+  if(documentsUploadRedux){
+    let newDocumentsUploadRedux = Object.assign({},documentsUploadRedux)
+        Object.keys(documentsUploadRedux).map(val => {
+          if(newDocumentsUploadRedux[val].documents)
+              delete newDocumentsUploadRedux[val].documents;
+
+           if(newDocumentsUploadRedux[val].dropdown)
+           delete newDocumentsUploadRedux[val].dropdown;
+        })
+
+        console.log(newDocumentsUploadRedux,"testintg")
+  }
+}
 const callBackForNext = async (state, dispatch) => {
   window.scrollTo(0, 0);
   let activeStep = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.stepper.props.activeStep", 0);
   let isFormValid = true;
   let hasFieldToaster = false;
+  //window.localStorage.setItem("ActivityStatusFlag","false");
   if (activeStep === 0) {
     // if (validatePropertyLocationDetails && validatePropertyDetails && validateForm) {
     //   isFormValid = await appl;
     // }
+
+// if wnsStatus is present then check the required fields
+const wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+if(wnsStatus && wnsStatus === "CONNECTION_CONVERSION"){
+  const iswaterConnFomValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.connConversionDetails.children.cardContent.children.connectionConversionDetails.children.ConnectionConversionDetails.children",
+    state,
+    dispatch,
+    "apply"
+  );
+
+  if(!iswaterConnFomValid){
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "WS_FILL_REQUIRED_FIELDS",
+        labelName: "Please fill Required details"
+      },
+        "warning"
+      )
+    )
+    return;
+  }
+  removingDocumentsWorkFlow(state, dispatch) ;
+  try{
+    let abc = await applyForWater(state, dispatch);
+    window.localStorage.setItem("ActivityStatusFlag","true");
+  }catch (err){
+    console.log("errrr")
+  }
+}
+else if(wnsStatus && wnsStatus === "UPDATE_CONNECTION_HOLDER_INFO"){
+  const iswaterConnFomValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.connectionHolderDetails.children.cardContent.children.holderDetails.children.holderDetails.children",
+    state,
+    dispatch,
+    "apply"
+  );
+
+  if(!iswaterConnFomValid){
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "WS_FILL_REQUIRED_FIELDS",
+        labelName: "Please fill Required details"
+      },
+        "warning"
+      )
+    )
+    return;
+  }
+  removingDocumentsWorkFlow(state, dispatch) ;
+  try{
+    let abc = await applyForWater(state, dispatch);
+    window.localStorage.setItem("ActivityStatusFlag","true");
+ 
+  }catch (err){
+    console.log("errrr")
+  }
+} 
+else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMPORARY_DISCONNECTION"||wnsStatus === "PERMANENT_DISCONNECTION")){
+  const iswaterConnFomValid = validateFields(
+    "components.div.children.formwizardFirstStep.children.commentSectionDetails.children.cardContent.children.commentDetails.children.CommentDetails.children",
+    state,
+    dispatch,
+    "apply"
+  );
+
+  if(!iswaterConnFomValid){
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "WS_FILL_REQUIRED_FIELDS",
+        labelName: "Please fill Required details"
+      },
+        "warning"
+      )
+    )
+    return;
+  }
+  removingDocumentsWorkFlow(state, dispatch) ;
+  try{
+    let abc = await applyForWater(state, dispatch);
+    window.localStorage.setItem("ActivityStatusFlag","true");
+  }catch (err){
+    console.log("errrr")
+  }
+ 
+}
+
+
+
     if (getQueryArg(window.location.href, "action") === "edit") {
       let application = findAndReplace(get(state.screenConfiguration.preparedFinalObject, "applyScreen", {}), "NA", null);
       const uploadedDocData = application.documents;
@@ -159,6 +272,16 @@ const callBackForNext = async (state, dispatch) => {
       }
 
     } else {
+
+      const isPropertyUsageValid= validateFields(
+        "components.div.children.formwizardFirstStep.children.propertyUsageDetails.children.cardContent.children.propertyUsage.children.PropertyUsageDetails.children",
+        state,
+        dispatch,
+        "apply"
+      );
+      if(!isPropertyUsageValid){
+        isFormValid = false;
+      }
       const water = get(
         state.screenConfiguration.preparedFinalObject,
         "applyScreen.water"
@@ -356,7 +479,21 @@ const callBackForNext = async (state, dispatch) => {
     if (moveToReview(state, dispatch)) {
       await pushTheDocsUploadedToRedux(state, dispatch);
       isFormValid = true; hasFieldToaster = false;
-      if (process.env.REACT_APP_NAME === "Citizen" && getQueryArg(window.location.href, "action") === "edit") {
+      const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+      // if(wnsStatus){
+      //   switch(wnsStatus){
+      //     case "UPDATE_CONNECTION_HOLDER_INFO" :   dispatch(prepareFinalObject("WaterConnection[0].activityType", "UPDATE_CONNECTION_HOLDER_INFO")); break;
+      //     case "REACTIVATE_CONNECTION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "REACTIVATE_CONNECTION")); break;
+      //     case "TEMPORARY_DISCONNECTION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "TEMPORARY_DISCONNECTION")); break;
+      //     case "APPLY_FOR_REGULAR_INFO":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "APPLY_FOR_REGULAR_INFO")); break;
+      //     case "PERMANENT_DISCONNECTION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "PERMANENT_DISCONNECTION")); break;
+      //     case "CONNECTION_CONVERSION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "CONNECTION_CONVERSION")); break;
+      //   }
+      // }
+      if(process.env.REACT_APP_NAME === "Citizen" && getQueryArg(window.location.href, "action") === "edit"&& window.localStorage.getItem("ActivityStatusFlag")=== "true"){
+        window.localStorage.removeItem("ActivityStatusFlag");
+      }
+     else if (process.env.REACT_APP_NAME === "Citizen" && getQueryArg(window.location.href, "action") === "edit") {  
         setReviewPageRoute(state, dispatch);
       }
     }

@@ -15,7 +15,7 @@ import{getMaterialMasterSearchResults} from '../../../../../ui-utils/storecommon
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import {  handleScreenConfigurationFieldChange as handleField, prepareFinalObject  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import { httpRequest } from "../../../../../ui-utils/api";
- 
+ import { getSTOREPattern} from "../../../../../ui-utils/commons";
  const getMaterialData = async (action, state, dispatch) => {
   const tenantId = getTenantId();
   let queryObject = [
@@ -92,7 +92,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
           },
           required: true,
-         
+          errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
           jsonPath: "materialReceipt[0].receivingStore.code",
           sourceJsonPath: "store.stores",
             props: {
@@ -144,6 +144,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_RECEIPT_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "materialReceipt[0].receiptDate",
           props: {
@@ -203,7 +204,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME"
           },
           required: true,
-         
+          errorMessage:"STORE_VALIDATION_SUPPLIER_NAME_SELECT",
           jsonPath: "materialReceipt[0].supplier.code",
           sourceJsonPath: "supplier.suppliers",
             props: {
@@ -253,6 +254,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_RECEIPT_SUPPLIER_BILL_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_SUPPLIER_BILL_DATE_SELECT",
           props: {
             inputProps: {
               max: new Date().toISOString().slice(0, 10),
@@ -291,6 +293,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_MATERIAL_RECEIPT_CHALLAN_DATE_PLACEHOLDER"
           },
           required: true,
+          errorMessage:"STORE_VALIDATION_CHALLAN_DATE_SELECT",
           props: {
             inputProps: {
               max: new Date().toISOString().slice(0, 10),
@@ -316,7 +319,8 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             rowsMax: 2,
           },
           required: true,
-          pattern: getPattern("eventDescription") || null,
+          errorMessage:"STORE_VALIDATION_REMARK",
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialReceipt[0].description"
         })
       },
@@ -384,7 +388,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             rowsMax: 2,
           },
           required: false,
-          pattern: getPattern("eventDescription") || null,
+          pattern: getSTOREPattern("Comment"),
           jsonPath: "materialReceipt[0].inspectionRemarks"
         })
       },

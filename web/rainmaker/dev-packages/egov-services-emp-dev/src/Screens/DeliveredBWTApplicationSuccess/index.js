@@ -16,7 +16,7 @@ class DeliveredBWTApplicationSuccess extends Component {
         <CommonSuccessMessage
         headermessage="BK_ES_APPLICATION_HEADER_MESSAGE_DELIVERED"
           successmessage="BK_ES_APPLICATION_DELIVERED_SUCCESS_MESSAGE"
-          secondaryLabel="MYBK_SUCCESSFULLY_DELIVERED_SEND_MESSAGE"
+          secondaryLabel="BK_MYBK_SUCCESSFULLY_DELIVERED_SEND_MESSAGE"
           containerStyle={{ display: "inline-block" }}
           icon={<Icon action="navigation" name="check" />}
           backgroundColor={"#22b25f"}
@@ -26,7 +26,7 @@ class DeliveredBWTApplicationSuccess extends Component {
           <Button
             id="resolve-success-continue"
             primary={true}
-            label={<Label buttonLabel={true} label="CORE_COMMON_GOTOHOME" />}
+            label={<Label buttonLabel={true} label="BK_CORE_COMMON_GOTOHOME" />}
             fullWidth={true}
             onClick={this.continueComplaintSubmit}
             className="responsive-action-button"
@@ -38,8 +38,8 @@ class DeliveredBWTApplicationSuccess extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints, common, auth, form } = state;
-  const { applicationData } = complaints;
+  const { bookings, common, auth, form } = state;
+  const { applicationData } = bookings;
   let bookingDetails = applicationData ? applicationData.bookingsModelList[0] : '';
   console.log("bookingDetailsinResolveSuccess--",bookingDetails)
   //bkApplicationNumber

@@ -13,7 +13,7 @@ import {
 } from "../../utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {ValidateCard} from '../../../../../ui-utils/storecommonsapi'
+import {ValidateCard,ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
 const moveToReview = dispatch => { 
   const reviewUrl = "/egov-store-asset/review-material-transfer-indent";
   dispatch(setRoute(reviewUrl));
@@ -92,12 +92,19 @@ export const callBackForNext = async (state, dispatch) => {
           let jasonpath =  "indents[0].indentDetails";
           let value = "material.code";
           let DuplicatItem = ValidateCard(state,dispatch,cardJsonPath,pagename,jasonpath,value)
+          let InputQtyValue = "indentQuantity";
+          let CompareQtyValue = "indentQuantity";
+          let balanceQuantity = "balanceQty";
+          let doubleqtyCheck = false
+          let InvaldQtyCard = ValidateCardUserQty(state,dispatch,cardJsonPath,pagename,jasonpath,value,InputQtyValue,CompareQtyValue,balanceQuantity,doubleqtyCheck)
          
        
           if(DuplicatItem && DuplicatItem[0])
           {
-            if(!DuplicatItem[0].IsDuplicatItem)
-            {
+            const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+            const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+            if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsZeroQty)
+                    {
 
               // refresh card item
               var storeMappingTemp = [];
@@ -123,14 +130,24 @@ export const callBackForNext = async (state, dispatch) => {
             changeStep(state, dispatch);
             }
             else{
-              const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
-              const errorMessage = {
-                labelName: "Duplicate Material Added",
-                //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
-                labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
-              };
-              dispatch(toggleSnackbar(true, errorMessage, "warning"));
-
+              if(DuplicatItem[0].IsDuplicatItem)
+              {
+                const errorMessage = {
+                  labelName: "Duplicate Material Added",
+                  //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+                  labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+              }
+              else if (InvaldQtyCard[0].IsZeroQty)
+              {
+                const errorMessage = {                
+                  labelName: "Quantity can not be Zero for",
+                  labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+              }
+              
             }
           }
         }

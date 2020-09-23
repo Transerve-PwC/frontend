@@ -38,13 +38,13 @@ class AssignToDriverSuccess extends Component {
 }
 
 const mapStateToProps = state => {
-  const { complaints, common, auth, form } = state;
-  const { applicationData } = complaints;
+  const { bookings, common, auth, form } = state;
+  const { applicationData } = bookings;
   let bookingDetails = applicationData ? applicationData.bookingsModelList[0] : '';
-  console.log("bookingDetailsinResolveSuccess--",bookingDetails)
+  
   //bkApplicationNumber
   let applicationNumber = applicationData ? applicationData.bookingsModelList[0].bkApplicationNumber : '';
-  console.log("applicationNumber--",applicationNumber)
+  
   return {
     bookingDetails,
     applicationNumber

@@ -7,7 +7,7 @@ import {
   getCommonContainer,
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 
 export const poApprovalInfo = getCommonCard({
   header: getCommonTitle(
@@ -97,7 +97,7 @@ export const poApprovalInfo = getCommonCard({
         labelName: "Enter remark",
         labelKey: "STORE_PURCHASE_ORDER_APPROVAL_RMRK_PLCEHLDER",
       },
-      pattern: getPattern("alpha-numeric-with-space-and-newline"),
+      pattern: getSTOREPattern("Comment"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "purchaseOrders[0].approvalRemark",
     }),

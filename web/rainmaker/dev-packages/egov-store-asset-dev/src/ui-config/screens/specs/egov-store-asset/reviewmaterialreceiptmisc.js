@@ -21,7 +21,7 @@ import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
     subHeader: getCommonSubHeader({
       labelName:
         "Verify entered details before submission.",
-      labelKey: "STORE_MATERIAL_MASTER_SUB_HEADER"
+      labelKey: "STORE_PURCHASE_ORDER_SUB_HEADER"
     })
   });
   

@@ -417,21 +417,7 @@ class BookingsDetails extends Component {
               hintStyle={{ width: "100%" }}
             />
           </div>
-          {/* <div className="col-sm-6 col-xs-6">
-            <FormControl component="fieldset">
-
-              <RadioGroup aria-label="gender" name="gender1" value={this.state.value}>
-                <FormControlLabel value="Community" control={<Radio onClick={this.handleChangeRadio} />} label="Community" />
-                <FormControlLabel value="Community1" control={<Radio onClick={this.handleChangeRadio} />} label="Community1" />
-                <FormControlLabel value="Park" control={<Radio />} label="Park" />
-
-              </RadioGroup>
-            </FormControl>
-            <div>
-        <input type="radio" onChange={this.handleChangeRadio}  value="Community" name="Community" /> Community
-        <input type="radio" selected onChange={this.handleChangeRadio} value="Park" name="Park" /> Park
-      </div> 
-          </div>*/}
+     
              
              <div className="col-sm-6 col-xs-6">
                   <TextField
@@ -577,64 +563,6 @@ class BookingsDetails extends Component {
 
           </div>
 
-          {/* <div className="col-sm-6 col-xs-6">
-            <TextField
-              id="approver-name"
-              name="approver-name"
-              type="text"
-
-              value={approverName}
-              hintText={
-                <Label
-                  label="BK_MYBK_APPROVER_NAME_PLACEHOLDER"
-                  color="rgba(0, 0, 0, 0.3799999952316284)"
-                  fontSize={16}
-                  labelStyle={hintTextStyle}
-                />
-              }
-              floatingLabelText={
-                <Label
-                  key={0}
-                  label="BK_MYBK_CREATE_APPROVER_NAME"
-                  color="rgba(0,0,0,0.60)"
-                  fontSize="12px"
-                />
-              }
-              onChange={handleChange('approverName')}
-              underlineStyle={{ bottom: 7 }}
-              underlineFocusStyle={{ bottom: 7 }}
-              hintStyle={{ width: "100%" }}
-            />
-          </div> */}
-
-          {/* <div className="col-sm-6 col-xs-6">
-            <TextField
-              id="comemnt"
-              name="comment"
-              type="text"
-              value={comment}
-              hintText={
-                <Label
-                  label="BK_MYBK_ADD_COMMENTS_PLACEHOLDER"
-                  color="rgba(0, 0, 0, 0.3799999952316284)"
-                  fontSize={16}
-                  labelStyle={hintTextStyle}
-                />
-              }
-              floatingLabelText={
-                <Label
-                  key={0}
-                  label="BK_MYBK_CREATE_COMMENT"
-                  color="rgba(0,0,0,0.60)"
-                  fontSize="12px"
-                />
-              }
-              onChange={handleChange('comment')}
-              underlineStyle={{ bottom: 7 }}
-              underlineFocusStyle={{ bottom: 7 }}
-              hintStyle={{ width: "100%" }}
-            />
-          </div> */}
 <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
           <div className="col-sm-12 col-xs-12" style={{ textAlign: 'right' }}>
             <Button
@@ -664,8 +592,8 @@ class BookingsDetails extends Component {
 const mapStateToProps = state => {
 
 
-  const { complaints, common, auth, form } = state;
-  const { complaintSector } = complaints;
+  const { bookings, common, auth, form } = state;
+  const { complaintSector } = bookings;
 
 
 

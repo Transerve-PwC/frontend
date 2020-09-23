@@ -9,7 +9,7 @@ import {
     getPattern
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
- 
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   export const otherDetails = getCommonCard({
     header: getCommonTitle(
@@ -262,6 +262,8 @@ import {
               labelKey: "STORE_MATERIAL_MODEL"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_MODEL",
+
             pattern: getPattern("Name") || null,
             jsonPath: "materials[0].model"
           })
@@ -277,8 +279,9 @@ import {
               labelKey: "STORE_MATERIAL_MANUFRACTURER_PART_NO"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_MANUFRACTURERE_NUMBER",
             pattern: getPattern("Name") || null,
-            jsonPath: "materials[0].manufracturerPartNo"
+            jsonPath: "materials[0].manufacturePartNo"
           })
         },
   
@@ -293,13 +296,14 @@ import {
               labelKey: "STORE_MATERIAL_TECHNICAL_SPECIFICATIONS"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_TECHNICAL_SPECIFICATIONS",
             props: {
               className: "applicant-details-error",
               multiline: "multiline",
               rowsMax: 2,
             },
-            pattern: getPattern("eventDescription") || null,
-            jsonPath: "materials[0].technicalSpecifications"
+            pattern: getSTOREPattern("Comment"),
+            jsonPath: "materials[0].techincalSpecs"
           })
         },
         TermsOfDelivery: {
@@ -313,12 +317,13 @@ import {
               labelKey: "STORE_MATERIAL_TERMS_OF_DELIVERY"
             },
             required: true,
+            errorMessage:"STORE_VALIDATION_TERMS_OF_DELIVERY",
             props: {
               className: "applicant-details-error",
               multiline: "multiline",
               rowsMax: 2,
             },
-            pattern: getPattern("eventDescription") || null,
+            pattern: getSTOREPattern("Comment"),
             jsonPath: "materials[0].termsOfDelivery"
           })
         },

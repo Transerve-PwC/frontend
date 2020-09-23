@@ -22,8 +22,13 @@ export const getWFConfig = (module, businessService, taskId) => {
         DEFAULT: "/egov-opms/search-preview",
       };
     }
-
   }
+  else if (businessService == "NULM") {
+		  return {
+			INITIATED: "/egov-nulm/view-susv",
+			DEFAULT: "/egov-nulm/view-susv",
+		  };
+	}
   else if (businessService == "Engineering" || businessService == "IT" || businessService == "Caretaker" || businessService == "MOH") {
     if (taskId.includes('MRNIN')) {
       return {
@@ -78,14 +83,7 @@ export const getWFConfig = (module, businessService, taskId) => {
         INITIATED: "/egov-store-asset/view-indent-outword",
         DEFAULT: "/egov-store-asset/view-indent-outword",
       };
-
     }
-	 else if (businessService == "NULM") {
-		  return {
-			INITIATED: "/egov-nulm/view-susv",
-			DEFAULT: "/egov-nulm/view-susv",
-		  };
-	 }
     else if (businessService == "PAYMENT WORKFLOW" || businessService == "FINE MASTER APPROVAL" || businessService == "CHALLAN WORKFLOW" || businessService == "AUCTION WORKFLOW") {
       switch (businessService) {
         case "CHALLAN WORKFLOW":

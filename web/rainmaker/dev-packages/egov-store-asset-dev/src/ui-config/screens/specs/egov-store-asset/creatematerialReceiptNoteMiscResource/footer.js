@@ -151,7 +151,7 @@ export const callBackForNext = async (state, dispatch) => {
         {
           let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
           let LocalizationCodeValueQty = getLocalizationCodeValue("STORE_MATERIAL_INVALID_MISC_RECEIPT_QTY_VALIDATION")
-          if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty )
+          if((!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty) &&  !InvaldQtyCard[0].IsZeroQty)
             {
       
               // refresh card item
@@ -191,8 +191,8 @@ export const callBackForNext = async (state, dispatch) => {
             else if (InvaldQtyCard[0].IsInvalidQty)
             {
               let indentNumber="";
-              indentNumber = getQueryArg(window.location.href, "indentNumber");
-              if(indentNumber){
+              // indentNumber = getQueryArg(window.location.href, "indentNumber");
+              // if(indentNumber){
               const errorMessage = {
               
                 labelName: "Ordered Qty less then Indent Qty for",
@@ -201,20 +201,39 @@ export const callBackForNext = async (state, dispatch) => {
                 labelKey:   LocalizationCodeValueQty+' '+InvaldQtyCard[0].duplicates
               };
               dispatch(toggleSnackbar(true, errorMessage, "warning"));
+           // }
+            
+      
+            }
+            else if (InvaldQtyCard[0].IsZeroQty)
+            {
+              const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+              const errorMessage = {              
+                labelName: "Quantity can not be Zero for",
+                labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+              };
+              dispatch(toggleSnackbar(true, errorMessage, "warning")); 
             }
             else{
-              changeStep(state, dispatch);
-            }
-      
+              if(activeStep ===1)
+              moveToReview(dispatch)
+              else
+              changeStep(state, dispatch);              
             }
           }
         }
         else{
-          changeStep(state, dispatch);
+          if(activeStep ===1)
+          moveToReview(dispatch)
+          else
+          changeStep(state, dispatch);  
         }
       }
       else{
-        changeStep(state, dispatch);
+        if(activeStep ===1)
+              moveToReview(dispatch)
+              else
+              changeStep(state, dispatch);  
       }
 
       
@@ -469,7 +488,7 @@ export const footer = getCommonApplyFooter({
   
   let issueNumber = get(
     state.screenConfiguration.preparedFinalObject,
-    `materialReceiptSearch[0].issueNumber`,
+    `materialReceipt[0].issueNumber`,
     ''
   ); 
   if(issueNumber)
