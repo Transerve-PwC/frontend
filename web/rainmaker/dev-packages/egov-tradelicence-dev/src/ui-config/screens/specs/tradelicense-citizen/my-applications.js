@@ -206,29 +206,29 @@ const screenConfig = {
                 jsonPath: "applicationType"
               },
               {
-                label: "TL_TRADE_TYPE_LABEL",
+                label: "TL_TABLE_TRADE_TYPE_LABEL",
                 jsonPath: "businessService",
                 suffix: "_GROUP"
               },
               {
-                label: "TL_SERVICE_TYPE_LABEL",
+                label: "TL_TABLE_SERVICE_TYPE_LABEL",
                 jsonPath: "businessService",
                 suffix: "_SHORT"
               },
               {
-                label: "TL_COMMON_TABLE_COL_APP_NO",
+                label: "TL_TABLE_COL_APP_NO",
                 jsonPath: "applicationNumber"
               },
               {
-                label: "TL_COMMON_TABLE_COL_OWN_NAME",
+                label: "TL_TABLE_COL_OWN_NAME",
                 jsonPath: "tradeLicenseDetail.owners[0].name"
               },
               {
-                label: "TL_COMMON_TABLE_COL_LIC_NO",
+                label: "TL_TABLE_COL_LIC_NO",
                 jsonPath: "licenseNumber"
               },
               {
-                label: "TL_COMMON_TABLE_COL_STATUS",
+                label: "TL_TABLE_COL_STATUS",
                 jsonPath: "status",
                 prefix: "WF_NEWTL_"
               },

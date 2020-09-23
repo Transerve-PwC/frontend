@@ -3044,14 +3044,14 @@ export const getTextToLocalMapping = label => {
     case "Service Type":
       return getLocaleLabels(
         "Service Type",
-        "TL_SERVICE_TYPE_LABEL",
+        "TL_TABLE_SERVICE_TYPE_LABEL",
         localisationLabels
       );
 
     case "License Type":
       return getLocaleLabels(
         "License Type",
-        "TL_TRADE_TYPE_LABEL",
+        "TL_TABLE_TRADE_TYPE_LABEL",
         localisationLabels
       );
 

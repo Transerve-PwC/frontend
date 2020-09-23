@@ -164,11 +164,11 @@ const tradeLicenseType = getQueryArg(window.location.href, "tlType");
 
 const tradeTypeLabel = {
     labelName: "Trade Type",
-    labelKey: "TL_TRADE_TYPE_LABEL"
+    labelKey: "TL_TABLE_TRADE_TYPE_LABEL"
 }
 const serviceTypeLabel = {
     labelName: "Service Type",
-    labelKey: "TL_SERVICE_TYPE_LABEL"
+    labelKey: "TL_TABLE_SERVICE_TYPE_LABEL"
 }
 const tradeTypeValue = {
     jsonPath: "Licenses[0].businessService"

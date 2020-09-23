@@ -172,7 +172,7 @@ export const tradeLicenseApplication = getCommonCard({
     tradeType: {...getSelectField({
       label: {
         labelName: "License Type",
-        labelKey: "TL_TRADE_TYPE_LABEL"
+        labelKey: "TL_TABLE_TRADE_TYPE_LABEL"
     },
     placeholder: {
         labelName: "Select License Type",
@@ -196,7 +196,7 @@ export const tradeLicenseApplication = getCommonCard({
       {
         label: {
             labelName: "Service Type",
-            labelKey: "TL_SERVICE_TYPE_LABEL"
+            labelKey: "TL_TABLE_SERVICE_TYPE_LABEL"
         },
         placeholder: {
             labelName: "Select Service Type",
