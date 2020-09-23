@@ -67,7 +67,6 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let applicationState = properties[0].state;
     
     let containers={}
-    let motContainers={}
     if(properties[0].propertyDetails.owners){
       // properties[0].propertyDetails.owners.forEach((element,index) => { 
       await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
@@ -100,11 +99,19 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
           }
         }
 
-        containers[index] = getCommonCard({
-          ownerdetailsComponent,
-          allotmentDetailsComponent,
-          modeOfTransferComponent
-        });  
+        if (!!modeOfTransferComponent) {
+          containers[index] = getCommonCard({
+            ownerdetailsComponent,
+            allotmentDetailsComponent,
+            modeOfTransferComponent
+          });
+        }
+        else {
+          containers[index] = getCommonCard({
+            ownerdetailsComponent,
+            allotmentDetailsComponent
+          });  
+        }
       });
     }
     
@@ -162,7 +169,7 @@ const EstateOwnerDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 1,
+              activeIndex: 2,
               onTabChange
             },
             type: "array",

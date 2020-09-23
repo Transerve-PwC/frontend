@@ -109,7 +109,7 @@ const EstatePurchaserDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 2,
+              activeIndex: 3,
               onTabChange
             },
             type: "array",
