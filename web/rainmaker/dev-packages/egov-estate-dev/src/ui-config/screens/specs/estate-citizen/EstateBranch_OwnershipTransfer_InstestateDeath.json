@@ -1,292 +1,332 @@
 {
-  "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
-  "EstateBranch_OwnershipTransfer_InstestateDeath": [
-    {
-      "fields": [
-        {
-          "path": "transferor",
-          "required": true,
-          "validations": [
-            {
-              "type": "object"
+    "tenantId": "ch",
+    "moduleName": "EstatePropertyService",
+    "EstateBranch_OwnershipTransfer_InstestateDeath": [
+      {
+        "dataSources": [
+          {
+            "name": "typesOfOwner",
+            "type": "local",
+            "cacheable": true,
+            "lazyload": true,
+            "values": [
+              {
+                "code": "New"
+              },
+              {
+                "code": "Existing"
+              }
+            ]
+          },
+          {
+            "name": "owners",
+            "type": "path",
+            "jsonPath": "propertyDetails.owners",
+            "code": "ownerDetails.ownerId",
+            "label": "ownerDetails.ownerName"
+          },
+          {
+            "name": "legalHeirRelationWithDeceased",
+            "type": "mdms",
+            "cacheable": true,
+            "lazyload": true,
+            "options": {
+              "moduleName": "EstatePropertyService",
+              "masterName": "LegaHeirRelationShipWithDeceased"
             }
-          ]
-        },
-        {
-          "path": "transferor.id",
-          "required": true,
-          "validations": [
-            {
-              "type": "transferor"
+          },
+          {
+            "name": "benificiaryRelationwithDeceased",
+            "type": "mdms",
+            "cacheable": true,
+            "lazyload": true,
+            "options": {
+              "moduleName": "EstatePropertyService",
+              "masterName": "BenificiaryRelationshipwithDeceased"
             }
-          ]
-        },
-        {
-          "path": "transferor.dateOfDeath",
-          "required": true,
-          "validations": [
-            {
-              "type": "date-range",
-              "params": {
-                "start": {
-                  "unit": "year",
-                  "value": -40
-                },
-                "end": {
-                  "unit": "second",
-                  "value": 0
+          }
+        ],
+        "fields": [
+          {
+            "path": "transferor",
+            "required": true,
+            "validations": [
+              {
+                "type": "object"
+              }
+            ]
+          },
+          {
+            "path": "transferor.id",
+            "required": true,
+            "validations": [
+              {
+                "type": "owner"
+              }
+            ]
+          },
+          {
+            "path": "transferor.dateOfDeath",
+            "required": true,
+            "validations": [
+              {
+                "type": "date-range",
+                "params": {
+                  "start": {
+                    "unit": "year",
+                    "value": -40
+                  },
+                  "end": {
+                    "unit": "second",
+                    "value": 0
+                  }
                 }
               }
-            }
-          ]
-        },
-        {
-          "path": "transferee",
-          "required": true,
-          "validations": [
-            {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "transferee.id",
-          "required": false,
-          "validations": [
-            {
-              "type": "transferee"
-            }
-          ]
-        },
-        {
-          "path": "transferee.name",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
+            ]
+          },
+          {
+            "path": "transferee",
+            "required": true,
+            "validations": [
+              {
+                "type": "object"
               }
-            }
-          ]
-        },
-        {
-          "path": "transferee.age",
-          "required": true,
-          "validations": [
-            {
-              "type": "numeric"
-            },
-            {
-              "type": "minmax",
-              "params": {
-                "min": 0,
-                "max": 100
+            ]
+          },
+          {
+            "path": "transferee.id",
+            "required": false,
+            "validations": [
+              {
+                "type": "owner"
               }
-            }
-          ]
-        },
-        {
-          "path": "transferee.fatherOrHusbandName",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "transferee.relation",
-          "required": true,
-          "validations": [
-            {
-              "type": "enum",
-              "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "path": "transferee.relationWithDeceased",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 3,
-                "max": 50
-              }
-            }
-          ]
-        },
-        {
-          "path": "transferee.address",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "transferee.mobileNo",
-          "required": false,
-          "validations": [
-            {
-              "type": "mobile"
-            }
-          ]
-        },
-        {
-          "path": "transferee.percentageOfShareTransferred",
-          "required": true,
-          "validations": [
-            {
-              "type": "numeric"
-            },
-            {
-              "type": "minmax",
-              "params": {
-                "min": 0,
-                "max": 100
-              }
-            }
-          ]
-        },
-        {
-          "path": "documentsReceivedDate",
-          "required": false,
-          "validations": [
-            {
-              "type": "date-range",
-              "params": {
-                "start": {
-                  "unit": "year",
-                  "value": -1
-                },
-                "end": {
-                  "unit": "second",
-                  "value": 0
+            ]
+          },
+          {
+            "path": "transferee.name",
+            "required": true,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 5,
+                  "max": 150
                 }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases",
-          "required": false,
-          "validations": [
-            {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "courtCases.estateOfficerCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.age",
+            "required": true,
+            "validations": [
+              {
+                "type": "numeric"
+              },
+              {
+                "type": "minmax",
+                "params": {
+                  "min": 0,
+                  "max": 100
+                }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.commissionersCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.fatherOrHusbandName",
+            "required": true,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 5,
+                  "max": 150
+                }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.chiefAdministratorsCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.relation",
+            "required": true,
+            "validations": [
+              {
+                "type": "enum",
+                "params": {
+                  "values": ["FATHER", "HUSBAND"]
+                }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.advisorToAdminCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.relationWithDeceased",
+            "required": true,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 3,
+                  "max": 50
+                }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.honbleDistrictCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.address",
+            "required": true,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 5,
+                  "max": 150
+                }
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.honbleHighCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.mobileNo",
+            "required": false,
+            "validations": [
+              {
+                "type": "mobile"
               }
-            }
-          ]
-        },
-        {
-          "path": "courtCases.honbleSupremeCourt",
-          "required": false,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 250
+            ]
+          },
+          {
+            "path": "transferee.percentageOfShareTransferred",
+            "required": true,
+            "validations": [
+              {
+                "type": "numeric"
+              },
+              {
+                "type": "minmax",
+                "params": {
+                  "min": 0,
+                  "max": 100
+                }
               }
-            }
-          ]
-        }
-      ],
+            ]
+          },
+          {
+            "path": "documentsReceivedDate",
+            "required": false,
+            "validations": [
+              {
+                "type": "date-range",
+                "params": {
+                  "start": {
+                    "unit": "year",
+                    "value": -1
+                  },
+                  "end": {
+                    "unit": "second",
+                    "value": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases",
+            "required": false,
+            "validations": [
+              {
+                "type": "object"
+              }
+            ]
+          },
+          {
+            "path": "courtCases.estateOfficerCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.commissionersCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.chiefAdministratorsCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.advisorToAdminCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.honbleDistrictCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.honbleHighCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          },
+          {
+            "path": "courtCases.honbleSupremeCourt",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 250
+                }
+              }
+            ]
+          }
+        ],
       "first_step": {
         "sections": [
           {
@@ -355,11 +395,12 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_DECEASED_NAME_TYPE_LABEL",
-                "placeholder": "EST_DECEASED_NAME_TYPE_PLACEHOLDER",
+                "label": "EST_DECEASED_NAME_LABEL",
+                "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferor.name",
-                "path": ""
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
@@ -390,25 +431,20 @@
                 "path": "transferor.dateOfDeath"
               },
               {
-                "label": "EST_IS_LEGAL_HEIR_LABEL",
-                "placeholder": "EST_IS_LEGAL_HEIR_PLACEHOLDER",
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.transferor.legalHeir",
-                "path": ""
-              },
-              {
-                "label": "EST_IS_EXISTING_OWNER_LABEL",
-                "placeholder": "EST_IS_EXISTING_OWNER_PLACEHOLDER",
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.transferor.existing",
-                "path": ""
+                "label": "EST_TRANSFEREE_TYPE_LABEL",
+                "placeholder": "EST_TRANSFEREE_TYPE_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.type",
+                "path": "transferee.type",
+                "dataSource": "typesOfOwner"
               },
               {
                 "label": "EST_SELECT_OWNER_LABEL",
                 "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.typesOfOwner",
-                "dataSource": ""
+                "jsonPath": "Applications[0].applicationDetails.transferee.id",
+                "path": "transferee.id",
+                "dataSource": "owners"
               }
             ]
           },
@@ -439,11 +475,12 @@
                 "path": "transferee.address"
               },
               {
-                "label": "EST_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_PLACEHOLDER",
-                "type": "RADIO_BUTTON",
+                "label": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                "placeholder": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
+                "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "path": "transferee.relationWithDeceased"
+                "path": "transferee.relationWithDeceased",
+                "dataSource": "legalHeirRelationWithDeceased"
               }
             ]
           }
