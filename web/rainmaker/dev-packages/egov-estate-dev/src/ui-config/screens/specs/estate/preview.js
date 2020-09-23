@@ -29,7 +29,8 @@ const getData = async (action, state, dispatch) => {
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments = [], businessService} = Applications[0];
+       let {applicationDocuments, businessService} = Applications[0];
+       applicationDocuments = applicationDocuments || []
        const statusQueryObject = [{
           key: "tenantId",
           value: getTenantId()

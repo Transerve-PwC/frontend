@@ -68,7 +68,7 @@ class MDMSDatasource {
      values;
      constructor(data, jsonPath, code, label) {
          this.values = (get(data, jsonPath) || []).map(item => ({
-             code: get(item, code),
+             code: !!code ? get(item, code) : item,
              label: get(item, label)
          }))
      }

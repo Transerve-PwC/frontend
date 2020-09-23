@@ -373,11 +373,46 @@
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "ownerDetails.share"
+                "jsonPath": "share"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
                 "jsonPath": "ownerDetails.mobileNumber"
+              }
+            ]
+          },
+          {
+            "header": "EST_OWNER_DETAILS_HEADER",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
+                "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
+              },
+              {
+                "label": "EST_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "EST_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+              },
+              {
+                "label": "EST_SELLER_TRANSFEROR_ADDRESS_LABEL",
+                "placeholder": "EST_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+              },
+              {
+                "label": "EST_PERCENT_SHARE_LABEL",
+                "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferor.share"
               }
             ]
           },
@@ -436,14 +471,6 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
                 "path": "transferee.mobileNo",
                 "pattern": "MobileNo"
-              },
-              {
-                "label": "EST_SELLER_OR_TRANSFEROR_NAME_LABEL",
-                "placeholder": "EST_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferor.id",
-                "path": "transferor.id",
-                "dataSource": "owners"
               },
               {
                 "label": "EST_PERCENTAGE_SHARED_LABEL",
