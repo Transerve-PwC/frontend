@@ -100,13 +100,13 @@ const getRelationshipRadioButton = {
     },
     buttons: [{
         labelName: "Father",
-        labelKey: "COMMON_RELATION_FATHER",
+        labelKey: "EST_COMMON_RELATION_FATHER",
         value: "FATHER",
         disabled: true
       },
       {
         label: "Husband",
-        labelKey: "COMMON_RELATION_HUSBAND",
+        labelKey: "EST_COMMON_RELATION_HUSBAND",
         value: "HUSBAND",
         disabled: true
       }

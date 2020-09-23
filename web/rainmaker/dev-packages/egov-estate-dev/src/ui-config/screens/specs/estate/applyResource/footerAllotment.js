@@ -118,7 +118,8 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep == COMPANY_DETAILS_STEP) {
     var propertyPartners = get(
       state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.partners"
+      "Properties[0].propertyDetails.partners",
+      []
     );
 
     let propertyPartnersItems = get(
@@ -812,7 +813,7 @@ export const previousButton = {
     },
     previousButtonLabel: getLabel({
       labelName: "Previous Step",
-      labelKey: "TL_COMMON_BUTTON_PREV_STEP"
+      labelKey: "EST_COMMON_BUTTON_PREV_STEP"
     })
   },
   visible: false
@@ -833,7 +834,7 @@ export const nextButton = {
   children: {
     nextButtonLabel: getLabel({
       labelName: "Next Step",
-      labelKey: "TL_COMMON_BUTTON_NXT_STEP"
+      labelKey: "EST_COMMON_BUTTON_NXT_STEP"
     }),
     nextButtonIcon: {
       uiFramework: "custom-atoms",
