@@ -86,6 +86,11 @@ const NestedList = Loadable({
   loading: () => <Loading />
 })
 
+const MultipleCards = Loadable({
+  loader: () => import("./MultipleCards"),
+  loading: () => <Loading />
+})
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -101,5 +106,6 @@ export {
   LandingPage,
   VerticalCardItems,
   ExpansionPanelMolecule,
-  NestedList
+  NestedList,
+  MultipleCards
 };

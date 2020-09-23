@@ -1,3 +1,7 @@
+import { getStatusList } from "./searchResource/functions";
+import {
+  getTenantId
+} from "egov-ui-kit/utils/localStorageUtils";
 const { getCommonContainer, getCommonHeader } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redux/screen-configuration/actions");
 const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
@@ -13,7 +17,7 @@ const headerrow = getCommonContainer({
   });
 
 const getData = async (action, state, dispatch) => {
-    dispatch(prepareFinalObject("workflow.ProcessInstances", []))
+    await dispatch(prepareFinalObject("workflow.ProcessInstances", []))
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
     if(!applicationNumber) {
         return {}
@@ -25,7 +29,17 @@ const getData = async (action, state, dispatch) => {
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments = []} = Applications[0];
+       let {applicationDocuments = [], businessService} = Applications[0];
+       const statusQueryObject = [{
+          key: "tenantId",
+          value: getTenantId()
+          },
+          {
+          key: "businessServices",
+          value: businessService
+          }
+        ]
+       getStatusList( state, dispatch, statusQueryObject)
        const removedDocs = applicationDocuments.filter(item => !item.isActive)
        applicationDocuments = applicationDocuments.filter(item => !!item.isActive)
        Applications = [{...Applications[0], applicationDocuments}]
@@ -80,7 +94,6 @@ const getData = async (action, state, dispatch) => {
                           componentPath: "WorkFlowContainer",
                           props: {
                             dataPath: "Applications",
-                            moduleName: "SaleGift",
                             updateUrl: "/est-services/application/_update"
                           }
                         },

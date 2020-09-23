@@ -42,7 +42,7 @@ const estateSearchAndResult = {
         ]
         dispatch(prepareFinalObject("searchScreen", {}))
         searchApplicationApiCall(state, dispatch, true)
-        getStatusList( state, dispatch, queryObject, "search-application", "components.div.children.estateApplicationSearch.children.cardContent.children.colonyContainer.children.status", "SaleGift")
+        // getStatusList( state, dispatch, queryObject, "search-application", "components.div.children.estateApplicationSearch.children.cardContent.children.colonyContainer.children.status", "SaleGift")
         return action
     },
     components: {
