@@ -15,6 +15,7 @@ import {
     prepareFinalObject
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
+    convertEpochToDate,
     getTodaysDateInYMD
   } from "../../utils";
   import get from "lodash/get";
@@ -239,12 +240,14 @@ export const headerDiv = {
       viewFour: getCommonContainer({
         possessionDate: getLabelWithValue(
             possessionDateField, {
-            jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.possesionDate`
+            jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.possesionDate`,
+            callback: convertEpochToDate
             }
         ),
         dateOfAllotment:getLabelWithValue(
             dateOfAllotmentField, {
-            jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`
+            jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`,
+            callback: convertEpochToDate
             }
         ),
         allotmentNumber: getLabelWithValue(

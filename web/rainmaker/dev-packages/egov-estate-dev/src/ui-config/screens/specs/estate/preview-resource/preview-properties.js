@@ -280,7 +280,8 @@ export const getPropertyDetails = (isEditable = true) => {
       viewFour: getCommonContainer({
         dateOfAllotment: getLabelWithValue(
           dateOfAllotmentLabel, {
-            jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.dateOfAllotment`
+            jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.dateOfAllotment`,
+            callBack: convertEpochToDate
           }
         ),
         allotmentNumber: getLabelWithValue(
@@ -313,7 +314,8 @@ export const getPropertyDetails = (isEditable = true) => {
       viewFour: getCommonContainer({
         lastNocDate: getLabelWithValue(
           lastNocDateLabel, {
-            jsonPath: "Properties[0].propertyDetails.lastNocDate"
+            jsonPath: "Properties[0].propertyDetails.lastNocDate",
+            callBack: convertEpochToDate
           }
         ),
         serviceCategory: getLabelWithValue(
