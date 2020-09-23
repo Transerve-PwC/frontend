@@ -336,6 +336,13 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
                 "path": "ownerDetails.address"
+              },
+              {
+                "label": "EST_RELATION_WITH_DECEASED_LABEL",
+                "required": true,
+                "type": "RADIO_BUTTON",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
+                "path": "ownerDetails.relationWithDeceased"
               }
             ]
           },
@@ -366,6 +373,13 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
                 "path": "ownerDetails.address"
+              },
+              {
+                "label": "EST_RELATION_WITH_DECEASED_LABEL",
+                "required": true,
+                "type": "RADIO_BUTTON",
+                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
+                "path": "ownerDetails.relationWithDeceased"
               }
             ]
           },
