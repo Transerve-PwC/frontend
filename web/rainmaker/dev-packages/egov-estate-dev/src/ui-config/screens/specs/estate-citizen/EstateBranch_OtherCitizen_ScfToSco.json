@@ -258,7 +258,7 @@
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "ownerDetails.share"
+                "jsonPath": "share"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",

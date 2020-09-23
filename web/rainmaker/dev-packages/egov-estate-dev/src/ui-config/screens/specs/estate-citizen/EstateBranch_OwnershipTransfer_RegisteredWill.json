@@ -3,24 +3,53 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_RegisteredWill": [
     {
-      "fields": [
+      "dataSources": [
         {
-          "path": "modeOfTransfer",
-          "required": true,
-          "validations": [
+          "name": "typesOfOwner",
+          "type": "local",
+          "cacheable": true,
+          "lazyload": true,
+          "values": [
             {
-              "type": "mdms",
-              "params": {
-                "moduleName": "EstatePropertyService",
-                "masterName": "modeOfTransfer",
-                "filter": "modeOfTransfer..code"
-              }
+              "code": "New"
+            },
+            {
+              "code": "Existing"
             }
           ]
         },
         {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
+          "label": "ownerDetails.ownerName"
+        },
+        {
+          "name": "legalHeirRelationWithDeceased",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "LegaHeirRelationShipWithDeceased"
+          }
+        },
+        {
+          "name": "benificiaryRelationwithDeceased",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "BenificiaryRelationshipwithDeceased"
+          }
+        }
+      ],
+      "fields": [
+        {
           "path": "registrationNumber",
-          "required": false,
+          "required": true,
           "validations": [
             {
               "type": "length",
@@ -33,7 +62,7 @@
         },
         {
           "path": "dateOfRegistration",
-          "required": false,
+          "required": true,
           "validations": [
             {
               "type": "date-range",
@@ -51,7 +80,26 @@
           ]
         },
         {
-          "path": "owner",
+          "path": "dateOfExecutionOfWill",
+          "required": true,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferor",
           "required": true,
           "validations": [
             {
@@ -60,7 +108,7 @@
           ]
         },
         {
-          "path": "owner.id",
+          "path": "transferor.id",
           "required": true,
           "validations": [
             {
@@ -69,8 +117,27 @@
           ]
         },
         {
-          "path": "purchaser",
+          "path": "transferor.dateOfDeath",
           "required": true,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -40
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee",
+          "required": false,
           "validations": [
             {
               "type": "object"
@@ -78,7 +145,31 @@
           ]
         },
         {
-          "path": "purchaser.name",
+          "path": "transferee.legalHeirOrbeneficiary",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": [
+                  "LEGALHEIR",
+                  "BENEFICIARY"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.id",
+          "required": false,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "transferee.name",
           "required": true,
           "validations": [
             {
@@ -91,20 +182,23 @@
           ]
         },
         {
-          "path": "purchaser.fatherOrHusbandName",
+          "path": "transferee.age",
           "required": true,
           "validations": [
             {
-              "type": "length",
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
               "params": {
-                "min": 5,
-                "max": 150
+                "min": 0,
+                "max": 100
               }
             }
           ]
         },
         {
-          "path": "purchaser.relation",
+          "path": "transferee.relation",
           "required": true,
           "validations": [
             {
@@ -119,7 +213,67 @@
           ]
         },
         {
-          "path": "purchaser.address",
+          "path": "transferee.relationWithDeceased",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 3,
+                "max": 50
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.address",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "transferee.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "mobile"
+            }
+          ]
+        },
+        {
+          "path": "transferee.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "witness",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "witness.name",
           "required": true,
           "validations": [
             {
@@ -132,16 +286,7 @@
           ]
         },
         {
-          "path": "purchaser.mobileNo",
-          "required": false,
-          "validations": [
-            {
-              "type": "phonenumber"
-            }
-          ]
-        },
-        {
-          "path": "purchaser.percentageOfShareTransferred",
+          "path": "witness.age",
           "required": true,
           "validations": [
             {
@@ -152,6 +297,147 @@
               "params": {
                 "min": 0,
                 "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "witness.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "mobile"
+            }
+          ]
+        },
+        {
+          "path": "witness.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "documentsReceivedDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -1
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "courtCases.estateOfficerCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.commissionersCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
               }
             }
           ]
@@ -212,7 +498,7 @@
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "ownerDetails.share"
+                "jsonPath": "share"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
@@ -227,41 +513,37 @@
               {
                 "label": "EST_DECEASED_NAME_LABEL",
                 "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
-                "required": true,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.purchaser.deceasedName",
-                "path": "purchaser.deceasedName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "EST_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.deceasedfatherOrHusband"
+                "disabled": true,
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
               },
               {
                 "label": "EST_DECEASED_ADDRESS_LABEL",
                 "placeholder": "EST_DECEASED_ADDRESS_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.deceasedAddress"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
               },
               {
                 "label": "EST_PERCENT_SHARE_LABEL",
                 "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.percentShare",
-                "jsonPath": "Applications[0].applicationDetails.percentShare"
+                "disabled": true,
+                "jsonPath": "Applications[0].applicationDetails.transferor.share"
               },
               {
                 "label": "EST_DATE_OF_DEATH_LABEL",
-                "required": true,
                 "type": "DATE_FIELD",
-                "path": "ownerDetails.dateOfDeath",
-                "jsonPath": "Applications[0].applicationDetails.dateOfDeath"
+                "path": "transferor.dateOfDeath",
+                "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath"
               }
             ]
           },
@@ -271,115 +553,82 @@
             "fields": [
               {
                 "label": "EST_DATE_OF_EXECUTION_OF_WILL_LABEL",
-                "required": true,
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.dateOfExecutionOfWill",
-                "path": "ownerDetails.dateOfExecutionOfWill"
+                "jsonPath": "Applications[0].applicationDetails.dateOfExecutionOfWill",
+                "path": "dateOfExecutionOfWill"
               },
               {
                 "label": "EST_REGISTRATION_NUMBER_OF_WILL_LABEL",
                 "placeholder": "EST_REGISTRATION_NUMBER_OF_WILL_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.registrationNumberOfWill",
-                "path": "ownerDetails.registrationNumberOfWill"
+                "jsonPath": "Applications[0].applicationDetails.registrationNumber",
+                "path": "registrationNumber"
               },
               {
                 "label": "EST_DATE_OF_REGISTRATION_OF_WILL_LABEL",
-                "required": true,
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.dateOfRegistrationOfWill",
-                "path": "ownerDetails.dateOfRegistrationOfWill"
+                "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
+                "path": "dateOfRegistration"
               },
               {
                 "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                 "placeholder": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_PLACEHOLDER",
-                "required": true,
                 "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.isLegalHeirOrBeneficiary",
-                "path": "ownerDetails.isLegalHeirOrBeneficiary"
+                "jsonPath": "Applications[0].applicationDetails.transferee.legalHeirOrbeneficiary",
+                "path": "transferee.legalHeirOrbeneficiary"
+              },
+              {
+                "label": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_LABEL",
+                "placeholder": "EST_IS_LEGAL_HEIR_OR_BENEFICIARY_EXISTING_OWNER_RADIO_BTN_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.type",
+                "path": "transferee.type",
+                "dataSource": "typesOfOwner"
               },
               {
                 "label": "EST_SELECT_OWNER_LABEL",
                 "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
-                "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
-              }
-            ]
-          },
-          {
-            "header": "EST_LEGAL_HEIR_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
+                "jsonPath": "Applications[0].applicationDetails.transferee.id",
+                "path": "transferee.id",
+                "dataSource": "owners"
+              },
               {
-                "label": "EST_LEGAL_HEIR_NAME_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_NAME_PLACEHOLDER",
-                "required": true,
+                "label": "EST_LEGAL_HEIR_BENEFICIARY_NAME_LABEL",
+                "placeholder": "EST_LEGAL_HEIR_BENEFICIARY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.legalHeirName",
-                "path": "ownerDetails.legalHeirName"
+                "jsonPath": "Applications[0].applicationDetails.transferee.name",
+                "path": "transferee.name"
               },
               {
                 "label": "EST_AGE_LABEL",
                 "placeholder": "EST_AGE_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
-                "path": "ownerDetails.age"
+                "jsonPath": "Applications[0].applicationDetails.transferee.age",
+                "path": "transferee.age"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
-                "path": "ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferee.address",
+                "path": "transferee.address"
               },
               {
-                "label": "EST_RELATION_WITH_DECEASED_LABEL",
-                "required": true,
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
-                "path": "ownerDetails.relationWithDeceased"
-              }
-            ]
-          },
-          {
-            "header": "EST_BENEFICIARY_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "EST_BENEFICIARY_NAME_LABEL",
-                "placeholder": "EST_BENEFICIARY_NAME_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.beneficiaryName",
-                "path": "ownerDetails.beneficiaryName"
+                "label": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                "placeholder": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
+                "path": "transferee.relationWithDeceased",
+                "dataSource": "legalHeirRelationWithDeceased"
               },
               {
-                "label": "EST_AGE_LABEL",
-                "placeholder": "EST_AGE_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
-                "path": "ownerDetails.age"
-              },
-              {
-                "label": "EST_ADDRESS_LABEL",
-                "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
-                "path": "ownerDetails.address"
-              },
-              {
-                "label": "EST_RELATION_WITH_DECEASED_LABEL",
-                "required": true,
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.relationWithDeceased",
-                "path": "ownerDetails.relationWithDeceased"
+                "label": "EST_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                "placeholder": "EST_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
+                "path": "transferee.relationWithDeceased",
+                "dataSource": "benificiaryRelationwithDeceased"
               }
             ]
           },
@@ -390,34 +639,30 @@
               {
                 "label": "EST_WITNESS_NAME_LABEL",
                 "placeholder": "EST_WITNESS_NAME_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.witnessName",
-                "path": "ownerDetails.beneficiaryName"
+                "jsonPath": "Applications[0].applicationDetails.witness[0].name",
+                "path": "witness.name"
               },
               {
                 "label": "EST_AGE_LABEL",
                 "placeholder": "EST_AGE_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.age",
-                "path": "ownerDetails.age"
+                "jsonPath": "Applications[0].applicationDetails.witness[0].age",
+                "path": "witness.age"
               },
               {
                 "label": "EST_ADDRESS_LABEL",
                 "placeholder": "EST_ADDRESS_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address",
-                "path": "ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.witness[0].address",
+                "path": "witness.address"
               },
               {
                 "label": "EST_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
-                "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
-                "path": "ownerDetails.phone"
+                "jsonPath": "Applications[0].applicationDetails.witness[0].mobileNo",
+                "path": "witness.mobileNo"
               }
             ]
           }

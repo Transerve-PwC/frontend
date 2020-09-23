@@ -61,7 +61,7 @@
                     },
                     {
                         "label": "EST_PERCENT_SHARE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.share"
                     },
                     {
                         "label": "EST_DATE_OF_DEATH_LABEL",

@@ -79,10 +79,12 @@ class ExpansionPanelMolecule extends Component {
       };
 
     render() {
-        const {data, contents, valueJsonPath, classes, header} = this.props;
+        let {data, contents, valueJsonPath, classes, header} = this.props;
+        data = data || []
         const {open} = this.state
         return(
-            <div className={classes.root}>
+          !data.length ? null :
+            (<div className={classes.root}>
                 <ExpansionPanel expanded={!!open} onChange={this.changeExpansion}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreRounded />} >
                 <Grid xs={12} sm={12} container>
@@ -128,7 +130,7 @@ class ExpansionPanelMolecule extends Component {
                     </Grid>
                 </ExpansionPanelDetails>
                 </ExpansionPanel>
-            </div>
+            </div>)
         )
     }
 }

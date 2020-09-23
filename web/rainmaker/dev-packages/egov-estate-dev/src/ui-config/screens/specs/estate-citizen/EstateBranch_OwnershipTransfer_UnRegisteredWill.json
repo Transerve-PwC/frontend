@@ -460,7 +460,7 @@
               },
               {
                 "label": "EST_OWNER_SHARE_LABEL",
-                "jsonPath": "ownerDetails.share"
+                "jsonPath": "share"
               },
               {
                 "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
@@ -499,8 +499,7 @@
                 "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "transferee.percentageOfShareTransferred",
-                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share"
               },
               {
                 "label": "EST_DATE_OF_DEATH_LABEL",
@@ -545,7 +544,7 @@
               },
               {
                 "label": "EST_LEGAL_HEIR_BENEFICIARY_NAME_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_NAME_PLACEHOLDER",
+                "placeholder": "EST_LEGAL_HEIR_BENEFICIARY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name"
@@ -611,7 +610,6 @@
               {
                 "label": "EST_MOBILE_NUMBER_LABEL",
                 "placeholder": "EST_MOBILE_NUMBER_PLACEHOLDER",
-                "required": false,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].mobileNo",
                 "path": "witness.mobileNo"
