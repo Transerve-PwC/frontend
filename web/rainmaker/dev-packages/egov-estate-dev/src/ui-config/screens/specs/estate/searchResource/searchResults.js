@@ -105,14 +105,12 @@ const onApplicationRowClick = rowData => {
 }
 
 const onRowClick = rowData => {
-  const {roles = []} = userInfo
-  const findItem = roles.find(item => item.code === "CTL_CLERK");
-  window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;
-  // if(rowData[3].toUpperCase() === "PM_DRAFTED" && !!findItem) {
-  //   window.location.href = `apply?tenantId=${getTenantId()}&transitNumber=${rowData[0]}`
-  // } else {
-  //   window.location.href = `search-preview?transitNumber=${rowData[0]}&tenantId=${getTenantId()}`;
-  // }
+  if (rowData[2].toUpperCase() === "PM_DRAFTED") {
+    window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+  }
+  else {
+    window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+  }
 };
 
 
