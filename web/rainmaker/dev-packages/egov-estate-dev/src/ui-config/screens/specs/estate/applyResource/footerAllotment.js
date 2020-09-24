@@ -114,68 +114,48 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
-    var propertyOwners = get(
+    let entityType = get(
       state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.owners"
-    );
+      "Properties[0].propertyDetails.entityType",
+    )
 
-    let propertyOwnersItems = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
-    );
+    let isOwnerOrPartnerDetailsValid = true;
 
-    if (propertyOwnersItems && propertyOwnersItems.length > 0) {
-      for (var i = 0; i < propertyOwnersItems.length; i++) {
-        if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardThirdStepAllotment.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+    switch(entityType) {
+      case "ET.PUBLIC_LIMITED_COMPANY":
+      case "ET.PRIVATE_LIMITED_COMPANY":
+        var isCompanyDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStepAllotment.children.companyDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "allotment"
+        );
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+        break;
+      case "ET.PARTNERSHIP_FIRM":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStepAllotment.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
           "allotment"
         )
 
-        var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
-        
-        if (i > 0) {
-          var documentDetailsString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_0`, {}
-          ))
-          var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
-          newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var documentDetailsObj = JSON.parse(newDocumentDetailsString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}`,
-            documentDetailsObj
-          )
-
-          setDocumentData("", state, dispatch, i)
-        }
-
-        set(
-          state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Douments - ${ownerName}`
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
+        break;
+      case "ET.PROPRIETORSHIP":
+        var isProprietorshipDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStepAllotment.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "allotment"
         )
-
-        const reviewOwnerDetails = getReviewOwner(true, i);
-        set(
-          reviewOwnerDetails,
-          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Owner Details - ${ownerName}`
-        )
-        set(
-          state.screenConfiguration.screenConfig,
-          `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
-          reviewOwnerDetails
-        )
-      }
+        break;
+      default:
+        break;
     }
 
-    if (isOwnerDetailsValid) {
+    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid || isOwnerOrPartnerDetailsValid) || isProprietorshipDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep, "allotment");
       if (!res) {
         return
@@ -450,6 +430,73 @@ const callBackForNext = async (state, dispatch) => {
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
+}
+
+const setOwnersOrPartners = (state, dispatch, container) => {
+  let propertyOwners = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyDetails.owners"
+  );
+
+  let propertyOwnersItems = get(
+    state.screenConfiguration.screenConfig,
+    `allotment.components.div.children.formwizardThirdStepAllotment.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
+  );
+
+  let isOwnerOrPartnerDetailsValid = true;
+
+  if (propertyOwnersItems && propertyOwnersItems.length > 0) {
+    for (var i = 0; i < propertyOwnersItems.length; i++) {
+      if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
+        continue;
+      }
+      isOwnerOrPartnerDetailsValid = validateFields(
+        `components.div.children.formwizardThirdStepAllotment.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+        state,
+        dispatch,
+        "allotment"
+      )
+
+      var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
+      
+      if (i > 0) {
+        var documentDetailsString = JSON.stringify(get(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_0`, {}
+        ))
+        var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
+        newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
+        var documentDetailsObj = JSON.parse(newDocumentDetailsString);
+        set(
+          state.screenConfiguration.screenConfig,
+          `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}`,
+          documentDetailsObj
+        )
+
+        setDocumentData("", state, dispatch, i)
+      }
+
+      set(
+        state.screenConfiguration.screenConfig,
+        `allotment.components.div.children.formwizardFourthStepAllotment.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+        `Douments - ${ownerName}`
+      )
+
+      const reviewOwnerDetails = getReviewOwner(true, i);
+      set(
+        reviewOwnerDetails,
+        "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+        `Owner Details - ${ownerName}`
+      )
+      set(
+        state.screenConfiguration.screenConfig,
+        `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+        reviewOwnerDetails
+      )
+    }
+  }
+
+  return isOwnerOrPartnerDetailsValid;
 }
 
 export const changeStep = (

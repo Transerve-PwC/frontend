@@ -240,12 +240,12 @@ const getIsDirectorRadioButton = {
     buttons: [{
         labelName: "Yes",
         labelKey: "ES_COMMON_YES",
-        value: "YES"
+        value: "true"
       },
       {
         label: "No",
         labelKey: "ES_COMMON_NO",
-        value: "NO"
+        value: "false"
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.isDirector",
