@@ -91,7 +91,7 @@ export const previousButton = {
         children: {
           submitButtonLabel: getLabel({
             labelName: "Submit",
-            labelKey: "TL_COMMON_BUTTON_SUBMIT"
+            labelKey: "ES_COMMON_BUTTON_SUBMIT"
           }),
           submitButtonIcon: {
             uiFramework: "custom-atoms",
