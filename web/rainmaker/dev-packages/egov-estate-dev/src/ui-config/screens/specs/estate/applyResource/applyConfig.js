@@ -282,20 +282,12 @@ export const stepsDataAllotment = [{
     labelKey: "ES_COMMON_AUCTION_DETAILS"
   },
   {
-    labelName: "Company Details",
-    labelKey: "ES_COMMON_COMPANY_DETAILS"
+    labelName: "Entity/Owner Details",
+    labelKey: "ES_COMMON_ENTITY_OWNER_DETAILS"
   },
   {
-    labelName: "Company Documents",
-    labelKey: "ES_COMMON_COMPANY_DOCUMENTS"
-  },
-  {
-    labelName: "Owner Details",
-    labelKey: "ES_COMMON_OWNER_DETAILS"
-  },
-  {
-    labelName: "Owner Documents",
-    labelKey: "ES_COMMON_OWNER_DOCUMENTS"
+    labelName: "Entity/Owner Documents",
+    labelKey: "ES_COMMON_ENTITY_OWNER_DOCUMENTS"
   },
   {
     labelName: "Court Case",
@@ -350,7 +342,11 @@ export const formwizardThirdStepAllotment = {
     id: "apply_form3"
   },
   children: {
-    CompanyDetails
+    companyDetails,
+    ownerDetails,
+    firmDetails,
+    partnerDetails,
+    proprietorshipDetails
   },
   visible: false
 };
@@ -362,7 +358,7 @@ export const formwizardFourthStepAllotment = {
     id: "apply_form4"
   },
   children: {
-    companyDocuments_0
+    ownerDocumentDetails_0
   },
   visible: false
 };
@@ -374,7 +370,7 @@ export const formwizardFifthStepAllotment = {
     id: "apply_form5"
   },
   children: {
-    ownerDetails
+    courtCaseDetails
   },
   visible: false
 };
@@ -386,7 +382,11 @@ export const formwizardSixthStepAllotment = {
     id: "apply_form6"
   },
   children: {
-    ownerDocumentDetails_0
+    premiumAmountDetails,
+    demandSelect,
+    groundRentDetails,
+    licenseFeeDetails,
+    securityDetails
   },
   visible: false
 };
@@ -398,35 +398,7 @@ export const formwizardSeventhStepAllotment = {
     id: "apply_form7"
   },
   children: {
-    courtCaseDetails
-  },
-  visible: false
-};
-
-export const formwizardEighthStepAllotment = {
-  uiFramework: "custom-atoms",
-  componentPath: "Form",
-  props: {
-    id: "apply_form8"
-  },
-  children: {
-    premiumAmountDetails,
-    demandSelect,
-    groundRentDetails,
-    licenseFeeDetails,
-    securityDetails
-  },
-  visible: false
-}
-
-export const formwizardNinthStepAllotment = {
-  uiFramework: "custom-atoms",
-  componentPath: "Form",
-  props: {
-    id: "apply_form9"
-  },
-  children: {
     reviewAllotmentDetails
   },
   visible: false
-}
+};
