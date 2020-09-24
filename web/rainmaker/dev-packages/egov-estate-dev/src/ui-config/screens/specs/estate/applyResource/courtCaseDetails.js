@@ -18,7 +18,7 @@ import get from "lodash/get";
 
 export const courtCaseHeader = getCommonTitle({
   labelName: "Court Case Details",
-  labelKey: "EST_COURT_CASE_DETAILS_HEADER"
+  labelKey: "ES_COURT_CASE_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -29,11 +29,11 @@ export const courtCaseHeader = getCommonTitle({
 const estateOfficerCourtField = {
   label: {
       labelName: "Estate Officer Court",
-      labelKey: "EST_ESTATE_OFFICER_COURT_LABEL"
+      labelKey: "ES_ESTATE_OFFICER_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Estate Officer Court",
-      labelKey: "EST_ESTATE_OFFICER_COURT_PLACEHOLDER"
+      labelKey: "ES_ESTATE_OFFICER_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -46,11 +46,11 @@ const estateOfficerCourtField = {
 const commissionersCourtField = {
   label: {
       labelName: "Commissioners Court",
-      labelKey: "EST_COMMISSIONERS_COURT_LABEL"
+      labelKey: "ES_COMMISSIONERS_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Commissioners Court",
-      labelKey: "EST_COMMISSIONERS_COURT_PLACEHOLDER"
+      labelKey: "ES_COMMISSIONERS_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -63,11 +63,11 @@ const commissionersCourtField = {
 const chiefAdministratorsCourtField = {
   label: {
       labelName: "Chief Administrators Court",
-      labelKey: "EST_CHIEF_ADMINISTRATORS_COURT_LABEL"
+      labelKey: "ES_CHIEF_ADMINISTRATORS_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Chief Administrators Court",
-      labelKey: "EST_CHIEF_ADMINISTRATORS_COURT_PLACEHOLDER"
+      labelKey: "ES_CHIEF_ADMINISTRATORS_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -80,11 +80,11 @@ const chiefAdministratorsCourtField = {
 const advisorToAdminCourtField = {
   label: {
       labelName: "Advisor to Admin Court",
-      labelKey: "EST_ADVISOR_TO_ADMIN_COURT_LABEL"
+      labelKey: "ES_ADVISOR_TO_ADMIN_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Advisor to Admin Court",
-      labelKey: "EST_ADVISOR_TO_ADMIN_COURT_PLACEHOLDER"
+      labelKey: "ES_ADVISOR_TO_ADMIN_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -97,11 +97,11 @@ const advisorToAdminCourtField = {
 const honbleDistrictCourtField = {
   label: {
       labelName: "Hon'ble District Court",
-      labelKey: "EST_HONBLE_DISTRICT_COURT_LABEL"
+      labelKey: "ES_HONBLE_DISTRICT_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Hon'ble District Court",
-      labelKey: "EST_HONBLE_DISTRICT_COURT_PLACEHOLDER"
+      labelKey: "ES_HONBLE_DISTRICT_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -114,11 +114,11 @@ const honbleDistrictCourtField = {
 const honbleHighCourtField = {
   label: {
       labelName: "Hon'ble High Court",
-      labelKey: "EST_HONBLE_HIGH_COURT_LABEL"
+      labelKey: "ES_HONBLE_HIGH_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Hon'ble High Court",
-      labelKey: "EST_HONBLE_HIGH_COURT_PLACEHOLDER"
+      labelKey: "ES_HONBLE_HIGH_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -131,11 +131,11 @@ const honbleHighCourtField = {
 const honbleSupremeCourtField = {
   label: {
       labelName: "Hon'ble Supreme Court",
-      labelKey: "EST_HONBLE_SUPREME_COURT_LABEL"
+      labelKey: "ES_HONBLE_SUPREME_COURT_LABEL"
   },
   placeholder: {
       labelName: "Enter Hon'ble Supreme Court",
-      labelKey: "EST_HONBLE_SUPREME_COURT_PLACEHOLDER"
+      labelKey: "ES_HONBLE_SUPREME_COURT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -162,7 +162,7 @@ const commonCourtCaseInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Court Case Information",
-      labelKey: "EST_COMMON_COURT_CASE_INFORMATION"
+      labelKey: "ES_COMMON_COURT_CASE_INFORMATION"
     }, {
       style: {
         marginBottom: 18
@@ -200,7 +200,7 @@ export const courtCaseDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Court Case",
-              labelKey: "EST_COMMON_ADD_COURT_CASE_LABEL"
+              labelKey: "ES_COMMON_ADD_COURT_CASE_LABEL"
             },
             headerName: "Court Case",
             headerJsonPath:

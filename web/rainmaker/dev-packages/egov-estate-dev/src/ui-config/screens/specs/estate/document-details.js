@@ -44,7 +44,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     payload,
     `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`,
     `PropertiesTemp[${index}].reviewDocData`,
-    dispatch,'EST'
+    dispatch,'ES'
     );
     let documentListContainer = getReviewDocuments(false,'document-details',`PropertiesTemp[${index}].reviewDocData`);
     containers[index] = getCommonCard({

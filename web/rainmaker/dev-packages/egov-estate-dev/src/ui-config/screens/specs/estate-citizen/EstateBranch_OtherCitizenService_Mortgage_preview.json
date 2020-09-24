@@ -2,97 +2,97 @@
     "preview": {
         "sections": [
             {
-                "header": "EST_PROPERTY_DETAILS_HEADER",
+                "header": "ES_PROPERTY_DETAILS_HEADER",
                 "isEditable": false,
                 "fields": [
                     {
-                        "label": "EST_FILE_NUMBER_LABEL",
+                        "label": "ES_FILE_NUMBER_LABEL",
                         "jsonPath": "Applications[0].property.fileNumber"
                     },
                     {
-                        "label": "EST_CATEGORY_LABEL",
+                        "label": "ES_CATEGORY_LABEL",
                         "jsonPath": "Applications[0].property.category"
                     },
                     {
-                        "label": "EST_SUB_CATEGORY_LABEL",
+                        "label": "ES_SUB_CATEGORY_LABEL",
                         "jsonPath": "Applications[0].property.subCategory"
                     },
                     {
-                        "label": "EST_SITE_NO_LABEL",
+                        "label": "ES_SITE_NO_LABEL",
                         "jsonPath": "Applications[0].property.siteNumber"
                     },
                     {
-                        "label": "EST_SECTOR_NO_LABEL",
+                        "label": "ES_SECTOR_NO_LABEL",
                         "jsonPath": "Applications[0].property.sectorNumber"
                     },
                     {
-                        "label": "EST_PROPERTY_TYPE_LABEL",
+                        "label": "ES_PROPERTY_TYPE_LABEL",
                         "jsonPath": "Applications[0].property.propertyDetails.propertyType"
                     },
                     {
-                        "label": "EST_LAST_NOC_DATE_LABEL",
+                        "label": "ES_LAST_NOC_DATE_LABEL",
                         "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
                     },
                     {
-                        "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                        "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
                         "jsonPath": "Applications[0].property.propertyDetails.propertyApplicationNumber"
                     },
                     {
-                        "label": "EST_DUE_AMOUNT_LABEL",
+                        "label": "ES_DUE_AMOUNT_LABEL",
                         "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
                     }
                 ]
             },
             {
-                "header": "EST_APPLICANT_DETAILS_HEADER",
+                "header": "ES_APPLICANT_DETAILS_HEADER",
                 "step": 0,
                 "fields": [
                     {
-                        "label": "EST_OWNER_NAME_LABEL",
+                        "label": "ES_OWNER_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.ownerName"
                     },
                     {
-                        "label": "EST_FATHER_HUSBAND_NAME_LABEL",
+                        "label": "ES_FATHER_HUSBAND_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
                     },
                     {
-                        "label": "EST_ADDRESS_LABEL",
+                        "label": "ES_ADDRESS_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
                     },
                     {
-                        "label": "EST_MOBILE_NUMBER_LABEL",
+                        "label": "ES_MOBILE_NUMBER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
                     },
                     {
-                        "label": "EST_OWNER_SHARE_LABEL",
+                        "label": "ES_OWNER_SHARE_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.share"
                     },
                     {
-                        "label": "EST_CP_NUMBER_LABEL",
+                        "label": "ES_CP_NUMBER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
                     }
                 ]
             },
             {
-                "header": "EST_LOAN_DETAILS_HEADER",
+                "header": "ES_LOAN_DETAILS_HEADER",
                 "step": 0,
                 "fields": [
                     {
-                        "label": "EST_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
+                        "label": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.bankName"
                     },
                     {
-                        "label": "EST_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
+                        "label": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.reasonForMortgage"
                     },
                     {
-                        "label": "EST_LOAN_AMOUNT_LABEL",
+                        "label": "ES_LOAN_AMOUNT_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.loanAmount"
                     }
                 ]
             },
             {
-                "header": "EST_DOCUMENT_DETAILS_HEADER",
+                "header": "ES_DOCUMENT_DETAILS_HEADER",
                 "type": "DOCUMENTS",
                 "step": 1,
                 "sourceJsonPath": "temp[0].reviewDocData"

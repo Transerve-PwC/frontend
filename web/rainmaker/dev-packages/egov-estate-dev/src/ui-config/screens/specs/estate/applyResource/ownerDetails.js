@@ -18,7 +18,7 @@ import get from "lodash/get";
 
 export const ownerHeader = getCommonTitle({
   labelName: "Owner Details",
-  labelKey: "EST_OWNER_DETAILS_HEADER"
+  labelKey: "ES_OWNER_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -29,11 +29,11 @@ export const ownerHeader = getCommonTitle({
 const ownerNameField = {
   label: {
     labelName: "Owner Name",
-    labelKey: "EST_OWNER_NAME_LABEL"
+    labelKey: "ES_OWNER_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Owner Name",
-    labelKey: "EST_OWNER_NAME_PLACEHOLDER"
+    labelKey: "ES_OWNER_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -48,11 +48,11 @@ const ownerNameField = {
 const fatherHusbandNameField = {
   label: {
     labelName: "Father/Husband Name",
-    labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+    labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Father/Husband Name",
-    labelKey: "EST_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    labelKey: "ES_FATHER_HUSBAND_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -75,17 +75,17 @@ const getRelationshipRadioButton = {
   props: {
     label: {
       name: "Relationship",
-      key: "EST_RELATIONSHIP_LABEL"
+      key: "ES_RELATIONSHIP_LABEL"
     },
     buttons: [{
         labelName: "Father",
-        labelKey: "EST_COMMON_RELATION_FATHER",
+        labelKey: "ES_COMMON_RELATION_FATHER",
         value: "FATHER",
         disabled: true
       },
       {
         label: "Husband",
-        labelKey: "EST_COMMON_RELATION_HUSBAND",
+        labelKey: "ES_COMMON_RELATION_HUSBAND",
         value: "HUSBAND",
         disabled: true
       }
@@ -100,11 +100,11 @@ const getRelationshipRadioButton = {
 const addressField = {
   label: {
     labelName: "Address",
-    labelKey: "EST_ADDRESS_LABEL"
+    labelKey: "ES_ADDRESS_LABEL"
   },
   placeholder: {
     labelName: "Enter Address",
-    labelKey: "EST_ADDRESS_PLACEHOLDER"
+    labelKey: "ES_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -126,7 +126,7 @@ const mobileNumberField = {
   },
   placeholder: {
     labelName: "Enter Mobile No.",
-    labelKey: "EST_MOBILE_NUMBER_PLACEHOLDER"
+    labelKey: "ES_MOBILE_NUMBER_PLACEHOLDER"
   },
   pattern: getPattern("MobileNo"),
   // props: {
@@ -139,11 +139,11 @@ const mobileNumberField = {
 const shareField = {
   label: {
     labelName: "Share",
-    labelKey: "EST_SHARE_LABEL"
+    labelKey: "ES_SHARE_LABEL"
   },
   placeholder: {
     labelName: "Enter Share",
-    labelKey: "EST_SHARE_PLACEHOLDER"
+    labelKey: "ES_SHARE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -158,11 +158,11 @@ const shareField = {
 const cpNumberField = {
   label: {
     labelName: "CP No.",
-    labelKey: "EST_CP_NUMBER_LABEL"
+    labelKey: "ES_CP_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter CP No.",
-    labelKey: "EST_CP_NUMBER_PLACEHOLDER"
+    labelKey: "ES_CP_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -175,11 +175,11 @@ const cpNumberField = {
 const possessionDateField = {
   label: {
     labelName: "Possession Date",
-    labelKey: "EST_POSSESSION_DATE_LABEL"
+    labelKey: "ES_POSSESSION_DATE_LABEL"
   },
   placeholder: {
     labelName: "Enter Possession Date",
-    labelKey: "EST_POSSESSION_DATE_PLACEHOLDER"
+    labelKey: "ES_POSSESSION_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   required: true,
@@ -194,11 +194,11 @@ const possessionDateField = {
 const dateOfAllotmentField = {
   label: {
     labelName: "Date of Allotment",
-    labelKey: "EST_DATE_OF_ALLOTMENT_LABEL"
+    labelKey: "ES_DATE_OF_ALLOTMENT_LABEL"
   },
   placeholder: {
     labelName: "Enter Date of Allotment",
-    labelKey: "EST_DATE_OF_ALLOTMENT_PLACEHOLDER"
+    labelKey: "ES_DATE_OF_ALLOTMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dateOfAllotment",
@@ -212,11 +212,11 @@ const dateOfAllotmentField = {
 const allotmentNumberField = {
   label: {
     labelName: "Allotment Number",
-    labelKey: "EST_ALLOTMENT_NUMBER_LABEL"
+    labelKey: "ES_ALLOTMENT_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter Allotment Number",
-    labelKey: "EST_ALLOTMENT_NUMBER_PLACEHOLDER"
+    labelKey: "ES_ALLOTMENT_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -237,16 +237,16 @@ const getIsDirectorRadioButton = {
   props: {
     label: {
       name: "Is Director",
-      key: "EST_IS_DIRECTOR_LABEL"
+      key: "ES_IS_DIRECTOR_LABEL"
     },
     buttons: [{
         labelName: "Yes",
-        labelKey: "EST_COMMON_YES",
+        labelKey: "ES_COMMON_YES",
         value: "YES"
       },
       {
         label: "No",
-        labelKey: "EST_COMMON_NO",
+        labelKey: "ES_COMMON_NO",
         value: "NO"
       }
     ],
@@ -261,7 +261,7 @@ const commonOwnerInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Owner Information",
-      labelKey: "EST_COMMON_OWNER_INFORMATION"
+      labelKey: "ES_COMMON_OWNER_INFORMATION"
     }, {
       style: {
         marginBottom: 18
@@ -303,7 +303,7 @@ export const ownerDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Owner",
-              labelKey: "EST_COMMON_ADD_OWNER_LABEL"
+              labelKey: "ES_COMMON_ADD_OWNER_LABEL"
             },
             headerName: "Owner Information",
             headerJsonPath: "children.cardContent.children.header.children.Owner Information.props.label",

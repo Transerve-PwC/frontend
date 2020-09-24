@@ -33,7 +33,7 @@ import {
 
 const header = getCommonHeader({
   labelName: "My Applications",
-  labelKey: "EST_MY_APPLICATIONS_HEADER"
+  labelKey: "ES_MY_APPLICATIONS_HEADER"
 }, {
   classes: {
     root: "common-header-cont"
@@ -90,21 +90,21 @@ const clearSearch = (state, dispatch) => {
 const searchCard = getCommonCard({
   subHeader: getCommonTitle({
     labelName: "Search Application",
-    labelKey: "EST_SEARCH_RESULTS_HEADING"
+    labelKey: "ES_SEARCH_RESULTS_HEADING"
   }),
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for an application",
-    labelKey: "EST_HOME_SEARCH_RESULTS_DESC"
+    labelKey: "ES_HOME_SEARCH_RESULTS_DESC"
   }),
   statusApplicationNumberContainer: getCommonContainer({
     applicationNo: getTextField({
       label: {
         labelName: "Application No.",
-        labelKey: "EST_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+        labelKey: "ES_HOME_SEARCH_RESULTS_APP_NO_LABEL"
       },
       placeholder: {
         labelName: "Enter Application No.",
-        labelKey: "EST_HOME_SEARCH_RESULTS_APP_NO_PLACEHOLDER"
+        labelKey: "ES_HOME_SEARCH_RESULTS_APP_NO_PLACEHOLDER"
       },
       gridDefination: {
         xs: 12,
@@ -118,11 +118,11 @@ const searchCard = getCommonCard({
     status: getSelectField({
       label: {
         labelName: "Application status",
-        labelKey: "EST_HOME_SEARCH_RESULTS_APP_STATUS_LABEL"
+        labelKey: "ES_HOME_SEARCH_RESULTS_APP_STATUS_LABEL"
       },
       placeholder: {
         labelName: "Select Application Status",
-        labelKey: "EST_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
+        labelKey: "ES_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
       },
       required: false,
       jsonPath: "searchScreen.status",
@@ -152,7 +152,7 @@ const searchCard = getCommonCard({
       children: {
         buttonLabel: getLabel({
           labelName: "Search",
-          labelKey: "EST_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+          labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
         })
       },
       onClickDefination: {
@@ -182,7 +182,7 @@ const searchCard = getCommonCard({
       children: {
         buttonLabel: getLabel({
           labelName: "Clear",
-          labelKey: "EST_SEARCH_CLEAR"
+          labelKey: "ES_SEARCH_CLEAR"
         })
       },
       onClickDefination: {
@@ -246,15 +246,15 @@ const screenConfig = {
           visible: true,
           props: {
             contents: [{
-                label: "EST_COMMON_TABLE_COL_APPLICAITON_NUMBER",
+                label: "ES_COMMON_TABLE_COL_APPLICAITON_NUMBER",
                 jsonPath: "applicationNumber"
               },
               {
-                label: "EST_COMMON_TABLE_COL_FILE_NO",
+                label: "ES_COMMON_TABLE_COL_FILE_NO",
                 jsonPath: "property.fileNumber"
               },
               {
-                label: "EST_COMMON_TABLE_COL_STATUS",
+                label: "ES_COMMON_TABLE_COL_STATUS",
                 jsonPath: "state"
               }
             ],

@@ -5,13 +5,13 @@ export const documentList = {
   props: {
     buttonLabel: {
       labelName: "UPLOAD FILE",
-      labelKey: "EST_BUTTON_UPLOAD_FILE"
+      labelKey: "ES_BUTTON_UPLOAD_FILE"
     },
     downloadButtonLabel: {
       labelName: "DOWNLOAD FILE",
-      labelKey: "EST_BUTTON_DOWNLOAD_FILE"
+      labelKey: "ES_BUTTON_DOWNLOAD_FILE"
     },
     inputProps : [],
-    documentTypePrefix: "EST_",
+    documentTypePrefix: "ES_",
   }
 };

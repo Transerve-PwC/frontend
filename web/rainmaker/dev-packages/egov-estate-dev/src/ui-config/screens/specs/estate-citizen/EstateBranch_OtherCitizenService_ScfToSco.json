@@ -206,117 +206,117 @@
       "first_step": {
         "sections": [
           {
-            "header": "EST_PROPERTY_DETAILS_HEADER",
+            "header": "ES_PROPERTY_DETAILS_HEADER",
             "type": "CARD_DETAIL",
             "fields": [
               {
-                "label": "EST_FILE_NUMBER_LABEL",
+                "label": "ES_FILE_NUMBER_LABEL",
                 "jsonPath": "property.fileNumber"
               },
               {
-                "label": "EST_CATEGORY_LABEL",
+                "label": "ES_CATEGORY_LABEL",
                 "jsonPath": "property.category"
               },
               {
-                "label": "EST_SUB_CATEGORY_LABEL",
+                "label": "ES_SUB_CATEGORY_LABEL",
                 "jsonPath": "property.subCategory"
               },
               {
-                "label": "EST_SITE_NO_LABEL",
+                "label": "ES_SITE_NO_LABEL",
                 "jsonPath": "property.siteNumber"
               },
               {
-                "label": "EST_SECTOR_NO_LABEL",
+                "label": "ES_SECTOR_NO_LABEL",
                 "jsonPath": "property.sectorNumber"
               },
               {
-                "label": "EST_PROPERTY_TYPE_LABEL",
+                "label": "ES_PROPERTY_TYPE_LABEL",
                 "jsonPath": "property.propertyDetails.propertyType"
               },
               {
-                "label": "EST_LAST_NOC_DATE_LABEL",
+                "label": "ES_LAST_NOC_DATE_LABEL",
                 "jsonPath": "property.propertyDetails.lastNocDate"
               },
               {
-                "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
                 "jsonPath": "property.propertyDetails.propertyApplicationNumber"
               },
               {
-                "label": "EST_DUE_AMOUNT_LABEL",
+                "label": "ES_DUE_AMOUNT_LABEL",
                 "jsonPath": "property.propertyDetails.dueAmount"
               }
             ]
           },
           {
-            "header": "EST_PROPERTY_OWNER_LIST_HEADER",
+            "header": "ES_PROPERTY_OWNER_LIST_HEADER",
             "type": "EXPANSION_DETAIL",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
-                "label": "EST_OWNER_NAME_LABEL",
+                "label": "ES_OWNER_NAME_LABEL",
                 "jsonPath": "ownerDetails.ownerName"
               },
               {
-                "label": "EST_OWNER_SHARE_LABEL",
+                "label": "ES_OWNER_SHARE_LABEL",
                 "jsonPath": "share"
               },
               {
-                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+                "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
                 "jsonPath": "ownerDetails.mobileNumber"
               }
             ]
           },
           {
-            "header": "EST_APPLICANT_DETAILS_HEADER",
+            "header": "ES_APPLICANT_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_OWNERS_LABEL",
-                "placeholder": "EST_OWNERS_PLACEHOLDER",
+                "label": "ES_OWNERS_LABEL",
+                "placeholder": "ES_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.applicant.owners",
                 "path": "applicant.owners"
               },
               {
-                "label": "EST_OWNER_NAME_LABEL",
-                "placeholder": "EST_OWNER_NAME_PLACEHOLDER",
+                "label": "ES_OWNER_NAME_LABEL",
+                "placeholder": "ES_OWNER_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.name",
                 "path": "applicant.name"
               },
               {
-                "label": "EST_FATHER_HUSBAND_NAME_LABEL",
-                "placeholder": "EST_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.fatherOrHusbandName",
                 "path": "applicant.fatherOrHusbandName"
               },
               {
-                "label": "EST_ADDRESS_LABEL",
-                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "label": "ES_ADDRESS_LABEL",
+                "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.applicant.address",
                 "path": "applicant.address"
               },
               {
-                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
-                "placeholder": "EST_OWNER_MOBILE_NUMBER_PLACEHOLDER",
+                "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
+                "placeholder": "ES_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo",
                 "path": "applicant.mobileNo",
                 "pattern": "MobileNo"
               },
               {
-                "label": "EST_SHARE_LABEL",
-                "placeholder": "EST_SHARE_PLACEHOLDER",
+                "label": "ES_SHARE_LABEL",
+                "placeholder": "ES_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.percentageOfShareTransferred",
                 "path": "duplicate.percentageOfShareTransferred",
                 "pattern": "Amount"
               },
               {
-                "label": "EST_CP_NUMBER_LABEL",
-                "placeholder": "EST_CP_NUMBER_PLACEHOLDER",
+                "label": "ES_CP_NUMBER_LABEL",
+                "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.cpnumber",
                 "path": "cpnumber"
@@ -324,33 +324,33 @@
             ]
           },
           {
-            "header": "EST_COMPANY_DETAILS_HEADER",
+            "header": "ES_COMPANY_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_NAME_LABEL",
-                "placeholder": "EST_NAME_PLACEHOLDER",
+                "label": "ES_NAME_LABEL",
+                "placeholder": "ES_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
                 "path": "company.name"
               },
               {
-                "label": "EST_ADDRESS_LABEL",
-                "placeholder": "EST_ADDRESS_PLACEHOLDER",
+                "label": "ES_ADDRESS_LABEL",
+                "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.duplicate.company.address",
                 "path": "company.address"
               },
               {
-                "label": "EST_REGESTRATION_NO_OF_PROPERTY_LABEL",
-                "placeholder": "EST_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+                "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
+                "placeholder": "ES_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
                 "path": "company.registrationNumber"
               },
               {
-                "label": "EST_TYPE_OF_LETTER_LABEL",
-                "placeholder": "EST_TYPE_OF_LETTER_PLACEHOLDER",
+                "label": "ES_TYPE_OF_LETTER_LABEL",
+                "placeholder": "ES_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.company.type",
                 "path": "company.type"
@@ -360,7 +360,7 @@
         ]
       },
       "second_step": {
-        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "header": "ES_DOCUMENT_DETAILS_HEADER",
         "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {

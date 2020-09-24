@@ -22,7 +22,7 @@ import {
  
 export const purchaserHeader = getCommonTitle({
     labelName: "Court Case Details",
-    labelKey: "EST_COURT_CASE_DETAILS_HEADER"
+    labelKey: "ES_COURT_CASE_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -33,47 +33,47 @@ export const purchaserHeader = getCommonTitle({
   const estateOfficerCourtField = {
    
         labelName: "Estate Officer Court",
-        labelKey: "EST_ESTATE_OFFICER_COURT_LABEL"
+        labelKey: "ES_ESTATE_OFFICER_COURT_LABEL"
   }
   
   const commissionersCourtField = {
   
         labelName: "Commissioners Court",
-        labelKey: "EST_COMMISSIONERS_COURT_LABEL",
+        labelKey: "ES_COMMISSIONERS_COURT_LABEL",
   }
   
   const chiefAdministratorsCourtField = {
     
         labelName: "Chief Administrators Court",
-        labelKey: "EST_CHIEF_ADMINISTRATORS_COURT_LABEL",
+        labelKey: "ES_CHIEF_ADMINISTRATORS_COURT_LABEL",
 
   }
   
   const advisorToAdminCourtField = {
     
         labelName: "Advisor to Admin Court",
-        labelKey: "EST_ADVISOR_TO_ADMIN_COURT_LABEL",
+        labelKey: "ES_ADVISOR_TO_ADMIN_COURT_LABEL",
    
   }
   
   const honbleDistrictCourtField = {
    
         labelName: "Hon'ble District Court",
-        labelKey: "EST_HONBLE_DISTRICT_COURT_LABEL",
+        labelKey: "ES_HONBLE_DISTRICT_COURT_LABEL",
    
   }
   
   const honbleHighCourtField = {
    
         labelName: "Hon'ble High Court",
-        labelKey: "EST_HONBLE_HIGH_COURT_LABEL",
+        labelKey: "ES_HONBLE_HIGH_COURT_LABEL",
     
   }
   
   const honbleSupremeCourtField = {
     
         labelName: "Hon'ble Supreme Court",
-        labelKey: "EST_HONBLE_SUPREME_COURT_LABEL",
+        labelKey: "ES_HONBLE_SUPREME_COURT_LABEL",
     
   }
 
@@ -132,7 +132,7 @@ export const headerDiv = {
             },
             ...getCommonSubHeader({
               labelName: "Court Case Details",
-              labelKey: "EST_COURT_CASE_DETAILS_HEADER"
+              labelKey: "ES_COURT_CASE_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)

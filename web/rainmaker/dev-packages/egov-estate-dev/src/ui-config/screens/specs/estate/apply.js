@@ -206,7 +206,7 @@ const getCompanyDocs = (action, state, dispatch, owner = 0) => {
 
 const header = getCommonHeader({
   labelName: "Add Estate",
-  labelKey: "EST_COMMON_ESTATES_ADD"
+  labelKey: "ES_COMMON_ESTATES_ADD"
 });
 
 export const getPMDetailsByFileNumber = async (

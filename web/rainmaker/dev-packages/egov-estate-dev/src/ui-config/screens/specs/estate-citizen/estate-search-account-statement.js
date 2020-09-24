@@ -15,7 +15,7 @@ import {
   
   const header = getCommonHeader({
     labelName: "Account Statement Generation",
-    labelKey: "EST_ACCOUNT_STATEMENT_GENERATION_HEADER"
+    labelKey: "ES_ACCOUNT_STATEMENT_GENERATION_HEADER"
   });
   
 //   const getMdmsData = async (dispatch) => {

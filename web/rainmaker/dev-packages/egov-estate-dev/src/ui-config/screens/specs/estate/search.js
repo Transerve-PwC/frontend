@@ -41,7 +41,7 @@ console.log(roles);
 const findItem = roles.find(item => item.code === "ES_EB_DISPATCH_OFFICER");
 const header = getCommonHeader({
   labelName: "Search Property Master",
-  labelKey: "EST_SEARCH_PROPERTY_MASTER_HEADER"
+  labelKey: "ES_SEARCH_PROPERTY_MASTER_HEADER"
 });
 
 const estateSearchAndResult = {
@@ -104,7 +104,7 @@ const estateSearchAndResult = {
               children: {
                 buttonLabel: getLabel({
                   labelName: "Add Property Master",
-                  labelKey: "EST_ESTATE_HOME_ADD_BUTTON"
+                  labelKey: "ES_ESTATE_HOME_ADD_BUTTON"
                 })
               },
               onClickDefination: {

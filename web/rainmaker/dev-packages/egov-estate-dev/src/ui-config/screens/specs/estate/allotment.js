@@ -137,7 +137,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
 
 const header = getCommonHeader({
   labelName: "Allotment of Site",
-  labelKey: "EST_ALLOTMENT_OF_SITE"
+  labelKey: "ES_ALLOTMENT_OF_SITE"
 });
 
 const getData = async (action, state, dispatch) => {
