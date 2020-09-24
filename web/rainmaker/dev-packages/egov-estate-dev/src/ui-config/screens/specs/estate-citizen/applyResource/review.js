@@ -49,7 +49,7 @@ const headerDiv = (isEditable = true, label, step) => {
             },
             buttonLabel: getLabel({
                 labelName: "Edit",
-                labelKey: "TL_SUMMARY_EDIT"
+                labelKey: "ES_SUMMARY_EDIT"
             })
         },
         visible: isEditable,

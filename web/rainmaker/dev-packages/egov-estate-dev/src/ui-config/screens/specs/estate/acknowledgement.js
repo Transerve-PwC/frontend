@@ -96,7 +96,7 @@ const getAcknowledgementCard = (
     } else if(purpose === "pay") {
       header = {
         labelName: "Payment is collected successfully",
-        labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
+        labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
       }
     }
     else {
@@ -141,8 +141,8 @@ const getAcknowledgementCard = (
   } else if(status === "failure" && purpose === "pay") {
     return {
       header: getCommonHeader({
-        labelName: `Rented Properties`,
-        labelKey: "RP_COMMON_RENTED_PROPERTIES",
+        labelName: `Estate`,
+        labelKey: "ES_SERVICES_HEADER",
       }),
       applicationSuccessCard: {
         uiFramework: "custom-atoms",
@@ -155,11 +155,11 @@ const getAcknowledgementCard = (
               labelName: "Payment is Failed!",
               labelKey: "ES_PAYMENT_FAILED_MESSAGE_HEAD"
             },
-            body: {
-              labelName:
-                "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
-              labelKey: "ES_APPLICATION_SUCCESS_MESSAGE_SUB"
-            },
+            // body: {
+            //   labelName:
+            //     "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+            //   labelKey: "ES_APPLICATION_SUCCESS_MESSAGE_SUB"
+            // },
             tailText: {
               labelName: "Application Number",
               labelKey: "ES_APPLICATION_NUMBER_LABEL"
