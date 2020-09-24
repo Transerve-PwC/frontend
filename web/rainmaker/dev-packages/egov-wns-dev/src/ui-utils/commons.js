@@ -743,6 +743,11 @@ const parserFunction = (state) => {
         usageCategory: (queryObject.waterProperty.usageCategory === null || queryObject.waterProperty.usageCategory === "NA") ? "" : queryObject.waterProperty.usageCategory,
         usageSubCategory: (queryObject.waterProperty.usageSubCategory === null || queryObject.waterProperty.usageSubCategory === "NA") ? "" : queryObject.waterProperty.usageSubCategory
         },
+        swProperty :{
+            id : get(state.screenConfiguration.preparedFinalObject, "WaterConnection[0].waterProperty.id", null),
+            usageCategory: (queryObject.waterProperty.usageCategory === null || queryObject.waterProperty.usageCategory === "NA") ? "" : queryObject.waterProperty.usageCategory,
+            usageSubCategory: (queryObject.waterProperty.usageSubCategory === null || queryObject.waterProperty.usageSubCategory === "NA") ? "" : queryObject.waterProperty.usageSubCategory
+            },
         securityCharge:(queryObject.securityCharge === null || queryObject.securityCharge === "NA") ? "" : parseFloat(queryObject.securityCharge),
         
         propertyId: (queryObject.property)?queryObject.property.id:null,
@@ -1157,7 +1162,9 @@ export const applyForBothWaterAndSewerage = async (state, dispatch) => {
         } else {
             set(queryObject, "processInstance.action", "INITIATE");
             queryObject = findAndReplace(queryObject, "NA", null);
-            response = await httpRequest("post", "/ws-services/wc/_create", "_create", [], { WaterConnection: queryObject });
+            let waterObject = queryObject;
+            waterObject.activityType = "NEW_WS_CONNECTION";
+            response = await httpRequest("post", "/ws-services/wc/_create", "_create", [], { WaterConnection: waterObject });
             const sewerageResponse = await httpRequest("post", "/sw-services/swc/_create", "_create", [], { SewerageConnection: queryObject });
             dispatch(prepareFinalObject("WaterConnection", response.WaterConnection));
             dispatch(prepareFinalObject("SewerageConnection", sewerageResponse.SewerageConnections));

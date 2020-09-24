@@ -367,7 +367,6 @@ dispatch(toggleSnackbar(true, errorMessage, "warning"));
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
-  let imageupload= true;
   let isFormValid = true;
   let propertyIdTransit = getQueryArg(window.location.href, "propertyIdTransit");
 
@@ -384,19 +383,10 @@ const isRentHolderValid = validateFields(
   dispatch,
   "notice-violation"
 )
-const isImageupload=get(state.screenConfiguration.screenConfig["notice-violation"],'components.div.children.imageUploadDetailsProperties.visible')
-if(isImageupload===true){
-  const images=get(
-    state, 'form.newapplication.files.media', []
-  )
-  console.log(images)
-  if(images.length===0){
-    imageupload=false
-  }
-}
+
 
 let res = [];
-if(isOwnerDetailsValid && isRentHolderValid && !!imageupload) {
+if(isOwnerDetailsValid && isRentHolderValid) {
   res = await applynoticegeneration(state, dispatch, "Violation",propertyIdTransit)
   if(!res) {
    return
@@ -419,7 +409,7 @@ if (!isFormValid) {
   let errorMessage = {
     labelName:
         "Please fill all mandatory fields, then do next !",
-    labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
+    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));

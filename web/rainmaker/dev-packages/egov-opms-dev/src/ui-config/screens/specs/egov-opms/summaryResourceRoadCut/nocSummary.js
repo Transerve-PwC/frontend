@@ -199,23 +199,6 @@ export const nocSummary = getCommonGrayCard({
           }
         }
       }
-    ),
-    width: getLabelWithValue(
-      {
-        labelName: "Width",
-        labelKey: "ROADCUT_WIDTH_NOC"
-      },
-      {
-        jsonPath: "nocApplicationDetail[0].applicationdetail",
-        callBack: value => {
-          if(value!=undefined){
-          let width = JSON.parse(value).hasOwnProperty('width')?JSON.parse(value)['width']:'';
-          return width;
-          }else{
-            return '';
-          }
-        }
-      }
     )
   })
 });

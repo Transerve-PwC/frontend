@@ -85,7 +85,7 @@ export const callPGService = async (state, dispatch) => {
 
       localStorageSet("amount", 0);
       localStorageSet("gstAmount", 0);
-      localStorageSet("performanceBankGuaranteeCharges", 0);
+//      localStorageSet("performanceBankGuaranteeCharges", 0);
 
       for (let index = 0; index < Accountdetails.length; index++) {
         const element = Accountdetails[index];
@@ -101,12 +101,13 @@ export const callPGService = async (state, dispatch) => {
           element.taxHeadCode === `ROADCUTNOC_TAX_RD3` ||
           element.taxHeadCode === `ADVERTISEMENTNOC_TAX`) {
           localStorageSet("gstAmount", element.amount);
-        } else if (element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD1`
-          || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD2`
-          || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD3`
-        ) {
-          localStorageSet("performanceBankGuaranteeCharges", element.amount);
         }
+        // else if (element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD1`
+        //   || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD2`
+        //   || element.taxHeadCode === `ROADCUTNOC_FEE_BANK_RD3`
+        // ) {
+        //   localStorageSet("performanceBankGuaranteeCharges", element.amount);
+        // }
       }
 
 

@@ -76,8 +76,7 @@ class InventoryContainer extends Component {
           APIData, 
           pageName,        
           moduleName } = this.props;
-console.log(APIData)
-console.log("APIData")
+
           if(pageName ==="INTIGRATION_PT")
           {
             return  ( <div>
@@ -93,9 +92,18 @@ console.log("APIData")
                <tr><td  style={{
                   textAlign: "left",
                   width:"15%"
-                }}><Label labelClassName="" label="INTIGRATION_PAYABLE_AMOUNT" /></td>
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="PT_CODE" /></td>
+                <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].PropertyId}/></td>
+                <td  style={{
+                  textAlign: "right",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",                  
+                }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
                 <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td>
-               
                 </tr>             
                      
               </table>

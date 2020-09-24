@@ -250,6 +250,21 @@ export const getData = async (action, state, dispatch) => {
         payloadWater.WaterConnection[0].water = true;
         payloadWater.WaterConnection[0].sewerage = false;
         dispatch(prepareFinalObject("WaterConnection", payloadWater.WaterConnection));
+
+        if(payloadWater && payloadWater.WaterConnection.length > 0){
+          const {usageCategory} = payloadWater.WaterConnection[0].waterProperty;
+
+          let subTypeValues = get(
+                state.screenConfiguration.preparedFinalObject,
+                "applyScreenMdmsData.PropertyTax.subUsageType"
+              );
+    
+            let subUsage=[];
+            subUsage = subTypeValues.filter(cur => {
+                        return (cur.code.startsWith(usageCategory))
+                      });
+                dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage));
+        }
       }
       const waterConnections = payloadWater ? payloadWater.WaterConnection : []
       const sewerageConnections = payloadSewerage ? payloadSewerage.SewerageConnections : [];

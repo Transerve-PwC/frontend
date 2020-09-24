@@ -224,7 +224,7 @@ export const prepareDocumentsUploadData = (state, dispatch, type) => {
 
 export const createUpdateOsbApplication = async (state, dispatch, action) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
 
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";
     try {
@@ -319,7 +319,7 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
 };
 export const createUpdatePCCApplication = async (state, dispatch, action) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
 
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";
     try {
@@ -440,7 +440,7 @@ export const createUpdateOSWMCCApplication = async (
     action
 ) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";
     try {
         let payload = get(
@@ -540,7 +540,7 @@ export const createUpdateOSWMCCNewLocation = async (
     action
 ) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
 
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";
     try {
@@ -628,7 +628,7 @@ export const createUpdateOSWMCCNewLocation = async (
 };
 export const createUpdateCgbApplication = async (state, dispatch, action) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     // let applicationNumber =
     //     getapplicationNumber() === "null" ? "" : getapplicationNumber();
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";
@@ -725,7 +725,7 @@ export const createUpdateCgbApplication = async (state, dispatch, action) => {
 };
 export const createUpdateWtbApplication = async (state, dispatch, action) => {
     let response = "";
-    let tenantId = getTenantId().split(".")[0];
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     // let applicationNumber =
     //     getapplicationNumber() === "null" ? "" : getapplicationNumber();
     let method = action === "INITIATE" ? "CREATE" : "UPDATE";

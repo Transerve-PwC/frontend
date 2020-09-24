@@ -7,6 +7,7 @@ import {
   getCommonContainer,
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTodaysDateInYMD } from "../../utils";
 
 export const SMIDDetails = getCommonCard({
@@ -167,7 +168,7 @@ export const SMIDDetails = getCommonCard({
       })
     },
     qualification: {
-      ...getTextField({
+      ...getSelectField({
         label: {
           labelName: "Qualification",
           labelKey: "NULM_SEP_QUALIFACATION"
@@ -178,6 +179,8 @@ export const SMIDDetails = getCommonCard({
         },
         required: true,
         pattern: getPattern("Address") || null,
+        sourceJsonPath:
+        "applyScreenMdmsData.NULM.Qualification",
         jsonPath: "NULMSMIDRequest.qualification"
       })
     },
@@ -213,7 +216,7 @@ export const SMIDDetails = getCommonCard({
           labelName: "Enter Email Id",
           labelKey: "NULM_SMID_EMAIL_ID_PLACEHOLDER"
         },
-        required: true,
+        required: false,
         pattern: getPattern("Email") || null,
         jsonPath: "NULMSMIDRequest.emailId",
       })
@@ -238,13 +241,13 @@ export const SMIDDetails = getCommonCard({
       ...getTextField({
         label: {
           labelName: "Phone Number",
-          labelKey: "NULM_SMID_PHONE_NUMBER"
+          labelKey: "NULM_SMID_PHONE_NUMBER_INPUT"
         },
         placeholder: {
           labelName: "Enter Phone Number",
-          labelKey: "NULM_SMID_PHONE_NUMBER_PLACEHOLDER"
+          labelKey: "NULM_SMID_PHONE_NUMBER_INPUT_PLACEHOLDER"
         },
-        required: true,
+        required: false,
         pattern: getPattern("numeric-only") || null,
         jsonPath: "NULMSMIDRequest.phoneNo"
       })
@@ -426,14 +429,15 @@ export const SMIDDetails = getCommonCard({
     adharNo: {
       ...getTextField({
         label: {
-          labelName: "Adhar Number",
-          labelKey: "NULM_SMID_ADHAR_NUMBER"
+          labelName: "Adhar Number(mentioned last four digits only)",
+          labelKey: "NULM_SEP_ADHAR_NUMBER_INPUT"
         },
         placeholder: {
           labelName: "Enter Adhar Number",
           labelKey: "NULM_SMID_ADHAR_NUMBER_PLACEHOLDER"
         },
-        pattern: getPattern("aadhar") || null,
+        pattern: getPattern("UOMValue") || null,
+        errorMessage: "NULM_SEP_ADHAR_NUMBER_INPUT_VALIDATION",
         jsonPath: "NULMSMIDRequest.adharNo"
       })
     },
@@ -449,6 +453,7 @@ export const SMIDDetails = getCommonCard({
           labelKey: "NULM_SMID_ADHAR_ACKNOWLEDGEMENT_NUMBER_PLACEHOLDER"
         },
         pattern: getPattern("aadharAcknowledgementNo") || null,
+        visible:false,
         jsonPath: "NULMSMIDRequest.adharAcknowledgementNo"
       })
     },
@@ -464,7 +469,7 @@ export const SMIDDetails = getCommonCard({
       props: {
         required: true,
         jsonPath: "NULMSMIDRequest.isInsurance",
-        label: { name: "Insurance", key: "NULM_SMID_INSURANCE" },
+        label: { name: "Insurance", key: "NULM_SMID_INSURANCE_INPUT" },
         buttons: [
           {
             labelName: "YES",
@@ -481,6 +486,29 @@ export const SMIDDetails = getCommonCard({
         defaultValue: "NO"
       },
       type: "array",
+      beforeFieldChange: (action, state, dispatch) => {
+        if (action.value === "NO") {
+          dispatch(
+            handleField(
+              "create-smid",
+              "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough",
+              "props",
+              { disabled: true }
+            )
+          ); 
+        }
+        else  if (action.value === "YES") {
+          dispatch(
+            handleField(
+              "create-smid",
+              "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough",
+              "props",
+              { disabled: false }
+            )
+          ); 
+        }
+           
+      }
      
     },
     insuranceThrough: {
@@ -510,7 +538,7 @@ export const SMIDDetails = getCommonCard({
       props: {
         required: true,
         jsonPath: "NULMSMIDRequest.isStreetVendor",
-        label: { name: "Street vendor", key: "NULM_SMID_STREET_VENDOR" },
+        label: { name: "Street vendor", key: "NULM_SMID_STREET_VENDOR_INPUT" },
         buttons: [
           {
             labelName: "YES",
@@ -540,7 +568,7 @@ export const SMIDDetails = getCommonCard({
       props: {
         required: true,
         jsonPath: "NULMSMIDRequest.isHomeless",
-        label: { name: "Homeless", key: "NULM_SMID_HOMELESS" },
+        label: { name: "Homeless", key: "NULM_SMID_HOMELESS_INPUT" },
         buttons: [
           {
             labelName: "YES",

@@ -63,7 +63,7 @@ let searchScreenObject = get(
   "searchScreen",
   {}
 );
-if( Object.keys(searchScreenObject).length == 0 )
+if( Object.keys(searchScreenObject).length <= 1 )
 {
   dispatch(
     toggleSnackbar(
@@ -93,7 +93,7 @@ queryObject.push({
   key: "isprint",
   value: false
 });
-
+dispatch(toggleSpinner())
 try {
   let payload =[];
 
@@ -114,22 +114,26 @@ try {
 // payload = InventoryData()
 // dispatch(prepareFinalObject("InventoryData", payload));
 if(get(Responce,"ResponseBody",[]))
-dispatch(prepareFinalObject("APIData", get(Responce,"ResponseBody",[])));
+{
+  dispatch(prepareFinalObject("APIData", get(Responce,"ResponseBody",[])));
+  dispatch(toggleSpinner())
+}
+
 else
 {
- let  APIData =[] 
+ let  APIData =null; 
+ dispatch(toggleSpinner())
  dispatch(prepareFinalObject("APIData",APIData));
 }
   console.log(payload)
-
-
-  
-
 
 return payload
 
 } catch (e) {
   console.log(e);
+  let  APIData =null; 
+  dispatch(toggleSpinner())
+  dispatch(prepareFinalObject("APIData",APIData));
 }
 }
 
@@ -207,7 +211,7 @@ const RegisterReviewResult = {
 //   {
 //   }
 // );
-let  APIData =[] 
+let  APIData =null; 
 dispatch(prepareFinalObject("APIData",APIData)); 
         return action;
   },
@@ -260,14 +264,19 @@ dispatch(prepareFinalObject("APIData",APIData));
         },
         receiptDate: {
           ...getDateField({
-            label: { labelName: " Receipt Date", labelKey: "INTIGRATION_RECEIPT_RECEIPT_DATE " },
+            label: { labelName: " Receipt Date", labelKey: "INTIGRATION_RECEIPT_RECEIPT_DATE" },
             placeholder: {
               labelName: "Enter Receipt Date",
               labelKey: "INTIGRATION_RECEIPT_RECEIPT_DATE"
             },
-            required: false,
+            required: true,
             jsonPath: "searchScreen.fromdate",
             pattern: getPattern("Date"),
+            props: {
+              inputProps: {
+                max: new Date().toISOString().slice(0, 10),
+              }
+            },
             gridDefination: {
               xs: 12,
               sm: 4,

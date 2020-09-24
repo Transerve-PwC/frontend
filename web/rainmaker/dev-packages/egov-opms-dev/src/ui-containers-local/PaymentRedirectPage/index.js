@@ -56,8 +56,8 @@ class PaymentRedirect extends Component {
           "currentState": getapplicationType() == "ROADCUTNOC" ? "APPROVED" : "INITIATED",
           "dataPayload": {
             "amount": localStorageGet(`amount`),
-            "gstAmount": localStorageGet(`gstAmount`),
-            "performanceBankGuaranteeCharges": localStorageGet(`performanceBankGuaranteeCharges`)
+            "gstAmount": localStorageGet(`gstAmount`)
+            //"performanceBankGuaranteeCharges": localStorageGet(`performanceBankGuaranteeCharges`)
           },
           "auditDetails": {
             "createdBy": 1,

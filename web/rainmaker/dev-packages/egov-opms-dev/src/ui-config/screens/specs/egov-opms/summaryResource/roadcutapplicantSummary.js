@@ -147,7 +147,26 @@ export const roadcutapplicantSummary = getCommonGrayCard({
                 }
               }
             }
-          ),
+          )
+          ,
+        roadCutType: getLabelWithValue(
+          {
+            labelName: "Road Cut Type",
+            labelKey: "ROADCUT_ROAD_CUT_TYPE_LABEL_NOC"
+          },
+          {
+          jsonPath: "nocApplicationDetail[0].applicationdetail",
+            callBack: value => {
+              if(value!=undefined){
+              let purposeOfRoadCutting = JSON.parse(value).hasOwnProperty('roadCutType')?JSON.parse(value)['roadCutType']:'';
+              return purposeOfRoadCutting;
+              }
+              else{
+                return '';
+              }
+            }
+          }
+        ),
           divsion: getLabelWithValue(
             {
               labelName: "divsion",
@@ -242,24 +261,6 @@ export const roadcutapplicantSummary = getCommonGrayCard({
                 if (value != undefined) {
                   let length = JSON.parse(value).hasOwnProperty('length') ? Number(JSON.parse(value)['length']) : '';
                   return length;
-                } else {
-                  return '';
-                }
-              }
-            }
-          ),
-          width: getLabelWithValue(
-            {
-              labelName: "landmark",
-              labelKey: "ROADCUT_WIDTH_NOC"
-            },
-            {
-              jsonPath:
-                "nocApplicationDetail[0].applicationdetail",
-              callBack: value => {
-                if (value != undefined) {
-                  let width = JSON.parse(value).hasOwnProperty('width') ? Number(JSON.parse(value)['width']) : '';
-                  return width;
                 } else {
                   return '';
                 }

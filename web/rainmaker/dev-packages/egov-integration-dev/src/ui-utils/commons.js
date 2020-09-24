@@ -1916,7 +1916,7 @@ export const UpdateStatus = async (dispatch, url, queryObject, code) => {
     );
   }
 };
-export const getSTOREPattern = type => {
+export const getPTPattern = type => {
   switch (type) {
     case "Name":
       return /^[^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,.:;“”‘’]{1,50}$/i;
@@ -1966,5 +1966,7 @@ export const getSTOREPattern = type => {
         return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,500}$/i;
         case "WFComment":
         return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,120}$/i;
+        case "PropertycodePT":
+          return /^[a-z0-9/]+$/i;
   }
 };

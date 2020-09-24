@@ -207,11 +207,14 @@ const getAcknowledgementCard = (
                   "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
                 labelKey: "RP_APPLICATION_SUCCESS_MESSAGE_SUB"
               },
-              tailText: {
+              tailText: !!transitNumber?{
+                labelName: "Transit Number",
+                labelKey: "RP_SITE_PLOT_LABEL"
+              }:{
                 labelName: "Application Number",
                 labelKey: "RP_APPLICATION_NUMBER_LABEL"
               },
-              number: applicationNumber
+              number: transitNumber||applicationNumber
             })
           }
         },
