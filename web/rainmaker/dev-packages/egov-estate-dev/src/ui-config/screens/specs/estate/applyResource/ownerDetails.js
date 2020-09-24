@@ -81,13 +81,11 @@ const getRelationshipRadioButton = {
         labelName: "Father",
         labelKey: "ES_COMMON_RELATION_FATHER",
         value: "FATHER",
-        disabled: true
       },
       {
         label: "Husband",
         labelKey: "ES_COMMON_RELATION_HUSBAND",
         value: "HUSBAND",
-        disabled: true
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianRelation",

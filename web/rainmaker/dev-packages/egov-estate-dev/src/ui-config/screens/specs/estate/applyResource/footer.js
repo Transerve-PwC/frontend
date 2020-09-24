@@ -25,11 +25,6 @@ import {
 } from "lodash";
 import "./index.css";
 import {
-  groundRentDetails,
-  serviceTaxDetails,
-  paymentMadeBy
-} from './paymentDetails';
-import {
   setDocumentData
 } from '../apply'
 import {
@@ -99,14 +94,14 @@ const callBackForNext = async (state, dispatch) => {
       "apply"
     )
 
-    /* if (isPropertyInfoValid && isAdditionalValid) {
+    if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === AUCTION_DETAILS_STEP) {
@@ -117,14 +112,14 @@ const callBackForNext = async (state, dispatch) => {
       "apply"
     )
 
-    /* if (isAuctionValid) {
+    if (isAuctionValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
@@ -171,67 +166,67 @@ const callBackForNext = async (state, dispatch) => {
 
           var groundRentString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_0`, {}
+            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_0`, {}
           ))
           var newGroundRentString = groundRentString.replace(/_0/g, `_${i}`);
           newGroundRentString = newGroundRentString.replace(/owners\[0\]/g, `owners[${i}]`)
           var groundRentObj = JSON.parse(newGroundRentString);
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_${i}`,
+            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}`,
             groundRentObj
           )
 
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
+            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
             getPattern("Date")
           )
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dueDateOfPayment.pattern`,
+            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dueDateOfPayment.pattern`,
             getPattern("Date")
           )
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
+            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
             getPattern("Date")
           )
 
           var serviceTaxString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.serviceTaxDetails_0`, {}
+            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_0`, {}
           ))
           var newServiceTaxString = serviceTaxString.replace(/_0/g, `_${i}`);
           newServiceTaxString = newServiceTaxString.replace(/owners\[0\]/g, `owners[${i}]`)
           var serviceTaxObj = JSON.parse(newServiceTaxString);
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.serviceTaxDetails_${i}`,
+            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}`,
             serviceTaxObj
           )
 
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
+            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
             getPattern("Date")
           )
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
+            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
             getPattern("Date")
           )
 
           var paymentMadeByString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.paymentMadeBy_0`, {}
+            `apply.components.div.children.formwizardEighthStep.children.paymentMadeBy_0`, {}
           ))
           var newPaymentMadeByString = paymentMadeByString.replace(/_0/g, `_${i}`)
           newPaymentMadeByString = newPaymentMadeByString.replace(/owners\[0\]/g, `owners[${i}]`)
           var paymentMadeByObj = JSON.parse(newPaymentMadeByString);
           set(
             state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardSeventhStep.children.paymentMadeBy_${i}`,
+            `apply.components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}`,
             paymentMadeByObj
           )
         }
@@ -239,7 +234,7 @@ const callBackForNext = async (state, dispatch) => {
         dispatch(
           handleField(
             "apply",
-            `components.div.children.formwizardSeventhStep.children.paymentMadeBy_${i}.children.cardContent.children.detailsContainer.children.paymentMadeBy`,
+            `components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}.children.cardContent.children.detailsContainer.children.paymentMadeBy`,
             "props.value",
             ownerName
           )
@@ -247,18 +242,18 @@ const callBackForNext = async (state, dispatch) => {
 
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `apply.components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Douments - ${ownerName}`
         )
 
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.groundRentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Ground Rent Details - ${ownerName}`
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardSeventhStep.children.serviceTaxDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Service Tax Details - ${ownerName}`
         )
 
@@ -282,20 +277,20 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
+          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
           reviewPaymentDetails
         )
       }
     }
 
-    /* if (isOwnerDetailsValid) {
+    if (isOwnerDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === ENTITY_OWNER_DOCUMENT_UPLOAD_STEP) {
@@ -355,7 +350,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
       }
@@ -394,20 +389,20 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
+          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
           reviewPurchaserDetails
         )
       }
     }
 
-    /* if (isPurchaserDetailsValid) {
+    if (isPurchaserDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   // if (activeStep === COMPANY_DETAILS_STEP) {
@@ -452,14 +447,14 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    /* if (isCourtCaseDetailsValid) {
+    if (isCourtCaseDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
@@ -488,14 +483,14 @@ const callBackForNext = async (state, dispatch) => {
       )
     }
 
-    /* if (isGroundRentDetailsValid && isServiceTaxDetailsValid) {
+    if (isGroundRentDetailsValid && isServiceTaxDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
       }
     } else {
       isFormValid = false;
-    } */
+    }
   }
 
   if (activeStep === SUMMARY_STEP) {
