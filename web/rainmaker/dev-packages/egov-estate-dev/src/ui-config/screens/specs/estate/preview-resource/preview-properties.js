@@ -13,83 +13,83 @@ import { convertEpochToDate, } from "../../utils";
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
-  labelKey: "EST_ALLOCATION_TYPE_LABEL"
+  labelKey: "ES_ALLOCATION_TYPE_LABEL"
 }
 const auctionIdLabel = {
   labelName: "Auction Id",
-  labelKey: "EST_AUCTION_ID_LABEL"
+  labelKey: "ES_AUCTION_ID_LABEL"
 }
 const modeOfAuctionLabel = {
   labelName: "Mode Of Auction",
-  labelKey: "EST_MODE_OF_AUCTION_LABEL"
+  labelKey: "ES_MODE_OF_AUCTION_LABEL"
 }
 const schemeNameLabel = {
   labelName: "Scheme Name",
-  labelKey: "EST_SCHEME_NAME_LABEL"
+  labelKey: "ES_SCHEME_NAME_LABEL"
 }
 const dateOfAuctionLabel = {
   labelName: "Date of Auction",
-  labelKey: "EST_DATE_OF_AUCTION_LABEL"
+  labelKey: "ES_DATE_OF_AUCTION_LABEL"
 }
 const emdAmountLabel = {
   labelName: "EMD Amount",
-  labelKey: "EST_EMD_AMOUNT_LABEL"
+  labelKey: "ES_EMD_AMOUNT_LABEL"
 }
 const emdDateLabel = {
   labelName: "EMD Date",
-  labelKey: "EST_EMD_DATE_LABEL"
+  labelKey: "ES_EMD_DATE_LABEL"
 }
 const dateOfAllotmentLabel = {
   labelName: "Date of Allotment",
-  labelKey: "EST_DATE_OF_ALLOTMENT_LABEL"
+  labelKey: "ES_DATE_OF_ALLOTMENT_LABEL"
 }
 const allotmentNumberLabel = {
   labelName: "Allotment Number",
-  labelKey: "EST_ALLOTMENT_NUMBER_LABEL"
+  labelKey: "ES_ALLOTMENT_NUMBER_LABEL"
 }
 const areaOfPropertyLabel = {
   labelName: "Area of Property",
-  labelKey: "EST_AREA_OF_PROPERTY_LABEL"
+  labelKey: "ES_AREA_OF_PROPERTY_LABEL"
 }
 const rateLabel = {
   labelName: "Rate",
-  labelKey: "EST_RATE_LABEL"
+  labelKey: "ES_RATE_LABEL"
 }
 const possessionDateLabel = {
   labelName: "Possession Date",
-  labelKey: "EST_POSSESSION_DATE_LABEL"
+  labelKey: "ES_POSSESSION_DATE_LABEL"
 }
 const categoryLabel = {
   labelName: "Category",
-  labelKey: "EST_CATEGORY_LABEL"
+  labelKey: "ES_CATEGORY_LABEL"
 }
 const subCategoryLabel = {
   labelName: "Sub Category",
-  labelKey: "EST_SUBCATEGORY_LABEL"
+  labelKey: "ES_SUBCATEGORY_LABEL"
 }
 const siteNumberLabel = {
   labelName: "Site Number",
-  labelKey: "EST_SITE_NUMBER_LABEL"
+  labelKey: "ES_SITE_NUMBER_LABEL"
 }
 const sectorNumberLabel = {
   labelName: "Sector Number",
-  labelKey: "EST_SECTOR_NUMBER_LABEL"
+  labelKey: "ES_SECTOR_NUMBER_LABEL"
 }
 const fileNumberLabel = {
   labelName: "File Number",
-  labelKey: "EST_FILE_NUMBER_LABEL"
+  labelKey: "ES_FILE_NUMBER_LABEL"
 }
 const lastNocDateLabel = {
   labelName: "Last NOC Date",
-  labelKey: "EST_LAST_NOC_DATE_LABEL"
+  labelKey: "ES_LAST_NOC_DATE_LABEL"
 }
 const propertyTypeLabel = {
   labelName: "Property Type",
-  labelKey: "EST_PROPERTY_TYPE_LABEL"
+  labelKey: "ES_PROPERTY_TYPE_LABEL"
 }
 const serviceCategoryLabel = {
   labelName: "Service Category",
-  labelKey: "EST_SERVICE_CATEGORY_LABEL"
+  labelKey: "ES_SERVICE_CATEGORY_LABEL"
 }
 export const editSection = {
     componentPath: "Button",
@@ -147,7 +147,7 @@ export const getPropertyDetails = (isEditable = true) => {
             },
             ...getCommonSubHeader({
               labelName: "Property INFO",
-              labelKey: "EST_PROPERTY_INFO_HEADER"
+              labelKey: "ES_PROPERTY_INFO_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)
@@ -216,7 +216,7 @@ export const getPropertyDetails = (isEditable = true) => {
             },
             ...getCommonSubHeader({
               labelName: "Auction Details",
-              labelKey: "EST_AUCTION_DETAILS_HEADER"
+              labelKey: "ES_AUCTION_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)
@@ -271,7 +271,7 @@ export const getPropertyDetails = (isEditable = true) => {
             },
             ...getCommonSubHeader({
               labelName: "Allotments Details",
-              labelKey: "EST_ALLOTMENT_DETAILS_HEADER"
+              labelKey: "ES_ALLOTMENT_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 1)
@@ -305,7 +305,7 @@ export const getPropertyDetails = (isEditable = true) => {
             },
             ...getCommonSubHeader({
               labelName: "Additional Details",
-              labelKey: "EST_ADDITIONAL_DETAILS_HEADER"
+              labelKey: "ES_ADDITIONAL_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)

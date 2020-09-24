@@ -15,7 +15,7 @@ import {
 
 const header = getCommonHeader({
   labelName: "Search Property",
-  labelKey: "EST_SEARCH_PROPERTY_HEADER"
+  labelKey: "ES_SEARCH_PROPERTY_HEADER"
 });
 
 const getMdmsData = async (dispatch) => {

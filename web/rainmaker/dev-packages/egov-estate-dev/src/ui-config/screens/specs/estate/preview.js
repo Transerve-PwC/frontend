@@ -12,7 +12,7 @@ const { setThirdStep } = require("../estate-citizen/applyResource/review");
 const headerrow = getCommonContainer({
     header: getCommonHeader({
       labelName: "Search preview",
-      labelKey: "EST_COMMON_SEARCH_PREVIEW"
+      labelKey: "ES_COMMON_SEARCH_PREVIEW"
     })
   });
 
@@ -50,7 +50,7 @@ const getData = async (action, state, dispatch) => {
         response,
         "Applications[0].applicationDocuments",
         "temp[0].reviewDocData",
-        dispatch,'EST'
+        dispatch,'ES'
       );
        const {branchType, moduleType, applicationType} = Applications[0];
        const type = `${branchType}_${moduleType}_${applicationType}`;

@@ -28,11 +28,11 @@ export const estateApplicationAccountStatementGen = getCommonCard({
         fileNumber: getTextField({
           label: {
             labelName: "File Number",
-            labelKey: "EST_FILE_NUMBER_LABEL"
+            labelKey: "ES_FILE_NUMBER_LABEL"
           },
           placeholder: {
             labelName: "Enter File Number",
-            labelKey: "EST_FILE_NUMBER_PLACEHOLDER"
+            labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
           },
           gridDefination: {
             xs: 12,
@@ -45,11 +45,11 @@ export const estateApplicationAccountStatementGen = getCommonCard({
         sectorNumber: getSelectField({
             label: {
               labelName: "sector number",
-              labelKey: "EST_SECTOR NUMBER_LABEL"
+              labelKey: "ES_SECTOR NUMBER_LABEL"
             },
             placeholder: {
               labelName: "Enter sector number",
-              labelKey: "EST_SECTOR NUMBER_PLACEHOLDER"
+              labelKey: "ES_SECTOR NUMBER_PLACEHOLDER"
             },
             // required: false,
             jsonPath: "Properties[0].sectorNumber",
@@ -60,18 +60,18 @@ export const estateApplicationAccountStatementGen = getCommonCard({
                 xs: 12,
                 sm: 6
             },
-            errorMessage: "EST_ERR_SECTOR_NUMBER_FIELD",
+            errorMessage: "ES_ERR_SECTOR_NUMBER_FIELD",
           })
       }),
       categoryContainer: getCommonContainer({
         category: getSelectField({
           label: {
             labelName: "Category",
-            labelKey: "EST_CATEGORY_LABEL"
+            labelKey: "ES_CATEGORY_LABEL"
           },
           // placeholder: {
           //   labelName: "Enter Category",
-          //   labelKey: "EST_CATEGORY_PLACEHOLDER"
+          //   labelKey: "ES_CATEGORY_PLACEHOLDER"
           // },
           // required: false,
           jsonPath: "Properties[0].category",
@@ -83,16 +83,16 @@ export const estateApplicationAccountStatementGen = getCommonCard({
                 sm: 6,
                 align: "center"
             },
-            errorMessage: "EST_ERR_CATEGORY_FIELD"
+            errorMessage: "ES_ERR_CATEGORY_FIELD"
         }),
         subCategory: getSelectField({
           label: {
             labelName: "Sub Category",
-            labelKey: "EST_SUB_CATEGORY_LABEL"
+            labelKey: "ES_SUB_CATEGORY_LABEL"
           },
           placeholder: {
             labelName: "Enter Sub Category",
-            labelKey: "EST_SUB_CATEGORY_PLACEHOLDER"
+            labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
           },
           // required: false,
           jsonPath: "Properties[0].subCategory",
@@ -103,18 +103,18 @@ export const estateApplicationAccountStatementGen = getCommonCard({
               xs: 12,
               sm: 6
           },
-          errorMessage: "EST_ERR_SUB_CATEGORY_FIELD",
+          errorMessage: "ES_ERR_SUB_CATEGORY_FIELD",
         }),
       }),
       siteContainer:getCommonContainer({
         siteNumber:getTextField({
             label: {
                 labelName: "Site Number",
-                labelKey: "EST_SITE_NUMBER_LABEL"
+                labelKey: "ES_SITE_NUMBER_LABEL"
             },
             placeholder: {
                 labelName: "Enter Site Number",
-                labelKey: "EST_SITE_NUMBER_PLACEHOLDER"
+                labelKey: "ES_SITE_NUMBER_PLACEHOLDER"
             },
             jsonPath: "Properties[0].siteNumber",
             optionValue: "code",
@@ -125,7 +125,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
                 sm: 6,
                 align: "center"
             },
-            errorMessage: "EST_ERR_SITE_NUMBER_FIELD"
+            errorMessage: "ES_ERR_SITE_NUMBER_FIELD"
         }),
         dummy:getTextField({
           label: {
@@ -144,18 +144,18 @@ export const estateApplicationAccountStatementGen = getCommonCard({
               xs: 12,
               sm: 6
           },
-          errorMessage: "EST_ERR_SITE_NUMBER_FIELD"
+          errorMessage: "ES_ERR_SITE_NUMBER_FIELD"
       })
     }),
     dateContainer: getCommonContainer({
       from:getDateField({
         label: {
           labelName: "From",
-          labelKey: "EST_FROM_DATE_LABEL"
+          labelKey: "ES_FROM_DATE_LABEL"
       },
       placeholder: {
           labelName: "Enter From Date",
-          labelKey: "EST_FROM_DATE_PLACEHOLDER"
+          labelKey: "ES_FROM_DATE_PLACEHOLDER"
       },
         pattern: getPattern("Date"),
         gridDefination:{
@@ -174,11 +174,11 @@ export const estateApplicationAccountStatementGen = getCommonCard({
       to:getDateField({
         label: {
           labelName: "To",
-          labelKey: "EST_TO_DATE_LABEL"
+          labelKey: "ES_TO_DATE_LABEL"
       },
       placeholder: {
           labelName: "Enter To Date",
-          labelKey: "EST_TO_DATE_PLACEHOLDER"
+          labelKey: "ES_TO_DATE_PLACEHOLDER"
       },
       pattern: getPattern("Date"),
       required: true,
@@ -216,7 +216,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           children: {
             buttonLabel: getLabel({
               labelName: "Reset",
-              labelKey: "EST_HOME_SEARCH_RESULTS_BUTTON_RESET"
+              labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_RESET"
             })
           },
           onClickDefination: {
@@ -246,7 +246,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           children: {
             buttonLabel: getLabel({
               labelName: "Generate Account Statement",
-              labelKey: "EST_GENERATE_ACCOUNT_STATEMENT"
+              labelKey: "ES_GENERATE_ACCOUNT_STATEMENT"
             })
           },
           onClickDefination: {

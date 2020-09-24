@@ -23,7 +23,7 @@ import {
   
   export const ownerHeader = getCommonTitle({
     labelName: "Owner Details",
-    labelKey: "EST_OWNER_DETAILS_HEADER"
+    labelKey: "ES_OWNER_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -34,7 +34,7 @@ import {
   const serialNumberField = {
     label: {
       labelName: "Sr No",
-      labelKey: "EST_SERIAL_NUMBER_LABEL"
+      labelKey: "ES_SERIAL_NUMBER_LABEL"
     },
     required: true,
     jsonPath: "Properties[0].ownerDetails[0].serialNumber",
@@ -50,23 +50,23 @@ import {
   
   const ownerNameField = {
       labelName: "Owner Name",
-      labelKey: "EST_OWNER_NAME_LABEL",
+      labelKey: "ES_OWNER_NAME_LABEL",
   }
   
   const fatherHusbandNameField = {
       labelName: "Father/Husband Name",
-      labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+      labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
   }
   
   const getRelationshipLabel = {
     labelName: "Relationship",
-    labelKey: "EST_RELATIONSHIP_LABEL"
+    labelKey: "ES_RELATIONSHIP_LABEL"
   };
   
   const addressField = {
    
       labelName: "Address",
-      labelKey: "EST_ADDRESS_LABEL",
+      labelKey: "ES_ADDRESS_LABEL",
   }
   
   const mobileNumberField = {
@@ -78,39 +78,39 @@ import {
   const shareField = {
    
       labelName: "Share",
-      labelKey: "EST_SHARE_LABEL",
+      labelKey: "ES_SHARE_LABEL",
   }
   
   const cpNumberField = {
       labelName: "CP No.",
-      labelKey: "EST_CP_NUMBER_LABEL",
+      labelKey: "ES_CP_NUMBER_LABEL",
   }
   
   const possessionDateField = {
    
       labelName: "Possession Date",
-      labelKey: "EST_POSSESSION_DATE_LABEL"
+      labelKey: "ES_POSSESSION_DATE_LABEL"
   }
   
   const dateOfAllotmentField = {
    
       labelName: "Date of Allotment",
-      labelKey: "EST_DATE_OF_ALLOTMENT_LABEL",
+      labelKey: "ES_DATE_OF_ALLOTMENT_LABEL",
   }
   
   const allotmentNumberField = {
       labelName: "Allotment Number",
-      labelKey: "EST_ALLOTMENT_NUMBER_LABEL",
+      labelKey: "ES_ALLOTMENT_NUMBER_LABEL",
   }
 
   const modeOfTransferField = {
       labelName: "Mode Of Transfer",
-      labelKey: "EST_MODE_OF_TRANSFER_LABEL",
+      labelKey: "ES_MODE_OF_TRANSFER_LABEL",
   }
 
   const applicationNumberField = {
       labelName: "Application Number",
-      labelKey: "EST_APPLICATION_NUMBER_LABEL",
+      labelKey: "ES_APPLICATION_NUMBER_LABEL",
   }
 
   export const editSection = {
@@ -168,7 +168,7 @@ export const headerDiv = {
             },
             ...getCommonSubHeader({
               labelName: "Owner Information",
-              labelKey: "EST_OWNER_INFO_HEADER"
+              labelKey: "ES_OWNER_INFO_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)
@@ -231,7 +231,7 @@ export const headerDiv = {
             },
             ...getCommonSubHeader({
               labelName: "Allotment Details",
-              labelKey: "EST_ALLOTMENT_DETAILS_HEADER"
+              labelKey: "ES_ALLOTMENT_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)
@@ -271,16 +271,16 @@ export const headerDiv = {
         className: "review-documents",
         contents: [
           {
-            label: "EST_APPLICATION_NUMBER",
+            label: "ES_APPLICATION_NUMBER",
             jsonPath: "applicationNumber",
             url: `/estate/preview?tenantId=${getTenantId()}`
           },
           {
-            label: "EST_MODE_OF_TRANSFER",
+            label: "ES_MODE_OF_TRANSFER",
             jsonPath: "applicationType"
           },
           {
-            label: "EST_APPROVAL_DATE",
+            label: "ES_APPROVAL_DATE",
             jsonPath: ""
           }
         ]

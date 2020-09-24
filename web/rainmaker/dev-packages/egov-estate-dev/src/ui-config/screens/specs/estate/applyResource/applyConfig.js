@@ -56,7 +56,7 @@ import {
 const documentCardConfig = {
   header: getCommonTitle({
     labelName: "Required Documents",
-    labelKey: "EST_UPLOAD_DOCS_HEADER"
+    labelKey: "ES_UPLOAD_DOCS_HEADER"
   }, {
     style: {
       marginBottom: 18
@@ -64,7 +64,7 @@ const documentCardConfig = {
   }),
   paragraph: getCommonParagraph({
     labelName: "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-    labelKey: "EST_UPLOAD_DOCS_SUBHEADER"
+    labelKey: "ES_UPLOAD_DOCS_SUBHEADER"
   }),
 }
 
@@ -113,39 +113,39 @@ export const previousOwnerDocuments_0 = getCommonCard({
 
 export const stepsData = [{
   labelName: "Property Details",
-  labelKey: "EST_COMMON_PROPERTY_DETAILS"
+  labelKey: "ES_COMMON_PROPERTY_DETAILS"
 },
 {
   labelName: "Auction Details",
-  labelKey: "EST_COMMON_AUCTION_DETAILS"
+  labelKey: "ES_COMMON_AUCTION_DETAILS"
 },
 {
   labelName: "Entity/Owner Details",
-  labelKey: "EST_COMMON_ENTITY_OWNER_DETAILS"
+  labelKey: "ES_COMMON_ENTITY_OWNER_DETAILS"
 },
 {
   labelName: "Entity/Owner Documents",
-  labelKey: "EST_COMMON_ENTITY_OWNER_DOCUMENTS"
+  labelKey: "ES_COMMON_ENTITY_OWNER_DOCUMENTS"
 },
 {
   labelName: "Previous Owner Details",
-  labelKey: "EST_COMMON_PREVIOUS_OWNER_DETAILS"
+  labelKey: "ES_COMMON_PREVIOUS_OWNER_DETAILS"
 },
 {
   labelName: "Previous Owner Documents",
-  labelKey: "EST_COMMON_PREVIOUS_OWNER_DOCUMENTS"
+  labelKey: "ES_COMMON_PREVIOUS_OWNER_DOCUMENTS"
 },
 {
   labelName: "Court Case",
-  labelKey: "EST_COMMON_COURT_CASE_DETAILS"
+  labelKey: "ES_COMMON_COURT_CASE_DETAILS"
 },
 {
   labelName: "Payment Details",
-  labelKey: "EST_COMMON_PAYMENT_DETAILS"
+  labelKey: "ES_COMMON_PAYMENT_DETAILS"
 },
 {
   labelName: "Summary",
-  labelKey: "EST_COMMON_SUMMARY"
+  labelKey: "ES_COMMON_SUMMARY"
 }
 ];
 
@@ -275,39 +275,39 @@ export const formwizardNinthStep = {
 /* Allotment of site */
 export const stepsDataAllotment = [{
     labelName: "Property Details",
-    labelKey: "EST_COMMON_PROPERTY_DETAILS"
+    labelKey: "ES_COMMON_PROPERTY_DETAILS"
   },
   {
     labelName: "Auction Details",
-    labelKey: "EST_COMMON_AUCTION_DETAILS"
+    labelKey: "ES_COMMON_AUCTION_DETAILS"
   },
   {
     labelName: "Company Details",
-    labelKey: "EST_COMMON_COMPANY_DETAILS"
+    labelKey: "ES_COMMON_COMPANY_DETAILS"
   },
   {
     labelName: "Company Documents",
-    labelKey: "EST_COMMON_COMPANY_DOCUMENTS"
+    labelKey: "ES_COMMON_COMPANY_DOCUMENTS"
   },
   {
     labelName: "Owner Details",
-    labelKey: "EST_COMMON_OWNER_DETAILS"
+    labelKey: "ES_COMMON_OWNER_DETAILS"
   },
   {
     labelName: "Owner Documents",
-    labelKey: "EST_COMMON_OWNER_DOCUMENTS"
+    labelKey: "ES_COMMON_OWNER_DOCUMENTS"
   },
   {
     labelName: "Court Case",
-    labelKey: "EST_COMMON_COURT_CASE_DETAILS"
+    labelKey: "ES_COMMON_COURT_CASE_DETAILS"
   },
   {
     labelName: "Payment Details",
-    labelKey: "EST_COMMON_PAYMENT_DETAILS"
+    labelKey: "ES_COMMON_PAYMENT_DETAILS"
   },
   {
     labelName: "Summary",
-    labelKey: "EST_COMMON_SUMMARY"
+    labelKey: "ES_COMMON_SUMMARY"
   }
 ];
 

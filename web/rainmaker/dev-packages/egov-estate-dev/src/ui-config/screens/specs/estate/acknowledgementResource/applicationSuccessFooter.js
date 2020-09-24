@@ -39,7 +39,7 @@ export const applicationSuccessFooter = (
       children: {
         downloadReceiptButtonLabel: getLabel({
           labelName: "GO TO HOME",
-          labelKey: "EST_COMMON_BUTTON_HOME"
+          labelKey: "ES_COMMON_BUTTON_HOME"
         })
       },
       onClickDefination: {
@@ -60,7 +60,7 @@ export const applicationSuccessFooter = (
         children: {
           downloadFormButtonLabel: getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: "EST_APPLICATION_BUTTON_DOWN_CONF"
+            labelKey: "ES_APPLICATION_BUTTON_DOWN_CONF"
           })
         },
         onClickDefination: {
@@ -84,7 +84,7 @@ export const applicationSuccessFooter = (
         children: {
           printFormButtonLabel: getLabel({
             labelName: "PRINT CONFIRMATION FORM",
-            labelKey: "EST_APPLICATION_BUTTON_PRINT_CONF"
+            labelKey: "ES_APPLICATION_BUTTON_PRINT_CONF"
           })
         },
         onClickDefination: {

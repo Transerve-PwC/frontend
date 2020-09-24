@@ -20,7 +20,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   
   export const auctionDetailsHeader = getCommonTitle({
     labelName: "Company Details",
-    labelKey: "EST_COMPANY_DETAILS_HEADER"
+    labelKey: "ES_COMPANY_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -39,16 +39,16 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     props: {
       label: {
         name: "Is Company Registered",
-        key: "EST_IS_COMPANY_REGISTERED_LABEL"
+        key: "ES_IS_COMPANY_REGISTERED_LABEL"
       },
       buttons: [{
           labelName: "YES",
-          labelKey: "EST_COMMON_YES",
+          labelKey: "ES_COMMON_YES",
           value: "YES"
         },
         {
           label: "NO",
-          labelKey: "EST_COMMON_NO",
+          labelKey: "ES_COMMON_NO",
           value: "NO"
         }
       ],
@@ -115,11 +115,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyNameField = {
     label: {
       labelName: "Company Name",
-      labelKey: "EST_COMPANY_NAME_LABEL"
+      labelKey: "ES_COMPANY_NAME_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Name",
-      labelKey: "EST_COMPANY_NAME_PLACEHOLDER"
+      labelKey: "ES_COMPANY_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -132,11 +132,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyAddressField = {
     label: {
       labelName: "Company Address",
-      labelKey: "EST_COMPANY_ADDRESS_LABEL"
+      labelKey: "ES_COMPANY_ADDRESS_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Address",
-      labelKey: "EST_COMPANY_ADDRESS_PLACEHOLDER"
+      labelKey: "ES_COMPANY_ADDRESS_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -149,11 +149,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyRegNoField = {
     label: {
       labelName: "Company Registration Number",
-      labelKey: "EST_COMPANY_REG_NO_LABEL"
+      labelKey: "ES_COMPANY_REG_NO_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Registration Number",
-      labelKey: "EST_COMPANY_REG_NO_PLACEHOLDER"
+      labelKey: "ES_COMPANY_REG_NO_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -166,11 +166,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyTypeField = {
     label: {
       labelName: "Company Type",
-      labelKey: "EST_COMPANY_TYPE_LABEL"
+      labelKey: "ES_COMPANY_TYPE_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Type",
-      labelKey: "EST_COMPANY_TYPE_PLACEHOLDER"
+      labelKey: "ES_COMPANY_TYPE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -183,11 +183,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const CompanyShareholderNameField = {
     label: {
       labelName: "Company Shareholder Name",
-      labelKey: "EST_COMPANY_SHAREHOLDER_NAME_LABEL"
+      labelKey: "ES_COMPANY_SHAREHOLDER_NAME_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Shareholder Name",
-      labelKey: "EST_COMPANY_SHAREHOLDER_NAME_PLACEHOLDER"
+      labelKey: "ES_COMPANY_SHAREHOLDER_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -200,11 +200,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const companyShare = {
     label: {
       labelName: "Company Share %",
-      labelKey: "EST_COMPANY_SHARE_LABEL"
+      labelKey: "ES_COMPANY_SHARE_LABEL"
     },
     placeholder: {
       labelName: "Enter Company Share %",
-      labelKey: "EST_COMPANY_SHARE_PLACEHOLDER"
+      labelKey: "ES_COMPANY_SHARE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -217,11 +217,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const PartnerName = {
     label: {
       labelName: "Partner Name",
-      labelKey: "EST_PARTNER_NAME_LABEL"
+      labelKey: "ES_PARTNER_NAME_LABEL"
     },
     placeholder: {
       labelName: "Enter Partner Name",
-      labelKey: "EST_PARTNER_NAME_PLACEHOLDER"
+      labelKey: "ES_PARTNER_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -234,11 +234,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const PartnerHusbandFatherName = {
     label: {
       labelName: "Father/Husband Name",
-      labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+      labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
     },
     placeholder: {
       labelName: "Enter Father/Husband Name",
-      labelKey: "EST_FATHER_HUSBAND_NAME_PLACEHOLDER"
+      labelKey: "ES_FATHER_HUSBAND_NAME_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -251,11 +251,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const partnerAddress = {
     label: {
       labelName: "Partner Address",
-      labelKey: "EST_PARTNER_ADDRESS_LABEL"
+      labelKey: "ES_PARTNER_ADDRESS_LABEL"
     },
     placeholder: {
       labelName: "Enter Partner Address",
-      labelKey: "EST_PARTNER_ADDRESS_PLACEHOLDER"
+      labelKey: "ES_PARTNER_ADDRESS_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -268,11 +268,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const partnerMobileNumber = {
     label: {
       labelName: "Partner Mobile Number",
-      labelKey: "EST_PARTNER_MOBILE_LABEL"
+      labelKey: "ES_PARTNER_MOBILE_LABEL"
     },
     placeholder: {
       labelName: "Enter Partner Mobile Number",
-      labelKey: "EST_PARTNER_MOBILE_PLACEHOLDER"
+      labelKey: "ES_PARTNER_MOBILE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -286,11 +286,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const partnerShare = {
     label: {
       labelName: "Partner Share",
-      labelKey: "EST_PARTNER_SHARE_LABEL"
+      labelKey: "ES_PARTNER_SHARE_LABEL"
     },
     placeholder: {
       labelName: "Enter Partner Share",
-      labelKey: "EST_PARTNER_SHARE_PLACEHOLDER"
+      labelKey: "ES_PARTNER_SHARE_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -303,11 +303,11 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
   const partnerCPNumber = {
     label: {
       labelName: "Partner CP Number",
-      labelKey: "EST_PARTNER_CP_NUMBER_LABEL"
+      labelKey: "ES_PARTNER_CP_NUMBER_LABEL"
     },
     placeholder: {
       labelName: "Enter Partner CP Number",
-      labelKey: "EST_PARTNER_CP_NUMBER_PLACEHOLDER"
+      labelKey: "ES_PARTNER_CP_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
       xs: 12,
@@ -328,16 +328,16 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     props: {
       label: {
         name: "Relationship",
-        key: "EST_RELATIONSHIP_LABEL"
+        key: "ES_RELATIONSHIP_LABEL"
       },
       buttons: [{
           labelName: "Father",
-          labelKey: "EST_COMMON_RELATION_FATHER",
+          labelKey: "ES_COMMON_RELATION_FATHER",
           value: "FATHER"
         },
         {
           label: "Husband",
-          labelKey: "EST_COMMON_RELATION_HUSBAND",
+          labelKey: "ES_COMMON_RELATION_HUSBAND",
           value: "HUSBAND"
         }
       ],
@@ -352,7 +352,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     return getCommonGrayCard({
       header: getCommonTitle({
         labelName: "Company Details",
-        labelKey: "EST_COMPANY_DETAILS_HEADER"
+        labelKey: "ES_COMPANY_DETAILS_HEADER"
       }, {
         style: {
           marginBottom: 18
@@ -376,7 +376,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
     return getCommonGrayCard({
       header: getCommonTitle({
         labelName: "Partner Details",
-        labelKey: "EST_PARTNER_DETAILS"
+        labelKey: "ES_PARTNER_DETAILS"
       }, {
         style: {
           marginBottom: 18
@@ -412,7 +412,7 @@ import { getActionDefinationForOwnerDetailsFields } from './ownerDetails'
             items: [],
             addItemLabel: {
               labelName: "Add Partner",
-              labelKey: "EST_COMMON_ADD_PARTNER_LABEL"
+              labelKey: "ES_COMMON_ADD_PARTNER_LABEL"
             },
             headerName: "Partner Information",
             headerJsonPath: "children.cardContent.children.header.children.Partner Information.props.label",

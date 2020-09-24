@@ -80,7 +80,7 @@ const documentList = {
         labelKey: "TL_BUTTON_DOWNLOAD_FILE"
       },
       inputProps,
-      documentTypePrefix: "EST_",
+      documentTypePrefix: "ES_",
       documentsJsonPath: "temp[0].documents",
       uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
       tenantIdJsonPath: "Applications[0].tenantId",

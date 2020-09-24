@@ -21,11 +21,11 @@ import {
 const typeOfAllocationField = {
     label: {
         labelName: "Type of Allocation",
-        labelKey: "EST_ALLOCATION_TYPE_LABEL"
+        labelKey: "ES_ALLOCATION_TYPE_LABEL"
     },
     placeholder: {
         labelName: "Select Type of Allocation",
-        labelKey: "EST_ALLOCATION_TYPE_PLACEHOLDER"
+        labelKey: "ES_ALLOCATION_TYPE_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.typeOfAllocation",
@@ -39,11 +39,11 @@ const typeOfAllocationField = {
 const modeOfAuctionField = {
     label: {
         labelName: "Mode of Auction",
-        labelKey: "EST_MODE_OF_AUCTION_LABEL"
+        labelKey: "ES_MODE_OF_AUCTION_LABEL"
     },
     placeholder: {
         labelName: "Enter Mode of Auction",
-        labelKey: "EST_MODE_OF_AUCTION_PLACEHOLDER"
+        labelKey: "ES_MODE_OF_AUCTION_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -56,11 +56,11 @@ const modeOfAuctionField = {
 const schemeNameField = {
     label: {
         labelName: "Scheme Name",
-        labelKey: "EST_SCHEME_NAME_LABEL"
+        labelKey: "ES_SCHEME_NAME_LABEL"
     },
     placeholder: {
         labelName: "Enter Scheme Name",
-        labelKey: "EST_SCHEME_NAME_PLACEHOLDER"
+        labelKey: "ES_SCHEME_NAME_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -73,11 +73,11 @@ const schemeNameField = {
 const dateOfAuctionField = {
     label: {
         labelName: "Date of Auction",
-        labelKey: "EST_DATE_OF_AUCTION_LABEL"
+        labelKey: "ES_DATE_OF_AUCTION_LABEL"
     },
     placeholder: {
         labelName: "Enter Date of Auction",
-        labelKey: "EST_DATE_OF_AUCTION_PLACEHOLDER"
+        labelKey: "ES_DATE_OF_AUCTION_PLACEHOLDER"
     },
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].propertyDetails.dateOfAuction",
@@ -91,11 +91,11 @@ const dateOfAuctionField = {
 const areaOfPropertyField = {
     label: {
         labelName: "Area of the Property in sqft",
-        labelKey: "EST_AREA_OF_PROPERTY_LABEL"
+        labelKey: "ES_AREA_OF_PROPERTY_LABEL"
     },
     placeholder: {
         labelName: "Enter Area of the Property in sqft",
-        labelKey: "EST_AREA_OF_PROPERTY_PLACEHOLDER"
+        labelKey: "ES_AREA_OF_PROPERTY_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -110,11 +110,11 @@ const areaOfPropertyField = {
 const rateField = {
     label: {
         labelName: "Rate per sqft",
-        labelKey: "EST_RATE_LABEL"
+        labelKey: "ES_RATE_LABEL"
     },
     placeholder: {
         labelName: "Enter Rate per sqft",
-        labelKey: "EST_RATE_PLACEHOLDER"
+        labelKey: "ES_RATE_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -129,11 +129,11 @@ const rateField = {
 const categoryField = {
     label: {
         labelName: "Category",
-        labelKey: "EST_CATEGORY_LABEL"
+        labelKey: "ES_CATEGORY_LABEL"
     },
     placeholder: {
         labelName: "Select Category",
-        labelKey: "EST_CATEGORY_PLACEHOLDER"
+        labelKey: "ES_CATEGORY_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].category",
@@ -200,11 +200,11 @@ const categoryField = {
 const subCategoryField = {
     label: {
         labelName: "Sub Category",
-        labelKey: "EST_SUBCATEGORY_LABEL"
+        labelKey: "ES_SUBCATEGORY_LABEL"
     },
     placeholder: {
         labelName: "Select Sub Category",
-        labelKey: "EST_SUBCATEGORY_PLACEHOLDER"
+        labelKey: "ES_SUBCATEGORY_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].subCategory",
@@ -218,11 +218,11 @@ const subCategoryField = {
 const siteNumberField = {
     label: {
         labelName: "Site Number",
-        labelKey: "EST_SITE_NUMBER_LABEL"
+        labelKey: "ES_SITE_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Enter Site Number",
-        labelKey: "EST_SITE_NUMBER_PLACEHOLDER"
+        labelKey: "ES_SITE_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -236,11 +236,11 @@ const siteNumberField = {
 const sectorNumberField = {
     label: {
         labelName: "Sector Number",
-        labelKey: "EST_SECTOR_NUMBER_LABEL"
+        labelKey: "ES_SECTOR_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Select Sector Number",
-        labelKey: "EST_SECTOR_NUMBER_PLACEHOLDER"
+        labelKey: "ES_SECTOR_NUMBER_PLACEHOLDER"
     },
     // required: true,
     jsonPath: "Properties[0].sectorNumber",
@@ -254,11 +254,11 @@ const sectorNumberField = {
 const fileNumberField = {
     label: {
         labelName: "File Number",
-        labelKey: "EST_FILE_NUMBER_LABEL"
+        labelKey: "ES_FILE_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Enter File Number",
-        labelKey: "EST_FILE_NUMBER_PLACEHOLDER"
+        labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -272,11 +272,11 @@ const fileNumberField = {
 const lastNocDateField = {
     label: {
         labelName: "Last NOC Date",
-        labelKey: "EST_LAST_NOC_DATE_LABEL"
+        labelKey: "ES_LAST_NOC_DATE_LABEL"
     },
     placeholder: {
         labelName: "Enter Last NOC Date",
-        labelKey: "EST_LAST_NOC_DATE_PLACEHOLDER"
+        labelKey: "ES_LAST_NOC_DATE_PLACEHOLDER"
     },
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].propertyDetails.lastNocDate",
@@ -290,11 +290,11 @@ const lastNocDateField = {
 const propertyTypeField = {
     label: {
         labelName: "Property Type",
-        labelKey: "EST_PROPERTY_TYPE_LABEL"
+        labelKey: "ES_PROPERTY_TYPE_LABEL"
     },
     placeholder: {
         labelName: "Select Property Type",
-        labelKey: "EST_PROPERTY_TYPE_PLACEHOLDER"
+        labelKey: "ES_PROPERTY_TYPE_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.propertyType",
@@ -329,11 +329,11 @@ const propertyTypeField = {
 const serviceCategoryField = {
     label: {
         labelName: "Service Category",
-        labelKey: "EST_SERVICE_CATEGORY_LABEL"
+        labelKey: "ES_SERVICE_CATEGORY_LABEL"
     },
     placeholder: {
         labelName: "Enter Service Category",
-        labelKey: "EST_SERVICE_CATEGORY_PLACEHOLDER"
+        labelKey: "ES_SERVICE_CATEGORY_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -354,16 +354,16 @@ const getPropertyRegisteredToRadioButton = {
     props: {
         label: {
             name: "Property Registered To",
-            key: "EST_PROPERTY_REGISTERED_TO_LABEL"
+            key: "ES_PROPERTY_REGISTERED_TO_LABEL"
         },
         buttons: [{
             labelName: "Entity",
-            labelKey: "EST_COMMON_ENTITY",
+            labelKey: "ES_COMMON_ENTITY",
             value: "ENTITY"
         },
         {
             label: "Individual",
-            labelKey: "EST_COMMON_INDIVIDUAL",
+            labelKey: "ES_COMMON_INDIVIDUAL",
             value: "INDIVIDUAL"
         }],
         jsonPath: "Properties[0].propertyDetails.propertyRegisteredTo",
@@ -394,11 +394,11 @@ const getPropertyRegisteredToRadioButton = {
 const entityTypeField = {
     label: {
         labelName: "Entity Type",
-        labelKey: "EST_ENTITY_TYPE_LABEL"
+        labelKey: "ES_ENTITY_TYPE_LABEL"
     },
     placeholder: {
         labelName: "Select Entity Type",
-        labelKey: "EST_ENTITY_TYPE_PLACEHOLDER"
+        labelKey: "ES_ENTITY_TYPE_PLACEHOLDER"
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.entityType",
@@ -470,7 +470,7 @@ const entityTypeField = {
 
 const propertyInfoHeader = getCommonTitle({
     labelName: "Property Info",
-    labelKey: "EST_PROPERTY_INFO_HEADER"
+    labelKey: "ES_PROPERTY_INFO_HEADER"
 }, {
     style: {
         marginBottom: 18,
@@ -496,7 +496,7 @@ export const propertyInfoDetails = getCommonCard({
 
 const auctionDetailsHeader = getCommonTitle({
     labelName: "Auction Details",
-    labelKey: "EST_AUCTION_DETAILS_HEADER"
+    labelKey: "ES_AUCTION_DETAILS_HEADER"
 }, {
     style: {
         marginBottom: 18,
@@ -514,7 +514,7 @@ export const auctionDetails = getCommonCard({
 
 const additionalDetailsHeader = getCommonTitle({
     labelName: "NOC Details",
-    labelKey: "EST_NOC_DETAILS_HEADER"
+    labelKey: "ES_NOC_DETAILS_HEADER"
 }, {
     style: {
         marginBottom: 18,

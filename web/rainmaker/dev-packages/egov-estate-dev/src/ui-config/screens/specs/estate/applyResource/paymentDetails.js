@@ -18,12 +18,12 @@ import get from "lodash/get";
 
 const paymentHeader = getCommonTitle({
   labelName: "Payment Details",
-  labelKey: "EST_PAYMENT_DETAILS_HEADER"
+  labelKey: "ES_PAYMENT_DETAILS_HEADER"
 })
 
 export const groundRentHeader = getCommonTitle({
   labelName: "Ground Rent Details",
-  labelKey: "EST_GROUND_RENT_DETAILS_HEADER"
+  labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -35,7 +35,7 @@ export const groundRentHeader = getCommonTitle({
 const dueDateOfPaymentField = {
   label: {
     labelName: "Due Date of Payment",
-    labelKey: "EST_DUE_DATE_OF_PAYMENT_LABEL"
+    labelKey: "ES_DUE_DATE_OF_PAYMENT_LABEL"
   },
   pattern: getPattern("Date"),
   // required: true,
@@ -50,11 +50,11 @@ const dueDateOfPaymentField = {
 const payableField = {
   label: {
     labelName: "Payable",
-    labelKey: "EST_PAYABLE_LABEL"
+    labelKey: "ES_PAYABLE_LABEL"
   },
   placeholder: {
     labelName: "Enter Payable",
-    labelKey: "EST_PAYABLE_PLACEHOLDER"
+    labelKey: "ES_PAYABLE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -68,11 +68,11 @@ const payableField = {
 const amountOfGRField = {
   label: {
     labelName: "Amount of GR",
-    labelKey: "EST_AMOUNT_OF_GR_LABEL"
+    labelKey: "ES_AMOUNT_OF_GR_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount of GR",
-    labelKey: "EST_AMOUNT_OF_GR_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_OF_GR_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -86,11 +86,11 @@ const amountOfGRField = {
 const totalGRField = {
   label: {
     labelName: "Total GR",
-    labelKey: "EST_TOTAL_GR_LABEL"
+    labelKey: "ES_TOTAL_GR_LABEL"
   },
   placeholder: {
     labelName: "Enter Total GR",
-    labelKey: "EST_TOTAL_GR_PLACEHOLDER"
+    labelKey: "ES_TOTAL_GR_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -104,7 +104,7 @@ const totalGRField = {
 const dateOfDepositField = {
   label: {
     labelName: "Date of Deposit",
-    labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
+    labelKey: "ES_DATE_OF_DEPOSIT_LABEL"
   },
   pattern: getPattern("Date"),
   // required: true,
@@ -119,11 +119,11 @@ const dateOfDepositField = {
 const delayInPaymentField = {
   label: {
     labelName: "Delay in Payment",
-    labelKey: "EST_DELAY_IN_PAYMENT_LABEL"
+    labelKey: "ES_DELAY_IN_PAYMENT_LABEL"
   },
   placeholder: {
     labelName: "Enter Delay in Payment",
-    labelKey: "EST_DELAY_IN_PAYMENT_PLACEHOLDER"
+    labelKey: "ES_DELAY_IN_PAYMENT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -137,11 +137,11 @@ const delayInPaymentField = {
 const interestForDelayField = {
   label: {
     labelName: "Interest For Delay",
-    labelKey: "EST_INTEREST_FOR_DELAY_LABEL"
+    labelKey: "ES_INTERES_FOR_DELAY_LABEL"
   },
   placeholder: {
     labelName: "Enter Interest For Delay",
-    labelKey: "EST_INTEREST_FOR_DELAY_PLACEHOLDER"
+    labelKey: "ES_INTERES_FOR_DELAY_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -155,11 +155,11 @@ const interestForDelayField = {
 const totalAmountDueWithInterestField = {
   label: {
     labelName: "Total Amount Due with Interest",
-    labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_LABEL"
+    labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_LABEL"
   },
   placeholder: {
     labelName: "Enter Total Amount Due with Interest",
-    labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_PLACEHOLDER"
+    labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -173,11 +173,11 @@ const totalAmountDueWithInterestField = {
 const amountDepositedGRField = {
   label: {
     labelName: "Amount Desposited GR",
-    labelKey: "EST_AMOUNT_DEPOSITED_GR_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_GR_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Desposited GR",
-    labelKey: "EST_AMOUNT_DEPOSITED_GR_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_DEPOSITED_GR_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -191,11 +191,11 @@ const amountDepositedGRField = {
 const amountDepositedInttField = {
   label: {
     labelName: "Amount Desposited Intt",
-    labelKey: "EST_AMOUNT_DEPOSITED_INTT_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_INTT_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Desposited Intt",
-    labelKey: "EST_AMOUNT_DEPOSITED_INTT_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_DEPOSITED_INTT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -209,11 +209,11 @@ const amountDepositedInttField = {
 const balanceGRField = {
   label: {
     labelName: "Balance(+due, -excess) GR",
-    labelKey: "EST_BALANCE_GR_LABEL"
+    labelKey: "ES_BALANCE_GR_LABEL"
   },
   placeholder: {
     labelName: "Enter Balance(+due, -excess) GR",
-    labelKey: "EST_BALANCE_GR_PLACEHOLDER"
+    labelKey: "ES_BALANCE_GR_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -227,11 +227,11 @@ const balanceGRField = {
 const balanceInttField = {
   label: {
     labelName: "Balance(+due, -excess) Intt",
-    labelKey: "EST_BALANCE_INTT_LABEL"
+    labelKey: "ES_BALANCE_INTT_LABEL"
   },
   placeholder: {
     labelName: "Enter Balance(+due, -excess) Intt",
-    labelKey: "EST_BALANCE_INTT_PLACEHOLDER"
+    labelKey: "ES_BALANCE_INTT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -245,11 +245,11 @@ const balanceInttField = {
 const totalDueField = {
   label: {
     labelName: "Total Due",
-    labelKey: "EST_TOTAL_DUE_LABEL"
+    labelKey: "ES_TOTAL_DUE_LABEL"
   },
   placeholder: {
     labelName: "Enter Total Due",
-    labelKey: "EST_TOTAL_DUE_PLACEHOLDER"
+    labelKey: "ES_TOTAL_DUE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -263,11 +263,11 @@ const totalDueField = {
 const receiptNumberField = {
   label: {
     labelName: "Receipt No.",
-    labelKey: "EST_RECEIPT_NUMBER_LABEL"
+    labelKey: "ES_RECEIPT_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter Receipt No.",
-    labelKey: "EST_RECEIPT_NUMBER_PLACEHOLDER"
+    labelKey: "ES_RECEIPT_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -281,7 +281,7 @@ const receiptNumberField = {
 const receiptDateField = {
   label: {
     labelName: "Receipt Date",
-    labelKey: "EST_RECEIPT_DATE_LABEL"
+    labelKey: "ES_RECEIPT_DATE_LABEL"
   },
   pattern: getPattern("Date"),
   // required: true,
@@ -316,7 +316,7 @@ export const groundRentDetails_0 = getCommonCard({
 
 export const serviceTaxHeader = getCommonTitle({
   labelName: "Service Tax/GST Details",
-  labelKey: "EST_SERVICE_TAX_DETAILS_HEADER"
+  labelKey: "ES_SERVICE_TAX_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -328,11 +328,11 @@ export const serviceTaxHeader = getCommonTitle({
 const rateOfStOrGstFieldST = {
   label: {
     labelName: "Rate of ST/GST",
-    labelKey: "EST_RATE_ST_GST_LABEL"
+    labelKey: "ES_RATE_ST_GST_LABEL"
   },
   placeholder: {
     labelName: "Enter Rate of ST/GST",
-    labelKey: "EST_RATE_ST_GST_PLACEHOLDER"
+    labelKey: "ES_RATE_ST_GST_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -346,11 +346,11 @@ const rateOfStOrGstFieldST = {
 const amountOfGstFieldST = {
   label: {
     labelName: "Amount Of GST",
-    labelKey: "EST_AMOUNT_OF_GST_LABEL"
+    labelKey: "ES_AMOUNT_OF_GST_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Of GST",
-    labelKey: "EST_AMOUNT_OF_GST_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_OF_GST_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -364,11 +364,11 @@ const amountOfGstFieldST = {
 const amountDueFieldST = {
   label: {
     labelName: "Amount Due",
-    labelKey: "EST_AMOUNT_DUE_LABEL"
+    labelKey: "ES_AMOUNT_DUE_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Due",
-    labelKey: "EST_AMOUNT_DUE_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_DUE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -382,7 +382,7 @@ const amountDueFieldST = {
 const dateOfDepositFieldST = {
   label: {
     labelName: "Date of Deposit",
-    labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
+    labelKey: "ES_DATE_OF_DEPOSIT_LABEL"
   },
   pattern: getPattern("Date"),
   // required: true,
@@ -397,11 +397,11 @@ const dateOfDepositFieldST = {
 const delayInPaymentFieldST = {
   label: {
     labelName: "Delay in Payment",
-    labelKey: "EST_DELAY_IN_PAYMENT_LABEL"
+    labelKey: "ES_DELAY_IN_PAYMENT_LABEL"
   },
   placeholder: {
     labelName: "Enter Delay in Payment",
-    labelKey: "EST_DELAY_IN_PAYMENT_PLACEHOLDER"
+    labelKey: "ES_DELAY_IN_PAYMENT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -415,11 +415,11 @@ const delayInPaymentFieldST = {
 const interestForDelayFieldST = {
   label: {
     labelName: "Interest For Delay",
-    labelKey: "EST_INTEREST_FOR_DELAY_LABEL"
+    labelKey: "ES_INTERES_FOR_DELAY_LABEL"
   },
   placeholder: {
     labelName: "Enter Interest For Delay",
-    labelKey: "EST_INTEREST_FOR_DELAY_PLACEHOLDER"
+    labelKey: "ES_INTERES_FOR_DELAY_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -433,11 +433,11 @@ const interestForDelayFieldST = {
 const totalAmountDueWithInterestFieldST = {
   label: {
     labelName: "Total Amount Due with Interest",
-    labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_LABEL"
+    labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_LABEL"
   },
   placeholder: {
     labelName: "Enter Total Amount Due with Interest",
-    labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_PLACEHOLDER"
+    labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -451,11 +451,11 @@ const totalAmountDueWithInterestFieldST = {
 const amountDepositedFieldST = {
   label: {
     labelName: "Amount Deposited ST/GST",
-    labelKey: "EST_AMOUNT_DEPOSITED_ST_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_ST_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Deposited ST/GST",
-    labelKey: "EST_AMOUNT_DEPOSITED_ST_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_DEPOSITED_ST_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -469,11 +469,11 @@ const amountDepositedFieldST = {
 const amountDepositedInttFieldST = {
   label: {
     labelName: "Amount Deposited Intt",
-    labelKey: "EST_AMOUNT_DEPOSITED_INTT_ST_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_INTT_ST_LABEL"
   },
   placeholder: {
     labelName: "Enter Amount Deposited Intt",
-    labelKey: "EST_AMOUNT_DEPOSITED_INTT_ST_PLACEHOLDER"
+    labelKey: "ES_AMOUNT_DEPOSITED_INTT_ST_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -487,11 +487,11 @@ const amountDepositedInttFieldST = {
 const balanceFieldST = {
   label: {
     labelName: "Balance ST/GST",
-    labelKey: "EST_BALANCE_ST_LABEL"
+    labelKey: "ES_BALANCE_ST_LABEL"
   },
   placeholder: {
     labelName: "Enter Balance ST/GST",
-    labelKey: "EST_BALANCE_ST_PLACEHOLDER"
+    labelKey: "ES_BALANCE_ST_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -505,11 +505,11 @@ const balanceFieldST = {
 const balanceInttFieldST = {
   label: {
     labelName: "Balance Intt",
-    labelKey: "EST_BALANCE_INTT_LABEL"
+    labelKey: "ES_BALANCE_INTT_LABEL"
   },
   placeholder: {
     labelName: "Enter Balance Intt",
-    labelKey: "EST_BALANCE_INTT_PLACEHOLDER"
+    labelKey: "ES_BALANCE_INTT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -523,11 +523,11 @@ const balanceInttFieldST = {
 const totalDueFieldST = {
   label: {
     labelName: "Total Due",
-    labelKey: "EST_TOTAL_DUE_LABEL"
+    labelKey: "ES_TOTAL_DUE_LABEL"
   },
   placeholder: {
     labelName: "Enter Total Due",
-    labelKey: "EST_TOTAL_DUE_PLACEHOLDER"
+    labelKey: "ES_TOTAL_DUE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -541,11 +541,11 @@ const totalDueFieldST = {
 const receiptNumberFieldST = {
   label: {
     labelName: "Receipt No.",
-    labelKey: "EST_RECEIPT_NUMBER_LABEL"
+    labelKey: "ES_RECEIPT_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter Receipt No.",
-    labelKey: "EST_RECEIPT_NUMBER_PLACEHOLDER"
+    labelKey: "ES_RECEIPT_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -559,7 +559,7 @@ const receiptNumberFieldST = {
 const receiptDateFieldST = {
   label: {
     labelName: "Receipt Date",
-    labelKey: "EST_RECEIPT_DATE_LABEL"
+    labelKey: "ES_RECEIPT_DATE_LABEL"
   },
   pattern: getPattern("Date"),
   // required: true,
@@ -594,11 +594,11 @@ export const serviceTaxDetails_0 = getCommonCard({
 const paymentMadeByField = {
   label: {
     labelName: "Payment Made By",
-    labelKey: "EST_PAYMENT_MADE_BY_LABEL"
+    labelKey: "ES_PAYMENT_MADE_BY_LABEL"
   },
   placeholder: {
     labelName: "Enter Payment Made By",
-    labelKey: "EST_PAYMENT_MADE_BY_PLACEHOLDER"
+    labelKey: "ES_PAYMENT_MADE_BY_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,

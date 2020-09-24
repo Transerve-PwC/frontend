@@ -19,11 +19,11 @@ import {
 const companyNameField = {
   label: {
     labelName: "Company Name",
-    labelKey: "EST_COMPANY_NAME_LABEL"
+    labelKey: "ES_COMPANY_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Company Name",
-    labelKey: "EST_COMPANY_NAME_PLACEHOLDER"
+    labelKey: "ES_COMPANY_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -37,11 +37,11 @@ const companyNameField = {
 const companyRegNoField = {
   label: {
     labelName: "Company Registration Number",
-    labelKey: "EST_COMPANY_REG_NO_LABEL"
+    labelKey: "ES_COMPANY_REG_NO_LABEL"
   },
   placeholder: {
     labelName: "Enter Company Registration Number",
-    labelKey: "EST_COMPANY_REG_NO_PLACEHOLDER"
+    labelKey: "ES_COMPANY_REG_NO_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -55,7 +55,7 @@ const companyRegNoField = {
 const companyRegDateField = {
   label: {
     labelName: "Registration Date",
-    labelKey: "EST_REGISTRATION_DATE_LABEL"
+    labelKey: "ES_REGISTRATION_DATE_LABEL"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.companyRegDate",
@@ -69,11 +69,11 @@ const companyRegDateField = {
 const companyAddressField = {
   label: {
     labelName: "Company Address",
-    labelKey: "EST_COMPANY_ADDRESS_LABEL"
+    labelKey: "ES_COMPANY_ADDRESS_LABEL"
 },
   placeholder: {
     labelName: "Enter Company Address",
-    labelKey: "EST_COMPANY_ADDRESS_PLACEHOLDER"
+    labelKey: "ES_COMPANY_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -90,7 +90,7 @@ const companyAddressField = {
 
 export const companyDetailsHeader = getCommonTitle({
   labelName: "Company Details",
-  labelKey: "EST_COMPANY_DETAILS_HEADER"
+  labelKey: "ES_COMPANY_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -112,11 +112,11 @@ export const companyDetails = getCommonCard({
 const firmNameField = {
   label: {
     labelName: "Firm Name",
-    labelKey: "EST_FIRM_NAME_LABEL"
+    labelKey: "ES_FIRM_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Firm Name",
-    labelKey: "EST_FIRM_NAME_PLACEHOLDER"
+    labelKey: "ES_FIRM_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -138,16 +138,16 @@ const getIsFirmRegisteredRadioButton = {
   props: {
     label: {
       name: "Is Firm Registered",
-      key: "EST_IS_FIRM_REGISTERED_LABEL"
+      key: "ES_IS_FIRM_REGISTERED_LABEL"
     },
     buttons: [{
         labelName: "YES",
-        labelKey: "EST_COMMON_YES",
+        labelKey: "ES_COMMON_YES",
         value: "YES"
       },
       {
         label: "NO",
-        labelKey: "EST_COMMON_NO",
+        labelKey: "ES_COMMON_NO",
         value: "NO"
       }
     ],
@@ -167,11 +167,11 @@ const getIsFirmRegisteredRadioButton = {
 const firmRegNoField = {
   label: {
     labelName: "Firm Registration Number",
-    labelKey: "EST_FIRM_REG_NO_LABEL"
+    labelKey: "ES_FIRM_REG_NO_LABEL"
   },
   placeholder: {
     labelName: "Enter Firm Registration Number",
-    labelKey: "EST_FIRM_REG_NO_PLACEHOLDER"
+    labelKey: "ES_FIRM_REG_NO_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -185,7 +185,7 @@ const firmRegNoField = {
 const firmRegDateField = {
   label: {
     labelName: "Registration Date",
-    labelKey: "EST_REGISTRATION_DATE_LABEL"
+    labelKey: "ES_REGISTRATION_DATE_LABEL"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.firmRegDate",
@@ -199,11 +199,11 @@ const firmRegDateField = {
 const firmAddressField = {
   label: {
     labelName: "Firm Address",
-    labelKey: "EST_FIRM_ADDRESS_LABEL"
+    labelKey: "ES_FIRM_ADDRESS_LABEL"
 },
   placeholder: {
     labelName: "Enter Firm Address",
-    labelKey: "EST_FIRM_ADDRESS_PLACEHOLDER"
+    labelKey: "ES_FIRM_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -220,7 +220,7 @@ const firmAddressField = {
 
 export const firmDetailsHeader = getCommonTitle({
   labelName: "Firm Details",
-  labelKey: "EST_FIRM_DETAILS_HEADER"
+  labelKey: "ES_FIRM_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -242,11 +242,11 @@ export const firmDetails = getCommonCard({
 const nameField = {
   label: {
     labelName: "Name",
-    labelKey: "EST_NAME_LABEL"
+    labelKey: "ES_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Name",
-    labelKey: "EST_NAME_PLACEHOLDER"
+    labelKey: "ES_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -261,11 +261,11 @@ const nameField = {
 const husbandFatherNameField = {
   label: {
     labelName: "Father/Husband Name",
-    labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+    labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Father/Husband Name",
-    labelKey: "EST_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    labelKey: "ES_FATHER_HUSBAND_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -280,11 +280,11 @@ const husbandFatherNameField = {
 const addressField = {
   label: {
     labelName: "Address",
-    labelKey: "EST_ADDRESS_LABEL"
+    labelKey: "ES_ADDRESS_LABEL"
   },
   placeholder: {
     labelName: "Enter Address",
-    labelKey: "EST_ADDRESS_PLACEHOLDER"
+    labelKey: "ES_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -303,7 +303,7 @@ const mobileNumberField = {
   },
   placeholder: {
     labelName: "Enter Mobile Number",
-    labelKey: "EST_MOBILE_NUMBER_PLACEHOLDER"
+    labelKey: "ES_MOBILE_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -317,11 +317,11 @@ const mobileNumberField = {
 const shareField = {
   label: {
     labelName: "Share",
-    labelKey: "EST_SHARE_LABEL"
+    labelKey: "ES_SHARE_LABEL"
   },
   placeholder: {
     labelName: "Enter Share",
-    labelKey: "EST_SHARE_PLACEHOLDER"
+    labelKey: "ES_SHARE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -336,11 +336,11 @@ const shareField = {
 const cpNumberField = {
   label: {
     labelName: "CP Number",
-    labelKey: "EST_CP_NUMBER_LABEL"
+    labelKey: "ES_CP_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter CP Number",
-    labelKey: "EST_CP_NUMBER_PLACEHOLDER"
+    labelKey: "ES_CP_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -362,16 +362,16 @@ const getRelationshipRadioButton = {
   props: {
     label: {
       name: "Relationship",
-      key: "EST_RELATIONSHIP_LABEL"
+      key: "ES_RELATIONSHIP_LABEL"
     },
     buttons: [{
         labelName: "Father",
-        labelKey: "EST_COMMON_RELATION_FATHER",
+        labelKey: "ES_COMMON_RELATION_FATHER",
         value: "FATHER"
       },
       {
         label: "Husband",
-        labelKey: "EST_COMMON_RELATION_HUSBAND",
+        labelKey: "ES_COMMON_RELATION_HUSBAND",
         value: "HUSBAND"
       }
     ],
@@ -384,7 +384,7 @@ const getRelationshipRadioButton = {
 
 export const partnerHeader = getCommonTitle({
   labelName: "Partner Details",
-  labelKey: "EST_PARTNER_DETAILS_HEADER"
+  labelKey: "ES_PARTNER_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -396,7 +396,7 @@ const commonPartnerInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Partner Information",
-      labelKey: "EST_PARTNER_INFORMATION"
+      labelKey: "ES_PARTNER_INFORMATION"
     }, {
       style: {
         marginBottom: 18
@@ -434,7 +434,7 @@ const commonPartnerInformation = () => {
             items: [],
             addItemLabel: {
               labelName: "Add Partner",
-              labelKey: "EST_COMMON_ADD_PARTNER_LABEL"
+              labelKey: "ES_COMMON_ADD_PARTNER_LABEL"
             },
             headerName: "Partner Information",
             headerJsonPath: "children.cardContent.children.header.children.Partner Information.props.label",
@@ -451,7 +451,7 @@ const commonPartnerInformation = () => {
 /***************** Proprietorship ********************/
 const proprietorshipDetailsHeader = getCommonTitle({
   labelName: "Proprietorship Details",
-  labelKey: "EST_PROPRIETORSHIP_DETAILS_HEADER"
+  labelKey: "ES_PROPRIETORSHIP_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,

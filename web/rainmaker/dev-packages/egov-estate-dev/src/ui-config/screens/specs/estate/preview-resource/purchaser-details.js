@@ -23,7 +23,7 @@ import {
  
 export const purchaserHeader = getCommonTitle({
     labelName: "Purchaser Details",
-    labelKey: "EST_PURCHASER_DETAILS_HEADER"
+    labelKey: "ES_PURCHASER_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -33,18 +33,18 @@ export const purchaserHeader = getCommonTitle({
   
   const newOwnerNameField = {
       labelName: "New Owner Name",
-      labelKey: "EST_NEW_OWNER_NAME_LABEL",
+      labelKey: "ES_NEW_OWNER_NAME_LABEL",
   }
   
   const newOwnerFatherHusbandNameField = {
       labelName: "New Owner Father/Husband Name",
-      labelKey: "EST_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL",
+      labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL",
   }
   
   const newOwnerAddressField = {
     
       labelName: "New Owner Address",
-      labelKey: "EST_NEW_OWNER_ADDRESS_LABEL",
+      labelKey: "ES_NEW_OWNER_ADDRESS_LABEL",
   }
   
   const newOwnerMobileNumberField = {
@@ -55,33 +55,33 @@ export const purchaserHeader = getCommonTitle({
   const sellerNameField = {
     
       labelName: "Seller Name",
-      labelKey: "EST_SELLER_NAME_LABEL",
+      labelKey: "ES_SELLER_NAME_LABEL",
   }
   
   const sellerFatherHusbandNameField = {
       labelName: "Seller Father/Husband Name",
-      labelKey: "EST_SELLER_FATHER_HUSBAND_NAME_LABEL",
+      labelKey: "ES_SELLER_FATHER_HUSBAND_NAME_LABEL",
   }
   
   const shareField = {
     
       labelName: "% Share",
-      labelKey: "EST_PERCENT_SHARE_LABEL",
+      labelKey: "ES_PERCENT_SHARE_LABEL",
   }
   
   const modeOfTransferField = {
       labelName: "Mode of Transfer",
-      labelKey: "EST_MODE_OF_TRANSFER_LABEL",
+      labelKey: "ES_MODE_OF_TRANSFER_LABEL",
   }
   
   const registrationNumberField = {
       labelName: "Registration Number of the Property in Sub-Registrar Office",
-      labelKey: "EST_REGISTRATION_NUMBER_LABEL",
+      labelKey: "ES_REGISTRATION_NUMBER_LABEL",
   }
   
   const dateOfRegistrationField = {
       labelName: "Date of Registration",
-      labelKey: "EST_DATE_OF_REGISTRATION_LABEL",
+      labelKey: "ES_DATE_OF_REGISTRATION_LABEL",
   }
 
   export const editSection = {
@@ -139,7 +139,7 @@ export const headerDiv = {
             },
             ...getCommonSubHeader({
               labelName: "Purchaser Details",
-              labelKey: "EST_PURCHASER_DETAILS_HEADER"
+              labelKey: "ES_PURCHASER_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)

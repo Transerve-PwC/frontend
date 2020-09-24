@@ -28,16 +28,16 @@ const searchBy = {
   props: {
     label: {
       name: "Search By",
-      key: "EST_SEARCH_BY_LABEL"
+      key: "ES_SEARCH_BY_LABEL"
     },
     buttons: [{
         labelName: "File No.",
-        labelKey: "EST_FILE_NUMBER_LABEL",
+        labelKey: "ES_FILE_NUMBER_LABEL",
         value: "File Number"
       },
       {
         label: "Site No.",
-        labelKey: "EST_SITE_NUMBER_LABEL",
+        labelKey: "ES_SITE_NUMBER_LABEL",
         value: "Site Number"
       }
     ],
@@ -99,7 +99,7 @@ const searchBy = {
 export const estateApplication = getCommonCard({
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for a property",
-    labelKey: "EST_HOME_SEARCH_RESULTS_DESC"
+    labelKey: "ES_HOME_SEARCH_RESULTS_DESC"
   }),
   searchBoxContainer: getCommonContainer({
     searchBy: searchBy,
@@ -107,11 +107,11 @@ export const estateApplication = getCommonCard({
       fileNumber: getTextField({
         label: {
           labelName: "File No.",
-          labelKey: "EST_FILE_NUMBER_LABEL"
+          labelKey: "ES_FILE_NUMBER_LABEL"
         },
         placeholder: {
           labelName: "Enter File No.",
-          labelKey: "EST_FILE_NUMBER_PLACEHOLDER"
+          labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
         },
         gridDefination: {
           xs: 12,
@@ -125,11 +125,11 @@ export const estateApplication = getCommonCard({
       category: getSelectField({
         label: {
             labelName: "Category",
-            labelKey: "EST_CATEGORY_LABEL"
+            labelKey: "ES_CATEGORY_LABEL"
         },
         placeholder: {
             labelName: "Select Category",
-            labelKey: "EST_CATEGORY_PLACEHOLDER"
+            labelKey: "ES_CATEGORY_PLACEHOLDER"
         },
         visible: false,
         required: true,
@@ -180,11 +180,11 @@ export const estateApplication = getCommonCard({
       subCategory: getSelectField({
         label: {
           labelName: "Sub Category",
-          labelKey: "EST_SUBCATEGORY_LABEL"
+          labelKey: "ES_SUBCATEGORY_LABEL"
         },
         placeholder: {
             labelName: "Select Sub Category",
-            labelKey: "EST_SUBCATEGORY_PLACEHOLDER"
+            labelKey: "ES_SUBCATEGORY_PLACEHOLDER"
         },
         required: true,
         jsonPath: "searchScreenSiteNo.subCategory",
@@ -197,11 +197,11 @@ export const estateApplication = getCommonCard({
       siteNumber: getTextField({
         label: {
           labelName: "Site Number",
-          labelKey: "EST_SITE_NUMBER_LABEL"
+          labelKey: "ES_SITE_NUMBER_LABEL"
         },
         placeholder: {
             labelName: "Enter Site Number",
-            labelKey: "EST_SITE_NUMBER_PLACEHOLDER"
+            labelKey: "ES_SITE_NUMBER_PLACEHOLDER"
         },
         gridDefination: {
             xs: 12,
@@ -216,11 +216,11 @@ export const estateApplication = getCommonCard({
       sectorNumber: getSelectField({
         label: {
             labelName: "Sector Number",
-            labelKey: "EST_SECTOR_NUMBER_LABEL"
+            labelKey: "ES_SECTOR_NUMBER_LABEL"
         },
         placeholder: {
             labelName: "Select Sector Number",
-            labelKey: "EST_SECTOR_NUMBER_PLACEHOLDER"
+            labelKey: "ES_SECTOR_NUMBER_PLACEHOLDER"
         },
         // required: true,
         visible: false,
@@ -255,7 +255,7 @@ export const estateApplication = getCommonCard({
         children: {
           buttonLabel: getLabel({
             labelName: "Reset",
-            labelKey: "EST_HOME_SEARCH_RESULTS_BUTTON_RESET"
+            labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_RESET"
           })
         },
         onClickDefination: {
@@ -283,7 +283,7 @@ export const estateApplication = getCommonCard({
         children: {
           buttonLabel: getLabel({
             labelName: "Search",
-            labelKey: "EST_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+            labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
           })
         },
         onClickDefination: {

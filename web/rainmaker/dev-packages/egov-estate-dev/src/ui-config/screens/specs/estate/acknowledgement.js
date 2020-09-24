@@ -35,31 +35,31 @@ const getAcknowledgementCard = (
     if (purpose == "apply") {
       header = {
         labelName: "Estate Property Master Entry Submitted Successfully",
-        labelKey: "EST_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "forward") {
       header = {
         labelName: "Estate Property Master Entry Forwarded Successfully",
-        labelKey: "EST_MASTER_ENTRY_FORWARD_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_MASTER_ENTRY_FORWARD_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "sendback") {
       header = {
         labelName: "Estate Property Master Entry is Sent Back Successfully",
-        labelKey: "EST_MASTER_ENTRY_SENDBACK_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_MASTER_ENTRY_SENDBACK_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "reject") {
       header = {
         labelName: "Estate Property Master Entry Rejected",
-        labelKey: "EST_MASTER_ENTRY_REJECT_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_MASTER_ENTRY_REJECT_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "approve") {
       header = {
         labelName: "Estate Property Master Entry is Approved Successfully",
-        labelKey: "EST_MASTER_ENTRY_APPROVE_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_MASTER_ENTRY_APPROVE_SUCCESS_MESSAGE_MAIN"
       }
     }
     else {
@@ -69,31 +69,31 @@ const getAcknowledgementCard = (
     if (purpose == "apply") {
       header = {
         labelName: "Ownership transfer application Submitted Successfully",
-        labelKey: "EST_OWNERSHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_OWNERSHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "forward") {
       header = {
         labelName: "Ownership transfer application Forwarded Successfully",
-        labelKey: "EST_OWNERSHIP_TRANSFER_FORWARD_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_OWNERSHIP_TRANSFER_FORWARD_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "sendback") {
       header = {
         labelName: "Ownership transfer application is Sent Back Successfully",
-        labelKey: "EST_OWNERSHIP_TRANSFER_SENDBACK_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_OWNERSHIP_TRANSFER_SENDBACK_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "reject") {
       header = {
         labelName: "Ownership transfer application Rejected",
-        labelKey: "EST_OWNERSHIP_TRANSFER_REJECT_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_OWNERSHIP_TRANSFER_REJECT_SUCCESS_MESSAGE_MAIN"
       }
     }
     else if (purpose == "approve") {
       header = {
         labelName: "Ownership transfer application Approved Successfully",
-        labelKey: "EST_OWNERSHIP_TRANSFER_APPROVE_SUCCESS_MESSAGE_MAIN"
+        labelKey: "ES_OWNERSHIP_TRANSFER_APPROVE_SUCCESS_MESSAGE_MAIN"
       }
     }
     else {
@@ -104,17 +104,17 @@ const getAcknowledgementCard = (
     const tailText = !!applicationNumber ? 
     {
       labelName: "Application Number",
-      labelKey: "EST_APPLICATION_NUMBER_LABEL"
+      labelKey: "ES_APPLICATION_NUMBER_LABEL"
     }
     : {
       labelName: "File Number",
-      labelKey: "EST_FILE_NUMBER_LABEL"
+      labelKey: "ES_FILE_NUMBER_LABEL"
     }
 
     return {
       header: getCommonHeader({
         labelName: `Estates`,
-        labelKey: "EST_COMMON_ESTATES",
+        labelKey: "ES_COMMON_ESTATES",
       }),
       applicationSuccessCard: {
         uiFramework: "custom-atoms",

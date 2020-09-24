@@ -2574,7 +2574,7 @@ export const getTextToLocalMapping = label => {
     case "Action":
       return getLocaleLabels(
         "Action",
-        "EST_COMMON_TABLE_COL_ACTION",
+        "ES_COMMON_TABLE_COL_ACTION",
         localisationLabels
       );
     case "File No":
@@ -2586,43 +2586,43 @@ export const getTextToLocalMapping = label => {
     case "Property Id":
       return getLocaleLabels(
         "Property Id",
-        "EST_COMMON_TABLE_COL_PROPERTY_ID",
+        "ES_COMMON_TABLE_COL_PROPERTY_ID",
         localisationLabels
       );
     case "House No":
       return getLocaleLabels(
         "House No",
-        "EST_COMMON_TABLE_COL_HOUSE_NUMBER",
+        "ES_COMMON_TABLE_COL_HOUSE_NUMBER",
         localisationLabels
       );
     case "Site Number":
       return getLocaleLabels(
         "Site Number",
-        "EST_COMMON_TABLE_COL_SITE_NUMBER",
+        "ES_COMMON_TABLE_COL_SITE_NUMBER",
         localisationLabels
       );
     case "Owner Name":
       return getLocaleLabels(
         "Owner Name",
-        "EST_COMMON_TABLE_COL_OWN_NAME",
+        "ES_COMMON_TABLE_COL_OWN_NAME",
         localisationLabels
       );
     case "Mobile No":
       return getLocaleLabels(
         "Mobile No",
-        "EST_COMMON_TABLE_COL_MOBILE_NUMBER",
+        "ES_COMMON_TABLE_COL_MOBILE_NUMBER",
         localisationLabels
       );
     case "Search Results for Properties":
       return getLocaleLabels(
         "Search Results for Properties",
-        "EST_SEARCH_RESULTS_TABLE_HEADING",
+        "ES_SEARCH_RESULTS_TABLE_HEADING",
         localisationLabels
       );
     case "Last Modified On":
       return getLocaleLabels(
         "Last Modified On",
-        "EST_LAST_MODIFIED_ON",
+        "ES_LAST_MODIFIED_ON",
         localisationLabels
       );
   }

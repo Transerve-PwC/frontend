@@ -12,7 +12,7 @@ import { registerDatasource } from "./dataSources";
 
 const header = getCommonHeader({
     labelName: "Apply",
-    labelKey: "EST_COMMON_APPLY"
+    labelKey: "ES_COMMON_APPLY"
   });
 
 const getPropertyData = async (action, state, dispatch) => {

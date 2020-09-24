@@ -19,7 +19,7 @@ import get from "lodash/get";
 
 export const auctionDetailsHeader = getCommonTitle({
   labelName: "Auction Details",
-  labelKey: "EST_AUCTION_DETAILS_HEADER"
+  labelKey: "ES_AUCTION_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -29,7 +29,7 @@ export const auctionDetailsHeader = getCommonTitle({
 
 export const biddersListHeader = getCommonTitle({
   labelName: "Bidders List Upload",
-  labelKey: "EST_BIDDERS_LIST_HEADER"
+  labelKey: "ES_BIDDERS_LIST_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -40,11 +40,11 @@ export const biddersListHeader = getCommonTitle({
 const auctionIdField = {
   label: {
     labelName: "Auction Id",
-    labelKey: "EST_AUCTION_ID_LABEL"
+    labelKey: "ES_AUCTION_ID_LABEL"
   },
   placeholder: {
     labelName: "Enter Auction Id",
-    labelKey: "EST_AUCTION_ID_PLACEHOLDER"
+    labelKey: "ES_AUCTION_ID_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -57,11 +57,11 @@ const auctionIdField = {
 const schemeName = {
   label: {
     labelName: "Scheme Name",
-    labelKey: "EST_SCHEME_NAME_LABEL"
+    labelKey: "ES_SCHEME_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Scheme Name",
-    labelKey: "EST_SCHEME_NAME_PLACEHOLDER"
+    labelKey: "ES_SCHEME_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -74,11 +74,11 @@ const schemeName = {
 const dateOfAuction = {
   label: {
     labelName: "Date Of Auction",
-    labelKey: "EST_DATE_OF_AUCTION_LABEL"
+    labelKey: "ES_DATE_OF_AUCTION_LABEL"
   },
   placeholder: {
     labelName: "Enter Date Of Aunction",
-    labelKey: "EST_DATE_OF_AUCTION_PLACEHOLDER"
+    labelKey: "ES_DATE_OF_AUCTION_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -91,11 +91,11 @@ const dateOfAuction = {
 const modeOfAuction = {
   label: {
     labelName: "Mode Of Auction",
-    labelKey: "EST_MODE_OF_AUCTION_LABEL"
+    labelKey: "ES_MODE_OF_AUCTION_LABEL"
   },
   placeholder: {
     labelName: "Enter Mode Of Auction",
-    labelKey: "EST_MODE_OF_AUCTION_PLACEHOLDER"
+    labelKey: "ES_MODE_OF_AUCTION_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -108,11 +108,11 @@ const modeOfAuction = {
 const emdAmount = {
   label: {
     labelName: "EMD Amount",
-    labelKey: "EST_EMD_AMOUNT_LABEL"
+    labelKey: "ES_EMD_AMOUNT_LABEL"
   },
   placeholder: {
     labelName: "Enter EMD Amount",
-    labelKey: "EST_EMD_AMOUNT_PLACEHOLDER"
+    labelKey: "ES_EMD_AMOUNT_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -125,11 +125,11 @@ const emdAmount = {
 const emdAmountDate = {
   label: {
     labelName: "EMD Date",
-    labelKey: "EST_EMD_DATE_LABEL"
+    labelKey: "ES_EMD_DATE_LABEL"
   },
   placeholder: {
     labelName: "Enter EMD Date",
-    labelKey: "EST_EMD_DATE_PLACEHOLDER"
+    labelKey: "ES_EMD_DATE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -168,7 +168,7 @@ const buttonItem = {
     children: {
       buttonLabel: getLabel({
         labelName: "Upload",
-        labelKey: "EST_UPLOAD_BUTTON"
+        labelKey: "ES_UPLOAD_BUTTON"
       })
     }
   }
@@ -178,7 +178,7 @@ const commonAuctionInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Auction Details",
-      labelKey: "EST_AUCTION_DETAILS_HEADER"
+      labelKey: "ES_AUCTION_DETAILS_HEADER"
     }, {
       style: {
         marginBottom: 18

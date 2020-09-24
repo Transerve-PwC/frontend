@@ -21,71 +21,71 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
-  labelKey: "EST_ALLOCATION_TYPE_LABEL"
+  labelKey: "ES_ALLOCATION_TYPE_LABEL"
 }
 const modeOfAuctionLabel = {
   labelName: "Mode Of Auction",
-  labelKey: "EST_MODE_OF_AUCTION_LABEL"
+  labelKey: "ES_MODE_OF_AUCTION_LABEL"
 }
 const schemeNameLabel = {
   labelName: "Scheme Name",
-  labelKey: "EST_SCHEME_NAME_LABEL"
+  labelKey: "ES_SCHEME_NAME_LABEL"
 }
 const dateOfAuctionLabel = {
   labelName: "Date of Auction",
-  labelKey: "EST_DATE_OF_AUCTION_LABEL"
+  labelKey: "ES_DATE_OF_AUCTION_LABEL"
 }
 const dateOfAllotmentLabel = {
   labelName: "Date of Allotment",
-  labelKey: "EST_DATE_OF_ALLOTMENT_LABEL"
+  labelKey: "ES_DATE_OF_ALLOTMENT_LABEL"
 }
 const allotmentNumberLabel = {
   labelName: "Allotment Number",
-  labelKey: "EST_ALLOTMENT_NUMBER_LABEL"
+  labelKey: "ES_ALLOTMENT_NUMBER_LABEL"
 }
 const areaOfPropertyLabel = {
   labelName: "Area of Property",
-  labelKey: "EST_AREA_OF_PROPERTY_LABEL"
+  labelKey: "ES_AREA_OF_PROPERTY_LABEL"
 }
 const rateLabel = {
   labelName: "Rate",
-  labelKey: "EST_RATE_LABEL"
+  labelKey: "ES_RATE_LABEL"
 }
 const possessionDateLabel = {
   labelName: "Possession Date",
-  labelKey: "EST_POSSESSION_DATE_LABEL"
+  labelKey: "ES_POSSESSION_DATE_LABEL"
 }
 const categoryLabel = {
   labelName: "Category",
-  labelKey: "EST_CATEGORY_LABEL"
+  labelKey: "ES_CATEGORY_LABEL"
 }
 const subCategoryLabel = {
   labelName: "Sub Category",
-  labelKey: "EST_SUBCATEGORY_LABEL"
+  labelKey: "ES_SUBCATEGORY_LABEL"
 }
 const siteNumberLabel = {
   labelName: "Site Number",
-  labelKey: "EST_SITE_NUMBER_LABEL"
+  labelKey: "ES_SITE_NUMBER_LABEL"
 }
 const sectorNumberLabel = {
   labelName: "Sector Number",
-  labelKey: "EST_SECTOR_NUMBER_LABEL"
+  labelKey: "ES_SECTOR_NUMBER_LABEL"
 }
 const fileNumberLabel = {
   labelName: "File Number",
-  labelKey: "EST_FILE_NUMBER_LABEL"
+  labelKey: "ES_FILE_NUMBER_LABEL"
 }
 const lastNocDateLabel = {
   labelName: "Last NOC Date",
-  labelKey: "EST_LAST_NOC_DATE_LABEL"
+  labelKey: "ES_LAST_NOC_DATE_LABEL"
 }
 const propertyTypeLabel = {
   labelName: "Property Type",
-  labelKey: "EST_PROPERTY_TYPE_LABEL"
+  labelKey: "ES_PROPERTY_TYPE_LABEL"
 }
 const serviceCategoryLabel = {
   labelName: "Service Category",
-  labelKey: "EST_SERVICE_CATEGORY_LABEL"
+  labelKey: "ES_SERVICE_CATEGORY_LABEL"
 }
 
 export const editSection = {
@@ -108,7 +108,7 @@ export const editSection = {
     },
     buttonLabel: getLabel({
       labelName: "Edit",
-      labelKey: "EST_SUMMARY_EDIT"
+      labelKey: "ES_SUMMARY_EDIT"
     })
   }
 }
@@ -154,7 +154,7 @@ export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") =>
           },
           ...getCommonSubHeader({
             labelName: "Property INFO",
-            labelKey: "EST_PROPERTY_INFO_HEADER"
+            labelKey: "ES_PROPERTY_INFO_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 0, screenkey)
@@ -222,7 +222,7 @@ export const getReviewAuction = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Auction Details",
-            labelKey: "EST_AUCTION_DETAILS_HEADER"
+            labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 0)
@@ -261,7 +261,7 @@ export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
           },
           ...getCommonSubHeader({
             labelName: "NOC Details",
-            labelKey: "EST_NOC_DETAILS_HEADER"
+            labelKey: "ES_NOC_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 0, screenkey)
@@ -286,19 +286,19 @@ export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
 /* Owner review */
 const ownerNameLabel = {
   labelName: "Owner Name",
-  labelKey: "EST_MODE_OF_AUCTION_LABEL"
+  labelKey: "ES_MODE_OF_AUCTION_LABEL"
 }
 const fatherHusbandNameLabel = {
   labelName: "Father/Husband Name",
-  labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+  labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
 }
 const relationshipLabel = {
   labelName: "Relationship",
-  labelKey: "EST_RELATIONSHIP_LABEL"
+  labelKey: "ES_RELATIONSHIP_LABEL"
 }
 const addressLabel = {
   labelName: "Address",
-  labelKey: "EST_ADDRESS_LABEL"
+  labelKey: "ES_ADDRESS_LABEL"
 }
 const mobileNumberLabel = {
   labelName: "Mobile No.",
@@ -306,11 +306,11 @@ const mobileNumberLabel = {
 }
 const shareLabel = {
   labelName: "Share",
-  labelKey: "EST_SHARE_LABEL"
+  labelKey: "ES_SHARE_LABEL"
 }
 const cpNumberLabel = {
   labelName: "CP No.",
-  labelKey: "EST_CP_NUMBER_LABEL"
+  labelKey: "ES_CP_NUMBER_LABEL"
 }
 
 export const getReviewOwner = (isEditable = true, owner = 0) => {
@@ -325,7 +325,7 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
           },
           ...getCommonSubHeader({
             labelName: "Owner Details",
-            labelKey: "EST_OWNER_DETAILS_HEADER"
+            labelKey: "ES_OWNER_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 1)
@@ -391,15 +391,15 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
 /* purchaser review */
 const newOwnerNameLabel = {
   labelName: "New Owner Name",
-  labelKey: "EST_NEW_OWNER_NAME_LABEL"
+  labelKey: "ES_NEW_OWNER_NAME_LABEL"
 }
 const newOwnerFatherHusbandNameLabel = {
   labelName: "New Father/Husband Name",
-  labelKey: "EST_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
+  labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
 }
 const newOwnerAddressLabel = {
   labelName: "New Owner Address",
-  labelKey: "EST_NEW_OWNER_ADDRESS_LABEL"
+  labelKey: "ES_NEW_OWNER_ADDRESS_LABEL"
 }
 const newOwnerMobileNumberLabel = {
   labelName: "New Owner Mobile No.",
@@ -407,27 +407,27 @@ const newOwnerMobileNumberLabel = {
 }
 const sellerNameLabel = {
   labelName: "Seller Name",
-  labelKey: "EST_SELLER_NAME_LABEL"
+  labelKey: "ES_SELLER_NAME_LABEL"
 }
 const sellerFatherHusbandNameLabel = {
   labelName: "Seller Father/Husband Name",
-  labelKey: "EST_SELLER_FATHER_HUSBAND_NAME_LABEL"
+  labelKey: "ES_SELLER_FATHER_HUSBAND_NAME_LABEL"
 }
 const percentShareLabel = {
   labelName: "% Share",
-  labelKey: "EST_PERCENT_SHARE_LABEL"
+  labelKey: "ES_PERCENT_SHARE_LABEL"
 }
 const modeOfTransferLabel = {
   labelName: "Mode of Transfer",
-  labelKey: "EST_MODE_OF_TRANSFER_LABEL"
+  labelKey: "ES_MODE_OF_TRANSFER_LABEL"
 }
 const registrationNumberLabel = {
   labelName: "Registration Number of the Property in Sub-Registrar Office",
-  labelKey: "EST_REGISTRATION_NUMBER_LABEL"
+  labelKey: "ES_REGISTRATION_NUMBER_LABEL"
 }
 const dateOfRegistrationLabel = {
   labelName: "Date of Registration",
-  labelKey: "EST_DATE_OF_REGISTRATION_LABEL"
+  labelKey: "ES_DATE_OF_REGISTRATION_LABEL"
 }
 
 export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
@@ -442,7 +442,7 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
           },
           ...getCommonSubHeader({
             labelName: "Purchaser Details",
-            labelKey: "EST_PURCHASER_DETAILS_HEADER"
+            labelKey: "ES_PURCHASER_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 2)
@@ -512,68 +512,68 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
 /* Ground rent review */
 const dueDateOfPaymentLabel = {
   labelName: "Due Date of payment",
-  labelKey: "EST_DUE_DATE_OF_PAYMENT_LABEL"
+  labelKey: "ES_DUE_DATE_OF_PAYMENT_LABEL"
 }
 const payableLabel = {
   labelName: "Payable",
-  labelKey: "EST_PAYABLE_LABEL"
+  labelKey: "ES_PAYABLE_LABEL"
 }
 const amountOfGRLabel = {
   labelName: "Amount of GR",
-  labelKey: "EST_AMOUNT_OF_GR_LABEL"
+  labelKey: "ES_AMOUNT_OF_GR_LABEL"
 }
 const totalGRLabel = {
   labelName: "Total GR",
-  labelKey: "EST_TOTAL_GR_LABEL"
+  labelKey: "ES_TOTAL_GR_LABEL"
 }
 const dateOfDepositLabel = {
   labelName: "Date of Deposit",
-  labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
+  labelKey: "ES_DATE_OF_DEPOSIT_LABEL"
 }
 const delayInPaymentLabel = {
   labelName: "Delay in Payment",
-  labelKey: "EST_DELAY_IN_PAYMENT_LABEL"
+  labelKey: "ES_DELAY_IN_PAYMENT_LABEL"
 }
 const interestForDelayLabel = {
   labelName: "Interest for Delay",
-  labelKey: "EST_INTEREST_FOR_DELAY_LABEL"
+  labelKey: "ES_INTERES_FOR_DELAY_LABEL"
 }
 const totalAmountDueWithInterestLabel = {
   labelName: "Total Amount Due with Interest",
-  labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_LABEL"
+  labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_LABEL"
 }
 const amountDepositedGRLabel = {
   labelName: "Amount Deposited GR",
-  labelKey: "EST_AMOUNT_DEPOSITED_GR_LABEL"
+  labelKey: "ES_AMOUNT_DEPOSITED_GR_LABEL"
 }
 const amountDepositedInttLabel = {
   labelName: "Amount Deposited Intt",
-  labelKey: "EST_AMOUNT_DEPOSITED_INTT_LABEL"
+  labelKey: "ES_AMOUNT_DEPOSITED_INTT_LABEL"
 }
 const balanceGRLabel = {
   labelName: "Balance(+due, -excess) GR",
-  labelKey: "EST_BALANCE_GR_LABEL"
+  labelKey: "ES_BALANCE_GR_LABEL"
 }
 const balanceInttLabel = {
   labelName: "Balance(+due, -excess) Intt",
-  labelKey: "EST_BALANCE_INTT_LABEL"
+  labelKey: "ES_BALANCE_INTT_LABEL"
 }
 const totalDueLabel = {
   labelName: "Total Due",
-  labelKey: "EST_TOTAL_DUE_LABEL"
+  labelKey: "ES_TOTAL_DUE_LABEL"
 }
 const receiptNumberLabel = {
   labelName: "Receipt No.",
-  labelKey: "EST_RECEIPT_NUMBER_LABEL"
+  labelKey: "ES_RECEIPT_NUMBER_LABEL"
 }
 const receiptDateLabel = {
   labelName: "Receipt Date",
-  labelKey: "EST_RECEIPT_DATE_LABEL"
+  labelKey: "ES_RECEIPT_DATE_LABEL"
 }
 
 export const groundRentHeader = getCommonTitle({
   labelName: "Ground Rent Details",
-  labelKey: "EST_GROUND_RENT_DETAILS_HEADER"
+  labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -584,7 +584,7 @@ export const groundRentHeader = getCommonTitle({
 
 export const serviceTaxHeader = getCommonTitle({
   labelName: "Service Tax/GST Details",
-  labelKey: "EST_SERVICE_TAX_DETAILS_HEADER"
+  labelKey: "ES_SERVICE_TAX_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -596,31 +596,31 @@ export const serviceTaxHeader = getCommonTitle({
 /* Service tax review */
 const rateOfStOrGstLabel = {
   labelName: "Rate of ST/GST",
-  labelKey: "EST_RATE_ST_GST_LABEL"
+  labelKey: "ES_RATE_ST_GST_LABEL"
 }
 const amountOfGstLabel = {
   labelName: "Amount of GST",
-  labelKey: "EST_AMOUNT_OF_GST_LABEL"
+  labelKey: "ES_AMOUNT_OF_GST_LABEL"
 }
 const amountDueLabel = {
   labelName: "Amount Due",
-  labelKey: "EST_AMOUNT_DUE_LABEL"
+  labelKey: "ES_AMOUNT_DUE_LABEL"
 }
 const amountDepositedSTLabel = {
   labelName: "Amount Deposited ST/GST",
-  labelKey: "EST_AMOUNT_DEPOSITED_ST_LABEL"
+  labelKey: "ES_AMOUNT_DEPOSITED_ST_LABEL"
 }
 const balanceStLabel = {
   labelName: "Balance ST/GST",
-  labelKey: "EST_BALANCE_ST_LABEL"
+  labelKey: "ES_BALANCE_ST_LABEL"
 }
 const balanceInttLabelST = {
   labelName: "Balance Intt",
-  labelKey: "EST_BALANCE_INTT_LABEL"
+  labelKey: "ES_BALANCE_INTT_LABEL"
 }
 const paymentMadeByLabel = {
   labelName: "Payment Made By",
-  labelKey: "EST_PAYMENT_MADE_BY_LABEL"
+  labelKey: "ES_PAYMENT_MADE_BY_LABEL"
 }
 
 export const getReviewPayment = (isEditable = true, owner) => {
@@ -635,7 +635,7 @@ export const getReviewPayment = (isEditable = true, owner) => {
           },
           ...getCommonSubHeader({
             labelName: "Payment Details",
-            labelKey: "EST_PAYMENT_DETAILS_HEADER"
+            labelKey: "ES_PAYMENT_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 4)
@@ -809,31 +809,31 @@ export const getReviewPayment = (isEditable = true, owner) => {
 /* Court case review */
 const estateOfficerCourtLabel = {
   labelName: "Estate Officer Court",
-  labelKey: "EST_ESTATE_OFFICER_COURT_LABEL"
+  labelKey: "ES_ESTATE_OFFICER_COURT_LABEL"
 }
 const commissionersCourtLabel = {
   labelName: "Commissioners Court",
-  labelKey: "EST_COMMISSIONERS_COURT_LABEL"
+  labelKey: "ES_COMMISSIONERS_COURT_LABEL"
 }
 const chiefAdministratorsCourtLabel = {
   labelName: "Chief Administrators Court",
-  labelKey: "EST_CHIEF_ADMINISTRATORS_COURT_LABEL"
+  labelKey: "ES_CHIEF_ADMINISTRATORS_COURT_LABEL"
 }
 const advisorToAdminCourtLabel = {
   labelName: "Advisor to Admin Court",
-  labelKey: "EST_ADVISOR_TO_ADMIN_COURT_LABEL"
+  labelKey: "ES_ADVISOR_TO_ADMIN_COURT_LABEL"
 }
 const honbleDistrictCourtLabel = {
   labelName: "Hon'ble District Court",
-  labelKey: "EST_HONBLE_DISTRICT_COURT_LABEL"
+  labelKey: "ES_HONBLE_DISTRICT_COURT_LABEL"
 }
 const honbleHighCourtLabel = {
   labelName: "Hon'ble High Court",
-  labelKey: "EST_HONBLE_HIGH_COURT_LABEL"
+  labelKey: "ES_HONBLE_HIGH_COURT_LABEL"
 }
 const honbleSupremeCourtLabel = {
   labelName: "Hon'ble Supreme Court",
-  labelKey: "EST_HONBLE_SUPREME_COURT_LABEL"
+  labelKey: "ES_HONBLE_SUPREME_COURT_LABEL"
 }
 
 export const getReviewCourtCase = (isEditable = true, owner = 0) => {
@@ -848,7 +848,7 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
           },
           ...getCommonSubHeader({
             labelName: "Court Case Details",
-            labelKey: "EST_COURT_CASE_DETAILS_HEADER"
+            labelKey: "ES_COURT_CASE_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 3)
@@ -906,7 +906,7 @@ export const getReviewPremiumAmount = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Premium Amount Details",
-            labelKey: "EST_PREMIUM_AMOUNT_DETAILS_HEADER"
+            labelKey: "ES_PREMIUM_AMOUNT_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 8, "allotment")
@@ -916,7 +916,7 @@ export const getReviewPremiumAmount = (isEditable = true) => {
       premiumAmount: getLabelWithValue(
         {
           labelName: "Premium Amount",
-          labelKey: "EST_PREMIUM_AMOUNT_LABEL"
+          labelKey: "ES_PREMIUM_AMOUNT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -939,7 +939,7 @@ export const getReviewGroundRent = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Ground Rent Details",
-            labelKey: "EST_GROUND_RENT_DETAILS_HEADER"
+            labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 8, "allotment")
@@ -949,7 +949,7 @@ export const getReviewGroundRent = (isEditable = true) => {
       groundRentGenerationType: getLabelWithValue(
         {
           labelName: "Ground Rent Generation Type",
-          labelKey: "EST_GROUND_RENT_GENERATION_TYPE_LABEL"
+          labelKey: "ES_GROUND_RENT_GENERATION_TYPE_LABEL"
         }, 
         {
           jsonPath: ``
@@ -958,7 +958,7 @@ export const getReviewGroundRent = (isEditable = true) => {
       billingStartDate: getLabelWithValue(
         {
           labelName: "Billing Start Date",
-          labelKey: "EST_BILLING_START_DATE_LABEL"
+          labelKey: "ES_BILLING_START_DATE_LABEL"
         }, 
         {
           jsonPath: ``
@@ -967,7 +967,7 @@ export const getReviewGroundRent = (isEditable = true) => {
       dateToGenerateDemandRent: getLabelWithValue(
         {
           labelName: "Date to Generate the Demand/Rent",
-          labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
+          labelKey: "ES_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -990,7 +990,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Advance Rent Details",
-            labelKey: "EST_ADVANCE_RENT_DETAILS_HEADER"
+            labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 8, "allotment")
@@ -1000,7 +1000,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
       advanceRent: getLabelWithValue(
         {
           labelName: "Advance Rent",
-          labelKey: "EST_ADVANCED_RENT_LABEL"
+          labelKey: "ES_ADVANCED_RENT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1009,7 +1009,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
       dateOfPaymentOfAdvanceRent: getLabelWithValue(
         {
           labelName: "Date of Payment of Advance Rent",
-          labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
+          labelKey: "ES_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1031,7 +1031,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "License Fee Details",
-            labelKey: "EST_LICENSE_FEE_DETAILS_HEADER"
+            labelKey: "ES_LICENSE_FEE_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 8, "allotment")
@@ -1041,7 +1041,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
       demandDenerationType: getLabelWithValue(
         {
           labelName: "License Fee Generation Type",
-          labelKey: "EST_LICENSE_FEE_GENERATION_TYPE_LABEL"
+          labelKey: "ES_LICENSE_FEE_GENERATION_TYPE_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1050,7 +1050,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
       dateToGenerateDemand: getLabelWithValue(
         {
           labelName: "Date to Generate the Demand/License Fee",
-          labelKey: "EST_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_LABEL"
+          labelKey: "ES_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1059,7 +1059,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
       billingStartDate: getLabelWithValue(
         {
           labelName: "Billing Start Date",
-          labelKey: "EST_BILLING_START_DATE_LABEL"
+          labelKey: "ES_BILLING_START_DATE_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1082,7 +1082,7 @@ export const getReviewSecurity = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Security Details",
-            labelKey: "EST_SECURITY_DETAILS_HEADER"
+            labelKey: "ES_SECURITY_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 8, "allotment")
@@ -1092,7 +1092,7 @@ export const getReviewSecurity = (isEditable = true) => {
       securityFeeAmount: getLabelWithValue(
         {
           labelName: "Security Fee Amount",
-          labelKey: "EST_SECURITY_FEE_AMOUNT_LABEL"
+          labelKey: "ES_SECURITY_FEE_AMOUNT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1101,7 +1101,7 @@ export const getReviewSecurity = (isEditable = true) => {
       securityFeeDateOfPayment: getLabelWithValue(
         {
           labelName: "Date of Payment",
-          labelKey: "EST_DATE_OF_PAYMENT_LABEL"
+          labelKey: "ES_DATE_OF_PAYMENT_LABEL"
         }, 
         {
           jsonPath: ``
@@ -1123,7 +1123,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Auction Details",
-            labelKey: "EST_AUCTION_DETAILS_HEADER"
+            labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 2, "allotment")
@@ -1133,7 +1133,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       auctionId: getLabelWithValue(
         {
           labelName: "Auction Id",
-          labelKey: "EST_AUCTION_ID_LABEL"
+          labelKey: "ES_AUCTION_ID_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.auctionId`
@@ -1142,7 +1142,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       schemeName: getLabelWithValue(
         {
           labelName: "Scheme Name",
-          labelKey: "EST_ESTATE_SCHEME_NAME_LABEL"
+          labelKey: "ES_ESTATE_SCHEME_NAME_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.schemeName`
@@ -1151,7 +1151,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       dateOfAuction: getLabelWithValue(
         {
           labelName: "Date Of Auction",
-          labelKey: "EST_DATE_OF_AUCTION_LABEL"
+          labelKey: "ES_DATE_OF_AUCTION_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.dateOfAuction`
@@ -1160,7 +1160,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       modeOfAuction: getLabelWithValue(
         {
           labelName: "Mode Of Auction",
-          labelKey: "EST_MODE_OF_AUCTION_LABEL"
+          labelKey: "ES_MODE_OF_AUCTION_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.modeOfAuction`
@@ -1169,7 +1169,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       emdAmount: getLabelWithValue(
         {
           labelName: "EMD Amount",
-          labelKey: "EST_EMD_AMOUNT_LABEL"
+          labelKey: "ES_EMD_AMOUNT_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.emdAmount`
@@ -1178,7 +1178,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
       emdAmountDate: getLabelWithValue(
         {
           labelName: "EMD Date",
-          labelKey: "EST_EMD_DATE_LABEL"
+          labelKey: "ES_EMD_DATE_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.emdDate`
@@ -1200,7 +1200,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
           },
           ...getCommonSubHeader({
             labelName: "Company Details",
-            labelKey: "EST_COMPANY_DETAILS_HEADER"
+            labelKey: "ES_COMPANY_DETAILS_HEADER"
           })
         },
         editSection: masterEntryEditSection(isEditable, 2, "allotment")
@@ -1210,7 +1210,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyName: getLabelWithValue(
         {
           labelName: "Company Name",
-          labelKey: "EST_COMPANY_NAME_LABEL"
+          labelKey: "ES_COMPANY_NAME_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyName`
@@ -1219,7 +1219,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyAddress: getLabelWithValue(
         {
           labelName: "Company Address",
-          labelKey: "EST_ESTATE_COMPANY_ADDRESS_LABEL"
+          labelKey: "ES_ESTATE_COMPANY_ADDRESS_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyAddress`
@@ -1228,7 +1228,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyRegNo: getLabelWithValue(
         {
           labelName: "Company Registration Number",
-          labelKey: "EST_COMPANY_REG_NO_LABEL"
+          labelKey: "ES_COMPANY_REG_NO_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyRegNo`
@@ -1237,7 +1237,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyType: getLabelWithValue(
         {
           labelName: "Company Type",
-          labelKey: "EST_COMPANY_TYPE_LABEL"
+          labelKey: "ES_COMPANY_TYPE_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyType`
@@ -1246,7 +1246,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyShareholderName: getLabelWithValue(
         {
           labelName: "Company Shareholder Name",
-          labelKey: "EST_COMPANY_SHAREHOLDER_NAME_LABEL"
+          labelKey: "ES_COMPANY_SHAREHOLDER_NAME_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyShareHolderName`
@@ -1255,7 +1255,7 @@ export const getReviewCompanyDetails = (isEditable = true) => {
       companyShare: getLabelWithValue(
         {
           labelName: "Company Share %",
-          labelKey: "EST_COMPANY_SHARE_LABEL"
+          labelKey: "ES_COMPANY_SHARE_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.companyShare`
@@ -1275,7 +1275,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`installment_${i}`] = getLabelWithValue(
           {
             labelName: "Installment",
-            labelKey: "EST_INSTALLMENT_LABEL"
+            labelKey: "ES_INSTALLMENT_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].installments[${i}].installmentAmount`
@@ -1285,7 +1285,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`dueDateForInstallment_${i}`] = getLabelWithValue(
           {
             labelName: "Due Date for Installment",
-            labelKey: "EST_DUE_DATE_INSTALLMENT_LABEL"
+            labelKey: "ES_DUE_DATE_INSTALLMENT_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].installments[${i}].dueDate`
@@ -1298,7 +1298,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`rentAmount_${i}`] = getLabelWithValue(
           {
             labelName: "Rent Amount",
-            labelKey: "EST_RENT_AMOUNT_LABEL"
+            labelKey: "ES_RENT_AMOUNT_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].rentAmount`
@@ -1308,7 +1308,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`startYear_${i}`] = getLabelWithValue(
           {
             labelName: "Start Year",
-            labelKey: "EST_START_YEAR_LABEL"
+            labelKey: "ES_START_YEAR_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].startYear`
@@ -1318,7 +1318,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`endYear_${i}`] = getLabelWithValue(
           {
             labelName: "End Year",
-            labelKey: "EST_END_YEAR_LABEL"
+            labelKey: "ES_END_YEAR_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].rent[${i}].endYear`
@@ -1332,7 +1332,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`licenseFee_${i}`] = getLabelWithValue(
           {
             labelName: "License Fee",
-            labelKey: "EST_LICENSE_FEE_LABEL"
+            labelKey: "ES_LICENSE_FEE_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].licenseFee`
@@ -1342,7 +1342,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`startYear_${i}`] = getLabelWithValue(
           {
             labelName: "Start Year",
-            labelKey: "EST_START_YEAR_LABEL"
+            labelKey: "ES_START_YEAR_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].startYear`
@@ -1352,7 +1352,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`endYear_${i}`] = getLabelWithValue(
           {
             labelName: "End Year",
-            labelKey: "EST_END_YEAR_LABEL"
+            labelKey: "ES_END_YEAR_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentDetails[0].licenseFee[${i}].endYear`
@@ -1366,7 +1366,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerName_${i}`] = getLabelWithValue(
           {
             labelName: "Partner Name",
-            labelKey: "EST_PARTNER_NAME_LABEL"
+            labelKey: "ES_PARTNER_NAME_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.partnerName`
@@ -1376,7 +1376,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`guardianName_${i}`] = getLabelWithValue(
           {
             labelName: "Father/Husband Name",
-            labelKey: "EST_FATHER_HUSBAND_NAME_LABEL"
+            labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianName`
@@ -1386,7 +1386,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`guardianRelation_${i}`] = getLabelWithValue(
           {
             labelName: "Relationship",
-            labelKey: "EST_RELATIONSHIP_LABEL"
+            labelKey: "ES_RELATIONSHIP_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.guardianRelation`
@@ -1396,7 +1396,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerAddress_${i}`] = getLabelWithValue(
           {
             labelName: "Partner Address",
-            labelKey: "EST_PARTNER_ADDRESS_LABEL"
+            labelKey: "ES_PARTNER_ADDRESS_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.address`
@@ -1406,7 +1406,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerMobileNumber_${i}`] = getLabelWithValue(
           {
             labelName: "Partner Mobile Number",
-            labelKey: "EST_PARTNER_MOBILE_LABEL"
+            labelKey: "ES_PARTNER_MOBILE_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[${i}].partnerDetails.mobileNumber`
@@ -1416,7 +1416,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerShare_${i}`] = getLabelWithValue(
           {
             labelName: "Partner Share",
-            labelKey: "EST_PARTNER_SHARE_LABEL"
+            labelKey: "ES_PARTNER_SHARE_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
@@ -1426,7 +1426,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerShare_${i}`] = getLabelWithValue(
           {
             labelName: "Partner Share",
-            labelKey: "EST_PARTNER_SHARE_LABEL"
+            labelKey: "ES_PARTNER_SHARE_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.share`
@@ -1436,7 +1436,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`partnerCPNumber_${i}`] = getLabelWithValue(
           {
             labelName: "PPartner CP Number",
-            labelKey: "EST_PARTNER_CP_NUMBER_LABEL"
+            labelKey: "ES_PARTNER_CP_NUMBER_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.partners[0].partnerDetails.cpNumber`

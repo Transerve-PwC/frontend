@@ -26,11 +26,11 @@ new Array(28).fill(undefined).map((val,idx) => {
 const advancedRentField = {
   label: {
       labelName: "Advance Rent",
-      labelKey: "EST_ADVANCED_RENT_LABEL"
+      labelKey: "ES_ADVANCED_RENT_LABEL"
   },
   placeholder: {
       labelName: "Enter Advanced Rent",
-      labelKey: "EST_ADVANCED_RENT_PLACEHOLDER"
+      labelKey: "ES_ADVANCED_RENT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -43,11 +43,11 @@ const advancedRentField = {
 const dateOfPaymentOfAdvanceRentField = {
   label: {
       labelName: "Date of Payment of Advance Rent",
-      labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
+      labelKey: "ES_DATE_OF_PAYMENT_OF_ADVANCE_RENT_LABEL"
   },
   placeholder: {
       labelName: "Enter Date of Payment of Advance Rent",
-      labelKey: "EST_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
+      labelKey: "ES_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateOfPaymentOfAdvanceRent",
@@ -62,11 +62,11 @@ const dateOfPaymentOfAdvanceRentField = {
 const premiumAmountField = {
   label: {
       labelName: "Premium Amount",
-      labelKey: "EST_PREMIUM_AMOUNT_LABEL"
+      labelKey: "ES_PREMIUM_AMOUNT_LABEL"
   },
   placeholder: {
       labelName: "Enter Premium Amount",
-      labelKey: "EST_PREMIUM_AMOUNT_PLACEHOLDER"
+      labelKey: "ES_PREMIUM_AMOUNT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -79,11 +79,11 @@ const premiumAmountField = {
 const installmentField = {
   label: {
       labelName: "Installment",
-      labelKey: "EST_INSTALLMENT_LABEL"
+      labelKey: "ES_INSTALLMENT_LABEL"
   },
   placeholder: {
       labelName: "Enter Installment",
-      labelKey: "EST_INSTALLMENT_PLACEHOLDER"
+      labelKey: "ES_INSTALLMENT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -96,11 +96,11 @@ const installmentField = {
 const dueDateForInstallmentField = {
   label: {
       labelName: "Due Date for Installment",
-      labelKey: "EST_DUE_DATE_INSTALLMENT_LABEL"
+      labelKey: "ES_DUE_DATE_INSTALLMENT_LABEL"
   },
   placeholder: {
       labelName: "Due Date for Installment",
-      labelKey: "EST_DUE_DATE_INSTALLMENT_PLACEHOLDER"
+      labelKey: "ES_DUE_DATE_INSTALLMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].dueDate",
@@ -115,7 +115,7 @@ const commonInstallmentInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Installment",
-      labelKey: "EST_INSTALLMENT"
+      labelKey: "ES_INSTALLMENT"
     }, {
       style: {
         marginBottom: 18
@@ -147,7 +147,7 @@ export const installmentDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Installment",
-              labelKey: "EST_COMMON_ADD_INSTALLMENT_LABEL"
+              labelKey: "ES_COMMON_ADD_INSTALLMENT_LABEL"
             },
             headerName: "Installment",
             headerJsonPath:
@@ -169,7 +169,7 @@ export const installmentDetails = getCommonCard({
 
 const premiumAmountHeader = getCommonTitle({
   labelName: "Premium Amount Details",
-  labelKey: "EST_PREMIUM_AMOUNT_HEADER"
+  labelKey: "ES_PREMIUM_AMOUNT_HEADER"
 }, {
   style: {
       marginBottom: 18,
@@ -197,16 +197,16 @@ const getDemandRadioButton = {
   props: {
     label: {
       name: "Demand",
-      key: "EST_DEMAND_LABEL"
+      key: "ES_DEMAND_LABEL"
     },
     buttons: [{
         labelName: "Ground Rent",
-        labelKey: "EST_GROUND_RENT_LABEL",
+        labelKey: "ES_GROUND_RENT_LABEL",
         value: "GROUNDRENT"
       },
       {
         label: "License Fee",
-        labelKey: "EST_LICENSE_FEE_LABEL",
+        labelKey: "ES_LICENSE_FEE_LABEL",
         value: "LICENSEFEE"
       }
     ],
@@ -266,11 +266,11 @@ export const demandSelect = getCommonCard({
 const groundRentGenerationTypeField = {
   label: {
       labelName: "Ground Rent Generation Type",
-      labelKey: "EST_GROUND_RENT_GENERATION_TYPE_LABEL"
+      labelKey: "ES_GROUND_RENT_GENERATION_TYPE_LABEL"
   },
   placeholder: {
       labelName: "Enter Ground Rent Generation Type",
-      labelKey: "EST_GROUND_RENT_GENERATION_TYPE_PLACEHOLDER"
+      labelKey: "ES_GROUND_RENT_GENERATION_TYPE_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -311,11 +311,11 @@ const groundRentGenerationTypeField = {
 const billingStartDateField = {
   label: {
       labelName: "Billing Start Date",
-      labelKey: "EST_BILLING_START_DATE_LABEL"
+      labelKey: "ES_BILLING_START_DATE_LABEL"
   },
   placeholder: {
       labelName: "Enter Billing Start Date",
-      labelKey: "EST_BILLING_START_DATE_PLACEHOLDER"
+      labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDate",
@@ -329,11 +329,11 @@ const billingStartDateField = {
 const dateToGenerateDemandRentField = {
   label: {
     labelName: "Date to Generate the Demand/Rent",
-    labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
+    labelKey: "ES_DATE_TO_GENERATE_DEMAND_RENT_LABEL"
   },
   placeholder: {
     labelName: "Select Date to Generate the Demand/Rent",
-    labelKey: "EST_DATE_TO_GENERATE_DEMAND_RENT_PLACEHOLDER"
+    labelKey: "ES_DATE_TO_GENERATE_DEMAND_RENT_PLACEHOLDER"
   },
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandRent",
   gridDefination: {
@@ -349,11 +349,11 @@ const dateToGenerateDemandRentField = {
 const rentAmountField = {
   label: {
       labelName: "Rent Amount",
-      labelKey: "EST_RENT_AMOUNT_LABEL"
+      labelKey: "ES_RENT_AMOUNT_LABEL"
   },
   placeholder: {
       labelName: "Enter Rent Amount",
-      labelKey: "EST_RENT_AMOUNT_PLACEHOLDER"
+      labelKey: "ES_RENT_AMOUNT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -366,11 +366,11 @@ const rentAmountField = {
 const startYearField = {
   label: {
       labelName: "Start Year",
-      labelKey: "EST_START_YEAR_LABEL"
+      labelKey: "ES_START_YEAR_LABEL"
   },
   placeholder: {
       labelName: "Enter Start Year",
-      labelKey: "EST_START_YEAR_PLACEHOLDER"
+      labelKey: "ES_START_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -383,11 +383,11 @@ const startYearField = {
 const endYearField = {
   label: {
       labelName: "End Year",
-      labelKey: "EST_END_YEAR_LABEL"
+      labelKey: "ES_END_YEAR_LABEL"
   },
   placeholder: {
       labelName: "Enter End Year",
-      labelKey: "EST_END_YEAR_PLACEHOLDER"
+      labelKey: "ES_END_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -401,7 +401,7 @@ const commonRentInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Rent",
-      labelKey: "EST_RENT"
+      labelKey: "ES_RENT"
     }, {
       style: {
         marginBottom: 18
@@ -434,7 +434,7 @@ export const rentDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Rent",
-              labelKey: "EST_COMMON_ADD_RENT_LABEL"
+              labelKey: "ES_COMMON_ADD_RENT_LABEL"
             },
             headerName: "Rent",
             headerJsonPath:
@@ -454,7 +454,7 @@ export const rentDetails = getCommonCard({
 })
 const groundRentHeader = getCommonTitle({
   labelName: "Ground Rent Details",
-  labelKey: "EST_GROUND_RENT_HEADER"
+  labelKey: "ES_GROUND_RENT_HEADER"
 }, {
   style: {
       marginBottom: 18,
@@ -479,11 +479,11 @@ export const groundRentDetails = getCommonCard({
 const licenseFeeGenerationTypeField = {
   label: {
       labelName: "License Fee Generation Type",
-      labelKey: "EST_LICENSE_FEE_GENERATION_TYPE_LABEL"
+      labelKey: "ES_LICENSE_FEE_GENERATION_TYPE_LABEL"
   },
   placeholder: {
       labelName: "Enter License Fee Generation Type",
-      labelKey: "EST_LICENSE_FEE_GENERATION_TYPE_PLACEHOLDER"
+      labelKey: "ES_LICENSE_FEE_GENERATION_TYPE_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -524,11 +524,11 @@ const licenseFeeGenerationTypeField = {
 const dateToGenerateDemandLicenseFeeField = {
   label: {
     labelName: "Date to Generate the Demand/License Fee",
-    labelKey: "EST_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_LABEL"
+    labelKey: "ES_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_LABEL"
   },
   placeholder: {
     labelName: "Select Date to Generate the Demand/License Fee",
-    labelKey: "EST_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_PLACEHOLDER"
+    labelKey: "ES_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_PLACEHOLDER"
   },
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandLf",
   gridDefination: {
@@ -544,11 +544,11 @@ const dateToGenerateDemandLicenseFeeField = {
 const billingStartDateLicenseFeeField = {
   label: {
       labelName: "Billing Start Date",
-      labelKey: "EST_BILLING_START_DATE_LABEL"
+      labelKey: "ES_BILLING_START_DATE_LABEL"
   },
   placeholder: {
       labelName: "Enter Billing Start Date",
-      labelKey: "EST_BILLING_START_DATE_PLACEHOLDER"
+      labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDateLf",
@@ -566,11 +566,11 @@ const billingStartDateLicenseFeeField = {
 const licenseFeeField = {
   label: {
       labelName: "License Fee",
-      labelKey: "EST_LICENSE_FEE_LABEL"
+      labelKey: "ES_LICENSE_FEE_LABEL"
   },
   placeholder: {
       labelName: "Enter License Fee",
-      labelKey: "EST_LICENSE_FEE_PLACEHOLDER"
+      labelKey: "ES_LICENSE_FEE_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -583,11 +583,11 @@ const licenseFeeField = {
 const startYearLfField = {
   label: {
       labelName: "Start Year",
-      labelKey: "EST_START_YEAR_LABEL"
+      labelKey: "ES_START_YEAR_LABEL"
   },
   placeholder: {
       labelName: "Enter Start Year",
-      labelKey: "EST_START_YEAR_PLACEHOLDER"
+      labelKey: "ES_START_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -600,11 +600,11 @@ const startYearLfField = {
 const endYearLfField = {
   label: {
       labelName: "End Year",
-      labelKey: "EST_END_YEAR_LABEL"
+      labelKey: "ES_END_YEAR_LABEL"
   },
   placeholder: {
       labelName: "Enter End Year",
-      labelKey: "EST_END_YEAR_PLACEHOLDER"
+      labelKey: "ES_END_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -619,7 +619,7 @@ const commonLicenseInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "License Fee for Year",
-      labelKey: "EST_LICENSE_FEE_FOR_YEAR"
+      labelKey: "ES_LICENSE_FEE_FOR_YEAR"
     }, {
       style: {
         marginBottom: 18
@@ -652,7 +652,7 @@ export const licenseFeeForYearDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add License Fee",
-              labelKey: "EST_COMMON_LICENSE_FEE_LABEL"
+              labelKey: "ES_COMMON_LICENSE_FEE_LABEL"
             },
             headerName: "License Fee for Year",
             headerJsonPath:
@@ -673,7 +673,7 @@ export const licenseFeeForYearDetails = getCommonCard({
 
 const licenseFeeHeader = getCommonTitle({
   labelName: "License Fee Details",
-  labelKey: "EST_LICENSE_FEE_HEADER"
+  labelKey: "ES_LICENSE_FEE_HEADER"
 }, {
   style: {
       marginBottom: 18,
@@ -698,11 +698,11 @@ export const licenseFeeDetails = getCommonCard({
 const securityFeeAmountField = {
   label: {
       labelName: "Security Fee Amount",
-      labelKey: "EST_SECURITY_FEE_AMOUNT_LABEL"
+      labelKey: "ES_SECURITY_FEE_AMOUNT_LABEL"
   },
   placeholder: {
       labelName: "Enter Security Fee Amount",
-      labelKey: "EST_SECURITY_FEE_AMOUNT_PLACEHOLDER"
+      labelKey: "ES_SECURITY_FEE_AMOUNT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -715,11 +715,11 @@ const securityFeeAmountField = {
 const dateOfPaymentField = {
   label: {
       labelName: "Date of Payment",
-      labelKey: "EST_DATE_OF_PAYMENT_LABEL"
+      labelKey: "ES_DATE_OF_PAYMENT_LABEL"
   },
   placeholder: {
       labelName: "Enter Date of Payment",
-      labelKey: "EST_DATE_OF_PAYMENT_PLACEHOLDER"
+      labelKey: "ES_DATE_OF_PAYMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeDateOfPayment",
@@ -732,7 +732,7 @@ const dateOfPaymentField = {
 
 const securityDetailsHeader = getCommonTitle({
   labelName: "Security Details",
-  labelKey: "EST_SECURITY_DETAILS_HEADER"
+  labelKey: "ES_SECURITY_DETAILS_HEADER"
 }, {
   style: {
       marginBottom: 18,

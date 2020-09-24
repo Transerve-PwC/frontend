@@ -23,7 +23,7 @@ import {
  
 export const paymentHeader = getCommonTitle({
     labelName: "Payment Details",
-    labelKey: "EST_PAYMENT_DETAILS_HEADER"
+    labelKey: "ES_PAYMENT_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -34,74 +34,74 @@ export const paymentHeader = getCommonTitle({
  /* Ground rent review */
 const dueDateOfPaymentLabel = {
     labelName: "Due Date of payment",
-    labelKey: "EST_DUE_DATE_OF_PAYMENT_LABEL"
+    labelKey: "ES_DUE_DATE_OF_PAYMENT_LABEL"
   }
   const payableLabel = {
     labelName: "Payable",
-    labelKey: "EST_PAYABLE_LABEL"
+    labelKey: "ES_PAYABLE_LABEL"
   }
   const amountOfGRLabel = {
     labelName: "Amount of GR",
-    labelKey: "EST_AMOUNT_OF_GR_LABEL"
+    labelKey: "ES_AMOUNT_OF_GR_LABEL"
   }
   const totalGRLabel = {
     labelName: "Total GR",
-    labelKey: "EST_TOTAL_GR_LABEL"
+    labelKey: "ES_TOTAL_GR_LABEL"
   }
   const dateOfDepositLabel = {
     labelName: "Date of Deposit",
-    labelKey: "EST_DATE_OF_DEPOSIT_LABEL"
+    labelKey: "ES_DATE_OF_DEPOSIT_LABEL"
   }
   const delayInPaymentLabel = {
     labelName: "Delay in Payment",
-    labelKey: "EST_DELAY_IN_PAYMENT_LABEL"
+    labelKey: "ES_DELAY_IN_PAYMENT_LABEL"
   }
   const interestForDelayLabel = {
     labelName: "Interest for Delay",
-    labelKey: "EST_INTEREST_FOR_DELAY_LABEL"
+    labelKey: "ES_INTERES_FOR_DELAY_LABEL"
   }
   const totalAmountDueWithInterestLabel = {
     labelName: "Total Amount Due with Interest",
-    labelKey: "EST_TOTAL_AMOUNT_DUE_WITH_INTEREST_LABEL"
+    labelKey: "ES_TOTAL_AMOUNT_DUE_WITH_INTERES_LABEL"
   }
   const amountDepositedGRLabel = {
     labelName: "Amount Deposited GR",
-    labelKey: "EST_AMOUNT_DEPOSITED_GR_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_GR_LABEL"
   }
   const amountDepositedInttLabel = {
     labelName: "Amount Deposited Intt",
-    labelKey: "EST_AMOUNT_DEPOSITED_INTT_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_INTT_LABEL"
   }
   const balanceGRLabel = {
     labelName: "Balance(+due, -excess) GR",
-    labelKey: "EST_BALANCE_GR_LABEL"
+    labelKey: "ES_BALANCE_GR_LABEL"
   }
   const balanceInttLabel = {
     labelName: "Balance(+due, -excess) Intt",
-    labelKey: "EST_BALANCE_INTT_LABEL"
+    labelKey: "ES_BALANCE_INTT_LABEL"
   }
   const totalDueLabel = {
     labelName: "Total Due",
-    labelKey: "EST_TOTAL_DUE_LABEL"
+    labelKey: "ES_TOTAL_DUE_LABEL"
   }
   const receiptNumberLabel = {
     labelName: "Receipt Date",
-    labelKey: "EST_RECEIPT_NUMBER_LABEL"
+    labelKey: "ES_RECEIPT_NUMBER_LABEL"
   }
 
   const receiptDateLabel = {
     labelName: "Receipt Date",
-    labelKey: "EST_RECEIPT_DATE_LABEL"
+    labelKey: "ES_RECEIPT_DATE_LABEL"
   }
 
    const paymentMadeByLabel = {
     labelName: "Payment Made By",
-    labelKey: "EST_PAYMENT_MADE_BY_LABEL"
+    labelKey: "ES_PAYMENT_MADE_BY_LABEL"
   }
   
   export const groundRentHeader = getCommonTitle({
     labelName: "Ground Rent Details",
-    labelKey: "EST_GROUND_RENT_DETAILS_HEADER"
+    labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -112,7 +112,7 @@ const dueDateOfPaymentLabel = {
   
   export const serviceTaxHeader = getCommonTitle({
     labelName: "Service Tax/GST Details",
-    labelKey: "EST_SERVICE_TAX_DETAILS_HEADER"
+    labelKey: "ES_SERVICE_TAX_DETAILS_HEADER"
   }, {
     style: {
       marginBottom: 18,
@@ -124,27 +124,27 @@ const dueDateOfPaymentLabel = {
   /* Service tax review */
   const rateOfStOrGstLabel = {
     labelName: "Rate of ST/GST",
-    labelKey: "EST_RATE_ST_GST_LABEL"
+    labelKey: "ES_RATE_ST_GST_LABEL"
   }
   const amountOfGstLabel = {
     labelName: "Amount of GST",
-    labelKey: "EST_AMOUNT_OF_GST_LABEL"
+    labelKey: "ES_AMOUNT_OF_GST_LABEL"
   }
   const amountDueLabel = {
     labelName: "Amount Due",
-    labelKey: "EST_AMOUNT_DUE_LABEL"
+    labelKey: "ES_AMOUNT_DUE_LABEL"
   }
   const amountDepositedSTLabel = {
     labelName: "Amount Deposited ST/GST",
-    labelKey: "EST_AMOUNT_DEPOSITED_ST_LABEL"
+    labelKey: "ES_AMOUNT_DEPOSITED_ST_LABEL"
   }
   const balanceStLabel = {
     labelName: "Balance ST/GST",
-    labelKey: "EST_BALANCE_ST_LABEL"
+    labelKey: "ES_BALANCE_ST_LABEL"
   }
   const balanceInttLabelST = {
     labelName: "Balance Intt",
-    labelKey: "EST_BALANCE_INTT_LABEL"
+    labelKey: "ES_BALANCE_INTT_LABEL"
   }
   
 
@@ -203,7 +203,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
             },
             ...getCommonSubHeader({
               labelName: "Payment Details",
-              labelKey: "EST_PAYMENT_DETAILS_HEADER"
+              labelKey: "ES_PAYMENT_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 3)

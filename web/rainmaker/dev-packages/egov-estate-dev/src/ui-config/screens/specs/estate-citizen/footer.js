@@ -11,9 +11,9 @@ export const DOCUMENT_UPLOAD_STEP = 1;
 export const SUMMARY_STEP = 2;
 
 export const stepsData = [
-    { labelName: "Details", labelKey: "EST_DETAILS_HEADER" },
-    { labelName: "Documents", labelKey: "EST_COMMON_DOCS" },
-    { labelName: "Summary", labelKey: "EST_COMMON_SUMMARY" }
+    { labelName: "Details", labelKey: "ES_DETAILS_HEADER" },
+    { labelName: "Documents", labelKey: "ES_COMMON_DOCS" },
+    { labelName: "Summary", labelKey: "ES_COMMON_SUMMARY" }
   ];
 
 export const stepper = getStepperObject(
@@ -43,7 +43,7 @@ export const previousButton = {
           },
           previousButtonLabel: getLabel({
             labelName: "Previous Step",
-            labelKey: "EST_COMMON_BUTTON_PREV_STEP"
+            labelKey: "ES_COMMON_BUTTON_PREV_STEP"
           })
         },
         visible: false
@@ -64,7 +64,7 @@ export const previousButton = {
     children: {
       nextButtonLabel: getLabel({
         labelName: "Next Step",
-        labelKey: "EST_COMMON_BUTTON_NXT_STEP"
+        labelKey: "ES_COMMON_BUTTON_NXT_STEP"
       }),
       nextButtonIcon: {
         uiFramework: "custom-atoms",
@@ -269,7 +269,7 @@ export const previousButton = {
               uploadedDocData &&
               uploadedDocData.map(item => {
                   return {
-                      title: `EST_${item.documentType}`,
+                      title: `ES_${item.documentType}`,
                       link: item.fileUrl && item.fileUrl.toString().split(",")[0],
                       linkText: "Download",
                       name: item.fileName

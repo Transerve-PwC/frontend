@@ -6,7 +6,7 @@ import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
 
 const header = getCommonHeader({
   labelName: "Estate",
-  labelKey: "EST_ESTATE_HEADER"
+  labelKey: "ES_ESTATE_HEADER"
 }, {
   classes: {
     root: "common-header-cont"
@@ -16,7 +16,7 @@ const header = getCommonHeader({
 const cardItems = [
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_HEADER",
+      labelKey: "ES_PROPERTY_MASTER_HEADER",
       labelName: "Property Master"
     },
     icon: < FormIcon / > ,
@@ -24,7 +24,7 @@ const cardItems = [
   },
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_SEARCH_APPLICATION_HEADER",
+      labelKey: "ES_PROPERTY_MASTER_SEARCH_APPLICATION_HEADER",
       labelName: "Search Applications"
     },
     icon: < FormIcon / > ,
@@ -32,7 +32,7 @@ const cardItems = [
   },
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_ALLOTMENT_HEADER",
+      labelKey: "ES_PROPERTY_MASTER_ALLOTMENT_HEADER",
       labelName: "Allotment"
     },
     icon: < FormIcon / > ,
@@ -40,7 +40,7 @@ const cardItems = [
   },
   // {
   //   label: {
-  //     labelKey: "EST_PROPERTY_MASTER_CANCELLATION_HEADER",
+  //     labelKey: "ES_PROPERTY_MASTER_CANCELLATION_HEADER",
   //     labelName: "Cancellation"
   //   },
   //   icon: < FormIcon / > ,
@@ -48,7 +48,7 @@ const cardItems = [
   // },
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_REFUND_HEADER",
+      labelKey: "ES_PROPERTY_MASTER_REFUND_HEADER",
       labelName: "Refund"
     },
     icon: < FormIcon / > ,
@@ -56,7 +56,7 @@ const cardItems = [
   },
   {
     label: {
-      labelKey: "EST_PROPERTY_MASTER_ISSUING_NOTICE_HEADER",
+      labelKey: "ES_PROPERTY_MASTER_ISSUING_NOTICE_HEADER",
       labelName: "Issuing Notice"
     },
     icon: < FormIcon / > ,
@@ -64,7 +64,7 @@ const cardItems = [
   },
   {
     label: {
-      labelKey: "EST_ACCOUNT_STATEMENT_GENERATION_HEADER",
+      labelKey: "ES_ACCOUNT_STATEMENT_GENERATION_HEADER",
       labelName: "Account Statement Generation"
     },
     icon: < FormIcon / > ,
@@ -75,7 +75,7 @@ const cardItems = [
 const citizenCardItems = [
   {
     label: {
-      labelKey: "EST_ESTATE_BRANCH_HEADER",
+      labelKey: "ES_ESTATE_BRANCH_HEADER",
       labelName: "Estate Branch"
     },
     icon: < FormIcon / > ,
@@ -83,7 +83,7 @@ const citizenCardItems = [
   },
   {
     label: {
-      labelKey: "EST_BUILDING_BRANCH_HEADER",
+      labelKey: "ES_BUILDING_BRANCH_HEADER",
       labelName: "Building Branch"
     },
     icon: < FormIcon / > ,
@@ -91,7 +91,7 @@ const citizenCardItems = [
   },
   {
     label: {
-      labelKey: "EST_MANIMAJRA_HEADER",
+      labelKey: "ES_MANIMAJRA_HEADER",
       labelName: "Manimajra"
     },
     icon: < FormIcon / > ,

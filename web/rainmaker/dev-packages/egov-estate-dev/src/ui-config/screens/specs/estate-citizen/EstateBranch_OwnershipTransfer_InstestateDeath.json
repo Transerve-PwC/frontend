@@ -32,7 +32,7 @@
             "lazyload": true,
             "options": {
               "moduleName": "EstatePropertyService",
-              "masterName": "LegaHeirRelationShipWithDeceased"
+              "masterName": "legaHeirRelationShipWithDeceased"
             }
           },
           {
@@ -42,7 +42,7 @@
             "lazyload": true,
             "options": {
               "moduleName": "EstatePropertyService",
-              "masterName": "BenificiaryRelationshipwithDeceased"
+              "masterName": "benificiaryRelationshipwithDeceased"
             }
           }
         ],
@@ -330,117 +330,117 @@
       "first_step": {
         "sections": [
           {
-            "header": "EST_PROPERTY_DETAILS_HEADER",
+            "header": "ES_PROPERTY_DETAILS_HEADER",
             "type": "CARD_DETAIL",
             "fields": [
               {
-                "label": "EST_FILE_NUMBER_LABEL",
+                "label": "ES_FILE_NUMBER_LABEL",
                 "jsonPath": "property.fileNumber"
               },
               {
-                "label": "EST_CATEGORY_LABEL",
+                "label": "ES_CATEGORY_LABEL",
                 "jsonPath": "property.category"
               },
               {
-                "label": "EST_SUB_CATEGORY_LABEL",
+                "label": "ES_SUB_CATEGORY_LABEL",
                 "jsonPath": "property.subCategory"
               },
               {
-                "label": "EST_SITE_NO_LABEL",
+                "label": "ES_SITE_NO_LABEL",
                 "jsonPath": "property.siteNumber"
               },
               {
-                "label": "EST_SECTOR_NO_LABEL",
+                "label": "ES_SECTOR_NO_LABEL",
                 "jsonPath": "property.sectorNumber"
               },
               {
-                "label": "EST_PROPERTY_TYPE_LABEL",
+                "label": "ES_PROPERTY_TYPE_LABEL",
                 "jsonPath": "property.propertyDetails.propertyType"
               },
               {
-                "label": "EST_LAST_NOC_DATE_LABEL",
+                "label": "ES_LAST_NOC_DATE_LABEL",
                 "jsonPath": "property.propertyDetails.lastNocDate"
               },
               {
-                "label": "EST_PROPERTY_APPLICATION_NUMBER_LABEL",
+                "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
                 "jsonPath": "property.propertyDetails.propertyApplicationNumber"
               },
               {
-                "label": "EST_DUE_AMOUNT_LABEL",
+                "label": "ES_DUE_AMOUNT_LABEL",
                 "jsonPath": "property.propertyDetails.dueAmount"
               }
             ]
           },
           {
-            "header": "EST_PROPERTY_OWNER_LIST_HEADER",
+            "header": "ES_PROPERTY_OWNER_LIST_HEADER",
             "type": "EXPANSION_DETAIL",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
-                "label": "EST_OWNER_NAME_LABEL",
+                "label": "ES_OWNER_NAME_LABEL",
                 "jsonPath": "ownerDetails.ownerName"
               },
               {
-                "label": "EST_OWNER_SHARE_LABEL",
+                "label": "ES_OWNER_SHARE_LABEL",
                 "jsonPath": "share"
               },
               {
-                "label": "EST_OWNER_MOBILE_NUMBER_LABEL",
+                "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
                 "jsonPath": "ownerDetails.mobileNumber"
               }
             ]
           },
           {
-            "header": "EST_DECEASED_DETAILS_HEADER",
+            "header": "ES_DECEASED_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_DECEASED_NAME_LABEL",
-                "placeholder": "EST_DECEASED_NAME_PLACEHOLDER",
+                "label": "ES_DECEASED_NAME_LABEL",
+                "placeholder": "ES_DECEASED_NAME_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferor.id",
                 "path": "transferor.id",
                 "dataSource": "owners"
               },
               {
-                "label": "EST_DECEASED_FATHER_HUSBAND_NAME_LABEL",
-                "placeholder": "EST_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "label": "ES_DECEASED_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "ES_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
                 "path": "transferee.fatherOrHusbandName"
               },
               {
-                "label": "EST_DECEASED_ADDRESS_LABEL",
-                "placeholder": "EST_DECEASED_ADDRESS_PLACEHOLDER",
+                "label": "ES_DECEASED_ADDRESS_LABEL",
+                "placeholder": "ES_DECEASED_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address"
               },
               {
-                "label": "EST_PERCENT_SHARE_LABEL",
-                "placeholder": "EST_PERCENT_SHARE_PLACEHOLDER",
+                "label": "ES_PERCENT_SHARE_LABEL",
+                "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred"
               },
               {
-                "label": "EST_DATE_OF_DEATH_LABEL",
-                "placeholder": "EST_DATE_OF_DEATH_PLACEHOLDER",
+                "label": "ES_DATE_OF_DEATH_LABEL",
+                "placeholder": "ES_DATE_OF_DEATH_PLACEHOLDER",
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath",
                 "path": "transferor.dateOfDeath"
               },
               {
-                "label": "EST_TRANSFEREE_TYPE_LABEL",
-                "placeholder": "EST_TRANSFEREE_TYPE_PLACEHOLDER",
+                "label": "ES_TRANSFEREE_TYPE_LABEL",
+                "placeholder": "ES_TRANSFEREE_TYPE_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
                 "dataSource": "typesOfOwner"
               },
               {
-                "label": "EST_SELECT_OWNER_LABEL",
-                "placeholder": "EST_SELECT_OWNER_PLACEHOLDER",
+                "label": "ES_SELECT_OWNER_LABEL",
+                "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
@@ -449,34 +449,34 @@
             ]
           },
           {
-            "header": "EST_LEGAL_HEIR_DETAILS_HEADER",
+            "header": "ES_LEGAL_HEIR_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
-                "label": "EST_LEGAL_HEIR_NAME_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_PLACEHOLDER",
+                "label": "ES_LEGAL_HEIR_NAME_LABEL",
+                "placeholder": "ES_LEGAL_HEIR_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
                 "dataSource": "typesOfOwner"
               },
               {
-                "label": "EST_LEGAL_HEIR_AGE_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_AGE_PLACEHOLDER",
+                "label": "ES_LEGAL_HEIR_AGE_LABEL",
+                "placeholder": "ES_LEGAL_HEIR_AGE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.age",
                 "path": "transferee.age"
               },
               {
-                "label": "EST_LEGAL_HEIR_ADDRESS_LABEL",
-                "placeholder": "EST_LEGAL_HEIR_ADDRESS_PLACEHOLDER",
+                "label": "ES_LEGAL_HEIR_ADDRESS_LABEL",
+                "placeholder": "ES_LEGAL_HEIR_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address"
               },
               {
-                "label": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
-                "placeholder": "EST_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
+                "label": "ES_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
+                "placeholder": "ES_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "path": "transferee.relationWithDeceased",
@@ -487,7 +487,7 @@
         ]
       },
       "second_step": {
-        "header": "EST_DOCUMENT_DETAILS_HEADER",
+        "header": "ES_DOCUMENT_DETAILS_HEADER",
         "jsonPath": "Applications[0].applicationDocuments",
         "documentList": [
           {

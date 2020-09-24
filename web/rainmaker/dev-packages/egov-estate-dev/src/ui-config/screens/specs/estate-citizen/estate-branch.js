@@ -13,7 +13,7 @@ const tenantId = getTenantId();
 
 const cardItems = [{
     label: {
-      labelKey: "EST_APPLY_ESTATE_BRANCH",
+      labelKey: "ES_APPLY_ESTATE_BRANCH",
       labelName: "Apply"
     },
     icon: < EstateIcon / > ,
@@ -21,7 +21,7 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_MY_APPLICATIONS",
+      labelKey: "ES_MY_APPLICATIONS",
       labelName: "My Applications/Search Applications"
     },
     icon: < EstateIcon / > ,
@@ -29,7 +29,7 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_PAY_DUE",
+      labelKey: "ES_PAY_DUE",
       labelName: "Pay Due"
     },
     icon: < EstateIcon / > ,
@@ -37,7 +37,7 @@ const cardItems = [{
   },
   {
     label: {
-      labelKey: "EST_PROPERTY_SEARCH",
+      labelKey: "ES_PROPERTY_SEARCH",
       labelName: "Property Search"
     },
     icon: < EstateIcon / > ,

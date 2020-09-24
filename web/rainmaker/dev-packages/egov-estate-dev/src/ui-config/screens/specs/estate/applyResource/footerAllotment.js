@@ -224,7 +224,7 @@ const callBackForNext = async (state, dispatch) => {
           uploadedDocData &&
           uploadedDocData.map(item => {
             return {
-              title: `EST_${item.documentType}`,
+              title: `ES_${item.documentType}`,
               link: item.fileUrl && item.fileUrl.split(",")[0],
               linkText: "View",
               name: item.fileName
@@ -360,7 +360,7 @@ const callBackForNext = async (state, dispatch) => {
           uploadedDocData &&
           uploadedDocData.map(item => {
             return {
-              title: `EST_${item.documentType}`,
+              title: `ES_${item.documentType}`,
               link: item.fileUrl && item.fileUrl.split(",")[0],
               linkText: "View",
               name: item.fileName
@@ -813,7 +813,7 @@ export const previousButton = {
     },
     previousButtonLabel: getLabel({
       labelName: "Previous Step",
-      labelKey: "EST_COMMON_BUTTON_PREV_STEP"
+      labelKey: "ES_COMMON_BUTTON_PREV_STEP"
     })
   },
   visible: false
@@ -834,7 +834,7 @@ export const nextButton = {
   children: {
     nextButtonLabel: getLabel({
       labelName: "Next Step",
-      labelKey: "EST_COMMON_BUTTON_NXT_STEP"
+      labelKey: "ES_COMMON_BUTTON_NXT_STEP"
     }),
     nextButtonIcon: {
       uiFramework: "custom-atoms",

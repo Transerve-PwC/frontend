@@ -18,7 +18,7 @@ import get from "lodash/get";
 
 export const purchaserHeader = getCommonTitle({
   labelName: "Purchaser Details",
-  labelKey: "EST_PURCHASER_DETAILS_HEADER"
+  labelKey: "ES_PURCHASER_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -29,11 +29,11 @@ export const purchaserHeader = getCommonTitle({
 const newOwnerNameField = {
   label: {
     labelName: "New Owner Name",
-    labelKey: "EST_NEW_OWNER_NAME_LABEL"
+    labelKey: "ES_NEW_OWNER_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter New Owner Name",
-    labelKey: "EST_NEW_OWNER_NAME_PLACEHOLDER"
+    labelKey: "ES_NEW_OWNER_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -47,11 +47,11 @@ const newOwnerNameField = {
 const newOwnerFatherHusbandNameField = {
   label: {
     labelName: "New Owner Father/Husband Name",
-    labelKey: "EST_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
+    labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter New Owner Father/Husband Name",
-    labelKey: "EST_NEW_OWNER_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -65,11 +65,11 @@ const newOwnerFatherHusbandNameField = {
 const newOwnerAddressField = {
   label: {
     labelName: "New Owner Address",
-    labelKey: "EST_NEW_OWNER_ADDRESS_LABEL"
+    labelKey: "ES_NEW_OWNER_ADDRESS_LABEL"
   },
   placeholder: {
     labelName: "Enter New Owner Address",
-    labelKey: "EST_NEW_OWNER_ADDRESS_PLACEHOLDER"
+    labelKey: "ES_NEW_OWNER_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -91,7 +91,7 @@ const newOwnerMobileNumberField = {
   },
   placeholder: {
     labelName: "Enter New Owner Mobile No.",
-    labelKey: "EST_NEW_OWNER_MOBILE_NUMBER_PLACEHOLDER"
+    labelKey: "ES_NEW_OWNER_MOBILE_NUMBER_PLACEHOLDER"
   },
   pattern: getPattern("MobileNo"),
   // props: {
@@ -104,11 +104,11 @@ const newOwnerMobileNumberField = {
 const sellerNameField = {
   label: {
     labelName: "Seller Name",
-    labelKey: "EST_SELLER_NAME_LABEL"
+    labelKey: "ES_SELLER_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Seller Name",
-    labelKey: "EST_SELLER_NAME_PLACEHOLDER"
+    labelKey: "ES_SELLER_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -122,11 +122,11 @@ const sellerNameField = {
 const sellerFatherHusbandNameField = {
   label: {
     labelName: "Seller Father/Husband Name",
-    labelKey: "EST_SELLER_FATHER_HUSBAND_NAME_LABEL"
+    labelKey: "ES_SELLER_FATHER_HUSBAND_NAME_LABEL"
   },
   placeholder: {
     labelName: "Enter Seller Father/Husband Name",
-    labelKey: "EST_SELLER_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    labelKey: "ES_SELLER_FATHER_HUSBAND_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -140,11 +140,11 @@ const sellerFatherHusbandNameField = {
 const shareField = {
   label: {
     labelName: "% Share",
-    labelKey: "EST_PERCENT_SHARE_LABEL"
+    labelKey: "ES_PERCENT_SHARE_LABEL"
   },
   placeholder: {
     labelName: "Enter % Share",
-    labelKey: "EST_PERCENT_SHARE_PLACEHOLDER"
+    labelKey: "ES_PERCENT_SHARE_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -158,11 +158,11 @@ const shareField = {
 const modeOfTransferField = {
   label: {
     labelName: "Mode of Transfer",
-    labelKey: "EST_MODE_OF_TRANSFER_LABEL"
+    labelKey: "ES_MODE_OF_TRANSFER_LABEL"
   },
   placeholder: {
     labelName: "Select Mode Of Transfer",
-    labelKey: "EST_MODE_OF_TRANSFER_PLACEHOLDER"
+    labelKey: "ES_MODE_OF_TRANSFER_PLACEHOLDER"
   },
   required: true,
   jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].modeOfTransfer",
@@ -176,11 +176,11 @@ const modeOfTransferField = {
 const registrationNumberField = {
   label: {
     labelName: "Registration Number of the Property in Sub-Registrar Office",
-    labelKey: "EST_REGISTRATION_NUMBER_LABEL"
+    labelKey: "ES_REGISTRATION_NUMBER_LABEL"
   },
   placeholder: {
     labelName: "Enter Registration Number of the Property in Sub-Registrar Office",
-    labelKey: "EST_REGISTRATION_NUMBER_PLACEHOLDER"
+    labelKey: "ES_REGISTRATION_NUMBER_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -193,11 +193,11 @@ const registrationNumberField = {
 const dateOfRegistrationField = {
   label: {
     labelName: "Date of Registration",
-    labelKey: "EST_DATE_OF_REGISTRATION_LABEL"
+    labelKey: "ES_DATE_OF_REGISTRATION_LABEL"
   },
   placeholder: {
     labelName: "Enter Date of Registration",
-    labelKey: "EST_DATE_OF_REGISTRATION_PLACEHOLDER"
+    labelKey: "ES_DATE_OF_REGISTRATION_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].dateOfRegistration",
@@ -212,7 +212,7 @@ const commonPurchaserInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
       labelName: "Purchaser Information",
-      labelKey: "EST_COMMON_PURCHASER_INFORMATION"
+      labelKey: "ES_COMMON_PURCHASER_INFORMATION"
     }, {
       style: {
         marginBottom: 18
@@ -253,7 +253,7 @@ export const purchaserDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Purchaser",
-              labelKey: "EST_COMMON_ADD_PURCHASER_LABEL"
+              labelKey: "ES_COMMON_ADD_PURCHASER_LABEL"
             },
             headerName: "Purchaser Information",
             headerJsonPath:
