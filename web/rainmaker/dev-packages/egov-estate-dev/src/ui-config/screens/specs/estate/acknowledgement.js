@@ -12,9 +12,7 @@ import {
   applicationSuccessFooter
 } from "./acknowledgementResource/applicationSuccessFooter";
 import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
-// import {
-//   paymentFailureFooter
-// } from "./acknowledgementResource/paymentFailureFooter";
+import { paymentFailureFooter } from "./acknowledgementResource/paymentFailureFooter";
 
 const getAcknowledgementCard = (
   state,
@@ -95,6 +93,11 @@ const getAcknowledgementCard = (
         labelName: "Ownership transfer application Approved Successfully",
         labelKey: "ES_OWNERSHIP_TRANSFER_APPROVE_SUCCESS_MESSAGE_MAIN"
       }
+    } else if(purpose === "pay") {
+      header = {
+        labelName: "Payment is collected successfully",
+        labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
+      }
     }
     else {
       header = {}
@@ -135,7 +138,39 @@ const getAcknowledgementCard = (
         tenant
       )
     };
-  } 
+  } else if(status === "failure" && purpose === "pay") {
+    return {
+      header: getCommonHeader({
+        labelName: `Rented Properties`,
+        labelKey: "RP_COMMON_RENTED_PROPERTIES",
+      }),
+      applicationSuccessCard: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        children: {
+          card: acknowledgementCard({
+            icon: "close",
+            backgroundColor: "#E54D42",
+            header: {
+              labelName: "Payment is Failed!",
+              labelKey: "ES_PAYMENT_FAILED_MESSAGE_HEAD"
+            },
+            body: {
+              labelName:
+                "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
+              labelKey: "ES_APPLICATION_SUCCESS_MESSAGE_SUB"
+            },
+            tailText: {
+              labelName: "Application Number",
+              labelKey: "ES_APPLICATION_NUMBER_LABEL"
+            },
+            number: applicationNumber
+          })
+        }
+      },
+      paymentFailureFooter: paymentFailureFooter(applicationNumber, tenant, businessService)
+    }
+  }
 }
 
 const getData = async (action, state, dispatch, {purpose, status, tenant, fileNumber, applicationNumber, type, businessService}) => {

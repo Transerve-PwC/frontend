@@ -31,6 +31,7 @@ import {
   getTransformedLocalStorgaeLabels, getFileUrlFromAPI
 } from "egov-ui-framework/ui-utils/commons";
 import axios from 'axios';
+import { getSearchApplicationsResults } from "../../../../ui-utils/commons";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -415,7 +416,7 @@ export const getFeesEstimateCard = props => {
   const { sourceJsonPath, ...rest } = props;
   return {
     uiFramework: "custom-containers-local",
-    moduleName: "egov-tradelicence",
+    moduleName: "egov-estate",
     componentPath: "EstimateCardContainer",
     props: {
       sourceJsonPath,
@@ -450,19 +451,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
 };
 
 export const getButtonVisibility = (status, button) => {
-  if (status === "INITIATED" && button === "SUBMISSION") {
-    return true;
-  }
-  if (status === "CITIZENACTIONREQUIRED" && button === "RESUBMIT")
-    return true;
-  if (status === "PENDINGPAYMENT" && button === "PROCEED TO PAYMENT")
-    return true;
-  if (status === "PENDINGAPPROVAL" && button === "APPROVE") return true;
-  if (status === "PENDINGAPPROVAL" && button === "REJECT") return true;
-  if (status === "APPROVED" && button === "CANCEL TRADE LICENSE") return true;
-  if (status === "APPROVED" && button === "APPROVED") return true;
-  if (status === "EXPIRED" && button === "EXPIRED") return true;
-  if (status === "PENDINGPAYMENT" && button === "PENDINGPAYMENT") return true;
+  if (status === "PENDING_PAYMENT" && button === "PENDINGPAYMENT") return true;
   return false;
 };
 
@@ -504,22 +493,6 @@ export const objectToDropdown = object => {
     }
   }
   return dropDown;
-};
-
-// Search API call
-export const getSearchResults = async queryObject => {
-  try {
-    const response = await httpRequest(
-      "post",
-      "/tl-services/v1/_search",
-      "",
-      queryObject
-    );
-    return response;
-  } catch (error) {
-    console.log(error);
-    return {};
-  }
 };
 
 export const getBill = async queryObject => {
@@ -1116,21 +1089,8 @@ const getToolTipInfo = (taxHead, LicenseData) => {
   }
 };
 
-const getEstimateData = (ResponseData, isPaid, LicenseData) => {
+const getEstimateData = (ResponseData, isPaid) => {
   if (ResponseData) {
-    // const extraData = ["TL_COMMON_REBATE", "TL_COMMON_PEN"].map(item => {
-    //   return {
-    //     name: {
-    //       labelName: item,
-    //       labelKey: item
-    //     },
-    //     value: null,
-    //     info: getToolTipInfo(item, LicenseData) && {
-    //       value: getToolTipInfo(item, LicenseData),
-    //       key: getToolTipInfo(item, LicenseData)
-    //     }
-    //   };
-    // });
     const { billAccountDetails } = ResponseData.billDetails[0];
     let transformedData = billAccountDetails.reduce((result, item) => {
       if (isPaid) {
@@ -1140,22 +1100,8 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               labelName: item.accountDescription.split("-")[0],
               labelKey: item.accountDescription.split("-")[0]
             },
-            // value: getTaxValue(item)  
             order: item.order,
-            value: item.amount,
-            info: getToolTipInfo(
-              item.accountDescription.split("-")[0],
-              LicenseData
-            ) && {
-                value: getToolTipInfo(
-                  item.accountDescription.split("-")[0],
-                  LicenseData
-                ),
-                key: getToolTipInfo(
-                  item.accountDescription.split("-")[0],
-                  LicenseData
-                )
-              }
+            value: item.amount
           });
         item.taxHeadCode &&
           result.push({
@@ -1164,12 +1110,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               labelKey: item.taxHeadCode
             },
             order: item.order,
-            // value: getTaxValue(item),
-            value: item.amount,
-            info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
-              value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
-            }
+            value: item.amount
           });
       } else {
         item.taxHeadCode &&
@@ -1179,13 +1120,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
               labelKey: item.taxHeadCode
             },
             order: item.order,
-            value: item.amount,
-            // value: getTaxValue(item),
-            // value : get(ResponseData , "totalAmount"),
-            info: getToolTipInfo(item.taxHeadCode, LicenseData) && {
-              value: getToolTipInfo(item.taxHeadCode, LicenseData),
-              key: getToolTipInfo(item.taxHeadCode, LicenseData)
-            }
+            value: item.amount
           });
       }
       return result;
@@ -1193,11 +1128,7 @@ const getEstimateData = (ResponseData, isPaid, LicenseData) => {
     transformedData = transformedData.sort((a, b) => {
       return a.order < b.order ? -1 : a.order > b.order ? 1 : a.value > b.value ? -1 : 0
     }).map(item => ({ ...item, value: item.value.toFixed(2) }))
-    return [
-      ...transformedData.filter(item => item.name.labelKey === "TL_TAX"),
-      ...transformedData.filter(item => item.name.labelKey !== "TL_TAX"),
-      // ...extraData
-    ];
+    return transformedData
   }
 };
 
@@ -1310,11 +1241,10 @@ const getBillingSlabData = async (
 
 const isApplicationPaid = (currentStatus, workflowCode) => {
   let isPAID = false;
-  if (currentStatus === "CITIZENACTIONREQUIRED" || currentStatus === "PENDING Payment") {
+  if (currentStatus === "PENDING_PAYMENT") {
     return isPAID;
   }
   const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
-
   if (!isEmpty(businessServiceData)) {
     const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
     const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
@@ -1338,28 +1268,23 @@ const isApplicationPaid = (currentStatus, workflowCode) => {
 };
 
 export const createEstimateData = async (
-  LicenseData,
-  jsonPath,
+  applicationData,
+  // jsonPath ,
   dispatch,
-  href = {},
-  getFromReceipt
+  href = {}
 ) => {
-  const workflowCode = get(LicenseData, "workflowCode") ? get(LicenseData, "workflowCode") : "NewTL"
+  const workflowCode = get(applicationData, "businessService")
   const applicationNo =
-    get(LicenseData, "applicationNumber") ||
+    get(applicationData, "applicationNumber") ||
     getQueryArg(href, "applicationNumber");
   const tenantId =
-    get(LicenseData, "tenantId") || getQueryArg(href, "tenantId");
-  const businessService = get(LicenseData, "businessService", "");
+    get(applicationData, "tenantId") || getQueryArg(href, "tenantId");
+  const businessService = get(applicationData, "businessService", "");
   const queryObj = [
     { key: "tenantId", value: tenantId },
     {
       key: "consumerCodes",
       value: applicationNo
-    },
-    {
-      key: "businessService",
-      value: businessService
     }
   ];
   const getBillQueryObj = [
@@ -1373,13 +1298,12 @@ export const createEstimateData = async (
       value: businessService
     }
   ];
-  const currentStatus = LicenseData.status;
+  const currentStatus = applicationData.state;
   const isPAID = isApplicationPaid(currentStatus, workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
   const payload = isPAID
-    ? await getReceipt(queryObj.filter(item => item.key !== "businessService"))
+    ? await getReceipt(queryObj)
     : fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
-
   let estimateData = payload
     ? isPAID
       ? payload &&
@@ -1387,10 +1311,9 @@ export const createEstimateData = async (
       payload.Payments.length > 0 &&
       getEstimateData(
         payload.Payments[0].paymentDetails[0].bill,
-        isPAID,
-        LicenseData
+        isPAID
       )
-      : payload && getEstimateData(payload, false, LicenseData)
+      : payload && getEstimateData(payload, false)
     : [];
   estimateData = estimateData || [];
   set(
@@ -1398,25 +1321,11 @@ export const createEstimateData = async (
     "payStatus",
     isPAID
   );
-  dispatch(prepareFinalObject(jsonPath, estimateData));
-  const accessories = get(LicenseData, "tradeLicenseDetail.accessories", []);
-  if (payload) {
-    const getBillResponse = await calculateBill(getBillQueryObj);
-    getBillResponse &&
-      getBillResponse.billingSlabIds &&
-      getBillingSlabData(
-        dispatch,
-        getBillResponse.billingSlabIds,
-        tenantId,
-        accessories
-      );
-  }
-
+  dispatch(prepareFinalObject("temp[0].estimateCardData", estimateData));
   /** Waiting for estimate to load while downloading confirmation form */
   var event = new CustomEvent("estimateLoaded", { detail: true });
   window.parent.document.dispatchEvent(event);
   /** END */
-
   return payload;
 };
 
@@ -1586,21 +1495,20 @@ export const fetchBill = async (action, state, dispatch) => {
       value: getQueryArg(window.location.href, "consumerCode")
     }
   ];
-  const LicensesPayload = await getSearchResults(queryObject);
+  const applicationPayload = await getSearchApplicationsResults(queryObject);
   //get bill and populate estimate card
   const payload =
-    LicensesPayload &&
-    LicensesPayload.Licenses &&
+  applicationPayload &&
+  applicationPayload.Applications &&
     (await createEstimateData(
-      LicensesPayload.Licenses[0],
-      "LicensesTemp[0].estimateCardData",
+      applicationPayload.Applications[0],
       dispatch,
       window.location.href
     ));
   //set in redux to be used for adhoc
-  LicensesPayload &&
-    LicensesPayload.Licenses &&
-    dispatch(prepareFinalObject("Licenses[0]", LicensesPayload.Licenses[0]));
+  applicationPayload &&
+  applicationPayload.Applications &&
+    dispatch(prepareFinalObject("Applications[0]", applicationPayload.Applications[0]));
 
   //initiate receipt object
   payload &&
