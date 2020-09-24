@@ -2,7 +2,9 @@ import { getStatusList } from "./searchResource/functions";
 import {
   getTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
-const { getCommonContainer, getCommonHeader } = require("egov-ui-framework/ui-config/screens/specs/utils");
+import { createEstimateData, getFeesEstimateCard } from "../utils";
+import { footerReview } from "./preview-resource/reviewFooter";
+const { getCommonContainer, getCommonHeader, getCommonCard, getCommonGrayCard } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redux/screen-configuration/actions");
 const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
@@ -26,10 +28,11 @@ const getData = async (action, state, dispatch) => {
     const queryObject = [
         {key: "applicationNumber", value: applicationNumber}
       ]
+    let footer = {};
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments, businessService} = Applications[0];
+       let {applicationDocuments, businessService, state: applicationState} = Applications[0];
        applicationDocuments = applicationDocuments || []
        const statusQueryObject = [{
           key: "tenantId",
@@ -54,7 +57,26 @@ const getData = async (action, state, dispatch) => {
       );
        const {branchType, moduleType, applicationType} = Applications[0];
        const type = `${branchType}_${moduleType}_${applicationType}`;
-       const reviewDetails = await setThirdStep(state, dispatch, type, Applications[0], false);
+       let reviewDetails = await setThirdStep({state, dispatch, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
+        if(applicationState === "PENDING_PAYMENT") {
+            const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
+            const estimate = !!estimateResponse ? getCommonGrayCard({
+              estimateSection: getFeesEstimateCard({
+                sourceJsonPath: "temp[0].estimateCardData"
+              })
+            }) : {}
+          reviewDetails = {estimate, ...reviewDetails}
+          footer = process.env.REACT_APP_NAME === "Citizen" && footerReview(
+            action,
+            state,
+            dispatch,
+            applicationState,
+            applicationNumber,
+            tenantId,
+            businessService
+          );
+        }
+        reviewDetails = getCommonCard({...reviewDetails})
         return {
                 div: {
                     uiFramework: "custom-atoms",
@@ -98,7 +120,8 @@ const getData = async (action, state, dispatch) => {
                             updateUrl: "/est-services/application/_update"
                           }
                         },
-                        reviewDetails
+                        reviewDetails,
+                        footer
                     }
                   }
         }

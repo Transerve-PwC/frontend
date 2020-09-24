@@ -108,10 +108,10 @@ export const viewFour = (section, data) => {
   }
 }
 
-export const setThirdStep = async (state, dispatch, applicationType, data, isEdit = true) => {
+export const setThirdStep = async ({state, dispatch, applicationType, data, isEdit = true, showHeader = true}) => {
     const {preview} = require(`../${applicationType}_preview.json`);
     const {sections = []} = preview;
-    const details = sections.reduce((acc, section, index) => {
+    let details = sections.reduce((acc, section, index) => {
       const {step, header, isEditable = true} = section
       return {
         ...acc,
@@ -121,12 +121,15 @@ export const setThirdStep = async (state, dispatch, applicationType, data, isEdi
         })
       }
     }, {})
-    const reviewDetails = getCommonCard({
-      header: getCommonTitle({
-        labelName: "Summary",
-        labelKey: "RP_PM_SUMMARY_HEADER"
-      }),
-      ...details
-    })
-     return reviewDetails
+    details = !!showHeader ? { header: getCommonTitle({
+      labelName: "Summary",
+      labelKey: "RP_PM_SUMMARY_HEADER"
+    }),
+    ...details
+    } : details
+    // const reviewDetails = getCommonCard({
+    //   ...details
+    // })
+    //  return reviewDetails
+    return details
   }

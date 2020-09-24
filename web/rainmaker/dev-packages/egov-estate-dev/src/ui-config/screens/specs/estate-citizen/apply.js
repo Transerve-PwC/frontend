@@ -1,4 +1,4 @@
-import { getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonCard, getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {footer, stepper} from './footer'
@@ -74,7 +74,8 @@ const getData = async (action, state, dispatch) => {
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
-    const third_step = await setThirdStep(state, dispatch, applicationType)
+    let third_step = await setThirdStep({state, dispatch, applicationType})
+    third_step = getCommonCard({...third_step})
     inputProps.push(...second_step_sections);
     return {
       div: {
