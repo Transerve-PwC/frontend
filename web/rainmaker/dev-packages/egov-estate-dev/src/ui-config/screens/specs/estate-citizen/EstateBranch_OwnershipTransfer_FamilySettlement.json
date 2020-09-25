@@ -3,6 +3,43 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_FamilySettlement": [
     {
+      "dataSources": [
+        {
+          "name": "typesOfOwner",
+          "type": "local",
+          "cacheable": true,
+          "lazyload": true,
+          "values": [
+            {
+              "code": "New"
+            },
+            {
+              "code": "Existing"
+            }
+          ]
+        },
+        {
+          "name": "modeOfTransfer",
+          "type": "local",
+          "cacheable": true,
+          "lazyload": true,
+          "values": [
+            {
+              "code": "FAMILY_SETTLEMENT"
+            },
+            {
+              "code": "COURT_DECREE"
+            }
+          ]
+        },
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
+          "label": "ownerDetails.ownerName"
+        }
+      ],
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -11,10 +48,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FAMILY_SETTLEMENT",
-                  "COURT_DECREE"
-                ]
+                "values": ["FAMILY_SETTLEMENT", "COURT_DECREE"]
               }
             }
           ]
@@ -33,7 +67,7 @@
           "required": true,
           "validations": [
             {
-              "type": "transferor"
+              "type": "owner"
             }
           ]
         },
@@ -83,7 +117,7 @@
           "required": false,
           "validations": [
             {
-              "type": "transferee"
+              "type": "owner"
             }
           ]
         },
@@ -120,10 +154,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
+                "values": ["FATHER", "HUSBAND"]
               }
             }
           ]
@@ -359,21 +390,24 @@
                 "placeholder": "ES_TRANSFEREE_TYPE_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
-                "path": "type"
+                "path": "transferee.type",
+                "dataSource": "typesOfOwner"
               },
               {
                 "label": "ES_EXISTING_OWNERS_LABEL",
                 "placeholder": "ES_EXISTING_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferee.owners",
-                "path": "owners"
+                "jsonPath": "Applications[0].applicationDetails.transferee.id",
+                "path": "transferee.id",
+                "dataSource": "owners"
               },
               {
                 "label": "ES_SELLERORTRANFERROR_NAME_LABEL",
                 "placeholder": "ES_SELLERORTRANFERROR_NAME_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferee.sellerortransferrorname",
-                "path": "sellerortransferrorname"
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "ES_TRANSFEREE_NAME_LABEL",
@@ -415,14 +449,14 @@
               {
                 "label": "ES_REGISTRATION_NUMBER_LABEL",
                 "placeholder": "ES_REGISTRATION_NUMBER_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].registrationNumber",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.registrationNumber",
                 "path": "registrationNumber"
               },
               {
                 "label": "ES_DATE_OF_REGISTRATION_LABEL",
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].dateOfRegistration",
+                "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
                 "path": "dateOfRegistration"
               }
             ]
@@ -434,9 +468,10 @@
               {
                 "label": "ES_FAMILILY_SETTLEMENT",
                 "placeholder": "ES_FAMILILY_SETTLEMENT_PLACEHOLDER",
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].modeOfTransfer",
-                "path": "modeOfTransfer"
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.modeOfTransfer",
+                "path": "modeOfTransfer",
+                "dataSource": "modeOfTransfer"
               }
             ]
           },
@@ -447,7 +482,7 @@
               {
                 "label": "ES_FAMILY_SETTLEMENT_DATE_LABEL",
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].familysettlementdate",
+                "jsonPath": "Applications[0].applicationDetails.familysettlementdate",
                 "path": "familysettlementdate"
               },
               {

@@ -48,35 +48,31 @@
                 "fields": [
                     {
                         "label": "ES_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.purchaser.transfereeType"
-                    },
-                    {
-                        "label": "ES_SELECT_OWNER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.purchaser.ownerName"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.type"
                     },
                     {
                         "label": "ES_SELLER_OR_TRANSFEROR_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.sellerOrTransferor"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "ES_TRANSFEREE_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transfereename"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
                         "label": "ES_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transfereefatherOrHusband"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
                     },
                     {
                         "label": "ES_TRANSFEREE_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transfereeAddress"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
                         "label": "ES_MOBILE_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.phone"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
                     },
                     {
                         "label": "ES_PERCENT_SHARE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.percentShare"
+                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     }
                 ]
             },
@@ -85,23 +81,23 @@
                 "fields": [
                     {
                         "label": "ES_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.regNumberOfPartnership"
+                        "jsonPath": "Applications[0].applicationDetails.registrationNumber"
                     },
                     {
                         "label": "ES_REGISTRATION_DATE",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.registrationDate"
+                        "jsonPath": "Applications[0].applicationDetails.dateOfRegistration"
                     },
                     {
                         "label": "ES_PRIVATE_LIMITED_COMPANY_NAME",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyName"
+                        "jsonPath": "Applications[0].applicationDetails.company.name"
                     },
                     {
                         "label": "ES_COMPANY_ADDRESS",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyAddress"
+                        "jsonPath": "Applications[0].applicationDetails.company.address"
                     },
                     {
                         "label": "ES_COMPANY_REGISTRATION_NUMBER",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyRegNumber"
+                        "jsonPath": "Applications[0].applicationDetails.company.registrationNumber"
                     }
                 ]
             },
@@ -110,7 +106,7 @@
                 "fields": [
                     {
                         "label": "ES_MODE_OF_TRANSFER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.modeOfTransfer"
+                        "jsonPath": "Applications[0].applicationDetails.modeOfTransfer"
                     }
                 ]
             },
