@@ -198,7 +198,6 @@ const callBackForNext = async(state, dispatch) => {
 
 
 const callBackForNextTransitImages = async(state, dispatch) => {
-        let imageupload=true
         let uploadFlag = false;
         let activeStep = 1;
         let isFormValid = true;
@@ -219,14 +218,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         dispatch,
         "transit-site-images"
       )
-      const images=get(
-        state, 'form.newapplication.files.media', []
-      )
-      console.log(images)
-      if(images.length<2){
-        imageupload=false
-      }
-      if(!!isOwnerDetailsValid  && !!isDetailsValid && !!imageupload) {
+      if(!!isOwnerDetailsValid  && !!isDetailsValid) {
         const propertyId = get(state.screenConfiguration.preparedFinalObject, "PropertyImagesApplications[0].property.id");
         let res = true;
         if(!propertyId) {

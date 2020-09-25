@@ -73,11 +73,11 @@ const documentList = {
     props: {
       buttonLabel: {
         labelName: "UPLOAD FILE",
-        labelKey: "TL_BUTTON_UPLOAD FILE"
+        labelKey: "ES_BUTTON_UPLOAD_FILE"
       },
       downloadButtonLabel: {
         labelName: "DOWNLOAD FILE",
-        labelKey: "TL_BUTTON_DOWNLOAD_FILE"
+        labelKey: "ES_BUTTON_DOWNLOAD_FILE"
       },
       inputProps,
       documentTypePrefix: "ES_",
@@ -92,7 +92,7 @@ const documentList = {
     header: getCommonTitle(
       {
         labelName: "Required Documents",
-        labelKey: "TL_NEW-UPLOAD-DOCS_HEADER"
+        labelKey: "ES_NEW-UPLOAD-DOCS_HEADER"
       },
       {
         style: {
@@ -103,7 +103,7 @@ const documentList = {
     paragraph: getCommonParagraph({
       labelName:
         "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
-      labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER"
+      labelKey: "ES_NEW-UPLOAD-DOCS_SUBHEADER"
     }),
     documentList
   })

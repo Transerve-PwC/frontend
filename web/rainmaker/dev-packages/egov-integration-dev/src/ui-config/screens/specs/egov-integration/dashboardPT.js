@@ -14,8 +14,10 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   //import { DOEApplyApplication} from "./applydoeResources/DOEApplyApplication";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-  import { getSearchPensioner,getPMSPattern } from "../../../../ui-utils/commons";
+  import { validateFields, getTextToLocalMapping } from "../utils";
+  import { getSearchPensioner,getPTPattern } from "../../../../ui-utils/commons";
   import { toggleSnackbar,toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import store from "../../../../ui-redux/store";
   import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
   import {
     getTenantId
@@ -33,7 +35,7 @@ import {
     import { httpRequest } from "../../../../ui-utils";
     import { getSearchResults } from "../../../../ui-utils/commons"; 
     const resetFields = (state, dispatch) => {
-      const textFields = ["minDeptCode",];
+      const textFields = ["code",];
       for (let i = 0; i < textFields.length; i++) {
         if (
           `state.screenConfiguration.screenConfig.dashboardPT.components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}.props.value`
@@ -63,6 +65,12 @@ import {
     "searchScreen",
     {}
   );
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+    state,
+    dispatch,
+    "dashboardPT"
+  );
   if( Object.keys(searchScreenObject).length == 0 )
   {
     dispatch(
@@ -76,13 +84,25 @@ import {
       )
     );
   }
+  else  if (!(isSearchBoxFirstRowValid)) {
+    dispatch(
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please enter valid property Id",
+          labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_CODE"
+        },
+        "error"
+      )
+    );
+  }
   else
   {
     let uid ='';
   for (var key in searchScreenObject) {  
     
     queryObject.push({ key: key, value: (searchScreenObject[key]) });
-    uid=searchScreenObject[key];
+    uid=searchScreenObject[key].trim();
   }
   
   queryObject.push({
@@ -90,7 +110,7 @@ import {
     value: false
   });
   
-  
+  dispatch(toggleSpinner())
   try {
     let payload =[];
   
@@ -110,16 +130,21 @@ import {
   if(Responce)
   {
     if(get(Responce,"ResponseBody",[]))
+    {
     dispatch(prepareFinalObject("APIData", get(Responce,"ResponseBody",[])));
+    dispatch(toggleSpinner())
+    }
     else
     {
      let  APIData =[] 
      dispatch(prepareFinalObject("APIData",APIData));
+     dispatch(toggleSpinner())
     }
   }
   else{
     let  APIData =[] 
      dispatch(prepareFinalObject("APIData",APIData));
+     dispatch(toggleSpinner())
 
   }
  
@@ -129,6 +154,16 @@ import {
   
   } catch (e) {
     console.log(e);
+    let  APIData =[] 
+    // dispatch(
+    //   toggleSnackbar(
+    //     true,
+    //     { labelName: "Input should not be shorter than 2 characters", labelKey: e },
+    //     "error"
+    //   )
+    // );
+     dispatch(prepareFinalObject("APIData",APIData));
+     dispatch(toggleSpinner())
   }
   }
   
@@ -242,11 +277,11 @@ import {
               label: { labelName: "Code", labelKey: "PT_CODE" },
               placeholder: {
                 labelName: "Enter Code",
-                labelKey: "PT_CODE_PLACEHOLDER"
+                labelKey: "PT_CODE"
               },
               required: true,
               jsonPath: "searchScreen.code",
-             // pattern: getPattern("Date"),
+             pattern: getPTPattern("PropertycodePT"),
               gridDefination: {
                 xs: 12,
                 sm: 4,
@@ -325,7 +360,7 @@ import {
           PensionReviewBottom: {
             uiFramework: "custom-containers-local",        
             componentPath: "InventoryContainer",
-            moduleName: "egov-rti",
+            moduleName: "egov-integration",
               props: {
                 dataPath: "records",
                 moduleName: "RTI",

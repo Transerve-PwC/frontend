@@ -305,8 +305,6 @@ const getPropertyDetailsForNotice = () => {
 const getPaymentDetailsNotice = () => {
     return {
             detailsContainer: getCommonContainer({    
-            demandNoticeFromDate: getDateField(demandNoticeFromDate),
-            demandNoticeLastDate: getDateField(demandNoticeLastDate),
             recoveryType: getSelectField(recoveryTypeField),
             paymentAmount: getTextField(paymentAmountFieldNotice),
         })

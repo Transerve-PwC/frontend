@@ -69,35 +69,43 @@ export const nocDetails = getCommonCard({
         },
       })
     },
-    // dummyDiv: {
-    //   uiFramework: "custom-atoms",
-    //   componentPath: "Div",
-    //   gridDefination: {
-    //     xs: 12,
-    //     sm: 12,
-    //     md: 6
-    //   },
-    //   props: {
-    //     disabled: true
-    //   }
-    // },
     roadCutType: {
-      ...getTextField({
+      ...getSelectField({
         label: {
           labelName: "Road Cut Type",
           labelKey: "ROADCUT_ROAD_CUT_TYPE_LABEL_NOC"
         },
+        optionLabel: "name",
         placeholder: {
           labelName: "Enter Road Cut Type",
           labelKey: "ROADCUT_ROAD_CUT_TYPE_PLACEHOLDER"
         },
-        pattern: getOPMSPattern("typeofroadcut"),
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        required: false,
-        jsonPath: "ROADCUTNOC.roadCutType"
+        sourceJsonPath: "applyScreenMdmsData.egpm.roadCutType",
+        jsonPath: "ROADCUTNOC.roadCutType",
+        required: true,
+        props: {
+          className: "applicant-details-error",
+          required: true
+        }
       })
     },
-
+    // roadCutType: {
+    //   ...getTextField({
+    //     label: {
+    //       labelName: "Road Cut Type",
+    //       labelKey: "ROADCUT_ROAD_CUT_TYPE_LABEL_NOC"
+    //     },
+    //     placeholder: {
+    //       labelName: "Enter Road Cut Type",
+    //       labelKey: "ROADCUT_ROAD_CUT_TYPE_PLACEHOLDER"
+    //     },
+    //     pattern: getOPMSPattern("typeofroadcut"),
+    //     errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+    //     required: false,
+    //     jsonPath: "ROADCUTNOC.roadCutType"
+    //   })
+    // },
     applicantName: {
       ...getTextField({
         label: {
@@ -252,24 +260,6 @@ export const nocDetails = getCommonCard({
           // disabled: true
         },
       })
-    },
-    width: {
-      ...getTextField({
-        label: {
-          labelName: "Width",
-          labelKey: "ROADCUT_WIDTH_NOC"
-        },
-        placeholder: {
-          labelName: "Enter Width",
-          labelKey: "ROADCUT_WIDTH_PLACEHOLDER"
-        },
-        required: true,
-        pattern: getOPMSPattern("Amount"),
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        jsonPath: "ROADCUTNOC.width"
-      })
-    },
-
-
+    }
   })
 });

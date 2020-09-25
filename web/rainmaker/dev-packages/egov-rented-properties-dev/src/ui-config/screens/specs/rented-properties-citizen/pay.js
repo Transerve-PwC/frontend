@@ -68,8 +68,8 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
         case BILLING_BUSINESS_SERVICE_DC: {
           sourceJsonPath = "DuplicateTemp[0].estimateCardData"
           header = getCommonHeader({
-            labelName: "Application for Ownership Transfer",
-            labelKey: "RP_COMMON_PAY_OWNERSHIP_SCREEN_HEADER"
+            labelName: "Application for Duplicate Transfer",
+            labelKey: "RP_COMMON_PAY_DUPLICATE_SCREEN_HEADER"
           })
           break
         }

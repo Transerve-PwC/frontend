@@ -9,7 +9,7 @@ import {
   import { documentDetails } from "./createSMIDResource/documentDetails";
   import get from "lodash/get";
   import { httpRequest } from "../../../../ui-utils";
-  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { NULMConfiguration } from "../../../../ui-utils/sampleResponses";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -81,6 +81,10 @@ import {
             masterDetails: [
               {
                 name: "SEPDocuments",
+              },
+              {
+                name: "Qualification",
+                
               }
             ]
           },
@@ -101,12 +105,22 @@ import {
   
     const SMIDDocuments = [{ accept: "application/pdf,image/*",
                       active: true,
-                      code: "NULM_SMID_DOCUMENT_UPLOAD",
-                      description: "Upload Relevent Document",
+                      code: "NULM_SMID_DOCUMENT_GOVT_ID",
+                      description: "Govt ID & Address Proof",
                       documentType: "smidDocument",
                       fileType: "PDF_IMAGE",
                       required: true, 
-                    }]
+                    },
+                    { accept: "application/pdf,image/*",
+                      active: true,
+                      code: "NULM_SMID_DOCUMENT_PHOTO_APPLICANT",
+                      description: "Photo of the applicant",
+                      documentType: "smidDocument",
+                      fileType: "PDF_IMAGE",
+                      required: true, 
+                    }
+                  
+                  ]
     const resp = {SMIDDocuments}
     dispatch(prepareFinalObject("applyScreenMdmsData.NULM", resp));
 //dispatch(prepareFinalObject("applyScreenMdmsData", get(response, "MdmsRes")));
@@ -128,7 +142,14 @@ import {
     beforeInitScreen: (action, state, dispatch) => {
   
       const mdmsDataStatus = getMdmsData(state, dispatch);
-  
+      dispatch(
+        handleField(
+          "create-smid",
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough",
+          "props",
+          { disabled: true }
+        )
+      ); 
       return action;
     },
   

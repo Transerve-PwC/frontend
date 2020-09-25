@@ -49,7 +49,7 @@ export const applicationSuccessFooter = (
         children: {
           downloadReceiptButtonLabel: getLabel({
             labelName: "GO TO HOME",
-            labelKey: "TL_COMMON_BUTTON_HOME"
+            labelKey: "RP_BUTTON_HOME"
           })
         },
         onClickDefination: {
@@ -251,7 +251,7 @@ export const applicationSuccessFooter = (
         children: {
           downloadReceiptButtonLabel: getLabel({
             labelName: "GO TO HOME",
-            labelKey: "TL_COMMON_BUTTON_HOME"
+            labelKey: "RP_BUTTON_HOME"
           })
         },
         onClickDefination: {

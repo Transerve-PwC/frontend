@@ -14,7 +14,7 @@ export const documentDetails = getCommonCard({
   ),
   subText: getCommonParagraph({
     labelName:
-      "Only image and .pdf files can be uploaded.Max file size 2MB each and 4 files can be uploaded.",
+      "Only image and .pdf files can be uploaded.Max file size 2MB each and 5 files can be uploaded.",
     labelKey: "ROADCUT_DOCUMENT_DETAILS_SUBTEXT_NOC"
   
   }),
@@ -36,7 +36,7 @@ export const documentDetails = getCommonCard({
         uiFramework: "custom-molecules",
         componentPath: "UploadMultipleFiles",
         props: {
-          maxFiles: 4,
+          maxFiles: 5,
           jsonPath: "RoadCutDocuments",
           inputProps: {
             //accept: ".pdf,.png,.jpeg,.zip,.WAV,.AIFF,.AU,.PCM,.BWF,.mp3,.mpeg,.mp4"
@@ -55,7 +55,7 @@ export const documentDetails = getCommonCard({
   },
   subText1: getCommonParagraph({
     labelName:
-      "1. Stamped Notarized 4 set drawing"
+      "1. Stamped Notarized drawing"
   }),
   subText2: getCommonParagraph({
     labelName:
@@ -69,4 +69,8 @@ export const documentDetails = getCommonCard({
     labelName:
       "4. Authorized person' ID Card"
   }),
+  subText5: getCommonParagraph({
+    labelName:
+      "5. Telecom License (if required)"
+  })
 });

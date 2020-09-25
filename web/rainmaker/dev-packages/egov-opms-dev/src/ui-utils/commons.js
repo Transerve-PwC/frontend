@@ -919,7 +919,6 @@ export const furnishRoadcutNocResponse = response => {
   set(refurnishresponse, "ward", applicationdetail.ward);
   set(refurnishresponse, "requestedLocation", applicationdetail.requestedLocation);
   set(refurnishresponse, "landmark", applicationdetail.landmark);
-  set(refurnishresponse, "width", applicationdetail.width);
   set(refurnishresponse, "purposeOfRoadCutting", applicationdetail.purposeOfRoadCutting);
   set(refurnishresponse, "division", applicationdetail.division);
   set(refurnishresponse, "uploadDocuments", applicationdetail.uploadDocuments);
@@ -1333,7 +1332,7 @@ export const createUpdateRoadCutNocApplication = async (state, dispatch, status)
 
     payload.hasOwnProperty("roadCutType") === false ? set(payload, "roadCutType", "") : ''
     payload.hasOwnProperty("requestedLocation") === false ? set(payload, "requestedLocation", "") : ''
-
+    payload.hasOwnProperty("gstin") === false ? set(payload, "gstin", "") : ''
     set(payload, "uploadDocuments", roadcutdocuments);
     set(payload, "remarks", Remarks);
 
@@ -1810,13 +1809,7 @@ const callPMUpdateStatusAPI = async (code,url,dispatch) => {
     );
     if (response.ResponseInfo.status == "success") {
       dispatch(toggleSpinner());
-      store.dispatch(
-        toggleSnackbar(
-          true,
-          { labelName: 'Success', labelCode: 'Success' },
-          "success"
-        ));
-      dispatch(setRoute(url))
+      dispatch(setRoute('/inbox'))
     }
     else {
       dispatch(toggleSpinner());

@@ -579,18 +579,7 @@ export const downloadCertificateForm = (Owners, data, applicationType,tenantId, 
       break; 
     default:      
   }
-  let {
-    documents
-  } = Owners[0].additionalDetails;
-  const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  const ownerDocument = findIndex !== -1 ? documents[findIndex] : {
-    link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`
-  };
   let ownersData = Owners[0];
-  ownersData = {
-    ...ownersData,
-    ownerDocument
-  }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",

@@ -367,7 +367,6 @@ dispatch(toggleSnackbar(true, errorMessage, "warning"));
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {
-  let imageupload= true;
   let isFormValid = true;
   let propertyIdTransit = getQueryArg(window.location.href, "propertyIdTransit");
 
@@ -384,19 +383,10 @@ const isRentHolderValid = validateFields(
   dispatch,
   "notice-violation"
 )
-const isImageupload=get(state.screenConfiguration.screenConfig["notice-violation"],'components.div.children.imageUploadDetailsProperties.visible')
-if(isImageupload===true){
-  const images=get(
-    state, 'form.newapplication.files.media', []
-  )
-  console.log(images)
-  if(images.length===0){
-    imageupload=false
-  }
-}
+
 
 let res = [];
-if(isOwnerDetailsValid && isRentHolderValid && !!imageupload) {
+if(isOwnerDetailsValid && isRentHolderValid) {
   res = await applynoticegeneration(state, dispatch, "Violation",propertyIdTransit)
   if(!res) {
    return
@@ -419,7 +409,7 @@ if (!isFormValid) {
   let errorMessage = {
     labelName:
         "Please fill all mandatory fields, then do next !",
-    labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
+    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -1285,7 +1275,7 @@ export const footer = getCommonApplyFooter({
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                label: {labelName : "DOWNLOAD" , labelKey :"RP_DOWNLOAD"},
                  leftIcon: "cloud_download",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginRight: "10px" }, className: "tl-download-button" },
@@ -1299,7 +1289,7 @@ export const footer = getCommonApplyFooter({
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                label: {labelName : "PRINT" , labelKey :"RP_PRINT"},
                 leftIcon: "print",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
@@ -1365,7 +1355,7 @@ export const footer = getCommonApplyFooter({
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "DOWNLOAD" , labelKey :"TL_DOWNLOAD"},
+                label: {labelName : "DOWNLOAD" , labelKey :"RP_DOWNLOAD"},
                  leftIcon: "cloud_download",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" ,marginRight: "10px"}, className: "tl-download-button" },
@@ -1379,7 +1369,7 @@ export const footer = getCommonApplyFooter({
             componentPath: "MenuButton",
             props: {
               data: {
-                label: {labelName : "PRINT" , labelKey :"TL_PRINT"},
+                label: {labelName : "PRINT" , labelKey :"RP_PRINT"},
                 leftIcon: "print",
                 rightIcon: "arrow_drop_down",
                 props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },

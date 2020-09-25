@@ -111,6 +111,9 @@ const getMdmsData = async (action, state, dispatch) => {
             },
             {
               name: "sector"
+            },
+            {
+              name: "roadCutType"
             }
           ]
         },
@@ -536,43 +539,43 @@ const setSearchResponseForNocCretificate = async (state, dispatch, applicationNu
 
 
   if (nocRemark == "PAID") {
-    let getCertificateDataForROADCUT = { "applicationType": "ROADCUTNOC", "tenantId": tenantId, "applicationId": applicationNumber, "dataPayload": { "requestDocumentType": "certificateData" } };
+    // let getCertificateDataForROADCUT = { "applicationType": "ROADCUTNOC", "tenantId": tenantId, "applicationId": applicationNumber, "dataPayload": { "requestDocumentType": "certificateData" } };
 
-    //ROADCUTNOC
-    const response0ROADCUT = await getSearchResultsForNocCretificate([
-      { key: "tenantId", value: tenantId },
-      { key: "applicationNumber", value: applicationNumber },
-      { key: "getCertificateData", value: getCertificateDataForROADCUT },
-      { key: "requestUrl", value: "/pm-services/noc/_getCertificateData" }
-    ]);
+    // //ROADCUTNOC
+    // const response0ROADCUT = await getSearchResultsForNocCretificate([
+    //   { key: "tenantId", value: tenantId },
+    //   { key: "applicationNumber", value: applicationNumber },
+    //   { key: "getCertificateData", value: getCertificateDataForROADCUT },
+    //   { key: "requestUrl", value: "/pm-services/noc/_getCertificateData" }
+    // ]);
 
-    let getFileStoreIdForROADCUT = { "nocApplicationDetail": [get(response0ROADCUT, "nocApplicationDetail[0]", "")] }
+    // let getFileStoreIdForROADCUT = { "nocApplicationDetail": [get(response0ROADCUT, "nocApplicationDetail[0]", "")] }
     //dispatch(prepareFinalObject("nocApplicationCertificateDetail", get(response, "nocApplicationDetail", [])));
 
-    const response1ROADCUT = await getSearchResultsForNocCretificate([
-      { key: "tenantId", value: tenantId },
-      { key: "applicationNumber", value: applicationNumber },
-      { key: "getCertificateDataFileStoreId", value: getFileStoreIdForROADCUT },
-      { key: "requestUrl", value: "/pdf-service/v1/_create?key=road-noc&tenantId=" + tenantId }
-    ]);
+    // const response1ROADCUT = await getSearchResultsForNocCretificate([
+    //   { key: "tenantId", value: tenantId },
+    //   { key: "applicationNumber", value: applicationNumber },
+    //   { key: "getCertificateDataFileStoreId", value: getFileStoreIdForROADCUT },
+    //   { key: "requestUrl", value: "/pdf-service/v1/_create?key=road-noc&tenantId=" + tenantId }
+    // ]);
 
-    const response2ROADCUT = await getSearchResultsForNocCretificateDownload([
-      { key: "tenantId", value: tenantId },
-      { key: "applicationNumber", value: applicationNumber },
-      { key: "filestoreIds", value: get(response1ROADCUT, "filestoreIds[0]", "") },
-      { key: "requestUrl", value: "/filestore/v1/files/url?tenantId=" + tenantId + "&fileStoreIds=" }
-    ]);
-    httpLinkROADCUT = get(response2ROADCUT, get(response1ROADCUT, "filestoreIds[0]", ""), "")
+    // const response2ROADCUT = await getSearchResultsForNocCretificateDownload([
+    //   { key: "tenantId", value: tenantId },
+    //   { key: "applicationNumber", value: applicationNumber },
+    //   { key: "filestoreIds", value: get(response1ROADCUT, "filestoreIds[0]", "") },
+    //   { key: "requestUrl", value: "/filestore/v1/files/url?tenantId=" + tenantId + "&fileStoreIds=" }
+    // ]);
+    // httpLinkROADCUT = get(response2ROADCUT, get(response1ROADCUT, "filestoreIds[0]", ""), "")
 
     //Object creation for NOC's
-    certificateDownloadObjectROADCUT = {
-      label: { labelName: "NOC Certificate ROADCUT", labelKey: "NOC_CERTIFICATE_ROADCUT" },
-      link: () => {
-        if (httpLinkROADCUT != "")
-          window.location.href = httpLinkROADCUT;
-      },
-      leftIcon: "book"
-    };
+    // certificateDownloadObjectROADCUT = {
+    //   label: { labelName: "NOC Certificate ROADCUT", labelKey: "NOC_CERTIFICATE_ROADCUT" },
+    //   link: () => {
+    //     if (httpLinkROADCUT != "")
+    //       window.location.href = httpLinkROADCUT;
+    //   },
+    //   leftIcon: "book"
+    // };
 
     //Receipts
     let getCertificateDataForROADCUT_RECEIPT = { "applicationType": "ROADCUTNOC", "tenantId": tenantId, "applicationId": applicationNumber, "dataPayload": { "requestDocumentType": "receiptData" } };
@@ -616,7 +619,7 @@ const setSearchResponseForNocCretificate = async (state, dispatch, applicationNu
 
   if (nocRemark == "PAID") {
     downloadMenu = [
-      certificateDownloadObjectROADCUT,
+      //certificateDownloadObjectROADCUT,
       certificateDownloadObjectROADCUT_RECEIPT
     ];
   }

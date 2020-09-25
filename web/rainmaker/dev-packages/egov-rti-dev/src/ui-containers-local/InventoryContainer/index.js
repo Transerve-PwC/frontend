@@ -76,8 +76,46 @@ class InventoryContainer extends Component {
           APIData, 
           pageName,        
           moduleName } = this.props;
-console.log(APIData)
-console.log("APIData")
+          let ministryname='';
+          let cpioRequestReceived=0;
+          let cpioRequestPending=0;
+          let appellateRequestReceived=0;
+          let appellateRequestPending=0;
+          let nodalRequestReceived=0;
+          let nodalRequestPending=0;
+          console.log(APIData)
+          console.log("APIData")
+          if(APIData!== null)
+          {
+          if(APIData.cpio !== null){
+            APIData.cpio.records.map((item,i)=>{
+              ministryname =item.minDeptDesc;
+              cpioRequestPending=cpioRequestPending + item.totalRequestPending;
+              cpioRequestReceived=cpioRequestReceived + item.totalRequestReceived;                          
+            })
+          }else{
+            cpioRequestPending=0;
+            cpioRequestReceived=0;
+          }
+          if(APIData.appellate !== null){
+            APIData.appellate.records.map((item,i)=>{
+              appellateRequestPending=appellateRequestPending + item.totalRequestPending;
+              appellateRequestReceived=appellateRequestReceived + item.totalRequestReceived;
+            })
+          }else{
+            appellateRequestPending=0;
+            appellateRequestReceived=0;  
+          }
+          if(APIData.nodal !== null){
+            APIData.nodal.records.map((item,i)=>{
+              nodalRequestPending=nodalRequestPending + item.totalRequestPending;
+              nodalRequestReceived=nodalRequestReceived + item.totalRequestReceived;                         
+            })
+          }else{
+            nodalRequestPending=0;
+            nodalRequestReceived=0;
+          }
+        }
           if(pageName ==="INTIGRATION_PT")
           {
             return  ( <div>
@@ -346,58 +384,18 @@ console.log("APIData")
                                <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"21"}} ><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
                              </tr>
                             
-                           ):(
-                            //  <tr> pritam data</tr>
-                          
-                           <tr>
-                             <th>
-                               {
-                                  APIData.appellate.records.map((item,i)=>{
-                                    return(
-                                      <tr>
-                                        {/* <th>{item.srNo}</th> */}
-                                        <th>{item.minDeptDesc}</th>
-                                        <th>{item.totalRequestReceived}</th>
-                                        <th>{item.totalRequestPending}</th>
-                                        {/* <th>{item.receiptDate}</th>
-                                        <th>{item.receiptNo}</th>
-                                        <th>{item.receiptDepartment}</th> */}
-                                       
-                                      </tr>
-                                    )                            
-                                  })
-                               }
-                             </th>
-                             {/* <th>
-                               {
-                                  APIData.appellate.records.map((item,i)=>{
-                                    return(
-                                      <tr>
-                                       
-                                        <th>{item.totalRequestReceived}</th>
-                                        <th>{item.totalRequestPending}</th>
-                                      </tr>
-                                    )                            
-                                  })
-                               }
-                             </th>
-                             <th>
-                               {
-                                  APIData.appellate.records.map((item,i)=>{
-                                    return(
-                                      <tr>                                        
-                                        <th>{item.totalRequestReceived}</th>
-                                        <th>{item.totalRequestPending}</th> 
-                                      </tr>
-                                    )                            
-                                  })
-                               }
-                             </th> */}
-                           </tr>
-                           )
-                          
-                         }
-    
+                           ):(                           
+                            <tr>
+                              <td>{ministryname}</td>
+                              <td>{appellateRequestReceived}</td>
+                              <td>{appellateRequestPending}</td>                           
+                              <td>{nodalRequestReceived}</td>
+                              <td>{nodalRequestPending}</td>
+                              <td>{cpioRequestReceived}</td>
+                              <td>{cpioRequestPending}</td>
+                            </tr>                              
+                           )                          
+                         }    
                     </tbody>
                     )                
                   }
