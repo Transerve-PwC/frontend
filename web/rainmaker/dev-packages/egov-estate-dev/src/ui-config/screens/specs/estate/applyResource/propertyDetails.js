@@ -423,14 +423,6 @@ const getPropertyRegisteredToRadioButton = {
                 !!(action.value == "ENTITY")
             )
         )
-        // dispatch(
-        //     handleField(
-        //         screenName,
-        //         `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[0].item0.children.cardContent.children.ownerCard.children.isDirector`,
-        //         "visible",
-        //         !!(action.value == "ENTITY")
-        //     )
-        // )
         dispatch(
             handleField(
                 screenName,

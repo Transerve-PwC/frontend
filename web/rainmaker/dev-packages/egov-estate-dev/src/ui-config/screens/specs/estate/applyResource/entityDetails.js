@@ -143,12 +143,12 @@ const getIsFirmRegisteredRadioButton = {
     buttons: [{
         labelName: "YES",
         labelKey: "ES_COMMON_YES",
-        value: "YES"
+        value: true
       },
       {
         label: "NO",
         labelKey: "ES_COMMON_NO",
-        value: "NO"
+        value: false
       }
     ],
     jsonPath: "Properties[0].propertyDetails.isFirmRegistered",

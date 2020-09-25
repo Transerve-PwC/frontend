@@ -8,9 +8,10 @@ import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getSearchApplicationsResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty } from "./preview-resource/owner-properties";
+import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails } from "./preview-resource/owner-properties";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import {onTabChange, headerrow, tabs} from './search-preview'
+import { firmDetails } from "./applyResource/entityDetails";
 
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
@@ -30,15 +31,15 @@ let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 const ownerContainer = {
   uiFramework: "custom-atoms",
-componentPath: "Div",
-props: {
-  id: "docs"
-},
-children: {
-}
+  componentPath: "Div",
+  props: {
+    id: "docs"
+  },
+  children: {
+  }
 }
 
-const modeOfTransferContainer = {
+const entityContainer = {
   uiFramework: "custom-atoms",
   componentPath: "Div",
   props: {
@@ -47,6 +48,7 @@ const modeOfTransferContainer = {
   children: {
   }
 }
+
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -65,62 +67,85 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     dispatch(prepareFinalObject("Properties", properties));
 
     let applicationState = properties[0].state;
-    
+    let entityType = properties[0].propertyDetails.entityType;
+    let companyDetails;
+    let firmDetails;
+    let proprietorshipDetails;
+
+    if (entityType == "ET.PUBLIC_LIMITED_COMPANY" || entityType == "ET.PRIVATE_LIMITED_COMPANY") {
+      companyDetails = getCompanyDetails(false);
+    }
+    else if (entityType == "ET.PARTNERSHIP_FIRM") {
+      firmDetails = getFirmDetails(false);
+    }
+
     let containers={}
     if(properties[0].propertyDetails.owners){
       // properties[0].propertyDetails.owners.forEach((element,index) => { 
       await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
-        let ownerdetailsComponent = getOwnerDetails(false,index);
-        let allotmentDetailsComponent = getAllotmentDetails(false,index);
+        if (!!element.ownerDetails.isCurrentOwner) {
+          let ownerdetailsComponent = getOwnerDetails(false,index);
+          let allotmentDetailsComponent = getAllotmentDetails(false,index);
 
-        if (applicationState == "PS_PM_APPROVED") {
-          let ownerId = element.id;
-          let queryObject = [
-            { key: "ownerId", value: ownerId }
-          ]
-          let payload = await getSearchApplicationsResults(queryObject);
-          let modeOfTransferArr = [];
+          if (applicationState == "PS_PM_APPROVED") {
+            let ownerId = element.id;
+            let queryObject = [
+              { key: "ownerId", value: ownerId }
+            ]
+            let payload = await getSearchApplicationsResults(queryObject);
+            let modeOfTransferArr = [];
 
-          if (payload.Applications && payload.Applications.length) {
-            payload.Applications.map(item => {
-              modeOfTransferArr.push({
-                applicationNumber: item.applicationNumber,
-                branchType: item.branchType,
-                moduleType: item.moduleType,
-                applicationType: item.applicationType
+            if (payload.Applications && payload.Applications.length) {
+              payload.Applications.map(item => {
+                modeOfTransferArr.push({
+                  applicationNumber: item.applicationNumber,
+                  branchType: item.branchType,
+                  moduleType: item.moduleType,
+                  applicationType: item.applicationType
+                })
               })
-            })
 
-            dispatch(
-              prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransfer`, modeOfTransferArr)
-            )
-  
-            var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty();
+              dispatch(
+                prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransfer`, modeOfTransferArr)
+              )
+    
+              var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty();
+            }
           }
-        }
 
-        if (!!modeOfTransferComponent) {
-          containers[index] = getCommonCard({
-            ownerdetailsComponent,
-            allotmentDetailsComponent,
-            modeOfTransferComponent
-          });
-        }
-        else {
-          containers[index] = getCommonCard({
-            ownerdetailsComponent,
-            allotmentDetailsComponent
-          });  
+          if (!!modeOfTransferComponent) {
+            containers[index] = getCommonCard({
+              ownerdetailsComponent,
+              allotmentDetailsComponent,
+              modeOfTransferComponent
+            });
+          }
+          else {
+            containers[index] = getCommonCard({
+              ownerdetailsComponent,
+              allotmentDetailsComponent
+            });  
+          }
         }
       });
     }
-    
+    let entityDetails = companyDetails ? companyDetails : firmDetails ? firmDetails : {};
+
     dispatch(
       handleField(
-      "owner-details",
-      "components.div.children.ownerContainer",
-      "children",
-      containers
+        "owner-details",
+        "components.div.children.entityContainer",
+        "children",
+        entityDetails
+      )
+    );
+
+    dispatch(
+      handleField(
+        "owner-details",
+        "components.div.children.ownerContainer",
+        "children",
+        containers
       )
     );
   }
@@ -174,7 +199,8 @@ const EstateOwnerDetails = {
             },
             type: "array",
           },
-          ownerContainer
+          ownerContainer,
+          entityContainer
       }
     }
   }
