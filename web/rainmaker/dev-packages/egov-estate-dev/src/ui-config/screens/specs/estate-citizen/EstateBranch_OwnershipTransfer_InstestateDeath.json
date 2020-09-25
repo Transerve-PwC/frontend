@@ -382,11 +382,12 @@
               },
               {
                 "label": "ES_OWNER_SHARE_LABEL",
-                "jsonPath": "share"
+                "jsonPath": "share",
+                "symbol": "%"
               },
               {
-                "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
-                "jsonPath": "ownerDetails.mobileNumber"
+                "label": "ES_OWNER_ADDRESS_LABEL",
+                "jsonPath": "ownerDetails.address"
               }
             ]
           },
