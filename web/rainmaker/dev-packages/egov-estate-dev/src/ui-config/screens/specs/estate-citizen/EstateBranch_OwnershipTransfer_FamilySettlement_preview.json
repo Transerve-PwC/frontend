@@ -52,11 +52,11 @@
                     },
                     {
                         "label": "ES_EXISTING_OWNERS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.owners"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "ES_SELLERORTRANFERROR_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.sellerortransferrorname"
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
                         "label": "ES_TRANSFEREE_NAME_LABEL",
@@ -80,11 +80,11 @@
                     },
                     {
                         "label": "ES_REGISTRATION_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].registrationNumber"
+                        "jsonPath": "Applications[0].applicationDetails.registrationNumber"
                     },
                     {
                         "label": "ES_DATE_OF_REGISTRATION_LABEL",
-                        "jsonPath": "Applications[0].dateOfRegistration"
+                        "jsonPath": "Applications[0].applicationDetails.dateOfRegistration"
                     }
                 ]
             },
@@ -102,7 +102,7 @@
                 "fields": [
                     {
                         "label": "ES_FAMILY_SETTLEMENT_DATE_LABEL",
-                        "jsonPath": "Applications[0].familysettlementdate"
+                        "jsonPath": "Applications[0].applicationDetails.familysettlementdate"
                     },
                     {
                         "label": "ES_PASSED_BY_COURT_LABEL",
