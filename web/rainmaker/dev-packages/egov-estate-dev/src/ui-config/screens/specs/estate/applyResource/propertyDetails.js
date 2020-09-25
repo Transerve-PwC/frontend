@@ -373,19 +373,86 @@ const getPropertyRegisteredToRadioButton = {
     type: "array",
     beforeFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
-        let stepName = "formwizardFirstStep";
+        let stepNameFirst = "formwizardFirstStep";
+        let stepNameThird = "formwizardThirdStep";
 
         if ((window.location.href.includes("allotment"))) {
             screenName = "allotment";
-            stepName = "formwizardFirstStepAllotment";
+            stepNameFirst = "formwizardFirstStepAllotment";
+            stepNameThird = "formwizardThirdStepAllotment";
         }
 
         dispatch(
             handleField(
                 screenName,
-                `components.div.children.${stepName}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
+                `components.div.children.${stepNameFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
                 `visible`,
                 !!(action.value === "ENTITY")
+            )
+        )
+
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.companyDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails`,
+                "visible",
+                !!(action.value == "INDIVIDUAL")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails`,
+                "visible",
+                !!(action.value == "INDIVIDUAL")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.isDirector`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        // dispatch(
+        //     handleField(
+        //         screenName,
+        //         `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[0].item0.children.cardContent.children.ownerCard.children.isDirector`,
+        //         "visible",
+        //         !!(action.value == "ENTITY")
+        //     )
+        // )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.firmDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.partnerDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.proprietorshipDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
             )
         )
     }
