@@ -3,6 +3,39 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OwnershipTransfer_PatnershipDeed": [
     {
+      "dataSources": [
+        {
+          "name": "typesOfOwner",
+          "type": "local",
+          "cacheable": true,
+          "lazyload": true,
+          "values": [
+            {
+              "code": "New"
+            },
+            {
+              "code": "Existing"
+            }
+          ]
+        },
+        {
+          "name": "modesOfTransfer",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "modeOfTransfer"
+          }
+        },
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
+          "label": "ownerDetails.ownerName"
+        }
+      ],
       "fields": [
         {
           "path": "modeOfTransfer",
@@ -12,14 +45,14 @@
               "type": "mdms",
               "params": {
                 "moduleName": "EstatePropertyService",
-                "masterName": "modeOfTransfer",
-                "filter": "modeOfTransfer..code"
+                "masterName": "patnershipModeOfTransfer",
+                "filter": "patnershipModeOfTransfer..code"
               }
             }
           ]
         },
         {
-          "path": "registrationNumber",
+          "path": "bookNumber",
           "required": false,
           "validations": [
             {
@@ -32,8 +65,21 @@
           ]
         },
         {
+          "path": "registrationNumber",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
           "path": "dateOfRegistration",
-          "required": false,
+          "required": true,
           "validations": [
             {
               "type": "date-range",
@@ -51,7 +97,7 @@
           ]
         },
         {
-          "path": "owner",
+          "path": "transferor",
           "required": true,
           "validations": [
             {
@@ -60,7 +106,7 @@
           ]
         },
         {
-          "path": "owner.id",
+          "path": "transferor.id",
           "required": true,
           "validations": [
             {
@@ -69,7 +115,7 @@
           ]
         },
         {
-          "path": "purchaser",
+          "path": "transferee",
           "required": true,
           "validations": [
             {
@@ -78,7 +124,16 @@
           ]
         },
         {
-          "path": "purchaser.name",
+          "path": "transferee.id",
+          "required": false,
+          "validations": [
+            {
+              "type": "owner"
+            }
+          ]
+        },
+        {
+          "path": "transferee.name",
           "required": true,
           "validations": [
             {
@@ -91,7 +146,7 @@
           ]
         },
         {
-          "path": "purchaser.fatherOrHusbandName",
+          "path": "transferee.fatherOrHusbandName",
           "required": true,
           "validations": [
             {
@@ -104,22 +159,19 @@
           ]
         },
         {
-          "path": "purchaser.relation",
+          "path": "transferee.relation",
           "required": true,
           "validations": [
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
+                "values": ["FATHER", "HUSBAND"]
               }
             }
           ]
         },
         {
-          "path": "purchaser.address",
+          "path": "transferee.address",
           "required": true,
           "validations": [
             {
@@ -132,16 +184,16 @@
           ]
         },
         {
-          "path": "purchaser.mobileNo",
+          "path": "transferee.mobileNo",
           "required": false,
           "validations": [
             {
-              "type": "phonenumber"
+              "type": "mobile"
             }
           ]
         },
         {
-          "path": "purchaser.percentageOfShareTransferred",
+          "path": "transferee.percentageOfShareTransferred",
           "required": true,
           "validations": [
             {
@@ -152,6 +204,201 @@
               "params": {
                 "min": 0,
                 "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "tradeType",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "tradeOptedForChange",
+                "filter": "tradeOptedForChange..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "company",
+          "required": true,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "company.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.address",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.type",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "companyDetails",
+                "filter": "companyDetails..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "company.registrationNumber",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "documentsReceivedDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -1
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
+          "validations": [
+            {
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "path": "courtCases.estateOfficerCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.commissionersCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
               }
             }
           ]
@@ -228,65 +475,68 @@
                 "label": "ES_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
                 "placeholder": "ES_TRANSFEREE_TYPE_RADIO_BTN_PLACEHOLDER",
                 "required": true,
-                "type": "RADIO_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.transfereeType",
-                "path": "ownerDetails.transfereeType"
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.type",
+                "path": "transferee.type",
+                "dataSource": "typesOfOwner"
               },
               {
                 "label": "ES_SELECT_OWNER_LABEL",
                 "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
                 "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "ES_SELLER_OR_TRANSFEROR_NAME_LABEL",
                 "placeholder": "ES_SELLER_OR_TRANSFEROR_NAME_PLACEHOLDER",
                 "required": false,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.purchaser.sellerOrTransferor",
-                "path": "purchaser.sellerOrTransferor"
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "ES_TRANSFEREE_NAME_LABEL",
                 "placeholder": "ES_TRANSFEREE_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.transfereefatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.transfereename"
+                "path": "transferee.name",
+                "jsonPath": "Applications[0].applicationDetails.transferee.name"
               },
               {
                 "label": "ES_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_TRANSFEREE_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.transfereefatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.transfereefatherOrHusband"
+                "path": "transferee.fatherOrHusbandName",
+                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
               },
               {
                 "label": "ES_TRANSFEREE_ADDRESS_LABEL",
                 "placeholder": "ES_TRANSFEREE_ADDRESS_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.deceasedfatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.transfereeAddress"
+                "path": "transferee.address",
+                "jsonPath": "Applications[0].applicationDetails.transferee.address"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "required": false,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
-                "path": "ownerDetails.phone"
+                "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
+                "path": "transferee.mobileNo"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.percentShare",
-                "jsonPath": "Applications[0].applicationDetails.percentShare"
+                "path": "transferee.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
               }
             ]
           },
@@ -299,39 +549,39 @@
                 "placeholder": "ES_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.regNumberOfPartnership",
-                "path": "ownerDetails.regNumberOfPartnership"
+                "jsonPath": "Applications[0].applicationDetails.registrationNumber",
+                "path": "registrationNumber"
               },
               {
                 "label": "ES_REGISTRATION_DATE",
                 "required": true,
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.registrationDate",
-                "path": "ownerDetails.registrationDate"
+                "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
+                "path": "dateOfRegistration"
               },
               {
                 "label": "ES_PRIVATE_LIMITED_COMPANY_NAME",
                 "placeholder": "ES_PRIVATE_LIMITED_COMPANY_NAME_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyName",
-                "path": "ownerDetails.companyName"
+                "jsonPath": "Applications[0].applicationDetails.company.name",
+                "path": "company.name"
               },
               {
                 "label": "ES_COMPANY_ADDRESS",
                 "placeholder": "ES_COMPANY_ADDRESS_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_BUTTON",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyAddress",
-                "path": "ownerDetails.companyAddress"
+                "jsonPath": "Applications[0].applicationDetails.company.address",
+                "path": "company.address"
               },
               {
                 "label": "ES_COMPANY_REGISTRATION_NUMBER",
                 "placeholder": "ES_COMPANY_REGISTRATION_NUMBER_PLACEHOLDER",
                 "required": false,
                 "type": "TEXT_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.companyRegNumber",
-                "path": "ownerDetails.companyRegNumber"
+                "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
+                "path": "company.registrationNumber"
               }
             ]
           },
@@ -344,8 +594,9 @@
                 "placeholder": "ES_MODE_OF_TRANSFER_PLACEHOLDER",
                 "required": true,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.modeOfTransfer",
-                "path": "ownerDetails.modeOfTransfer"
+                "jsonPath": "Applications[0].applicationDetails.modeOfTransfer",
+                "path": "modeOfTransfer",
+                "dataSource": "modesOfTransfer"
               }
             ]
           }
