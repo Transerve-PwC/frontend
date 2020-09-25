@@ -20,9 +20,9 @@ import {
   courtCaseDetails
 } from './courtCaseDetails';
 import {
-  groundRentDetails_0,
-  serviceTaxDetails_0,
-  paymentMadeBy_0
+  groundRentDetailsPM,
+  serviceTaxDetails,
+  paymentMadeBy
 } from './paymentDetails';
 import {
   reviewDetails
@@ -253,9 +253,9 @@ export const formwizardEighthStep = {
     id: "apply_form8"
   },
   children: {
-    groundRentDetails_0,
-    serviceTaxDetails_0,
-    paymentMadeBy_0
+    groundRentDetailsPM,
+    serviceTaxDetails,
+    paymentMadeBy
   },
   visible: false
 }

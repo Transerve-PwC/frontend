@@ -164,7 +164,7 @@ const callBackForNext = async (state, dispatch) => {
 
           setDocumentData("", state, dispatch, i)
 
-          var groundRentString = JSON.stringify(get(
+          /* var groundRentString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
             `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_0`, {}
           ))
@@ -228,10 +228,10 @@ const callBackForNext = async (state, dispatch) => {
             state.screenConfiguration.screenConfig,
             `apply.components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}`,
             paymentMadeByObj
-          )
+          ) */
         }
 
-        dispatch(
+        /* dispatch(
           handleField(
             "apply",
             `components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}.children.cardContent.children.detailsContainer.children.paymentMadeBy`,
@@ -239,14 +239,14 @@ const callBackForNext = async (state, dispatch) => {
             ownerName
           )
         );
-
+ */
         set(
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Douments - ${ownerName}`
         )
 
-        set(
+        /* set(
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Ground Rent Details - ${ownerName}`
@@ -255,7 +255,7 @@ const callBackForNext = async (state, dispatch) => {
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
           `Service Tax Details - ${ownerName}`
-        )
+        ) */
 
         const reviewOwnerDetails = getReviewOwner(true, i);
         set(
@@ -269,7 +269,7 @@ const callBackForNext = async (state, dispatch) => {
           reviewOwnerDetails
         )
 
-        const reviewPaymentDetails = getReviewPayment(true, i);
+        /* const reviewPaymentDetails = getReviewPayment(true, i);
         set(
           reviewPaymentDetails,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
@@ -279,7 +279,7 @@ const callBackForNext = async (state, dispatch) => {
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
           reviewPaymentDetails
-        )
+        ) */
       }
     }
 
@@ -405,18 +405,6 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
-  // if (activeStep === COMPANY_DETAILS_STEP) {
-  //   var companyPartners = get(
-  //     state.screenConfiguration.preparedFinalObject,
-  //     "Properties[0].propertyDetails.owners"
-  //   );
-
-  //   let companyPartnerItems = get(
-  //     state,
-  //     "components.div.children.formwizardThirdStep.children.CompanyDetails.children.cardContent.children.partnerDetails.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
-  //   );
-  // }
-
   if (activeStep === COURT_CASE_DETAILS_STEP) {
     const courtCases = get(
       state.screenConfiguration.preparedFinalObject,
@@ -458,30 +446,19 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
-    let propertyOwnersItems = get(
+    var isGroundRentDetailsValid = validateFields(
+      `components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children`,
       state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardEighthStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items",
-      []
-    );
+      dispatch,
+      "apply"
+    )
 
-    for (var i = 0; i < propertyOwnersItems.length; i++) {
-      if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
-        continue;
-      }
-      var isGroundRentDetailsValid = validateFields(
-        `components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children`,
-        state,
-        dispatch,
-        "apply"
-      )
-
-      var isServiceTaxDetailsValid = validateFields(
-        `components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children`,
-        state,
-        dispatch,
-        "apply"
-      )
-    }
+    var isServiceTaxDetailsValid = validateFields(
+      `components.div.children.formwizardEighthStep.children.serviceTaxDetails.children.cardContent.children.detailsContainer.children`,
+      state,
+      dispatch,
+      "apply"
+    )
 
     if (isGroundRentDetailsValid && isServiceTaxDetailsValid) {
       const res = await applyEstates(state, dispatch, activeStep);
