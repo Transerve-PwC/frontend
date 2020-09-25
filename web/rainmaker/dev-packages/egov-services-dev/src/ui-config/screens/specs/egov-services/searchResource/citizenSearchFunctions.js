@@ -14,7 +14,7 @@ export const fetchData = async (action, state, dispatch) => {
             toDate: "",
             applicationStatus: "",
             bookingType: "",
-            tenantId: getTenantId().split(".")[0],
+            tenantId: process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId(),
             uuid: JSON.parse(getUserInfo()).uuid,
         };
     } else {

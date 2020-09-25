@@ -15,6 +15,7 @@ import {
 } from "../../../../../ui-utils/commons";
 import {
     getTenantId,
+    getUserInfo,
 } from "egov-ui-kit/utils/localStorageUtils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { set } from "lodash";
@@ -51,7 +52,9 @@ const callBackForNext = async (state, dispatch) => {
             // dispatch(toggleSnackbar(true, successMessage, "success"));
 
             // GET FEE DETAILS
-            let tenantId = getTenantId().split(".")[0];
+            // let tenantId = getTenantId().split(".")[0];
+            let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+            console.log(tenantId, 'tenantId..............', JSON.parse(getUserInfo()).permanentCity, getTenantId());
             let applicationNumber = get(
                 response,
                 "data.bkApplicationNumber",
@@ -117,7 +120,8 @@ const callBackForNext = async (state, dispatch) => {
             //     labelKey: "", //UPLOAD_FILE_TOAST
             // };
             // dispatch(toggleSnackbar(true, successMessage, "success"));
-            let tenantId = getTenantId().split(".")[0];
+            // let tenantId = getTenantId().split(".")[0];
+            let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
             let applicationNumber = get(
                 response,
                 "data.bkApplicationNumber",
