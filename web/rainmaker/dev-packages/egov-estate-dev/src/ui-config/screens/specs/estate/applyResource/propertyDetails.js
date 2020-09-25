@@ -308,7 +308,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     true
                 )
@@ -317,7 +317,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     false
                 )
@@ -428,7 +428,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.companyDetails",
+                `components.div.children.${stepName}.children.companyDetails`,
                 "visible",
                 !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
             )
@@ -436,7 +436,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.ownerDetails",
+                `components.div.children.${stepName}.children.ownerDetails`,
                 "visible",
                 !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
             )
@@ -444,7 +444,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.firmDetails",
+                `components.div.children.${stepName}.children.firmDetails`,
                 "visible",
                 !!(action.value == "ET.PARTNERSHIP_FIRM")
             )
@@ -452,7 +452,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.partnerDetails",
+                `components.div.children.${stepName}.children.partnerDetails`,
                 "visible",
                 !!(action.value == "ET.PARTNERSHIP_FIRM")
             )
@@ -460,7 +460,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.proprietorshipDetails",
+                `components.div.children.${stepName}.children.proprietorshipDetails`,
                 "visible",
                 !!(action.value == "ET.PROPRIETORSHIP")
             )

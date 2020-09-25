@@ -417,7 +417,7 @@ const commonPartnerInformation = () => {
  export const partnerDetails = getCommonCard({
   header: partnerHeader,
   detailsContainer: getCommonContainer({
-    multiplePartnerContainer: {
+    multipleApplicantContainer: {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
@@ -426,7 +426,7 @@ const commonPartnerInformation = () => {
         }
       },
       children: {
-        multiplePartnerInfo: {
+        multipleApplicantInfo: {
           uiFramework: "custom-containers",
           componentPath: "MultiItem",
           props: {

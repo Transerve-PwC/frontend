@@ -218,6 +218,21 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         []
       )
 
+      let prevOwners = get(
+        queryObject[0],
+        "propertyDetails.purchaser",
+        []
+      )
+
+      owners = owners.map(item => ({...item, isCurrentOwner: true}))
+      owners = [...owners, ...prevOwners];
+
+      set(
+        queryObject[0],
+        "propertyDetails.owners",
+        owners
+      )
+
       if (owners) {
         owners.map((item, index) => {
           let ownerDocuments = get(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`) || [];
@@ -241,6 +256,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       const removedDocs = get(state.screenConfiguration.preparedFinalObject, "PropertiesTemp[0].removedDocs") || [];
       ownerDocuments = [...ownerDocuments, ...removedDocs]
       set(queryObject[0], "ownerDetails.ownerDocuments", ownerDocuments) */
+
+      
 
       response = await httpRequest(
         "post",

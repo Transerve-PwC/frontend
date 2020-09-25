@@ -293,7 +293,7 @@ const receiptDateField = {
   }
 }
 
-export const groundRentDetails_0 = getCommonCard({
+export const groundRentDetailsPM = getCommonCard({
   header: groundRentHeader,
   detailsContainer: getCommonContainer({
     dueDateOfPayment: getDateField(dueDateOfPaymentField),
@@ -571,7 +571,7 @@ const receiptDateFieldST = {
   }
 }
 
-export const serviceTaxDetails_0 = getCommonCard({
+export const serviceTaxDetails = getCommonCard({
   header: serviceTaxHeader,
   detailsContainer: getCommonContainer({
     rateOfStOrGst: getTextField(rateOfStOrGstFieldST),
@@ -604,58 +604,16 @@ const paymentMadeByField = {
     xs: 12,
     sm: 6
   },
-  props: {
-    disabled: true
-  },
+  // props: {
+  //   disabled: true
+  // },
   // required: true,
   maxLength: 15,
   jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.paymentDetails[0].stPaymentMadeBy`
 }
 
-export const paymentMadeBy_0 = getCommonCard({
+export const paymentMadeBy = getCommonCard({
   detailsContainer: getCommonContainer({
     paymentMadeBy: getTextField(paymentMadeByField)
   })
 })
-
-// export const getPaymentDetails = (owner) => {
-//   return getCommonCard({
-//     header: paymentHeader,
-//     groundRentContainer: getCommonContainer({
-//       // header: groundRentHeader,
-//       dueDateOfPayment: getDateField(dueDateOfPaymentField(owner)),
-//       payable: getTextField(payableField(owner)),
-//       amountOfGR: getTextField(amountOfGRField(owner)),
-//       totalGR: getTextField(totalGRField(owner)),
-//       dateOfDeposit: getDateField(dateOfDepositField(owner)),
-//       delayInPayment: getTextField(delayInPaymentField(owner)),
-//       interestForDelay: getTextField(interestForDelayField(owner)),
-//       totalAmountDueWithInterest: getTextField(totalAmountDueWithInterestField(owner)),
-//       amountDepositedGR: getTextField(amountDepositedGRField(owner)),
-//       amountDepositedIntt: getTextField(amountDepositedInttField(owner)),
-//       balanceGR: getTextField(balanceGRField(owner)),
-//       balanceIntt: getTextField(balanceInttField(owner)),
-//       totalDue: getTextField(totalDueField(owner)),
-//       receiptNumberAndDate: getTextField(receiptNumberAndDateField(owner))
-//     }),
-//     serviceTaxContainer: getCommonContainer({
-//       // header: serviceTaxHeader,
-//       rateOfStOrGst: getTextField(rateOfStOrGstFieldST()),
-//       amountOfGst: getTextField(amountOfGstFieldST()),
-//       amountDue: getTextField(amountDueFieldST()),
-//       dateOfDeposit: getDateField(dateOfDepositFieldST()),
-//       delayInPayment: getTextField(delayInPaymentFieldST()),
-//       interestForDelay: getTextField(interestForDelayFieldST()),
-//       totalAmountDueWithInterest: getTextField(totalAmountDueWithInterestFieldST()),
-//       amountDepositedSt: getTextField(amountDepositedFieldST()),
-//       amountDepositedIntt: getTextField(amountDepositedInttFieldST()),
-//       balanceSt: getTextField(balanceFieldST()),
-//       balanceIntt: getTextField(balanceInttFieldST()),
-//       totalDue: getTextField(totalDueFieldST()),
-//       receiptNumberAndDate: getTextField(receiptNumberAndDateFieldST())
-//     }),
-//     paymentMadeByContainer: getCommonContainer({
-//       paymentMadeBy: getTextField(paymentMadeByField())
-//     })
-//   })
-// }

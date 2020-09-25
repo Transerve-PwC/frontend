@@ -17,8 +17,8 @@ import {
 import get from "lodash/get";
 
 export const purchaserHeader = getCommonTitle({
-  labelName: "Purchaser Details",
-  labelKey: "ES_PURCHASER_DETAILS_HEADER"
+  labelName: "Previous Owner Details",
+  labelKey: "ES_PREVIOUS_OWNER_DETAILS_HEADER"
 }, {
   style: {
     marginBottom: 18,
@@ -28,12 +28,12 @@ export const purchaserHeader = getCommonTitle({
 
 const newOwnerNameField = {
   label: {
-    labelName: "New Owner Name",
-    labelKey: "ES_NEW_OWNER_NAME_LABEL"
+    labelName: "Previous Owner Name",
+    labelKey: "ES_PREVIOUS_OWNER_NAME_LABEL"
   },
   placeholder: {
-    labelName: "Enter New Owner Name",
-    labelKey: "ES_NEW_OWNER_NAME_PLACEHOLDER"
+    labelName: "Enter Previous Owner Name",
+    labelKey: "ES_PREVIOUS_OWNER_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -41,17 +41,17 @@ const newOwnerNameField = {
   },
   required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].newOwnerName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.ownerName"
 }
 
 const newOwnerFatherHusbandNameField = {
   label: {
-    labelName: "New Owner Father/Husband Name",
-    labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
+    labelName: "Previous Owner Father/Husband Name",
+    labelKey: "ES_PREVIOUS_OWNER_FATHER_HUSBAND_NAME_LABEL"
   },
   placeholder: {
-    labelName: "Enter New Owner Father/Husband Name",
-    labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_PLACEHOLDER"
+    labelName: "Enter Previous Owner Father/Husband Name",
+    labelKey: "ES_PREVIOUS_OWNER_FATHER_HUSBAND_NAME_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -59,17 +59,48 @@ const newOwnerFatherHusbandNameField = {
   },
   required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].newOwnerFatherName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianName"
 }
+
+const getRelationshipRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
+  gridDefination: {
+    xs: 12,
+    sm: 6,
+  },
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianRelation",
+  props: {
+    label: {
+      name: "Relationship",
+      key: "ES_RELATIONSHIP_LABEL"
+    },
+    buttons: [{
+        labelName: "Father",
+        labelKey: "ES_COMMON_RELATION_FATHER",
+        value: "FATHER",
+      },
+      {
+        label: "Husband",
+        labelKey: "ES_COMMON_RELATION_HUSBAND",
+        value: "HUSBAND",
+      }
+    ],
+    jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianRelation",
+    required: true,
+  },
+  required: true,
+  type: "array",
+};
 
 const newOwnerAddressField = {
   label: {
-    labelName: "New Owner Address",
-    labelKey: "ES_NEW_OWNER_ADDRESS_LABEL"
+    labelName: "Previous Owner Address",
+    labelKey: "ES_PREVIOUS_OWNER_ADDRESS_LABEL"
   },
   placeholder: {
-    labelName: "Enter New Owner Address",
-    labelKey: "ES_NEW_OWNER_ADDRESS_PLACEHOLDER"
+    labelName: "Enter Previous Owner Address",
+    labelKey: "ES_PREVIOUS_OWNER_ADDRESS_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
@@ -81,24 +112,24 @@ const newOwnerAddressField = {
     rows: 2
   },
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].newOwnerAddress"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address"
 }
 
 const newOwnerMobileNumberField = {
   label: {
-    labelName: "New Owner Mobile No.",
-    labelKey: "ESTATE_NEW_OWNER_MOBILE_NUMBER_LABEL"
+    labelName: "Previous Owner Mobile No.",
+    labelKey: "ES_PREVIOUS_OWNER_MOBILE_NUMBER_LABEL"
   },
   placeholder: {
-    labelName: "Enter New Owner Mobile No.",
-    labelKey: "ES_NEW_OWNER_MOBILE_NUMBER_PLACEHOLDER"
+    labelName: "Enter Previous Owner Mobile No.",
+    labelKey: "ES_PREVIOUS_OWNER_MOBILE_NUMBER_PLACEHOLDER"
   },
   pattern: getPattern("MobileNo"),
   // props: {
   //   value: userInfo.userName,
   //   disabled: true
   // },
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].newOwnerMobileNumber",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.mobileNumber",
 }
 
 const sellerNameField = {
@@ -116,7 +147,7 @@ const sellerNameField = {
   },
   required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].sellerName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerName"
 }
 
 const sellerFatherHusbandNameField = {
@@ -134,8 +165,39 @@ const sellerFatherHusbandNameField = {
   },
   required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].sellerFatherName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerFatherName"
 }
+
+const getSellerRelationshipRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
+  gridDefination: {
+    xs: 12,
+    sm: 6,
+  },
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.sellerGuardianRelation",
+  props: {
+    label: {
+      name: "Relationship",
+      key: "ES_RELATIONSHIP_LABEL"
+    },
+    buttons: [{
+        labelName: "Father",
+        labelKey: "ES_COMMON_RELATION_FATHER",
+        value: "FATHER",
+      },
+      {
+        label: "Husband",
+        labelKey: "ES_COMMON_RELATION_HUSBAND",
+        value: "HUSBAND",
+      }
+    ],
+    jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.sellerGuardianRelation",
+    required: true,
+  },
+  required: true,
+  type: "array",
+};
 
 const shareField = {
   label: {
@@ -152,7 +214,7 @@ const shareField = {
   },
   required: true,
   maxLength: 5,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].percentageOfShare"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.percentageOfShare"
 }
 
 const modeOfTransferField = {
@@ -165,7 +227,7 @@ const modeOfTransferField = {
     labelKey: "ES_MODE_OF_TRANSFER_PLACEHOLDER"
   },
   required: true,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].modeOfTransfer",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.modeOfTransfer",
   sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.modeOfTransfer",
   gridDefination: {
     xs: 12,
@@ -187,7 +249,7 @@ const registrationNumberField = {
     sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].registrationNumber"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.registrationNumber"
 }
 
 const dateOfRegistrationField = {
@@ -200,7 +262,7 @@ const dateOfRegistrationField = {
     labelKey: "ES_DATE_OF_REGISTRATION_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.purchaseDetails[0].dateOfRegistration",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dateOfRegistration",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
@@ -211,8 +273,8 @@ const dateOfRegistrationField = {
 const commonPurchaserInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
-      labelName: "Purchaser Information",
-      labelKey: "ES_COMMON_PURCHASER_INFORMATION"
+      labelName: "Previous Owner Information",
+      labelKey: "ES_COMMON_PREVIOUS_OWNER_INFORMATION"
     }, {
       style: {
         marginBottom: 18
@@ -221,10 +283,12 @@ const commonPurchaserInformation = () => {
     purchaserCard: getCommonContainer({
       newOwnerName: getTextField(newOwnerNameField),
       newOwnerFatherHusbandName: getTextField(newOwnerFatherHusbandNameField),
+      guardianRelation: getRelationshipRadioButton,
       newOwnerAddress: getTextField(newOwnerAddressField),
       newOwnerMobileNumber: getTextField(newOwnerMobileNumberField),
       sellerName: getTextField(sellerNameField),
       sellerFatherHusbandName: getTextField(sellerFatherHusbandNameField),
+      sellerGuardianRelation: getSellerRelationshipRadioButton,
       share: getTextField(shareField),
       modeOfTransfer: getSelectField(modeOfTransferField),
       registrationNumber: getTextField(registrationNumberField),
@@ -252,13 +316,13 @@ export const purchaserDetails = getCommonCard({
             scheama: commonPurchaserInformation(),
             items: [],
             addItemLabel: {
-              labelName: "Add Purchaser",
+              labelName: "Add Previous Owner",
               labelKey: "ES_COMMON_ADD_PURCHASER_LABEL"
             },
             headerName: "Purchaser Information",
             headerJsonPath:
               "children.cardContent.children.header.children.Purchaser Information.props.label",
-            sourceJsonPath: "Properties[0].propertyDetails.purchaseDetails",
+            sourceJsonPath: "Properties[0].propertyDetails.purchaser",
             prefixSourceJsonPath: "children.cardContent.children.purchaserCard.children"
           },
           type: "array"

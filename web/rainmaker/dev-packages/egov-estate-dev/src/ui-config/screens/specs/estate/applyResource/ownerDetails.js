@@ -81,13 +81,11 @@ const getRelationshipRadioButton = {
         labelName: "Father",
         labelKey: "ES_COMMON_RELATION_FATHER",
         value: "FATHER",
-        disabled: true
       },
       {
         label: "Husband",
         labelKey: "ES_COMMON_RELATION_HUSBAND",
         value: "HUSBAND",
-        disabled: true
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianRelation",
@@ -242,12 +240,12 @@ const getIsDirectorRadioButton = {
     buttons: [{
         labelName: "Yes",
         labelKey: "ES_COMMON_YES",
-        value: "YES"
+        value: "true"
       },
       {
         label: "No",
         labelKey: "ES_COMMON_NO",
-        value: "NO"
+        value: "false"
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.isDirector",
