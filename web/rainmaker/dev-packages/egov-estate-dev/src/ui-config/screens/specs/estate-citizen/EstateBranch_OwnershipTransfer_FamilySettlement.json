@@ -38,26 +38,6 @@
           "jsonPath": "propertyDetails.owners",
           "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
-        },
-        {
-          "name": "legalHeirRelationWithDeceased",
-          "type": "mdms",
-          "cacheable": true,
-          "lazyload": true,
-          "options": {
-            "moduleName": "EstatePropertyService",
-            "masterName": "legaHeirRelationShipWithDeceased"
-          }
-        },
-        {
-          "name": "benificiaryRelationwithDeceased",
-          "type": "mdms",
-          "cacheable": true,
-          "lazyload": true,
-          "options": {
-            "moduleName": "EstatePropertyService",
-            "masterName": "benificiaryRelationshipwithDeceased"
-          }
         }
       ],
       "fields": [
