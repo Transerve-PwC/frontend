@@ -203,29 +203,27 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       );
     } else {
       let tabsArr = [0,1,2,3,4,5,6,7];
+      let owners = get(
+        queryObject[0],
+        "propertyDetails.owners",
+        []
+      )
+      let prevOwners = get(
+        queryObject[0],
+        "propertyDetails.purchaser",
+        []
+      )
       if (screenName == "allotment") {
         tabsArr.pop();
       }
       if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")
       } else {
+        owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+        owners = [...owners, ...prevOwners];
+
         set(queryObject[0], "action", "SUBMIT")
       }
-
-      let owners = get(
-        queryObject[0],
-        "propertyDetails.owners",
-        []
-      )
-
-      let prevOwners = get(
-        queryObject[0],
-        "propertyDetails.purchaser",
-        []
-      )
-
-      owners = owners.map(item => ({...item, isCurrentOwner: true}))
-      owners = [...owners, ...prevOwners];
 
       set(
         queryObject[0],

@@ -48,10 +48,12 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    if(properties[0].propertyDetails.purchaseDetails){
-      properties[0].propertyDetails.purchaseDetails.forEach((element,index) => { 
-        let purchaseDetailContainer = getPurchaserDetails(false,index);
-        containers[index] = getCommonCard({purchaseDetailContainer})
+    if(properties[0].propertyDetails.owners){
+      properties[0].propertyDetails.owners.forEach((element,index) => { 
+        if (!element.isCurrentOwner) {
+          let purchaseDetailContainer = getPurchaserDetails(false,index);
+          containers[index] = getCommonCard({purchaseDetailContainer})
+        }
       });
     }
     
