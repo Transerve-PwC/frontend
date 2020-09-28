@@ -1064,6 +1064,22 @@ export const preparePrevOwnerDocumentTypeObjMaster = (documents, prevOwnerIndex)
   return documentsArr;
 };
 
+export const prepareBiddersDocumentTypeObjMaster = (documents) => {
+  let documentsArr =
+    documents.length > 0
+      ? documents.reduce((documentsArr, item, ind) => {
+        documentsArr.push({
+          name: item.code,
+          required: item.required,
+          jsonPath: `bidders[0].documents[${ind}]`,
+          statement: "BIDDERS_LIST_DESC"
+        });
+        return documentsArr;
+      }, [])
+      : [];
+  return documentsArr;
+};
+
 export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
   let documentsArr =
     documents.length > 0
