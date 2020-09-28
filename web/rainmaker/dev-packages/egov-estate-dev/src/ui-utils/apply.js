@@ -222,8 +222,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         set(queryObject[0], "action", "SUBMIT")
       }
 
-      owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isOwnerActive: true}}))
-      prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isOwnerActive: false}}))
+      owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+      prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
       owners = [...owners, ...prevOwners];
 
       set(
@@ -271,6 +271,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       Properties
     } = response
 
+    dispatch(prepareFinalObject("Properties", Properties));
+
     let owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -291,8 +293,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         );
       })
 
-      let currOwners = owners.filter(item => item.ownerDetails.isOwnerActive == true);
-      let prevOwners = owners.filter(item => item.ownerDetails.isOwnerActive == false);
+      let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+      let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
       dispatch(
         prepareFinalObject(
@@ -317,7 +319,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //     ownerDocuments
     //   }
     // }]
-    dispatch(prepareFinalObject("Properties", Properties));
+    
     // dispatch(
     //   prepareFinalObject(
     //     "Properties[0].removedDocs",
