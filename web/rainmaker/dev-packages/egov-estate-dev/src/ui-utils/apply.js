@@ -219,11 +219,12 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")
       } else {
-        owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
-        owners = [...owners, ...prevOwners];
-
         set(queryObject[0], "action", "SUBMIT")
       }
+
+      owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isOwnerActive: true}}))
+      prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isOwnerActive: false}}))
+      owners = [...owners, ...prevOwners];
 
       set(
         queryObject[0],
@@ -289,6 +290,22 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
           )
         );
       })
+
+      let currOwners = owners.filter(item => item.ownerDetails.isOwnerActive == true);
+      let prevOwners = owners.filter(item => item.ownerDetails.isOwnerActive == false);
+
+      dispatch(
+        prepareFinalObject(
+          "Properties[0].propertyDetails.owners",
+          currOwners
+        )
+      )
+      dispatch(
+        prepareFinalObject(
+          "Properties[0].propertyDetails.purchaser",
+          prevOwners
+        )
+      )
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)
