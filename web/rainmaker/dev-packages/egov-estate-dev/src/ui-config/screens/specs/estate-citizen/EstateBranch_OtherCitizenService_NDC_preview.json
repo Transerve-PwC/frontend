@@ -47,10 +47,6 @@
                 "header": "ES_APPLICANT_DETAILS_HEADER",
                 "fields": [
                     {
-                        "label": "ES_SELECT_OWNER_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
-                    },
-                    {
                         "label": "ES_OWNER_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName"
                     },
@@ -76,7 +72,7 @@
                     },
                     {
                         "label": "ES_REASON_FOR_NO_DUE_CERTIFICATE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.reasonForNoDue"
+                        "jsonPath": "Applications[0].applicationDetails.reasonForNdc"
                     }
                 ]
             },
