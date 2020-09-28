@@ -505,7 +505,7 @@ const entityTypeField = {
                 screenName,
                 `components.div.children.${stepName}.children.firmDetails`,
                 "visible",
-                !!(action.value == "ET.PARTNERSHIP_FIRM")
+                !!(action.value == "ET.PARTNERSHIP_FIRM" || action.value == "ET.PROPRIETORSHIP")
             )
         )
         dispatch(
