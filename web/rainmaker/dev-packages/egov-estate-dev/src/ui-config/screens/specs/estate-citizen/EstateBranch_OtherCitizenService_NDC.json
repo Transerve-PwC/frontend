@@ -19,16 +19,6 @@
           ]
         },
         {
-          "name": "modesOfTransfer",
-          "type": "mdms",
-          "cacheable": true,
-          "lazyload": true,
-          "options": {
-            "moduleName": "EstatePropertyService",
-            "masterName": "modeOfTransfer"
-          }
-        },
-        {
           "name": "owners",
           "type": "path",
           "jsonPath": "propertyDetails.owners",
