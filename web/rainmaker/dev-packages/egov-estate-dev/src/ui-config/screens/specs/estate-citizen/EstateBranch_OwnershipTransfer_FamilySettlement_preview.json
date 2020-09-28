@@ -44,20 +44,31 @@
                 ]
             },
             {
-                "header": "ES_TRANSFEREE_DETAILS_HEADER",
+                "header": "ES_SELLER_TRANSFEROR_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
-                        "label": "ES_TRANSFEREE_TYPE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.type"
-                    },
-                    {
-                        "label": "ES_EXISTING_OWNERS_LABEL",
+                        "label": "ES_SELLER_OR_TRANSFEROR_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
-                        "label": "ES_SELLERORTRANFERROR_NAME_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
+                        "label": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
                     },
+                    {
+                        "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                    },
+                    {
+                        "label": "ES_PERCENT_SHARE_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                    }
+                ]
+            },
+            {
+                "header": "ES_TRANSFEREE_DETAILS_HEADER",
+                "step": 0,
+                "fields": [
                     {
                         "label": "ES_TRANSFEREE_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.name"
@@ -90,6 +101,7 @@
             },
             {
                 "header": "ES_MODE_OF_TRANSFER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "ES_FAMILILY_SETTLEMENT",
@@ -99,6 +111,7 @@
             },
             {
                 "header": "ES_SETTLEMENT_OR_DECREE_DETAIL_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "ES_FAMILY_SETTLEMENT_DATE_LABEL",
@@ -116,6 +129,7 @@
             },
             {
                 "header": "ES_DOCUMENT_DETAILS_HEADER",
+                "step": 1,
                 "type": "DOCUMENTS",
                 "sourceJsonPath": "temp[0].reviewDocData"
             }

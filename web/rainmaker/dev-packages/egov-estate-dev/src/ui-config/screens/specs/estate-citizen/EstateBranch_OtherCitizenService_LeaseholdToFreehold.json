@@ -237,59 +237,45 @@
               {
                 "label": "ES_SELECT_OWNER_LABEL",
                 "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
-                "required": false,
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferor.id",
                 "path": "transferor.id",
                 "dataSource": "owners"
               },
               {
-                "label": "ES_OWNER_NAME_LABEL",
-                "placeholder": "ES_OWNER_NAME_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
-              },
-              {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.fatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.address",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
-                "required": false,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.phone",
-                "path": "ownerDetails.phone"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
               },
               {
                 "label": "ES_OWNER_SHARE_LABEL",
                 "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
-                "required": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.share",
-                "jsonPath": "Applications[0].applicationDetails.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share"
               },
               {
                 "label": "ES_CP_NUMBER_LABEL",
                 "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
-                "required": false,
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "path": "ownerDetails.cpNumber",
-                "jsonPath": "Applications[0].applicationDetails.cpNumber"
+                "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber"
               }
             ]
           }
