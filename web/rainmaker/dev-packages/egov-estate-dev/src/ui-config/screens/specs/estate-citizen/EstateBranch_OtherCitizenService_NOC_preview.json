@@ -48,7 +48,7 @@
                 "step": 0,
                 "fields": [
                     {
-                        "label": "ES_SELECT_OWNER_LABEL",
+                        "label": "ES_OWNER_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
                     {
