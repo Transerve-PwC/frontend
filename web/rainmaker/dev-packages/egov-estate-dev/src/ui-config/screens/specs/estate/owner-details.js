@@ -70,12 +70,11 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let entityType = properties[0].propertyDetails.entityType;
     let companyDetails;
     let firmDetails;
-    let proprietorshipDetails;
 
     if (entityType == "ET.PUBLIC_LIMITED_COMPANY" || entityType == "ET.PRIVATE_LIMITED_COMPANY") {
       companyDetails = getCompanyDetails(false);
     }
-    else if (entityType == "ET.PARTNERSHIP_FIRM") {
+    else if (entityType == "ET.PARTNERSHIP_FIRM" || entityType == "ET.PROPRIETORSHIP") {
       firmDetails = getFirmDetails(false);
     }
 
