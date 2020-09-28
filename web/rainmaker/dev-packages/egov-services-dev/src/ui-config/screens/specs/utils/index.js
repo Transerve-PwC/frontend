@@ -334,10 +334,11 @@ export const generateBill = async (
     tenantId,
     bookingType
 ) => {
+    const tenantIdn = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     try {
         if (applicationNumber && tenantId && bookingType) {
             let queryObject = [
-                { key: "tenantId", value: tenantId },
+                { key: "tenantId", value: tenantIdn},
                 { key: "consumerCode", value: applicationNumber },
                 { key: "businessService", value: bookingType },
             ];

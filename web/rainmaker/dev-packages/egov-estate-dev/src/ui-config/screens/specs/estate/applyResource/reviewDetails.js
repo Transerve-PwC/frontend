@@ -16,7 +16,7 @@ const header = getCommonTitle({
 if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "undefined" && typeof getReviewAdditional != "undefined") {
   var reviewPropertyInfo = getReviewPropertyInfo();
   var reviewAuction = getReviewAuction();
-  var reviewAdditional = getReviewAuction();
+  var reviewAdditional = getReviewAdditional();
 }
 
 export const reviewDetails = getCommonCard({

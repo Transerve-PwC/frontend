@@ -27,7 +27,7 @@ import set from "lodash/set";
 import {
   getQueryArg,
   getFileUrl,
-  getFileUrlFromAPI
+  getFileUrlFromAPI, setDocuments
 } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import {
@@ -208,7 +208,12 @@ export const updatePFOforSearchResults = async (
   // const payload = await getSearchResults(queryObject)
   // getQueryArg(window.location.href, "action") === "edit" &&
   //   (await setDocsForEditFlow(state, dispatch));
-
+   await setDocuments(
+    payload,
+    "Licenses[0].tradeLicenseDetail.applicationDocuments",
+    "LicensesTemp[0].reviewDocData",
+    dispatch,'TL'
+  );
   const dob = get(
     payload,
     "Licenses[0].tradeLicenseDetail.owners[0].dob", 

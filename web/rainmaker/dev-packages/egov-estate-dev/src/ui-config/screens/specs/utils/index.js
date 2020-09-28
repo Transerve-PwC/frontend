@@ -1048,7 +1048,23 @@ export const prepareDocumentTypeObjMaster = (documents, ownerIndex) => {
   return documentsArr;
 };
 
-/* export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
+export const preparePrevOwnerDocumentTypeObjMaster = (documents, prevOwnerIndex) => {
+  let documentsArr =
+    documents.length > 0
+      ? documents.reduce((documentsArr, item, ind) => {
+        documentsArr.push({
+          name: item.code,
+          required: item.required,
+          jsonPath: `Properties[0].propertyDetails.purchaser[${prevOwnerIndex}].ownerDetails.ownerDocuments[${ind}]`,
+          statement: item.description
+        });
+        return documentsArr;
+      }, [])
+      : [];
+  return documentsArr;
+};
+
+export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
   let documentsArr =
     documents.length > 0
       ? documents.reduce((documentsArr, item, ind) => {
@@ -1062,7 +1078,7 @@ export const prepareDocumentTypeObjMaster = (documents, ownerIndex) => {
       }, [])
       : [];
   return documentsArr;
-}; */
+};
 
 //Common functions for Estimate card
 

@@ -75,6 +75,9 @@ class ExpansionPanelMolecule extends Component {
         } else {
           LabelKey = `${get(item, content.jsonPath,"")}`;
         }
+        if(content.symbol) {
+          LabelKey = `${LabelKey}${content.symbol}`
+        }
         return LabelKey;
       };
 

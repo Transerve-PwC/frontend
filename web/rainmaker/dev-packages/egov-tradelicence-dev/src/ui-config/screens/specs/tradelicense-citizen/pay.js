@@ -117,7 +117,7 @@ const screenConfig = {
             paymentDetails: getCommonCard({
               header: getCommonTitle({
                 labelName: "Please review your fee and proceed to payment",
-                labelKey: "NOC_PAYMENT_HEAD"
+                labelKey: "TL_PAYMENT_REVIEW_HEAD"
               }),
               estimateDetails
             })

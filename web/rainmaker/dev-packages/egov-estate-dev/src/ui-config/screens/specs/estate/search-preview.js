@@ -22,7 +22,7 @@ let tenantId = getTenantId()
 export const headerrow = getCommonContainer({
   header: getCommonHeader({
     labelName: "Estate",
-    labelKey: "ESTATE_COMMON_ESTATE"
+    labelKey: "ES_COMMON_ESTATE"
   })
 });
 // const reviewAuctionDetails = getReviewAuction(false);
@@ -91,10 +91,10 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
         path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 4:
-        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 5:
-        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
         break
       case 6:
         path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
@@ -109,28 +109,28 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
 
 export const tabs = [
   {
-    tabButton: { labelName: "Property Details", labelKey: "ESTATE_PROPERTY_DETAILS" },
+    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" },
   },
   {
-    tabButton: { labelName: "Auction Details", labelKey: "ESTATE_AUCTION_DETAILS" },
+    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" },
   },
   {
-    tabButton: { labelName: "Owner Details", labelKey: "ESTATE_OWNER_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" },
   },
   {
-    tabButton: { labelName: "Purchaser Details", labelKey: "ESTATE_PURCHASER_DETAILS" },
+    tabButton: { labelName: "Previous Owner Details", labelKey: "ES_PREVIOUS_OWNER_DETAILS" },
   },
   {
-    tabButton: { labelName: "Payment Details", labelKey: "ESTATE_PAYMENT_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" },
   },
   {
-    tabButton: { labelName: "Documents", labelKey: "ESTATE_DOCUMENTS" },
+    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" },
   },
   {
-    tabButton: { labelName: "Notices", labelKey: "ESTATE_NOTICES" },
+    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" },
   },
   {
-    tabButton: { labelName: "Court Case", labelKey: "ESTATE_COURT_CASE" },
+    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" },
   }
 ]
 

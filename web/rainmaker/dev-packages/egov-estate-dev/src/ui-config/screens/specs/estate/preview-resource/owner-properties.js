@@ -113,6 +113,51 @@ import {
       labelKey: "ES_APPLICATION_NUMBER_LABEL",
   }
 
+  const companyNameField = {
+    labelName: "Company Name",
+    labelKey: "ES_COMPANY_NAME_LABEL"
+  }
+  
+  const companyRegNoField = {
+    labelName: "Company Registration Number",
+    labelKey: "ES_COMPANY_REG_NO_LABEL"
+  }
+
+  const companyRegDateField = {
+    labelName: "Registration Date",
+    labelKey: "ES_REGISTRATION_DATE_LABEL"
+  }
+
+  const companyAddressField = {
+    labelName: "Company Address",
+    labelKey: "ES_COMPANY_ADDRESS_LABEL"
+  }
+
+  const firmNameField = {
+    labelName: "Firm Name",
+    labelKey: "ES_FIRM_NAME_LABEL"
+  }
+
+  const isFirmRegistered = {
+    labelName: "Is Firm Registered",
+    labelKey: "ES_IS_FIRM_REGISTERED_LABEL"
+  }
+
+  const firmRegNoField = {
+    labelName: "Firm Registration Number",
+    labelKey: "ES_FIRM_REG_NO_LABEL"
+  }
+
+  const firmRegDateField = {
+    labelName: "Registration Date",
+    labelKey: "ES_REGISTRATION_DATE_LABEL"
+  }
+
+  const firmAddressField = {
+    labelName: "Firm Address",
+    labelKey: "ES_FIRM_ADDRESS_LABEL"
+  }
+
   export const editSection = {
     componentPath: "Button",
     props: {
@@ -287,4 +332,97 @@ export const headerDiv = {
       }
     }
     return modeOfTransferObj;
+  }
+
+  export const getCompanyDetails = (isEditable = true) => {
+    return getCommonGrayCard({
+      headerDiv: {
+        ...headerDiv,
+        children: {
+          header: {
+            gridDefination: {
+              xs: 12,
+              sm: 10
+            },
+            ...getCommonSubHeader({
+              labelName: "Company Details",
+              labelKey: "ES_COMPANY_DETAILS_HEADER"
+            })
+          },
+          editSection: masterEntryEditSection(isEditable, 0)
+        }
+      },
+      viewCompanyDetails: getCommonContainer({
+        companyName: getLabelWithValue(
+            companyNameField, {
+            jsonPath: `Properties[0].propertyDetails.companyName`,
+            }
+        ),
+        companyRegNo: getLabelWithValue(
+            companyRegNoField, {
+            jsonPath: `Properties[0].propertyDetails.companyRegNo`,
+            }
+        ),
+        companyRegDate: getLabelWithValue(
+            companyRegDateField, {
+            jsonPath: `Properties[0].propertyDetails.companyRegDate`,
+            callBack: convertEpochToDate
+            }
+        ),
+        companyAddress: getLabelWithValue(
+          companyAddressField, {
+          jsonPath: `Properties[0].propertyDetails.companyAddress`,
+          }
+        )
+      })
+    })
+  }
+
+  export const getFirmDetails = (isEditable = true) => {
+    return getCommonGrayCard({
+      headerDiv: {
+        ...headerDiv,
+        children: {
+          header: {
+            gridDefination: {
+              xs: 12,
+              sm: 10
+            },
+            ...getCommonSubHeader({
+              labelName: "Firm Details",
+              labelKey: "ES_FIRM_DETAILS_HEADER"
+            })
+          },
+          editSection: masterEntryEditSection(isEditable, 0)
+        }
+      },
+      viewFirmDetails: getCommonContainer({
+        firmName: getLabelWithValue(
+            firmNameField, {
+            jsonPath: `Properties[0].propertyDetails.firmName`,
+            }
+        ),
+        isFirmRegistered: getLabelWithValue(
+            isFirmRegistered, {
+            jsonPath: `Properties[0].propertyDetails.isFirmRegistered`,
+            }
+        ),
+        firmRegNo: getLabelWithValue(
+            firmRegNoField, {
+            jsonPath: `Properties[0].propertyDetails.firmRegNo`,
+            }
+        ),
+        firmRegDate: getLabelWithValue(
+            firmRegDateField, {
+            jsonPath: `Properties[0].propertyDetails.firmRegDate`,
+            callBack: convertEpochToDate
+            }
+        ),
+        firmAddress: getLabelWithValue(
+          firmAddressField, {
+          jsonPath: `Properties[0].propertyDetails.firmAddress`,
+          }
+        )
+      })
+    })
   }

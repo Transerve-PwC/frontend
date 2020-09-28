@@ -20,6 +20,7 @@ import {
   getTenantId,
   localStorageSet,
   getapplicationType,
+  getUserInfo,
 } from "egov-ui-kit/utils/localStorageUtils";
 import {
   checkAvaialbilityAtSubmitCgb,
@@ -143,7 +144,8 @@ export const callPGService = async (state, dispatch, item) => {
     "screenConfiguration.preparedFinalObject.Booking"
   );
   const businessService = getQueryArg(window.location.href, "businessService");
-  const tenantId = getQueryArg(window.location.href, "tenantId");
+  // const tenantId = getQueryArg(window.location.href, "tenantId");
+  const tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
   const applicationNumber = getQueryArg(
     window.location.href,
     "applicationNumber"

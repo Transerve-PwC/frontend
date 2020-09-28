@@ -143,12 +143,12 @@ const getIsFirmRegisteredRadioButton = {
     buttons: [{
         labelName: "YES",
         labelKey: "ES_COMMON_YES",
-        value: "YES"
+        value: true
       },
       {
         label: "NO",
         labelKey: "ES_COMMON_NO",
-        value: "NO"
+        value: false
       }
     ],
     jsonPath: "Properties[0].propertyDetails.isFirmRegistered",
@@ -417,7 +417,7 @@ const commonPartnerInformation = () => {
  export const partnerDetails = getCommonCard({
   header: partnerHeader,
   detailsContainer: getCommonContainer({
-    multiplePartnerContainer: {
+    multipleApplicantContainer: {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       props: {
@@ -426,7 +426,7 @@ const commonPartnerInformation = () => {
         }
       },
       children: {
-        multiplePartnerInfo: {
+        multipleApplicantInfo: {
           uiFramework: "custom-containers",
           componentPath: "MultiItem",
           props: {

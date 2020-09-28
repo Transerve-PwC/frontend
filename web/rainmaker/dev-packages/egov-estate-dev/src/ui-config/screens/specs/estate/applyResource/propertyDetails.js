@@ -308,7 +308,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     true
                 )
@@ -317,7 +317,7 @@ const propertyTypeField = {
             dispatch(
                 handleField(
                     "allotment",
-                    "components.div.children.formwizardEighthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
+                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
                     "visible",
                     false
                 )
@@ -373,19 +373,78 @@ const getPropertyRegisteredToRadioButton = {
     type: "array",
     beforeFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
-        let stepName = "formwizardFirstStep";
+        let stepNameFirst = "formwizardFirstStep";
+        let stepNameThird = "formwizardThirdStep";
 
         if ((window.location.href.includes("allotment"))) {
             screenName = "allotment";
-            stepName = "formwizardFirstStepAllotment";
+            stepNameFirst = "formwizardFirstStepAllotment";
+            stepNameThird = "formwizardThirdStepAllotment";
         }
 
         dispatch(
             handleField(
                 screenName,
-                `components.div.children.${stepName}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
+                `components.div.children.${stepNameFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
                 `visible`,
                 !!(action.value === "ENTITY")
+            )
+        )
+
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.companyDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails`,
+                "visible",
+                !!(action.value == "INDIVIDUAL")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails`,
+                "visible",
+                !!(action.value == "INDIVIDUAL")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.isDirector`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.firmDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.partnerDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
+            )
+        )
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${stepNameThird}.children.proprietorshipDetails`,
+                "visible",
+                !!(action.value == "ENTITY")
             )
         )
     }
@@ -428,7 +487,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.companyDetails",
+                `components.div.children.${stepName}.children.companyDetails`,
                 "visible",
                 !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
             )
@@ -436,7 +495,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.ownerDetails",
+                `components.div.children.${stepName}.children.ownerDetails`,
                 "visible",
                 !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
             )
@@ -444,7 +503,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.firmDetails",
+                `components.div.children.${stepName}.children.firmDetails`,
                 "visible",
                 !!(action.value == "ET.PARTNERSHIP_FIRM")
             )
@@ -452,7 +511,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.partnerDetails",
+                `components.div.children.${stepName}.children.partnerDetails`,
                 "visible",
                 !!(action.value == "ET.PARTNERSHIP_FIRM")
             )
@@ -460,7 +519,7 @@ const entityTypeField = {
         dispatch(
             handleField(
                 screenName,
-                "components.div.children.formwizardThirdStep.children.proprietorshipDetails",
+                `components.div.children.${stepName}.children.proprietorshipDetails`,
                 "visible",
                 !!(action.value == "ET.PROPRIETORSHIP")
             )
