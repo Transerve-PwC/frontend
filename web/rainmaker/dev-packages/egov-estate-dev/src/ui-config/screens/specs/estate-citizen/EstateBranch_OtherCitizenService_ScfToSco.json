@@ -3,7 +3,40 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OtherCitizenService_ScfToSco": [
     {
+      "dataSources": [
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
+          "label": "ownerDetails.ownerName"
+        },
+        {
+          "name": "TypeOfLetter",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "typeOfLetter"
+          }
+        }
+      ],
       "fields": [
+        {
+          "path": "company.type",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstatePropertyService",
+                "masterName": "typeOfLetter",
+                "filter": "typeOfLetter..code"
+              }
+            }
+          ]
+        },
         {
           "path": "transferor",
           "required": true,
@@ -24,7 +57,7 @@
         },
         {
           "path": "company",
-          "required": true,
+          "required": false,
           "validations": [
             {
               "type": "object"
@@ -33,7 +66,7 @@
         },
         {
           "path": "company.name",
-          "required": true,
+          "required": false,
           "validations": [
             {
               "type": "length",
@@ -46,7 +79,7 @@
         },
         {
           "path": "company.address",
-          "required": true,
+          "required": false,
           "validations": [
             {
               "type": "length",
@@ -59,7 +92,7 @@
         },
         {
           "path": "company.registrationNumber",
-          "required": true,
+          "required": false,
           "validations": [
             {
               "type": "length",
@@ -72,13 +105,14 @@
         },
         {
           "path": "company.type",
-          "required": true,
+          "required": false,
           "validations": [
             {
-              "type": "length",
+              "type": "mdms",
               "params": {
-                "min": 5,
-                "max": 50
+                "moduleName": "EstatePropertyService",
+                "masterName": "companyDetails",
+                "filter": "companyDetails..code"
               }
             }
           ]
@@ -272,11 +306,12 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_OWNERS_LABEL",
-                "placeholder": "ES_OWNERS_PLACEHOLDER",
+                "label": "ES_SELECT_OWNER_LABEL",
+                "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.applicant.owners",
-                "path": "applicant.owners"
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                "path": "transferor.id",
+                "dataSource": "owners"
               },
               {
                 "label": "ES_OWNER_NAME_LABEL",
@@ -301,7 +336,7 @@
               },
               {
                 "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
-                "placeholder": "ES_OWNER_MOBILE_NUMBER_PLACEHOLDER",
+                "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.applicant.mobileNo",
                 "path": "applicant.mobileNo",
@@ -354,7 +389,8 @@
                 "placeholder": "ES_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.company.type",
-                "path": "company.type"
+                "path": "company.type",
+                "dataSource": "TypeOfLetter"
               }
             ]
           }
