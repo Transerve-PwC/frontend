@@ -24,20 +24,6 @@
       ],
       "fields": [
         {
-          "path": "company.type",
-          "required": true,
-          "validations": [
-            {
-              "type": "mdms",
-              "params": {
-                "moduleName": "EstatePropertyService",
-                "masterName": "typeOfLetter",
-                "filter": "typeOfLetter..code"
-              }
-            }
-          ]
-        },
-        {
           "path": "transferor",
           "required": true,
           "validations": [

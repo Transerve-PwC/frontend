@@ -52,16 +52,23 @@
           "required": true,
           "validations": [
             {
-              "type": "date-range",
+              "type": "length",
               "params": {
-                "start": {
-                  "unit": "year",
-                  "value": -40
-                },
-                "end": {
-                  "unit": "second",
-                  "value": 0
-                }
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "path": "bookNumber",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
               }
             }
           ]

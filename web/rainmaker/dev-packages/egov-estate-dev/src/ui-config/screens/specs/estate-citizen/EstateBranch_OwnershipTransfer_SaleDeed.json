@@ -52,6 +52,19 @@
           ]
         },
         {
+          "path": "bookNumber",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
           "path": "registrationNumber",
           "required": true,
           "validations": [
@@ -152,10 +165,7 @@
             {
               "type": "enum",
               "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
+                "values": ["FATHER", "HUSBAND"]
               }
             }
           ]

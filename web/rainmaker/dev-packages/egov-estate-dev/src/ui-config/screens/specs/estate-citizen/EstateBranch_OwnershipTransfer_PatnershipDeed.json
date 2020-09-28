@@ -193,6 +193,22 @@
           ]
         },
         {
+          "path": "transferee.age",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
           "path": "transferee.percentageOfShareTransferred",
           "required": true,
           "validations": [

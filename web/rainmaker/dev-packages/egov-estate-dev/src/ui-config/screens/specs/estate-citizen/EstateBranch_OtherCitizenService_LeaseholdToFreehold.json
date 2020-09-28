@@ -14,34 +14,25 @@
       ],
       "fields": [
         {
-          "path": "modeOfTransfer",
+          "path": "transferor",
           "required": true,
           "validations": [
             {
-              "type": "mdms",
-              "params": {
-                "moduleName": "EstatePropertyService",
-                "masterName": "modeOfTransfer",
-                "filter": "modeOfTransfer..code"
-              }
+              "type": "object"
             }
           ]
         },
         {
-          "path": "registrationNumber",
-          "required": false,
+          "path": "transferor.id",
+          "required": true,
           "validations": [
             {
-              "type": "length",
-              "params": {
-                "min": 0,
-                "max": 100
-              }
+              "type": "owner"
             }
           ]
         },
         {
-          "path": "dateOfRegistration",
+          "path": "documentsReceivedDate",
           "required": false,
           "validations": [
             {
@@ -49,7 +40,7 @@
               "params": {
                 "start": {
                   "unit": "year",
-                  "value": -40
+                  "value": -1
                 },
                 "end": {
                   "unit": "second",
@@ -60,107 +51,101 @@
           ]
         },
         {
-          "path": "owner",
-          "required": true,
-          "validations": [
-            {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "owner.id",
-          "required": true,
-          "validations": [
-            {
-              "type": "owner"
-            }
-          ]
-        },
-        {
-          "path": "purchaser",
-          "required": true,
-          "validations": [
-            {
-              "type": "object"
-            }
-          ]
-        },
-        {
-          "path": "purchaser.name",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.fatherOrHusbandName",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.relation",
-          "required": true,
-          "validations": [
-            {
-              "type": "enum",
-              "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.address",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.mobileNo",
+          "path": "courtCases",
           "required": false,
           "validations": [
             {
-              "type": "phonenumber"
+              "type": "object"
             }
           ]
         },
         {
-          "path": "purchaser.percentageOfShareTransferred",
-          "required": true,
+          "path": "courtCases.estateOfficerCourt",
+          "required": false,
           "validations": [
             {
-              "type": "numeric"
-            },
-            {
-              "type": "minmax",
+              "type": "length",
               "params": {
                 "min": 0,
-                "max": 100
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.commissionersCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
               }
             }
           ]

@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_InstestateDeath": [
+    "EstateBranch_OwnershipTransfer_IntestateDeath": [
       {
         "dataSources": [
           {
@@ -47,6 +47,19 @@
           }
         ],
         "fields": [
+          {
+            "path": "bookNumber",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 100
+                }
+              }
+            ]
+          },
           {
             "path": "transferor",
             "required": true,
@@ -161,11 +174,14 @@
             "required": true,
             "validations": [
               {
-                "type": "length",
-                "params": {
-                  "min": 3,
-                  "max": 50
-                }
+                "type": "mdms",
+                "params": [
+                  {
+                    "moduleName": "EstatePropertyService",
+                    "masterName": "legaHeirRelationShipWithDeceased",
+                    "filter": "legaHeirRelationShipWithDeceased..code"
+                  }
+                ]
               }
             ]
           },
