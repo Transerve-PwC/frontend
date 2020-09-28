@@ -44,16 +44,31 @@
                 ]
             },
             {
-                "header": "ES_TRANSFEREE_DETAILS_HEADER",
+                "header": "ES_SELLER_TRANSFEROR_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
-                    {
-                        "label": "ES_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.type"
-                    },
                     {
                         "label": "ES_SELLER_OR_TRANSFEROR_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
                     },
+                    {
+                        "label": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                    },
+                    {
+                        "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                    },
+                    {
+                        "label": "ES_PERCENT_SHARE_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                    }
+                ]
+            },
+            {
+                "header": "ES_TRANSFEREE_DETAILS_HEADER",
+                "step": 0,
+                "fields": [
                     {
                         "label": "ES_TRANSFEREE_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.name"
@@ -78,6 +93,7 @@
             },
             {
                 "header": "ES_COMPANY_DETAILS_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "ES_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
@@ -103,6 +119,7 @@
             },
             {
                 "header": "ES_MODE_OF_TRANSFER_HEADER",
+                "step": 0,
                 "fields": [
                     {
                         "label": "ES_MODE_OF_TRANSFER_LABEL",
@@ -112,6 +129,7 @@
             },
             {
                 "header": "ES_DOCUMENT_DETAILS_HEADER",
+                "step": 1,
                 "type": "DOCUMENTS",
                 "sourceJsonPath": "temp[0].reviewDocData"
             }

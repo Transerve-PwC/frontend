@@ -1,7 +1,7 @@
 {
     "tenantId": "ch",
     "moduleName": "EstatePropertyService",
-    "EstateBranch_OwnershipTransfer_InstestateDeath": [
+    "EstateBranch_OwnershipTransfer_IntestateDeath": [
       {
         "dataSources": [
           {
@@ -47,6 +47,19 @@
           }
         ],
         "fields": [
+          {
+            "path": "bookNumber",
+            "required": false,
+            "validations": [
+              {
+                "type": "length",
+                "params": {
+                  "min": 0,
+                  "max": 100
+                }
+              }
+            ]
+          },
           {
             "path": "transferor",
             "required": true,
@@ -161,11 +174,14 @@
             "required": true,
             "validations": [
               {
-                "type": "length",
-                "params": {
-                  "min": 3,
-                  "max": 50
-                }
+                "type": "mdms",
+                "params": [
+                  {
+                    "moduleName": "EstatePropertyService",
+                    "masterName": "legaHeirRelationShipWithDeceased",
+                    "filter": "legaHeirRelationShipWithDeceased..code"
+                  }
+                ]
               }
             ]
           },
@@ -406,23 +422,23 @@
               {
                 "label": "ES_DECEASED_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
-                "path": "transferee.fatherOrHusbandName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
               },
               {
                 "label": "ES_DECEASED_ADDRESS_LABEL",
                 "placeholder": "ES_DECEASED_ADDRESS_PLACEHOLDER",
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferee.address",
-                "path": "transferee.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
+                "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
-                "path": "transferee.percentageOfShareTransferred"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share"
               },
               {
                 "label": "ES_DATE_OF_DEATH_LABEL",
@@ -430,22 +446,6 @@
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferor.dateOfDeath",
                 "path": "transferor.dateOfDeath"
-              },
-              {
-                "label": "ES_TRANSFEREE_TYPE_LABEL",
-                "placeholder": "ES_TRANSFEREE_TYPE_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferee.type",
-                "path": "transferee.type",
-                "dataSource": "typesOfOwner"
-              },
-              {
-                "label": "ES_SELECT_OWNER_LABEL",
-                "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferee.id",
-                "path": "transferee.id",
-                "dataSource": "owners"
               }
             ]
           },
@@ -453,6 +453,22 @@
             "header": "ES_LEGAL_HEIR_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
+              {
+                "label": "ES_LEGAL_HEIR_TYPE_LABEL",
+                "placeholder": "ES_LEGAL_HEIR_TYPE_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.type",
+                "path": "transferee.type",
+                "dataSource": "typesOfOwner"
+              },
+              {
+                "label": "ES_SELECT_LEGAL_HEIR_LABEL",
+                "placeholder": "ES_SELECT_LEGAL_HEIR_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.transferee.id",
+                "path": "transferee.id",
+                "dataSource": "owners"
+              },
               {
                 "label": "ES_LEGAL_HEIR_NAME_LABEL",
                 "placeholder": "ES_LEGAL_HEIR_PLACEHOLDER",
