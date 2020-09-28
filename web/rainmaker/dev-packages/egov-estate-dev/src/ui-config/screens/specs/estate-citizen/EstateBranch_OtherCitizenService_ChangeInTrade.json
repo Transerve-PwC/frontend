@@ -3,49 +3,49 @@
   "moduleName": "EstatePropertyService",
   "EstateBranch_OtherCitizenService_ChangeInTrade": [
     {
+      "dataSources": [
+        {
+          "name": "ChangeInTradeOptions",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "tradeOptedForChange"
+          }
+        },
+        {
+          "name": "owners",
+          "type": "path",
+          "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
+          "label": "ownerDetails.ownerName"
+        }
+      ],
       "fields": [
         {
-          "path": "modeOfTransfer",
+          "path": "changeInTrade",
           "required": true,
           "validations": [
             {
               "type": "mdms",
               "params": {
                 "moduleName": "EstatePropertyService",
-                "masterName": "modeOfTransfer",
-                "filter": "modeOfTransfer..code"
+                "masterName": "tradeOptedForChange",
+                "filter": "tradeOptedForChange..code"
               }
             }
           ]
         },
         {
-          "path": "registrationNumber",
-          "required": false,
+          "path": "currentTrade",
+          "required": true,
           "validations": [
             {
               "type": "length",
               "params": {
-                "min": 0,
-                "max": 100
-              }
-            }
-          ]
-        },
-        {
-          "path": "dateOfRegistration",
-          "required": false,
-          "validations": [
-            {
-              "type": "date-range",
-              "params": {
-                "start": {
-                  "unit": "year",
-                  "value": -40
-                },
-                "end": {
-                  "unit": "second",
-                  "value": 0
-                }
+                "min": 5,
+                "max": 150
               }
             }
           ]
@@ -69,8 +69,27 @@
           ]
         },
         {
-          "path": "purchaser",
-          "required": true,
+          "path": "documentsReceivedDate",
+          "required": false,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -1
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases",
+          "required": false,
           "validations": [
             {
               "type": "object"
@@ -78,80 +97,92 @@
           ]
         },
         {
-          "path": "purchaser.name",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.fatherOrHusbandName",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.relation",
-          "required": true,
-          "validations": [
-            {
-              "type": "enum",
-              "params": {
-                "values": [
-                  "FATHER",
-                  "HUSBAND"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.address",
-          "required": true,
-          "validations": [
-            {
-              "type": "length",
-              "params": {
-                "min": 5,
-                "max": 150
-              }
-            }
-          ]
-        },
-        {
-          "path": "purchaser.mobileNo",
+          "path": "courtCases.estateOfficerCourt",
           "required": false,
           "validations": [
             {
-              "type": "phonenumber"
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
             }
           ]
         },
         {
-          "path": "purchaser.percentageOfShareTransferred",
-          "required": true,
+          "path": "courtCases.commissionersCourt",
+          "required": false,
           "validations": [
             {
-              "type": "numeric"
-            },
-            {
-              "type": "minmax",
+              "type": "length",
               "params": {
                 "min": 0,
-                "max": 100
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.chiefAdministratorsCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.advisorToAdminCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleDistrictCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleHighCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
+              }
+            }
+          ]
+        },
+        {
+          "path": "courtCases.honbleSupremeCourt",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 0,
+                "max": 250
               }
             }
           ]
@@ -226,20 +257,29 @@
             "type": "FORM",
             "fields": [
               {
+                "label": "ES_OWNER_LABEL",
+                "placeholder": "ES_OWNER_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.owner.id",
+                "path": "owner",
+                "dataSource": "owners"
+              },
+              {
                 "label": "ES_CURRENT_TRADE_LABEL",
                 "placeholder": "ES_CURRENT_TRADE_PLACEHOLDER",
                 "required": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.currentTrade",
-                "path": "ownerDetails.currentTrade"
+                "jsonPath": "Applications[0].applicationDetails.currentTrade",
+                "path": "currentTrade"
               },
               {
                 "label": "ES_TRADE_OPTED_FOR_CHANGE_LABEL",
                 "placeholder": "ES_TRADE_OPTED_FOR_CHANGE_PLACEHOLDER",
                 "required": true,
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.tradeOptedForChange",
-                "path": "ownerDetails.tradeOptedForChange"
+                "jsonPath": "Applications[0].applicationDetails.changeInTrade",
+                "path": "tradeOptedForChange",
+                "dataSource": "ChangeInTradeOptions"
               }
             ]
           }
