@@ -47,10 +47,6 @@
                 "header": "ES_APPLICANT_DETAILS_HEADER",
                 "fields": [
                     {
-                        "label": "ES_OWNERS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.applicant.owners"
-                    },
-                    {
                         "label": "ES_OWNER_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.applicant.name"
                     },
