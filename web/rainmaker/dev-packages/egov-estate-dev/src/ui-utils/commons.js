@@ -7,7 +7,8 @@ import {
   getHygeneLevelJson,
   getLocalityHarmedJson,
   setFilteredTradeTypes,
-  getTradeTypeDropdownData
+  getTradeTypeDropdownData,
+  getTextToLocalMapping
 } from "../ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
@@ -967,6 +968,15 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
       queryObject
     )
     if(!!response) {
+      store.dispatch(
+        handleField(
+          "apply",
+          "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+          "visible",
+          true
+        )
+      );
+      store.dispatch(toggleSnackbar(true, { labelName: "File Uploaded Successfully" }, "success"));
       console.log(response);
       let response = {
         "ResponseInfo": {
@@ -1054,7 +1064,7 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
         }
         let { Auctions } = response;
 
-        // populateBiddersTable({auctions: Auctions})
+        populateBiddersTable(Auctions)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -1066,5 +1076,27 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
       )
     );
     store.dispatch(toggleSpinner());
+  }
+}
+
+export const populateBiddersTable = (auctionData) => {
+  console.log(auctionData);
+  debugger;
+
+  if (!!auctionData) {
+    let data = auctionData.map(item => ({
+      [getTextToLocalMapping("Property Id")]: item.propertyId || "-",
+      [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
+      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-"
+    }));
+
+    store.dispatch(
+      handleField(
+        "apply",
+        "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+        "props.data",
+        data
+      )
+    );
   }
 }

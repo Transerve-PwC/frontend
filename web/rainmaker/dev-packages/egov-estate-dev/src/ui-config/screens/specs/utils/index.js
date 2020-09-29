@@ -2565,6 +2565,12 @@ export const getTextToLocalMapping = label => {
         "ES_LAST_MODIFIED_ON",
         localisationLabels
       );
+    case "Participated Bidders":
+      return getLocaleLabels(
+        "Participated Bidders",
+        "ES_PARTICIPATED_BIDDERS",
+        localisationLabels
+      );
   }
 };
 
