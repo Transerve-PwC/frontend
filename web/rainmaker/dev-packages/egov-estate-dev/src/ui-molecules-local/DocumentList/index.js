@@ -125,12 +125,12 @@ class DocumentList extends Component {
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, excelUrl} = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, excelUrl, screenKey, componentJsonPath } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
 
     if (excelUrl) {
       this.setState({showLoader: false})
-      getExcelData(excelUrl, fileStoreId)
+      getExcelData(excelUrl, fileStoreId, screenKey, componentJsonPath)
     }
     else {
       const fileUrl = await getFileUrlFromAPI(fileStoreId);

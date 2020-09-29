@@ -45,7 +45,7 @@ import {
 import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
-import * as biddersListData from './applyResource/biddersListDoc.json'
+import * as biddersListData from './applyResource/biddersListDoc.json';
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -369,6 +369,23 @@ const getData = async (action, state, dispatch) => {
   // getCompanyDocs(state, dispatch)
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
+
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.screenKey",
+      "apply"
+    )
+  )
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.componentJsonPath",
+      "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
+    )
+  )
 }
 
 const applyEstate = {

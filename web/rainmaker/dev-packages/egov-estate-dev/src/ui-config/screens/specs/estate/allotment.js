@@ -26,7 +26,7 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareDocumentTypeObjMaster,
-  prepareCompanyDocumentTypeObjMaster
+  prepareBiddersDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -37,6 +37,7 @@ import {
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
+import * as biddersListData from './applyResource/biddersListDoc.json';
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
 
@@ -133,6 +134,31 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
+const setBiddersDoc = (action, state, dispatch) => {
+  const {
+    EstatePropertyService
+  } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
+  const {
+    biddersListDoc = []
+  } = EstatePropertyService || {}
+
+  const findMasterItem = biddersListDoc.find(item => item.code === "MasterEst")
+  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+
+  var documentTypes;
+  documentTypes = prepareBiddersDocumentTypeObjMaster(masterDocuments);
+
+  dispatch(
+    handleField(
+      "allotment",
+      `components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList`,
+      "props.inputProps",
+      masterDocuments
+    )
+  );
+  dispatch(prepareFinalObject(`temp[0].documents`, documentTypes))
+}
+
 const header = getCommonHeader({
   labelName: "Allotment of Site",
   labelKey: "ES_ALLOTMENT_OF_SITE"
@@ -188,6 +214,25 @@ const getData = async (action, state, dispatch) => {
       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails",
       "visible",
       false
+    )
+  )
+
+  setBiddersDoc(action, state, dispatch);
+
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.screenKey",
+      "allotment"
+    )
+  )
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.componentJsonPath",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
     )
   )
 }

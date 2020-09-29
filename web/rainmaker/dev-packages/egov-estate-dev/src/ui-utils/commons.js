@@ -955,7 +955,7 @@ export const download = (receiptQueryString, Licenses, data, mode = "download") 
   }
 }
 
-export const getExcelData = async (excelUrl, fileStoreId) => {
+export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJsonPath) => {
   const queryObject = [
     {key: "tenantId", value: "ch"},
     {key: "fileStoreId", value: fileStoreId}
@@ -971,8 +971,8 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
     if(!!response) {
       store.dispatch(
         handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+          screenKey,
+          componentJsonPath,
           "visible",
           true
         )
@@ -1065,7 +1065,7 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
         }
         let { Auctions } = response;
 
-        populateBiddersTable(Auctions)
+        populateBiddersTable(Auctions, screenKey, componentJsonPath)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -1081,7 +1081,7 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
 }
 
 
-export const populateBiddersTable = (auctionData) => {
+export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
   console.log(auctionData);
 
   if (!!auctionData) {
@@ -1104,11 +1104,32 @@ export const populateBiddersTable = (auctionData) => {
 
     store.dispatch(
       handleField(
-        "apply",
-        "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+        screenKey,
+        componentJsonPath,
         "props.data",
         data
       )
     );
   }
 }
+
+export const getAuctionDetails = async requestBody => {
+  try {
+    const response = await httpRequest(
+      "post",
+      "/est-services/auctions/_search",
+      "_search",
+      [],
+      requestBody
+    );
+    return response;
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+  }
+};
