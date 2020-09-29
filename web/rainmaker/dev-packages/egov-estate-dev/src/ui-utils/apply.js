@@ -271,8 +271,6 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       Properties
     } = response
 
-    dispatch(prepareFinalObject("Properties", Properties));
-
     let owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -296,18 +294,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
       let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-      dispatch(
-        prepareFinalObject(
-          "Properties[0].propertyDetails.owners",
-          currOwners
-        )
-      )
-      dispatch(
-        prepareFinalObject(
-          "Properties[0].propertyDetails.purchaser",
-          prevOwners
-        )
-      )
+      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)
@@ -319,6 +306,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //     ownerDocuments
     //   }
     // }]
+
+    dispatch(prepareFinalObject("Properties", Properties));
     
     // dispatch(
     //   prepareFinalObject(
