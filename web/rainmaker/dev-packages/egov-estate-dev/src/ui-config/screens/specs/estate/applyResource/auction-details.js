@@ -7,7 +7,8 @@ import {
   getPattern,
   getCommonContainer,
   getCommonGrayCard,
-  getLabel
+  getLabel,
+  getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   prepareFinalObject
@@ -260,9 +261,18 @@ export const auctionTable = {
   visible: false,
   props: {
     columns: [
-      getTextToLocalMapping("Property Id"),
       getTextToLocalMapping("File Number"),
-      getTextToLocalMapping("Participated Bidders")
+      getTextToLocalMapping("Participated Bidders"),
+      getTextToLocalMapping("Deposited EMD Amount"),
+      getTextToLocalMapping("Deposit Date"),
+      getTextToLocalMapping("EMD Validity Date"),
+      {
+        name: getTextToLocalMapping("Mark as Refunded"),
+        options: { 
+          display: false,
+          viewColumns: false
+        }
+      }
     ],
     options: {
       pagination: false,
@@ -275,29 +285,30 @@ export const auctionTable = {
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
-      sort: false
     },
-    // customSortColumn: {
-    //   column: "Application Date",
-    //   sortingFn: (data, i, sortDateOrder) => {
-    //     const epochDates = data.reduce((acc, curr) => {
-    //       acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
-    //       return acc;
-    //     }, []);
-    //     const order = sortDateOrder === "asc" ? true : false;
-    //     const finalData = sortByEpoch(epochDates, !order).map(item => {
-    //       item.pop();
-    //       return item;
-    //     });
-    //     return { data: finalData, currentOrder: !order ? "asc" : "desc" };
-    //   }
-    // }
+    customSortColumn: {
+      column: "Property Id",
+      sortingFn: (data, i, sortDateOrder) => {
+        // const epochDates = data.reduce((acc, curr) => {
+        //   acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
+        //   return acc;
+        // }, []);
+        // const order = sortDateOrder === "asc" ? true : false;
+        // const finalData = sortByEpoch(epochDates, !order).map(item => {
+        //   item.pop();
+        //   return item;
+        // });
+        // return { data: finalData, currentOrder: !order ? "asc" : "desc" };
+        return { data: data, currentOrder: "desc" };
+      }
+    }
   }
 };
 
 export const AllotmentAuctionDetails = getCommonCard({
   header: auctionDetailsHeader,
   biddersListContainer: documentDetails,
+  breakAfterSearch: getBreak(),
   auctionTableContainer: auctionTable,
   detailsContainer: commonAuctionInformation()
 })

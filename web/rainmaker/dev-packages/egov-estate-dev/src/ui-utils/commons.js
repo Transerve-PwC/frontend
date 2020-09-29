@@ -1,3 +1,4 @@
+import React from 'react';
 import { httpRequest } from "./api";
 import {
   convertDateToEpoch,
@@ -1079,15 +1080,26 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
   }
 }
 
+
 export const populateBiddersTable = (auctionData) => {
   console.log(auctionData);
-  debugger;
 
   if (!!auctionData) {
     let data = auctionData.map(item => ({
-      [getTextToLocalMapping("Property Id")]: item.propertyId || "-",
       [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
-      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-"
+      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-",
+      [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
+      [getTextToLocalMapping("Deposit Date")]: item.depositDate || "-",
+      [getTextToLocalMapping("EMD Validity Date")]: item.emdValidityDate || "-",
+      [getTextToLocalMapping("Mark as Refunded")]: React.createElement(
+        "input",
+        {
+          type:"checkbox",
+          defaultChecked: false, 
+          onClick: () => { 
+            console.log("checkbox clicked");
+          }
+        })
     }));
 
     store.dispatch(

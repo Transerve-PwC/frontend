@@ -2571,6 +2571,30 @@ export const getTextToLocalMapping = label => {
         "ES_PARTICIPATED_BIDDERS",
         localisationLabels
       );
+    case "Deposited EMD Amount":
+      return getLocaleLabels(
+        "Deposited EMD Amount",
+        "ES_DEPOSITED_EMD_AMOUNT",
+        localisationLabels
+      );
+    case "Deposit Date":
+      return getLocaleLabels(
+        "Deposit Date",
+        "ES_DEPOSIT_DATE",
+        localisationLabels
+      );
+    case "EMD Validity Date":
+      return getLocaleLabels(
+        "EMD Validity Date",
+        "ES_EMD_VALIDITY_DATE",
+        localisationLabels
+      );
+    case "Mark as Refunded":
+      return getLocaleLabels(
+        "Mark as Refunded",
+        "ES_MARK_AS_REFUNDED",
+        localisationLabels
+      );
   }
 };
 
