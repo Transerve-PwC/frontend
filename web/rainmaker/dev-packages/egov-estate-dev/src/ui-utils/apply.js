@@ -11,6 +11,8 @@ import {
 import get from "lodash/get";
 import set from "lodash/set";
 import {
+  getFileUrl,
+  getFileUrlFromAPI,
   getQueryArg,
 } from "egov-ui-framework/ui-utils/commons";
 import {
@@ -24,7 +26,7 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
     sourceJsonPath,
     []
   ) || []
-  applicationDocuments = applicationDocuments.filter(item => !!item.active)
+  applicationDocuments = applicationDocuments.filter(item => !!item.isActive)
   let uploadedDocuments = {};
   let fileStoreIds =
     applicationDocuments &&

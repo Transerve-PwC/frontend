@@ -83,7 +83,7 @@
                     },
                     {
                         "label": "ES_ADDRESS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.company.address"
+                        "jsonPath": "Applications[0].applicationDetails.company.address"
                     },
                     {
                         "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
