@@ -4,7 +4,45 @@ import {viewFour} from './review'
 import {getOptions} from '../dataSources'
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { convertDateToEpoch } from "../../utils";
-import { afterFieldChange } from './afterFieldChange'
+import { setFieldProperty, getComponentJsonPath } from './afterFieldChange'
+import { get } from "lodash";
+
+let _conf = {};
+const onFieldChange = (action, state, dispatch) => {
+  updateReadOnlyForAllFields(action, state, dispatch);
+}
+
+const evaluate = (application, formula, defaultValue) => {
+  try {
+    return eval(formula);
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
+const updateReadOnlyForAllFields = (action, state, dispatch) => {
+  // Update readonly
+  // For each field. get the field config, get componentJsonPath, 
+  // dispatch new Value
+  const application = get(state, "screenConfiguration.preparedFinalObject.Applications[0]");
+  const actionDefiniton = [
+    {
+      path: getComponentJsonPath({cardName: "ES_PURCHASER_DETAILS_HEADER", fieldName: "ES_PURCHASER_TRANSFEREE_ID"}),
+      property: "visible",
+      value: evaluate(application, "application.applicationDetails.transferee.type == 'Existing'")
+    },
+    {
+      path: getComponentJsonPath({cardName: "ES_PURCHASER_DETAILS_HEADER", fieldName: "ES_FATHER_HUSBAND_NAME_LABEL"}),
+      property: "props.disabled",
+      value: evaluate(application, "application.applicationDetails.transferee.type == 'Existing'")
+    }
+  ]
+  setFieldProperty({dispatch, actionDefiniton})
+}
+
+const updateVisibilityForAllFields = () => {
+  // Update visibility
+}
 
 const headerObj = value => {
     return getCommonHeader({
@@ -33,7 +71,7 @@ export const getRelationshipRadioButton = {
   }
 
 const getField = async (item, fieldData = {}, state) => {
-    let {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
+    let {label: labelItem, placeholder, type, pattern, disabled = false, visibile, ...rest } = item;
     const {required = false, validations = []} = fieldData
     let fieldProps = {
       label : {
@@ -48,12 +86,12 @@ const getField = async (item, fieldData = {}, state) => {
         xs: 12,
         sm: 6
       },
-      props: { disabled: eval(disabled) },
+      props: { disabled },
       required
     }
   
     fieldProps = !!pattern ? {...fieldProps, pattern: getPattern(pattern)} : fieldProps
-    rest = {...rest, afterFieldChange}
+    rest = {...rest, afterFieldChange : onFieldChange }
     switch(type) {
       case "TEXT_FIELD": {
         return getTextField({
@@ -85,6 +123,7 @@ const getField = async (item, fieldData = {}, state) => {
           dispatch(prepareFinalObject(
             rest.jsonPath, convertDateToEpoch(action.value)
           ))
+          onFieldChange(action, state, dispatch)
         }
       }
       }
@@ -157,8 +196,8 @@ const expansionSection = (section) => {
 }
 
 export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
-    let {sections = []} = format_config
-    sections = await arrayReduce(sections, async (acc, section) => {
+    const {sections = []} = format_config
+    const uiConfig = await arrayReduce(sections, async (acc, section) => {
         return {
         ...acc, 
         [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
@@ -167,5 +206,7 @@ export const setFirstStep = async (state, dispatch, {data_config, format_config}
         })
     }
     }, {})
-    return sections;
+
+    _conf = uiConfig;
+    return uiConfig;
 }

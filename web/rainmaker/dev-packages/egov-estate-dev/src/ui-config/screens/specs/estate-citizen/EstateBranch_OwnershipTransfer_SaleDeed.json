@@ -443,7 +443,7 @@
                 "label": "ES_PURCHASER_TRANSFEREE_ID",
                 "placeholder": "ES_PURCHASER_TRANSFEREE_ID_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "visible": false,
+                "visible": "application.applicationDetails.transferee.type == 'Existing'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
                 "dataSource": "owners"

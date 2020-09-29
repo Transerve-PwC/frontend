@@ -2,11 +2,11 @@ import { dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/s
 import get from "lodash/get";
 
 
-const setFieldProperty = ({dispatch, actionDefiniton }) => {
+export const setFieldProperty = ({dispatch, actionDefiniton }) => {
     dispatchMultipleFieldChangeAction("apply", actionDefiniton, dispatch)
   }
 
-  const getComponentJsonPath = ({cardName, fieldName}) => {
+  export const getComponentJsonPath = ({cardName, fieldName}) => {
     return `components.div.children.formwizardFirstStep.children.${cardName}.children.cardContent.children.details_container.children.${fieldName}`
   }
 
