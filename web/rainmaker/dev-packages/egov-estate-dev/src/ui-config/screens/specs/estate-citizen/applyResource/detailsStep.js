@@ -1,10 +1,10 @@
 import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
-import get from "lodash/get";
 import {getOptions} from '../dataSources'
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { convertDateToEpoch } from "../../utils";
+import { afterFieldChange } from './afterFieldChange'
 
 const headerObj = value => {
     return getCommonHeader({
@@ -33,9 +33,8 @@ export const getRelationshipRadioButton = {
   }
 
 const getField = async (item, fieldData = {}, state) => {
-
-    const {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
-    const {required = true, validations = []} = fieldData
+    let {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item
+    const {required = false, validations = []} = fieldData
     let fieldProps = {
       label : {
         labelName: labelItem,
@@ -54,7 +53,7 @@ const getField = async (item, fieldData = {}, state) => {
     }
   
     fieldProps = !!pattern ? {...fieldProps, pattern: getPattern(pattern)} : fieldProps
-  
+    rest = {...rest, afterFieldChange}
     switch(type) {
       case "TEXT_FIELD": {
         return getTextField({
@@ -135,7 +134,8 @@ const getDetailsContainer = async (section, data_config, state) => {
     const {fields = []} = section;
     const values = await arrayReduce(fields, async (acc, field) => {
       const findFieldData = data_config.find(item => item.path === field.path)
-      return {...acc, [field.label]: await getField(field, findFieldData, state)}
+      const fieldConfig = await getField(field, findFieldData, state)
+      return {...acc, [field.label]: fieldConfig}
     }, {})
     return getCommonContainer(values);
 }
