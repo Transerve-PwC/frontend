@@ -49,7 +49,7 @@ const companyRegNoField = {
   },
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.companyRegNo"
+  jsonPath: "Properties[0].propertyDetails.companyRegistrationNumber"
 }
 
 const companyRegDateField = {
@@ -58,7 +58,7 @@ const companyRegDateField = {
     labelKey: "ES_REGISTRATION_DATE_LABEL"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.companyRegDate",
+  jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
