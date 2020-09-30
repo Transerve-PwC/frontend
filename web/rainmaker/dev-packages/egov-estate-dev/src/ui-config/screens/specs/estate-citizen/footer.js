@@ -1,8 +1,8 @@
 import { getLabel, getStepperObject, dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/screens/specs/utils"
-import { getCommonApplyFooter } from "../utils";
+import { getCommonApplyFooter, validateFields } from "../utils";
 import { get, some } from "lodash";
 import { applyforApplication } from "../../../../ui-utils/apply";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { moveToSuccess } from "../estate/applyResource/footer";
 
 export const DEFAULT_STEP = -1;
@@ -237,11 +237,23 @@ export const previousButton = {
         0
     );
     let isFormValid = true;
+    let hasFieldToaster = true;
     if(activeStep === DETAILS_STEP) {
-    const res =  await applyforApplication(state, dispatch, activeStep)
-      if(!res) {
-        return
-      }
+
+      let cardItems = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardFirstStep.children", {}) || {}
+      cardItems = Object.keys(cardItems);
+
+      cardItems.forEach((cardItem) => {
+        const isValid = validateFields(`components.div.children.formwizardFirstStep.children.${cardItem}.children.cardContent.children.details_container.children`, state,
+        dispatch, "apply");
+        isFormValid = isFormValid && isValid
+      })
+    if(!!isFormValid) {
+      const res =  await applyforApplication(state, dispatch, activeStep)
+        if(!res) {
+          return
+        }
+    }
     }
     if(activeStep === DOCUMENT_UPLOAD_STEP) {
       const uploadedDocData = get(
@@ -293,6 +305,28 @@ export const previousButton = {
     if(activeStep !== SUMMARY_STEP) {
       if(!!isFormValid) {
         changeStep(state, dispatch, "apply");
+      } else if (hasFieldToaster) {
+        let errorMessage = {
+          labelName:
+              "Please fill all mandatory fields and upload the documents !",
+          labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+        };
+        switch (activeStep) {
+          case DETAILS_STEP: 
+                  errorMessage = {
+                    labelName:
+                        "Please fill all mandatory fields, then do next !",
+                    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+                  };
+              break
+          case DOCUMENT_UPLOAD_STEP:
+                  errorMessage = {
+                      labelName: "Please upload all the required documents !",
+                      labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+                  };
+              break;
+        }
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
     }
   }

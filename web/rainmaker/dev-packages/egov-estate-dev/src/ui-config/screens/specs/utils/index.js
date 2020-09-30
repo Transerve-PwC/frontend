@@ -1398,7 +1398,7 @@ export const validateFields = (
         fields[variable] &&
         fields[variable].props &&
         (fields[variable].props.disabled === undefined ||
-          !fields[variable].props.disabled) &&
+          !fields[variable].props.disabled) && !!fields[variable].jsonPath &&
         !validate(
           screen,
           {
