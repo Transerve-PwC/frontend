@@ -40,6 +40,24 @@ const transitNumberField = {
       "visible",
       false
     ))
+    dispatch(
+      prepareFinalObject(
+        "Properties[0].propertyDetails.address.colony",
+        ""
+      )
+    )
+    dispatch(
+      prepareFinalObject(
+        "Properties[0].propertyDetails.address.pincode",
+        ""
+      )
+    )
+    dispatch(
+      prepareFinalObject(
+        "Properties[0].owners[0].ownerDetails.name",
+        ""
+      )
+    )
   }
 }
 
