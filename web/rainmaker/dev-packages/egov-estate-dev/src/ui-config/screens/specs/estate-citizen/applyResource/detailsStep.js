@@ -4,7 +4,7 @@ import {viewFour} from './review'
 import {getOptions} from '../dataSources'
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { convertDateToEpoch } from "../../utils";
-import { setFieldProperty, getComponentJsonPath } from './afterFieldChange'
+import { setFieldProperty } from './afterFieldChange'
 import { get } from "lodash";
 
 let _conf = {};
@@ -12,7 +12,7 @@ const onFieldChange = (action, state, dispatch) => {
   updateReadOnlyForAllFields(action, state, dispatch);
 }
 
-const evaluate = (application, formula, defaultValue) => {
+const evaluate = ({application, owners, selectedOwner, selectedPurchaser, purchaserList, formula, defaultValue}) => {
   try {
     return eval(formula);
   } catch (e) {
@@ -24,20 +24,40 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
   // Update readonly
   // For each field. get the field config, get componentJsonPath, 
   // dispatch new Value
-  const application = get(state, "screenConfiguration.preparedFinalObject.Applications[0]");
-  const actionDefiniton = [
-    {
-      path: getComponentJsonPath({cardName: "ES_PURCHASER_DETAILS_HEADER", fieldName: "ES_PURCHASER_TRANSFEREE_ID"}),
-      property: "visible",
-      value: evaluate(application, "application.applicationDetails.transferee.type == 'Existing'")
-    },
-    {
-      path: getComponentJsonPath({cardName: "ES_PURCHASER_DETAILS_HEADER", fieldName: "ES_FATHER_HUSBAND_NAME_LABEL"}),
-      property: "props.disabled",
-      value: evaluate(application, "application.applicationDetails.transferee.type == 'Existing'")
-    }
-  ]
-  setFieldProperty({dispatch, actionDefiniton})
+
+  const application = get(state, "screenConfiguration.preparedFinalObject.Applications[0]") || {};
+  const owners = get(state, "screenConfiguration.preparedFinalObject.property.propertyDetails.owners") || [];
+  const applicationDetails = get(application, "applicationDetails")
+
+  const selectedOwner = !!applicationDetails && (!!applicationDetails.transferor || !!applicationDetails.owner) ? owners.find(item => !!applicationDetails.transferor ? item.id === applicationDetails.transferor.id : item.id === applicationDetails.owner.id) : {}
+  const selectedPurchaser = !!applicationDetails.transferee ? owners.find(item => item.id === applicationDetails.transferee.id) : {}
+  let purchaserList = !!applicationDetails.transferor ? owners.filter(item => item.id !== applicationDetails.transferor.id) : owners;
+  purchaserList = purchaserList.map(item => ({
+    code: item.id,
+    label: item.ownerDetails.ownerName
+  }))
+  const objectValues = Object.values(_conf);
+  const fields = objectValues.reduce((prev, curr) => {
+    const fieldItems = !!curr.children ? curr.children.cardContent.children.details_container.children : {};
+    prev = [...prev, ...Object.values(fieldItems)]
+    return prev
+  }, []).filter(item => item.componentPath !== "Div")
+
+  const actionDefiniton = fields.reduce((prev, curr) => {
+    const propValues = [{value: "visibility", property: "visible", defaultValue: curr.visible}, {value: "disability", property: "props.disabled", defaultValue: curr.props.disabled}, {value: "prefillValue", property: "props.value", defaultValue: ""}, {value: "dataValue", property: "props.data"}];
+
+    const actions = propValues.reduce((prevValue, currValue) => {
+      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchaserList, formula: curr[currValue.value]}
+      evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams
+      const actionItem = !!curr[currValue.value] ? [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}] : []
+      return [...prevValue, ...actionItem]
+    }, [])
+    return [...prev, ...actions]
+  }, [])
+
+  const findItem = actionDefiniton.find(item => item.path === action.componentJsonpath && item.value === action.value)
+
+  !findItem && setFieldProperty({dispatch, actionDefiniton})
 }
 
 const updateVisibilityForAllFields = () => {
@@ -71,7 +91,7 @@ export const getRelationshipRadioButton = {
   }
 
 const getField = async (item, fieldData = {}, state) => {
-    let {label: labelItem, placeholder, type, pattern, disabled = false, visibile, ...rest } = item;
+    let {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item;
     const {required = false, validations = []} = fieldData
     let fieldProps = {
       label : {

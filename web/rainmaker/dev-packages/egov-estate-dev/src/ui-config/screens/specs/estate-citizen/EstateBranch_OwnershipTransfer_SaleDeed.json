@@ -165,7 +165,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["FATHER", "HUSBAND"]
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
@@ -409,21 +412,24 @@
                 "placeholder": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               }
             ]
           },
@@ -437,21 +443,25 @@
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
-                "dataSource": "typesOfOwner"
+                "dataSource": "typesOfOwner",
+                "visibility": "owners.length > 1 && purchaserList.length > 0"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_ID",
                 "placeholder": "ES_PURCHASER_TRANSFEREE_ID_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "visible": "application.applicationDetails.transferee.type == 'Existing'",
+                "visible": false,
+                "visibility": "application.applicationDetails.transferee.type == 'Existing'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
+                "dataValue": "purchaserList",
                 "dataSource": "owners"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_NAME_LABEL",
                 "placeholder": "ES_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
+                "visibility": "application.applicationDetails.transferee.type == 'New'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name"
               },
@@ -460,20 +470,26 @@
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
-                "path": "transferee.fatherOrHusbandName"
+                "path": "transferee.fatherOrHusbandName",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.guardianName"
               },
               {
                 "label": "ES_RELATION_SHIP_LABEL",
                 "type": "RADIO_BUTTON",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relation",
-                "path": "transferee.relation"
+                "path": "transferee.relation",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.guardianRelation"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
-                "path": "transferee.address"
+                "path": "transferee.address",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.address"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
@@ -481,7 +497,9 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
                 "path": "transferee.mobileNo",
-                "pattern": "MobileNo"
+                "pattern": "MobileNo",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_PERCENTAGE_SHARED_LABEL",

@@ -6,7 +6,7 @@ export const setFieldProperty = ({dispatch, actionDefiniton }) => {
     dispatchMultipleFieldChangeAction("apply", actionDefiniton, dispatch)
   }
 
-  export const getComponentJsonPath = ({cardName, fieldName}) => {
+const getComponentJsonPath = ({cardName, fieldName}) => {
     return `components.div.children.formwizardFirstStep.children.${cardName}.children.cardContent.children.details_container.children.${fieldName}`
   }
 
