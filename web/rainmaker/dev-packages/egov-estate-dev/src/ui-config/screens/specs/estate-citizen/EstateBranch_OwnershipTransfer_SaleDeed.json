@@ -462,7 +462,7 @@
                 "label": "ES_PURCHASER_TRANSFEREE_NAME_LABEL",
                 "placeholder": "ES_PURCHASER_TRANSFEREE_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "visibility": "application.applicationDetails.transferee.type == 'New'",
+                "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
                 "errorMessage": "ES_ERR_PURCHASER_NAME"
