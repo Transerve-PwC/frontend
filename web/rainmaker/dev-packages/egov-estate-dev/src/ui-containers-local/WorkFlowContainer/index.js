@@ -176,7 +176,7 @@ class WorkFlowContainer extends React.Component {
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
             break;
           default: {
-            const {branchType, moduleType, applicationType} = data;
+            const {branchType, moduleType, applicationType} = data[0];
             const type = `${branchType}_${moduleType}_${applicationType}`;
             path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`
           }
