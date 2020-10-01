@@ -501,21 +501,24 @@
                 "placeholder": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               }
             ]
           },
@@ -529,7 +532,8 @@
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
-                "dataSource": "typesOfOwner"
+                "dataSource": "typesOfOwner",
+                "visibility": "owners.length > 1 && purchasers.length > 0"
               },
               {
                 "label": "ES_SELECT_OWNER_LABEL",
@@ -537,42 +541,59 @@
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
-                "dataSource": "owners"
+                "dataSource": "owners",
+                "dataValue": "purchasers",
+                "prefillValue": "selectedPurchaser ? selectedPurchaser.id : ''",
+                "visible": false,
+                "visibility": "application.applicationDetails.transferee.type == 'Existing'"
               },
               {
                 "label": "ES_TRANSFEREE_NAME_LABEL",
                 "placeholder": "ES_TRANSFEREE_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "path": "transferee.name",
-                "jsonPath": "Applications[0].applicationDetails.transferee.name"
+                "jsonPath": "Applications[0].applicationDetails.transferee.name",
+                "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
+                "errorMessage": "ES_ERR_PURCHASER_NAME"
               },
               {
                 "label": "ES_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_TRANSFEREE_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "path": "transferee.fatherOrHusbandName",
-                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
+                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.guardianName",
+                "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
               },
               {
                 "label": "ES_TRANSFEREE_ADDRESS_LABEL",
                 "placeholder": "ES_TRANSFEREE_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "path": "transferee.address",
-                "jsonPath": "Applications[0].applicationDetails.transferee.address"
+                "jsonPath": "Applications[0].applicationDetails.transferee.address",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.address",
+                "errorMessage": "ES_ERR_ADDRESS"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
-                "path": "transferee.mobileNo"
+                "path": "transferee.mobileNo",
+                "pattern": "MobileNo",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "path": "transferee.percentageOfShareTransferred",
-                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               }
             ]
           },
@@ -583,14 +604,13 @@
               {
                 "label": "ES_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED",
                 "placeholder": "ES_REGISTRATION_NUMBER_OF_PARTNERSHIP_DEED_OR_DISSOLUTION_DEED_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.registrationNumber",
-                "path": "registrationNumber"
+                "path": "registrationNumber",
+                "errorMessage": "ES_ERR_REGISTRATION_NUMBER"
               },
               {
                 "label": "ES_REGISTRATION_DATE",
-                "required": true,
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
                 "path": "dateOfRegistration"
@@ -598,26 +618,26 @@
               {
                 "label": "ES_PRIVATE_LIMITED_COMPANY_NAME",
                 "placeholder": "ES_PRIVATE_LIMITED_COMPANY_NAME_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
-                "path": "company.name"
+                "path": "company.name",
+                "errorMessage": "ES_ERR_COMPANY_NAME"
               },
               {
                 "label": "ES_COMPANY_ADDRESS",
                 "placeholder": "ES_COMPANY_ADDRESS_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_BUTTON",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.company.address",
-                "path": "company.address"
+                "path": "company.address",
+                "errorMessage": "ES_ERR_COMPANY_ADDRESS"
               },
               {
                 "label": "ES_COMPANY_REGISTRATION_NUMBER",
                 "placeholder": "ES_COMPANY_REGISTRATION_NUMBER_PLACEHOLDER",
-                "required": false,
-                "type": "TEXT_DOWN",
+                "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
-                "path": "company.registrationNumber"
+                "path": "company.registrationNumber",
+                "errorMessage": "ES_ERR_COMPANY_REGISTRATION_NUMBER"
               }
             ]
           },
