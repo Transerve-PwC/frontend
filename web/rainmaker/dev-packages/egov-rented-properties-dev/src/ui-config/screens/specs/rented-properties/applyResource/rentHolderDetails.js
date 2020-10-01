@@ -515,7 +515,24 @@ export const  applicantGenderLabel = {
     errorMessage:"RP_ERR_GENDER_FIELD"
 };
 
-
+const fatherOrHusbandsNameOwnerShip = {
+    label: {
+        labelName: "Father/ Husband's Name",
+        labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
+    },
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    minLength: 4,
+    maxLength: 40,
+    required: true,
+    props: {
+        disabled: true
+      },
+    jsonPath: "Owners[0].ownerDetails.fatherOrHusband",
+    errorMessage:"RP_ERR_FATHER_OR_HUSBAND_FIELD"
+}
 const fatherOrHusbandsName = {
     label: {
         labelName: "Father/ Husband's Name",
@@ -703,6 +720,7 @@ const getApplicantDetails = () => {
         header: applicantHeader,
         detailsContainer: getCommonContainer({
             ownerName: getTextField(applicantNameField),
+            fatherOrHusband: getTextField(fatherOrHusbandsNameOwnerShip),
             relationShip: ownerShipRelationShip,
             phone: getTextField(applicantphoneNumberField),
             deathOfAllotee: getDateField(deathField),

@@ -282,8 +282,8 @@ const transitNumberField = {
 
   const areaField = {
     label: {
-        labelName: "Area of the property",
-        labelKey: "RP_AREA_PROPERTY_LABEL"
+        labelName: "Area of the property (in Sq.yd)",
+        labelKey: "RP_AREA_PROPERTY_LABEL_IN_UNITS"
     },
     placeholder: {
         labelName: "Enter Area of the property",

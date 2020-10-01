@@ -136,6 +136,16 @@ export const accountStatementResults = {
         }
       },
       {
+        name: REMAINING_INTEREST,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
         name: TOTAL_DUE,
         options: {
           customBodyRender: value => (
@@ -147,16 +157,6 @@ export const accountStatementResults = {
       },
       {
         name: ACCOUNT_BALANCE,
-        options: {
-          customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
-          {value}
-        </span> 
-          )
-        }
-      },
-      {
-        name: REMAINING_INTEREST,
         options: {
           customBodyRender: value => (
             <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>

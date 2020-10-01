@@ -123,7 +123,7 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
 
 
 export const handleSubmitSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"CREATED")
+  handleCreateUpdateSEP(state, dispatch,"APPROVED")
 };
 export const handlesaveSEP = (state, dispatch) =>{
   handleCreateUpdateSEP(state, dispatch,"DRAFTED")

@@ -8,7 +8,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import "../../../../customstyle.css";
 import { httpRequest } from "../../../../ui-utils";
-import { getCurrentAssigneeUserNameAndRole, getSearchResultsView } from "../../../../ui-utils/commons";
+import { getCurrentAssigneeUserNameAndRole, getSearchResultsView, commonConfig } from "../../../../ui-utils/commons";
 import { downloadPrintContainer } from "./applyResourceSearchPreview/footer";
 import { documentsSummary } from "./myRequestSearchPreview/documentsSummary";
 import { ownerDetails } from "./myRequestSearchPreview/ownerDetails";
@@ -117,11 +117,22 @@ const prepareDocumentsView = async (state, dispatch) => {
 
 const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
   //debugger
-  let tenantIdForBoth = JSON.parse(getUserInfo()).permanentCity;
+  const tenantId = getQueryArg(window.location.href, "tenantId");
   const response = await getSearchResultsView([
-    { key: "tenantId", value: tenantIdForBoth },
+    { key: "tenantId", value: tenantId },
     { key: "service_request_id", value: serviceRequestId }
   ]);
+  var servicetype = response.ResponseBody[0].service_type
+
+  if(servicetype != null && servicetype != undefined && servicetype != ""  )
+ { 
+   const queryObject = [
+    { key: "tenantId", value: tenantId },
+    { key: "businessServices", value: servicetype}
+  ];
+
+  await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+}
 
   if(!response.ResponseInfo['ver'] === false)
   {
@@ -164,14 +175,7 @@ const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
   prepareDocumentsView(state, dispatch);
   set(state, "screenConfiguration.moduleName", "HC");
 
-  var servicetype = response.ResponseBody[0].service_type
-
-   const queryObject = [
-      { key: "tenantId", value: tenantIdForBoth },
-      { key: "businessServices", value: servicetype.toUpperCase().trim()}
-    ];
-     setBusinessServiceDataToLocalStorage(queryObject, dispatch);
-
+  
   try{
   var service_request_status = response.ResponseBody[0].service_request_status
   

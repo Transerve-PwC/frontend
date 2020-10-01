@@ -18,7 +18,7 @@ import {
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import { prepareDocumentsUploadData } from "../../../../ui-utils/storecommonsapi";
   import commonConfig from "../../../../config/common";
-  
+  import { getSearchResults } from "../../../../ui-utils/commons";
   export const stepsData = [
     { labelName: "SUH Details", labelKey: "NULM_SUH_DETAILS" },
     { labelName: "Facilities Available", labelKey: "NULM_SUH_FACILITIES_AVAILABLE" },
@@ -216,6 +216,29 @@ import {
     }
   };
   
+  const getShelterName = async(action, state, dispatch) => {
+    try{
+      let OrganizationRequest = {};
+      OrganizationRequest.tenantId = "ch.chandigarh";
+      const requestBody = {OrganizationRequest}
+      let response = await getSearchResults([],requestBody, dispatch,"organization");
+      if(response){
+        const shelterName = response.ResponseBody.map(orgObj => {
+           let shelter = {};
+           shelter.name = orgObj.organizationName;
+           shelter.code = orgObj.organizationUuid;
+
+           return shelter;
+        });
+        
+        shelterName &&  dispatch(prepareFinalObject(`createScreenMdmsData1.NULM.assignTo`,shelterName));
+   
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+}
   
   const screenConfig = {
     uiFramework: "material-ui",
@@ -224,7 +247,7 @@ import {
     beforeInitScreen: (action, state, dispatch) => {
   
       const mdmsDataStatus = getMdmsData(state, dispatch);
-  
+      getShelterName(action, state, dispatch);
       return action;
     },
   

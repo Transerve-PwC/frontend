@@ -1,8 +1,13 @@
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { handleSubmitSEP,handleRejectSEP,handlesaveSEP,handleApproveSEP } from "./functions";
-
+import { handleSubmitSEP,handleRejectSEP,handlesaveSEP,handleApproveSEP,handleForwardToTFCSEP } from "./functions";
+import {NULM_SEP_CREATED,
+  FORWARD_TO_TASK_FORCE_COMMITTEE,
+  APPROVED_BY_TASK_FORCE_COMMITTEE,
+  REJECTED_BY_TASK_FORCE_COMMITTEE,
+  SENT_TO_BANK_FOR_PROCESSING,
+SANCTION_BY_BANK} from '../../../../../ui-utils/commons'
 const gotoCreateFlow = (state, dispatch) => {
   const createUrl = `/egov-nulm/create-sep`;
   dispatch(setRoute(createUrl));
@@ -19,12 +24,13 @@ const getCommonCreateFooter = children => {
   };
 };
 export const buttonController = () => {
+  const status = window.localStorage.getItem("SEP_Status");
   if (process.env.REACT_APP_NAME === "Employee")
     return {
-      rejectButton: {
+      forwardToTFC: {
         componentPath: "Button",
         props: {
-          variant: "outlined",
+          variant: "contained",
           color: "primary",
           style: {
              minWidth: "200px",
@@ -34,15 +40,15 @@ export const buttonController = () => {
         },
         children: {
           resetButtonLabel: getLabel({
-            labelName: "Reject",
-            labelKey: "NULM_COMMON_REJECT_BUTTON",
+            labelName: "Forward to Task force Committee",
+            labelKey: "NULM_COMMON_FORWARD_TO_TFC_BUTTON",
           }),
         },
         onClickDefination: {
           action: "condition",
-          callBack: handleRejectSEP,
+          callBack: handleForwardToTFCSEP,
         },
-        visible: true,
+        visible:status ===NULM_SEP_CREATED ? true :false,
       },
       approvedButton: {
         componentPath: "Button",
@@ -57,15 +63,15 @@ export const buttonController = () => {
         },
         children: {
           updateButtonLabel: getLabel({
-            labelName: "Approved",
-            labelKey: "NULM_COMMON_APPROVED_BUTTON",
+            labelName: "SUBMIT",
+            labelKey: "HR_SUBMIT_LABEL",
           }),
         },
         onClickDefination: {
           action: "condition",
-          callBack: handleApproveSEP,
+          callBack: handleSubmitSEP,
         },
-        visible: true,
+        visible: status !==NULM_SEP_CREATED ? true :false,
       },
     };
   else

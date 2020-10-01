@@ -53,6 +53,13 @@ export const getReviewApplicantDetails = (isEditable = true) => {
                 },
                 { jsonPath: "Owners[0].ownerDetails.name" }
             ),
+            fatherOrHusband: getLabelWithValue(
+                {
+                    labelName: "Father/ Husband's Name",
+                    labelKey: "RP_FATHER_OR_HUSBANDS_NAME_LABEL"
+                },
+                { jsonPath: "Owners[0].ownerDetails.fatherOrHusband" }
+            ),
             relationship: getLabelWithValue(
                 {
                     labelName: "Relationship",

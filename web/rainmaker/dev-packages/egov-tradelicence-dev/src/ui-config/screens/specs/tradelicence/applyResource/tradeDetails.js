@@ -1572,7 +1572,7 @@ const platformNumberField = {
         labelName: "Enter Platform/Shop Number",
         labelKey: "TL_PLATFORM_NUMBER_PLACEHOLDER"
     },
-    pattern: getPattern("familyMonthlyIncome"),
+    pattern: getPattern("AlphaNumValidation"),
     visible: false,
     minLength: 1,
     maxLength: FIELD_MAXLENGTH,

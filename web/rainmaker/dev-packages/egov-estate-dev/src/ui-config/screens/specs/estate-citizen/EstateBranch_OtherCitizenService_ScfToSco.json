@@ -341,8 +341,8 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_NAME_LABEL",
-                "placeholder": "ES_NAME_PLACEHOLDER",
+                "label": "ES_COMPANY_NAME_LABEL",
+                "placeholder": "ES_COMPANY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
                 "path": "company.name"
@@ -362,8 +362,8 @@
                 "path": "company.registrationNumber"
               },
               {
-                "label": "ES_TYPE_OF_LETTER_LABEL",
-                "placeholder": "ES_TYPE_OF_LETTER_PLACEHOLDER",
+                "label": "ES_EST_TYPE_OF_LETTER_LABEL",
+                "placeholder": "ES_EST_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.company.type",
                 "path": "company.type",
@@ -392,11 +392,11 @@
             "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
           },
           {
-            "code": "LEASE_WATER_BILL",
+            "code": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LEASE_WATER_BILL_DESCRIPTION"
+            "description": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
           }
         ]
       }

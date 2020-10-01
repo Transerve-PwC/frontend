@@ -19,7 +19,7 @@ const getCommonCreateFooter = children => {
   };
 };
 export const buttonController = () => {
-  if (process.env.REACT_APP_NAME === "Employee")
+  if (process.env.REACT_APP_NAME !== "Employee")
     return {
       rejectButton: {
         componentPath: "Button",
@@ -91,7 +91,7 @@ export const buttonController = () => {
           action: "condition",
           callBack: handlesaveSEP,
         },
-        visible: true,
+        visible: false,
       },
       submitButton: {
         componentPath: "Button",

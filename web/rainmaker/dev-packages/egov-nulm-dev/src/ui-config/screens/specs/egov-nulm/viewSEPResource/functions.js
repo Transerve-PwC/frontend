@@ -19,7 +19,13 @@ import {
 import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {  handleCardDelete } from "../../../../../ui-utils/commons";
-import{httpRequest} from '../../../../../ui-utils/api'
+import{httpRequest} from '../../../../../ui-utils/api';
+import {NULM_SEP_CREATED,
+  FORWARD_TO_TASK_FORCE_COMMITTEE,
+  APPROVED_BY_TASK_FORCE_COMMITTEE,
+  REJECTED_BY_TASK_FORCE_COMMITTEE,
+  SENT_TO_BANK_FOR_PROCESSING,
+SANCTION_BY_BANK} from '../../../../../ui-utils/commons'
 // SET ALL SIMPLE DATES IN YMD FORMAT
 const setDateInYmdFormat = (obj, values) => {
   values.forEach(element => {
@@ -120,10 +126,38 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
 };
 
 
-
+export const handleForwardToTFCSEP = (state, dispatch) =>{
+  handleCreateUpdateSEP(state, dispatch,FORWARD_TO_TASK_FORCE_COMMITTEE)
+};
 
 export const handleSubmitSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"CREATED")
+  const status = window.localStorage.getItem("SEP_Status");
+
+  if(process.env.REACT_APP_NAME === "Employee"){
+      if(status === FORWARD_TO_TASK_FORCE_COMMITTEE){
+      const tfcStatus =  get(state, 'screenConfiguration.preparedFinalObject.NULMSEPRequest.taskCommitteeStatus');
+        if(tfcStatus === "Approved by Task force committee")
+            handleCreateUpdateSEP(state, dispatch,APPROVED_BY_TASK_FORCE_COMMITTEE);
+        else 
+          handleCreateUpdateSEP(state, dispatch,REJECTED_BY_TASK_FORCE_COMMITTEE); 
+      }
+    else if (status === APPROVED_BY_TASK_FORCE_COMMITTEE){
+      const tfcStatus =  get(state, 'screenConfiguration.preparedFinalObject.NULMSEPRequest.taskCommitteeStatus');
+      if(tfcStatus === "Approved by Task force committee")
+          handleCreateUpdateSEP(state, dispatch,SENT_TO_BANK_FOR_PROCESSING);
+      else 
+        handleCreateUpdateSEP(state, dispatch,REJECTED_BY_TASK_FORCE_COMMITTEE); 
+    }
+    else if(status === SENT_TO_BANK_FOR_PROCESSING){
+      handleCreateUpdateSEP(state, dispatch,SANCTION_BY_BANK); 
+    }
+  
+    window.localStorage.removeItem("SEP_Status");
+  }
+  else{
+    handleCreateUpdateSEP(state, dispatch,"CREATED");
+  }
+  
 };
 export const handlesaveSEP = (state, dispatch) =>{
   handleCreateUpdateSEP(state, dispatch,"DRAFTED")

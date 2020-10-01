@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { UploadSingleFile } from "../../ui-molecules-local";
-import { handleFileUpload } from "../../ui-utils/commons"
+import { handleFileUpload, getExcelData } from "../../ui-utils/commons"
 import { LabelContainer } from "egov-ui-framework/ui-containers";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
@@ -125,33 +125,40 @@ class DocumentList extends Component {
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath } = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, excelUrl} = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
-    const fileUrl = await getFileUrlFromAPI(fileStoreId);
-    uploadedDocuments = {
-      ...uploadedDocuments,
-      [uploadedDocIndex]: [
-        {
-          fileName: file.name,
-          fileStoreId,
-          fileUrl: Object.values(fileUrl)[0],
-          documentType: name,
-          tenantId
-        }
-      ]
-    };
-    prepareFinalObject(uploadedDocumentsJsonPath, {
-      ...uploadedDocuments
-    });
-    prepareFinalObject(jsonPath, {
-      fileName: file.name,
-      fileStoreId,
-      fileUrl: Object.values(fileUrl)[0],
-      documentType: name,
-      tenantId
-    });
-    this.setState({ uploadedDocuments, showLoader: false });
-    this.getFileUploadStatus(true, uploadedDocIndex);
+
+    if (excelUrl) {
+      this.setState({showLoader: false})
+      getExcelData(excelUrl, fileStoreId)
+    }
+    else {
+      const fileUrl = await getFileUrlFromAPI(fileStoreId);
+      uploadedDocuments = {
+        ...uploadedDocuments,
+        [uploadedDocIndex]: [
+          {
+            fileName: file.name,
+            fileStoreId,
+            fileUrl: Object.values(fileUrl)[0],
+            documentType: name,
+            tenantId
+          }
+        ]
+      };
+      prepareFinalObject(uploadedDocumentsJsonPath, {
+        ...uploadedDocuments
+      });
+      prepareFinalObject(jsonPath, {
+        fileName: file.name,
+        fileStoreId,
+        fileUrl: Object.values(fileUrl)[0],
+        documentType: name,
+        tenantId
+      });
+      this.setState({ uploadedDocuments, showLoader: false });
+      this.getFileUploadStatus(true, uploadedDocIndex);
+    }
   };
 
   changeFile = (key) => async (e) => {

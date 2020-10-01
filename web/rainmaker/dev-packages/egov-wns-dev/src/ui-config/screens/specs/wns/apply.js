@@ -8,6 +8,7 @@ import {
   getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from "lodash/get";
+import set from "lodash/set";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { footer } from "./applyResource/footer";
@@ -481,6 +482,7 @@ const screenConfig = {
     getData(action, state, dispatch).then(() => { });
     dispatch(prepareFinalObject("applyScreen.water", true));
     dispatch(prepareFinalObject("applyScreen.sewerage", false));
+    dispatch(prepareFinalObject("applyScreen.tubewell", false));
     const propertyId = getQueryArg(window.location.href, "propertyId");
 
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");

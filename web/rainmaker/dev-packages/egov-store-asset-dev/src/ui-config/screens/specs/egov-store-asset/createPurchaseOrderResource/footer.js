@@ -187,7 +187,9 @@ export const callBackForNext = async (state, dispatch) => {
         let indentNumber="";
         const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
         indentNumber = getQueryArg(window.location.href, "indentNumber");
-        if(indentNumber){
+        const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
+        const {purchaseType} = purchaseOrders[0];
+        if(indentNumber ||  purchaseType ==='Non Indent'){
         const errorMessage = {
         
           labelName: "Quantity can not be Zero for",

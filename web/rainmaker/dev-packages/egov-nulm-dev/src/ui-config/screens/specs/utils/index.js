@@ -23,7 +23,7 @@ import {
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { sampleGetBill } from "../../../../ui-utils/sampleResponses";
-
+import { getprintpdf } from "../../../../ui-utils/storecommonsapi";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -75,6 +75,8 @@ export const validateFields = (
     {}
   );
   let isFormValid = true;
+
+  
   for (var variable in fields) {
     if (fields.hasOwnProperty(variable)) {
       if (
@@ -95,6 +97,7 @@ export const validateFields = (
           true
         )
       ) {
+      
         isFormValid = false;
       }
     }
@@ -1171,3 +1174,95 @@ export const getTodaysDateInYMD = () => {
   date = `${date.getFullYear()}-${month}-${day}`;
   return date;
 };
+export const checkValueForNA = value => {
+  return value ? value : "NA";
+};
+// for file store id
+export const getFileUrlFromAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	{ key: "tenantId", value: tenantId },
+   // { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const downloadReceiptFromFilestoreID=(fileStoreId,mode,tenantId)=>{
+  getFileUrlFromAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    if (mode === 'download') {
+      var win = window.open(fileRes[fileStoreId], '_blank');
+      if(win){
+        win.focus();
+      }
+    }
+    else {
+     // printJS(fileRes[fileStoreId])
+      var response =await axios.get(fileRes[fileStoreId], {
+        //responseType: "blob",
+        responseType: "arraybuffer",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf"
+        }
+      });
+      console.log("responseData---",response);
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      var myWindow = window.open(fileURL);
+      if (myWindow != undefined) {
+        myWindow.addEventListener("load", event => {
+          myWindow.focus();
+          myWindow.print();
+        });
+      }
+    
+    }
+  });
+  
+}
+
+export const downloadAcknowledgementForm = async ( pagename,mode="download") => {
+  let tenantId =  getQueryArg(window.location.href, "tenantId");
+  let APIUrl =`/pdf-service/v1/_create`
+  let ApplicationNo ='';
+  let queryObject = [
+    {
+      key: "tenantId",
+      value: tenantId
+    }
+  ]
+switch(pagename)
+{
+  case "Sep":
+    ApplicationNo = getQueryArg(window.location.href, "applicationNumber");
+    queryObject.push({
+      key: "key",
+      value:"nulm-certificate"
+    });
+    APIUrl = `/pdf-service/v1/_create`
+    break;
+}
+   
+    try {    
+      const response = await getprintpdf(queryObject,APIUrl);
+      if(response)
+      {
+        let filestoreId = response.filestoreIds[0]
+        downloadReceiptFromFilestoreID(filestoreId,mode,tenantId)
+      }
+     
+    } catch (exception) {
+      alert('Some Error Occured while downloading Acknowledgement form!');
+    }
+  
+  }

@@ -8,7 +8,7 @@ import set from "lodash/set";
 import store from "redux/store";
 import { convertDateToEpoch, getCheckBoxJsonpath, getHygeneLevelJson, getLocalityHarmedJson, getSafetyNormsJson, getTranslatedLabel, ifUserRoleExists, updateDropDowns } from "../ui-config/screens/specs/utils";
 import { httpRequest } from "./api";
-
+import cloneDeep from "lodash/cloneDeep";
 export const serviceConst = {
     "WATER": "WATER",
     "SEWERAGE": "SEWERAGE"
@@ -1002,7 +1002,12 @@ export const applyForWaterOrSewerage = async (state, dispatch) => {
     if (get(state, "screenConfiguration.preparedFinalObject.applyScreen.water") && get(state, "screenConfiguration.preparedFinalObject.applyScreen.sewerage")) {
         let response = await applyForBothWaterAndSewerage(state, dispatch);
         return response;
-    } else if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
+    }
+    else if (get(state, "screenConfiguration.preparedFinalObject.applyScreen.tubewell") && get(state, "screenConfiguration.preparedFinalObject.applyScreen.sewerage")){
+        let response = await applyForBothWaterAndSewerage(state, dispatch);
+        return response;
+    }
+     else if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
         let response = await applyForSewerage(state, dispatch);
         return response;
     } else {
@@ -1044,21 +1049,44 @@ export const applyForWater = async (state, dispatch) => {
               set(queryObjectForUpdate, "processInstance.action", "INITIATE");
               set(queryObjectForUpdate, "waterApplication", null);
               set(queryObjectForUpdate, "activityType", wnsStatus);
-            }
-                if(localStorage.getItem("WNS_STATUS")){
-                    window.localStorage.removeItem("WNS_STATUS");
-                }
+            }             
            
             set(queryObjectForUpdate, "waterSource", (queryObjectForUpdate.waterSource + "." + queryObjectForUpdate.waterSubSource));
-            queryObjectForUpdate = findAndReplace(queryObjectForUpdate, "NA", null);
-            await httpRequest("post", "/ws-services/wc/_update", "", [], { WaterConnection: queryObjectForUpdate });
+            const appNumber =   getQueryArg(window.location.href, "applicationNumber");
+
+                queryObjectForUpdate = findAndReplace(queryObjectForUpdate, "NA", null);
+            
+           
+          let responseWater =  await httpRequest("post", "/ws-services/wc/_update", "", [], { WaterConnection: queryObjectForUpdate });
             let searchQueryObject = [{ key: "tenantId", value: queryObjectForUpdate.tenantId }, { key: "applicationNumber", value: queryObjectForUpdate.applicationNo }];
+            
+            const btnName = ["UPDATE_CONNECTION_HOLDER_INFO","APPLY_FOR_REGULAR_INFO","REACTIVATE_CONNECTION","CONNECTION_CONVERSION","TEMPORARY_DISCONNECTION","PERMANENT_DISCONNECTION"];
+        if(btnName.includes(wnsStatus)){
+            responseWater.WaterConnection[0].property = queryObjectForUpdate.property;
+            dispatch(prepareFinalObject("WaterConnection", responseWater.WaterConnection));
+            setApplicationNumberBox(state, dispatch);
+            dispatch(prepareFinalObject("applyScreen", findAndReplace(responseWater.WaterConnection[0], "null", "NA")));
+            let oldcombinedArray = cloneDeep(responseWater.WaterConnection[0]);
+            dispatch(prepareFinalObject("applyScreenOld", findAndReplace(oldcombinedArray, "null", "NA")));
+        }
+        else{
             let searchResponse = await getSearchResults(searchQueryObject);
             dispatch(prepareFinalObject("WaterConnection", searchResponse.WaterConnection));
+        }
+
+            if(localStorage.getItem("WNS_STATUS")){
+                window.localStorage.removeItem("WNS_STATUS");
+            }
+            
         } else {
             set(queryObject, "processInstance.action", "INITIATE")
             queryObject = findAndReplace(queryObject, "NA", null);
-            queryObject.activityType = "NEW_WS_CONNECTION"
+            if(get(state, "screenConfiguration.preparedFinalObject.applyScreen.tubewell")){
+                queryObject.activityType = "NEW_TUBEWELL_CONNECTION";
+            }else{
+                queryObject.activityType = "NEW_WS_CONNECTION"
+            }
+           
             response = await httpRequest("post", "/ws-services/wc/_create", "", [], { WaterConnection: queryObject });
             dispatch(prepareFinalObject("WaterConnection", response.WaterConnection));
             setApplicationNumberBox(state, dispatch);
@@ -1163,7 +1191,12 @@ export const applyForBothWaterAndSewerage = async (state, dispatch) => {
             set(queryObject, "processInstance.action", "INITIATE");
             queryObject = findAndReplace(queryObject, "NA", null);
             let waterObject = queryObject;
-            waterObject.activityType = "NEW_WS_CONNECTION";
+            if(get(state, "screenConfiguration.preparedFinalObject.applyScreen.tubewell")){
+                waterObject.activityType = "NEW_TUBEWELL_CONNECTION";
+            }else{
+                waterObject.activityType = "NEW_WS_CONNECTION";
+            }
+            
             response = await httpRequest("post", "/ws-services/wc/_create", "_create", [], { WaterConnection: waterObject });
             const sewerageResponse = await httpRequest("post", "/sw-services/swc/_create", "_create", [], { SewerageConnection: queryObject });
             dispatch(prepareFinalObject("WaterConnection", response.WaterConnection));
