@@ -147,6 +147,12 @@ const ownershipTransitNumberField = {
               ""
             )
           )
+          dispatch(
+            prepareFinalObject(
+              "Owners[0].ownerDetails.fatherOrHusband",
+              ""
+            )
+          )
       }
 }
 

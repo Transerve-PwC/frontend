@@ -108,7 +108,7 @@ const getAcknowledgementCard = (
         labelKey: "RP_MASTER_ENTRY_APPROVAL_SUCCESS_MESSAGE_HEAD"
       } : purpose === "submit" ? {
         labelName: "Rented Property Master Entry is Submitted Successfully",
-        labelKey: "RP_SUBMISSION_SUCCESS_MESSAGE_HEAD"
+        labelKey: "RP_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
       } : {
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"

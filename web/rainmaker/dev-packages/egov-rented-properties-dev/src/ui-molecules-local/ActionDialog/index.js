@@ -206,7 +206,7 @@ class ActionDialog extends React.Component {
       );
 return
     }
-    else if(value.indexOf(' ')>=0){
+    else if(value.toString().indexOf(' ')>=0){
       toggleSnackbar(
         true,
         { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
@@ -248,7 +248,7 @@ return
       );
 return
     }
-    else if(value.indexOf(' ')>=0){
+    else if(value.toString().indexOf(' ')>=0){
       toggleSnackbar(
         true,
         { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},

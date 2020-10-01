@@ -273,7 +273,7 @@ export const applicationSuccessFooter = (
         children: {
           downloadFormButtonLabel: getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" :type=="NOTICE_GENERATION"? "RP_DOWNLOAD_NOTICE": type=="RentedProperties.Rent"?"RP_DOWNLOAD_PAYMENT_RECIEPT" : "RP_DOWNLOAD_RECEIPT"
           })
         },
         onClickDefination: {
@@ -324,7 +324,7 @@ export const applicationSuccessFooter = (
         children: {
           printFormButtonLabel: getLabel({
             labelName: "PRINT CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : type=="NOTICE_GENERATION"? "RP_PRINT_NOTICE":type=="RentedProperties.Rent"?"RP_PRINT_PAYMENT_RECIEPT" :"RP_PRINT_RECEIPT"
           })
         },
         onClickDefination: {

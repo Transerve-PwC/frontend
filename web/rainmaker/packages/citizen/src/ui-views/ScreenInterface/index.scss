@@ -105,8 +105,24 @@ span[class^="MuiFormLabel-asterisk"] {
     text-align: center;
   }
   .pay-success-footer {
-    height: 120px;
-    overflow: auto;
+    height: 53px;
+    // overflow: auto;
+  }
+  .pay-success-footer .tl-download-button span span:nth-child(3), .pay-success-footer .tl-print-button span span:nth-child(3), .pay-success-footer .tl-home-button span:nth-child(3){
+    margin-left: 5px !important;
+  }
+
+  .pay-success-footer .tl-download-button {
+    width: 154px;
+    height: 30px !important;
+  }
+  .pay-success-footer .tl-print-button {
+    width: 114px;
+    height: 30px !important;
+  }
+  .pay-success-footer .tl-home-button {
+    width: 55px;
+    height: 30px !important;
   }
 
 }

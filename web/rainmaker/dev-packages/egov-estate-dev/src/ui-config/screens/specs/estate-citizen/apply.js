@@ -28,6 +28,8 @@ const getPropertyData = async (action, state, dispatch) => {
 }
 
 const getData = async (action, state, dispatch) => {
+  dispatch(prepareFinalObject("Applications", []))
+  dispatch(prepareFinalObject("temp", []))
   let applicationType = getQueryArg(window.location.href, "applicationType");
   const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
   let propertyId = getQueryArg(window.location.href, "propertyId")
@@ -42,12 +44,12 @@ const getData = async (action, state, dispatch) => {
       dispatch(prepareFinalObject("Applications", Applications))
       const {branchType, moduleType, applicationType: type} = Applications[0];
       applicationType = `${branchType}_${moduleType}_${type}`;
-      property = Applications[0].property
+      // property = Applications[0].property
       propertyId = Applications[0].property.id
     } catch (error) {
       return {}
     }
-  } else {
+  } 
     const queryObject = [
       {key: "propertyId", value: propertyId}
     ]
@@ -56,7 +58,7 @@ const getData = async (action, state, dispatch) => {
        property = response.Properties[0]
        dispatch(prepareFinalObject("Applications[0].property.id", propertyId ))
     }
-  }
+  
     // await new Promise((resolve) => {
     //     setTimeout(resolve, 0)
     // })

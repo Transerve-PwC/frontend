@@ -11,6 +11,8 @@ import {
 import get from "lodash/get";
 import set from "lodash/set";
 import {
+  getFileUrl,
+  getFileUrlFromAPI,
   getQueryArg,
 } from "egov-ui-framework/ui-utils/commons";
 import {
@@ -24,7 +26,7 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
     sourceJsonPath,
     []
   ) || []
-  applicationDocuments = applicationDocuments.filter(item => !!item.active)
+  applicationDocuments = applicationDocuments.filter(item => !!item.isActive)
   let uploadedDocuments = {};
   let fileStoreIds =
     applicationDocuments &&
@@ -219,11 +221,12 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")
       } else {
-        owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
-        owners = [...owners, ...prevOwners];
-
         set(queryObject[0], "action", "SUBMIT")
       }
+
+      owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+      prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
+      owners = [...owners, ...prevOwners];
 
       set(
         queryObject[0],
@@ -289,6 +292,11 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
           )
         );
       })
+
+      let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+      let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
+
+      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)
@@ -300,7 +308,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //     ownerDocuments
     //   }
     // }]
+
     dispatch(prepareFinalObject("Properties", Properties));
+    
     // dispatch(
     //   prepareFinalObject(
     //     "Properties[0].removedDocs",

@@ -18,7 +18,6 @@
           "name": "owners",
           "type": "path",
           "jsonPath": "propertyDetails.owners",
-          "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
         }
       ],
@@ -263,6 +262,41 @@
                 "jsonPath": "Applications[0].applicationDetails.owner.id",
                 "path": "owner",
                 "dataSource": "owners"
+              },
+              {
+                "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
+              },
+              {
+                "label": "ES_ADDRESS_LABEL",
+                "placeholder": "ES_ADDRESS_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
+              },
+              {
+                "label": "ES_MOBILE_NUMBER_LABEL",
+                "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
+              },
+              {
+                "label": "ES_OWNER_SHARE_LABEL",
+                "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.owner.share"
+              },
+              {
+                "label": "ES_CP_NUMBER_LABEL",
+                "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
               },
               {
                 "label": "ES_CURRENT_TRADE_LABEL",

@@ -49,7 +49,7 @@
                 "fields": [
                     {
                         "label": "ES_OWNERS_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.duplicate.owner.ownerDetails.ownerName"
+                        "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.ownerName"
                     },
                     {
                         "label": "ES_FATHER_HUSBAND_NAME_LABEL",

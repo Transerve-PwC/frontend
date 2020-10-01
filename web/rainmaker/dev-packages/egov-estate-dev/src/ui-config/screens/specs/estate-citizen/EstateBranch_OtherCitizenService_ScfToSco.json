@@ -351,7 +351,7 @@
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.duplicate.company.address",
+                "jsonPath": "Applications[0].applicationDetails.company.address",
                 "path": "company.address"
               },
               {
