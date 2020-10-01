@@ -21,6 +21,12 @@ import {
   getLocaleLabels,
   getTransformedLocalStorgaeLabels,
 } from "egov-ui-framework/ui-utils/commons";
+import {NULM_SEP_CREATED,
+  FORWARD_TO_TASK_FORCE_COMMITTEE,
+  APPROVED_BY_TASK_FORCE_COMMITTEE,
+  REJECTED_BY_TASK_FORCE_COMMITTEE,
+  SENT_TO_BANK_FOR_PROCESSING,
+SANCTION_BY_BANK} from '../../../../../ui-utils/commons'
 // import "./index.css";
 
   const moveToReview = dispatch => {
@@ -70,7 +76,7 @@ if(NULMSEPRequest && NULMSEPRequest.isUrbanPoor){
   }
 }
 if(NULMSEPRequest && NULMSEPRequest.isHandicapped){
-  if(NULMSEPRequest.isHandicapped =="YES" && (NULMSEPRequest.disabilityCertificate === undefined) ){
+  if(NULMSEPRequest.isHandicapped =="YES" && (NULMSEPRequest.isDisabilityCertificateAvailable === undefined) ){
     const errorMessage = {
       labelName: "Please chose disability certificate available option",
       labelKey: "ERR_NULM_FILL_DISABILITY_CERTIFICATE"
@@ -84,12 +90,67 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
   isFormValid = false;
 }
 
-
-
-    if (!isSepDetailsValid) {
-      //isFormValid = false;
-      isFormValid = true;
+    if (!isSepDetailsValid) {     
+      isFormValid = false;
     }
+    const status = window.localStorage.getItem("SEP_Status");
+
+    if(status === FORWARD_TO_TASK_FORCE_COMMITTEE || status === APPROVED_BY_TASK_FORCE_COMMITTEE|| status===REJECTED_BY_TASK_FORCE_COMMITTEE || status===SENT_TO_BANK_FOR_PROCESSING) {
+      const isValid = validateFields(
+                          "components.div.children.formwizardFirstStep.children.TFCDetails.children.cardContent.children.TFCDetailsContainer.children",
+                          state,
+                          dispatch,
+                          "create-sep"
+                        );
+
+      if(!isValid){
+
+        const errorMessage = {
+          labelName: "Please fill all fields",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }
+    if(status === APPROVED_BY_TASK_FORCE_COMMITTEE || status===REJECTED_BY_TASK_FORCE_COMMITTEE || status===SENT_TO_BANK_FOR_PROCESSING) {
+      const isValid = validateFields(
+        "components.div.children.formwizardFirstStep.children.bankDetailToProcess.children.cardContent.children.bankDetailToProcessContainer.children",
+                          state,
+                          dispatch,
+                          "create-sep"
+                        );
+
+      if(!isValid){
+
+        const errorMessage = {
+          labelName: "Please fill all fields",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }
+
+    if(status===SENT_TO_BANK_FOR_PROCESSING){
+      const isValid = validateFields(
+        "components.div.children.formwizardFirstStep.children.SanctionDetails.children.cardContent.children.SanctionDetailsContainer.children",
+                          state,
+                          dispatch,
+                          "create-sep"
+                        );
+
+      if(!isValid){
+
+        const errorMessage = {
+          labelName: "Please fill all fields",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }
+
   }
   if (activeStep === 1) {
     const localisationLabels = getTransformedLocalStorgaeLabels();
@@ -107,7 +168,7 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
         
       uploadedDocs &&  Object.entries(uploadedDocs).forEach(ele => {         
         docArray[ele[0]] = ele[1];
-        if(ele[1] &&  ele[1].documents && ele[1].documents.length>0){
+        if(ele[1] &&  ele[1].documents && ele[1].documents.length>0 && ele[0] != -1){
           let obj = {
             title: documents[ele[0]].title,
             linkText: "VIEW", 

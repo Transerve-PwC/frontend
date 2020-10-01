@@ -178,7 +178,7 @@ const emdAmountDate = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.emdAmountDate"
+  jsonPath: "Properties[0].propertyDetails.emdDate"
 }
 
 const buttonItem = {

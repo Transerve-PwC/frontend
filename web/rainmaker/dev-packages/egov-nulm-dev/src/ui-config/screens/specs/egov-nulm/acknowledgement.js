@@ -76,6 +76,12 @@ const getApplicationDisplayCode =() => {
         labelKey: `NULM_SUH_OF_SHELTER`,
       }
       break;
+      case "SUHLOGC":
+        labelValue = {
+          labelName: "Name of shelter",
+          labelKey: `NULM_SUH_CITIZEN_SELTER_REQUEST`,
+        }
+        break;
     default :  labelValue = {
       labelName: "Application No.",
       labelKey: "NOC_HOME_SEARCH_RESULTS_APP_NO_LABEL",

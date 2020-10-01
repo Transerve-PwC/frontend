@@ -59,15 +59,15 @@ class TableData extends Component {
       typing: false
     },
     filter: {
-      localityFilter: {
-        selectedValue: ["ALL"],
-        dropdownData: [
-          {
-            value: "ALL",
-            label: "CS_INBOX_SELECT_ALL",
-          }
-        ]
-      },
+      // localityFilter: {
+      //   selectedValue: ["ALL"],
+      //   dropdownData: [
+      //     {
+      //       value: "ALL",
+      //       label: "CS_INBOX_SELECT_ALL",
+      //     }
+      //   ]
+      // },
       moduleFilter: {
         selectedValue: ["ALL"],
         dropdownData: [
@@ -92,8 +92,9 @@ class TableData extends Component {
     tabData: [{ label: "COMMON_INBOX_TAB_ASSIGNED_TO_ME", dynamicArray: [0] }
       , { label: "COMMON_INBOX_TAB_ALL", dynamicArray: [0] }],
     taskboardData: [{ head: 0, body: "WF_TOTAL_TASK", color: "rgb(171,211,237)", baseColor: "rgb(53,152,219)" },
-    { head: 0, body: "WF_TOTAL_NEARING_SLA", color: "rgb(238, 167, 58 ,0.38)", baseColor: "#EEA73A" },
-    { head: 0, body: "WF_ESCALATED_SLA", color: "rgb(244, 67, 54 ,0.38)", baseColor: "#F44336" }],
+   // { head: 0, body: "WF_TOTAL_NEARING_SLA", color: "rgb(238, 167, 58 ,0.38)", baseColor: "#EEA73A" },
+   // { head: 0, body: "WF_ESCALATED_SLA", color: "rgb(244, 67, 54 ,0.38)", baseColor: "#F44336" }
+  ],
     taskboardLabel: '',
     inboxData: [{ headers: [], rows: [] }],
     initialInboxData: [{ headers: [], rows: [] }],
@@ -161,8 +162,8 @@ class TableData extends Component {
     }
   }
   checkRow = (row, filter, searchFilter, taskboardLabel) => {
-    if ((filter.localityFilter.selectedValue.includes('ALL') || filter.localityFilter.selectedValue.includes(row[1].text.props.label)) &&
-      (filter.moduleFilter.selectedValue.includes('ALL') || filter.moduleFilter.selectedValue.includes(row[2].text.props.label.split('_')[1])) &&
+    //if ((filter.localityFilter.selectedValue.includes('ALL') || filter.localityFilter.selectedValue.includes(row[1].text.props.label)) &&
+     if( (filter.moduleFilter.selectedValue.includes('ALL') || filter.moduleFilter.selectedValue.includes(row[2].text.props.label.split('_')[1])) &&
       (filter.statusFilter.selectedValue.includes('ALL') || filter.statusFilter.selectedValue.includes(row[2].text.props.label.split('_')[2])) &&
       (searchFilter.value == '' || this.checkMatch(row, searchFilter.value)
       )
@@ -219,8 +220,8 @@ class TableData extends Component {
 
     let { taskboardData, tabData } = this.state;
     taskboardData[0].head = totalRows.length;
-    taskboardData[1].head = NEARING_SLA.length;
-    taskboardData[2].head = ESCALATED_SLA.length;
+   // taskboardData[1].head = NEARING_SLA.length;
+   // taskboardData[2].head = ESCALATED_SLA.length;
     tabData[0].dynamicArray = [initialInboxData[0].rows.length];
     tabData[1].dynamicArray = [initialInboxData[1].rows.length];
     this.hideLoading();
@@ -246,10 +247,10 @@ class TableData extends Component {
     const initialInboxData = cloneDeep(this.state.initialInboxData);
     const tempObject = cloneDeep(this.state.initialInboxData);
     const filter = {
-      localityFilter: {
-        selectedValue: ["ALL"],
-        dropdownData: [...this.state.filter.localityFilter.dropdownData]
-      },
+      // localityFilter: {
+      //   selectedValue: ["ALL"],
+      //   dropdownData: [...this.state.filter.localityFilter.dropdownData]
+      // },
       moduleFilter: {
         selectedValue: ["ALL"],
         dropdownData: [...this.state.filter.moduleFilter.dropdownData]
@@ -290,7 +291,7 @@ class TableData extends Component {
               "referenceNumber": businessIds
             }
           }
-          const moduleWiseLocality = await httpRequest(`egov-searcher/locality/${uniqueModules[i]}/_get`, "search", [], requestBody);
+          const moduleWiseLocality = //await httpRequest(`egov-searcher/locality/${uniqueModules[i]}/_get`, "search", [], requestBody);
           localitymap = [...localitymap, ...moduleWiseLocality.Localities];
         } catch (e) {
           console.log("error");
@@ -362,15 +363,15 @@ class TableData extends Component {
     if(all){
       this.setState({
         filter: {
-          localityFilter: {
-            selectedValue: ['ALL'],
-            dropdownData: this.getUniqueList([
-              {
-                value: "ALL",
-                label: getLocaleLabels("","CS_INBOX_SELECT_ALL",localizationLabels),
-              }, ...localityDropdownList
-            ])
-          },
+          // localityFilter: {
+          //   selectedValue: ['ALL'],
+          //   dropdownData: this.getUniqueList([
+          //     {
+          //       value: "ALL",
+          //       label: getLocaleLabels("","CS_INBOX_SELECT_ALL",localizationLabels),
+          //     }, ...localityDropdownList
+          //   ])
+          // },
           moduleFilter: {
             selectedValue: ['ALL'],
             dropdownData: this.getUniqueList([
@@ -532,10 +533,10 @@ class TableData extends Component {
       
       let headersList = [
         "WF_INBOX_HEADER_APPLICATION_NO",
-        "WF_INBOX_HEADER_LOCALITY",
+       // "WF_INBOX_HEADER_LOCALITY",
         "WF_INBOX_HEADER_STATUS",
         "WF_INBOX_HEADER_CURRENT_OWNER",
-        "WF_INBOX_HEADER_SLA_DAYS_REMAINING",
+      //  "WF_INBOX_HEADER_SLA_DAYS_REMAINING",
       ];
       inboxData[0].headers = headersList;
       inboxData[0].rows = assignedDataRows;
@@ -550,8 +551,8 @@ class TableData extends Component {
       let ESCALATED_SLA = [];
       const taskCount = allDataRows.length;
       taskboardData[0].head = taskCount;
-      taskboardData[1].head = NEARING_SLA.length;
-      taskboardData[2].head = ESCALATED_SLA.length;
+     // taskboardData[1].head = NEARING_SLA.length;
+    //  taskboardData[2].head = ESCALATED_SLA.length;
 
       this.setState({
         loaded: true,

@@ -9,6 +9,9 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "../../utils";
 import { getNULMPattern } from "../../../../../ui-utils/commons";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import get from "lodash/get";
+import set from "lodash/set";
 export const SepDetails = getCommonCard({
   header: getCommonTitle(
     {
@@ -438,19 +441,35 @@ export const SepDetails = getCommonCard({
         ],      
         defaultValue: "NO"
       },
-      type: "array",    
+      type: "array",   
+      beforeFieldChange: (action, state, dispatch) => {
+        let isDisabilityCertificateAvailablePath = action.componentJsonpath.replace(
+          ".isHandicapped",
+          ".isDisabilityCertificateAvailable"
+        );
+        if (action.value) {
+          dispatch(
+            handleField(
+              "create-sep",
+              isDisabilityCertificateAvailablePath,
+              "props.value",
+              "NO"
+            )
+          );
+      } 
+    }
     },
-    disabilityCertificate: {
+    isDisabilityCertificateAvailable: {
       uiFramework: "custom-containers",
       componentPath: "RadioGroupContainer",
       gridDefination: {
         xs: 6
       },
-      jsonPath: "NULMSEPRequest.disabilityCertificate",
+      jsonPath: "NULMSEPRequest.isDisabilityCertificateAvailable",
       type: "array",
       props: {
         required: true,
-        jsonPath: "NULMSEPRequest.disabilityCertificate",
+        jsonPath: "NULMSEPRequest.isDisabilityCertificateAvailable",
         label: { name: "Disability Certificate Available", key: "NULM_SEP_NULM_DISABILITY_CERTIFICATE" },
         buttons: [
           {
@@ -517,23 +536,52 @@ export const SepDetails = getCommonCard({
       })
     },
 
-    bankDetails: {
+    bankName: {
       ...getTextField({
         label: {
-          labelName: "Details of account of beneficiary-bank Name/Branch/A/C name (Only in Chandigarh)",
-          labelKey: "NULM_SEP_OF_ACCOUNT_OF_BENEFICIARY_BANK_A_C_NAME_ONLY_IN_CHANDIGARH)"
+          labelName: "Bank Name (Only in Chandigarh)",
+          labelKey: "NULM_SEP_BANK_NAME"
         },
-        // placeholder: {
-        //   labelName: "Enter Details of account of beneficiary-bank Name/Branch/A/C name (Only in Chandigarh)",
-        //   labelKey: "NULM_SEP_OF_ACCOUNT_OF_BENEFICIARY_BANK_A_C_NAME_ONLY_IN_CHANDIGARH)"
-        // },
-        required: true,
+        placeholder: {
+          labelName: "Enter Bank Name (Only in Chandigarh)",
+          labelKey: "NULM_SEP_BANK_NAME_PLACEHOLDER"
+        },
+      //  required: true,
         pattern: getPattern("alpha-numeric-with-space") || null,
-        jsonPath: "NULMSEPRequest.bankDetails"
+        jsonPath: "NULMSEPRequest.bankName"
       })
     },
-
-
+    branchName: {
+      ...getTextField({
+        label: {
+          labelName: "Branch Name",
+          labelKey: "NULM_SEP_BRANCH_NAME"
+        },
+        placeholder: {
+          labelName: "Enter Branch Name",
+          labelKey: "NULM_SEP_BRANCH_NAME_PLACEHOLDER"
+        },
+      //  required: true,
+        pattern: getPattern("alpha-numeric-with-space") || null,
+        jsonPath: "NULMSEPRequest.branchName"
+      })
+    },
+    accountName: {
+      ...getTextField({
+        label: {
+          labelName: "A/C Name",
+          labelKey: "NULM_SEP_AC_NAME"
+        },
+        placeholder: {
+          labelName: "Enter A/C Name",
+          labelKey: "NULM_SEP_AC_NAME_PLACEHOLDER"
+        },
+       // required: true,
+        pattern: getPattern("alpha-numeric-with-space") || null,
+        jsonPath: "NULMSEPRequest.accountName"
+      })
+    },
+    
     noOfFamilyMembers: {
       ...getTextField({
         label: {

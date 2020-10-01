@@ -8,7 +8,8 @@ import {
     getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-    handleScreenConfigurationFieldChange as handleField
+    handleScreenConfigurationFieldChange as handleField,
+    prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
     getTodaysDateInYMD
@@ -482,6 +483,23 @@ const entityTypeField = {
         if ((window.location.href.includes("allotment"))) {
             screenName = "allotment";
             stepName = "formwizardThirdStepAllotment";
+        }
+
+        if (action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value == "ET.PRIVATE_LIMITED_COMPANY") {
+            dispatch(
+                prepareFinalObject(
+                    "Properties[0].propertyDetails.companyOrFirm",
+                    "COMPANY"
+                )
+            )
+        }
+        else {
+            dispatch(
+                prepareFinalObject(
+                    "Properties[0].propertyDetails.companyOrFirm",
+                    "FIRM"
+                )
+            )
         }
 
         dispatch(

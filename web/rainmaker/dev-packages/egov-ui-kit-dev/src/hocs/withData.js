@@ -11,8 +11,8 @@ const withData = (Component) => {
     componentDidMount() {
       const { searchUser, fetchComplaintCategories ,fetchComplaintDepartment , fetchComplaintSector , authenticated, fetchpgrConstants, fetchUiCommonConfig, fetchUiCommonConstants } = this.props;
       if (getAccessToken()) {
-
-        if(getModule() ==="rainmaker-pgr"){
+ 
+        if(getModule() ==="rainmaker-pgr"|| window.location.pathname.includes("/all-complaints") ){
           fetchComplaintCategories();
           fetchComplaintDepartment();
           fetchComplaintSector();

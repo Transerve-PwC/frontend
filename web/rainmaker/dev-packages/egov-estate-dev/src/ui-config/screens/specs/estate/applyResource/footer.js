@@ -134,6 +134,12 @@ const callBackForNext = async (state, dispatch) => {
       []
     );
 
+    let entityType = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.entityType",
+      ""
+    )
+
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
       for (var i = 0; i < propertyOwnersItems.length; i++) {
         if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
@@ -147,6 +153,26 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
+
+        if (!!entityType) {
+          if (entityType == "ET.PARTNERSHIP_FIRM") {
+            dispatch(
+              prepareFinalObject(
+                `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+                "PARTNER"
+              )
+            )
+          }
+          else {
+            dispatch(
+              prepareFinalObject(
+                `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+                "OWNER"
+              )
+            )
+          }
+        }
+
 
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(

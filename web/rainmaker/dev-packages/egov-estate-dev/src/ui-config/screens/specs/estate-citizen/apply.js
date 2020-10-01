@@ -4,7 +4,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {footer, stepper} from './footer'
 import { setThirdStep } from "./applyResource/review";
 import { getSearchApplicationsResults, getSearchResults } from "../../../../ui-utils/commons";
-import { setFirstStep } from "./applyResource/detailsStep";
+import { setFirstStep, updateReadOnlyForAllFields } from "./applyResource/detailsStep";
 import { setDocumentData, documentDetails, inputProps } from "./applyResource/documentsStep";
 import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 import get from "lodash/get";
@@ -151,6 +151,7 @@ const commonApply = {
         // await getPropertyData(action, state, dispatch)
         const components = await getData(action, state, dispatch)
         dispatch(toggleSpinner())
+        setTimeout(() => updateReadOnlyForAllFields(action, state, dispatch), 100)
         return {
           "type": "INIT_SCREEN",
           "screenKey": "apply",

@@ -8,6 +8,7 @@ import {
   import { SMIDDetails } from "./createSMIDResource/smid-Details";
   import { documentDetails } from "./createSMIDResource/documentDetails";
   import get from "lodash/get";
+  import set from "lodash/set";
   import { httpRequest } from "../../../../ui-utils";
   import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -80,7 +81,7 @@ import {
             moduleName: "NULM",
             masterDetails: [
               {
-                name: "SEPDocuments",
+                name: "SMIDDocuments",
               },
               {
                 name: "Qualification",
@@ -122,8 +123,8 @@ import {
                   
                   ]
     const resp = {SMIDDocuments}
-    dispatch(prepareFinalObject("applyScreenMdmsData.NULM", resp));
-//dispatch(prepareFinalObject("applyScreenMdmsData", get(response, "MdmsRes")));
+   // dispatch(prepareFinalObject("applyScreenMdmsDocumentType.NULM", resp));
+    dispatch(prepareFinalObject("applyScreenMdmsData", get(response, "MdmsRes")));
   
       // setting documents
       prepareDocumentsUploadData(state, dispatch, 'SMIDApplication');
@@ -142,14 +143,160 @@ import {
     beforeInitScreen: (action, state, dispatch) => {
   
       const mdmsDataStatus = getMdmsData(state, dispatch);
-      dispatch(
-        handleField(
-          "create-smid",
-          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough",
-          "props",
-          { disabled: true }
-        )
-      ); 
+      // dispatch(
+      //   handleField(
+      //     state.screenConfiguration.screenConfig["create-smid"],
+      //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minority",
+      //     "props.style",
+      //     { display: "none" }
+      //   )
+      // );
+      let minority =
+      get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.minority",false) 
+      let isInsurance =
+      get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.isInsurance",false) 
+      let isStreetVendor =
+      get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.isStreetVendor",false) 
+      let isRegistered =
+      get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.isRegistered",false) 
+      let isHomeless =
+      get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.isHomeless",false) 
+
+      if(!isHomeless)
+        dispatch(prepareFinalObject("NULMSMIDRequest.isHomeless","NO"));
+      // if(minority)
+      // {
+      //  dispatch(
+      //    handleField(
+      //      "create-smid",
+      //      "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minority",
+      //      "props",
+      //      { display: "inline-block" }
+      //    )
+      //  );
+      // }
+      // else{
+      //  dispatch(
+      //    handleField(
+      //      "create-smid",
+      //      "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minority",
+      //      "props",
+      //      { display: "none" }
+      //    )
+      //  );
+   
+      // }
+      // set(
+      //   action.screenConfig,
+      //   "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI",
+      //   { isFieldValid: true }
+      // );
+      if(!minority)
+      {
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI.props.style",
+          { display: "none" }
+        );
+        // dispatch(
+        //   handleField(
+        //     `create-smid`,
+        //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI",
+        //     "props.style",
+        //     { display: "none" }
+        //   )
+        // );  
+        
+        dispatch(prepareFinalObject("NULMSMIDRequest.minority","NO"));
+      }
+ 
+      else
+      {
+        // dispatch(
+        //   handleField(
+        //     `create-smid`,
+        //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI",
+        //     "props.style",
+        //     { display: "inline-block" }
+        //   )
+        // ); 
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI.props.style",
+          { display: "inline-block" }
+        );  
+      }
+      
+      if(!isInsurance)
+      {
+        dispatch(prepareFinalObject("NULMSMIDRequest.insuranceThrough",null));
+        dispatch(prepareFinalObject("NULMSMIDRequest.isInsurance","NO"));
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough.props.style",
+          { display: "none" }
+        );
+      }
+      
+      else
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough.props.style",
+        { display: "inline-block" }
+      );
+    
+      if(!isStreetVendor)
+      {
+         dispatch(prepareFinalObject("NULMSMIDRequest.isRegistered","NO"));
+         dispatch(prepareFinalObject("NULMSMIDRequest.isStreetVendor","NO"));
+        // dispatch(
+        //   handleField(
+        //     `create-smid`,
+        //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.RegistredCMC",
+        //     "props.style",
+        //     { display: "none" }
+        //   )
+        // ); 
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.RegistredCMC.props.style",
+          { display: "none" }
+        ); 
+      }     
+      else
+
+      {
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.RegistredCMC.props.style",
+          { display: "inline-block" }
+        ); 
+      }
+      // dispatch(
+      //   handleField(
+      //     `create-smid`,
+      //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.RegistredCMC",
+      //     "props.style",
+      //     { display: "inline-block" }
+      //   )
+      // ); 
+      if(!isRegistered)
+      {
+        dispatch(prepareFinalObject("NULMSMIDRequest.cobNumber",''));
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.cobNumber.props.style",
+          { display: "none" }
+        );
+      }
+   
+      else
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.cobNumber.props.style",
+        { display: "inline-block" }
+      );
+     // dispatch(prepareFinalObject("NULMSMIDRequest.insuranceThrough",''));
       return action;
     },
   

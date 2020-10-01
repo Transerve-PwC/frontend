@@ -40,24 +40,26 @@ const styles = {
 };
 
 class CheckboxLabels extends React.Component {
-  state = { checkedSewerage: false, checkedWater: false, interChange: false }
+  state = { checkedSewerage: false, checkedWater: false, interChange: false,checkedTubewell:false }
 
   componentWillMount() {
     const { preparedFinalObject } = this.props;
     let checkedWater = (preparedFinalObject && preparedFinalObject.applyScreen.water) ? preparedFinalObject.applyScreen.water : false;
     let checkedSewerage = (preparedFinalObject && preparedFinalObject.applyScreen.sewerage) ? preparedFinalObject.applyScreen.sewerage : false;
-    this.setState({ checkedSewerage: checkedSewerage, checkedWater: checkedWater })
+    let checkedTubewell = (preparedFinalObject && preparedFinalObject.applyScreen.tubewell) ? preparedFinalObject.applyScreen.tubewell : false;
+    this.setState({ checkedSewerage: checkedSewerage, checkedWater: checkedWater ,checkedTubewell: checkedTubewell})
   }
 
   handleWater = name => event => {
-    const { jsonPathWater, approveCheck, onFieldChange } = this.props;
-    this.setState({ [name]: event.target.checked, interChange: true }, () => {
+    const { jsonPathWater, approveCheck, onFieldChange,jsonPathTubewell } = this.props;
+    this.setState({ [name]: event.target.checked, interChange: true ,checkedTubewell : false}, () => {
       if (this.state.checkedWater) {
         toggleWater(onFieldChange, true);
         if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, true); }
         else { toggleSewerage(onFieldChange, false); }
       } else { toggleWater(onFieldChange, false); }
       approveCheck(jsonPathWater, this.state.checkedWater);
+      approveCheck(jsonPathTubewell, false);
     });
   };
 
@@ -72,16 +74,31 @@ class CheckboxLabels extends React.Component {
       approveCheck(jsonPathSewerage, this.state.checkedSewerage);
     });
   }
+  handleTubewell = name => event => {
+    const { jsonPathTubewell, approveCheck, onFieldChange,jsonPathWater } = this.props;
+    this.setState({ [name]: event.target.checked, interChange: true,checkedWater : false }, () => {
+      if (this.state.checkedTubewell) {
+        toggleWater(onFieldChange, false);
+        if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, true); }
+        else { toggleSewerage(onFieldChange, false); }
+      } 
+      approveCheck(jsonPathTubewell, this.state.checkedTubewell);
+      approveCheck(jsonPathWater, false);
+    });
+  }
+
 
   render() {
     const { classes, required, preparedFinalObject } = this.props;
-    let checkedWater, checkedSewerage;
+    let checkedWater, checkedSewerage,checkedTubewell;
     if (this.state.interChange) {
       checkedWater = this.state.checkedWater;
       checkedSewerage = this.state.checkedSewerage;
+      checkedTubewell = this.state.checkedTubewell;
     } else {
       checkedWater = (preparedFinalObject && preparedFinalObject.applyScreen.water) ? preparedFinalObject.applyScreen.water : false;
       checkedSewerage = (preparedFinalObject && preparedFinalObject.applyScreen.sewerage) ? preparedFinalObject.applyScreen.sewerage : false;
+      checkedTubewell = (preparedFinalObject && preparedFinalObject.applyScreen.tubewell) ? preparedFinalObject.applyScreen.tubewell : false;
     }
 
     return (
@@ -113,6 +130,17 @@ class CheckboxLabels extends React.Component {
                 />}
               label={<LabelContainer labelKey="WS_APPLY_SEWERAGE" />}
             />
+              <FormControlLabel
+              classes={{ label: "checkbox-button-label" }}
+              control={
+                <Checkbox
+                  checked={checkedTubewell}
+                  onChange={this.handleTubewell("checkedTubewell")}
+                  classes={{ root: classes.radioRoot, checked: classes.checked }}
+                  color="primary"
+                />}
+              label={<LabelContainer labelKey="WS_APPLY_TUBEWELL" />}
+            />
           </FormGroup>
         </FormControl>
       </div>
@@ -122,9 +150,9 @@ class CheckboxLabels extends React.Component {
 
 const mapStateToProps = (state, ownprops) => {
   const { screenConfiguration } = state;
-  const { jsonPathWater, jsonPathSewerage } = ownprops;
+  const { jsonPathWater, jsonPathSewerage ,jsonPathTubewell} = ownprops;
   const { preparedFinalObject } = screenConfiguration;
-  return { preparedFinalObject, jsonPathWater, jsonPathSewerage };
+  return { preparedFinalObject, jsonPathWater, jsonPathSewerage,jsonPathTubewell };
 };
 
 const mapDispatchToProps = dispatch => {

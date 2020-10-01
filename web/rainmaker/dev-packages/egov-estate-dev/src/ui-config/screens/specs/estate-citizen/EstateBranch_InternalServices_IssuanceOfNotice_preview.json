@@ -7,7 +7,7 @@
                 "fields": [
                     {
                         "label": "ES_TYPE_OF_NOTICE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.noticeTyp"
+                        "jsonPath": "Applications[0].applicationDetails.noticeType"
                     }
                 ]
             },

@@ -62,23 +62,23 @@ export const searchForm = getCommonCard({
         jsonPath: "searchScreen.suhId"
       })
     },
-    applicationStatus: getSelectField({
-      label: { labelName: "Application Status", labelKey: "NULM_SEP_APPLICATION_STATUS" },
-      placeholder: {
-        labelName: "Select Application Status",
-        labelKey: "NULM_SEP_APPLICATION_STATUS_SELECT",
-      },
-      jsonPath: "searchScreen.applicationStatus",
-      gridDefination: {
-        xs: 12,
-        sm: 4,
-      },
-      sourceJsonPath: "searchScreenMdmsData.suh.status",
-      props: {
-        optionValue: "value",
-        optionLabel: "label",
-      },
-    }),
+    // applicationStatus: getSelectField({
+    //   label: { labelName: "Application Status", labelKey: "NULM_SEP_APPLICATION_STATUS" },
+    //   placeholder: {
+    //     labelName: "Select Application Status",
+    //     labelKey: "NULM_SEP_APPLICATION_STATUS_SELECT",
+    //   },
+    //   jsonPath: "searchScreen.applicationStatus",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 4,
+    //   },
+    //   sourceJsonPath: "searchScreenMdmsData.suh.status",
+    //   props: {
+    //     optionValue: "value",
+    //     optionLabel: "label",
+    //   },
+    // }),
     nameOfShelter: {
       ...getTextField({
         label: {
