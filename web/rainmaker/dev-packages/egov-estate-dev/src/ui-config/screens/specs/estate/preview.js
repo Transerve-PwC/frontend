@@ -2,21 +2,13 @@ import { getStatusList } from "./searchResource/functions";
 import {
   getTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
-import { createEstimateData, getFeesEstimateCard } from "../utils";
+import { createEstimateData, getCommonApplyHeader, getFeesEstimateCard } from "../utils";
 import { footerReview } from "./preview-resource/reviewFooter";
 const { getCommonContainer, getCommonHeader, getCommonCard, getCommonGrayCard } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redux/screen-configuration/actions");
 const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
-
-
-const headerrow = getCommonContainer({
-    header: getCommonHeader({
-      labelName: "Search preview",
-      labelKey: "ES_COMMON_SEARCH_PREVIEW"
-    })
-  });
 
 const getData = async (action, state, dispatch) => {
     await dispatch(prepareFinalObject("workflow.ProcessInstances", []))
@@ -29,6 +21,7 @@ const getData = async (action, state, dispatch) => {
         {key: "applicationNumber", value: applicationNumber}
       ]
     let footer = {};
+    
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
@@ -57,6 +50,11 @@ const getData = async (action, state, dispatch) => {
       );
        const {branchType, moduleType, applicationType} = Applications[0];
        const type = `${branchType}_${moduleType}_${applicationType}`;
+
+       const headerLabel = `ES_${type.toUpperCase()}`
+
+       const headerrow = getCommonApplyHeader({label: headerLabel, number: applicationNumber});
+
        let reviewDetails = await setThirdStep({state, dispatch, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
         if(applicationState === "PENDING_PAYMENT") {
             const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)

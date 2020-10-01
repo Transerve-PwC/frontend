@@ -9,23 +9,7 @@ import { setDocumentData, documentDetails, inputProps } from "./applyResource/do
 import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 import get from "lodash/get";
 import { registerDatasource } from "./dataSources";
-
-const header = getCommonHeader({
-    labelName: "Apply",
-    labelKey: "ES_COMMON_APPLY"
-  });
-
-const getPropertyData = async (action, state, dispatch) => {
-  const fileNumber = getQueryArg(window.location.href, "fileNumber")
-  const queryObject = [
-    {key: "fileNumber", value: fileNumber}
-  ]
-  const response = await getSearchResults(queryObject)
-  if(!!response.Properties && !!response.Properties.length) {
-    dispatch(prepareFinalObject("property", response.Properties[0]));
-    dispatch(prepareFinalObject("Applications[0].property.id", response.Properties[0].propertyDetails.propertyId ))
-  }
-}
+import { getCommonApplyHeader } from "../utils";
 
 const getData = async (action, state, dispatch) => {
   await dispatch(prepareFinalObject("Applications", []))
@@ -44,12 +28,13 @@ const getData = async (action, state, dispatch) => {
       dispatch(prepareFinalObject("Applications", Applications))
       const {branchType, moduleType, applicationType: type} = Applications[0];
       applicationType = `${branchType}_${moduleType}_${type}`;
-      // property = Applications[0].property
+      property = Applications[0].property
       propertyId = Applications[0].property.id
     } catch (error) {
       return {}
     }
   } 
+  // else {
     const queryObject = [
       {key: "propertyId", value: propertyId}
     ]
@@ -58,10 +43,12 @@ const getData = async (action, state, dispatch) => {
        property = response.Properties[0]
        dispatch(prepareFinalObject("Applications[0].property.id", propertyId ))
     }
-  
-    // await new Promise((resolve) => {
-    //     setTimeout(resolve, 0)
-    // })
+  // }
+
+    const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
+
+    const header = getCommonApplyHeader({label: headerLabel, number: applicationNumber})
+
     dispatch(prepareFinalObject("property", property));
     const dataConfig = require(`./${applicationType}.json`);
     let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType][0];
