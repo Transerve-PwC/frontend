@@ -145,7 +145,13 @@ export const getSuhDetailsView = (isReview = true) => {
         },
         { jsonPath: "NulmSuhRequest.capacity" }
       ),
-
+      assignedTo: getLabelWithValue(
+        {
+          labelName: "Assign To",
+          labelKey: "NULM_SUH_ASSIGN_TO"
+        },
+        { jsonPath: "NulmSuhRequest.assignedToName" }
+      ),
     }),
   });
 };

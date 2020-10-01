@@ -61,11 +61,10 @@ import {
         tenantId: tenant,
         moduleDetails: [
           {
-            moduleName: "egov-hrms",
+            moduleName: "NULM",
             masterDetails: [
               {
-                name: "DeactivationReason",
-                filter: "[?(@.active == true)]"
+                name: "SMIDDocuments",
               }
             ]
           }
@@ -89,52 +88,66 @@ import {
     //mdms call
     getMdmsData(dispatch, tenantId);
 
-   const fileStoreIds = response.ResponseBody[0].documentAttachemnt;
+   //const fileStoreIds = response.ResponseBody[0].documentAttachemnt;
+   const fileStoreIds = response.ResponseBody[0].documentAttachemnt.map(docInfo => docInfo.filestoreId).join();
 
 
    const fileUrlPayload =  fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
-
-   if(fileUrlPayload){
    let  documentsUploadRedux ={}
-  const documentsPreview = [  {    title: "smidDocument",
-                                    linkText: "VIEW", 
-                                    link :  (fileUrlPayload &&
-                                                    fileUrlPayload[fileStoreIds] &&
-                                                    getFileUrl(fileUrlPayload[fileStoreIds])) ||
+  const documentsPreview = response.ResponseBody[0].documentAttachemnt 
+                          && response.ResponseBody[0].documentAttachemnt.map((docInfo,index) => {
+                            let docObj =  {
+                                          title: docInfo.documentType,
+                                          linkText: "VIEW", 
+                                          link :  (fileUrlPayload &&
+                                                    fileUrlPayload[docInfo.filestoreId] &&
+                                                    getFileUrl(fileUrlPayload[docInfo.filestoreId])) ||
                                                     "",
-                                     name:   (fileUrlPayload &&
-                                                      fileUrlPayload[fileStoreIds] &&
+                                           name:   (fileUrlPayload &&
+                                                      fileUrlPayload[docInfo.filestoreId] &&
                                                       decodeURIComponent(
-                                                        getFileUrl(fileUrlPayload[fileStoreIds])
+                                                        getFileUrl(fileUrlPayload[docInfo.filestoreId])
                                                           .split("?")[0]
                                                           .split("/")
                                                           .pop().slice(13)
                                                       )) ||
                                                     `Document - ${index + 1}` 
                                         }
-                                      ];
+
                                         //for populating in update mode
-                                        documentsUploadRedux[0] = {                          
-                                          "documents":[
-                                          {
-                                          "fileName":  (fileUrlPayload &&
-                                            fileUrlPayload[fileStoreIds] &&
-                                            decodeURIComponent(
-                                              getFileUrl(fileUrlPayload[fileStoreIds])
-                                                .split("?")[0]
-                                                .split("/")
-                                                .pop().slice(13)
-                                            )) ||
-                                          `Document - 1`,
-                                          "fileStoreId": fileStoreIds,
-                                          "fileUrl": fileUrlPayload[fileStoreIds]
+                                        const {viewScreenMdmsData} = state.screenConfiguration.preparedFinalObject;
+                                        if(viewScreenMdmsData && viewScreenMdmsData.NULM && viewScreenMdmsData.NULM.SMIDDocuments){
+
+                                          const {SMIDDocuments} = viewScreenMdmsData.NULM;
+                                          const documentsDes = ["Govt ID & Address Proof","Photo of the applicant",]
+                                          const indexOfDoc = documentsDes.findIndex(doc =>  doc === docInfo.documentType )
+
+                                            documentsUploadRedux[indexOfDoc] = {                          
+                                            "documents":[
+                                            {
+                                            "fileName":  (fileUrlPayload &&
+                                              fileUrlPayload[docInfo.filestoreId] &&
+                                              decodeURIComponent(
+                                                getFileUrl(fileUrlPayload[docInfo.filestoreId])
+                                                  .split("?")[0]
+                                                  .split("/")
+                                                  .pop().slice(13)
+                                              )) ||
+                                            `Document - ${index + 1}`,
+                                            "fileStoreId": docInfo.filestoreId,
+                                            "fileUrl": fileUrlPayload[docInfo.filestoreId]
+                                           }
+                                          ]
                                          }
-                                        ]
-                                       }
-                                  
+                                        }
+
+                              return docObj;
+                          })
+    
           documentsPreview && dispatch(prepareFinalObject("documentsPreview", documentsPreview));
-         documentsPreview &&  dispatch(prepareFinalObject("documentsUploadRedux", documentsUploadRedux));
-         }
+                          
+                            
+          documentsPreview &&  dispatch(prepareFinalObject("documentsUploadRedux", documentsUploadRedux));
                        
    
   }

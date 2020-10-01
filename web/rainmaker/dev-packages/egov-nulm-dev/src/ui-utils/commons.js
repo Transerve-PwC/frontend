@@ -11,7 +11,12 @@ import { httpRequest } from "./api";
 
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
-
+export const NULM_SEP_CREATED = "CREATED";
+ export const FORWARD_TO_TASK_FORCE_COMMITTEE = "Forwarded to Task force Committee";
+ export const APPROVED_BY_TASK_FORCE_COMMITTEE = "Approved by Task force committee";
+ export const REJECTED_BY_TASK_FORCE_COMMITTEE = "Rejected by Task force committee";
+ export const SENT_TO_BANK_FOR_PROCESSING = "Sent to bank for processing";
+ export const SANCTION_BY_BANK = "Sanctioned by Bank";
 const role_name = JSON.parse(getUserInfo()).roles[0].code
 
 export const handleCardDelete = (prepareFinalObject , arrayPath , isActive = false,mode="create") => {
@@ -61,6 +66,10 @@ export const getSearchResults = async (queryObject=[],requestBody={},dispatch,sc
     case "susv":  url =  "/nulm-services/v1/susv/_get";
     break;
     case "susvtransaction":  url =  "/nulm-services/v1/susv/transaction/_get";
+    break;
+    case "suhcitizen":  url =  "/nulm-services/v1/suh/citizen/_get";
+    break;
+     case "suhShelterName" : url = "/nulm-services/v1/suh/_getShelterName";
     break;
   }
   try {

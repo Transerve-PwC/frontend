@@ -47,7 +47,7 @@ const employeeSearchResults = {
     const businessServiceData = JSON.parse(
       localStorageGet("businessServiceData")
     );
-    if (businessServiceData[0].businessService === "NewWS1" || businessServiceData[0].businessService === "NewSW1") {
+    if (businessServiceData[0].businessService === "NewWS1" || businessServiceData[0].businessService === "NewSW1" || businessServiceData[0].businessService === "WS_CONVERSION" || businessServiceData[0].businessService === "WS_DISCONNECTION" || businessServiceData[0].businessService === "WS_RENAME" || businessServiceData[0].businessService === "WS_TUBEWELL") {
       const data = find(businessServiceData, { businessService: businessServiceData[0].businessService });
       const { states } = data || [];
       if (states && states.length > 0) {

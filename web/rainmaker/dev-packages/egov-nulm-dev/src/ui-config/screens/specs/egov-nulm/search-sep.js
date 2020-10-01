@@ -63,9 +63,25 @@ import {
       label: "CREATED"
     },
     {
-      value: "APPROVED",
-      label: "APPROVED"
-    }
+      value: "Forwarded to Task force Committee",
+      label: "Forwarded to Task force Committee"
+    },
+    {
+      value: "Approved by Task force committee",
+      label: "Approved by Task force committee"
+    },
+    {
+      value: "Rejected by Task force committee",
+      label: "Rejected by Task force committee"
+    },
+    {
+      value: "Sent to bank for processing",
+      label: "Sent to bank for processing"
+    },
+    {
+      value: "Sanctioned by Bank",
+      label: "Sanctioned by Bank"
+    },
    ]:[
       {
         value: "CREATED",
@@ -75,10 +91,7 @@ import {
         value: "DRAFTED",
         label: "DRAFTED"
       },
-      {
-        value: "APPROVED",
-        label: "APPROVED"
-      }
+     
     ];
     dispatch(prepareFinalObject("searchScreenMdmsData.sep.status", data));
    // await getMDMSData(action, state, dispatch);

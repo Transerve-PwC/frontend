@@ -224,12 +224,33 @@ export const getSEPDetailsView = (isReview = true) => {
         { jsonPath: "NULMSEPRequest.placeOfWork" }
       ),
 
-      bankDetails: getLabelWithValue(
+      // bankDetails: getLabelWithValue(
+      //   {
+      //     labelName: "Details of account of beneficiary-bank Name/Branch/A/C name (Only in Chandigarh)",
+      //     labelKey: "NULM_SEP_OF_ACCOUNT_OF_BENEFICIARY_BANK_A_C_NAME_ONLY_IN_CHANDIGARH)"
+      //   },
+      //   { jsonPath: "NULMSEPRequest.bankDetails" }
+      // ),
+      bankName: getLabelWithValue(
         {
-          labelName: "Details of account of beneficiary-bank Name/Branch/A/C name (Only in Chandigarh)",
-          labelKey: "NULM_SEP_OF_ACCOUNT_OF_BENEFICIARY_BANK_A_C_NAME_ONLY_IN_CHANDIGARH)"
+          labelName: "Bank Name(Only in Chandigarh)",
+          labelKey: "NULM_SEP_BANK_NAME"
         },
-        { jsonPath: "NULMSEPRequest.bankDetails" }
+        { jsonPath: "NULMSEPRequest.bankName" }
+      ),
+      branchName: getLabelWithValue(
+        {
+          labelName: "Branch Name",
+          labelKey: "NULM_SEP_BRANCH_NAME"
+        },
+        { jsonPath: "NULMSEPRequest.branchName" }
+      ),
+      accountName: getLabelWithValue(
+        {
+          labelName: "Acount Name",
+          labelKey: "NULM_SEP_AC_NAME"
+        },
+        { jsonPath: "NULMSEPRequest.accountName" }
       ),
       noOfFamilyMembers: getLabelWithValue(
         {

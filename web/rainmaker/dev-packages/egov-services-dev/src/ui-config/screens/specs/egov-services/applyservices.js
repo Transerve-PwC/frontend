@@ -122,8 +122,8 @@ const PermissionManagementSearchAndResult = {
     uiFramework: "material-ui",
     name: "home",
     beforeInitScreen: (action, state, dispatch) => {
-        let UsertenantInfo = JSON.parse(getUserInfo()).permanentCity;
-        setTenantId(UsertenantInfo);
+        // let UsertenantInfo = JSON.parse(getUserInfo()).permanentCity;
+        // setTenantId(UsertenantInfo);
         return action;
     },
     components: {

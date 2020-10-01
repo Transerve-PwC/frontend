@@ -71,7 +71,7 @@ export const applicationSuccessFooter = (
         children: {
           downloadFormButtonLabel: getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" : "RP_DOWNLOAD_PAYMENT_RECIEPT"
           })
         },
         onClickDefination: {
@@ -159,7 +159,7 @@ export const applicationSuccessFooter = (
         children: {
           printFormButtonLabel: getLabel({
             labelName: "PRINT CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : "RP_PRINT_PAYMENT_RECIEPT"
           })
         },
         onClickDefination: {

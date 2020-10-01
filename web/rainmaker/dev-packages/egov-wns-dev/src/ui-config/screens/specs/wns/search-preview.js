@@ -38,8 +38,8 @@ import { getWorkFlowData } from "../../../../ui-utils/commons";
 const tenantId = getQueryArg(window.location.href, "tenantId");
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 let service = getQueryArg(window.location.href, "service");
-const serviceModuleName = service === "WATER" ? "NewWS1" : "NewSW1";
-const serviceUrl = serviceModuleName === "NewWS1" ? "/ws-services/wc/_update" : "/sw-services/swc/_update";
+const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow") : "NewSW1";
+const serviceUrl = serviceModuleName === "NewSW1" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
 const headerrow = getCommonContainer({
   header: getCommonHeader({
     labelKey: "WS_TASK_DETAILS"

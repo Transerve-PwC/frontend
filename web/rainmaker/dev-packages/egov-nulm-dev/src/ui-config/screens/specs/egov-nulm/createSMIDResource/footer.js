@@ -17,7 +17,12 @@ import {
   validateFields,
   epochToYmd
 } from "../../utils";
-// import "./index.css";
+import {
+  getLocaleLabels,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
+import set from "lodash/set";
+ // import "./index.css";
 
   const moveToReview = dispatch => {
     const reviewUrl =`/egov-nulm/review-smid`;
@@ -33,8 +38,13 @@ export const callBackForNext = async (state, dispatch) => {
   const {NULMSMIDRequest} = state.screenConfiguration.preparedFinalObject;
   let isFormValid = true;
   let documentsPreview =[];
-  let documentAttachemnt = "";
+  let documentAttachemnt = [];
   if (activeStep === 0) {
+    // set(
+    //   `create-smid`,
+    //   "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.minorityUI",
+    //   { isFieldValid: true }
+    // );
     const isSmidDetailsValid = validateFields(
       "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children",
       state,
@@ -83,6 +93,16 @@ if(NULMSMIDRequest ){
     return;
   }
 }
+if(NULMSMIDRequest && NULMSMIDRequest.isRegistered){
+  if(NULMSMIDRequest.isRegistered =="YES" && !NULMSMIDRequest.cobNumber ){
+    const errorMessage = {
+      labelName: "Please provide the COB Number",
+      labelKey: "NULM_SEP_COB_NUMBER_INPUT_VALIDATION"
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    return;
+  }
+}
 
 if(NULMSMIDRequest && ( !NULMSMIDRequest.hasOwnProperty("gender") || !NULMSMIDRequest.hasOwnProperty("caste"))){
   isFormValid = false;
@@ -90,10 +110,45 @@ if(NULMSMIDRequest && ( !NULMSMIDRequest.hasOwnProperty("gender") || !NULMSMIDRe
 
 
     if (!isSmidDetailsValid) {
-      isFormValid = false;
+      const fields = get(
+        state.screenConfiguration.screenConfig[`create-smid`],
+        "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children",
+        {}
+      );
+      if(fields.name!==undefined 
+        &&fields.fatherOrHusbandName!==undefined 
+        &&fields.qualification!==undefined 
+        &&fields.dob!==undefined       
+        &&fields.mobileNo!==undefined       
+        &&fields.motherName!==undefined 
+        &&fields.address!==undefined 
+        &&fields.wardNo!==undefined 
+        &&fields.nameAsPerAdhar!==undefined 
+       ) 
+        {
+          if(fields.name.isFieldValid ===false 
+            ||fields.fatherOrHusbandName.isFieldValid ===false 
+            ||fields.qualification.isFieldValid ===false 
+            ||fields.dob.isFieldValid ===false           
+            ||fields.mobileNo.isFieldValid ===false           
+            ||fields.motherName.isFieldValid ===false 
+            ||fields.address.isFieldValid ===false 
+            ||fields.wardNo.isFieldValid ===false 
+            ||fields.nameAsPerAdhar.isFieldValid ===false 
+            )
+            {
+              isFormValid = false;
+            }
+            else
+            {
+              isFormValid = true;
+            }
+        }
+      
     }
   }
   if (activeStep === 1) {
+    const localisationLabels = getTransformedLocalStorgaeLabels();
     const documents = get(state.screenConfiguration.preparedFinalObject, "documentsContract");
     const uploadedDocs = get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux");
     const isDocRequired =  documents.map(doc => {
@@ -117,7 +172,12 @@ if(NULMSMIDRequest && ( !NULMSMIDRequest.hasOwnProperty("gender") || !NULMSMIDRe
                       )) ||
                     `Document - ${index + 1}`     
           }
-          documentAttachemnt = ele[1].documents[0].fileStoreId;
+          let reqObj = {
+            documentType :  getLocaleLabels(documents[ele[0]].code,documents[ele[0]].code,localisationLabels),  
+            filestoreId:   ele[1].documents[0].fileStoreId,
+          }
+         // documentAttachemnt = ele[1].documents[0].fileStoreId;
+          documentAttachemnt.push(reqObj);
           documentsPreview.push(obj)
         }
     

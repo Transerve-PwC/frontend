@@ -328,5 +328,20 @@ export const SuhDetails = getCommonCard({
         jsonPath: "NulmSuhRequest.capacity"
       })
     },
+    assignedTo: getSelectField({
+      label: { labelName: "Assign To", labelKey: "NULM_SUH_ASSIGN_TO" },
+      placeholder: {
+        labelName: "Select Assign To",
+        labelKey: "NULM_SUH_ASSIGN_TO_SELECT",
+      },
+      required: true,
+      jsonPath: "NulmSuhRequest.assignedTo",
+     sourceJsonPath: "createScreenMdmsData1.NULM.assignTo",
+      props: {
+        optionValue: "code",
+        optionLabel: "name",
+      },
+    }),
+   
   })
 });

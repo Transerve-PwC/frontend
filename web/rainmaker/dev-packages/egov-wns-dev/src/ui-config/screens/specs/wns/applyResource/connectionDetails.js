@@ -25,6 +25,7 @@ export const getCheckboxContainer = {
   props: {
     jsonPathSewerage: "applyScreen.sewerage",
     jsonPathWater: "applyScreen.water",
+    jsonPathTubewell: "applyScreen.tubewell",
     required: true
   },
   type: "array",
