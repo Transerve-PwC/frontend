@@ -194,10 +194,11 @@ export const paymentSuccessFooter = (
                 variant: "outlined",
                 color: "primary",
                 style: {
-                  minWidth: "200px",
                   height: "48px",
-                  marginRight: "16px"
-                }
+                  marginRight: "16px",
+                  width: "55px"
+                },
+                className: "tl-home-button"
               },
               children: {
                 downloadReceiptButtonLabel: getLabel({

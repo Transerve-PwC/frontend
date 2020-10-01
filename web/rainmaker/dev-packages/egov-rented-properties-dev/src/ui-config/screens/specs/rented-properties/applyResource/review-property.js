@@ -507,20 +507,6 @@ export const getNoticeRecoveryPreviewReviewRentDetails = (isEditable = true) => 
                     },
                     { jsonPath: "SingleProperties[0].description" }
                 ),
-                demandNoticeFromDate: getLabelWithValue(
-                    {
-                        labelName: "Demand Notice First Date",
-                        labelKey: "RP_DEMAND_NOTICE_FIRST_DATE"
-                    },
-                    { jsonPath: "SingleProperties[0].demandNoticeFrom", callBack: convertEpochToDate}
-                ),
-                demandNoticeLastDate: getLabelWithValue(
-                    {
-                        labelName: "Demand Notice Last Date",
-                        labelKey: "RP_DEMAND_NOTICE_LAST_DATE"
-                    },
-                    { jsonPath: "SingleProperties[0].demandNoticeTo", callBack: convertEpochToDate}
-                ),
                 recoveryType: getLabelWithValue(
                     {
                         labelName: "Recovery Type",
