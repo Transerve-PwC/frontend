@@ -18,6 +18,7 @@ const _getPattern = (type) => {
 
 
 let _conf = {};
+let pendingFieldChanges = [];
 const onFieldChange = (action, state, dispatch) => {
   updateReadOnlyForAllFields(action, state, dispatch);
 }
@@ -30,7 +31,7 @@ const evaluate = ({application, owners, selectedOwner, selectedPurchaser, purcha
   }
 }
 
-const updateReadOnlyForAllFields = (action, state, dispatch) => {
+export const updateReadOnlyForAllFields = (action, state, dispatch) => {
   // Update readonly
   // For each field. get the field config, get componentJsonPath, 
   // dispatch new Value
@@ -43,8 +44,8 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
   const applicationDetails = get(application, "applicationDetails")
 
   const selectedOwner = !!applicationDetails && (!!applicationDetails.transferor || !!applicationDetails.owner) ? owners.find(item => !!applicationDetails.transferor ? item.id === applicationDetails.transferor.id : item.id === applicationDetails.owner.id) : {}
-  let purchasers = !!applicationDetails.transferor ? owners.filter(item => item.id !== applicationDetails.transferor.id) : owners;
-  const selectedPurchaser = !!applicationDetails.transferee ? purchasers.find(item => item.id === applicationDetails.transferee.id) : {}
+  let purchasers = !!applicationDetails && !!applicationDetails.transferor ? owners.filter(item => item.id !== applicationDetails.transferor.id) : owners;
+  const selectedPurchaser = !!applicationDetails && !!applicationDetails.transferee ? purchasers.find(item => item.id === applicationDetails.transferee.id) : {}
   purchasers = purchasers.map(item => ({
     code: item.id,
     label: item.ownerDetails.ownerName
@@ -75,23 +76,58 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
     ];
 
     const actions = propValues.reduce((prevValue, currValue) => {
-      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]}
-      evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams
-      const actionItem = !!curr[currValue.value] ? currValue.value === "prefillValue" ? [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.error", value: false}] : [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}] : []
+      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]} //evaluate params
+
+      evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams //passing defaultvalue param if needed
+
+      let actionItem = []; 
+
+      if(!!curr.hasOwnProperty(currValue.value)) { //if propValue exists return array of actions
+        if(currValue.value === "prefillValue" && action.componentJsonpath !== curr.componentJsonpath) {
+          /*
+           * removing error message if the field is not changed by the user
+           */
+          actionItem = [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.error", value: false}]
+        } 
+        else if(currValue.value === "disability" && curr.componentPath === "RadioGroupContainer") {
+          /*
+           * If the field is radio button and property is disability
+           */
+          actionItem = [{path: curr.componentJsonpath, property: "props.buttons[0].disabled", value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.buttons[1].disabled", value: evaluate(evalParams)}]
+        } 
+        else {
+          actionItem = [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}]
+        }
+      }
       return [...prevValue, ...actionItem]
     }, [])
     return [...prev, ...actions]
   }, [])
 
-  actionDefiniton = !!findField ? [...actionDefiniton, {path: findField.componentJsonpath, property: "props.errorMessage", value: findField.errorMessage}] : actionDefiniton
+  /*
+  adding error message to the changed field
+  */ 
 
-  const findIndex = actionDefiniton.findIndex(item => item.path === action.componentJsonpath && item.property === action.property && item.value === action.value)
-  // actionDefiniton = [...actionDefiniton.slice(0, findIndex), ...actionDefiniton.slice(findIndex+1)]
-  findIndex === -1 && setFieldProperty({dispatch, actionDefiniton})
-}
+  actionDefiniton = !!findField ? [...actionDefiniton, {path: findField.componentJsonpath, property: "props.errorMessage", value: findField.errorMessage}] : actionDefiniton 
 
-const updateVisibilityForAllFields = () => {
-  // Update visibility
+  /* 
+  search in pendingFieldChanges if action item already exists (find index)
+  */
+
+  const isAlreadyExists = pendingFieldChanges.findIndex(item => item.path === action.componentJsonpath && item.property === action.property && item.value === action.value) 
+
+  if(isAlreadyExists !== -1) { 
+    /*
+     * if already exist remove from pending field changes
+     */
+    pendingFieldChanges = [...pendingFieldChanges.slice(0, isAlreadyExists), ...pendingFieldChanges.slice(isAlreadyExists + 1)]
+  } else {
+    /*
+     * not exist set field property
+     */
+    pendingFieldChanges = [...pendingFieldChanges, ...actionDefiniton]
+    setFieldProperty({dispatch, actionDefiniton})
+  }
 }
 
 const headerObj = value => {
@@ -138,7 +174,7 @@ const getField = async (item, fieldData = {}, state) => {
         xs: 12,
         sm: 6
       },
-      props: { disabled, errorMessage: rest.errorMessage },
+      props: { disabled },
       required
     }
   
@@ -212,9 +248,11 @@ const getField = async (item, fieldData = {}, state) => {
                       key: labelItem
                   },
                   buttons,
+                  disabled: true,
                   jsonPath: rest.jsonPath,
                   required
-              }
+              },
+              ...rest
           }
       }
       default: return getTextField({
