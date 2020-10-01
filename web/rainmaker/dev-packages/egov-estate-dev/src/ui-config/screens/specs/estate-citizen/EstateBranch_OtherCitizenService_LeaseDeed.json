@@ -274,7 +274,7 @@
               },
               {
                 "label": "ES_OWNER_SHARE_LABEL",
-                "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
+                "placeholder": "ES_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferor.share"
