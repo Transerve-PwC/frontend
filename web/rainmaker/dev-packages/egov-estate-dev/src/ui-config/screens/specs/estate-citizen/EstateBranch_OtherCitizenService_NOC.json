@@ -345,7 +345,7 @@
               {
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
-                "disable": true,
+                "disabled": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"

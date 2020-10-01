@@ -350,21 +350,24 @@
                 "placeholder": "ES_COMPANY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
-                "path": "company.name"
+                "path": "company.name",
+                "errorMessage": "ES_ERR_COMPANY_NAME"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.company.address",
-                "path": "company.address"
+                "path": "company.address",
+                "errorMessage": "ES_ERR_COMPANY_ADDRESS"
               },
               {
                 "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
                 "placeholder": "ES_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
-                "path": "company.registrationNumber"
+                "path": "company.registrationNumber",
+                "errorMessage": "ES_ERR_COMPANY_REGISTRATION_NUMBER"
               },
               {
                 "label": "ES_EST_TYPE_OF_LETTER_LABEL",

@@ -28,8 +28,8 @@ const getPropertyData = async (action, state, dispatch) => {
 }
 
 const getData = async (action, state, dispatch) => {
-  dispatch(prepareFinalObject("Applications", []))
-  dispatch(prepareFinalObject("temp", []))
+  await dispatch(prepareFinalObject("Applications", []))
+  await dispatch(prepareFinalObject("temp", []))
   let applicationType = getQueryArg(window.location.href, "applicationType");
   const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
   let propertyId = getQueryArg(window.location.href, "propertyId")
