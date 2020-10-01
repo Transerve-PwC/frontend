@@ -1068,16 +1068,17 @@ export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "d
     value: `${getTenantId().split('.')[0]}`
   }
   
-  let {
-    documents
-  } = Licenses[0].additionalDetails;
-  // const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  // const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
-  // // documents = findIndex !== -1 ? [...documents.slice(0, findIndex), ...documents.slice(findIndex+1)] : documents
+  // let {
+  //   documents
+  // } = Licenses[0].additionalDetails;
   // const length = documents.length % 4
-  // documents = [...documents, ...new Array(length > 2 ? 4 - length : length).fill({ title: "", name: "" })]
+  // documents = !!length ? [...documents, ...new Array(4 - length).fill({
+  //   title: "",
+  //   name: ""
+  // })] : documents
   // const myDocuments = documents.map((item) => ({
-  //   ...item, title: getLocaleLabels(item.title, item.title)
+  //   ...item,
+  //   title: getLocaleLabels(item.title, item.title)
   // })).reduce((splits, i) => {
   //   const length = splits.length
   //   const rest = splits.slice(0, length - 1);
@@ -1086,7 +1087,7 @@ export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "d
   // }, []);
   let licenses = Licenses[0];
   // console.log(myDocuments)
-  // licenses = { ...licenses, additionalDetails: { documents: myDocuments }, ownerDocument }
+  // licenses = { ...licenses, additionalDetails: { documents: myDocuments } }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
