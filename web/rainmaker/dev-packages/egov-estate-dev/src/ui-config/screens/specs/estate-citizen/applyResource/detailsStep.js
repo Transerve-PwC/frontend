@@ -7,12 +7,22 @@ import { convertDateToEpoch } from "../../utils";
 import { setFieldProperty } from './afterFieldChange'
 import { get } from "lodash";
 
+const _getPattern = (type) => {
+  switch(type) {
+    case "Percentage": 
+        return /^[1-9][0-9]?$|^100$/i
+    case "MobileNo": 
+        return /^[6789][0-9]{9}$/i;
+  }
+}
+
+
 let _conf = {};
 const onFieldChange = (action, state, dispatch) => {
   updateReadOnlyForAllFields(action, state, dispatch);
 }
 
-const evaluate = ({application, owners, selectedOwner, selectedPurchaser, purchaserList, formula, defaultValue}) => {
+const evaluate = ({application, owners, selectedOwner, selectedPurchaser, purchasers, formula, defaultValue}) => {
   try {
     return eval(formula);
   } catch (e) {
@@ -30,9 +40,9 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
   const applicationDetails = get(application, "applicationDetails")
 
   const selectedOwner = !!applicationDetails && (!!applicationDetails.transferor || !!applicationDetails.owner) ? owners.find(item => !!applicationDetails.transferor ? item.id === applicationDetails.transferor.id : item.id === applicationDetails.owner.id) : {}
-  const selectedPurchaser = !!applicationDetails.transferee ? owners.find(item => item.id === applicationDetails.transferee.id) : {}
-  let purchaserList = !!applicationDetails.transferor ? owners.filter(item => item.id !== applicationDetails.transferor.id) : owners;
-  purchaserList = purchaserList.map(item => ({
+  let purchasers = !!applicationDetails.transferor ? owners.filter(item => item.id !== applicationDetails.transferor.id) : owners;
+  const selectedPurchaser = !!applicationDetails.transferee ? purchasers.find(item => item.id === applicationDetails.transferee.id) : {}
+  purchasers = purchasers.map(item => ({
     code: item.id,
     label: item.ownerDetails.ownerName
   }))
@@ -43,21 +53,25 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
     return prev
   }, []).filter(item => item.componentPath !== "Div")
 
-  const actionDefiniton = fields.reduce((prev, curr) => {
+  const findField = fields.find(item => item.componentJsonpath === action.componentJsonpath && !!item.errorMessage)
+
+  let actionDefiniton = fields.reduce((prev, curr) => {
     const propValues = [{value: "visibility", property: "visible", defaultValue: curr.visible}, {value: "disability", property: "props.disabled", defaultValue: curr.props.disabled}, {value: "prefillValue", property: "props.value", defaultValue: ""}, {value: "dataValue", property: "props.data"}];
 
     const actions = propValues.reduce((prevValue, currValue) => {
-      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchaserList, formula: curr[currValue.value]}
+      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]}
       evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams
-      const actionItem = !!curr[currValue.value] ? [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}] : []
+      const actionItem = !!curr[currValue.value] ? currValue.value === "prefillValue" ? [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.error", value: false}] : [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}] : []
       return [...prevValue, ...actionItem]
     }, [])
     return [...prev, ...actions]
   }, [])
 
-  const findItem = actionDefiniton.find(item => item.path === action.componentJsonpath && item.value === action.value)
+  actionDefiniton = !!findField ? [...actionDefiniton, {path: findField.componentJsonpath, property: "props.errorMessage", value: findField.errorMessage}] : actionDefiniton
 
-  !findItem && setFieldProperty({dispatch, actionDefiniton})
+  const findIndex = actionDefiniton.findIndex(item => item.path === action.componentJsonpath && item.property === action.property && item.value === action.value)
+  // actionDefiniton = [...actionDefiniton.slice(0, findIndex), ...actionDefiniton.slice(findIndex+1)]
+  findIndex === -1 && setFieldProperty({dispatch, actionDefiniton})
 }
 
 const updateVisibilityForAllFields = () => {
@@ -93,6 +107,8 @@ export const getRelationshipRadioButton = {
 const getField = async (item, fieldData = {}, state) => {
     let {label: labelItem, placeholder, type, pattern, disabled = false, ...rest } = item;
     const {required = false, validations = []} = fieldData
+    const minMaxValidation = validations.find(item => item.type === "length")
+    const minMaxValue = validations.find(item => item.type === "minmax")
     let fieldProps = {
       label : {
         labelName: labelItem,
@@ -106,11 +122,14 @@ const getField = async (item, fieldData = {}, state) => {
         xs: 12,
         sm: 6
       },
-      props: { disabled },
+      props: { disabled, errorMessage: rest.errorMessage },
       required
     }
   
-    fieldProps = !!pattern ? {...fieldProps, pattern: getPattern(pattern)} : fieldProps
+    fieldProps = !!pattern ? {...fieldProps, pattern: _getPattern(pattern)} : fieldProps
+    fieldProps = !!minMaxValidation ? {...fieldProps, minLength: minMaxValidation.params.min, maxLength: minMaxValidation.params.max} : fieldProps
+    fieldProps = !!minMaxValue ? {...fieldProps, minValue: minMaxValue.params.min, maxValue: minMaxValue.params.max} : fieldProps
+
     rest = {...rest, afterFieldChange : onFieldChange }
     switch(type) {
       case "TEXT_FIELD": {

@@ -454,8 +454,9 @@
                 "visibility": "application.applicationDetails.transferee.type == 'Existing'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
-                "dataValue": "purchaserList",
-                "dataSource": "owners"
+                "dataValue": "purchasers",
+                "dataSource": "owners",
+                "prefillValue": "selectedPurchaser ? selectedPurchaser.id : ''"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_NAME_LABEL",
@@ -463,7 +464,8 @@
                 "type": "TEXT_FIELD",
                 "visibility": "application.applicationDetails.transferee.type == 'New'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
-                "path": "transferee.name"
+                "path": "transferee.name",
+                "errorMessage": "ES_ERR_PURCHASER_NAME"
               },
               {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",
@@ -472,7 +474,8 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
                 "path": "transferee.fatherOrHusbandName",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.guardianName"
+                "prefillValue": "selectedPurchaser.ownerDetails.guardianName",
+                "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
               },
               {
                 "label": "ES_RELATION_SHIP_LABEL",
@@ -489,7 +492,8 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.address"
+                "prefillValue": "selectedPurchaser.ownerDetails.address",
+                "errorMessage": "ES_ERR_ADDRESS"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
@@ -507,7 +511,8 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred",
-                "pattern": "Amount"
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               },
               {
                 "label": "ES_MODE_OF_TRANSFER_LABEL",
@@ -522,7 +527,8 @@
                 "placeholder": "ES_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.registrationNumber",
-                "path": "registrationNumber"
+                "path": "registrationNumber",
+                "errorMessage": "ES_ERR_REGISTERATION_NO"
               },
               {
                 "label": "ES_DATE_OF_REGISTRATION_LABEL",
