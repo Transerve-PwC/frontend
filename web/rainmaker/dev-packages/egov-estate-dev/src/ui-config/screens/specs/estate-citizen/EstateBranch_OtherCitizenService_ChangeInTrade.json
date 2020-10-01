@@ -259,8 +259,8 @@
                 "label": "ES_OWNER_LABEL",
                 "placeholder": "ES_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.owner.id",
-                "path": "owner",
+                "jsonPath": "Applications[0].applicationDetails.transferor",
+                "path": "transferor.id",
                 "dataSource": "owners"
               },
               {
@@ -268,35 +268,40 @@
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber",
+                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_OWNER_SHARE_LABEL",
                 "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               },
               {
                 "label": "ES_CP_NUMBER_LABEL",
                 "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
+                "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber",
+                "prefillValue": "selectedOwner.cpNumber"
               },
               {
                 "label": "ES_CURRENT_TRADE_LABEL",
