@@ -1,1 +1,1 @@
-export const WF_PROPERTY_MASTER = "PropertyMaster"
+export const WF_PROPERTY_MASTER = "ES-EB-PropertyMaster"

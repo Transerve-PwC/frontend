@@ -124,7 +124,7 @@ const firmNameField = {
   },
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.firmName"
+  jsonPath: "Properties[0].propertyDetails.companyName"
 }
 
 const getIsFirmRegisteredRadioButton = {
@@ -143,24 +143,44 @@ const getIsFirmRegisteredRadioButton = {
     buttons: [{
         labelName: "YES",
         labelKey: "ES_COMMON_YES",
-        value: true
+        value: "true"
       },
       {
         label: "NO",
         labelKey: "ES_COMMON_NO",
-        value: false
+        value: "false"
       }
     ],
     jsonPath: "Properties[0].propertyDetails.isFirmRegistered",
     required: true,
-    value: "YES"
   },
   required: true,
   type: "array",
   beforeFieldChange: (action, state, dispatch) => {
-    if (action.value == "YES") {
-      
+    let screenName = "apply";
+    let stepName = "formwizardThirdStep";
+
+    if ((window.location.href.includes("allotment"))) {
+        screenName = "allotment";
+        stepName = "formwizardThirdStepAllotment";
     }
+
+    dispatch(
+      handleField(
+        screenName,
+        `components.div.children.${stepName}.children.firmDetails.children.cardContent.children.detailsContainer.children.firmRegNo`,
+        "props.required",
+        !!(action.value == "true")
+      )
+    )
+    dispatch(
+      handleField(
+        screenName,
+        `components.div.children.${stepName}.children.firmDetails.children.cardContent.children.detailsContainer.children.firmRegDate`,
+        "props.required",
+        !!(action.value == "true")
+      )
+    )
   }
 }
 
@@ -179,7 +199,7 @@ const firmRegNoField = {
   },
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.firmRegNo"
+  jsonPath: "Properties[0].propertyDetails.companyRegistrationNumber"
 }
 
 const firmRegDateField = {
@@ -188,7 +208,7 @@ const firmRegDateField = {
     labelKey: "ES_REGISTRATION_DATE_LABEL"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.firmRegDate",
+  jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
@@ -211,7 +231,7 @@ const firmAddressField = {
   },
   minLength: 2,
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.firmAddress",
+  jsonPath: "Properties[0].propertyDetails.companyAddress",
   props:{
     multiline: true,
     rows: "2"
