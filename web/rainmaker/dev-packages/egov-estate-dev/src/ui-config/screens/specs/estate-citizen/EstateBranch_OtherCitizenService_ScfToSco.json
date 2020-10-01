@@ -269,7 +269,7 @@
           },
           {
             "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "EXPANSION_DETAIL",
+            "type": "TABLE",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
@@ -304,35 +304,40 @@
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "disabled": true,
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "disabled": true,
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "disabled": true,
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber",
+                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_SHARE_LABEL",
                 "placeholder": "ES_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "disabled": true,
-                "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               },
               {
                 "label": "ES_CP_NUMBER_LABEL",
                 "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "disabled": true,
-                "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber"
+                "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber",
+                "prefillValue": "selectedOwner.cpNumber"
               }
             ]
           },
@@ -341,8 +346,8 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_NAME_LABEL",
-                "placeholder": "ES_NAME_PLACEHOLDER",
+                "label": "ES_COMPANY_NAME_LABEL",
+                "placeholder": "ES_COMPANY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
                 "path": "company.name"
@@ -362,8 +367,8 @@
                 "path": "company.registrationNumber"
               },
               {
-                "label": "ES_TYPE_OF_LETTER_LABEL",
-                "placeholder": "ES_TYPE_OF_LETTER_PLACEHOLDER",
+                "label": "ES_EST_TYPE_OF_LETTER_LABEL",
+                "placeholder": "ES_EST_TYPE_OF_LETTER_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.company.type",
                 "path": "company.type",
@@ -392,11 +397,11 @@
             "description": "CLEARANCE_OF_PROPERTY_TAX_DESCRIPTION"
           },
           {
-            "code": "LEASE_WATER_BILL",
+            "code": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "LEASE_WATER_BILL_DESCRIPTION"
+            "description": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
           }
         ]
       }

@@ -17,6 +17,45 @@ import {
 } from "../../utils";
 import get from "lodash/get";
 
+const documentList = {
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
+  componentPath: "DocumentListContainer",
+  props: {
+    buttonLabel: {
+      labelName: "UPLOAD FILE",
+      labelKey: "ES_BUTTON_UPLOAD_FILE"
+    },
+    inputProps: [],
+    documentTypePrefix: "ES_",
+    documentsJsonPath: "temp[0].documents",
+    uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
+    tenantIdJsonPath: "Properties[0].tenantId",
+    removedJsonPath: "temp[0].removedDocs",
+    excelUrl: "/est-services/auctions/_create?"
+  }
+};
+
+export const documentDetails = getCommonCard({
+  header: getCommonTitle(
+    {
+      labelName: "Upload Bidders List",
+      labelKey: "ES_UPLOAD_BIDDERS_LIST_HEADER"
+    },
+    {
+      style: {
+        marginBottom: 18
+      }
+    }
+  ),
+  // paragraph: getCommonParagraph({
+  //   labelName:
+  //     "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
+  //   labelKey: "ES_NEW-UPLOAD-DOCS_SUBHEADER"
+  // }),
+  documentList
+})
+
 export const auctionDetailsHeader = getCommonTitle({
   labelName: "Auction Details",
   labelKey: "ES_AUCTION_DETAILS_HEADER"
@@ -27,15 +66,15 @@ export const auctionDetailsHeader = getCommonTitle({
   }
 })
 
-export const biddersListHeader = getCommonTitle({
-  labelName: "Bidders List Upload",
-  labelKey: "ES_BIDDERS_LIST_HEADER"
-}, {
-  style: {
-    marginBottom: 18,
-    marginTop: 18
-  }
-})
+// export const biddersListHeader = getCommonTitle({
+//   labelName: "Bidders List Upload",
+//   labelKey: "ES_BIDDERS_LIST_HEADER"
+// }, {
+//   style: {
+//     marginBottom: 18,
+//     marginTop: 18
+//   }
+// })
 
 const auctionIdField = {
   label: {
@@ -136,7 +175,7 @@ const emdAmountDate = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.emdAmountDate"
+  jsonPath: "Properties[0].propertyDetails.emdDate"
 }
 
 const buttonItem = {
@@ -195,29 +234,29 @@ const commonAuctionInformation = () => {
   });
 };
 
-const UploadButtonContainer = getCommonGrayCard({
-  header: biddersListHeader,
-  buttonContainer: getCommonContainer(
-    {...buttonItem, searchButton: {...buttonItem.searchButton, 
-      onClickDefination: {
-        action: "condition",
-        // callBack: searchApiCall
-      }
-    }, lastCont: {
-      uiFramework: "custom-atoms",
-      componentPath: "Div",
-      gridDefination: {
-        xs: 12,
-        sm: 4
-      }
-    }
-  })
-});
+// const UploadButtonContainer = getCommonGrayCard({
+//   header: biddersListHeader,
+//   buttonContainer: getCommonContainer(
+//     {...buttonItem, searchButton: {...buttonItem.searchButton, 
+//       onClickDefination: {
+//         action: "condition",
+//         // callBack: searchApiCall
+//       }
+//     }, lastCont: {
+//       uiFramework: "custom-atoms",
+//       componentPath: "Div",
+//       gridDefination: {
+//         xs: 12,
+//         sm: 4
+//       }
+//     }
+//   })
+// });
 
 
 
 export const AllotmentAuctionDetails = getCommonCard({
   header: auctionDetailsHeader,
-  uploadButton:UploadButtonContainer,
+  biddersListContainer: documentDetails,
   detailsContainer: commonAuctionInformation()
 })

@@ -18,6 +18,7 @@
           "name": "owners",
           "type": "path",
           "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
         }
       ],
@@ -220,7 +221,7 @@
           },
           {
             "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "EXPANSION_DETAIL",
+            "type": "TABLE",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
@@ -246,8 +247,8 @@
                 "label": "ES_SELECT_OWNERS_LABEL",
                 "placeholder": "ES_SELECT_OWNERS_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.owner",
-                "path": "owner",
+                "jsonPath": "Applications[0].applicationDetails.owner.id",
+                "path": "owner.id",
                 "dataSource": "owners"
               },
               {
@@ -255,35 +256,40 @@
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName",
-                "disabled": true
+                "disabled": true,
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address",
-                "disabled": true
+                "disabled": true,
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_OWNER_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
-                "disabled": true
+                "disabled": true,
+                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_SHARE_LABEL",
                 "placeholder": "ES_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.owner.share",
-                "disabled": true
+                "disabled": true,
+                "prefillValue": "selectedOwner.share"
               },
               {
                 "label": "ES_CP_NUMBER_LABEL",
                 "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.owner.cpNumber",
-                "disabled": true
+                "disabled": true,
+                "prefillValue": "selectedOwner.cpNumber"
               }
             ]
           },

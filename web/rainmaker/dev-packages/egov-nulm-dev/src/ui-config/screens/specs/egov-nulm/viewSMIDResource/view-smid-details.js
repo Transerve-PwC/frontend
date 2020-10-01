@@ -7,7 +7,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import {  checkValueForNA } from "../../utils";
 const gotoCreatePage = (state, dispatch) => {
    const createUrl = `/egov-nulm/create-smid?step=0`;
   dispatch(setRoute(createUrl));
@@ -83,7 +83,8 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelName: "BPL NULM_SMID_BPL_NUMBER",
           labelKey: "NULM_SMID_BPL_NUMBER"
         },
-        { jsonPath: "NULMSMIDRequest.bplNo" }
+        { jsonPath: "NULMSMIDRequest.bplNo" ,
+        callBack: checkValueForNA }
       ),
       
       isPwd: getLabelWithValue(
@@ -127,7 +128,8 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelName: "Email Id",
           labelKey: "NULM_SMID_EMAIL_ID"
         },
-        { jsonPath: "NULMSMIDRequest.emailId" }
+        { jsonPath: "NULMSMIDRequest.emailId" ,
+        callBack: checkValueForNA }
       ),
 
       mobileNo: getLabelWithValue(
@@ -142,7 +144,8 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelName: "Phone Number",
           labelKey: "NULM_SMID_PHONE_NUMBER"
         },
-        { jsonPath: "NULMSMIDRequest.phoneNo" }
+        { jsonPath: "NULMSMIDRequest.phoneNo" ,
+        callBack: checkValueForNA }
       ),
       motherName: getLabelWithValue(
         {
@@ -200,13 +203,13 @@ export const getSMIDDetailsView = (isReview = true) => {
         },
         { jsonPath: "NULMSMIDRequest.adharNo" }
       ),
-      adharAcknowledgementNo: getLabelWithValue(
-        {
-          labelName: "Adhar Acknowledgement Number",
-          labelKey: "NULM_SMID_ADHAR_ACKNOWLEDGEMENT_NUMBER"
-        },
-        { jsonPath: "NULMSMIDRequest.adharAcknowledgementNo" }
-      ),
+      // adharAcknowledgementNo: getLabelWithValue(
+      //   {
+      //     labelName: "Adhar Acknowledgement Number",
+      //     labelKey: "NULM_SMID_ADHAR_ACKNOWLEDGEMENT_NUMBER"
+      //   },
+      //   { jsonPath: "NULMSMIDRequest.adharAcknowledgementNo" }
+      // ),
 
       isInsurance: getLabelWithValue(
         {
@@ -220,7 +223,8 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelName: "Insurance through",
           labelKey: "NULM_SMID_INSURANCE_THROUGH"
         },
-        { jsonPath: "NULMSMIDRequest.insuranceThrough" }
+        { jsonPath: "NULMSMIDRequest.insuranceThrough",
+        callBack: checkValueForNA }
       ),
       isStreetVendor: getLabelWithValue(
         {
@@ -235,6 +239,23 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelKey: "NULM_SMID_HOMELESS"
         },
         { jsonPath: "NULMSMIDRequest.isHomeless" }
+      ),
+      RegistredCMC: getLabelWithValue(
+        {
+          labelName: "Registred",
+          labelKey: "NULM_SMID_CMC_INPUT"
+        },
+        { jsonPath: "NULMSMIDRequest.isRegistered",
+        callBack: checkValueForNA }
+      ),
+      cobNumber: getLabelWithValue(
+        {
+          labelName: "cob Number",
+          labelKey: "NULM_SEP_COB_NUMBER_INPUT"
+        },
+        { jsonPath: "NULMSMIDRequest.cobNumber",
+        callBack: checkValueForNA },
+        
       ),
      
     }),

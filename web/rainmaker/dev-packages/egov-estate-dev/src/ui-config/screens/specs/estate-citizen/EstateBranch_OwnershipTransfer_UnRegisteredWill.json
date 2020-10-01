@@ -451,7 +451,7 @@
           },
           {
             "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "EXPANSION_DETAIL",
+            "type": "TABLE",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {
@@ -486,21 +486,24 @@
                 "placeholder": "ES_DECEASED_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_DECEASED_ADDRESS_LABEL",
                 "placeholder": "ES_DECEASED_ADDRESS_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_PERCENT_SHARE_LABEL",
                 "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               },
               {
                 "label": "ES_DATE_OF_DEATH_LABEL",
@@ -533,7 +536,8 @@
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
-                "dataSource": "typesOfOwner"
+                "dataSource": "typesOfOwner",
+                "visibility": "owners.length > 1 && purchasers.length > 0"
               },
               {
                 "label": "ES_SELECT_LEGAL_HEIR_BENEFICIARY_LABEL",
@@ -541,14 +545,20 @@
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.id",
                 "path": "transferee.id",
-                "dataSource": "owners"
+                "dataSource": "owners",
+                "dataValue": "purchasers",
+                "prefillValue": "selectedPurchaser ? selectedPurchaser.id : ''",
+                "visible": false,
+                "visibility": "application.applicationDetails.transferee.type == 'Existing'"
               },
               {
                 "label": "ES_LEGAL_HEIR_BENEFICIARY_NAME_LABEL",
                 "placeholder": "ES_LEGAL_HEIR_BENEFICIARY_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
-                "path": "transferee.name"
+                "path": "transferee.name",
+                "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
+                "errorMessage": "ES_ERR_LEGAL_BENEFICIARY_NAME"
               },
               {
                 "label": "ES_AGE_LABEL",
@@ -562,21 +572,26 @@
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
-                "path": "transferee.address"
+                "path": "transferee.address",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "selectedPurchaser.ownerDetails.address",
+                "errorMessage": "ES_ERR_ADDRESS"
               },
               {
                 "label": "ES_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                 "placeholder": "ES_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "dataSource": "legalHeirRelationWithDeceased"
+                "dataSource": "legalHeirRelationWithDeceased",
+                "visibility": "application.applicationDetails.transferee.legalHeirOrbeneficiary === 'LEGALHEIR'"
               },
               {
                 "label": "ES_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                 "placeholder": "ES_BENEFICIARY_RELATION_WITH_DECEASED_RADIO_BTN_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
-                "dataSource": "benificiaryRelationwithDeceased"
+                "dataSource": "benificiaryRelationwithDeceased",
+                "visibility": "application.applicationDetails.transferee.legalHeirOrbeneficiary === 'BENEFICIARY'"
               }
             ]
           },

@@ -26,7 +26,7 @@ const Filter = ({ filter, handleChangeFilter, clearFilter }) => {
                     prefix ={"CS_COMMON_INBOX_"}
                 />
             </div>
-            <div className="col-md-3">
+            {/* <div className="col-md-3">
                 <MultiSelectDropdown
                     multiple
                     onChange={(e, index, value) => {
@@ -43,7 +43,7 @@ const Filter = ({ filter, handleChangeFilter, clearFilter }) => {
                         width: "90%"
                     }}
                 />
-            </div>
+            </div> */}
             <div className="col-md-3" >
                 <MultiSelectDropdown
                  multiple

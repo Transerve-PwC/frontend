@@ -1,0 +1,35 @@
+{
+  "ResponseInfo": null,
+  "MdmsRes": {
+    "EstatePropertyService": {
+      "biddersListDoc": [
+        {
+          "code": "MasterEst",
+          "type": "Estate",
+          "documentList": [
+            {
+              "type": "BIDDERS_LIST",
+              "code": "BIDDERS_LIST",
+              "required": true,
+              "accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+              "fileType": "ALLTYPES",
+              "description":  {
+                "labelName": "Only .jpg and .pdf files. 6MB max file size.",
+                "labelKey": "BIDDERS_ALLOWED_TYPES"
+              },
+              "formatProps": {
+                "accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              },
+              "maxFileSize": 6000,
+              "moduleName": "Estate",
+              "statement": {
+                "labelName": "Allowed documents are Aadhar Card / Voter ID Card / Driving License",
+                "labelKey": "BIDDERS_LIST_DESC"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

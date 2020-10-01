@@ -15,7 +15,15 @@ import { NULMConfiguration } from "../../../../ui-utils/sampleResponses";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { prepareDocumentsUploadData } from "../../../../ui-utils/storecommonsapi";
 import commonConfig from "../../../../config/common";
-
+import { TFCDetails } from './createSEPResource/tfc-details';
+import { bankDetailToProcess } from './createSEPResource/bankDetailToProcess';
+import { SanctionDetails } from './createSEPResource/sanctionDetails';
+import {NULM_SEP_CREATED,
+  FORWARD_TO_TASK_FORCE_COMMITTEE,
+  APPROVED_BY_TASK_FORCE_COMMITTEE,
+  REJECTED_BY_TASK_FORCE_COMMITTEE,
+  SENT_TO_BANK_FOR_PROCESSING,
+SANCTION_BY_BANK} from '../../../../ui-utils/commons'
 export const stepsData = [
   { labelName: "SEP Details", labelKey: "NULM_APPLICATION_FOR_SEP_PROGRAM" },
   { labelName: "Documents", labelKey: "NULM_SEP_DOCUMENT_HEADER" },
@@ -33,15 +41,27 @@ export const header = getCommonContainer({
   })
 });
 
+const formAvailabiltyBaseOnStatus = () => {
+    const status = window.localStorage.getItem("SEP_Status");
+    switch(status){
+      case NULM_SEP_CREATED : return {SepDetails}
+      case FORWARD_TO_TASK_FORCE_COMMITTEE :  return {SepDetails,TFCDetails}
+      case APPROVED_BY_TASK_FORCE_COMMITTEE :  return {SepDetails,TFCDetails,bankDetailToProcess}
+      case REJECTED_BY_TASK_FORCE_COMMITTEE :   return {SepDetails,TFCDetails,bankDetailToProcess}
+      case SENT_TO_BANK_FOR_PROCESSING :   return {SepDetails,TFCDetails,bankDetailToProcess,SanctionDetails}
+      case SANCTION_BY_BANK :    return {SepDetails,TFCDetails,bankDetailToProcess,SanctionDetails}
+      default : return {SepDetails}
+    }
+   
+}
+
 export const formwizardFirstStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
     id: "apply_form1"
   },
-  children: {
-    SepDetails
-  }
+  children: formAvailabiltyBaseOnStatus()
 };
 
 export const formwizardSecondStep = {

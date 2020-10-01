@@ -96,6 +96,9 @@ const creatPOHandle = async (state, dispatch) => {
 };
 //print function UI start SE0001
 /** MenuButton data based on status */
+const printPdf = async (state, dispatch) => {
+  downloadAcknowledgementForm("Material Receipt Misc");
+}
 let printMenu = [];
 let receiptPrintObject = {
   label: { labelName: "Receipt", labelKey: "STORE_PRINT_MR_MISC" },
@@ -264,29 +267,48 @@ const screenConfig = {
         },
          //print function UI start SE0001
          printMenu: {
-          uiFramework: "custom-atoms-local",
-          moduleName: "egov-tradelicence",
-          componentPath: "MenuButton",
+          componentPath: "Button", 
           gridDefination: {
             xs: 12,
-            sm: 12,
-            // md:3,
-            // lg:3,
-            align: "right",
-          },  
-          visible: true,// enableButton,
+            sm: 4,
+            md:3,
+            lg:3,
+            // align: "right",
+          },             
+          visible: true,
           props: {
-            data: {
-              label: {
-                labelName:"PRINT",
-                labelKey:"STORE_PRINT"
+            variant: "contained",
+            color: "primary",
+            style: {
+              color: "white",
+              borderRadius: "2px",
+              // width: "250px",
+              height: "48px",
+            },
+          },
+
+          children: {
+            plusIconInsideButton: {
+              uiFramework: "custom-atoms",
+              componentPath: "Icon",
+              props: {
+                iconName: "print",
+                style: {
+                  fontSize: "24px",
+                },
               },
-              leftIcon: "print",
-              rightIcon: "arrow_drop_down",
-              props: { variant: "outlined", style: { marginLeft: 10, align: "right", } },
-              menu: printMenu
-            }
-          }
+            },
+
+            buttonLabel: getLabel({
+              labelName: "Indent note",
+              labelKey: "STORE_PRINT_MR_MISC",
+            }),
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: printPdf,
+          },
+         
         },
         //print function UI End SE0001
         taskStatus: {

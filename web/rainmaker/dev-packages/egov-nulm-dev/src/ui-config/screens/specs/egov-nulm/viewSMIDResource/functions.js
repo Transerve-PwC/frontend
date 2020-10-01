@@ -170,7 +170,7 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
   //   formattedDOB
   // );
 
-  const radioButtonValue = ["isUrbanPoor","isPwd","isMinority","isInsurance","isStreetVendor","isHomeless"];
+  const radioButtonValue = ["isUrbanPoor","isPwd","isMinority","isInsurance","isStreetVendor","isHomeless","isRegistered"];
     
   radioButtonValue.forEach(value => {
     if(NULMSMIDRequest[value] && NULMSMIDRequest[value]==="YES" ){
