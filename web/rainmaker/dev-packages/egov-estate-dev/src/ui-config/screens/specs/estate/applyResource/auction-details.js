@@ -18,6 +18,7 @@ import {
   getTextToLocalMapping
 } from "../../utils";
 import get from "lodash/get";
+import store from "../../../../../ui-redux/store";
 
 const documentList = {
   uiFramework: "custom-containers-local",
@@ -285,6 +286,9 @@ export const auctionTable = {
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
+      onRowClick: (row, index) => {
+        onRowClick(row);
+      }
     },
     customSortColumn: {
       column: "Property Id",
@@ -303,6 +307,12 @@ export const auctionTable = {
       }
     }
   }
+};
+
+const onRowClick = rowData => {
+  // store.dispatch(
+  //   prepareFinalObject()
+  // )
 };
 
 export const AllotmentAuctionDetails = getCommonCard({

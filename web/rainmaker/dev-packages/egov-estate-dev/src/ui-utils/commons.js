@@ -41,7 +41,7 @@ import {
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
-import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
+import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons";
 
 export const updateTradeDetails = async requestBody => {
   try {
@@ -1114,6 +1114,11 @@ export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) 
           defaultChecked: false, 
           onClick: () => { 
             console.log("checkbox clicked");
+            if (confirm('Are you sure you want to mark/unmark as refunded?')) {
+              console.log('Done');
+            } else {
+              console.log('Cancelled');
+            }
           }
         })
     }));
