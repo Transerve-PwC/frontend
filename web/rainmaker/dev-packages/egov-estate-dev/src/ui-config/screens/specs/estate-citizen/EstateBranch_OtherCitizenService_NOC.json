@@ -379,7 +379,7 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
                 "dataSource": "typesOfOwner",
-                "visibility": "owners.length > 1 && purchaserList.length > 0"
+                "visibility": "owners.length > 1 && purchasers.length > 0"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_ID",
