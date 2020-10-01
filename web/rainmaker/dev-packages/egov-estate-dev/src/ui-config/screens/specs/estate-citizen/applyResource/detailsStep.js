@@ -13,6 +13,10 @@ const _getPattern = (type) => {
         return /^[1-9][0-9]?$|^100$/i
     case "MobileNo": 
         return /^[6789][0-9]{9}$/i;
+    case "Amount":
+        return /^[0-9]{0,9}$/i;
+    case "numeric-only":
+        return /^[0-9]*$/i;
   }
 }
 
@@ -233,8 +237,8 @@ const getField = async (item, fieldData = {}, state) => {
           const findItem = validations.find(validation => validation.type === "enum")
           const buttons = !!findItem && !!findItem.params && !!findItem.params.values ? findItem.params.values.map(value => 
             ({
-                labelName: `COMMON_RELATION_${value}`,
-                labelKey: `COMMON_RELATION_${value}`,
+                labelName: `ES_${value}`,
+                labelKey: `ES_${value}`,
                 value
             })
             ) : []

@@ -18,6 +18,7 @@
           "name": "owners",
           "type": "path",
           "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
         }
       ],
@@ -289,8 +290,8 @@
                 "label": "ES_SELECT_OWNER_LABEL",
                 "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.owner",
-                "path": "owner",
+                "jsonPath": "Applications[0].applicationDetails.owner.id",
+                "path": "owner.id",
                 "dataSource": "owners"
               },
               {
@@ -298,35 +299,40 @@
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
+                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
+                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
               },
               {
                 "label": "ES_OWNER_SHARE_LABEL",
                 "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.share"
+                "jsonPath": "Applications[0].applicationDetails.owner.share",
+                "prefillValue": "selectedOwner.share"
               },
               {
                 "label": "ES_CP_NUMBER_LABEL",
                 "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
                 "disabled": true,
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
+                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber",
+                "prefillValue": "selectedOwner.cpNumber"
               }
             ]
           },
@@ -339,21 +345,25 @@
                 "placeholder": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.bankName",
-                "path": "bankName"
+                "path": "bankName",
+                "errorMessage": "ES_ERR_BANK_NAME"
               },
               {
                 "label": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
                 "placeholder": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.reasonForMortgage",
-                "path": "reasonForMortgage"
+                "path": "reasonForMortgage",
+                "errorMessage": "ES_ERR_MORTGAGE_PURPOSE"
               },
               {
                 "label": "ES_LOAN_AMOUNT_LABEL",
                 "placeholder": "ES_LOAN_AMOUNT_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "path": "loanAmount",
-                "jsonPath": "Applications[0].applicationDetails.loanAmount"
+                "jsonPath": "Applications[0].applicationDetails.loanAmount",
+                "pattern": "numeric-only",
+                "errorMessage": "ES_ERR_LOAN_AMOUNT"
               }
             ]
           }

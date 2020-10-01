@@ -419,7 +419,7 @@
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },
@@ -444,7 +444,7 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
                 "dataSource": "typesOfOwner",
-                "visibility": "owners.length > 1 && purchaserList.length > 0"
+                "visibility": "owners.length > 1 && purchasers.length > 0"
               },
               {
                 "label": "ES_PURCHASER_TRANSFEREE_ID",
