@@ -1,7 +1,7 @@
-import { getCommonCard, getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonCard, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import {footer, stepper} from './footer'
+import {footer, stepsData} from './footer'
 import { setThirdStep } from "./applyResource/review";
 import { getSearchApplicationsResults, getSearchResults } from "../../../../ui-utils/commons";
 import { setFirstStep, updateReadOnlyForAllFields } from "./applyResource/detailsStep";
@@ -60,6 +60,11 @@ const getData = async (action, state, dispatch) => {
     !!dataSources && dataSources.forEach(dataSource => dataSource.type === "path" ?
       registerDatasource({...dataSource, data: property})
     : registerDatasource(dataSource));
+    
+    const stepper = getStepperObject(
+      { props: { activeStep: 0 } },
+      stepsData
+    );
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})

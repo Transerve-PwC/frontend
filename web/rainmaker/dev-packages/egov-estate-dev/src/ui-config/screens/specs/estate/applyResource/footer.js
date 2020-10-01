@@ -62,7 +62,9 @@ export const moveToSuccess = (data, dispatch, type) => {
       path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`;
       break;
     default : {
-      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+      const {branchType, moduleType, applicationType} = data;
+      type = `${branchType}_${moduleType}_${applicationType}`;
+      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
     }
   }
   dispatch(
