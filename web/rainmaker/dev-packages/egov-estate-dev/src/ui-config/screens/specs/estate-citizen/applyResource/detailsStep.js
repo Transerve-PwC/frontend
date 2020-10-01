@@ -35,6 +35,9 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
   // For each field. get the field config, get componentJsonPath, 
   // dispatch new Value
 
+  /**
+   * Parameters for evaluating conditions.
+   */
   const application = get(state, "screenConfiguration.preparedFinalObject.Applications[0]") || {};
   const owners = get(state, "screenConfiguration.preparedFinalObject.property.propertyDetails.owners") || [];
   const applicationDetails = get(application, "applicationDetails")
@@ -46,6 +49,11 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
     code: item.id,
     label: item.ownerDetails.ownerName
   }))
+
+
+  /**
+   * Extracts fields from config.
+   */
   const objectValues = Object.values(_conf);
   const fields = objectValues.reduce((prev, curr) => {
     const fieldItems = !!curr.children ? curr.children.cardContent.children.details_container.children : {};
@@ -53,10 +61,18 @@ const updateReadOnlyForAllFields = (action, state, dispatch) => {
     return prev
   }, []).filter(item => item.componentPath !== "Div")
 
+  /**
+   * Get the fields whose value just changed.
+   */
   const findField = fields.find(item => item.componentJsonpath === action.componentJsonpath && !!item.errorMessage)
 
   let actionDefiniton = fields.reduce((prev, curr) => {
-    const propValues = [{value: "visibility", property: "visible", defaultValue: curr.visible}, {value: "disability", property: "props.disabled", defaultValue: curr.props.disabled}, {value: "prefillValue", property: "props.value", defaultValue: ""}, {value: "dataValue", property: "props.data"}];
+    const propValues = [
+      {value: "visibility", property: "visible", defaultValue: curr.visible}, 
+      {value: "disability", property: "props.disabled", defaultValue: curr.props.disabled}, 
+      {value: "prefillValue", property: "props.value", defaultValue: ""}, 
+      {value: "dataValue", property: "props.data"}
+    ];
 
     const actions = propValues.reduce((prevValue, currValue) => {
       let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]}
