@@ -955,18 +955,34 @@ export const download = (receiptQueryString, Licenses, data, mode = "download") 
   }
 }
 
-export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJsonPath) => {
+export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJsonPath, preparedFinalObject) => {
+  const fileNumber = get(
+    preparedFinalObject,
+    "Properties[0].fileNumber"
+  )
+  const propertyId = get(
+    preparedFinalObject,
+    "Properties[0].id"
+  )
   const queryObject = [
-    {key: "tenantId", value: "ch"},
+    {key: "tenantId", value: getTenantId()},
     {key: "fileStoreId", value: fileStoreId}
   ]
+  const reqBody = {
+    Property: {
+      tenantId: "ch",
+      fileNumber: fileNumber,
+      id: propertyId
+    }
+  };
   try {
     store.dispatch(toggleSpinner());
     const response = await httpRequest(
       "post",
       excelUrl,
       "",
-      queryObject
+      queryObject,
+      reqBody
     )
     if(!!response) {
       store.dispatch(

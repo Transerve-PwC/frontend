@@ -125,12 +125,12 @@ class DocumentList extends Component {
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, excelUrl, screenKey, componentJsonPath } = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, excelUrl, screenKey, componentJsonPath, preparedFinalObject } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
 
     if (excelUrl) {
       this.setState({showLoader: false})
-      getExcelData(excelUrl, fileStoreId, screenKey, componentJsonPath)
+      getExcelData(excelUrl, fileStoreId, screenKey, componentJsonPath, preparedFinalObject)
     }
     else {
       const fileUrl = await getFileUrlFromAPI(fileStoreId);
@@ -303,6 +303,12 @@ DocumentList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
+const mapStateToProps = (state) => {
+  const { screenConfiguration } = state;
+  const { preparedFinalObject } = screenConfiguration;
+  return { preparedFinalObject};
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     prepareFinalObject: (jsonPath, value) =>
@@ -312,7 +318,7 @@ const mapDispatchToProps = dispatch => {
 
 export default withStyles(styles)(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(DocumentList)
 );
