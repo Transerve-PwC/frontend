@@ -1,6 +1,7 @@
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils/api";
 import { get } from "lodash";
+import commonConfig from "config/common.js";
 
 class MDMSDatasource {
     options;
@@ -20,7 +21,7 @@ class MDMSDatasource {
         const { moduleName, masterName, filter } = this.options;
         const payload = {
             MdmsCriteria: {
-                tenantId: getTenantId(),
+                tenantId: commonConfig.tenantId,
                 moduleDetails: [
                   {
                     moduleName: moduleName,
