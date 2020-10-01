@@ -198,7 +198,7 @@ class ActionDialog extends React.Component {
             );
       return
     }
-    else if(value==="0"){
+    else if(parseInt(value)===0){
       toggleSnackbar(
         true,
         { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
@@ -240,7 +240,7 @@ return
             );
       return
     }
-    else if(value==="0"){
+    else if(parseInt(value)===0){
       toggleSnackbar(
         true,
         { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
