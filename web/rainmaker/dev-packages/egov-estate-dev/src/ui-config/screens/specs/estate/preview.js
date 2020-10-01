@@ -9,7 +9,8 @@ const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redu
 const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
-
+import {downloadPrintContainer} from './applyResource/footer';
+import { set } from "lodash";
 
 const headerrow = getCommonContainer({
     header: getCommonHeader({
@@ -28,7 +29,7 @@ const getData = async (action, state, dispatch) => {
     const queryObject = [
         {key: "applicationNumber", value: applicationNumber}
       ]
-    let footer = {};
+    let footer = {},printCont = {};
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
@@ -76,6 +77,14 @@ const getData = async (action, state, dispatch) => {
             businessService
           );
         }
+
+       printCont = downloadPrintContainer(
+          action,
+          state,
+          dispatch,
+          applicationState,
+          applicationType
+        );        
         reviewDetails = getCommonCard({...reviewDetails})
         return {
                 div: {
@@ -107,7 +116,9 @@ const getData = async (action, state, dispatch) => {
                               xs: 12,
                               sm: 4,
                               align: "right"
-                            }
+                            },
+                            children: printCont
+                              
                           }
                           }
                         },

@@ -4,20 +4,32 @@ import {
   getCommonSubHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
-import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  downloadReceiptFromFilestoreID
+} from "egov-common/ui-utils/commons"
+import {
+  toggleSnackbar
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
-import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  validate
+} from "egov-ui-framework/ui-redux/screen-configuration/utils";
+import {
+  handleScreenConfigurationFieldChange as handleField
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
 import filter from "lodash/filter";
-import { httpRequest } from "../../../../ui-utils/api";
+import {
+  httpRequest
+} from "../../../../ui-utils/api";
 import {
   prepareFinalObject,
   initScreen
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import {
+  getQueryArg
+} from "egov-ui-framework/ui-utils/commons";
 import isUndefined from "lodash/isUndefined";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -28,10 +40,13 @@ import {
 import commonConfig from "config/common.js";
 import {
   getLocaleLabels,
-  getTransformedLocalStorgaeLabels, getFileUrlFromAPI
+  getTransformedLocalStorgaeLabels,
+  getFileUrlFromAPI
 } from "egov-ui-framework/ui-utils/commons";
 import axios from 'axios';
-import { getSearchApplicationsResults } from "../../../../ui-utils/commons";
+import {
+  getSearchApplicationsResults
+} from "../../../../ui-utils/commons";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -73,7 +88,9 @@ export const getTooltip = (children, toolTipProps) => {
       label: children,
       toolTip: {
         componentPath: "Tooltip",
-        props: { ...toolTipProps },
+        props: {
+          ...toolTipProps
+        },
         children: {
           uiFramework: "custom-atoms",
           componentPath: "Icon",
@@ -103,11 +120,9 @@ export const getUploadFile = {
   uiFramework: "custom-molecules",
   componentPath: "DocumentList",
   props: {
-    documents: [
-      {
-        name: "Upload Document"
-      }
-    ]
+    documents: [{
+      name: "Upload Document"
+    }]
   }
 };
 
@@ -121,7 +136,10 @@ export const getUploadFilesMultiple = jsonPath => {
       inputProps: {
         accept: "image/*, .pdf, .png, .jpeg"
       },
-      buttonLabel: { labelName: "UPLOAD FILES", labelKey: "TL_UPLOAD_FILES_BUTTON" },
+      buttonLabel: {
+        labelName: "UPLOAD FILES",
+        labelKey: "TL_UPLOAD_FILES_BUTTON"
+      },
       maxFileSize: 5000,
       moduleName: "TL"
     }
@@ -256,8 +274,7 @@ export const getApprovalTextField = queryValue => {
       },
       required: false,
       pattern: "",
-      jsonPath:
-        "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.comments",
+      jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.rejectDetail.comments",
       props: {
         style: {
           paddingBottom: 5
@@ -276,8 +293,7 @@ export const getApprovalTextField = queryValue => {
       },
       required: false,
       pattern: "",
-      jsonPath:
-        "Licenses[0].tradeLicenseDetail.additionalDetail.cancelDetail.comments",
+      jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.cancelDetail.comments",
       props: {
         style: {
           paddingBottom: 5
@@ -296,8 +312,7 @@ export const getApprovalTextField = queryValue => {
       },
       required: false,
       pattern: "",
-      jsonPath:
-        "Licenses[0].tradeLicenseDetail.additionalDetail.approveDetail.comments",
+      jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.approveDetail.comments",
       props: {
         style: {
           paddingBottom: 5
@@ -413,7 +428,10 @@ export const onClickPreviousButton = (
   }
 };
 export const getFeesEstimateCard = props => {
-  const { sourceJsonPath, ...rest } = props;
+  const {
+    sourceJsonPath,
+    ...rest
+  } = props;
   return {
     uiFramework: "custom-containers-local",
     moduleName: "egov-estate",
@@ -489,7 +507,9 @@ export const objectToDropdown = object => {
   let dropDown = [];
   for (var variable in object) {
     if (object.hasOwnProperty(variable)) {
-      dropDown.push({ code: variable });
+      dropDown.push({
+        code: variable
+      });
     }
   }
   return dropDown;
@@ -637,21 +657,37 @@ export const getHeaderSideText = (status, licenseNo = null) => {
   switch (status) {
     case "PAID":
     case "PENDINGAPPROVAL":
-      return { word1: "Status: ", word2: "WF_NEWTL_PENDINGAPPROVAL" };
+      return {
+        word1: "Status: ", word2: "WF_NEWTL_PENDINGAPPROVAL"
+      };
     case "PENDINGPAYMENT":
-      return { word1: "Status: ", word2: "WF_NEWTL_PENDINGPAYMENT" };
+      return {
+        word1: "Status: ", word2: "WF_NEWTL_PENDINGPAYMENT"
+      };
     case "FIELDINSPECTION":
-      return { word1: "Status: ", word2: "WF_NEWTL_FIELDINSPECTION" };
+      return {
+        word1: "Status: ", word2: "WF_NEWTL_FIELDINSPECTION"
+      };
     case "APPLIED":
-      return { word1: "Status: ", word2: "TL_APPLIED" };
+      return {
+        word1: "Status: ", word2: "TL_APPLIED"
+      };
     case "REJECTED":
-      return { word1: "Status: ", word2: "TL_REJECTED" };
+      return {
+        word1: "Status: ", word2: "TL_REJECTED"
+      };
     case "CANCELLED":
-      return { word1: `Trade License No: `, word2: `${licenseNo}` };
+      return {
+        word1: `Trade License No: `, word2: `${licenseNo}`
+      };
     case "APPROVED":
-      return { word1: `Trade License No: `, word2: `${licenseNo}` };
+      return {
+        word1: `Trade License No: `, word2: `${licenseNo}`
+      };
     default:
-      return { word1: "", word2: "" };
+      return {
+        word1: "", word2: ""
+      };
   }
 };
 
@@ -687,8 +723,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
     if (!tenantId) {
       dispatch(
         toggleSnackbar(
-          true,
-          {
+          true, {
             labelName: "Please select city to search by property id !!",
             labelKey: "ERR_SELECT_CITY_TO_SEARCH_PROPERTY_ID"
           },
@@ -702,8 +737,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
         "post",
         `/pt-services-v2/property/_search?tenantId=${tenantId}&ids=${propertyId}`,
         "_search",
-        [],
-        {}
+        [], {}
       );
       if (
         payload &&
@@ -713,8 +747,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
         if (payload.Properties.length === 0) {
           dispatch(
             toggleSnackbar(
-              true,
-              {
+              true, {
                 labelName: "Property is not found with this Property Id",
                 labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
               },
@@ -734,8 +767,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
             handleField(
               "apply",
               "components.div.children.formwizardFirstStep.children.tradeLocationDetails.children.cardContent.children.tradeDetailsConatiner.children.tradeLocMohalla",
-              "props.value",
-              {
+              "props.value", {
                 value: payload.Properties[0].address.locality.code,
                 label: payload.Properties[0].address.locality.name
               }
@@ -786,8 +818,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
     if (ownerNo === owners[cardIndex].userName) {
       dispatch(
         toggleSnackbar(
-          true,
-          {
+          true, {
             labelName: "Owner already added !",
             labelKey: "ERR_OWNER_ALREADY_ADDED"
           },
@@ -833,8 +864,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
       } else {
         dispatch(
           toggleSnackbar(
-            true,
-            {
+            true, {
               labelName: "Owner already added !",
               labelKey: "ERR_OWNER_ALREADY_ADDED_1"
             },
@@ -849,8 +879,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         "post",
         `/user/_search?tenantId=${commonConfig.tenantId}`,
         "_search",
-        [],
-        {
+        [], {
           tenantId: commonConfig.tenantId,
           userName: `${ownerNo}`
         }
@@ -859,8 +888,7 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
         if (payload.user.length === 0) {
           dispatch(
             toggleSnackbar(
-              true,
-              {
+              true, {
                 labelName: "This mobile number is not registered !",
                 labelKey: "ERR_MOBILE_NUMBER_NOT_REGISTERED"
               },
@@ -932,27 +960,133 @@ const getStatementForDocType = docType => {
 };
 
 
-export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
-  const queryStr = [
-    { key: "key", value: `tlapplication_${Licenses[0].businessService}` },
-    { key: "tenantId", value: "ch" }
-  ]
-  let { documents } = Licenses[0].additionalDetails;
-  const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
-  // documents = findIndex !== -1 ? [...documents.slice(0, findIndex), ...documents.slice(findIndex+1)] : documents
-  const length = documents.length % 4
-  documents = [...documents, ...new Array(length > 2 ? 4 - length : length).fill({ title: "", name: "" })]
-  const myDocuments = documents.map((item) => ({
-    ...item, title: getLocaleLabels(item.title, item.title)
-  })).reduce((splits, i) => {
-    const length = splits.length
-    const rest = splits.slice(0, length - 1);
-    const lastArray = splits[length - 1] || [];
-    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
-  }, []);
+export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "download") => {
+  let queryStr = []
+  switch (applicationType) {
+    case 'SaleDeed':
+      queryStr = [{
+          key: "key",
+          value: `est-sale-deed-application-fresh`
+        }
+      ]
+      break;
+    case 'LeaseDeed':
+      queryStr = [{
+          key: "key",
+          value: `est-lease-deed-application`
+        }
+      ]
+      break;
+    case 'ScfToSco':
+      queryStr = [{
+          key: "key",
+          value: `est-scf-to-sco-application`
+        }
+      ]
+      break;
+    case 'LeaseholdToFreehold':
+      queryStr = [{
+          key: "key",
+          value: `est-leaseholdToFreehold-Application`
+        }
+      ]
+      break;
+    case 'ChangeInTrade':
+      queryStr = [{
+          key: "key",
+          value: `est-change-trade-application`
+        }
+      ]
+      break;
+    case 'UnRegisteredWill':
+      queryStr = [{
+          key: "key",
+          value: `est-unregisteredWill-application-fresh`
+        }
+      ]
+      break;
+      case 'NOC':
+      queryStr = [{
+          key: "key",
+          value: `est-noc-application-fresh`
+        }
+      ]
+      break;
+      case 'RegisteredWill':
+      queryStr = [{
+          key: "key",
+          value: `est-registeredWill-application-fresh`
+        }
+      ]
+      break;
+      case 'NDC':
+      queryStr = [{
+          key: "key",
+          value: `est-ndc-application-fresh`
+        }
+        
+      ]
+      break;
+      case 'PartnershipDeed':
+      queryStr = [{
+          key: "key",
+          value: `est-partnership-deed-application-fresh`
+        }
+      ]
+      break;
+      case 'DuplicateCopy':
+      queryStr = [{
+          key: "key",
+          value: `est-duplicate-copy-application-fresh`
+        }
+      ]
+      break;
+      case 'Mortgage':
+      queryStr = [{
+          key: "key",
+          value: `est-mortgage-application-fresh`
+        }
+      ]
+      break;
+      case 'FamilySettlement':
+      queryStr = [{
+          key: "key",
+          value: `est-court-decree-family-settlement-application`
+        }
+      ]
+      break;
+      case 'IntestateDeath':
+      queryStr = [{
+          key: "key",
+          value: `est-inestate-death-application-fresh`
+        }
+      ]
+      break;
+  }
+  queryStr[1] = {
+    key: "tenantId",
+    value: `${getTenantId().split('.')[0]}`
+  }
+  
+  let {
+    documents
+  } = Licenses[0].additionalDetails;
+  // const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
+  // const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
+  // // documents = findIndex !== -1 ? [...documents.slice(0, findIndex), ...documents.slice(findIndex+1)] : documents
+  // const length = documents.length % 4
+  // documents = [...documents, ...new Array(length > 2 ? 4 - length : length).fill({ title: "", name: "" })]
+  // const myDocuments = documents.map((item) => ({
+  //   ...item, title: getLocaleLabels(item.title, item.title)
+  // })).reduce((splits, i) => {
+  //   const length = splits.length
+  //   const rest = splits.slice(0, length - 1);
+  //   const lastArray = splits[length - 1] || [];
+  //   return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  // }, []);
   let licenses = Licenses[0];
-  licenses = { ...licenses, additionalDetails: { documents: myDocuments }, ownerDocument }
+  // console.log(myDocuments)
+  // licenses = { ...licenses, additionalDetails: { documents: myDocuments }, ownerDocument }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -960,7 +1094,13 @@ export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
     },
   };
   try {
-    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Licenses: [licenses] }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Applications: [licenses]
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
       .then(res => {
         res.filestoreIds[0]
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
@@ -978,15 +1118,27 @@ export const downloadAcknowledgementForm = (Licenses, mode = "download") => {
 
 export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
   const applicationType = Licenses && Licenses.length > 0 ? get(Licenses[0], "applicationType") : "NEW";
-  const queryStr = [
-    { key: "key", value: applicationType === "RENEWAL" ? "tlrenewalcertificate" : "tlcertificate" },
-    { key: "tenantId", value: "ch" }
+  const queryStr = [{
+      key: "key",
+      value: applicationType === "RENEWAL" ? "tlrenewalcertificate" : "tlcertificate"
+    },
+    {
+      key: "tenantId",
+      value: "ch"
+    }
   ]
-  let { documents } = Licenses[0].additionalDetails;
-  const findIndex = documents.findIndex(item => item.title === "TL_OWNERPHOTO");
-  const ownerDocument = findIndex !== -1 ? documents[findIndex] : { link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png` };
+  let {
+    documents
+  } = Licenses[0].additionalDetails;
+  const findIndex = documents && documents.findIndex(item => item.title === "TL_OWNERPHOTO");
+  const ownerDocument = findIndex !== -1 ? documents[findIndex] : {
+    link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`
+  };
   let licenses = Licenses[0];
-  licenses = { ...licenses, ownerDocument }
+  licenses = {
+    ...licenses,
+    ownerDocument
+  }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -994,7 +1146,14 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
     },
   };
   try {
-    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Licenses: [licenses], data }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Licenses: [licenses],
+        data
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
       .then(res => {
         res.filestoreIds[0]
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
@@ -1018,80 +1177,80 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
 
 export const prepareDocumentTypeObj = documents => {
   let documentsArr =
-    documents.length > 0
-      ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item.code,
-          required: item.required,
-          jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.ownerDocuments[${ind}]`,
-          statement: item.description
-        });
-        return documentsArr;
-      }, [])
-      : [];
+    documents.length > 0 ?
+    documents.reduce((documentsArr, item, ind) => {
+      documentsArr.push({
+        name: item.code,
+        required: item.required,
+        jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.ownerDocuments[${ind}]`,
+        statement: item.description
+      });
+      return documentsArr;
+    }, []) :
+    [];
   return documentsArr;
 };
 
 export const prepareDocumentTypeObjMaster = (documents, ownerIndex) => {
   let documentsArr =
-    documents.length > 0
-      ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item.code,
-          required: item.required,
-          jsonPath: `Properties[0].propertyDetails.owners[${ownerIndex}].ownerDetails.ownerDocuments[${ind}]`,
-          statement: item.description
-        });
-        return documentsArr;
-      }, [])
-      : [];
+    documents.length > 0 ?
+    documents.reduce((documentsArr, item, ind) => {
+      documentsArr.push({
+        name: item.code,
+        required: item.required,
+        jsonPath: `Properties[0].propertyDetails.owners[${ownerIndex}].ownerDetails.ownerDocuments[${ind}]`,
+        statement: item.description
+      });
+      return documentsArr;
+    }, []) :
+    [];
   return documentsArr;
 };
 
 export const preparePrevOwnerDocumentTypeObjMaster = (documents, prevOwnerIndex) => {
   let documentsArr =
-    documents.length > 0
-      ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item.code,
-          required: item.required,
-          jsonPath: `Properties[0].propertyDetails.purchaser[${prevOwnerIndex}].ownerDetails.ownerDocuments[${ind}]`,
-          statement: item.description
-        });
-        return documentsArr;
-      }, [])
-      : [];
+    documents.length > 0 ?
+    documents.reduce((documentsArr, item, ind) => {
+      documentsArr.push({
+        name: item.code,
+        required: item.required,
+        jsonPath: `Properties[0].propertyDetails.purchaser[${prevOwnerIndex}].ownerDetails.ownerDocuments[${ind}]`,
+        statement: item.description
+      });
+      return documentsArr;
+    }, []) :
+    [];
   return documentsArr;
 };
 
 export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
   let documentsArr =
-    documents.length > 0
-      ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item.code,
-          required: item.required,
-          jsonPath: `Properties[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments[${ind}]`,
-          statement: item.description
-        });
-        return documentsArr;
-      }, [])
-      : [];
+    documents.length > 0 ?
+    documents.reduce((documentsArr, item, ind) => {
+      documentsArr.push({
+        name: item.code,
+        required: item.required,
+        jsonPath: `Properties[0].propertyDetails.partners[${partner}].partnerDetails.partnerDocuments[${ind}]`,
+        statement: item.description
+      });
+      return documentsArr;
+    }, []) :
+    [];
   return documentsArr;
 };
 
 //Common functions for Estimate card
 
 const getTaxValue = item => {
-  return item
-    ? item.amount
-      ? item.amount
-      : item.debitAmount
-        ? -Math.abs(item.debitAmount)
-        : item.crAmountToBePaid
-          ? item.crAmountToBePaid
-          : 0
-    : 0;
+  return item ?
+    item.amount ?
+    item.amount :
+    item.debitAmount ?
+    -Math.abs(item.debitAmount) :
+    item.crAmountToBePaid ?
+    item.crAmountToBePaid :
+    0 :
+    0;
 };
 
 const getToolTipInfo = (taxHead, LicenseData) => {
@@ -1107,7 +1266,9 @@ const getToolTipInfo = (taxHead, LicenseData) => {
 
 const getEstimateData = (ResponseData, isPaid) => {
   if (ResponseData) {
-    const { billAccountDetails } = ResponseData.billDetails[0];
+    const {
+      billAccountDetails
+    } = ResponseData.billDetails[0];
     let transformedData = billAccountDetails.reduce((result, item) => {
       if (isPaid) {
         item.accountDescription &&
@@ -1143,7 +1304,10 @@ const getEstimateData = (ResponseData, isPaid) => {
     }, []);
     transformedData = transformedData.sort((a, b) => {
       return a.order < b.order ? -1 : a.order > b.order ? 1 : a.value > b.value ? -1 : 0
-    }).map(item => ({ ...item, value: item.value.toFixed(2) }))
+    }).map(item => ({
+      ...item,
+      value: item.value.toFixed(2)
+    }))
     return transformedData
   }
 };
@@ -1154,8 +1318,11 @@ const getBillingSlabData = async (
   tenantId,
   accessories
 ) => {
-  const { accesssoryBillingSlabIds, tradeTypeBillingSlabIds } =
-    billingSlabIds || {};
+  const {
+    accesssoryBillingSlabIds,
+    tradeTypeBillingSlabIds
+  } =
+  billingSlabIds || {};
   if (accesssoryBillingSlabIds || tradeTypeBillingSlabIds) {
     const accessoryUnit =
       accesssoryBillingSlabIds &&
@@ -1173,9 +1340,14 @@ const getBillingSlabData = async (
 
     let billingData = tradeUnit && [...tradeUnit];
     accessoryUnit && (billingData = [...billingData, ...accessoryUnit]);
-    const queryObject = [
-      { key: "tenantId", value: tenantId },
-      { key: "ids", value: billingData && billingData.join(",") }
+    const queryObject = [{
+        key: "tenantId",
+        value: tenantId
+      },
+      {
+        key: "ids",
+        value: billingData && billingData.join(",")
+      }
     ];
     try {
       const response = await httpRequest(
@@ -1201,7 +1373,7 @@ const getBillingSlabData = async (
             } else {
               const count = accessories.find(
                 accessory =>
-                  item.accessoryCategory === accessory.accessoryCategory
+                item.accessoryCategory === accessory.accessoryCategory
               ).count;
               accessoriesTotal = accessoriesTotal + item.rate * count;
               result.accessoryData.push({
@@ -1212,10 +1384,15 @@ const getBillingSlabData = async (
               });
             }
             return result;
-          },
-          { tradeUnitData: [], accessoryData: [] }
+          }, {
+            tradeUnitData: [],
+            accessoryData: []
+          }
         );
-      const { accessoryData, tradeUnitData } = finalData;
+      const {
+        accessoryData,
+        tradeUnitData
+      } = finalData;
       dispatch(
         prepareFinalObject(
           "LicensesTemp[0].billingSlabData.tradeUnitData",
@@ -1243,8 +1420,7 @@ const getBillingSlabData = async (
     } catch (e) {
       dispatch(
         toggleSnackbar(
-          open,
-          {
+          open, {
             lableName: "Billing Slab error!",
             labelKey: "ERR_BILLING_SLAB_ERROR"
           },
@@ -1296,15 +1472,19 @@ export const createEstimateData = async (
   const tenantId =
     get(applicationData, "tenantId") || getQueryArg(href, "tenantId");
   const businessService = get(applicationData, "businessService", "");
-  const queryObj = [
-    { key: "tenantId", value: tenantId },
+  const queryObj = [{
+      key: "tenantId",
+      value: tenantId
+    },
     {
       key: "consumerCodes",
       value: applicationNo
     }
   ];
-  const getBillQueryObj = [
-    { key: "tenantId", value: tenantId },
+  const getBillQueryObj = [{
+      key: "tenantId",
+      value: tenantId
+    },
     {
       key: "consumerCode",
       value: applicationNo
@@ -1317,20 +1497,20 @@ export const createEstimateData = async (
   const currentStatus = applicationData.state;
   const isPAID = isApplicationPaid(currentStatus, workflowCode);
   const fetchBillResponse = await getBill(getBillQueryObj);
-  const payload = isPAID
-    ? await getReceipt(queryObj)
-    : fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
-  let estimateData = payload
-    ? isPAID
-      ? payload &&
-      payload.Payments &&
-      payload.Payments.length > 0 &&
-      getEstimateData(
-        payload.Payments[0].paymentDetails[0].bill,
-        isPAID
-      )
-      : payload && getEstimateData(payload, false)
-    : [];
+  const payload = isPAID ?
+    await getReceipt(queryObj) :
+    fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
+  let estimateData = payload ?
+    isPAID ?
+    payload &&
+    payload.Payments &&
+    payload.Payments.length > 0 &&
+    getEstimateData(
+      payload.Payments[0].paymentDetails[0].bill,
+      isPAID
+    ) :
+    payload && getEstimateData(payload, false) :
+    [];
   estimateData = estimateData || [];
   set(
     estimateData,
@@ -1339,7 +1519,9 @@ export const createEstimateData = async (
   );
   dispatch(prepareFinalObject("temp[0].estimateCardData", estimateData));
   /** Waiting for estimate to load while downloading confirmation form */
-  var event = new CustomEvent("estimateLoaded", { detail: true });
+  var event = new CustomEvent("estimateLoaded", {
+    detail: true
+  });
   window.parent.document.dispatchEvent(event);
   /** END */
   return payload;
@@ -1388,8 +1570,7 @@ export const validateFields = (
 ) => {
   const fields = get(
     state.screenConfiguration.screenConfig[screen],
-    objectJsonPath,
-    {}
+    objectJsonPath, {}
   );
   let isFormValid = true;
   for (var variable in fields) {
@@ -1400,8 +1581,7 @@ export const validateFields = (
         (fields[variable].props.disabled === undefined ||
           !fields[variable].props.disabled) && !!fields[variable].jsonPath &&
         !validate(
-          screen,
-          {
+          screen, {
             ...fields[variable],
             value: get(
               state.screenConfiguration.preparedFinalObject,
@@ -1458,7 +1638,10 @@ export const getFinancialYearDates = (format, et) => {
    *  return the dates for the current financial year */
   var date = !et ? new Date() : new Date(et);
   var curMonth = date.getMonth();
-  var financialDates = { startDate: "NA", endDate: "NA" };
+  var financialDates = {
+    startDate: "NA",
+    endDate: "NA"
+  };
   if (curMonth > 3) {
     switch (format) {
       case "dd/mm/yyyy":
@@ -1500,8 +1683,10 @@ export const getBaseURL = () => {
 export const fetchBill = async (action, state, dispatch) => {
   //For Adhoc
   // Search License
-  let queryObject = [
-    { key: "tenantId", value: getQueryArg(window.location.href, "tenantId") },
+  let queryObject = [{
+      key: "tenantId",
+      value: getQueryArg(window.location.href, "tenantId")
+    },
     {
       key: "applicationNumber",
       value: getQueryArg(window.location.href, "consumerCode")
@@ -1514,8 +1699,8 @@ export const fetchBill = async (action, state, dispatch) => {
   const applicationPayload = await getSearchApplicationsResults(queryObject);
   //get bill and populate estimate card
   const payload =
-  applicationPayload &&
-  applicationPayload.Applications &&
+    applicationPayload &&
+    applicationPayload.Applications &&
     (await createEstimateData(
       applicationPayload.Applications[0],
       dispatch,
@@ -1523,7 +1708,7 @@ export const fetchBill = async (action, state, dispatch) => {
     ));
   //set in redux to be used for adhoc
   applicationPayload &&
-  applicationPayload.Applications &&
+    applicationPayload.Applications &&
     dispatch(prepareFinalObject("Applications[0]", applicationPayload.Applications[0]));
 
   //initiate receipt object
@@ -1738,7 +1923,7 @@ export const updateDropDowns = async (
           "applyScreenMdmsData.common-masters.StructureSubTypeTransformed",
           get(
             state.screenConfiguration.preparedFinalObject.applyScreenMdmsData[
-            "common-masters"
+              "common-masters"
             ],
             `StructureType.${structType.split(".")[0]}`,
             []
@@ -2093,8 +2278,7 @@ const getAllBillingSlabs = async tenantId => {
     "post",
     `/tl-calculator/billingslab/_search?tenantId=${tenantId}`,
     "_search",
-    [],
-    {}
+    [], {}
   );
   return payload;
 };
@@ -2105,8 +2289,12 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
     payload.billingSlab &&
     payload.billingSlab.reduce(
       (acc, item) => {
-        let accessory = { active: true };
-        let tradeType = { active: true };
+        let accessory = {
+          active: true
+        };
+        let tradeType = {
+          active: true
+        };
         if (item.accessoryCategory && item.tradeType === null) {
           accessory.code = item.accessoryCategory;
           accessory.uom = item.uom;
@@ -2123,8 +2311,10 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
             acc.tradeTypeData.push(tradeType);
         }
         return acc;
-      },
-      { accessories: [], tradeTypeData: [] }
+      }, {
+        accessories: [],
+        tradeTypeData: []
+      }
     );
 
   const accessories = getUniqueItemsFromArray(
@@ -2135,10 +2325,12 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
     processedData.tradeTypeData,
     "structureType"
   );
-  structureTypes = commonTransform(
-    {
+  structureTypes = commonTransform({
       StructureType: structureTypes.map(item => {
-        return { code: item.structureType, active: true };
+        return {
+          code: item.structureType,
+          active: true
+        };
       })
     },
     "StructureType"
@@ -2148,7 +2340,10 @@ export const getAllDataFromBillingSlab = async (tenantId, dispatch) => {
     "licenseType"
   );
   licenseTypes = licenseTypes.map(item => {
-    return { code: item.licenseType, active: true };
+    return {
+      code: item.licenseType,
+      active: true
+    };
   });
   dispatch(
     prepareFinalObject(
@@ -2226,8 +2421,7 @@ export const setFilteredTradeTypes = (
           ) {
             tradeTypeList.push({
               ...item,
-              applicationDocument:
-                mdmsTTTransformed[item.code].applicationDocument
+              applicationDocument: mdmsTTTransformed[item.code].applicationDocument
             });
           }
         });
@@ -2242,8 +2436,9 @@ export const setFilteredTradeTypes = (
             )
               return true;
           });
-        let tradeTypeTransformed = commonTransform(
-          { TradeType: [...filteredList] },
+        let tradeTypeTransformed = commonTransform({
+            TradeType: [...filteredList]
+          },
           "TradeType"
         );
         dispatch(
@@ -2293,11 +2488,11 @@ export const applyForm = (state, dispatch) => {
 
   if (isTradeDetailsValid) {
     window.location.href =
-      process.env.NODE_ENV === "production"
-        ? `/citizen/tradelicense-citizen/apply?tenantId=${tenantId}`
-        : process.env.REACT_APP_SELF_RUNNING === true
-          ? `/egov-ui-framework/tradelicense-citizen/apply?tenantId=${tenantId}`
-          : `/tradelicense-citizen/apply?tenantId=${tenantId}`;
+      process.env.NODE_ENV === "production" ?
+      `/citizen/tradelicense-citizen/apply?tenantId=${tenantId}` :
+      process.env.REACT_APP_SELF_RUNNING === true ?
+      `/egov-ui-framework/tradelicense-citizen/apply?tenantId=${tenantId}` :
+      `/tradelicense-citizen/apply?tenantId=${tenantId}`;
   }
 };
 
@@ -2323,7 +2518,10 @@ export const getTradeTypeDropdownData = tradeTypes => {
     tradeTypes &&
     tradeTypes.TradeType &&
     Object.keys(tradeTypes.TradeType).map(item => {
-      return { code: item, active: true };
+      return {
+        code: item,
+        active: true
+      };
     })
   );
 };
