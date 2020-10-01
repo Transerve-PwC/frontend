@@ -360,7 +360,7 @@ class WorkFlowContainer extends React.Component {
     if(!moduleName) {
       const {dataPath, preparedFinalObject} = this.props
       let _data = get(preparedFinalObject, dataPath, []);
-      businessService = _data[0].businessService
+      businessService = _data[0].workFlowBusinessService
     }
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];
