@@ -91,7 +91,7 @@ if(NULMSEPRequest && ( !NULMSEPRequest.hasOwnProperty("gender") || !NULMSEPReque
 }
 
     if (!isSepDetailsValid) {     
-      isFormValid = false;
+      isFormValid = true;
     }
     const status = window.localStorage.getItem("SEP_Status");
 

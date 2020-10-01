@@ -301,7 +301,8 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
   //       : false
   //     : false);
 
-
+/*withdraw button hide*/
+/*
   set(
     action,
     "screenConfig.components.div.children.footer.children.withdraw.visible",
@@ -317,30 +318,7 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
         : false
       : false
   );
-
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footer.children.nextButton.visible",
-  //   checkForRole(roles, 'JEX') || checkForRole(roles, 'OSD')
-  //     ? localStorageGet('pms_iswithdrawn') !== "yes"
-  //       ? true
-  //       : false
-  //     : checkForRole(roles, 'SUPERINTENDENT')
-  //       ? true
-  //       : false
-  // );
-
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footer.children.reassign.visible",
-  //   checkForRole(roles, 'SUPERINTENDENT') || checkForRole(roles, 'OSD') || checkForRole(roles, 'CA')
-  //     ? true
-  //     : checkForRole(roles, 'JEX')
-  //       ? localStorageGet('pms_iswithdrawn') !== "yes"
-  //         ? true
-  //         : false
-  //       : false
-  // );
+*/
   //fwd
   set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
   if (localStorageGet('pms_iswithdrawn') !== "yes") {

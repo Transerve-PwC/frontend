@@ -90,6 +90,8 @@ import {
     beforeInitScreen: (action, state, dispatch) => {
             // fetching MDMS data
       getData(action, state, dispatch);
+      dispatch(prepareFinalObject(`documentsUploadRedux`,{}));
+      dispatch(prepareFinalObject("searchScreen", {}));
       return action;
     },
     components: {

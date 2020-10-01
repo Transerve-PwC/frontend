@@ -25,7 +25,7 @@ export const documentDetails = getCommonCard({
   break: getBreak(),
   documentList: {
     uiFramework: "custom-containers-local",
-    moduleName: "egov-opms",
+    moduleName: "egov-nulm",
     componentPath: "DocumentListContainer",
     required:true,
     props: {      
@@ -35,7 +35,8 @@ export const documentDetails = getCommonCard({
       },
       description: "Only .jpg and .pdf files. 1MB max file size.",
       inputProps: {
-        accept: ".pdf,.png,.jpeg"
+         accept: ".pdf,.png,.jpeg"
+       // accept: ".png,.jpeg,.jpg"
       },
       maxFileSize: 1000
     },
