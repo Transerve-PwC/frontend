@@ -30,7 +30,8 @@ import {
   prepareDocumentTypeObj,
   prepareDocumentTypeObjMaster,
   prepareCompanyDocumentTypeObjMaster,
-  preparePrevOwnerDocumentTypeObjMaster
+  preparePrevOwnerDocumentTypeObjMaster,
+  prepareBiddersDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -43,7 +44,8 @@ import {
 } from "../../../../ui-utils/commons";
 import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import * as previousDocsData from './applyResource/previousOwnerDocs.json'
+import * as previousDocsData from './applyResource/previousOwnerDocs.json';
+import * as biddersListData from './applyResource/biddersListDoc.json'
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -204,6 +206,31 @@ const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplicationsPrevOwnerDocs", previousOwnerDocs))
 }
 
+const setBiddersDoc = (action, state, dispatch) => {
+  const {
+    EstatePropertyService
+  } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
+  const {
+    biddersListDoc = []
+  } = EstatePropertyService || {}
+
+  const findMasterItem = biddersListDoc.find(item => item.code === "MasterEst")
+  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+
+  var documentTypes;
+  documentTypes = prepareBiddersDocumentTypeObjMaster(masterDocuments);
+
+  dispatch(
+    handleField(
+      "apply",
+      `components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList`,
+      "props.inputProps",
+      masterDocuments
+    )
+  );
+  dispatch(prepareFinalObject(`temp[0].documents`, documentTypes))
+}
+
 const getCompanyDocs = (action, state, dispatch, owner = 0) => {
   const {
     EstatePropertyService
@@ -341,7 +368,7 @@ const getData = async (action, state, dispatch) => {
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
   // getCompanyDocs(state, dispatch)
   setPrevOwnerDocs(action, state, dispatch);
-
+  setBiddersDoc(action, state, dispatch);
 }
 
 const applyEstate = {

@@ -11,7 +11,8 @@ import {
 } from "../ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
-  toggleSnackbar
+  toggleSnackbar,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTranslatedLabel,
@@ -949,5 +950,121 @@ export const download = (receiptQueryString, Licenses, data, mode = "download") 
     })
   } catch (exception) {
     alert('Some Error Occured while downloading Receipt!');
+  }
+}
+
+export const getExcelData = async (excelUrl, fileStoreId) => {
+  const queryObject = [
+    {key: "tenantId", value: "ch"},
+    {key: "fileStoreId", value: fileStoreId}
+  ]
+  try {
+    store.dispatch(toggleSpinner());
+    const response = await httpRequest(
+      "post",
+      excelUrl,
+      "",
+      queryObject
+    )
+    if(!!response) {
+      console.log(response);
+      let response = {
+        "ResponseInfo": {
+        "apiId": "Rainmaker",
+        "ver": ".01",
+        "ts": null,
+        "resMsgId": "uief87324",
+        "msgId": "20170310130900|en_IN",
+        "status": "successful"
+        },
+        "Auctions": [
+        {
+        "id": "3e6aaff5-02d8-47c2-9d16-bcadd7b9cb8c",
+        "propertyId": "1",
+        "tenantId": "Hello",
+        "fileNumber": "File-1237",
+        "auctionDescription": "Can be ignored ",
+        "participatedBidders": "a",
+        "depositedEMDAmount": 10000.0,
+        "depositDate": 1599264000000,
+        "emdValidityDate": null,
+        "refundStatus": "",
+        "auditDetails": {
+        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "createdTime": 1601298961101,
+        "lastModifiedTime": 1601298961101
+        }
+        },
+        {
+        "id": "752890a0-3cce-4f3a-84aa-cb6f6ce3c2e7",
+        "propertyId": "1",
+        "tenantId": "Hello",
+        "fileNumber": "File-1237",
+        "auctionDescription": "",
+        "participatedBidders": "b",
+        "depositedEMDAmount": 10000.0,
+        "depositDate": 1599264000000,
+        "emdValidityDate": null,
+        "refundStatus": "",
+        "auditDetails": {
+        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "createdTime": 1601298961101,
+        "lastModifiedTime": 1601298961101
+        }
+        },
+        {
+        "id": "3795ba93-28de-400d-b347-9a55061c405a",
+        "propertyId": "1",
+        "tenantId": "Hello",
+        "fileNumber": "File-1237",
+        "auctionDescription": "",
+        "participatedBidders": "c",
+        "depositedEMDAmount": 10000.0,
+        "depositDate": 1599264000000,
+        "emdValidityDate": null,
+        "refundStatus": "",
+        "auditDetails": {
+        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "createdTime": 1601298961101,
+        "lastModifiedTime": 1601298961101
+        }
+        },
+        {
+        "id": "ef512c07-b1b0-4b07-a6d2-bd5dd8622aa8",
+        "propertyId": "1",
+        "tenantId": "Hello",
+        "fileNumber": "File-1237",
+        "auctionDescription": "",
+        "participatedBidders": "d",
+        "depositedEMDAmount": 10000.0,
+        "depositDate": 1599264000000,
+        "emdValidityDate": null,
+        "refundStatus": "",
+        "auditDetails": {
+        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
+        "createdTime": 1601298961101,
+        "lastModifiedTime": 1601298961101
+        }
+        }
+        ]
+        }
+        let { Auctions } = response;
+
+        // populateBiddersTable({auctions: Auctions})
+    }
+    store.dispatch(toggleSpinner());
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+    store.dispatch(toggleSpinner());
   }
 }
