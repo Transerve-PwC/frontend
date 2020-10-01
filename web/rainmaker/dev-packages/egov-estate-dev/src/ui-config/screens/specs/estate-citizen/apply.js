@@ -151,7 +151,7 @@ const commonApply = {
         // await getPropertyData(action, state, dispatch)
         const components = await getData(action, state, dispatch)
         dispatch(toggleSpinner())
-        setTimeout(() => updateReadOnlyForAllFields(action, state, dispatch), 1000)
+        setTimeout(() => updateReadOnlyForAllFields(action, state, dispatch), 100)
         return {
           "type": "INIT_SCREEN",
           "screenKey": "apply",

@@ -483,7 +483,7 @@
           },
           {
             "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "EXPANSION_DETAIL",
+            "type": "TABLE",
             "sourceJsonPath": "property.propertyDetails.owners",
             "fields": [
               {

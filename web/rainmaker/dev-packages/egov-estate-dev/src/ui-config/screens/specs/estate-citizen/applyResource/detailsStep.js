@@ -1,5 +1,5 @@
 import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+import { getLocaleLabels, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import {getOptions} from '../dataSources'
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -57,7 +57,7 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
    */
   const objectValues = Object.values(_conf);
   const fields = objectValues.reduce((prev, curr) => {
-    const fieldItems = !!curr.children ? curr.children.cardContent.children.details_container.children : {};
+    const fieldItems = !!curr.children && curr.componentPath !== "Div" ? curr.children.cardContent.children.details_container.children : {};
     prev = [...prev, ...Object.values(fieldItems)]
     return prev
   }, []).filter(item => item.componentPath !== "Div")
@@ -288,12 +288,59 @@ const expansionSection = (section) => {
   }
 }
 
+const tableSection = (section, state) => {
+  const {fields =[], sourceJsonPath, header} = section;
+  let data = get(state.screenConfiguration.preparedFinalObject, sourceJsonPath) || [];
+  data = data.map(datum => {
+    return fields.reduce((prevField, currField) => {
+      return {...prevField, [getLocaleLabels(currField.label, currField.label)]: get(datum, currField.jsonPath)}
+    }, {})
+  })
+  return {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    children: {
+    middleDiv: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    props: {
+      style: { height: 20 }
+    }
+    } , table: {
+    uiFramework: "custom-molecules",
+    componentPath: "Table",
+    visible: true,
+    props: {
+      columns: fields.map(item => getLocaleLabels(item.label, item.label)),
+      options: {
+          filter: false,
+          download: false,
+          responsive: "stacked",
+          selectableRows: false,
+          hover: true,
+          pagination:false,
+          print:false,
+          search:false,
+          viewColumns: false,
+        onRowClick: (row, index) => {
+        },
+        },
+        customSortColumn: {
+        },
+        title: getLocaleLabels(header, header),
+        data
+    }
+  }
+  }
+  }
+}
+
 export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
     const {sections = []} = format_config
     const uiConfig = await arrayReduce(sections, async (acc, section) => {
         return {
         ...acc, 
-        [section.header]: section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
+        [section.header]: section.type === "TABLE" ? tableSection(section, state) : section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
             details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, state)
         })
