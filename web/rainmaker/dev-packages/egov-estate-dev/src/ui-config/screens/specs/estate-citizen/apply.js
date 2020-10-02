@@ -66,6 +66,8 @@ const getData = async (action, state, dispatch) => {
       stepsData
     );
 
+    const applyFooter = footer;
+
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
     let third_step = await setThirdStep({state, dispatch, applicationType})
@@ -128,7 +130,7 @@ const getData = async (action, state, dispatch) => {
             },
             visible: false
           } ,
-          footer
+          footer: applyFooter
         }
       }
     }

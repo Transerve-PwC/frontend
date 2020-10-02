@@ -97,8 +97,9 @@
                         "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
-                        "label": "ES_AGE_LABEL",
-                        "jsonPath": "Applications[0].applicationDetails.transferee.age"
+                        "label": "ES_DOB_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                        "type": "date"
                     },
                     {
                         "label": "ES_ADDRESS_LABEL",
@@ -121,8 +122,9 @@
                         "jsonPath": "name"
                     },
                     {
-                        "label": "ES_AGE_LABEL",
-                        "jsonPath": "age"
+                        "label": "ES_DOB_LABEL",
+                        "jsonPath": "dob",
+                        "type": "date"
                     },
                     {
                         "label": "ES_ADDRESS_LABEL",

@@ -65,15 +65,17 @@ const getAcknowledgementCard = (
     }
   } else {
     if(!!type) {
-      const label = `ES_${type.toUpperCase()}_${purpose.toUpperCase()}_MESSAGE`
-      header = {
-        labelName: `${label}_SUBMIT_MESSAGE`,
-        labelKey: `${label}_SUBMIT_MESSAGE`
-      }
-    } else if(purpose === "pay") {
-      header = {
-        labelName: "Payment is collected successfully",
-        labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
+      if(purpose === "pay") {
+        header = {
+          labelName: "Payment is collected successfully",
+          labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
+        }
+      } else {
+        const label = `ES_${type.toUpperCase()}_${purpose.toUpperCase()}_MESSAGE`
+        header = {
+          labelName: `${label}`,
+          labelKey: `${label}`
+        }
       }
     } else {
       header = {}
@@ -119,11 +121,11 @@ const getAcknowledgementCard = (
       )
     };
   } else if(status === "failure" && purpose === "pay") {
+    const commonHeader = !!type ? 
+    {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
+    {}
     return {
-      header: getCommonHeader({
-        labelName: `Estate`,
-        labelKey: "ES_SERVICES_HEADER",
-      }),
+      header: getCommonHeader(commonHeader),
       applicationSuccessCard: {
         uiFramework: "custom-atoms",
         componentPath: "Div",

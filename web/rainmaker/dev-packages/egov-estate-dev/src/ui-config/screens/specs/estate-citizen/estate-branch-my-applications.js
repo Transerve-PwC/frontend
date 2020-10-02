@@ -27,9 +27,6 @@ import get from "lodash/get";
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {
-  WF_PROPERTY_MASTER
-} from "../../../../ui-constants";
 
 const header = getCommonHeader({
   labelName: "My Applications",
@@ -39,7 +36,6 @@ const header = getCommonHeader({
     root: "common-header-cont"
   }
 });
-
 
 const searchApplications = (state, dispatch) => {
   const preparedFinalObject = get(state, "screenConfiguration.preparedFinalObject");
@@ -85,26 +81,24 @@ const clearSearch = (state, dispatch) => {
   }
 }
 
-
-
 const searchCard = getCommonCard({
   subHeader: getCommonTitle({
     labelName: "Search Application",
-    labelKey: "ES_SEARCH_RESULTS_HEADING"
+    labelKey: "ES_SEARCH_APPLICATION"
   }),
   subParagraph: getCommonParagraph({
     labelName: "Provide at least one parameter to search for an application",
-    labelKey: "ES_HOME_SEARCH_RESULTS_DESC"
+    labelKey: "ES_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATIONS"
   }),
   statusApplicationNumberContainer: getCommonContainer({
     applicationNo: getTextField({
       label: {
         labelName: "Application No.",
-        labelKey: "ES_HOME_SEARCH_RESULTS_APP_NO_LABEL"
+        labelKey: "ES_APPLICATION_NUMBER_LABEL"
       },
       placeholder: {
         labelName: "Enter Application No.",
-        labelKey: "ES_HOME_SEARCH_RESULTS_APP_NO_PLACEHOLDER"
+        labelKey: "ES_APPLICATION_NUMBER_PLACEHOLDER"
       },
       gridDefination: {
         xs: 12,
@@ -118,11 +112,11 @@ const searchCard = getCommonCard({
     status: getSelectField({
       label: {
         labelName: "Application status",
-        labelKey: "ES_HOME_SEARCH_RESULTS_APP_STATUS_LABEL"
+        labelKey: "ES_APPLICATION_STATUS_LABEL"
       },
       placeholder: {
         labelName: "Select Application Status",
-        labelKey: "ES_HOME_SEARCH_RESULTS_APP_STATUS_PLACEHOLDER"
+        labelKey: "ES_APPLICATION_STATUS_PLACEHOLDER"
       },
       required: false,
       jsonPath: "searchScreen.status",
@@ -246,15 +240,15 @@ const screenConfig = {
           visible: true,
           props: {
             contents: [{
-                label: "ES_COMMON_TABLE_COL_APPLICAITON_NUMBER",
+                label: "ES_APPLICATION_NUMBER_LABEL",
                 jsonPath: "applicationNumber"
               },
               {
-                label: "ES_COMMON_TABLE_COL_FILE_NO",
+                label: "ES_FILE_NUMBER_LABEL",
                 jsonPath: "property.fileNumber"
               },
               {
-                label: "ES_COMMON_TABLE_COL_STATUS",
+                label: "ES_APPLICATION_STATUS_LABEL",
                 jsonPath: "state"
               }
             ],

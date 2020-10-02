@@ -561,11 +561,11 @@
                 "errorMessage": "ES_ERR_LEGAL_BENEFICIARY_NAME"
               },
               {
-                "label": "ES_AGE_LABEL",
-                "placeholder": "ES_AGE_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferee.age",
-                "path": "transferee.age"
+                "label": "ES_DOB_LABEL",
+                "placeholder": "ES_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                "path": "transferee.dob"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
@@ -604,14 +604,15 @@
                 "placeholder": "ES_WITNESS_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].name",
-                "path": "witness.name"
+                "path": "witness.name",
+                "errorMessage": "ES_ERR_WITNESS_NAME"
               },
               {
-                "label": "ES_AGE_LABEL",
-                "placeholder": "ES_AGE_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.witness[0].age",
-                "path": "witness.age"
+                "label": "ES_DOB_LABEL",
+                "placeholder": "ES_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.witness[0].dob",
+                "path": "witness.dob"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
@@ -619,14 +620,17 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].address",
-                "path": "witness.address"
+                "path": "witness.address",
+                "errorMessage": "ES_ERR_ADDRESS"
               },
               {
                 "label": "ES_MOBILE_NUMBER_LABEL",
                 "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].mobileNo",
-                "path": "witness.mobileNo"
+                "path": "witness.mobileNo",
+                "pattern": "MobileNo",
+                "errorMessage": "ES_ERR_MOBILE_NUMBER"
               }
             ]
           }

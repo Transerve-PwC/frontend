@@ -487,7 +487,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
 };
 
 export const getButtonVisibility = (status, button) => {
-  if (status === "PENDING_PAYMENT" && button === "PENDINGPAYMENT") return true;
+  if (status === "ES_PENDING_PAYMENT" && button === "PENDINGPAYMENT") return true;
   return false;
 };
 
@@ -1471,7 +1471,7 @@ const getBillingSlabData = async (
 
 const isApplicationPaid = (currentStatus, workflowCode) => {
   let isPAID = false;
-  if (currentStatus === "PENDING_PAYMENT") {
+  if (currentStatus === "ES_PENDING_PAYMENT") {
     return isPAID;
   }
   const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
@@ -1503,17 +1503,15 @@ export const createEstimateData = async (
   dispatch,
   href = {}
 ) => {
-  const workflowCode = get(applicationData, "businessService")
+  const workflowCode = get(applicationData, "workFlowBusinessService")
   const applicationNo =
     get(applicationData, "applicationNumber") ||
     getQueryArg(href, "applicationNumber");
   const tenantId =
     get(applicationData, "tenantId") || getQueryArg(href, "tenantId");
-  const businessService = get(applicationData, "businessService", "");
-  const queryObj = [{
-      key: "tenantId",
-      value: tenantId
-    },
+  const businessService = get(applicationData, "billingBusinessService", "");
+  const queryObj = [
+    { key: "tenantId", value: tenantId },
     {
       key: "consumerCodes",
       value: applicationNo
@@ -2652,6 +2650,12 @@ export const getTextToLocalMapping = label => {
         "TL_COMMON_TABLE_COL_STATUS",
         localisationLabels
       );
+    case "Application Status": 
+        return getLocaleLabels(
+          "Application Status",
+          "ES_APPLICATION_STATUS_LABEL",
+          localisationLabels
+        )
     case "INITIATED":
       return getLocaleLabels("Initiated,", "TL_INITIATED", localisationLabels);
     case "APPLIED":
@@ -2728,7 +2732,7 @@ export const getTextToLocalMapping = label => {
     case "Application Number":
       return getLocaleLabels(
         "Application Number",
-        "ESTATE_COMMON_TABLE_COL_APPLICATION_NO",
+        "ES_APPLICATION_NUMBER_LABEL",
         localisationLabels
       )
     case "Action":
@@ -2758,7 +2762,7 @@ export const getTextToLocalMapping = label => {
     case "Site Number":
       return getLocaleLabels(
         "Site Number",
-        "ES_COMMON_TABLE_COL_SITE_NUMBER",
+        "ES_SITE_NO_LABEL",
         localisationLabels
       );
     case "Owner Name":

@@ -119,11 +119,11 @@ import {
   const applicationNumberField = {
     label: {
         labelName: "Application Number",
-        labelKey: "ESTATE_APPLICATION_NUMBER_LABEL"
+        labelKey: "ES_APPLICATION_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Enter Application Number",
-        labelKey: "ESTATE_APPLICATION_NUMBER_PLACEHOLDER"
+        labelKey: "ES_APPLICATION_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -136,11 +136,11 @@ import {
   const FileNameField = {
     label: {
         labelName: "File Name",
-        labelKey: "ESTATE_FILE_NAME_LABEL"
+        labelKey: "ES_FILE_NAME_LABEL"
     },
     placeholder: {
         labelName: "Enter File Name",
-        labelKey: "ESTATE_FILE_NAME_PLACEHOLDER"
+        labelKey: "ES_FILE_NAME_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -153,11 +153,11 @@ import {
   const FileNumberField = {
     label: {
         labelName: "File Number",
-        labelKey: "ESTATE_FILE_NUMBER_LABEL"
+        labelKey: "ES_FILE_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Enter File Name",
-        labelKey: "ESTATE_FILE_NUMBER_PLACEHOLDER"
+        labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,
@@ -239,12 +239,12 @@ import {
   
   const statusField = {
     label: {
-      labelName: "Status",
-      labelKey: "TL_COMMON_TABLE_COL_STATUS"
+      labelName: "Application Status",
+      labelKey: "ES_APPLICATION_STATUS_LABEL"
     },
     placeholder: {
-      labelName: "Select Status",
-      labelKey: "TL_COMMON_TABLE_COL_STATUS_PLACEHOLDER"
+      labelName: "Select Applicaton Status",
+      labelKey: "ES_APPLICATION_STATUS_PLACEHOLDER"
     },
     required: false,
     jsonPath: "searchScreen.state",
@@ -298,7 +298,7 @@ import {
       children: {
         buttonLabel: getLabel({
           labelName: "Search",
-          labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+          labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
         })
       }
     }
@@ -338,8 +338,8 @@ import {
 
   export const estateApplicationSearch = getCommonCard({
     subParagraph: getCommonParagraph({
-      labelName: "Please provide atleast one parameter to search Property",
-      labelKey: "RP_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_PROPERTY_LABEL"
+      labelName: "Please provide atleast one parameter to search Applications",
+      labelKey: "ES_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATIONS"
     }),
     colonyContainer: getCommonContainer({
       fileNumber: getTextField(FileNumberField),
