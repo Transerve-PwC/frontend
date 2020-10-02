@@ -131,6 +131,7 @@ class DocumentList extends Component {
       prepareFinalObject
     } = this.props;
     let index = 0;
+   
     documentsList.forEach(docType => {
       docType.cards &&
         docType.cards.forEach(card => {
@@ -301,6 +302,7 @@ class DocumentList extends Component {
             }
             onButtonClick={() => this.onUploadClick(key)}
             inputProps={this.props.inputProps}
+            doctypename ={card.name}
             buttonLabel={this.props.buttonLabel}
           />
         </Grid>

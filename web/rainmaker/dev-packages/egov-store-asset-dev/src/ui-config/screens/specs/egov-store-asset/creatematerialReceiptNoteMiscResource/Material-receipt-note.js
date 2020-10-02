@@ -108,7 +108,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
     ),
     MaterialReceiptNoteContainer: getCommonContainer({
       StoreName: {
-        ...getSelectField({
+        ...getTextField({
           label: {
             labelName: " Store Name",
             labelKey: "STORE_DETAILS_STORE_NAME"
@@ -119,32 +119,32 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
           },
           required: true,
           errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
-          jsonPath: "materialReceipt[0].receivingStore.code",
-          sourceJsonPath: "store.stores",
+          jsonPath: "materialReceipt[0].receivingStore.name",
+         // sourceJsonPath: "store.stores",
             props: {
               disabled: true, 
-              optionValue: "code",
-              optionLabel: "name",
+              // optionValue: "code",
+              // optionLabel: "name",
             },
         }),
         beforeFieldChange: (action, state, dispatch) => {
-          let store = get(
-            state.screenConfiguration.preparedFinalObject,
-            `store.stores`,
-            []
-          ); 
-          // call api to get mrnNumber List
-          getmrnNumber(action,state, dispatch,action.value)
-          store =  store.filter(x=> x.code === action.value) 
-          if(store && store[0])  
-          {
-            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name));           
+          // let store = get(
+          //   state.screenConfiguration.preparedFinalObject,
+          //   `store.stores`,
+          //   []
+          // ); 
+          // // call api to get mrnNumber List
+          // getmrnNumber(action,state, dispatch,action.value)
+          // store =  store.filter(x=> x.code === action.value) 
+          // if(store && store[0])  
+          // {
+          //   dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name));           
            
-          }
-          else{
+          // }
+          // else{
 
 
-          }
+          // }
          
           
         }

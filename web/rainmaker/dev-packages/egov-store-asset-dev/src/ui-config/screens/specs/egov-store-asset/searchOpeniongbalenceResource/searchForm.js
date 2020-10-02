@@ -15,7 +15,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["financialYear","storeName",];
+  const textFields = ["financialYear","storeName","mrnNumber",];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-opening-balence.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -43,7 +43,20 @@ export const searchForm = getCommonCard({
     labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
   }),
   searchFormContainer: getCommonContainer({
-
+    mrnNumber: getTextField({
+      label: { labelName: "Material Receipt Number", labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER" },
+      placeholder: {
+        labelName: "Material Receipt Number",
+        labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER",
+      },
+      required: false,
+      jsonPath: "searchScreen.mrnNumber",
+      gridDefination: {
+        xs: 12,
+        sm: 4,
+      },
+     
+    }),
     financialYear: getSelectField({
       label: { labelName: "Financial Year", labelKey: "STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR"},
       placeholder: {

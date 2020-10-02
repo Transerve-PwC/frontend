@@ -316,10 +316,6 @@ if(parseInt(paymentValid) == 0 || paymentValid === ""){
   isPaymentAmountValid = false
 }
 
-if(paymentValid.length > 8 || paymentValid.length === 0){
-  isAmountValid = false
-}
-
 if (isFormValid && isDateValid && isPaymentAmountValid) {
 moveToSuccess(res.NoticeApplications[0], dispatch, RECOVERY_NOTICE);
 }
@@ -353,17 +349,7 @@ if (!isPaymentAmountValid) {
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
-}  
-if (!isAmountValid) {
-  
-  let errorMessage = {
-    labelName:
-        "Please enter Amount between 1 and 8 digits!",
-    labelKey: "ERR_AMOUNT_BETWEEN_1_AND_8_DIGITS"
-};
-
-dispatch(toggleSnackbar(true, errorMessage, "warning"));
-}   
+}    
 }
 
 const callBackForNextViolationnoticegeneration = async(state, dispatch) => {

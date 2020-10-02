@@ -292,6 +292,15 @@ class WorkFlowContainer extends React.Component {
           },
           "error"
         );
+      }else if(moduleName === "NewWS1" || moduleName === "NewSW1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL" ){
+        toggleSnackbar(
+          true,
+          {
+            labelName: "Workflow update error!",
+            labelKey: e.message
+          },
+          "error"
+        ); 
       } else {
         toggleSnackbar(
           true,
@@ -492,6 +501,7 @@ class WorkFlowContainer extends React.Component {
             const {WaterConnection} = preparedFinalObject;
             let inWorkflow = false ;
             inWorkflow = WaterConnection && WaterConnection[0].inWorkflow;
+            const connectionUsagesType = WaterConnection && WaterConnection[0].connectionUsagesType;
             if(inWorkflow){
               actions = [];
             }
@@ -501,7 +511,13 @@ class WorkFlowContainer extends React.Component {
             else if(status === "TEMPORARY_DISCONNECTED"){
               actions = actions.filter(item => item.buttonLabel === 'REACTIVATE_CONNECTION'); 
             }
-            else {
+            else if (moduleName === "WS_TUBEWELL"){
+              actions = actions.filter(item => item.buttonLabel === 'UPDATE_CONNECTION_HOLDER_INFO');
+            }
+            else if(connectionUsagesType && connectionUsagesType==="COMMERCIAL"){
+              actions = actions.filter(item => item.buttonLabel !== 'REACTIVATE_CONNECTION' && item.buttonLabel !== 'CONNECTION_CONVERSION'&& item.buttonLabel !== 'APPLY_FOR_REGULAR_INFO'); 
+            } 
+            else{
               actions = actions.filter(item => item.buttonLabel !== 'REACTIVATE_CONNECTION' && item.buttonLabel !== 'APPLY_FOR_REGULAR_INFO'); 
             }
 
@@ -574,7 +590,7 @@ class WorkFlowContainer extends React.Component {
       // });
     }
 
-    if(businessService=='NewWS1'){
+    if(businessService=='NewWS1' || businessService ==='WS_RENAME' ||businessService === "WS_CONVERSION" || businessService === "WS_DISCONNECTION" || businessService === "WS_TUBEWELL"){
       const userRoles = JSON.parse(getUserInfo()).roles;
       const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
       const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;

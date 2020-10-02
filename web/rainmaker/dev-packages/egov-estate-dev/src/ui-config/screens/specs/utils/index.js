@@ -1,7 +1,7 @@
 import {
   getLabel,
   getTextField,
-  getCommonSubHeader
+  getCommonSubHeader, getCommonHeader, getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import {
@@ -47,6 +47,24 @@ import axios from 'axios';
 import {
   getSearchApplicationsResults
 } from "../../../../ui-utils/commons";
+
+export const getCommonApplyHeader = ({label, number}) => {
+  return getCommonContainer({
+    header: getCommonHeader({
+      labelName: label,
+    labelKey: label
+    }),
+    applicationNumber : {
+      uiFramework: "custom-atoms-local",
+      moduleName: "egov-estate",
+      componentPath: "ApplicationNoContainer",
+      props: {
+        number
+      },
+      visible: !!number
+    }
+  })
+}
 
 export const getCommonApplyFooter = children => {
   return {

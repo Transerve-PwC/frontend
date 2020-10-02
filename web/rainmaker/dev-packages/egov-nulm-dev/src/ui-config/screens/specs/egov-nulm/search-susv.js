@@ -65,7 +65,8 @@ import {
     beforeInitScreen: (action, state, dispatch) => {
             // fetching MDMS data
       getData(action, state, dispatch);
-      dispatch(prepareFinalObject("NulmSusvRequest", {}));  
+      dispatch(prepareFinalObject("NulmSusvRequest", {}));
+      dispatch(prepareFinalObject(`documentsUploadRedux`,{}));  
       dispatch(prepareFinalObject("searchScreen", {}));
       return action;
     },

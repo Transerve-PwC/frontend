@@ -474,10 +474,15 @@ import {
                   );
                   if (action.value === "Self") {
                     const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
+                    if(NulmSuhCitizenNGORequest.shelterRequestedForPerson !== undefined)
+                    {
+
+                    
                     if(NulmSuhCitizenNGORequest && NulmSuhCitizenNGORequest.shelterRequestedForPerson)
                     {
                      dispatch( handleField("createSuh", nomineeNamePath, "props.value",NulmSuhCitizenNGORequest.shelterRequestedForPerson));
                     }
+                  }
                  }
                  if (action.value === "Others") {
                    
@@ -537,10 +542,13 @@ dispatch( handleField("createSuh", nomineeNamePath, "props.value",""));
     beforeInitScreen: (action, state, dispatch) => {
 
        const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
+       if(NulmSuhCitizenNGORequest.shelterRequestedForPerson !== undefined)
+       {
        if(!NulmSuhCitizenNGORequest &&  !NulmSuhCitizenNGORequest.shelterRequestedForPerson)
        {
         dispatch(prepareFinalObject("NulmSuhCitizenNGORequest.nominatedBy", 'Self'));
        }
+      }
        
       return action;
     },

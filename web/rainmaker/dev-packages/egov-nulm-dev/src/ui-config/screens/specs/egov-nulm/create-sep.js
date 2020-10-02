@@ -142,7 +142,7 @@ const screenConfig = {
   name: `create-sep`,
   // hasBeforeInitAsync:true,
   beforeInitScreen: (action, state, dispatch) => {
-
+    
     const mdmsDataStatus = getMdmsData(state, dispatch);
     if(state.screenConfiguration.preparedFinalObject && state.screenConfiguration.preparedFinalObject.NULMSEPRequest){
 
@@ -164,6 +164,9 @@ const screenConfig = {
       dispatch(prepareFinalObject(`NULMSEPRequest.disabilityCertificate`, "NO" ));
     }
   }
+
+  
+
     return action;
   },
 

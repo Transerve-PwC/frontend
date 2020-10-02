@@ -3,6 +3,7 @@ import {
     getCommonHeader,
     getLabel,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
+  import { getCommonApplyFooter, validateFields } from "../utils";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import set from "lodash/set";
@@ -16,6 +17,62 @@ import { masterViewFooter } from "./viewopeningbalenceResource/footer";
 import { getOpeningBalanceData } from "./viewopeningbalenceResource/functions";
   const hasButton = getQueryArg(window.location.href, "hasButton");
   let enableButton = true;
+  export const getLabelWithValue = (label, value, props = {}) => {
+    return {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      gridDefination: {
+        xs: 12,
+        sm: 6,
+      },
+      props: {
+        style: {
+          marginBottom: "16px",
+          wordBreak: "break-word",
+        },
+        ...props,
+      },
+      children: {
+        label: getCommonCaption(label),
+        value: getCommonValue(value),
+      },
+    };
+  };
+  //Edit Button
+  const callBackForEdit = async (state, dispatch) => {
+    // window.location.href = `/employee/egov-store-asset/createStore?tenantId=${tenantId}&name=${storeName}&edited=true`;
+    const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const createUrl =
+      process.env.REACT_APP_SELF_RUNNING === "true"
+        ? `/egov-ui-framework/egov-store-asset/createopeningbalence?applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+        : `/egov-store-asset/createopeningbalence?applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
+    dispatch(setRoute(createUrl));
+  };
+  export const footer = getCommonApplyFooter({
+    editButton: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+          // minWidth: "200px",
+          height: "48px",
+          marginRight: "45px",
+        },
+      },
+      children: {
+        submitButtonLabel: getLabel({
+          labelName: "Edit",
+          labelKey: "STORE_DETAILS_EDIT_BUTTON",
+        }),
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: callBackForEdit,
+      },
+    },
+  });
   //enableButton = hasButton && hasButton === "false" ? false : true;
   
   const header = getCommonHeader({
@@ -87,9 +144,10 @@ import { getOpeningBalanceData } from "./viewopeningbalenceResource/functions";
     name: "view-opening-balence",
     beforeInitScreen: (action, state, dispatch) => {
       getData(action, state, dispatch);
-      let id = getQueryArg(window.location.href, "id");
-      let tenantId = getQueryArg(window.location.href, "tenantId");     
-      getOpeningBalanceData(state, dispatch, id, tenantId);
+      let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+      let tenantId = getQueryArg(window.location.href, "tenantId"); 
+     // let applicationNumber = getQueryArg(window.location.href, "applicationNumber");      
+      getOpeningBalanceData(state, dispatch, applicationNumber, tenantId);
       return action;
     },
     components: {
@@ -114,7 +172,8 @@ import { getOpeningBalanceData } from "./viewopeningbalenceResource/functions";
             }
           },
           masterView,
-          footer: masterViewFooter()
+          footer,
+         // footer: masterViewFooter()
         }
       },
      

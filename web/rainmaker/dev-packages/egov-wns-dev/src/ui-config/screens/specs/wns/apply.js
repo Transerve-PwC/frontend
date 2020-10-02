@@ -250,6 +250,13 @@ export const getData = async (action, state, dispatch) => {
         try { payloadWater = await getSearchResults(queryObject) } catch (error) { console.error(error); };
         payloadWater.WaterConnection[0].water = true;
         payloadWater.WaterConnection[0].sewerage = false;
+        if(payloadWater.WaterConnection[0].activityType === "NEW_TUBEWELL_CONNECTION"){
+          payloadWater.WaterConnection[0].water = false;
+          payloadWater.WaterConnection[0].tubewell = true;
+          dispatch(prepareFinalObject("applyScreen.water", false));
+          dispatch(prepareFinalObject("applyScreen.tubewell", true));
+          toggleWaterFeilds(action, false);
+        }
         dispatch(prepareFinalObject("WaterConnection", payloadWater.WaterConnection));
 
         if(payloadWater && payloadWater.WaterConnection.length > 0){

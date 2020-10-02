@@ -95,7 +95,8 @@ import {
     uiFramework: "material-ui",
     name: "searchSuh",
     beforeInitScreen: (action, state, dispatch) => {
-      dispatch(prepareFinalObject("NulmSuhRequest", {}));  
+      dispatch(prepareFinalObject("NulmSuhRequest", {})); 
+      dispatch(prepareFinalObject(`documentsUploadRedux`,{})); 
       dispatch(prepareFinalObject("searchScreen", {}));
             // fetching MDMS data
       getData(action, state, dispatch);

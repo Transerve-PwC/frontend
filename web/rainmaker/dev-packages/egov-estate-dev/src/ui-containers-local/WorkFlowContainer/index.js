@@ -176,7 +176,9 @@ class WorkFlowContainer extends React.Component {
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
             break;
           default: {
-            path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}`
+            const {branchType, moduleType, applicationType} = data[0];
+            const type = `${branchType}_${moduleType}_${applicationType}`;
+            path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`
           }
         }
         window.location.href = `acknowledgement?${this.getPurposeString(
@@ -360,7 +362,7 @@ class WorkFlowContainer extends React.Component {
     if(!moduleName) {
       const {dataPath, preparedFinalObject} = this.props
       let _data = get(preparedFinalObject, dataPath, []);
-      businessService = _data[0].businessService
+      businessService = _data[0].workFlowBusinessService
     }
     let businessId = get(data[data.length - 1], "businessId");
     let filteredActions = [];

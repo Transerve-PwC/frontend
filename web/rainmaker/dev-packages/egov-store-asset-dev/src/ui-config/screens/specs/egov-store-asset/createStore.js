@@ -401,7 +401,7 @@ export const formwizardFirstStep = {
           },
           required: true,
             errorMessage:"STORE_VALIDATION_DIVISION_NAME",
-          pattern: getPattern("non-empty-alpha-numeric"),
+          pattern: getPattern("Name"),
          
           jsonPath: "stores[0].divisionName",
         }),

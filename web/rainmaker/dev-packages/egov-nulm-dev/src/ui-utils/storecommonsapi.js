@@ -61,6 +61,7 @@ export const prepareDocumentsUploadData = async (state, dispatch, type) => {
     card["code"] = doc.documentType;
     card["title"] = doc.documentType;
     card["cards"] = [];
+    card["inputProps.accept"]=".jpeg";
     tempDoc[doc.documentType] = card;
   });
 
@@ -108,6 +109,7 @@ export const getprintpdf = async (queryObject , api) => {
 const {NULMSEPRequest} = state.screenConfiguration.preparedFinalObject;
 
 const SepApplication = [NULMSEPRequest]; 
+
 const fileStoreIdsObj = NULMSEPRequest.applicationDocument.filter(docInfo => {
   if(docInfo.documentType==="Photo copy of Applicant" || docInfo.documentType==="Photo of Applicant") 
   return docInfo.filestoreId
@@ -117,7 +119,12 @@ const fileStoreIdsObj = NULMSEPRequest.applicationDocument.filter(docInfo => {
    if(fileUrlPayload){
     const photoUrl = getFileUrl(fileUrlPayload[fileStoreIds]);
     SepApplication[0].applicantPhoto = photoUrl;
-      SepApplication[0].nameOfApplicant = SepApplication[0].name;
+    // Hard code value is set which is not get from API responce
+      SepApplication[0].corporationName = "MUNICIPAL CORPORATION CHANDIGARH";
+      SepApplication[0].corporationAddress = "New Deluxe Building, Sector 17, Chandigarh";
+      SepApplication[0].corporationContact = "+91-172-2541002, 0172-2541003";
+      SepApplication[0].corporationWebsite = "http://mcchandigarh.gov.in";
+      SepApplication[0].corporationEmail = null;
    let requestBody = {SepApplication};
     const response = await httpRequest(
       "post",

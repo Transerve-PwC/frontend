@@ -66,6 +66,7 @@ import {
             // fetching MDMS data
       getData(action, state, dispatch);
       dispatch(prepareFinalObject("NULMSMIDRequest", {}));  
+      dispatch(prepareFinalObject(`documentsUploadRedux`,{}));
       dispatch(prepareFinalObject("searchScreen", {}));
       return action;
     },

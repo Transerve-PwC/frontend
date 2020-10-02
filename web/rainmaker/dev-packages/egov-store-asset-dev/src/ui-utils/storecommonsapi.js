@@ -836,6 +836,9 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
     CardItem[index].isDeleted !== false)
     {
     let code = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${value}`,'') 
+    if(pagename==='createopeningbalence')
+    code = GetMdmsNameBycode(state, dispatch,"searchScreenMdmsData.store-asset.Material",code)  
+    else
     code = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",code)  
     let InputQtyValue_ = Number( get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${InputQtyValue}`,0))
     let CompareQtyValue_ = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${CompareQtyValue}`,0)) 

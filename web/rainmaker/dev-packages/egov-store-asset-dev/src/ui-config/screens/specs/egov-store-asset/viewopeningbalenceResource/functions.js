@@ -248,13 +248,13 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
 export const getOpeningBalanceData = async (
   state,
   dispatch,
-  id,
+  mrnNumber,
   tenantId
 ) => {
   let queryObject = [
     {
-      key: "ids",
-      value: id
+      key: "mrnNumber",
+      value: mrnNumber
     },
     {
       key: "tenantId",
@@ -264,7 +264,29 @@ export const getOpeningBalanceData = async (
 
  let response = await getOpeningBalanceSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
-  dispatch(prepareFinalObject("materials", get(response, "materials")));
+///
+// let  materialReceipt = response.materialReceipt
+// materialReceipt = materialReceipt.filter(x=>x.mrnNumber === mrnNumber)
+response = response.materialReceipt.filter(x => x.mrnNumber === mrnNumber)
+if(response && response[0])
+  {
+  for (let index = 0; index < response[0].receiptDetails.length; index++) {
+    const element = response[0].receiptDetails[index];
+   
+       set(response[0], `receiptDetails[${index}].lotNo`, element.receiptDetailsAddnInfo[0].lotNo);
+       set(response[0], `receiptDetails[${index}].expiryDate`, epochToYmdDate(element.receiptDetailsAddnInfo[0].expiryDate));
+       set(response[0], `receiptDetails[${index}].receivedDate`, epochToYmdDate(element.receiptDetailsAddnInfo[0].receivedDate));
+       set(response[0], `receiptDetails[${index}].userAcceptedQty`, element.receiptDetailsAddnInfo[0].userQuantity);       
+       set(response[0], `receiptDetails[${index}].oldReceiptNumber`, element.receiptDetailsAddnInfo[0].oldReceiptNumber);
+      
+       
+  }
+  dispatch(prepareFinalObject("materialReceipt", response));
+}
+////
+
+ 
+ // dispatch(prepareFinalObject("materials", get(response, "materials")));
 
  // furnishmaterialsData(state, dispatch);
 };
