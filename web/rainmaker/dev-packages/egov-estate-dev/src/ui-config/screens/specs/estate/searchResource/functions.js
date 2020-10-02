@@ -461,7 +461,7 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
       let data = response.Applications.map(item => ({
         [getTextToLocalMapping("File Number")]: item.property.fileNumber || "-",
         [getTextToLocalMapping("Application Number")]: item.applicationNumber || "-",
-        [getTextToLocalMapping("Status")]: getLocaleLabels(item.property.state, item.property.state) || "-",
+        [getTextToLocalMapping("Application Status")]: getLocaleLabels(item.property.state, item.property.state) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(

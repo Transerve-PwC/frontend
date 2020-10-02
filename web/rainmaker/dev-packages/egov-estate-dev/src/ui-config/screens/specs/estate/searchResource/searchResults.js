@@ -17,7 +17,7 @@ export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_T
 export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
 export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
 export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
-export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "RP_COMMON_TABLE_COL_LAST_MODIFIED_ON")
+export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
 
 
 export const searchResults = {
@@ -68,7 +68,7 @@ export const searchApplicationResults = {
     columns: [
       getTextToLocalMapping("File Number"),
       getTextToLocalMapping("Application Number"),
-      getTextToLocalMapping("Status"),
+      getTextToLocalMapping("Application Status"),
       LAST_MODIFIED_ON
     ],
     options: {
