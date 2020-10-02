@@ -214,6 +214,11 @@ export const getWFConfig = (module, businessService, taskId) => {
         DEFAULT: "/rented-properties/mortgage-search-preview",
       };
     }
+    case "ESTATEPROPERTIES":
+      return {
+        INITIATED: "/estate/preview",
+        DEFAULT: "/estate/preview"
+      }
      case "WS-SERVICES":
       return {
         INITIATED: "/wns/search-preview",

@@ -1323,13 +1323,13 @@ export const createEstimateData = async (
   dispatch,
   href = {}
 ) => {
-  const workflowCode = get(applicationData, "businessService")
+  const workflowCode = get(applicationData, "workFlowBusinessService")
   const applicationNo =
     get(applicationData, "applicationNumber") ||
     getQueryArg(href, "applicationNumber");
   const tenantId =
     get(applicationData, "tenantId") || getQueryArg(href, "tenantId");
-  const businessService = get(applicationData, "businessService", "");
+  const businessService = get(applicationData, "billingBusinessService", "");
   const queryObj = [
     { key: "tenantId", value: tenantId },
     {

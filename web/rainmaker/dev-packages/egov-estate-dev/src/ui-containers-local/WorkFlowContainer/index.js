@@ -178,7 +178,7 @@ class WorkFlowContainer extends React.Component {
           default: {
             const {branchType, moduleType, applicationType} = data[0];
             const type = `${branchType}_${moduleType}_${applicationType}`;
-            path = `&fileNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`
+            path = `&applicationNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`
           }
         }
         window.location.href = `acknowledgement?${this.getPurposeString(

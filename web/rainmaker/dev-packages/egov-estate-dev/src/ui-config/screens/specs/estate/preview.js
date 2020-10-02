@@ -25,7 +25,7 @@ const getData = async (action, state, dispatch) => {
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments, workFlowBusinessService, state: applicationState} = Applications[0];
+       let {applicationDocuments, workFlowBusinessService, state: applicationState, billingBusinessService: businessService} = Applications[0];
        applicationDocuments = applicationDocuments || []
        const statusQueryObject = [{
           key: "tenantId",
@@ -56,7 +56,7 @@ const getData = async (action, state, dispatch) => {
        const headerrow = getCommonApplyHeader({label: headerLabel, number: applicationNumber});
 
        let reviewDetails = await setThirdStep({state, dispatch, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
-        if(applicationState === "PENDING_PAYMENT") {
+        if(applicationState === "ES_PENDING_PAYMENT") {
             const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
             const estimate = !!estimateResponse ? getCommonGrayCard({
               estimateSection: getFeesEstimateCard({

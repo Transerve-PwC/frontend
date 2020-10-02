@@ -23,7 +23,7 @@ import {
   const setPaymentMethods = async (action, state, dispatch) => {
     const businessService = getQueryArg(window.location.href, "businessService")
     const response = await getPaymentGateways();
-    if(!!response.length) {
+    if(!!response && !!response.length) {
       const paymentMethods = response.map(item => ({
         label: { labelName: item,
         labelKey: item},
