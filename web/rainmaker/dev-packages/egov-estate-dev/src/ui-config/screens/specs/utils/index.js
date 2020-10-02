@@ -978,7 +978,7 @@ const getStatementForDocType = docType => {
 };
 
 
-export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "download") => {
+export const downloadAcknowledgementForm = (Applications, applicationType, mode = "download") => {
   let queryStr = []
   switch (applicationType) {
     case 'SaleDeed':
@@ -1086,26 +1086,29 @@ export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "d
     value: `${getTenantId().split('.')[0]}`
   }
   
-  // let {
-  //   documents
-  // } = Licenses[0].additionalDetails;
-  // const length = documents.length % 4
-  // documents = !!length ? [...documents, ...new Array(4 - length).fill({
-  //   title: "",
-  //   name: ""
-  // })] : documents
-  // const myDocuments = documents.map((item) => ({
-  //   ...item,
-  //   title: getLocaleLabels(item.title, item.title)
-  // })).reduce((splits, i) => {
-  //   const length = splits.length
-  //   const rest = splits.slice(0, length - 1);
-  //   const lastArray = splits[length - 1] || [];
-  //   return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
-  // }, []);
-  let licenses = Licenses[0];
-  // console.log(myDocuments)
-  // licenses = { ...licenses, additionalDetails: { documents: myDocuments } }
+  let {
+    documents
+  } = Applications[0].additionalDetails;
+  const length = documents.length % 4
+  documents = !!length ? [...documents, ...new Array(4 - length).fill({
+    title: "",
+    name: ""
+  })] : documents
+  const myDocuments = documents.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+  let Application = Applications[0];
+  Application = {
+    ...Application,
+    applicationDocuments: myDocuments
+   
+  }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
@@ -1114,7 +1117,7 @@ export const downloadAcknowledgementForm = (Licenses, applicationType, mode = "d
   };
   try {
     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
-        Applications: [licenses]
+        Applications: [Application]
       }, {
         'Accept': 'application/json'
       }, {
