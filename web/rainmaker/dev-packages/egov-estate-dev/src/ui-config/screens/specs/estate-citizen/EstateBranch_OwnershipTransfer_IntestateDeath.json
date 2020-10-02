@@ -487,11 +487,11 @@
                 "errorMessage": "ES_ERR_LEGAL_NAME"
               },
               {
-                "label": "ES_LEGAL_HEIR_AGE_LABEL",
-                "placeholder": "ES_LEGAL_HEIR_AGE_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferee.age",
-                "path": "transferee.age"
+                "label": "ES_LEGAL_HEIR_DOB_LABEL",
+                "placeholder": "ES_LEGAL_HEIR_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                "path": "transferee.dob"
               },
               {
                 "label": "ES_LEGAL_HEIR_ADDRESS_LABEL",
