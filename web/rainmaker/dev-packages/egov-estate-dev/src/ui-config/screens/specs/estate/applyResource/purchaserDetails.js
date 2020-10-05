@@ -317,7 +317,7 @@ export const purchaserDetails = getCommonCard({
             items: [],
             addItemLabel: {
               labelName: "Add Previous Owner",
-              labelKey: "ES_COMMON_ADD_PURCHASER_LABEL"
+              labelKey: "ES_COMMON_ADD_PREVIOUS_OWNER_LABEL"
             },
             headerName: "Purchaser Information",
             headerJsonPath:

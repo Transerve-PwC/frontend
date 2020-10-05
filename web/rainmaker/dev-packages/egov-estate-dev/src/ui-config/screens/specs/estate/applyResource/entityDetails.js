@@ -487,7 +487,7 @@ export const proprietorshipDetails = getCommonCard({
     relationship: getRelationshipRadioButton,
     address: getTextField(addressField),
     mobileNumber: getTextField(mobileNumberField),
-    share: getTextField(shareField),
+    // share: getTextField(shareField),
     cpNumber: getTextField(cpNumberField)
   })
 });
