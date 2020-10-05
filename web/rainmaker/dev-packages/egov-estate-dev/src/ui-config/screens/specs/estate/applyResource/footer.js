@@ -954,7 +954,7 @@ export const downloadPrintContainer = (
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadNotice(Applications,applicationType,'print');
+      downloadNotice(Applications,applicationType);
     },
     leftIcon: "assignment"
   };
