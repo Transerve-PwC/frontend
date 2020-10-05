@@ -279,6 +279,7 @@ export const downloadAcknowledgementForm = (Applications, applicationType, mode 
         }
       ]
       break;
+    case 'ResidentailToCommercial':
     case 'ScfToSco':
       queryStr = [{
           key: "key",

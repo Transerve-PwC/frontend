@@ -20,17 +20,13 @@
         },
         {
           "name": "modeOfTransfer",
-          "type": "local",
+          "type": "mdms",
           "cacheable": true,
           "lazyload": true,
-          "values": [
-            {
-              "code": "FAMILY_SETTLEMENT"
-            },
-            {
-              "code": "COURT_DECREE"
-            }
-          ]
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "familySettlementModeOfTransfer"
+          }
         },
         {
           "name": "owners",
@@ -532,8 +528,8 @@
                 "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.mobileNumber : application.applicationDetails.transferee.mobileNo"
               },
               {
-                "label": "ES_PERCENTAGE_SHARE_LABEL",
-                "placeholder": "ES_PERCENTAGE_SHARE_PLACEHOLDER",
+                "label": "ES_PERCENT_SHARE_LABEL",
+                "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred",

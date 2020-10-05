@@ -270,7 +270,7 @@
               },
               {
                 "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
-                "placeholder": "ES_OWNER_MOBILE_NUMBER_PLACEHOLDER",
+                "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
                 "disabled": true,

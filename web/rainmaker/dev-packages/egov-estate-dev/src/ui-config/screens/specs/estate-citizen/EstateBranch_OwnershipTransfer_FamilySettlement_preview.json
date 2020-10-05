@@ -87,7 +87,7 @@
                         "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
                     },
                     {
-                        "label": "ES_PERCENTAGE_SHARE_LABEL",
+                        "label": "ES_PERCENT_SHARE_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     },
                     {
