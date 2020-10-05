@@ -45,11 +45,15 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    let owners = properties[0].propertyDetails.owners;
+
+    let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments, owners: currOwners, purchaser: prevOwners}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(
       prepareFinalObject(
