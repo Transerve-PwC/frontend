@@ -215,9 +215,16 @@ export const getWFConfig = (module, businessService, taskId) => {
       };
     }
     case "ESTATEPROPERTIES":
-      return {
-        INITIATED: "/estate/preview",
-        DEFAULT: "/estate/preview"
+      if(businessService === "ES-EB-PropertyMaster") {
+        return {
+          INITIATED: 'estate/search-preview',
+          DEFAULT: 'estate/search-preview'
+        }
+      } else {
+        return {
+          INITIATED: "/estate/preview",
+          DEFAULT: "/estate/preview"
+        }
       }
      case "WS-SERVICES":
       return {

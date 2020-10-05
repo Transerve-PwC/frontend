@@ -143,7 +143,7 @@ const getData = async (action, state, dispatch) => {
   const transitNumber = getQueryArg(window.location.href, "transitNumber");
 
   if (transitNumber) {
-    await updatePFOforSearchResults(action, state, dispatch, transitNumber)
+    // await updatePFOforSearchResults(action, state, dispatch, transitNumber)
   } else {
     dispatch(
       prepareFinalObject(

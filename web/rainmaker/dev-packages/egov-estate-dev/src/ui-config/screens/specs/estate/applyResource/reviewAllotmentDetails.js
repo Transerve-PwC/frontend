@@ -30,7 +30,7 @@ var proprietorDetails = getReviewProprietorshipDetails(true, "allotment");
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
-  labelKey: "TL_SUMMARY_HEADER"
+  labelKey: "ES_SUMMARY_HEADER"
 })
 
 export const reviewAllotmentDetails = getCommonCard({

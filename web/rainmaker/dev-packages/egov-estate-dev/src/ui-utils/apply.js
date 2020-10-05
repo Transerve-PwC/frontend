@@ -143,8 +143,6 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
   }
 }
 
-
-
 export const applyEstates = async (state, dispatch, activeIndex, screenName = "apply") => {
   try {
     let queryObject = JSON.parse(

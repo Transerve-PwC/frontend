@@ -1,20 +1,12 @@
 import {
-    getCommonHeader,
-    getCommonContainer,
-    getLabel,
     getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getOwnerDetails,getAllotmentDetails } from "../estate/preview-resource/owner-properties";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import {onTabChange, headerrow, tabs} from './estate-branch-search-preview'
 
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "filenumber");
 
