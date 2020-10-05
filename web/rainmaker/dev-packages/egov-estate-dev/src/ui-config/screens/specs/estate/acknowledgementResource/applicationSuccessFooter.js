@@ -2,8 +2,9 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  ifUserRoleExists
+  ifUserRoleExists,downloadAcknowledgementForm
 } from "../../utils";
+import set from "lodash/set";
 
 const getCommonApplyFooter = children => {
   return {
@@ -46,54 +47,65 @@ export const applicationSuccessFooter = (
         action: "page_change",
         path: redirectionURL
       },
-      downloadFormButton: {
-        componentPath: "Button",
-        props: {
-          variant: "outlined",
-          color: "primary",
-          style: {
-            minWidth: "180px",
-            height: "48px",
-            marginRight: "16px"
-          }
-        },
-        children: {
-          downloadFormButtonLabel: getLabel({
-            labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: "ES_APPLICATION_BUTTON_DOWN_CONF"
-          })
-        },
-        onClickDefination: {
-          action: "condition",
-          callBack: () => {
-          }
-        },
-        visible: true
+     
+    },
+    downloadFormButton: {
+      componentPath: "Button",
+      props: {
+        variant: "outlined",
+        color: "primary",
+        style: {
+          minWidth: "180px",
+          height: "48px",
+          marginRight: "16px"
+        }
       },
-      printFormButton: {
-        componentPath: "Button",
-        props: {
-          variant: "outlined",
-          color: "primary",
-          style: {
-            minWidth: "180px",
-            height: "48px",
-            marginRight: "16px"
-          }
-        },
-        children: {
-          printFormButtonLabel: getLabel({
-            labelName: "PRINT CONFIRMATION FORM",
-            labelKey: "ES_APPLICATION_BUTTON_PRINT_CONF"
-          })
-        },
-        onClickDefination: {
-          action: "condition",
-          callBack: () => {
-          }
-        },
-        visible: true
-      }
+      children: {
+        downloadFormButtonLabel: getLabel({
+          labelName: "DOWNLOAD CONFIRMATION FORM",
+          labelKey: "ES_APPLICATION_BUTTON_DOWN_CONF"
+        })
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: () => {
+          const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+          const { applicationType} = Applications[0];
+          const documents = temp[0].reviewDocData;
+          set(Applications[0],"additionalDetails.documents",documents)
+          downloadAcknowledgementForm(Applications,applicationType); 
+        }
+      },
+      visible: true
+    },
+    printFormButton: {
+      componentPath: "Button",
+      props: {
+        variant: "outlined",
+        color: "primary",
+        style: {
+          minWidth: "180px",
+          height: "48px",
+          marginRight: "16px"
+        }
+      },
+      children: {
+        printFormButtonLabel: getLabel({
+          labelName: "PRINT CONFIRMATION FORM",
+          labelKey: "ES_APPLICATION_BUTTON_PRINT_CONF"
+        })
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: () => {
+          const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+          const { applicationType} = Applications[0];
+          const documents = temp[0].reviewDocData;
+          set(Applications[0],"additionalDetails.documents",documents)
+          downloadAcknowledgementForm(Applications,applicationType,'print'); 
+        }
+      },
+      visible: true
     }
   });
 };
