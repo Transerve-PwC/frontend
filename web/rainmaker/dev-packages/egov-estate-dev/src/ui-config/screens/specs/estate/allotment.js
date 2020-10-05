@@ -34,9 +34,6 @@ import {
 import {
   get
 } from "lodash";
-import {
-  updatePFOforSearchResults
-} from "../../../../ui-utils/commons";
 import * as biddersListData from './applyResource/biddersListDoc.json';
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
@@ -168,7 +165,7 @@ const getData = async (action, state, dispatch) => {
   const transitNumber = getQueryArg(window.location.href, "transitNumber");
 
   if (transitNumber) {
-    await updatePFOforSearchResults(action, state, dispatch, transitNumber)
+    // await updatePFOforSearchResults(action, state, dispatch, transitNumber)
   } else {
     dispatch(
       prepareFinalObject(

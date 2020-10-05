@@ -49,21 +49,6 @@ class ActionDialog extends React.Component {
     roles: ""
   };
 
-  // onEmployeeClick = e => {
-  //   const { handleFieldChange, toggleSnackbar } = this.props;
-  //   const selectedValue = e.target.value;
-  //   const currentUser = JSON.parse(getUserInfo()).uuid;
-  //   if (selectedValue === currentUser) {
-  //     toggleSnackbar(
-  //       true,
-  //       "Please mark to different Employee !",
-  //       "error"
-  //     );
-  //   } else {
-  //     handleFieldChange("Licenses[0].assignee", e.target.value);
-  //   }
-  // };
-
   getButtonLabelName = label => {
     switch (label) {
       case "FORWARD":
@@ -210,39 +195,7 @@ class ActionDialog extends React.Component {
                         marginBottom: "8px"
                       }}
                     >
-                      {/* <div className="rainmaker-displayInline">
-                        <LabelContainer
-                          labelName="Supporting Documents"
-                          labelKey="WF_APPROVAL_UPLOAD_HEAD"
-                        />
-                        {isDocRequired && (
-                          <span style={{ marginLeft: 5, color: "red" }}>*</span>
-                        )}
-                      </div> */}
                     </Typography>
-                    {/* <div
-                      style={{
-                        color: "rgba(0, 0, 0, 0.60)",
-                        fontFamily: "Roboto",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "20px"
-                      }}
-                    >
-                      <LabelContainer
-                        labelName="Only .jpg and .pdf files. 5MB max file size."
-                        labelKey="WF_APPROVAL_UPLOAD_SUBHEAD"
-                      />
-                    </div>
-                    <UploadMultipleFiles
-                      maxFiles={4}
-                      inputProps={{
-                        accept: "image/*, .pdf, .png, .jpeg"
-                      }}
-                      buttonLabel={{ labelName: "UPLOAD FILES",labelKey : "TL_UPLOAD_FILES_BUTTON" }}
-                      jsonPath={`${dataPath}.wfDocuments`}
-                      maxFileSize={5000}
-                    /> */}
                     <Grid sm={12} style={{ textAlign: "right" }} className="bottom-button-container">
                       <Button
                         variant={"contained"}

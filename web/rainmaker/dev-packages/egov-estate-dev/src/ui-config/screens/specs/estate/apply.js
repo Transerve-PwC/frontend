@@ -27,7 +27,6 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import {
-  prepareDocumentTypeObj,
   prepareDocumentTypeObjMaster,
   prepareCompanyDocumentTypeObjMaster,
   preparePrevOwnerDocumentTypeObjMaster,

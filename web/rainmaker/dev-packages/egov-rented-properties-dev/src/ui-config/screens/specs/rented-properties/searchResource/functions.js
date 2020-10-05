@@ -285,8 +285,9 @@ export const searchAccountStatement = async (state, dispatch) => {
             [RECIEPT_NO]:item.receiptNo||"-"
           }));
           let lastElement = data.pop();
-          lastElement.Date = "Total as on "+lastElement.Date
-          lastElement.Type = 0
+          lastElement.Date = "Balance as on "+lastElement.Date
+          lastElement["Type(Payment)"] = "-"
+          lastElement["Type(Rent)"]= "-"
           data.push(lastElement)
           dispatch(
             handleField(
@@ -338,10 +339,10 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
       remainingBalance : formatAmount(item.remainingBalance.toFixed(2))
     })
   )
-
   let lastElement = data.pop();
-  lastElement.date = "Total as on "+ lastElement.date
-  lastElement.type = '-'
+  lastElement.date = "Balance as on "+ lastElement.date
+  lastElement.typeP = '-'
+  lastElement.typeR = '-'
   lastElement.amount = '-'
   data.push(lastElement)
   const mode = "download"

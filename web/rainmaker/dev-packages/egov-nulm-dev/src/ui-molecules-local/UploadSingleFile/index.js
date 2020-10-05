@@ -9,8 +9,12 @@ const UploadSingleFile = ({
   removeDocument,
   onButtonClick,
   inputProps,
+  doctypename,
   buttonLabel
+  
 }) => {
+  //alert('1')
+  //inputProps.accept = doctypename === "NULM_DISABILITY_CERTIFICATE" ? ".jpg,.png" : ".pdf,.png,.jpeg"
   return (
     <div>
       {!uploaded && (

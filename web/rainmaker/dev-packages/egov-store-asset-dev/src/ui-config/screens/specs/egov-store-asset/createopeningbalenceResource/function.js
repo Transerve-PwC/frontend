@@ -10,12 +10,14 @@ import {
   getOpeningBalanceSearchResults,
   updateOpeningBalance
 } from "../../../../../ui-utils/storecommonsapi";
+import {ValidateCard, ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
 import {
   convertDateToEpoch,
   epochToYmdDate,
   epochToYmd,
   showHideAdhocPopup,
-  validateFields
+  validateFields,
+  getLocalizationCodeValue
 } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -44,8 +46,29 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
       dispatch,
       "createopeningbalence"
     );
+    let MaterialDetailsCardPath =
+    "components.div.children.OpeningBalanceDetails.children.cardContent.children.View2.children.cardContent.children.OpeningbalenceDetailsCard.props.items";
+  let MasterDetailsItems = get(
+    state.screenConfiguration.screenConfig.createopeningbalence,
+    MaterialDetailsCardPath,
+    []
+  );
+  let isMasterDetailsValid = true;
+  for (var j = 0; j < MasterDetailsItems.length; j++) {
+    if (
+      (MasterDetailsItems[j].isDeleted === undefined ||
+        MasterDetailsItems[j].isDeleted !== false) &&
+      !validateFields(
+        `${MaterialDetailsCardPath}[${j}].item${j}.children.cardContent.children.rltnDetailsCardContainer.children`,
+        state,
+        dispatch,
+        "createopeningbalence"
+      )
+    )
+    isMasterDetailsValid = false;
+  }
     
-    if(isFinancialYearContainerValid && isOpeningBalanceContainer)
+    if(isFinancialYearContainerValid && isMasterDetailsValid)
     {
       // Date vadiation 
       let expiryDateValid = true
@@ -53,13 +76,22 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
       const CurrentDate = new Date();
       let receivedDate = get(
         state.screenConfiguration.preparedFinalObject,
-        "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate",
+        "materialReceipt[0].receiptDetails[0].receivedDate",
         null
       );
       let expiryDate = get(
         state.screenConfiguration.preparedFinalObject,
-        "materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate",
+        "materialReceipt[0].receiptDetails[0].expiryDate",
         null
+      );
+
+      let materialReceiptObject = get(
+        state.screenConfiguration.preparedFinalObject,
+        "materialReceipt",
+        []
+      );
+      let receiptDetails_ = returnEmptyArrayIfNull(
+        get(materialReceiptObject[0], "receiptDetails", [])
       );
       if(Number(receivedDate))
       {
@@ -71,16 +103,36 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
       //alert('i am number')
       expiryDate = epochToYmd(expiryDate)
     }
-    const  receiptDate_ = new Date(receivedDate)
-    const  expiryDate_ = new Date(expiryDate)
-    if(receivedDate>=CurrentDate)
-    {
-      receiptDateValid = false
-    }
-    if(expiryDate_<CurrentDate)
-    {
-      expiryDateValid = false
-    }
+    let  receiptDate_ = new Date(receivedDate)
+    let  expiryDate_ = new Date(expiryDate)
+      for (let index = 0; index < receiptDetails_.length; index++) {
+        const element = receiptDetails_[index]; 
+        receiptDate_ = new Date(element.receivedDate)
+        expiryDate_ = new Date(element.expiryDate)
+        if(receivedDate>=CurrentDate)
+        {
+          receiptDateValid = false
+          break;
+        }
+        if(expiryDate_<CurrentDate)
+        {
+          expiryDateValid = false
+          break;
+        }
+      }
+    //validate duplicate card
+    let cardJsonPath =
+    "components.div.children.OpeningBalanceDetails.children.cardContent.children.View2.children.cardContent.children.OpeningbalenceDetailsCard.props.items";
+    let pagename = "createopeningbalence";
+    let jasonpath =  "materialReceipt[0].receiptDetails";//indents[0].indentDetails
+    let value = "material.code";
+    let DuplicatItem = ValidateCard(state,dispatch,cardJsonPath,pagename,jasonpath,value)
+    let InputQtyValue = "userQuantity";
+    let CompareQtyValue = "indentQuantity";
+    let balanceQuantity = "balanceQty";
+    let doubleqtyCheck = false
+    let InvaldQtyCard = ValidateCardUserQty(state,dispatch,cardJsonPath,pagename,jasonpath,value,InputQtyValue,CompareQtyValue,balanceQuantity,doubleqtyCheck)
+   
     if(!expiryDateValid)
     {
       const errorMessage = {
@@ -97,9 +149,59 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
+    else  if(DuplicatItem && DuplicatItem[0])
+    {
+      const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+        const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+        if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsZeroQty)
+                {
+                    // refresh card item
+                    var storeMappingTemp = [];
+                    let  storeMapping =  get(
+                      state.screenConfiguration.preparedFinalObject,
+                      `materialReceipt[0].receiptDetails`,
+                      []
+                    );
+                    for(var i = 0; i < storeMapping.length; i++){
+                        if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
+                          storeMappingTemp.push(storeMapping[i]);
+                        }
+                    }
+                    storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+                    if(storeMappingTemp.length>0)
+                    {
+                      dispatch(prepareFinalObject("materialReceipt[0].receiptDetails",storeMappingTemp)
+                    );
+                      }
+                      if (id) {
+                        createUpdateOpeningBalence(state, dispatch, "UPDATE");
+                      } else {
+                        createUpdateOpeningBalence(state, dispatch, "CREATE");
+                      }
+          }
+          else{
+            if(DuplicatItem[0].IsDuplicatItem)
+            {
+              const errorMessage = {
+                labelName: "Duplicate Material Added",
+                //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+                labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+              };
+              dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            }
+            else if (InvaldQtyCard[0].IsZeroQty)
+            {
+              const errorMessage = {                
+                labelName: "Quantity can not be Zero for",
+                labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+              };
+              dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            }
+            
+          }
+
+    }
    else{
-     
-   
 
     if (id) {
       createUpdateOpeningBalence(state, dispatch, "UPDATE");
@@ -109,7 +211,13 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
   }
   }
   };
-  
+  const returnEmptyArrayIfNull = value => {
+    if (value === null || value === undefined) {
+      return [];
+    } else {
+      return value;
+    }
+  };
   export const createUpdateOpeningBalence = async (state, dispatch, action) => {
     const pickedTenant = get(
       state.screenConfiguration.preparedFinalObject,
@@ -132,10 +240,10 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
 
      // set date field in eoch formate
 
-    let receivedDate =
-  get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate",0) 
-  receivedDate = convertDateToEpoch(receivedDate);
-  set(materialReceiptObject[0],"receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate", receivedDate);
+  //   let receivedDate =
+  // get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate",0) 
+  // receivedDate = convertDateToEpoch(receivedDate);
+  // set(materialReceiptObject[0],"receiptDetails[0].receiptDetailsAddnInfo[0].receivedDate", receivedDate);
   let id = get(
     state.screenConfiguration.preparedFinalObject,
     "materialReceipt[0].id",
@@ -146,22 +254,38 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
     // const CurrentDate_ = new Date();
     // let receiptDate = convertDateToEpoch(CurrentDate_);
   set(materialReceiptObject[0],"mrnNumber","");
-  set(materialReceiptObject[0],"receiptDate",receivedDate);
+// set(materialReceiptObject[0],"receiptDate",receivedDate);
   set(materialReceiptObject[0],"mrnStatus","CREATED");
   set(materialReceiptObject[0],"receiptDetails[0].material.description","");
+ 
   }
   
-  let UOM = get(state, "screenConfiguration.preparedFinalObject.material.materials",[]) 
-  let MaterialCode = get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].material.code",'') 
-  let UOMCode = UOM.filter((x) => x.code ===MaterialCode)
-  console.log(UOMCode);
-  set(materialReceiptObject[0],"receiptDetails[0].uom.code",UOMCode[0].baseUom.code);
   set(materialReceiptObject[0],"receiptDetails[0].receivedQty","");
 
-  let expiryDate =
-  get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate",0) 
-  expiryDate = convertDateToEpoch(expiryDate);
-  set(materialReceiptObject[0],"receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate", expiryDate);
+  //let expiryDate =
+  // get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate",0) 
+  // expiryDate = convertDateToEpoch(expiryDate);
+  // set(materialReceiptObject[0],"receiptDetails[0].receiptDetailsAddnInfo[0].expiryDate", expiryDate);
+  let receiptDetails_ = returnEmptyArrayIfNull(
+    get(materialReceiptObject[0], "receiptDetails", [])
+  );
+  for (let index = 0; index < receiptDetails_.length; index++) {
+    const element = receiptDetails_[index]; 
+    let UOM = get(state, "screenConfiguration.preparedFinalObject.material.materials",[]) 
+    let MaterialCode = get(state, `screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[${index}].material.code`,'') 
+    let UOMCode = UOM.filter((x) => x.code ===MaterialCode)
+    console.log(UOMCode);
+      set(materialReceiptObject[0],`receiptDetails[${index}].uom.code`,UOMCode[0].baseUom.code);  
+       set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].lotNo`, element.lotNo);
+       set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].userQuantity`, element.userQuantity);
+       set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].oldReceiptNumber`, element.oldReceiptNumber);       
+       set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].receivedDate`, convertDateToEpoch(element.receivedDate));
+       set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].expiryDate`, convertDateToEpoch(element.expiryDate));
+       set(materialReceiptObject[0], `receiptDetails[${index}].receivedDate`, convertDateToEpoch(element.receivedDate));
+       set(materialReceiptObject[0], `receiptDetails[${index}].expiryDate`, convertDateToEpoch(element.expiryDate));
+       //set(materialReceiptObject[0],"receiptDate",convertDateToEpoch(element.receiptDate));
+  }
+
   set(materialReceiptObject[0],"tenantId", tenantId);
 
   

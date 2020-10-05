@@ -89,8 +89,24 @@ import {
     try {
       let response = await getOpeningBalanceSearchResults(queryObject, dispatch);        
      let  materialReceipt = response.materialReceipt
-     materialReceipt = materialReceipt.filter(x=>x.mrnNumber === mrnNumber)
-      dispatch(prepareFinalObject("materialReceipt", materialReceipt));
+    // materialReceipt = materialReceipt.filter(x=>x.mrnNumber === mrnNumber)
+     response = response.materialReceipt.filter(x => x.mrnNumber === mrnNumber)
+     if(response && response[0])
+  {
+  for (let index = 0; index < response[0].receiptDetails.length; index++) {
+    const element = response[0].receiptDetails[index];
+   
+       set(response[0], `receiptDetails[${index}].lotNo`, element.receiptDetailsAddnInfo[0].lotNo);
+       set(response[0], `receiptDetails[${index}].expiryDate`, element.receiptDetailsAddnInfo[0].expiryDate);
+       set(response[0], `receiptDetails[${index}].receivedDate`, element.receiptDetailsAddnInfo[0].receivedDate);
+       set(response[0], `receiptDetails[${index}].userAcceptedQty`, element.receiptDetailsAddnInfo[0].userQuantity);       
+       set(response[0], `receiptDetails[${index}].oldReceiptNumber`, element.receiptDetailsAddnInfo[0].oldReceiptNumber);
+      
+       
+  }
+  dispatch(prepareFinalObject("materialReceipt", response));
+}
+     // dispatch(prepareFinalObject("materialReceipt", materialReceipt));
        
     } catch (e) {
       console.log(e);
@@ -100,15 +116,16 @@ import {
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
     await getstoreData(action,state, dispatch);
-    const mrnNumber = getQueryArg(
+    const applicationNumber = getQueryArg(
       window.location.href,
-      "mrnNumber"
+      "applicationNumber"
     );
-    if(mrnNumber)
+    if(applicationNumber)
     {
-      await getOpeningBalanceData(action,state, dispatch,mrnNumber);
+      await getOpeningBalanceData(action,state, dispatch,applicationNumber);
     }
     else{
+      //dispatch(prepareFinalObject("materialReceipt[0]", null));
       dispatch(prepareFinalObject("materialReceipt", null));
     }
   };

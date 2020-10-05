@@ -363,7 +363,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -411,6 +412,7 @@
                 "label": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "disabled": true,
+                "required": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
                 "prefillValue": "selectedOwner.ownerDetails.guardianName"
@@ -474,7 +476,7 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
                 "path": "transferee.fatherOrHusbandName",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.guardianName",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianName : application.applicationDetails.transferee.fatherOrHusbandName",
                 "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
               },
               {
@@ -483,7 +485,7 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.relation",
                 "path": "transferee.relation",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.guardianRelation"
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianRelation : application.applicationDetails.transferee.relation"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
@@ -492,7 +494,7 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.address",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.address : application.applicationDetails.transferee.address",
                 "errorMessage": "ES_ERR_ADDRESS"
               },
               {
@@ -503,7 +505,7 @@
                 "path": "transferee.mobileNo",
                 "pattern": "MobileNo",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
-                "prefillValue": "selectedPurchaser.ownerDetails.mobileNumber"
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.mobileNumber : application.applicationDetails.transferee.mobileNo"
               },
               {
                 "label": "ES_PERCENTAGE_SHARED_LABEL",
@@ -566,11 +568,11 @@
             "description": "SELF_ATTESTED_PHOTO_TRANSFEREE_DESCRIPTION"
           },
           {
-            "code": "IDEMINITY_BOND_OF_TRANSFEREE",
+            "code": "INDEMINITY_BOND_OF_TRANSFEREE",
             "required": true,
             "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
             "fileType": "ALLTYPES",
-            "description": "IDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
+            "description": "INDEMINITY_BOND_OF_TRANSFEREE_DESCRIPTION"
           },
           {
             "code": "SELF_ATTESTED_PHOTO_OF_WITNESSES",

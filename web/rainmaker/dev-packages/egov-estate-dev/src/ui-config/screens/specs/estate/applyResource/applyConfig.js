@@ -90,7 +90,7 @@ export const companyDocuments_0 = getCommonCard({
       ...documentList.props,
       documentsJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.partnerDocuments",
       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.uploadedDocsInRedux",
-      // tenantIdJsonPath: "Properties[0].tenantId",
+      tenantIdJsonPath: "Properties[0].tenantId",
       removedJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.removedDocs"
     }
   }
@@ -104,7 +104,7 @@ export const previousOwnerDocuments_0 = getCommonCard({
       ...documentList.props,
       documentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.ownerDocuments",
       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.uploadedDocsInRedux",
-      // tenantIdJsonPath: "Properties[0].tenantId",
+      tenantIdJsonPath: "Properties[0].tenantId",
       removedJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.removedDocs"
     }
   }

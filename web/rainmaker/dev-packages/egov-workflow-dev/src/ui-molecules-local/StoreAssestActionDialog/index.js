@@ -207,12 +207,14 @@ class StoreAssetActionDialog extends React.Component {
                       style={{ marginRight: "15px", width: "100%" }}
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
+                      required={true}
                       onChange={e =>
                         handleFieldChange(`${dataPath}.workFlowDetails.comments`, e.target.value)
                       }
                       jsonPath={`${dataPath}.workFlowDetails.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                     />
+                    
                   </Grid>
 
                   {/*button and image code starts */}

@@ -64,42 +64,20 @@ const getAcknowledgementCard = (
       header = {}
     }
   } else {
-    if (purpose == "apply") {
-      header = {
-        labelName: "Ownership transfer application Submitted Successfully",
-        labelKey: "ES_OWNERSHIP_TRANSFER_SUCCESS_MESSAGE_MAIN"
+    if(!!type) {
+      if(purpose === "pay") {
+        header = {
+          labelName: "Payment is collected successfully",
+          labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
+        }
+      } else {
+        const label = `ES_${type.toUpperCase()}_${purpose.toUpperCase()}_MESSAGE`
+        header = {
+          labelName: `${label}`,
+          labelKey: `${label}`
+        }
       }
-    }
-    else if (purpose == "forward") {
-      header = {
-        labelName: "Ownership transfer application Forwarded Successfully",
-        labelKey: "ES_OWNERSHIP_TRANSFER_FORWARD_SUCCESS_MESSAGE_MAIN"
-      }
-    }
-    else if (purpose == "sendback") {
-      header = {
-        labelName: "Ownership transfer application is Sent Back Successfully",
-        labelKey: "ES_OWNERSHIP_TRANSFER_SENDBACK_SUCCESS_MESSAGE_MAIN"
-      }
-    }
-    else if (purpose == "reject") {
-      header = {
-        labelName: "Ownership transfer application Rejected",
-        labelKey: "ES_OWNERSHIP_TRANSFER_REJECT_SUCCESS_MESSAGE_MAIN"
-      }
-    }
-    else if (purpose == "approve") {
-      header = {
-        labelName: "Ownership transfer application Approved Successfully",
-        labelKey: "ES_OWNERSHIP_TRANSFER_APPROVE_SUCCESS_MESSAGE_MAIN"
-      }
-    } else if(purpose === "pay") {
-      header = {
-        labelName: "Payment is collected successfully",
-        labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
-      }
-    }
-    else {
+    } else {
       header = {}
     }
   }
@@ -114,11 +92,15 @@ const getAcknowledgementCard = (
       labelKey: "ES_FILE_NUMBER_LABEL"
     }
 
+    const commonHeader = type === WF_PROPERTY_MASTER ? {
+      labelName: 'Estate Property Master Entry',
+      labelKey: "ES_PROPERTY_MASTER_ENTRY",
+    } : !!type ? 
+    {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
+    {}
+
     return {
-      header: getCommonHeader({
-        labelName: `Estates`,
-        labelKey: "ES_COMMON_ESTATES",
-      }),
+      header: getCommonHeader(commonHeader),
       applicationSuccessCard: {
         uiFramework: "custom-atoms",
         componentPath: "Div",
@@ -139,11 +121,11 @@ const getAcknowledgementCard = (
       )
     };
   } else if(status === "failure" && purpose === "pay") {
+    const commonHeader = !!type ? 
+    {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
+    {}
     return {
-      header: getCommonHeader({
-        labelName: `Estate`,
-        labelKey: "ES_SERVICES_HEADER",
-      }),
+      header: getCommonHeader(commonHeader),
       applicationSuccessCard: {
         uiFramework: "custom-atoms",
         componentPath: "Div",

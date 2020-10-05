@@ -18,7 +18,28 @@ import {
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 let userInfo = JSON.parse(getUserInfo());
+
+export const setApplicationNumberBox = ({dispatch, applicationNumber, screenKey}) => {
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.headerDiv.children.header.children.applicationNumber",
+      "visible",
+      true
+    )
+  );
+  dispatch(
+    handleField(
+      screenKey,
+      "components.div.children.headerDiv.children.header.children.applicationNumber",
+      "props.number",
+      applicationNumber
+    )
+  );
+};
 
 export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destinationJsonPath) => {
   let applicationDocuments = get(
@@ -111,9 +132,9 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
             removedDocs
           )
         );
-        // const applicationNumber = Owners[0].ownerDetails.applicationNumber
+        const applicationNumber = Applications[0].applicationNumber
         await setDocsForEditFlow(state, dispatch, "Applications[0].applicationDocuments", "temp[0].uploadedDocsInRedux");
-        // setApplicationNumberBox(state, dispatch, applicationNumber, "apply")
+        setApplicationNumberBox({dispatch, applicationNumber, screenKey: "apply"})
         return true;
   } catch (error) {
     dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
@@ -121,8 +142,6 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     return false;
   }
 }
-
-
 
 export const applyEstates = async (state, dispatch, activeIndex, screenName = "apply") => {
   try {

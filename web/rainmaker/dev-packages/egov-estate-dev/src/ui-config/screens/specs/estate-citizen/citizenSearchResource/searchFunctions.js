@@ -2,7 +2,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import memoize from "lodash/memoize";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults, getCount } from "../../../../..//ui-utils/commons";
+import { getSearchResults } from "../../../../..//ui-utils/commons";
 import {
   convertEpochToDate,
   convertDateToEpoch,

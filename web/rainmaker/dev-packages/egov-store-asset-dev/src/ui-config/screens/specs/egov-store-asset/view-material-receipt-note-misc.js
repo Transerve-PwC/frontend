@@ -224,7 +224,7 @@ const screenConfig = {
             },
             newPOButton: {
               componentPath: "Button",            
-              visible: enableButton,
+              visible: false,
               props: {
                 variant: "contained",
                 color: "primary",

@@ -31,7 +31,8 @@
           },
           {
             "label": "ES_LAST_NOC_DATE_LABEL",
-            "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
+            "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+            "type": "date"
           },
           {
             "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -48,28 +49,28 @@
         "step": 0,
         "fields": [
           {
-            "label": "ES_OWNERS_LABEL",
-            "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.ownerName"
+            "label": "ES_OWNER_NAME_LABEL",
+            "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
           },
           {
               "label": "ES_FATHER_HUSBAND_NAME_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
+              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
           },
           {
               "label": "ES_ADDRESS_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
+              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
           },
           {
               "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
+              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
           },
           {
               "label": "ES_SHARE_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.owner.share"
+              "jsonPath": "Applications[0].applicationDetails.transferor.share"
           },
           {
               "label": "ES_CP_NUMBER_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
+              "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber"
           },
           {
             "label": "ES_CURRENT_TRADE_LABEL",

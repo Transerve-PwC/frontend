@@ -18,6 +18,7 @@
           "name": "owners",
           "type": "path",
           "jsonPath": "propertyDetails.owners",
+          "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
         }
       ],
@@ -219,7 +220,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -259,7 +261,7 @@
                 "label": "ES_OWNER_LABEL",
                 "placeholder": "ES_OWNER_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferor",
+                "jsonPath": "Applications[0].applicationDetails.transferor.id",
                 "path": "transferor.id",
                 "dataSource": "owners"
               },
@@ -309,7 +311,8 @@
                 "required": true,
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.currentTrade",
-                "path": "currentTrade"
+                "path": "currentTrade",
+                "errorMessage": "ES_ERR_CURRENT_TRADE"
               },
               {
                 "label": "ES_TRADE_OPTED_FOR_CHANGE_LABEL",

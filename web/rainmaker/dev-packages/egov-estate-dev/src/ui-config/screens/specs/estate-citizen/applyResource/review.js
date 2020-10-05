@@ -123,7 +123,7 @@ export const setThirdStep = async ({state, dispatch, applicationType, data, isEd
     }, {})
     details = !!showHeader ? { header: getCommonTitle({
       labelName: "Summary",
-      labelKey: "RP_PM_SUMMARY_HEADER"
+      labelKey: "ES_SUMMARY_HEADER"
     }),
     ...details
     } : details

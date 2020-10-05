@@ -37,6 +37,9 @@ import {
   getReviewDocuments
 } from "./reviewDocuments";
 import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
+import { download } from "../../../../../ui-utils/commons";
+import { downloadAcknowledgementForm} from "../../utils";
+
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -62,7 +65,9 @@ export const moveToSuccess = (data, dispatch, type) => {
       path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`;
       break;
     default : {
-      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+      const {branchType, moduleType, applicationType} = data;
+      type = `${branchType}_${moduleType}_${applicationType}`;
+      path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
     }
   }
   dispatch(
@@ -874,3 +879,95 @@ export const footer = getCommonApplyFooter({
     },
   }
 });
+
+export const downloadPrintContainer = (
+  action,
+  state,
+  dispatch,
+  applicationState,
+  applicationType
+) => {
+ 
+  /** MenuButton data based on status */
+  let downloadMenu = [];
+  let printMenu = [];  
+ 
+
+  let applicationDownloadObject = {
+    label: { labelName: "Application", labelKey: "ES_APPLICATION" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadAcknowledgementForm(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  };
+
+  let applicationPrintObject = {
+    label: { labelName: "Application", labelKey: "ES_APPLICATION" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadAcknowledgementForm(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  };
+
+  downloadMenu = [
+    applicationDownloadObject
+  ]
+
+  printMenu = [
+    applicationPrintObject
+  ]
+
+
+
+
+  return {
+    rightdiv: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: { textAlign: "right", display: "flex" },
+      },
+      children: {
+        downloadMenu: {
+          uiFramework: "custom-atoms-local",
+          moduleName: "egov-estate",
+          componentPath: "MenuButton",
+          props: {
+            data: {
+              label: {labelName : "DOWNLOAD" , labelKey :"ES_DOWNLOAD"},
+               leftIcon: "cloud_download",
+              rightIcon: "arrow_drop_down",
+              props: { variant: "outlined", style: { height: "60px", color : "#FE7A51",marginRight: "10px" }, className: "tl-download-button" },
+              menu: downloadMenu
+            }
+          }
+        },
+        printMenu: {
+          uiFramework: "custom-atoms-local",
+          moduleName: "egov-estate",
+          componentPath: "MenuButton",
+          props: {
+            data: {
+              label: {labelName : "PRINT" , labelKey :"ES_PRINT"},
+              leftIcon: "print",
+              rightIcon: "arrow_drop_down",
+              props: { variant: "outlined", style: { height: "60px", color : "#FE7A51" }, className: "tl-print-button" },
+              menu: printMenu
+            }
+          }
+        }
+
+      },
+      // gridDefination: {
+      //   xs: 12,
+      //   sm: 6
+      // }
+    }
+  }
+};
