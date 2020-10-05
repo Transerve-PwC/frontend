@@ -105,7 +105,7 @@ const onApplicationRowClick = rowData => {
 }
 
 const onRowClick = rowData => {
-  if (rowData[2].toUpperCase() === "PM_DRAFTED") {
+  if (rowData[2].toUpperCase() === "ES_PM_DRAFTED") {
     window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
   }
   else {

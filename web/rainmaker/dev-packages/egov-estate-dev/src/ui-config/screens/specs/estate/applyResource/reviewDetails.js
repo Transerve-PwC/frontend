@@ -5,7 +5,10 @@ import {
 import {
   getReviewPropertyInfo,
   getReviewAuction,
-  getReviewAdditional
+  getReviewAdditional,
+  getReviewCompanyDetails,
+  getReviewFirmDetails,
+  getReviewProprietorshipDetails
 } from "./reviewProperty";
 
 const header = getCommonTitle({
@@ -17,11 +20,17 @@ if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "u
   var reviewPropertyInfo = getReviewPropertyInfo();
   var reviewAuction = getReviewAuction();
   var reviewAdditional = getReviewAdditional();
+  var companyDetails = getReviewCompanyDetails();
+  var firmDetails = getReviewFirmDetails();
+  var proprietorDetails = getReviewProprietorshipDetails();
 }
 
 export const reviewDetails = getCommonCard({
   header,
   reviewPropertyInfo,
   reviewAuction,
-  reviewAdditional
+  reviewAdditional,
+  companyDetails,
+  firmDetails, 
+  proprietorDetails
 })

@@ -128,194 +128,70 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
-    var propertyOwners = get(
-      state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.owners"
-    );
-
-    let propertyOwnersItems = get(
-      state,
-      "screenConfiguration.screenConfig.apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items",
-      []
-    );
-
     let entityType = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.entityType",
       ""
     )
 
-    if (propertyOwnersItems && propertyOwnersItems.length > 0) {
-      for (var i = 0; i < propertyOwnersItems.length; i++) {
-        if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isOwnerDetailsValid = validateFields(
-          `components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+    let isOwnerOrPartnerDetailsValid = true;
+
+    switch(entityType) {
+      case "ET.PUBLIC_LIMITED_COMPANY":
+      case "ET.PRIVATE_LIMITED_COMPANY":
+        var isCompanyDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        );
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+        break;
+      case "ET.PARTNERSHIP_FIRM":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
           "apply"
         )
 
-        var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
-
-        if (!!entityType) {
-          if (entityType == "ET.PARTNERSHIP_FIRM") {
-            dispatch(
-              prepareFinalObject(
-                `Properties[0].propertyDetails.owners[${i}].ownershipType`,
-                "PARTNER"
-              )
-            )
-          }
-          else {
-            dispatch(
-              prepareFinalObject(
-                `Properties[0].propertyDetails.owners[${i}].ownershipType`,
-                "OWNER"
-              )
-            )
-          }
-        }
-
-
-        if (i > 0) {
-          var documentDetailsString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_0`, {}
-          ))
-          var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
-          newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var documentDetailsObj = JSON.parse(newDocumentDetailsString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${i}`,
-            documentDetailsObj
-          )
-
-          setDocumentData("", state, dispatch, i)
-
-          /* var groundRentString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_0`, {}
-          ))
-          var newGroundRentString = groundRentString.replace(/_0/g, `_${i}`);
-          newGroundRentString = newGroundRentString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var groundRentObj = JSON.parse(newGroundRentString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}`,
-            groundRentObj
-          )
-
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.dueDateOfPayment.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
-            getPattern("Date")
-          )
-
-          var serviceTaxString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_0`, {}
-          ))
-          var newServiceTaxString = serviceTaxString.replace(/_0/g, `_${i}`);
-          newServiceTaxString = newServiceTaxString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var serviceTaxObj = JSON.parse(newServiceTaxString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}`,
-            serviceTaxObj
-          )
-
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.dateOfDeposit.pattern`,
-            getPattern("Date")
-          )
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.detailsContainer.children.receiptDate.pattern`,
-            getPattern("Date")
-          )
-
-          var paymentMadeByString = JSON.stringify(get(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.paymentMadeBy_0`, {}
-          ))
-          var newPaymentMadeByString = paymentMadeByString.replace(/_0/g, `_${i}`)
-          newPaymentMadeByString = newPaymentMadeByString.replace(/owners\[0\]/g, `owners[${i}]`)
-          var paymentMadeByObj = JSON.parse(newPaymentMadeByString);
-          set(
-            state.screenConfiguration.screenConfig,
-            `apply.components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}`,
-            paymentMadeByObj
-          ) */
-        }
-
-        /* dispatch(
-          handleField(
-            "apply",
-            `components.div.children.formwizardEighthStep.children.paymentMadeBy_${i}.children.cardContent.children.detailsContainer.children.paymentMadeBy`,
-            "props.value",
-            ownerName
-          )
-        );
- */
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Douments - ${ownerName}`
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
+        break;
+      case "ET.PROPRIETORSHIP":
+        var isProprietorshipDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
         )
+        break;
+      default:
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+        break;
+    }
 
-        /* set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.groundRentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Ground Rent Details - ${ownerName}`
+    if (!!entityType) {
+      if (entityType == "ET.PARTNERSHIP_FIRM") {
+        dispatch(
+          prepareFinalObject(
+            `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+            "PARTNER"
+          )
         )
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.serviceTaxDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Service Tax Details - ${ownerName}`
-        ) */
-
-        const reviewOwnerDetails = getReviewOwner(true, i);
-        set(
-          reviewOwnerDetails,
-          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Owner Details - ${ownerName}`
+      }
+      else {
+        dispatch(
+          prepareFinalObject(
+            `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+            "OWNER"
+          )
         )
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
-          reviewOwnerDetails
-        )
-
-        /* const reviewPaymentDetails = getReviewPayment(true, i);
-        set(
-          reviewPaymentDetails,
-          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Payment Details - ${ownerName}`
-        )
-        set(
-          state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPaymentDetails_${i}`,
-          reviewPaymentDetails
-        ) */
       }
     }
 
-    if (isOwnerDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
+    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid || isOwnerOrPartnerDetailsValid) || isProprietorshipDetailsValid) {
+      const res = await applyEstates(state, dispatch, activeStep, "apply");
       if (!res) {
         return
       }
@@ -391,7 +267,7 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep === PURCHASER_DETAILS_STEP) {
     const propertyPurchasers = get(
       state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.purchaseDetails"
+      "Properties[0].propertyDetails.purchaser"
     )
 
     let propertyPurchaserItems = get(
@@ -411,12 +287,12 @@ const callBackForNext = async (state, dispatch) => {
           "apply"
         )
 
-        const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].newOwnerName : "" : "";
+        const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].ownerDetails.ownerName : "" : "";
         const reviewPurchaserDetails = getReviewPurchaser(true, i);
         set(
           reviewPurchaserDetails,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Purchaser - ${purchaserName}`
+          `Previous Owner - ${purchaserName}`
         )
         set(
           state.screenConfiguration.screenConfig,
@@ -542,6 +418,73 @@ const callBackForNext = async (state, dispatch) => {
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
+}
+
+const setOwnersOrPartners = (state, dispatch, container) => {
+  let propertyOwners = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyDetails.owners"
+  );
+
+  let propertyOwnersItems = get(
+    state.screenConfiguration.screenConfig,
+    `apply.components.div.children.formwizardThirdStep.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
+  );
+
+  let isOwnerOrPartnerDetailsValid = true;
+
+  if (propertyOwnersItems && propertyOwnersItems.length > 0) {
+    for (var i = 0; i < propertyOwnersItems.length; i++) {
+      if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
+        continue;
+      }
+      isOwnerOrPartnerDetailsValid = validateFields(
+        `components.div.children.formwizardThirdStep.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
+        state,
+        dispatch,
+        "apply"
+      )
+
+      var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
+      
+      if (i > 0) {
+        var documentDetailsString = JSON.stringify(get(
+          state.screenConfiguration.screenConfig,
+          `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_0`, {}
+        ))
+        var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
+        newDocumentDetailsString = newDocumentDetailsString.replace(/owners\[0\]/g, `owners[${i}]`)
+        var documentDetailsObj = JSON.parse(newDocumentDetailsString);
+        set(
+          state.screenConfiguration.screenConfig,
+          `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${i}`,
+          documentDetailsObj
+        )
+
+        setDocumentData("", state, dispatch, i)
+      }
+
+      set(
+        state.screenConfiguration.screenConfig,
+        `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+        `Douments - ${ownerName}`
+      )
+
+      const reviewOwnerDetails = getReviewOwner(true, i);
+      set(
+        reviewOwnerDetails,
+        "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+        `Owner Details - ${ownerName}`
+      )
+      set(
+        state.screenConfiguration.screenConfig,
+        `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+        reviewOwnerDetails
+      )
+    }
+  }
+
+  return isOwnerOrPartnerDetailsValid;
 }
 
 export const changeStep = (
