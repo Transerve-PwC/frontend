@@ -4,19 +4,11 @@ import {
   getEpochForDate,
   getTextToLocalMapping
 } from "../../utils";
-import { searchApiCall } from "./functions";
-import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 
-const userInfo = JSON.parse(getUserInfo());
 const tenantId = getTenantId();
 
-export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
-export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
-export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
-export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
 
 

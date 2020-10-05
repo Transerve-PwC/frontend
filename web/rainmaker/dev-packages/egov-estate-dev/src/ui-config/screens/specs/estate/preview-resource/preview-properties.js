@@ -111,7 +111,7 @@ export const editSection = {
         },
         buttonLabel: getLabel({
             labelName: "Edit",
-            labelKey: "TL_SUMMARY_EDIT"
+            labelKey: "ES_SUMMARY_EDIT"
         })
     }
 }
