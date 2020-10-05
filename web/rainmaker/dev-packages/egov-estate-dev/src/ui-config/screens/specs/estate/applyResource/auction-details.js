@@ -310,9 +310,9 @@ export const auctionTable = {
 };
 
 const onRowClick = rowData => {
-  // store.dispatch(
-  //   prepareFinalObject()
-  // )
+  store.dispatch(
+    prepareFinalObject("Auctions", rowData)
+  )
 };
 
 export const AllotmentAuctionDetails = getCommonCard({

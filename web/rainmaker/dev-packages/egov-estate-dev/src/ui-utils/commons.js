@@ -1097,7 +1097,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 }
 
 
-export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
+export const populateBiddersTable = (auctionData, screenKey, componentJsonPath, preparedFinalObject) => {
   console.log(auctionData);
 
   if (!!auctionData) {
@@ -1116,6 +1116,16 @@ export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) 
             console.log("checkbox clicked");
             if (confirm('Are you sure you want to mark/unmark as refunded?')) {
               console.log('Done');
+              debugger;
+              // let auctionData = preparedFinalObject.Auctions;
+              // console.log("auctionData", auctionData);
+              // const reqBody = {
+              //   Property: {
+              //     tenantId: "ch",
+              //     fileNumber: fileNumber,
+              //     id: propertyId
+              //   }
+              // };
             } else {
               console.log('Cancelled');
             }
