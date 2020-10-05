@@ -1041,7 +1041,7 @@ export const downloadPrintContainer = (
             applicationPrintObject,LetterPrintObject
           ]
       break;
-      case 'PartnershipDeed':
+      case 'PatnershipDeed':
           downloadMenu = [
             applicationDownloadObject
           ]

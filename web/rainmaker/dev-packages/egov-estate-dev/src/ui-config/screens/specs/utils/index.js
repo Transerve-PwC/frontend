@@ -329,7 +329,7 @@ export const downloadAcknowledgementForm = (Applications, applicationType, mode 
         
       ]
       break;
-      case 'PartnershipDeed':
+      case 'PatnershipDeed':
       queryStr = [{
           key: "key",
           value: `est-partnership-deed-application-fresh`
