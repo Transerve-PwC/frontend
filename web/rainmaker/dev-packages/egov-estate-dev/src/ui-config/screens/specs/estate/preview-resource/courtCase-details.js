@@ -97,7 +97,7 @@ export const purchaserHeader = getCommonTitle({
         },
         buttonLabel: getLabel({
             labelName: "Edit",
-            labelKey: "TL_SUMMARY_EDIT"
+            labelKey: "ES_SUMMARY_EDIT"
         })
     }
 }

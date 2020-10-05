@@ -10,7 +10,7 @@ import {
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
-  labelKey: "TL_SUMMARY_HEADER"
+  labelKey: "ES_SUMMARY_HEADER"
 })
 
 if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "undefined" && typeof getReviewAdditional != "undefined") {

@@ -19,7 +19,7 @@ export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath 
           },
           ...getCommonSubHeader({
             labelName: "Documents",
-            labelKey: "TL_COMMON_DOCS"
+            labelKey: "ES_COMMON_DOCS"
           })
         },
         editSection: {
@@ -43,7 +43,7 @@ export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath 
             },
             buttonLabel: getLabel({
               labelName: "Edit",
-              labelKey: "TL_SUMMARY_EDIT"
+              labelKey: "ES_SUMMARY_EDIT"
             })
           },
           onClickDefination: {

@@ -158,7 +158,7 @@ class ViewBreakupContainer extends React.Component {
               <div style={{ paddingBottom: "16px", paddingTop: "8px" }}>
                 <LabelContainer
                   labelName="Calculation Breakup"
-                  labelKey="TL_CALCULATION_BREAKUP"
+                  labelKey="ES_CALCULATION_BREAKUP"
                   style={{
                     color: "rgba(0, 0, 0, 0.8700000047683716)",
                     fontSize: "20px",
@@ -171,7 +171,7 @@ class ViewBreakupContainer extends React.Component {
                 <div style={{ paddingBottom: "12px" }}>
                   <LabelContainer
                     labelName={"Trade Unit"}
-                    labelKey={"TL_NEW_TRADE_DETAILS_TRADE_UNIT_HEADER"}
+                    labelKey={"ES_NEW_TRADE_DETAILS_TRADE_UNIT_HEADER"}
                     style={{
                       color: "rgba(0, 0, 0, 0.8700000047683716)",
                       fontSize: "16px",
@@ -192,7 +192,7 @@ class ViewBreakupContainer extends React.Component {
                 <div style={{ paddingBottom: "12px", marginTop: 20 }}>
                   <LabelContainer
                     labelName="Accessory Unit"
-                    labelKey="TL_ACCESSORY_UNIT"
+                    labelKey="ES_ACCESSORY_UNIT"
                     style={{
                       color: "rgba(0, 0, 0, 0.8700000047683716)",
                       fontSize: "16px",
@@ -218,7 +218,7 @@ class ViewBreakupContainer extends React.Component {
               <div style={{ paddingBottom: "16px" }}>
                 <LabelContainer
                   labelName="Calculation Breakup"
-                  labelKey="TL_CALCULATION_BREAKUP"
+                  labelKey="ES_CALCULATION_BREAKUP"
                   style={{
                     color: "rgba(0, 0, 0, 0.8700000047683716)",
                     fontSize: "20px",
