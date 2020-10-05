@@ -38,7 +38,7 @@ import {
 } from "./reviewDocuments";
 import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
-import { downloadAcknowledgementForm} from "../../utils";
+import { downloadAcknowledgementForm,downloadLetter,downloadNotice} from "../../utils";
 
 
 export const DEFAULT_STEP = -1;
@@ -904,6 +904,28 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   };
 
+  let LetterDownloadObject = {
+    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let LetterPrintObject = {
+    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
   let applicationPrintObject = {
     label: { labelName: "Application", labelKey: "ES_APPLICATION" },
     link: () => {
@@ -915,16 +937,163 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   };
 
-  downloadMenu = [
-    applicationDownloadObject
-  ]
+  let NoticePrintObject = {
+    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
 
-  printMenu = [
-    applicationPrintObject
-  ]
+  let NoticeDownloadObject = {
+    label: { labelName: "Notice", labelKey: "ES_NOTICE" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  };
 
+  switch (applicationType) {
+    case 'SaleDeed':
+        downloadMenu = [
+          applicationDownloadObject,LetterDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject,LetterPrintObject
+        ]
+      break;
+    case 'LeaseDeed':
+        downloadMenu = [
+          applicationDownloadObject,LetterDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject,LetterPrintObject
+        ]
+      break;
+    case 'ScfToSco':
+        downloadMenu = [
+          applicationDownloadObject,LetterDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject,LetterPrintObject
+        ]
+      break;
+    case 'LeaseholdToFreehold':
+        downloadMenu = [
+          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject,LetterPrintObject,NoticePrintObject
+        ]
+      break;
+    case 'ChangeInTrade':
+        downloadMenu = [
+          applicationDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject
+        ]
+      break;
+    case 'UnRegisteredWill':
+        downloadMenu = [
+          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+        ]
+      
+        printMenu = [
+          applicationPrintObject,LetterPrintObject,NoticePrintObject
+        ]
+      break;
+      case 'NOC':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject
+          ]
+      break;
+      case 'RegisteredWill':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject,NoticePrintObject
+          ]
+      break;
+      case 'NDC':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject
+          ]
+      break;
+      case 'PatnershipDeed':
+          downloadMenu = [
+            applicationDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject
+          ]
+      break;
+      case 'DuplicateCopy':
+          downloadMenu = [
+            applicationDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject
+          ]
+      break;
+      case 'Mortgage':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject
+          ]
+      break;
+      case 'FamilySettlement':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject
+          ]
+      break;
+      case 'IntestateDeath':
+          downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject,NoticePrintObject
+          ]
+      break;
+  }
+  // downloadMenu = [
+  //   applicationDownloadObject,LetterDownloadObject
+  // ]
 
-
+  // printMenu = [
+  //   applicationPrintObject,LetterPrintObject
+  // ]
 
   return {
     rightdiv: {
