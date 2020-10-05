@@ -9,12 +9,9 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails } from "./preview-resource/preview-properties";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
 
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 let tenantId = getTenantId()

@@ -100,7 +100,7 @@ import {
             children: {
               buttonLabel: getLabel({
                 labelName: "Download",
-                labelKey: "RP_COMMON_DOWNLOAD_PDF"
+                labelKey: "ES_COMMON_DOWNLOAD_PDF"
               })
             },
             onClickDefination: {

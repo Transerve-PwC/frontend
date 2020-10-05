@@ -146,7 +146,7 @@ class MapLocator extends Component {
       : location;
     let translatedSearchPlaceholder = getLocaleLabels(
       "Search Address",
-      "TL_SEARCH_ADDRESS_MAP_PLACEHOLDER",
+      "ES_SEARCH_ADDRESS_MAP_PLACEHOLDER",
       localizationLabels
     );
     return (
@@ -183,7 +183,7 @@ class MapLocator extends Component {
             children={
               <LabelContainer
                 labelName={"Close"}
-                labelKey={"TL_MAP_CLOSE_LABEL"}
+                labelKey={"ES_MAP_CLOSE_LABEL"}
               />
             }
             style={{
@@ -202,7 +202,7 @@ class MapLocator extends Component {
             children={
               <LabelContainer
                 labelName={"Pick"}
-                labelKey={"TL_MAP_PICK_LABEL"}
+                labelKey={"ES_MAP_PICK_LABEL"}
               />
             }
             style={{
