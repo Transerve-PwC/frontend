@@ -38,7 +38,7 @@ import {
 } from "./reviewDocuments";
 import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
-import { downloadAcknowledgementForm} from "../../utils";
+import { downloadAcknowledgementForm,downloadLetter} from "../../utils";
 
 
 export const DEFAULT_STEP = -1;
@@ -904,6 +904,28 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   };
 
+  let LetterDownloadObject = {
+    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let LetterPrintObject = {
+    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
   let applicationPrintObject = {
     label: { labelName: "Application", labelKey: "ES_APPLICATION" },
     link: () => {
@@ -916,15 +938,12 @@ export const downloadPrintContainer = (
   };
 
   downloadMenu = [
-    applicationDownloadObject
+    applicationDownloadObject,LetterDownloadObject
   ]
 
   printMenu = [
-    applicationPrintObject
+    applicationPrintObject,LetterPrintObject
   ]
-
-
-
 
   return {
     rightdiv: {

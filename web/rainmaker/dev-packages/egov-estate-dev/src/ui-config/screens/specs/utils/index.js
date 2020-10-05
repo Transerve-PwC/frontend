@@ -1191,6 +1191,148 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
   }
 }
 
+export const downloadLetter = (Applications, applicationType, mode = 'download') => {
+
+let queryStr = []
+  switch (applicationType) {
+    case 'SaleDeed':
+      queryStr = [{
+          key: "key",
+          value: `est-ot-sale-gift-family-deed`
+        }
+      ]
+      break;
+    case 'LeaseDeed':
+    case 'LeaseholdToFreehold':
+      queryStr = [{
+          key: "key",
+          value: `est-ot-lease-deed-system-letter`
+        }
+      ]
+      break;
+    case 'ScfToSco':
+      queryStr = [{
+          key: "key",
+          value: `est-scf-sco-letter`
+        }
+      ]
+      break;
+  
+    // case 'ChangeInTrade':
+    //   queryStr = [{
+    //       key: "key",
+    //       value: `est-ot-sale-gift-family-deed`
+    //     }
+    //   ]
+    //   break;
+    
+      case 'NOC':
+      queryStr = [{
+          key: "key",
+          value: `est-noc-letter`
+        }
+      ]
+      break;
+      case 'UnRegisteredWill':
+      case 'RegisteredWill':
+      queryStr = [{
+          key: "key",
+          value: `est-ot-unregistered-will-final-letter`
+        }
+      ]
+      break;
+      case 'NDC':
+      queryStr = [{
+          key: "key",
+          value: `est-ndc-general-reason-letter`
+        }
+        
+      ]
+      break;
+      // case 'PartnershipDeed':
+      // queryStr = [{
+      //     key: "key",
+      //     value: `est-partnership-deed-application-fresh`
+      //   }
+      // ]
+      // break;
+      // case 'DuplicateCopy':
+      // queryStr = [{
+      //     key: "key",
+      //     value: `est-duplicate-copy-application-fresh`
+      //   }
+      // ]
+      // break;
+      case 'Mortgage':
+      queryStr = [{
+          key: "key",
+          value: `est-mortgage-freehold`
+        }
+      ]
+      break;
+      case 'FamilySettlement':
+      queryStr = [{
+          key: "key",
+          value: `est-ot-family-settlement`
+        }
+      ]
+      break;
+      case 'IntestateDeath':
+      queryStr = [{
+          key: "key",
+          value: `est-ot-final-letter`
+        }
+      ]
+      break;
+  }
+  queryStr[1] = {
+    key: "tenantId",
+    value: `${getTenantId().split('.')[0]}`
+  }
+
+  let {
+    documents
+  } = Applications[0].additionalDetails;
+  // const findIndex = documents && documents.findIndex(item => item.title === "TL_OWNERPHOTO");
+  // const ownerDocument = findIndex !== -1 ? documents[findIndex] : {
+  //   link: `${process.env.REACT_APP_MEDIA_BASE_URL}/silhoutte-bust.png`
+  // };
+  debugger
+
+  let Application = Applications[0];
+  Application = {
+    ...Application,
+    documents
+  }
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+      Applications: [Application]
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
+      .then(res => {
+        res.filestoreIds[0]
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map(fileStoreId => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
+          })
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
+  } catch (exception) {
+    alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
 
 
 
