@@ -211,7 +211,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
