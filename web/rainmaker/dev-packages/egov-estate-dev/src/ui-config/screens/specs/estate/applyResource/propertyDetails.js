@@ -478,12 +478,14 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
     let stepNameFirst = "formwizardFirstStep";
     let stepNameThird = "formwizardThirdStep";
     let stepNameReview = "formwizardNinthStep";
+    let reviewContainer = "reviewDetails";
 
     if ((window.location.href.includes("allotment"))) {
         screenName = "allotment";
         stepNameFirst = "formwizardFirstStepAllotment";
         stepNameThird = "formwizardThirdStepAllotment";
         stepNameReview = "formwizardSeventhStepAllotment";
+        reviewContainer = "reviewAllotmentDetails"
     }
 
     dispatch(
@@ -506,7 +508,7 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.companyDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.companyDetails`,
             "visible",
             !!(value == "ENTITY")
         )
@@ -538,7 +540,7 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.firmDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.firmDetails`,
             "visible",
             !!(value == "ENTITY")
         )
@@ -562,7 +564,7 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.proprietorDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.proprietorDetails`,
             "visible",
             !!(value == "ENTITY")
         )
@@ -571,12 +573,14 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
 export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
     let screenName = "apply";
     let stepName = "formwizardThirdStep";
-    let stepNameReview = "formwizardNinthStep"
+    let stepNameReview = "formwizardNinthStep";
+    let reviewContainer = "reviewDetails";
 
     if ((window.location.href.includes("allotment"))) {
         screenName = "allotment";
         stepName = "formwizardThirdStepAllotment";
-        stepNameReview = "formwizardSeventhStepAllotment"
+        stepNameReview = "formwizardSeventhStepAllotment";
+        reviewContainer = "reviewAllotmentDetails";
     }
 
     if (value == "ET.PUBLIC_LIMITED_COMPANY" || value == "ET.PRIVATE_LIMITED_COMPANY") {
@@ -607,7 +611,7 @@ export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.companyDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.companyDetails`,
             "visible",
             !!(value == "ET.PUBLIC_LIMITED_COMPANY" || value =="ET.PRIVATE_LIMITED_COMPANY")
         )
@@ -631,7 +635,7 @@ export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.firmDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.firmDetails`,
             "visible",
             !!(value == "ET.PARTNERSHIP_FIRM" || value == "ET.PROPRIETORSHIP")
         )
@@ -655,7 +659,7 @@ export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
     dispatch(
         handleField(
             screenName,
-            `components.div.children.${stepNameReview}.children.reviewDetails.children.cardContent.children.proprietorDetails`,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.proprietorDetails`,
             "visible",
             !!(value == "ET.PROPRIETORSHIP")
         )

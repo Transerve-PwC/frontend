@@ -37,6 +37,7 @@ import {
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
+import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo } from './applyResource/propertyDetails'
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
 
