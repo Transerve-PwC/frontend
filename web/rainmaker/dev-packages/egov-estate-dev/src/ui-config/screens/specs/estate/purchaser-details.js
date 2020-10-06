@@ -19,32 +19,34 @@ let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 const purchaserContainer = {
   uiFramework: "custom-atoms",
-componentPath: "Container",
-props: {
-  id: "docs"
-},
-children: {
-}
+  componentPath: "Div",
+  props: {
+    id: "docs"
+  },
+  children: {
+  }
 }
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
     { key: "fileNumber", value: fileNumber },
-    {key: "relations", value: "purchase"}
+    {key: "relations", value: "owner"}
   ];
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    let owners = properties[0].propertyDetails.owners;
+    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, purchaser: prevOwners}}]
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    if(properties[0].propertyDetails.owners){
-      properties[0].propertyDetails.owners.forEach((element,index) => { 
-        if (!element.isCurrentOwner) {
-          let purchaseDetailContainer = getPurchaserDetails(false,index);
-          containers[index] = getCommonCard({purchaseDetailContainer})
-        }
+    if(properties[0].propertyDetails.purchaser){
+      properties[0].propertyDetails.purchaser.forEach((element,index) => { 
+        let purchaseDetailContainer = getPurchaserDetails(false,index);
+        containers[index] = getCommonCard({purchaseDetailContainer})
       });
+      
     }
     
     dispatch(
@@ -101,7 +103,7 @@ const EstatePurchaserDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 3,
+              activeIndex: 4,
               onTabChange
             },
             type: "array",

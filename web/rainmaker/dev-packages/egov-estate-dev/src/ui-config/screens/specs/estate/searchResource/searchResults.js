@@ -6,6 +6,7 @@ import {
 } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
+import store from "../../../../../ui-redux/store";
 
 const tenantId = getTenantId();
 
@@ -21,7 +22,11 @@ export const searchResults = {
       getTextToLocalMapping("File Number"),
       getTextToLocalMapping("Sector Number"),
       getTextToLocalMapping("Status"),
-      LAST_MODIFIED_ON
+      LAST_MODIFIED_ON,
+      {name: "propertyMasterOrAllotmentOfSite", options: {
+        display: false,
+        viewColumns: false
+      }}
     ],
     options: {
       filter: false,
@@ -97,8 +102,12 @@ const onApplicationRowClick = rowData => {
 }
 
 const onRowClick = rowData => {
+  console.log(rowData);
   if (rowData[2].toUpperCase() === "ES_PM_DRAFTED") {
-    window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+    if (rowData[4] == "PROPERTY_MASTER")
+      window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+    else
+      window.location.href = `allotment?filenumber=${rowData[0]}&tenantId=${tenantId}`;
   }
   else {
     window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;

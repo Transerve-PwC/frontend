@@ -42,15 +42,11 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-    let owners = properties[0].propertyDetails.owners;
-
-    let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
-    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments, owners: currOwners, purchaser: prevOwners}}]
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, applicationDocuments}}]
     dispatch(prepareFinalObject("Properties[0]", properties[0]));
     dispatch(
       prepareFinalObject(
@@ -77,61 +73,64 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 
 export const onTabChange = async(tabIndex, dispatch, state) => {
   fileNumber = getQueryArg(window.location.href, "filenumber");
-  let path = ""
-  switch(tabIndex){
-      case 0:
-        path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 1:
-        path = `/estate/auction-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 2:
-        path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 3:
-        path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 4:
-        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 5:
-        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 6:
-        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 7:
-        path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-
+  let path = "";
+  if (tabIndex === 0) {
+    path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`;
+  }
+  else if (tabIndex === 1) {
+    path = `/estate/auction-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 2) {
+    path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 3) {
+    path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 4) {
+    path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 5) {
+    path = `/estate/previous-owner-document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 6) {
+    path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 7) {
+    path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 8) {
+    path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
   }
   dispatch(setRoute(path))
 }
 
 export const tabs = [
   {
-    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" },
+    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" }
   },
   {
-    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" },
+    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" }
   },
   {
-    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" }
   },
   {
-    tabButton: { labelName: "Previous Owner Details", labelKey: "ES_PREVIOUS_OWNER_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" }
   },
   {
-    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" },
+    tabButton: { labelName: "Previous Owner Details", labelKey: "ES_PREVIOUS_OWNER_DETAILS" }
   },
   {
-    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" },
+    tabButton: { labelName: "Previous Owner Documents", labelKey: "ES_PREVIOUS_OWNER_DOCUMENTS" }
   },
   {
-    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" },
+    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" }
   },
   {
-    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" },
+    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" }
+  },
+  {
+    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
   }
 ]
 

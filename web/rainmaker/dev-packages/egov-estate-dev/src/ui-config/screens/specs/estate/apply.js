@@ -45,7 +45,6 @@ import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
-import * as biddersListData from './applyResource/biddersListDoc.json'
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo } from './applyResource/propertyDetails'
 
 
@@ -359,7 +358,7 @@ const getData = async (action, state, dispatch) => {
     dispatch(
       prepareFinalObject(
         "Properties",
-        []
+        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
       )
     )
   }

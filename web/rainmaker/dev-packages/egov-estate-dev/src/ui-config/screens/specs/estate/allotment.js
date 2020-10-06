@@ -38,7 +38,8 @@ import * as biddersListData from './applyResource/biddersListDoc.json';
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
-import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo } from './applyResource/propertyDetails'
+import { getPMDetailsByFileNumber } from './apply'
+
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
 
@@ -166,15 +167,15 @@ const header = getCommonHeader({
 });
 
 const getData = async (action, state, dispatch) => {
-  const transitNumber = getQueryArg(window.location.href, "transitNumber");
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
 
-  if (transitNumber) {
-    // await updatePFOforSearchResults(action, state, dispatch, transitNumber)
+  if (fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber)
   } else {
     dispatch(
       prepareFinalObject(
         "Properties",
-        []
+        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
       )
     )
   }

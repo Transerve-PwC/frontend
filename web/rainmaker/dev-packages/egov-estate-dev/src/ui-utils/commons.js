@@ -3,7 +3,8 @@ import { httpRequest } from "./api";
 import {
   toggleSnackbar,
   toggleSpinner,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTranslatedLabel,
@@ -13,6 +14,10 @@ import store from "redux/store";
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
 import get from "lodash/get";
+import {
+  getFileUrlFromAPI,
+  getFileUrl
+} from "egov-ui-framework/ui-utils/commons";
 
 export const getPaymentGateways = async () => {
   try {
@@ -233,7 +238,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 }
 
 
-export const populateBiddersTable = (auctionData, screenKey, componentJsonPath, preparedFinalObject) => {
+export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
   console.log(auctionData);
 
   if (!!auctionData) {
@@ -248,21 +253,39 @@ export const populateBiddersTable = (auctionData, screenKey, componentJsonPath, 
         {
           type:"checkbox",
           defaultChecked: false, 
-          onClick: () => { 
-            console.log("checkbox clicked");
+          onClick: (e) => { 
             if (confirm('Are you sure you want to mark/unmark as refunded?')) {
               console.log('Done');
-              debugger;
-              let auctionData = preparedFinalObject.Auctions;
-              console.log("auctionData", auctionData);
-              const reqBody = {
-                Property: {
-                  tenantId: "ch",
-                  fileNumber: fileNumber,
-                  id: propertyId
-                }
-              };
+              setTimeout(() => {
+                debugger;
+                let auctionData = store.getState().screenConfiguration.preparedFinalObject.Auctions;
+                console.log("auctionData", auctionData);
+                /* const reqBody = {
+                  Auctions: [{
+                    id: "",
+                    propertyId: ""
+                  }]
+                };
+                const response = await httpRequest(
+                  "post",
+                  "/est-services/auctions/_update",
+                  "",
+                  "",
+                  reqBody
+                );
+
+                if (response) {
+                  store.dispatch(
+                    toggleSnackbar(
+                      true,
+                      { labelName: "Success", labelKey: "ES_SUCCESS" },
+                      "success"
+                    )
+                  ); 
+                } */
+              }, 2000)
             } else {
+              e.preventDefault();
               console.log('Cancelled');
             }
           }
@@ -299,4 +322,49 @@ export const getAuctionDetails = async requestBody => {
       )
     );
   }
+};
+
+export const setDocuments = async (
+  payload,
+  sourceJsonPath,
+  destJsonPath,
+  dispatch,
+  businessService
+) => {
+  const uploadedDocData = get(payload, sourceJsonPath) ? get(payload, sourceJsonPath) : [];
+
+  const fileStoreIds =
+    uploadedDocData &&
+    uploadedDocData
+      .map(item => {
+        return item.fileStoreId;
+      })
+      .join(",");
+  const fileUrlPayload =
+    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+  const reviewDocData =
+    uploadedDocData &&
+    uploadedDocData.map((item, index) => {
+      return {
+        title: `${businessService}_${item.documentType}` || "",
+        link:
+          (fileUrlPayload &&
+            fileUrlPayload[item.fileStoreId] &&
+            getFileUrl(fileUrlPayload[item.fileStoreId])) ||
+          "",
+        linkText: "Download",
+        name:
+          (fileUrlPayload &&
+            fileUrlPayload[item.fileStoreId] &&
+            decodeURIComponent(
+              getFileUrl(fileUrlPayload[item.fileStoreId])
+                .split("?")[0]
+                .split("/")
+                .pop()
+                .slice(13)
+            )) ||
+          `Document - ${index + 1}`
+      };
+    });
+  reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
 };
