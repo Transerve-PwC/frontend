@@ -722,17 +722,11 @@ export const downloadEmailNotice = (Applications, applicationType, mode = 'downl
       case 'UnRegisteredWill':    
         queryStr = [{
             key: "key",
-            value: `est-ot-unregistered-will-system-letter`
+            value: `est-email-notice-letter`
           }
         ]
       break;
-      default:
-          queryStr = [{
-            key: "key",
-            value: `est-ot-unregistered-will-system-letter`
-          }
-        ]  
-      break;
+  
     }
     queryStr[1] = {
       key: "tenantId",
