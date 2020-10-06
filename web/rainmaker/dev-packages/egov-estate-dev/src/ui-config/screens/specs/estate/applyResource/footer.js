@@ -38,7 +38,7 @@ import {
 } from "./reviewDocuments";
 import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
-import { downloadAcknowledgementForm,downloadLetter,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
+import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
 
 
 export const DEFAULT_STEP = -1;
@@ -946,6 +946,29 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   }
 
+  let EmailDownloadObject = {
+    label: { labelName: "Email Notice", labelKey: "ES_EMAIL_NOTICE"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadEmailNotice(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let EmailPrintObject = {
+    label: { labelName: "Email Notice", labelKey: "ES_EMAIL_NOTICE"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadEmailNotice(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
+
   switch (applicationType) {
     case 'SaleDeed':
         downloadMenu = [
@@ -1001,11 +1024,11 @@ export const downloadPrintContainer = (
       break;
     case 'UnRegisteredWill':
         downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
         ]
       
         printMenu = [
-          applicationPrintObject,LetterPrintObject,NoticePrintObject
+          applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
         ]
       break;
       case 'NOC':
@@ -1019,11 +1042,11 @@ export const downloadPrintContainer = (
       break;
       case 'RegisteredWill':
           downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
           ]
         
           printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject
+            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
           ]
       break;
       case 'NDC':
@@ -1073,11 +1096,11 @@ export const downloadPrintContainer = (
       break;
       case 'IntestateDeath':
           downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
           ]
         
           printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject
+            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
           ]
       break;
   }
