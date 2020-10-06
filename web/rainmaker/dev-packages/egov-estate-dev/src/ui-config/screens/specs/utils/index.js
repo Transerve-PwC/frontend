@@ -722,7 +722,7 @@ export const downloadEmailNotice = (Applications, applicationType, mode = 'downl
       case 'UnRegisteredWill':    
         queryStr = [{
             key: "key",
-            value: `est-email-notice-letter`
+            value: `est-ot-email-body`
           }
         ]
       break;
