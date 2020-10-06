@@ -45,6 +45,8 @@ import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
+import * as biddersListData from './applyResource/biddersListDoc.json'
+import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo } from './applyResource/propertyDetails'
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -322,12 +324,29 @@ export const getPMDetailsByFileNumber = async (
   const payload = await getSearchResults(queryObject);
 
   if (payload) {
+    let properties = payload.Properties;
+    let owners = properties[0].propertyDetails.owners;
+
+    let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
+
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
+
     dispatch(
       prepareFinalObject(
         "Properties",
-        payload.Properties
+        properties 
       )
     )
+
+    let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
+    let entityType = properties[0].propertyDetails.entityType;
+    if (propertyRegisteredTo == "ENTITY") {
+      toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
+    }
+    else {
+      toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(propertyRegisteredTo, dispatch)
+    }
   }
 }
 

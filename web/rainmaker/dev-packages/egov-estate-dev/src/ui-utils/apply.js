@@ -157,6 +157,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     set(queryObject[0], "tenantId", tenantId);
     set(queryObject[0], "propertyDetails.dateOfAuction", convertDateToEpoch(queryObject[0].propertyDetails.dateOfAuction))
     set(queryObject[0], "propertyDetails.lastNocDate", convertDateToEpoch(queryObject[0].propertyDetails.lastNocDate))
+    set(queryObject[0], "propertyDetails.companyRegistrationDate", convertDateToEpoch(queryObject[0].propertyDetails.companyRegistrationDate))
 
     var purchaseDetails = get(
       queryObject[0],

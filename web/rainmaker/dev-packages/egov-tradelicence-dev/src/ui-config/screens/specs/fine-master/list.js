@@ -32,16 +32,18 @@ const showOrHidePopup = (state, dispatch) => {
 const updateRate = async (state, dispatch) => {
   const {fineMasterEditData} = state.screenConfiguration.preparedFinalObject
   const {rate} = fineMasterEditData;
-  let isRateFormValid = false;
+  let isRateFormValid = true;
   let href = (window.location.href).split("/");
   let screen = href[href.length - 1];
 
-  isRateFormValid = validateFields(
-    "components.adhocDialog.children.popup.children.rateCard.children",
-    state,
-    dispatch,
-    screen
-  );
+  if(rate !== 0) {
+    isRateFormValid = validateFields(
+      "components.adhocDialog.children.popup.children.rateCard.children",
+      state,
+      dispatch,
+      screen
+    );
+  }
 
   if(!!isRateFormValid) {
     try {
@@ -348,7 +350,7 @@ const onRowClick = (row, businessService, screenKey, state, dispatch) => {
       fromUom:row[2],
       toUom:row[3],
       uom:row[4],
-      rate:row[5],
+      rate:row[5] + "",
       id: row[7],
       tenantId: row[6]
   }

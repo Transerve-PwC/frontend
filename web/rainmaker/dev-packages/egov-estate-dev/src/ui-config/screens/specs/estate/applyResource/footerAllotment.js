@@ -412,7 +412,7 @@ const callBackForNext = async (state, dispatch) => {
       switch (activeStep) {
         case PROPERTY_DETAILS_STEP:
         case AUCTION_DETAILS_STEP:
-        case OWNER_DETAILS_STEP:
+        case ENTITY_OWNER_DETAILS_STEP:
         case COURT_CASE_DETAILS_STEP:
         case PAYMENT_DETAILS_STEP:
           errorMessage = {
@@ -420,7 +420,7 @@ const callBackForNext = async (state, dispatch) => {
             labelKey: "ERR_FILL_ESTATE_MANDATORY_FIELDS"
           };
           break;
-        case DOCUMENT_UPLOAD_STEP:
+        case ENTITY_OWNER_DOCUMENT_UPLOAD_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
             labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"

@@ -273,9 +273,9 @@ const commonOwnerInformation = () => {
       mobileNumber: getTextField(mobileNumberField),
       share: getTextField(shareField),
       cpNumber: getTextField(cpNumberField),
-      possessionDate: getDateField(possessionDateField),
       dateOfAllotment: getDateField(dateOfAllotmentField),
       allotmentNumber: getTextField(allotmentNumberField),
+      possessionDate: getDateField(possessionDateField),
       isDirector: getIsDirectorRadioButton
     })
   });

@@ -528,8 +528,8 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
-                "placeholder": "ES_TRANSFEREE_TYPE_RADIO_BTN_PLACEHOLDER",
+                "label": "ES_SELECT_SELLER_OR_TRANSFEROR_LABEL",
+                "placeholder": "ES_SELECT_SELLER_OR_TRANSFEROR_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",

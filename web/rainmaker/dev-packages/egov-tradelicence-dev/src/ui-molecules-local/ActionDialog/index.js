@@ -46,7 +46,13 @@ const fieldConfig = {
 class ActionDialog extends React.Component {
   state = {
     employeeList: [],
-    roles: ""
+    roles: "",
+    fields: {
+      "comments": ""
+    },
+    errors: {
+      "comments": ""
+    }
   };
 
   // onEmployeeClick = e => {
@@ -63,6 +69,36 @@ class ActionDialog extends React.Component {
   //     handleFieldChange("Licenses[0].assignee", e.target.value);
   //   }
   // };
+
+  handleValidation(){
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+    //comments
+    if(!fields["comments"]){
+       formIsValid = false;
+       errors["comments"] = "Please enter comments";
+    }
+
+    this.setState({errors: errors});
+    return formIsValid;
+  }
+
+  handleChange(field, e){         
+    let fields = this.state.fields;
+    let errors = this.state.errors;
+
+    if (Object.keys(fields).length) {
+      fields[field] = e.target.value;        
+      this.setState({fields});
+
+      if (e.target.value) {
+        errors["comments"] = "";
+        this.setState({errors: errors});
+      }
+    }
+}
 
   getButtonLabelName = label => {
     switch (label) {
@@ -196,9 +232,12 @@ class ActionDialog extends React.Component {
                       jsonPath={`${dataPath}.comment`}
                       placeholder={fieldConfig.comments.placeholder}
                     /> */}
-                    { (showEmployeeList && !!dropDownData.length) ? <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label> : <div style={{height: "10px"}}></div>
+                    { (showEmployeeList && !!dropDownData.length) ? <div><label className="commentsLabel">{fieldConfig.comments.label.labelName}</label><span style={{marginLeft:"-18px",color:"red"}}>*</span></div> : <div style={{height: "10px"}}></div>
                     }
-                    <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/>
+                    <textarea refs="comments" className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} value={this.state.fields["comments"]} onChange={e => {
+                    this.handleChange("comments", e);handleFieldChange(`${dataPath}.comment`, e.target.value)}
+                    }/>
+                    <span style={{color: "red"}}>{this.state.errors["comments"]}</span>
                   </Grid>
                   <Grid item sm="12">
                     <Typography
@@ -256,7 +295,7 @@ class ActionDialog extends React.Component {
                         }}
                         className="bottom-button"
                         onClick={() =>
-                          onButtonClick(buttonLabel, isDocRequired)
+                          this.handleValidation() ? onButtonClick(buttonLabel, isDocRequired) : false
                         }
                       >
                         <LabelContainer
@@ -279,4 +318,17 @@ class ActionDialog extends React.Component {
     );
   }
 }
-export default withStyles(styles)(ActionDialog);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSnackbar: (open, message, variant) =>
+      dispatch(toggleSnackbar(open, message, variant))
+  };
+};
+
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(ActionDialog)
+);
