@@ -62,11 +62,6 @@ const ExpansionPanelContainer = Loadable({
   loading: () => <Loading />
 })
 
-const UpdateContainer = Loadable({
-  loader: () => import("./UpdateContainer"),
-  loading: () => <Loading/>
-})
-
 const MultipleDocumentsContainer = Loadable({
   loader: () => import("./MultipleDocumentsContainer"),
   loading: () => <Loading/>
@@ -96,7 +91,6 @@ export {
   ResubmitActionContainer,
   WorkFlowContainer,
   ExpansionPanelContainer,
-  UpdateContainer,
   MultipleDocumentsContainer,
   NestedListContainer,
   MultipleCardContainer

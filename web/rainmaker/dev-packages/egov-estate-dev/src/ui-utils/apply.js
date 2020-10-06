@@ -134,7 +134,7 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
         );
         const applicationNumber = Applications[0].applicationNumber
         await setDocsForEditFlow(state, dispatch, "Applications[0].applicationDocuments", "temp[0].uploadedDocsInRedux");
-        setApplicationNumberBox({dispatch, applicationNumber, screenKey: "apply"})
+        setApplicationNumberBox({dispatch, applicationNumber, screenKey: "_apply"})
         return true;
   } catch (error) {
     dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
