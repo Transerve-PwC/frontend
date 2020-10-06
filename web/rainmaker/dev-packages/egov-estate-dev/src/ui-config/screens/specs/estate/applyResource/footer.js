@@ -38,7 +38,7 @@ import {
 } from "./reviewDocuments";
 import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
-import { downloadAcknowledgementForm,downloadLetter,downloadNotice} from "../../utils";
+import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
 
 
 export const DEFAULT_STEP = -1;
@@ -902,6 +902,73 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   };
 
+  let AmountLetterAfterConversionDownloadObject = {
+    label: { labelName: "Conversion Letter", labelKey: "ES_CONVERSION_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadAmountLetter(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let AmountLetterAfterConversionPrintObject = {
+    label: { labelName: "Conversion Letter", labelKey: "ES_CONVERSION_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadAmountLetter(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let HousingBoardNotificationDownloadObject = {
+    label: { labelName: "Housing Board Notification", labelKey: "ES_HOUSING_BOARD_NOTIFICATION"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadHousingBoardLetter(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let HousingBoardNotificationPrintObject = {
+    label: { labelName: "Housing Board Notification", labelKey: "ES_HOUSING_BOARD_NOTIFICATION"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadHousingBoardLetter(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let EmailDownloadObject = {
+    label: { labelName: "Email Notice", labelKey: "ES_EMAIL_NOTICE"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadEmailNotice(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let EmailPrintObject = {
+    label: { labelName: "Email Notice", labelKey: "ES_EMAIL_NOTICE"},
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadEmailNotice(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
+
   switch (applicationType) {
     case 'SaleDeed':
         downloadMenu = [
@@ -918,7 +985,8 @@ export const downloadPrintContainer = (
         ]
       
         printMenu = [
-          applicationPrintObject,LetterPrintObject
+          applicationPrintObject,LetterPrintObject,
+         
         ]
       break;
     case 'ScfToSco':
@@ -932,12 +1000,18 @@ export const downloadPrintContainer = (
       break;
     case 'LeaseholdToFreehold':
         downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+          applicationDownloadObject,LetterDownloadObject,
+          AmountLetterAfterConversionDownloadObject,
+          HousingBoardNotificationDownloadObject,
+          NoticeDownloadObject
         ]
       
         printMenu = [
-          applicationPrintObject,LetterPrintObject,NoticePrintObject
+          applicationPrintObject,LetterPrintObject,
+          AmountLetterAfterConversionPrintObject,
+          HousingBoardNotificationPrintObject,NoticePrintObject
         ]
+        
       break;
     case 'ChangeInTrade':
         downloadMenu = [
@@ -950,11 +1024,11 @@ export const downloadPrintContainer = (
       break;
     case 'UnRegisteredWill':
         downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
         ]
       
         printMenu = [
-          applicationPrintObject,LetterPrintObject,NoticePrintObject
+          applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
         ]
       break;
       case 'NOC':
@@ -968,11 +1042,11 @@ export const downloadPrintContainer = (
       break;
       case 'RegisteredWill':
           downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
           ]
         
           printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject
+            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
           ]
       break;
       case 'NDC':
@@ -1022,11 +1096,11 @@ export const downloadPrintContainer = (
       break;
       case 'IntestateDeath':
           downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject
+            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
           ]
         
           printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject
+            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
           ]
       break;
   }

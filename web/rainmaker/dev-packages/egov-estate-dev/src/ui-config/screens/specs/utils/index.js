@@ -475,6 +475,118 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
     alert('Some Error Occured while downloading Acknowledgement form!');
   }
 }
+export const downloadAmountLetter = (Applications, applicationType, mode = 'download') => {
+
+  let queryStr = []
+    switch (applicationType) {
+      case 'LeaseholdToFreehold':
+        queryStr = [{
+            key: "key",
+            value: `est-amount-letter-after-conversion`
+          }
+        ]
+        break;
+     
+    }
+    queryStr[1] = {
+      key: "tenantId",
+      value: `${getTenantId().split('.')[0]}`
+    }
+  
+    let {
+      documents
+    } = Applications[0].additionalDetails;
+   
+    let Application = Applications[0];
+    Application = {
+      ...Application,
+      documents
+    }
+    const DOWNLOADRECEIPT = {
+      GET: {
+        URL: "/pdf-service/v1/_create",
+        ACTION: "_get",
+      },
+    };
+    try {
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Applications: [Application]
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+    } catch (exception) {
+      alert('Some Error Occured while downloading Acknowledgement form!');
+    }
+}
+
+export const downloadHousingBoardLetter = (Applications, applicationType, mode = 'download') => {
+
+  let queryStr = []
+    switch (applicationType) {
+      case 'LeaseholdToFreehold':
+        queryStr = [{
+            key: "key",
+            value: `est-housing-board-letter`
+          }
+        ]
+        break;
+     
+    }
+    queryStr[1] = {
+      key: "tenantId",
+      value: `${getTenantId().split('.')[0]}`
+    }
+  
+    let {
+      documents
+    } = Applications[0].additionalDetails;
+   
+    let Application = Applications[0];
+    Application = {
+      ...Application,
+      documents
+    }
+    const DOWNLOADRECEIPT = {
+      GET: {
+        URL: "/pdf-service/v1/_create",
+        ACTION: "_get",
+      },
+    };
+    try {
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Applications: [Application]
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+    } catch (exception) {
+      alert('Some Error Occured while downloading Acknowledgement form!');
+    }
+}
+
 
 export const downloadLetter = (Applications, applicationType, mode = 'download') => {
 
@@ -601,6 +713,64 @@ let queryStr = []
     alert('Some Error Occured while downloading Acknowledgement form!');
   }
 }
+export const downloadEmailNotice = (Applications, applicationType, mode = 'download') => {
+
+  let queryStr = []
+    switch (applicationType) {
+      case 'RegisteredWill':
+      case 'IntestateDeath':
+      case 'UnRegisteredWill':    
+        queryStr = [{
+            key: "key",
+            value: `est-ot-email-body`
+          }
+        ]
+      break;
+  
+    }
+    queryStr[1] = {
+      key: "tenantId",
+      value: `${getTenantId().split('.')[0]}`
+    }
+  
+    let {
+      documents
+    } = Applications[0].additionalDetails;
+   
+    let Application = Applications[0];
+    Application = {
+      ...Application,
+      documents
+    }
+    const DOWNLOADRECEIPT = {
+      GET: {
+        URL: "/pdf-service/v1/_create",
+        ACTION: "_get",
+      },
+    };
+    try {
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Applications: [Application]
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Acknowledgement form Download");
+          }
+        });
+    } catch (exception) {
+      alert('Some Error Occured while downloading Acknowledgement form!');
+    }
+  }
+
 
 export const downloadNotice = (Applications, applicationType, mode = 'download') => {
 
