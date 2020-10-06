@@ -112,7 +112,7 @@ export const getReviewProperty = (isEditable = true) => {
             propertyArea: getLabelWithValue(
                 {
                     labelName: "Area of the property",
-                    labelKey: "RP_AREA_PROPERTY_LABEL"
+                    labelKey: "RP_AREA_PROPERTY_LABEL_IN_UNITS"
                 },
                 { jsonPath: "Properties[0].propertyDetails.area" }
             ),

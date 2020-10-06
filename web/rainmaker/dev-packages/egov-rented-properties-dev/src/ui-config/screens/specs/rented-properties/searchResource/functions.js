@@ -324,7 +324,7 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
   const { RentAccountStatements } = state.screenConfiguration.preparedFinalObject;
   const {Properties} = state.screenConfiguration.preparedFinalObject;
   let properties = Properties
-  properties[0].demands[0].remainingPrincipal = properties[0].demands[0].remainingPrincipal.toFixed(2)
+  properties[0].demands[0].remainingPrincipal = parseInt(properties[0].demands[0].remainingPrincipal).toFixed(2)
   const data = RentAccountStatements.map(item =>
     ({
       ...item,
