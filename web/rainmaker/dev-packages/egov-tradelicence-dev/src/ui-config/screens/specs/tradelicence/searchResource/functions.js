@@ -146,56 +146,16 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
 
     // const {licensesCount = 0} = await getCount(queryObject) || {};
 
-    
-
     const response = await getSearchResults(queryObject);
     try {
       const length = response.Licenses.length
+      dispatch(prepareFinalObject("_searchResults", response.Licenses))
       dispatch(
         handleField(
           "search",
           "components.div.children.searchResults",
           "props.count",
           length
-        )
-      );
-  
-      dispatch(
-        handleField(
-          "search",
-          "components.div.children.searchResults",
-          "props.title",
-          `${getTextToLocalMapping(
-            "Search Results for Trade License Applications"
-          )} (${length})`
-        )
-      );
-      let data = response.Licenses.map(item => ({
-  
-        [getTextToLocalMapping("Application No")]:
-          item.applicationNumber || "-",
-        [getTextToLocalMapping("License No")]: item.licenseNumber || "-",
-        [getTextToLocalMapping("License Type")]:   getLocaleLabels(item.businessService + "_GROUP", item.businessService + "_GROUP"),
-        [getTextToLocalMapping("Service Type")]: getLocaleLabels(item.businessService + "_SHORT", item.businessService + "_SHORT"),
-        [getTextToLocalMapping("Owner Name")]:
-          item.tradeLicenseDetail.owners[0].name || "-",
-        [getTextToLocalMapping("Application Date")]:
-          convertEpochToDate(item.applicationDate) || "-",
-          [getTextToLocalMapping("Financial Year")]:
-          item.financialYear || "-",
-          [getTextToLocalMapping("Application Type")]:
-          item.applicationType || "Renew",
-        [getTextToLocalMapping("Status")]: item.status || "-",
-        ["tenantId"]: item.tenantId,
-        ["status1"]: item.status || "-"
-      }));
-
-      dispatch(
-        handleField(
-          "search",
-          "components.div.children.searchResults",
-          "props.data",
-          data
         )
       );
       !!hideTable && showHideTable(true, dispatch);
