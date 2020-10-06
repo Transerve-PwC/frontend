@@ -93,7 +93,7 @@
                         "jsonPath": "Applications[0].applicationDetails.transferee.address"
                     },
                     {
-                        "label": "ES_LEGAL_HEIR_RELATIONSHIP_WITH_DECEASED_LABEL",
+                        "label": "ES_LEGAL_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased"
                     }
                 ]
