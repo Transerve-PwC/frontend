@@ -88,7 +88,13 @@
                         "label": "ES_DATE_OF_REGISTRATION_OF_WILL_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
                         "type": "date"
-                    },
+                    }
+                ]
+            },
+            {
+                "header": "ES_LEGAL_BENEFICIARY_DETAILS",
+                "step": 0,
+                "fields": [
                     {
                         "label": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.legalHeirOrbeneficiary"
@@ -113,7 +119,7 @@
                 ]
             },
             {
-                "header": "ES_BENEFICIARY_DETAILS_HEADER",
+                "header": "ES_WITNESS_DETAILS_HEADER",
                 "step": 0,
                 "sourceJsonPath": "Applications[0].applicationDetails.witness",
                 "type": "LIST",

@@ -10,7 +10,6 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 import { WF_PROPERTY_MASTER } from "../../ui-constants";
-
 class Footer extends React.Component {
   state = {
     open: false,
@@ -28,6 +27,10 @@ class Footer extends React.Component {
     const { handleFieldChange, setRoute, dataPath, moduleName } = this.props;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
     const {workflow: {ProcessInstances = []}} = preparedFinalObject || {}
+    const data = get(
+      preparedFinalObject,
+      dataPath
+    );
     let employeeList = [];
     let action = ""
     switch(item.buttonLabel) {
@@ -40,11 +43,17 @@ class Footer extends React.Component {
     let assignee = [];
     switch(moduleName) {
       case WF_PROPERTY_MASTER: {
-        if(!!action && dataPath[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
+        if(!!action && data[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
           const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
           assignee = !!assigner.uuid ? [assigner.uuid] : []
         }
         break
+      }
+      default: {
+        if(!!action && data[0].state !== "ES_PENDING_DS_VERIFICATION"){
+          const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+          assignee = !!assigner.uuid ? [assigner.uuid] : []
+        }
       }
     }
 

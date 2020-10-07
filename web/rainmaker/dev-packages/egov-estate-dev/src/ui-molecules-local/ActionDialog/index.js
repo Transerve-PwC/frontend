@@ -176,9 +176,9 @@ class ActionDialog extends React.Component {
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
                       onChange={e =>
-                        handleFieldChange(`${dataPath}.comment`, e.target.value)
+                        handleFieldChange(`${dataPath}.comments`, e.target.value)
                       }
-                      jsonPath={`${dataPath}.comment`}
+                      jsonPath={`${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                     />
                   </Grid>

@@ -97,6 +97,16 @@
                 ]
             },
             {
+                "header": "ES_MODE_OF_TRANSFER_HEADER",
+                "step": 0,
+                "fields": [
+                    {
+                        "label": "ES_MODE_OF_TRANSFER_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.modeOfTransfer"
+                    }
+                ]
+            },
+            {
                 "header": "ES_DOCUMENT_DETAILS_HEADER",
                 "step": 1,
                 "type": "DOCUMENTS",

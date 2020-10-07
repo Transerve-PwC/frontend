@@ -115,6 +115,10 @@
                     {
                         "label": "ES_COMPANY_REGISTRATION_NUMBER",
                         "jsonPath": "Applications[0].applicationDetails.company.registrationNumber"
+                    },
+                    {
+                        "label": "ES_COMPANY_TYPE_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.company.type"
                     }
                 ]
             },
