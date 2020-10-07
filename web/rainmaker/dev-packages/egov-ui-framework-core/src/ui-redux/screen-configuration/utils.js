@@ -40,7 +40,8 @@ export const validateField = field => {
   }
 
   if (value) {
-    fieldLength = value.length;
+    // convert to string to fix error if value is numeric, since length of value whose type is number is undefined.
+    fieldLength = (value.toString()).length;
   }
 
   if (
