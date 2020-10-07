@@ -32,6 +32,10 @@ class Footer extends React.Component {
     const { handleFieldChange, setRoute, dataPath, moduleName } = this.props;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
     const {workflow: {ProcessInstances = []}} = preparedFinalObject || {}
+    const data = get(
+      preparedFinalObject,
+      dataPath
+    );
     let employeeList = [];
       let action = ""
       switch(item.buttonLabel) {
@@ -44,14 +48,14 @@ class Footer extends React.Component {
       let assignee = [];
       switch(moduleName) {
         case "MasterRP": {
-          if(!!action && dataPath[0].masterDataState !== "PM_PENDINGJAVERIFICATION") {
+          if(!!action && data[0].masterDataState !== "PM_PENDINGJAVERIFICATION") {
             const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
         }
         case WORKFLOW_BUSINESS_SERVICE_OT: {
-          if(!!action && dataPath[0].applicationState !== "OT_PENDINGCLVERIFICATION") {
+          if(!!action && data[0].applicationState !== "OT_PENDINGCLVERIFICATION") {
             const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
@@ -59,7 +63,7 @@ class Footer extends React.Component {
         }
         case "PermissionToMortgage":
         case WORKFLOW_BUSINESS_SERVICE_DC: {
-          if(!!action && (dataPath[0].state !== "DC_PENDINGCLVERIFICATION" || dataPath[0].state !== "MG_PENDINGCLVERIFICATION")) {
+          if(!!action && data[0].state !== "DC_PENDINGCLVERIFICATION" && data[0].state !== "MG_PENDINGCLVERIFICATION") {
             const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
