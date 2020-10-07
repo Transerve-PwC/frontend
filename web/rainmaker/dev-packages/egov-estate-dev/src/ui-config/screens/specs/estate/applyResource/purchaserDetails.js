@@ -9,7 +9,8 @@ import {
   getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  prepareFinalObject
+  prepareFinalObject,
+  handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTodaysDateInYMD
@@ -39,9 +40,14 @@ const newOwnerNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.ownerName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.ownerName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const newOwnerFatherHusbandNameField = {
@@ -57,9 +63,14 @@ const newOwnerFatherHusbandNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const getRelationshipRadioButton = {
@@ -87,10 +98,15 @@ const getRelationshipRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianRelation",
-    required: true,
+    // required: true,
   },
-  required: true,
+  // required: true,
   type: "array",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 };
 
 const newOwnerAddressField = {
@@ -106,13 +122,18 @@ const newOwnerAddressField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   props: {
     multiline: true,
     rows: 2
   },
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const newOwnerMobileNumberField = {
@@ -130,6 +151,11 @@ const newOwnerMobileNumberField = {
   //   disabled: true
   // },
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.mobileNumber",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const sellerNameField = {
@@ -145,9 +171,14 @@ const sellerNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const sellerFatherHusbandNameField = {
@@ -163,9 +194,14 @@ const sellerFatherHusbandNameField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerFatherName"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerFatherName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const getSellerRelationshipRadioButton = {
@@ -193,10 +229,15 @@ const getSellerRelationshipRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.sellerGuardianRelation",
-    required: true,
+    // required: true,
   },
-  required: true,
+  // required: true,
   type: "array",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 };
 
 const shareField = {
@@ -212,9 +253,14 @@ const shareField = {
     xs: 12,
     sm: 6
   },
-  required: true,
+  // required: true,
   maxLength: 5,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.percentageOfShare"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.percentageOfShare",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const modeOfTransferField = {
@@ -226,12 +272,17 @@ const modeOfTransferField = {
     labelName: "Select Mode Of Transfer",
     labelKey: "ES_MODE_OF_TRANSFER_PLACEHOLDER"
   },
-  required: true,
+  // required: true,
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.modeOfTransfer",
   sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.modeOfTransfer",
   gridDefination: {
     xs: 12,
     sm: 6
+  },
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
   }
 }
 
@@ -249,7 +300,12 @@ const registrationNumberField = {
     sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.registrationNumber"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.registrationNumber",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
+    }
+  }
 }
 
 const dateOfRegistrationField = {
@@ -266,6 +322,11 @@ const dateOfRegistrationField = {
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
+    }
+  },
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
     }
   }
 }
@@ -331,3 +392,22 @@ export const purchaserDetails = getCommonCard({
     }
   })
 })
+
+export const markFieldsMandatory = (param, dispatch) => {
+  debugger
+  let commonPathArr = (param.componentJsonpath).split(".");
+  commonPathArr.pop();
+  let commonpath = commonPathArr.join(".");
+  let fieldsArr = ["newOwnerName", "newOwnerFatherHusbandName", "guardianRelation", "newOwnerAddress", "newOwnerMobileNumber", "sellerName", "sellerFatherHusbandName", "sellerGuardianRelation", "share", "modeOfTransfer"]
+
+  fieldsArr.map(item => {
+    dispatch(
+      handleField(
+        param.screenKey,
+        `${commonpath}.${item}`,
+        `props.required`,
+        !!param.value
+      )
+    )
+  })
+}
