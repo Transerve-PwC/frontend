@@ -326,7 +326,7 @@
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "disabled": true,
                 "path": "ownerDetails.address",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",

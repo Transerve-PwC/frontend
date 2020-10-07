@@ -21,10 +21,10 @@ import React from 'react';
 
 export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(label));
 
-export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+export const searchApiCall = async (state, dispatch, queryObject = [], offset, limit = 100, hideTable = true) => {
   dispatch(toggleSpinner());
   !!hideTable && showHideTable(false, dispatch);
-  let queryObject = [
+   queryObject = [...queryObject,
     {
       key: "offset",
       value: offset

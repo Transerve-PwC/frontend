@@ -288,7 +288,7 @@ export const estateApplication = getCommonCard({
         },
         onClickDefination: {
           action: "condition",
-          callBack: searchApiCall
+          callBack: (state, dispatch) => searchApiCall(state, dispatch, [{key: "state",value: "ES_PM_APPROVED"}])
         }
       }
     })

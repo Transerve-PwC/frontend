@@ -277,7 +277,7 @@
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },

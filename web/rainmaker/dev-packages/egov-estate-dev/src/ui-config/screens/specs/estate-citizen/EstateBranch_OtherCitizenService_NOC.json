@@ -24,6 +24,16 @@
           "jsonPath": "propertyDetails.owners",
           "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
+        },
+        {
+          "name": "modesOfTransfer",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "modeOfTransfer"
+          }
         }
       ],
       "fields": [
@@ -324,7 +334,7 @@
             ]
           },
           {
-            "header": "ES_OWNER_DETAILS_HEADER",
+            "header": "ES_APPLICANT_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
@@ -347,7 +357,7 @@
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },
@@ -439,6 +449,21 @@
                 "pattern": "MobileNo",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
                 "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.mobileNumber : application.applicationDetails.transferee.mobileNo"
+              }
+            ]
+          },
+          {
+            "header": "ES_MODE_OF_TRANSFER_LABEL",
+            "type": "FORM",
+            "fields": [
+              {
+                "label": "ES_MODE_OF_TRANSFER_LABEL",
+                "placeholder": "ES_MODE_OF_TRANSFER_PLACEHOLDER",
+                "required": true,
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.modeOfTransfer",
+                "path": "modeOfTransfer",
+                "dataSource": "modesOfTransfer"
               }
             ]
           }
