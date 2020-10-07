@@ -218,7 +218,7 @@ const subCategoryField = {
 
 const siteNumberField = {
     label: {
-        labelName: "Site Number",
+        labelName: "Site Number/SCO/Booth",
         labelKey: "ES_SITE_NUMBER_LABEL"
     },
     placeholder: {

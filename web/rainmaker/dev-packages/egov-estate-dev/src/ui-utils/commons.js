@@ -1,14 +1,23 @@
+import React from 'react';
 import { httpRequest } from "./api";
 import {
   toggleSnackbar,
-  toggleSpinner
+  toggleSpinner,
+  handleScreenConfigurationFieldChange as handleField,
+  prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getTranslatedLabel
+  getTranslatedLabel,
+  getTextToLocalMapping
 } from "../ui-config/screens/specs/utils";
 import store from "redux/store";
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
 import commonConfig from "config/common.js";
+import get from "lodash/get";
+import {
+  getFileUrlFromAPI,
+  getFileUrl
+} from "egov-ui-framework/ui-utils/commons";
 
 export const getPaymentGateways = async () => {
   try {
@@ -170,108 +179,50 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
   }
 };
 
-export const getExcelData = async (excelUrl, fileStoreId) => {
+export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJsonPath, preparedFinalObject) => {
+  const fileNumber = get(
+    preparedFinalObject,
+    "Properties[0].fileNumber"
+  )
+  const propertyId = get(
+    preparedFinalObject,
+    "Properties[0].id"
+  )
   const queryObject = [
     {key: "tenantId", value: "ch"},
     {key: "fileStoreId", value: fileStoreId}
   ]
+  const reqBody = {
+    Property: {
+      tenantId: "ch",
+      fileNumber: fileNumber,
+      id: propertyId
+    }
+  };
   try {
     store.dispatch(toggleSpinner());
     const response = await httpRequest(
       "post",
       excelUrl,
       "",
-      queryObject
+      queryObject,
+      reqBody
     )
     if(!!response) {
+      store.dispatch(
+        handleField(
+          screenKey,
+          componentJsonPath,
+          "visible",
+          true
+        )
+      );
+      store.dispatch(toggleSnackbar(true, { labelName: "File Uploaded Successfully" }, "success"));
       console.log(response);
-      let response = {
-        "ResponseInfo": {
-        "apiId": "Rainmaker",
-        "ver": ".01",
-        "ts": null,
-        "resMsgId": "uief87324",
-        "msgId": "20170310130900|en_IN",
-        "status": "successful"
-        },
-        "Auctions": [
-        {
-        "id": "3e6aaff5-02d8-47c2-9d16-bcadd7b9cb8c",
-        "propertyId": "1",
-        "tenantId": "Hello",
-        "fileNumber": "File-1237",
-        "auctionDescription": "Can be ignored ",
-        "participatedBidders": "a",
-        "depositedEMDAmount": 10000.0,
-        "depositDate": 1599264000000,
-        "emdValidityDate": null,
-        "refundStatus": "",
-        "auditDetails": {
-        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "createdTime": 1601298961101,
-        "lastModifiedTime": 1601298961101
-        }
-        },
-        {
-        "id": "752890a0-3cce-4f3a-84aa-cb6f6ce3c2e7",
-        "propertyId": "1",
-        "tenantId": "Hello",
-        "fileNumber": "File-1237",
-        "auctionDescription": "",
-        "participatedBidders": "b",
-        "depositedEMDAmount": 10000.0,
-        "depositDate": 1599264000000,
-        "emdValidityDate": null,
-        "refundStatus": "",
-        "auditDetails": {
-        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "createdTime": 1601298961101,
-        "lastModifiedTime": 1601298961101
-        }
-        },
-        {
-        "id": "3795ba93-28de-400d-b347-9a55061c405a",
-        "propertyId": "1",
-        "tenantId": "Hello",
-        "fileNumber": "File-1237",
-        "auctionDescription": "",
-        "participatedBidders": "c",
-        "depositedEMDAmount": 10000.0,
-        "depositDate": 1599264000000,
-        "emdValidityDate": null,
-        "refundStatus": "",
-        "auditDetails": {
-        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "createdTime": 1601298961101,
-        "lastModifiedTime": 1601298961101
-        }
-        },
-        {
-        "id": "ef512c07-b1b0-4b07-a6d2-bd5dd8622aa8",
-        "propertyId": "1",
-        "tenantId": "Hello",
-        "fileNumber": "File-1237",
-        "auctionDescription": "",
-        "participatedBidders": "d",
-        "depositedEMDAmount": 10000.0,
-        "depositDate": 1599264000000,
-        "emdValidityDate": null,
-        "refundStatus": "",
-        "auditDetails": {
-        "createdBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "lastModifiedBy": "2743bf22-6499-4029-bd26-79e5d0ce6427",
-        "createdTime": 1601298961101,
-        "lastModifiedTime": 1601298961101
-        }
-        }
-        ]
-        }
-        let { Auctions } = response;
 
-        // populateBiddersTable({auctions: Auctions})
+      let { Auctions } = response;
+
+      populateBiddersTable(Auctions, screenKey, componentJsonPath, preparedFinalObject)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -285,3 +236,135 @@ export const getExcelData = async (excelUrl, fileStoreId) => {
     store.dispatch(toggleSpinner());
   }
 }
+
+
+export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
+  console.log(auctionData);
+
+  if (!!auctionData) {
+    let data = auctionData.map(item => ({
+      [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
+      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-",
+      [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
+      [getTextToLocalMapping("Deposit Date")]: item.depositDate || "-",
+      [getTextToLocalMapping("EMD Validity Date")]: item.emdValidityDate || "-",
+      [getTextToLocalMapping("Mark as Refunded")]: React.createElement(
+        "input",
+        {
+          type:"checkbox",
+          defaultChecked: false, 
+          onClick: (e) => { 
+            if (confirm('Are you sure you want to mark/unmark as refunded?')) {
+              console.log('Done');
+              setTimeout(() => {
+                debugger;
+                let auctionData = store.getState().screenConfiguration.preparedFinalObject.Auctions;
+                console.log("auctionData", auctionData);
+                /* const reqBody = {
+                  Auctions: [{
+                    id: "",
+                    propertyId: ""
+                  }]
+                };
+                const response = await httpRequest(
+                  "post",
+                  "/est-services/auctions/_update",
+                  "",
+                  "",
+                  reqBody
+                );
+
+                if (response) {
+                  store.dispatch(
+                    toggleSnackbar(
+                      true,
+                      { labelName: "Success", labelKey: "ES_SUCCESS" },
+                      "success"
+                    )
+                  ); 
+                } */
+              }, 2000)
+            } else {
+              e.preventDefault();
+              console.log('Cancelled');
+            }
+          }
+        })
+    }));
+
+    store.dispatch(
+      handleField(
+        screenKey,
+        componentJsonPath,
+        "props.data",
+        data
+      )
+    );
+  }
+}
+
+export const getAuctionDetails = async requestBody => {
+  try {
+    const response = await httpRequest(
+      "post",
+      "/est-services/auctions/_search",
+      "_search",
+      [],
+      requestBody
+    );
+    return response;
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+export const setDocuments = async (
+  payload,
+  sourceJsonPath,
+  destJsonPath,
+  dispatch,
+  businessService
+) => {
+  const uploadedDocData = get(payload, sourceJsonPath) ? get(payload, sourceJsonPath) : [];
+
+  const fileStoreIds =
+    uploadedDocData &&
+    uploadedDocData
+      .map(item => {
+        return item.fileStoreId;
+      })
+      .join(",");
+  const fileUrlPayload =
+    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+  const reviewDocData =
+    uploadedDocData &&
+    uploadedDocData.map((item, index) => {
+      return {
+        title: `${businessService}_${item.documentType}` || "",
+        link:
+          (fileUrlPayload &&
+            fileUrlPayload[item.fileStoreId] &&
+            getFileUrl(fileUrlPayload[item.fileStoreId])) ||
+          "",
+        linkText: "Download",
+        name:
+          (fileUrlPayload &&
+            fileUrlPayload[item.fileStoreId] &&
+            decodeURIComponent(
+              getFileUrl(fileUrlPayload[item.fileStoreId])
+                .split("?")[0]
+                .split("/")
+                .pop()
+                .slice(13)
+            )) ||
+          `Document - ${index + 1}`
+      };
+    });
+  reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
+};

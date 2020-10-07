@@ -158,6 +158,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     set(queryObject[0], "propertyDetails.dateOfAuction", convertDateToEpoch(queryObject[0].propertyDetails.dateOfAuction))
     set(queryObject[0], "propertyDetails.lastNocDate", convertDateToEpoch(queryObject[0].propertyDetails.lastNocDate))
     set(queryObject[0], "propertyDetails.companyRegistrationDate", convertDateToEpoch(queryObject[0].propertyDetails.companyRegistrationDate))
+    set(queryObject[0], "propertyDetails.emdDate", convertDateToEpoch(queryObject[0].propertyDetails.emdDate))
 
     var purchaseDetails = get(
       queryObject[0],
@@ -301,7 +302,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (owners) {
       owners.map((item, index) => {
-        let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDocuments || [];
+        let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments || [];
         const removedDocs = ownerDocuments.filter(item => !item.isActive)
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
         Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;

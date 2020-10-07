@@ -312,6 +312,70 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
+  if (activeStep === PURCHASER_DOCUMENTS_STEP) {
+    const propertyPrevOwners = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.purchaser"
+    );
+
+    const propertyPrevOwnersTemp = get(
+      state.screenConfiguration.preparedFinalObject,
+      "PropertiesTemp[0].propertyDetails.purchaser"
+    );
+
+    for (var i = 0; i < propertyPrevOwnersTemp.length; i++) {
+      const uploadedDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Properties[0].propertyDetails.purchaser[${i}].ownerDetails.ownerDocuments`,
+        []
+      );
+
+      const uploadedTempDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.ownerDocuments`,
+        []
+      );
+
+      for (var y = 0; y < uploadedTempDocData.length; y++) {
+        if (
+          uploadedTempDocData[y].required &&
+          !some(uploadedDocData, {
+            documentType: uploadedTempDocData[y].name
+          })
+        ) {
+          isFormValid = false;
+        }
+      }
+      if (isFormValid) {
+        const reviewDocData =
+          uploadedDocData &&
+          uploadedDocData.map(item => {
+            return {
+              title: `ES_${item.documentType}`,
+              link: item.fileUrl && item.fileUrl.split(",")[0],
+              linkText: "View",
+              name: item.fileName
+            };
+          });
+        dispatch(
+          prepareFinalObject(`PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, reviewDocData)
+        );
+
+        const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`);
+        set(
+          reviewDocuments,
+          "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
+          `Documents - ${propertyPrevOwners ? propertyPrevOwners[i] ? propertyPrevOwners[i].ownerDetails.ownerName : "" : ""}`
+        )
+        set(
+          state.screenConfiguration.screenConfig,
+          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocumentsPrevOwner_${i}`,
+          reviewDocuments
+        )
+      }
+    }
+  }
+
   if (activeStep === COURT_CASE_DETAILS_STEP) {
     const courtCases = get(
       state.screenConfiguration.preparedFinalObject,

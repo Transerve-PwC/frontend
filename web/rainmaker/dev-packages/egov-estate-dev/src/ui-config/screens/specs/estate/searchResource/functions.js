@@ -103,7 +103,8 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
         [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
         [getTextToLocalMapping("Sector Number")]: item.sectorNumber || "-",
         [getTextToLocalMapping("Status")]: getLocaleLabels(item.state, item.state) || "-",
-        [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
+        [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-",
+        ["propertyMasterOrAllotmentOfSite"]: item.propertyMasterOrAllotmentOfSite
       }));
       dispatch(
         handleField(
