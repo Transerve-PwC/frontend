@@ -42,7 +42,6 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
@@ -66,8 +65,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-   
-     await searchResults(action, state, dispatch, fileNumber)
+    await searchResults(action, state, dispatch, fileNumber);
   }
 }
 
@@ -161,7 +159,40 @@ const estateDetailPreview = {
               },
              ...headerrow
             },
-            }
+            /* cancellationOfSiteButton: {
+              componentPath: "Button",
+              visible: false,
+              gridDefination: {
+                xs: 12,
+                sm: 4,
+                align: "right"
+              },
+              props: {
+                variant: "contained",
+                style: {
+                  color: "white",
+                  backgroundColor: "#fe7a51",
+                  borderColor: "#fe7a51",
+                  borderRadius: "2px",
+                  width: "50%",
+                  height: "48px",
+                  margin: "-10px 0px 10px"
+                }
+              },
+              children: {
+                buttonLabel: getLabel({
+                  labelName: "Cancellation of Site",
+                  labelKey: "ES_CANCELLATION_OF_SITE_BUTTON"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: (state, dispatch) => {
+                  cancellationOfSite();
+                }
+              }
+            } */
+          }
           },
           tabSection: {
             uiFramework: "custom-containers-local",
@@ -193,4 +224,7 @@ const estateDetailPreview = {
   }
 };
 
+/* const cancellationOfSite = () => {
+  console.log("Cancellation of Site");
+} */
 export default estateDetailPreview;

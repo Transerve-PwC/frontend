@@ -376,8 +376,18 @@ const callBackForNext = async (state, dispatch) => {
         isFormValid = false;
       }
     }
-    else {
+    else if (selectedDemand == "LICENSEFEE") {
       if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    else {
+      if (isPremiumAmountValid && isSecurityDetailsValid && isInstallmentDetailsValid) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {
           return
