@@ -56,8 +56,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
         `PropertiesTemp[${index}].reviewDocDataPrevOwner`,
         dispatch, 'ES'
       );
-      let documentListContainer = getReviewDocuments(false, 'document-details', `PropertiesTemp[${index}].
-      PrevOwner`);
+      let documentListContainer = getReviewDocuments(false, 'document-details', `PropertiesTemp[${index}].reviewDocDataPrevOwner`, 5);
       containers[index] = getCommonCard({
         documentListContainer
       });
