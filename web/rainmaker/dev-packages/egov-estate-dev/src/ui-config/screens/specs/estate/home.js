@@ -3,6 +3,9 @@ import {
   getCommonHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
+import {
+  getTenantId
+} from "egov-ui-kit/utils/localStorageUtils";
 
 const header = getCommonHeader({
   labelName: "Estate",
@@ -36,7 +39,7 @@ const cardItems = [
       labelName: "Allotment"
     },
     icon: < FormIcon / > ,
-    route: "allotment"
+    route: `allotment?tenantId=${getTenantId()}`
   },
   // {
   //   label: {
