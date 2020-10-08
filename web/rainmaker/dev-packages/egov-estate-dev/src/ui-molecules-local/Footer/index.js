@@ -34,6 +34,7 @@ class Footer extends React.Component {
     let employeeList = [];
     let action = ""
     switch(item.buttonLabel) {
+      case "SENTBACK":
       case "SENDBACK": {
         action = "FORWARD"
         break
