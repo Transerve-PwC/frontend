@@ -70,6 +70,7 @@ export const getMdmsData = async (dispatch, body) => {
 };
 
 const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
+
   const paymentDocuments=[{
     type:"PAYMENT_DOCUMENT",
     description: {
@@ -97,36 +98,20 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
   dispatch(
     handleField(
         "apply",
-        `components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+        `components.div.children.formwizardEighthStep.children.paymentDocumentsDetails.children.cardContent.children.documentList`,
         "props.inputProps",
         paymentDocuments
     )
 );
-dispatch(prepareFinalObject("PropertiesTemp[0].applicationPaymentDocuments", documentsType))
-// const fileStoreId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].fileStoreId")
-// const tenantId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].tenantId")
-// if(!!fileStoreId) {
-//   const fileUrl = await getFileUrlFromAPI(fileStoreId);
-//  const paymentDocuments = { "fileName" : (fileUrl &&
-//   fileUrl[fileStoreId] &&
-//     decodeURIComponent(
-//       getFileUrl(fileUrl[fileStoreId])
-//         .split("?")[0]
-//         .split("/")
-//         .pop()
-//         .slice(13)
-//     )) ||
-//   `Document`,
-//   "fileStoreId" : fileStoreId,
-//   "fileUrl" : Object.values(fileUrl)[0],
-//   "documentType" :  "PAYMENT_DOCUMENT",
-//   "tenantId" : tenantId,
-//   "active": true }
-
-//   dispatch(prepareFinalObject(
-//     "paymentDocuments", paymentDocuments
-//   ))
-// }
+// dispatch(
+//   handleField(
+//       "apply",
+//       `components.div.children.formwizardFirstStep.children.paymentDocumentsDetails.children.cardContent.children.documentList`,
+//       "props.inputProps",
+//       paymentDocuments
+//   )
+// );
+dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.applicationPaymentDocuments`, documentsType))
 }
 
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
@@ -199,7 +184,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   );
   dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`, documentTypes))
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
-  // setPaymentDocumentData(action, state, dispatch,owner)
+  setPaymentDocumentData(action, state, dispatch,owner)
 
 }
 

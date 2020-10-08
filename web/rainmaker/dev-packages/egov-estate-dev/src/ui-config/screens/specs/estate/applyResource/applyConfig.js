@@ -82,6 +82,23 @@ export const ownerDocumentDetails_0 = getCommonCard({
   }
 });
 
+export const paymentDocumentsDetails = getCommonCard({
+  ...documentCardConfig,
+  documentList : {
+    ...documentList,
+    props: {
+      ...documentList.props,
+       documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.applicationPaymentDocuments",
+       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
+       tenantIdJsonPath: "Properties[0].tenantId",
+       removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
+      //  getUrl: "/rp-services/v1/excel/read",
+      //  componentJsonPath: "components.div.children.formwizardThirdStep.children.paymentDetailsTable",
+      // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"
+    }
+  }
+});
+
 export const companyDocuments_0 = getCommonCard({
   ...documentCardConfig,
   documentList: {
@@ -267,9 +284,10 @@ export const formwizardEighthStep = {
     id: "apply_form8"
   },
   children: {
-    groundRentDetailsPM,
-    serviceTaxDetails,
-    paymentMadeBy
+    paymentDocumentsDetails
+    // groundRentDetailsPM,
+    // serviceTaxDetails,
+    // paymentMadeBy
   },
   visible: false
 }
