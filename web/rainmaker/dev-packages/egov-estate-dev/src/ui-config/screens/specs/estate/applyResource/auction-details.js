@@ -35,7 +35,7 @@ const documentList = {
     uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
     tenantIdJsonPath: "Properties[0].tenantId",
     removedJsonPath: "temp[0].removedDocs",
-    excelUrl: "/est-services/auctions/_create?"
+    excelUrl: "/est-services/auctions/_parse?"
   }
 };
 
