@@ -69,6 +69,66 @@ export const getMdmsData = async (dispatch, body) => {
   }
 };
 
+const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
+  const paymentDocuments=[{
+    type:"PAYMENT_DOCUMENT",
+    description: {
+      labelName: "ONLY_CSV",
+      labelKey: "ONLY_CSV",
+    },
+      formatProps :{
+        accept : ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+      }, 
+      maxFileSize: 6000,
+      moduleName: "Estate",
+      statement: {
+       labelName: "UPLOAD_CSV",
+       labelKey: "UPLOAD_CSV"
+  }
+  }]
+  const documentsType=[
+    {
+    name: "PAYMENT_DOCUMENT",
+    required: true,
+    jsonPath: `paymentDocuments`,
+    statement: "UPLOAD_CSV"
+    }
+  ]
+  dispatch(
+    handleField(
+        "apply",
+        `components.div.children.formwizardEighthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+        "props.inputProps",
+        paymentDocuments
+    )
+);
+dispatch(prepareFinalObject("PropertiesTemp[0].applicationPaymentDocuments", documentsType))
+// const fileStoreId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].fileStoreId")
+// const tenantId = get(state.screenConfiguration, "preparedFinalObject.Properties[0].tenantId")
+// if(!!fileStoreId) {
+//   const fileUrl = await getFileUrlFromAPI(fileStoreId);
+//  const paymentDocuments = { "fileName" : (fileUrl &&
+//   fileUrl[fileStoreId] &&
+//     decodeURIComponent(
+//       getFileUrl(fileUrl[fileStoreId])
+//         .split("?")[0]
+//         .split("/")
+//         .pop()
+//         .slice(13)
+//     )) ||
+//   `Document`,
+//   "fileStoreId" : fileStoreId,
+//   "fileUrl" : Object.values(fileUrl)[0],
+//   "documentType" :  "PAYMENT_DOCUMENT",
+//   "tenantId" : tenantId,
+//   "active": true }
+
+//   dispatch(prepareFinalObject(
+//     "paymentDocuments", paymentDocuments
+//   ))
+// }
+}
+
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   const documentTypePayload = [{
     moduleName: "EstatePropertyService",
@@ -139,6 +199,8 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   );
   dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`, documentTypes))
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
+  // setPaymentDocumentData(action, state, dispatch,owner)
+
 }
 
 const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
