@@ -1,5 +1,6 @@
 import {
-  getCommonHeader
+  getCommonHeader,
+  dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   stepper,
@@ -45,7 +46,7 @@ import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
-import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo } from './applyResource/propertyDetails'
+import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -303,11 +304,48 @@ const header = getCommonHeader({
   labelKey: "ES_COMMON_ESTATES_ADD"
 });
 
+export const setData = (properties, screenName, dispatch) => {
+  let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
+  let entityType = properties[0].propertyDetails.entityType;
+  if (propertyRegisteredTo == "ENTITY") {
+    toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
+  }
+  else {
+    toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(propertyRegisteredTo, dispatch)
+  }
+
+  let stepSecond;
+  switch(screenName) {
+    case "apply":
+      stepSecond = "formwizardSecondStep";
+      break;
+    case "allotment":
+      stepSecond = "formwizardSecondStepAllotment";
+      break;
+  }
+
+  let allocationType = properties[0].propertyDetails.typeOfAllocation;
+  dispatchMultipleFieldChangeAction(
+    screenName,
+    getActionDefinationForAuctionDetailsFields(!!(allocationType == "ALLOCATION_TYPE.ALLOTMENT"), stepSecond),
+    dispatch
+  );
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.${stepSecond}.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer`,
+      `visible`,
+      !!(allocationType == "ALLOCATION_TYPE.AUCTION")
+    )
+  )
+}
+
 export const getPMDetailsByFileNumber = async (
   action,
   state,
   dispatch,
-  fileNumber
+  fileNumber,
+  screenName
 ) => {
   let queryObject = [
     {
@@ -338,14 +376,7 @@ export const getPMDetailsByFileNumber = async (
       )
     )
 
-    let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
-    let entityType = properties[0].propertyDetails.entityType;
-    if (propertyRegisteredTo == "ENTITY") {
-      toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
-    }
-    else {
-      toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(propertyRegisteredTo, dispatch)
-    }
+    setData(properties, screenName, dispatch);
   }
 }
 
@@ -353,7 +384,7 @@ const getData = async (action, state, dispatch) => {
   const fileNumber = getQueryArg(window.location.href, "filenumber");
 
   if (fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber)
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
   } else {
     dispatch(
       prepareFinalObject(
