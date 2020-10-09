@@ -87,7 +87,7 @@
                         "jsonPath": "Applications[0].applicationDetails.company.address"
                     },
                     {
-                        "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
+                        "label": "ES_COMPANY_REGISTRATION_NUMBER",
                         "jsonPath": "Applications[0].applicationDetails.company.registrationNumber"
                     },
                     {
