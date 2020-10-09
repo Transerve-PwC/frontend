@@ -3,7 +3,10 @@ import {
   sortByEpoch,
   getEpochForDate,
 } from "../../utils";
-import { getTextToLocalMapping } from "./searchFunctions";
+// import { getTextToLocalMapping } from "./searchFunctions";
+import {
+  getTextToLocalMapping
+} from "../../utils/index";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 export const searchResultsAccountStatement = {

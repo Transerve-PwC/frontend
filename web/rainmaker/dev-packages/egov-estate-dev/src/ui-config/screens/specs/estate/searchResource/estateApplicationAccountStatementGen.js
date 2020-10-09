@@ -57,7 +57,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             key: "If you have already assessed your property, then please search your property by your File Number"
           },
           infoIcon: "info_circle",
-          beforeFieldChange: (action, state, dispatch) => {
+          afterFieldChange: (action, state, dispatch) => {
             dispatch(
                 prepareFinalObject(
                   "searchScreen.sectorNumber",

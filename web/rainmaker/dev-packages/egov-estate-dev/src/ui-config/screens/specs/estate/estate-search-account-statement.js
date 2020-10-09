@@ -4,8 +4,8 @@ import {
     getBreak,
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { estateApplicationAccountStatementGen } from './citizenSearchResource/estateApplicationAccountStatementGen';
-  import { searchResultsAccountStatement } from './citizenSearchResource/searchResultsAccountStatement';
+  import { estateApplicationAccountStatementGen } from './searchResource/estateApplicationAccountStatementGen';
+  import { searchResultsAccountStatement } from './searchResource/searchResultsAccountStatement';
   import commonConfig from "config/common.js";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { httpRequest } from "../../../../ui-utils";
