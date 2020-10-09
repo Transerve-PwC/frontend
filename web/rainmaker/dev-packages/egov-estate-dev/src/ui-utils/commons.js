@@ -225,7 +225,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 
       store.dispatch(
         prepareFinalObject(
-          "Properties[0].propertyDetails.Bidders",
+          "Properties[0].propertyDetails.bidders",
           Bidders
         )
       )
@@ -268,20 +268,8 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                 debugger;
                 let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
                 console.log("bidderData", bidderData);
-                /* const reqBody = {
-                  Auctions: [{
-                    id: "",
-                    propertyId: ""
-                  }]
-                };
-                const response = await httpRequest(
-                  "post",
-                  "/est-services/auctions/_update",
-                  "",
-                  "",
-                  reqBody
-                );
-
+                
+                /* 
                 if (response) {
                   store.dispatch(
                     toggleSnackbar(
