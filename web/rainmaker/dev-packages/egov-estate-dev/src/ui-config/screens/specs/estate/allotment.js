@@ -1,5 +1,6 @@
 import {
-  getCommonHeader
+  getCommonHeader,
+  getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   stepperAllotment,
@@ -161,27 +162,23 @@ const setBiddersDoc = (action, state, dispatch) => {
   dispatch(prepareFinalObject(`temp[0].documents`, documentTypes))
 }
 
-const header = getCommonHeader({
-  labelName: "Allotment of Site",
-  labelKey: "ES_ALLOTMENT_OF_SITE"
-});
+const header = getCommonContainer({
+  header: getCommonHeader({
+    labelName: "Allotment of Site",
+    labelKey: "ES_ALLOTMENT_OF_SITE"
+  }),
+  fileNumber: {
+    uiFramework: "custom-atoms-local",
+    moduleName: "egov-estate",
+    componentPath: "FileNumberContainer",
+    props: {
+      number: ""
+    },
+    visible: false
+  }
+})
 
 const getData = async (action, state, dispatch) => {
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
-
-  if (fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
-      )
-    )
-  }
-  
-  setDocumentData(action, state, dispatch);
-
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
     masterDetails: [{
@@ -201,6 +198,20 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  if (fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
+  } else {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
+      )
+    )
+  }
+  
+  setDocumentData(action, state, dispatch);
 
   dispatch(
     handleField(
