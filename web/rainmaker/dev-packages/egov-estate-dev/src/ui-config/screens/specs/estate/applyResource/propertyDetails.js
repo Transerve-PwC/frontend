@@ -139,11 +139,11 @@ const dateOfAuctionField = {
     },
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].propertyDetails.dateOfAuction",
-    props: {
-        inputProps: {
-            max: getTodaysDateInYMD()
-        }
-    }
+    // props: {
+    //     inputProps: {
+    //         max: getTodaysDateInYMD()
+    //     }
+    // }
 }
 
 const areaOfPropertyField = {
@@ -200,10 +200,10 @@ const categoryField = {
         xs: 12,
         sm: 6
     },
-    beforeFieldChange: (action, state, dispatch) => {
+    afterFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
         let step = "formwizardFirstStep";
-        
+                
         if ((window.location.href).includes("allotment")) {
             screenName = "allotment";
             step = "formwizardFirstStepAllotment";
@@ -233,7 +233,7 @@ const categoryField = {
                 "applyScreenMdmsData.EstatePropertyService.categories"
             )
 
-            const filteredCategory = categories.filter(item => item.code === action.value)
+            const filteredCategory = categories.filter(item => item.code === action.value);
             dispatch(
                 handleField(
                     screenName,
@@ -338,11 +338,11 @@ const lastNocDateField = {
     },
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].propertyDetails.lastNocDate",
-    props: {
-        inputProps: {
-            max: getTodaysDateInYMD()
-        }
-    }
+    // props: {
+    //     inputProps: {
+    //         max: getTodaysDateInYMD()
+    //     }
+    // }
 }
 
 const propertyTypeField = {

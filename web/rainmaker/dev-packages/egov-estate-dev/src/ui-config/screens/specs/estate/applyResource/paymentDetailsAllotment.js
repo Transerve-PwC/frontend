@@ -51,11 +51,11 @@ const dateOfPaymentOfAdvanceRentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateOfPaymentOfAdvanceRent",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 /************************ Premium Amount Deatails *******************/
@@ -104,11 +104,11 @@ const dueDateForInstallmentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].dueDate",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const commonInstallmentInformation = () => {
@@ -318,11 +318,11 @@ const billingStartDateField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDate",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const dateToGenerateDemandRentField = {
@@ -555,11 +555,11 @@ const billingStartDateLicenseFeeField = {
     xs: 12,
     sm: 6
   },
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const licenseFeeField = {
@@ -722,11 +722,11 @@ const dateOfPaymentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeDateOfPayment",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const securityDetailsHeader = getCommonTitle({

@@ -59,11 +59,11 @@ const companyRegDateField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
-  props: {
-    inputProps: {
-      max: getTodaysDateInYMD()
-    }
-  }
+  // props: {
+  //   inputProps: {
+  //     max: getTodaysDateInYMD()
+  //   }
+  // }
 }
 
 const companyAddressField = {
@@ -209,11 +209,11 @@ const firmRegDateField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
-  props: {
-    inputProps: {
-      max: getTodaysDateInYMD()
-    }
-  }
+  // props: {
+  //   inputProps: {
+  //     max: getTodaysDateInYMD()
+  //   }
+  // }
 }
 
 const firmAddressField = {
