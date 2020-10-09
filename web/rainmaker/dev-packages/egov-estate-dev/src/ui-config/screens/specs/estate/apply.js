@@ -47,7 +47,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
-
+import {downloadSummary} from "../utils"
 
 export const getMdmsData = async (dispatch, body) => {
   let mdmsBody = {
@@ -468,12 +468,12 @@ const buttonComponent = (label) => ({
         const { Properties } = state.screenConfiguration.preparedFinalObject;
         // const documents = PropertiesTemp[0].reviewDocData;
         // set(Properties[0],"additionalDetails.ownerDocuments",documents)
-        // downloadCertificateForm(Properties, []);
+        downloadSummary(Properties, []);
       }else{
         const { Properties } = state.screenConfiguration.preparedFinalObject;
         // const documents = PropertiesTemp[0].reviewDocData;
         // set(Properties[0],"additionalDetails.ownerDocuments",documents)
-        // downloadCertificateForm(Properties, [],'print');
+        downloadSummary(Properties,'print');
       }
 
     }
@@ -484,6 +484,11 @@ const applyEstate = {
   uiFramework: "material-ui",
   name: "apply",
   beforeInitScreen: (action, state, dispatch) => {
+    // let activeStep = get(
+    //   state.screenConfiguration.screenConfig, 
+    //   `apply.components.div.children.stepper.props.activeStep`
+    // ) || 0;
+    // console.log(activeStep)
     getData(action, state, dispatch)
     return action;
   },

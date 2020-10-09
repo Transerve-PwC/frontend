@@ -262,6 +262,69 @@ export const getMdmsData = async queryObject => {
   }
 };
 
+export const downloadSummary = (Properties, mode = "download") => {
+  let queryStr = [{
+    key: "key",
+    value: `propertySummary`
+  },
+  {
+    key: "tenantId",
+    value: `${getTenantId().split('.')[0]}`
+  }
+]
+
+  // let {
+  //   documents
+  // } = Properties[0].additionalDetails;
+  // const length = documents.length % 4
+  // documents = !!length ? [...documents, ...new Array(4 - length).fill({
+  //   title: "",
+  //   name: ""
+  // })] : documents
+  // const myDocuments = documents.map((item) => ({
+  //   ...item,
+  //   title: getLocaleLabels(item.title, item.title)
+  // })).reduce((splits, i) => {
+  //   const length = splits.length
+  //   const rest = splits.slice(0, length - 1);
+  //   const lastArray = splits[length - 1] || [];
+  //   return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  // }, []);
+  let Property = Properties[0];
+  // Property = {
+  //   ...Property,
+  //   applicationDocuments: myDocuments
+   
+  // }
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+        Properties: [Property]
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
+      .then(res => {
+        res.filestoreIds[0]
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map(fileStoreId => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
+          })
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
+  } catch (exception) {
+    alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
 export const downloadAcknowledgementForm = (Applications, applicationType, mode = "download") => {
   let queryStr = []
   switch (applicationType) {
