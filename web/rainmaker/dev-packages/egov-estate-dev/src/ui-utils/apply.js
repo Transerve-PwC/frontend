@@ -294,6 +294,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       Properties
     } = response
 
+    let ratePerSqft = (Properties[0].propertyDetails.ratePerSqft).toString();
+    let areaSqft = (Properties[0].propertyDetails.areaSqft).toString();
+
     let owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -302,6 +305,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (owners) {
       owners.map((item, index) => {
+        item.share = (item.share).toString();
         let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments || [];
         const removedDocs = ownerDocuments.filter(item => !item.isActive)
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
@@ -317,7 +321,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
       let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
+      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)

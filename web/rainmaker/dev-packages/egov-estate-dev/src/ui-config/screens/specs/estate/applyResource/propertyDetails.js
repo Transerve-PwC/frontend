@@ -5,7 +5,8 @@ import {
     getDateField,
     getCommonTitle,
     getPattern,
-    getCommonContainer
+    getCommonContainer,
+    dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
     handleScreenConfigurationFieldChange as handleField,
@@ -18,6 +19,40 @@ import get from "lodash/get";
 import {
     companyDetails
 } from "./entityDetails"
+
+export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
+    const actionDefination = [{
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.auctionId`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmount`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.modeOfAuction`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.schemeName`,
+      property: "props.disabled",
+      value: disabled
+    }];
+    return actionDefination;
+  }
 
 const typeOfAllocationField = {
     label: {
@@ -34,6 +69,28 @@ const typeOfAllocationField = {
     gridDefination: {
         xs: 12,
         sm: 6
+    },
+    beforeFieldChange: (action, state, dispatch) => {
+        let screenName = "apply";
+        let step = "formwizardSecondStep";
+        
+        if ((window.location.href).includes("allotment")) {
+            screenName = "allotment";
+            step = "formwizardSecondStepAllotment";
+        }
+        dispatchMultipleFieldChangeAction(
+            screenName,
+            getActionDefinationForAuctionDetailsFields(!!(action.value == "ALLOCATION_TYPE.ALLOTMENT"), step),
+            dispatch
+        );
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer`,
+                `visible`,
+                !!(action.value == "ALLOCATION_TYPE.AUCTION")
+            )
+        )
     }
 }
 

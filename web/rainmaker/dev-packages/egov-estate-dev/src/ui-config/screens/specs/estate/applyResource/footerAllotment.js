@@ -250,7 +250,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
-        const reviewCourtCaseDetails = getReviewCourtCase(true, i);
+        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 4, "allotment");
         set(
           state.screenConfiguration.screenConfig,
           `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
