@@ -36,7 +36,7 @@ const documentContainer = {
 export const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
     {key: "fileNumber", value: fileNumber},
-    {key: "relations", value: "owner"}
+    {key: "relations", value: "owner,ownerdocs"}
   ];
   let payload = await getSearchResults(queryObject);
   if (payload) {
