@@ -321,6 +321,7 @@ export const setData = (properties, screenName, dispatch) => {
   let entityType = properties[0].propertyDetails.entityType;
   let fileNumber = properties[0].fileNumber;
 
+  /* code to set file number in the file number container and disable file number field */
   dispatch(
     handleField(
       screenName,
@@ -337,6 +338,15 @@ export const setData = (properties, screenName, dispatch) => {
       true
     )
   )
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.fileNumber`,
+      `props.disabled`,
+      true
+    )
+  )
+  /**********************************************************************************************/
 
   if (propertyRegisteredTo == "ENTITY") {
     toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);

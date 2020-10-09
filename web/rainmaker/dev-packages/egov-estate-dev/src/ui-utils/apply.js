@@ -225,6 +225,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         }
       );
       if (response) {
+        /* code to set file number in the file number container and disable file number field */
         let fileNumber = response.Properties[0].fileNumber;
         dispatch(
           handleField(
@@ -242,6 +243,15 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
             true
           )
         )
+        dispatch(
+          handleField(
+            screenName,
+            `components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.fileNumber`,
+            `props.disabled`,
+            true
+          )
+        )
+        /*****************************************************************************************/
       }
     } else {
       let tabsArr = [0,1,2,3,4,5,6,7];
