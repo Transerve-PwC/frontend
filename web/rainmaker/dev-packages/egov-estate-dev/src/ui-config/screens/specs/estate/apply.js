@@ -104,14 +104,7 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
         paymentDocuments
     )
 );
-// dispatch(
-//   handleField(
-//       "apply",
-//       `components.div.children.formwizardFirstStep.children.paymentDocumentsDetails.children.cardContent.children.documentList`,
-//       "props.inputProps",
-//       paymentDocuments
-//   )
-// );
+
 dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.applicationPaymentDocuments`, documentsType))
 }
 
