@@ -262,8 +262,8 @@ export const auctionTable = {
   visible: false,
   props: {
     columns: [
-      getTextToLocalMapping("File Number"),
-      getTextToLocalMapping("Participated Bidders"),
+      getTextToLocalMapping("Auction Id"),
+      getTextToLocalMapping("Bidder Name"),
       getTextToLocalMapping("Deposited EMD Amount"),
       getTextToLocalMapping("Deposit Date"),
       getTextToLocalMapping("EMD Validity Date"),
@@ -311,7 +311,7 @@ export const auctionTable = {
 
 const onRowClick = rowData => {
   store.dispatch(
-    prepareFinalObject("Auctions", rowData)
+    prepareFinalObject("BidderData", rowData)
   )
 };
 
