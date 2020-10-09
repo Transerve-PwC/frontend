@@ -1,6 +1,6 @@
 import {
   getCommonHeader,
-  dispatchMultipleFieldChangeAction
+  dispatchMultipleFieldChangeAction,getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   stepper,
@@ -37,7 +37,7 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  get
+  get,set
 } from "lodash";
 import {
   getSearchResults
@@ -439,6 +439,47 @@ const getData = async (action, state, dispatch) => {
   )
 }
 
+const buttonComponent = (label) => ({
+  componentPath: "Button",
+  gridDefination: {
+    xs: 12,
+    sm: 2
+  },
+  props: {
+    variant: "contained",
+    style: {
+      color: "white",
+      backgroundColor: "#fe7a51",
+      borderColor:"#fe7a51",
+      borderRadius: "2px",
+      height: "48px"
+    }
+  },
+  children: {
+    buttonLabel: getLabel({
+      labelName: label,
+      labelKey: label
+    })
+  },
+  onClickDefination: {
+    action: "condition",
+    callBack: (state, dispatch) => {
+      if(label === "Download Summary"){
+        const { Properties } = state.screenConfiguration.preparedFinalObject;
+        // const documents = PropertiesTemp[0].reviewDocData;
+        // set(Properties[0],"additionalDetails.ownerDocuments",documents)
+        // downloadCertificateForm(Properties, []);
+      }else{
+        const { Properties } = state.screenConfiguration.preparedFinalObject;
+        // const documents = PropertiesTemp[0].reviewDocData;
+        // set(Properties[0],"additionalDetails.ownerDocuments",documents)
+        // downloadCertificateForm(Properties, [],'print');
+      }
+
+    }
+  }
+})
+
 const applyEstate = {
   uiFramework: "material-ui",
   name: "apply",
@@ -465,6 +506,24 @@ const applyEstate = {
               },
               ...header
             }
+          
+          }
+        },
+        rightdiv: {
+          visible:true,
+          uiFramework: "custom-atoms",
+          componentPath: "Container",
+          props: {
+            style: { justifyContent: "flex-end", marginTop: 10 }
+          },
+          gridDefination: {
+            xs: 12,
+            sm: 12,
+            align: "right",
+          },
+          children: {
+            downloadButton: buttonComponent("Download Summary"),
+            printButton: buttonComponent("Print Summary"),
           }
         },
         stepper,
