@@ -25,7 +25,8 @@ import {
 } from "lodash";
 import "./index.css";
 import {
-  setDocumentData
+  setDocumentData,
+  setPrevOwnerDocs
 } from '../apply'
 import {
   getReviewOwner,
@@ -288,6 +289,29 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].ownerDetails.ownerName : "" : "";
+
+        if (i > 0) {
+          var documentDetailsString = JSON.stringify(get(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardSixthStep.children.previousOwnerDocuments_0`, {}
+          ))
+          var newDocumentDetailsString = documentDetailsString.replace(/_0/g, `_${i}`);
+          newDocumentDetailsString = newDocumentDetailsString.replace(/purchaser\[0\]/g, `purchaser[${i}]`)
+          var documentDetailsObj = JSON.parse(newDocumentDetailsString);
+          set(
+            state.screenConfiguration.screenConfig,
+            `apply.components.div.children.formwizardSixthStep.children.previousOwnerDocuments_${i}`,
+            documentDetailsObj
+          )
+  
+          setPrevOwnerDocs("", state, dispatch, i)
+        }
+
+        set(
+          state.screenConfiguration.screenConfig,
+          `apply.components.div.children.formwizardSixthStep.children.previousOwnerDocuments_${i}.children.cardContent.children.header.children.key.props.labelKey`,
+          `Douments - ${purchaserName}`
+        )
         const reviewPurchaserDetails = getReviewPurchaser(true, i);
         set(
           reviewPurchaserDetails,
@@ -361,7 +385,7 @@ const callBackForNext = async (state, dispatch) => {
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, reviewDocData)
         );
 
-        const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`);
+        const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, 5);
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",

@@ -170,7 +170,7 @@ const getData = async (action, state, dispatch) => {
   const fileNumber = getQueryArg(window.location.href, "filenumber");
 
   if (fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber)
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
   } else {
     dispatch(
       prepareFinalObject(

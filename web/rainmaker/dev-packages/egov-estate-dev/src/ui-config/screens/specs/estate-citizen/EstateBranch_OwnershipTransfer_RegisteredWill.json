@@ -164,7 +164,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["LEGALHEIR", "BENEFICIARY"]
+                "values": [
+                  "LEGALHEIR",
+                  "BENEFICIARY"
+                ]
               }
             }
           ]
@@ -214,7 +217,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["FATHER", "HUSBAND"]
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
@@ -644,6 +650,15 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "dataSource": "benificiaryRelationwithDeceased",
                 "visibility": "application.applicationDetails.transferee.legalHeirOrbeneficiary === 'BENEFICIARY'"
+              },
+              {
+                "label": "ES_PERCENTAGE_SHARED_LABEL",
+                "placeholder": "ES_PERCENTAGE_SHARED_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+                "path": "transferee.percentageOfShareTransferred",
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               }
             ]
           },

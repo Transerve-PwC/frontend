@@ -214,7 +214,7 @@ const getField = async (item, fieldData = {}, state) => {
             max: getTodaysDateInYMD()
         }
         },
-          pattern: getPattern("Date")
+          // pattern: getPattern("Date")
         }),
         afterFieldChange: (action, state, dispatch) => {
           dispatch(prepareFinalObject(

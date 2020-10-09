@@ -68,6 +68,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
     if (response && response.Owners) {
     let {Owners} = response
     let allotmentnumber=Owners[0].allotmenNumber
+    let billingBuisinessService=Owners[0].billingBusinessService
     let ownershipTransferDocuments = Owners[0].ownerDetails.ownershipTransferDocuments || [];
     const removedDocs = ownershipTransferDocuments.filter(item => !item.active)
     ownershipTransferDocuments = ownershipTransferDocuments.filter(item => !!item.active)
@@ -96,7 +97,6 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       "OwnersTemp[0].estimateCardData",
       dispatch,
       window.location.href,
-      BILLING_BUSINESS_SERVICE_OT,
       WORKFLOW_BUSINESS_SERVICE_OT
     );
 
@@ -165,7 +165,7 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       status,
       applicationNumber,
       tenantId,
-      BILLING_BUSINESS_SERVICE_OT
+      billingBuisinessService
     );
     process.env.REACT_APP_NAME === "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)

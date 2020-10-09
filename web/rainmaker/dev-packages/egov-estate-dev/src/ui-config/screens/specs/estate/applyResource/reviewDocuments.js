@@ -5,8 +5,11 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import { changeStep } from "./footer";
+import {
+  changeStep as changeStepAllotment
+} from "./footerAllotment"
 
-export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath = "PropertiesTemp[0].reviewDocData") => {
+export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 3) => {
   return getCommonGrayCard({
     headerDiv: {
       uiFramework: "custom-atoms",
@@ -49,7 +52,12 @@ export const getReviewDocuments = (isEditable = true, screenKey, sourceJsonPath 
           onClickDefination: {
             action: "condition",
             callBack: (state, dispatch) => {
-              changeStep(state, dispatch, screenKey, "", 5);
+              if (screenkey == "apply") {
+                changeStep(state, dispatch, screenkey, "", step);
+              }
+              else if (screenkey == "allotment") {
+                changeStepAllotment(state, dispatch, screenkey, "", step)
+              }
             }
           }
         },

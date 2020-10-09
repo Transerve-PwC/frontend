@@ -225,7 +225,7 @@ export const getReviewAuction = (isEditable = true) => {
             labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 1)
       }
     },
     viewFour: getCommonContainer({
@@ -328,7 +328,7 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
             labelKey: "ES_OWNER_PARTNER_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 1)
+        editSection: masterEntryEditSection(isEditable, 2)
       }
     },
     viewFour: getCommonContainer({
@@ -445,7 +445,7 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
             labelKey: "ES_PREVIOUS_OWNER_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2)
+        editSection: masterEntryEditSection(isEditable, 4)
       }
     },
     viewFour: getCommonContainer({
@@ -638,7 +638,7 @@ export const getReviewPayment = (isEditable = true, owner) => {
             labelKey: "ES_PAYMENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 4)
+        editSection: masterEntryEditSection(isEditable, 7)
       }
     },
     viewGroundRent: getCommonContainer({
@@ -836,7 +836,7 @@ const honbleSupremeCourtLabel = {
   labelKey: "ES_HONBLE_SUPREME_COURT_LABEL"
 }
 
-export const getReviewCourtCase = (isEditable = true, owner = 0) => {
+export const getReviewCourtCase = (isEditable = true, owner = 0, step = 6, screenKey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -851,7 +851,7 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
             labelKey: "ES_COURT_CASE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 3)
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewFour: getCommonContainer({
@@ -909,7 +909,7 @@ export const getReviewPremiumAmount = (isEditable = true) => {
             labelKey: "ES_PREMIUM_AMOUNT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewPremiumAmount: getCommonContainer({
@@ -942,7 +942,7 @@ export const getReviewGroundRent = (isEditable = true) => {
             labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewGroundRent: getCommonContainer({
@@ -993,7 +993,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
             labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewAdvanceRent: getCommonContainer({
@@ -1034,7 +1034,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
             labelKey: "ES_LICENSE_FEE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewLicenseFee: getCommonContainer({
@@ -1085,7 +1085,7 @@ export const getReviewSecurity = (isEditable = true) => {
             labelKey: "ES_SECURITY_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewSecurity: getCommonContainer({
@@ -1126,7 +1126,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
             labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+        editSection: masterEntryEditSection(isEditable, 1, "allotment")
       }
     },
     viewAuctionDetails: getCommonContainer({
