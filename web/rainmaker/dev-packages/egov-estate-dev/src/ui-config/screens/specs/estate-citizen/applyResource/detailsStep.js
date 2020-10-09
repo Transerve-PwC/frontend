@@ -27,7 +27,7 @@ const onFieldChange = (action, state, dispatch) => {
   updateReadOnlyForAllFields(action, state, dispatch);
 }
 
-const evaluate = ({application, owners, selectedOwner, selectedPurchaser, purchasers, formula, defaultValue}) => {
+const evaluate = ({application, property, owners, selectedOwner, selectedPurchaser, purchasers, formula, defaultValue}) => {
   try {
     return eval(formula);
   } catch (e) {
@@ -43,6 +43,7 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
   /**
    * Parameters for evaluating conditions.
    */
+  const property = get(state, "screenConfiguration.preparedFinalObject.property")
   const application = get(state, "screenConfiguration.preparedFinalObject.Applications[0]") || {};
   const owners = get(state, "screenConfiguration.preparedFinalObject.property.propertyDetails.owners") || [];
   const applicationDetails = get(application, "applicationDetails")
@@ -80,7 +81,7 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
     ];
 
     const actions = propValues.reduce((prevValue, currValue) => {
-      let evalParams = {application, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]} //evaluate params
+      let evalParams = {application, property, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]} //evaluate params
 
       evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams //passing defaultvalue param if needed
 

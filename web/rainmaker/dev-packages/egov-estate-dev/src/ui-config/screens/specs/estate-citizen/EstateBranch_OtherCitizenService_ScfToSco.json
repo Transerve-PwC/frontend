@@ -352,7 +352,9 @@
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.name",
                 "path": "company.name",
-                "errorMessage": "ES_ERR_COMPANY_NAME"
+                "disabled": true,
+                "errorMessage": "ES_ERR_COMPANY_NAME",
+                "prefillValue": "property.propertyDetails.companyName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
@@ -360,23 +362,28 @@
                 "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.company.address",
                 "path": "company.address",
-                "errorMessage": "ES_ERR_COMPANY_ADDRESS"
+                "errorMessage": "ES_ERR_COMPANY_ADDRESS",
+                "disabled": true,
+                "prefillValue": "property.propertyDetails.companyAddress"
               },
               {
-                "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
+                "label": "ES_COMPANY_REGISTRATION_NUMBER",
                 "placeholder": "ES_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
                 "path": "company.registrationNumber",
-                "errorMessage": "ES_ERR_COMPANY_REGISTRATION_NUMBER"
+                "errorMessage": "ES_ERR_COMPANY_REGISTRATION_NUMBER",
+                "disabled": true,
+                "prefillValue": "property.propertyDetails.companyRegistrationNumber"
               },
               {
-                "label": "ES_EST_TYPE_OF_LETTER_LABEL",
-                "placeholder": "ES_EST_TYPE_OF_LETTER_PLACEHOLDER",
+                "label": "ES_COMPANY_TYPE_LABEL",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.company.type",
                 "path": "company.type",
-                "dataSource": "TypeOfLetter"
+                "dataSource": "TypeOfLetter",
+                "disabled": true,
+                "prefillValue": "property.propertyDetails.companyType"
               }
             ]
           }

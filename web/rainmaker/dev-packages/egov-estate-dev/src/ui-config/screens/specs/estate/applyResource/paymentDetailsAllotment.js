@@ -51,11 +51,11 @@ const dateOfPaymentOfAdvanceRentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateOfPaymentOfAdvanceRent",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 /************************ Premium Amount Deatails *******************/
@@ -104,11 +104,11 @@ const dueDateForInstallmentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].dueDate",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const commonInstallmentInformation = () => {
@@ -150,8 +150,8 @@ export const installmentDetails = getCommonCard({
               labelKey: "ES_COMMON_ADD_INSTALLMENT_LABEL"
             },
             headerName: "Installment",
-            headerJsonPath:
-              "children.cardContent.children.header.children.key.props.labelKey",
+            // headerJsonPath: "children.cardContent.children.header.children.key.props.labelKey",
+            headerJsonPath: "children.cardContent.children.header.children.Installment.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments",
             prefixSourceJsonPath: "children.cardContent.children.installmentCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
@@ -215,7 +215,6 @@ const getDemandRadioButton = {
   },
   required: true,
   type: "array",
-  visible: false,
   beforeFieldChange: (action, state, dispatch) => {
     if (action.value == "GROUNDRENT") {
       dispatch(
@@ -319,11 +318,11 @@ const billingStartDateField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDate",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const dateToGenerateDemandRentField = {
@@ -437,8 +436,8 @@ export const rentDetails = getCommonCard({
               labelKey: "ES_COMMON_ADD_RENT_LABEL"
             },
             headerName: "Rent",
-            headerJsonPath:
-              "children.cardContent.children.header.children.key.props.labelKey",
+            // headerJsonPath: "children.cardContent.children.header.children.key.props.labelKey",
+            headerJsonPath: "children.cardContent.children.header.children.Rent.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent",
             prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
@@ -556,11 +555,11 @@ const billingStartDateLicenseFeeField = {
     xs: 12,
     sm: 6
   },
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const licenseFeeField = {
@@ -655,8 +654,8 @@ export const licenseFeeForYearDetails = getCommonCard({
               labelKey: "ES_COMMON_LICENSE_FEE_LABEL"
             },
             headerName: "License Fee for Year",
-            headerJsonPath:
-              "children.cardContent.children.header.children.key.props.labelKey",
+            // headerJsonPath: "children.cardContent.children.header.children.key.props.labelKey",
+            headerJsonPath: "children.cardContent.children.header.children.License Fee.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
             onMultiItemAdd: (state, muliItemContent) => {
@@ -723,11 +722,11 @@ const dateOfPaymentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeDateOfPayment",
-  props: {
-      inputProps: {
-          max: getTodaysDateInYMD()
-      }
-  }
+  // props: {
+  //     inputProps: {
+  //         max: getTodaysDateInYMD()
+  //     }
+  // }
 }
 
 const securityDetailsHeader = getCommonTitle({
