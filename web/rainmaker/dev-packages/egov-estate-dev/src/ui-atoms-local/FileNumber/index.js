@@ -1,9 +1,4 @@
 import React from "react";
-import LabelContainer from "egov-ui-framework/ui-containers/LabelContainer";
-import {
-  getQueryArg
-} from "egov-ui-framework/ui-utils/commons";
-import "./index.css";
 
 const styles = {
   backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
