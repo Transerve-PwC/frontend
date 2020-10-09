@@ -362,25 +362,14 @@ const propertyTypeField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
-        if (action.value == "PROPERTY_TYPE.LEASEHOLD") {
-            dispatch(
-                handleField(
-                    "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
-                    "visible",
-                    true
-                )
+        dispatch(
+            handleField(
+                "allotment",
+                "components.div.children.formwizardSixthStepAllotment.children.demandSelect",
+                "visible",
+                !!(action.value == "PROPERTY_TYPE.LEASEHOLD")
             )
-        } else {
-            dispatch(
-                handleField(
-                    "allotment",
-                    "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand",
-                    "visible",
-                    false
-                )
-            )
-        }
+        )
     }
 }
 

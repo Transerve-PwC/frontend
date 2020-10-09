@@ -215,7 +215,6 @@ const getDemandRadioButton = {
   },
   required: true,
   type: "array",
-  visible: false,
   beforeFieldChange: (action, state, dispatch) => {
     if (action.value == "GROUNDRENT") {
       dispatch(
