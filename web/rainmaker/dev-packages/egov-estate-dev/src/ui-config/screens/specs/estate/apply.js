@@ -316,13 +316,26 @@ const header = getCommonContainer({
   }
 })
 
-export const setData = (properties, screenName, dispatch) => {
+export const setData = (properties, screenName, dispatch, state) => {
   let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
   let entityType = properties[0].propertyDetails.entityType;
   let fileNumber = properties[0].fileNumber;
   let stepSecond;
   let allocationType = properties[0].propertyDetails.typeOfAllocation;
   let propertyType = properties[0].propertyDetails.propertyType;
+  let category = properties[0].category;
+  let stepFirst;
+
+  switch(screenName) {
+    case "apply":
+      stepFirst = "formwizardFirstStep";
+      stepSecond = "formwizardSecondStep";
+      break;
+    case "allotment":
+      stepFirst = "formwizardFirstStepAllotment";
+      stepSecond = "formwizardSecondStepAllotment";
+      break;
+  }
 
   /* set file number in the file number container and disable file number field */
   dispatch(
@@ -361,15 +374,6 @@ export const setData = (properties, screenName, dispatch) => {
   /**********************************************************************************************/
 
   /* based on allocationType toggle display of bidders list upload container and disable auction details fields */
-  switch(screenName) {
-    case "apply":
-      stepSecond = "formwizardSecondStep";
-      break;
-    case "allotment":
-      stepSecond = "formwizardSecondStepAllotment";
-      break;
-  }
-
   dispatchMultipleFieldChangeAction(
     screenName,
     getActionDefinationForAuctionDetailsFields(!!(allocationType == "ALLOCATION_TYPE.ALLOTMENT"), stepSecond),
@@ -397,6 +401,41 @@ export const setData = (properties, screenName, dispatch) => {
     ) 
   }
   /*************************************************************************************************/
+
+  /* based on selected category toggle display of sub-category field */
+  if (category == "CAT.RESIDENTIAL" || category == "CAT.COMMERCIAL") {
+    dispatch(
+      handleField(
+        screenName,
+        `components.div.children.${stepFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+        "visible",
+        true
+      )
+    );
+
+    const categories = get(
+      state.screenConfiguration.preparedFinalObject,
+      "applyScreenMdmsData.EstatePropertyService.categories"
+    )
+
+    const filteredCategory = categories.filter(item => item.code === category)
+    dispatch(
+      handleField(
+          screenName,
+          `components.div.children.${stepFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+          "props.data",
+          filteredCategory[0].SubCategory
+      )
+    )
+    dispatch(
+      handleField(
+          screenName,
+          `components.div.children.${stepFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+          "props.value",
+          properties[0].subCategory
+      )
+    )
+  }
 }
 
 export const getPMDetailsByFileNumber = async (
@@ -438,25 +477,11 @@ export const getPMDetailsByFileNumber = async (
       )
     )
 
-    setData(properties, screenName, dispatch);
+    setData(properties, screenName, dispatch, state);
   }
 }
 
 const getData = async (action, state, dispatch) => {
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
-
-  if (fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
-      )
-    )
-  }
-  setDocumentData(action, state, dispatch);
-
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
     masterDetails: [{
@@ -476,6 +501,21 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+  
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+
+  if (fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
+  } else {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
+      )
+    )
+  }
+  setDocumentData(action, state, dispatch);
+  
   // getCompanyDocs(state, dispatch)
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
