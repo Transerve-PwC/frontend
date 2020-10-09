@@ -224,6 +224,25 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
           Properties: queryObject
         }
       );
+      if (response) {
+        let fileNumber = response.Properties[0].fileNumber;
+        dispatch(
+          handleField(
+            screenName,
+            `components.div.children.headerDiv.children.header.children.fileNumber`,
+            `props.number`,
+            fileNumber
+          )
+        )
+        dispatch(
+          handleField(
+            screenName,
+            `components.div.children.headerDiv.children.header.children.fileNumber`,
+            `visible`,
+            true
+          )
+        )
+      }
     } else {
       let tabsArr = [0,1,2,3,4,5,6,7];
       let owners = get(

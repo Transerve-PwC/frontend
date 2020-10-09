@@ -1,6 +1,7 @@
 import {
   getCommonHeader,
-  dispatchMultipleFieldChangeAction
+  dispatchMultipleFieldChangeAction,
+  getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   stepper,
@@ -299,14 +300,44 @@ const getCompanyDocs = (action, state, dispatch, owner = 0) => {
 
 }
 
-const header = getCommonHeader({
-  labelName: "Add Estate",
-  labelKey: "ES_COMMON_ESTATES_ADD"
-});
+const header = getCommonContainer({
+  header: getCommonHeader({
+    labelName: "Add Estate",
+    labelKey: "ES_COMMON_ESTATES_ADD"
+  }),
+  fileNumber: {
+    uiFramework: "custom-atoms-local",
+    moduleName: "egov-estate",
+    componentPath: "FileNumberContainer",
+    props: {
+      number: ""
+    },
+    visible: false
+  }
+})
 
 export const setData = (properties, screenName, dispatch) => {
   let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
   let entityType = properties[0].propertyDetails.entityType;
+  let fileNumber = properties[0].fileNumber;
+
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.headerDiv.children.header.children.fileNumber`,
+      `props.number`,
+      fileNumber
+    )
+  )
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.headerDiv.children.header.children.fileNumber`,
+      `visible`,
+      true
+    )
+  )
+
   if (propertyRegisteredTo == "ENTITY") {
     toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
   }
