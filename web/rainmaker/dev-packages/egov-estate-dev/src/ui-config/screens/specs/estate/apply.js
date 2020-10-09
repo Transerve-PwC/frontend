@@ -141,7 +141,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
-const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
+export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
   const {
     EstatePropertyService
   } = previousDocsData && previousDocsData.MdmsRes ? previousDocsData.MdmsRes : {}
@@ -325,11 +325,14 @@ export const getPMDetailsByFileNumber = async (
   if (payload) {
     let properties = payload.Properties;
     let owners = properties[0].propertyDetails.owners;
+    owners = owners.map(item => ({...item, share: (item.share).toString()}))
 
     let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
     let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
+    let ratePerSqft = (properties[0].propertyDetails.ratePerSqft).toString();
+    let areaSqft = (properties[0].propertyDetails.areaSqft).toString();
 
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
 
     dispatch(
       prepareFinalObject(

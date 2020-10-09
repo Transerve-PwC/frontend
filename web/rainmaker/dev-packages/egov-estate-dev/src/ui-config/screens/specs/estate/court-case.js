@@ -11,7 +11,7 @@ let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 const courtCaseContainer = {
   uiFramework: "custom-atoms",
-componentPath: "Container",
+componentPath: "Div",
 props: {
   id: "docs"
 },
