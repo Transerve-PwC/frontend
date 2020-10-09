@@ -319,11 +319,11 @@ const dateOfRegistrationField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dateOfRegistration",
-  props: {
-    inputProps: {
-      max: getTodaysDateInYMD()
-    }
-  },
+  // props: {
+  //   inputProps: {
+  //     max: getTodaysDateInYMD()
+  //   }
+  // },
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);

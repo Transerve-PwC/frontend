@@ -1,9 +1,12 @@
+
+import React from "react";
 import {
   getStepperObject,
   getCommonCard,
   getCommonTitle,
-  getCommonParagraph
+  getCommonParagraph,getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getEpochForDate, sortByEpoch } from "../../utils";
 import {
   propertyInfoDetails,
   auctionDetails,
@@ -52,6 +55,9 @@ import {
   partnerDetails,
   proprietorshipDetails
 } from './entityDetails'
+import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_DUE_DATE,
+ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
+ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../../../../../ui-constants'
 
 const documentCardConfig = {
   header: getCommonTitle({
@@ -82,6 +88,75 @@ export const ownerDocumentDetails_0 = getCommonCard({
   }
 });
 
+export const paymentDocumentsDetails = getCommonCard({
+  ...documentCardConfig,
+  documentList : {
+    ...documentList,
+    props: {
+      ...documentList.props,
+       documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.applicationPaymentDocuments",
+       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
+       tenantIdJsonPath: "Properties[0].tenantId",
+       removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
+      //  getUrl: "/rp-services/v1/excel/read",
+      //  screenKey: "apply",
+      //  componentJsonPath: "components.div.children.formwizardEighthStep.children.paymentDetailsTable",
+      // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"
+    }
+  }
+});
+
+export const paymentDetailsTable =  {
+  uiFramework: "custom-molecules",
+  componentPath: "Table",
+  visible: true,
+  props: {
+    columns: [
+      ES_MONTH,
+      ES_RENT_DUE,
+      ES_RENT_RECEIVED,
+      ES_RECEIPT_NO,
+      ES_DATE,
+      ES_RENT_DUE_DATE,
+      ES_PENALTY_INTEREST,
+      ES_ST_GST_RATE,
+      ES_ST_GST_DUE,
+      ES_PAID,
+      ES_DATE_OF_RECEIPT,
+      ES_NO_OF_DAYS,
+      ES_INTEREST_ON_DELAYED_PAYMENT
+      
+    ],
+    options: {
+      pagination: false,
+      filter: false,
+      download: false,
+      print: false,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
+      hover: true,
+      rowsPerPageOptions: [10, 15, 20]
+    },
+    customSortColumn: {
+      column: "Application Date",
+      sortingFn: (data, i, sortDateOrder) => {
+        const epochDates = data.reduce((acc, curr) => {
+          acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
+          return acc;
+        }, []);
+        const order = sortDateOrder === "asc" ? true : false;
+        const finalData = sortByEpoch(epochDates, !order).map(item => {
+          item.pop();
+          return item;
+        });
+        return { data: finalData, currentOrder: !order ? "asc" : "desc" };
+      }
+    }
+  }
+}
+
 export const companyDocuments_0 = getCommonCard({
   ...documentCardConfig,
   documentList: {
@@ -109,7 +184,6 @@ export const previousOwnerDocuments_0 = getCommonCard({
     }
   }
 });
-
 
 export const stepsData = [{
   labelName: "Property Details",
@@ -253,9 +327,12 @@ export const formwizardEighthStep = {
     id: "apply_form8"
   },
   children: {
-    groundRentDetailsPM,
-    serviceTaxDetails,
-    paymentMadeBy
+    paymentDocumentsDetails,
+    breakAfterSearch: getBreak(),
+    paymentDetailsTable
+    // groundRentDetailsPM,
+    // serviceTaxDetails,
+    // paymentMadeBy
   },
   visible: false
 }
@@ -402,3 +479,4 @@ export const formwizardSeventhStepAllotment = {
   },
   visible: false
 };
+

@@ -48,6 +48,11 @@ const EstateIcon = Loadable({
   loading: () => <Loading />
 });
 
+const FileNumberContainer = Loadable({
+  loader: () => import("./FileNumber"),
+  loading: () => <Loading />
+})
+
 export {
   TestAtoms,
   ApplicationNoContainer,
@@ -57,5 +62,6 @@ export {
   Asteric,
   MenuButton,
   FormIcon,
-  EstateIcon
+  EstateIcon,
+  FileNumberContainer
 };
