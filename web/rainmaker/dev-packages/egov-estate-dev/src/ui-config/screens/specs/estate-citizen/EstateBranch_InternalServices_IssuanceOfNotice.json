@@ -24,7 +24,7 @@
       ],
       "fields": [
         {
-          "path": "typeOfNotice", 
+          "path": "typeOfNotice",
           "required": true,
           "validations": [
             {
@@ -56,7 +56,7 @@
           ]
         },
         {
-          "path": "violationDetails", 
+          "path": "violationDetails",
           "required": true,
           "validations": [
             {
@@ -69,7 +69,7 @@
           ]
         },
         {
-          "path": "violationDate", 
+          "path": "violationDate",
           "required": false,
           "validations": [
             {
@@ -111,16 +111,13 @@
           "required": true,
           "validations": [
             {
-              "type": "date-range",
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
               "params": {
-                "start": {
-                  "unit": "second",
-                  "value": 0
-                },
-                "end": {
-                  "unit": "year",
-                  "value": 10
-                }
+                "min": 0,
+                "max": 23
               }
             }
           ]
@@ -258,7 +255,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type":"date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -298,8 +296,8 @@
                 "label": "ES_TYPE_OF_NOTICE_LABEL",
                 "placeholder": "ES_TYPE_OF_NOTICE_PLACEHOLDER",
                 "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.noticeType",
-                "path": "noticeType",
+                "jsonPath": "Applications[0].applicationDetails.typeOfNotice",
+                "path": "typeOfNotice",
                 "dataSource": "NoticeTypeOptions"
               }
             ]
@@ -311,40 +309,41 @@
               {
                 "label": "ES_SELECT_OWNER_LABEL",
                 "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
-                "required": false,
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferor.id",
                 "path": "transferor.id",
                 "dataSource": "owners"
               },
               {
-                "label": "ES_OWNER_NAME_LABEL",
-                "placeholder": "ES_OWNER_NAME_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.ownerName",
-                "path": "ownerDetails.ownerName"
-              },
-              {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "required": true,
                 "type": "TEXT_FIELD",
+                "disabled": true,
                 "path": "ownerDetails.fatherOrHusband",
-                "jsonPath": "Applications[0].applicationDetails.fatherOrHusband"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                "prefillValue": "selectedOwner.ownerDetails.guardianName"
               },
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "required": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
+                "disabled": true,
                 "path": "ownerDetails.address",
-                "jsonPath": "Applications[0].applicationDetails.ownerDetails.address"
+                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                "prefillValue": "selectedOwner.ownerDetails.address"
+              },
+              {
+                "label": "ES_PERCENT_SHARE_LABEL",
+                "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
+                "disabled": true,
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                "prefillValue": "selectedOwner.share"
               }
             ]
           },
           {
-            "header": "ES_NON_PAYMENT_DETAILS_HEADER",
+            "header": "ES_NOTICE_DETAILS_HEADER",
             "type": "FORM",
             "fields": [
               {
@@ -352,80 +351,48 @@
                 "placeholder": "ES_GROUND_RENT_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.groundRent",
-                "path": "groundRent"
+                "path": "groundRent",
+                "visible": false,
+                "visibility": "application.applicationDetails.typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'"
               },
               {
-                "label": "ES_INTERES_LABEL",
+                "label": "ES_INTEREST_LABEL",
                 "placeholder": "ES_INTERES_PLACEHOLDER",
-                "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.Interest",
-                "path": "Interest"
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.interest",
+                "path": "interest",
+                "visible": false,
+                "visibility": "application.applicationDetails.typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'"
               },
               {
                 "label": "ES_SERVICE_TAX_OR_GST_LABEL",
                 "placeholder": "ES_SERVICE_TAX_OR_GST_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.serviceTaxOrGst",
-                "path": "serviceTaxOrGst"
+                "path": "serviceTaxOrGst",
+                "visible": false,
+                "visibility": "application.applicationDetails.typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'"
               },
               {
                 "label": "ES_OUTSTANDING_AMOUNT_LABEL",
                 "placeholder": "ES_OUTSTANDING_AMOUNT_PLACEHOLDER",
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.outstandingAmount",
-                "path": "outstandingAmount"
+                "path": "outstandingAmount",
+                "visible": false,
+                "visibility": "application.applicationDetails.typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'"
               },
               {
                 "label": "ES_DATE_OF_HEARING_LABEL",
                 "placeholder": "ES_DATE_OF_HEARING_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
                 "path": "dateOfHearing "
               },
               {
                 "label": "ES_TIME_OF_HEARING_LABEL",
                 "placeholder": "ES_TIME_OF_HEARING_PLACEHOLDER",
-                "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
-                "path": "timeOfHearing"
-              }
-            ]
-          },
-          {
-            "header": "ES_VIOLATION_NOTICE_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_DATE_OF_HEARING_LABEL",
-                "placeholder": "ES_DATE_OF_HEARING_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
-                "path": "dateOfHearing "
-              },
-              {
-                "label": "ES_TIME_OF_HEARING_LABEL",
-                "placeholder": "ES_TIME_OF_HEARING_PLACEHOLDER",
-                "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
-                "path": "timeOfHearing"
-              }
-            ]
-          },
-          {
-            "header": "ES_OCCUPATION_NOTICE_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_DATE_OF_HEARING_LABEL",
-                "placeholder": "ES_DATE_OF_HEARING_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.dateOfHearing",
-                "path": "dateOfHearing "
-              },
-              {
-                "label": "ES_TIME_OF_HEARING_LABEL",
-                "placeholder": "ES_TIME_OF_HEARING_PLACEHOLDER",
-                "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.timeOfHearing",
                 "path": "timeOfHearing"
               }

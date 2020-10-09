@@ -11,7 +11,9 @@ import {
   getReviewGroundRent, 
   getReviewLicenseFee,
   getReviewAdvanceRent,
-  getReviewSecurity
+  getReviewSecurity,
+  getReviewFirmDetails,
+  getReviewProprietorshipDetails
 } from "./reviewProperty";
 
 var reviewPropertyInfo = getReviewPropertyInfo(true, "allotment");
@@ -22,11 +24,13 @@ var reviewGroundRent = getReviewGroundRent();
 var reviewLicenseFee = getReviewLicenseFee();
 var reviewAdvanceRent = getReviewAdvanceRent();
 var reviewSecurity = getReviewSecurity();
-var reviewCompanyDetails = getReviewCompanyDetails();
+var companyDetails = getReviewCompanyDetails(true, "allotment");
+var firmDetails = getReviewFirmDetails(true, "allotment");
+var proprietorDetails = getReviewProprietorshipDetails(true, "allotment");
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
-  labelKey: "TL_SUMMARY_HEADER"
+  labelKey: "ES_SUMMARY_HEADER"
 })
 
 export const reviewAllotmentDetails = getCommonCard({
@@ -34,7 +38,9 @@ export const reviewAllotmentDetails = getCommonCard({
   reviewPropertyInfo,
   reviewAdditional,
   reviewAuctionAllotment,
-  reviewCompanyDetails,
+  companyDetails,
+  firmDetails,
+  proprietorDetails,
   reviewPremiumAmount,
   reviewGroundRent,
   reviewLicenseFee,

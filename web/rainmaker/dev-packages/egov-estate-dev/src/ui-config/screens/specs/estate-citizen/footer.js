@@ -227,12 +227,12 @@ export const previousButton = {
 
 
   const callBackForPrevious = async (state, dispatch) => {
-    changeStep(state, dispatch, "apply", "previous");
+    changeStep(state, dispatch, "_apply", "previous");
   };
 
   const callBackForNext = async(state, dispatch) => {
     let activeStep = get(
-        state.screenConfiguration.screenConfig["apply"],
+        state.screenConfiguration.screenConfig["_apply"],
         "components.div.children.stepper.props.activeStep",
         0
     );
@@ -240,12 +240,12 @@ export const previousButton = {
     let hasFieldToaster = true;
     if(activeStep === DETAILS_STEP) {
 
-      let cardItems = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardFirstStep.children", {}) || {}
+      let cardItems = get(state.screenConfiguration.screenConfig["_apply"], "components.div.children.formwizardFirstStep.children", {}) || {}
       cardItems = Object.keys(cardItems);
 
       cardItems.forEach((cardItem) => {
         const isValid = validateFields(`components.div.children.formwizardFirstStep.children.${cardItem}.children.cardContent.children.details_container.children`, state,
-        dispatch, "apply");
+        dispatch, "_apply");
         isFormValid = isFormValid && isValid
       })
     if(!!isFormValid) {
@@ -304,7 +304,7 @@ export const previousButton = {
       }
     if(activeStep !== SUMMARY_STEP) {
       if(!!isFormValid) {
-        changeStep(state, dispatch, "apply");
+        changeStep(state, dispatch, "_apply");
       } else if (hasFieldToaster) {
         let errorMessage = {
           labelName:

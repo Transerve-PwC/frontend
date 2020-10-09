@@ -9,12 +9,9 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails } from "./preview-resource/preview-properties";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
 
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 let tenantId = getTenantId()
@@ -45,7 +42,6 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
-
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     applicationDocuments = applicationDocuments.filter(item => !!item.active)
@@ -69,68 +65,70 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-   
-     await searchResults(action, state, dispatch, fileNumber)
+    await searchResults(action, state, dispatch, fileNumber);
   }
 }
 
 export const onTabChange = async(tabIndex, dispatch, state) => {
   fileNumber = getQueryArg(window.location.href, "filenumber");
-  let path = ""
-  switch(tabIndex){
-      case 0:
-        path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 1:
-        path = `/estate/auction-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 2:
-        path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 3:
-        path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 4:
-        path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 5:
-        path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 6:
-        path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-      case 7:
-        path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
-        break
-
+  let path = "";
+  if (tabIndex === 0) {
+    path = `/estate/search-preview?filenumber=${fileNumber}&tenantId=${tenantId}`;
+  }
+  else if (tabIndex === 1) {
+    path = `/estate/auction-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 2) {
+    path = `/estate/owner-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 3) {
+    path = `/estate/document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 4) {
+    path = `/estate/purchaser-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 5) {
+    path = `/estate/previous-owner-document-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 6) {
+    path = `/estate/payment-details?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 7) {
+    path = `/estate/notices?filenumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 8) {
+    path = `/estate/court-case?filenumber=${fileNumber}&tenantId=${tenantId}`
   }
   dispatch(setRoute(path))
 }
 
 export const tabs = [
   {
-    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" },
+    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" }
   },
   {
-    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" },
+    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" }
   },
   {
-    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" }
   },
   {
-    tabButton: { labelName: "Previous Owner Details", labelKey: "ES_PREVIOUS_OWNER_DETAILS" },
+    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" }
   },
   {
-    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" },
+    tabButton: { labelName: "Previous Owner Details", labelKey: "ES_PREVIOUS_OWNER_DETAILS" }
   },
   {
-    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" },
+    tabButton: { labelName: "Previous Owner Documents", labelKey: "ES_PREVIOUS_OWNER_DOCUMENTS" }
   },
   {
-    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" },
+    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" }
   },
   {
-    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" },
+    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" }
+  },
+  {
+    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
   }
 ]
 
@@ -161,7 +159,40 @@ const estateDetailPreview = {
               },
              ...headerrow
             },
-            }
+            /* cancellationOfSiteButton: {
+              componentPath: "Button",
+              visible: false,
+              gridDefination: {
+                xs: 12,
+                sm: 4,
+                align: "right"
+              },
+              props: {
+                variant: "contained",
+                style: {
+                  color: "white",
+                  backgroundColor: "#fe7a51",
+                  borderColor: "#fe7a51",
+                  borderRadius: "2px",
+                  width: "50%",
+                  height: "48px",
+                  margin: "-10px 0px 10px"
+                }
+              },
+              children: {
+                buttonLabel: getLabel({
+                  labelName: "Cancellation of Site",
+                  labelKey: "ES_CANCELLATION_OF_SITE_BUTTON"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: (state, dispatch) => {
+                  cancellationOfSite();
+                }
+              }
+            } */
+          }
           },
           tabSection: {
             uiFramework: "custom-containers-local",
@@ -193,4 +224,7 @@ const estateDetailPreview = {
   }
 };
 
+/* const cancellationOfSite = () => {
+  console.log("Cancellation of Site");
+} */
 export default estateDetailPreview;

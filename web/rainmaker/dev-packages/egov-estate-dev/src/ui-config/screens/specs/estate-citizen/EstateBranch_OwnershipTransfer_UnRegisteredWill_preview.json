@@ -31,7 +31,8 @@
                     },
                     {
                         "label": "ES_LAST_NOC_DATE_LABEL",
-                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
+                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+                        "type": "date"
                     },
                     {
                         "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -78,7 +79,13 @@
                         "label": "ES_DATE_OF_EXECUTION_OF_UNREGISTERED_WILL_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.dateOfExecutionOfWill",
                         "type": "date"
-                    },
+                    }
+                ]
+            },
+            {
+                "header": "ES_LEGAL_BENEFICIARY_DETAILS",
+                "step": 0,
+                "fields": [
                     {
                         "label": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.legalHeirOrbeneficiary"

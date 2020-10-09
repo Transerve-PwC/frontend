@@ -250,7 +250,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
-        const reviewCourtCaseDetails = getReviewCourtCase(true, i);
+        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 4, "allotment");
         set(
           state.screenConfiguration.screenConfig,
           `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
@@ -376,8 +376,18 @@ const callBackForNext = async (state, dispatch) => {
         isFormValid = false;
       }
     }
-    else {
+    else if (selectedDemand == "LICENSEFEE") {
       if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    else {
+      if (isPremiumAmountValid && isSecurityDetailsValid && isInstallmentDetailsValid) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {
           return
@@ -412,7 +422,7 @@ const callBackForNext = async (state, dispatch) => {
       switch (activeStep) {
         case PROPERTY_DETAILS_STEP:
         case AUCTION_DETAILS_STEP:
-        case OWNER_DETAILS_STEP:
+        case ENTITY_OWNER_DETAILS_STEP:
         case COURT_CASE_DETAILS_STEP:
         case PAYMENT_DETAILS_STEP:
           errorMessage = {
@@ -420,7 +430,7 @@ const callBackForNext = async (state, dispatch) => {
             labelKey: "ERR_FILL_ESTATE_MANDATORY_FIELDS"
           };
           break;
-        case DOCUMENT_UPLOAD_STEP:
+        case ENTITY_OWNER_DOCUMENT_UPLOAD_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
             labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
@@ -743,7 +753,7 @@ export const submitButton = {
   children: {
     submitButtonLabel: getLabel({
       labelName: "Submit",
-      labelKey: "TL_COMMON_BUTTON_SUBMIT"
+      labelKey: "ES_COMMON_BUTTON_SUBMIT"
     }),
     submitButtonIcon: {
       uiFramework: "custom-atoms",

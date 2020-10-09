@@ -1,27 +1,17 @@
 import {
-  getCommonHeader,
-  getCommonContainer,
-  getLabel,
   getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getCourtCaseDetails } from "./preview-resource/courtCase-details";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import {onTabChange, headerrow, tabs} from './search-preview'
-
-
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 const courtCaseContainer = {
   uiFramework: "custom-atoms",
-componentPath: "Container",
+componentPath: "Div",
 props: {
   id: "docs"
 },
@@ -101,7 +91,7 @@ components: {
           componentPath: "CustomTabContainer",
           props: {
             tabs,
-            activeIndex: 7,
+            activeIndex: 8,
             onTabChange
           },
           type: "array",

@@ -220,7 +220,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -276,7 +277,7 @@
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },

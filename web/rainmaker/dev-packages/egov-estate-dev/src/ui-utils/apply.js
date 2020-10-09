@@ -134,7 +134,7 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
         );
         const applicationNumber = Applications[0].applicationNumber
         await setDocsForEditFlow(state, dispatch, "Applications[0].applicationDocuments", "temp[0].uploadedDocsInRedux");
-        setApplicationNumberBox({dispatch, applicationNumber, screenKey: "apply"})
+        setApplicationNumberBox({dispatch, applicationNumber, screenKey: "_apply"})
         return true;
   } catch (error) {
     dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
@@ -142,8 +142,6 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     return false;
   }
 }
-
-
 
 export const applyEstates = async (state, dispatch, activeIndex, screenName = "apply") => {
   try {
@@ -159,6 +157,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     set(queryObject[0], "tenantId", tenantId);
     set(queryObject[0], "propertyDetails.dateOfAuction", convertDateToEpoch(queryObject[0].propertyDetails.dateOfAuction))
     set(queryObject[0], "propertyDetails.lastNocDate", convertDateToEpoch(queryObject[0].propertyDetails.lastNocDate))
+    set(queryObject[0], "propertyDetails.companyRegistrationDate", convertDateToEpoch(queryObject[0].propertyDetails.companyRegistrationDate))
+    set(queryObject[0], "propertyDetails.emdDate", convertDateToEpoch(queryObject[0].propertyDetails.emdDate))
 
     var purchaseDetails = get(
       queryObject[0],
@@ -294,6 +294,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       Properties
     } = response
 
+    let ratePerSqft = (Properties[0].propertyDetails.ratePerSqft).toString();
+    let areaSqft = (Properties[0].propertyDetails.areaSqft).toString();
+
     let owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -302,7 +305,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (owners) {
       owners.map((item, index) => {
-        let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDocuments || [];
+        item.share = (item.share).toString();
+        let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments || [];
         const removedDocs = ownerDocuments.filter(item => !item.isActive)
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
         Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
@@ -317,7 +321,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
       let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners}}]
+      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)

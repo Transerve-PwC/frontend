@@ -31,7 +31,8 @@
                     },
                     {
                         "label": "ES_LAST_NOC_DATE_LABEL",
-                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
+                        "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+                        "type": "date"
                     },
                     {
                         "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -92,6 +93,16 @@
                     {
                         "label": "ES_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo"
+                    }
+                ]
+            },
+            {
+                "header": "ES_MODE_OF_TRANSFER_HEADER",
+                "step": 0,
+                "fields": [
+                    {
+                        "label": "ES_MODE_OF_TRANSFER_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.modeOfTransfer"
                     }
                 ]
             },

@@ -4,19 +4,12 @@ import {
   getEpochForDate,
   getTextToLocalMapping
 } from "../../utils";
-import { searchApiCall } from "./functions";
-import { localStorageGet,getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
+import store from "../../../../../ui-redux/store";
 
-const userInfo = JSON.parse(getUserInfo());
 const tenantId = getTenantId();
 
-export const APPLICATION_NO = getLocaleLabels("APPLICATION NUMBER", "RP_COMMON_TABLE_COL_APPLICAITON_NUMBER")
-export const PROPERTY_ID = getLocaleLabels("PROPERTY ID", "RP_COMMON_TABLE_COL_PROPERTY_ID")
-export const OWNER_NAME = getLocaleLabels("APPLICANT NAME", "RP_COMMON_TABLE_COL_APPLICANT_NAME")
-export const STATUS = getLocaleLabels("APPLICATION STATUS", "RP_COMMON_TABLE_COL_APPLICATION_STATUS")
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
 
 
@@ -29,7 +22,11 @@ export const searchResults = {
       getTextToLocalMapping("File Number"),
       getTextToLocalMapping("Sector Number"),
       getTextToLocalMapping("Status"),
-      LAST_MODIFIED_ON
+      LAST_MODIFIED_ON,
+      {name: "propertyMasterOrAllotmentOfSite", options: {
+        display: false,
+        viewColumns: false
+      }}
     ],
     options: {
       filter: false,
@@ -105,8 +102,12 @@ const onApplicationRowClick = rowData => {
 }
 
 const onRowClick = rowData => {
-  if (rowData[2].toUpperCase() === "PM_DRAFTED") {
-    window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+  console.log(rowData);
+  if (rowData[2].toUpperCase() === "ES_PM_DRAFTED") {
+    if (rowData[4] == "PROPERTY_MASTER")
+      window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+    else
+      window.location.href = `allotment?filenumber=${rowData[0]}&tenantId=${tenantId}`;
   }
   else {
     window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;

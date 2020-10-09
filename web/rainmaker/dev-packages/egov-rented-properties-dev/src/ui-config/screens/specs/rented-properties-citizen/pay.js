@@ -32,7 +32,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
   });
   
   const setPaymentMethods = async (action, state, dispatch) => {
-    const businessService = getQueryArg(window.location.href, "businessService") || BILLING_BUSINESS_SERVICE_RENT
+    const businessService = getQueryArg(window.location.href, "businessService")
     const response = await getPaymentGateways();
     if(!!response.length) {
       const paymentMethods = response.map(item => ({
@@ -47,6 +47,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
   const beforeScreenInit = async (action, state, dispatch) => {
     const tenantId = getQueryArg(window.location.href, "tenantId");
     let consumerCode = getQueryArg(window.location.href, "consumerCode");
+    let consumerNumber=consumerCode.split("-")[2]
       const businessService = getQueryArg(window.location.href, "businessService")
       const queryObject = [
         { key: "tenantId", value: tenantId },
@@ -56,8 +57,8 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
       // setBusinessServiceDataToLocalStorage(queryObject, dispatch);
       await fetchBill(action, state, dispatch, businessService);
       let sourceJsonPath, header;
-      switch(businessService) {
-        case BILLING_BUSINESS_SERVICE_OT : {
+      switch(consumerNumber) {
+        case "OT" : {
           sourceJsonPath = "OwnersTemp[0].estimateCardData"
           header = getCommonHeader({
             labelName: "Application for Ownership Transfer",
@@ -65,7 +66,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
           })
           break
         }
-        case BILLING_BUSINESS_SERVICE_DC: {
+        case "DC": {
           sourceJsonPath = "DuplicateTemp[0].estimateCardData"
           header = getCommonHeader({
             labelName: "Application for Duplicate Transfer",
@@ -73,7 +74,6 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
           })
           break
         }
-        case BILLING_BUSINESS_SERVICE_RENT:
         default:  
         {
           sourceJsonPath = "PropertiesTemp[0].estimateCardData"
@@ -82,6 +82,14 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
             labelKey: "RP_COMMON_PAY_ONLINE_RENT_SCREEN_HEADER"
           })
           consumerCode = consumerCode.split("-")[1]
+          dispatch(
+            handleField(
+              "pay",
+              "components.div.children.headerDiv.children.header.children.applicationNumber.props",
+              "type",
+              "RP_MASTER"
+            )
+          )
           break
         }
       }
@@ -107,14 +115,6 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
         "components.div.children.headerDiv.children.header.children.applicationNumber.props",
         "number",
         consumerCode
-      )
-    )
-    businessService === BILLING_BUSINESS_SERVICE_RENT && dispatch(
-      handleField(
-        "pay",
-        "components.div.children.headerDiv.children.header.children.applicationNumber.props",
-        "type",
-        "RP_MASTER"
       )
     )
   }

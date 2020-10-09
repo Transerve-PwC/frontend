@@ -3,58 +3,19 @@ import { connect } from "react-redux";
 import { ActionDialog } from "../";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { Container, Item } from "egov-ui-framework/ui-atoms";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import MenuButton from "egov-ui-framework/ui-molecules/MenuButton";
-import {getNextFinancialYearForRenewal,getSearchResults} from "../../ui-utils/commons"
-import { getDownloadItems } from "./downloadItems";
 import get from "lodash/get";
-import set from "lodash/set";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 import { WF_PROPERTY_MASTER } from "../../ui-constants";
-
 class Footer extends React.Component {
   state = {
     open: false,
     data: {},
     employeeList: [],
     //responseLength: 0
-  };
-
-  getDownloadData = () => {
-    const { dataPath, state } = this.props;
-    const data = get(
-      state,
-      `screenConfiguration.preparedFinalObject.${dataPath}`
-    );
-    const { status, fileNumber } = (data && data[0]) || "";
-    return {
-      label: "Download",
-      leftIcon: "cloud_download",
-      rightIcon: "arrow_drop_down",
-      props: { variant: "outlined", style: { marginLeft: 10 } },
-      menu: getDownloadItems(status, fileNumber, state).downloadMenu
-      // menu: ["One ", "Two", "Three"]
-    };
-  };
-
-  getPrintData = () => {
-    const { dataPath, state } = this.props;
-    const data = get(
-      state,
-      `screenConfiguration.preparedFinalObject.${dataPath}`
-    );
-    const { status, fileNumber } = (data && data[0]) || "";
-    return {
-      label: "Print",
-      leftIcon: "print",
-      rightIcon: "arrow_drop_down",
-      props: { variant: "outlined", style: { marginLeft: 10 } },
-      // menu: ["One ", "Two", "Three"]
-      menu: getDownloadItems(status, fileNumber, state).printMenu
-    };
   };
 
   findAssigner = (item, processInstances) => {
@@ -66,9 +27,14 @@ class Footer extends React.Component {
     const { handleFieldChange, setRoute, dataPath, moduleName } = this.props;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
     const {workflow: {ProcessInstances = []}} = preparedFinalObject || {}
+    const data = get(
+      preparedFinalObject,
+      dataPath
+    );
     let employeeList = [];
     let action = ""
     switch(item.buttonLabel) {
+      case "SENTBACK":
       case "SENDBACK": {
         action = "FORWARD"
         break
@@ -78,11 +44,17 @@ class Footer extends React.Component {
     let assignee = [];
     switch(moduleName) {
       case WF_PROPERTY_MASTER: {
-        if(!!action && dataPath[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
+        if(!!action && data[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
           const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
           assignee = !!assigner.uuid ? [assigner.uuid] : []
         }
         break
+      }
+      default: {
+        if(!!action && data[0].state !== "ES_PENDING_DS_VERIFICATION"){
+          const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+          assignee = !!assigner.uuid ? [assigner.uuid] : []
+        }
       }
     }
 
@@ -137,36 +109,6 @@ class Footer extends React.Component {
     });
   };
 
-  renewTradelicence = async (financialYear, tenantId) => {
-    const {setRoute , state} = this.props;
-    const licences = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses`
-    );
-
-    const nextFinancialYear = await getNextFinancialYearForRenewal(financialYear);
-
-    const wfCode = "DIRECTRENEWAL";
-    set(licences[0], "action", "INITIATE");
-    set(licences[0], "workflowCode", wfCode);
-    set(licences[0], "applicationType", "RENEWAL");
-    set(licences[0],"financialYear" ,nextFinancialYear);
-
-  const response=  await httpRequest("post", "/tl-services/v1/_update", "", [], {
-      Licenses: licences
-    })
-     const renewedapplicationNo = get(
-      response,
-      `Licenses[0].applicationNumber`
-    );
-    const licenseNumber = get(
-      response,
-      `Licenses[0].licenseNumber`
-    );
-    setRoute(
-      `/tradelicence/acknowledgement?purpose=DIRECTRENEWAL&status=success&applicationNumber=${renewedapplicationNo}&licenseNumber=${licenseNumber}&FY=${nextFinancialYear}&tenantId=${tenantId}&action=${wfCode}`
-    );
-  };
   render() {
     const {
       contractData,

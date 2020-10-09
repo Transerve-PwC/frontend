@@ -164,7 +164,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["LEGALHEIR", "BENEFICIARY"]
+                "values": [
+                  "LEGALHEIR",
+                  "BENEFICIARY"
+                ]
               }
             }
           ]
@@ -214,7 +217,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["FATHER", "HUSBAND"]
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
@@ -469,7 +475,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -567,7 +574,13 @@
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
                 "path": "dateOfRegistration"
-              },
+              }
+            ]
+          },
+          {
+            "header": "ES_LEGAL_BENEFICIARY_DETAILS",
+            "type": "FORM",
+            "fields": [
               {
                 "label": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                 "placeholder": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_PLACEHOLDER",
@@ -615,7 +628,7 @@
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
@@ -637,6 +650,15 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "dataSource": "benificiaryRelationwithDeceased",
                 "visibility": "application.applicationDetails.transferee.legalHeirOrbeneficiary === 'BENEFICIARY'"
+              },
+              {
+                "label": "ES_PERCENTAGE_SHARED_LABEL",
+                "placeholder": "ES_PERCENTAGE_SHARED_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+                "path": "transferee.percentageOfShareTransferred",
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               }
             ]
           },
@@ -662,7 +684,7 @@
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].address",
                 "path": "witness.address",
                 "errorMessage": "ES_ERR_ADDRESS"

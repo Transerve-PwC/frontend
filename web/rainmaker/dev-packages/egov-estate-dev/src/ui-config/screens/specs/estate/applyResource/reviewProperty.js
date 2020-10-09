@@ -225,7 +225,7 @@ export const getReviewAuction = (isEditable = true) => {
             labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 0)
+        editSection: masterEntryEditSection(isEditable, 1)
       }
     },
     viewFour: getCommonContainer({
@@ -285,8 +285,8 @@ export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
 
 /* Owner review */
 const ownerNameLabel = {
-  labelName: "Owner Name",
-  labelKey: "ES_MODE_OF_AUCTION_LABEL"
+  labelName: "Name",
+  labelKey: "ES_NAME_LABEL"
 }
 const fatherHusbandNameLabel = {
   labelName: "Father/Husband Name",
@@ -324,11 +324,11 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
             sm: 10
           },
           ...getCommonSubHeader({
-            labelName: "Owner Details",
-            labelKey: "ES_OWNER_DETAILS_HEADER"
+            labelName: "Owner/Partner Details",
+            labelKey: "ES_OWNER_PARTNER_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 1)
+        editSection: masterEntryEditSection(isEditable, 2)
       }
     },
     viewFour: getCommonContainer({
@@ -390,20 +390,20 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
 
 /* purchaser review */
 const newOwnerNameLabel = {
-  labelName: "New Owner Name",
-  labelKey: "ES_NEW_OWNER_NAME_LABEL"
+  labelName: "Previous Owner Name",
+  labelKey: "ES_PREVIOUS_OWNER_NAME_LABEL"
 }
 const newOwnerFatherHusbandNameLabel = {
-  labelName: "New Father/Husband Name",
-  labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL"
+  labelName: "Previous Owner Father/Husband Name",
+  labelKey: "ES_PREVIOUS_OWNER_FATHER_HUSBAND_NAME_LABEL"
 }
 const newOwnerAddressLabel = {
-  labelName: "New Owner Address",
-  labelKey: "ES_NEW_OWNER_ADDRESS_LABEL"
+  labelName: "Previous Owner Address",
+  labelKey: "ES_PREVIOUS_OWNER_ADDRESS_LABEL"
 }
 const newOwnerMobileNumberLabel = {
-  labelName: "New Owner Mobile No.",
-  labelKey: "ESTATE_NEW_OWNER_MOBILE_NUMBER_LABEL"
+  labelName: "Previous Owner Mobile No.",
+  labelKey: "ES_PREVIOUS_OWNER_MOBILE_NUMBER_LABEL"
 }
 const sellerNameLabel = {
   labelName: "Seller Name",
@@ -441,67 +441,67 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
             sm: 10
           },
           ...getCommonSubHeader({
-            labelName: "Purchaser Details",
-            labelKey: "ES_PURCHASER_DETAILS_HEADER"
+            labelName: "Previous Owner Details",
+            labelKey: "ES_PREVIOUS_OWNER_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2)
+        editSection: masterEntryEditSection(isEditable, 4)
       }
     },
     viewFour: getCommonContainer({
       newOwnerName: getLabelWithValue(
         newOwnerNameLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].newOwnerName`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.ownerName`
         }
       ),
       newOwnerFatherHusbandName: getLabelWithValue(
         newOwnerFatherHusbandNameLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].newOwnerFatherName`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.guardianName`
         }
       ),
       relationship: getLabelWithValue(
         relationshipLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].relationship`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.guardianRelation`
         }
       ),
       newOwnerAddress: getLabelWithValue(
         newOwnerAddressLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].newOwnerAddress`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.address`
         }
       ),
       newOwnerMobileNumber: getLabelWithValue(
         newOwnerMobileNumberLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].newOwnerMobileNumber`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.mobileNumber`
         }
       ),
       sellerName: getLabelWithValue(
         sellerNameLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].sellerName`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.sellerName`
         }
       ),
       sellerFatherHusbandName: getLabelWithValue(
         sellerFatherHusbandNameLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].sellerFatherName`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.sellerFatherName`
         }
       ),
       percentShare: getLabelWithValue(
         percentShareLabel, {
-          jsonPath: "Properties[0].propertyDetails.purchaseDetails[${purchaser}].percentageOfShare"
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.percentageOfShare`
         }
       ),
       modeOfTransfer: getLabelWithValue(
         modeOfTransferLabel, {
-          jsonPath: "Properties[0].propertyDetails.purchaseDetails[${purchaser}].modeOfTransfer"
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.modeOfTransfer`
         }
       ),
       registrationNumber: getLabelWithValue(
         registrationNumberLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].registrationNumberField`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.registrationNumberField`
         }
       ),
       dateOfRegistration: getLabelWithValue(
         dateOfRegistrationLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaseDetails[${purchaser}].dateOfRegistration`,
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.dateOfRegistration`,
           callBack: convertEpochToDate
         }
       )
@@ -638,7 +638,7 @@ export const getReviewPayment = (isEditable = true, owner) => {
             labelKey: "ES_PAYMENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 4)
+        editSection: masterEntryEditSection(isEditable, 7)
       }
     },
     viewGroundRent: getCommonContainer({
@@ -836,7 +836,7 @@ const honbleSupremeCourtLabel = {
   labelKey: "ES_HONBLE_SUPREME_COURT_LABEL"
 }
 
-export const getReviewCourtCase = (isEditable = true, owner = 0) => {
+export const getReviewCourtCase = (isEditable = true, owner = 0, step = 6, screenKey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -851,7 +851,7 @@ export const getReviewCourtCase = (isEditable = true, owner = 0) => {
             labelKey: "ES_COURT_CASE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 3)
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewFour: getCommonContainer({
@@ -909,7 +909,7 @@ export const getReviewPremiumAmount = (isEditable = true) => {
             labelKey: "ES_PREMIUM_AMOUNT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewPremiumAmount: getCommonContainer({
@@ -942,7 +942,7 @@ export const getReviewGroundRent = (isEditable = true) => {
             labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewGroundRent: getCommonContainer({
@@ -993,7 +993,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
             labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewAdvanceRent: getCommonContainer({
@@ -1034,7 +1034,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
             labelKey: "ES_LICENSE_FEE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewLicenseFee: getCommonContainer({
@@ -1085,7 +1085,7 @@ export const getReviewSecurity = (isEditable = true) => {
             labelKey: "ES_SECURITY_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 8, "allotment")
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewSecurity: getCommonContainer({
@@ -1126,7 +1126,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
             labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2, "allotment")
+        editSection: masterEntryEditSection(isEditable, 1, "allotment")
       }
     },
     viewAuctionDetails: getCommonContainer({
@@ -1185,84 +1185,6 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
         }
       )
     })
-  })
-}
-
-export const getReviewCompanyDetails = (isEditable = true) => {
-  return getCommonGrayCard({
-    headerDiv: {
-      ...headerDiv,
-      children: {
-        header: {
-          gridDefination: {
-            xs: 12,
-            sm: 10
-          },
-          ...getCommonSubHeader({
-            labelName: "Company Details",
-            labelKey: "ES_COMPANY_DETAILS_HEADER"
-          })
-        },
-        editSection: masterEntryEditSection(isEditable, 2, "allotment")
-      }
-    },
-    viewCompanyDetails: getCommonContainer({
-      companyName: getLabelWithValue(
-        {
-          labelName: "Company Name",
-          labelKey: "ES_COMPANY_NAME_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyName`
-        }
-      ),
-      companyAddress: getLabelWithValue(
-        {
-          labelName: "Company Address",
-          labelKey: "ES_ESTATE_COMPANY_ADDRESS_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyAddress`
-        }
-      ),
-      companyRegNo: getLabelWithValue(
-        {
-          labelName: "Company Registration Number",
-          labelKey: "ES_COMPANY_REG_NO_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyRegNo`
-        }
-      ),
-      companyType: getLabelWithValue(
-        {
-          labelName: "Company Type",
-          labelKey: "ES_COMPANY_TYPE_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyType`
-        }
-      ),
-      companyShareholderName: getLabelWithValue(
-        {
-          labelName: "Company Shareholder Name",
-          labelKey: "ES_COMPANY_SHAREHOLDER_NAME_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyShareHolderName`
-        }
-      ),
-      companyShare: getLabelWithValue(
-        {
-          labelName: "Company Share %",
-          labelKey: "ES_COMPANY_SHARE_LABEL"
-        }, 
-        {
-          jsonPath: `Properties[0].propertyDetails.companyShare`
-        }
-      )
-    }),
-    viewPartners: getCommonContainer({})
   })
 }
 
@@ -1435,7 +1357,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
 
         detailsObj[`partnerCPNumber_${i}`] = getLabelWithValue(
           {
-            labelName: "PPartner CP Number",
+            labelName: "Partner CP Number",
             labelKey: "ES_PARTNER_CP_NUMBER_LABEL"
           }, 
           {
@@ -1454,4 +1376,190 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
       detailsObj
     )
   )
+}
+
+export const getReviewCompanyDetails = (isEditable = true, screenkey = "apply") => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Company Details",
+            labelKey: "ES_COMPANY_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, screenkey)
+      }
+    },
+    viewFour: getCommonContainer({
+      companyName: getLabelWithValue(
+        {
+          labelName: "Company Name",
+          labelKey: "ES_COMPANY_NAME_LABEL"
+        }, 
+        {
+          jsonPath: "Properties[0].propertyDetails.companyName",
+        }
+      ),
+      companyRegistrationNumber: getLabelWithValue(
+        {
+          labelName: "Company Registration Number",
+          labelKey: "ES_COMPANY_REG_NO_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyRegistrationNumber"
+        }
+      ),
+      companyRegistrationDate: getLabelWithValue(
+        {
+          labelName: "Registration Date",
+          labelKey: "ES_REGISTRATION_DATE_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyRegistrationDate"
+        }
+      ),
+      companyAddress: getLabelWithValue(
+        {
+          labelName: "Company Address",
+          labelKey: "ES_COMPANY_ADDRESS_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyAddress"
+        }
+      )
+    })
+  })
+}
+
+export const getReviewFirmDetails = (isEditable = true, screenkey = "apply") => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Firm Details",
+            labelKey: "ES_FIRM_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, screenkey)
+      }
+    },
+    viewFour: getCommonContainer({
+      firmName: getLabelWithValue(
+        {
+          labelName: "Firm Name",
+          labelKey: "ES_FIRM_NAME_LABEL"
+        }, 
+        {
+          jsonPath: "Properties[0].propertyDetails.companyName",
+        }
+      ),
+      firmRegistrationNumber: getLabelWithValue(
+        {
+          labelName: "Firm Registration Number",
+          labelKey: "ES_FIRM_REG_NO_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyRegistrationNumber"
+        }
+      ),
+      firmRegistrationDate: getLabelWithValue(
+        {
+          labelName: "Registration Date",
+          labelKey: "ES_REGISTRATION_DATE_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyRegistrationDate"
+        }
+      ),
+      firmAddress: getLabelWithValue(
+        {
+          labelName: "Firm Address",
+          labelKey: "ES_FIRM_ADDRESS_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.companyAddress"
+        }
+      )
+    })
+  })
+}
+
+export const getReviewProprietorshipDetails = (isEditable = true, screenkey = "apply") => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Proprietorship Details",
+            labelKey: "ES_PROPRIETORSHIP_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 2, screenkey)
+      }
+    },
+    viewFour: getCommonContainer({
+      proprietorName: getLabelWithValue(
+        {
+          labelName: "Name",
+          labelKey: "ES_NAME_LABEL"
+        }, 
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
+        }
+      ),
+      gaurdianName: getLabelWithValue(
+        {
+          labelName: "Father/Husband Name",
+          labelKey: "ES_FATHER_HUSBAND_NAME_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName"
+        }
+      ),
+      address: getLabelWithValue(
+        {
+          labelName: "Address",
+          labelKey: "ES_ADDRESS_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
+        }
+      ),
+      mobileNumber: getLabelWithValue(
+        {
+          labelName: "Mobile Number",
+          labelKey: "ESTATE_MOBILE_NUMBER_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
+        }
+      ),
+      cpNumber: getLabelWithValue(
+        {
+          labelName: "CP Number",
+          labelKey: "ES_CP_NUMBER_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.cpNumber"
+        }
+      )
+    })
+  })
 }

@@ -31,7 +31,8 @@
           },
           {
             "label": "ES_LAST_NOC_DATE_LABEL",
-            "jsonPath": "Applications[0].property.propertyDetails.lastNocDate"
+            "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+            "type": "date"
           },
           {
             "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -48,7 +49,7 @@
         "step": 0,
         "fields": [
           {
-            "label": "ES_OWNERS_LABEL",
+            "label": "ES_OWNER_NAME_LABEL",
             "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
           },
           {

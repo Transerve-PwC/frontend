@@ -1,21 +1,13 @@
 import {
-    getCommonHeader,
-    getCommonContainer,
-    getLabel,
     getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getSearchApplicationsResults } from "../../../../ui-utils/commons";
-import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails } from "./preview-resource/owner-properties";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import {onTabChange, headerrow, tabs} from './search-preview'
 import { firmDetails } from "./applyResource/entityDetails";
 
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "CTL_CLERK");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
@@ -64,6 +56,10 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
+    let owners = properties[0].propertyDetails.owners;
+    let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners}}]
+    
     dispatch(prepareFinalObject("Properties", properties));
 
     let applicationState = properties[0].state;

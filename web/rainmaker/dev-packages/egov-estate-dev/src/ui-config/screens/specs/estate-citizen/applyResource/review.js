@@ -56,7 +56,7 @@ const headerDiv = (isEditable = true, label, step) => {
         onClickDefination: {
         action: "condition",
         callBack: (state, dispatch) => {
-            changeStep(state, dispatch, "apply", "", step);
+            changeStep(state, dispatch, "_apply", "", step);
         }
     }
     }

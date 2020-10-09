@@ -300,6 +300,14 @@ return
             );
       return
     }
+    else if(isNaN(mortgageAmountValid)){
+      toggleSnackbar(
+        true,
+        { labelName: "Amount should be a numeric value", labelKey: "ERR_MORTGAGEAMOUNT_NUMBER"},
+        "error"
+      );
+      return
+    }
     else if(!(mortgageAmountValid.length >= 3 && mortgageAmountValid.length <= 8)){
       toggleSnackbar(
         true,

@@ -183,8 +183,10 @@ const getField = async (item, fieldData = {}, state) => {
     }
   
     fieldProps = !!pattern ? {...fieldProps, pattern: _getPattern(pattern)} : fieldProps
-    fieldProps = !!minMaxValidation ? {...fieldProps, minLength: minMaxValidation.params.min, maxLength: minMaxValidation.params.max} : fieldProps
-    fieldProps = !!minMaxValue ? {...fieldProps, minValue: minMaxValue.params.min, maxValue: minMaxValue.params.max} : fieldProps
+    if(!!required) {
+      fieldProps = !!minMaxValidation ? {...fieldProps, minLength: minMaxValidation.params.min, maxLength: minMaxValidation.params.max} : fieldProps
+      fieldProps = !!minMaxValue ? {...fieldProps, minValue: minMaxValue.params.min, maxValue: minMaxValue.params.max} : fieldProps
+    }
 
     rest = {...rest, afterFieldChange : onFieldChange }
     switch(type) {
@@ -212,7 +214,7 @@ const getField = async (item, fieldData = {}, state) => {
             max: getTodaysDateInYMD()
         }
         },
-          pattern: getPattern("Date")
+          // pattern: getPattern("Date")
         }),
         afterFieldChange: (action, state, dispatch) => {
           dispatch(prepareFinalObject(

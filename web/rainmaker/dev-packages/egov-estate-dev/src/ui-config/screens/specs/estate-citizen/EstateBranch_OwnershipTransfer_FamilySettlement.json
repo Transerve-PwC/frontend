@@ -20,17 +20,13 @@
         },
         {
           "name": "modeOfTransfer",
-          "type": "local",
+          "type": "mdms",
           "cacheable": true,
           "lazyload": true,
-          "values": [
-            {
-              "code": "FAMILY_SETTLEMENT"
-            },
-            {
-              "code": "COURT_DECREE"
-            }
-          ]
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "familySettlementModeOfTransfer"
+          }
         },
         {
           "name": "owners",
@@ -396,7 +392,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -452,7 +449,7 @@
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },
@@ -531,8 +528,8 @@
                 "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.mobileNumber : application.applicationDetails.transferee.mobileNo"
               },
               {
-                "label": "ES_PERCENTAGE_SHARE_LABEL",
-                "placeholder": "ES_PERCENTAGE_SHARE_PLACEHOLDER",
+                "label": "ES_PERCENT_SHARE_LABEL",
+                "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
                 "path": "transferee.percentageOfShareTransferred",
@@ -574,7 +571,7 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_FAMILY_SETTLEMENT_DATE_LABEL",
+                "label": "ES_FAMILY_SETTLEMENT_COURT_DECREE_DATE_LABEL",
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.familysettlementdate",
                 "path": "familysettlementdate"

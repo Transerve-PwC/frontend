@@ -3,7 +3,7 @@ import get from "lodash/get";
 
 
 export const setFieldProperty = ({dispatch, actionDefiniton }) => {
-    dispatchMultipleFieldChangeAction("apply", actionDefiniton, dispatch)
+    dispatchMultipleFieldChangeAction("_apply", actionDefiniton, dispatch)
   }
 
 const getComponentJsonPath = ({cardName, fieldName}) => {

@@ -250,7 +250,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         
         let errorMessage = {
           labelName:
-              "Please fill all mandatory fields and upload at least two the images !",
+              "Please fill all mandatory fields and upload the images !",
           labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));

@@ -5,7 +5,8 @@ import {
     getDateField,
     getCommonTitle,
     getPattern,
-    getCommonContainer
+    getCommonContainer,
+    dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
     handleScreenConfigurationFieldChange as handleField,
@@ -18,6 +19,40 @@ import get from "lodash/get";
 import {
     companyDetails
 } from "./entityDetails"
+
+export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
+    const actionDefination = [{
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.auctionId`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmount`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.modeOfAuction`,
+      property: "props.disabled",
+      value: disabled
+    },
+    {
+      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.schemeName`,
+      property: "props.disabled",
+      value: disabled
+    }];
+    return actionDefination;
+  }
 
 const typeOfAllocationField = {
     label: {
@@ -34,6 +69,28 @@ const typeOfAllocationField = {
     gridDefination: {
         xs: 12,
         sm: 6
+    },
+    beforeFieldChange: (action, state, dispatch) => {
+        let screenName = "apply";
+        let step = "formwizardSecondStep";
+        
+        if ((window.location.href).includes("allotment")) {
+            screenName = "allotment";
+            step = "formwizardSecondStepAllotment";
+        }
+        dispatchMultipleFieldChangeAction(
+            screenName,
+            getActionDefinationForAuctionDetailsFields(!!(action.value == "ALLOCATION_TYPE.ALLOTMENT"), step),
+            dispatch
+        );
+        dispatch(
+            handleField(
+                screenName,
+                `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer`,
+                `visible`,
+                !!(action.value == "ALLOCATION_TYPE.AUCTION")
+            )
+        )
     }
 }
 
@@ -218,7 +275,7 @@ const subCategoryField = {
 
 const siteNumberField = {
     label: {
-        labelName: "Site Number",
+        labelName: "Site Number/SCO/Booth",
         labelKey: "ES_SITE_NUMBER_LABEL"
     },
     placeholder: {
@@ -373,85 +430,14 @@ const getPropertyRegisteredToRadioButton = {
     required: true,
     type: "array",
     beforeFieldChange: (action, state, dispatch) => {
-        let screenName = "apply";
-        let stepNameFirst = "formwizardFirstStep";
-        let stepNameThird = "formwizardThirdStep";
-
-        if ((window.location.href.includes("allotment"))) {
-            screenName = "allotment";
-            stepNameFirst = "formwizardFirstStepAllotment";
-            stepNameThird = "formwizardThirdStepAllotment";
+        if (!!action.value) {
+            toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(action.value, dispatch);
         }
-
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
-                `visible`,
-                !!(action.value === "ENTITY")
-            )
-        )
-
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.companyDetails`,
-                "visible",
-                !!(action.value == "ENTITY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.ownerDetails`,
-                "visible",
-                !!(action.value == "INDIVIDUAL")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.ownerDetails`,
-                "visible",
-                !!(action.value == "INDIVIDUAL")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.isDirector`,
-                "visible",
-                !!(action.value == "ENTITY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.firmDetails`,
-                "visible",
-                !!(action.value == "ENTITY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.partnerDetails`,
-                "visible",
-                !!(action.value == "ENTITY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepNameThird}.children.proprietorshipDetails`,
-                "visible",
-                !!(action.value == "ENTITY")
-            )
-        )
     }
 };
 
 const entityTypeField = {
+
     label: {
         labelName: "Entity Type",
         labelKey: "ES_ENTITY_TYPE_LABEL"
@@ -477,71 +463,9 @@ const entityTypeField = {
     },
     visible: false,
     beforeFieldChange: (action, state, dispatch) => {
-        let screenName = "apply";
-        let stepName = "formwizardThirdStep";
-
-        if ((window.location.href.includes("allotment"))) {
-            screenName = "allotment";
-            stepName = "formwizardThirdStepAllotment";
+        if (!!action.value) {
+            toggleEntityOwnersDivsBasedOnEntityType(action.value, dispatch);
         }
-
-        if (action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value == "ET.PRIVATE_LIMITED_COMPANY") {
-            dispatch(
-                prepareFinalObject(
-                    "Properties[0].propertyDetails.companyOrFirm",
-                    "COMPANY"
-                )
-            )
-        }
-        else {
-            dispatch(
-                prepareFinalObject(
-                    "Properties[0].propertyDetails.companyOrFirm",
-                    "FIRM"
-                )
-            )
-        }
-
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepName}.children.companyDetails`,
-                "visible",
-                !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepName}.children.ownerDetails`,
-                "visible",
-                !!(action.value == "ET.PUBLIC_LIMITED_COMPANY" || action.value =="ET.PRIVATE_LIMITED_COMPANY")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepName}.children.firmDetails`,
-                "visible",
-                !!(action.value == "ET.PARTNERSHIP_FIRM" || action.value == "ET.PROPRIETORSHIP")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepName}.children.partnerDetails`,
-                "visible",
-                !!(action.value == "ET.PARTNERSHIP_FIRM")
-            )
-        )
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${stepName}.children.proprietorshipDetails`,
-                "visible",
-                !!(action.value == "ET.PROPRIETORSHIP")
-            )
-        )
     }
 }
 
@@ -605,3 +529,196 @@ export const additionalDetails = getCommonCard({
         serviceCategory: getTextField(serviceCategoryField)
     })
 })
+
+export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatch) =>  {
+    let screenName = "apply";
+    let stepNameFirst = "formwizardFirstStep";
+    let stepNameThird = "formwizardThirdStep";
+    let stepNameReview = "formwizardNinthStep";
+    let reviewContainer = "reviewDetails";
+
+    if ((window.location.href.includes("allotment"))) {
+        screenName = "allotment";
+        stepNameFirst = "formwizardFirstStepAllotment";
+        stepNameThird = "formwizardThirdStepAllotment";
+        stepNameReview = "formwizardSeventhStepAllotment";
+        reviewContainer = "reviewAllotmentDetails"
+    }
+
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType`,
+            `visible`,
+            !!(value === "ENTITY")
+        )
+    )
+
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.companyDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.companyDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.ownerDetails`,
+            "visible",
+            !!(value == "INDIVIDUAL")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.scheama.children.cardContent.children.ownerCard.children.isDirector`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.firmDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.firmDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.partnerDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameThird}.children.proprietorshipDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.proprietorDetails`,
+            "visible",
+            !!(value == "ENTITY")
+        )
+    )
+}
+export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
+    let screenName = "apply";
+    let stepName = "formwizardThirdStep";
+    let stepNameReview = "formwizardNinthStep";
+    let reviewContainer = "reviewDetails";
+
+    if ((window.location.href.includes("allotment"))) {
+        screenName = "allotment";
+        stepName = "formwizardThirdStepAllotment";
+        stepNameReview = "formwizardSeventhStepAllotment";
+        reviewContainer = "reviewAllotmentDetails";
+    }
+
+    if (value == "ET.PUBLIC_LIMITED_COMPANY" || value == "ET.PRIVATE_LIMITED_COMPANY") {
+        dispatch(
+            prepareFinalObject(
+                "Properties[0].propertyDetails.companyOrFirm",
+                "COMPANY"
+            )
+        )
+    }
+    else {
+        dispatch(
+            prepareFinalObject(
+                "Properties[0].propertyDetails.companyOrFirm",
+                "FIRM"
+            )
+        )
+    }
+
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepName}.children.companyDetails`,
+            "visible",
+            !!(value == "ET.PUBLIC_LIMITED_COMPANY" || value =="ET.PRIVATE_LIMITED_COMPANY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.companyDetails`,
+            "visible",
+            !!(value == "ET.PUBLIC_LIMITED_COMPANY" || value =="ET.PRIVATE_LIMITED_COMPANY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepName}.children.ownerDetails`,
+            "visible",
+            !!(value == "ET.PUBLIC_LIMITED_COMPANY" || value =="ET.PRIVATE_LIMITED_COMPANY")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepName}.children.firmDetails`,
+            "visible",
+            !!(value == "ET.PARTNERSHIP_FIRM" || value == "ET.PROPRIETORSHIP")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.firmDetails`,
+            "visible",
+            !!(value == "ET.PARTNERSHIP_FIRM" || value == "ET.PROPRIETORSHIP")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepName}.children.partnerDetails`,
+            "visible",
+            !!(value == "ET.PARTNERSHIP_FIRM")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepName}.children.proprietorshipDetails`,
+            "visible",
+            !!(value == "ET.PROPRIETORSHIP")
+        )
+    )
+    dispatch(
+        handleField(
+            screenName,
+            `components.div.children.${stepNameReview}.children.${reviewContainer}.children.cardContent.children.proprietorDetails`,
+            "visible",
+            !!(value == "ET.PROPRIETORSHIP")
+        )
+    )
+}

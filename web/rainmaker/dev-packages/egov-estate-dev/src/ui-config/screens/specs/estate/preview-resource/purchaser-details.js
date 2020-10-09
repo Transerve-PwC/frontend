@@ -32,24 +32,24 @@ export const purchaserHeader = getCommonTitle({
   })
   
   const newOwnerNameField = {
-      labelName: "New Owner Name",
-      labelKey: "ES_NEW_OWNER_NAME_LABEL",
+      labelName: "Name",
+      labelKey: "ES_NAME_LABEL",
   }
   
   const newOwnerFatherHusbandNameField = {
-      labelName: "New Owner Father/Husband Name",
-      labelKey: "ES_NEW_OWNER_FATHER_HUSBAND_NAME_LABEL",
+      labelName: "Father/Husband Name",
+      labelKey: "ES_FATHER_HUSBAND_NAME_LABEL",
   }
   
   const newOwnerAddressField = {
     
-      labelName: "New Owner Address",
-      labelKey: "ES_NEW_OWNER_ADDRESS_LABEL",
+      labelName: "Address",
+      labelKey: "ES_ADDRESS_LABEL",
   }
   
   const newOwnerMobileNumberField = {
-      labelName: "New Owner Mobile No.",
-      labelKey: "ESTATE_NEW_OWNER_MOBILE_NUMBER_LABEL",
+      labelName: "Mobile No.",
+      labelKey: "ES_MOBILE_NUMBER_LABEL",
   }
   
   const sellerNameField = {
@@ -84,6 +84,11 @@ export const purchaserHeader = getCommonTitle({
       labelKey: "ES_DATE_OF_REGISTRATION_LABEL",
   }
 
+  const relationshipField = {
+      labelName: "Relationship",
+      labelKey: "ES_RELATIONSHIP_LABEL",
+  }
+
   export const editSection = {
     componentPath: "Button",
     props: {
@@ -104,7 +109,7 @@ export const purchaserHeader = getCommonTitle({
         },
         buttonLabel: getLabel({
             labelName: "Edit",
-            labelKey: "TL_SUMMARY_EDIT"
+            labelKey: "ES_SUMMARY_EDIT"
         })
     }
 }
@@ -127,7 +132,7 @@ export const headerDiv = {
     }
 }
 
-   export const getPurchaserDetails = (isEditable = true,index) => {
+   export const getPurchaserDetails = (isEditable = true, index) => {
     return getCommonGrayCard({
       headerDiv: {
         ...headerDiv,
@@ -138,8 +143,8 @@ export const headerDiv = {
               sm: 10
             },
             ...getCommonSubHeader({
-              labelName: "Purchaser Details",
-              labelKey: "ES_PURCHASER_DETAILS_HEADER"
+              labelName: "Previous Owner Details",
+              labelKey: "ES_PREVIOUS_OWNER_DETAILS_HEADER"
             })
           },
           editSection: masterEntryEditSection(isEditable, 0)
@@ -148,52 +153,57 @@ export const headerDiv = {
       viewFour: getCommonContainer({
         newOwnerName: getLabelWithValue(
             newOwnerNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaseDetails[${index}].newOwnerName`
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerName`
             }
           ),
           newOwnerFatherHusbandName: getLabelWithValue(
             newOwnerFatherHusbandNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaseDetails[${index}].newOwnerFatherName`
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianName`
+            }
+          ),
+          gaurdianRelation: getLabelWithValue(
+            relationshipField, {
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianRelation`
             }
           ),
           newOwnerAddress:getLabelWithValue(
             newOwnerAddressField, {
-              jsonPath: `Properties[0].propertyDetails.purchaseDetails[${index}].newOwnerAddress`
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.address`
             }
           ),
           newOwnerMobileNumber: getLabelWithValue(
             newOwnerMobileNumberField, {
-              jsonPath:  `Properties[0].propertyDetails.purchaseDetails[${index}].newOwnerMobileNumber`
+              jsonPath:  `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.mobileNumber`
             }
           ),
           sellerName: getLabelWithValue(
             sellerNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaseDetails[${index}].sellerName`
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerName`
             }
           ),
         sellerFatherHusbandName: getLabelWithValue(
             sellerFatherHusbandNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaseDetails[${index}].sellerFatherName`
+              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerFatherName`
             }
           ),
           share: getLabelWithValue(
             shareField, {
-              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].percentageOfShare`
+              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.percentageOfShare`
             }
           ),
           modeOfTransfer: getLabelWithValue(
             modeOfTransferField, {
-              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].modeOfTransfer`
+              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.modeOfTransfer`
             }
           ),
           registrationNumber: getLabelWithValue(
             registrationNumberField, {
-              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].registrationNumber`
+              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.registrationNumber`
             }
           ),
           dateOfRegistration: getLabelWithValue(
             dateOfRegistrationField, {
-              jsonPath:`Properties[0].propertyDetails.purchaseDetails[${index}].dateOfRegistration`,
+              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.dateOfRegistration`,
               callback: convertEpochToDate
             }
           )

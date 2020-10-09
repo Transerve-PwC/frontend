@@ -5,23 +5,32 @@ import {
 import {
   getReviewPropertyInfo,
   getReviewAuction,
-  getReviewAdditional
+  getReviewAdditional,
+  getReviewCompanyDetails,
+  getReviewFirmDetails,
+  getReviewProprietorshipDetails
 } from "./reviewProperty";
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
-  labelKey: "TL_SUMMARY_HEADER"
+  labelKey: "ES_SUMMARY_HEADER"
 })
 
 if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "undefined" && typeof getReviewAdditional != "undefined") {
   var reviewPropertyInfo = getReviewPropertyInfo();
   var reviewAuction = getReviewAuction();
   var reviewAdditional = getReviewAdditional();
+  var companyDetails = getReviewCompanyDetails();
+  var firmDetails = getReviewFirmDetails();
+  var proprietorDetails = getReviewProprietorshipDetails();
 }
 
 export const reviewDetails = getCommonCard({
   header,
   reviewPropertyInfo,
   reviewAuction,
-  reviewAdditional
+  reviewAdditional,
+  companyDetails,
+  firmDetails, 
+  proprietorDetails
 })

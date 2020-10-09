@@ -437,7 +437,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -493,7 +494,7 @@
                 "label": "ES_DECEASED_ADDRESS_LABEL",
                 "placeholder": "ES_DECEASED_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },
@@ -522,7 +523,13 @@
                 "type": "DATE_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.dateOfExecutionOfWill",
                 "path": "dateOfExecutionOfWill"
-              },
+              }
+            ]
+          },
+          {
+            "header": "ES_LEGAL_BENEFICIARY_DETAILS",
+            "type": "FORM",
+            "fields": [
               {
                 "label": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_LABEL",
                 "placeholder": "ES_IS_LEGAL_HEIR_OR_BENEFICIARY_RADIO_BTN_PLACEHOLDER",
@@ -570,7 +577,7 @@
               {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "path": "transferee.address",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
@@ -618,7 +625,7 @@
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "required": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.witness[0].address",
                 "path": "witness.address",
                 "errorMessage": "ES_ERR_ADDRESS"

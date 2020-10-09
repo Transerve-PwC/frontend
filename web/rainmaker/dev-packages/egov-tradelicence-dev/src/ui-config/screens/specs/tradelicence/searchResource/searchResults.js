@@ -6,61 +6,11 @@ import {
 import { getTextToLocalMapping } from "./functions";
 
 export const searchResults = {
-  uiFramework: "custom-molecules",
-  // moduleName: "egov-tradelicence",
-  componentPath: "Table",
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-tradelicence",
+  componentPath: "TableContainer",
   visible: true,
   props: {
-    columns: [
-      getTextToLocalMapping("Application No"),
-      getTextToLocalMapping("License No"),
-      getTextToLocalMapping("License Type"), 
-      getTextToLocalMapping("Service Type"),
-      getTextToLocalMapping("Owner Name"),
-      getTextToLocalMapping("Application Date"),
-      getTextToLocalMapping("Financial Year"),
-      {
-        name: getTextToLocalMapping("Application Type"),
-        options: {
-          filter: false,
-          customBodyRender: value => (
-            <span>
-              {getTextToLocalMapping(value)}
-            </span>
-          )
-        }
-      },
-      {
-        name: getTextToLocalMapping("Status"),
-        options: {
-          filter: false,
-          customBodyRender: value => (
-            <span
-              style={
-                value === "APPROVED" ? { color: "green" } : { color: "red" }
-              }
-            >
-              {getTextToLocalMapping(value)}
-            </span>
-          )
-        }
-      },
-      {
-        name: "tenantId",
-        options: {
-          display: false,
-          viewColumns: false
-        }
-      },
-      {
-        name:"status1",
-        options: {
-          display: false,
-          viewColumns: false
-        }
-      },
-
-    ],
     options: {
       filter: false,
       download: false,

@@ -25,7 +25,7 @@
           "lazyload": true,
           "options": {
             "moduleName": "EstatePropertyService",
-            "masterName": "modeOfTransfer"
+            "masterName": "patnershipModeOfTransfer"
           }
         },
         {
@@ -34,6 +34,16 @@
           "jsonPath": "propertyDetails.owners",
           "code": "ownerDetails.ownerId",
           "label": "ownerDetails.ownerName"
+        },
+        {
+          "name": "companyType",
+          "type": "mdms",
+          "cacheable": true,
+          "lazyload": true,
+          "options": {
+            "moduleName": "EstatePropertyService",
+            "masterName": "companyDetails"
+          }
         }
       ],
       "fields": [
@@ -452,7 +462,8 @@
               },
               {
                 "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate"
+                "jsonPath": "property.propertyDetails.lastNocDate",
+                "type": "date"
               },
               {
                 "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
@@ -508,7 +519,7 @@
                 "label": "ES_SELLER_TRANSFEROR_ADDRESS_LABEL",
                 "placeholder": "ES_SELLER_TRANSFEROR_ADDRESS_PLACEHOLDER",
                 "disabled": true,
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
                 "prefillValue": "selectedOwner.ownerDetails.address"
               },
@@ -527,8 +538,8 @@
             "type": "FORM",
             "fields": [
               {
-                "label": "ES_TRANSFEREE_TYPE_RADIO_BTN_LABEL",
-                "placeholder": "ES_TRANSFEREE_TYPE_RADIO_BTN_PLACEHOLDER",
+                "label": "ES_SELECT_SELLER_OR_TRANSFEROR_LABEL",
+                "placeholder": "ES_SELECT_SELLER_OR_TRANSFEROR_PLACEHOLDER",
                 "type": "DROP_DOWN",
                 "jsonPath": "Applications[0].applicationDetails.transferee.type",
                 "path": "transferee.type",
@@ -569,7 +580,7 @@
               {
                 "label": "ES_TRANSFEREE_ADDRESS_LABEL",
                 "placeholder": "ES_TRANSFEREE_ADDRESS_PLACEHOLDER",
-                "type": "TEXT_FIELD",
+                "type": "TEXT_AREA",
                 "path": "transferee.address",
                 "jsonPath": "Applications[0].applicationDetails.transferee.address",
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
@@ -638,11 +649,19 @@
                 "jsonPath": "Applications[0].applicationDetails.company.registrationNumber",
                 "path": "company.registrationNumber",
                 "errorMessage": "ES_ERR_COMPANY_REGISTRATION_NUMBER"
+              },
+              {
+                "label": "ES_COMPANY_TYPE_LABEL",
+                "placeholder": "ES_SELECT_COMPANY_TYPE_PLACEHOLDER",
+                "type": "DROP_DOWN",
+                "jsonPath": "Applications[0].applicationDetails.company.type",
+                "path": "company.type",
+                "dataSource": "companyType"
               }
             ]
           },
           {
-            "header": "ES_MODE_OF_TRANSFER_HEADER",
+            "header": "ES_MODE_OF_TRANSFER_LABEL",
             "type": "FORM",
             "fields": [
               {

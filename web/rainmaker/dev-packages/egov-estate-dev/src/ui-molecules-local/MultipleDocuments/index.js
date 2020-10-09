@@ -8,16 +8,10 @@ import classNames from "classnames";
 import Button from "@material-ui/core/Button";
 import {LabelContainer}  from "egov-ui-framework/ui-containers"
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-import { getFileUrl,getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 import moment from 'moment'
 import { checkValueForNA } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { get } from "lodash";
 
-const userInfo = JSON.parse(getUserInfo());
-const {roles = []} = userInfo
-const findItem = roles.find(item => item.code === "RP_CLERK");
 const styles = {
     card: {
       paddingTop: 8,

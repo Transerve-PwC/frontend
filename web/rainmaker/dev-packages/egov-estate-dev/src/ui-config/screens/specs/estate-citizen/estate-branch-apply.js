@@ -29,9 +29,9 @@ const getData = async (action, state, dispatch) => {
     const propertyId = getQueryArg(window.location.href, "propertyId")
     const item = !!curr.SubTypes && !!curr.SubTypes.length ?
       {...curr, SubTypes: curr.SubTypes.map(subType => ({
-        ...subType, route: `apply?applicationType=${subType.type}&propertyId=${propertyId}`
+        ...subType, route: `_apply?applicationType=${subType.type}&propertyId=${propertyId}`
       }))}
-    : {...curr, route: `apply?applicationType=${curr.type}&propertyId=${propertyId}`} 
+    : {...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}`} 
     return [...prev, item]
   }, [])
     return {

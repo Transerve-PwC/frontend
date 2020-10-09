@@ -91,11 +91,6 @@ const getData = async (action, state, dispatch) => {
                   sm: 10
                 },
                 ...header
-              },
-              updateContainer: {
-                uiFramework: "custom-containers-local",
-                moduleName: "egov-estate",
-                componentPath: "UpdateContainer",
               }
             }
           },
@@ -138,7 +133,7 @@ const getData = async (action, state, dispatch) => {
 
 const commonApply = {
     uiFramework: "material-ui",
-    name: "apply",
+    name: "_apply",
     hasBeforeInitAsync: true,
     beforeInitScreen: async (action, state, dispatch) => {
         dispatch(toggleSpinner())
@@ -148,10 +143,10 @@ const commonApply = {
         setTimeout(() => updateReadOnlyForAllFields(action, state, dispatch), 100)
         return {
           "type": "INIT_SCREEN",
-          "screenKey": "apply",
+          "screenKey": "_apply",
           "screenConfig": {
             "uiFramework": "material-ui",
-            "name": "apply",
+            "name": "_apply",
             components
           }
         }
