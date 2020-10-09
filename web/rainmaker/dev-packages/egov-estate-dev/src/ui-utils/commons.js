@@ -8,7 +8,8 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTranslatedLabel,
-  getTextToLocalMapping
+  getTextToLocalMapping,
+  convertEpochToDate
 } from "../ui-config/screens/specs/utils";
 import store from "redux/store";
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
@@ -220,9 +221,16 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
       store.dispatch(toggleSnackbar(true, { labelName: "File Uploaded Successfully" }, "success"));
       console.log(response);
 
-      let { Auctions } = response;
+      let { Bidders } = response;
 
-      populateBiddersTable(Auctions, screenKey, componentJsonPath, preparedFinalObject)
+      store.dispatch(
+        prepareFinalObject(
+          "Properties[0].propertyDetails.Bidders",
+          Bidders
+        )
+      )
+
+      populateBiddersTable(Bidders, screenKey, componentJsonPath, preparedFinalObject)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -238,16 +246,16 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 }
 
 
-export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
-  console.log(auctionData);
+export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) => {
+  console.log(biddersList);
 
-  if (!!auctionData) {
-    let data = auctionData.map(item => ({
-      [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
-      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-",
+  if (!!biddersList) {
+    let data = biddersList.map(item => ({
+      [getTextToLocalMapping("Auction Id")]: item.auctionId || "-",
+      [getTextToLocalMapping("Bidder Name")]: item.bidderName || "-",
       [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
-      [getTextToLocalMapping("Deposit Date")]: item.depositDate || "-",
-      [getTextToLocalMapping("EMD Validity Date")]: item.emdValidityDate || "-",
+      [getTextToLocalMapping("Deposit Date")]: convertEpochToDate(item.depositDate) || "-",
+      [getTextToLocalMapping("EMD Validity Date")]: convertEpochToDate(item.emdValidityDate) || "-",
       [getTextToLocalMapping("Mark as Refunded")]: React.createElement(
         "input",
         {
@@ -258,8 +266,8 @@ export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) 
               console.log('Done');
               setTimeout(() => {
                 debugger;
-                let auctionData = store.getState().screenConfiguration.preparedFinalObject.Auctions;
-                console.log("auctionData", auctionData);
+                let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+                console.log("bidderData", bidderData);
                 /* const reqBody = {
                   Auctions: [{
                     id: "",
