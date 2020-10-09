@@ -273,13 +273,14 @@ const goToPayment = async (state, dispatch, type) => {
       const response = await getConsumerCode(state, dispatch, payload)
       if(!!response && !!response.Properties.length){
         const {rentPaymentConsumerCode, tenantId} = response.Properties[0]
+        let billingBuisnessService=response.Properties[0].billingBusinessService
         type === ONLINE ? dispatch(
             setRoute(
-             `/rented-properties-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${BILLING_BUSINESS_SERVICE_RENT}`
+             `/rented-properties-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
             )
           ) : dispatch(
             setRoute(
-            `/rented-properties/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${BILLING_BUSINESS_SERVICE_RENT}`
+            `/rented-properties/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
              
             )
           )
