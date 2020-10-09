@@ -72,6 +72,14 @@ const cardItems = [
     },
     icon: < FormIcon / > ,
     route: "/estate-citizen/estate-search-account-statement"
+  },
+  {
+    label: {
+      labelKey: "ES_RENT_PAYMENT_HEADER",
+      labelName: "Rent Payment"
+    },
+    icon: < FormIcon / > ,
+    route: "estate-payment"
   }
 ]
 
