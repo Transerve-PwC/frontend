@@ -132,7 +132,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["LEGALHEIR", "BENEFICIARY"]
+                "values": [
+                  "LEGALHEIR",
+                  "BENEFICIARY"
+                ]
               }
             }
           ]
@@ -182,7 +185,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["FATHER", "HUSBAND"]
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
@@ -568,6 +574,24 @@
                 "errorMessage": "ES_ERR_LEGAL_BENEFICIARY_NAME"
               },
               {
+                "label": "ES_LEGAL_BENIFICIARY_FATHER_HUSBAND_NAME_LABEL",
+                "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName",
+                "path": "transferee.fatherOrHusbandName",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianName : application.applicationDetails.transferee.fatherOrHusbandName",
+                "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
+              },
+              {
+                "label": "ES_RELATION_SHIP_LABEL",
+                "type": "RADIO_BUTTON",
+                "jsonPath": "Applications[0].applicationDetails.transferee.relation",
+                "path": "transferee.relation",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianRelation : application.applicationDetails.transferee.relation"
+              },
+              {
                 "label": "ES_DOB_LABEL",
                 "placeholder": "ES_DOB_PLACEHOLDER",
                 "type": "DATE_FIELD",
@@ -599,6 +623,15 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "dataSource": "benificiaryRelationwithDeceased",
                 "visibility": "application.applicationDetails.transferee.legalHeirOrbeneficiary === 'BENEFICIARY'"
+              },
+              {
+                "label": "ES_PERCENTAGE_SHARED_LABEL",
+                "placeholder": "ES_PERCENTAGE_SHARED_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+                "path": "transferee.percentageOfShareTransferred",
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               }
             ]
           },

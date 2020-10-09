@@ -197,7 +197,10 @@
             {
               "type": "enum",
               "params": {
-                "values": ["FATHER", "HUSBAND"]
+                "values": [
+                  "FATHER",
+                  "HUSBAND"
+                ]
               }
             }
           ]
@@ -508,6 +511,14 @@
                 "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
               },
               {
+                "label": "ES_RELATION_SHIP_LABEL",
+                "type": "RADIO_BUTTON",
+                "jsonPath": "Applications[0].applicationDetails.transferee.relation",
+                "path": "transferee.relation",
+                "disability": "application.applicationDetails.transferee.type == 'Existing'",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianRelation : application.applicationDetails.transferee.relation"
+              },
+              {
                 "label": "ES_ADDRESS_LABEL",
                 "placeholder": "ES_ADDRESS_PLACEHOLDER",
                 "type": "TEXT_AREA",
@@ -518,7 +529,7 @@
                 "errorMessage": "ES_ERR_ADDRESS"
               },
               {
-                "label": "ES_TRANSFEREE_MOBILENUMBER_LABEL",
+                "label": "ES_PURCHASER_TRANSFEREE_MOBILENUMBER_LABEL",
                 "placeholder": "ES_PURCHASER_TRANSFEREE_MOBILENUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.transferee.mobileNo",
