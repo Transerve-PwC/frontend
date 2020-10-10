@@ -262,10 +262,10 @@ export const getMdmsData = async queryObject => {
   }
 };
 
-export const downloadSummary = (Properties, mode = "download") => {
+export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") => {
   let queryStr = [{
     key: "key",
-    value: `propertySummary`
+    value: `property-summary`
   },
   {
     key: "tenantId",
@@ -273,23 +273,44 @@ export const downloadSummary = (Properties, mode = "download") => {
   }
 ]
 
+debugger
+let previousOwnerDocuments = PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.reviewDocDataPrevOwner
+let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.reviewDocData
   // let {
   //   documents
   // } = Properties[0].additionalDetails;
-  // const length = documents.length % 4
-  // documents = !!length ? [...documents, ...new Array(4 - length).fill({
-  //   title: "",
-  //   name: ""
-  // })] : documents
-  // const myDocuments = documents.map((item) => ({
-  //   ...item,
-  //   title: getLocaleLabels(item.title, item.title)
-  // })).reduce((splits, i) => {
-  //   const length = splits.length
-  //   const rest = splits.slice(0, length - 1);
-  //   const lastArray = splits[length - 1] || [];
-  //   return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
-  // }, []);
+  const olength = ownerDocuments.length % 4
+  ownerDocuments = !!olength ? [...ownerDocuments, ...new Array(4 - olength).fill({
+    title: "",
+    name: ""
+  })] : ownerDocuments
+  const myODocuments = ownerDocuments.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+  console.log(myODocuments)
+
+  const plength = previousOwnerDocuments.plength % 4
+  previousOwnerDocuments = !!plength ? [...previousOwnerDocuments, ...new Array(4 - plength).fill({
+    title: "",
+    name: ""
+  })] : previousOwnerDocuments
+  const myPDocuments = previousOwnerDocuments.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+  console.log(myPDocuments)
+
   let Property = Properties[0];
   // Property = {
   //   ...Property,
@@ -304,7 +325,7 @@ export const downloadSummary = (Properties, mode = "download") => {
   };
   try {
     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
-        Properties: [Property]
+      Properties: [Property]
       }, {
         'Accept': 'application/json'
       }, {
