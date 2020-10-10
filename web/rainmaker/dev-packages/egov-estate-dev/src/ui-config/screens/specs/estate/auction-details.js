@@ -34,28 +34,26 @@ import {
 } from '../utils'
 
 const searchResults = async (action, state, dispatch, fileNumber) => {
-  let queryObject = [{
-      key: "fileNumber",
-      value: fileNumber
-    }
+  let queryObject = [
+    { key: "fileNumber", value: fileNumber },
+    {key: "relations", value: "bidder"}
   ];
   let payload = await getSearchResults(queryObject);
   if (payload) {
     let properties = payload.Properties;
     dispatch(prepareFinalObject("Properties", properties));
-  }
-
-  if (properties[0].propertyDetails.bidders) {
-    dispatch(
-      handleField(
-        "auction-details",
-        "components.div.children.auctionTableContainer",
-        "visible",
-        true
-      )
-    );
-    let { Bidders } = properties[0].propertyDetails.bidders;
-    populateBiddersTable(Bidders, "auction-details", "components.div.children.auctionTableContainer")
+    if (properties[0].propertyDetails.bidders) {
+      dispatch(
+        handleField(
+          "auction-details",
+          "components.div.children.auctionTableContainer",
+          "visible",
+          true
+        )
+      );
+      let { bidders } = properties[0].propertyDetails;
+      populateBiddersTable(bidders, "auction-details", "components.div.children.auctionTableContainer")
+    }
   }
 }
 
@@ -65,8 +63,8 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       await searchResults(action, state, dispatch, fileNumber);
 
       const auctionTableColumns = [
-        getTextToLocalMapping("File Number"),
-        getTextToLocalMapping("Participated Bidders"),
+        getTextToLocalMapping("Auction Id"),
+        getTextToLocalMapping("Bidder Name"),
         getTextToLocalMapping("Deposited EMD Amount"),
         getTextToLocalMapping("Deposit Date"),
         getTextToLocalMapping("EMD Validity Date"),

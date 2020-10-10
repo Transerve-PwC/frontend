@@ -41,7 +41,8 @@ import {
   get
 } from "lodash";
 import {
-  getSearchResults
+  getSearchResults,
+  populateBiddersTable
 } from "../../../../ui-utils/commons";
 import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -476,6 +477,21 @@ export const setData = (properties, screenName, dispatch, state) => {
       )
     )
   }
+
+  /* Show current bidders list data if uploaded */
+  if (properties[0].propertyDetails.bidders) {
+    dispatch(
+      handleField(
+        screenName,
+        "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+        "visible",
+        true
+      )
+    );
+    let { bidders } = properties[0].propertyDetails;
+    populateBiddersTable(bidders, screenName, "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer")
+  }
+  /*******************************************************************************/
 }
 
 export const getPMDetailsByFileNumber = async (
@@ -522,6 +538,15 @@ export const getPMDetailsByFileNumber = async (
 }
 
 const getData = async (action, state, dispatch) => {
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  if (!fileNumber) {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
+      )
+    )
+  }
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
     masterDetails: [{
@@ -541,22 +566,11 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
-  
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
 
-  if (fileNumber) {
+  if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
-      )
-    )
   }
   setDocumentData(action, state, dispatch);
-  
-  // getCompanyDocs(state, dispatch)
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
 

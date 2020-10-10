@@ -263,22 +263,33 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
           defaultChecked: false, 
           onClick: (e) => { 
             if (confirm('Are you sure you want to mark/unmark as refunded?')) {
-              console.log('Done');
-              setTimeout(() => {
+              let isMarked = e.target.checked;
+              setTimeout((e) => {
                 debugger;
+                let { bidders } = store.getState().screenConfiguration.preparedFinalObject.Properties[0].propertyDetails;
                 let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
-                console.log("bidderData", bidderData);
+
+                bidders.map(item => {
+                  if (bidderData[1] == item.bidderName) {
+                    item.refundStatus = isMarked;
+                  }
+                  return item;
+                })
+
+                store.dispatch(
+                  prepareFinalObject(
+                    "Properties[0].propertyDetails.bidders",
+                    bidders
+                  )
+                )
                 
-                /* 
-                if (response) {
-                  store.dispatch(
-                    toggleSnackbar(
-                      true,
-                      { labelName: "Success", labelKey: "ES_SUCCESS" },
-                      "success"
-                    )
-                  ); 
-                } */
+                store.dispatch(
+                  toggleSnackbar(
+                    true,
+                    { labelName: "Success", labelKey: "ES_SUCCESS" },
+                    "success"
+                  )
+                ); 
               }, 2000)
             } else {
               e.preventDefault();
