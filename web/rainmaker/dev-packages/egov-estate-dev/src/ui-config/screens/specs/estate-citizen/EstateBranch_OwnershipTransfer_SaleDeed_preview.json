@@ -75,6 +75,11 @@
                         "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
+                        "label": "ES_DOB_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                        "type": "date"
+                    },
+                    {
                         "label": "ES_PURCHASER_TRANSFEREE_FATHER_HUSBAND_NAME_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
                     },
