@@ -305,25 +305,23 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
-
+  
   let Property = Properties[0];
-  Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments =  myODocuments
-  Property.propertyDetails.owner[0].ownerDetails.ownerDocuments = myPDocuments
-  // Property = {
-  //   ...Property,
-  //   propertyDetails: {
-  //     ...Property.propertyDetails,purchaser:{
-  //       ...Property.propertyDetails.purchaser,ownerDetails:{
-  //         ...Property.propertyDetails.purchaser[0].ownerDetails,ownerDocuments:myPDocuments
-  //       }
-  //     },owners:{
-  //       ...owners.propertyDetails.owners,ownerDetails:{
-  //         ...owners.propertyDetails.owners[0].ownerDetails,ownerDocuments:myPDocuments
-  //       }
-  //     }
-  //   }
+  Property = {
+    ...Property,
+    propertyDetails: {
+      ...Property.propertyDetails,purchaser:{
+        ...Property.propertyDetails.purchaser[0],ownerDetails:{
+          ...Property.propertyDetails.purchaser[0].ownerDetails,ownerDocuments:myPDocuments
+        }
+      },owners:{
+        ...Property.propertyDetails.owners[0],ownerDetails:{
+          ...Property.propertyDetails.owners[0].ownerDetails,ownerDocuments:myODocuments
+        }
+      }
+    }
 
-  // }
+  }
   const DOWNLOADRECEIPT = {
     GET: {
       URL: "/pdf-service/v1/_create",
