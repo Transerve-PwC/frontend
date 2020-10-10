@@ -1,11 +1,44 @@
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getCommonHeader, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel  } from "egov-ui-framework/ui-config/screens/specs/utils";
+import commonConfig from "config/common.js";
+import { httpRequest } from "../../../../ui-utils";
+import get from "lodash/get";
+import { getPropertyDetails } from "./searchResource/estateApplicationAccountStatementGen";
 
 const header = getCommonHeader({
     labelName: "Rent Payment",
     labelKey: "ES_RENT_PAYMENT_HEADER"
   });
+  const getMdmsData = async (dispatch) => {
+    let mdmsBody = {
+      MdmsCriteria: {
+        tenantId: commonConfig.tenantId,
+        moduleDetails: [{
+          moduleName: "EstatePropertyService",
+          masterDetails: [{
+           name: "paymentType"
+          }]
+        }]
+      }
+    };
+    try {
+      let payload = await httpRequest(
+        "post",
+        "/egov-mdms-service/v1/_search",
+        "_search",
+        [],
+        mdmsBody
+      );
+      dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
+  
+  const beforeInitFn =async(action, state, dispatch)=>{
+    getMdmsData(dispatch);
+  }
 const propertyDetailsHeader = getCommonTitle(
     {
         labelName: "Property Details",
@@ -63,12 +96,12 @@ const propertyDetailsHeader = getCommonTitle(
         position: "end",
         color: "#FE7A51"
       },
-    //   onClickDefination: {
-    //     action: "condition",
-    //     callBack: (state, dispatch) => {
-    //       getEstateRentPaymentPropertyDetails(state, dispatch);
-    //     }
-    //   },
+      onClickDefination: {
+        action: "condition",
+        callBack: (state, dispatch) => {
+          getEstateRentPaymentPropertyDetails(state, dispatch);
+        }
+      },
     
     afterFieldChange: (action, state, dispatch)=> { 
     //   dispatch(prepareFinalObject("Properties", []))
@@ -92,13 +125,13 @@ const propertyDetailsHeader = getCommonTitle(
       )
       dispatch(
         prepareFinalObject(
-          "searchScreen.areaOfPropertyInSqFeet",
+          "searchScreen.areaSqft",
           ""
         )
       )
       dispatch(
         prepareFinalObject(
-          "searchScreen.ratePerSqfeet",
+          "searchScreen.ratePerSqft",
           ""
         )
       )
@@ -168,19 +201,19 @@ const propertyDetailsHeader = getCommonTitle(
           dispatch(
             prepareFinalObject(
               "searchScreen.propertyType",
-              Properties[0].propertyType
+              Properties[0].propertyDetails.propertyType
             )
           )
           dispatch(
             prepareFinalObject(
-              "searchScreen.areaOfPropertyInSqFeet",
-              Properties[0].areaOfPropertyInSqFeet
+              "searchScreen.areaSqft",
+              Properties[0].propertyDetails.areaSqft
             )
           )
           dispatch(
             prepareFinalObject(
-              "searchScreen.ratePerSqfeet",
-              Properties[0].ratePerSqfeet
+              "searchScreen.ratePerSqft",
+              Properties[0].propertyDetails.ratePerSqft
             )
           )
           // dispatch(
@@ -218,18 +251,18 @@ const propertyDetailsHeader = getCommonTitle(
             jsonPath: "Properties[0].paymentType",
             optionValue: "code",
             optionLabel: "name",
-            sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.categories",
+            sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.paymentType",
             gridDefination: {
                 xs: 12,
                 sm: 6
             },
             errorMessage: "ES_ERR_PAYMENT_TYPE_FIELD",
             placeholder: {
-              labelName: "",
-              labelKey: ""
-            },
+              labelName: "Select Payment Type",
+              labelKey: "ES_SELECT_PAYMENT_TYPE_PLACEHOLDER"
+          },
             props: {
-              disabled: true
+              disabled: false
             },
             required: false,
             jsonPath: "Properties[0].paymentType"
@@ -239,10 +272,7 @@ const propertyDetailsHeader = getCommonTitle(
                 labelName: "Amount",
                 labelKey: "ES_AMOUNT_LABEL"
             },
-            placeholder: {
-                labelName: "Enter amount",
-                labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
-            },
+            
             jsonPath: "Properties[0].amount",
             optionValue: "code",
             optionLabel: "label",
@@ -253,9 +283,9 @@ const propertyDetailsHeader = getCommonTitle(
             },
             errorMessage: "ES_ERR_AMOUNT_FIELD",
             placeholder: {
-              labelName: "",
-              labelKey: ""
-            },
+              labelName: "Enter amount",
+              labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
+          },
             props: {
               disabled: false
             },
@@ -267,10 +297,7 @@ const propertyDetailsHeader = getCommonTitle(
                 labelName: "Bank Name",
                 labelKey: "ES_BANK_NAME_LABEL"
             },
-            placeholder: {
-                labelName: "Enter Bank Name",
-                labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
-            },
+            
             jsonPath: "Properties[0].bankName",
             optionValue: "code",
             optionLabel: "label",
@@ -281,9 +308,9 @@ const propertyDetailsHeader = getCommonTitle(
             },
             errorMessage: "ES_ERR_BANK_NAME_FIELD",
             placeholder: {
-              labelName: "",
-              labelKey: ""
-            },
+              labelName: "Enter Bank Name",
+              labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
+          },
             props: {
               disabled: false
             },
@@ -295,10 +322,7 @@ const propertyDetailsHeader = getCommonTitle(
                 labelName: "Transaction ID",
                 labelKey: "ES_TRANSACTION_ID_LABEL"
             },
-            placeholder: {
-                labelName: "Enter Transaction ID",
-                labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
-            },
+            
             jsonPath: "Properties[0].transactionId",
             optionValue: "code",
             optionLabel: "label",
@@ -309,9 +333,9 @@ const propertyDetailsHeader = getCommonTitle(
             },
             errorMessage: "ES_ERR_TRANSACTION_ID_FIELD",
             placeholder: {
-              labelName: "",
-              labelKey: ""
-            },
+              labelName: "Enter Transaction ID",
+              labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
+          },
             props: {
               disabled: false
             },
@@ -324,13 +348,13 @@ const propertyDetailsHeader = getCommonTitle(
     header: propertyDetailsHeader,
     detailsContainer: getCommonContainer({
       fileNumber: getTextField(fileNumberField),
-      category: getSelectField({
+      category: getTextField({
         label: {
             labelName: "Category",
             labelKey: "ES_CATEGORY_LABEL"
           },
         required: false,
-        jsonPath: "Properties[0].category",
+        jsonPath: "searchScreen.category",
         optionValue: "code",
         optionLabel: "name",
         sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.categories",
@@ -346,10 +370,9 @@ const propertyDetailsHeader = getCommonTitle(
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].category"
+        required: false
       }),
-      subCategory: getSelectField({
+      subCategory: getTextField({
         label: {
             labelName: "Sub Category",
             labelKey: "ES_SUB_CATEGORY_LABEL"
@@ -359,7 +382,7 @@ const propertyDetailsHeader = getCommonTitle(
             labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
           },
         required: false,
-        jsonPath: "Properties[0].subCategory",
+        jsonPath: "searchScreen.subCategory",
         optionValue: "code",
         optionLabel: "name",
         sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -375,10 +398,9 @@ const propertyDetailsHeader = getCommonTitle(
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].subCategory"
+        required: false
       }),
-      sectorNumber: getSelectField({
+      sectorNumber: getTextField({
         label: {
             labelName: "sector number",
             labelKey: "ES_SECTOR NUMBER_LABEL"
@@ -388,7 +410,7 @@ const propertyDetailsHeader = getCommonTitle(
             labelKey: "ES_SECTOR NUMBER_PLACEHOLDER"
           },
         required: false,
-        jsonPath: "Properties[0].sectorNumber",
+        jsonPath: "searchScreen.sectorNumber",
         optionValue: "code",
         optionLabel: "label",
         sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -404,8 +426,7 @@ const propertyDetailsHeader = getCommonTitle(
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].sectorNumber"
+        required: false
       }),
       siteNumber: getTextField({
         label: {
@@ -416,7 +437,7 @@ const propertyDetailsHeader = getCommonTitle(
             labelName: "Enter Site Number",
             labelKey: "ES_SITE_NUMBER_PLACEHOLDER"
         },
-        jsonPath: "Properties[0].siteNumber",
+        jsonPath: "searchScreen.siteNumber",
         optionValue: "code",
         optionLabel: "label",
         sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -425,15 +446,10 @@ const propertyDetailsHeader = getCommonTitle(
             sm: 6
         },
         errorMessage: "ES_ERR_SITE_NUMBER_FIELD",
-        placeholder: {
-          labelName: "",
-          labelKey: ""
-        },
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].siteNumber"
+        required: false
       }),
       propertyType: getTextField({
         label: {
@@ -445,7 +461,7 @@ const propertyDetailsHeader = getCommonTitle(
         labelKey: "ES_ENTER_PROPERTY_TYPE_PLACEHOLDER"
     },
     required: false,
-    jsonPath: "Properties[0].propertyType",
+    jsonPath: "searchScreen.propertyType",
     optionValue: "code",
     optionLabel: "label",
     sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -454,15 +470,10 @@ const propertyDetailsHeader = getCommonTitle(
         sm: 6
     },
     errorMessage: "ES_ERR_PROPERTY_TYPE_FIELD",
-        placeholder: {
-          labelName: "",
-          labelKey: ""
-        },
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].propertyType"
+        required: false
       }),
       areaOfPropertyInSqFeet: getTextField({
         label: {
@@ -474,7 +485,7 @@ const propertyDetailsHeader = getCommonTitle(
             labelKey: "ES_ENTER_AREA_OF_PROPERTY_IN_SQ_FEET_PLACEHOLDER"
         },
         required: false,
-        jsonPath: "Properties[0].areaOfPropertyInSqFeet",
+        jsonPath: "searchScreen.areaSqft",
         optionValue: "code",
         optionLabel: "label",
         sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -483,15 +494,10 @@ const propertyDetailsHeader = getCommonTitle(
             sm: 6
         },
         errorMessage: "RP_ERR_AREA_OF_PROPERTY_IN_SQ_FEET_FIELD",
-        placeholder: {
-          labelName: "",
-          labelKey: ""
-        },
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].areaOfPropertyInSqFeetField"
+        required: false
       }),
       ratePerSqfeet: getTextField({
         label: {
@@ -503,7 +509,7 @@ const propertyDetailsHeader = getCommonTitle(
             labelKey: "ES_ENTER_RATE_PER_SQUARE_FEET_PLACEHOLDER"
         },
         required: false,
-        jsonPath: "Properties[0].ratePerSqfeet",
+        jsonPath: "searchScreen.ratePerSqft",
         optionValue: "code",
         optionLabel: "label",
         sourceJsonPath: "applyScreenMdmsData.propertyTypes",
@@ -512,15 +518,10 @@ const propertyDetailsHeader = getCommonTitle(
             sm: 6
         },
         errorMessage: "RP_ERR_RATE_PER_SQUARE_FEET_FIELD",
-        placeholder: {
-          labelName: "",
-          labelKey: ""
-        },
         props: {
           disabled: true
         },
-        required: false,
-        jsonPath: "Properties[0].ratePerSqfeet"
+        required: false
       })
     })
   })
@@ -538,15 +539,72 @@ const detailsContainer = {
     },
     visible: true
   }
+  
+
+  // export const getPaymentTypes = async(action, state, dispatch) => {
+  //   const PaymentTypesPayload = [{
+  //     moduleName: "EstatePropertyService",
+  //     masterDetails: [{name: "paymentType"}, {name: "applications"}]
+  //   }
+  // ]
+  //   const colonyRes = await getMdmsData(dispatch, PaymentTypesPayload);
+  //   const {RentedProperties} = !!colonyRes && !!colonyRes.MdmsRes ? colonyRes.MdmsRes : {}
+  //   const {colonies = []} = RentedProperties || {}
+  //     dispatch(prepareFinalObject("applyScreenMdmsData.rentedPropertyColonies", colonies))
+  //     const propertyTypes = colonies.map(item => ({
+  //       code: item.code,
+  //       label: item.code
+  //     }))
+  //     dispatch(prepareFinalObject("applyScreenMdmsData.propertyTypes", propertyTypes))
+  // }
+  export const getCommonApplyFooter = children => {
+    return {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        className: "apply-wizard-footer"
+      },
+      children
+    };
+  };
+
+  const paymentFooter = getCommonApplyFooter({
+    makePayment: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+          minWidth: "180px",
+          height: "48px",
+          marginRight: "45px",
+          borderRadius: "inherit"
+        }
+      },
+      children: {
+        submitButtonLabel: getLabel({
+          labelName: "MAKE PAYMENT",
+          labelKey: "COMMON_MAKE_PAYMENT"
+        })
+      },
+      // onClickDefination: {
+      //   action: "condition",
+      //   callBack: (state, dispatch) => {
+      //     goToPayment(state, dispatch, ONLINE)
+      //   },
+  
+      // },
+      visible: true
+    }
+  })
+
 const payment = {
     uiFramework: "material-ui",
     name: "estate-payment",
     beforeInitScreen: (action, state, dispatch) => {
-    //   beforeInitFn(action, state, dispatch);
-    //   dispatch(prepareFinalObject("Properties", []));
-    //   dispatch(prepareFinalObject("property", {}))
-    //   dispatch(prepareFinalObject("paymentInfo", {}))
-      return action;
+      beforeInitFn(action, state, dispatch);
+      return action
+      
     },
     components: {
         div: {
@@ -569,8 +627,8 @@ const payment = {
                 }
               }
             },
-            detailsContainer
-            // footer: paymentFooter
+            detailsContainer,
+            footer: paymentFooter
           }
         }
       }
