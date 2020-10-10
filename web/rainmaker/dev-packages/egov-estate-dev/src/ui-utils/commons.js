@@ -376,22 +376,12 @@ export const setDocuments = async (
 
 export const setXLSTableData = async({demands, payments, componentJsonPath, screenKey}) => {
 
-  let data = payments.map(item => ({
-    [ES_MONTH]: ' ',
-    [ES_RENT_DUE]: ' ',
-    [ES_RENT_RECEIVED]: !!item.rentReceived && item.rentReceived.toFixed(2),
-    [ES_RECEIPT_NO]: ' ',
-    [ES_RENT_DUE_DATE]: ' ',
-    [ES_PENALTY_INTEREST]: ' ',
-    [ES_ST_GST_RATE]:' ',
-    [ES_ST_GST_DUE]: ' ',
-    [ES_PAID]: ' ',
-    [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY"),
-    [ES_NO_OF_DAYS]: ' ',
-    [ES_INTEREST_ON_DELAYED_PAYMENT]: ' '
-  }))
+  let data = demands.map(item => {
+    const findItem = payments.find(payData => moment(new Date(payData.receiptDate)).format("MMM YYYY") === moment(new Date(item.demandDate)).format("MMM YYYY"));
+    return !!findItem ? {...item, ...findItem} : {...item}
+  })
 
-    data = demands.map(item => ({
+   data = data.map(item => ({
     [ES_MONTH]: ' ',
     [ES_RENT_DUE]: !!item.rent && item.rent.toFixed(2),
     [ES_RENT_RECEIVED]: !!item.rentReceived && item.rentReceived.toFixed(2),
@@ -402,7 +392,7 @@ export const setXLSTableData = async({demands, payments, componentJsonPath, scre
     [ES_ST_GST_DUE]: !!item.gstInterest && item.gstInterest.toFixed(2),
     [ES_PAID]: ' ',
     [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY"),
-    [ES_NO_OF_DAYS]: '',
+    [ES_NO_OF_DAYS]: ' ',
     [ES_INTEREST_ON_DELAYED_PAYMENT]: ' '
   }))
 
@@ -445,7 +435,7 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
       "",
       queryObject
     )
-  
+   
     if(!!response) {
       let {estateDemands, estatePayments} = response;
       if(!!estateDemands.length && !!estatePayments.length) {
