@@ -401,7 +401,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
     }
   }
 
-  const getPropertyDetails = async ({state, dispatch, fileNumber, screenKey, componentJsonPath, jsonPath}) => {
+  export const getPropertyDetails = async ({state, dispatch, fileNumber, screenKey, componentJsonPath, jsonPath}) => {
     let queryObject = [
       { key: "fileNumber", value: fileNumber }
     ];
