@@ -11,7 +11,6 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getSearchResults,
-  getAuctionDetails,
   populateBiddersTable
 } from "../../../../ui-utils/commons";
 import {
@@ -61,30 +60,6 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
       await searchResults(action, state, dispatch, fileNumber);
-
-      const auctionTableColumns = [
-        getTextToLocalMapping("Auction Id"),
-        getTextToLocalMapping("Bidder Name"),
-        getTextToLocalMapping("Deposited EMD Amount"),
-        getTextToLocalMapping("Deposit Date"),
-        getTextToLocalMapping("EMD Validity Date"),
-        {
-          name: getTextToLocalMapping("Mark as Refunded"),
-          options: { 
-            display: true,
-            viewColumns: true
-          }
-        }
-      ]
-
-      dispatch(
-        handleField(
-          "auction-details",
-          "components.div.children.auctionTableContainer",
-          "props.columns",
-          auctionTableColumns
-        )
-      )
   }
 }
 

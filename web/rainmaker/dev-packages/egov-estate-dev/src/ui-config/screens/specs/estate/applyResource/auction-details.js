@@ -268,7 +268,7 @@ export const auctionTable = {
       getTextToLocalMapping("Deposit Date"),
       getTextToLocalMapping("EMD Validity Date"),
       {
-        name: getTextToLocalMapping("Mark as Refunded"),
+        name: getTextToLocalMapping("Initiate Refund"),
         options: { 
           display: false,
           viewColumns: false

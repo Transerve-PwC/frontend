@@ -256,25 +256,52 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
       [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
       [getTextToLocalMapping("Deposit Date")]: convertEpochToDate(item.depositDate) || "-",
       [getTextToLocalMapping("EMD Validity Date")]: convertEpochToDate(item.emdValidityDate) || "-",
-      [getTextToLocalMapping("Mark as Refunded")]: React.createElement(
+      [getTextToLocalMapping("Initiate Refund")]: React.createElement("div", {}, [
+        React.createElement(
         "input",
         {
           type:"checkbox",
-          defaultChecked: false, 
+          defaultChecked: !!(item.refundStatus) ? true : false, 
           onClick: (e) => { 
-            if (confirm('Are you sure you want to mark/unmark as refunded?')) {
+            if (confirm('Are you sure you want to initiate refund?')) {
               let isMarked = e.target.checked;
               setTimeout((e) => {
-                debugger;
                 let { bidders } = store.getState().screenConfiguration.preparedFinalObject.Properties[0].propertyDetails;
                 let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
 
-                bidders.map(item => {
+                bidders.map((item, index) => {
                   if (bidderData[1] == item.bidderName) {
-                    item.refundStatus = isMarked;
+                    item.refundStatus = isMarked ? "Initiated" : "";
+                    store.dispatch(
+                      handleField(
+                        "refund", 
+                        `components.div.children.auctionTableContainer.props.data[${index}].ES_INITIATE_REFUND.props.children["1"]`,
+                        "props.children",
+                        "Initiated"
+                      )
+                    )
                   }
                   return item;
                 })
+
+                let refundedBidders = bidders.filter(item => item.refundStatus == "Initiated");
+
+                store.dispatch(
+                  handleField(
+                    "refund", 
+                    "components.div.children.submitButton",
+                    "visible",
+                    (bidders.length === refundedBidders.length)
+                  )
+                )
+                store.dispatch(
+                  handleField(
+                    "refund", 
+                    "components.div.children.saveButton",
+                    "visible",
+                    (bidders.length !== refundedBidders.length)
+                  )
+                )
 
                 store.dispatch(
                   prepareFinalObject(
@@ -282,21 +309,15 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                     bidders
                   )
                 )
-                
-                store.dispatch(
-                  toggleSnackbar(
-                    true,
-                    { labelName: "Success", labelKey: "ES_SUCCESS" },
-                    "success"
-                  )
-                ); 
               }, 2000)
             } else {
               e.preventDefault();
               console.log('Cancelled');
             }
           }
-        })
+        }),
+        React.createElement("span", {}, item.refundStatus)
+      ])
     }));
 
     store.dispatch(
@@ -309,27 +330,6 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
     );
   }
 }
-
-export const getAuctionDetails = async requestBody => {
-  try {
-    const response = await httpRequest(
-      "post",
-      "/est-services/auctions/_search",
-      "_search",
-      [],
-      requestBody
-    );
-    return response;
-  } catch (error) {
-    store.dispatch(
-      toggleSnackbar(
-        true,
-        { labelName: error.message, labelKey: error.message },
-        "error"
-      )
-    );
-  }
-};
 
 export const setDocuments = async (
   payload,

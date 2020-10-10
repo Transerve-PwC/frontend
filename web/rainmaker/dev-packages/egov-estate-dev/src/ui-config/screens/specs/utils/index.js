@@ -1455,10 +1455,10 @@ export const getTextToLocalMapping = label => {
         "ES_EMD_VALIDITY_DATE",
         localisationLabels
       );
-    case "Mark as Refunded":
+    case "Initiate Refund":
       return getLocaleLabels(
-        "Mark as Refunded",
-        "ES_MARK_AS_REFUNDED",
+        "Initiate Refund",
+        "ES_INITIATE_REFUND",
         localisationLabels
       );
   }
