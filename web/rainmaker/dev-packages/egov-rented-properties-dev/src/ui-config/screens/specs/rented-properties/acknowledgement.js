@@ -203,9 +203,8 @@ const getAcknowledgementCard = (
                 labelKey: "RP_PAYMENT_FAILED_MESSAGE_HEAD"
               },
               body: {
-                labelName:
-                  "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
-                labelKey: "RP_APPLICATION_SUCCESS_MESSAGE_SUB"
+                labelName:"",
+                labelKey: ""
               },
               tailText: !!transitNumber?{
                 labelName: "Transit Number",

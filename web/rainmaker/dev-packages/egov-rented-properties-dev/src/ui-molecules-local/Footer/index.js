@@ -23,8 +23,8 @@ class Footer extends React.Component {
     //responseLength: 0
   };
 
-  findAssigner = (item, processInstances) => {
-    const findIndex = processInstances.map(processInstance => processInstance.action === item).lastIndexOf(true)
+  findAssigner = (item, processInstances,state) => {
+    const findIndex = processInstances.map(processInstance => processInstance.action === item && processInstance.state.applicationStatus === state).lastIndexOf(true)
     return processInstances[findIndex]
   }
 
@@ -49,14 +49,14 @@ class Footer extends React.Component {
       switch(moduleName) {
         case "MasterRP": {
           if(!!action && data[0].masterDataState !== "PM_PENDINGJAVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].masterDataState) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
         }
         case WORKFLOW_BUSINESS_SERVICE_OT: {
           if(!!action && data[0].applicationState !== "OT_PENDINGCLVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].applicationState) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
@@ -64,7 +64,7 @@ class Footer extends React.Component {
         case "PermissionToMortgage":
         case WORKFLOW_BUSINESS_SERVICE_DC: {
           if(!!action && data[0].state !== "DC_PENDINGCLVERIFICATION" && data[0].state !== "MG_PENDINGCLVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].state) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
