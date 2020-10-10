@@ -262,6 +262,98 @@ export const getMdmsData = async queryObject => {
   }
 };
 
+export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") => {
+  let queryStr = [{
+    key: "key",
+    value: `property-summary`
+  },
+  {
+    key: "tenantId",
+    value: `${getTenantId().split('.')[0]}`
+  }
+]
+
+let previousOwnerDocuments = PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.reviewDocDataPrevOwner
+let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.reviewDocData
+
+  const olength = ownerDocuments.length % 4
+  ownerDocuments = !!olength ? [...ownerDocuments, ...new Array(4 - olength).fill({
+    title: "",
+    name: ""
+  })] : ownerDocuments
+  const myODocuments = ownerDocuments.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+
+  const plength = previousOwnerDocuments.plength % 4
+  previousOwnerDocuments = !!plength ? [...previousOwnerDocuments, ...new Array(4 - plength).fill({
+    title: "",
+    name: ""
+  })] : previousOwnerDocuments
+  const myPDocuments = previousOwnerDocuments.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+
+  let Property = Properties[0];
+  Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments =  myODocuments
+  Property.propertyDetails.owner[0].ownerDetails.ownerDocuments = myPDocuments
+  // Property = {
+  //   ...Property,
+  //   propertyDetails: {
+  //     ...Property.propertyDetails,purchaser:{
+  //       ...Property.propertyDetails.purchaser,ownerDetails:{
+  //         ...Property.propertyDetails.purchaser[0].ownerDetails,ownerDocuments:myPDocuments
+  //       }
+  //     },owners:{
+  //       ...owners.propertyDetails.owners,ownerDetails:{
+  //         ...owners.propertyDetails.owners[0].ownerDetails,ownerDocuments:myPDocuments
+  //       }
+  //     }
+  //   }
+
+  // }
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+      Properties: [Property]
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
+      .then(res => {
+        res.filestoreIds[0]
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map(fileStoreId => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
+          })
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
+  } catch (exception) {
+    alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
+
 export const downloadAcknowledgementForm = (Applications, applicationType, mode = "download") => {
   let queryStr = []
   switch (applicationType) {
