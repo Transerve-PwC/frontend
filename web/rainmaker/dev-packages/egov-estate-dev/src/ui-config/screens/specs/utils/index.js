@@ -1425,10 +1425,16 @@ export const getTextToLocalMapping = label => {
         "ES_LAST_MODIFIED_ON",
         localisationLabels
       );
-    case "Participated Bidders":
+    case "Auction Id":
       return getLocaleLabels(
-        "Participated Bidders",
-        "ES_PARTICIPATED_BIDDERS",
+        "Auction Id",
+        "ES_AUCTION_ID",
+        localisationLabels
+      );
+    case "Bidder Name":
+      return getLocaleLabels(
+        "Bidder Name",
+        "ES_BIDDER_NAME",
         localisationLabels
       );
     case "Deposited EMD Amount":
@@ -1449,10 +1455,10 @@ export const getTextToLocalMapping = label => {
         "ES_EMD_VALIDITY_DATE",
         localisationLabels
       );
-    case "Mark as Refunded":
+    case "Initiate Refund":
       return getLocaleLabels(
-        "Mark as Refunded",
-        "ES_MARK_AS_REFUNDED",
+        "Initiate Refund",
+        "ES_INITIATE_REFUND",
         localisationLabels
       );
   }

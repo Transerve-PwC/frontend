@@ -5,8 +5,9 @@ import {
   getTextToLocalMapping
 } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
+import { getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import store from "../../../../../ui-redux/store";
+
 
 const tenantId = getTenantId();
 
@@ -103,6 +104,12 @@ const onApplicationRowClick = rowData => {
 
 const onRowClick = rowData => {
   console.log(rowData);
+  let type = getQueryArg(window.location.href, "type");
+
+  if (type == "refund" && rowData[2].toUpperCase() == "ES_PM_APPROVED") {
+    return window.location.href = `refund?filenumber=${rowData[0]}&tenantId=${tenantId}`
+  }
+
   if (rowData[2].toUpperCase() === "ES_PM_DRAFTED") {
     if (rowData[4] == "PROPERTY_MASTER")
       window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;

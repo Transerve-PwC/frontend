@@ -35,7 +35,7 @@ const documentList = {
     uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
     tenantIdJsonPath: "Properties[0].tenantId",
     removedJsonPath: "temp[0].removedDocs",
-    excelUrl: "/est-services/auctions/_create?"
+    excelUrl: "/est-services/auctions/_parse?"
   }
 };
 
@@ -262,13 +262,13 @@ export const auctionTable = {
   visible: false,
   props: {
     columns: [
-      getTextToLocalMapping("File Number"),
-      getTextToLocalMapping("Participated Bidders"),
+      getTextToLocalMapping("Auction Id"),
+      getTextToLocalMapping("Bidder Name"),
       getTextToLocalMapping("Deposited EMD Amount"),
       getTextToLocalMapping("Deposit Date"),
       getTextToLocalMapping("EMD Validity Date"),
       {
-        name: getTextToLocalMapping("Mark as Refunded"),
+        name: getTextToLocalMapping("Initiate Refund"),
         options: { 
           display: false,
           viewColumns: false
@@ -311,7 +311,7 @@ export const auctionTable = {
 
 const onRowClick = rowData => {
   store.dispatch(
-    prepareFinalObject("Auctions", rowData)
+    prepareFinalObject("BidderData", rowData)
   )
 };
 
