@@ -15,7 +15,7 @@ import {
   } from "../../utils";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-  import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
+  import{GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
 
   const arrayCrawler = (arr, n) => {
     if (n == 1) {
@@ -29,7 +29,8 @@ import {
   };
   
   const MaterialTransferInwordCard = {
-    uiFramework: "custom-containers",
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-store-asset",
     componentPath: "MultiItem",
     props: {
       scheama: getCommonGrayCard({
@@ -92,18 +93,31 @@ import {
                get(state, "screenConfiguration.preparedFinalObject.transferInwards[0].receiptDate",0) 
                receiptDate = convertDateToEpoch(receiptDate);
                 dispatch(prepareFinalObject(`transferInwards[0].receiptDetails[${cardIndex}].receiptDetailsAddnInfo[0].receivedDate`, receiptDate));
-
+                //set total value on Qty Change
+                let cardJsonPath =
+                "components.div.children.formwizardSecondStep.children.MaterialTransferInwordDetail.children.cardContent.children.MaterialTransferInwordCard.props.items";
+                let pagename = `createMaterialTransferInword`;
+                let jasonpath =  "transferInwards[0].receiptDetails";
+                let InputQtyValue = "userReceivedQty";
+                let TotalValue_ = "totalValue";
+                let TotalQty ="userReceivedQty"
+                let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
+                if(Qty && Qty[0])
+                {                
+                dispatch(prepareFinalObject(`transferInwards[0].totalvalue`, Qty[0].TotalValue));
+                dispatch(prepareFinalObject(`transferInwards[0].totalQty`, Qty[0].TotalQty)); 
+                }
               }
             },
             quantityIssued: {
               ...getTextField({
                 label: {
                   labelName: "Available Qty",
-                  labelKey: "STORE_MATERIAL_RECEIPT_AVAILABLE_QTY"
+                  labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED"
                 },
                 placeholder: {
                   labelName: "Available Qty",
-                  labelKey: "STORE_MATERIAL_RECEIPT_AVAILABLE_QTY_PLACEHOLDER"
+                  labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED"
                 },
                 props:{
                   disabled:true
@@ -171,7 +185,7 @@ import {
                 },
                 required: false,
                 pattern: getPattern("Name") || null,
-                jsonPath: "transferInwards[0].receiptDetails[0].uom.code"
+                jsonPath: "transferInwards[0].receiptDetails[0].uom.name"
               })
             },
             UnitRate: {
@@ -238,6 +252,9 @@ import {
         )
       }),
       items: [],
+      onMultiItemDelete:(state, dispatch)=>{       
+
+      },
       addItemLabel: {
         labelName: "Add ",
         labelKey: "STORE_MATERIAL_COMMON_CARD_ADD"
@@ -246,6 +263,16 @@ import {
       headerJsonPath:
         "children.cardContent.children.header.children.head.children.Accessories.props.label",
       sourceJsonPath: "transferInwards[0].receiptDetails",
+       //Update Total value when delete any card configuration settings     
+     cardtotalpropes:{
+      totalIndentQty:false,
+      pagename:`createMaterialTransferInword`,
+      cardJsonPath:"components.div.children.formwizardSecondStep.children.MaterialTransferInwordDetail.children.cardContent.children.MaterialTransferInwordCard.props.items",     
+      jasonpath:"transferInwards[0].receiptDetails",
+      InputQtyValue:"userReceivedQty",
+      TotalValue:"totalValue",
+      TotalQty:"userReceivedQty"  
+     },
       prefixSourceJsonPath:
         "children.cardContent.children.materialReceiptCardContainer.children"
     },

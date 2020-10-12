@@ -194,6 +194,7 @@ class MultiItem extends React.Component {
     
         sourceCJsonPath = sourceCJsonPath[0];
       }
+     
       console.log(cardtotalpropes)
       let Qty = GetTotalQtyValue(this.props.state,cardtotalpropes.cardJsonPath,cardtotalpropes.pagename,cardtotalpropes.jasonpath,cardtotalpropes.InputQtyValue,cardtotalpropes.TotalValue,cardtotalpropes.TotalQty )
       

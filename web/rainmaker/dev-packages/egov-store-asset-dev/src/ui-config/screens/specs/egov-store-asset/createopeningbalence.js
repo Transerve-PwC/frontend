@@ -3,15 +3,16 @@ import {
     getCommonHeader,
     getLabel,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { prepareFinalObject ,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import set from "lodash/set";
   import { httpRequest,getsto } from "../../../../ui-utils";
   import { getstoreTenantId,getMaterialMasterSearchResults,getStoresSearchResults,getOpeningBalanceSearchResults } from "../../../../ui-utils/storecommonsapi";
   import { OpeningBalanceDetails } from "./createopeningbalenceResource/OpeningBalance-Details";
   import { footer } from "./createopeningbalenceResource/footer";
-  import { getTenantId , getOPMSTenantId} from "egov-ui-kit/utils/localStorageUtils";
+  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+  import get from "lodash/get";
   
   const hasButton = getQueryArg(window.location.href, "hasButton");
   let enableButton = true;
@@ -42,6 +43,12 @@ import {
             moduleName: "egf-master",
             masterDetails: [{ name: "FinancialYear" }]
           },
+          {
+            moduleName: "store-asset",
+            masterDetails: [
+              { name: "businessService" },
+            ]
+          }
         ],
       },
     };
@@ -57,7 +64,35 @@ import {
     } catch (e) {
       console.log(e);
     }
+};
+  
+const getMDMSWorkflowData = async (action, state, dispatch) => {
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: getstoreTenantId(),
+      moduleDetails: [
+        {
+          moduleName: "store-asset",
+          masterDetails: [
+            { name: "businessService" },
+          ]
+        }
+      ]
+    }
   };
+  try {
+    const response = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+    dispatch(prepareFinalObject("businessServiceTypeData", get(response, "MdmsRes")));
+  } catch (e) {
+    console.log(e);
+  }
+};
   const getstoreData = async (action, state, dispatch) => {
     const tenantId = getTenantId();
     let queryObject = [
@@ -115,6 +150,7 @@ import {
   
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
+    await getMDMSWorkflowData(action, state, dispatch);
     await getstoreData(action,state, dispatch);
     const applicationNumber = getQueryArg(
       window.location.href,
@@ -126,7 +162,26 @@ import {
     }
     else{
       //dispatch(prepareFinalObject("materialReceipt[0]", null));
-      dispatch(prepareFinalObject("materialReceipt", null));
+     
+      const textFields = ["remarks", "oldReceiptNumber", "unitRate","userReceivedQty","lotNo"];
+      let MaterialDetailsCardPath =
+    "components.div.children.OpeningBalanceDetails.children.cardContent.children.View2.children.cardContent.children.OpeningbalenceDetailsCard.props.items";
+      for (let i = 0; i < textFields.length; i++) {
+      let j =0;
+          // dispatch(
+          //   handleField(
+          //     "createopeningbalence",
+          //     `${MaterialDetailsCardPath}[${j}].item${j}.children.cardContent.children.rltnDetailsCardContainer.children${textFields[i]}`,
+          //     "props.value",
+          //     ""
+          //   )
+          // );
+       
+      }
+      dispatch(prepareFinalObject("materialReceipt[0]", null));
+      for (let i = 0; i < textFields.length; i++) {
+     dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[0].${textFields[i]}`, ''));
+      }
     }
   };
   

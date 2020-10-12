@@ -65,6 +65,7 @@ export const MTONHeader = getCommonCard({
           dispatch(prepareFinalObject("materialIssues[0].toStore.code", indents[0].indentStore.code)); 
           dispatch(prepareFinalObject("materialIssues[0].indent.indentStore.code", indents[0].indentStore.code));
           dispatch(prepareFinalObject("materialIssues[0].indent.indentStore.name", indents[0].indentStore.name));
+          dispatch(prepareFinalObject("materialIssues[0].indent.indentStore.department.name", indents[0].indentStore.department.name));
           dispatch(prepareFinalObject("materialIssues[0].fromStore.name", indents[0].issueStore.name));
           dispatch(prepareFinalObject("materialIssues[0].fromStore.code", indents[0].issueStore.code));
           dispatch(prepareFinalObject("materialIssues[0].indent.indentType", indents[0].indentType));
@@ -249,12 +250,12 @@ export const MTONHeader = getCommonCard({
           labelName: "Enter Indenting Dept. Name",
           labelKey: "STORE_MTON_INDENT_DEPT_NAME_PLCEHLDER"
         },
-        visible:false,
+        visible:true,
         props: {
           disabled: true
         },
        // pattern: getPattern("Email"),
-        jsonPath: "materialIssues[0].createdBy"
+        jsonPath: "materialIssues[0].indent.indentStore.department.name"
       })
     },
     indentPurpose: {
@@ -357,10 +358,10 @@ export const MTONHeader = getCommonCard({
     },
     degignation: {
       ...getTextField({
-        label: { labelName: "degignation", labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION" },
+        label: { labelName: "degignation", labelKey: "STORE_PURCHASE_ORDER_DSGNTN" },
         placeholder: {
           labelName: "degignation",
-          labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION"
+          labelKey: "STORE_PURCHASE_ORDER_DSGNTN"
         },
         props: {
           disabled: true,       

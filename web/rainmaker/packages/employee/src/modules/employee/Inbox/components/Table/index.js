@@ -150,10 +150,11 @@ class InboxData extends React.Component {
     // if (processInstances && processInstances.length > 0) {
     //   await addWflowFileUrl(processInstances, prepareFinalObject);
     // }
+	
     let contextPath = status === "Initiated" ? getWFConfig(row[0].hiddenText,row[0].subtext,taskId).INITIATED : getWFConfig(row[0].hiddenText,row[0].subtext,taskId).DEFAULT;
     let queryParams = `applicationNumber=${taskId}&tenantId=${tenantId}`;
     
-    if(contextPath=='/egov-services/application-details'||contextPath=='/egov-services/bwt-application-details'){
+    if(contextPath=='/egov-services/application-details'||contextPath=='/egov-services/bwt-application-details'|| "/egov-services/newLocation-application-details"){
       queryParams = `${taskId}`;
     }
 
@@ -186,7 +187,12 @@ class InboxData extends React.Component {
       queryParams = `filenumber=${taskId}&tenantId=${tenantId}`
     }
 
+    if(contextPath=='/egov-services/application-details'||contextPath=='/egov-services/bwt-application-details'|| "/egov-services/newLocation-application-details"){
+      this.props.setRoute(`${contextPath}/${queryParams}`);
+
+    }else{
     this.props.setRoute(`${contextPath}?${queryParams}`);
+    }
   };
 
   getSlaColor = (sla, businessService) => {

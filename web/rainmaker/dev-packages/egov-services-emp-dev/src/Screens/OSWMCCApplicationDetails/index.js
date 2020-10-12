@@ -24,12 +24,10 @@ import ApproveBooking from "../ApplicationResolved";
 import RejectBooking from "../RejectComplaint";
 import { httpRequest } from "egov-ui-kit/utils/api";
 import jp from "jsonpath";
-import {
-	getQueryArg,
-	setBusinessServiceDataToLocalStorage,
-	getFileUrlFromAPI,
-	setDocuments
-} from "egov-ui-framework/ui-utils/commons";
+// import {
+// 	getFileUrlFromAPI,
+//} from "egov-ui-framework/ui-utils/commons";
+import {getFileUrlFromAPI} from '../../modules/commonFunction'
 import {
 	getDateFromEpoch,
 	mapCompIDToName,
@@ -334,7 +332,7 @@ class ApplicationDetails extends Component {
 	
 	
 		let documentsPreviewData;
-		const { DownloadReceiptDetailsforCG } = this.props;
+		const { DownloadReceiptDetailsforCG,userInfo} = this.props;
 		
 		var documentsPreview = [];
 		if (DownloadReceiptDetailsforCG && DownloadReceiptDetailsforCG.filestoreIds.length > 0) {
@@ -346,7 +344,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenanId) : {};
 		
 	
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -437,7 +435,7 @@ class ApplicationDetails extends Component {
 		await this.downloadApplicationFunction();
 	
 		let documentsPreviewData;
-		const { DownloadMccAppp } = this.props;
+		const { DownloadMccAppp,userInfo } = this.props;
 		
 		var documentsPreview = [];
 		if (DownloadMccAppp && DownloadMccAppp.filestoreIds.length > 0) {
@@ -451,7 +449,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenanId) : {};
 		
 	
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -540,7 +538,7 @@ class ApplicationDetails extends Component {
 	
 	
 		let documentsPreviewData;
-		const { DownloadMccPermissionLetter } = this.props;
+		const { DownloadMccPermissionLetter,userInfo } = this.props;
 		
 		var documentsPreview = [];
 		if (DownloadMccPermissionLetter && DownloadMccPermissionLetter.filestoreIds.length > 0) {
@@ -554,7 +552,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 	
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -633,7 +631,7 @@ class ApplicationDetails extends Component {
 	}
 
 	callApiForDocumentData = async (e) => {
-		const { documentMap } = this.props;
+		const { documentMap,userInfo } = this.props;
 		var documentsPreview = [];
 		if (documentMap && Object.keys(documentMap).length > 0) {
 			let keys = Object.keys(documentMap);
@@ -648,7 +646,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {

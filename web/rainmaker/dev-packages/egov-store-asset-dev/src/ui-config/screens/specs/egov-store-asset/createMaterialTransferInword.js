@@ -9,6 +9,7 @@ import {
   import { MaterialTransferInwordDetail } from "./creatematerialTransferInwordResource/Material-transfer-inword-details"; 
   import { MaterialTransferInwordNote } from "./creatematerialTransferInwordResource/Material-transfer-inword-note"; 
   import { otherDetails } from "./creatematerialTransferInwordResource/other-details";
+  import {totalIssueValue} from "./creatematerialTransferInwordResource/totalIssueValue";
   import set from "lodash/set";
   import get from "lodash/get";
   import map from "lodash/map";
@@ -65,7 +66,8 @@ export const header = getCommonContainer({
       id: "apply_form2"
     },
     children: {
-      MaterialTransferInwordDetail
+      MaterialTransferInwordDetail,
+      totalIssueValue
     },
     visible: false
   };

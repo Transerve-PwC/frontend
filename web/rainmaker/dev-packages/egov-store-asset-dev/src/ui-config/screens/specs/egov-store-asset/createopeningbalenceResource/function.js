@@ -8,7 +8,8 @@ import set from "lodash/set";
 import {
   createOpeningBalance,
   getOpeningBalanceSearchResults,
-  updateOpeningBalance
+  updateOpeningBalance,
+  getWFPayload
 } from "../../../../../ui-utils/storecommonsapi";
 import {ValidateCard, ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
 import {
@@ -127,7 +128,7 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
     let jasonpath =  "materialReceipt[0].receiptDetails";//indents[0].indentDetails
     let value = "material.code";
     let DuplicatItem = ValidateCard(state,dispatch,cardJsonPath,pagename,jasonpath,value)
-    let InputQtyValue = "userQuantity";
+    let InputQtyValue = "userReceivedQty";
     let CompareQtyValue = "indentQuantity";
     let balanceQuantity = "balanceQty";
     let doubleqtyCheck = false
@@ -291,16 +292,19 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
   
     if (action === "CREATE") {
       try {
-       
+        let wfobject = getWFPayload(state,dispatch)
+
         let response = await createOpeningBalance(
           queryObject,         
           materialReceiptObject,
-          dispatch
+          dispatch,
+          wfobject
         );
         if(response){
           let mrnNumber = response.materialReceipt[0].mrnNumber
-          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=OPENINGBALANCE&mode=create&code=${mrnNumber}`));
-         }
+//          dispatch(setRoute(`/egov-store-asset/acknowledgement?screen=OPENINGBALANCE&mode=create&code=${mrnNumber}`));
+            dispatch(setRoute(`/egov-store-asset/view-opening-balence?applicationNumber=${mrnNumber}&tenantId=${response.materialReceipt[0].tenantId}`));
+        }
       } catch (error) {
         //furnishmaterialsData(state, dispatch);
       }

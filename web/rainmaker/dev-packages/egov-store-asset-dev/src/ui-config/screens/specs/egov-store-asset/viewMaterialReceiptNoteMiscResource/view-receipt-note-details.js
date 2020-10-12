@@ -93,6 +93,20 @@ export const getReceiptNoteListDetailsView = (isReview = true) => {
         },
         {  jsonPath: "materialReceipt[0].receivingStore.name", }
       ),
+      indentDeptName: getLabelWithValue(
+        {
+          labelName: "Indenting Dept. Name",
+          labelKey: "STORE_MTON_INDENT_DEPT_NAME"
+        },
+        { jsonPath: "materialReceipt[0].receivingStore.department.name" }
+      ),
+      divisionName: getLabelWithValue(
+        {
+          labelName: "Indenting division Name",
+          labelKey: "STORE_INDENTING_DIVISION_NAME"
+        },
+        { jsonPath: "materialReceipt[0].receivingStore.divisionName" }
+      ),
       ReceiptDate: getLabelWithValue(
         {labelName: "Receipt Date",
         labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_DATE " },

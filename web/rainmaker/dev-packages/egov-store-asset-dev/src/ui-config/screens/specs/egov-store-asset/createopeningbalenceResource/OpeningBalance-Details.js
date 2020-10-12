@@ -10,6 +10,8 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
  import { getTodaysDateInYMD } from "../../utils";
  import { getSTOREPattern} from "../../../../../ui-utils/commons";
+ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+ import set from "lodash/set";
  const OpeningbalenceDetailsCard = {
   uiFramework: "custom-containers",
   componentPath: "MultiItem",
@@ -65,7 +67,7 @@ import {
                 labelName: "Lot No.",
                 labelKey: "STORE_MATERIAL_OPENNING_BALANCE_LOT_NO"
               },
-              required: true,
+              required: false,
               errorMessage:"STORE_VALIDATION_LOT_NUMBER",
               pattern: getPattern("Name") || null,
               jsonPath: "materialReceipt[0].receiptDetails[0].lotNo"
@@ -105,7 +107,7 @@ import {
               required: true,
               errorMessage:"STORE_VALIDATION_OPENING_QUANTITY",
               pattern: getPattern("Amount") || null,
-              jsonPath: "materialReceipt[0].receiptDetails[0].userQuantity"
+              jsonPath: "materialReceipt[0].receiptDetails[0].userReceivedQty"
             })
           },
           OpeningRate: {
@@ -190,6 +192,7 @@ import {
         }
       )
     }),
+ 
     items: [],
     addItemLabel: {
       labelName: "ADD",

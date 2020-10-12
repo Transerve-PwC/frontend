@@ -8,7 +8,7 @@ import { getSearchResults } from "../../../../../ui-utils/commons";
 import { getTextToLocalMapping } from "./searchResults";
 import { validateFields } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
 
 export const searchApiCall = async (state, dispatch) => {
   let { localisationLabels } = state.app || {};
@@ -64,6 +64,13 @@ export const searchApiCall = async (state, dispatch) => {
       if(searchScreenObject.hasOwnProperty(key) && typeof searchScreenObject[key] === "boolean"){
         queryObject.push({ key: key, value: searchScreenObject[key] });
       }
+      else if (key === "indentFromDate"|| key === "indentToDate") {
+        let Dateselect = true;
+         queryObject.push({
+           key: key,
+           value: convertDateToEpoch(searchScreenObject[key])
+         });
+       } 
       else  if (
         searchScreenObject.hasOwnProperty(key) &&
         searchScreenObject[key].trim() !== ""

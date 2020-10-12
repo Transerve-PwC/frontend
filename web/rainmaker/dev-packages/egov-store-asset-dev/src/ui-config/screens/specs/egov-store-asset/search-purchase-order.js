@@ -39,7 +39,9 @@ import {
           {
             moduleName: "store-asset",
             masterDetails: [
-              { name: "RateType", filter: "[?(@.active == true)]" }
+              { name: "RateType", filter: "[?(@.active == true)]" },
+              { name: "InventoryType", filter: "[?(@.active == true)]" },
+              { name: "IndentPurpose"},// filter: "[?(@.active == true)]" },
             ],
   
           }
@@ -60,9 +62,38 @@ import {
       console.log(e);
     }
   };
+  const getcreatorList = async (action, state, dispatch) => {
+    const tenantId = getTenantId();  
+    let queryObject = [
+      {
+        key: "tenantId",
+        value: tenantId
+      }];
+  
+    try {
+     let response = await getSearchResults(queryObject, dispatch,"creatorList");
+
+      if(response)
+      {
+        let payloadprocess = [];
+    for (let index = 0; index < response.users.length; index++) {
+      const element = response.users[index];
+      let pay = {
+        element: element
+      }
+      payloadprocess.push(pay);
+    }
+    dispatch(prepareFinalObject("applyScreenMdmsData.creatorList", payloadprocess));
+      }
+      
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getData = async (action, state, dispatch) => {
     await getMDMSData(action, state, dispatch);
+    await getcreatorList(action, state, dispatch)
   };
   
   const purchaseOrderSearchAndResult = {

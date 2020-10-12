@@ -26,14 +26,11 @@ import PaymentDetails from "../AllApplications/components/PaymentDetails"
 import NewLocationResolved from "../NewLocationResolved";
 import NewLocationRejected from "../NewLocationRejected";
 import NewLocationPublished from '../NewLocationPublished';
-
+import {getFileUrlFromAPI} from '../../modules/commonFunction'
 import jp from "jsonpath";
-import {
-	getQueryArg,
-	setBusinessServiceDataToLocalStorage,
-	getFileUrlFromAPI,
-	setDocuments
-} from "egov-ui-framework/ui-utils/commons";
+// import {
+// 	getFileUrlFromAPI
+// } from "egov-ui-framework/ui-utils/commons";
 import {
 	getDateFromEpoch,
 	mapCompIDToName,
@@ -169,7 +166,7 @@ class ApplicationDetails extends Component {
 		let bookingDocs = imageListFromAPI && imageListFromAPI.documentList;
 		let fileStoreIds = bookingDocs.map(e => e.fileStoreId).join(",");
 
-		const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+		const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId));
 		let newLocationImagesPreview = [];
 		bookingDocs && bookingDocs.forEach((item, index) => {
 
@@ -476,7 +473,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -523,7 +520,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -632,7 +629,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -679,7 +676,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 
 
 			documentsPreview = documentsPreview.map(function (doc, index) {

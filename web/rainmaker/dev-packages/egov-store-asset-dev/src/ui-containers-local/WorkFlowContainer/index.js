@@ -292,7 +292,9 @@ class WorkFlowContainer extends React.Component {
       editUrl = `/egov-store-asset/create-purchase-order?poNumber=${businessId}&tenantId=${tenant}`;
 
     } else if (dataPath === "materialReceipt") {
-      if (businessId.includes("MMRN")) {
+      if (businessId.includes("OPB")) {
+        editUrl = `/egov-store-asset/createopeningbalence?applicationNumber=${businessId}&tenantId=${tenant}`;
+      } else if (businessId.includes("MMRN")) {
         editUrl = `/egov-store-asset/createMaterialReceiptNoteMisc?tenantId=${tenant}`;
       } else {
         editUrl = `/egov-store-asset/createMaterialReceiptNote?mrnNumber=${businessId}&tenantId=${tenant}`;

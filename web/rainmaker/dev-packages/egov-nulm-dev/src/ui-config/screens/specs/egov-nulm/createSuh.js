@@ -542,6 +542,8 @@ dispatch( handleField("createSuh", nomineeNamePath, "props.value",""));
     beforeInitScreen: (action, state, dispatch) => {
 
        const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
+       if(NulmSuhCitizenNGORequest!== undefined)
+       {       
        if(NulmSuhCitizenNGORequest.shelterRequestedForPerson !== undefined)
        {
        if(!NulmSuhCitizenNGORequest &&  !NulmSuhCitizenNGORequest.shelterRequestedForPerson)
@@ -549,6 +551,7 @@ dispatch( handleField("createSuh", nomineeNamePath, "props.value",""));
         dispatch(prepareFinalObject("NulmSuhCitizenNGORequest.nominatedBy", 'Self'));
        }
       }
+    }
        
       return action;
     },

@@ -27,12 +27,10 @@ import BwtApplicationDriverDetailsfrom from "../AllApplications/components/BwtAp
 
 
 import jp from "jsonpath";
-import {
-	getQueryArg,
-	setBusinessServiceDataToLocalStorage,
-	getFileUrlFromAPI,
-	setDocuments
-} from "egov-ui-framework/ui-utils/commons";
+// import {
+// 	getFileUrlFromAPI,
+	
+// } from "egov-ui-framework/ui-utils/commons";
 import {
 	getDateFromEpoch,
 	mapCompIDToName,
@@ -62,9 +60,9 @@ import Typography from '@material-ui/core/Typography';
 import AssignTODriver from "../AssignToDriver";
 import RejectBWTBooking from "../RejectBWTBooking";
 import DeliveredBWTBooking from "../DeliveredBWTBooking";
-import { convertEpochToDate, getDurationDate} from '../../modules/commonFunction'
+import { convertEpochToDate, getDurationDate,getFileUrlFromAPI} from '../../modules/commonFunction'
 
-
+import { httpRequest } from "egov-ui-kit/utils/api";
 const styles = (theme) => ({
 
 });
@@ -230,7 +228,7 @@ downloadReceiptButton = async (e) => {
 
 	
 	let documentsPreviewData;
-	const { DownloadReceiptDetailsforCG } = this.props;
+	const { DownloadReceiptDetailsforCG,userInfo } = this.props;
 	
 	var documentsPreview = [];
 	if (DownloadReceiptDetailsforCG && DownloadReceiptDetailsforCG.filestoreIds.length > 0) {
@@ -246,7 +244,7 @@ downloadReceiptButton = async (e) => {
 		});
 		let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 		let fileUrls =
-			fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+			fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 
 		documentsPreview = documentsPreview.map(function (doc, index) {
@@ -334,7 +332,7 @@ downloadReceiptFunction = async (e) => {
 downloadApplicationMCCButton = async (e) => {
 	await this.downloadApplicationFunction();
 	
-	 const {DownloadBWTApplicationDetails}=this.props;
+	 const {DownloadBWTApplicationDetails,userInfo}=this.props;
    //  let fileStoreId=DownloadBWTApplicationDetails&&DownloadBWTApplicationDetails.filestoreIds[0];
 	
 		 var documentsPreview = [];
@@ -348,7 +346,7 @@ downloadApplicationMCCButton = async (e) => {
 				 });
 				 let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 				 let fileUrls =
-					 fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+					 fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 				 
 	 
 				 documentsPreview = documentsPreview.map(function (doc, index) {
@@ -503,7 +501,7 @@ downloadApplicationMCCButton = async (e) => {
 		// history.push(`/egov-services/assignto-driver/${complaintNo}`);
 	}
 	callApiDorData = async (e) => {
-		const { documentMap } = this.props;
+		const { documentMap,userInfo } = this.props;
 		var documentsPreview = [];
 		// const {documentMap}=this.props;
 		if (documentMap && Object.keys(documentMap).length > 0) {
@@ -519,7 +517,7 @@ downloadApplicationMCCButton = async (e) => {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 			
 
 

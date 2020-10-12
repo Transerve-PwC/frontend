@@ -224,7 +224,7 @@ const id = getQueryArg(window.location.href, "id");
         },
         isFieldValid: true,
         required: false,
-  
+        visible:false,
         props: {
           content: "STORE_PRICE_ACTIVE",
           disabled:disabled,

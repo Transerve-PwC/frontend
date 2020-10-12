@@ -119,13 +119,13 @@ export const getIndentNoteListDetailsView = (isReview = true) => {
         }
       ),
       createdBy: getLabelWithValue(
-        { labelName: "Created by", labelKey: "STORE_PURCHASE_ORDER_CREATEBY" },
+        { labelName: "Created by", labelKey: "STORE_CREATEBY_MR_ISSUE" },
         {
           jsonPath: "materialIssues[0].createdByName",
         }
       ),
       designation: getLabelWithValue(
-        { labelName: "Designation", labelKey: "STORE_PURCHASE_ORDER_DSGNTN" },
+        { labelName: "Designation", labelKey: "STORE_DSGNTN_MR_ISSUE" },
         {
           jsonPath: "materialIssues[0].designation",
         }

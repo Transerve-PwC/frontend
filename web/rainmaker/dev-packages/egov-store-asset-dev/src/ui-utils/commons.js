@@ -68,6 +68,8 @@ export const getSearchResults = async (queryObject,dispatch,screenName) => {
     break;
     case "disposals":  url = "store-asset-services/disposals/_search";
     break;
+    case "creatorList":  url = "store-asset-services/indents/_creatorList";
+    break;
   }
   try {
     const response = await httpRequest("post", url, "", queryObject, {} );

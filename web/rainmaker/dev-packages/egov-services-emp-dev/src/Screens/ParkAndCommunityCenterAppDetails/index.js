@@ -19,9 +19,10 @@ import PaymentDetails from "./components/PaymentDetails"
 import Label from "egov-ui-kit/utils/translationNode";
 
 import jp from "jsonpath";
-import {
-	getFileUrlFromAPI,
-} from "egov-ui-framework/ui-utils/commons";
+// import {
+// 	getFileUrlFromAPI,
+// } from "egov-ui-framework/ui-utils/commons";
+import {getFileUrlFromAPI} from '../../modules/commonFunction'
 import {
 	getDateFromEpoch,
 	mapCompIDToName,
@@ -352,7 +353,7 @@ class ApplicationDetails extends Component {
 	
 	downloadApplicationButton = async (e) => {
 		await this.downloadApplicationFunction();
-		const { DownloadApplicationDetails } = this.props;
+		const { DownloadApplicationDetails,userInfo } = this.props;
 		var documentsPreview = [];
 		let documentsPreviewData;
 		if (DownloadApplicationDetails && DownloadApplicationDetails.filestoreIds.length > 0) {	
@@ -364,7 +365,7 @@ class ApplicationDetails extends Component {
 				});
 				let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 				let fileUrls =
-					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 				
 					
 				documentsPreview = documentsPreview.map(function (doc, index) {
@@ -401,7 +402,7 @@ class ApplicationDetails extends Component {
 downloadPermissionLetterButton = async (e) => {
 	await this.downloadPermissionLetterFunction();
 	let documentsPreviewData;
-	const { DownloadPermissionLetterDetails } = this.props;
+	const { DownloadPermissionLetterDetails,userInfo } = this.props;
 	var documentsPreview = [];
 	if (DownloadPermissionLetterDetails && DownloadPermissionLetterDetails.filestoreIds.length > 0) {
 		 documentsPreviewData=DownloadPermissionLetterDetails.filestoreIds[0];
@@ -412,7 +413,7 @@ downloadPermissionLetterButton = async (e) => {
 		});
 		let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 		let fileUrls =
-			fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+			fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 	
 
 		documentsPreview = documentsPreview.map(function (doc, index) {
@@ -489,7 +490,7 @@ downloadPermissionLetterFunction = async (e) => {
 	downloadPaymentReceiptButton = async (e) => {
 		this.downloadPaymentReceiptFunction();
 		let documentsPreviewData;
-		const { DownloadPaymentReceiptDetails } = this.props;
+		const { DownloadPaymentReceiptDetails,userInfo } = this.props;
 		var documentsPreview = [];
 		if (DownloadPaymentReceiptDetails && DownloadPaymentReceiptDetails.filestoreIds.length > 0) {	
 		documentsPreviewData = DownloadPaymentReceiptDetails.filestoreIds[0];
@@ -500,7 +501,7 @@ downloadPermissionLetterFunction = async (e) => {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -532,7 +533,7 @@ downloadPermissionLetterFunction = async (e) => {
 	}
 
 	callApiForDocumentData = async (e) => {
-		const { documentMap } = this.props;
+		const { documentMap,userInfo } = this.props;
 		var documentsPreview = [];
 		if (documentMap && Object.keys(documentMap).length > 0) {
 			let keys = Object.keys(documentMap);
@@ -547,7 +548,7 @@ downloadPermissionLetterFunction = async (e) => {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
