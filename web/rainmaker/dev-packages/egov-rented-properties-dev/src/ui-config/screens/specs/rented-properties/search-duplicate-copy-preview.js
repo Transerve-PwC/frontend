@@ -56,6 +56,7 @@ const duplicateReviewDetails = getCommonCard({
         setApplicationNumberBox(state, dispatch, applicationNumber, "search-duplicate-copy-preview")
         if (response && response.DuplicateCopyApplications) {
         let {DuplicateCopyApplications} = response
+        let billingBuisinessService=DuplicateCopyApplications[0].billingBusinessService
         let applicationDocuments = DuplicateCopyApplications[0].applicationDocuments|| [];
         const removedDocs = applicationDocuments.filter(item => !item.active)
         applicationDocuments = applicationDocuments.filter(item => !!item.active)
@@ -84,7 +85,6 @@ const duplicateReviewDetails = getCommonCard({
           "DuplicateTemp[0].estimateCardData",
           dispatch,
           window.location.href,
-          BILLING_BUSINESS_SERVICE_DC,
           WORKFLOW_BUSINESS_SERVICE_DC
         );
      
@@ -110,7 +110,7 @@ const duplicateReviewDetails = getCommonCard({
           status,
           applicationNumber,
           tenantId,
-          BILLING_BUSINESS_SERVICE_DC
+          billingBuisinessService
         );
 
         process.env.REACT_APP_NAME === "Citizen"

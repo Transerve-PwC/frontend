@@ -720,7 +720,7 @@ export const getDetailsFromProperty = async (state, dispatch) => {
           dispatch(
             prepareFinalObject(
               "Owners[0].ownerDetails.fatherOrHusband",
-              findOwner.ownerDetails.fatherOrHusband
+              findOwner.ownerDetails.name
             )
           )
           return true

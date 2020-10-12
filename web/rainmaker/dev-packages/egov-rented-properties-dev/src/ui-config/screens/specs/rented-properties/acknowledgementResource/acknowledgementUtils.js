@@ -13,7 +13,8 @@ import {
     tailText: {
       color: "rgba(0, 0, 0, 0.6000000238418579)",
       fontSize: 16,
-      fontWeight: 400
+      fontWeight: 400,
+      textAlign: "right"
     },
     tailNumber: {
       // fontSize: 24,

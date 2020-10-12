@@ -198,7 +198,7 @@ class ActionDialog extends React.Component {
             );
       return
     }
-    else if(value==="0"){
+    else if(parseInt(value)===0){
       toggleSnackbar(
         true,
         { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
@@ -240,7 +240,7 @@ return
             );
       return
     }
-    else if(value==="0"){
+    else if(parseInt(value)===0){
       toggleSnackbar(
         true,
         { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
@@ -284,7 +284,7 @@ return
     const sanctionDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].sanctionDate) : ""
     const mortgageEndDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) : ""
 
-    if(!bankName && !mortgageAmountValid && ! sanctionLetterNumber && !sanctionDateEpoch && !mortageEndDate){
+    if(!bankName || !mortgageAmountValid || ! sanctionLetterNumber || !sanctionDateEpoch || !mortgageEndDateEpoch){
       toggleSnackbar(
         true,
         { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
@@ -298,6 +298,14 @@ return
               { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "ERR_BANKNAME_RANGE"},
               "error"
             );
+      return
+    }
+    else if(isNaN(mortgageAmountValid)){
+      toggleSnackbar(
+        true,
+        { labelName: "Amount should be a numeric value", labelKey: "ERR_MORTGAGEAMOUNT_NUMBER"},
+        "error"
+      );
       return
     }
     else if(!(mortgageAmountValid.length >= 3 && mortgageAmountValid.length <= 8)){
