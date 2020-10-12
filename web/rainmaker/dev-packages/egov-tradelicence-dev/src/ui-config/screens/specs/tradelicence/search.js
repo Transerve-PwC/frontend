@@ -183,7 +183,6 @@ const tradeLicenseSearchAndResult = {
             }
           }
         },
-        pendingApprovals,
         tradeLicenseApplication,
         breakAfterSearch: getBreak(),
         searchResults
