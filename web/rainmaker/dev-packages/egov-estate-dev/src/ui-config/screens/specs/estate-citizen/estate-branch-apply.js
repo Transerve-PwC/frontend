@@ -6,7 +6,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getMdmsData } from "../utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
 
-const applicationTypes = [
+const _applicationTypes = [
   {
     "name": "Transfer of Ownership on the basis of Registered Sale/Gift/Exchange/Family Transfer Deed",
     "code": "ES_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
@@ -123,7 +123,7 @@ const getData = async (action, state, dispatch) => {
         ]
       }
     }
-    // const response = await getMdmsData(queryObject);
+    const response = await getMdmsData(queryObject);
     const propertyId = getQueryArg(window.location.href, "propertyId")
     const propertyQueryObject = [
       {key: "propertyId", value: propertyId}
@@ -131,6 +131,7 @@ const getData = async (action, state, dispatch) => {
     const propertyResponse = await getSearchResults(propertyQueryObject)
     try {
       const property = propertyResponse.Properties[0]
+      const applicationTypes = response.MdmsRes.EstatePropertyService.applicationTypes
       const listItems = applicationTypes.filter(item => !!item.companyDetails ? !!property.propertyDetails.companyName && !!property.propertyDetails.companyType : !!item.courtDetails ? !!property.propertyDetails.decreeDate && !!property.propertyDetails.courtDetails && !!property.propertyDetails.civilTitledAs : true).reduce((prev, curr) => {
         if(!!curr.category) {
           let type = {}
