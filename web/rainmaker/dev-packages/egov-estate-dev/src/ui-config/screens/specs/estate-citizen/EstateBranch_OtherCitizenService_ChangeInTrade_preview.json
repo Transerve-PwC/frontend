@@ -50,27 +50,27 @@
         "fields": [
           {
             "label": "ES_OWNER_NAME_LABEL",
-            "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
+            "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.ownerName"
           },
           {
               "label": "ES_FATHER_HUSBAND_NAME_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
           },
           {
               "label": "ES_ADDRESS_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
           },
           {
               "label": "ES_OWNER_MOBILE_NUMBER_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
+              "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
           },
           {
               "label": "ES_SHARE_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.transferor.share"
+              "jsonPath": "Applications[0].applicationDetails.owner.share"
           },
           {
               "label": "ES_CP_NUMBER_LABEL",
-              "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber"
+              "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
           },
           {
             "label": "ES_CURRENT_TRADE_LABEL",

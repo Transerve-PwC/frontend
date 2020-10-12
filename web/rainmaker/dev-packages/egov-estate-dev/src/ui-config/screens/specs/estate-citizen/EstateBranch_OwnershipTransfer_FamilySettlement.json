@@ -501,6 +501,13 @@
                 "errorMessage": "ES_ERR_PURCHASER_NAME"
               },
               {
+                "label": "ES_DOB_LABEL",
+                "placeholder": "ES_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                "path": "transferee.dob"
+              },
+              {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",
                 "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
                 "type": "TEXT_FIELD",
@@ -584,22 +591,28 @@
               {
                 "label": "ES_FAMILY_SETTLEMENT_COURT_DECREE_DATE_LABEL",
                 "type": "DATE_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.familysettlementdate",
-                "path": "familysettlementdate"
+                "disabled": true,
+                "jsonPath": "Applications[0].applicationDetails.decreeDate",
+                "path": "decreeDate",
+                "prefillValue": "property.propertyDetails.decreeDate"
               },
               {
                 "label": "ES_PASSED_BY_COURT_LABEL",
                 "placeholder": "ES_PASSED_BY_COURT_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.purchaser.passedbycourt",
-                "path": "passedbycourt"
+                "disabled": true,
+                "jsonPath": "Applications[0].applicationDetails.courtDetails",
+                "path": "courtDetails",
+                "prefillValue": "property.propertyDetails.courtDetails"
               },
               {
                 "label": "ES_IN_CIVIL_SUIT_TITLE_LABEL",
                 "placeholder": "ES_IN_CIVIL_SUIT_TITLE_PLACEHOLDER",
                 "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.purchaser.civilsuittitle",
-                "path": "civilsuittitle"
+                "disabled": true,
+                "jsonPath": "Applications[0].applicationDetails.civilTitledAs",
+                "path": "civilTitledAs",
+                "prefillValue": "property.propertyDetails.civilTitledAs"
               }
             ]
           }

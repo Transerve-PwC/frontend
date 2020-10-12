@@ -179,6 +179,16 @@ const header = getCommonContainer({
 })
 
 const getData = async (action, state, dispatch) => {
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  if (!fileNumber) {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
+      )
+    )
+  }
+  
   const mdmsPayload = [{
     moduleName: "EstatePropertyService",
     masterDetails: [{
@@ -199,16 +209,8 @@ const getData = async (action, state, dispatch) => {
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
-  if (fileNumber) {
+  if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
-      )
-    )
   }
   
   setDocumentData(action, state, dispatch);
