@@ -80,6 +80,13 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           display: true,
           viewColumns: true
         }
+      },
+      {
+        name: getTextToLocalMapping("Refund Status"),
+        options: { 
+          display: true,
+          viewColumns: true
+        }
       }
     ]
 
@@ -183,7 +190,7 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
     "Properties"
   )
 
-  /* let response = await httpRequest(
+  let response = await httpRequest(
     "post",
     "/est-services/property-master/_update",
     "",
@@ -192,7 +199,7 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
       Properties: reqBody
     }
   );
-  console.log(response); */
+  console.log(response);
 }
 
 const refund = {
