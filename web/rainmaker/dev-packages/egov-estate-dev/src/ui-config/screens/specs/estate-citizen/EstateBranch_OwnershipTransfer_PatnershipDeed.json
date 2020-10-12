@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OwnershipTransfer_PatnershipDeed": [
     {
       "dataSources": [
@@ -24,7 +24,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "patnershipModeOfTransfer"
           }
         },
@@ -41,7 +41,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "companyDetails"
           }
         },
@@ -51,7 +51,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "tradeOptedForChange"
           }
         }
@@ -64,7 +64,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "patnershipModeOfTransfer",
                 "filter": "patnershipModeOfTransfer..code"
               }
@@ -254,7 +254,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "tradeOptedForChange",
                 "filter": "tradeOptedForChange..code"
               }
@@ -303,7 +303,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "companyDetails",
                 "filter": "companyDetails..code"
               }

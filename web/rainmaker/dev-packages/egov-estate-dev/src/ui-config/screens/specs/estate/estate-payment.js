@@ -4,6 +4,7 @@ import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../ui-utils";
 import get from "lodash/get";
 import { getPropertyDetails } from "./searchResource/estateApplicationAccountStatementGen";
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 const header = getCommonHeader({
     labelName: "Rent Payment",
@@ -14,7 +15,7 @@ const header = getCommonHeader({
       MdmsCriteria: {
         tenantId: commonConfig.tenantId,
         moduleDetails: [{
-          moduleName: "EstatePropertyService",
+          moduleName: ESTATE_SERVICES_MDMS_MODULE,
           masterDetails: [{
            name: "paymentType"
           }]
@@ -251,7 +252,7 @@ const propertyDetailsHeader = getCommonTitle(
             jsonPath: "Properties[0].paymentType",
             optionValue: "code",
             optionLabel: "name",
-            sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.paymentType",
+            sourceJsonPath: "searchScreenMdmsData.EstateServices.paymentType",
             gridDefination: {
                 xs: 12,
                 sm: 6
@@ -357,7 +358,7 @@ const propertyDetailsHeader = getCommonTitle(
         jsonPath: "searchScreen.category",
         optionValue: "code",
         optionLabel: "name",
-        sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.categories",
+        sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
         gridDefination: {
             xs: 12,
             sm: 6
@@ -543,7 +544,7 @@ const detailsContainer = {
 
   // export const getPaymentTypes = async(action, state, dispatch) => {
   //   const PaymentTypesPayload = [{
-  //     moduleName: "EstatePropertyService",
+  //     moduleName: ESTATE_SERVICES_MDMS_MODULE,
   //     masterDetails: [{name: "paymentType"}, {name: "applications"}]
   //   }
   // ]

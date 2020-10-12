@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OwnershipTransfer_SaleDeed": [
     {
       "dataSources": [
@@ -24,7 +24,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "modeOfTransfer"
           }
         },
@@ -44,7 +44,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "modeOfTransfer",
                 "filter": "modeOfTransfer..code"
               }

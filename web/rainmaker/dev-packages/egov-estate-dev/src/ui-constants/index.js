@@ -14,3 +14,4 @@ export const ES_PAID = getLocaleLabels("ES_PAID", "ES_PAID")
 export const ES_DATE_OF_RECEIPT = getLocaleLabels("ES_DATE_OF_RECEIPT", "ES_DATE_OF_RECEIPT")
 export const ES_NO_OF_DAYS = getLocaleLabels("ES_NO_OF_DAYS", "ES_NO_OF_DAYS")
 export const ES_INTEREST_ON_DELAYED_PAYMENT = getLocaleLabels("ES_INTEREST_ON_DELAYED_PAYMENT", "ES_INTEREST_ON_DELAYED_PAYMENT")
+export const ESTATE_SERVICES_MDMS_MODULE = "EstateServices"

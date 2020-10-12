@@ -134,7 +134,7 @@ export const estateApplication = getCommonCard({
         visible: false,
         required: true,
         jsonPath: "searchScreenSiteNo.category",
-        sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.categories",
+        sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
         gridDefination: {
             xs: 12,
             sm: 6
@@ -152,7 +152,7 @@ export const estateApplication = getCommonCard({
   
               const categories = get(
                   state.screenConfiguration.preparedFinalObject,
-                  "searchScreenMdmsData.EstatePropertyService.categories"
+                  "searchScreenMdmsData.EstateServices.categories"
               )
   
               const filteredCategory = categories.filter(item => item.code === action.value)
@@ -225,7 +225,7 @@ export const estateApplication = getCommonCard({
         // required: true,
         visible: false,
         jsonPath: "searchScreenSiteNo.sectorNumber",
-        sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.SectorNumber",
+        sourceJsonPath: "searchScreenMdmsData.EstateServices.SectorNumber",
         gridDefination: {
             xs: 12,
             sm: 6

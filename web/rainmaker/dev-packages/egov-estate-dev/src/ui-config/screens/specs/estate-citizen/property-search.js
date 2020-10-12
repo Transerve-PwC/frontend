@@ -12,6 +12,7 @@ import { httpRequest } from "../../../../ui-utils";
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 const header = getCommonHeader({
   labelName: "Search Property",
@@ -23,7 +24,7 @@ const getMdmsData = async (dispatch) => {
     MdmsCriteria: {
       tenantId: commonConfig.tenantId,
       moduleDetails: [{
-        moduleName: "EstatePropertyService",
+        moduleName: ESTATE_SERVICES_MDMS_MODULE,
         masterDetails: [{
           name: "categories"
         }]

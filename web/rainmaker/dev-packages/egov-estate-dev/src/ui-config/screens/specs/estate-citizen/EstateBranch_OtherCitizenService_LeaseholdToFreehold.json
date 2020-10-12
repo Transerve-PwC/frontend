@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_LeaseholdToFreehold": [
     {
       "dataSources": [

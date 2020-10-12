@@ -65,7 +65,7 @@ const typeOfAllocationField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.typeOfAllocation",
-    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.allocationType",
+    sourceJsonPath: "applyScreenMdmsData.EstateServices.allocationType",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -195,7 +195,7 @@ const categoryField = {
     },
     required: true,
     jsonPath: "Properties[0].category",
-    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.categories",
+    sourceJsonPath: "applyScreenMdmsData.EstateServices.categories",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -230,7 +230,7 @@ const categoryField = {
 
             const categories = get(
                 state.screenConfiguration.preparedFinalObject,
-                "applyScreenMdmsData.EstatePropertyService.categories"
+                "applyScreenMdmsData.EstateServices.categories"
             )
 
             const filteredCategory = categories.filter(item => item.code === action.value);
@@ -302,7 +302,7 @@ const sectorNumberField = {
     },
     // required: true,
     jsonPath: "Properties[0].sectorNumber",
-    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.SectorNumber",
+    sourceJsonPath: "applyScreenMdmsData.EstateServices.SectorNumber",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -356,7 +356,7 @@ const propertyTypeField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.propertyType",
-    sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.propertyType",
+    sourceJsonPath: "applyScreenMdmsData.EstateServices.propertyType",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -437,7 +437,7 @@ const entityTypeField = {
     },
     required: true,
     jsonPath: "Properties[0].propertyDetails.entityType",
-    // sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.entityType",
+    // sourceJsonPath: "applyScreenMdmsData.EstateServices.entityType",
     gridDefination: {
         xs: 12,
         sm: 6

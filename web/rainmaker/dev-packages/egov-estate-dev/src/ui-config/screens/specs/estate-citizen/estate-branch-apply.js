@@ -5,6 +5,7 @@ import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { getMdmsData } from "../utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 const _applicationTypes = [
   {
@@ -115,7 +116,7 @@ const getData = async (action, state, dispatch) => {
         tenantId: getTenantId(),
         moduleDetails: [
           {
-            moduleName: "EstatePropertyService",
+            moduleName: ESTATE_SERVICES_MDMS_MODULE,
             masterDetails: [
               { name: "applicationTypes" }
             ]
@@ -131,7 +132,7 @@ const getData = async (action, state, dispatch) => {
     const propertyResponse = await getSearchResults(propertyQueryObject)
     try {
       const property = propertyResponse.Properties[0]
-      const applicationTypes = response.MdmsRes.EstatePropertyService.applicationTypes
+      const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
       const listItems = applicationTypes.filter(item => !!item.companyDetails ? !!property.propertyDetails.companyName && !!property.propertyDetails.companyType : !!item.courtDetails ? !!property.propertyDetails.decreeDate && !!property.propertyDetails.courtDetails && !!property.propertyDetails.civilTitledAs : true).reduce((prev, curr) => {
         if(!!curr.category) {
           let type = {}

@@ -119,7 +119,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           jsonPath: "Properties[0].category",
             optionValue: "code",
             optionLabel: "name",
-            sourceJsonPath: "searchScreenMdmsData.EstatePropertyService.categories",
+            sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
             gridDefination: {
                 xs: 12,
                 sm: 6,
@@ -136,7 +136,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
 
               let categorySelected = action.value;
               let subcatvar = get(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar");
-              let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstatePropertyService.categories")
+              let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstateServices.categories")
             
               if(categorySelected === "CAT.RESIDENTIAL"){
                 subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.RESIDENTIAL")

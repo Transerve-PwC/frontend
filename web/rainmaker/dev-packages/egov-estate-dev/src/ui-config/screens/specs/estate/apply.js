@@ -49,6 +49,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -112,18 +113,18 @@ dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].
 
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   const documentTypePayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
       name: "documents"
     }]
   }]
   const documentRes = await getMdmsData(dispatch, documentTypePayload);
   const {
-    EstatePropertyService
+    EstateServices
   } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
     documents = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = documents.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
   const estateMasterDocuments = masterDocuments.map(item => ({
@@ -186,11 +187,11 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
 
 export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = previousDocsData && previousDocsData.MdmsRes ? previousDocsData.MdmsRes : {}
   const {
     previousOwnerDocs = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = previousOwnerDocs.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
 
@@ -251,11 +252,11 @@ export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) =>
 
 const setBiddersDoc = (action, state, dispatch) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
   const {
     biddersListDoc = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
 
   const findMasterItem = biddersListDoc.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
@@ -276,11 +277,11 @@ const setBiddersDoc = (action, state, dispatch) => {
 
 const getCompanyDocs = (action, state, dispatch, owner = 0) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = companyDocsData && companyDocsData.MdmsRes ? companyDocsData.MdmsRes : {}
   const {
     documents = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = documents.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
 
@@ -456,7 +457,7 @@ export const setData = (properties, screenName, dispatch, state) => {
 
     const categories = get(
       state.screenConfiguration.preparedFinalObject,
-      "applyScreenMdmsData.EstatePropertyService.categories"
+      "applyScreenMdmsData.EstateServices.categories"
     )
 
     const filteredCategory = categories.filter(item => item.code === category)
@@ -548,7 +549,7 @@ const getData = async (action, state, dispatch) => {
     )
   }
   const mdmsPayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
       name: "categories"
     },

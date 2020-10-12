@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_NDC": [
     {
       "dataSources": [
@@ -31,7 +31,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "noDueCertificteReason"
           }
         }
@@ -62,7 +62,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "noDueCertificteReason",
                 "filter": "noDueCertificteReason..code"
               }

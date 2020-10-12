@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OwnershipTransfer_FamilySettlement": [
     {
       "dataSources": [
@@ -24,7 +24,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "familySettlementModeOfTransfer"
           }
         },
@@ -44,7 +44,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "familySettlementModeOfTransfer",
                 "filter": "familySettlementModeOfTransfer..code"
               }

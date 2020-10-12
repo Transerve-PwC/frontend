@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_DuplicateCopy": [
     {
       "dataSources": [
@@ -10,7 +10,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "typeOfLetter"
           }
         },
@@ -48,7 +48,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "typeOfLetter",
                 "filter": "typeOfLetter..code"
               }
