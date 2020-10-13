@@ -273,9 +273,8 @@ export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") =
   }
 ]
 
-let previousOwnerDocuments = PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.reviewDocDataPrevOwner
+let previousOwnerDocuments = PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.ownerDocuments
 let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.reviewDocData
-
   const olength = ownerDocuments.length % 4
   ownerDocuments = !!olength ? [...ownerDocuments, ...new Array(4 - olength).fill({
     title: "",

@@ -25,6 +25,7 @@ export const applicationSuccessFooter = (
 ) => {
   const roleExists = ifUserRoleExists("CITIZEN");
   const redirectionURL = roleExists ? "/" : "/inbox";
+  debugger
   if(roleExists){
     return getCommonApplyFooter({
       gotoHome: {
@@ -154,6 +155,7 @@ export const applicationSuccessFooter = (
         onClickDefination: {
           action: "condition",
           callBack: () => {
+            debugger
             const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
             downloadSummary(Properties, PropertiesTemp);
           }
