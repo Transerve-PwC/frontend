@@ -17,7 +17,7 @@ import { searchApiCall } from "./functions";
 import { convertDateToEpoch, convertDateToEpochIST } from "../../utils";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["indentNumber","indentDate","indentPurpose",  "inventoryType","indentStore"];
+  const textFields = ["indentNumber","indentDate","indentPurpose", "inventoryType","indentStore","indentType","indentToDate","indentFromDate","indentRaisedBy"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-indent.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -55,35 +55,35 @@ export const searchForm = getCommonCard({
       jsonPath: "searchScreen.indentNumber",
       gridDefination: {
         xs: 12,
-        sm: 4,
+        sm: 3,
       },
      
     }),
-    indentDate: {
-      ...getDateField({
-        label: {
-          labelName: "Indent Date",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE"
-        },
-        placeholder: {
-          labelName: "Enter Indent Date",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE_PLACEHOLDER"
-        },
-        required: false,
-        pattern: getPattern("Date") || null,
-        jsonPath: "searchScreen.indentDate",
-        gridDefination: {
-          xs: 12,
-          sm: 4,
-        },
-        props: {
-          // inputProps: {
-          //   max: getTodaysDateInYMD()
-          // }
-        }
-      }),
+    // indentDate: {
+    //   ...getDateField({
+    //     label: {
+    //       labelName: "Indent Date",
+    //       labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE"
+    //     },
+    //     placeholder: {
+    //       labelName: "Enter Indent Date",
+    //       labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE_PLACEHOLDER"
+    //     },
+    //     required: false,
+    //     pattern: getPattern("Date") || null,
+    //     jsonPath: "searchScreen.indentDate",
+    //     gridDefination: {
+    //       xs: 12,
+    //       sm: 3,
+    //     },
+    //     props: {
+    //       // inputProps: {
+    //       //   max: getTodaysDateInYMD()
+    //       // }
+    //     }
+    //   }),
     
-    },
+    // },
     indentPurpose: {
       ...getSelectField({
         label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
@@ -95,7 +95,7 @@ export const searchForm = getCommonCard({
         jsonPath: "searchScreen.indentPurpose",
         gridDefination: {
           xs: 12,
-          sm: 4,
+          sm: 3,
         },
         sourceJsonPath: "searchScreenMdmsData.store-asset.IndentPurpose",
       props: {
@@ -122,7 +122,7 @@ export const searchForm = getCommonCard({
         jsonPath: "searchScreen.inventoryType",
         gridDefination: {
           xs: 12,
-          sm: 4,
+          sm: 3,
         },
          sourceJsonPath: "searchScreenMdmsData.store-asset.InventoryType",
         props: {
@@ -146,7 +146,7 @@ export const searchForm = getCommonCard({
         jsonPath: "searchScreen.indentStore", 
         gridDefination: {
           xs: 12,
-          sm: 4,
+          sm: 3,
         },        
         sourceJsonPath: "store.stores",
         props: {
@@ -154,6 +154,98 @@ export const searchForm = getCommonCard({
           optionLabel: "name",
         },
       })
+    },
+    // indentType: {
+    //   ...getSelectField({
+    //     label: { labelName: "Inventry Type", labelKey: "STORE_INVENTRY_TYPE" },
+    //     placeholder: {
+    //       labelName: "Select Inventry Type",
+    //       labelKey: "STORE_INVENTRY_TYPE"
+    //     },
+    //     required: false,
+    //     jsonPath: "searchScreen.indentType",
+    //     gridDefination: {
+    //       xs: 12,
+    //       sm: 3,
+    //     },
+    //    //  sourceJsonPath: "searchScreenMdmsData.store-asset.InventoryType",
+    //     props: {
+         
+    //       optionValue: "code",
+    //       optionLabel: "name"
+    //     },
+    //   })
+    // },
+    indentFromDate: {
+      ...getDateField({
+        label: {
+          labelName: "Indent Date From",
+          labelKey: "STORE_INDENT_DATE_FROM "
+        },
+        placeholder: {
+          labelName: "Enter Indent Date From",
+          labelKey: "STORE_INDENT_DATE_FROM_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "searchScreen.indentFromDate",
+        gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+        props: {
+          // inputProps: {
+          //   max: getTodaysDateInYMD()
+          // }
+        }
+      })
+    },
+    indentToDate: {
+      ...getDateField({
+        label: {
+          labelName: "Indent Date To",
+          labelKey: "STORE_INDENT_DATE_TO"
+        },
+        placeholder: {
+          labelName: "Enter Indent Date To",
+          labelKey: "STORE_INDENT_DATE_TO_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "searchScreen.indentToDate",
+        gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+        props: {
+          // inputProps: {
+          //   max: getTodaysDateInYMD()
+          // }
+        }
+      })
+    },
+     indentRaisedBy: {
+      ...getSelectField({
+        label: { labelName: "Indent Raised By", labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY" },
+        placeholder: {
+          labelName: "Select Indent Raised By",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY"
+        },
+       visible:true,
+        required: false,
+        jsonPath: "searchScreen.indentRaisedBy",
+       sourceJsonPath: "applyScreenMdmsData.creatorList",
+       gridDefination: {
+        xs: 12,
+        sm: 3,
+      },
+        props: {         
+          className: "hr-generic-selectfield",
+          optionValue: "element",
+          optionLabel: "element",
+         
+        }
+      }),
     },
   }),
 

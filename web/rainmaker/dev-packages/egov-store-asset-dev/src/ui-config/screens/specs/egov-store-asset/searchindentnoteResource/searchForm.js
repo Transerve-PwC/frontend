@@ -16,7 +16,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["issueStore",  "issueNoteNumber","issueDate","indentFromDate","indentToDate","indentRaisedBy","indentPurpose"];
+  const textFields = ["issueStore",  "issueNoteNumber","issueDate","issueFromDate","issueToDate","indentRaisedBy","indentPurpose"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-indent-note.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -47,12 +47,12 @@ export const searchForm = getCommonCard({
     issueStore: {
       ...getSelectField({
         label: {
-          labelName: "Store Name",
-          labelKey: "STORE_DETAILS_STORE_NAME"
+          labelName: "Indenting Store",
+          labelKey: "STORE_DETAILS_STORE_NAME_INDENT"
         },
         placeholder: {
-          labelName: "Select Store Name",
-          labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
+          labelName: "Select Indenting Store",
+          labelKey: "STORE_DETAILS_STORE_NAME_INDENT_SELECT"
         },
         required: false,
         jsonPath: "searchScreen.fromStore", 
@@ -94,19 +94,43 @@ export const searchForm = getCommonCard({
       },
       })
     },   
-    issueDate: {
+    // issueDate: {
+    //   ...getDateField({
+    //     label: {
+    //       labelName: "Issue Date",
+    //       labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE"
+    //     },
+    //     placeholder: {
+    //       labelName: "Enter Issue Date",
+    //       labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE_PLACEHOLDER"
+    //     },
+    //     required: false,
+    //     pattern: getPattern("Date") || null,
+    //     jsonPath: "searchScreen.issueDate",
+    //     gridDefination: {
+    //       xs: 12,
+    //       sm: 3,
+    //     },
+    //     props: {
+    //       // inputProps: {
+    //       //   max: getTodaysDateInYMD()
+    //       // }
+    //     }
+    //   })
+    // },
+    issueFromDate: {
       ...getDateField({
         label: {
-          labelName: "Issue Date",
-          labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE"
+          labelName: "Issue Date From",
+          labelKey: "STORE_INDENT_ISSUE_DATE_FROM "
         },
         placeholder: {
-          labelName: "Enter Issue Date",
-          labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE_PLACEHOLDER"
+          labelName: "Enter Issue Date From",
+          labelKey: "STORE_INDENT_ISSUE_DATE_FROM_PLACEHOLDER"
         },
         required: false,
         pattern: getPattern("Date") || null,
-        jsonPath: "searchScreen.issueDate",
+        jsonPath: "searchScreen.issueFromDate",
         gridDefination: {
           xs: 12,
           sm: 3,
@@ -118,19 +142,19 @@ export const searchForm = getCommonCard({
         }
       })
     },
-    indentFromDate: {
+    issueToDate: {
       ...getDateField({
         label: {
-          labelName: "Indent Date From",
-          labelKey: "STORE_INDENT_DATE_FROM "
+          labelName: "Issue Date To",
+          labelKey: "STORE_INDENT_ISSUE_DATE_TO"
         },
         placeholder: {
-          labelName: "Enter Indent Date From",
-          labelKey: "STORE_INDENT_DATE_FROM_PLACEHOLDER"
+          labelName: "Enter Issue Date To",
+          labelKey: "STORE_INDENT_ISSUE_DATE_TO_PLACEHOLDER"
         },
         required: false,
         pattern: getPattern("Date") || null,
-        jsonPath: "searchScreen.indentFromDate",
+        jsonPath: "searchScreen.issueToDate",
         gridDefination: {
           xs: 12,
           sm: 3,
@@ -142,104 +166,80 @@ export const searchForm = getCommonCard({
         }
       })
     },
-    indentToDate: {
-      ...getDateField({
-        label: {
-          labelName: "Indent Date To",
-          labelKey: "STORE_INDENT_DATE_TO"
-        },
-        placeholder: {
-          labelName: "Enter Indent Date To",
-          labelKey: "STORE_INDENT_DATE_TO_PLACEHOLDER"
-        },
-        required: false,
-        pattern: getPattern("Date") || null,
-        jsonPath: "searchScreen.indentToDate",
-        gridDefination: {
-          xs: 12,
-          sm: 3,
-        },
-        props: {
-          // inputProps: {
-          //   max: getTodaysDateInYMD()
-          // }
-        }
-      })
-    },
-    indentPurpose: {
-      ...getSelectField({
-        label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
-        placeholder: {
-          labelName: "Select Indent Purpose",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
-        },
-        required: false,
-        errorMessage: "STORE_VALIDATION_INDENT_PURPOSE",
-        jsonPath: "searchScreen.indentPurpose",
-        sourceJsonPath: "searchScreenMdmsData.store-asset.IndentPurpose",
-        gridDefination: {
-          xs: 12,
-          sm: 3,
-        },
-      props: {
+    // indentPurpose: {
+    //   ...getSelectField({
+    //     label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
+    //     placeholder: {
+    //       labelName: "Select Indent Purpose",
+    //       labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
+    //     },
+    //     required: false,
+    //     errorMessage: "STORE_VALIDATION_INDENT_PURPOSE",
+    //     jsonPath: "searchScreen.indentPurpose",
+    //     sourceJsonPath: "searchScreenMdmsData.store-asset.IndentPurpose",
+    //     gridDefination: {
+    //       xs: 12,
+    //       sm: 3,
+    //     },
+    //   props: {
         
-        optionValue: "code",
-        optionLabel: "name",
-      },
-      }),
+    //     optionValue: "code",
+    //     optionLabel: "name",
+    //   },
+    //   }),
      
-    },
-    indentRaisedBy: {
-      ...getSelectField({
-        label: { labelName: "Indent Raised By", labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY" },
-        placeholder: {
-          labelName: "Select Indent Raised By",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY"
-        },
-       visible:true,
-        required: false,
-        jsonPath: "searchScreen.indentRaisedBy",
-       sourceJsonPath: "applyScreenMdmsData.creatorList",
-       gridDefination: {
-        xs: 12,
-        sm: 3,
-      },
-        props: {         
-          className: "hr-generic-selectfield",
-          optionValue: "element",
-          optionLabel: "element",
+    // },
+    // indentRaisedBy: {
+    //   ...getSelectField({
+    //     label: { labelName: "Indent Raised By", labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY" },
+    //     placeholder: {
+    //       labelName: "Select Indent Raised By",
+    //       labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY"
+    //     },
+    //    visible:true,
+    //     required: false,
+    //     jsonPath: "searchScreen.indentRaisedBy",
+    //    sourceJsonPath: "applyScreenMdmsData.creatorList",
+    //    gridDefination: {
+    //     xs: 12,
+    //     sm: 3,
+    //   },
+    //     props: {         
+    //       className: "hr-generic-selectfield",
+    //       optionValue: "element",
+    //       optionLabel: "element",
          
-        }
-      }),
-    },
-    issuePurpose: {
-      ...getSelectField({
-        label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
-        placeholder: {
-          labelName: "Select Indent Purpose",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
-        },
-        required: false,
-        visible:false,
-        jsonPath: "searchScreen.issuePurpose",
-        gridDefination: {
-          xs: 12,
-          sm: 3,
-        },
-        //sourceJsonPath: "searchScreenMdmsData.store-asset.RateType",
-      props: {
-        data: [
-          {
-            code: "Consumption",
-            name: "Capital/Repair/Consumption"
-          },
+    //     }
+    //   }),
+    // },
+    // issuePurpose: {
+    //   ...getSelectField({
+    //     label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
+    //     placeholder: {
+    //       labelName: "Select Indent Purpose",
+    //       labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
+    //     },
+    //     required: false,
+    //     visible:false,
+    //     jsonPath: "searchScreen.issuePurpose",
+    //     gridDefination: {
+    //       xs: 12,
+    //       sm: 3,
+    //     },
+    //     //sourceJsonPath: "searchScreenMdmsData.store-asset.RateType",
+    //   props: {
+    //     data: [
+    //       {
+    //         code: "Consumption",
+    //         name: "Capital/Repair/Consumption"
+    //       },
          
-        ],
-        optionValue: "code",
-        optionLabel: "name",
-      },
-      })
-    },
+    //     ],
+    //     optionValue: "code",
+    //     optionLabel: "name",
+    //   },
+    //   })
+    // },
    
   }),
 

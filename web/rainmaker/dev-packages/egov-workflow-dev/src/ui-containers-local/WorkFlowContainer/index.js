@@ -609,8 +609,8 @@ class WorkFlowContainer extends React.Component {
       const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
       const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;
       if(roleIndex && !isButtonPresent ){
-        const buttonArray = getWNSButtonForCitizen(preparedFinalObject, applicationStatus, businessId,businessService);
-       actions = actions.concat(buttonArray);
+      //   const buttonArray = getWNSButtonForCitizen(preparedFinalObject, applicationStatus, businessId,businessService);
+      //  actions = actions.concat(buttonArray);
       }
         
     }

@@ -28,7 +28,7 @@ case "Raised By":
     case "Indenting Store Name":
       return getLocaleLabels(
         "Indenting Store Name",
-        "STORE_DETAILS_STORE_NAME",
+        "STORE_DETAILS_STORE_NAME_INDENT",
         localisationLabels
       );
       case "Indent Purpose":

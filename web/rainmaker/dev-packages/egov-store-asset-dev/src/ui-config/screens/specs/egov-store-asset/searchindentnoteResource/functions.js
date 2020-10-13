@@ -92,7 +92,7 @@ export const searchApiCall = async (state, dispatch) => {
         searchScreenObject[key].trim() !== ""
       ) {
 
-        if (key === "issueDate" || key === "indentFromDate"|| key === "indentToDate") {
+        if (key === "issueDate" || key === "issueToDate"|| key === "issueFromDate") {
          let Dateselect = true;
           queryObject.push({
             key: key,

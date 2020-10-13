@@ -13,6 +13,7 @@ import {
     getBreak
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   //import { DOEApplyApplication} from "./applydoeResources/DOEApplyApplication";
+  
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { validateFields, getTextToLocalMapping } from "../utils";
   import { getSearchPensioner,getPTPattern } from "../../../../ui-utils/commons";
@@ -20,7 +21,7 @@ import {
   import store from "../../../../ui-redux/store";
   import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
   import {
-    getTenantId
+    getTenantId,getUserInfo
   } from "egov-ui-kit/utils/localStorageUtils";
   import find from "lodash/find";
   import set from "lodash/set";
@@ -35,7 +36,7 @@ import {
     import { httpRequest } from "../../../../ui-utils";
     import { getSearchResults } from "../../../../ui-utils/commons"; 
     const resetFields = (state, dispatch) => {
-      const textFields = ["code",];
+      const textFields = ["propertyTaxId","code",];
       for (let i = 0; i < textFields.length; i++) {
         if (
           `state.screenConfiguration.screenConfig.dashboardPT.components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}.props.value`
@@ -65,12 +66,72 @@ import {
     "searchScreen",
     {}
   );
-  const isSearchBoxFirstRowValid = validateFields(
+  let isSearchBoxFirstRowValid = validateFields(
     "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
     state,
     dispatch,
     "dashboardPT"
   );
+  
+  //isSearchBoxFirstRowValid = true;
+  if( Object.keys(searchScreenObject).length == 2 )
+  {
+    const fields = get(
+      state.screenConfiguration.screenConfig[`dashboardPT`],
+      "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+      {}
+    );
+    if(fields.code!==undefined )
+    {
+      if(fields.code.isFieldValid ===false)
+      {
+        if(fields.code.props.style.display ==="none")
+        {
+          isSearchBoxFirstRowValid = true;
+        }
+        else
+        {
+          isSearchBoxFirstRowValid = false;
+        }
+
+      }
+     
+      else
+      isSearchBoxFirstRowValid = true;
+
+    }
+    
+  }
+  else if( Object.keys(searchScreenObject).length == 1 )
+  {
+    const fields = get(
+      state.screenConfiguration.screenConfig[`dashboardPT`],
+      "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+      {}
+    );
+    if(fields.propertyTaxId!==undefined )
+    {
+      if(fields.propertyTaxId.isFieldValid ===false)
+      {      
+      isSearchBoxFirstRowValid = false;
+      }
+      else
+      {
+        if(fields.propertyTaxId.isFieldValid ===false)
+        {
+        isSearchBoxFirstRowValid = false;
+        }
+        else
+       {
+        isSearchBoxFirstRowValid = true;
+       }
+      }
+    
+
+    }
+    
+  }
+
   if( Object.keys(searchScreenObject).length == 0 )
   {
     dispatch(
@@ -99,16 +160,55 @@ import {
   else
   {
     let uid ='';
-  for (var key in searchScreenObject) {  
-    
-    queryObject.push({ key: key, value: (searchScreenObject[key]) });
-    uid=searchScreenObject[key].trim();
+    if( Object.keys(searchScreenObject).length == 1 )
+  {
+    let propertyTaxId = get(
+      state.screenConfiguration.preparedFinalObject,
+      "searchScreen.propertyTaxId",
+      null
+    );
+    uid = propertyTaxId
   }
+  else if( Object.keys(searchScreenObject).length == 2 )
+  {
+    let code = get(
+      state.screenConfiguration.preparedFinalObject,
+      "searchScreen.code",
+      null
+    );
+    let propertyTaxId = get(
+      state.screenConfiguration.preparedFinalObject,
+      "searchScreen.propertyTaxId",
+      null
+    );
+    const fields = get(
+      state.screenConfiguration.screenConfig[`dashboardPT`],
+      "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+      {}
+    );
+    if(fields.code.props.style.display ==="none")
+    {
+      uid = propertyTaxId
+    }
+    else{
+      uid = code
+    }
+    
+  }
+  // for (var key in searchScreenObject) {  
+    
+  //   queryObject.push({ key: key, value: (searchScreenObject[key]) });
+  //   if(key ==="code")
+  //   {
+  //     uid=searchScreenObject[key].trim();
+  //   }
+  //   else{
+  //     uid=searchScreenObject[key].trim();
+  //   }
+    
+  // }
   
-  queryObject.push({
-    key: "isprint",
-    value: false
-  });
+
   
   dispatch(toggleSpinner())
   try {
@@ -132,6 +232,56 @@ import {
     if(get(Responce,"ResponseBody",[]))
     {
     dispatch(prepareFinalObject("APIData", get(Responce,"ResponseBody",[])));
+    // call save api /integration-services/pt-mapping/v1/_save if input id not exist in List
+    // get integration-services/pt-mapping/v1/_get
+    let {result} = state.screenConfiguration.preparedFinalObject.searchScreenMdmsData;
+    let uidExist = false;
+    // check id in list
+    if(result)
+    {
+      result = result.filter(x=>x.propertyTaxId == uid)
+      if(result.length >0)
+      uidExist = true;
+    }
+    // call save api
+    if(!uidExist)
+    {
+      try
+      {
+        const userInfo = JSON.parse(getUserInfo());
+      let  payload = await httpRequest(
+          "post",
+          "/integration-services/pt-mapping/v1/_save",
+          "_save",    
+          [],
+            {
+              
+              PtMappingRequest:{
+                userId:userInfo.id,
+                propertyTaxId:`${uid}`,
+                tenantId: "ch",
+              }
+            }
+        );
+        if(payload)
+        {
+          await getMdmsData(state, dispatch);
+        }
+
+      }
+      catch(error)
+      {
+        dispatch(
+          toggleSnackbar(
+            true,
+            { labelName: error.message, labelKey: error.message },
+            "error"
+          )
+        );
+
+      }
+  }
+
     dispatch(toggleSpinner())
     }
     else
@@ -152,16 +302,29 @@ import {
   
   return payload
   
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     let  APIData =[] 
-    // dispatch(
-    //   toggleSnackbar(
-    //     true,
-    //     { labelName: "Input should not be shorter than 2 characters", labelKey: e },
-    //     "error"
-    //   )
-    // );
+    if(error.message ==="An unhandled exception occurred on the server")
+    {
+      
+            const errorMessage = {
+              labelName: "Enter Valid property tax id",
+              labelKey:   `INTIGRATION_ERR_FILL_VALID_FIELDS_PT_CODE`
+              
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else{
+      dispatch(
+        toggleSnackbar(
+          true,
+          { labelName: error.message, labelKey: error.message },
+          "error"
+        )
+      );
+    }
+ 
      dispatch(prepareFinalObject("APIData",APIData));
      dispatch(toggleSpinner())
   }
@@ -169,50 +332,81 @@ import {
   
   
   }
-  
+  const addPropertyIdHandle = async (state, dispatch) => {
+    console.log('call api to add property id seasrch');
+  };
   export const getData = async (action, state, dispatch) => {
    
     await getMdmsData(state, dispatch);
     
      //fetching store name
-     const queryObject = [{ key: "tenantId", value: getTenantId()  }];
-     getSearchResults(queryObject, dispatch,"storeMaster")
-     .then(response =>{
-       if(response){
-         const storeNames = response.stores.map(item => {
-           let code = item.code;
-           let name = item.name;
-           let department = item.department.name;
-           let divisionName = item.divisionName;
-           return{code,name,department,divisionName}
-         } )
-         dispatch(prepareFinalObject("searchMaster.storeNames", storeNames));
-       }
-     });
+    //  const queryObject = [{ key: "tenantId", value: getTenantId()  }];
+    //  getSearchResults(queryObject, dispatch,"storeMaster")
+    //  .then(response =>{
+    //    if(response){
+    //      const storeNames = response.stores.map(item => {
+    //        let code = item.code;
+    //        let name = item.name;
+    //        let department = item.department.name;
+    //        let divisionName = item.divisionName;
+    //        return{code,name,department,divisionName}
+    //      } )
+    //      dispatch(prepareFinalObject("searchMaster.storeNames", storeNames));
+    //    }
+    //  });
   };
   const getMdmsData = async (state, dispatch) => {
     const tenantId =  getstoreTenantId();
     let mdmsBody = {
-      MdmsCriteria: {
-        tenantId: tenantId,
-        moduleDetails: [
-          {
-            moduleName: "egf-master",
-            masterDetails: [{ name: "FinancialYear" }]
-          },
-        ]
+      userInfo: {
+        id: 323,
+       
       }
     };
     try {
       const response = await httpRequest(
         "post",
-        "/egov-mdms-service/v1/_search",
-        "_search",
+        "/integration-services/pt-mapping/v1/_get",
+        "_get",
         [],
         mdmsBody
       );
-      dispatch(prepareFinalObject("searchScreenMdmsData", get(response, "MdmsRes"))
-      );
+      if(response)
+      {
+        dispatch(prepareFinalObject("searchScreenMdmsData",response.ResponseBody))
+      }
+     //dispatch(prepareFinalObject("searchScreenMdmsData", get(response, "ResponseBody.result")));
+      const {result} = state.screenConfiguration.preparedFinalObject.searchScreenMdmsData;
+      result.push(
+        {
+          propertyTaxId:"others",
+          isActive:true,
+          userId:0
+        }
+      )
+      dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
+      // if(result)
+      // {
+      //   result.push(
+      //     {
+      //       propertyTaxId:"others",
+      //       isActive:true,
+      //       userId:0
+      //     }
+      //   )
+      //   dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
+      // }
+      // else{
+      //   result.push(
+      //     {
+      //       propertyTaxId:"others",
+      //       isActive:true,
+      //       userId:0
+      //     }
+      //   )
+      //   dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
+
+      // }
   
       return true;
     } catch (e) {
@@ -231,16 +425,30 @@ import {
     //  resetFields(state, dispatch);
       const tenantId = getTenantId();   
       dispatch(prepareFinalObject("searchScreen",{}));
-      // getData(action, state, dispatch).then(responseAction => {
+      getData(action, state, dispatch).then(responseAction => {
       
-      // }); 
-         //get Eployee details data       
-  // prepareEditFlow(state, dispatch,  tenantId).then(res=>
-  //   {
-  //   }
-  // );
+      }); 
+         
   let  APIData =[] 
   dispatch(prepareFinalObject("APIData",APIData)); 
+  dispatch(
+    handleField(
+    "dashboardPT",
+    `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code`,
+    "props.style",
+    { display: "none" }
+    )
+    );
+    set(
+      action.screenConfig,
+      "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code.props.style",
+      { display: "none" }
+    );
+    set(
+      action.screenConfig,
+      "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.newPropertycodePTButton.props.style",
+      { display: "none" }
+    );
           return action;
     },
     components: {
@@ -271,7 +479,79 @@ import {
       SearchCard: getCommonCard({
   
         appPRSearchContainer: getCommonContainer({
+          propertyTaxId: {
+            ...getSelectField({
+              label: { labelName: "property Tax Id", labelKey: "PT_CODE" },
+              placeholder: {
+                labelName: "Select property Tax Id",
+                labelKey: "PT_CODE"
+              },
+              gridDefination: {
+                xs: 12,
+                sm: 4,
+              },
+              required: true,
+              jsonPath: "searchScreen.propertyTaxId",
+              sourceJsonPath: "searchScreenMdmsData.result",
+              props: {
+                className: "hr-generic-selectfield",
+                optionValue: "propertyTaxId",
+                optionLabel: "propertyTaxId"
+              }
+            }),
+            beforeFieldChange: (action, state, dispatch) => {
+              if(action.value)
+              {
+                if(action.value.toUpperCase() === "OTHERS")
+                {
+                  dispatch(
+                  handleField(
+                  "dashboardPT",
+                  `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code`,
+                  "props.style",
+                  { display: "inline-block" }
+                  )
+                  );
+                  dispatch(
+                    handleField(
+                    "dashboardPT",
+                    `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.newPropertycodePTButton`,
+                    "props.style",
+                    { display: "inline-block" }
+                    )
+                    );
+                }
+                else{
+                  dispatch(
+                    handleField(
+                    "dashboardPT",
+                    `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code`,
+                    "props.style",
+                    { display: "none" }
+                    )
+                    );
+                    dispatch(
+                      handleField(
+                      "dashboardPT",
+                      `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.newPropertycodePTButton`,
+                      "props.style",
+                      { display: "none" }
+                      )
+                      );
 
+                      dispatch(
+                        handleField(
+                          "dashboardPT",
+                          `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code`,
+                          "props.value",
+                          ""
+                        )
+                      );
+                }
+
+              }
+            }
+          },
           code: {
             ...getTextField({
               label: { labelName: "Code", labelKey: "PT_CODE" },
@@ -288,7 +568,56 @@ import {
               },
                
             })
-          }, 
+          },
+          // newPropertycodePTButton: {
+          //   componentPath: "Button",
+          //   gridDefination: {
+          //     xs: 12,
+          //     sm: 4,
+          //     align: "left",
+          //     style: {
+          //       paddingTop:"16px"
+                
+          //     },
+          //   },
+          //   visible: false,
+          //   props: {
+          //     variant: "contained",
+          //     color: "primary",
+          //     style: {
+          //       color: "white",
+          //       borderRadius: "2px",
+          //       // width: "250px",
+          //       // height: "48px",
+          //     },
+          //   },
+
+          //   children: {
+          //     plusIconInsideButton: {
+          //       uiFramework: "custom-atoms",
+          //       componentPath: "Icon",
+          //       props: {
+          //         iconName: "add",
+          //         style: {
+          //           fontSize: "24px",
+          //         },
+          //       },
+          //     },
+
+          //     // buttonLabel: getLabel({
+          //     //   labelName: "Add Purchase Order",
+          //     //   labelKey: "STORE_ADD_NEW_PURCHASE_ORDR_BUTTON",
+          //     // }),
+          //   },
+          //   onClickDefination: {
+          //     action: "condition",
+          //     callBack: addPropertyIdHandle,
+          //   },
+          //   // roleDefination: {
+          //   //   rolePath: "user-info.roles",
+          //   //   roles: roles
+          //   // }
+          // }, 
     }),
     button: getCommonContainer({
       buttonContainer: getCommonContainer({
