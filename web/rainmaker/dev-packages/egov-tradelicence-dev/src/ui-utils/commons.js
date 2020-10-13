@@ -473,10 +473,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       ""
     );
     const tenantId = ifUserRoleExists("CITIZEN") ? cityId : getTenantId();
-    const BSqueryObject = [
-      { key: "tenantId", value: tenantId },
-      { key: "businessServices", value: "NewTL" }
-    ];
     if (process.env.REACT_APP_NAME === "Citizen") {
       let currentFinancialYr = getCurrentFinancialYear();
       //Changing the format of FY
@@ -484,12 +480,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       fY1 = fY1.substring(2, 4);
       currentFinancialYr = currentFinancialYr.split("-")[0] + "-" + fY1;
       set(queryObject[0], "financialYear", currentFinancialYr);
-      await setBusinessServiceDataToLocalStorage(BSqueryObject, dispatch);
-
-      const businessServiceData = JSON.parse(
-        localStorageGet("businessServiceData")
-      );
-      businessService = businessServiceData[0].businessService;
     }
 
 
@@ -500,10 +490,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       //call update
       const isEditRenewal = getQueryArg(window.location.href, "action") === "EDITRENEWAL";
       if(isEditRenewal ){
-        // if(process.env.REACT_APP_NAME === "Citizen"){
-        //   const nextFinancialyear = await getNextFinancialYearForRenewal(queryObject[0].financialYear);
-        //   set(queryObject[0], "financialYear", nextFinancialyear);
-        // } 
         set(queryObject[0], "workflowCode", getQueryArg(window.location.href, "action"));
       }
 
@@ -526,17 +512,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       );
 
       let action = "INITIATE";
-      //Code for edit flow
-
-      if (
-        queryObject[0].tradeLicenseDetail &&
-        queryObject[0].tradeLicenseDetail.applicationDocuments
-      ) {
-        if (getQueryArg(window.location.href, "action") === "edit" || isEditRenewal) {
-        } else if (activeIndex === 1) {
-          set(queryObject[0], "tradeLicenseDetail.applicationDocuments", null);
-        } else action = "SUBMIT";
-      }
 
       if (activeIndex === 3 && isEditRenewal) {
         action = "SUBMIT";
@@ -559,10 +534,10 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       const isEditFlow = getQueryArg(window.location.href, "action") === "edit";
       let updateResponse;
       if (!isEditFlow) {
-        if(activeIndex === 0) {
+        if(activeIndex === 0 || activeIndex === 1) {
           set(queryObject[0], "action", "REINITIATE")
-          // set(queryObject[0], "wfDocuments", null)
-          // set(queryObject[0], "tradeLicenseDetail.applicationDocuments", null)
+        } else {
+          set(queryObject[0], "action", "SUBMIT")
         }
         let applicationDocuments = get(queryObject[0], "tradeLicenseDetail.applicationDocuments") || [];
         applicationDocuments = applicationDocuments.map(item => ({...item, active: true}))
@@ -598,13 +573,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
         !!updateResponse.Licenses && 
         !!updateResponse.Licenses.length) {
           let {Licenses: updatedLicenses = []} = updateResponse;
-          /* if(activeIndex === 0) {
-            let [license] = updatedLicenses;
-            license = {...license, wfDocuments: documents, 
-              tradeLicenseDetail: {...license.tradeLicenseDetail, 
-                applicationDocuments: documents}}
-            updatedLicenses = [license]
-          } */
           updatedLicenses = organizeLicenseData(updatedLicenses);
           let applicationDocuments = updatedLicenses[0].tradeLicenseDetail.applicationDocuments;
           const removedDocs = applicationDocuments.filter(item => !item.active)
@@ -619,22 +587,9 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
           );
           await setDocsForEditFlow(state, dispatch)
         }
-      // const updatedtradeUnits = get(
-      //   searchResponse,
-      //   "Licenses[0].tradeLicenseDetail.tradeUnits"
-      // );
-      // const tradeTemp = updatedtradeUnits.map((item, index) => {
-      //   return {
-      //     tradeSubType: item.tradeType.split(".")[1],
-      //     tradeType: item.tradeType.split(".")[0]
-      //   };
-      // });
-      // dispatch(prepareFinalObject("LicensesTemp.tradeUnits", tradeTemp));
-      // createOwnersBackup(dispatch, searchResponse);
     } else {
       let accessories = get(queryObject[0], "tradeLicenseDetail.accessories");
       let tradeUnits = get(queryObject[0], "tradeLicenseDetail.tradeUnits");
-      // let owners = get(queryObject[0], "tradeLicenseDetail.owners");
       let mergedTradeUnits =
         tradeUnits &&
         tradeUnits.filter(item => !item.hasOwnProperty("isDeleted"));
@@ -652,7 +607,6 @@ export const applyTradeLicense = async (state, dispatch, activeIndex) => {
       if (!queryObject[0].applicationNumber)
         set(queryObject[0], "tradeLicenseDetail.applicationDocuments", null);
 
-      // const tradeLicenseType = getQueryArg(window.location.href, "tlType");
 
       if (queryObject[0].tradeLicenseDetail.owners[0].businessStartDate) {
         set(

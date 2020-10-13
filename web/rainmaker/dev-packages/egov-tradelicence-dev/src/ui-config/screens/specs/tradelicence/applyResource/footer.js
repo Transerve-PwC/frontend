@@ -329,14 +329,19 @@ export const callBackForNext = async (state, dispatch) => {
                       name: item.fileName
                   };
               });
-          createEstimateData(
-              LicenseData,
-              "LicensesTemp[0].estimateCardData",
-              dispatch
-          ); //get bill and populate estimate card
-          dispatch(
-              prepareFinalObject("LicensesTemp[0].reviewDocData", reviewDocData)
-          );
+          const response = await applyTradeLicense(state, dispatch, activeStep);
+          if(!!response) {
+            createEstimateData(
+                LicenseData,
+                "LicensesTemp[0].estimateCardData",
+                dispatch
+            ); //get bill and populate estimate card
+            dispatch(
+                prepareFinalObject("LicensesTemp[0].reviewDocData", reviewDocData)
+            );
+          } else {
+            return
+          }
       }
   }
   if (activeStep === SUMMARY_STEP) {
@@ -344,7 +349,7 @@ export const callBackForNext = async (state, dispatch) => {
           state.screenConfiguration.preparedFinalObject,
           "Licenses[0]"
       );
-      isFormValid = await applyTradeLicense(state, dispatch);
+      isFormValid = await applyTradeLicense(state, dispatch, activeStep);
       if (isFormValid) {
           moveToSuccess(LicenseData, dispatch);
       }

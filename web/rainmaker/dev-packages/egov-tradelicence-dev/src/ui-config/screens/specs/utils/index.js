@@ -1375,18 +1375,6 @@ export const createEstimateData = async (
     isPAID
   );
   dispatch(prepareFinalObject(jsonPath, estimateData));
-  const accessories = get(LicenseData, "tradeLicenseDetail.accessories", []);
-  if (payload) {
-    const getBillResponse = await calculateBill(getBillQueryObj);
-    getBillResponse &&
-      getBillResponse.billingSlabIds &&
-      getBillingSlabData(
-        dispatch,
-        getBillResponse.billingSlabIds,
-        tenantId,
-        accessories
-      );
-  }
 
   /** Waiting for estimate to load while downloading confirmation form */
   var event = new CustomEvent("estimateLoaded", { detail: true });
