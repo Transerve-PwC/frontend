@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OwnershipTransfer_RegisteredWill": [
     {
       "dataSources": [
@@ -31,7 +31,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "legaHeirRelationShipWithDeceased"
           }
         },
@@ -41,7 +41,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "benificiaryRelationshipwithDeceased"
           }
         }

@@ -111,6 +111,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           {
           dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name));       
           dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name",store[0].department.name));
+          dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName",store[0].divisionName));
            //getpurchaseOrder(action,state, dispatch);
           }
         }
@@ -131,6 +132,24 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           required: false,
           pattern: getPattern("Name") || null,
           jsonPath: "materialReceipt[0].receivingStore.department.name"
+        })
+      },
+      divisionName: {
+        ...getTextField({
+          label: {
+            labelName: "Indenting division Name",
+            labelKey: "STORE_INDENTING_DIVISION_NAME"
+          },
+          placeholder: {
+            labelName: "Enter Indenting Dept. Name",
+            labelKey: "STORE_INDENTING_DIVISION_NAME"
+          },
+          visible:true,
+          props: {
+            disabled: true
+          },
+         // pattern: getPattern("Email"),
+          jsonPath: "materialReceipt[0].receivingStore.divisionName"
         })
       },
       receiptDate : {

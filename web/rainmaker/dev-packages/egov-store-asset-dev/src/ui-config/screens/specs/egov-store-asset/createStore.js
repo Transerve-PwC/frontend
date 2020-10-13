@@ -415,7 +415,7 @@ export const formwizardFirstStep = {
           },
           isFieldValid: true,
           required: false,
-
+        visible:false,
           props: {
             content: "STORE_DETAILS_CENTRAL_STORE",
             jsonPath: "stores[0].isCentralStore",
@@ -709,6 +709,8 @@ const screenConfig = {
       dispatch(prepareFinalObject("stores[0].active", true));
     }
     getData(action, state, dispatch);
+    // set stores[0].isCentralStore false
+    dispatch(prepareFinalObject("stores[0].isCentralStore", false));
     return action;
   },
   components: {

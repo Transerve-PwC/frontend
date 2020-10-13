@@ -119,13 +119,14 @@ class WorkFlowContainer extends React.Component {
       case "APPROVE_FOR_CONNECTION":
         return "purpose=approve&status=success";
       case "ACTIVATE_CONNECTION":
+      case "ACTIVATE_TEMP_CONNECTION":
         return "purpose=activate&status=success";
       case "REVOCATE":
         return "purpose=application&status=revocated";
 
       case "VERIFY_AND_FORWARD_EE":
       case "VERIFY_AND_FORWARD_JE_BR":
-          return "purpose=verify&status=success";
+          return "purpose=forward&status=success";
 
       case "PAY":
       case "PAY_FOR_REGULAR_CONNECTION":
@@ -355,7 +356,7 @@ class WorkFlowContainer extends React.Component {
   };
 
   getRedirectUrl = (action, businessId, moduleName) => {
-    console.log("modulenamewater", moduleName);
+    //console.log("modulenamewater", moduleName);
     const isAlreadyEdited = getQueryArg(window.location.href, "edited");
     const tenant = getQueryArg(window.location.href, "tenantId");
     const { ProcessInstances } = this.props;
@@ -374,6 +375,8 @@ class WorkFlowContainer extends React.Component {
       baseUrl = "wns"
       if (moduleName === "NewWS1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
         bservice = "WS.ONE_TIME_FEE"
+        if(moduleName === "NewWS1")   window.localStorage.setItem("isTubeWell",false);
+        if( moduleName === "WS_TUBEWELL") window.localStorage.setItem("isTubeWell",true);
       } else {
         bservice = "SW.ONE_TIME_FEE"
       }
@@ -514,7 +517,7 @@ class WorkFlowContainer extends React.Component {
             else if (moduleName === "WS_TUBEWELL"){
               actions = actions.filter(item => item.buttonLabel === 'UPDATE_CONNECTION_HOLDER_INFO');
             }
-            else if(connectionUsagesType && connectionUsagesType==="COMMERCIAL"){
+            else if(connectionUsagesType && connectionUsagesType !=="COMMERCIAL"){
               actions = actions.filter(item => item.buttonLabel !== 'REACTIVATE_CONNECTION' && item.buttonLabel !== 'CONNECTION_CONVERSION'&& item.buttonLabel !== 'APPLY_FOR_REGULAR_INFO'); 
             } 
             else{
@@ -586,8 +589,19 @@ class WorkFlowContainer extends React.Component {
     if(businessService=='NewWS1' && applicationStatus == 'PENDING_FOR_TEMPORARY_TO_REGULAR_CONNECTION_APPROVAL'){
       //    actions.forEach(item => {
       //     if(item.buttonLabel === 'APPROVE_FOR_CONNECTION_CONVERSION')
-      //      prepareFinalObject("WaterConnection[0].waterApplicationType","REGULAR")
+      //     // prepareFinalObject("WaterConnection[0].waterApplicationType","REGULAR")
       // });
+    }
+    if(businessService=='WS_DISCONNECTION' && applicationStatus == 'PENDING_FOR_SUPERINTENTENT_APPROVAL'){
+      const {WaterConnection} = preparedFinalObject;;
+      const  activityType = WaterConnection && WaterConnection[0].activityType;
+
+      if(activityType ==="TEMPORARY_DISCONNECTION"){
+        actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_STOP_BILLING');
+      }
+      else if(activityType ==="PERMANENT_DISCONNECTION"){
+        actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_TEMP_STOP_BILLING');
+      }
     }
 
     if(businessService=='NewWS1' || businessService ==='WS_RENAME' ||businessService === "WS_CONVERSION" || businessService === "WS_DISCONNECTION" || businessService === "WS_TUBEWELL"){

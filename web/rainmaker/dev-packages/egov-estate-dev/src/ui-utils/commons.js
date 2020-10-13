@@ -8,7 +8,8 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTranslatedLabel,
-  getTextToLocalMapping
+  getTextToLocalMapping,
+  convertEpochToDate
 } from "../ui-config/screens/specs/utils";
 import store from "redux/store";
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
@@ -18,6 +19,11 @@ import {
   getFileUrlFromAPI,
   getFileUrl
 } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_DUE_DATE,
+  ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
+  ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../ui-constants'
+import moment from "moment";
 
 export const getPaymentGateways = async () => {
   try {
@@ -220,9 +226,16 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
       store.dispatch(toggleSnackbar(true, { labelName: "File Uploaded Successfully" }, "success"));
       console.log(response);
 
-      let { Auctions } = response;
+      let { Bidders } = response;
 
-      populateBiddersTable(Auctions, screenKey, componentJsonPath, preparedFinalObject)
+      store.dispatch(
+        prepareFinalObject(
+          "Properties[0].propertyDetails.bidders",
+          Bidders
+        )
+      )
+
+      populateBiddersTable(Bidders, screenKey, componentJsonPath, preparedFinalObject)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -238,58 +251,78 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 }
 
 
-export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) => {
-  console.log(auctionData);
+export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) => {
+  console.log(biddersList);
 
-  if (!!auctionData) {
-    let data = auctionData.map(item => ({
-      [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
-      [getTextToLocalMapping("Participated Bidders")]: item.participatedBidders || "-",
+  if (!!biddersList) {
+    let data = biddersList.map(item => ({
+      [getTextToLocalMapping("Auction Id")]: item.auctionId || "-",
+      [getTextToLocalMapping("Bidder Name")]: item.bidderName || "-",
       [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
-      [getTextToLocalMapping("Deposit Date")]: item.depositDate || "-",
-      [getTextToLocalMapping("EMD Validity Date")]: item.emdValidityDate || "-",
-      [getTextToLocalMapping("Mark as Refunded")]: React.createElement(
+      [getTextToLocalMapping("Deposit Date")]: convertEpochToDate(item.depositDate) || "-",
+      [getTextToLocalMapping("EMD Validity Date")]: convertEpochToDate(item.emdValidityDate) || "-",
+      [getTextToLocalMapping("Initiate Refund")]: React.createElement("div", {}, [
+        React.createElement(
         "input",
         {
           type:"checkbox",
-          defaultChecked: false, 
+          defaultChecked: !!(item.refundStatus) ? true : false, 
           onClick: (e) => { 
-            if (confirm('Are you sure you want to mark/unmark as refunded?')) {
-              console.log('Done');
-              setTimeout(() => {
-                debugger;
-                let auctionData = store.getState().screenConfiguration.preparedFinalObject.Auctions;
-                console.log("auctionData", auctionData);
-                /* const reqBody = {
-                  Auctions: [{
-                    id: "",
-                    propertyId: ""
-                  }]
-                };
-                const response = await httpRequest(
-                  "post",
-                  "/est-services/auctions/_update",
-                  "",
-                  "",
-                  reqBody
-                );
+            if (confirm('Are you sure you want to initiate refund?')) {
+              let isMarked = e.target.checked;
+              setTimeout((e) => {
+                let { bidders } = store.getState().screenConfiguration.preparedFinalObject.Properties[0].propertyDetails;
+                let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
 
-                if (response) {
-                  store.dispatch(
-                    toggleSnackbar(
-                      true,
-                      { labelName: "Success", labelKey: "ES_SUCCESS" },
-                      "success"
+                bidders.map((item, index) => {
+                  if (bidderData[1] == item.bidderName) {
+                    item.refundStatus = isMarked ? "Initiated" : "";
+                    store.dispatch(
+                      handleField(
+                        "refund", 
+                        `components.div.children.auctionTableContainer.props.data[${index}].ES_INITIATE_REFUND.props.children["1"]`,
+                        "props.children",
+                        "Initiated"
+                      )
                     )
-                  ); 
-                } */
+                  }
+                  return item;
+                })
+
+                let refundedBidders = bidders.filter(item => item.refundStatus == "Initiated");
+
+                store.dispatch(
+                  handleField(
+                    "refund", 
+                    "components.div.children.submitButton",
+                    "visible",
+                    (bidders.length === refundedBidders.length)
+                  )
+                )
+                store.dispatch(
+                  handleField(
+                    "refund", 
+                    "components.div.children.saveButton",
+                    "visible",
+                    (bidders.length !== refundedBidders.length)
+                  )
+                )
+
+                store.dispatch(
+                  prepareFinalObject(
+                    "Properties[0].propertyDetails.bidders",
+                    bidders
+                  )
+                )
               }, 2000)
             } else {
               e.preventDefault();
               console.log('Cancelled');
             }
           }
-        })
+        }),
+        React.createElement("span", {}, item.refundStatus)
+      ])
     }));
 
     store.dispatch(
@@ -302,27 +335,6 @@ export const populateBiddersTable = (auctionData, screenKey, componentJsonPath) 
     );
   }
 }
-
-export const getAuctionDetails = async requestBody => {
-  try {
-    const response = await httpRequest(
-      "post",
-      "/est-services/auctions/_search",
-      "_search",
-      [],
-      requestBody
-    );
-    return response;
-  } catch (error) {
-    store.dispatch(
-      toggleSnackbar(
-        true,
-        { labelName: error.message, labelKey: error.message },
-        "error"
-      )
-    );
-  }
-};
 
 export const setDocuments = async (
   payload,
@@ -368,3 +380,77 @@ export const setDocuments = async (
     });
   reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
 };
+
+export const setXLSTableData = async({Calculations, componentJsonPath, screenKey}) => {
+
+  let data  = Calculations.map(item => ({
+    [ES_MONTH]: !!item.month && moment(new Date(item.month)).format("DD MMM YYYY"),
+    [ES_RENT_DUE]: !!item.rentDue && item.rentDue.toFixed(2),
+    [ES_RENT_RECEIVED]: '',
+    [ES_RECEIPT_NO]: !!item.rentReceiptNo && item.rentReceiptNo,
+    [ES_RENT_DUE_DATE]: !!item.date && moment(new Date(item.date)).format("DD MMM YYYY"),
+    [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest.toFixed(2),
+    [ES_ST_GST_RATE]:!!item.stGstRate && item.stGstRate.toFixed(2),
+    [ES_ST_GST_DUE]: !!item.stGstDue && item.stGstDue.toFixed(2),
+    [ES_PAID]: !!item.paid && item.paid.toFixed(2),
+    [ES_DATE_OF_RECEIPT]: !!item.dateOfReceipt && moment(new Date(item.dateOfReceipt)).format("DD MMM YYYY"),
+    [ES_NO_OF_DAYS]: !!item.noOfDays && item.noOfDays,
+    [ES_INTEREST_ON_DELAYED_PAYMENT]: !!item.delayedPaymentOfGST && item.delayedPaymentOfGST.toFixed(2)
+  }))
+
+  if(data.length > 1) {
+    store.dispatch(
+      handleField(
+          screenKey,
+          componentJsonPath,
+          "props.data",
+          data
+      )
+    );
+    store.dispatch(
+      handleField(
+          screenKey,
+          componentJsonPath,
+          "visible",
+          true
+      )
+    );
+  }
+  // store.dispatch(
+  //   prepareFinalObject("Properties[0].Calculations", Calculations)
+  // )
+ 
+}
+
+export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStoreId) => {
+  const queryObject = [
+    {key: "tenantId", value: getTenantId().split('.')[0]},
+    {key: "fileStoreId", value: fileStoreId}
+  ]
+  try {
+    store.dispatch(toggleSpinner());
+    let response = await httpRequest(
+      "post",
+      getUrl,
+      "",
+      queryObject
+    )
+   
+    if(!!response) {
+      let {Calculations} = response
+        if(!!Calculations.length){
+          setXLSTableData({Calculations:Calculations, componentJsonPath, screenKey})
+      }
+    }
+    store.dispatch(toggleSpinner());
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+    store.dispatch(toggleSpinner());
+  }
+}

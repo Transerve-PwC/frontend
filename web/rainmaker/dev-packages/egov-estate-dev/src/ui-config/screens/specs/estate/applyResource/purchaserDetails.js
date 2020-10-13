@@ -274,7 +274,7 @@ const modeOfTransferField = {
   },
   // required: true,
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.modeOfTransfer",
-  sourceJsonPath: "applyScreenMdmsData.EstatePropertyService.modeOfTransfer",
+  sourceJsonPath: "applyScreenMdmsData.EstateServices.modeOfTransfer",
   gridDefination: {
     xs: 12,
     sm: 6

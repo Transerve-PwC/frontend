@@ -135,19 +135,19 @@ export const getIndentNoteListDetailsView = (isReview = true) => {
           jsonPath: "materialIssues[0].fromStore.department.name",
         }
       ),
-      // IssueToEmployee: getLabelWithValue(
-      //   { labelName: "Issue To Employee",
-      //   labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_TO_EMPLOYEE" },
-      //   {
-      //     jsonPath: "materialIssues[0].issuedToEmployee"
-      //   }
-      // ),
-      // issuedToDesignation: getLabelWithValue(
-      //   {labelName: "Designation", labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION" },
-      //   {
-      //     jsonPath: "materialIssues[0].issuedToDesignation",
-      //   }
-      // ),
+      IssueToEmployee: getLabelWithValue(
+        { labelName: "Issue To Employee",
+        labelKey: "STORE_MTON_ISSUED_TO_EMP" },
+        {
+          jsonPath: "materialIssues[0].issuedToEmployee"
+        }
+      ),
+      issuedToDesignation: getLabelWithValue(
+        {labelName: "Designation", labelKey: "STORE_MTON_ISSUED_TO_EMP_DEGIGNATION" },
+        {
+          jsonPath: "materialIssues[0].issuedToDesignation",
+        }
+      ),
       Remark: getLabelWithValue(
         { labelName: "Remark",
         labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK" },
@@ -176,13 +176,13 @@ export const getIndentNoteListDetailsView = (isReview = true) => {
       //   }
       // ),
       createdBy: getLabelWithValue(
-        { labelName: "Created by", labelKey: "STORE_PURCHASE_ORDER_CREATEBY" },
+        { labelName: "Created by", labelKey: "STORE_CREATEBY_MR_ISSUE" },
         {
           jsonPath: "materialIssues[0].createdByName",
         }
       ),
       designation: getLabelWithValue(
-        { labelName: "Designation", labelKey: "STORE_PURCHASE_ORDER_DSGNTN" },
+        { labelName: "Designation", labelKey: "STORE_DSGNTN_MR_ISSUE" },
         {
           jsonPath: "materialIssues[0].designation",
         }

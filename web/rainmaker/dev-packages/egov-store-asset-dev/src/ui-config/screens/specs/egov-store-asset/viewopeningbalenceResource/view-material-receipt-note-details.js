@@ -52,7 +52,7 @@ import {
               labelName: "Opening Qty",
               labelKey: "STORE_MATERIAL_OPENNING_BALANCE_OPENING_QTY"
             },
-            { jsonPath: "materialReceipt[0].receiptDetails[0].userQuantity",          
+            { jsonPath: "materialReceipt[0].receiptDetails[0].userReceivedQty",          
           }
           ),
           unitRate: getLabelWithValue(

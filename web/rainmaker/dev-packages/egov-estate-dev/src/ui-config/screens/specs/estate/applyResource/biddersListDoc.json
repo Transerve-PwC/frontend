@@ -1,7 +1,7 @@
 {
   "ResponseInfo": null,
   "MdmsRes": {
-    "EstatePropertyService": {
+    "EstateServices": {
       "biddersListDoc": [
         {
           "code": "MasterEst",

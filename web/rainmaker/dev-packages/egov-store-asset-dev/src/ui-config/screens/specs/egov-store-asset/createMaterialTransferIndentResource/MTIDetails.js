@@ -65,7 +65,7 @@ const MTIDetailsCard = {
               },
               required: true,
               errorMessage:"STORE_VALIDATION_UOM_NAME",
-              jsonPath: "indents[0].indentDetails[0].uom.code",
+              jsonPath: "indents[0].indentDetails[0].uom.name",
               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
               props: {
                 disabled:true,

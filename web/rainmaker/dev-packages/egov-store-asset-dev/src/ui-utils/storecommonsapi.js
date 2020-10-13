@@ -202,14 +202,14 @@ export const getOpeningBalanceSearchResults = async queryObject => {
   }
 
 };
-export const createOpeningBalance = async (queryObject, payload, dispatch) => {
+export const createOpeningBalance = async (queryObject, payload, dispatch,wfobject) => {
   try {
     const response = await httpRequest(
       "post",
       "/store-asset-services/openingbalance/_create",
       "",
       queryObject,
-      { materialReceipt: payload }
+      { materialReceipt: payload,workFlowDetails: wfobject }
     );
     return response;
   } catch (error) {

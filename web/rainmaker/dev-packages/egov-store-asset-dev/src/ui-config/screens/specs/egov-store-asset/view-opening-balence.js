@@ -171,8 +171,19 @@ import { getOpeningBalanceData } from "./viewopeningbalenceResource/functions";
               }
             }
           },
+          taskStatus: {
+            uiFramework: "custom-containers-local",
+            componentPath: "WorkFlowContainer",
+            moduleName: "egov-store-asset",
+            visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+            props: {
+              moduleName: "StoreManagement",
+              dataPath: "materialReceipt",
+              updateUrl: "/store-asset-services/openingbalance/_updateStatus"
+            }
+          },
           masterView,
-          footer,
+          //footer,
          // footer: masterViewFooter()
         }
       },

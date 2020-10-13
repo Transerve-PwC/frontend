@@ -162,7 +162,7 @@ export const getMdmsData = async dispatch => {
     let UsageType=[] , subUsageType=[];
     if (payload.MdmsRes['ws-services-calculation'].PipeSize !== undefined && payload.MdmsRes['ws-services-calculation'].PipeSize.length > 0) {
       let pipeSize = [];
-      payload.MdmsRes['ws-services-calculation'].PipeSize.forEach(obj => pipeSize.push({ code: obj.size, name: obj.id, isActive: obj.isActive }));
+      payload.MdmsRes['ws-services-calculation'].PipeSize.forEach(obj => pipeSize.push({ code: obj.size, name: obj.id, isActive: obj.isActive, charges : obj.charges }));
       payload.MdmsRes['ws-services-calculation'].pipeSize = pipeSize;
       let waterSource = [], GROUND = [], SURFACE = [], BULKSUPPLY = [];
       payload.MdmsRes['ws-services-masters'].waterSource.forEach(obj => {
@@ -260,8 +260,8 @@ export const getData = async (action, state, dispatch) => {
         dispatch(prepareFinalObject("WaterConnection", payloadWater.WaterConnection));
 
         if(payloadWater && payloadWater.WaterConnection.length > 0){
-          const {usageCategory} = payloadWater.WaterConnection[0].waterProperty;
-
+          const {usageCategory } = payloadWater.WaterConnection[0].waterProperty;
+          const {applicationStatus,proposedPipeSize} = payloadWater.WaterConnection[0];
           let subTypeValues = get(
                 state.screenConfiguration.preparedFinalObject,
                 "applyScreenMdmsData.PropertyTax.subUsageType"
@@ -272,6 +272,53 @@ export const getData = async (action, state, dispatch) => {
                         return (cur.code.startsWith(usageCategory))
                       });
                 dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage));
+
+                // check for security deposite
+                if(applicationStatus === "PENDING_FOR_METER_INSTALLATION" ){
+                    if(proposedPipeSize == 15){
+                      const {applyScreenMdmsData} = state.screenConfiguration.preparedFinalObject;
+
+                      const pipeSize = applyScreenMdmsData['ws-services-calculation'].PipeSize.filter(pipeSize => pipeSize.size == 15);
+                      const securityCharges = pipeSize[0].charges[0].security;
+              
+                      dispatch(
+                        handleField(
+                          "apply",
+                          "components.div.children.formwizardThirdStep.children.additionDetails.children.cardContent.children.OtherChargeContainer.children.cardContent.children.chargesDetails.children.enterSecurityAmount",
+                          "props.value",
+                          securityCharges
+                        )
+                      );
+
+                      dispatch(
+                        handleField(
+                          "apply",
+                          "components.div.children.formwizardThirdStep.children.additionDetails.children.cardContent.children.OtherChargeContainer.children.cardContent.children.chargesDetails.children.enterSecurityAmount",
+                          "props.disabled",
+                          true
+                        )
+                      );
+                    }else{
+                      dispatch(
+                        handleField(
+                          "apply",
+                          "components.div.children.formwizardThirdStep.children.additionDetails.children.cardContent.children.OtherChargeContainer.children.cardContent.children.chargesDetails.children.enterSecurityAmount",
+                          "props.disabled",
+                          false
+                        )
+                      );
+                    }
+                }
+                else {
+                  dispatch(
+                    handleField(
+                      "apply",
+                      "components.div.children.formwizardThirdStep.children.additionDetails.children.cardContent.children.OtherChargeContainer.children.cardContent.children.chargesDetails.children.enterSecurityAmount",
+                      "props.disabled",
+                      true
+                    )
+                  );
+                }
         }
       }
       const waterConnections = payloadWater ? payloadWater.WaterConnection : []
@@ -511,13 +558,26 @@ const screenConfig = {
       if (applicationNumber.includes("SW")) {
         dispatch(prepareFinalObject("applyScreen.water", false));
         dispatch(prepareFinalObject("applyScreen.sewerage", true));
+        dispatch(prepareFinalObject("applyScreen.tubewell", false));
         toggleWaterFeilds(action, false);
         toggleSewerageFeilds(action, true);
       } else {
+       const isTubeWell = window.localStorage.getItem("isTubeWell");
+       if(isTubeWell){
+        dispatch(prepareFinalObject("applyScreen.water", false));
+        dispatch(prepareFinalObject("applyScreen.sewerage", false));
+        dispatch(prepareFinalObject("applyScreen.tubewell", true));
+        toggleWaterFeilds(action, false);
+        toggleSewerageFeilds(action, false);
+       }else{
         dispatch(prepareFinalObject("applyScreen.water", true));
         dispatch(prepareFinalObject("applyScreen.sewerage", false));
+        dispatch(prepareFinalObject("applyScreen.tubewell", false));
         toggleWaterFeilds(action, true);
         toggleSewerageFeilds(action, false);
+       }
+       
+       window.localStorage.removeItem("isTubeWell");
       }
     } else {
       togglePropertyFeilds(action, false)

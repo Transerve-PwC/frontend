@@ -19,6 +19,19 @@ const styles = {
 
 class MyConnections extends React.Component {
   getConnectionDetails = data => {
+
+    if(data.activityType){
+      switch(data.activityType){
+        case "UPDATE_CONNECTION_HOLDER_INFO" :  window.localStorage.setItem("wns_workflow","WS_RENAME"); break;
+        case "REACTIVATE_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTIONA"); break;
+        case "TEMPORARY_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;
+        case "APPLY_FOR_REGULAR_INFO":  window.localStorage.setItem("wns_workflow","NewWS1"); break;
+        case "NEW_WS_CONNECTION":  window.localStorage.setItem("wns_workflow","NewWS1"); break;
+     //   case "PERMANENT_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;
+        case "CONNECTION_CONVERSION":  window.localStorage.setItem("wns_workflow","WS_CONVERSION"); break;
+        case "NEW_TUBEWELL_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
+      }
+}
     window.location.href = `/citizen/wns/connection-details?connectionNumber=${data.connectionNo}&tenantId=${data.property.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
   }
 

@@ -234,6 +234,7 @@ console.log(matcodes)
         jsonPath: "materialIssues[0].fromStore.divisionName",
       }),
   
+
       IndentingDetpName: {
         ...getTextField({
           label: {
@@ -250,6 +251,42 @@ console.log(matcodes)
           required: false,
           pattern: getPattern("Name") || null,
           jsonPath: "materialIssues[0].fromStore.department.name"
+        })
+      },
+      issuedToEmployee: {
+        ...getTextField({
+          label: {
+            labelName: "Issued to Employee",
+            labelKey: "STORE_MTON_ISSUED_TO_EMP"
+          },
+          placeholder: {
+            labelName: "Issued to Employee",
+            labelKey: "STORE_MTON_ISSUED_TO_EMP"
+          },
+          props: {
+            disabled: true,       
+          },
+          required: false,
+          pattern: getPattern("Name") || null,
+          jsonPath: "materialIssues[0].issuedToEmployee"
+        })
+      },
+      issuedToDesignation: {
+        ...getTextField({
+          label: {
+            labelName: "Issued to Employee Degignation",
+            labelKey: "STORE_MTON_ISSUED_TO_EMP_DEGIGNATION"
+          },
+          placeholder: {
+            labelName: "Issued to Employee Degignation",
+            labelKey: "STORE_MTON_ISSUED_TO_EMP_DEGIGNATION"
+          },
+          props: {
+            disabled: true,       
+          },
+          required: false,
+          pattern: getPattern("Name") || null,
+          jsonPath: "materialIssues[0].issuedToDesignation"
         })
       },
       IssueDate: {
@@ -276,12 +313,12 @@ console.log(matcodes)
       createdBy: {
         ...getTextField({
           label: {
-            labelName: "Created by",
-            labelKey: "STORE_PURCHASE_ORDER_CREATEBY"
+            labelName: "Issued By Employee",
+            labelKey: "STORE_CREATEBY_MR_ISSUE"
           },
           placeholder: {
-            labelName: "Enter Created By",
-            labelKey: "STORE_PURCHASE_ORDER_CREATEBY_PLCEHLDER"
+            labelName: "Enter Issued By Employee",
+            labelKey: "STORE_CREATEBY_MR_ISSUE"
           },
           props: {
             disabled: true
@@ -293,12 +330,12 @@ console.log(matcodes)
       designation: {
         ...getTextField({
           label: {
-            labelName: "Designation",
-            labelKey: "STORE_PURCHASE_ORDER_DSGNTN"
+            labelName: "Issued By Employee Designation",
+            labelKey: "STORE_DSGNTN_MR_ISSUE"
           },
           placeholder: {
-            labelName: "Enter Designation",
-            labelKey: "STORE_PURCHASE_ORDER_DSGNTN_PLCEHLDER"
+            labelName: "Enter Issued By Employee Designation",
+            labelKey: "STORE_DSGNTN_MR_ISSUE"
           },
           props: {
             disabled: true

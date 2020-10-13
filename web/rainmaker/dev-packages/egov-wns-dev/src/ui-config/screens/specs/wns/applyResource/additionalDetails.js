@@ -264,7 +264,7 @@ export const additionDetails = getCommonCard({
       labelKey: "WS_OTHER_CHARGE_DETAILS"
     }),
     chargesDetails: getCommonContainer({
-      enterArea: getTextField({
+      enterSecurityAmount: getTextField({
         label: {
           labelKey: "WS_ADDN_DETAILS_SECURITY_CHARGES_LABEL"
         },

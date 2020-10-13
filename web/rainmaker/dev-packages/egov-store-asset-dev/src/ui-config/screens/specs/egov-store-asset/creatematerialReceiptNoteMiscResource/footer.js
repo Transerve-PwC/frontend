@@ -544,6 +544,8 @@ export const footer = getCommonApplyFooter({
            }
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.code", response.materialIssues[0].toStore.code));
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name", response.materialIssues[0].toStore.name));
+           dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name", response.materialIssues[0].toStore.department.name));
+           dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName", response.materialIssues[0].toStore.divisionName));
            dispatch(prepareFinalObject("MiscMaterilList", material));
         }
         else{

@@ -170,6 +170,42 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
           }
         })
       },
+      indentDeptName: {
+        ...getTextField({
+          label: {
+            labelName: "Indenting Dept. Name",
+            labelKey: "STORE_MTON_INDENT_DEPT_NAME"
+          },
+          placeholder: {
+            labelName: "Enter Indenting Dept. Name",
+            labelKey: "STORE_MTON_INDENT_DEPT_NAME_PLCEHLDER"
+          },
+          visible:true,
+          props: {
+            disabled: true
+          },
+         // pattern: getPattern("Email"),
+          jsonPath: "materialReceipt[0].receivingStore.department.name"
+        })
+      },
+      divisionName: {
+        ...getTextField({
+          label: {
+            labelName: "Indenting division Name",
+            labelKey: "STORE_INDENTING_DIVISION_NAME"
+          },
+          placeholder: {
+            labelName: "Enter Indenting Dept. Name",
+            labelKey: "STORE_INDENTING_DIVISION_NAME"
+          },
+          visible:true,
+          props: {
+            disabled: true
+          },
+         // pattern: getPattern("Email"),
+          jsonPath: "materialReceipt[0].receivingStore.divisionName"
+        })
+      }, 
       receiptType: {
         ...getSelectField({
           label: { labelName: "Receipt Type", labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_TYPE" },

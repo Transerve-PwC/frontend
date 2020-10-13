@@ -15,8 +15,11 @@ import { getPropertyDetails } from "./connectionDetailsResource/property-details
 import { getOwnerDetails, connHolderDetailsSummary, connHolderDetailsSameAsOwnerSummary } from "./connectionDetailsResource/owner-deatils";
 const tenantId = getQueryArg(window.location.href, "tenantId")
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
-const service = getQueryArg(window.location.href, "service")
+const service = getQueryArg(window.location.href, "service");
+window.localStorage.getItem("wns_workflow")
+const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NEWWS1" ? "NewWS1":  window.localStorage.getItem("wns_workflow") : "NewSW1";
 
+const serviceUrl = serviceModuleName === "NewSW1" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
 const getApplicationNumber = (dispatch,connectionsObj) => {
   let appNos = "";
   if(connectionsObj.length > 1){
@@ -223,6 +226,7 @@ const screenConfig = {
               },
               ...headerrow
             },
+      
             helpSection: {
               uiFramework: "custom-atoms",
               componentPath: "Container",
@@ -263,11 +267,23 @@ const screenConfig = {
                     })
                 },
               }
-            }
+            },
+            ...connectionDetailsFooter,
           }
         },
         connectionDetails,
-        connectionDetailsFooter
+      //  connectionDetailsFooter
+      taskStatus: {
+        uiFramework: "custom-containers-local",
+        componentPath: "WorkFlowContainer",
+        moduleName: "egov-wns",
+        // visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+        props: {
+          dataPath: "WaterConnection",
+          moduleName: serviceModuleName,
+          updateUrl: serviceUrl
+        }
+      },
       }
     }
   }

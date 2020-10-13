@@ -72,10 +72,16 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           {
             dispatch(prepareFinalObject("transferInwards[0].issueNumber",materialIssues[0].issueNumber));
             dispatch(prepareFinalObject("transferInwards[0].receivingStore.code",materialIssues[0].toStore.code));
+            dispatch(prepareFinalObject("transferInwards[0].receivingStore.name",materialIssues[0].toStore.name));
             dispatch(prepareFinalObject("transferInwards[0].issueingStore.code",materialIssues[0].fromStore.code));
+            dispatch(prepareFinalObject("transferInwards[0].issueingStore.name",materialIssues[0].fromStore.name));
             dispatch(prepareFinalObject("transferInwards[0].issueDate", convertDateToEpoch(materialIssues[0].issueDate)));
             dispatch(prepareFinalObject("transferInwards[0].indent.issueStore.code",materialIssues[0].indent.issueStore.code));
+            dispatch(prepareFinalObject("transferInwards[0].indent.issueStore.name",materialIssues[0].indent.issueStore.name));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.code",materialIssues[0].indent.indentStore.code));
+            dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.name",materialIssues[0].indent.indentStore.name));
+            // dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.department.name",materialIssues[0].indent.indentStore.department.name));
+            // dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.divisionName",materialIssues[0].indent.indentStore.divisionName));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentPurpose",materialIssues[0].indent.indentPurpose));
 
             let materialIssueDetails = get(
@@ -127,6 +133,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           }
         })
       },
+
       receiptType: {
         ...getTextField({
           label: { labelName: "Receipt Type", labelKey: "STORE_MATERIAL_RECEIPT_RECEIPT_TYPE" },
@@ -170,7 +177,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             disabled: true,       
           },
           required: false,
-          jsonPath: "transferInwards[0].indent.indentStore.code",
+          jsonPath: "transferInwards[0].indent.indentStore.name",
          
           
         })
@@ -186,7 +193,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             disabled: true,       
           },
           required: false,
-          jsonPath: "transferInwards[0].indent.issueStore.code",
+          jsonPath: "transferInwards[0].indent.issueStore.name",
          
           
         })
@@ -252,7 +259,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           },
           placeholder: {
             labelName: "Enter Created By",
-            labelKey: "STORE_PURCHASE_ORDER_CREATEBY_PLCEHLDER"
+            labelKey: "STORE_PURCHASE_ORDER_CREATEBY"
           },
           props: {
             disabled: true
@@ -263,10 +270,10 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
       },
       degignation: {
         ...getTextField({
-          label: { labelName: "degignation", labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION" },
+          label: { labelName: "Designation of Issue created by Employee", labelKey: "STORE_PURCHASE_ORDER_DSGNTN" },
           placeholder: {
             labelName: "degignation",
-            labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION"
+            labelKey: "STORE_PURCHASE_ORDER_DSGNTN"
           },
           props: {
             disabled: true,       

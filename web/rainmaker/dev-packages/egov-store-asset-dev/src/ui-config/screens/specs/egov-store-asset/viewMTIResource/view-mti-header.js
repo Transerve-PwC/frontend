@@ -71,6 +71,20 @@ export const getMTIHeaderView = (isReview = true) => {
         },
         { jsonPath: "indents[0].indentStore.name" }
       ),
+      indentDeptName: getLabelWithValue(
+        {
+          labelName: "Indenting Dept. Name",
+          labelKey: "STORE_MTON_INDENT_DEPT_NAME"
+        },
+        { jsonPath: "indents[0].indentStore.department.name" }
+      ),
+      divisionName: getLabelWithValue(
+        {
+          labelName: "Indenting division Name",
+          labelKey: "STORE_INDENTING_DIVISION_NAME"
+        },
+        { jsonPath: "indents[0].indentStore.divisionName" }
+      ),
       indentDate: getLabelWithValue(
         {
           labelName: "Indent Date",

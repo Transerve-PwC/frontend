@@ -87,13 +87,13 @@ export const getMaterialTransferInwordNoteListDetailsView = (isReview = true) =>
     break1: getBreak(),
     viewOne: getCommonContainer({
 
-      mrnNUmber: getLabelWithValue(
-        {
-          labelName: "Material Receipt Number",
-          labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER"
-        },
-        { jsonPath: "transferInwards[0].mrnNumber" }
-      ),
+      // mrnNUmber: getLabelWithValue(
+      //   {
+      //     labelName: "Material Receipt Number",
+      //     labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER"
+      //   },
+      //   { jsonPath: "transferInwards[0].mrnNumber" }
+      // ),
       TransferOutwordNo: getLabelWithValue(
         {
           labelName: "Transfer Outword No.",

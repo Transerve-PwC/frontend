@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_NOC": [
     {
       "dataSources": [
@@ -31,7 +31,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "modeOfTransfer"
           }
         }
@@ -411,6 +411,13 @@
                 "path": "transferee.name",
                 "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
                 "errorMessage": "ES_ERR_PURCHASER_NAME"
+              },
+              {
+                "label": "ES_DOB_LABEL",
+                "placeholder": "ES_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                "path": "transferee.dob"
               },
               {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",

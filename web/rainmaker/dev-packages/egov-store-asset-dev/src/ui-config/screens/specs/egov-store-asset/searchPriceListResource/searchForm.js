@@ -110,7 +110,7 @@ export const searchForm = getCommonCard({
       },
       isFieldValid: true,
       required: false,
-
+      visible:false,
       props: {
         content: "STORE_MATERIAL_TYPE_ACTIVE",
         jsonPath: "searchScreen.active",

@@ -70,7 +70,10 @@ const CheckboxContainerConnHolder = Loadable({
    loader: () => import("./CheckboxContainerConnHolder"),
     loading: () => <Loading />
   });
-
+  const WorkFlowContainer = Loadable({
+    loader: () => import("./WorkFlowContainer"),
+    loading: () => <Loading />
+  });
 export {
   CustomTabContainer,
   LabelContainer,
@@ -86,5 +89,6 @@ export {
   RadioGroupContainer,
   EstimateOverviewCardContainer,
   ModificationDocumentListContainer,
-  CheckboxContainerConnHolder
+  CheckboxContainerConnHolder,
+  WorkFlowContainer
 };

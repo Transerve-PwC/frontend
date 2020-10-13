@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_OwnershipTransfer_SaleDeed": [
     {
       "dataSources": [
@@ -24,7 +24,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "modeOfTransfer"
           }
         },
@@ -44,7 +44,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "modeOfTransfer",
                 "filter": "modeOfTransfer..code"
               }
@@ -478,6 +478,13 @@
                 "disability": "application.applicationDetails.transferee.type == 'Existing'",
                 "prefillValue": "application.applicationDetails.transferee.type == 'Existing' ? selectedPurchaser.ownerDetails.guardianName : application.applicationDetails.transferee.fatherOrHusbandName",
                 "errorMessage": "ES_ERR_FATHER_HUSBAND_NAME"
+              },
+              {
+                "label": "ES_DOB_LABEL",
+                "placeholder": "ES_DOB_PLACEHOLDER",
+                "type": "DATE_FIELD",
+                "jsonPath": "Applications[0].applicationDetails.transferee.dob",
+                "path": "transferee.dob"
               },
               {
                 "label": "ES_RELATION_SHIP_LABEL",

@@ -112,6 +112,11 @@ const OwnerHeader = Loadable({
   loader: () => import("./OwnerHeader"),
   loading: () => <Loading />
 });
+const Footer = Loadable({
+  loader: () => import("./Footer"),
+  loading: () => <Loading />
+});
+
 
 export {
   TestMolecules,
@@ -135,7 +140,8 @@ export {
   Applications,
   WnsHowItWorks,
   FeesEstimateOverviewCard,
-  OwnerHeader
+  OwnerHeader,
+  Footer
 
   // PropertyTaxDetails
 };

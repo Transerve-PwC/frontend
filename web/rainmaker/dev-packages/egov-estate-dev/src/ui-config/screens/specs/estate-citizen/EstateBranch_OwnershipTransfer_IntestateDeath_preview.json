@@ -84,6 +84,14 @@
                         "jsonPath": "Applications[0].applicationDetails.transferee.name"
                     },
                     {
+                        "label": "ES_LEGAL_FATHER_HUSBAND_NAME_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.fatherOrHusbandName"
+                    },
+                    {
+                        "label": "ES_RELATION_SHIP_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.relation"
+                    },
+                    {
                         "label": "ES_LEGAL_HEIR_DOB_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.dob",
                         "type": "date"

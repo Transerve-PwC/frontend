@@ -41,13 +41,15 @@ import {
   get
 } from "lodash";
 import {
-  getSearchResults
+  getSearchResults,
+  populateBiddersTable
 } from "../../../../ui-utils/commons";
 import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -111,18 +113,18 @@ dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].
 
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   const documentTypePayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
       name: "documents"
     }]
   }]
   const documentRes = await getMdmsData(dispatch, documentTypePayload);
   const {
-    EstatePropertyService
+    EstateServices
   } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
     documents = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = documents.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
   const estateMasterDocuments = masterDocuments.map(item => ({
@@ -185,11 +187,11 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
 
 export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = previousDocsData && previousDocsData.MdmsRes ? previousDocsData.MdmsRes : {}
   const {
     previousOwnerDocs = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = previousOwnerDocs.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
 
@@ -250,11 +252,11 @@ export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) =>
 
 const setBiddersDoc = (action, state, dispatch) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
   const {
     biddersListDoc = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
 
   const findMasterItem = biddersListDoc.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
@@ -275,11 +277,11 @@ const setBiddersDoc = (action, state, dispatch) => {
 
 const getCompanyDocs = (action, state, dispatch, owner = 0) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = companyDocsData && companyDocsData.MdmsRes ? companyDocsData.MdmsRes : {}
   const {
     documents = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = documents.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
 
@@ -455,7 +457,7 @@ export const setData = (properties, screenName, dispatch, state) => {
 
     const categories = get(
       state.screenConfiguration.preparedFinalObject,
-      "applyScreenMdmsData.EstatePropertyService.categories"
+      "applyScreenMdmsData.EstateServices.categories"
     )
 
     const filteredCategory = categories.filter(item => item.code === category)
@@ -476,6 +478,21 @@ export const setData = (properties, screenName, dispatch, state) => {
       )
     )
   }
+
+  /* Show current bidders list data if uploaded */
+  if (properties[0].propertyDetails.bidders) {
+    dispatch(
+      handleField(
+        screenName,
+        "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+        "visible",
+        true
+      )
+    );
+    let { bidders } = properties[0].propertyDetails;
+    populateBiddersTable(bidders, screenName, "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer")
+  }
+  /*******************************************************************************/
 }
 
 export const getPMDetailsByFileNumber = async (
@@ -522,8 +539,17 @@ export const getPMDetailsByFileNumber = async (
 }
 
 const getData = async (action, state, dispatch) => {
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  if (!fileNumber) {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
+      )
+    )
+  }
   const mdmsPayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
       name: "categories"
     },
@@ -541,22 +567,11 @@ const getData = async (action, state, dispatch) => {
 
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
-  
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
 
-  if (fileNumber) {
+  if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "PROPERTY_MASTER"}]
-      )
-    )
   }
   setDocumentData(action, state, dispatch);
-  
-  // getCompanyDocs(state, dispatch)
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
 

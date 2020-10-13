@@ -5,13 +5,10 @@ import SuccessMessage from "../../modules/SuccessMessage";
 import { connect } from "react-redux";
 import { createWaterTankerApplication, downloadBWTApplication } from "egov-ui-kit/redux/bookings/actions";
 import jp from "jsonpath";
-import {
-	getQueryArg,
-	setBusinessServiceDataToLocalStorage,
-	getFileUrlFromAPI,
-	setDocuments
-} from "egov-ui-framework/ui-utils/commons";
-
+// import {
+// 	getFileUrlFromAPI
+// } from "egov-ui-framework/ui-utils/commons";
+import {getFileUrlFromAPI} from '../../modules/commonFunction'
 import "./index.css";
 import { SortDialog, Screen } from "modules/common";
 import isEmpty from "lodash/isEmpty";
@@ -73,7 +70,7 @@ class CreateWBTApplicationSuccess extends Component {
 
   downloadApplicationButton = async (e) => {
    await this.downloadApplicationFunction();
-    const {DownloadBWTApplicationDetails}=this.props;
+    const {DownloadBWTApplicationDetails,userInfo}=this.props;
 
 		var documentsPreview = [];
 		let documentsPreviewData;
@@ -86,7 +83,7 @@ class CreateWBTApplicationSuccess extends Component {
 				});
 				let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 				let fileUrls =
-					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
+					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 				
 	
 				documentsPreview = documentsPreview.map(function (doc, index) {

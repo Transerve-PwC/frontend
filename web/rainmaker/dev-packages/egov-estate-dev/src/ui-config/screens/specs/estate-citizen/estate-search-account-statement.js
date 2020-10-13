@@ -23,7 +23,7 @@ import {
 //       MdmsCriteria: {
 //         tenantId: commonConfig.tenantId,
 //         moduleDetails: [{
-//           moduleName: "EstatePropertyService",
+//           moduleName: ESTATE_SERVICES_MDMS_MODULE,
 //           masterDetails: [{
 //             name: "categories"
 //           }]

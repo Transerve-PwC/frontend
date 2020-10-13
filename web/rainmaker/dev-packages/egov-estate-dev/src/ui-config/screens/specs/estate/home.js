@@ -55,7 +55,7 @@ const cardItems = [
       labelName: "Refund"
     },
     icon: < FormIcon / > ,
-    route: "search"
+    route: "search?type=refund"
   },
   {
     label: {

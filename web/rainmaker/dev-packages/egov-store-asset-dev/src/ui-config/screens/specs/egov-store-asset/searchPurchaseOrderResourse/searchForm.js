@@ -16,7 +16,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["store", "rateType", "supplierCode","purchaseOrderNumber","purchaseType"];
+  const textFields = ["store", "rateType", "supplierCode","purchaseOrderNumber","indentFromDate","indentToDate","indentPurpose","inventoryType","indentRaisedBy"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-purchase-order.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -54,7 +54,7 @@ export const searchForm = getCommonCard({
       },
       gridDefination: {
         xs: 12,
-        sm: 4,
+        sm: 3,
       },
       placeholder: {
         labelName: "Enter Purchase Order Number",
@@ -75,7 +75,7 @@ export const searchForm = getCommonCard({
       jsonPath: "searchScreen.store",
       gridDefination: {
         xs: 12,
-        sm: 4,
+        sm: 3,
       },
       sourceJsonPath: "searchMaster.storeNames",
       props: {
@@ -83,7 +83,6 @@ export const searchForm = getCommonCard({
         optionLabel: "name",
       },
     }),  
-
     rateType: {
       ...getSelectField({
         label: { labelName: "PO Rate Type", labelKey: "STORE_PURCHASE_ORDER_RATETYPE" },
@@ -93,7 +92,7 @@ export const searchForm = getCommonCard({
         },
         gridDefination: {
           xs: 12,
-          sm: 4,
+          sm: 3,
         },
         jsonPath: "searchScreen.rateType",
         sourceJsonPath: "searchScreenMdmsData.store-asset.RateType",
@@ -113,7 +112,7 @@ export const searchForm = getCommonCard({
         },
         gridDefination: {
           xs: 12,
-          sm: 4,
+          sm: 3,
         },
         jsonPath: "searchScreen.supplierCode",
         sourceJsonPath: "searchMaster.supplierName",
@@ -123,6 +122,54 @@ export const searchForm = getCommonCard({
           optionLabel: "name"
         }
       }),
+    },
+    indentFromDate: {
+      ...getDateField({
+        label: {
+          labelName: "Indent Date From",
+          labelKey: "STORE_INDENT_DATE_FROM "
+        },
+        placeholder: {
+          labelName: "Enter Indent Date From",
+          labelKey: "STORE_INDENT_DATE_FROM_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "searchScreen.indentFromDate",
+        gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+        props: {
+          // inputProps: {
+          //   max: getTodaysDateInYMD()
+          // }
+        }
+      })
+    },
+    indentToDate: {
+      ...getDateField({
+        label: {
+          labelName: "Indent Date To",
+          labelKey: "STORE_INDENT_DATE_TO"
+        },
+        placeholder: {
+          labelName: "Enter Indent Date To",
+          labelKey: "STORE_INDENT_DATE_TO_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "searchScreen.indentToDate",
+        gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+        props: {
+          // inputProps: {
+          //   max: getTodaysDateInYMD()
+          // }
+        }
+      })
     },
     purchaseType: {
       ...getSelectField({
@@ -149,6 +196,74 @@ export const searchForm = getCommonCard({
               label: "Non Indent"
             }
           ],
+        }
+      }),
+    },
+    indentPurpose: {
+      ...getSelectField({
+        label: { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
+        placeholder: {
+          labelName: "Select Indent Purpose",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE_SELECT"
+        },
+        required: false,
+        errorMessage: "STORE_VALIDATION_INDENT_PURPOSE",
+        jsonPath: "searchScreen.indentPurpose",
+        sourceJsonPath: "searchScreenMdmsData.store-asset.IndentPurpose",
+        gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+      props: {
+        
+        optionValue: "code",
+        optionLabel: "name",
+      },
+      }),
+     
+    },
+    inventoryType: {
+      ...getSelectField({
+        label: { labelName: "Inventry Type", labelKey: "STORE_INVENTRY_TYPE" },
+        placeholder: {
+          labelName: "Select Inventry Type",
+          labelKey: "STORE_MATERIAL_TYPE_NAME_SELECT"
+        },
+        required: false,
+        errorMessage: "STORE_VALIDATION_INVENTRY_TYPE",
+        jsonPath: "searchScreen.inventoryType",
+         sourceJsonPath: "searchScreenMdmsData.store-asset.InventoryType",
+         gridDefination: {
+          xs: 12,
+          sm: 3,
+        },
+        props: {
+         
+          optionValue: "code",
+          optionLabel: "name"
+        },
+      })
+    },
+    indentRaisedBy: {
+      ...getSelectField({
+        label: { labelName: "Indent Raised By", labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY" },
+        placeholder: {
+          labelName: "Select Indent Raised By",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_RAISED_BY"
+        },
+       visible:true,
+        required: false,
+        jsonPath: "searchScreen.indentRaisedBy",
+       sourceJsonPath: "applyScreenMdmsData.creatorList",
+       gridDefination: {
+        xs: 12,
+        sm: 3,
+      },
+        props: {         
+          className: "hr-generic-selectfield",
+          optionValue: "element",
+          optionLabel: "element",
+         
         }
       }),
     },

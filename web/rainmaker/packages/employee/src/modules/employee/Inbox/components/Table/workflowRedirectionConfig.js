@@ -84,6 +84,13 @@ export const getWFConfig = (module, businessService, taskId) => {
         DEFAULT: "/egov-store-asset/view-indent-outword",
       };
     }
+	else if (taskId.includes('OPB')) {
+      return {
+        INITIATED: "/egov-store-asset/view-opening-balence",
+        DEFAULT: "/egov-store-asset/view-opening-balence",
+      };
+    }
+
     else if (businessService == "PAYMENT WORKFLOW" || businessService == "FINE MASTER APPROVAL" || businessService == "CHALLAN WORKFLOW" || businessService == "AUCTION WORKFLOW") {
       switch (businessService) {
         case "CHALLAN WORKFLOW":
@@ -241,11 +248,18 @@ export const getWFConfig = (module, businessService, taskId) => {
           INITIATED: "/fire-noc/apply",
           DEFAULT: "/fire-noc/search-preview",
         };
+		
+		case "MCC-BOOKING-NEW-LOCATION":
+		return {	
+			DEFAULT: "/egov-services/newLocation-application-details", 
+			}
+		 
+		
         case "BOOKING-SERVICES":
           return {
             DEFAULT: "/egov-services/application-details",
           }
-    
+		 
         case "WATER-TANKER-SERVICES":
           return {
             DEFAULT: "/egov-services/bwt-application-details",

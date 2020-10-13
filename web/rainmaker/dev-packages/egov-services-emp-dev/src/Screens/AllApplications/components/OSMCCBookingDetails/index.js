@@ -127,11 +127,13 @@ class BookingDetails extends Component {
                   <Label label="BK_MYBK_TASK_STATUS" containerStyle={{ marginLeft: "13px" }} labelClassName="dark-heading" />
                 </div>
                 <div style={{ position: "absolute", right: "100px" }} className="col-4">
-                  <button
+                <button
                     style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", background: "white" }}
                     onClick={() => { this.handleClickOpen() }}>
-                    <HistoryIcon />VIEW HISTORY
-                   {/* <Label style={{marginTop: '-52px',marginLeft: '63px',color: 'red'}} label="VIEW_HISTORY" /> */}
+                   <HistoryIcon />
+                    <h5 style={{ marginTop: "-25px", marginBottom: "60px", marginLeft: "130px"}}>
+                    VIEW HISTORY
+                    </h5>
                   </button>
                 </div>
               </div>

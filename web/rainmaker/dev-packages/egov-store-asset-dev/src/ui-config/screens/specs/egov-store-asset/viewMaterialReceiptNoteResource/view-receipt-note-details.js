@@ -86,19 +86,33 @@ export const getReceiptNoteListDetailsView = (isReview = true) => {
    
     break1: getBreak(),
     viewOne: getCommonContainer({
-      mrnNumber: getLabelWithValue(
-        {
-          labelName: " Material Receipt Number",
-          labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER"
-        },
-        {  jsonPath: "materialReceipt[0].mrnNumber", }
-      ),
+      // mrnNumber: getLabelWithValue(
+      //   {
+      //     labelName: " Material Receipt Number",
+      //     labelKey: "STORE_MATERIAL_COMMON_MRN_NUMBER"
+      //   },
+      //   {  jsonPath: "materialReceipt[0].mrnNumber", }
+      // ),
       StoreName: getLabelWithValue(
         {
           labelName: " Store Name",
           labelKey: "STORE_DETAILS_STORE_NAME"
         },
         {  jsonPath: "materialReceipt[0].receivingStore.name", }
+      ),
+      indentDeptName: getLabelWithValue(
+        {
+          labelName: "Department Name",
+          labelKey: "STORE_DETAILS_DEPARTMENT_NAME"
+        },
+        { jsonPath: "materialReceipt[0].receivingStore.department.name" }
+      ),
+      divisionName: getLabelWithValue(
+        {
+          labelName: "Indenting division Name",
+          labelKey: "STORE_INDENTING_DIVISION_NAME"
+        },
+        { jsonPath: "materialReceipt[0].receivingStore.divisionName" }
       ),
       ReceiptDate: getLabelWithValue(
         {labelName: "Receipt Date",

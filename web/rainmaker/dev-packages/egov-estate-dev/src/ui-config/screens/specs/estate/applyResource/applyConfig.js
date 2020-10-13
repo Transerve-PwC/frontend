@@ -98,9 +98,9 @@ export const paymentDocumentsDetails = getCommonCard({
        uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
        tenantIdJsonPath: "Properties[0].tenantId",
        removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
-      //  getUrl: "/rp-services/v1/excel/read",
-      //  screenKey: "apply",
-      //  componentJsonPath: "components.div.children.formwizardEighthStep.children.paymentDetailsTable",
+       getUrl: "/est-services/estate/_calculation",
+       screenKey: "apply",
+       componentJsonPath: "components.div.children.formwizardEighthStep.children.paymentDetailsTable",
       // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"
     }
   }
@@ -109,7 +109,7 @@ export const paymentDocumentsDetails = getCommonCard({
 export const paymentDetailsTable =  {
   uiFramework: "custom-molecules",
   componentPath: "Table",
-  visible: true,
+  visible: false,
   props: {
     columns: [
       ES_MONTH,

@@ -221,7 +221,7 @@ import {
                 {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.name`,materials[0].name));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].MaterialNameDesc`,materials[0].description));
-                //dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.code",materials[0].baseUom.code));
+                //dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].baseUom.code));
                // dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].name));
                 }
 
@@ -261,7 +261,7 @@ import {
                 },
                 required: false,
                 pattern: getPattern("Name") || null,
-                jsonPath: "materialReceipt[0].receiptDetails[0].uom.code"
+                jsonPath: "materialReceipt[0].receiptDetails[0].uom.name"
               })
             },
             AvailableQty: {

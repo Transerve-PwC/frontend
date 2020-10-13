@@ -40,6 +40,7 @@ import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
 import { getPMDetailsByFileNumber } from './apply'
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 
 const propertyId = getQueryArg(window.location.href, "propertyId")
@@ -67,18 +68,18 @@ export const getMdmsData = async (dispatch, body) => {
 
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   const documentTypePayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
       name: "documents"
     }]
   }]
   const documentRes = await getMdmsData(dispatch, documentTypePayload);
   const {
-    EstatePropertyService
+    EstateServices
   } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
     documents = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
   const findMasterItem = documents.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
   const estateMasterDocuments = masterDocuments.map(item => ({
@@ -139,11 +140,11 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
 
 const setBiddersDoc = (action, state, dispatch) => {
   const {
-    EstatePropertyService
+    EstateServices
   } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
   const {
     biddersListDoc = []
-  } = EstatePropertyService || {}
+  } = EstateServices || {}
 
   const findMasterItem = biddersListDoc.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
@@ -179,8 +180,18 @@ const header = getCommonContainer({
 })
 
 const getData = async (action, state, dispatch) => {
+  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  if (!fileNumber) {
+    dispatch(
+      prepareFinalObject(
+        "Properties",
+        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
+      )
+    )
+  }
+  
   const mdmsPayload = [{
-    moduleName: "EstatePropertyService",
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
         name: "categories"
       },
@@ -199,16 +210,8 @@ const getData = async (action, state, dispatch) => {
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
-  if (fileNumber) {
+  if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
-  } else {
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
-      )
-    )
   }
   
   setDocumentData(action, state, dispatch);

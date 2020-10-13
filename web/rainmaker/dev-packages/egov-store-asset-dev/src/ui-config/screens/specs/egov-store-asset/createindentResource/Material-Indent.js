@@ -57,7 +57,7 @@ import {
           dispatch(prepareFinalObject("indents[0].indentStore.divisionName",store[0].divisionName));
           }
           
-        }
+      }
       },
       divisionName: getTextField({
         label: {

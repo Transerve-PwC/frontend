@@ -97,6 +97,16 @@ export const header = getCommonContainer({
               
             ],
           },
+          {
+            moduleName: "common-masters",
+            masterDetails: [
+              {
+                name: "UOM",
+                filter: "[?(@.active == true)]"
+              },
+              
+            ]
+          }, 
          
          
         ]

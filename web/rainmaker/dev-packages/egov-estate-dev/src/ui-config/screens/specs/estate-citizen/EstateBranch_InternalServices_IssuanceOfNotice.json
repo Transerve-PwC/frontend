@@ -1,6 +1,6 @@
 {
   "tenantId": "ch",
-  "moduleName": "EstatePropertyService",
+  "moduleName": "EstateServices",
   "EstateBranch_InternalServices_IssuanceOfNotice": [
     {
       "dataSources": [
@@ -10,7 +10,7 @@
           "cacheable": true,
           "lazyload": true,
           "options": {
-            "moduleName": "EstatePropertyService",
+            "moduleName": "EstateServices",
             "masterName": "typeOfNotice"
           }
         },
@@ -30,7 +30,7 @@
             {
               "type": "mdms",
               "params": {
-                "moduleName": "EstatePropertyService",
+                "moduleName": "EstateServices",
                 "masterName": "typeOfNotice",
                 "filter": "typeOfNotice..code"
               }
