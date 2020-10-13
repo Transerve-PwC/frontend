@@ -47,7 +47,8 @@ const interestRateField = {
         sm: 6
     },
     // minLength: 1,
-    maxLength: 5,
+    //maxLength: 5,
+    pattern:getPattern("twodigit-number"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.interestRate",
     errorMessage: "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD"
@@ -67,7 +68,8 @@ const rentIncrementPeriodField = {
         sm: 6
     },
     // minLength: 1,
-    maxLength: 5,
+    // maxLength: 2,
+    pattern:getPattern("twodigit-number"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.rentIncrementPeriod",
     errorMessage: "RP_ERR_RENT_INCREMENT_PERIOD_FIELD",
@@ -87,7 +89,8 @@ const rentIncrementPercentageField = {
         sm: 6
     },
     // minLength: 1,
-    maxLength: 3,
+    //maxLength: 3,
+    pattern:getPattern("interestRate"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.rentIncrementPercentage",
     errorMessage: "RP_ERR_RENT_INCREMENT_PERCENTAGE_FIELD",

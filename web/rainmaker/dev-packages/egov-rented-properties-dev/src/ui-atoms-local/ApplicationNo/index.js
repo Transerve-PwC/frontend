@@ -11,7 +11,7 @@ function ApplicationNoContainer(props) {
   {number}
   </div>;
 } else if(props.type === "RP_MASTER") {
-  return <div className="application-no-container"><LabelContainer labelName="Transit Site No." labelKey ={"RP_COMMON_TABLE_COL_TRANSIT_NO"}/>
+  return <div className="application-no-container"><LabelContainer labelName="Transit Site No." labelKey ={"RP_SITE_PLOT_LABEL"}/>
   {" "}{number}
   </div>
 } else if(props.notice==="ALLOTMENT"){

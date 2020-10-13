@@ -177,7 +177,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
             { Owners: queryObject }
           );
         } else {
-          if(activeIndex === 0) {
+          if(activeIndex !==2) {
             set(queryObject[0], "applicationAction", "REINITIATE")
           } else {
             set(queryObject[0], "applicationAction", "SUBMIT")
@@ -397,7 +397,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
             { MortgageApplications: queryObject }
           );
         } else {
-          if(activeIndex === 0) {
+          if(activeIndex !==2) {
             set(queryObject[0], "action", "REINITIATE")
           } 
           else {
@@ -478,7 +478,7 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
             { DuplicateCopyApplications: queryObject }
           );
         } else {
-          if(activeIndex === 0) {
+          if(activeIndex !==2) {
             set(queryObject[0], "action", "REINITIATE")
           } else {
             set(queryObject[0], "action", "SUBMIT")
@@ -627,6 +627,12 @@ export const getAccountStatementProperty = async (state, dispatch) => {
           prepareFinalObject(
             "searchScreen.pincode",
             Properties[0].propertyDetails.address.pincode
+          )
+        )
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.area",
+            Properties[0].propertyDetails.address.area
           )
         )
         dispatch(

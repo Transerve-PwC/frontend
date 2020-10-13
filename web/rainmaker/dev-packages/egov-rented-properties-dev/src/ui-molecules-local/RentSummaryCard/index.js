@@ -6,7 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { Tooltip } from "egov-ui-framework/ui-molecules";
 import { LabelContainer } from "egov-ui-framework/ui-containers";
-
+import "./index.css";
+import{formatAmount} from "../../ui-config/screens/specs/rented-properties/searchResource/functions"
 const styles = {
   card: {
     backgroundColor: "rgb(242, 242, 242)",
@@ -74,8 +75,8 @@ function RentSummaryCard(props) {
             </Grid>
             <Grid xs={4} align="right">
               <LabelContainer
-                labelName={rentSummary.rent.balancePrincipal}
-                labelKey={rentSummary.rent.balancePrincipal ? rentSummary.rent.balancePrincipal : 0}
+                labelName={formatAmount(rentSummary.rent.balancePrincipal)}
+                labelKey={formatAmount(rentSummary.rent.balancePrincipal) ? formatAmount(rentSummary.rent.balancePrincipal) : 0}
                 style={styles.taxStyles}
               />
             </Grid>
@@ -90,8 +91,8 @@ function RentSummaryCard(props) {
             </Grid>
             <Grid xs={4} align="right">
               <LabelContainer
-                labelName={rentSummary.rent.balanceInterest}
-                labelKey={rentSummary.rent.balanceInterest ? rentSummary.rent.balanceInterest : 0}
+                labelName={formatAmount(rentSummary.rent.balanceInterest)}
+                labelKey={formatAmount(rentSummary.rent.balanceInterest) ? formatAmount(rentSummary.rent.balanceInterest) : 0}
                 style={styles.taxStyles}
               />
             </Grid>
@@ -106,8 +107,8 @@ function RentSummaryCard(props) {
             </Grid>
             <Grid xs={4} align="right">
               <LabelContainer
-                labelName={rentSummary.rent.balanceAmount}
-                labelKey={rentSummary.rent.balanceAmount ? rentSummary.rent.balanceAmount : 0}
+                labelName={formatAmount(rentSummary.rent.balanceAmount)}
+                labelKey={formatAmount(rentSummary.rent.balanceAmount) ? formatAmount(rentSummary.rent.balanceAmount) : 0}
                 style={styles.taxStyles}
               />
             </Grid>
@@ -129,7 +130,7 @@ function RentSummaryCard(props) {
               style={{ paddingRight: 0 }}
               className="rp-application-table-total-value"
             >
-              <Typography variant="body2">{isNaN(total) ? 0 : total}</Typography>
+              <Typography variant="body2">{isNaN(total) ? 0 : formatAmount(total)}</Typography>
             </Grid>
           </Grid>
         </div>
@@ -146,7 +147,7 @@ function RentSummaryCard(props) {
           />
         </Typography>
         <Typography className={totalHeadClassName} align="right">
-          Rs {isNaN(total) ? 0 : total}
+          Rs {isNaN(total) ? 0 : formatAmount(total)}
         </Typography>
       </Grid>
     </Grid>

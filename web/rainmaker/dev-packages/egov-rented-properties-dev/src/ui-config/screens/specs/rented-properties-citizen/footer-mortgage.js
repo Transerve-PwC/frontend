@@ -83,10 +83,11 @@ const callBackForNextMortgage = async(state, dispatch) => {
             dispatch(
               prepareFinalObject("MortgageApplicationsTemp[0].reviewDocData", reviewDocData)
           );
+          const Res = await applyMortgage(state, dispatch, activeStep)
   }
   }
   if(activeStep === SUMMARY_STEP) {
-  isFormValid = await applyMortgage(state, dispatch);
+  isFormValid = await applyMortgage(state, dispatch,activeStep);
     if (isFormValid) {
       const rentedData = get(
         state.screenConfiguration.preparedFinalObject,
@@ -115,7 +116,7 @@ const callBackForNextMortgage = async(state, dispatch) => {
               case DOCUMENT_UPLOAD_STEP:
                   errorMessage = {
                       labelName: "Please upload all the required documents !",
-                      labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+                      labelKey: "RP_ERR_UPLOAD_REQUIRED_DOCUMENTS"
                   };
                   break;
           }

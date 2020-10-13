@@ -6,7 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import { Tooltip } from "egov-ui-framework/ui-molecules";
 import { LabelContainer } from "egov-ui-framework/ui-containers";
-
+import "./index.css";
+import{formatAmount} from "../../ui-config/screens/specs/rented-properties/searchResource/functions"
 const styles = {
   card: {
     backgroundColor: "rgb(242, 242, 242)",
@@ -91,8 +92,8 @@ function FeesEstimateCard(props) {
               let textRight = fee.value ? (
                 <Grid xs={4} align="right">
                   <LabelContainer
-                    labelName={fee.value}
-                    labelKey={fee.value}
+                    labelName={formatAmount(fee.value)}
+                    labelKey={formatAmount(fee.value)}
                     style={styles.taxStyles}
                   />
                 </Grid>
@@ -130,7 +131,7 @@ function FeesEstimateCard(props) {
               style={{ paddingRight: 0 }}
               className="tl-application-table-total-value"
             >
-              <Typography variant="body2">{total}</Typography>
+              <Typography variant="body2">{formatAmount(total)}</Typography>
             </Grid>
           </Grid>
         </div>
@@ -147,7 +148,7 @@ function FeesEstimateCard(props) {
           />
         </Typography>
         <Typography className={totalHeadClassName} align="right">
-          Rs {total}
+          Rs {formatAmount(total)}
         </Typography>
         {estimate.extra && estimate.extra.length !== 0 ? (
           <Card className={classes.whiteCard}>

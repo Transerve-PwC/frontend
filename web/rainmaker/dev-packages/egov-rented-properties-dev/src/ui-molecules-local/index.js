@@ -82,7 +82,10 @@ const MultiDownloadCardNoticePreview = Loadable({
   loader: () => import("./MultiDownloadCardNoticePreview"),
   loading: () => <Loading />
 })
-
+const MultiDownloadCard = Loadable({
+  loader: () => import("./MultiDownloadCard"),
+  loading: () => <Loading />
+});
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -100,5 +103,6 @@ export {
   MultipleOwners,
   MultipleDocuments,
   MultiDownloadCardNoticePreview,
-  RentSummaryCard
+  RentSummaryCard,
+  MultiDownloadCard
 }

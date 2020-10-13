@@ -191,7 +191,7 @@ const notices = {
                 style: { justifyContent: "flex-end", marginTop: 10 }
               },
               gridDefination: {
-                xs: 12,
+                xs: 10,
                 sm: 12,
                 align: "right"
               },

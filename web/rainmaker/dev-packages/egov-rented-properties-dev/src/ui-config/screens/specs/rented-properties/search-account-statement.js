@@ -71,7 +71,7 @@ import {getColonyTypes} from "../rented-properties/apply"
                     backgroundColor: "#fe7a51",
                     borderColor:"#fe7a51",
                     borderRadius: "2px",
-                    width: "25%",
+                    //width: "25%",
                     height: "48px",
                     margin:"10px"
                   }
@@ -102,7 +102,7 @@ import {getColonyTypes} from "../rented-properties/apply"
                     backgroundColor: "#fe7a51",
                     borderColor:"#fe7a51",
                     borderRadius: "2px",
-                    width: "25%",
+                    //width: "25%",
                     height: "48px",
                     margin:"10px"
                   }

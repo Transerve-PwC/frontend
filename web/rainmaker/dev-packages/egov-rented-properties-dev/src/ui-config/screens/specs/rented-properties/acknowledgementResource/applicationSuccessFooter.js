@@ -273,14 +273,17 @@ export const applicationSuccessFooter = (
         children: {
           downloadFormButtonLabel: getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" :type=="NOTICE_GENERATION"? "RP_DOWNLOAD_NOTICE": type=="RentedProperties.Rent"?"RP_DOWNLOAD_PAYMENT_RECIEPT" : "RP_DOWNLOAD_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_DOWN_CONF" :type=="NOTICE_GENERATION"? "RP_DOWNLOAD_NOTICE": (type=="RENTED_PROPERTIES_COLONY_MILK.RENT" || type=="RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT"||type=="RENTED_PROPERTIES_COLONY_KUMHAR.RENT"||type=="RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT")?"RP_DOWNLOAD_PAYMENT_RECIEPT" : "RP_DOWNLOAD_RECEIPT"
           })
         },
         onClickDefination: {
           action: "condition",
           callBack: async() => {
              switch(type){
-        case 'RentedProperties.Rent':
+              case 'RENTED_PROPERTIES_COLONY_MILK.RENT':
+                case 'RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT':
+                  case 'RENTED_PROPERTIES_COLONY_KUMHAR.RENT':
+                    case 'RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT':
               let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
               let transitNumber = consumerCodes.split('-')[1]
               let queryObject = [
@@ -308,7 +311,7 @@ export const applicationSuccessFooter = (
              }   
           }
         },
-      visible: (type == "NOTICE_GENERATION" || type == "RentedProperties.Rent") ? true : false
+      visible: (type == "NOTICE_GENERATION" || type=="RENTED_PROPERTIES_COLONY_MILK.RENT" || type=="RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT"||type=="RENTED_PROPERTIES_COLONY_KUMHAR.RENT"||type=="RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT") ? true : false
       },
       printFormButton: {
         componentPath: "Button",
@@ -324,14 +327,17 @@ export const applicationSuccessFooter = (
         children: {
           printFormButtonLabel: getLabel({
             labelName: "PRINT CONFIRMATION FORM",
-            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : type=="NOTICE_GENERATION"? "RP_PRINT_NOTICE":type=="RentedProperties.Rent"?"RP_PRINT_PAYMENT_RECIEPT" :"RP_PRINT_RECEIPT"
+            labelKey: (type == "OWNERSHIPTRANSFERRP" || type == "DUPLICATECOPYOFALLOTMENTLETTERRP" || type == "PERMISSIONTOMORTGAGE") ? "RP_APPLICATION_BUTTON_PRINT_CONF" : type=="NOTICE_GENERATION"? "RP_PRINT_NOTICE":(type=="RENTED_PROPERTIES_COLONY_MILK.RENT" || type=="RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT"||type=="RENTED_PROPERTIES_COLONY_KUMHAR.RENT"||type=="RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT")?"RP_PRINT_PAYMENT_RECIEPT" :"RP_PRINT_RECEIPT"
           })
         },
         onClickDefination: {
           action: "condition",
           callBack: async() => {
              switch(type){
-        case 'RentedProperties.Rent':
+              case 'RENTED_PROPERTIES_COLONY_MILK.RENT':
+                case 'RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT':
+                  case 'RENTED_PROPERTIES_COLONY_KUMHAR.RENT':
+                    case 'RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT':
               let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
               let transitNumber = consumerCodes.split('-')[1]
               let queryObject = [
@@ -359,7 +365,7 @@ export const applicationSuccessFooter = (
              }   
           }
         },
-        visible: (type == "NOTICE_GENERATION" || type == "RentedProperties.Rent") ? true : false
+        visible: (type == "NOTICE_GENERATION" || type=="RENTED_PROPERTIES_COLONY_MILK.RENT" || type=="RENTED_PROPERTIES_COLONY_SECTOR_52_53.RENT"||type=="RENTED_PROPERTIES_COLONY_KUMHAR.RENT"||type=="RENTED_PROPERTIES_COLONY_VIKAS_NAGAR.RENT") ? true : false
       }
     });
   }

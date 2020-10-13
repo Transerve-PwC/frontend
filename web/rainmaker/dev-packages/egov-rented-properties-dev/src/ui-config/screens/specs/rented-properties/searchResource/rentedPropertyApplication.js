@@ -206,7 +206,7 @@ const ownershipStatusField = {
 const areaField = {
   label: {
     labelName: "Area",
-    labelKey: "RP_AREA",
+    labelKey: "RP_AREA_PROPERTY_LABEL_IN_UNITS",
   },
   // placeholder: {
   //   labelName: "Enter Area",
@@ -583,9 +583,15 @@ const accountStatementTransitNumber = {
           ""
         )
       )
+        dispatch(
+          prepareFinalObject(
+            "searchScreen.ownername",
+            ""
+          )    
+      )
       dispatch(
         prepareFinalObject(
-          "searchScreen.ownername",
+          "searchScreen.area",
           ""
         )
       )
@@ -603,12 +609,10 @@ export const accountStatementFilterForm = getCommonCard({
   }),
   statusContainer: getCommonContainer({
     pincode:getTextField(pincodeField),
-    ownername:getTextField(ownernameField)
+    ownername:getTextField(ownernameField),
+    areaField:getTextField(areaField)
   }),
-  subParagraph: getCommonParagraph({
-    labelName: "Select start date and end date to generate account statement",
-    labelKey: "RP_FILTER_CONTAINER_HEADER_LABEL"
-  }),
+ 
   dateContainer:getCommonContainer({
       from:getDateField({...fromDateField}),
       to:getDateField({...toDateField})

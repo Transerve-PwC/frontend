@@ -127,10 +127,11 @@ const callBackForNext = async(state, dispatch) => {
               dispatch(
                 prepareFinalObject("OwnersTemp[0].reviewDocData", reviewDocData)
             );
+            const Res = await applyOwnershipTransfer(state, dispatch, activeStep)
     }
     }
     if(activeStep === SUMMARY_STEP) {
-    isFormValid = await applyOwnershipTransfer(state, dispatch);
+    isFormValid = await applyOwnershipTransfer(state, dispatch,activeStep);
       if (isFormValid) {
         const rentedData = get(
           state.screenConfiguration.preparedFinalObject,
@@ -177,7 +178,7 @@ const callBackForNext = async(state, dispatch) => {
                 case DOCUMENT_UPLOAD_STEP:
                     errorMessage = {
                         labelName: "Please upload all the required documents !",
-                        labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+                        labelKey: "RP_ERR_UPLOAD_REQUIRED_DOCUMENTS"
                     };
                     break;
             }
@@ -357,6 +358,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
               dispatch(
                 prepareFinalObject("DuplicateTemp[0].reviewDocData", reviewDocData)
             );
+            const Res = await applyDuplicateCopy(state, dispatch, activeStep)
     }
     }
     if(activeStep === SUMMARY_STEP) {
@@ -364,7 +366,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "DuplicateCopyApplications[0]"
     );
-    isFormValid = await applyDuplicateCopy(state, dispatch);
+    isFormValid = await applyDuplicateCopy(state, dispatch,activeStep);
       if (isFormValid) {
           moveToSuccess(rentedData, dispatch, DUPLICATECOPYOFALLOTMENTLETTERRP);
       }
@@ -389,7 +391,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
                 case DOCUMENT_UPLOAD_STEP:
                     errorMessage = {
                         labelName: "Please upload all the required documents !",
-                        labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+                        labelKey: "RP_ERR_UPLOAD_REQUIRED_DOCUMENTS"
                     };
                     break;
             }
