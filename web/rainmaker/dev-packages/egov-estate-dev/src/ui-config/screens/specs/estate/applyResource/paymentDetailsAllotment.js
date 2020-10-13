@@ -154,10 +154,9 @@ export const installmentDetails = getCommonCard({
             headerJsonPath: "children.cardContent.children.header.children.Installment.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments",
             prefixSourceJsonPath: "children.cardContent.children.installmentCard.children",
-            onMultiItemAdd: (state, muliItemContent) => {
-              console.log(muliItemContent);
+            onMultiItemAdd: (state, multiItemContent) => {
               // muliItemContent["dueDateForInstallment"]["visible"] = true;
-              return muliItemContent;
+              return multiItemContent;
             }
           },
           type: "array"
@@ -440,9 +439,18 @@ export const rentDetails = getCommonCard({
             headerJsonPath: "children.cardContent.children.header.children.Rent.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent",
             prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
-            onMultiItemAdd: (state, muliItemContent) => {
-              console.log(muliItemContent);
-              return muliItemContent;
+            onMultiItemAdd: (state, multiItemContent) => {
+              let rent = get(
+                state.screenConfiguration.preparedFinalObject,
+                "Properties[0].propertyDetails.paymentDetails[0].rent",
+                []
+              );
+              if (rent.length) {
+                let lastAddedEndYear = rent[rent.length - 1].endYear;
+                multiItemContent.startYear.props.value = lastAddedEndYear;
+              }
+                
+              return multiItemContent;
             }
           },
           type: "array"
@@ -658,9 +666,18 @@ export const licenseFeeForYearDetails = getCommonCard({
             headerJsonPath: "children.cardContent.children.header.children.License Fee.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
-            onMultiItemAdd: (state, muliItemContent) => {
-              console.log(muliItemContent);
-              return muliItemContent;
+            onMultiItemAdd: (state, multiItemContent) => {
+              let licenseFees = get(
+                state.screenConfiguration.preparedFinalObject,
+                "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
+                []
+              );
+              if (licenseFees.length) {
+                let lastAddedEndYear = licenseFees[licenseFees.length - 1].endYear;
+                multiItemContent.startYear.props.value = lastAddedEndYear;
+              }
+                
+              return multiItemContent;
             }
           },
           type: "array"

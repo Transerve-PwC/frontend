@@ -261,17 +261,19 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
       [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
       [getTextToLocalMapping("Deposit Date")]: convertEpochToDate(item.depositDate) || "-",
       [getTextToLocalMapping("EMD Validity Date")]: convertEpochToDate(item.emdValidityDate) || "-",
-      [getTextToLocalMapping("Initiate Refund")]: React.createElement("div", {}, [
-        React.createElement(
+      [getTextToLocalMapping("Initiate Refund")]: React.createElement(
         "input",
         {
           type:"checkbox",
           defaultChecked: !!(item.refundStatus) ? true : false, 
           onClick: (e) => { 
+            store.dispatch(toggleSpinner());
             if (confirm('Are you sure you want to initiate refund?')) {
               let isMarked = e.target.checked;
               setTimeout((e) => {
-                let { bidders } = store.getState().screenConfiguration.preparedFinalObject.Properties[0].propertyDetails;
+                store.dispatch(toggleSpinner());
+                let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
+                let { bidders } = Properties[0].propertyDetails;
                 let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
 
                 bidders.map((item, index) => {
@@ -279,18 +281,16 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                     item.refundStatus = isMarked ? "Initiated" : "";
                     store.dispatch(
                       handleField(
-                        "refund", 
-                        `components.div.children.auctionTableContainer.props.data[${index}].ES_INITIATE_REFUND.props.children["1"]`,
-                        "props.children",
-                        "Initiated"
+                        `refund`,
+                        `components.div.children.auctionTableContainer.props.data[${index}]`,
+                        `ES_REFUND_STATUS`,
+                        item.refundStatus
                       )
                     )
                   }
                   return item;
                 })
-
                 let refundedBidders = bidders.filter(item => item.refundStatus == "Initiated");
-
                 store.dispatch(
                   handleField(
                     "refund", 
@@ -307,22 +307,25 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                     (bidders.length !== refundedBidders.length)
                   )
                 )
+                let action = (bidders.length == refundedBidders.length) ? "SUBMIT" : "";
+                let state = ""
 
+                let properties = [{...Properties[0], action: action, state: state, propertyDetails: {...Properties[0].propertyDetails, bidders: bidders}}]
                 store.dispatch(
                   prepareFinalObject(
-                    "Properties[0].propertyDetails.bidders",
-                    bidders
+                    "Properties",
+                    properties
                   )
                 )
-              }, 2000)
+              }, 1000)
             } else {
               e.preventDefault();
+              store.dispatch(toggleSpinner());
               console.log('Cancelled');
             }
           }
         }),
-        React.createElement("span", {}, item.refundStatus)
-      ])
+        [getTextToLocalMapping("Refund Status")]: item.refundStatus || "-",
     }));
 
     store.dispatch(
@@ -381,21 +384,27 @@ export const setDocuments = async (
   reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
 };
 
-export const setXLSTableData = async({Calculations, componentJsonPath, screenKey}) => {
+export const setXLSTableData = async({demands, payments ,componentJsonPath, screenKey}) => {
 
-  let data  = Calculations.map(item => ({
-    [ES_MONTH]: !!item.month && moment(new Date(item.month)).format("DD MMM YYYY"),
-    [ES_RENT_DUE]: !!item.rentDue && item.rentDue.toFixed(2),
-    [ES_RENT_RECEIVED]: '',
-    [ES_RECEIPT_NO]: !!item.rentReceiptNo && item.rentReceiptNo,
-    [ES_RENT_DUE_DATE]: !!item.date && moment(new Date(item.date)).format("DD MMM YYYY"),
-    [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest.toFixed(2),
-    [ES_ST_GST_RATE]:!!item.stGstRate && item.stGstRate.toFixed(2),
-    [ES_ST_GST_DUE]: !!item.stGstDue && item.stGstDue.toFixed(2),
-    [ES_PAID]: !!item.paid && item.paid.toFixed(2),
-    [ES_DATE_OF_RECEIPT]: !!item.dateOfReceipt && moment(new Date(item.dateOfReceipt)).format("DD MMM YYYY"),
-    [ES_NO_OF_DAYS]: !!item.noOfDays && item.noOfDays,
-    [ES_INTEREST_ON_DELAYED_PAYMENT]: !!item.delayedPaymentOfGST && item.delayedPaymentOfGST.toFixed(2)
+  let data = demands.map(item => {
+    const findItem = payments.find(payData => moment(new Date(payData.receiptDate)).format("MMM YYYY") === moment(new Date(item.demandDate)).format("MMM YYYY"));
+    return !!findItem ? {...item, ...findItem} : {...item}
+  })
+
+  data  = data.map(item => ({
+    [ES_MONTH]:  ' ',
+    [ES_RENT_DUE]: !!item.rent && item.rent.toFixed(2) || ' ',
+    [ES_RENT_RECEIVED]:!!item.rentReceived && item.rentReceived.toFixed(2) || ' ',
+    [ES_RECEIPT_NO]: !!item.receiptNo && item.receiptNo || ' ',
+    [ES_DATE] : ' ',
+    [ES_RENT_DUE_DATE]: ' ',
+    [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest.toFixed(2) || '',
+    [ES_ST_GST_RATE]:!!item.gst && item.gst.toFixed(2) || '',
+    [ES_ST_GST_DUE]: !!item.collectedGST && item.collectedGST.toFixed(2) || '',
+    [ES_PAID]: !!item.paid && item.paid.toFixed(2) || '',
+    [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY") || '',
+    [ES_NO_OF_DAYS]: !!item.noOfDays && item.noOfDays || '',
+    [ES_INTEREST_ON_DELAYED_PAYMENT]: !!item.gstInterest && item.gstInterest.toFixed(2) || ''
   }))
 
   if(data.length > 1) {
@@ -437,9 +446,9 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
     )
    
     if(!!response) {
-      let {Calculations} = response
-        if(!!Calculations.length){
-          setXLSTableData({Calculations:Calculations, componentJsonPath, screenKey})
+      let {estateDemands, estatePayments} = response.Calculations;
+      if(!!estateDemands.length && !!estatePayments.length){
+          setXLSTableData({demands:estateDemands,payments:estatePayments, componentJsonPath, screenKey})
       }
     }
     store.dispatch(toggleSpinner());

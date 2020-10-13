@@ -95,7 +95,7 @@ const getRelationshipRadioButton = {
   type: "array",
 };
 
-const addressField = {
+export const addressField = {
   label: {
     labelName: "Address",
     labelKey: "ES_ADDRESS_LABEL"
@@ -117,7 +117,7 @@ const addressField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
 }
 
-const mobileNumberField = {
+export const mobileNumberField = {
   label: {
     labelName: "Mobile No.",
     labelKey: "ESTATE_MOBILE_NUMBER_LABEL"

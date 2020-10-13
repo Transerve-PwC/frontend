@@ -273,6 +273,13 @@ export const auctionTable = {
           display: false,
           viewColumns: false
         }
+      },
+      {
+        name: getTextToLocalMapping("Refund Status"),
+        options: { 
+          display: false,
+          viewColumns: false
+        }
       }
     ],
     options: {

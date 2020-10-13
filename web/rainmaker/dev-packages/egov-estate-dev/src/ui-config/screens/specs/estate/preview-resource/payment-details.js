@@ -214,7 +214,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         dueDateOfPayment: getLabelWithValue(
           dueDateOfPaymentLabel, {
             jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDueDateOfPayment`,
-            callback: convertEpochToDate
+            callBack: convertEpochToDate
           }
         ),
         payable: getLabelWithValue(
@@ -235,7 +235,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         dateOfDeposit: getLabelWithValue(
           dateOfDepositLabel, {
             jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grDateOfDeposit`,
-            callback: convertEpochToDate
+            callBack: convertEpochToDate
           }
         ),
         delayInPayment: getLabelWithValue(
@@ -286,7 +286,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         receiptDate : getLabelWithValue(
             receiptDateLabel,{
                 jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].grReceiptDate`,
-                callback: convertEpochToDate
+                callBack: convertEpochToDate
             }
         )
       }),
@@ -310,7 +310,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         dateOfDeposit: getLabelWithValue(
           dateOfDepositLabel, {
             jsonPath: `Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stDateOfDeposit`,
-            callback: convertEpochToDate
+            callBack: convertEpochToDate
           }
         ),
         delayInPayment: getLabelWithValue(
@@ -361,7 +361,7 @@ export const getReviewPayment = (isEditable = true,parentIndex=0,index=0) => {
         receiptDate : getLabelWithValue(
             receiptDateLabel,{
                 jsonPath:`Properties[0].propertyDetails.owners[${parentIndex}].ownerDetails.paymentDetails[${index}].stReceiptDate`,
-                callback: convertEpochToDate
+                callBack: convertEpochToDate
             }
         ),
         paymentMadeBy: getLabelWithValue(

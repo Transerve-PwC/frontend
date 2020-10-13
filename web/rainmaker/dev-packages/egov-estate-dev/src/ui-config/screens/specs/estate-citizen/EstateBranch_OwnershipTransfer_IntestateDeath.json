@@ -529,6 +529,15 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased",
                 "path": "transferee.relationWithDeceased",
                 "dataSource": "legalHeirRelationWithDeceased"
+              },
+              {
+                "label": "ES_PERCENT_SHARE_LABEL",
+                "placeholder": "ES_PERCENT_SHARE_PLACEHOLDER",
+                "type": "TEXT_FIELD",
+                "path": "transferee.percentageOfShareTransferred",
+                "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred",
+                "pattern": "Percentage",
+                "errorMessage": "ES_ERR_PERCENTAGE"
               }
             ]
           }

@@ -290,10 +290,14 @@ export const previousButton = {
               dispatch(
                 prepareFinalObject("temp[0].reviewDocData", reviewDocData)
             );
+        const response = await applyforApplication(state, dispatch, activeStep)
+        if(!response) {
+          return
+        }
     }
     }
     if(activeStep === SUMMARY_STEP) {
-      isFormValid = await applyforApplication(state, dispatch);
+      isFormValid = await applyforApplication(state, dispatch, activeStep);
         if (isFormValid) {
           const data = get(
             state.screenConfiguration.preparedFinalObject,

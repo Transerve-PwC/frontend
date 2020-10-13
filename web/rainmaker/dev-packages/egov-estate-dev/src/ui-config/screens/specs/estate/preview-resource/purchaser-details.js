@@ -204,7 +204,7 @@ export const headerDiv = {
           dateOfRegistration: getLabelWithValue(
             dateOfRegistrationField, {
               jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.dateOfRegistration`,
-              callback: convertEpochToDate
+              callBack: convertEpochToDate
             }
           )
       })

@@ -12,7 +12,8 @@ import {
     getLabelWithValue
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import {
-    prepareFinalObject
+    prepareFinalObject,
+    handleScreenConfigurationFieldChange as handleField
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
     convertEpochToDate,
@@ -193,6 +194,65 @@ import {
         }
     }
 })
+
+const editOwnerDetailsByDso = (isEditableByDso, index) => ({
+  ...editSection,
+  visible: isEditableByDso,
+  onClickDefination: {
+      action: "condition",
+      callBack: (state, dispatch) => {
+        let owners = get(
+          state.screenConfiguration.preparedFinalObject,
+          `Properties[0].propertyDetails.owners`,
+          []
+        )
+        dispatch(
+          prepareFinalObject("ownersTemp", JSON.parse(JSON.stringify(owners)))
+        )
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog`,
+            `props.open`,
+            true
+          )
+        );
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog.children.details.children.address`,
+            `jsonPath`,
+            `Properties[0].propertyDetails.owners[${index}].ownerDetails.address`
+          )
+        )
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog.children.details.children.address`,
+            `props.value`,
+            owners[index].ownerDetails.address
+          )
+        )
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog.children.details.children.mobileNumber`,
+            `jsonPath`,
+            `Properties[0].propertyDetails.owners[${index}].ownerDetails.mobileNumber`
+          )
+        )
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog.children.details.children.mobileNumber`,
+            `props.value`,
+            owners[index].ownerDetails.mobileNumber
+          )
+        )
+      }
+  }
+})
+
 export const headerDiv = {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -201,7 +261,7 @@ export const headerDiv = {
     }
 }
 
-   export const getOwnerDetails = (isEditable = true,index=0) => {
+   export const getOwnerDetails = (isEditable = true, index=0, isEditableByDso = false) => {
     return getCommonGrayCard({
       headerDiv: {
         ...headerDiv,
@@ -216,7 +276,8 @@ export const headerDiv = {
               labelKey: "ES_OWNER_INFO_HEADER"
             })
           },
-          editSection: masterEntryEditSection(isEditable, 0)
+          editSection: masterEntryEditSection(isEditable, 0),
+          editOwnerDetailsByDso: editOwnerDetailsByDso(isEditableByDso, index)
         }
       },
       viewFour: getCommonContainer({
@@ -286,13 +347,13 @@ export const headerDiv = {
         possessionDate: getLabelWithValue(
             possessionDateField, {
             jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.possesionDate`,
-            callback: convertEpochToDate
+            callBack: convertEpochToDate
             }
         ),
         dateOfAllotment:getLabelWithValue(
             dateOfAllotmentField, {
             jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`,
-            callback: convertEpochToDate
+            callBack: convertEpochToDate
             }
         ),
         allotmentNumber: getLabelWithValue(

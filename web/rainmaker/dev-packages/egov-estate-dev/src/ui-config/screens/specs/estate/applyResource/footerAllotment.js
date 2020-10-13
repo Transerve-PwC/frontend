@@ -69,6 +69,8 @@ const callBackForNext = async (state, dispatch) => {
   );
   let isFormValid = true;
   let hasFieldToaster = true;
+  let rentYearMismatch = false;
+  let licenseFeeYearMismatch = false;
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
@@ -326,6 +328,12 @@ const callBackForNext = async (state, dispatch) => {
       "allotment.components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
     );
 
+    let rentArr = get(
+      state.screenConfiguration.preparedFinalObject,
+      `Properties[0].propertyDetails.paymentDetails[0].rent`,
+      []
+    )
+
     if (rentItems && rentItems.length > 0) {
       for (var i = 0; i < rentItems.length; i++) {
         if (typeof rentItems[i].isDeleted !== "undefined") {
@@ -337,6 +345,13 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
+        if (!!rentArr[i] && !!rentArr[i+1]) {
+          if (rentArr[i].endYear !== rentArr[i+1].startYear) {
+            rentYearMismatch = true;
+            isRentDetailsValid = false
+          }
+        }
+
         getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents`, "groundRent", rentItems.length);
       }
     }
@@ -345,6 +360,11 @@ const callBackForNext = async (state, dispatch) => {
       state.screenConfiguration.screenConfig,
       "allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
     );
+    let licenseFeeArr = get(
+      state.screenConfiguration.preparedFinalObject,
+      `Properties[0].propertyDetails.paymentDetails[0].licenseFees`,
+      []
+    )
 
     if (licenseFeeItems && licenseFeeItems.length > 0) {
       for (var i = 0; i < licenseFeeItems.length; i++) {
@@ -357,6 +377,13 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
+        if (!!licenseFeeArr[i] && !!licenseFeeArr[i+1]) {
+          if (licenseFeeArr[i].endYear !== licenseFeeArr[i+1].startYear) {
+            licenseFeeYearMismatch = true;
+            isLicenseFeeDetailsForYearValid = false
+          }
+        }
+
         getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
       }
     }
@@ -367,7 +394,7 @@ const callBackForNext = async (state, dispatch) => {
     )
 
     if (selectedDemand == "GROUNDRENT") {
-      if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid) {
+      if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {
           return
@@ -377,7 +404,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
     else if (selectedDemand == "LICENSEFEE") {
-      if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid) {
+      if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {
           return
@@ -396,8 +423,6 @@ const callBackForNext = async (state, dispatch) => {
         isFormValid = false;
       }
     }
-    
-    
   }
 
   if (activeStep === SUMMARY_STEP) {
@@ -425,10 +450,24 @@ const callBackForNext = async (state, dispatch) => {
         case ENTITY_OWNER_DETAILS_STEP:
         case COURT_CASE_DETAILS_STEP:
         case PAYMENT_DETAILS_STEP:
-          errorMessage = {
-            labelName: "Please fill all mandatory fields, then do next !",
-            labelKey: "ERR_FILL_ESTATE_MANDATORY_FIELDS"
-          };
+          if (!!rentYearMismatch) {
+            errorMessage = {
+              labelName: "Start year for the succeeding rent entry should match the preceeding end year",
+              labelKey: "ERR_RENT_YEAR_MISMATCH"
+            };
+          }
+          else if (!!licenseFeeYearMismatch) {
+            errorMessage = {
+              labelName: "Start year for the succeeding license fee entry should match the preceeding end year",
+              labelKey: "ERR_LICENSE_FEE_YEAR_MISMATCH"
+            };
+          }
+          else {
+            errorMessage = {
+              labelName: "Please fill all mandatory fields, then do next !",
+              labelKey: "ERR_FILL_ESTATE_MANDATORY_FIELDS"
+            };
+          }
           break;
         case ENTITY_OWNER_DOCUMENT_UPLOAD_STEP:
           errorMessage = {

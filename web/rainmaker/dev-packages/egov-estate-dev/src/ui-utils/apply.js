@@ -102,7 +102,7 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
         { Applications : queryObject }
       );
     } else {
-        if(activeIndex === 0) {
+        if(activeIndex === 0 || activeIndex === 1) {
           set(queryObject[0], "action", "")
         } else {
           set(queryObject[0], "action", "SUBMIT")
@@ -345,6 +345,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
             removedDocs
           )
         );
+        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
       })
 
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);

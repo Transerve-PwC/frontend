@@ -80,6 +80,13 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           display: true,
           viewColumns: true
         }
+      },
+      {
+        name: getTextToLocalMapping("Refund Status"),
+        options: { 
+          display: true,
+          viewColumns: true
+        }
       }
     ]
 
