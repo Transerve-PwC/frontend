@@ -416,7 +416,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             true,
             {
               labelName: "Property is not found with this File Number",
-              labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+              labelKey: "ES_ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
             },
             "info"
           )

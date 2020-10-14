@@ -18,7 +18,7 @@ const header = getCommonTitle({
 
 if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "undefined" && typeof getReviewAdditional != "undefined") {
   var reviewPropertyInfo = getReviewPropertyInfo();
-  var reviewAuction = getReviewAuction();
+  var reviewAuction = getReviewAuction(true, "apply");
   var reviewAdditional = getReviewAdditional();
   var companyDetails = getReviewCompanyDetails();
   var firmDetails = getReviewFirmDetails();

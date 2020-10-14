@@ -467,7 +467,8 @@
                 "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
-                "errorMessage": "ES_ERR_PURCHASER_NAME"
+                "errorMessage": "ES_ERR_PURCHASER_NAME",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' && selectedPurchaser ? selectedPurchaser.ownerDetails.ownerName : '' "
               },
               {
                 "label": "ES_FATHER_HUSBAND_NAME_LABEL",

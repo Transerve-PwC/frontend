@@ -442,7 +442,7 @@ const callBackForNext = async (state, dispatch) => {
     } else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",
-        labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+        labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
       };
       switch (activeStep) {
         case PROPERTY_DETAILS_STEP:
@@ -453,26 +453,26 @@ const callBackForNext = async (state, dispatch) => {
           if (!!rentYearMismatch) {
             errorMessage = {
               labelName: "Start year for the succeeding rent entry should match the preceeding end year",
-              labelKey: "ERR_RENT_YEAR_MISMATCH"
+              labelKey: "ES_ERR_RENT_YEAR_MISMATCH"
             };
           }
           else if (!!licenseFeeYearMismatch) {
             errorMessage = {
               labelName: "Start year for the succeeding license fee entry should match the preceeding end year",
-              labelKey: "ERR_LICENSE_FEE_YEAR_MISMATCH"
+              labelKey: "ES_ERR_LICENSE_FEE_YEAR_MISMATCH"
             };
           }
           else {
             errorMessage = {
               labelName: "Please fill all mandatory fields, then do next !",
-              labelKey: "ERR_FILL_ESTATE_MANDATORY_FIELDS"
+              labelKey: "ES_ERR_FILL_ESTATE_MANDATORY_FIELDS"
             };
           }
           break;
         case ENTITY_OWNER_DOCUMENT_UPLOAD_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
-            labelKey: "ERR_UPLOAD_REQUIRED_DOCUMENTS"
+            labelKey: "ES_ERR_UPLOAD_REQUIRED_DOCUMENTS"
           };
           break;
       }

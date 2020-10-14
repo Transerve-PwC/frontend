@@ -345,11 +345,19 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
             removedDocs
           )
         );
-        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
       })
 
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
       let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
+
+      
+      currOwners.map((item, index) => {
+        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
+      })
+
+      prevOwners.map((item, index) => {
+        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
+      })
 
       Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
     }

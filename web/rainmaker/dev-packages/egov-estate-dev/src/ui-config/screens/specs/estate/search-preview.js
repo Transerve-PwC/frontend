@@ -31,7 +31,7 @@ const additionalDetails = getAdditionalDetails(false)
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
   // reviewAuctionDetails,
-  reviewAllotmentDetails,
+  // reviewAllotmentDetails,
   additionalDetails
 });
 

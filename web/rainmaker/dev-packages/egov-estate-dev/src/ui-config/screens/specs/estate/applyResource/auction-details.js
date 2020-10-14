@@ -93,7 +93,10 @@ const auctionIdField = {
     sm: 6
   },
   maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.auctionId"
+  props: {
+    disabled:true
+  },
+  jsonPath: "Properties[0].propertyDetails.bidders[0].auctionId",
 }
 
 const schemeName = {

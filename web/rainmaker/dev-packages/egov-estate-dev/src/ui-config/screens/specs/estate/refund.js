@@ -10,7 +10,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
+  toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getSearchResults,
@@ -185,21 +186,47 @@ const saveButton = {
 }
 
 const callBackForSaveOrSubmit = async (state, dispatch) => {
-  let reqBody = get(
-    state.screenConfiguration.preparedFinalObject,
-    "Properties"
-  )
+  try {
+    let reqBody = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties"
+    )
 
-  /* let response = await httpRequest(
-    "post",
-    "/est-services/property-master/_update",
-    "",
-    [], 
-    {
-      Properties: reqBody
+    const response = await httpRequest(
+      "post",
+      "/est-services/property-master/_update",
+      "",
+      [], 
+      {
+        Properties: reqBody
+      }
+    );
+    if (!!response) {
+      let message = {
+        labelName: "Success",
+        labelKey: "ES_SUCCESS"
+      };
+      dispatch(toggleSnackbar(true, message, "success"));
+      dispatch(
+        handleField(
+          "refund",
+          "components.div.children.saveButton",
+          "visible",
+          false
+        )
+      )
+      dispatch(
+        handleField(
+          "refund",
+          "components.div.children.submitButton",
+          "visible",
+          false
+        )
+      )
     }
-  );
-  console.log(response); */
+  } catch(err) {
+    dispatch(toggleSnackbar(true, { labelName: err.message }, "error"));
+  }
 }
 
 const refund = {

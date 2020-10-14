@@ -106,7 +106,7 @@ const searchCard = getCommonCard({
       },
       required: false,
       pattern: /^[a-zA-Z0-9-]*$/i,
-      errorMessage: "ERR_INVALID_APPLICATION_NO",
+      errorMessage: "ES_ERR_INVALID_APPLICATION_NO",
       jsonPath: "searchScreen.applicationNumber"
     }),
     status: getSelectField({

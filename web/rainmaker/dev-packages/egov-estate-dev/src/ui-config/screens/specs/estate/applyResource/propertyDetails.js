@@ -21,11 +21,7 @@ import {
 } from "./entityDetails"
 
 export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
-    const actionDefination = [{
-      path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.auctionId`,
-      property: "props.disabled",
-      value: disabled
-    },
+    const actionDefination = [
     {
       path: `components.div.children.${step}.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction`,
       property: "props.disabled",

@@ -210,45 +210,6 @@ export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") =>
   })
 }
 
-export const getReviewAuction = (isEditable = true) => {
-  return getCommonGrayCard({
-    headerDiv: {
-      ...headerDiv,
-      children: {
-        header: {
-          gridDefination: {
-            xs: 12,
-            sm: 10
-          },
-          ...getCommonSubHeader({
-            labelName: "Auction Details",
-            labelKey: "ES_AUCTION_DETAILS_HEADER"
-          })
-        },
-        editSection: masterEntryEditSection(isEditable, 1)
-      }
-    },
-    viewFour: getCommonContainer({
-      modeOfAuction: getLabelWithValue(
-        modeOfAuctionLabel, {
-          jsonPath: "Properties[0].propertyDetails.modeOfAuction"
-        }
-      ),
-      schemeName: getLabelWithValue(
-        schemeNameLabel, {
-          jsonPath: "Properties[0].propertyDetails.schemeName"
-        }
-      ),
-      dateOfAuction: getLabelWithValue(
-        dateOfAuctionLabel, {
-          jsonPath: "Properties[0].propertyDetails.dateOfAuction",
-          callBack: convertEpochToDate
-        }
-      )
-    })
-  })
-}
-
 export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
   return getCommonGrayCard({
     headerDiv: {
@@ -1111,7 +1072,7 @@ export const getReviewSecurity = (isEditable = true) => {
   })
 }
 
-export const getReviewAuctionAllotment = (isEditable = true) => {
+export const getReviewAuction = (isEditable = true, screenName) => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -1126,7 +1087,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
             labelKey: "ES_AUCTION_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 1, "allotment")
+        editSection: masterEntryEditSection(isEditable, 1, screenName)
       }
     },
     viewAuctionDetails: getCommonContainer({
@@ -1154,7 +1115,8 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
           labelKey: "ES_DATE_OF_AUCTION_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.dateOfAuction`
+          jsonPath: `Properties[0].propertyDetails.dateOfAuction`,
+          callBack: convertEpochToDate
         }
       ),
       modeOfAuction: getLabelWithValue(
@@ -1172,7 +1134,7 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
           labelKey: "ES_EMD_AMOUNT_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.emdAmount`
+          jsonPath: `Properties[0].propertyDetails.emdAmount`,
         }
       ),
       emdAmountDate: getLabelWithValue(
@@ -1181,7 +1143,8 @@ export const getReviewAuctionAllotment = (isEditable = true) => {
           labelKey: "ES_EMD_DATE_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.emdDate`
+          jsonPath: `Properties[0].propertyDetails.emdDate`,
+          callBack: convertEpochToDate
         }
       )
     })

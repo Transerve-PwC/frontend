@@ -484,13 +484,13 @@ export const setData = (properties, screenName, dispatch, state) => {
     dispatch(
       handleField(
         screenName,
-        "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer",
+        `components.div.children.${stepSecond}.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer`,
         "visible",
         true
       )
     );
     let { bidders } = properties[0].propertyDetails;
-    populateBiddersTable(bidders, screenName, "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer")
+    populateBiddersTable(bidders, screenName, `components.div.children.${stepSecond}.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer`)
   }
   /*******************************************************************************/
 }

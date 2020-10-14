@@ -23,7 +23,9 @@ import get from "lodash/get";
 import {
   validateFields
 } from "../utils";
-
+import {
+  httpRequest
+} from "../../../../ui-utils";
 
 const userInfo = JSON.parse(getUserInfo());
 const {
@@ -101,10 +103,10 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
       // properties[0].propertyDetails.owners.forEach((element,index) => { 
       await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
         if (!!element.ownerDetails.isCurrentOwner) {
-          let ownerdetailsComponent = getOwnerDetails(false, index, !!findItem);
+          let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == "ES_PM_APPROVED"));
           let allotmentDetailsComponent = getAllotmentDetails(false,index);
 
-          if (applicationState == "PS_PM_APPROVED") {
+          if (applicationState == "ES_PM_APPROVED") {
             let ownerId = element.id;
             let queryObject = [
               { key: "ownerId", value: ownerId }
@@ -184,21 +186,46 @@ const callBackForSave = async (state, dispatch) => {
   )
 
   if (isOwnerInfoValid) {
-    // update api call
-
-    let message = {
-      labelName: "Owner details updated successfully",
-      labelKey: "ES_OWNER_DETAILS_UPDATE_SUCCESS"
-    };
-    dispatch(toggleSnackbar(true, message, "success"));
-    dispatch(
-      handleField(
-        "owner-details",
-        `components.adhocDialog`,
-        "props.open",
-        false
+    try {
+      // update api call
+      let properties = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Properties"
       )
-    )
+      const response = await httpRequest(
+        "post",
+        "/est-services/property-master/_update",
+        "",
+        [], 
+        properties
+      );
+      if (!!response) {
+        let message = {
+          labelName: "Owner details updated successfully",
+          labelKey: "ES_OWNER_DETAILS_UPDATE_SUCCESS"
+        };
+        dispatch(toggleSnackbar(true, message, "success"));
+        dispatch(
+          handleField(
+            "owner-details",
+            `components.adhocDialog`,
+            "props.open",
+            false
+          )
+        )
+      }
+    } catch(err) {
+      dispatch(toggleSnackbar(true, { labelName: err.message }, "error"));
+
+      let ownersTemp = get(
+        state.screenConfiguration.preparedFinalObject,
+        "ownersTemp",
+        []
+      )
+      dispatch(
+        prepareFinalObject("Properties[0].propertyDetails.owners", ownersTemp)
+      )
+    }
   }
 }
 const callBackForCancel = async (state, dispatch) => {

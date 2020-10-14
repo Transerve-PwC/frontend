@@ -4,12 +4,16 @@ import {
   getEpochForDate,
   getTextToLocalMapping
 } from "../../utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import store from "../../../../../ui-redux/store";
 
-
 const tenantId = getTenantId();
+const userInfo = JSON.parse(getUserInfo());
+const {
+    roles = []
+} = userInfo
+const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
 
@@ -106,7 +110,7 @@ const onRowClick = rowData => {
   console.log(rowData);
   let type = getQueryArg(window.location.href, "type");
 
-  if (type == "refund" && rowData[2].toUpperCase() == "ES_PM_APPROVED") {
+  if (type == "refund" && rowData[2].toUpperCase() == "ES_PM_APPROVED" && !!findItem) {
     return window.location.href = `refund?filenumber=${rowData[0]}&tenantId=${tenantId}`
   }
 

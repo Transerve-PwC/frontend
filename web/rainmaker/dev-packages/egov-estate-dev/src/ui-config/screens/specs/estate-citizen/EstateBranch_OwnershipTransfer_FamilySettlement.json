@@ -498,7 +498,8 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
                 "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
-                "errorMessage": "ES_ERR_PURCHASER_NAME"
+                "errorMessage": "ES_ERR_PURCHASER_NAME",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' && selectedPurchaser ? selectedPurchaser.ownerDetails.ownerName : '' "
               },
               {
                 "label": "ES_DOB_LABEL",

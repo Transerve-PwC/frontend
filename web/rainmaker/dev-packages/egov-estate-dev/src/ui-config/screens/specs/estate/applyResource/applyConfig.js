@@ -57,7 +57,10 @@ import {
 } from './entityDetails'
 import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_DUE_DATE,
 ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
-ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../../../../../ui-constants'
+ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../../../../../ui-constants';
+import {
+ applyEstates
+} from '../../../../../ui-utils/apply'
 
 const documentCardConfig = {
   header: getCommonTitle({
@@ -83,7 +86,9 @@ export const ownerDocumentDetails_0 = getCommonCard({
       documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.ownerDocuments",
       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
       tenantIdJsonPath: "Properties[0].tenantId",
-      removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs"
+      removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
+      callBack: applyEstates,
+      activeIndex: 3
     }
   }
 });
@@ -180,7 +185,9 @@ export const previousOwnerDocuments_0 = getCommonCard({
       documentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.ownerDocuments",
       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.uploadedDocsInRedux",
       tenantIdJsonPath: "Properties[0].tenantId",
-      removedJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.removedDocs"
+      removedJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.removedDocs",
+      callBack: applyEstates,
+      activeIndex: 5
     }
   }
 });

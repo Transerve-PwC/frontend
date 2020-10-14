@@ -494,7 +494,7 @@ const propertyDetailsHeader = getCommonTitle(
             xs: 12,
             sm: 6
         },
-        errorMessage: "RP_ERR_AREA_OF_PROPERTY_IN_SQ_FEET_FIELD",
+        errorMessage: "ES_ERR_AREA_OF_PROPERTY_IN_SQ_FEET_FIELD",
         props: {
           disabled: true
         },
@@ -518,7 +518,7 @@ const propertyDetailsHeader = getCommonTitle(
             xs: 12,
             sm: 6
         },
-        errorMessage: "RP_ERR_RATE_PER_SQUARE_FEET_FIELD",
+        errorMessage: "ES_ERR_RATE_PER_SQUARE_FEET_FIELD",
         props: {
           disabled: true
         },

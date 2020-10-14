@@ -106,7 +106,7 @@ class ResubmitActionContainer extends React.Component {
         true,
         {
           labelName: "Workflow update error!",
-          labelKey: "ERR_WF_UPDATE_ERROR"
+          labelKey: "ES_ERR_WF_UPDATE_ERROR"
         },
         "error"
       );
@@ -132,7 +132,7 @@ class ResubmitActionContainer extends React.Component {
       } else {
         toggleSnackbar(
           true,
-          { labelName: "Please Upload file !", labelKey: "ERR_UPLOAD_FILE" },
+          { labelName: "Please Upload file !", labelKey: "ES_ERR_UPLOAD_FILE" },
           "error"
         );
       }

@@ -1,6 +1,7 @@
 import { get } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getCommonCard, getCommonTitle, getCommonParagraph } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { applyforApplication } from "../../../../../ui-utils/apply";
 
 const prepareDocuments = (documents, jsonPath) => {
     let documentsArr =
@@ -84,7 +85,9 @@ const documentList = {
       documentsJsonPath: "temp[0].documents",
       uploadedDocumentsJsonPath: "temp[0].uploadedDocsInRedux",
       tenantIdJsonPath: "Applications[0].tenantId",
-      removedJsonPath: "temp[0].removedDocs"
+      removedJsonPath: "temp[0].removedDocs",
+      callBack: applyforApplication,
+      activeIndex: 1
     }
   };
 

@@ -125,7 +125,7 @@ class DocumentList extends Component {
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, getUrl,excelUrl, screenKey, componentJsonPath, preparedFinalObject } = this.props;
+    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, getUrl,excelUrl, screenKey, componentJsonPath, preparedFinalObject, callBack, activeIndex } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
 
     if(getUrl) {
@@ -162,6 +162,9 @@ class DocumentList extends Component {
       });
       this.setState({ uploadedDocuments, showLoader: false });
       this.getFileUploadStatus(true, uploadedDocIndex);
+      if(!!callBack) {
+        callBack(this.props.state, this.props.dispatch, activeIndex)
+      }
     }
   };
 
@@ -310,7 +313,7 @@ DocumentList.propTypes = {
 const mapStateToProps = (state) => {
   const { screenConfiguration } = state;
   const { preparedFinalObject } = screenConfiguration;
-  return { preparedFinalObject};
+  return { state, preparedFinalObject};
 };
 
 const mapDispatchToProps = dispatch => {

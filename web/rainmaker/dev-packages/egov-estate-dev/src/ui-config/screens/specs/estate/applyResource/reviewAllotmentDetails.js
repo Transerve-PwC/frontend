@@ -5,7 +5,7 @@ import {
 import {
   getReviewPropertyInfo,
   getReviewAdditional,
-  getReviewAuctionAllotment,
+  getReviewAuction,
   getReviewCompanyDetails,
   getReviewPremiumAmount,
   getReviewGroundRent, 
@@ -18,7 +18,7 @@ import {
 
 var reviewPropertyInfo = getReviewPropertyInfo(true, "allotment");
 var reviewAdditional = getReviewAdditional(true, "allotment");
-var reviewAuctionAllotment = getReviewAuctionAllotment();
+var reviewAuctionAllotment = getReviewAuction(true, "allotment");
 var reviewPremiumAmount = getReviewPremiumAmount();
 var reviewGroundRent = getReviewGroundRent();
 var reviewLicenseFee = getReviewLicenseFee();

@@ -123,7 +123,7 @@ export const estateApplication = getCommonCard({
         },
         required: true,
         pattern: /^[a-zA-Z0-9-]*$/i,
-        errorMessage: "ERR_INVALID_FILE_NO",
+        errorMessage: "ES_ERR_INVALID_FILE_NO",
         jsonPath: "searchScreenFileNo.fileNumber"
       })
     }),

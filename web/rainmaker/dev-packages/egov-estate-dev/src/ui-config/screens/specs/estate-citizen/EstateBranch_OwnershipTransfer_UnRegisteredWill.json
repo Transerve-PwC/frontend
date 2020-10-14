@@ -571,7 +571,8 @@
                 "jsonPath": "Applications[0].applicationDetails.transferee.name",
                 "path": "transferee.name",
                 "visibility": "application.applicationDetails.transferee.type !== 'Existing'",
-                "errorMessage": "ES_ERR_LEGAL_BENEFICIARY_NAME"
+                "errorMessage": "ES_ERR_LEGAL_BENEFICIARY_NAME",
+                "prefillValue": "application.applicationDetails.transferee.type == 'Existing' && selectedPurchaser ? selectedPurchaser.ownerDetails.ownerName : '' "
               },
               {
                 "label": "ES_LEGAL_BENIFICIARY_FATHER_HUSBAND_NAME_LABEL",
