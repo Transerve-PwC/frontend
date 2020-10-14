@@ -45,6 +45,9 @@ const getData = async (action, state, dispatch) => {
     }
   // }
 
+    const owners = property.propertyDetails.owners.filter(item => !!item.ownerDetails.isCurrentOwner)
+    property = {...property, propertyDetails: {...property.propertyDetails, owners}}
+    
     const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
 
     const header = getCommonApplyHeader({label: headerLabel, number: applicationNumber})

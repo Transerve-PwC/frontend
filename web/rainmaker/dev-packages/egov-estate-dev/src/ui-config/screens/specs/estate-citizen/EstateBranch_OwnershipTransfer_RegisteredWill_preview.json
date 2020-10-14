@@ -123,6 +123,10 @@
                     {
                         "label": "ES_RELATION_WITH_DECEASED_RADIO_BTN_LABEL",
                         "jsonPath": "Applications[0].applicationDetails.transferee.relationWithDeceased"
+                    },
+                    {
+                        "label": "ES_PERCENTAGE_SHARED_LABEL",
+                        "jsonPath": "Applications[0].applicationDetails.transferee.percentageOfShareTransferred"
                     }
                 ]
             },

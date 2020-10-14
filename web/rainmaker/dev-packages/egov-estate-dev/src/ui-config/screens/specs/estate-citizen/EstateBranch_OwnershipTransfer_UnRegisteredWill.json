@@ -632,6 +632,12 @@
                 "path": "transferee.percentageOfShareTransferred",
                 "pattern": "Percentage",
                 "errorMessage": "ES_ERR_PERCENTAGE"
+              },
+              {
+                "label": "ES_REMAINING_SHARE_PERCENTAGE",
+                "type": "TEXT_FIELD",
+                "disabled": true,
+                "prefillValue": "!!application.applicationDetails.transferee.percentageOfShareTransferred && !!selectedOwner.share ? selectedOwner.share - (selectedOwner.share * application.applicationDetails.transferee.percentageOfShareTransferred / 100) : ''"
               }
             ]
           },
