@@ -63,11 +63,11 @@ class ImageUpload extends Component {
   };
 
   onFilePicked = (file, imageUri) => {
-    const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText, MAX_IMAGE_SIZE = 5000, imageLength = 3,labelKey = "ERR_FILE_MORE_THAN_FIVEMB" } = this.props;
+    const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText, MAX_IMAGE_SIZE = 5000, imageLength = 3,labelKey = "RP_ERR_FILE_MORE_THAN_FIVEMB" } = this.props;
     const fileSize = getFileSize(file);
     const isImage = isFileImage(file);
     if (!isImage) {
-      toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "ERR_NOT_VALID_IMAGE" }, "error");
+      toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "RP_ERR_NOT_VALID_IMAGE" }, "error");
     } else if (fileSize > MAX_IMAGE_SIZE) {
       toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: labelKey },"error");
     } else {
@@ -85,7 +85,7 @@ class ImageUpload extends Component {
 
   render() {
     const { onFilePicked, removeImage } = this;
-    const { images, loading , labelKey = "ERR_FILE_MORE_THAN_FIVEMB"} = this.props;
+    const { images, loading , labelKey = "RP_ERR_FILE_MORE_THAN_FIVEMB"} = this.props;
     let {imageLength =  3} = this.props ;
     if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF"){
       imageLength = 5 ;

@@ -2,6 +2,7 @@ import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTit
 import { transitNumberLookUp, propertyHeader, pincodeField,colonyFieldDup, pincodeFieldTransitSite } from '../applyResource/propertyDetails'
 import { getDetailsFromProperty,getDetailsFromPropertyMortgage,getDetailsFromPropertyTransit } from "../../../../../ui-utils/apply";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 const addressHeader = getCommonTitle(
     {
@@ -45,6 +46,44 @@ placeholder: {
     maxLength: 100,
     required: true,
     errorMessage: "RP_ERR_AREA_FIELD",
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 100) {
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_AREA_LOCALITY_FIELD_MAXLENGTH"
+              )
+          )
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_AREA_LOCALITY_FIELD_MAXLENGTH"
+              )
+          )
+      }
+      else {
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_AREA_FIELD"
+              )
+          )
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_AREA_FIELD"
+              )
+          )
+      }
+    }
   }
 
 
@@ -85,10 +124,48 @@ placeholder: {
       rows: "4"
   },
   visible: true,
-    // minLength: 1,
-    // maxLength: 1000,
+    minLength: 1,
+    maxLength: 100,
     required: true,
     errorMessage: "RP_ERR_COMMENTS_FIELD",
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 100) {
+          dispatch(
+              handleField(
+                "transit-site-images",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_COMMENTS_FIELD_MAXLENGTH"
+              )
+          )
+          dispatch(
+              handleField(
+                "transit-site-images",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_COMMENTS_FIELD_MAXLENGTH"
+              )
+          )
+      }
+      else {
+          dispatch(
+              handleField(
+                "transit-site-images",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_COMMENTS_FIELD"
+              )
+          )
+          dispatch(
+              handleField(
+                "transit-site-images",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_COMMENTS_FIELD"
+              )
+          )
+      }
+    }
   }
 
 const getAddressDetails = () => {

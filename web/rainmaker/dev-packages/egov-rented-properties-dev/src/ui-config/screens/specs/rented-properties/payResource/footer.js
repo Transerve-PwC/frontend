@@ -273,7 +273,7 @@ const callBackForPay = async (state, dispatch) => {
           true,
           {
             labelName: "Transaction numbers don't match !",
-            labelKey: "ERR_TRASACTION_NUMBERS_DONT_MATCH"
+            labelKey: "RP_ERR_TRASACTION_NUMBERS_DONT_MATCH"
           },
           "error"
         )
@@ -322,7 +322,7 @@ const callBackForPay = async (state, dispatch) => {
         {
           labelName:
             "Please fill all mandatory fields and upload the documents !",
-          labelKey: "ERR_FILL_MANDATORY_FIELDS"
+          labelKey: "RP_ERR_FILL_MANDATORY_FIELDS"
         },
         "warning"
       )
@@ -336,7 +336,7 @@ export const getCommonApplyFooter = children => {
     componentPath: "Div",
     props: {
       className: "apply-wizard-footer",
-      style: { display: "flex", justifyContent: "flex-end" }
+      style: { justifyContent: "flex-end" }
     },
     children
   };

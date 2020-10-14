@@ -11,7 +11,7 @@ const uploadimage = getCommonCard({
     // imageLength: 6,
     hide: false,
     MAX_IMAGE_SIZE: 6000,
-    labelKey: "ERR_FILE_MORE_THAN_SIXMB"
+    labelKey: "RP_ERR_FILE_MORE_THAN_SIXMB"
     },
     visible: true,
      required: true

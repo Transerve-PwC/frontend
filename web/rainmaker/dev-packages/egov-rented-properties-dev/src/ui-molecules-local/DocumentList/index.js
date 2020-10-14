@@ -254,7 +254,7 @@ class DocumentList extends Component {
                       </div>
                     )}
                   </Grid>
-                  <Grid item={true} xs={6} sm={6} align="left">
+                  <Grid item={true} xs={10} sm={6} align="left">
                     <LabelContainer
                       labelName={documentTypePrefix + document.name}
                       labelKey={documentTypePrefix + document.name}

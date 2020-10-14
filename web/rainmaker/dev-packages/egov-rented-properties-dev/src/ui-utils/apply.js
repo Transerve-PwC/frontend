@@ -545,7 +545,7 @@ const getPropertyDetails = async ({state, dispatch, transitNumber, screenKey, co
           true,
           {
             labelName: "Property is not found with this Transit Number",
-            labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+            labelKey: "RP_ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
           },
           "info"
         )
@@ -1081,7 +1081,7 @@ export const getOfflineRentPaymentDetailsFromProperty = async (state, dispatch) 
               true,
               {
                 labelName: "Property is not found with this Transit Number",
-                labelKey: "ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
+                labelKey: "RP_ERR_PROPERTY_NOT_FOUND_WITH_PROPERTY_ID"
               },
               "info"
             )

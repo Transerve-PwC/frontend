@@ -4,7 +4,7 @@ import {
     getCommonParagraph,
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  
+  import "./index.css";
   const style = {
     bodyBox: {
       marginLeft: 16,

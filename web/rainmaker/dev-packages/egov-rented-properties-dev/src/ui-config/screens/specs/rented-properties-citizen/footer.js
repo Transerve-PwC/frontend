@@ -67,7 +67,7 @@ const callBackForNext = async(state, dispatch) => {
               const errorMessage = {
                 labelName:
                   "Unable to process your request, as another application with same transit number is already in progress",
-                labelKey: "ERR_OT_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
+                labelKey: "RP_ERR_OT_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
               };
               return dispatch(toggleSnackbar(true, errorMessage, "error"));
             }
@@ -147,7 +147,7 @@ const callBackForNext = async(state, dispatch) => {
           let errorMsg = {
             labelName:
                 "Date of death of allotee cant be a future date!",
-            labelKey: "ERR_DATE_OF_DEATH_FUTURE_DATE"
+            labelKey: "RP_ERR_DATE_OF_DEATH_FUTURE_DATE"
         };
           dispatch(toggleSnackbar(true, errorMsg, "warning"));
       } 
@@ -155,7 +155,7 @@ const callBackForNext = async(state, dispatch) => {
             let errorMessage = {
                 labelName:
                     "Please fill all mandatory fields and upload the documents !",
-                labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+                labelKey: "RP_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
             };
             switch (activeStep) {
                 case DETAILS_STEP:
@@ -163,7 +163,7 @@ const callBackForNext = async(state, dispatch) => {
                     let errorMessage = {
                       labelName:
                           "Date of death of allote cannot be future date ",
-                      labelKey: "ERR_DATE_GREATER_THAN_TODAY_DATE"
+                      labelKey: "RP_ERR_DATE_GREATER_THAN_TODAY_DATE"
                   };
                   
                   dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -171,7 +171,7 @@ const callBackForNext = async(state, dispatch) => {
                     errorMessage = {
                         labelName:
                             "Please fill all mandatory fields, then do next !",
-                        labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+                        labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"
                     };
                   }
                     break;
@@ -189,7 +189,7 @@ const callBackForNext = async(state, dispatch) => {
         //   let errorMessage = {
         //     labelName:
         //         "date cannot be greater than Today!",
-        //     labelKey: "ERR_DATE_GREATER_THAN_TODAY_DATE"
+        //     labelKey: "RP_ERR_DATE_GREATER_THAN_TODAY_DATE"
         // };
         
         // dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -252,7 +252,7 @@ const callBackForNextTransitImages = async(state, dispatch) => {
         let errorMessage = {
           labelName:
               "Please fill all mandatory fields and upload the images !",
-          labelKey: "ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
+          labelKey: "RP_ERR_FILL_MANDATORY_FIELDS_AND_UPLOAD_IMG"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 
@@ -300,7 +300,7 @@ const callBackForNextDuplicate = async(state, dispatch) => {
               const errorMessage = {
                 labelName:
                   "Unable to process your request, as another application with same transit number is already in progress",
-                labelKey: "ERR_DC_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
+                labelKey: "RP_ERR_DC_ANOTHER_APPLICATION_ALREADY_IN_PROGRESS_ERR"
               };
               return dispatch(toggleSnackbar(true, errorMessage, "error"));
             }
@@ -378,14 +378,14 @@ const callBackForNextDuplicate = async(state, dispatch) => {
             let errorMessage = {
                 labelName:
                     "Please fill all mandatory fields and upload the documents !",
-                labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+                labelKey: "RP_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
             };
             switch (activeStep) {
                 case DETAILS_STEP:
                     errorMessage = {
                         labelName:
                             "Please fill all mandatory fields, then do next !",
-                        labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+                        labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"
                     };
                     break;
                 case DOCUMENT_UPLOAD_STEP:

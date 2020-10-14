@@ -162,6 +162,44 @@ const amountField = {
   maxLength: 7,
   jsonPath: "paymentInfo.amount",
   errorMessage: "RP_ERR_AMOUNT_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_AMOUNT_FIELD_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_AMOUNT_FIELD_MAXLENGTH"
+            )
+        )
+    }
+    else {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_AMOUNT_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_AMOUNT_FIELD"
+            )
+        )
+    }
+  }
 }
 
 const bankNameField = {
@@ -288,7 +326,7 @@ const goToPayment = async (state, dispatch, type) => {
       }
     }
   } else {
-    dispatch(toggleSnackbar(true, {labelName: "ERR_FILL_RENTED_MANDATORY_FIELDS", labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"}, "warning"))
+    dispatch(toggleSnackbar(true, {labelName: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS", labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"}, "warning"))
   }
 }
 

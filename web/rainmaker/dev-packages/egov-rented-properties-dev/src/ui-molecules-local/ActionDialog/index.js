@@ -295,7 +295,7 @@ return
     else if(!(bankName.length >= 3 && bankName.length <= 25)) {
       toggleSnackbar(
               true,
-              { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "ERR_BANKNAME_RANGE"},
+              { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "RP_ERR_BANKNAME_RANGE"},
               "error"
             );
       return
@@ -303,7 +303,7 @@ return
     else if(isNaN(mortgageAmountValid)){
       toggleSnackbar(
         true,
-        { labelName: "Amount should be a numeric value", labelKey: "ERR_MORTGAGEAMOUNT_NUMBER"},
+        { labelName: "Amount should be a numeric value", labelKey: "RP_ERR_MORTGAGEAMOUNT_NUMBER"},
         "error"
       );
       return
@@ -311,7 +311,7 @@ return
     else if(!(mortgageAmountValid.length >= 3 && mortgageAmountValid.length <= 8)){
       toggleSnackbar(
         true,
-        { labelName: "Enter Mortgage Amount between 3 and 8 digits only", labelKey: "ERR_MORTGAGEAMOUNT_RANGE"},
+        { labelName: "Enter Mortgage Amount between 3 and 8 digits only", labelKey: "RP_ERR_MORTGAGEAMOUNT_RANGE"},
         "error"
       );
       return
@@ -319,7 +319,7 @@ return
     else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 25)){
       toggleSnackbar(
         true,
-        { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "ERR_SANCTION_LETTER_NUMBER_RANGE"},
+        { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "RP_ERR_SANCTION_LETTER_NUMBER_RANGE"},
         "error"
       );
       return

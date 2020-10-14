@@ -185,8 +185,8 @@ class WorkFlowContainer extends React.Component {
           toggleSnackbar(
             true,
             {
-              labelName: `We could not process your request right now. Please try after sometime` + e.message,
-              labelKey: `We could not process your request right now. Please try after sometime` + e.message
+              labelName: e.message,
+              labelKey: e.message
             },
             "error"
           );
@@ -196,7 +196,7 @@ class WorkFlowContainer extends React.Component {
             true,
             {
               labelName: "Workflow update error!",
-              labelKey: "ERR_WF_UPDATE_ERROR"
+              labelKey: "RP_ERR_WF_UPDATE_ERROR"
             },
             "error"
           );

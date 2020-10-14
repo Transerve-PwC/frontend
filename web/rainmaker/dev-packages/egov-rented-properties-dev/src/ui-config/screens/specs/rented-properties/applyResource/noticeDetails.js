@@ -3,6 +3,7 @@ import { getTodaysDateInYMD } from "../../utils";
 import get from "lodash/get";
 import { getRecoveryValueProperty} from "../../../../../ui-utils/apply";
 import { transitNumberConfig } from "./propertyDetails";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 export const propertyHeader = getCommonTitle(
     {
@@ -65,7 +66,80 @@ const getEditorField = {
         rows: "4"
     },
     visible: true,
-    jsonPath: "Properties[0].owners[0].ownerDetails.editor"
+    minLength: 1,
+    maxLength: 100,
+    jsonPath: "Properties[0].owners[0].ownerDetails.editor",
+    errorMessage: "RP_ERR_EDITOR_DESC_FIELD",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 100) {
+            dispatch(
+                handleField(
+                  "notice-violation",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD_MAXLENGTH"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-violation",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD_MAXLENGTH"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-recovry",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD_MAXLENGTH"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-recovry",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD_MAXLENGTH"
+                )
+            )
+        }
+        else {
+            dispatch(
+                handleField(
+                  "notice-violation",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-violation",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-recovry",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD"
+                )
+            )
+            dispatch(
+                handleField(
+                  "notice-recovry",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_EDITOR_DESC_FIELD"
+                )
+            )
+        }
+      }
   }
 
 const originalAllotteField = {

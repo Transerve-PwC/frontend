@@ -140,13 +140,6 @@ export const getreviewPropertyAddressDetails = (isEditable = true) => {
                 },
                 { jsonPath: "Owners[0].property.transitNumber" }
             ),
-            allotmentNumber: getLabelWithValue(
-                {
-                    labelName: "Allotment Number",
-                    labelKey: "RP_ALLOTMENT_NUMBER"
-                },
-                {jsonPath: "Owners[0].allotmenNumber"}
-            ),
             area: getLabelWithValue(
                 colonyLabel,
                 { jsonPath: "Owners[0].property.colony" }

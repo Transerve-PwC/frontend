@@ -14,7 +14,7 @@ import Icon from "egov-ui-framework/ui-atoms/Icon";
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    //display: "flex"
   },
   paper: {
     marginRight: theme.spacing.unit * 2

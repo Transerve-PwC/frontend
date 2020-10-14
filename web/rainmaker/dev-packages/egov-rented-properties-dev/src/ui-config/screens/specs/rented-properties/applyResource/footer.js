@@ -231,7 +231,7 @@ const callBackForNext = async(state, dispatch) => {
             let errorMessage = {
                 labelName:
                     "Please fill all mandatory fields and upload the documents !",
-                labelKey: "ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+                labelKey: "RP_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
             };
             switch (activeStep) {
                 case DETAILS_STEP:
@@ -239,13 +239,13 @@ const callBackForNext = async(state, dispatch) => {
                     errorMessage = {
                       labelName:
                           "Date of allotment is greater than date of possession",
-                      labelKey: "ERR_DATE_ALLOTMENT_FIELDS"
+                      labelKey: "RP_ERR_DATE_ALLOTMENT_FIELDS"
                   };
                   }else{
                     errorMessage = {
                         labelName:
                             "Please fill all mandatory fields, then do next !",
-                        labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+                        labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"
                     };
                   }
                     break;
@@ -325,7 +325,7 @@ if (!isFormValid) {
   let errorMessage = {
     labelName:
         "Please fill all mandatory fields, then do next !",
-    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+    labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -335,7 +335,7 @@ if (!isDateValid) {
   let errorMessage = {
     labelName:
         "From date cannot be greater than To date!",
-    labelKey: "ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+    labelKey: "RP_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -345,7 +345,7 @@ if (!isPaymentAmountValid) {
   let errorMessage = {
     labelName:
         "Due Amount Cannot be 0 or empty!",
-    labelKey: "ERR_DUE_AMOUNT_0_OR_EMPTY"
+    labelKey: "RP_ERR_DUE_AMOUNT_0_OR_EMPTY"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
@@ -395,7 +395,7 @@ if (!isFormValid) {
   let errorMessage = {
     labelName:
         "Please fill all mandatory fields, then do next !",
-    labelKey: "ERR_FILL_RENTED_MANDATORY_FIELDS"
+    labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));

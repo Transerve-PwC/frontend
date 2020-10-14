@@ -712,7 +712,7 @@ class ShowForm extends Component {
               style={{ padding: "16px" }}
               textChildren={
                 <div>
-                  <Label label={"REPORTS_SEARCHFORM_MODIFY_DATE_HEADER"} />
+                   {(metaData.reportDetails.reportName==="RPDueAmountReport")?<Label label={"RP_REPORTS_SEARCHFORM_MODIFY_COLONY_HEADER"} />:<Label label={"REPORTS_SEARCHFORM_MODIFY_DATE_HEADER"} />}
                   <Grid container spacing={8}>{this.handleFormFields()}</Grid>
                   <Row>
                     <div style={{ marginTop: "16px", textAlign: "center" }} className="col-xs-12">
