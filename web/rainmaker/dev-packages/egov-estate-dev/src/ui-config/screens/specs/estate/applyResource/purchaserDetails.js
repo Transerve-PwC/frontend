@@ -109,6 +109,28 @@ const getRelationshipRadioButton = {
   }
 };
 
+const dateOfBirthField = {
+  label: {
+      labelName: "Date of Birth",
+      labelKey: "ES_DOB_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Date of Birth",
+      labelKey: "ES_DOB_PLACEHOLDER"
+  },
+  required: true,
+  pattern: getPattern("Date"),
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dob",
+  props: {
+    inputProps: {
+        max: getTodaysDateInYMD(),
+        style: {
+            lineHeight: "initial"
+        }
+    }
+  }
+}
+
 const newOwnerAddressField = {
   label: {
     labelName: "Previous Owner Address",
@@ -196,7 +218,7 @@ const sellerFatherHusbandNameField = {
   },
   // required: true,
   maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerFatherName",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerGuardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
@@ -211,7 +233,7 @@ const getSellerRelationshipRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.sellerGuardianRelation",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerRelation",
   props: {
     label: {
       name: "Relationship",
@@ -228,7 +250,7 @@ const getSellerRelationshipRadioButton = {
         value: "HUSBAND",
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.sellerGuardianRelation",
+    jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerRelation",
     // required: true,
   },
   // required: true,
@@ -255,7 +277,7 @@ const shareField = {
   },
   // required: true,
   maxLength: 5,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.percentageOfShare",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].share",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
@@ -286,51 +308,6 @@ const modeOfTransferField = {
   }
 }
 
-const registrationNumberField = {
-  label: {
-    labelName: "Registration Number of the Property in Sub-Registrar Office",
-    labelKey: "ES_REGISTRATION_NUMBER_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Registration Number of the Property in Sub-Registrar Office",
-    labelKey: "ES_REGISTRATION_NUMBER_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  },
-  maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.registrationNumber",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
-}
-
-const dateOfRegistrationField = {
-  label: {
-    labelName: "Date of Registration",
-    labelKey: "ES_DATE_OF_REGISTRATION_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Date of Registration",
-    labelKey: "ES_DATE_OF_REGISTRATION_PLACEHOLDER"
-  },
-  pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dateOfRegistration",
-  // props: {
-  //   inputProps: {
-  //     max: getTodaysDateInYMD()
-  //   }
-  // },
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
-}
-
 const commonPurchaserInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
@@ -345,15 +322,14 @@ const commonPurchaserInformation = () => {
       newOwnerName: getTextField(newOwnerNameField),
       newOwnerFatherHusbandName: getTextField(newOwnerFatherHusbandNameField),
       guardianRelation: getRelationshipRadioButton,
+      dob: getDateField(dateOfBirthField),
       newOwnerAddress: getTextField(newOwnerAddressField),
       newOwnerMobileNumber: getTextField(newOwnerMobileNumberField),
       sellerName: getTextField(sellerNameField),
       sellerFatherHusbandName: getTextField(sellerFatherHusbandNameField),
       sellerGuardianRelation: getSellerRelationshipRadioButton,
       share: getTextField(shareField),
-      modeOfTransfer: getSelectField(modeOfTransferField),
-      registrationNumber: getTextField(registrationNumberField),
-      dateOfRegistration: getDateField(dateOfRegistrationField)
+      modeOfTransfer: getSelectField(modeOfTransferField)
     })
   });
 };
@@ -394,7 +370,6 @@ export const purchaserDetails = getCommonCard({
 })
 
 export const markFieldsMandatory = (param, dispatch) => {
-  debugger
   let commonPathArr = (param.componentJsonpath).split(".");
   commonPathArr.pop();
   let commonpath = commonPathArr.join(".");

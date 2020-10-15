@@ -367,10 +367,6 @@
                 "type": "date"
               },
               {
-                "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
-                "jsonPath": "property.propertyDetails.propertyApplicationNumber"
-              },
-              {
                 "label": "ES_DUE_AMOUNT_LABEL",
                 "jsonPath": "property.propertyDetails.dueAmount"
               }
@@ -539,12 +535,12 @@
                 "dataSource": "modesOfTransfer"
               },
               {
-                "label": "ES_REGESTRATION_NO_OF_PROPERTY_LABEL",
-                "placeholder": "ES_REGESTRATION_NO_OF_PROPERTY_PLACEHOLDER",
+                "label": "ES_REGISTRATION_NUMBER_LABEL",
+                "placeholder": "ES_REGISTRATION_NUMBER_PLACEHOLDER",
                 "type": "TEXT_FIELD",
                 "jsonPath": "Applications[0].applicationDetails.registrationNumber",
                 "path": "registrationNumber",
-                "errorMessage": "ES_ERR_REGISTERATION_NO"
+                "errorMessage": "ES_ERR_REGISTRATION_NUMBER"
               },
               {
                 "label": "ES_DATE_OF_REGISTRATION_LABEL",

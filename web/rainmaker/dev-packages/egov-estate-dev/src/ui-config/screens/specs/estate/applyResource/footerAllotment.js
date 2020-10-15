@@ -38,6 +38,7 @@ import {
 import {
   getReviewDocuments
 } from "./reviewDocuments";
+import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -52,10 +53,10 @@ export const moveToSuccess = (estatesData, dispatch, type) => {
   const id = get(estatesData, "id");
   const tenantId = get(estatesData, "tenantId");
   const fileNumber = get(estatesData, "fileNumber");
-  const purpose = "apply";
+  const purpose = "allotment";
   const status = "success";
 
-  const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}`
+  const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`
   dispatch(
     setRoute(path)
   );
@@ -154,7 +155,27 @@ const callBackForNext = async (state, dispatch) => {
         )
         break;
       default:
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
         break;
+    }
+
+    if (!!entityType) {
+      if (entityType == "ET.PARTNERSHIP_FIRM") {
+        dispatch(
+          prepareFinalObject(
+            `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+            "PARTNER"
+          )
+        )
+      }
+      else {
+        dispatch(
+          prepareFinalObject(
+            `Properties[0].propertyDetails.owners[${i}].ownershipType`,
+            "OWNER"
+          )
+        )
+      }
     }
 
     if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid || isOwnerOrPartnerDetailsValid) || isProprietorshipDetailsValid) {
@@ -432,7 +453,7 @@ const callBackForNext = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
-      moveToSuccess(estatesData, dispatch);
+      moveToSuccess(estatesData, dispatch, WF_PROPERTY_MASTER);
     }
   }
 

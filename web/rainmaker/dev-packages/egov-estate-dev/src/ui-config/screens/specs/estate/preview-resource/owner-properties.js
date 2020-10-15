@@ -63,6 +63,11 @@ import {
     labelName: "Relationship",
     labelKey: "ES_RELATIONSHIP_LABEL"
   };
+
+  const dobLabel = {
+    labelName: "Date of Birth",
+    labelKey: "ES_DOB_LABEL"
+  };
   
   const addressField = {
    
@@ -296,6 +301,12 @@ export const headerDiv = {
               jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.guardianRelation`
             }
           ),
+        dob:getLabelWithValue(
+            dobLabel, {
+              jsonPath: `Properties[0].propertyDetails.owners[${index}].ownerDetails.dob`,
+              callBack: convertEpochToDate
+            }
+          ),
         address: getLabelWithValue(
             addressField, {
               jsonPath:  `Properties[0].propertyDetails.owners[${index}].ownerDetails.address`
@@ -371,7 +382,7 @@ export const headerDiv = {
       moduleName: "egov-estate",
       componentPath: "MultipleDocumentsContainer",
       props: {
-        sourceJsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.modeOfTransfer`,
+        sourceJsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.modeOfTransferArr`,
         btnhide: false,
         businessService:"EST",
         className: "review-documents",

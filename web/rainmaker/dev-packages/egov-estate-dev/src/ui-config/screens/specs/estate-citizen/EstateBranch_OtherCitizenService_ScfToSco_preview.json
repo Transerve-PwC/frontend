@@ -35,10 +35,6 @@
                         "type": "date"
                     },
                     {
-                        "label": "ES_PROPERTY_APPLICATION_NUMBER_LABEL",
-                        "jsonPath": "Applications[0].property.propertyDetails.propertyApplicationNumber"
-                    },
-                    {
                         "label": "ES_DUE_AMOUNT_LABEL",
                         "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
                     }

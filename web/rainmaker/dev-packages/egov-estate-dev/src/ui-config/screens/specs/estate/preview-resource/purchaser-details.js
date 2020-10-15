@@ -89,6 +89,11 @@ export const purchaserHeader = getCommonTitle({
       labelKey: "ES_RELATIONSHIP_LABEL",
   }
 
+  const dobLabel = {
+    labelName: "Date of Birth",
+    labelKey: "ES_DOB_LABEL"
+  };
+
   export const editSection = {
     componentPath: "Button",
     props: {
@@ -152,61 +157,56 @@ export const headerDiv = {
       },
       viewFour: getCommonContainer({
         newOwnerName: getLabelWithValue(
-            newOwnerNameField, {
+          newOwnerNameField, {
               jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerName`
-            }
-          ),
-          newOwnerFatherHusbandName: getLabelWithValue(
-            newOwnerFatherHusbandNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianName`
-            }
-          ),
-          gaurdianRelation: getLabelWithValue(
-            relationshipField, {
-              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianRelation`
-            }
-          ),
-          newOwnerAddress:getLabelWithValue(
-            newOwnerAddressField, {
-              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.address`
-            }
-          ),
-          newOwnerMobileNumber: getLabelWithValue(
-            newOwnerMobileNumberField, {
-              jsonPath:  `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.mobileNumber`
-            }
-          ),
-          sellerName: getLabelWithValue(
-            sellerNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerName`
-            }
-          ),
-        sellerFatherHusbandName: getLabelWithValue(
-            sellerFatherHusbandNameField, {
-              jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerFatherName`
-            }
-          ),
-          share: getLabelWithValue(
-            shareField, {
-              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.percentageOfShare`
-            }
-          ),
-          modeOfTransfer: getLabelWithValue(
-            modeOfTransferField, {
-              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.modeOfTransfer`
-            }
-          ),
-          registrationNumber: getLabelWithValue(
-            registrationNumberField, {
-              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.registrationNumber`
-            }
-          ),
-          dateOfRegistration: getLabelWithValue(
-            dateOfRegistrationField, {
-              jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.dateOfRegistration`,
-              callBack: convertEpochToDate
-            }
-          )
+          }
+        ),
+        newOwnerFatherHusbandName: getLabelWithValue(
+          newOwnerFatherHusbandNameField, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianName`
+          }
+        ),
+        gaurdianRelation: getLabelWithValue(
+          relationshipField, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.guardianRelation`
+          }
+        ),
+        dob:getLabelWithValue(
+          dobLabel, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.dob`,
+            callBack: convertEpochToDate
+          }
+        ),
+        newOwnerAddress:getLabelWithValue(
+          newOwnerAddressField, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.address`
+          }
+        ),
+        newOwnerMobileNumber: getLabelWithValue(
+          newOwnerMobileNumberField, {
+            jsonPath:  `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.mobileNumber`
+          }
+        ),
+        sellerName: getLabelWithValue(
+          sellerNameField, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerName`
+          }
+        ),
+      sellerFatherHusbandName: getLabelWithValue(
+          sellerFatherHusbandNameField, {
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerFatherName`
+          }
+        ),
+        share: getLabelWithValue(
+          shareField, {
+            jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.percentageOfShare`
+          }
+        ),
+        modeOfTransfer: getLabelWithValue(
+          modeOfTransferField, {
+            jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.modeOfTransfer`
+          }
+        )
       })
     })
   }

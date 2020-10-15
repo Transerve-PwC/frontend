@@ -203,7 +203,7 @@ export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") =>
       ),
       allocationType: getLabelWithValue(
         allocationTypeLabel, {
-          jsonPath: "Properties[0].propertyDetails.allocationType"
+          jsonPath: "Properties[0].propertyDetails.typeOfAllocation"
         }
       )
     })
@@ -257,6 +257,10 @@ const relationshipLabel = {
   labelName: "Relationship",
   labelKey: "ES_RELATIONSHIP_LABEL"
 }
+const dobLabel = {
+  labelName: "Date of Birth",
+  labelKey: "ES_DOB_LABEL"
+}
 const addressLabel = {
   labelName: "Address",
   labelKey: "ES_ADDRESS_LABEL"
@@ -306,6 +310,12 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
       relationship: getLabelWithValue(
         relationshipLabel, {
           jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.guardianRelation`
+        }
+      ),
+      dob: getLabelWithValue(
+        dobLabel, {
+          jsonPath: `Properties[0].propertyDetails.owners[${owner}].ownerDetails.dob`,
+          callBack: convertEpochToDate
         }
       ),
       address: getLabelWithValue(
@@ -382,14 +392,6 @@ const modeOfTransferLabel = {
   labelName: "Mode of Transfer",
   labelKey: "ES_MODE_OF_TRANSFER_LABEL"
 }
-const registrationNumberLabel = {
-  labelName: "Registration Number of the Property in Sub-Registrar Office",
-  labelKey: "ES_REGISTRATION_NUMBER_LABEL"
-}
-const dateOfRegistrationLabel = {
-  labelName: "Date of Registration",
-  labelKey: "ES_DATE_OF_REGISTRATION_LABEL"
-}
 
 export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
   return getCommonGrayCard({
@@ -425,6 +427,12 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
           jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.guardianRelation`
         }
       ),
+      dob: getLabelWithValue(
+        dobLabel, {
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.dob`,
+          callBack: convertEpochToDate
+        }
+      ),
       newOwnerAddress: getLabelWithValue(
         newOwnerAddressLabel, {
           jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.address`
@@ -442,28 +450,22 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
       ),
       sellerFatherHusbandName: getLabelWithValue(
         sellerFatherHusbandNameLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.sellerFatherName`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.sellerGuardianName`
+        }
+      ),
+      sellerRelationship: getLabelWithValue(
+        relationshipLabel, {
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.sellerRelation`
         }
       ),
       percentShare: getLabelWithValue(
         percentShareLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.percentageOfShare`
+          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].share`
         }
       ),
       modeOfTransfer: getLabelWithValue(
         modeOfTransferLabel, {
           jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.modeOfTransfer`
-        }
-      ),
-      registrationNumber: getLabelWithValue(
-        registrationNumberLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.registrationNumberField`
-        }
-      ),
-      dateOfRegistration: getLabelWithValue(
-        dateOfRegistrationLabel, {
-          jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].ownerDetails.dateOfRegistration`,
-          callBack: convertEpochToDate
         }
       )
     })
@@ -1097,7 +1099,7 @@ export const getReviewAuction = (isEditable = true, screenName) => {
           labelKey: "ES_AUCTION_ID_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.auctionId`
+          jsonPath: `Properties[0].propertyDetails.bidders[0].auctionId`
         }
       ),
       schemeName: getLabelWithValue(

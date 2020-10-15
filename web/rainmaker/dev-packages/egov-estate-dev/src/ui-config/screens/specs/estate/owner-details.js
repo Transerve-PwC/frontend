@@ -125,7 +125,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
               })
 
               dispatch(
-                prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransfer`, modeOfTransferArr)
+                prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransferArr`, modeOfTransferArr)
               )
     
               var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty();
@@ -197,7 +197,7 @@ const callBackForSave = async (state, dispatch) => {
         "/est-services/property-master/_update",
         "",
         [], 
-        properties
+        { Properties: properties }
       );
       if (!!response) {
         let message = {

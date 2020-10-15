@@ -95,6 +95,28 @@ const getRelationshipRadioButton = {
   type: "array",
 };
 
+const dateOfBirthField = {
+  label: {
+      labelName: "Date of Birth",
+      labelKey: "ES_DOB_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Date of Birth",
+      labelKey: "ES_DOB_PLACEHOLDER"
+  },
+  required: true,
+  pattern: getPattern("Date"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dob",
+  props: {
+    inputProps: {
+        max: getTodaysDateInYMD(),
+        style: {
+            lineHeight: "initial"
+        }
+    }
+  }
+}
+
 export const addressField = {
   label: {
     labelName: "Address",
@@ -270,6 +292,7 @@ const commonOwnerInformation = () => {
       ownerName: getTextField(ownerNameField),
       fatherHusbandName: getTextField(fatherHusbandNameField),
       relationship: getRelationshipRadioButton,
+      dob: getDateField(dateOfBirthField),
       address: getTextField(addressField),
       mobileNumber: getTextField(mobileNumberField),
       share: getTextField(shareField),
