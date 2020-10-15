@@ -172,7 +172,7 @@ class DocumentList extends Component {
   removeDocument = remDocIndex => {
     let { uploadedDocuments } = this.state;
     const { prepareFinalObject, documents, preparedFinalObject, uploadedDocumentsJsonPath, removedJsonPath, componentJsonPath, getUrl, handleField, screenKey } = this.props;
-    const jsonPath = documents[remDocIndex].jsonPath;
+    let jsonPath = documents[remDocIndex].jsonPath;
       uploadedDocuments[remDocIndex][0].id &&
       prepareFinalObject(removedJsonPath, [
         ...get(preparedFinalObject, removedJsonPath, []),
@@ -182,6 +182,11 @@ class DocumentList extends Component {
         }
       ]);
     uploadedDocuments[remDocIndex] = [];
+    const keys = Object.keys(uploadedDocuments);
+    const findIndex = keys.findIndex(item => Number(item) === remDocIndex)
+    if(findIndex !== -1) {
+      jsonPath = documents[findIndex].jsonPath
+    }
     prepareFinalObject(jsonPath, uploadedDocuments[remDocIndex]);
     prepareFinalObject(
       uploadedDocumentsJsonPath,

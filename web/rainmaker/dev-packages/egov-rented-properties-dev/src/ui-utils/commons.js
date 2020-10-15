@@ -192,7 +192,10 @@ export const setDocumentData = async(action, state, dispatch, {documentCode, jso
     const {RentedProperties} = !!documentRes && !!documentRes.MdmsRes ? documentRes.MdmsRes : {}
     const {applications = []} = RentedProperties || {}
     const findFreshLicenceItem = applications.find(item => item.code === documentCode)
-    const masterDocuments = !!findFreshLicenceItem ? findFreshLicenceItem.documentList : [];
+    let masterDocuments = !!findFreshLicenceItem ? findFreshLicenceItem.documentList : [];
+    const requiredDocs = masterDocuments.filter(item => !!item.required);
+    const nonRequiredDocs = masterDocuments.filter(item => !item.required);
+    masterDocuments = [...requiredDocs, ...nonRequiredDocs]
     const freshLicenceDocuments = masterDocuments.map(item => ({
     type: item.code,
     description: {
