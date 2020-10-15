@@ -56,8 +56,8 @@ class Footer extends React.Component {
     };
   };
 
-  findAssigner = (item, processInstances) => {
-    const findIndex = processInstances.map(processInstance => processInstance.action === item).lastIndexOf(true)
+  findAssigner = (item, processInstances,state) => {
+    const findIndex = processInstances.map(processInstance => processInstance.action === item && processInstance.state.applicationStatus === state).lastIndexOf(true)
     return processInstances[findIndex]
   }
 
@@ -80,7 +80,7 @@ class Footer extends React.Component {
       }
       let assignee = [];
       if(!!action && Licenses[0].status !== "PENDINGL1VERIFICATION") {
-        const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
+        const {assigner = {}} = this.findAssigner(action, ProcessInstances, Licenses[0].status) || {}
         assignee = !!assigner.uuid ? [assigner.uuid] : []
       }
       handleFieldChange(`${dataPath}[0].comment`, "");
