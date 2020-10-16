@@ -143,8 +143,7 @@ const getData = async (action, state, dispatch) => {
     const propertyResponse = await getSearchResults(propertyQueryObject)
     try {
       const property = propertyResponse.Properties[0]
-      // const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
-      const applicationTypes = _applicationTypes
+      const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
       const listItems = applicationTypes.filter(item => eval(item.filter)).reduce((prev, curr) => {
         if(!!curr.category) {
           let type = {}
