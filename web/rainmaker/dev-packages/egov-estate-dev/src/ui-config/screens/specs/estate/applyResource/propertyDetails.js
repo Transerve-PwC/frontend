@@ -300,7 +300,7 @@ const sectorNumberField = {
     },
     // required: true,
     jsonPath: "Properties[0].sectorNumber",
-    sourceJsonPath: "applyScreenMdmsData.EstateServices.SectorNumber",
+    sourceJsonPath: "applyScreenMdmsData.EstateServices.sector",
     gridDefination: {
         xs: 12,
         sm: 6
