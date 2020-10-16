@@ -4,6 +4,7 @@ import { get, some } from "lodash";
 import { applyforApplication } from "../../../../ui-utils/apply";
 import { prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { moveToSuccess } from "../estate/applyResource/footer";
+import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -277,14 +278,24 @@ export const previousButton = {
       }
     }
     if(isFormValid) {
+      const fileStoreIds = uploadedDocData && uploadedDocData.map(item => item.fileStoreId).join(",");
+      const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
       const reviewDocData =
               uploadedDocData &&
-              uploadedDocData.map(item => {
+              uploadedDocData.map((item, index) => {
                   return {
                       title: `ES_${item.documentType}`,
-                      link: item.fileUrl && item.fileUrl.toString().split(",")[0],
+                      link: item.fileUrl ? item.fileUrl.toString().split(",")[0] : !!fileUrlPayload && Object.values(fileUrlPayload)[index],
                       linkText: "Download",
-                      name: item.fileName
+                      name: item.fileName || (fileUrlPayload &&
+                        fileUrlPayload[item.fileStoreId] &&
+                        decodeURIComponent(
+                          getFileUrl(fileUrlPayload[item.fileStoreId])
+                            .split("?")[0]
+                            .split("/")
+                            .pop()
+                            .slice(13)
+                        ))
                   };
               }).filter(item => !!item.link && !!item.name);
               dispatch(

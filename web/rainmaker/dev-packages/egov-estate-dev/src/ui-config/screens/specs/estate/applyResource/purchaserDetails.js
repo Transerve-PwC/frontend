@@ -118,7 +118,7 @@ const dateOfBirthField = {
       labelName: "Enter Date of Birth",
       labelKey: "ES_DOB_PLACEHOLDER"
   },
-  required: true,
+  // required: true,
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dob",
   props: {
@@ -127,6 +127,11 @@ const dateOfBirthField = {
         style: {
             lineHeight: "initial"
         }
+    }
+  },
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value) {
+      markFieldsMandatory(action, dispatch);
     }
   }
 }
@@ -373,7 +378,7 @@ export const markFieldsMandatory = (param, dispatch) => {
   let commonPathArr = (param.componentJsonpath).split(".");
   commonPathArr.pop();
   let commonpath = commonPathArr.join(".");
-  let fieldsArr = ["newOwnerName", "newOwnerFatherHusbandName", "guardianRelation", "newOwnerAddress", "newOwnerMobileNumber", "sellerName", "sellerFatherHusbandName", "sellerGuardianRelation", "share", "modeOfTransfer"]
+  let fieldsArr = ["newOwnerName", "newOwnerFatherHusbandName", "guardianRelation", "newOwnerAddress", "newOwnerMobileNumber", "sellerName", "sellerFatherHusbandName", "sellerGuardianRelation", "share", "modeOfTransfer", "dob"]
 
   fieldsArr.map(item => {
     dispatch(

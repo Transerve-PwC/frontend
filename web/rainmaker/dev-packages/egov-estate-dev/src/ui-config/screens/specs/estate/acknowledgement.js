@@ -36,7 +36,7 @@ const getAcknowledgementCard = (
         labelKey: "ES_MASTER_ENTRY_SUCCESS_MESSAGE_MAIN"
       }
     }
-    if (purpose == "allotment") {
+    else if (purpose == "allotment") {
       header = {
         labelName: "Estate allotment of site entry submitted successfully",
         labelKey: "ES_AOS_ENTRY_SUCCESS_MESSAGE_MAIN"

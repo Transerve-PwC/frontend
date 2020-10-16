@@ -1565,3 +1565,10 @@ export const calculateAge = dob => {
     return false;
   }
 }
+
+export const _getPattern = (type) => {
+  switch(type) {
+    case "float": 
+        return /^[+-]?\d+(\.\d+)?$/i
+  }
+}

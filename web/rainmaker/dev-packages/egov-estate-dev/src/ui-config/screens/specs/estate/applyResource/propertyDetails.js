@@ -17,8 +17,8 @@ import {
 } from "../../utils";
 import get from "lodash/get";
 import {
-    companyDetails
-} from "./entityDetails"
+    _getPattern
+} from "../../utils"
 
 export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
     const actionDefination = [
@@ -155,6 +155,7 @@ const areaOfPropertyField = {
         xs: 12,
         sm: 6
     },
+    pattern: _getPattern("float"),
     required: true,
     minLength: 2,
     maxLength: 15,
@@ -174,9 +175,10 @@ const rateField = {
         xs: 12,
         sm: 6
     },
+    pattern: _getPattern("float"),
     required: true,
     minLength: 2,
-    maxLength: 5,
+    maxLength: 15,
     jsonPath: "Properties[0].propertyDetails.ratePerSqft"
 }
 
