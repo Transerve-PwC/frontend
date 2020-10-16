@@ -17,6 +17,9 @@ import {
   searchApiCall
 } from "./searchFunctions";
 import get from "lodash/get";
+import {
+  ESTATE_APPROVED_STATE
+} from "../../../../../ui-constants"
 
 const searchBy = {
   uiFramework: "custom-containers",
@@ -288,7 +291,7 @@ export const estateApplication = getCommonCard({
         },
         onClickDefination: {
           action: "condition",
-          callBack: (state, dispatch) => searchApiCall(state, dispatch, [{key: "state",value: "ES_PM_APPROVED"}])
+          callBack: (state, dispatch) => searchApiCall(state, dispatch, [{key: "state",value: ESTATE_APPROVED_STATE}])
         }
       }
     })

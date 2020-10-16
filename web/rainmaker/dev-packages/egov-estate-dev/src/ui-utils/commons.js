@@ -25,6 +25,21 @@ import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_
   ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../ui-constants'
 import moment from "moment";
 
+export const getApplicationStatusList = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
+try {
+  const response = await httpRequest(
+    "post",
+    "/est-services/application/states",
+    ""
+  );
+  const {States} = response
+  const data = States.map(item => ({label: item, code: item}))
+  dispatch(handleField(screenKey, componentJsonPath, "props.data", data))
+} catch (error) {
+  console.log(error)
+}
+}
+
 export const getPaymentGateways = async () => {
   try {
     const payload = await httpRequest(

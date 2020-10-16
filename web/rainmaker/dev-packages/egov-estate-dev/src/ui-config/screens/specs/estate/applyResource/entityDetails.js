@@ -9,7 +9,8 @@ import {
   getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  getTodaysDateInYMD
+  getTodaysDateInYMD,
+  _getPattern
 } from "../../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -329,6 +330,7 @@ const mobileNumberField = {
     xs: 12,
     sm: 6
   },
+  required: true,
   pattern: getPattern("MobileNo"),
   maxLength: 10,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
@@ -348,8 +350,7 @@ const shareField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
-  maxLength: 5,
+  patters: _getPattern("share"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.share"
 }
 
@@ -366,7 +367,6 @@ const cpNumberField = {
     xs: 12,
     sm: 6
   },
-  minLength: 1,
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.cpNumber"
 }

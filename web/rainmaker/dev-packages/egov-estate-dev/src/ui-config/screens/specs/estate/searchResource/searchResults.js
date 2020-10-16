@@ -7,6 +7,10 @@ import {
 import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import store from "../../../../../ui-redux/store";
+import {
+  ESTATE_APPROVED_STATE,
+  ESTATE_DRAFTED_STATE
+} from "../../../../../ui-constants"
 
 const tenantId = getTenantId();
 const userInfo = JSON.parse(getUserInfo());
@@ -110,11 +114,11 @@ const onRowClick = rowData => {
   console.log(rowData);
   let type = getQueryArg(window.location.href, "type");
 
-  if (type == "refund" && rowData[2].toUpperCase() == "ES_PM_APPROVED" && !!findItem) {
+  if (type == "refund" && rowData[2].toUpperCase() == ESTATE_APPROVED_STATE && !!findItem) {
     return window.location.href = `refund?filenumber=${rowData[0]}&tenantId=${tenantId}`
   }
 
-  if (rowData[2].toUpperCase() === "ES_PM_DRAFTED") {
+  if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
     if (rowData[4] == "PROPERTY_MASTER")
       window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
     else

@@ -2,6 +2,7 @@ import {
   getCommonHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
+  getApplicationStatusList,
   getSearchApplicationsResults
 } from "../../../../ui-utils/commons";
 import {
@@ -194,9 +195,6 @@ const searchCard = getCommonCard({
   }
 })
 
-
-
-
 const getData = async (action, state, dispatch) => {
   const response = await getSearchApplicationsResults();
   console.log(response)
@@ -206,25 +204,15 @@ const getData = async (action, state, dispatch) => {
   }
 }
 
-
 const screenConfig = {
   uiFramework: "material-ui",
   name: "estate-branch-my-applications",
   beforeInitScreen: (action, state, dispatch) => {
-    const queryObject = [{
-        key: "tenantId",
-        value: getTenantId()
-      },
-      {
-        key: "businessServices",
-        value: "SaleGift"
-      }
-    ]
     dispatch(prepareFinalObject("actualResults", []));
     dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);
     getData(action, state, dispatch)
-    // getStatusList(state, dispatch, queryObject, "estate-branch-my-applications", "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status", "SaleGift")
+    getApplicationStatusList({action, state, dispatch, screenKey: "estate-branch-my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status"})
     return action
   },
   components: {

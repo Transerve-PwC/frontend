@@ -7,6 +7,8 @@ import {
     getLabel
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { searchApiCall, searchApplicationApiCall} from "./functions";
+  import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { get } from "lodash";
 
   const sectorNumberField = {
     label: {
@@ -88,6 +90,8 @@ import {
     required: false,
     jsonPath: "searchScreen.state",
     data:[],
+    optionValue: "code",
+    optionLabel: "label",
     gridDefination: {
       xs: 12,
       sm: 6
@@ -114,7 +118,6 @@ import {
         variant: "contained",
         style: {
           color: "white",
-  
           backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
           borderRadius: "2px",
           width: "80%",
@@ -162,31 +165,100 @@ import {
     })
   });
 
+  const clearSearch = (state, dispatch) => {
+    const preparedFinalObject = get(state, "screenConfiguration.preparedFinalObject");
+    const {searchScreen = {}} = preparedFinalObject
+    if(!!searchScreen.fileNumber || !!searchScreen.state || !!searchScreen.applicationNumber) {
+    dispatch(
+      handleField(
+        "search-application",
+        "components.div.children.estateApplicationSearch.children.cardContent.children.fileStatusContainer.children.fileNumber",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "search-application",
+        "components.div.children.estateApplicationSearch.children.cardContent.children.fileStatusContainer.children.status",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "search",
+        "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationNumber",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(prepareFinalObject("searchScreen", {}))
+    searchApplicationApiCall(state, dispatch, true)
+    }
+  }
+
   export const estateApplicationSearch = getCommonCard({
     subParagraph: getCommonParagraph({
       labelName: "Please provide atleast one parameter to search Applications",
       labelKey: "ES_PLEASE_PROVIDE_ONE_PARAMETER_TO_SEARCH_APPLICATIONS"
     }),
-    colonyContainer: getCommonContainer({
+    fileStatusContainer: getCommonContainer({
       fileNumber: getTextField(FileNumberField),
       status: getSelectField(statusField)
     }),
-    transitNumberContainer: getCommonContainer({
-        sectorNumber: getTextField(applicationNumberField),
+    applicationNumberContainer: getCommonContainer({
+        applicationNumber: getTextField(applicationNumberField),
     }),
     button: getCommonContainer({
       buttonContainer: getCommonContainer(
-        {...buttonItem, searchButton: {...buttonItem.searchButton, 
+        {firstCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 2
+          }
+        }, searchButton: {...buttonItem.searchButton, 
           onClickDefination: {
             action: "condition",
             callBack: searchApplicationApiCall
+          }
+        }, resetButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          },
+          props: {
+            variant: "outlined",
+            style: {
+              color: "#fe7a51",
+              borderColor: "#fe7a51",
+              backgroundColor: "white",
+              borderRadius: "2px",
+              width: "80%",
+              height: "48px"
+            }
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Clear",
+              labelKey: "ES_SEARCH_RESET"
+            })
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: (state, dispatch) => {
+              clearSearch(state, dispatch)
+            }
           }
         }, lastCont: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           gridDefination: {
             xs: 12,
-            sm: 4
+            sm: 2
           }
         }
       })

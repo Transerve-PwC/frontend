@@ -471,28 +471,28 @@ export const headerDiv = {
       viewFirmDetails: getCommonContainer({
         firmName: getLabelWithValue(
             firmNameField, {
-            jsonPath: `Properties[0].propertyDetails.firmName`,
+            jsonPath: `Properties[0].propertyDetails.companyName`,
             }
         ),
-        isFirmRegistered: getLabelWithValue(
-            isFirmRegistered, {
-            jsonPath: `Properties[0].propertyDetails.isFirmRegistered`,
-            }
-        ),
+        // isFirmRegistered: getLabelWithValue(
+        //     isFirmRegistered, {
+        //     jsonPath: `Properties[0].propertyDetails.isFirmRegistered`,
+        //     }
+        // ),
         firmRegNo: getLabelWithValue(
             firmRegNoField, {
-            jsonPath: `Properties[0].propertyDetails.firmRegNo`,
+            jsonPath: `Properties[0].propertyDetails.companyRegistrationNumber`,
             }
         ),
         firmRegDate: getLabelWithValue(
             firmRegDateField, {
-            jsonPath: `Properties[0].propertyDetails.firmRegDate`,
+            jsonPath: `Properties[0].propertyDetails.companyRegistrationDate`,
             callBack: convertEpochToDate
             }
         ),
         firmAddress: getLabelWithValue(
           firmAddressField, {
-          jsonPath: `Properties[0].propertyDetails.firmAddress`,
+          jsonPath: `Properties[0].propertyDetails.companyAddress`,
           }
         )
       })

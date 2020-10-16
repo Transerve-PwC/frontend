@@ -389,5 +389,13 @@ export const markFieldsMandatory = (param, dispatch) => {
         !!param.value
       )
     )
+    dispatch(
+      handleField(
+        param.screenKey,
+        `${commonpath}.${item}`,
+        `required`,
+        !!param.value
+      )
+    )
   })
 }

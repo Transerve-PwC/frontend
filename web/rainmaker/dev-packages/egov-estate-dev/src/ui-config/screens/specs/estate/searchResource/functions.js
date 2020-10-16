@@ -139,17 +139,15 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
     {}
   );
 
-  
-
   const isSearchBoxFirstRowValid = validateFields(
-    "components.div.children.estateApplicationSearch.children.cardContent.children.colonyContainer.children",
+    "components.div.children.estateApplicationSearch.children.cardContent.children.fileStatusContainer.children",
     state,
     dispatch,
     "search-application"
   );
 
   const isSearchBoxSecondRowValid = validateFields(
-    "components.div.children.estateApplicationSearch.children.cardContent.children.transitNumberContainer.children",
+    "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children",
     state,
     dispatch,
     "search-application"

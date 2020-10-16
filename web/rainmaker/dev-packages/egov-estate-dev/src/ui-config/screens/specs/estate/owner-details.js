@@ -12,26 +12,28 @@ import {
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getSearchApplicationsResults } from "../../../../ui-utils/commons";
-import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails } from "./preview-resource/owner-properties";
+import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails, getFirmDetails } from "./preview-resource/owner-properties";
 import {onTabChange, headerrow, tabs} from './search-preview'
-import { firmDetails } from "./applyResource/entityDetails";
 import { mobileNumberField } from "./applyResource/ownerDetails";
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import {
-  validateFields
+  validateFields,
 } from "../utils";
 import {
   httpRequest
 } from "../../../../ui-utils";
+import {
+  ESTATE_APPROVED_STATE
+} from "../../../../ui-constants"
 
 const userInfo = JSON.parse(getUserInfo());
 const {
     roles = []
 } = userInfo
-const findItem = roles.find(item => item.code === "ES_EB_DISPATCH_OFFICER");
+const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
@@ -103,10 +105,10 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
       // properties[0].propertyDetails.owners.forEach((element,index) => { 
       await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
         if (!!element.ownerDetails.isCurrentOwner) {
-          let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == "ES_PM_APPROVED"));
+          let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == ESTATE_APPROVED_STATE));
           let allotmentDetailsComponent = getAllotmentDetails(false,index);
 
-          if (applicationState == "ES_PM_APPROVED") {
+          if (applicationState == ESTATE_APPROVED_STATE) {
             let ownerId = element.id;
             let queryObject = [
               { key: "ownerId", value: ownerId }
@@ -155,7 +157,9 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
         "owner-details",
         "components.div.children.entityContainer",
         "children",
-        entityDetails
+        {
+          entityDetails: getCommonCard({entityDetails})
+        }
       )
     );
 
@@ -192,6 +196,8 @@ const callBackForSave = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "Properties"
       )
+
+      properties = [{...properties[0], action: ""}];
       const response = await httpRequest(
         "post",
         "/est-services/property-master/_update",
@@ -379,8 +385,8 @@ const EstateOwnerDetails = {
             },
             type: "array",
           },
-          ownerContainer,
-          entityContainer
+          entityContainer,
+          ownerContainer
       }
     },
     adhocDialog: {
