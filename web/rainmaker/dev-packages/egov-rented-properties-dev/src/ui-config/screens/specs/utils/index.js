@@ -49,6 +49,7 @@ import {
   getOwnershipSearchResults,
   getDuplicateCopySearchResults
 } from "../../../../ui-utils/commons";
+import moment from "moment";
 import { BILLING_BUSINESS_SERVICE_DC, BILLING_BUSINESS_SERVICE_OT, WORKFLOW_BUSINESS_SERVICE_OT, WORKFLOW_BUSINESS_SERVICE_DC, BILLING_BUSINESS_SERVICE_RENT } from "../../../../ui-constants";
 
 export const getCommonApplyFooter = children => {
@@ -773,6 +774,8 @@ export const download = (receiptQueryString, Properties, data, generatedBy,type,
       let {
         Payments
       } = payloadReceiptDetails;
+      let time = Payments[0].paymentDetails[0].auditDetails.lastModifiedTime
+
       let {
         billAccountDetails
       } = Payments[0].paymentDetails[0].bill.billDetails[0];
@@ -796,6 +799,18 @@ export const download = (receiptQueryString, Properties, data, generatedBy,type,
           }
         }]
       }]
+
+      if(time){
+        time = moment(new Date(time)).format("h:mm:ss a")
+      }
+      Payments = [{
+        ...Payments[0],paymentDetails:[{
+          ...Payments[0].paymentDetails[0],auditDetails:{
+            ...Payments[0].paymentDetails[0].auditDetails,lastModifiedTime:time
+          }
+        }]
+      }]
+      
       httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
           Payments,
           Properties,

@@ -336,7 +336,7 @@ return
   else if((this.props.moduleName==="MasterRP"||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_OT||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_DC||this.props.moduleName==="PermissionToMortgage")&&(buttonLabel==="REJECT" || buttonLabel==="APPROVE"))
   {
 const comments=data.comment
-if(!comments){
+if(!comments || !comments.replace(/\s/g, '').length){
   toggleSnackbar(
     true,
     { labelName: "Please enter the comments", labelKey: "RP_ERR_ENTER_COMMENTS"},
@@ -402,6 +402,11 @@ return
     const mastrerstate=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).masterDataState
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
     const duplicateCopyApplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).state
+    
+    if((applicationState==="OT_PENDINGCLAPPROVAL"||duplicateCopyApplicationState==="DC_PENDINGCLAPPROVAL")&&buttonLabel==="REJECT"){
+      dialogHeader.labelKey="RP_WF_FORWARD_REJECT_APPLICATION"
+      dialogHeader.labelName="Forward To SA application"
+     }
     return (
       <Dialog
         fullScreen={fullscreen}
