@@ -108,8 +108,8 @@ export const viewFour = (section, data) => {
   }
 }
 
-export const setThirdStep = async ({state, dispatch, applicationType, data, isEdit = true, showHeader = true}) => {
-    const {preview} = require(`../${applicationType}_preview.json`);
+export const setThirdStep = async ({state, dispatch, applicationType, preview, data, isEdit = true, showHeader = true}) => {
+    // const {preview} = require(`../${applicationType}_preview.json`);
     const {sections = []} = preview;
     let details = sections.reduce((acc, section, index) => {
       const {step, header, isEditable = true} = section

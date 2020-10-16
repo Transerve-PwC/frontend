@@ -3,25 +3,6 @@
   "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_LeaseDeed": [
     {
-      "dataSources": [
-        {
-          "name": "owners",
-          "type": "path",
-          "jsonPath": "propertyDetails.owners",
-          "code": "ownerDetails.ownerId",
-          "label": "ownerDetails.ownerName"
-        },
-        {
-          "name": "typeOfExecution",
-          "type": "mdms",
-          "cacheable": true,
-          "lazyload": true,
-          "options": {
-            "moduleName": "EstateServices",
-            "masterName": "typeOfExecution"
-          }
-        }
-      ],
       "fields": [
         {
           "path": "typeOfExecution",
@@ -175,163 +156,273 @@
           ]
         }
       ],
-      "first_step": {
-        "sections": [
+      "documentList": [
+        {
+          "code": "CONVEYANCE_OR_LEASE_DEED",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CONVEYANCE_OR_LEASE_DEED_DESCRIPTION"
+        },
+        {
+          "code": "CLEARENCE_OF_PROPERTY_TAX",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CLEARENCE_OF_PROPERTY_TAX_DESCRIPTION"
+        },
+        {
+          "code": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
+        }
+      ],
+      "uiConfig": {
+        "dataSources": [
           {
-            "header": "ES_PROPERTY_DETAILS_HEADER",
-            "type": "CARD_DETAIL",
-            "fields": [
-              {
-                "label": "ES_FILE_NUMBER_LABEL",
-                "jsonPath": "property.fileNumber"
-              },
-              {
-                "label": "ES_CATEGORY_LABEL",
-                "jsonPath": "property.category"
-              },
-              {
-                "label": "ES_SUB_CATEGORY_LABEL",
-                "jsonPath": "property.subCategory"
-              },
-              {
-                "label": "ES_SITE_NO_LABEL",
-                "jsonPath": "property.siteNumber"
-              },
-              {
-                "label": "ES_SECTOR_NO_LABEL",
-                "jsonPath": "property.sectorNumber"
-              },
-              {
-                "label": "ES_PROPERTY_TYPE_LABEL",
-                "jsonPath": "property.propertyDetails.propertyType"
-              },
-              {
-                "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate",
-                "type": "date"
-              },
-              {
-                "label": "ES_DUE_AMOUNT_LABEL",
-                "jsonPath": "property.propertyDetails.dueAmount"
-              }
-            ]
+            "name": "owners",
+            "type": "path",
+            "jsonPath": "propertyDetails.owners",
+            "code": "ownerDetails.ownerId",
+            "label": "ownerDetails.ownerName"
           },
           {
-            "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "TABLE",
-            "sourceJsonPath": "property.propertyDetails.owners",
-            "fields": [
-              {
-                "label": "ES_OWNER_NAME_LABEL",
-                "jsonPath": "ownerDetails.ownerName"
-              },
-              {
-                "label": "ES_OWNER_SHARE_LABEL",
-                "jsonPath": "share",
-                "symbol": "%"
-              },
-              {
-                "label": "ES_OWNER_ADDRESS_LABEL",
-                "jsonPath": "ownerDetails.address"
-              }
-            ]
-          },
-          {
-            "header": "ES_APPLICANT_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_SELECT_OWNER_LABEL",
-                "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.transferor.id",
-                "path": "transferor.id",
-                "dataSource": "owners"
-              },
-              {
-                "label": "ES_FATHER_HUSBAND_NAME_LABEL",
-                "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
-                "prefillValue": "selectedOwner.ownerDetails.guardianName"
-              },
-              {
-                "label": "ES_ADDRESS_LABEL",
-                "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
-                "prefillValue": "selectedOwner.ownerDetails.address"
-              },
-              {
-                "label": "ES_MOBILE_NUMBER_LABEL",
-                "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber",
-                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
-              },
-              {
-                "label": "ES_OWNER_SHARE_LABEL",
-                "placeholder": "ES_SHARE_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.share",
-                "prefillValue": "selectedOwner.share"
-              },
-              {
-                "label": "ES_CP_NUMBER_LABEL",
-                "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber",
-                "prefillValue": "selectedOwner.cpNumber"
-              }
-            ]
-          },
-          {
-            "header": "ES_TYPE_OF_EXECUTION_DETAILS",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_SELECT_TYPE_OF_EXECUTION_LABEL",
-                "placeholder": "ES_SELECT_TYPE_OF_EXECUTION_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.typeOfExecution",
-                "path": "typeOfExecution",
-                "dataSource": "typeOfExecution"
-              }
-            ]
+            "name": "typeOfExecution",
+            "type": "mdms",
+            "cacheable": true,
+            "lazyload": true,
+            "options": {
+              "moduleName": "EstateServices",
+              "masterName": "typeOfExecution"
+            }
           }
-        ]
-      },
-      "second_step": {
-        "header": "ES_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "Applications[0].applicationDocuments",
-        "documentList": [
-          {
-            "code": "CONVEYANCE_OR_LEASE_DEED",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "CONVEYANCE_OR_LEASE_DEED_DESCRIPTION"
-          },
-          {
-            "code": "CLEARENCE_OF_PROPERTY_TAX",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "CLEARENCE_OF_PROPERTY_TAX_DESCRIPTION"
-          },
-          {
-            "code": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "LATES_WATER_BILL_WITH_PAYMENT_RECEIPT_DESCRIPTION"
-          }
-        ]
+        ],
+        "first_step": {
+          "sections": [
+            {
+              "header": "ES_PROPERTY_DETAILS_HEADER",
+              "type": "CARD_DETAIL",
+              "fields": [
+                {
+                  "label": "ES_FILE_NUMBER_LABEL",
+                  "jsonPath": "property.fileNumber"
+                },
+                {
+                  "label": "ES_CATEGORY_LABEL",
+                  "jsonPath": "property.category"
+                },
+                {
+                  "label": "ES_SUB_CATEGORY_LABEL",
+                  "jsonPath": "property.subCategory"
+                },
+                {
+                  "label": "ES_SITE_NO_LABEL",
+                  "jsonPath": "property.siteNumber"
+                },
+                {
+                  "label": "ES_SECTOR_NO_LABEL",
+                  "jsonPath": "property.sectorNumber"
+                },
+                {
+                  "label": "ES_PROPERTY_TYPE_LABEL",
+                  "jsonPath": "property.propertyDetails.propertyType"
+                },
+                {
+                  "label": "ES_LAST_NOC_DATE_LABEL",
+                  "jsonPath": "property.propertyDetails.lastNocDate",
+                  "type": "date"
+                },
+                {
+                  "label": "ES_DUE_AMOUNT_LABEL",
+                  "jsonPath": "property.propertyDetails.dueAmount"
+                }
+              ]
+            },
+            {
+              "header": "ES_PROPERTY_OWNER_LIST_HEADER",
+              "type": "TABLE",
+              "sourceJsonPath": "property.propertyDetails.owners",
+              "fields": [
+                {
+                  "label": "ES_OWNER_NAME_LABEL",
+                  "jsonPath": "ownerDetails.ownerName"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "jsonPath": "share",
+                  "symbol": "%"
+                },
+                {
+                  "label": "ES_OWNER_ADDRESS_LABEL",
+                  "jsonPath": "ownerDetails.address"
+                }
+              ]
+            },
+            {
+              "header": "ES_APPLICANT_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_SELECT_OWNER_LABEL",
+                  "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.id",
+                  "path": "transferor.id",
+                  "dataSource": "owners"
+                },
+                {
+                  "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                  "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName",
+                  "prefillValue": "selectedOwner.ownerDetails.guardianName"
+                },
+                {
+                  "label": "ES_ADDRESS_LABEL",
+                  "placeholder": "ES_ADDRESS_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_AREA",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address",
+                  "prefillValue": "selectedOwner.ownerDetails.address"
+                },
+                {
+                  "label": "ES_MOBILE_NUMBER_LABEL",
+                  "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber",
+                  "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "placeholder": "ES_SHARE_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.share",
+                  "prefillValue": "selectedOwner.share"
+                },
+                {
+                  "label": "ES_CP_NUMBER_LABEL",
+                  "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber",
+                  "prefillValue": "selectedOwner.cpNumber"
+                }
+              ]
+            },
+            {
+              "header": "ES_TYPE_OF_EXECUTION_DETAILS",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_SELECT_TYPE_OF_EXECUTION_LABEL",
+                  "placeholder": "ES_SELECT_TYPE_OF_EXECUTION_PLACEHOLDER",
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.typeOfExecution",
+                  "path": "typeOfExecution",
+                  "dataSource": "typeOfExecution"
+                }
+              ]
+            }
+          ]
+        },
+        "second_step": {
+          "header": "ES_DOCUMENT_DETAILS_HEADER",
+          "jsonPath": "Applications[0].applicationDocuments"
+        },
+        "preview": {
+          "sections": [
+              {
+                  "header": "ES_PROPERTY_DETAILS_HEADER",
+                  "isEditable": false,
+                  "fields": [
+                      {
+                          "label": "ES_FILE_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].property.fileNumber"
+                      },
+                      {
+                          "label": "ES_CATEGORY_LABEL",
+                          "jsonPath": "Applications[0].property.category"
+                      },
+                      {
+                          "label": "ES_SUB_CATEGORY_LABEL",
+                          "jsonPath": "Applications[0].property.subCategory"
+                      },
+                      {
+                          "label": "ES_SITE_NO_LABEL",
+                          "jsonPath": "Applications[0].property.siteNumber"
+                      },
+                      {
+                          "label": "ES_SECTOR_NO_LABEL",
+                          "jsonPath": "Applications[0].property.sectorNumber"
+                      },
+                      {
+                          "label": "ES_PROPERTY_TYPE_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.propertyType"
+                      },
+                      {
+                          "label": "ES_LAST_NOC_DATE_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+                          "type": "date"
+                      },
+                      {
+                          "label": "ES_DUE_AMOUNT_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
+                      }
+                  ]
+              },
+              {
+                  "header": "ES_APPLICANT_DETAILS_HEADER",
+                  "step": 0,
+                  "fields": [
+                      {
+                          "label": "ES_OWNER_NAME_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.ownerName"
+                      },
+                      {
+                          "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.guardianName"
+                      },
+                      {
+                          "label": "ES_ADDRESS_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.address"
+                      },
+                      {
+                          "label": "ES_MOBILE_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.transferorDetails.mobileNumber"
+                      },
+                      {
+                          "label": "ES_OWNER_SHARE_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.share"
+                      },
+                      {
+                          "label": "ES_CP_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.transferor.cpNumber"
+                      }
+                  ]
+              },
+              {
+                  "header": "ES_TYPE_OF_EXECUTION_DETAILS",
+                  "step": 2,
+                  "fields": [
+                      {
+                          "label": "ES_SELECT_TYPE_OF_EXECUTION_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.typeOfExecution"
+                      }
+                  ] 
+              },
+              {
+                  "header": "ES_DOCUMENT_DETAILS_HEADER",
+                  "step": 1,
+                  "type": "DOCUMENTS",
+                  "sourceJsonPath": "temp[0].reviewDocData"
+              }
+          ]
+        }
       }
     }
   ]

@@ -13,43 +13,47 @@ const _applicationTypes = [
     "code": "ES_TRANSFER_OF_OWNERSHIP_REGISTERED_DEED",
     "type": "EstateBranch_OwnershipTransfer_SaleDeed",
     "active": true,
-    "category": "ES_OWNERSHIP_TRANSFER"
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": true
   },
   {
     "name": "Transfer of Ownership on the basis of Registered Will",
     "code": "ES_TRANSFER_OF_OWNERSHIP_REGISTERED_WILL",
     "type": "EstateBranch_OwnershipTransfer_RegisteredWill",
     "active": true,
-    "category": "ES_OWNERSHIP_TRANSFER"
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": true
   },
   {
     "name": "Transfer of Ownership on the basis of Un-registered Will",
     "code": "ES_TRANSFER_OF_OWNERSHIP_UNREGISTERED_WILL",
     "type": "EstateBranch_OwnershipTransfer_UnRegisteredWill",
     "active": true,
-    "category": "ES_OWNERSHIP_TRANSFER"
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": true
   },
   {
     "name": "Transfer of Ownership on the basis of Intestate Death",
     "code": "ES_TRANSFER_OF_OWNERSHIP_INTESTATE_DEATH",
     "type": "EstateBranch_OwnershipTransfer_IntestateDeath",
     "active": true,
-    "category": "ES_OWNERSHIP_TRANSFER"
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": true
   },
   {
     "name": "Transfer of Ownership on the basis of Partnership deed/Dissolution deed/Change of Director in case of Private Limited Company",
     "code": "ES_TRANSFER_OF_OWNERSHIP_PARTNERSHIP_DEED",
     "type": "EstateBranch_OwnershipTransfer_PatnershipDeed",
     "active": true,
-    "companyDetails": true,
-    "category": "ES_OWNERSHIP_TRANSFER"
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": "!!property.propertyDetails.entityType && (property.propertyDetails.entityType === 'ET.PUBLIC_LIMITED_COMPANY' || property.propertyDetails.entityType === 'ET.PRIVATE_LIMITED_COMPANY')"
   },
   {
     "name": "Transfer of Ownership on the basis of Court Decree/Family Settlement",
     "code": "ES_TRANSFER_OF_OWNERSHIP_COURT_DECREE",
     "type": "EstateBranch_OwnershipTransfer_FamilySettlement",
     "active": true,
-    "courtDetails": true,
+    "filter": "!!property.propertyDetails.decreeDate && !!property.propertyDetails.courtDetails && !!property.propertyDetails.civilTitledAs",
     "category": "ES_OWNERSHIP_TRANSFER"
   },
   {
@@ -57,53 +61,60 @@ const _applicationTypes = [
     "code": "ES_NO_OBJECTION_CERTIFICATE",
     "type": "EstateBranch_OtherCitizenService_NOC",
     "active": true,
-    "category": "ES_NO_OBJECTION_NO_DUE_CERTIFICATE"
+    "category": "ES_NO_OBJECTION_NO_DUE_CERTIFICATE",
+    "filter": true
   },
   {
     "name": "No Dues Certificate",
     "code": "ES_NO_DUES_CERTIFICATE",
     "type": "EstateBranch_OtherCitizenService_NDC",
     "active": true,
-    "category": "ES_NO_OBJECTION_NO_DUE_CERTIFICATE"
+    "category": "ES_NO_OBJECTION_NO_DUE_CERTIFICATE",
+    "filter": true
   },
   {
     "name": "Conversion of Property from residential to Commercial (SCF to SCO)",
     "code": "ES_CONVERSION_OF_PROPERTY_RES_TO_COMM",
     "type": "EstateBranch_OtherCitizenService_ScfToSco",
     "active": true,
-    "companyDetails": true,
-    "category": "ES_CONVERSION_OF_PROPERTY"
+    "category": "ES_CONVERSION_OF_PROPERTY",
+    "filter": "!!property.propertyDetails.entityType && (property.propertyDetails.entityType === 'ET.PUBLIC_LIMITED_COMPANY' || property.propertyDetails.entityType === 'ET.PRIVATE_LIMITED_COMPANY')"
   },
   {
     "name": "Conversion from Leasehold to Freehold Property",
     "code": "ES_CONVERSION_FROM_LEASEHOLD_TO_FREEHOLD",
     "type": "EstateBranch_OtherCitizenService_LeaseholdToFreehold",
     "active": true,
-    "category": "ES_CONVERSION_OF_PROPERTY"
+    "category": "ES_CONVERSION_OF_PROPERTY",
+    "filter": true
   },
   {
     "name": "Duplicate Allotment Letter/Possession Letter",
     "code": "ES_DUPLICATE_ALLOTMENT_POSSESSION_LETTER",
     "type": "EstateBranch_OtherCitizenService_DuplicateCopy",
-    "active": true
+    "active": true,
+    "filter": true
   },
   {
     "name": "Execution of Lease Deed/Deed of Conveyance",
     "code": "ES_EXECUTION_OF_LEASE_DEED",
     "type": "EstateBranch_OtherCitizenService_LeaseDeed",
-    "active": true
+    "active": true,
+    "filter": true
   },
   {
     "name": "Permission to Mortgage",
     "code": "ES_PERMISSION_TO_MORTGAGE",
     "type": "EstateBranch_OtherCitizenService_Mortgage",
-    "active": true
+    "active": true,
+    "filter": true
   },
   {
     "name": "Change of Trade",
     "code": "ES_CHANGE_OF_TRADE",
     "type": "EstateBranch_OtherCitizenService_ChangeInTrade",
-    "active": true
+    "active": true,
+    "filter": true
   }
 ]
 
@@ -132,8 +143,9 @@ const getData = async (action, state, dispatch) => {
     const propertyResponse = await getSearchResults(propertyQueryObject)
     try {
       const property = propertyResponse.Properties[0]
-      const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
-      const listItems = applicationTypes.filter(item => !!item.companyDetails ? !!property.propertyDetails.companyName && !!property.propertyDetails.companyType : !!item.courtDetails ? !!property.propertyDetails.decreeDate && !!property.propertyDetails.courtDetails && !!property.propertyDetails.civilTitledAs : true).reduce((prev, curr) => {
+      // const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
+      const applicationTypes = _applicationTypes
+      const listItems = applicationTypes.filter(item => eval(item.filter)).reduce((prev, curr) => {
         if(!!curr.category) {
           let type = {}
           const findIndex = prev.findIndex(item => item.code === curr.category);

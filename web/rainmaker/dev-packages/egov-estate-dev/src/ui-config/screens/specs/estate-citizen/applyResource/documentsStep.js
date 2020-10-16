@@ -19,8 +19,8 @@ const prepareDocuments = (documents, jsonPath) => {
     return documentsArr;
   };
 
-export const setDocumentData = async(state, dispatch, {format_config}) => {
-    const {jsonPath, documentList = []} = format_config;
+export const setDocumentData = async(state, dispatch, {format_config, documentList = []}) => {
+    const {jsonPath} = format_config;
     const documents = documentList.map(item => ({
       type: item.code,
       description: {

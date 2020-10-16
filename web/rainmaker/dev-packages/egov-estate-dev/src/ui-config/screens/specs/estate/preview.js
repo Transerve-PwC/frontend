@@ -54,8 +54,10 @@ const getData = async (action, state, dispatch) => {
        const headerLabel = `ES_${type.toUpperCase()}`
 
        const headerrow = getCommonApplyHeader({label: headerLabel, number: applicationNumber});
-
-       let reviewDetails = await setThirdStep({state, dispatch, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
+       const dataConfig = require(`../estate-citizen/${type}.json`);
+       let {uiConfig} = dataConfig[type][0];
+       let {preview} = uiConfig
+       let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
         if(applicationState === "ES_PENDING_PAYMENT") {
             const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
             const estimate = !!estimateResponse ? getCommonGrayCard({
@@ -64,7 +66,7 @@ const getData = async (action, state, dispatch) => {
               })
             }) : {}
           reviewDetails = {estimate, ...reviewDetails}
-          footer = process.env.REACT_APP_NAME === "Citizen" && footerReview(
+          footer = process.env.REACT_APP_NAME === "Citizen" ? footerReview(
             action,
             state,
             dispatch,
@@ -72,7 +74,7 @@ const getData = async (action, state, dispatch) => {
             applicationNumber,
             tenantId,
             businessService
-          );
+          ) : footer
         }
 
        printCont = downloadPrintContainer(

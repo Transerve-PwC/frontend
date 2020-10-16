@@ -3,25 +3,6 @@
   "moduleName": "EstateServices",
   "EstateBranch_OtherCitizenService_Mortgage": [
     {
-      "dataSources": [
-        {
-          "name": "typesOfMortgage",
-          "type": "mdms",
-          "cacheable": true,
-          "lazyload": true,
-          "options": {
-            "moduleName": "EstateServices",
-            "masterName": "permissionToMortagage"
-          }
-        },
-        {
-          "name": "owners",
-          "type": "path",
-          "jsonPath": "propertyDetails.owners",
-          "code": "ownerDetails.ownerId",
-          "label": "ownerDetails.ownerName"
-        }
-      ],
       "fields": [
         {
           "path": "mortgageType",
@@ -210,251 +191,369 @@
           ]
         }
       ],
-      "first_step": {
-        "sections": [
+      "documentList": [
+        {
+          "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS_DESCRIPTION"
+        },
+        {
+          "code": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN_DESCRIPTION"
+        },
+        {
+          "code": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT_DESCRIPTION"
+        },
+        {
+          "code": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT_DESCRIPTION"
+        },
+        {
+          "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND_DESCRIPTION"
+        },
+        {
+          "code": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+        },
+        {
+          "code": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DESCRIPTION"
+        },
+        {
+          "code": "PROOF_OF_CONSTRUCTION",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "PROOF_OF_CONSTRUCTION_DESCRIPTION"
+        },
+        {
+          "code": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
+        },
+        {
+          "code": "ATTESTED_COPY_OF_PARTNERSHIP_DEED",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "ATTESTED_COPY_OF_PARTNERSHIP_DEED_DESCRIPTION"
+        },
+        {
+          "code": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION_DESCRIPTION"
+        },
+        {
+          "code": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
+        }
+      ],
+      "uiConfig": {
+        "dataSources": [
           {
-            "header": "ES_PROPERTY_DETAILS_HEADER",
-            "type": "CARD_DETAIL",
-            "fields": [
-              {
-                "label": "ES_FILE_NUMBER_LABEL",
-                "jsonPath": "property.fileNumber"
-              },
-              {
-                "label": "ES_CATEGORY_LABEL",
-                "jsonPath": "property.category"
-              },
-              {
-                "label": "ES_SUB_CATEGORY_LABEL",
-                "jsonPath": "property.subCategory"
-              },
-              {
-                "label": "ES_SITE_NO_LABEL",
-                "jsonPath": "property.siteNumber"
-              },
-              {
-                "label": "ES_SECTOR_NO_LABEL",
-                "jsonPath": "property.sectorNumber"
-              },
-              {
-                "label": "ES_PROPERTY_TYPE_LABEL",
-                "jsonPath": "property.propertyDetails.propertyType"
-              },
-              {
-                "label": "ES_LAST_NOC_DATE_LABEL",
-                "jsonPath": "property.propertyDetails.lastNocDate",
-                "type": "date"
-              },
-              {
-                "label": "ES_DUE_AMOUNT_LABEL",
-                "jsonPath": "property.propertyDetails.dueAmount"
-              }
-            ]
+            "name": "typesOfMortgage",
+            "type": "mdms",
+            "cacheable": true,
+            "lazyload": true,
+            "options": {
+              "moduleName": "EstateServices",
+              "masterName": "permissionToMortagage"
+            }
           },
           {
-            "header": "ES_PROPERTY_OWNER_LIST_HEADER",
-            "type": "TABLE",
-            "sourceJsonPath": "property.propertyDetails.owners",
-            "fields": [
-              {
-                "label": "ES_OWNER_NAME_LABEL",
-                "jsonPath": "ownerDetails.ownerName"
-              },
-              {
-                "label": "ES_OWNER_SHARE_LABEL",
-                "jsonPath": "share",
-                "symbol": "%"
-              },
-              {
-                "label": "ES_OWNER_ADDRESS_LABEL",
-                "jsonPath": "ownerDetails.address"
-              }
-            ]
-          },
-          {
-            "header": "ES_APPLICANT_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_SELECT_TYPE_OF_MORTGAGE_LABEL",
-                "placeholder": "ES_SELECT_TYPE_OF_MORTGAGE_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.mortgageType",
-                "path": "mortgageType",
-                "dataSource": "typesOfMortgage"
-              },
-              {
-                "label": "ES_SELECT_OWNER_LABEL",
-                "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
-                "type": "DROP_DOWN",
-                "jsonPath": "Applications[0].applicationDetails.owner.id",
-                "path": "owner.id",
-                "dataSource": "owners"
-              },
-              {
-                "label": "ES_FATHER_HUSBAND_NAME_LABEL",
-                "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName",
-                "prefillValue": "selectedOwner.ownerDetails.guardianName"
-              },
-              {
-                "label": "ES_ADDRESS_LABEL",
-                "placeholder": "ES_ADDRESS_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_AREA",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address",
-                "prefillValue": "selectedOwner.ownerDetails.address"
-              },
-              {
-                "label": "ES_MOBILE_NUMBER_LABEL",
-                "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
-                "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
-              },
-              {
-                "label": "ES_OWNER_SHARE_LABEL",
-                "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.share",
-                "prefillValue": "selectedOwner.share"
-              },
-              {
-                "label": "ES_CP_NUMBER_LABEL",
-                "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
-                "disabled": true,
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.owner.cpNumber",
-                "prefillValue": "selectedOwner.cpNumber"
-              }
-            ]
-          },
-          {
-            "header": "ES_LOAN_DETAILS_HEADER",
-            "type": "FORM",
-            "fields": [
-              {
-                "label": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
-                "placeholder": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.bankName",
-                "path": "bankName",
-                "errorMessage": "ES_ERR_BANK_NAME"
-              },
-              {
-                "label": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
-                "placeholder": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "jsonPath": "Applications[0].applicationDetails.reasonForMortgage",
-                "path": "reasonForMortgage",
-                "errorMessage": "ES_ERR_MORTGAGE_PURPOSE"
-              },
-              {
-                "label": "ES_LOAN_AMOUNT_LABEL",
-                "placeholder": "ES_LOAN_AMOUNT_PLACEHOLDER",
-                "type": "TEXT_FIELD",
-                "path": "loanAmount",
-                "jsonPath": "Applications[0].applicationDetails.loanAmount",
-                "pattern": "numeric-only",
-                "errorMessage": "ES_ERR_LOAN_AMOUNT"
-              }
-            ]
+            "name": "owners",
+            "type": "path",
+            "jsonPath": "propertyDetails.owners",
+            "code": "ownerDetails.ownerId",
+            "label": "ownerDetails.ownerName"
           }
-        ]
-      },
-      "second_step": {
-        "header": "ES_DOCUMENT_DETAILS_HEADER",
-        "jsonPath": "Applications[0].applicationDocuments",
-        "documentList": [
-          {
-            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANTS_DESCRIPTION"
-          },
-          {
-            "code": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "AFFIDAVIT_WITH_PHOTOGRAPH_TO_THE_EFFECT_THAT_THE_PROPERTY_IS_FREE_FROM_ALL_SORTS_OF_ENCUMBRANCES_OR_DISPUTE_OR_LITIGATION_MORTGAGE_OR_LIEN_DESCRIPTION"
-          },
-          {
-            "code": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "INDEMNITY_BOND_OF_THE_OWNER_APPLICANT_DESCRIPTION"
-          },
-          {
-            "code": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "INDEMNITY_BOND_OF_TRANSFEREE_OR_APPLICANT_DESCRIPTION"
-          },
-          {
-            "code": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_BOTH_THE_WITNESSES_TO_INDEMNITY_BOND_DESCRIPTION"
-          },
-          {
-            "code": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "NDC_OR_REDEMPTION_DEED_OF_THE_PREVIOUS_LOAN_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
-          },
-          {
-            "code": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "COPY_OF_SEWERAGE_CONNECTION_OR_OCCUPATION_CERTIFICATE_DESCRIPTION"
-          },
-          {
-            "code": "PROOF_OF_CONSTRUCTION",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "PROOF_OF_CONSTRUCTION_DESCRIPTION"
-          },
-          {
-            "code": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "CONSENT_LETTER_OF_BANK_OR_FINANCIAL_INSTITUTION_DESCRIPTION"
-          },
-          {
-            "code": "ATTESTED_COPY_OF_PARTNERSHIP_DEED",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "ATTESTED_COPY_OF_PARTNERSHIP_DEED_DESCRIPTION"
-          },
-          {
-            "code": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "COPY_OF_MEMORANDUM_OF_ARTICLES_AND_ASSOCIATION_DESCRIPTION"
-          },
-          {
-            "code": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR",
-            "required": true,
-            "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
-            "fileType": "ALLTYPES",
-            "description": "CLEARANCE_OF_PROPERTY_TAX_TILL_CURRENT_FINANCIAL_YEAR_DESCRIPTION"
-          }
-        ]
+        ],
+        "first_step": {
+          "sections": [
+            {
+              "header": "ES_PROPERTY_DETAILS_HEADER",
+              "type": "CARD_DETAIL",
+              "fields": [
+                {
+                  "label": "ES_FILE_NUMBER_LABEL",
+                  "jsonPath": "property.fileNumber"
+                },
+                {
+                  "label": "ES_CATEGORY_LABEL",
+                  "jsonPath": "property.category"
+                },
+                {
+                  "label": "ES_SUB_CATEGORY_LABEL",
+                  "jsonPath": "property.subCategory"
+                },
+                {
+                  "label": "ES_SITE_NO_LABEL",
+                  "jsonPath": "property.siteNumber"
+                },
+                {
+                  "label": "ES_SECTOR_NO_LABEL",
+                  "jsonPath": "property.sectorNumber"
+                },
+                {
+                  "label": "ES_PROPERTY_TYPE_LABEL",
+                  "jsonPath": "property.propertyDetails.propertyType"
+                },
+                {
+                  "label": "ES_LAST_NOC_DATE_LABEL",
+                  "jsonPath": "property.propertyDetails.lastNocDate",
+                  "type": "date"
+                },
+                {
+                  "label": "ES_DUE_AMOUNT_LABEL",
+                  "jsonPath": "property.propertyDetails.dueAmount"
+                }
+              ]
+            },
+            {
+              "header": "ES_PROPERTY_OWNER_LIST_HEADER",
+              "type": "TABLE",
+              "sourceJsonPath": "property.propertyDetails.owners",
+              "fields": [
+                {
+                  "label": "ES_OWNER_NAME_LABEL",
+                  "jsonPath": "ownerDetails.ownerName"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "jsonPath": "share",
+                  "symbol": "%"
+                },
+                {
+                  "label": "ES_OWNER_ADDRESS_LABEL",
+                  "jsonPath": "ownerDetails.address"
+                }
+              ]
+            },
+            {
+              "header": "ES_APPLICANT_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_SELECT_TYPE_OF_MORTGAGE_LABEL",
+                  "placeholder": "ES_SELECT_TYPE_OF_MORTGAGE_PLACEHOLDER",
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.mortgageType",
+                  "path": "mortgageType",
+                  "dataSource": "typesOfMortgage"
+                },
+                {
+                  "label": "ES_SELECT_OWNER_LABEL",
+                  "placeholder": "ES_SELECT_OWNER_PLACEHOLDER",
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.owner.id",
+                  "path": "owner.id",
+                  "dataSource": "owners"
+                },
+                {
+                  "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                  "placeholder": "ES_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName",
+                  "prefillValue": "selectedOwner.ownerDetails.guardianName"
+                },
+                {
+                  "label": "ES_ADDRESS_LABEL",
+                  "placeholder": "ES_ADDRESS_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_AREA",
+                  "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address",
+                  "prefillValue": "selectedOwner.ownerDetails.address"
+                },
+                {
+                  "label": "ES_MOBILE_NUMBER_LABEL",
+                  "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber",
+                  "prefillValue": "selectedOwner.ownerDetails.mobileNumber"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.share",
+                  "prefillValue": "selectedOwner.share"
+                },
+                {
+                  "label": "ES_CP_NUMBER_LABEL",
+                  "placeholder": "ES_CP_NUMBER_PLACEHOLDER",
+                  "disabled": true,
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.cpNumber",
+                  "prefillValue": "selectedOwner.cpNumber"
+                }
+              ]
+            },
+            {
+              "header": "ES_LOAN_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
+                  "placeholder": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.bankName",
+                  "path": "bankName",
+                  "errorMessage": "ES_ERR_BANK_NAME"
+                },
+                {
+                  "label": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
+                  "placeholder": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.reasonForMortgage",
+                  "path": "reasonForMortgage",
+                  "errorMessage": "ES_ERR_MORTGAGE_PURPOSE"
+                },
+                {
+                  "label": "ES_LOAN_AMOUNT_LABEL",
+                  "placeholder": "ES_LOAN_AMOUNT_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "path": "loanAmount",
+                  "jsonPath": "Applications[0].applicationDetails.loanAmount",
+                  "pattern": "numeric-only",
+                  "errorMessage": "ES_ERR_LOAN_AMOUNT"
+                }
+              ]
+            }
+          ]
+        },
+        "second_step": {
+          "header": "ES_DOCUMENT_DETAILS_HEADER",
+          "jsonPath": "Applications[0].applicationDocuments"
+        },
+        "preview": {
+          "sections": [
+              {
+                  "header": "ES_PROPERTY_DETAILS_HEADER",
+                  "isEditable": false,
+                  "fields": [
+                      {
+                          "label": "ES_FILE_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].property.fileNumber"
+                      },
+                      {
+                          "label": "ES_CATEGORY_LABEL",
+                          "jsonPath": "Applications[0].property.category"
+                      },
+                      {
+                          "label": "ES_SUB_CATEGORY_LABEL",
+                          "jsonPath": "Applications[0].property.subCategory"
+                      },
+                      {
+                          "label": "ES_SITE_NO_LABEL",
+                          "jsonPath": "Applications[0].property.siteNumber"
+                      },
+                      {
+                          "label": "ES_SECTOR_NO_LABEL",
+                          "jsonPath": "Applications[0].property.sectorNumber"
+                      },
+                      {
+                          "label": "ES_PROPERTY_TYPE_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.propertyType"
+                      },
+                      {
+                          "label": "ES_LAST_NOC_DATE_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+                          "type": "date"
+                      },
+                      {
+                          "label": "ES_DUE_AMOUNT_LABEL",
+                          "jsonPath": "Applications[0].property.propertyDetails.dueAmount"
+                      }
+                  ]
+              },
+              {
+                  "header": "ES_APPLICANT_DETAILS_HEADER",
+                  "step": 0,
+                  "fields": [
+                      {
+                          "label": "ES_OWNER_NAME_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.ownerName"
+                      },
+                      {
+                          "label": "ES_FATHER_HUSBAND_NAME_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.guardianName"
+                      },
+                      {
+                          "label": "ES_ADDRESS_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.address"
+                      },
+                      {
+                          "label": "ES_MOBILE_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.ownerDetails.mobileNumber"
+                      },
+                      {
+                          "label": "ES_OWNER_SHARE_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.share"
+                      },
+                      {
+                          "label": "ES_CP_NUMBER_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.owner.cpNumber"
+                      }
+                  ]
+              },
+              {
+                  "header": "ES_LOAN_DETAILS_HEADER",
+                  "step": 0,
+                  "fields": [
+                      {
+                          "label": "ES_NAME_OF_BANK_OR_FINANCIAL_INSTITUTION_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.bankName"
+                      },
+                      {
+                          "label": "ES_PURPOSE_OF_MORTGAGE_OR_LOAN_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.reasonForMortgage"
+                      },
+                      {
+                          "label": "ES_LOAN_AMOUNT_LABEL",
+                          "jsonPath": "Applications[0].applicationDetails.loanAmount"
+                      }
+                  ]
+              },
+              {
+                  "header": "ES_DOCUMENT_DETAILS_HEADER",
+                  "type": "DOCUMENTS",
+                  "step": 1,
+                  "sourceJsonPath": "temp[0].reviewDocData"
+              }
+          ]
+        }
       }
     }
   ]

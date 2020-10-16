@@ -54,7 +54,8 @@ const getData = async (action, state, dispatch) => {
 
     dispatch(prepareFinalObject("property", property));
     const dataConfig = require(`./${applicationType}.json`);
-    let {fields: data_config, first_step, second_step, dataSources} = dataConfig[applicationType][0];
+    let {fields: data_config, documentList, uiConfig} = dataConfig[applicationType][0];
+    let {first_step, second_step, dataSources, preview} = uiConfig
     const values = applicationType.split("_")
     dispatch(prepareFinalObject("Applications[0].branchType", values[0] ))
     dispatch(prepareFinalObject("Applications[0].moduleType", values[1] ))
@@ -72,8 +73,8 @@ const getData = async (action, state, dispatch) => {
     const applyFooter = footer;
 
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
-    const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step})
-    let third_step = await setThirdStep({state, dispatch, applicationType})
+    const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step, documentList})
+    let third_step = await setThirdStep({state, dispatch, applicationType, preview})
     third_step = getCommonCard({...third_step})
     inputProps.push(...second_step_sections);
     return {
