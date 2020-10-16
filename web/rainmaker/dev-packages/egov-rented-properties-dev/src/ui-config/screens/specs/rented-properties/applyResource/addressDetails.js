@@ -125,11 +125,11 @@ placeholder: {
   },
   visible: true,
     minLength: 1,
-    maxLength: 100,
+    maxLength: 1000,
     required: true,
     errorMessage: "RP_ERR_COMMENTS_FIELD",
     afterFieldChange: (action, state, dispatch) => {
-      if (action.value.length > 100) {
+      if (action.value.length > 1000) {
           dispatch(
               handleField(
                 "transit-site-images",

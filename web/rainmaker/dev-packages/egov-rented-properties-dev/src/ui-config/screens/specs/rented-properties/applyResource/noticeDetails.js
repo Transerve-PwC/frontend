@@ -67,11 +67,11 @@ const getEditorField = {
     },
     visible: true,
     minLength: 1,
-    maxLength: 100,
+    maxLength: 1000,
     jsonPath: "Properties[0].owners[0].ownerDetails.editor",
     errorMessage: "RP_ERR_EDITOR_DESC_FIELD",
     afterFieldChange: (action, state, dispatch) => {
-        if (action.value.length > 100) {
+        if (action.value.length > 1000) {
             dispatch(
                 handleField(
                   "notice-violation",

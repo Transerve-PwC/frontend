@@ -12,7 +12,7 @@ const tenantId = getTenantId();
 const header = getCommonHeader(
     {
       labelName: "Duplicate copy of Allotment letter",
-      labelKey: "RP_DUPLICATE_COPY_HEADER"
+      labelKey: "RP_DUPLICATECOPY_HEADER"
     },
     {
       classes: {

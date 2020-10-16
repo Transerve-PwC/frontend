@@ -287,7 +287,9 @@ export const applicationSuccessFooter = (
               let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
               let transitNumber = consumerCodes.split('-')[1]
               let queryObject = [
-                { key: "transitNumber", value: transitNumber }
+                { key: "transitNumber", value: transitNumber },
+                {key:"state",value:"PM_APPROVED"},
+                {key: "relations", value: 'owner,offlinepayment'}   
               ];
               let payload =  await getSearchResults(queryObject);
                 let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),
@@ -341,7 +343,9 @@ export const applicationSuccessFooter = (
               let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
               let transitNumber = consumerCodes.split('-')[1]
               let queryObject = [
-                { key: "transitNumber", value: transitNumber }
+                { key: "transitNumber", value: transitNumber },
+                {key:"state",value:"PM_APPROVED"},
+                {key: "relations", value: 'owner,offlinepayment'}   
               ];
               let payload =  await getSearchResults(queryObject);
                 let properties = payload.Properties.map(item => ({...item, rentSummary: {balanceAmount: Number(item.rentSummary.balanceAmount.toFixed(2)),

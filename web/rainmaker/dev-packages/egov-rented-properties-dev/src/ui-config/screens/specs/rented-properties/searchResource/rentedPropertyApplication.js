@@ -639,7 +639,7 @@ const accountStatementTransitNumber = {
 
 export const accountStatementFilterForm = getCommonCard({
   subParagraph: getCommonParagraph({
-    labelName: "Please Provide Transit Number",
+    labelName: "Please provide transit site/plot number and click on search icon",
     labelKey: "RP_PLEASE_TRANSIT_NUMBER_TO_SEARCH_APPLICATION_LABEL"
   }),
   applicationNoContainer: getCommonContainer({

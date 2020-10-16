@@ -642,6 +642,8 @@ return
                         <LabelContainer
                           labelName={getButtonLabelName(buttonLabel)}
                           labelKey={
+                            (applicationState==="OT_PENDINGCLAPPROVAL"||duplicateCopyApplicationState==="DC_PENDINGCLAPPROVAL")&&buttonLabel==="REJECT"
+                            ?`WF_${moduleName.toUpperCase()}_FORWARD_${buttonLabel}`:
                             moduleName
                               ? `WF_${moduleName.toUpperCase()}_${buttonLabel}`
                               : ""

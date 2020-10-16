@@ -37,7 +37,8 @@ const styles = {
       paddingTop: 7
     },
     body2: {
-      wordWrap: "break-word"
+      wordWrap: "break-word",
+      wordBreak:"break-all"
     }
   };
   
@@ -47,7 +48,8 @@ const styles = {
     fontSize: "16px",
     fontWeight: 400,
     letterSpacing: "0.67px",
-    lineHeight: "19px"
+    lineHeight: "19px",
+    wordBreak: "break-word"
   };
 
   const commentHeader = {
@@ -141,7 +143,8 @@ class MultipleDocuments extends Component {
                               style={{
                                 fontSize: 14,
                                 color: !!content.callBack || !!content.url ? "#FE7A51" : "rgba(0, 0, 0, 0.87",
-                                cursor: !!content.callBack || !!content.url ? "pointer" : "auto"
+                                cursor: !!content.callBack || !!content.url ? "pointer" : "auto",
+                                wordWrap: "break-word"
                               }}
                             />
                           </Grid>
@@ -176,7 +179,10 @@ class MultipleDocuments extends Component {
                             <Grid xs={6} className={classes.subtext}>
                               <Typography className={classes.body2}>{content.name}</Typography>
                             </Grid>
-                            <Grid xs={6} align="right">
+                            <Grid xs={6} align="right"
+                            style={{
+                              wordBreak : "normal"
+                            }}>
                               <Button href={content.url.split(",")[0]} color="primary">
                               Download
                               </Button>

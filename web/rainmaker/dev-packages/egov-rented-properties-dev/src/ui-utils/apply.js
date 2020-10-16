@@ -632,7 +632,7 @@ export const getAccountStatementProperty = async (state, dispatch) => {
         dispatch(
           prepareFinalObject(
             "searchScreen.area",
-            Properties[0].propertyDetails.address.area
+            Properties[0].propertyDetails.area
           )
         )
         dispatch(
