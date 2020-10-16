@@ -77,7 +77,7 @@ class TableContainer extends Component {
               item.financialYear || "-",
               [this._getLocaleLabels("TL_TABLE_COL_APP_TYPE")]:
               item.applicationType || "Renew",
-            [this._getLocaleLabels("TL_TABLE_COL_STATUS")]: item.status || "-",
+            [this._getLocaleLabels("TL_TABLE_COL_STATUS")]: this._getLocaleLabels(item.status) || "-",
             ["tenantId"]: item.tenantId,
             ["status1"]: item.status || "-"
           }));
