@@ -222,7 +222,7 @@ export const getWFConfig = (module, businessService, taskId) => {
       };
     }
     case "ESTATEPROPERTIES":
-      if(businessService === "ES-EB-PropertyMaster") {
+      if(businessService === "ES-EB-AllotmentOfSite") {
         return {
           INITIATED: 'estate/search-preview',
           DEFAULT: 'estate/search-preview'

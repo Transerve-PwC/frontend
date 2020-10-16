@@ -37,7 +37,7 @@ import {
 import {
   getReviewDocuments
 } from "./reviewDocuments";
-import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
 import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
 
@@ -62,7 +62,7 @@ export const moveToSuccess = (data, dispatch, type) => {
   const status = "success";
   let path = "";
   switch(type) {
-    case WF_PROPERTY_MASTER : 
+    case WF_ALLOTMENT_OF_SITE : 
       path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`;
       break;
     default : {
@@ -472,7 +472,7 @@ const callBackForNext = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
-      moveToSuccess(estatesData, dispatch, WF_PROPERTY_MASTER);
+      moveToSuccess(estatesData, dispatch, WF_ALLOTMENT_OF_SITE);
     }
   }
 

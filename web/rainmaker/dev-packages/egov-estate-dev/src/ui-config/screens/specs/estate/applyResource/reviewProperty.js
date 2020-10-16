@@ -1386,7 +1386,8 @@ export const getReviewCompanyDetails = (isEditable = true, screenkey = "apply") 
           labelKey: "ES_REGISTRATION_DATE_LABEL"
         },
         {
-          jsonPath: "Properties[0].propertyDetails.companyRegistrationDate"
+          jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
+          callBack: convertEpochToDate
         }
       ),
       companyAddress: getLabelWithValue(

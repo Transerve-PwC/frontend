@@ -15,3 +15,4 @@ export const ES_DATE_OF_RECEIPT = getLocaleLabels("ES_DATE_OF_RECEIPT", "ES_DATE
 export const ES_NO_OF_DAYS = getLocaleLabels("ES_NO_OF_DAYS", "ES_NO_OF_DAYS")
 export const ES_INTEREST_ON_DELAYED_PAYMENT = getLocaleLabels("ES_INTEREST_ON_DELAYED_PAYMENT", "ES_INTEREST_ON_DELAYED_PAYMENT")
 export const ESTATE_SERVICES_MDMS_MODULE = "EstateServices"
+export const WF_ALLOTMENT_OF_SITE = "ES-EB-AllotmentOfSite"

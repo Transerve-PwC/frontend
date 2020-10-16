@@ -15,6 +15,9 @@ import {
   getTodaysDateInYMD
 } from "../../utils";
 import get from "lodash/get";
+import {
+  _getPattern
+} from "../../utils"
 
 export const ownerHeader = getCommonTitle({
   labelName: "Owner Details",
@@ -171,8 +174,7 @@ const shareField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
-  maxLength: 5,
+  pattern: _getPattern("share"),
   jsonPath: "Properties[0].propertyDetails.owners[0].share"
 }
 

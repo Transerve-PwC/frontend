@@ -1569,6 +1569,8 @@ export const calculateAge = dob => {
 export const _getPattern = (type) => {
   switch(type) {
     case "float": 
-        return /^[+-]?\d+(\.\d+)?$/i
+        return /^[+-]?\d+(\.\d+)?$/i;
+    case "share":
+      return /^[+-]?\d{1,5}(\.\d{1,2})?$/i;
   }
 }

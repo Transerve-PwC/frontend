@@ -4,8 +4,16 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
 import {
-  getTenantId
+  getTenantId,
+  getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {
+  roles = []
+} = userInfo
+console.log(roles);
+const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 const header = getCommonHeader({
   labelName: "Estate",
@@ -33,14 +41,14 @@ const cardItems = [
     icon: < FormIcon / > ,
     route: "search-application"
   },
-  {
-    label: {
-      labelKey: "ES_PROPERTY_MASTER_ALLOTMENT_HEADER",
-      labelName: "Allotment"
-    },
-    icon: < FormIcon / > ,
-    route: `allotment?tenantId=${getTenantId()}`
-  },
+  // {
+  //   label: {
+  //     labelKey: "ES_PROPERTY_MASTER_ALLOTMENT_HEADER",
+  //     labelName: "Allotment"
+  //   },
+  //   icon: < FormIcon / > ,
+  //   route: `allotment?tenantId=${getTenantId()}`
+  // },
   // {
   //   label: {
   //     labelKey: "ES_PROPERTY_MASTER_CANCELLATION_HEADER",
@@ -82,6 +90,18 @@ const cardItems = [
     route: "estate-payment"
   }
 ]
+
+if (!!findItem) {
+  let allotmentCardItem = {
+      label: {
+        labelKey: "ES_PROPERTY_MASTER_ALLOTMENT_HEADER",
+        labelName: "Allotment"
+      },
+      icon: < FormIcon / > ,
+      route: `allotment?tenantId=${getTenantId()}`
+    };
+  cardItems.splice(2, 0, allotmentCardItem);
+}
 
 const citizenCardItems = [
   {

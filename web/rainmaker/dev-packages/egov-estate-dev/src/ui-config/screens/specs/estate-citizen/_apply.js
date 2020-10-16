@@ -10,6 +10,26 @@ import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 import get from "lodash/get";
 import { registerDatasource } from "./dataSources";
 import { getCommonApplyHeader } from "../utils";
+import commonConfig from "config/common.js";
+import { getMdmsData } from "../estate/apply";
+
+export const getApplicationConfig = async({dispatch, applicationType}) => {
+  const payload = [
+    {
+      moduleName: "EstateServices",
+      masterDetails: [
+        { name:  applicationType}
+      ]
+    }
+  ]
+  const applicationResponse = await getMdmsData(dispatch, payload)
+  try {
+   return applicationResponse.MdmsRes.EstateServices[applicationType][0]
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 const getData = async (action, state, dispatch) => {
   await dispatch(prepareFinalObject("Applications", []))
@@ -51,10 +71,12 @@ const getData = async (action, state, dispatch) => {
     const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
 
     const header = getCommonApplyHeader({label: headerLabel, number: applicationNumber})
-
+    
     dispatch(prepareFinalObject("property", property));
-    const dataConfig = require(`./${applicationType}.json`);
-    let {fields: data_config, documentList, uiConfig} = dataConfig[applicationType][0];
+
+    let {fields: data_config, documentList, uiConfig} = await getApplicationConfig({dispatch, applicationType})
+    // const dataConfig = require(`./${applicationType}.json`);
+    // let {fields: data_config, documentList, uiConfig} = dataConfig[applicationType][0];
     let {first_step, second_step, dataSources, preview} = uiConfig
     const values = applicationType.split("_")
     dispatch(prepareFinalObject("Applications[0].branchType", values[0] ))

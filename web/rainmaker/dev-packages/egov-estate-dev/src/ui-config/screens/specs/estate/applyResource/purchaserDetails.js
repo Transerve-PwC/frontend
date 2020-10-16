@@ -13,7 +13,7 @@ import {
   handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getTodaysDateInYMD
+  getTodaysDateInYMD, _getPattern
 } from "../../utils";
 import get from "lodash/get";
 
@@ -281,7 +281,7 @@ const shareField = {
     sm: 6
   },
   // required: true,
-  maxLength: 5,
+  pattern: _getPattern("share"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].share",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {

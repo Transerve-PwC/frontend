@@ -10,6 +10,7 @@ const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/common
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
 import {downloadPrintContainer} from './applyResource/footer';
+import { getApplicationConfig } from "../estate-citizen/_apply";
 
 const getData = async (action, state, dispatch) => {
     await dispatch(prepareFinalObject("workflow.ProcessInstances", []))
@@ -54,8 +55,9 @@ const getData = async (action, state, dispatch) => {
        const headerLabel = `ES_${type.toUpperCase()}`
 
        const headerrow = getCommonApplyHeader({label: headerLabel, number: applicationNumber});
-       const dataConfig = require(`../estate-citizen/${type}.json`);
-       let {uiConfig} = dataConfig[type][0];
+      const {uiConfig} = await getApplicationConfig({dispatch, applicationType: type})
+       //  const dataConfig = require(`../estate-citizen/${type}.json`);
+      //  let {uiConfig} = dataConfig[type][0];
        let {preview} = uiConfig
        let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
         if(applicationState === "ES_PENDING_PAYMENT") {

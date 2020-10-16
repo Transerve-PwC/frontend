@@ -38,7 +38,7 @@ import {
 import {
   getReviewDocuments
 } from "./reviewDocuments";
-import { WF_PROPERTY_MASTER } from "../../../../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -453,7 +453,7 @@ const callBackForNext = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject,
         "Properties[0]"
       );
-      moveToSuccess(estatesData, dispatch, WF_PROPERTY_MASTER);
+      moveToSuccess(estatesData, dispatch, WF_ALLOTMENT_OF_SITE);
     }
   }
 

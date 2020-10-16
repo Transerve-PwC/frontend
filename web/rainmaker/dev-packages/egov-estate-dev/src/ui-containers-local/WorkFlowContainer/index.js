@@ -22,7 +22,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import orderBy from "lodash/orderBy";
-import { WF_PROPERTY_MASTER } from "../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE } from "../../ui-constants";
 
 class WorkFlowContainer extends React.Component {
   state = {
@@ -45,7 +45,7 @@ class WorkFlowContainer extends React.Component {
       { key: "tenantId", value: tenantId }
     ];
     switch(this.props.moduleName) {
-      case WF_PROPERTY_MASTER : 
+      case WF_ALLOTMENT_OF_SITE : 
         queryObject = [...queryObject,
           { key: "businessIds", value: fileNumber }
       ]
@@ -136,7 +136,7 @@ class WorkFlowContainer extends React.Component {
     } = this.props;
     const tenant = getQueryArg(window.location.href, "tenantId");
     let data = get(preparedFinalObject, dataPath, []);
-    if (moduleName === WF_PROPERTY_MASTER) {
+    if (moduleName === WF_ALLOTMENT_OF_SITE) {
       if (getQueryArg(window.location.href, "edited")) {
         // let owners = get(
         //   preparedFinalObject
@@ -173,7 +173,7 @@ class WorkFlowContainer extends React.Component {
       if (payload) {
         let path = "";
         switch(this.props.moduleName) {
-          case WF_PROPERTY_MASTER: 
+          case WF_ALLOTMENT_OF_SITE: 
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
             break;
           default: {

@@ -10,7 +10,7 @@ import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails } from "./preview-resource/preview-properties";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-import { WF_PROPERTY_MASTER } from "../../../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE } from "../../../../ui-constants";
 
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
@@ -211,7 +211,7 @@ const estateDetailPreview = {
             componentPath: "WorkFlowContainer",
             props: {
               dataPath: "Properties",
-              moduleName: WF_PROPERTY_MASTER,
+              moduleName: WF_ALLOTMENT_OF_SITE,
               updateUrl: "/est-services/property-master/_update",
               style: {
                 wordBreak: "break-word"

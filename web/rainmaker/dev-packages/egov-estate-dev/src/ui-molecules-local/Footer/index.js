@@ -9,7 +9,7 @@ import MenuButton from "egov-ui-framework/ui-molecules/MenuButton";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
-import { WF_PROPERTY_MASTER } from "../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE } from "../../ui-constants";
 class Footer extends React.Component {
   state = {
     open: false,
@@ -43,7 +43,7 @@ class Footer extends React.Component {
     }
     let assignee = [];
     switch(moduleName) {
-      case WF_PROPERTY_MASTER: {
+      case WF_ALLOTMENT_OF_SITE: {
         if(!!action && data[0].masterDataState !== "PM_PENDING_DA_VERIFICATION") {
           const {assigner = {}} = this.findAssigner(action, ProcessInstances) || {}
           assignee = !!assigner.uuid ? [assigner.uuid] : []
