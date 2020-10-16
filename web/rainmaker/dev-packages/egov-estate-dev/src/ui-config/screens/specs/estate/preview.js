@@ -60,14 +60,16 @@ const getData = async (action, state, dispatch) => {
       //  let {uiConfig} = dataConfig[type][0];
        let {preview} = uiConfig
        let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
-        if(applicationState === "ES_PENDING_PAYMENT") {
-            const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
-            const estimate = !!estimateResponse ? getCommonGrayCard({
-              estimateSection: getFeesEstimateCard({
-                sourceJsonPath: "temp[0].estimateCardData"
-              })
-            }) : {}
+       const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
+       if(!!estimateResponse) {
+         const estimate = !!estimateResponse ? getCommonGrayCard({
+           estimateSection: getFeesEstimateCard({
+             sourceJsonPath: "temp[0].estimateCardData"
+            })
+          }) : {}
           reviewDetails = {estimate, ...reviewDetails}
+       }
+        if(applicationState === "ES_PENDING_PAYMENT") {
           footer = process.env.REACT_APP_NAME === "Citizen" ? footerReview(
             action,
             state,
