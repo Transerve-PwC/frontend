@@ -99,14 +99,31 @@ formValue.businessService.value=bookingservice
         </div>
       </div>
       <div className={classes.btnWrapper}>
-        <button 
-        onClick={onSubmit}
-        className={classes.button}
-       id="rejectcomplaint-submit-action"
-       primary={true}
-       {...submit}
-       fullWidth={true}
-      >Reject</button>
+        {(() => {
+          if (!commentValue) {
+            return <button
+              onClick={onSubmit}
+              style={{ backgroundColor: "darkgray" }}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              disabled
+            >Reject</button>
+
+          } else {
+            return <button
+              onClick={onSubmit}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+            >Reject</button>
+          }
+        })()}
+
       </div>
     </div>
   );

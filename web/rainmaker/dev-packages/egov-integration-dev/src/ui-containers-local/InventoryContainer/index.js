@@ -97,14 +97,33 @@ class InventoryContainer extends Component {
                   
                 }} label="PT_CODE" /></td>
                 <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].PropertyId}/></td>
-                <td  style={{
+                {/* <td  style={{
                   textAlign: "right",
                   width:"15%"
                 }}><Label labelClassName="" style={{
-                  fontWeight: "bold",                  
+                  fontWeight: "bold",
+                  textAlign: "center", 
+                  width:"40%"               
+                }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
+                <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td> */}
+                </tr>  
+                <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
                 }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
                 <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td>
-                </tr>             
+                {/* <td  style={{
+                  textAlign: "right",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                                
+                }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
+                <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td> */}
+                </tr>            
                      
               </table>
               </div>

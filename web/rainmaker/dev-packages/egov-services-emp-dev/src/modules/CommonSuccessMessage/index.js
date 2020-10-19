@@ -30,7 +30,7 @@ class SuccessMessage extends Component {
       <div className="container-fluid">
         <div className="row spl-application-header" style={{ marginTop: '40px', marginBottom: '30px', marginLeft: '-6px' }}>
           <div className="col-sm-6 spl-app-header-text">  <Label label={headermessage} /></div>
-          <div className="col-sm-5 spl-app-header-number" > <Label label={label1 } /></div>
+          {/* <div className="col-sm-5 spl-app-header-number" > <Label label={label1 } /></div> */}
           {/* <div class="col-sm-5">  </div> */}
         </div>
 

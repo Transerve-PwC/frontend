@@ -85,15 +85,32 @@ formValue.businessService.value=bookingservice
           <TextArea onChange={ontextAreaChange} value={commentValue} {...fields.textarea} />
         </div>
       </div>
-	  <div className={classes.btnWrapper}>
-      <button 
-       onClick={onSubmit}
-       className={classes.button}
-       id="rejectcomplaint-submit-action"
-       primary={true}
-       {...submit}
-       fullWidth={true}
-      >Publish</button>
+      <div className={classes.btnWrapper}>
+        {(() => {
+          if (!commentValue) {
+            return <button
+              onClick={onSubmit}
+              style={{ backgroundColor: "darkgray" }}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              disabled
+            >Publish</button>
+
+          } else {
+            return <button
+              onClick={onSubmit}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+            >Publish</button>
+          }
+        })()}
+
       </div>
     </div>
   );

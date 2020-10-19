@@ -113,6 +113,17 @@ const styles = {
         color: "rgba(0, 0, 0, 0.54)",
         fontSize: "12px",
     },
+    descStyle : {
+        color: "rgba(0, 0, 0, 0.6)",
+        fontFamily: "Roboto",
+        fontSize: "14px",
+        fontWeight: 400,
+        letterSpacing: "0.67px",
+        lineHeight: "20px",
+        marginBottom: "12px",
+        marginLeft: "76px"
+
+    }
 };
 
 const requiredIcon = (
@@ -195,7 +206,7 @@ class DocumentList extends Component {
                             //         ...oldDocumentData,
                             //         ...newDocumentData,
                             //     })
-                            //     : 
+                            //     :
                             (documentsUploadRedux[index] = { ...newDocumentData });
                         }
                         index++;
@@ -250,6 +261,7 @@ class DocumentList extends Component {
     };
 
     getUploadCard = (card, key) => {
+console.log(card, "Card He");
         const { classes, documentsUploadRedux } = this.props;
         let jsonPath = `documentsUploadRedux[${key}].dropdown.value`;
         return (
@@ -271,8 +283,8 @@ class DocumentList extends Component {
                 <Grid
                     item={true}
                     xs={10}
-                    sm={5}
-                    md={4}
+                    sm={6}
+                    md={6}
                     align="left"
                     className={classes.descriptionDiv}
                 >
@@ -282,30 +294,13 @@ class DocumentList extends Component {
                     />
                     {card.required && requiredIcon}
                 </Grid>
-                <Grid item={true} xs={12} sm={6} md={4}>
-                    {card.dropdown && (
-                        <TextFieldContainer
-                            select={true}
-                            label={{
-                                labelKey: getTransformedLocale(
-                                    card.dropdown.label
-                                ),
-                            }}
-                            placeholder={{ labelKey: card.dropdown.label }}
-                            data={card.dropdown.menu}
-                            optionValue="code"
-                            optionLabel="label"
-                            required={true}
-                            onChange={(event) => this.handleChange(key, event)}
-                            jsonPath={jsonPath}
-                        />
-                    )}
-                </Grid>
+
                 <Grid
                     item={true}
                     xs={12}
-                    sm={12}
+                    sm={4}
                     md={3}
+                    align="right"
                     className={classes.fileUploadDiv}
                 >
                     <UploadSingleFile
@@ -328,6 +323,28 @@ class DocumentList extends Component {
                         inputProps={this.props.inputProps}
                         buttonLabel={this.props.buttonLabel}
                     />
+                </Grid>
+                <Grid
+                    item={true}
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    align="left"
+                    className={classes.descriptionDiv}
+                >
+                    <LabelContainer
+                        labelKey={(()=>{
+                            if(card.code == "OSWMCC_LOCATION_IMAGE_1" || card.code == "OSWMCC_LOCATION_IMAGE_2" || card.code == "OSWMCC_LOCATION_IMAGE_3"){
+                                return "Supported Documents: jpg, png. Max file size: 1MB";
+                            }else{
+                                return "Supported Documents: pdf, jpg, png. Max file size: 1MB";
+                            }
+                        })()}
+
+
+                        style={styles.descStyle}
+                    />
+
                 </Grid>
             </Grid>
         );

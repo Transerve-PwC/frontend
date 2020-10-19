@@ -87,6 +87,14 @@ const serviceCategoryLabel = {
   labelName: "Service Category",
   labelKey: "ES_SERVICE_CATEGORY_LABEL"
 }
+const propertyRegisteredToLabel = {
+  labelName: "Property Registered To",
+  labelKey: "ES_PROPERTY_REGISTERED_TO_LABEL"
+}
+const entityTypeLabel = {
+  labelName: "Entity Type",
+  labelKey: "ES_ENTITY_TYPE_LABEL"
+}
 
 export const editSection = {
   componentPath: "Button",
@@ -204,6 +212,16 @@ export const getReviewPropertyInfo = (isEditable = true, screenkey = "apply") =>
       allocationType: getLabelWithValue(
         allocationTypeLabel, {
           jsonPath: "Properties[0].propertyDetails.typeOfAllocation"
+        }
+      ),
+      propertyRegisteredTo: getLabelWithValue(
+        propertyRegisteredToLabel, {
+          jsonPath: "Properties[0].propertyDetails.propertyRegisteredTo"
+        }
+      ),
+      entityType: getLabelWithValue(
+        entityTypeLabel, {
+          jsonPath: "Properties[0].propertyDetails.entityType"
         }
       )
     })

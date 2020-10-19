@@ -10,16 +10,21 @@ class BookingMedia extends React.Component {
         super(props);
     }
     render() {
-        const { masterDataPCC, availabilityCheckData } = this.props;
+        const { masterDataPCC, availabilityCheckData, pacc_image_initial_path } = this.props;
+        let pacc_image = 'No data found in selected Locality. Please select other Locality';
+        let masterDataExists = 0;
+        if (masterDataPCC.length > 0) {
+            masterDataExists = 1;
+            pacc_image = pacc_image_initial_path + "/" + masterDataPCC[0].imagePath;
+        }
+
         return (
             <div>
                 <img
                     id="imageMap-pccMaps"
-                    src={`${
-                        availabilityCheckData.bkBookingType === "Parks"
-                            ? "https://zfunds3.s3.ap-south-1.amazonaws.com/park11.jpeg"
-                            : CC
-                    }`}
+                    src={`${pacc_image
+
+                        }`}
                     // src={`https://zfunds3.s3.ap-south-1.amazonaws.com/${masterDataPCC[0].imagePath}`}
                     // border="0"
                     useMap="#pccMaps"
@@ -35,11 +40,11 @@ class BookingMedia extends React.Component {
         );
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         availabilityCheckData: state.screenConfiguration.preparedFinalObject.availabilityCheckData,
-//     };
-// };
+const mapStateToProps = (state) => {
+    return {
+        pacc_image_initial_path: state.screenConfiguration.preparedFinalObject.applyScreenMdmsData.Booking.Booking_Config[0].Value,
+    };
+};
 
 // const mapDispatchToProps = (dispatch) => {
 //     return {
@@ -49,4 +54,4 @@ class BookingMedia extends React.Component {
 //     };
 // };
 
-export default connect(null, null)(BookingMedia);
+export default connect(mapStateToProps, null)(BookingMedia);

@@ -152,6 +152,26 @@ export const bookingDetails = getCommonCard({
                 jsonPath: "Booking.bkBookingPurpose",
             }),
         },
+        bkLocationChangeAmount: {
+            ...getTextField({
+                label: {
+                    labelName: "Locality",
+                    labelKey: "BK_PCC_LOCATION_CHANGE_AMOUNT_LABEL",
+                },
+                placeholder: {
+                    labelName: "Locality",
+                    labelKey: "BK_PCC_LOCATION_CHANGE_AMOUNT_PLACEHOLDER",
+                },
+                required: true,
+                props: {
+                    disabled: true,
+                },
+                //pattern: getPattern("Name"),
+                errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+                jsonPath: "Booking.bkLocationChangeAmount",
+            }),
+            visible : false,
+        },
         bkSector: {
             ...getTextField({
                 label: {

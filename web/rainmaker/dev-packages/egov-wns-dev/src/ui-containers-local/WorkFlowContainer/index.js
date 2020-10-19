@@ -24,6 +24,7 @@ import orderBy from "lodash/orderBy";
 import { getSearchResults} from "../../ui-utils/commons";
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
 const tenantId = getQueryArg(window.location.href, "tenantId");
+const serviceType = getQueryArg(window.location.href, "service");
 
 class WorkFlowContainer extends React.Component {
   state = {
@@ -39,7 +40,7 @@ class WorkFlowContainer extends React.Component {
     let payloadData = await getSearchResults(queryObject);
 
     const {WaterConnection} =await  payloadData
-    if(WaterConnection){
+    if(WaterConnection && WaterConnection.length > 0){
       const {applicationNo,applicationStatus} = WaterConnection[0]
       this.setState({applicationId : applicationNo , applicationStatus,WaterConnectionObj:WaterConnection});
     }
@@ -194,7 +195,7 @@ class WorkFlowContainer extends React.Component {
       const userRoles = JSON.parse(getUserInfo()).roles;
       const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
       const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;
-      if(roleIndex && !isButtonPresent ){
+      if(roleIndex && !isButtonPresent && serviceType !== "SEWERAGE"){
         const buttonArray = getWNSButtonForCitizen(WaterConnection, applicationStatus, businessId,"NewWS1");
        actions = actions.concat(buttonArray);
       }

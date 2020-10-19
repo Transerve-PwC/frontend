@@ -1,5 +1,7 @@
 import React from "react";
-import DayPicker, { DateUtils } from "../../contributed-modules/react-day-picker";
+import DayPicker, {
+    DateUtils,
+} from "../../contributed-modules/react-day-picker";
 import {
     prepareFinalObject,
     toggleSnackbar,
@@ -38,26 +40,6 @@ class BookingCalendar extends React.Component {
             });
         }
 
-        // for (let i = 0; i < this.props.reservedDays.length; i++) {
-        //     pushReservedDay.push(new Date(this.props.reservedDays[i]));
-        // }
-
-        //  if(this.props.reservedDays.length > 0) {
-
-        //     this.setState({
-        //         from: new Date(this.props.availabilityCheckData.bkFromDate),
-        //         // to: new Date(this.props.availabilityCheckData.bkToDate),
-        //         enteredTo: new Date(this.props.availabilityCheckData.bkToDate),
-        //     });
-        // }
-        // if(applicationNumber !== null || applicationNumber !== undefined){
-        //     alert("in it")
-        //     this.setState({
-        //         from: new Date(localStorageGet("fromDateCG")),
-        //         // to: new Date(this.props.availabilityCheckData.bkToDate),
-        //         enteredTo: new Date(localStorageGet("toDateCG")),
-        //     });
-        // }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -162,6 +144,11 @@ class BookingCalendar extends React.Component {
                         day
                     );
 
+                    this.props.prepareFinalObject(
+                        "availabilityCheckData.bkToDate",
+                        null
+                    );
+
                     this.setState({
                         from: day,
                         to: null,
@@ -250,13 +237,27 @@ class BookingCalendar extends React.Component {
         };
         let data = new Date();
         let newData = new Date(data.setMonth(data.getMonth() + 5));
+
+        let initialMonthDate =
+            from === null || from === undefined ? new Date() : new Date(from);
+        let initialMonthDateYear = initialMonthDate.getFullYear();
+        let initialMonthDateMonth = initialMonthDate.getMonth() + 1;
+
+        let initialMonthDateStr = `${initialMonthDateYear}, ${initialMonthDateMonth}`;
+
+        // console.log(initialMonthDateStr, "initialMonthDateStr");
+        // console.log(from, "initialMonthDateStr");
         return (
             <div className="calendar-wrapper">
                 <div className="calendar-section">
                     <DayPicker
                         className="Selectable"
                         numberOfMonths={2}
-                        initialMonth={new Date()}
+                        initialMonth={
+                            from === undefined || from || null
+                                ? new Date()
+                                : new Date(initialMonthDateStr)
+                        }
                         disabledDays={this.state.dselectedDays}
                         fromMonth={new Date()}
                         toMonth={newData}

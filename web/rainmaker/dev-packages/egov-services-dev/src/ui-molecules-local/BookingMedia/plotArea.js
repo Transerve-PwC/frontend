@@ -3,6 +3,7 @@ import {
     prepareFinalObject,
     toggleSnackbar,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { connect } from "react-redux";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import {
     getAvailabilityDataPCC,
@@ -21,7 +22,7 @@ class PlotArea extends React.Component {
         const { availabilityCheckData } = this.props;
         if (
             availabilityCheckData.bkBookingType == "Community Center" &&
-            item.bookingItemType == "HOURLY"
+            item.bkDuration == "HOURLY"
         ) {
             set(
                 this.props.calendarVisiblity.checkavailability_pcc,
@@ -56,13 +57,13 @@ class PlotArea extends React.Component {
             item.name
         );
         this.props.prepareFinalObject(
-            "availabilityCheckData.bookingItemType",
-            item.bookingItemType
+            "availabilityCheckData.bkDuration",
+            item.bkDuration
         );
         this.props.prepareFinalObject("Booking.bkBookingVenue", item.id);
         this.props.prepareFinalObject(
-            "Booking.bookingItemType",
-            item.bookingItemType
+            "Booking.bkDuration",
+            item.bkDuration
         );
 
         let requestBody = {
@@ -90,6 +91,8 @@ class PlotArea extends React.Component {
                 "availabilityCheckData.reservedDays",
                 reservedDates
             );
+
+            console.log(data, "Reservered Time Slots");
             this.props.prepareFinalObject(
                 "availabilityCheckData.reservedTimeSlotsData",
                 data

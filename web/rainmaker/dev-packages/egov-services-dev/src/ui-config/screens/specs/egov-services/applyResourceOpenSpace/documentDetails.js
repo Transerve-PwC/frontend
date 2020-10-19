@@ -28,7 +28,7 @@ export const documentDetails = getCommonCard({
     moduleName: "egov-services",
     componentPath: "DocumentListContainer",
     // required:false,
-    props: {      
+    props: {
       buttonLabel: {
         labelName: "UPLOAD FILE",
         labelKey: "BK_OSB_DOCUMENT_UPLOAD_BUTTON"
@@ -41,5 +41,5 @@ export const documentDetails = getCommonCard({
       moduleName : "OSBM"
     },
     type: "array"
-  } 
+  }
 });

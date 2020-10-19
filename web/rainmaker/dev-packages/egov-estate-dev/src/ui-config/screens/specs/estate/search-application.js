@@ -16,7 +16,7 @@ import { searchApplicationResults } from './searchResource/searchResults';
 import {
     getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
-import { getApplicationStatusList } from "../../../../ui-utils/commons";
+import { getApplicationStatusList, getApplicationTypes } from "../../../../ui-utils/commons";
 
 const userInfo = JSON.parse(getUserInfo());
 const {
@@ -35,6 +35,7 @@ const estateSearchAndResult = {
         dispatch(prepareFinalObject("searchScreen", {}))
         searchApplicationApiCall(state, dispatch, true)
         getApplicationStatusList({state, dispatch, action, screenKey: "search-application", componentJsonPath: "components.div.children.estateApplicationSearch.children.cardContent.children.fileStatusContainer.children.status"})
+        getApplicationTypes({state, dispatch, action, screenKey: "search-application", componentJsonPath: "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationType"})
         return action
     },
     components: {

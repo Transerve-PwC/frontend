@@ -61,7 +61,22 @@ class SummaryDetails extends Component {
         const { firstName,approverName,comment, email, mobileNo, houseNo, address, locality, residenials, propsData } = this.props;
         return (
             <div>
-                <div classsName="container">
+<div classsName="container">
+                    <div className="col-xs-12">
+                        <button
+                            style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", float: 'right', marginRight: '50px', marginTop: '40px', background: "#f9f6f6" }}
+                            onClick={this.firstStep}>
+                            <EditIcon />
+                            <h5 style={{ fontSize: "14px", marginTop: "-27px", marginBottom: "15px", marginLeft: "59px" }}>
+                                EDIT
+                    </h5>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                {/* <div classsName="container">
                 <div className="col-xs-12">
                   <button
                         style={{ float: 'right', marginRight: '50px', marginTop: '40px' }}
@@ -70,7 +85,7 @@ class SummaryDetails extends Component {
                         className="ViewDetailButton"
                     >EDIT</button>
                 </div>
-                </div>
+                </div> */}
                 <div style={{marginLeft: "20px", paddingBottom: '5px',paddingLeft:25}}>
                     <Label label="BK_MYBK_APPLICANT_DETAILS" labelClassName="dark-heading" />
                 </div>

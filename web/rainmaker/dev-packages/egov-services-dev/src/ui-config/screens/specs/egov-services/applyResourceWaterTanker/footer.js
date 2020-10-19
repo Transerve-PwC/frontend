@@ -17,7 +17,59 @@ import {
     setapplicationNumber,
 } from "egov-ui-kit/utils/localStorageUtils";
 import { set } from "lodash";
+const moveToReview = (state, dispatch) => {
+    let validateDocumentField = true;
 
+    const bkDate = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.bkDate"
+    );
+    const bkTime = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.bkTime"
+    );
+
+    const bkStatus = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.bkStatus"
+    );
+    if (bkStatus.includes("Paid")) {
+        if (bkDate) {
+            let currentTimestamp = new Date().getTime();
+            const [year, month, day] = bkDate.split("-");
+            const [hour, min] = bkTime.split(":");
+
+            let bookingDateObj = new Date(year, parseInt(month, 10) - 1, day, hour, min);
+            let bookingTimestamp = bookingDateObj.getTime();
+
+            if (bookingTimestamp < currentTimestamp) {
+                dispatch(
+                    toggleSnackbar(
+                        true,
+                        { labelName: "You can not select Past Time!", labelKey: "" },
+                        "warning"
+                    )
+                );
+                validateDocumentField = false;
+            } else {
+                validateDocumentField = true;
+            }
+        } else {
+            dispatch(
+                toggleSnackbar(
+                    true,
+                    { labelName: "Please select Date!", labelKey: "" },
+                    "warning"
+                )
+            );
+            validateDocumentField = false;
+        }
+    } else {
+        validateDocumentField = true;
+    }
+
+    return validateDocumentField;
+}
 const callBackForNext = async (state, dispatch) => {
     let errorMessage = "";
     let activeStep = get(
@@ -36,6 +88,11 @@ const callBackForNext = async (state, dispatch) => {
 
     isFormValid = validatestepformflag[0];
     hasFieldToaster = validatestepformflag[1];
+    //console.log(activeStep, "active Step Nero");
+    //isFormValid = moveToReview(state, dispatch);
+    if (activeStep === 1 && isFormValid != false) {
+        isFormValid = moveToReview(state, dispatch);
+    }
     if (activeStep === 1 && isFormValid != false) {
         let response = await createUpdateWtbApplication(
             state,

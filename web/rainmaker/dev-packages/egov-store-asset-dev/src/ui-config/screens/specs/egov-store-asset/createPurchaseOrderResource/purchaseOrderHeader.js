@@ -132,6 +132,32 @@ export const purchaseOrderHeader = getCommonCard({
               dispatch(prepareFinalObject("purchaseOrders[0].store.divisionName", storebj[0].divisionName));              
             }
           }
+          //
+          const step = getQueryArg(window.location.href, "step");
+          const poNumber = getQueryArg(window.location.href, "poNumber");
+          if(!step && !poNumber){
+              // dispatch(
+              //   handleField(
+              //     `create-purchase-order`,
+              //     "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
+              //     "props.style",
+              //    { display: "none" }
+              //     // { display: "inline-block" }
+                  
+              //   )
+              // );
+              // dispatch(
+              //   handleField(
+              //     `create-purchase-order`,
+              //     "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
+              //     "props",
+              //     // { display: "none" }
+              //     { disabled: true }
+                  
+              //   )
+              // );
+              
+                }
         }
       }
     },
@@ -236,6 +262,15 @@ export const purchaseOrderHeader = getCommonCard({
          
           dispatch(prepareFinalObject("purchaseOrders[0].rateType", "Gem"));  
         }
+        // dispatch(
+        //   handleField(
+        //     `create-purchase-order`,
+        //     "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
+        //     "props.style",
+        //     { display: "inline-block" }
+            
+        //   )
+        // );
         
       }
     },
@@ -266,6 +301,8 @@ export const purchaseOrderHeader = getCommonCard({
             const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
             const {rateType} = purchaseOrders[0];
             let priceList = [{rateContractNumber:"",rateContractDate:"",agreementNumber:"",agreementDate:"",agreementStartDate:"",agreementEndDate:""}];
+           if(rateType)
+           {
             if(rateType.toLocaleUpperCase() === 'GEM')
             {
               
@@ -287,6 +324,7 @@ export const purchaseOrderHeader = getCommonCard({
               priceList[0].agreementEndDate   =  new Date(response.priceLists[0].agreementEndDate).toISOString().substr(0,10);
 
             }
+          }
            
             dispatch(prepareFinalObject("searchMaster.priceList", response.priceLists));  
             dispatch(prepareFinalObject("purchaseOrders[0].priceList", priceList));    
@@ -303,34 +341,34 @@ export const purchaseOrderHeader = getCommonCard({
        }
      }
     },
-    advancePercentage: {
-      ...getTextField({
-        label: {
-          labelName: "Advance Percentage",
-          labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT"
-        },
-        placeholder: {
-          labelName: "Enter Advance Percentage",
-          labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT_PLACEHOLDER"
-        },
-        pattern: getPattern("Amount"),
-        jsonPath: "purchaseOrders[0].advancePercentage"
-      })
-    },
-    advanceAmount: {
-      ...getTextField({
-        label: {
-          labelName: "Advance Amount",
-          labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMT"
-        },
-        placeholder: {
-          labelName: "Enter Advance Amount",
-          labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMTT_PLACEHOLDER"
-        },
-        pattern: getPattern("Amount"),
-        jsonPath: "purchaseOrders[0].advanceAmount"
-      })
-    },
+    // advancePercentage: {
+    //   ...getTextField({
+    //     label: {
+    //       labelName: "Advance Percentage",
+    //       labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT"
+    //     },
+    //     placeholder: {
+    //       labelName: "Enter Advance Percentage",
+    //       labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT_PLACEHOLDER"
+    //     },
+    //     pattern: getPattern("Amount"),
+    //     jsonPath: "purchaseOrders[0].advancePercentage"
+    //   })
+    // },
+    // advanceAmount: {
+    //   ...getTextField({
+    //     label: {
+    //       labelName: "Advance Amount",
+    //       labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMT"
+    //     },
+    //     placeholder: {
+    //       labelName: "Enter Advance Amount",
+    //       labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMTT_PLACEHOLDER"
+    //     },
+    //     pattern: getPattern("Amount"),
+    //     jsonPath: "purchaseOrders[0].advanceAmount"
+    //   })
+    // },
     expectedDeliveryDate: {
       ...getDateField({
         label: {

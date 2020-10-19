@@ -6,12 +6,15 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 
+import {
+    createUpdatePCCApplication
+} from "../../../../../ui-utils/commons";
 
 export const callBackForEdit = (state, dispatch) => {
     dispatch(setRoute("/egov-services/my-applications"));
 };
 
-export const callBackForCancelParkAndCC = (state, dispatch) => {
+export const callBackForCancelParkAndCC = async (state, dispatch) => {
     const applicationNumber = getQueryArg(
         window.location.href,
         "applicationNumber"
@@ -21,13 +24,31 @@ export const callBackForCancelParkAndCC = (state, dispatch) => {
         "screenConfiguration.preparedFinalObject.Booking.businessService",
         {}
     );
-    dispatch(
-        setRoute(
-            `/egov-services/acknowledgementrefundparkcc?purpose=confirmed&applicationNumber=${applicationNumber}&tenantId=${
-            getTenantId().split(".")[0]
-            }&businessService=${businessService}`
-        )
+
+    let response = await createUpdatePCCApplication(
+        state,
+        dispatch,
+        "CANCEL"
     );
+
+    let responseStatus = get(response, "status", "");
+    if (responseStatus == "SUCCESS" || responseStatus == "success" || responseStatus == "200") {
+        dispatch(
+            setRoute(
+                `/egov-services/acknowledgementrefundparkcc?purpose=confirmed&applicationNumber=${applicationNumber}&tenantId=${getTenantId().split(".")[0]
+                }&businessService=${businessService}`
+            )
+        );
+    } else {
+        let errorMessage = {
+            labelName: "Submission Falied, Try Again later!",
+            labelKey: "", //UPLOAD_FILE_TOAST
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "error"));
+    }
+
+
+
 };
 
 
@@ -83,13 +104,13 @@ export const footerForParkAndCC = getCommonApplyFooter({
                 labelName: "CANCEL",
                 labelKey: "BK_MY_BK_BUTTON_CANCEL",
             }),
-            
+
         },
         onClickDefination: {
             action: "condition",
             callBack: callBackForEdit,
         },
         visible: false,
-        
+
     },
 });

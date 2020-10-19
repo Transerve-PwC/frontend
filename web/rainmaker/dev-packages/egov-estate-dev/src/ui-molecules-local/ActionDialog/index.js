@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
+import { get } from "lodash";
 
 const styles = theme => ({
   root: {
@@ -77,7 +78,8 @@ class ActionDialog extends React.Component {
       handleFieldChange,
       onButtonClick,
       dialogData,
-      dataPath
+      dataPath,
+      state
     } = this.props;
     const {
       buttonLabel,
@@ -91,13 +93,9 @@ class ActionDialog extends React.Component {
     if (window.innerWidth <= 768) {
       fullscreen = true;
     }
-    if (dataPath === "FireNOCs") {
-      dataPath = `${dataPath}[0].fireNOCDetails`
-    } else if (dataPath === "BPA") {
-      dataPath = `${dataPath}`;
-    } else {
-      dataPath = `${dataPath}[0]`;
-    }
+    dataPath = `${dataPath}[0]`;
+
+    const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || {}).state
 
     return (
       <Dialog
@@ -182,6 +180,56 @@ class ActionDialog extends React.Component {
                       placeholder={fieldConfig.comments.placeholder}
                     />
                   </Grid>
+
+
+                  {buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION" && (<Grid item sm="12">
+                  <Typography
+                      component="h3"
+                      variant="subheading"
+                      style={{
+                        color: "rgba(0, 0, 0, 0.8700000047683716)",
+                        fontFamily: "Roboto",
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        lineHeight: "20px",
+                        marginBottom: "8px"
+                      }}
+                    >
+                      <div className="rainmaker-displayInline">
+                        <LabelContainer
+                          labelName="Supporting Documents"
+                          labelKey="ES_WF_APPROVAL_UPLOAD_HEAD"
+                        />
+                        {isDocRequired && (
+                          <span style={{ marginLeft: 5, color: "red" }}>*</span>
+                        )}
+                      </div>
+                    </Typography>
+                    <div
+                      style={{
+                        color: "rgba(0, 0, 0, 0.60)",
+                        fontFamily: "Roboto",
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        lineHeight: "20px"
+                      }}
+                    >
+                      <LabelContainer
+                        labelName="Only .jpg and .pdf files. 5MB max file size."
+                        labelKey="ES_WF_APPROVAL_UPLOAD_SUBHEAD"
+                      />
+                    </div>
+                    <UploadMultipleFiles
+                      maxFiles={4}
+                      inputProps={{
+                        accept: "image/*, .pdf, .png, .jpeg"
+                      }}
+                      buttonLabel={{ labelName: "UPLOAD FILES",labelKey : "ES_UPLOAD_FILES_BUTTON" }}
+                      jsonPath={`${dataPath}.wfDocuments`}
+                      maxFileSize={5000}
+                    />
+                    </Grid>)}
+
                   <Grid item sm="12">
                     <Typography
                       component="h3"

@@ -28,6 +28,75 @@ import {
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { set } from "lodash";
 
+const moveToReview = (state, dispatch, applnid) => {
+    const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
+    );
+
+    let validateDocumentField = false;
+
+    for (let i = 0; i < documentsFormat.length; i++) {
+        let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
+        let isDocumentTypeRequired = get(
+            documentsFormat[i], "isDocumentTypeRequired");
+
+        let documents = get(documentsFormat[i], "documents");
+        if (isDocumentRequired) {
+            if (documents && documents.length > 0) {
+                let fileExtArray = ['jpeg', 'png', 'jpg', 'JPEG', 'pdf'];
+                let fileExt = documents[0].fileName.split('.').pop();
+                if (!fileExtArray.includes(fileExt)) {
+                    dispatch(
+                        toggleSnackbar(
+                            true,
+                            { labelName: "Please upload correct document!", labelKey: "" },
+                            "warning"
+                        )
+                    );
+                    validateDocumentField = false;
+                    break;
+                } else {
+                    validateDocumentField = true;
+                }
+                // if (isDocumentTypeRequired) {
+                //     if (get(documentsFormat[i], "dropdown.value")) {
+                //         validateDocumentField = true;
+                //     } else {
+                //         dispatch(
+                //             toggleSnackbar(
+                //                 true,
+                //                 { labelName: "Please select type of Document!", labelKey: "" },
+                //                 "warning"
+                //             )
+                //         );
+                //         validateDocumentField = false;
+                //         break;
+                //     }
+                // } else {
+                //     validateDocumentField = true;
+                // }
+            } else {
+                dispatch(
+                    toggleSnackbar(
+                        true,
+
+
+                        { labelName: "Please upload mandatory documents!", labelKey: "" },
+                        "warning"
+                    )
+                );
+                validateDocumentField = false;
+                break;
+            }
+        } else {
+            validateDocumentField = true;
+        }
+
+    }
+
+    //validateDocumentField = true;
+
+    return validateDocumentField;
+};
 const callBackForNext = async (state, dispatch) => {
     let errorMessage = "";
     let activeStep = get(
@@ -42,6 +111,9 @@ const callBackForNext = async (state, dispatch) => {
 
     isFormValid = validatestepformflag[0];
     hasFieldToaster = validatestepformflag[1];
+    if (activeStep === 2 && isFormValid != false) {
+        isFormValid = moveToReview(state, dispatch);
+    }
     if (activeStep === 2 && isFormValid != false) {
         // prepareDocumentsUploadData(state, dispatch);
         let from = get(
@@ -73,15 +145,15 @@ const callBackForNext = async (state, dispatch) => {
         var date1 = new Date(from);
         var date2 = new Date(to);
 
-        // To calculate the time difference of two dates 
+        // To calculate the time difference of two dates
         var Difference_In_Time = date2.getTime() - date1.getTime();
 
-        // To calculate the no. of days between two dates 
+        // To calculate the no. of days between two dates
         var Difference_In_Days = (Difference_In_Time / (1000 * 3600 * 24)) + 1;
 
 
 
-        dispatch(prepareFinalObject("BaseCharge", `for ${totalArea} sqft X ${Difference_In_Days} days 
+        dispatch(prepareFinalObject("BaseCharge", `for ${totalArea} sqft X ${Difference_In_Days} days
                                                                             (@Rs.${rateData.data.ratePerSqrFeetPerDay}/sqft)`));
         let response = await createUpdateOSWMCCApplication(
             state,

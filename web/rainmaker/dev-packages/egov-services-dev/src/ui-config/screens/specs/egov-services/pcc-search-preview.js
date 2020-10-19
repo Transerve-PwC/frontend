@@ -24,26 +24,16 @@ import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
-import {
-    generageBillCollection,
-    generateBill,
-} from "../utils";
+import { generageBillCollection, generateBill, clearlocalstorageAppDetails } from "../utils";
 import { pccSummary } from "./summaryResource/pccSummary";
 import { pccApplicantSummary } from "./summaryResource/pccApplicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary } from "./summaryResource/estimateSummary";
 import { remarksSummary } from "./searchResource/remarksSummary";
 import { footerForParkAndCC } from "./searchResource/citizenFooter";
-import {
-    footerReviewTop,
-} from "./searchResource/footer";
-import {
-    getLocale,
-    getUserInfo,
-} from "egov-ui-kit/utils/localStorageUtils";
-import {
-    getSearchResultsView
-} from "../../../../ui-utils/commons";
+import { footerReviewTop } from "./searchResource/footer";
+import { getLocale, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getSearchResultsView } from "../../../../ui-utils/commons";
 import { httpRequest } from "../../../../ui-utils";
 
 let role_name = JSON.parse(getUserInfo()).roles[0].code;
@@ -61,7 +51,7 @@ const titlebar = getCommonContainer({
         props: {
             number: getapplicationNumber(), //localStorage.getItem('applicationsellmeatNumber')
         },
-    }
+    },
 });
 
 const prepareDocumentsView = async (state, dispatch) => {
@@ -113,9 +103,9 @@ const prepareDocumentsView = async (state, dispatch) => {
     }
 };
 
-const HideshowFooter = (action, bookingStatus) => {
-    // Hide edit Footer
-    // console.log("actionnew", action);
+const HideshowFooter = (action, bookingStatus, fromDate) => {
+    let bookingTimeStamp = new Date(fromDate).getTime();
+    let currentTimeStamp = new Date().getTime();
     let showFooter = false;
     if (bookingStatus === "APPLIED") {
         showFooter = true;
@@ -123,12 +113,12 @@ const HideshowFooter = (action, bookingStatus) => {
     set(
         action,
         "screenConfig.components.div.children.footer.children.cancelButton.visible",
-        role_name === "CITIZEN" ? (showFooter === true ? true : false) : false
+        showFooter === true ? true : false
     );
     set(
         action,
         "screenConfig.components.div.children.footer.children.editButton.visible",
-        role_name === "CITIZEN" ? (showFooter === true ? true : false) : false
+        showFooter === true ? true : false
     );
 };
 
@@ -137,7 +127,8 @@ const setSearchResponse = async (
     action,
     dispatch,
     applicationNumber,
-    tenantId
+    tenantId,
+    businessService
 ) => {
     const response = await getSearchResultsView([
         { key: "tenantId", value: tenantId },
@@ -146,88 +137,93 @@ const setSearchResponse = async (
     let recData = get(response, "bookingsModelList", []);
     if (recData.length > 0) {
         if (recData[0].timeslots && recData[0].timeslots.length > 0) {
-            if (recData[0].bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1475") {
-                recData[0].bookingItemType = "HOURLY"
-            } else if (recData[0].bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1476") {
-                recData[0].bookingItemType = "HOURLY";
-            } else if (recData[0].bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1474") {
-                recData[0].bookingItemType = "FULLDAY";
-            } else {
-                recData[0].bookingItemType = "FULLDAY";
-            }
-
-            var [fromTime, toTime] = recData[0].timeslots[0].slot.split('-')
+            var [fromTime, toTime] = recData[0].timeslots[0].slot.split("-");
 
             let DisplayPaccObject = {
                 bkDisplayFromDateTime: recData[0].bkFromDate + "#" + fromTime,
-                bkDisplayToDateTime: recData[0].bkToDate + "#" + toTime
-            }
+                bkDisplayToDateTime: recData[0].bkToDate + "#" + toTime,
+            };
 
-            dispatch(prepareFinalObject("DisplayTimeSlotData", DisplayPaccObject))
+            dispatch(
+                prepareFinalObject("DisplayTimeSlotData", DisplayPaccObject)
+            );
+        }
+        set(
+            action.screenConfig,
+            "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.FromDate.visible",
+            recData[0].bkDuration === "FULLDAY" ? true : false
+        );
+
+        set(
+            action.screenConfig,
+            "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.ToDate.visible",
+            recData[0].bkDuration === "FULLDAY" ? true : false
+        );
+        set(
+            action.screenConfig,
+            "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.bkDisplayFromTime.visible",
+            recData[0].bkDuration === "HOURLY" ? true : false
+        );
+
+        set(
+            action.screenConfig,
+            "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.bkDisplayToTime.visible",
+            recData[0].bkDuration === "HOURLY" ? true : false
+        );
+        dispatch(
+            prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
+        );
+        dispatch(
+            prepareFinalObject(
+                "BookingDocument",
+                get(response, "documentMap", {})
+            )
+        );
+
+        bookingStatus = recData[0].bkApplicationStatus;
+        if (bookingStatus === "APPLIED") {
+            await generageBillCollection(
+                state,
+                dispatch,
+                applicationNumber,
+                tenantId
+            );
+        } else {
+            await generateBill(
+                state,
+                dispatch,
+                applicationNumber,
+                tenantId,
+                businessService
+            );
         }
 
+        localStorageSet("bookingStatus", bookingStatus);
+        // // recData[0].bkFromDate = "2020-06-06";
+        // let bookingTimeStamp = new Date(recData[0].bkFromDate).getTime();
+        // let currentTimeStamp = new Date().getTime();
+        // if (currentTimeStamp < bookingTimeStamp) {
+        HideshowFooter(action, bookingStatus, recData[0].bkFromDat);
+        // }
+
+        prepareDocumentsView(state, dispatch);
+
+        const CitizenprintCont = footerReviewTop(
+            action,
+            state,
+            dispatch,
+            bookingStatus,
+            applicationNumber,
+            tenantId,
+            ""
+        );
+
+        set(
+            action,
+            "screenConfig.components.div.children.headerDiv.children.helpSection.children",
+            CitizenprintCont
+        );
     }
-    set(
-        action.screenConfig,
-        "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.FromDate.visible",
-        recData[0].bkBookingType !== "Parks" &&
-            recData[0].bookingItemType === "HOURLY"
-            ? false
-            : true
-    );
-
-    set(
-        action.screenConfig,
-        "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.ToDate.visible",
-        recData[0].bkBookingType !== "Parks" &&
-            recData[0].bookingItemType === "HOURLY"
-            ? false
-            : true
-    );
-    dispatch(
-        prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
-    );
-    dispatch(
-        prepareFinalObject("BookingDocument", get(response, "documentMap", {}))
-    );
-
-    bookingStatus = get(
-        state,
-        "screenConfiguration.preparedFinalObject.Booking.bkApplicationStatus",
-        {}
-    );
-    if (bookingStatus === "APPLIED") {
-        await generageBillCollection(state, dispatch, applicationNumber, tenantId)
-    } else {
-        await generateBill(state, dispatch, applicationNumber, tenantId, recData[0].businessService);
-    }
-
-    localStorageSet("bookingStatus", bookingStatus);
-    // recData[0].bkFromDate = "2020-06-06";
-    let bookingTimeStamp = new Date(recData[0].bkFromDate).getTime();
-    let currentTimeStamp = new Date().getTime();
-    if (currentTimeStamp < bookingTimeStamp) {
-        HideshowFooter(action, bookingStatus);
-    }
-
-
-    prepareDocumentsView(state, dispatch);
-
-    const CitizenprintCont = footerReviewTop(
-        action,
-        state,
-        dispatch,
-        bookingStatus,
-        applicationNumber,
-        tenantId,
-        ""
-    );
-
-    set(
-        action,
-        "screenConfig.components.div.children.headerDiv.children.helpSection.children",
-        CitizenprintCont
-    )
 };
 
 // const getPaymentGatwayList = async (action, state, dispatch) => {
@@ -255,25 +251,29 @@ const setSearchResponse = async (
 //     }
 // };
 
-
 const screenConfig = {
     uiFramework: "material-ui",
     name: "pcc-search-preview",
     beforeInitScreen: (action, state, dispatch) => {
+        clearlocalstorageAppDetails(state);
         const applicationNumber = getQueryArg(
             window.location.href,
             "applicationNumber"
         );
-        const tenantId = getQueryArg(
-            window.location.href,
-            "tenantId"
-        );
+        const tenantId = getQueryArg(window.location.href, "tenantId");
         const businessService = getQueryArg(
             window.location.href,
             "businessService"
         );
         setapplicationNumber(applicationNumber);
-        setSearchResponse(state, action, dispatch, applicationNumber, tenantId);
+        setSearchResponse(
+            state,
+            action,
+            dispatch,
+            applicationNumber,
+            tenantId,
+            businessService
+        );
         // getPaymentGatwayList(action, state, dispatch).then(response => {
         // });
         const queryObject = [
@@ -336,13 +336,13 @@ const screenConfig = {
                     pccApplicantSummary: pccApplicantSummary,
                     pccSummary: pccSummary,
                     documentsSummary: documentsSummary,
-                    remarksSummary: remarksSummary,
+                    // remarksSummary: remarksSummary,
                 }),
                 // break: getBreak(),
                 footer: footerForParkAndCC,
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 export default screenConfig;

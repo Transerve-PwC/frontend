@@ -5,7 +5,7 @@ import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { connect } from "react-redux";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Grid from '@material-ui/core/Grid';
-
+import "./index.css";
 
 
 class ApplicatInfo extends Component {
@@ -71,6 +71,7 @@ class ApplicatInfo extends Component {
             name="name"
             type="text"
             value={firstName}
+            required = {true} 
             hintText={
               <Label
                 label="BK_MYBK_NAME_CITIZEN_PLACEHOLDER"
@@ -100,6 +101,7 @@ class ApplicatInfo extends Component {
             name="email"
             type="string"
             value={email}
+            required = {true} 
             hintText={
               <Label
                 label="BK_MYBK_CITIZEN_EMAIL_PLACEHOLDER"
@@ -130,6 +132,7 @@ class ApplicatInfo extends Component {
             name="mobile-no"
             type="text"
             value={mobileNo}
+            required = {true} 
             hintText={
               <Label
                 label="BK_MYBK_CITIZEN_MOBILENO_PLACEHOLDER"

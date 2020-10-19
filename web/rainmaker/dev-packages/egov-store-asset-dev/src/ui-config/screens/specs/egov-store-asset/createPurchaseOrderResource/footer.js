@@ -13,6 +13,8 @@ import {
 } from "../../utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {ValidateCard, ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getSearchResults } from "../../../../../ui-utils/commons";
 const moveToReview = dispatch => {
   let indentNumber="",reviewUrl="";
   indentNumber = getQueryArg(window.location.href, "indentNumber");
@@ -40,7 +42,7 @@ export const callBackForNext = async (state, dispatch) => {
       "create-purchase-order"
     );
       const {advancePercentage} = purchaseOrders[0];
-
+      const {supplier} = purchaseOrders[0];
       if(advancePercentage && ( 0 > parseInt(advancePercentage,10) || parseInt(advancePercentage,10) > 100 )){
         const errorMessage = {
           labelName: "Percentage should be between 0 and 100",
@@ -49,7 +51,47 @@ export const callBackForNext = async (state, dispatch) => {
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
         return;
       }
+    //set price list
+    const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "suppliers", value: supplier.code}];
+       
+    getSearchResults(queryObject, dispatch,"priceList")
+    .then(response =>{
+      if(response){
+        const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
+        const {rateType} = purchaseOrders[0];
+        let priceList = [{rateContractNumber:"",rateContractDate:"",agreementNumber:"",agreementDate:"",agreementStartDate:"",agreementEndDate:""}];
+       if(rateType)
+       {
+        if(rateType.toLocaleUpperCase() === 'GEM')
+        {
+          
+          priceList[0].rateContractNumber  =  "";
+          priceList[0].rateContractDate   = new Date().toISOString().slice(0, 10);
+          priceList[0].agreementNumber   =   "";
+          priceList[0].agreementDate   =   new Date().toISOString().slice(0, 10);
+          priceList[0].agreementStartDate   = new Date().toISOString().slice(0, 10);
+          priceList[0].agreementEndDate   =  new Date().toISOString().slice(0, 10);
 
+        }
+        else{
+          
+          priceList[0].rateContractNumber  =  response.priceLists[0].rateContractNumber;
+          priceList[0].rateContractDate   = new Date(response.priceLists[0].rateContractDate).toISOString().substr(0,10);
+          priceList[0].agreementNumber   =   response.priceLists[0].agreementNumber;
+          priceList[0].agreementDate   =   new Date(response.priceLists[0].agreementDate).toISOString().substr(0,10);
+          priceList[0].agreementStartDate   = new Date(response.priceLists[0].agreementStartDate).toISOString().substr(0,10);
+          priceList[0].agreementEndDate   =  new Date(response.priceLists[0].agreementEndDate).toISOString().substr(0,10);
+
+        }
+      }
+       
+        dispatch(prepareFinalObject("searchMaster.priceList", response.priceLists));  
+        dispatch(prepareFinalObject("purchaseOrders[0].priceList", priceList));    
+           
+       }
+      });
+
+    //
 
     if (!ispurchaseOrderHeaderValid) {
       isFormValid = false;

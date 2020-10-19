@@ -13,9 +13,17 @@ import {
   handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getTodaysDateInYMD, _getPattern
+  getTodaysDateInYMD, 
+  _getPattern,
+  displayMaxLengthErr,
+  displayDefaultErr
 } from "../../utils";
 import get from "lodash/get";
+
+let screenName = "apply";
+if ((window.location.href).includes("allotment")) {
+    screenName = "allotment";
+}
 
 export const purchaserHeader = getCommonTitle({
   labelName: "Previous Owner Details",
@@ -41,11 +49,17 @@ const newOwnerNameField = {
     sm: 6
   },
   // required: true,
-  maxLength: 150,
+  pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
+      if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_NAME_MAXLENGTH", screenName);
+      }
+      else {
+          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      }
     }
   }
 }
@@ -64,11 +78,18 @@ const newOwnerFatherHusbandNameField = {
     sm: 6
   },
   // required: true,
-  maxLength: 150,
+  pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
+
+      if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_GUARDIAN_NAME_MAXLENGTH", screenName);
+      }
+      else {
+          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      }
     }
   }
 }
@@ -154,11 +175,17 @@ const newOwnerAddressField = {
     multiline: true,
     rows: 2
   },
-  maxLength: 150,
+  pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
+      if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_ADDRESS_MAXLENGTH", screenName);
+      }
+      else {
+          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      }
     }
   }
 }
@@ -199,11 +226,17 @@ const sellerNameField = {
     sm: 6
   },
   // required: true,
-  maxLength: 150,
+  pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
+    }
+    if (action.value.length > 150) {
+      displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SELLER_NAME_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
     }
   }
 }
@@ -222,11 +255,17 @@ const sellerFatherHusbandNameField = {
     sm: 6
   },
   // required: true,
-  maxLength: 150,
+  pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerGuardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
+      if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SELLER_GUARDIAN_NAME_MAXLENGTH", screenName);
+      }
+      else {
+          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      }
     }
   }
 }

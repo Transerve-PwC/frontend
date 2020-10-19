@@ -2,16 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { ActionDialog } from "../../ui-molecules-local";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
 import "./index.css";
-
 import {
   getQueryArg,
-  getMultiUnits
 } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
-
-
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
 import get from "lodash/get";
@@ -23,64 +17,15 @@ class ResubmitActionContainer extends React.Component {
     open: false,
     data: {},
   };
-  convertOwnerDobToEpoch = owners => {
-    let updatedOwners =
-      owners &&
-      owners
-        .map(owner => {
-          return {
-            ...owner,
-            dob:
-              owner && owner !== null && convertDateToEpoch(owner.dob, "dayend")
-          };
-        })
-        .filter(item => item && item !== null);
-    return updatedOwners;
-  };
+
   wfUpdate = async label => {
     let {
       toggleSnackbar,
       preparedFinalObject,
       dataPath,
-
       updateUrl
     } = this.props;
     let data = get(preparedFinalObject, dataPath, []);
-
-    if (getQueryArg(window.location.href, "edited")) {
-      const removedDocs = get(
-        preparedFinalObject,
-        "LicensesTemp[0].removedDocs",
-        []
-      );
-      if (data[0] && data[0].commencementDate) {
-        data[0].commencementDate = convertDateToEpoch(
-          data[0].commencementDate,
-          "dayend"
-        );
-      }
-      let owners = get(data[0], "tradeLicenseDetail.owners");
-      owners = (owners && this.convertOwnerDobToEpoch(owners)) || [];
-      set(data[0], "tradeLicenseDetail.owners", owners);
-      set(data[0], "tradeLicenseDetail.applicationDocuments", [
-        ...get(data[0], "tradeLicenseDetail.applicationDocuments", []),
-        ...removedDocs
-      ]);
-
-      // Accessories issue fix by Gyan
-      let accessories = get(data[0], "tradeLicenseDetail.accessories");
-      let tradeUnits = get(data[0], "tradeLicenseDetail.tradeUnits");
-      set(
-        data[0],
-        "tradeLicenseDetail.tradeUnits",
-        getMultiUnits(tradeUnits)
-      );
-      set(
-        data[0],
-        "tradeLicenseDetail.accessories",
-        getMultiUnits(accessories)
-      );
-    }
 
     const applicationNumber = getQueryArg(
       window.location.href,
@@ -97,9 +42,10 @@ class ResubmitActionContainer extends React.Component {
 
       if (payload) {
         let path = "";
-        path = "Licenses[0].licenseNumber";
-        const licenseNumber = get(payload, path, "");
-        window.location.href = `acknowledgement?purpose=resubmit&status=success&applicationNumber=${applicationNumber}&tenantId=${tenant}&secondNumber=${licenseNumber}`;
+        const {branchType, moduleType, applicationType} = data[0];
+        const type = `${branchType}_${moduleType}_${applicationType}`;
+        path = `&applicationNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`;
+        window.location.href = `acknowledgement?purpose=resubmit&status=success${path}`;
       }
     } catch (e) {
       toggleSnackbar(
@@ -157,7 +103,6 @@ class ResubmitActionContainer extends React.Component {
   render() {
     const {
       prepareFinalObject,
-      onDialogButtonClick,
       dataPath,
     } = this.props;
     const { open, data } = this.props;
@@ -171,6 +116,8 @@ class ResubmitActionContainer extends React.Component {
           handleFieldChange={prepareFinalObject}
           onButtonClick={this.createWorkFLow}
           dataPath={dataPath}
+          showDocumentUpload={true}
+          state={this.props.state}
         />
       </div>
     );
@@ -183,7 +130,7 @@ const mapStateToProps = state => {
   const { workflow } = preparedFinalObject;
   const { ProcessInstances } = workflow || [];
   const { ResubmitAction: open } = preparedFinalObject;
-  return { ProcessInstances, preparedFinalObject, open };
+  return { ProcessInstances, preparedFinalObject, open, state };
 
 };
 

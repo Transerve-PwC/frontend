@@ -3,6 +3,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   getApplicationStatusList,
+  getApplicationTypes,
   getSearchApplicationsResults
 } from "../../../../ui-utils/commons";
 import {
@@ -28,6 +29,7 @@ import get from "lodash/get";
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { applicationTypeField } from "../estate/searchResource/estateApplication";
 
 const header = getCommonHeader({
   labelName: "My Applications",
@@ -51,6 +53,9 @@ const searchApplications = (state, dispatch) => {
   if (!!searchScreen.status) {
     searchResults = searchResults.filter(item => item.state === (searchScreen.status).trim())
   }
+  if(!!searchScreen.applicationType) {
+    searchResults = searchResults.filter(item => item.applicationType === searchScreen.applicationType)
+  }
   dispatch(prepareFinalObject("searchResults", searchResults))
 }
 
@@ -73,6 +78,14 @@ const clearSearch = (state, dispatch) => {
       handleField(
         "estate-branch-my-applications",
         "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "estate-branch-my-applications",
+        "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType",
         "props.value",
         ""
       )
@@ -103,7 +116,7 @@ const searchCard = getCommonCard({
       },
       gridDefination: {
         xs: 12,
-        sm: 3
+        sm: 4
       },
       required: false,
       pattern: /^[a-zA-Z0-9-]*$/i,
@@ -124,70 +137,99 @@ const searchCard = getCommonCard({
       data: [],
       gridDefination: {
         xs: 12,
-        sm: 3
+        sm: 4
       }
     }),
-    searchButton: {
-      componentPath: "Button",
-      gridDefination: {
-        xs: 12,
-        sm: 3
-      },
-      props: {
-        variant: "contained",
-        style: {
-          color: "white",
-          marginBottom: "10px",
-          backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
-          borderRadius: "2px",
-          width: "80%",
-          height: "48px"
+    applicationType: getSelectField({...applicationTypeField, gridDefination: {
+      xs: 12,
+      sm: 4
+    }}),
+  }),
+
+  button: getCommonContainer({
+    buttonContainer: getCommonContainer(
+      {
+        firstCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 2
+          }
+        }, 
+        searchButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 3
+          },
+          props: {
+            variant: "contained",
+            style: {
+              color: "white",
+              marginBottom: "10px",
+              backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
+              borderRadius: "2px",
+              width: "80%",
+              height: "48px"
+            }
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Search",
+              labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+            })
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: (state, dispatch) => {
+              searchApplications(state, dispatch)
+            }
+          }
+        },
+        clearButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 3
+          },
+          props: {
+            variant: "outlined",
+            style: {
+              color: "#fe7a51",
+              borderColor: "#fe7a51",
+              backgroundColor: "white",
+              borderRadius: "2px",
+              width: "80%",
+              height: "48px"
+            }
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Clear",
+              labelKey: "ES_SEARCH_CLEAR"
+            })
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: (state, dispatch) => {
+              clearSearch(state, dispatch)
+            }
+          }
+        }, 
+        lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 2
+          }
         }
-      },
-      children: {
-        buttonLabel: getLabel({
-          labelName: "Search",
-          labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
-        })
-      },
-      onClickDefination: {
-        action: "condition",
-        callBack: (state, dispatch) => {
-          searchApplications(state, dispatch)
-        }
-      }
-    },
-    clearButton: {
-      componentPath: "Button",
-      gridDefination: {
-        xs: 12,
-        sm: 3
-      },
-      props: {
-        variant: "outlined",
-        style: {
-          color: "#fe7a51",
-          borderColor: "#fe7a51",
-          backgroundColor: "white",
-          borderRadius: "2px",
-          width: "80%",
-          height: "48px"
-        }
-      },
-      children: {
-        buttonLabel: getLabel({
-          labelName: "Clear",
-          labelKey: "ES_SEARCH_CLEAR"
-        })
-      },
-      onClickDefination: {
-        action: "condition",
-        callBack: (state, dispatch) => {
-          clearSearch(state, dispatch)
-        }
-      }
-    }
+    })
   })
+
+
+      
 }, {
   style: {
     marginLeft: 8,
@@ -213,6 +255,7 @@ const screenConfig = {
     clearSearch(state, dispatch);
     getData(action, state, dispatch)
     getApplicationStatusList({action, state, dispatch, screenKey: "estate-branch-my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status"})
+    getApplicationTypes({action, state, dispatch, screenKey: "estate-branch-my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType"})
     return action
   },
   components: {
@@ -238,6 +281,10 @@ const screenConfig = {
               {
                 label: "ES_APPLICATION_STATUS_LABEL",
                 jsonPath: "state"
+              },
+              {
+                label: "ES_APPLICATION_TYPE_LABEL",
+                jsonPath: "applicationType"
               }
             ],
             moduleName: "EST",

@@ -127,36 +127,36 @@ import {
                 },
               })
             },
-            AssestCode: {
-              ...getTextField({
-                label: {
-                  labelName: "Assest Code",
-                  labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
-                },
-                placeholder: {
-                  labelName: "Assest Code",
-                  labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
-                },
-                props:{
-                  disabled:true
-                },
-                required: false,
-                pattern: getPattern("Name") || null,
-                jsonPath: "indents[0].indentDetails[0].asset.code",
-               // sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
-                props: {
-                  data: [
-                    {
-                      value: "Code1",
-                      label: "Code1"
-                    },
+            // AssestCode: {
+            //   ...getTextField({
+            //     label: {
+            //       labelName: "Assest Code",
+            //       labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
+            //     },
+            //     placeholder: {
+            //       labelName: "Assest Code",
+            //       labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
+            //     },
+            //     props:{
+            //       disabled:true
+            //     },
+            //     required: false,
+            //     pattern: getPattern("Name") || null,
+            //     jsonPath: "indents[0].indentDetails[0].asset.code",
+            //    // sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
+            //     props: {
+            //       data: [
+            //         {
+            //           value: "Code1",
+            //           label: "Code1"
+            //         },
                     
-                  ],
-                  optionValue: "value",
-                  optionLabel: "label"
-                },
-              })
-            },
+            //       ],
+            //       optionValue: "value",
+            //       optionLabel: "label"
+            //     },
+            //   })
+            // },
             ProjectCode: {
               ...getTextField({
                 label: {
@@ -276,41 +276,41 @@ import {
           set(preparedFinalObject.indents[0],`indentDetails[${cardIndex}].indentPurpose` , indentPurpose);
         }      
   
-          Object.keys(muliItemContent).forEach(key => {
-            if(indentPurpose ==='Revenue')
-            {
-              if ( key === "AssestCode") {
-                //set(muliItemContent[key], "props.visible", true);
-                muliItemContent[key].props.style = {display:"inline-block"};
-                muliItemContent["AssestCode"].props.disabled = false;
-                //set(muliItemContent[key], "props.value", indentNumber);
-              }
-              if ( key === "ProjectCode") {
-                //set(muliItemContent[key], "props.visible", false);
-                muliItemContent[key].props.style = {display:"inline-block"};
-                muliItemContent["ProjectCode"].props.disabled = true;
+          // Object.keys(muliItemContent).forEach(key => {
+          //   if(indentPurpose ==='Revenue')
+          //   {
+          //     if ( key === "AssestCode") {
+          //       //set(muliItemContent[key], "props.visible", true);
+          //       muliItemContent[key].props.style = {display:"inline-block"};
+          //       muliItemContent["AssestCode"].props.disabled = false;
+          //       //set(muliItemContent[key], "props.value", indentNumber);
+          //     }
+          //     if ( key === "ProjectCode") {
+          //       //set(muliItemContent[key], "props.visible", false);
+          //       muliItemContent[key].props.style = {display:"inline-block"};
+          //       muliItemContent["ProjectCode"].props.disabled = true;
                 
-              }
-            }
+          //     }
+          //   }
 
-            else if(indentPurpose ==='Capital')
-            {
-              if ( key === "AssestCode") {
-                //set(muliItemContent[key], "props.visible", false);
-                muliItemContent[key].props.style = {display:"inline-block"};
-                muliItemContent["AssestCode"].props.disabled = true;
-                //set(muliItemContent[key], "props.value", indentNumber);
-              }
-              if ( key === "ProjectCode") {
-                //set(muliItemContent[key], "props.visible", true);
-                muliItemContent[key].props.style = {display:"inline-block"};
-                muliItemContent["ProjectCode"].props.disabled = false;
+          //   else if(indentPurpose ==='Capital')
+          //   {
+          //     if ( key === "AssestCode") {
+          //       //set(muliItemContent[key], "props.visible", false);
+          //       muliItemContent[key].props.style = {display:"inline-block"};
+          //       muliItemContent["AssestCode"].props.disabled = true;
+          //       //set(muliItemContent[key], "props.value", indentNumber);
+          //     }
+          //     if ( key === "ProjectCode") {
+          //       //set(muliItemContent[key], "props.visible", true);
+          //       muliItemContent[key].props.style = {display:"inline-block"};
+          //       muliItemContent["ProjectCode"].props.disabled = false;
                 
-              }
+          //     }
 
-            }
+          //   }
              
-          });  
+          // });  
   
         }
           //console.log("click on add");

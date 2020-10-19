@@ -36,6 +36,76 @@ var response;
 var applicationNumber
 var businessService
 var tenantId
+
+const moveToReview = (state, dispatch, applnid) => {
+    const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
+    );
+
+    let validateDocumentField = false;
+
+    for (let i = 0; i < documentsFormat.length; i++) {
+        let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
+        let isDocumentTypeRequired = get(
+            documentsFormat[i], "isDocumentTypeRequired");
+
+        let documents = get(documentsFormat[i], "documents");
+        if (isDocumentRequired) {
+            if (documents && documents.length > 0) {
+                let fileExtArray = ['jpeg', 'png', 'jpg', 'JPEG', 'pdf'];
+                let fileExt = documents[0].fileName.split('.').pop();
+                if (!fileExtArray.includes(fileExt)) {
+                    dispatch(
+                        toggleSnackbar(
+                            true,
+                            { labelName: "Please upload correct document!", labelKey: "" },
+                            "warning"
+                        )
+                    );
+                    validateDocumentField = false;
+                    break;
+                } else {
+                    validateDocumentField = true;
+                }
+                // if (isDocumentTypeRequired) {
+                //     if (get(documentsFormat[i], "dropdown.value")) {
+                //         validateDocumentField = true;
+                //     } else {
+                //         dispatch(
+                //             toggleSnackbar(
+                //                 true,
+                //                 { labelName: "Please select type of Document!", labelKey: "" },
+                //                 "warning"
+                //             )
+                //         );
+                //         validateDocumentField = false;
+                //         break;
+                //     }
+                // } else {
+                //     validateDocumentField = true;
+                // }
+            } else {
+                dispatch(
+                    toggleSnackbar(
+                        true,
+
+
+                        { labelName: "Please upload mandatory documents!", labelKey: "" },
+                        "warning"
+                    )
+                );
+                validateDocumentField = false;
+                break;
+            }
+        } else {
+            validateDocumentField = true;
+        }
+
+    }
+
+    //validateDocumentField = true;
+
+    return validateDocumentField;
+};
 const callBackForNext = async (state, dispatch) => {
     let errorMessage = "";
     let activeStep = get(
@@ -51,6 +121,9 @@ const callBackForNext = async (state, dispatch) => {
     isFormValid = validatestepformflag[0];
     hasFieldToaster = validatestepformflag[1];
     if (activeStep === 2 && isFormValid != false) {
+        isFormValid = moveToReview(state, dispatch);
+    }
+    if (activeStep === 2 && isFormValid != false) {
         // prepareDocumentsUploadData(state, dispatch);
         let venue = get(
             state.screenConfiguration.preparedFinalObject,
@@ -63,7 +136,7 @@ const callBackForNext = async (state, dispatch) => {
         if(baseCharge!==undefined){
             dispatch(prepareFinalObject("BaseCharge", `@Rs.${baseCharge.data.ratePerDay}/day`));
         }
-        
+
 
         response = await createUpdateCgbApplication(state, dispatch, "INITIATE");
         console.log(response, "myResponse");
@@ -89,7 +162,7 @@ const callBackForNext = async (state, dispatch) => {
             const reviewUrl = `/egov-services/applycommercialground?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));
 
-            
+
             set(
                 state.screenConfiguration.screenConfig["applycommercialground"],
                 "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
@@ -150,7 +223,7 @@ const callBackForNext = async (state, dispatch) => {
 
 
         //         dispatch(setRoute(`/egov-services/checkavailability?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`));
-              
+
         //     }
         // })
 

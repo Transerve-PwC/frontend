@@ -17,7 +17,7 @@ import {
     getapplicationNumber,
 } from "egov-ui-kit/utils/localStorageUtils";
 import {
-    
+
     getFileUrlFromAPI,
     getQueryArg,
     setBusinessServiceDataToLocalStorage,
@@ -155,7 +155,7 @@ const setSearchResponse = async (
         { key: "applicationNumber", value: applicationNumber },
     ]);
     let recData = get(response, "bookingsModelList", []);
-    console.log(recData, "nero data");
+
     dispatch(
         prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
     );

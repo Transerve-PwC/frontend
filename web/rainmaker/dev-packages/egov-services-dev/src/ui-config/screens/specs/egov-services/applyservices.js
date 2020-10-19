@@ -49,7 +49,7 @@ if (role_name === "CITIZEN") {
             //         event
             //     </i>
             // ),
-            route: "",
+            route: "checkavailability_pcc",
         },
         {
             label: {
@@ -118,7 +118,7 @@ if (role_name === "CITIZEN") {
     cardItems = cardlist;
 }
 
-const PermissionManagementSearchAndResult = {
+const screenConfig = {
     uiFramework: "material-ui",
     name: "home",
     beforeInitScreen: (action, state, dispatch) => {
@@ -141,27 +141,9 @@ const PermissionManagementSearchAndResult = {
                         module: "SERVICES",
                     },
                 },
-                // listCard: {
-                //   uiFramework: "custom-molecules-local",
-                //   moduleName: "egov-services",
-                //   componentPath: "HowItWorks",
-                // },
-            },
-        },
-        adhocDialog: {
-            uiFramework: "custom-containers-local",
-            moduleName: "egov-services",
-            componentPath: "DialogContainer",
-            props: {
-                open: false,
-                maxWidth: false,
-                screenKey: "home",
-            },
-            children: {
-                popup: {},
             },
         },
     },
 };
 
-export default PermissionManagementSearchAndResult;
+export default screenConfig;

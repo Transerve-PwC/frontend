@@ -154,6 +154,13 @@ const getMdmsData = async (state, dispatch) => {
           moduleName: "egf-master",
           masterDetails: [{ name: "FinancialYear" }]
         },
+        {
+          moduleName: "store-asset",
+          masterDetails: [           
+            { name: "businessService" }, 
+            
+          ],
+        },
       ]
     }
   };

@@ -101,15 +101,32 @@ formValue.approverName.value = approverName;
         </div>
       </div>
       <div className={classes.btnWrapper}>
-        <button
-          onClick={onSubmit}
-          className={classes.button}
-          id="rejectcomplaint-submit-action"
-          primary={true}
-          {...submit}
-          fullWidth={true}
-        >Deliver/Closed</button>
-     </div>
+        {(() => {
+          if (!commentValue) {
+            return <button
+              onClick={onSubmit}
+              style={{ backgroundColor: "darkgray" }}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              disabled
+            >Deliver/Closed</button>
+
+          } else {
+            return <button
+              onClick={onSubmit}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              >Deliver/Closed</button>
+          }
+        })()}
+
+      </div>
     </div>
   );
 };

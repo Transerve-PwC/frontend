@@ -122,7 +122,7 @@ export const searchForm = getCommonCard({
       ...getDateField({
         label: {
           labelName: "Issue Date From",
-          labelKey: "STORE_INDENT_ISSUE_DATE_FROM "
+          labelKey: "STORE_INDENT_ISSUE_DATE_FROM"
         },
         placeholder: {
           labelName: "Enter Issue Date From",

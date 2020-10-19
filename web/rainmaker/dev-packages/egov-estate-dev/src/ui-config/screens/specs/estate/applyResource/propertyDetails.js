@@ -12,13 +12,19 @@ import {
     handleScreenConfigurationFieldChange as handleField,
     prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {
-    getTodaysDateInYMD
-} from "../../utils";
 import get from "lodash/get";
 import {
-    _getPattern
+    displayDefaultErr,
+    displayMaxLengthErr,
+    _getPattern,
+    getTodaysDateInYMD
 } from "../../utils"
+   
+
+let screenName = "apply";
+if ((window.location.href).includes("allotment")) {
+    screenName = "allotment";
+}
 
 export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
     const actionDefination = [
@@ -103,8 +109,9 @@ const modeOfAuctionField = {
         xs: 12,
         sm: 6
     },
+    minLength: 1,
     maxLength: 100,
-    jsonPath: "Properties[0].propertyDetails.modeOfAuction"
+    jsonPath: "Properties[0].propertyDetails.modeOfAuction",
 }
 
 const schemeNameField = {
@@ -121,7 +128,7 @@ const schemeNameField = {
         sm: 6
     },
     maxLength: 100,
-    jsonPath: "Properties[0].propertyDetails.schemeName"
+    jsonPath: "Properties[0].propertyDetails.schemeName",
 }
 
 const dateOfAuctionField = {
@@ -155,10 +162,8 @@ const areaOfPropertyField = {
         xs: 12,
         sm: 6
     },
-    pattern: _getPattern("float"),
+    pattern: _getPattern("areaOfProperty"),
     required: true,
-    minLength: 2,
-    maxLength: 15,
     jsonPath: "Properties[0].propertyDetails.areaSqft"
 }
 
@@ -175,10 +180,8 @@ const rateField = {
         xs: 12,
         sm: 6
     },
-    pattern: _getPattern("float"),
+    pattern: _getPattern("share"),
     required: true,
-    minLength: 2,
-    maxLength: 15,
     jsonPath: "Properties[0].propertyDetails.ratePerSqft"
 }
 
@@ -285,8 +288,16 @@ const siteNumberField = {
         sm: 6
     },
     required: true,
-    maxLength: 50,
-    jsonPath: "Properties[0].siteNumber"
+    pattern: _getPattern("fileNumber"),
+    jsonPath: "Properties[0].siteNumber",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 50) {
+            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SITE_NUMBER_MAXLENGTH", screenName);
+        }
+        else {
+            displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+        }
+    }
 }
 
 const sectorNumberField = {
@@ -321,8 +332,16 @@ const fileNumberField = {
         sm: 6
     },
     required: true,
-    maxLength: 50,
-    jsonPath: "Properties[0].fileNumber"
+    pattern: _getPattern("fileNumber"),
+    jsonPath: "Properties[0].fileNumber",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 50) {
+            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER_MAXLENGTH", screenName);
+        }
+        else {
+            displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+        }
+    }
 }
 
 const lastNocDateField = {
@@ -384,8 +403,16 @@ const serviceCategoryField = {
         xs: 12,
         sm: 6
     },
-    maxLength: 100,
-    jsonPath: "Properties[0].propertyDetails.serviceCategory"
+    pattern: _getPattern("alphaNumeric"),
+    jsonPath: "Properties[0].propertyDetails.serviceCategory",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 100) {
+            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SERVICE_CATEGORY_MAXLENGTH", screenName);
+        }
+        else {
+            displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+        }
+    }
 }
 
 const getPropertyRegisteredToRadioButton = {
@@ -709,3 +736,5 @@ export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
         )
     )
 }
+
+

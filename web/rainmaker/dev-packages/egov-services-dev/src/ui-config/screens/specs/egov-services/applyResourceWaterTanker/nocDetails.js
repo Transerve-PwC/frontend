@@ -12,7 +12,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import { getTodaysDateInYMD, getFinancialYearDates } from "../../utils";
-
+import set from "lodash/set";
 export const personalDetails = getCommonCard({
     // header: getCommonTitle(
     //   {
@@ -207,11 +207,11 @@ export const bookingDetails = getCommonCard({
             }),
             // visible: true,
             beforeFieldChange: (action, state, dispatch) => {
-				const bkDate = get(
+                const bkDate = get(
                     state,
                     "screenConfiguration.preparedFinalObject.Booking.bkDate"
                 );
-				const bkTime = get(
+                const bkTime = get(
                     state,
                     "screenConfiguration.preparedFinalObject.Booking.bkTime"
                 );
@@ -230,23 +230,38 @@ export const bookingDetails = getCommonCard({
                         "visible",
                         action.value.includes("Paid") ? true : false
                     )
-				);
-				dispatch(
+                );
+                dispatch(
                     handleField(
                         "applywatertanker",
                         "components.div.children.formwizardSecondStep.children.bookingDetails.children.cardContent.children.bookingDetailsContainer.children.bkDate",
                         "props.value",
                         action.value.includes("Paid") ? ((bkDate === undefined || bkDate === "") ? "" : bkDate) : ""
                     )
-				);
-				dispatch(
+                );
+                dispatch(
                     handleField(
                         "applywatertanker",
                         "components.div.children.formwizardSecondStep.children.bookingDetails.children.cardContent.children.bookingDetailsContainer.children.bkTime",
                         "props.value",
-                        action.value.includes("Paid") ?  ((bkTime === undefined || bkTime === "") ? "00:00" : bkTime ) : ""
+                        action.value.includes("Paid") ? ((bkTime === undefined || bkTime === "") ? "00:00" : bkTime) : ""
                     )
-				);
+                );
+                // dispatch(
+                //     handleField(
+                //         "applywatertanker",
+                //         "components.div.children.formwizardThirdStep.children.summaryDetails.children.cardContent.children.div.children.waterTankerSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicantContainer.children.BookingDate",
+                //         "visible",
+                //         action.value.includes("Paid") ? true : false
+                //     ));
+                // dispatch(
+                //     handleField(
+                //         "applywatertanker",
+                //         "components.div.children.formwizardThirdStep.children.summaryDetails.children.cardContent.children.div.children.waterTankerSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicantContainer.children.BookingTime",
+                //         "visible",
+                //         action.value.includes("Paid") ? true : false
+                //     ));
+
             },
         },
         bkDate: {
@@ -297,8 +312,8 @@ export const bookingDetails = getCommonCard({
                 props: {
                     defaultValue: "00:00",
                 },
-			}),
-			visible: false,
+            }),
+            visible: false,
         },
 
         dummyDiv: {

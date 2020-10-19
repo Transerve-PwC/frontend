@@ -16,8 +16,15 @@ import {
 } from "../../utils";
 import get from "lodash/get";
 import {
-  _getPattern
+  _getPattern,
+  displayMaxLengthErr,
+  displayDefaultErr
 } from "../../utils"
+
+let screenName = "apply";
+if ((window.location.href).includes("allotment")) {
+    screenName = "allotment";
+}
 
 export const ownerHeader = getCommonTitle({
   labelName: "Owner Details",
@@ -43,9 +50,16 @@ const ownerNameField = {
     sm: 6
   },
   required: true,
-  minLength: 2,
-  maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName"
+  pattern: _getPattern("alphabet"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_OWNER_NAME_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 const fatherHusbandNameField = {
@@ -62,9 +76,16 @@ const fatherHusbandNameField = {
     sm: 6
   },
   required: true,
-  minLength: 2,
-  maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName"
+  pattern: _getPattern("alphabet"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_GUARDIAN_NAME_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 const getRelationshipRadioButton = {
@@ -138,8 +159,16 @@ export const addressField = {
     multiline: true,
     rows: 2
   },
-  maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
+  pattern: _getPattern("alphabet"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_ADDRESS_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 export const mobileNumberField = {
@@ -191,8 +220,16 @@ const cpNumberField = {
     xs: 12,
     sm: 6
   },
-  maxLength: 100,
+  pattern: _getPattern("alphaNumeric"),
   jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 100) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_CP_NUMBER_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 const possessionDateField = {
@@ -245,8 +282,16 @@ const allotmentNumberField = {
     xs: 12,
     sm: 6
   },
-  maxLength: 50,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber"
+  pattern: _getPattern("fileNumber"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_ALLOTMENT_NUMBER_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 const getIsDirectorRadioButton = {

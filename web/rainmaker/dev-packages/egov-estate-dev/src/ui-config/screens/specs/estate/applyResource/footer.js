@@ -112,7 +112,7 @@ const callBackForNext = async (state, dispatch) => {
 
   if (activeStep === AUCTION_DETAILS_STEP) {
     const isAuctionValid = validateFields(
-      "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children",
+      "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children",
       state,
       dispatch,
       "apply"
@@ -936,7 +936,7 @@ export const downloadPrintContainer = (
   };
 
   let LetterDownloadObject = {
-    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_GENERAL_REASON":  applicationType === "PatnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -947,12 +947,34 @@ export const downloadPrintContainer = (
   }
 
   let LetterPrintObject = {
-    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_GENERAL_REASON": "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
       downloadLetter(Applications,applicationType,'print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let NDCWHODownloadObject = {
+    label: { labelName: "Letter", labelKey: "ES_NDC_AWHO_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType);
+    },
+    leftIcon: "assignment"
+  }
+
+  let NDCWHOPrintObject = {
+    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_AWHO_LETTER": "ES_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'print');
     },
     leftIcon: "assignment"
   }
@@ -1139,20 +1161,20 @@ export const downloadPrintContainer = (
       break;
       case 'NDC':
           downloadMenu = [
+            applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
+          ]
+        
+          printMenu = [
+            applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
+          ]
+      break;
+      case 'PatnershipDeed':
+          downloadMenu = [
             applicationDownloadObject,LetterDownloadObject
           ]
         
           printMenu = [
             applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'PatnershipDeed':
-          downloadMenu = [
-            applicationDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject
           ]
       break;
       case 'DuplicateCopy':

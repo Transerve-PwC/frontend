@@ -92,6 +92,7 @@ class BookingsDetails extends Component {
               type="text"
 
               value={houseNo}
+              required = {true} 
               hintText={
                 <Label
                   label="BK_MYBK_CITIZEN_HOUSE_NUMBER_PLACEHOLDER"
@@ -121,6 +122,7 @@ class BookingsDetails extends Component {
               name="address"
               type="text"
               value={address}
+              required = {true} 
               hintText={
                 <Label
                   label="BK_MYBK_NAME_CITIZEN_ADDRESS_PLACEHOLDER"
@@ -147,7 +149,10 @@ class BookingsDetails extends Component {
           <div className="col-sm-6 col-xs-6">
 
             <FormControl style={{ width: '100%' }}>
-              <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Locality</InputLabel>
+            <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label  
+                  required = {true}   
+                  label="BK_MYBK_APPLICANT_SECTOR"
+                /></InputLabel>
               <Select
                 maxWidth={false}
                 labelId="demo-controlled-open-select-label-Locality"
@@ -171,7 +176,10 @@ class BookingsDetails extends Component {
 
           <div className="col-sm-6 col-xs-6">
             <FormControl style={{ width: '100%' }}>
-              <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Residentials/Commercials</InputLabel>
+            <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label  
+                  required = {true}   
+                  label="BK_MYBK_NORMAL_RESIDENTIAL"
+                /></InputLabel>
               <Select
                 maxWidth={false}
                 labelId="demo-controlled-open-select-label"
@@ -200,6 +208,7 @@ class BookingsDetails extends Component {
               type="text"
 
               value={approverName}
+              required = {true} 
               hintText={
                 <Label
                   label="BK_MYBK_APPROVER_NAME_PLACEHOLDER"
@@ -230,6 +239,7 @@ class BookingsDetails extends Component {
               type="text"
 
               value={comment}
+              required = {true} 
               hintText={
                 <Label
                   label="BK_MYBK_ADD_COMMENTS_PLACEHOLDER"

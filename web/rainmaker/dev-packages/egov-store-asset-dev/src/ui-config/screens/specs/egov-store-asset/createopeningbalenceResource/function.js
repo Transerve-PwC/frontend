@@ -12,6 +12,7 @@ import {
   getWFPayload
 } from "../../../../../ui-utils/storecommonsapi";
 import {ValidateCard, ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
+
 import {
   convertDateToEpoch,
   epochToYmdDate,
@@ -20,7 +21,7 @@ import {
   validateFields,
   getLocalizationCodeValue
 } from "../../utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {  
   samplematerialsSearch,
@@ -133,7 +134,28 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
     let balanceQuantity = "balanceQty";
     let doubleqtyCheck = false
     let InvaldQtyCard = ValidateCardUserQty(state,dispatch,cardJsonPath,pagename,jasonpath,value,InputQtyValue,CompareQtyValue,balanceQuantity,doubleqtyCheck)
-   
+    let stores = get(state, "screenConfiguration.preparedFinalObject.store.stores",[]) 
+    let storecode = get(state,"screenConfiguration.preparedFinalObject.materialReceipt[0].receivingStore.code")
+    stores = stores.filter(x=>x.code == storecode)//.materialType.code
+    const userInfo = JSON.parse(getUserInfo());
+    let businessServiceName =''
+    let businessService  = get(state, `screenConfiguration.preparedFinalObject.searchScreenMdmsData.store-asset.businessService`,[]) 
+    // filter store based on login user role and assign business service
+    let roles = userInfo.roles
+    businessService = businessService.filter(x=>x.role === roles[0].code)
+    if(businessService.length==1)
+    businessServiceName =businessService[0].name;
+    if(stores &&stores[0])
+        {
+          if(stores[0].department.deptCategory !== businessServiceName )
+          {
+            const errorMessage = {
+              labelName: "Select valid store",
+              labelKey: "STORE_OPENING_BALANCE_STORE_SELECTION_VALIDATION"
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          }
+        }
     if(!expiryDateValid)
     {
       const errorMessage = {
@@ -149,6 +171,17 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
         labelKey: "STORE_OPENING_BALANCE_RECEIPT_DATE_VALIDATION"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else  if(stores &&stores[0])
+    {
+      if(stores[0].department.deptCategory !== businessServiceName )
+      {
+        const errorMessage = {
+          labelName: "Select valid store",
+          labelKey: "STORE_OPENING_BALANCE_STORE_SELECTION_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
     }
     else  if(DuplicatItem && DuplicatItem[0])
     {

@@ -28,6 +28,75 @@ import {
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { set } from "lodash";
 
+const moveToReview = (state, dispatch, applnid) => {
+    const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
+    );
+
+    let validateDocumentField = false;
+
+    for (let i = 0; i < documentsFormat.length; i++) {
+        let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
+        let isDocumentTypeRequired = get(
+            documentsFormat[i], "isDocumentTypeRequired");
+
+        let documents = get(documentsFormat[i], "documents");
+        if (isDocumentRequired) {
+            if (documents && documents.length > 0) {
+                let fileExtArray = ['jpeg', 'png', 'jpg', 'JPEG', 'pdf'];
+                let fileExt = documents[0].fileName.split('.').pop();
+                if (!fileExtArray.includes(fileExt)) {
+                    dispatch(
+                        toggleSnackbar(
+                            true,
+                            { labelName: "Please upload correct document!", labelKey: "" },
+                            "warning"
+                        )
+                    );
+                    validateDocumentField = false;
+                    break;
+                } else {
+                    validateDocumentField = true;
+                }
+                // if (isDocumentTypeRequired) {
+                //     if (get(documentsFormat[i], "dropdown.value")) {
+                //         validateDocumentField = true;
+                //     } else {
+                //         dispatch(
+                //             toggleSnackbar(
+                //                 true,
+                //                 { labelName: "Please select type of Document!", labelKey: "" },
+                //                 "warning"
+                //             )
+                //         );
+                //         validateDocumentField = false;
+                //         break;
+                //     }
+                // } else {
+                //     validateDocumentField = true;
+                // }
+            } else {
+                dispatch(
+                    toggleSnackbar(
+                        true,
+
+
+                        { labelName: "Please upload mandatory documents!", labelKey: "" },
+                        "warning"
+                    )
+                );
+                validateDocumentField = false;
+                break;
+            }
+        } else {
+            validateDocumentField = true;
+        }
+
+    }
+
+    //validateDocumentField = true;
+
+    return validateDocumentField;
+};
 const callBackForNext = async (state, dispatch) => {
     let errorMessage = "";
     let activeStep = get(
@@ -43,13 +112,17 @@ const callBackForNext = async (state, dispatch) => {
     isFormValid = validatestepformflag[0];
     hasFieldToaster = validatestepformflag[1];
     if (activeStep === 2 && isFormValid != false) {
+        isFormValid = moveToReview(state, dispatch);
+    }
+    if (activeStep === 2 && isFormValid != false) {
         // prepareDocumentsUploadData(state, dispatch);
+        let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.Booking.bkPaymentStatus", "");
+
         let response = await createUpdatePCCApplication(
             state,
             dispatch,
-            "INITIATE"
+            paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "RE_INITIATED" : "INITIATE"
         );
-        console.log(response, "myResponse");
         let responseStatus = get(response, "status", "");
         if (responseStatus == "SUCCESS" || responseStatus == "success") {
             // DISPLAY SUCCESS MESSAGE
@@ -70,11 +143,6 @@ const callBackForNext = async (state, dispatch) => {
             const reviewUrl = `/egov-services/applyparkcommunitycenter?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));
 
-            // set(
-            //     state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
-            //     "components.div.children.headerDiv.children.header.children.applicationNumber.props.number",
-            //     applicationNumber
-            // );
             set(
                 state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
                 "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
@@ -126,17 +194,17 @@ const callBackForNext = async (state, dispatch) => {
         // console.log(response, "step3Response");
         // let responseStatus = get(response, "status", "");
         // if (responseStatus == "SUCCESS" || responseStatus == "success") {
-            // let successMessage = {
-            //     labelName: "APPLICATION SUBMITTED SUCCESSFULLY! ",
-            //     labelKey: "", //UPLOAD_FILE_TOAST
-            // };
-            // dispatch(toggleSnackbar(true, successMessage, "success"));
-            let applicationData = get(
-                state.screenConfiguration.preparedFinalObject,
-                "Booking"
-            );
-            const reviewUrl = `/egov-services/pay?applicationNumber=${applicationData.bkApplicationNumber}&tenantId=${applicationData.tenantId}&businessService=${applicationData.businessService}`;
-            dispatch(setRoute(reviewUrl));
+        // let successMessage = {
+        //     labelName: "APPLICATION SUBMITTED SUCCESSFULLY! ",
+        //     labelKey: "", //UPLOAD_FILE_TOAST
+        // };
+        // dispatch(toggleSnackbar(true, successMessage, "success"));
+        let applicationData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Booking"
+        );
+        const reviewUrl = `/egov-services/pay?applicationNumber=${applicationData.bkApplicationNumber}&tenantId=${applicationData.tenantId}&businessService=${applicationData.businessService}`;
+        dispatch(setRoute(reviewUrl));
         // }
         //  else {
         //     let errorMessage = {

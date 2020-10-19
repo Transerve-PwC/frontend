@@ -22,7 +22,7 @@ export const waterTankerSummary = getCommonGrayCard({
                     xs: 8,
                 },
                 ...getCommonSubHeader({
-                    labelName: "Applicant Details",
+                    labelName: "Booking Details",
                     labelKey: "BK_WTB_APPLICATION_DETAILS_HEADER",
                 }),
             },
@@ -35,33 +35,33 @@ export const waterTankerSummary = getCommonGrayCard({
             className: "sellmeatapplicant-summary",
             scheama: getCommonGrayCard({
                 applicantContainer: getCommonContainer({
-                    applicantName: getLabelWithValue(
-                        {
-                            labelName: "Name",
-                            labelKey: "BK_WTB_NAME_LABEL",
-                        },
-                        {
-                            jsonPath: "Booking.bkApplicantName",
-                        }
-                    ),
-                    applicantEmail: getLabelWithValue(
-                        {
-                            labelName: "Email Address",
-                            labelKey: "BK_WTB_EMAIL_LABEL",
-                        },
-                        {
-                            jsonPath: "Booking.bkEmail",
-                        }
-                    ),
-                    applicantMobile: getLabelWithValue(
-                        {
-                            labelName: "Mobile Number",
-                            labelKey: "BK_WTB_MOBILE_NO_LABEL",
-                        },
-                        {
-                            jsonPath: "Booking.bkMobileNumber",
-                        }
-                    ),
+                    // applicantName: getLabelWithValue(
+                    //     {
+                    //         labelName: "Name",
+                    //         labelKey: "BK_WTB_NAME_LABEL",
+                    //     },
+                    //     {
+                    //         jsonPath: "Booking.bkApplicantName",
+                    //     }
+                    // ),
+                    // applicantEmail: getLabelWithValue(
+                    //     {
+                    //         labelName: "Email Address",
+                    //         labelKey: "BK_WTB_EMAIL_LABEL",
+                    //     },
+                    //     {
+                    //         jsonPath: "Booking.bkEmail",
+                    //     }
+                    // ),
+                    // applicantMobile: getLabelWithValue(
+                    //     {
+                    //         labelName: "Mobile Number",
+                    //         labelKey: "BK_WTB_MOBILE_NO_LABEL",
+                    //     },
+                    //     {
+                    //         jsonPath: "Booking.bkMobileNumber",
+                    //     }
+                    // ),
                     HouseNo: getLabelWithValue(
                         {
                             labelName: "House No.",

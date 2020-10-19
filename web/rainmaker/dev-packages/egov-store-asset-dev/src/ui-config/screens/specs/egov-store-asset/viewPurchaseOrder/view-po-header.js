@@ -108,18 +108,18 @@ export const getPurchaseOrderHeaderView = (isReview = true) => {
           jsonPath: "purchaseOrders[0].supplier.name",
         }
       ),
-      advancePercentage: getLabelWithValue(
-        { labelName: "Advance Percentage", labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT" },
-        {
-          jsonPath: "purchaseOrders[0].advancePercentage"
-        }
-      ),
-      advanceAmount: getLabelWithValue(
-        { labelName: "Advance Amount", labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMT" },
-        {
-          jsonPath: "purchaseOrders[0].advanceAmount"
-        }
-      ),
+      // advancePercentage: getLabelWithValue(
+      //   { labelName: "Advance Percentage", labelKey: "STORE_PURCHASE_ORDER_ADVNC_PRCNT" },
+      //   {
+      //     jsonPath: "purchaseOrders[0].advancePercentage"
+      //   }
+      // ),
+      // advanceAmount: getLabelWithValue(
+      //   { labelName: "Advance Amount", labelKey: "STORE_PURCHASE_ORDER_ADVNC_AMT" },
+      //   {
+      //     jsonPath: "purchaseOrders[0].advanceAmount"
+      //   }
+      // ),
       expectedDeliveryDate: getLabelWithValue(
         {
           labelName: "Expected Delivery Date",

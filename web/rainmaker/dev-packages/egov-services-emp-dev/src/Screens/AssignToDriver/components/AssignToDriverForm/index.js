@@ -83,6 +83,9 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
               name="approver-name"
               type="string"
               value={approverName}
+            //   onInput = {(e) =>{
+            //     e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,50)
+            // }}
               hintText={
                 <Label
                   label="BK_MYBK_APPROVER_NAME_PLACEHOLDER"
@@ -120,6 +123,9 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
             name="driver-name"
             type="string"
             value={driverFullName}
+          //   onInput = {(e) =>{
+          //     e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,50)
+          // }}
             hintText={
               <Label
                 label="BK_MYBK_DRIVER_NAME_PLACEHOLDER"
@@ -205,6 +211,7 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
            }else{
             return <button
             onClick={handleValidation}
+            style={{ backgroundColor: "darkgray" }}
             className={classes.button}
             id="rejectcomplaint-submit-action"
             primary={true}
@@ -227,6 +234,7 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
              
               return <button
               onClick={handleValidation}
+              style={{ backgroundColor: "darkgray" }}
               className={classes.button}
               id="rejectcomplaint-submit-action"
               primary={true}

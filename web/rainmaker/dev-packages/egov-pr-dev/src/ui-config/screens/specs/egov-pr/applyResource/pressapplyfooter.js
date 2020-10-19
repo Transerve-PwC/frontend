@@ -493,18 +493,25 @@ if (activeStep === 2) {
     
       dispatch(prepareFinalObject("documentsPreview", documentsPreview));
       
-
+      }
+	      //   else{
+    //     dispatch(
+    //       toggleSnackbar(
+    //         true,
+    //         {   labelName: "Please fill all mandatory fields and select atleast one Press!",
+    // labelKey: "PR_ERR_FILL_ALL_PRESS_MANDATORY_FIELDS_TOAST" },
+    //         "warning"
+    //       )
+    //     );
+    //   }
     let data1='';
     if(localStorageGet("PressNoteList")!== null){
       data1=JSON.parse(localStorageGet("PressNoteList"))
     }
     else{
       data1=JSON.parse(localStorageGet("PressNoteListAll"))
-    
     }
 		let data =data1.map(item => ({
-
-      
       [getTextToLocalMapping("Publication Name")]:
       truncData(item['Publication Name']) || "-",
       [ getTextToLocalMapping("Type of the Press")]:
@@ -517,8 +524,6 @@ if (activeStep === 2) {
       item['Mobile Number'] || "-",
       [getTextToLocalMapping("Press master UUID")]:
       item['Press master UUID'] || "-",
-    
-      
      }));
 
      dispatch(
@@ -528,20 +533,7 @@ if (activeStep === 2) {
         "props.data",
         data
       ));
-	
-  
-  changeStep(state, dispatch, 'next', activeStep);
-      }
-      else{
-        dispatch(
-          toggleSnackbar(
-            true,
-            {   labelName: "Please fill all mandatory fields and select atleast one Press!",
-    labelKey: "PR_ERR_FILL_ALL_PRESS_MANDATORY_FIELDS_TOAST" },
-            "warning"
-          )
-        );
-      }
+	changeStep(state, dispatch, 'next', activeStep);
 	}
 	else
 	{
@@ -589,10 +581,10 @@ labelKey: "PR_ERR_FILL_ALL_PRESS_MANDATORY_FIELDS_TOAST" },
 
 
   if (activeStep !== 2) {
-    if (get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux.0.documents.0.fileStoreId", "")=="") {
-      hasFieldToaster=true;
-      isFormValid=false;
-      } 
+    // if (get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux.0.documents.0.fileStoreId", "")=="") {
+    //   hasFieldToaster=true;
+    //   isFormValid=false;
+    //   } 
 
     if (isFormValid ) {
       let responseStatus = "success";

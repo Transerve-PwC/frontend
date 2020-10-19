@@ -16,8 +16,8 @@ const styles = (theme) => ({
 
 class SelectedTimeSlotInfo extends Component {
     render() {
-        const { bookingLocation, fromDate, toDate, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDateTime} = this.props;
-        console.log(this.props,"nero rops");
+        const { bookingLocation, fromDate, toDate, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDateTime, timeSlots} = this.props;
+        console.log(this.props,"kj  nero rops");
         return (
             <Grid container={true}>
                 <Grid item={true} xs={1}>
@@ -75,7 +75,7 @@ class SelectedTimeSlotInfo extends Component {
                             letterSpacing: "0.67px",
                         }}
                     >
-                        {fromTime && fromTime.length == 0?'--/--/--':bkDisplayFromDateTime}
+                        {timeSlots && timeSlots.length > 0? bkDisplayFromDateTime:'--/--/--'}
                     </span>
                 </Grid>
                 <Grid item={true} xs={1}>
@@ -104,7 +104,7 @@ class SelectedTimeSlotInfo extends Component {
                             letterSpacing: "0.67px",
                         }}
                     >
-                        {toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime}
+                        {timeSlots && timeSlots.length > 0?bkDisplayToDateTime:'--/--/--'}
                     </span>
                 </Grid>
             </Grid>
@@ -142,6 +142,12 @@ const mapStateToProps = (state, ownProps) => {
         []
     );
 
+    let timeSlots = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.timeslots",
+        []
+    );
+
     let bkDisplayFromDateTime = get(
         state,
         "screenConfiguration.preparedFinalObject.DisplayPacc.bkDisplayFromDateTime",
@@ -153,14 +159,15 @@ const mapStateToProps = (state, ownProps) => {
         "screenConfiguration.preparedFinalObject.DisplayPacc.bkDisplayToDateTime",
         []
     );
-    return { 
+    return {
         bookingLocation: bookingLocation,
         fromDate: bkFromDate,
         toDate: bkToDate,
         fromTime: bkFromTime,
         toTime: bkToTime,
         bkDisplayFromDateTime: bkDisplayFromDateTime,
-        bkDisplayToDateTime: bkDisplayToDateTime
+        bkDisplayToDateTime: bkDisplayToDateTime,
+        timeSlots: timeSlots
 
      };
 };

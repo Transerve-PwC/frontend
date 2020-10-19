@@ -330,6 +330,7 @@ const screenConfig = {
     dispatch(prepareFinalObject("pressnote", {}));
     dispatch(prepareFinalObject("PressNoteDocuments", []));
     dispatch(prepareFinalObject("AllIndex", ""));
+    dispatch(prepareFinalObject("documentsPreview", []));
 
     
     const applicationNumber = getQueryArg(

@@ -7,10 +7,11 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchPropertyTable} from "./searchResource/searchResults";
 import { httpRequest } from "../../../../ui-utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from "config/common.js";
 // import { showHideAdhocPopup } from "../utils";
 import { resetFields } from "./mutation-methods";
+import { propertySearch} from "./searchResource/searchFunctions";
 import "./index.css"
 import {searchPropertyDetails} from "./mutation-methods"
 const hasButton = getQueryArg(window.location.href, "hasButton");
@@ -60,7 +61,9 @@ const getMDMSData = async (dispatch) => {
     console.log(e);
   }
 };
-
+const getPropertyResults = async(state, dispatch) => {
+  propertySearch  (state, dispatch)
+}
 const header = getCommonHeader({
   labelName: "Property Registry",
   labelKey: "PT_COMMON_PROPERTY_REGISTRY_HEADER"
@@ -72,6 +75,14 @@ const screenConfig = {
   beforeInitScreen: (action, state, dispatch) => {
     resetFields(state, dispatch);
     getMDMSData(dispatch);
+   
+    if(process.env.REACT_APP_NAME == "Citizen"){
+      let userName = JSON.parse(getUserInfo()).userName;
+      let tenant =  JSON.parse(getUserInfo()).permanentCity;
+      dispatch( prepareFinalObject( "searchScreen.mobileNumber",  userName ));
+      dispatch( prepareFinalObject( "searchScreen.tenantId", tenant ));
+      getPropertyResults(state, dispatch);
+    }
     return action;
   },
 
@@ -153,4 +164,3 @@ const screenConfig = {
 };
 
 export default screenConfig;
-

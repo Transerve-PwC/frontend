@@ -11,14 +11,23 @@ import {
   getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  prepareFinalObject
+  prepareFinalObject,
+  handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTodaysDateInYMD,
-  getTextToLocalMapping
+  getTextToLocalMapping,
+  displayDefaultErr,
+  displayMaxLengthErr,
+ _getPattern
 } from "../../utils";
 import get from "lodash/get";
 import store from "../../../../../ui-redux/store";
+
+let screenName = "apply";
+if ((window.location.href).includes("allotment")) {
+    screenName = "allotment";
+}
 
 const documentList = {
   uiFramework: "custom-containers-local",
@@ -112,8 +121,16 @@ const schemeName = {
     xs: 12,
     sm: 6
   },
-  maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.schemeName"
+  pattern: _getPattern("alphaNumeric"),
+  jsonPath: "Properties[0].propertyDetails.schemeName",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 100) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SCHEME_NAME_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+}
 }
 
 const dateOfAuction = {
@@ -146,8 +163,16 @@ const modeOfAuction = {
     xs: 12,
     sm: 6
   },
-  maxLength: 250,
-  jsonPath: "Properties[0].propertyDetails.modeOfAuction"
+  pattern: _getPattern("alphaNumeric"),
+  jsonPath: "Properties[0].propertyDetails.modeOfAuction",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 100) {
+        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_MODE_OF_AUCTION_MAXLENGTH", screenName);
+    }
+    else {
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    }
+  }
 }
 
 const emdAmount = {

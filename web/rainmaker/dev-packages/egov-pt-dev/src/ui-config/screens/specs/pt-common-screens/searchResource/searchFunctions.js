@@ -5,7 +5,7 @@ import { handleScreenConfigurationFieldChange as handleField, toggleSnackbar } f
 import get from "lodash/get";
 import { getSearchResults } from "../../../../../ui-utils/commons";
 import { convertDateToEpoch,  validateFields } from "../../utils/index";
-
+import {getTextToLocalMapping} from './searchResults'
 export const propertySearch = async (state, dispatch) => {
   searchApiCall(state, dispatch)
 }
@@ -68,13 +68,11 @@ const searchApiCall = async (state, dispatch) => {
     try {
       const response = await getSearchResults(queryObject);
       let propertyData = response.Properties.map(item => ({
-        ["PT_COMMON_TABLE_COL_PT_ID"]:
-          item.propertyId || "-",
-        ["PT_COMMON_TABLE_COL_OWNER_NAME"]: item.owners.map(owner=>owner.name).join(",") || "-",
-        ["PT_COMMON_COL_ADDRESS"]:
-          getAddress(item) || "-",
-        ["PT_COMMON_TABLE_COL_ACTION_LABEL"]: (item.status !== 'INACTIVE')?"SELECT":"INACTIVE",
-        ["PT_COMMON_TABLE_COL_TENANTID_LABEL"]: item.tenantId
+        [getTextToLocalMapping("Unique Property ID")]:    item.propertyId || "-",
+        [getTextToLocalMapping("Owner Name")]: item.owners.map(owner=>owner.name).join(",") || "-",
+        [getTextToLocalMapping("Address")]:          getAddress(item) || "-",
+        [getTextToLocalMapping("Action")]: (item.status !== 'INACTIVE')?"SELECT":"INACTIVE",
+        [getTextToLocalMapping("tenantId")]: item.tenantId
       }));
 
       dispatch(

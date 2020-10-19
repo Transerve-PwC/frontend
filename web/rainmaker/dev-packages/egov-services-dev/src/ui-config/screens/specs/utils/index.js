@@ -338,7 +338,7 @@ export const generateBill = async (
     try {
         if (applicationNumber && tenantId && bookingType) {
             let queryObject = [
-                { key: "tenantId", value: tenantIdn},
+                { key: "tenantId", value: tenantIdn },
                 { key: "consumerCode", value: applicationNumber },
                 { key: "businessService", value: bookingType },
             ];
@@ -662,7 +662,7 @@ export const getDurationDateWithTime = (fromDate, toDate, fromTime, toTime) => {
         " " +
         monthNames[startDate.getMonth()] +
         " " +
-        startDate.getFullYear()+", "+ fromTime;
+        startDate.getFullYear() + ", " + fromTime;
 
     let endDate = new Date(toDate);
     endDate.setMonth(endDate.getMonth());
@@ -671,8 +671,8 @@ export const getDurationDateWithTime = (fromDate, toDate, fromTime, toTime) => {
         " " +
         monthNames[endDate.getMonth()] +
         " " +
-        endDate.getFullYear()+", "+ toTime;
-    let finalDate = finalStartDate+ " to " + finalEndDate;
+        endDate.getFullYear() + ", " + toTime;
+    let finalDate = finalStartDate + " to " + finalEndDate;
     return finalDate;
 };
 export const getDurationDate = (fromDate, toDate) => {
@@ -753,7 +753,7 @@ export const downloadReceipt = (
         { key: "consumerCodes", value: applicationNumber },
         {
             key: "tenantId",
-            value: tenantId,
+            value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
         },
     ];
     const FETCHRECEIPT = {
@@ -781,7 +781,7 @@ export const downloadReceipt = (
                     { key: "key", value: "pacc-payment-receipt" },
                     {
                         key: "tenantId",
-                        value: "ch",
+                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
                     },
                 ];
             } else {
@@ -789,7 +789,7 @@ export const downloadReceipt = (
                     { key: "key", value: "bk-payment-receipt" },
                     {
                         key: "tenantId",
-                        value: "ch",
+                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
                     },
                 ];
             }
@@ -803,12 +803,17 @@ export const downloadReceipt = (
             }
 
             let paymentInfoData = "";
+            let date2obj = new Date(payloadReceiptDetails.Payments[0].transactionDate);
+            const txnDate = date2obj.toDateString();
+            const [txnTime] = date2obj.toTimeString().split(" ");
+            const txnDateTime = `${txnDate}, ${txnTime}`;
+
+            var date2 = new Date();
+
+            var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
             if (applicationData.businessService === "PACC") {
                 paymentInfoData = {
-                    paymentDate: convertEpochToDate(
-                        payloadReceiptDetails.Payments[0].transactionDate,
-                        "dayend"
-                    ),
+                    paymentDate: txnDateTime,
                     transactionId:
                         payloadReceiptDetails.Payments[0].transactionNumber,
                     bookingPeriod: getDurationDate(
@@ -848,10 +853,7 @@ export const downloadReceipt = (
                 };
             } else {
                 paymentInfoData = {
-                    paymentDate: convertEpochToDate(
-                        payloadReceiptDetails.Payments[0].transactionDate,
-                        "dayend"
-                    ),
+                    paymentDate: txnDateTime,
                     transactionId:
                         payloadReceiptDetails.Payments[0].transactionNumber,
                     bookingPeriod:
@@ -866,19 +868,18 @@ export const downloadReceipt = (
                                 applicationData.bkToDate
                             )
                             : `${applicationData.bkDate} , ${applicationData.bkTime} `,
-                    bookingItem: `Online Payment Against Booking of ${
-                        payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "GFCP"
-                            ? "Commercial Ground"
+                    bookingItem: `Online Payment Against Booking of ${payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                        .businessService === "GFCP"
+                        ? "Commercial Ground"
+                        : payloadReceiptDetails.Payments[0]
+                            .paymentDetails[0].bill.businessService ===
+                            "OSBM"
+                            ? "Open Space for Building Material"
                             : payloadReceiptDetails.Payments[0]
                                 .paymentDetails[0].bill.businessService ===
-                                "OSBM"
-                                ? "Open Space for Building Material"
-                                : payloadReceiptDetails.Payments[0]
-                                    .paymentDetails[0].bill.businessService ===
-                                    "OSUJM"
-                                    ? "Open Space within MCC jurisdiction"
-                                    : "Water Tanker"
+                                "OSUJM"
+                                ? "Open Space within MCC jurisdiction"
+                                : "Water Tanker"
                         }`,
                     amount: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
                         (el) => !el.taxHeadCode.includes("TAX")
@@ -931,6 +932,7 @@ export const downloadReceipt = (
                     },
                     generatedBy: {
                         generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
                     },
                 },
             ];
@@ -990,7 +992,7 @@ export const downloadCertificate = async (
                                 ? "bk-oswmcc-booking-pl"
                                 : "bk-cg-pl",
             },
-            { key: "tenantId", value: "ch" },
+            { key: "tenantId", value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId },
         ];
 
         // applicationData.businessService == "OSBM"
@@ -1016,10 +1018,7 @@ export const downloadCertificate = async (
                 // }
 
                 var [fromTime, toTime] = applicationData.timeslots[0].slot.split('-')
-                console.log(applicationData.bkFromDate,
-                applicationData.bkToDate,
-                fromTime,
-                toTime, "Hello nero")
+
                 bookingDuration = getDurationDateWithTime(
                     applicationData.bkFromDate,
                     applicationData.bkToDate,
@@ -1126,11 +1125,19 @@ export const downloadApplication = async (
     mode = "download"
 ) => {
     let tenantData = await getMdmsTenantsData();
-    console.log(tenantData, "response tenantData");
+
     let applicationData = get(
         state.screenConfiguration.preparedFinalObject,
         "Booking"
     );
+    let documentName = '';
+    if (applicationData.businessService != "NLUJM") {
+        let attachedDocuments = get(
+            state.screenConfiguration.preparedFinalObject,
+            "documentsPreview"
+        );
+        documentName = attachedDocuments && attachedDocuments[0].name;
+    }
     let paymentData = get(
         state.screenConfiguration.preparedFinalObject,
         "ReceiptTemp[0].Bill[0]"
@@ -1162,7 +1169,7 @@ export const downloadApplication = async (
                                             ? "bk-wt-app-form"
                                             : "bk-wt-unpaid-app-form",
             },
-            { key: "tenantId", value: "ch" },
+            { key: "tenantId", value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId },
         ];
 
         let bookingDataOsbm = {
@@ -1232,6 +1239,10 @@ export const downloadApplication = async (
             bookingPurpose: applicationData.bkBookingPurpose,
             parkDim: applicationData.bkDimension,
         };
+
+        var date2 = new Date();
+
+        var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
         let appData = "";
         if (applicationData.businessService == "NLUJM") {
             appData = [
@@ -1251,6 +1262,7 @@ export const downloadApplication = async (
                     },
                     generatedBy: {
                         generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
                     },
                 },
             ];
@@ -1293,6 +1305,10 @@ export const downloadApplication = async (
                     },
                     generatedBy: {
                         generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
+                    },
+                    documentDetail: {
+                        documentName: documentName
                     },
                 },
             ];
@@ -1338,6 +1354,10 @@ export const downloadApplication = async (
                     },
                     generatedBy: {
                         generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
+                    },
+                    documentDetail: {
+                        documentName: documentName
                     },
                 },
             ];
@@ -1380,7 +1400,6 @@ export const getAvailabilityData = async (sectorData) => {
             [],
             requestBody
         );
-        console.log(response, "availability response");
         return response;
     } catch (exception) {
         console.log(exception);
@@ -1425,7 +1444,6 @@ export const getNewLocatonImages = async (bookingSector, bookingArea) => {
             requestBody
         );
         // return response;
-        console.log(response, "myNew response");
         return { status: "success", data: response };
     } catch (exception) {
         console.log(exception);

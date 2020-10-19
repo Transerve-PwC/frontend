@@ -174,6 +174,7 @@ const getMdmsData = async (action, state, dispatch) => {
 };
 
 export const prepareEditFlow = async (
+    action,
     state,
     dispatch,
     applicationNumber,
@@ -187,6 +188,19 @@ export const prepareEditFlow = async (
         setapplicationNumber(applicationNumber);
         setApplicationNumberBox(state, dispatch, applicationNumber);
         dispatch(prepareFinalObject("Booking", response.bookingsModelList[0]));
+        // console.log("Nero G");
+        // set(
+        //     action.screenConfig,
+        //     "components.div.children.formwizardThirdStep.children.summaryDetails.children.cardContent.children.div.children.waterTankerSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicantContainer.children.BookingDate.visible",
+        //     response.bookingsModelList[0].bkStatus != "Request due to water supply failure" ? true : false
+        // );
+        // set(
+        //     action.screenConfig,
+        //     "components.div.children.formwizardThirdStep.children.summaryDetails.children.cardContent.children.div.children.waterTankerSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicantContainer.children.BookingTime.visible",
+        //     response.bookingsModelList[0].bkStatus != "Request due to water supply failure" ? true : false
+        // );
+
+
     }
 };
 
@@ -230,13 +244,14 @@ const screenConfig = {
         // dispatch(prepareFinalObject("Booking.bkStatus", "Normal"));
 
 
-		if (applicationNumber !== null ) {
-			set(
+        if (applicationNumber !== null) {
+            set(
                 action.screenConfig,
                 "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
                 true
             );
-            prepareEditFlow(state, dispatch, applicationNumber, tenantId);
+            prepareEditFlow(action, state, dispatch, applicationNumber, tenantId);
+
         }
 
         // Code to goto a specific step through URL

@@ -321,7 +321,7 @@ export const createUpdatePCCApplication = async (state, dispatch, action) => {
     let response = "";
     let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
 
-    let method = action === "INITIATE" ? "CREATE" : "UPDATE";
+    let method = action === "INITIATE" || action === "RE_INITIATED" ? "CREATE" : "UPDATE";
     try {
         let payload = get(
             state.screenConfiguration.preparedFinalObject,
@@ -362,7 +362,7 @@ export const createUpdatePCCApplication = async (state, dispatch, action) => {
         set(payload, "businessService", "PACC");
         // set(payload, "timeslots", [{
         //     "slot" : "9:00 AM - 8:59 AM"
-           
+
         // }]);
         // set(payload, "totime", "9:00 AM");
         // set(payload, "fromtime", "8:59 AM");

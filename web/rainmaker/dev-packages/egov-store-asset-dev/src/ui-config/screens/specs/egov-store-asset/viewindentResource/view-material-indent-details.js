@@ -47,15 +47,15 @@ import {
              
             }
           ),
-          AssestCode: getLabelWithValue(
-            {  labelName: "Assest Code",
-            labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE" },
-            {
-              jsonPath: "indents[0].indentDetails[0].asset.code",
-              callBack: checkValueForNA
+          // AssestCode: getLabelWithValue(
+          //   {  labelName: "Assest Code",
+          //   labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE" },
+          //   {
+          //     jsonPath: "indents[0].indentDetails[0].asset.code",
+          //     callBack: checkValueForNA
              
-            }
-          ),
+          //   }
+          // ),
           ProjectCode: getLabelWithValue(
             { labelName: "Project Code",
             labelKey: "STORE_MATERIAL_INDENT_NOTE_PROJECT_CODE" },

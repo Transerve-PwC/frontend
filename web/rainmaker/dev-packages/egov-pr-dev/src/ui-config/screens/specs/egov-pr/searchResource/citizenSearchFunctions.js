@@ -1388,7 +1388,7 @@ if(doc.length>0)
 let eventDoc = PublicRelation.hasOwnProperty('documentAttachment')?doc[0]['fileStoreId']:''
     doctitle.push(doc[i]['fileName:']);
 
-if (eventDoc !== '' || eventDoc!==undefined) {
+if ( eventDoc!==undefined && eventDoc !== '') {
   documentsPreview.push({
     title: doc[i]['fileName:'],
   // title: doc[i]['fileName'],

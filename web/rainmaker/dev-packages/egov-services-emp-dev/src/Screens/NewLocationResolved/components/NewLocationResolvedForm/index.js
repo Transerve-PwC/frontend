@@ -148,17 +148,36 @@ const NewLocationResolvedForm = ({ form,handleChangeAssignee,assignToMe,foundFir
           {/* <TextArea onChange={ontextAreaChange} value={commentValue} {...fields.textarea} /> */}
         </div>
       </div>
+
       <div className={classes.btnWrapper}>
-        <button
-          onClick={onSubmit}
-          className={classes.button}
-          id="rejectcomplaint-submit-action"
-          primary={true}
-          {...submit}
-          fullWidth={true}
-        >Approve</button>
+        {(() => {
+          if (!commentValue) {
+            return <button
+              onClick={onSubmit}
+              style={{ backgroundColor: "darkgray" }}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              disabled
+            >Approve</button>
+
+          } else {
+            return <button
+              onClick={onSubmit}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+            >Approve</button>
+          }
+        })()}
+
       </div>
     </div>
+    
   );
 };
 

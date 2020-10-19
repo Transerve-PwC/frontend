@@ -63,6 +63,37 @@ import {
   
                 },
                 visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
+              },
+              uploadDocument: {
+                componentPath: "Button",
+                props: {
+                  variant: "contained",
+                  color: "primary",
+                  style: {
+                    minWidth: "180px",
+                    height: "48px",
+                    marginRight: "45px",
+                    borderRadius: "inherit"
+                  }
+                },
+                children: {
+                  submitButtonLabel: getLabel({
+                    labelName: "MAKE PAYMENT",
+                    labelKey: "COMMON_MAKE_PAYMENT"
+                  })
+                },
+                onClickDefination: {
+                  action: "condition",
+                  callBack: () => {
+                    // dispatch(
+                    //   setRoute(
+                    //    `/estate-citizen/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
+                    //   )
+                    // );
+                  },
+  
+                },
+                visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "UPLOAD_DOCUMENT") ? true : false
               }
             },
             gridDefination: {

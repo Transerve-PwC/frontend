@@ -12,7 +12,7 @@ import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { LAST_MODIFIED_ON } from "./searchResults";
+import { APPLICATION_TYPE, LAST_MODIFIED_ON } from "./searchResults";
 
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
@@ -192,7 +192,8 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
       let data = response.Applications.map(item => ({
         [getTextToLocalMapping("File Number")]: item.property.fileNumber || "-",
         [getTextToLocalMapping("Application Number")]: item.applicationNumber || "-",
-        [getTextToLocalMapping("Application Status")]: getLocaleLabels(item.property.state, item.property.state) || "-",
+        [getTextToLocalMapping("Application Status")]: getLocaleLabels(item.state, item.state) || "-",
+        [APPLICATION_TYPE]: getLocaleLabels(item.applicationType, item.applicationType) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(

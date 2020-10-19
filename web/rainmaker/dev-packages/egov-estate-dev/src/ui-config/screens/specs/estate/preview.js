@@ -69,7 +69,7 @@ const getData = async (action, state, dispatch) => {
           }) : {}
           reviewDetails = {estimate, ...reviewDetails}
        }
-        if(applicationState === "ES_PENDING_PAYMENT") {
+        if(applicationState === "ES_PENDING_PAYMENT" || applicationState === "ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION" || applicationState === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS") {
           footer = process.env.REACT_APP_NAME === "Citizen" ? footerReview(
             action,
             state,
@@ -132,6 +132,26 @@ const getData = async (action, state, dispatch) => {
                           props: {
                             dataPath: "Applications",
                             updateUrl: "/est-services/application/_update"
+                          }
+                        },
+                        actionDialog: {
+                          uiFramework: "custom-containers-local",
+                          componentPath: "ResubmitActionContainer",
+                          moduleName: "egov-estate",
+                          visible: process.env.REACT_APP_NAME === "Citizen" ? true : false,
+                          props: {
+                            dataPath: "Applications",
+                            updateUrl: "/est-services/application/_update",
+                            data: {
+                              buttonLabel: "RESUBMIT",
+                              dialogHeader: {
+                                labelName: "RESUBMIT Application",
+                                labelKey: "WF_RESUBMIT_APPLICATION"
+                              },
+                              showEmployeeList: false,
+                              roles: "CITIZEN",
+                              isDocRequired: true
+                            }
                           }
                         },
                         reviewDetails,

@@ -2,11 +2,67 @@ import React from "react";
 import { LabelContainer } from "egov-ui-framework/ui-containers";
 import { getQueryArg, getStatusKey } from "egov-ui-framework/ui-utils/commons";
 import { getEpochForDate, sortByEpoch } from "../../utils";
+import {
+  getLocaleLabels,
+  getTransformedLocalStorgaeLabels,
+} from "egov-ui-framework/ui-utils/commons";
+const localisationLabels = getTransformedLocalStorgaeLabels();
 
 const url = getQueryArg(
   window.location.href,
   "redirectUrl"
 );
+
+export const getTextToLocalMapping = (label) => {
+  switch (label) {
+    case "Unique Property ID":
+      return getLocaleLabels(
+        "Unique Property ID",
+        "PT_COMMON_TABLE_COL_PT_ID",
+        localisationLabels
+      );
+
+    case "Owner Name":
+      return getLocaleLabels(
+        "Owner Name",
+        "PT_COMMON_TABLE_COL_OWNER_NAME",
+        localisationLabels
+      );
+
+    case "Address":
+      return getLocaleLabels(
+        "Address",
+        "PT_COMMON_COL_ADDRESS",
+        localisationLabels
+      );
+
+    case "tenantId":
+      return getLocaleLabels(
+        "tenantId",
+        "PT_COMMON_TABLE_COL_TENANTID_LABEL",
+        localisationLabels
+      );
+    case "service":
+      return getLocaleLabels(
+        "service",
+        "WS_COMMON_TABLE_COL_SERVICE_LABEL",
+        localisationLabels
+      );
+        case "Action":
+          return getLocaleLabels(
+            "Action",
+            "PT_COMMON_TABLE_COL_ACTION_LABEL",
+            localisationLabels
+          );
+
+    case "Search Results for Properties":
+      return getLocaleLabels(
+        "Search Results for Properties",
+        "PT_HOME_PROPERTY_RESULTS_TABLE_HEADING",
+        localisationLabels
+      );
+  }
+};
 
 export const searchPropertyTable = {
   uiFramework: "custom-molecules",
@@ -16,8 +72,7 @@ export const searchPropertyTable = {
   props: {
     columns: [
       {
-       name: "Unique Property ID",
-       labelKey: "PT_COMMON_TABLE_COL_PT_ID",  
+       name:  getTextToLocalMapping("Unique Property ID"), 
        options: {
         filter: false,
         customBodyRender: (value) =>{
@@ -29,13 +84,10 @@ export const searchPropertyTable = {
       }
       }
     },
-     
-
-      {name: "Owner Name", labelKey: "PT_COMMON_TABLE_COL_OWNER_NAME"},
-      {name: "Address", labelKey: "PT_COMMON_COL_ADDRESS"},
+    getTextToLocalMapping("Owner Name"),
+    getTextToLocalMapping("Address"),
       {
-        name: "Action",
-        labelKey: "PT_COMMON_TABLE_COL_ACTION_LABEL",
+        name:   getTextToLocalMapping("Action"),
         options: {
           filter: false,
           customBodyRender: (value,data) =>{
@@ -52,14 +104,13 @@ export const searchPropertyTable = {
         }
       },
       {
-        name: "tenantId",
-        labelKey: "PT_COMMON_TABLE_COL_TENANTID_LABEL",
+        name:  getTextToLocalMapping("tenantId"),
         options: {
           display: false
         }
       }
     ],    
-    title: {labelKey:"PT_HOME_PROPERTY_RESULTS_TABLE_HEADING", labelName:"Search Results for Properties"},
+    title: getTextToLocalMapping("Search Results for Properties"),
     rows:"",
     options: {
       filter: false,

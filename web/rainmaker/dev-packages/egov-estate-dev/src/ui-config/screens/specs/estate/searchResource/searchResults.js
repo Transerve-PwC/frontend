@@ -20,7 +20,7 @@ const {
 const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
-
+export const APPLICATION_TYPE = getLocaleLabels("Application Type", "ES_APPLICATION_TYPE_LABEL")
 
 export const searchResults = {
   uiFramework: "custom-molecules",
@@ -75,6 +75,7 @@ export const searchApplicationResults = {
       getTextToLocalMapping("File Number"),
       getTextToLocalMapping("Application Number"),
       getTextToLocalMapping("Application Status"),
+      APPLICATION_TYPE,
       LAST_MODIFIED_ON
     ],
     options: {

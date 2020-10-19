@@ -47,11 +47,14 @@ class ApplicationResolved extends Component {
 
   onSubmit = e => {
   };
+  onSubmitClick= e => {
+    console.log('click one to')
+  };
 
   render() {
     let { match, userInfo } = this.props;
 
-    const { handleCommentsChange, handleOptionsChange, onSubmit } = this;
+    const { handleCommentsChange, handleOptionsChange, onSubmit ,onSubmitClick} = this;
     const { valueSelected, commentValue } = this.state;
     const { trasformData, businessServiceData,applicationNumber } = this.props;
   
@@ -61,7 +64,7 @@ class ApplicationResolved extends Component {
           
           ontextAreaChange={handleCommentsChange}
           handleOptionChange={handleOptionsChange}
-          
+          onSubmitClick={onSubmitClick}
           commentValue={commentValue}
           applicationNumber={applicationNumber}
           createdBy={userInfo.name}

@@ -135,15 +135,32 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
         )}
       </div>
       <div className={classes.btnWrapper}>
-        <button
-          onClick={onSubmit}
-          className={classes.button}
-          id="rejectcomplaint-submit-action"
-          primary={true}
-          {...submit}
-          fullWidth={true}
-        >Reject</button>
-    </div>
+        {(() => {
+          if (!commentValue&&(!approverName)) {
+            return <button
+              onClick={onSubmit}
+              style={{ backgroundColor: "darkgray" }}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+              disabled
+            >Reject</button>
+
+          } else {
+            return <button
+              onClick={onSubmit}
+              className={classes.button}
+              id="rejectcomplaint-submit-action"
+              primary={true}
+              {...submit}
+              fullWidth={true}
+            >Reject</button>
+          }
+        })()}
+
+      </div>
     </div>
   );
 };

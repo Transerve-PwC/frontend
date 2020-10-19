@@ -9,7 +9,8 @@ import {
 import {
   getTranslatedLabel,
   getTextToLocalMapping,
-  convertEpochToDate
+  convertEpochToDate,
+  getMdmsData
 } from "../ui-config/screens/specs/utils";
 import store from "redux/store";
 import { uploadFile } from "egov-ui-framework/ui-utils/api";
@@ -22,7 +23,7 @@ import {
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_DUE_DATE,
   ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
-  ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT} from '../ui-constants'
+  ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT, ESTATE_SERVICES_MDMS_MODULE} from '../ui-constants'
 import moment from "moment";
 
 export const getApplicationStatusList = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
@@ -38,6 +39,33 @@ try {
 } catch (error) {
   console.log(error)
 }
+}
+
+export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
+  try {
+    const queryObject = {
+      MdmsCriteria: {
+        tenantId: commonConfig.tenantId,
+        moduleDetails: [
+          {
+            moduleName: ESTATE_SERVICES_MDMS_MODULE,
+            masterDetails: [
+              { name: "applicationTypes" }
+            ]
+          }
+        ]
+      }
+    }
+    const response = await getMdmsData(queryObject);
+    const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
+    const data = applicationTypes.map(item => ({
+      code: item.type.split("_").pop(),
+      label: item.code
+    }))
+    dispatch(handleField(screenKey, componentJsonPath, "props.data", data))
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const getPaymentGateways = async () => {
@@ -137,7 +165,7 @@ const isValid = (file, acceptedFiles) => {
     return {valid: true}
    } else {
     return {  valid: false, 
-              errorMessage: `Please upload the allowed type files only.`
+              errorMessage: `Please upload the allowed file types only.`
             }
   }
 }

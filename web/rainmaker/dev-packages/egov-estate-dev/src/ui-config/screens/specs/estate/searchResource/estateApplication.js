@@ -97,6 +97,26 @@ import { get } from "lodash";
       sm: 6
     }
   }
+
+  export const applicationTypeField = {
+    label: {
+      labelName: "Application Type",
+      labelKey: "ES_APPLICATION_TYPE_LABEL"
+    },
+    placeholder: {
+      labelName: "Select Application Type",
+      labelKey: "ES_APPLICATION_TYPE_PLACEHOLDER"
+    },
+    required: false,
+    jsonPath: "searchScreen.applicationType",
+    data: [],
+    optionValue: "code",
+    optionLabel: "label",
+    gridDefination: {
+      xs: 12,
+      sm: 6
+    }
+  }
   
   
   const buttonItem = {
@@ -209,6 +229,7 @@ import { get } from "lodash";
     }),
     applicationNumberContainer: getCommonContainer({
         applicationNumber: getTextField(applicationNumberField),
+        applicationType: getSelectField(applicationTypeField)
     }),
     button: getCommonContainer({
       buttonContainer: getCommonContainer(

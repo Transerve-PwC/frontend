@@ -130,6 +130,7 @@ export const getFeesEstimateCard = props => {
 
 export const getButtonVisibility = (status, button) => {
   if (status === "ES_PENDING_PAYMENT" && button === "PENDINGPAYMENT") return true;
+  if ((status === "ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION" || status === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS") && button === "UPLOAD_DOCUMENTS") return true
   return false;
 };
 
@@ -715,6 +716,15 @@ let queryStr = []
         
       ]
       break;
+
+      case 'PatnershipDeed':  
+          queryStr = [{
+            key: "key",
+            value: `private-limited-company`
+          }
+          
+        ]
+    break;
     
       case 'Mortgage':
         let mortgageType = Applications[0].applicationDetails.mortgageType;
@@ -747,6 +757,7 @@ let queryStr = []
         }
       ]
       break;
+      
   }
   queryStr[1] = {
     key: "tenantId",
@@ -885,6 +896,14 @@ export const downloadNotice = (Applications, applicationType, mode = 'download')
         }
       ]
       break;
+
+      case 'NDC':
+        queryStr = [{
+            key: "key",
+            value: `est-ndc-who`
+          }
+        ]
+        break;
   }
     queryStr[1] = {
       key: "tenantId",
@@ -1073,7 +1092,7 @@ const isApplicationPaid = (currentStatus, workflowCode) => {
     const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
     const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
     for (var i = 0; i < states.length; i++) {
-      if (states[i].state === currentStatus) {
+      if (states[i].applicationStatus === currentStatus) {
         break;
       }
       if (
@@ -1572,5 +1591,51 @@ export const _getPattern = (type) => {
         return /^[+-]?\d+(\.\d+)?$/i;
     case "share":
       return /^[+-]?\d{1,5}(\.\d{1,2})?$/i;
+    case "areaOfProperty":
+      return /^[+-]?\d{1,15}(\.\d{1,2})?$/i;
+    case "alphaNumeric":
+      return /^[a-zA-Z0-9]{1,100}$/i;
+    case "fileNumber":
+      return /^[a-zA-Z0-9]{1,50}$/i;
+    case "alphabet":
+      return /^[a-zA-Z]{1,150}$/i;
   }
+}
+
+export const displayDefaultErr = (componentJsonpath, dispatch, screenName) => {
+  dispatch(
+      handleField(
+         screenName,
+         componentJsonpath,
+          "errorMessage",
+          "ERR_DEFAULT_INPUT_FIELD_MSG"
+      )
+  )
+  dispatch(
+      handleField(
+          screenName,
+          componentJsonpath,
+          "props.errorMessage",
+          "ERR_DEFAULT_INPUT_FIELD_MSG"
+      )
+  )
+}
+
+export const displayMaxLengthErr = (componentJsonpath, dispatch, errMsg, screenName) => {
+  dispatch(
+      handleField(
+          screenName,
+          componentJsonpath,
+          "errorMessage",
+          errMsg
+      )
+  )
+  dispatch(
+      handleField(
+          screenName,
+          componentJsonpath,
+          "props.errorMessage",
+          errMsg
+      )
+  )
 }
