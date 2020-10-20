@@ -942,7 +942,7 @@ export const createEstimateData = async (
   const applicationNo = getQueryArg(href, "applicationNumber") || getQueryArg(href, "consumerCode");
   const tenantId =
     get(data, "tenantId") || getQueryArg(href, "tenantId");
-  const businessService = get(data, "billingBusinessService", "") 
+  const businessService = get(data, "billingBusinessService", "") || getQueryArg(href, "businessService")
   const queryObj = [{
       key: "tenantId",
       value: tenantId

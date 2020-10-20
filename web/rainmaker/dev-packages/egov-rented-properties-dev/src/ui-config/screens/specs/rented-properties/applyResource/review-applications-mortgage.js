@@ -26,7 +26,7 @@ export const getReviewApplicantDetailsMortgage = (isEditable = true) => {
             children: {
                 header: {
                     gridDefination: {
-                        xs: 12,
+                        xs: 8,
                         sm: 10
                     },
                     ...getCommonSubHeader({
@@ -100,7 +100,7 @@ export const getreviewPropertyAddressDetailsMortgage = (isEditable = true) => {
             children: {
                 header: {
                     gridDefination: {
-                        xs: 12,
+                        xs: 8,
                         sm: 10
                     },
                     ...getCommonSubHeader({

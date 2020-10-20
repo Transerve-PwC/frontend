@@ -1,5 +1,5 @@
 import React from "react";
-import { getCommonHeader } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonHeader, getCommonTitle } from "egov-ui-framework/ui-config/screens/specs/utils";
 import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
 import TradeLicenseIcon from "../../../../ui-atoms-local/Icons/TradeLicenseIcon";
 import "../utils/index.css";
@@ -11,14 +11,20 @@ const tenantId = getTenantId();
 
 const header = getCommonHeader(
     {
-      labelName: "Transfer of Transit site In case of Legal Heir",
+      labelName: "Ownership Transfer",
       labelKey: "RP_OWNER_SHIP_TRANSFER_HEADER"
     },
     {
       classes: {
         root: "common-header-cont"
       }
+    },
+    {
+    style: {
+      wordWrap: "break-word",
+      wordBreak:"break-all"
     }
+  }
   );
 
 const cardItems = [{
@@ -57,7 +63,7 @@ const ownershipHome = {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           children: {
-            header: header,
+            header,
             applyCard: {
               uiFramework: "custom-molecules",
               componentPath: "LandingPage",

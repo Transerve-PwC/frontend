@@ -68,6 +68,7 @@ const getEditorField = {
     visible: true,
     minLength: 1,
     maxLength: 1000,
+    required: false,
     jsonPath: "Properties[0].owners[0].ownerDetails.editor",
     errorMessage: "RP_ERR_EDITOR_DESC_FIELD",
     afterFieldChange: (action, state, dispatch) => {

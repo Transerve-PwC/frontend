@@ -16,6 +16,11 @@ const ActionDialog = Loadable({
   loading: () => <Loading />
 });
 
+const SimpleModal = Loadable({
+  loader: () => import("./SimpleModal"),
+  loading: () => <Loading />
+});
+
 const Tooltip = Loadable({
   loader: () => import("./Tooltip"),
   loading: () => <Loading />
@@ -104,5 +109,6 @@ export {
   MultipleDocuments,
   MultiDownloadCardNoticePreview,
   RentSummaryCard,
-  MultiDownloadCard
+  MultiDownloadCard,
+  SimpleModal
 }

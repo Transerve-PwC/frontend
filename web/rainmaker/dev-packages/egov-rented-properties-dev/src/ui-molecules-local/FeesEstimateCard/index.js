@@ -77,6 +77,7 @@ function FeesEstimateCard(props) {
               ) : (
                 ""
               );
+              if(fee.value!=="0.00"){
               let textLeft = fee.name ? (
                 <Grid container xs={8}>
                   <LabelContainer
@@ -111,7 +112,7 @@ function FeesEstimateCard(props) {
                   {textLeft}
                   {textRight}
                 </Grid>
-              );
+              );}
             })}
           </Grid>
           <Divider style={{ marginBottom: 16 }} />

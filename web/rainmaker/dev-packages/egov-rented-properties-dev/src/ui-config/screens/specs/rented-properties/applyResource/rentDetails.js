@@ -1,5 +1,5 @@
 import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTitle, getPattern, getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
-
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 const rentHeader =  getCommonTitle(
     {
         labelName: "Rent Details",
@@ -51,7 +51,45 @@ const interestRateField = {
     pattern:getPattern("twodigit-number"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.interestRate",
-    errorMessage: "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD"
+    errorMessage: "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 2) {
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD_MAXLENGTH"
+                )
+            )
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD_MAXLENGTH"
+                )
+            )
+        }
+        else {
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD"
+                )
+            )
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_INTEREST_RATE_OR_YEAR_FIELD"
+                )
+            )
+        }
+      }
 }
 
 const rentIncrementPeriodField = {
@@ -73,6 +111,44 @@ const rentIncrementPeriodField = {
     required: true,
     jsonPath: "Properties[0].propertyDetails.rentIncrementPeriod",
     errorMessage: "RP_ERR_RENT_INCREMENT_PERIOD_FIELD",
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 2) {
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_RENT_INCREMENT_PERIOD_FIELD_MAXLENGTH"
+                )
+            )
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_RENT_INCREMENT_PERIOD_FIELD_MAXLENGTH"
+                )
+            )
+        }
+        else {
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "errorMessage",
+                  "RP_ERR_RENT_INCREMENT_PERIOD_FIELD"
+                )
+            )
+            dispatch(
+                handleField(
+                  "apply",
+                  action.componentJsonpath,
+                  "props.errorMessage",
+                  "RP_ERR_RENT_INCREMENT_PERIOD_FIELD"
+                )
+            )
+        }
+      }
   }
 
 const rentIncrementPercentageField = {

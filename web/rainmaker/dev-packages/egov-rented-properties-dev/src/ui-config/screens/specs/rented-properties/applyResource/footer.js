@@ -779,13 +779,7 @@ export const submitButtontransit = {
           labelName: "submit",
           labelKey: "RP_TRANSITE_SITE_BUTTON_SUBMIT"
         }),
-        submitButtonIcon: {
-          uiFramework: "custom-atoms",
-          componentPath: "Icon",
-          props: {
-            iconName: "keyboard_arrow_right"
-          }
-        }
+       
       },
       
 }
