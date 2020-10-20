@@ -333,12 +333,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         const removedDocs = ownerDocuments.filter(item => !item.isActive)
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
         Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
-        dispatch(
-          prepareFinalObject(
-            `Properties[0].propertyDetails.owners[${index}].removedDocs`,
-            removedDocs
-          )
-        );
+        Properties[0].propertyDetails.owners[index].ownerDetails.removedDocs = removedDocs;
       })
 
       let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);

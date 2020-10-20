@@ -18,7 +18,7 @@ import {
   getTodaysDateInYMD,
   getTextToLocalMapping,
   displayDefaultErr,
-  displayMaxLengthErr,
+  displayCustomErr,
  _getPattern
 } from "../../utils";
 import get from "lodash/get";
@@ -125,7 +125,7 @@ const schemeName = {
   jsonPath: "Properties[0].propertyDetails.schemeName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SCHEME_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -167,7 +167,7 @@ const modeOfAuction = {
   jsonPath: "Properties[0].propertyDetails.modeOfAuction",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_MODE_OF_AUCTION_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);

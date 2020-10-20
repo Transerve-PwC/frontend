@@ -17,7 +17,7 @@ import {
 import get from "lodash/get";
 import {
   _getPattern,
-  displayMaxLengthErr,
+  displayCustomErr,
   displayDefaultErr
 } from "../../utils"
 
@@ -54,7 +54,7 @@ const ownerNameField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_OWNER_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -80,7 +80,7 @@ const fatherHusbandNameField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_GUARDIAN_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -163,7 +163,7 @@ export const addressField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_ADDRESS_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -224,7 +224,7 @@ const cpNumberField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_CP_NUMBER_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -286,7 +286,7 @@ const allotmentNumberField = {
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.allotmentNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_ALLOTMENT_NUMBER_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);

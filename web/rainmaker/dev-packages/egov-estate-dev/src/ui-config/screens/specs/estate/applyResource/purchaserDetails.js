@@ -15,7 +15,7 @@ import {
 import {
   getTodaysDateInYMD, 
   _getPattern,
-  displayMaxLengthErr,
+  displayCustomErr,
   displayDefaultErr
 } from "../../utils";
 import get from "lodash/get";
@@ -55,7 +55,7 @@ const newOwnerNameField = {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
       else {
           displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -85,7 +85,7 @@ const newOwnerFatherHusbandNameField = {
       markFieldsMandatory(action, dispatch);
 
       if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_GUARDIAN_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
       else {
           displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -181,7 +181,7 @@ const newOwnerAddressField = {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_PREV_OWNER_ADDRESS_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
       else {
           displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -233,7 +233,7 @@ const sellerNameField = {
       markFieldsMandatory(action, dispatch);
     }
     if (action.value.length > 150) {
-      displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SELLER_NAME_MAXLENGTH", screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
         displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -261,7 +261,7 @@ const sellerFatherHusbandNameField = {
     if (action.value) {
       markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
-        displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SELLER_GUARDIAN_NAME_MAXLENGTH", screenName);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
       else {
           displayDefaultErr(action.componentJsonpath, dispatch, screenName);

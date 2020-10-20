@@ -79,7 +79,7 @@ const cardItems = [
       labelName: "Account Statement Generation"
     },
     icon: < FormIcon / > ,
-    route: "/estate-citizen/estate-search-account-statement"
+    route: "/estate/estate-search-account-statement"
   },
   {
     label: {

@@ -9,7 +9,7 @@ import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAdditionalDetails } from "../estate/preview-resource/preview-properties";
 
-let fileNumber = getQueryArg(window.location.href, "filenumber");
+let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 export const headerrow = getCommonContainer({
 header: getCommonHeader({
@@ -54,14 +54,14 @@ if(fileNumber){
 }
 
 export const onTabChange = async(tabIndex, dispatch, state) => {
-fileNumber = getQueryArg(window.location.href, "filenumber");
+fileNumber = getQueryArg(window.location.href, "fileNumber");
 let path = ""
 switch(tabIndex){
     case 0:
-      path = `/estate-citizen/estate-branch-search-preview?filenumber=${fileNumber}`
+      path = `/estate-citizen/estate-branch-search-preview?fileNumber=${fileNumber}`
       break
     case 1:
-      path = `/estate-citizen/estate-branch-owner-details?filenumber=${fileNumber}`
+      path = `/estate-citizen/estate-branch-owner-details?fileNumber=${fileNumber}`
       break
 }
 dispatch(setRoute(path))
@@ -80,7 +80,7 @@ const EstateBranchPropertyDetails = {
 uiFramework: "material-ui",
 name: "estate-branch-search-preview",
 beforeInitScreen: (action, state, dispatch) => {
-  fileNumber = getQueryArg(window.location.href, "filenumber");
+  fileNumber = getQueryArg(window.location.href, "fileNumber");
   beforeInitFn(action, state, dispatch, fileNumber);
   return action;
 },

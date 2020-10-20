@@ -194,12 +194,12 @@ export const headerDiv = {
         ),
       sellerFatherHusbandName: getLabelWithValue(
           sellerFatherHusbandNameField, {
-            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerFatherName`
+            jsonPath: `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.sellerGuardianName`
           }
         ),
         share: getLabelWithValue(
           shareField, {
-            jsonPath:`Properties[0].propertyDetails.purchaser[${index}].ownerDetails.percentageOfShare`
+            jsonPath:`Properties[0].propertyDetails.purchaser[${index}].share`
           }
         ),
         modeOfTransfer: getLabelWithValue(

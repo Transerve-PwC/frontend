@@ -15,7 +15,7 @@ import {
 import get from "lodash/get";
 import {
     displayDefaultErr,
-    displayMaxLengthErr,
+    displayCustomErr,
     _getPattern,
     getTodaysDateInYMD
 } from "../../utils"
@@ -292,7 +292,7 @@ const siteNumberField = {
     jsonPath: "Properties[0].siteNumber",
     afterFieldChange: (action, state, dispatch) => {
         if (action.value.length > 50) {
-            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SITE_NUMBER_MAXLENGTH", screenName);
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
         }
         else {
             displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -336,7 +336,7 @@ const fileNumberField = {
     jsonPath: "Properties[0].fileNumber",
     afterFieldChange: (action, state, dispatch) => {
         if (action.value.length > 50) {
-            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER_MAXLENGTH", screenName);
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
         }
         else {
             displayDefaultErr(action.componentJsonpath, dispatch, screenName);
@@ -407,7 +407,7 @@ const serviceCategoryField = {
     jsonPath: "Properties[0].propertyDetails.serviceCategory",
     afterFieldChange: (action, state, dispatch) => {
         if (action.value.length > 100) {
-            displayMaxLengthErr(action.componentJsonpath, dispatch, "ES_ERR_SERVICE_CATEGORY_MAXLENGTH", screenName);
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
         }
         else {
             displayDefaultErr(action.componentJsonpath, dispatch, screenName);

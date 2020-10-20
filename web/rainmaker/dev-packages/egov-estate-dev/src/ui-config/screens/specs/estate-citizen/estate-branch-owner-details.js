@@ -8,11 +8,11 @@ import { getOwnerDetails,getAllotmentDetails } from "../estate/preview-resource/
 import {onTabChange, headerrow, tabs} from './estate-branch-search-preview'
 
 
-let fileNumber = getQueryArg(window.location.href, "filenumber");
+let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
 const ownerContainer = {
   uiFramework: "custom-atoms",
-componentPath: "Container",
+componentPath: "Div",
 props: {
   id: "owner"
 },
@@ -65,7 +65,7 @@ const EstateBranchOwnerDetails = {
   uiFramework: "material-ui",
   name: "estate-branch-owner-details",
   beforeInitScreen: (action, state, dispatch) => {
-    fileNumber = getQueryArg(window.location.href, "filenumber");
+    fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },
