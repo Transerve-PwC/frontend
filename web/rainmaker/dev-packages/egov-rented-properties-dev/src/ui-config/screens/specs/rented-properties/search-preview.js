@@ -2,7 +2,7 @@ import {
     getCommonHeader,
     getCommonContainer,
     getLabel,
-    getCommonCard,getTextField
+    getCommonCard,getTextField,getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { getSearchResults } from "../../../../ui-utils/commons";
@@ -326,7 +326,49 @@ const phoneField = {
     sm: 12
   },
   jsonPath: "Properties[0].owners[0].ownerDetails.phone",
-  // pattern: getPattern("Amount")
+  minLength:10,
+  maxLength:10,
+  required: true,
+  pattern: getPattern("MobileNo"),
+  errorMessage: "RP_ERR_PHONE_NUMBER_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 10) {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD_MAXLENGTH"
+            )
+        )
+    }
+    else {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD"
+            )
+        )
+    }
+  }
 }
 
 const pincodeField = {
@@ -343,7 +385,48 @@ const pincodeField = {
     sm: 12
   },
   jsonPath: "Properties[0].propertyDetails.address.pincode",
-  // pattern: getPattern("Amount")
+  minLength: 6,
+  maxLength: 6,
+  required: true,
+  errorMessage: "RP_ERR_PINCODE_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 6) {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_PINCODE_FIELD_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_PINCODE_FIELD_MAXLENGTH"
+            )
+        )
+    }
+    else {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_PINCODE_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_PINCODE_FIELD"
+            )
+        )
+    }
+  }
 }
 
 const areaField = {
@@ -360,7 +443,48 @@ placeholder: {
     sm: 12
   },
   jsonPath: "Properties[0].propertyDetails.address.area",
-  // pattern: getPattern("Amount")
+  minLength: 3,
+  maxLength: 100,
+  required: true,
+  errorMessage: "RP_ERR_AREA_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 100) {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_AREA_LOCALITY_FIELD_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_AREA_LOCALITY_FIELD_MAXLENGTH"
+            )
+        )
+    }
+    else {
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_AREA_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "search-preview",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_AREA_FIELD"
+            )
+        )
+    }
+  }
 }
 
 export const editPopup = getCommonContainer({

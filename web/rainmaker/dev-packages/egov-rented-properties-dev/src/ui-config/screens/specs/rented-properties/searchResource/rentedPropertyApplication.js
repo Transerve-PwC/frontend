@@ -592,6 +592,7 @@ const duplicateCopySearchForm = {
 const accountStatementTransitNumber = {
   ...transitNumberField,
   required: true,
+  errorMessage: "RP_SITE_PLOT_SEARCH_PLACEHOLDER",
   iconObj: {
     iconName: "search",
     position: "end",

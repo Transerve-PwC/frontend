@@ -156,7 +156,7 @@ const amountField = {
     xs: 12,
     sm: 6
   },
-  pattern: getPattern("numeric-only"),
+  pattern: getPattern("AmountFeild"),
   required: true,
   minLength: 3,
   maxLength: 7,
@@ -216,9 +216,50 @@ const bankNameField = {
     sm: 6
   },
   required: true,
+  errorMessage:"RP_ERR_BANK_NAME_FIELD",
+  minLength: 1,
   maxLength: 40,
   jsonPath: "paymentInfo.bankName",
-  visible: process.env.REACT_APP_NAME !== "Citizen"
+  visible: process.env.REACT_APP_NAME !== "Citizen",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 40) {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_BANK_NAME_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_BANK_NAME_MAXLENGTH"
+            )
+        )
+     }
+    else {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_BANK_NAME_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_BANK_NAME_FIELD"
+            )
+        )
+    }
+  
+}
 }
 
 const transactionNumberField = {
@@ -235,9 +276,49 @@ const transactionNumberField = {
     sm: 6
   },
   required: true,
+  errorMessage:"RP_ERR_TRANSACTION_NUMBER_FIELD",
+  minLength: 1,
   maxLength: 40,
   jsonPath: "paymentInfo.transactionNumber",
-  visible: process.env.REACT_APP_NAME !== "Citizen"
+  visible: process.env.REACT_APP_NAME !== "Citizen",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 40) {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_TRANSACTION_NUMBER_MAXLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_TRANSACTION_NUMBER_MAXLENGTH"
+            )
+        )
+    }
+    else {
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_TRANSACTION_NUMBER_FIELD"
+            )
+        )
+        dispatch(
+            handleField(
+              "payment",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_TRANSACTION_NUMBER_FIELD"
+            )
+        )
+    }
+  }
 }
 
 const paymentInfo = getCommonCard({
