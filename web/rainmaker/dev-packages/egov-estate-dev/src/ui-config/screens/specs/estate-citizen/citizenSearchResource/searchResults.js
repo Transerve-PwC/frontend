@@ -41,6 +41,9 @@ export const searchResults = {
 
 const onRowClick = rowData => {
   const type = getQueryArg(window.location.href, "type")
-  window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}`
-  // window.location.href = `apply?propertyId=${rowData[4]}&applicationType=${type}`;
+  if(type === "payment") {
+    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `/estate/estate-payment?propertyId=${rowData[4]}` : `estate-payment?propertyId=${rowData[4]}`
+  } else {
+    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}`
+  }
 };

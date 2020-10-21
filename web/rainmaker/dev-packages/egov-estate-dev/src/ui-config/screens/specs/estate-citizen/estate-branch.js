@@ -33,7 +33,7 @@ const cardItems = [{
       labelName: "Pay Due"
     },
     icon: < EstateIcon / > ,
-    route: "estateBranchPayDue"
+    route: "property-search?type=payment"
   },
   {
     label: {

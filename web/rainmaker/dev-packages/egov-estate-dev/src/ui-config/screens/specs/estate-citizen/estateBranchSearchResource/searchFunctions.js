@@ -10,14 +10,9 @@ import {
 } from "../../utils/index";
 import { toggleSnackbar, prepareFinalObject, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-import commonConfig from "config/common.js";
-import { httpRequest } from "../../../../../ui-utils"
 import {
-  localStorageGet,
-} from "egov-ui-kit/utils/localStorageUtils";
-import React from 'react';
+  ESTATE_APPROVED_STATE
+} from "../../../../../ui-constants"
 
 export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(label));
 
@@ -32,6 +27,10 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
     {
       key: "limit",
       value: limit
+    },
+    {
+      key: "state",
+      value: ESTATE_APPROVED_STATE
     }
   ];
   queryObject = queryObject.filter(({

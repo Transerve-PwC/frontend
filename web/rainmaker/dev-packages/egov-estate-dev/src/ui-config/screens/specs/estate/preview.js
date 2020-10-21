@@ -1,6 +1,7 @@
 import { getStatusList } from "./searchResource/functions";
 import {
-  getTenantId
+  getTenantId,
+  getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import { createEstimateData, getCommonApplyHeader, getFeesEstimateCard } from "../utils";
 import { footerReview } from "./preview-resource/reviewFooter";
@@ -11,6 +12,12 @@ const { getSearchApplicationsResults } = require("../../../../ui-utils/commons")
 const { setThirdStep } = require("../estate-citizen/applyResource/review");
 import {downloadPrintContainer} from './applyResource/footer';
 import { getApplicationConfig } from "../estate-citizen/_apply";
+
+const userInfo = JSON.parse(getUserInfo());
+const {
+  roles = []
+} = userInfo
+const findItem = roles.find(item => item.code === "ES_EB_FINANCIAL_OFFICER");
 
 const getData = async (action, state, dispatch) => {
     await dispatch(prepareFinalObject("workflow.ProcessInstances", []))
@@ -70,7 +77,7 @@ const getData = async (action, state, dispatch) => {
           reviewDetails = {estimate, ...reviewDetails}
        }
         if(applicationState === "ES_PENDING_PAYMENT" || applicationState === "ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION" || applicationState === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS") {
-          footer = process.env.REACT_APP_NAME === "Citizen" ? footerReview(
+          footer = process.env.REACT_APP_NAME === "Citizen" || (!!findItem && applicationState === "ES_PENDING_PAYMENT") ? footerReview(
             action,
             state,
             dispatch,
@@ -150,7 +157,8 @@ const getData = async (action, state, dispatch) => {
                               },
                               showEmployeeList: false,
                               roles: "CITIZEN",
-                              isDocRequired: true
+                              isDocRequired: true,
+                              showDocuments: true
                             }
                           }
                         },

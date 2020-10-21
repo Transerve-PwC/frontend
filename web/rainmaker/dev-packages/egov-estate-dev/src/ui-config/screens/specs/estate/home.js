@@ -12,7 +12,6 @@ const userInfo = JSON.parse(getUserInfo());
 const {
   roles = []
 } = userInfo
-console.log(roles);
 const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 const header = getCommonHeader({
@@ -87,7 +86,7 @@ const cardItems = [
       labelName: "Rent Payment"
     },
     icon: < FormIcon / > ,
-    route: "estate-payment"
+    route: "/estate/property-search?type=payment"
   }
 ]
 

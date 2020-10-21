@@ -118,6 +118,7 @@ class ResubmitActionContainer extends React.Component {
           dataPath={dataPath}
           showDocumentUpload={true}
           state={this.props.state}
+          showDocuments={this.props.showDocuments}
         />
       </div>
     );

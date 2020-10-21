@@ -217,7 +217,7 @@ class ActionDialog extends React.Component {
                     /> 
                     </Grid>
                   )}
-                  {buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION" && (<Grid item sm="12">
+                  {(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION") || !!this.props.showDocuments && (<Grid item sm="12">
                   <Typography
                       component="h3"
                       variant="subheading"
