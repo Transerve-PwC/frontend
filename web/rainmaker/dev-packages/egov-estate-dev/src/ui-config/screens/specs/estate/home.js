@@ -87,7 +87,7 @@ const cardItems = [
       labelName: "Rent Payment"
     },
     icon: < FormIcon / > ,
-    route: "estate-payment"
+    route: "/estate/estate-payment-search"
   }
 ]
 

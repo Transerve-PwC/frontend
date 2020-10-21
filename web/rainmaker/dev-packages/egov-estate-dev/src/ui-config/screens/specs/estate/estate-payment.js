@@ -10,6 +10,9 @@ const header = getCommonHeader({
     labelName: "Rent Payment",
     labelKey: "ES_RENT_PAYMENT_HEADER"
   });
+// Using the passed query arg to be used here to fech data and auto fill all details in fields.
+const fileNoQueryArg = getQueryArg(window.location.href, "fileNo")
+
   const getMdmsData = async (dispatch) => {
     let mdmsBody = {
       MdmsCriteria: {
@@ -80,29 +83,29 @@ const propertyDetailsHeader = getCommonTitle(
     },
     required: true,
     jsonPath: "searchScreenFileNo.fileNumber",
-    placeholder: {
-        labelName: "Enter File Number and click on search icon",
-        labelKey: "ES_FILE_NUMBER_SEARCH_PLACEHOLDER"
-    },
-    title: {
-      value:
-        "If you have already assessed your property, then please search your property by your File Number",
-      key: "If you have already assessed your property, then please search your property by your File Number"
-    },
-    infoIcon: "info_circle",
-    errorMessage: "ES_FILE_NUMBER_SEARCH_PLACEHOLDER",
-    jsonPath: "searchScreenFileNo.fileNumber",
-    iconObj: {
-        iconName: "search",
-        position: "end",
-        color: "#FE7A51"
-      },
-      onClickDefination: {
-        action: "condition",
-        callBack: (state, dispatch) => {
-          getEstateRentPaymentPropertyDetails(state, dispatch);
-        }
-      },
+    // placeholder: {
+    //     labelName: "Enter File Number and click on search icon",
+    //     labelKey: "ES_FILE_NUMBER_SEARCH_PLACEHOLDER"
+    // },
+    // title: {
+    //   value:
+    //     "If you have already assessed your property, then please search your property by your File Number",
+    //   key: "If you have already assessed your property, then please search your property by your File Number"
+    // },
+    // infoIcon: "info_circle",
+    // errorMessage: "ES_FILE_NUMBER_SEARCH_PLACEHOLDER",
+    // jsonPath: "searchScreenFileNo.fileNumber",
+    // iconObj: {
+    //     iconName: "search",
+    //     position: "end",
+    //     color: "#FE7A51"
+    //   },
+    //   onClickDefination: {
+    //     action: "condition",
+    //     callBack: (state, dispatch) => {
+    //       getEstateRentPaymentPropertyDetails(state, dispatch);
+    //     }
+    //   },
     
     afterFieldChange: (action, state, dispatch)=> { 
     //   dispatch(prepareFinalObject("Properties", []))
