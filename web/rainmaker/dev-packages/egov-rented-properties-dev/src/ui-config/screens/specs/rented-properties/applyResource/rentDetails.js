@@ -107,7 +107,7 @@ const rentIncrementPeriodField = {
     },
     // minLength: 1,
     // maxLength: 2,
-    pattern:getPattern("twodigit-number"),
+    pattern:getPattern("twodigit-number-without-zero"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.rentIncrementPeriod",
     errorMessage: "RP_ERR_RENT_INCREMENT_PERIOD_FIELD",

@@ -141,12 +141,10 @@ class Footer extends React.Component {
     const downloadMenu =
       contractData &&
       contractData.map(item => {
-        const applicationstate= get(state.screenConfiguration.preparedFinalObject,"Owners[0].applicationState")
-        const duplicateState=get(state.screenConfiguration.preparedFinalObject,"DuplicateCopyApplications[0].state")
         const { buttonLabel, moduleName } = item;
           return {
             labelName: { buttonLabel },
-            labelKey: ((applicationstate==="OT_PENDINGCLAPPROVAL"||duplicateState==="DC_PENDINGCLAPPROVAL")&&buttonLabel==="REJECT")?`WF_${moduleName.toUpperCase()}_FORWARD_${buttonLabel}`:`WF_${moduleName.toUpperCase()}_${buttonLabel}`,
+            labelKey: `WF_${moduleName.toUpperCase()}_${buttonLabel}`,
             link: moduleName === "MasterRP" && buttonLabel === "MODIFY" ? 
               () => setRoute(`/rented-properties/apply?transitNumber=${transitNumber}&tenantId=${tenant}`)
               : () => {

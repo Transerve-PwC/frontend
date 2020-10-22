@@ -513,6 +513,10 @@ export const getPattern = type => {
         return /^[0-9]{12}$/i
     case "Amount":
       return /^[0-9]{0,9}$/i;
+    case "AmountFeild":
+      return /^[1-9][0-9]{2,6}$/i;
+     case "comments":
+      return /^([\s\S]){1,1000}$/i;
     case "Email":
       return /^(?=^.{1,64}$)((([^<>()\[\]\\.,;:\s$*@'"]+(\.[^<>()\[\]\\.,;:\s@'"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$/i;
     case "Address":
@@ -607,7 +611,9 @@ export const getPattern = type => {
     case "numeric-only":
       return /^[0-9]*$/i;
       case "twodigit-number":
-      return /^[0-9]{1,2}$/i
+      return /^[0-9]{1,2}$/i;
+      case "twodigit-number-without-zero":
+      return /^([1-9]{1}\d)$|^([1-9]{1})$/i;
     case "VATNo":
       return /^\d{2}[A-Za-z0-9-!@#$%&*.?=]{8}[V]{1}$/i;
     case "CSTNo":
@@ -615,7 +621,7 @@ export const getPattern = type => {
     case "TINNo":
       return /^\d{2}[A-Za-z0-9-!@#$%&*.?=]{9}$/i;
       case "interestRate":
-      return /^(\d{1,2}|\d{1,2}\.\d{1,2})$/i;
+      return /^(?=.*[1-9])\d{1,2}(?:\.\d{1,2})?$/i;
     case "DecimalAmount":
       return /^\d{0,6}$/i
     case "ECViolatorAddress":

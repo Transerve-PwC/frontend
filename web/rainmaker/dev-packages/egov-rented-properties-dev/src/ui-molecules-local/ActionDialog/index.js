@@ -403,10 +403,6 @@ return
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
     const duplicateCopyApplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).state
     
-    if((applicationState==="OT_PENDINGCLAPPROVAL"||duplicateCopyApplicationState==="DC_PENDINGCLAPPROVAL")&&buttonLabel==="REJECT"){
-      dialogHeader.labelKey="RP_WF_FORWARD_REJECT_APPLICATION"
-      dialogHeader.labelName="Forward To SA application"
-     }
     return (
       <Dialog
         fullScreen={fullscreen}
@@ -647,8 +643,6 @@ return
                         <LabelContainer
                           labelName={getButtonLabelName(buttonLabel)}
                           labelKey={
-                            (applicationState==="OT_PENDINGCLAPPROVAL"||duplicateCopyApplicationState==="DC_PENDINGCLAPPROVAL")&&buttonLabel==="REJECT"
-                            ?`WF_${moduleName.toUpperCase()}_FORWARD_${buttonLabel}`:
                             moduleName
                               ? `WF_${moduleName.toUpperCase()}_${buttonLabel}`
                               : ""

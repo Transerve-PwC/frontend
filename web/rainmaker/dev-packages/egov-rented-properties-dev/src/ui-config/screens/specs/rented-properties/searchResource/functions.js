@@ -237,6 +237,7 @@ export const changePType=(type)=>{
 }
 }
 export const searchAccountStatement = async (state, dispatch) => {
+  let isDateValid =true
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
     "searchScreen",
@@ -249,8 +250,10 @@ export const searchAccountStatement = async (state, dispatch) => {
     dispatch,
     "search-account-statement"
   );
-
-  if(!!isSearchBoxFirstRowValid) {
+if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
+  isDateValid=false;
+}
+  if(!!isSearchBoxFirstRowValid && !!isDateValid) {
     let Criteria = {
       fromdate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
       todate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
@@ -265,7 +268,16 @@ export const searchAccountStatement = async (state, dispatch) => {
           [],
           {Criteria}
         )
+if(response.RentAccountStatements.length===0){
+  let errorMessage = {
+    labelName:
+        "No records found",
+    labelKey: "RP_ERR_NO_RECORDS_FOUND"
+};
 
+dispatch(toggleSnackbar(true, errorMessage, "warning"));
+}
+else{
         try {
           dispatch(
             prepareFinalObject(
@@ -316,7 +328,17 @@ export const searchAccountStatement = async (state, dispatch) => {
         } catch (error) {
           dispatch(toggleSnackbar(true, error.message, "error"));
         }
+      }
     }
+  }
+  else{
+    let errorMessage = {
+      labelName:
+          "From date cannot be greater than To date!",
+      labelKey: "RP_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+  };
+  
+  dispatch(toggleSnackbar(true, errorMessage, "warning"));
   }
 }
 
