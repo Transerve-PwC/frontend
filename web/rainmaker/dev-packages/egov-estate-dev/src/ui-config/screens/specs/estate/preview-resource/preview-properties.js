@@ -347,3 +347,47 @@ export const getPropertyDetails = (isEditable = true) => {
       })
     })
   }
+
+  export const getReviewRentSummary = (isEditable = true) => {
+    return getCommonGrayCard({
+        headerDiv: {
+            ...headerDiv,
+            children: {
+                header: {
+                    gridDefination: {
+                        xs: 12,
+                        sm: 10
+                    },
+                    ...getCommonSubHeader({
+                        labelName: "Rent Summary",
+                        labelKey: "ES_RENT_SUMMARY_HEADER"
+                    })
+                },
+                editSection: masterEntryEditSection(isEditable, 2)
+            }
+        },
+        viewFour: getCommonContainer({
+                totalDue: getLabelWithValue(
+                    {
+                        labelName: "Total Due ",
+                        labelKey: "ES_TOTAL_DUE_LABEL"
+                    },
+                    { jsonPath: "Properties[0].formatrentSummary.balancePrincipal" }
+                ),
+                amountPaid: getLabelWithValue(
+                    {
+                        labelName: "Amount Paid",
+                        labelKey: "ES_AMOUNT_PAID_LABEL"
+                    },
+                    { jsonPath: "Properties[0].formatrentSummary.balanceInterest" }
+                ),
+                outstanding: getLabelWithValue(
+                    {
+                        labelName: "Outstanding",
+                        labelKey: "ES_OUTSTANDING_LABEL"
+                    },
+                    { jsonPath: "Properties[0].formatrentSummary.balanceAmount" }
+                ),
+        })
+    })
+  }

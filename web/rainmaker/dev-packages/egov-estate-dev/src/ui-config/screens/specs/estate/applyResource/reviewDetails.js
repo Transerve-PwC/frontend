@@ -8,8 +8,11 @@ import {
   getReviewAdditional,
   getReviewCompanyDetails,
   getReviewFirmDetails,
-  getReviewProprietorshipDetails
+  getReviewProprietorshipDetails,
 } from "./reviewProperty";
+import {getReviewRentSummary} from '../preview-resource/preview-properties'
+
+const reviewRentSummary = getReviewRentSummary(true);
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",
@@ -32,5 +35,6 @@ export const reviewDetails = getCommonCard({
   reviewAdditional,
   companyDetails,
   firmDetails, 
-  proprietorDetails
+  proprietorDetails,
+  reviewRentSummary
 })

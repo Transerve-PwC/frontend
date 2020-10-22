@@ -11,7 +11,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails } from "./preview-resource/preview-properties";
+import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails,getReviewRentSummary} from "./preview-resource/preview-properties";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { WF_ALLOTMENT_OF_SITE } from "../../../../ui-constants";
 
@@ -29,13 +29,14 @@ export const headerrow = getCommonContainer({
 const reviewPropertyDetails = getPropertyDetails(false);
 const reviewAllotmentDetails = getAllotmentDetails(false);
 const additionalDetails = getAdditionalDetails(false)
-
+const reviewRentSummary = getReviewRentSummary(false);
 
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
   // reviewAuctionDetails,
   // reviewAllotmentDetails,
-  additionalDetails
+  additionalDetails,
+  reviewRentSummary
 });
 
 export const searchResults = async (action, state, dispatch, fileNumber) => {
