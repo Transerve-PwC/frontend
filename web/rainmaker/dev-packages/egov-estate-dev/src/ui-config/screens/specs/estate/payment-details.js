@@ -3,67 +3,24 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults } from "../../../../ui-utils/commons";
+import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
 import {getReviewPayment} from './preview-resource/payment-details'
 import {onTabChange, headerrow, tabs} from './search-preview'
+import {paymentDetailsTable} from './applyResource/applyConfig'
+import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 
-
-
-let fileNumber = getQueryArg(window.location.href, "fileNumber");
-
-// const paymentReviewDetails = getReviewPayment(false)
-
-// export const PaymentDetails = getCommonCard({
-//   paymentReviewDetails
-// });
-
-const paymentContainer = {
-  uiFramework: "custom-atoms",
-componentPath: "Container",
-props: {
-  id: "docs"
-},
-children: {
-}
-}
-
-export const searchResults = async (action, state, dispatch, fileNumber) => {
-  let queryObject = [
-    { key: "fileNumber", value: fileNumber }
-  ];
-  let payload = await getSearchResults(queryObject);
-  if(payload) {
-    let properties = payload.Properties;
-    dispatch(prepareFinalObject("Properties", properties));
-
-    let containers={}
-    properties[0].propertyDetails.owners.forEach((element,parentIndex) => { 
-      if(element.ownerDetails.paymentDetails){
-         let subContainer ={}
-         element.ownerDetails.paymentDetails.forEach((element,index) => { 
-            let paymentListContainer = getReviewPayment(false,parentIndex,index)
-            subContainer[index] = getCommonCard({
-              paymentListContainer
-              }); 
-           })
-           containers[parentIndex] = getCommonCard(subContainer); 
-      }
-    });
-    dispatch(
-      handleField(
-      "payment-details",
-      "components.div.children.paymentContainer",
-      "children",
-      containers
-      )
-    );
-  }
-}
-
-const beforeInitFn = async (action, state, dispatch, fileNumber) => {
-  dispatch(prepareFinalObject("workflow.ProcessInstances", []))
-  if(fileNumber){
-    await searchResults(action, state, dispatch, fileNumber)
+const beforeInitFn = async (action, state, dispatch, filenumber) => {
+  if(filenumber){
+      let queryObject = [
+          { key: "fileNumber", value: filenumber }
+        ];
+   const response =  await getSearchResults(queryObject);
+    if(!!response) {
+      let {estateDemands, estatePayments} = response.Properties[0].propertyDetails;
+      estateDemands = estateDemands || []
+      estatePayments = estatePayments || []
+      setXLSTableData({demands:estateDemands,payments:estatePayments, componentJsonPath: "components.div.children.paymentDetailsTable", screenKey: "payment-details"})
+    }
   }
 }
 
@@ -72,7 +29,7 @@ const EstatePaymentDetails = {
   uiFramework: "material-ui",
   name: "payment-details",
   beforeInitScreen: (action, state, dispatch) => {
-    fileNumber = getQueryArg(window.location.href, "filenumber");
+    const fileNumber = getQueryArg(window.location.href, "filenumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },
@@ -108,7 +65,8 @@ const EstatePaymentDetails = {
             },
             type: "array",
           },
-          paymentContainer
+          breakAfterSearch: getBreak(),
+          paymentDetailsTable
       }
     }
   }
