@@ -432,12 +432,12 @@ export const headerDiv = {
         ),
         companyRegNo: getLabelWithValue(
             companyRegNoField, {
-            jsonPath: `Properties[0].propertyDetails.companyRegNo`,
+            jsonPath: `Properties[0].propertyDetails.companyRegistrationNumber`,
             }
         ),
         companyRegDate: getLabelWithValue(
             companyRegDateField, {
-            jsonPath: `Properties[0].propertyDetails.companyRegDate`,
+            jsonPath: `Properties[0].propertyDetails.companyRegistrationDate`,
             callBack: convertEpochToDate
             }
         ),

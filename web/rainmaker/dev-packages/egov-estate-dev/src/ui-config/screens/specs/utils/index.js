@@ -1598,7 +1598,7 @@ export const _getPattern = (type) => {
     case "fileNumber":
       return /^[a-zA-Z0-9]{1,50}$/i;
     case "alphabet":
-      return /^[a-zA-Z]{1,150}$/i;
+      return /^[a-zA-Z ]*$/i;
   }
 }
 

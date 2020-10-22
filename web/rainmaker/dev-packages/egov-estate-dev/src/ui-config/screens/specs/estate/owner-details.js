@@ -84,8 +84,9 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let properties = payload.Properties;
     let owners = properties[0].propertyDetails.owners;
     let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+    let companyOrFirm = properties[0].propertyDetails.companyOrFirm;
     properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners}}]
-    
+
     dispatch(prepareFinalObject("Properties", properties));
 
     let applicationState = properties[0].state;
@@ -171,6 +172,15 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
         containers
       )
     );
+
+    dispatch(
+      handleField(
+        "owner-details",
+        "components.div.children.entityContainer",
+        "visible",
+        !!companyOrFirm
+      )
+    )
   }
 }
 

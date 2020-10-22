@@ -100,6 +100,21 @@ const callBackForNext = async (state, dispatch) => {
       "apply"
     )
 
+    let propertyRegisteredTo = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.propertyRegisteredTo",
+      ""
+    )
+
+    dispatch(
+      handleField(
+        "apply",
+        "components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.entityType",
+        "visible",
+        propertyRegisteredTo == "ENTITY"
+      )
+    )
+
     if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {

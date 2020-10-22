@@ -24,6 +24,7 @@ export const searchResults = {
       filter: false,
       download: false,
       responsive: "stacked",
+      search:false,
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
