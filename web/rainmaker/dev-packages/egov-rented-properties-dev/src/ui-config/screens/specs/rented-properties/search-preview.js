@@ -19,6 +19,7 @@ import{formatAmount} from "./searchResource/functions"
 import set from "lodash/set"
 import {applicationNumber} from './apply'
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
+import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 const userInfo = JSON.parse(getUserInfo());
 const tenantId = getTenantId();
 const {roles = []} = userInfo
@@ -613,13 +614,18 @@ export const editPopup = getCommonContainer({
       }
     }
 })
-
+const getData = async (action, state, dispatch) => {
+  const queryObject = [{ key: "tenantId", value: getTenantId() }, 
+                      { key: "businessServices", value: "MasterRP" }]
+  await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+}
 const rentedPropertiesDetailPreview = {
   uiFramework: "material-ui",
   name: "search-preview",
   beforeInitScreen: (action, state, dispatch) => {
     transitNumber = getQueryArg(window.location.href, "transitNumber");
     beforeInitFn(action, state, dispatch, transitNumber);
+    getData(action, state, dispatch)
     return action;
   },
   components: {

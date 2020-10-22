@@ -15,7 +15,8 @@ import { footerReviewTop} from "./applyResource/reviewFooter";
 import {downloadPrintContainer} from './applyResource/footer';
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import {applicationNumber} from './apply'
-
+import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 const headerrow = getCommonContainer({
   header: getCommonHeader({
     labelName: "Mortgage Application",
@@ -116,11 +117,18 @@ const beforeInitFn = async(action, state, dispatch) => {
     }
     
   }
+  const getData = async (action, state, dispatch) => {
+    const queryObject = [{ key: "tenantId", value: getTenantId() }, 
+                        { key: "businessServices", value: "PermissionToMortgage" }]
+    await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
+  }
+  
 const mortgagePreviewDetails = {
     uiFramework: "material-ui",
     name: "mortgage-search-preview",
     beforeInitScreen: (action, state, dispatch) => {
         beforeInitFn(action, state, dispatch)
+        getData(action, state, dispatch)
         return action
     },
     components: {
