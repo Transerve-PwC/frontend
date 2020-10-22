@@ -114,9 +114,12 @@ class Footer extends React.Component {
       contractData,
       handleFieldChange,
       onDialogButtonClick,
-      dataPath
+      dataPath,
+      documentProps
     } = this.props;
     const { open, data, employeeList } = this.state;
+
+    const dialogData = {...data, documentProps}
 
     const downloadMenu =
       contractData &&
@@ -159,7 +162,7 @@ class Footer extends React.Component {
         <ActionDialog
           open={open}
           onClose={this.onClose}
-          dialogData={data}
+          dialogData={dialogData}
           dropDownData={employeeList}
           handleFieldChange={handleFieldChange}
           onButtonClick={onDialogButtonClick}

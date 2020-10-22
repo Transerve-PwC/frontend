@@ -159,7 +159,7 @@ export const addressField = {
     multiline: true,
     rows: 2
   },
-  pattern: _getPattern("alphabet"),
+  pattern: _getPattern("address"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {

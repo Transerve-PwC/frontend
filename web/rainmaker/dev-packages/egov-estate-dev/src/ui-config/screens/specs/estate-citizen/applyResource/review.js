@@ -64,7 +64,7 @@ const headerDiv = (isEditable = true, label, step) => {
   }
 }
 
-export const viewFour = (section, data) => {
+export const viewFour = (section, application) => {
   const {fields = [], type} = section
   switch(type) {
     case "DOCUMENTS" : {
@@ -91,7 +91,7 @@ export const viewFour = (section, data) => {
     }
     default: {
       const field_types = fields.reduce((acc, field) => {
-        const visible = !!field.visibility && !!data ? eval(field.visibility) : true
+        const visible = !!field.visibility ? eval(field.visibility) : true
         return {
         ...acc, 
         [field.label]: getLabelWithValue({
@@ -108,16 +108,16 @@ export const viewFour = (section, data) => {
   }
 }
 
-export const setThirdStep = async ({state, dispatch, applicationType, preview, data, isEdit = true, showHeader = true}) => {
-    // const {preview} = require(`../${applicationType}_preview.json`);
+export const setThirdStep = async ({state, dispatch, applicationType, preview, data: application = {}, isEdit = true, showHeader = true}) => {
     const {sections = []} = preview;
-    let details = sections.reduce((acc, section, index) => {
+    let details = sections.filter(item => !!item.visibility ? eval(item.visibility) : true)
+      .reduce((acc, section, index) => {
       const {step, header, isEditable = true} = section
       return {
         ...acc,
         [section.header]: getCommonGrayCard({
           headerDiv: headerDiv(isEdit && isEditable , header, step),
-          viewFour: viewFour(section, data)
+          viewFour: viewFour(section, application)
         })
       }
     }, {})
@@ -127,9 +127,5 @@ export const setThirdStep = async ({state, dispatch, applicationType, preview, d
     }),
     ...details
     } : details
-    // const reviewDetails = getCommonCard({
-    //   ...details
-    // })
-    //  return reviewDetails
     return details
   }
