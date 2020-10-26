@@ -268,7 +268,7 @@ if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreen
           [],
           {Criteria}
         )
-if(response.RentAccountStatements.length===0){
+if(response.RentAccountStatements.length===1){
   let errorMessage = {
     labelName:
         "No records found",
@@ -276,6 +276,22 @@ if(response.RentAccountStatements.length===0){
 };
 
 dispatch(toggleSnackbar(true, errorMessage, "warning"));
+dispatch(
+  handleField(
+    "search-account-statement",
+    "components.div.children.accountStatementResults",
+    "visible",
+    false
+  )
+);
+dispatch(
+  handleField(
+    "search-account-statement",
+    "components.div.children.downloadButton",
+    "visible",
+    false
+),
+);
 }
 else{
         try {
@@ -331,7 +347,7 @@ else{
       }
     }
   }
-  else{
+  if(!isDateValid){
     let errorMessage = {
       labelName:
           "From date cannot be greater than To date!",
