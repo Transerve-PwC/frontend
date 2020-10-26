@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 	final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 	private static String URL   =BuildConfig.url;
-	private String FILE_TYPE    = "image/*";  //to upload any file type using "*/*"; check file type references for more
+	private String FILE_TYPE    = "*/*";  //to upload any file type using "*/*"; check file type references for more
 	public static String HOST	= getHost(URL);
 
 	//Careful with these variable names if altering
@@ -448,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
 //		else if (url.contains("98jf4")) {
 //			loadView(url, true);
 //			//Opening external URLs in android default web browser
-//		} 
+//		}
 		else if (!getHost(url).equals(HOST)) {
 			try {
 				Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);

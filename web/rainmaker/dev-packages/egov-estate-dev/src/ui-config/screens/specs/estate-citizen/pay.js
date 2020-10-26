@@ -12,7 +12,7 @@ import {
   import { fetchBill, getFeesEstimateCard } from "../utils";
   import set from "lodash/set";
   import { getPaymentGateways } from "../../../../ui-utils/commons";
-import { offlinePaymentDetails, getMdmsData } from "../estate/estate-payment";
+import { applicationOfflinePaymentDetails, getMdmsData } from "../estate/estate-payment";
 
   const header = getCommonContainer({
     header: getCommonHeader({
@@ -92,7 +92,7 @@ import { offlinePaymentDetails, getMdmsData } from "../estate/estate-payment";
                   })
               }),
               offlinePaymentDetails : {
-                ...offlinePaymentDetails,
+                ...applicationOfflinePaymentDetails,
                 visible: process.env.REACT_APP_NAME === "Employee"
               }
             }

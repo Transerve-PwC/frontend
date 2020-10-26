@@ -102,22 +102,22 @@ import {
              
             }
           ),
-          // AssestCode: getLabelWithValue(
-          //   {   labelName: "Assest Code",
-          //   labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE" },
-          //   {
-          //     jsonPath: "materialIssues[0].materialIssueDetails[0].AssestCode",
+          IndentPurpose: getLabelWithValue(
+            {   labelName: "Indent Purpose",
+            labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
+            {
+              jsonPath: "materialIssues[0].materialIssueDetails[0].indent.indentPurpose",
              
-          //   }
-          // ),
-          // ProjectCode: getLabelWithValue(
-          //   {   labelName: "Project Code",
-          //   labelKey: "STORE_MATERIAL_INDENT_NOTE_PROJECT_CODE"},
-          //   {
-          //     jsonPath: "materialIssues[0].materialIssueDetails[0].ProjectCode",
+            }
+          ),
+          ProjectCode: getLabelWithValue(
+            {   labelName: "Project Code",
+            labelKey: "STORE_MATERIAL_INDENT_NOTE_PROJECT_CODE"},
+            {
+              jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.projectCode.code",
              
-          //   }
-          // ),
+            }
+          ),
          
           Remark: getLabelWithValue(
             {   labelName: "Remark",

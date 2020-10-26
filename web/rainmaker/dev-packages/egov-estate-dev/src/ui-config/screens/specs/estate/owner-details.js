@@ -14,7 +14,7 @@ import {
 import { getSearchResults, getSearchApplicationsResults } from "../../../../ui-utils/commons";
 import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails, getFirmDetails } from "./preview-resource/owner-properties";
 import {onTabChange, headerrow, tabs} from './search-preview'
-import { mobileNumberField } from "./applyResource/ownerDetails";
+import { mobileNumberField, addressField } from "./applyResource/ownerDetails";
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
@@ -329,27 +329,6 @@ const ownerHeader = getCommonTitle({
   }
 })
 
-const addressField = {
-  label: {
-    labelName: "Address",
-    labelKey: "ES_ADDRESS_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Address",
-    labelKey: "ES_ADDRESS_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 12
-  },
-  required: true,
-  props: {
-    multiline: true,
-    rows: 2
-  },
-  maxLength: 150,
-  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address"
-}
 const editOwnerDetails = getCommonContainer({
   address: getTextField(addressField),
   mobileNumber: getTextField(mobileNumberField)

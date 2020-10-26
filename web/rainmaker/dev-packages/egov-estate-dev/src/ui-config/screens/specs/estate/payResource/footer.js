@@ -12,6 +12,7 @@ import {
     getUserInfo,
   } from "egov-ui-kit/utils/localStorageUtils";
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 export const callPGService = async (state, dispatch, item, _businessService) => {
   const tenantId = getQueryArg(window.location.href, "tenantId");
@@ -170,11 +171,26 @@ export const getCommonApplyFooter = children => {
   };
 };
 
-const callBackForOfflinePayment = (state, dispatch) => {
+const callBackForOfflinePayment = async (state, dispatch) => {
   let isValid = true;
   isValid = validateFields("components.div.children.formwizardFirstStep.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "pay")
   if(isValid) {
-    console.log("====hiii")
+    const applicationNumber = getQueryArg(window.location.href, "consumerCode")
+    const tenantId = getTenantId()
+    const type = getQueryArg(window.location.href, "businessService")
+    const paymentDetails = get(state, "screenConfiguration.preparedFinalObject.payment")
+    const payload = [{...paymentDetails, applicationNumber, tenantId}]
+    const response = await httpRequest("post",
+    "/est-services/application/_collect_payment",
+    "",
+    [],
+    { Applications : payload })
+    if(!!response) {
+      const path = `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+      dispatch(
+        setRoute(path)
+      );
+    }
   }
 }
 

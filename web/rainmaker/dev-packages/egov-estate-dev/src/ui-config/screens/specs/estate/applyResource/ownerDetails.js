@@ -21,9 +21,15 @@ import {
   displayDefaultErr
 } from "../../utils"
 
-let screenName = "apply";
+let screenName;
 if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
+}
+else if ((window.location.href).includes("owner-details")) {
+  screenName = "owner-details";
+}
+else {
+  screenName = "apply";
 }
 
 export const ownerHeader = getCommonTitle({

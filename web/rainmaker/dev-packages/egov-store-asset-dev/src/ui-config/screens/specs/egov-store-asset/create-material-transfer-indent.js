@@ -85,6 +85,7 @@ import {
               { name: "Material" }, //filter: "[?(@.active == true)]" },
               { name: "InventoryType", filter: "[?(@.active == true)]" },
               { name: "IndentPurpose"},// filter: "[?(@.active == true)]" },
+              { name: "businessService" }, 
             ]
           },
           {
@@ -105,6 +106,7 @@ import {
         mdmsBody
       );
       dispatch( prepareFinalObject("createScreenMdmsData", get(response, "MdmsRes")) );
+      return true;
     } catch (e) {
       console.log(e);
     }
@@ -150,8 +152,35 @@ import {
     }
   };
   const getData = async (action, state, dispatch) => {
-    await getMdmsData(action, state, dispatch);
-    await getstoreData(action, state, dispatch);
+    getMdmsData(action, state, dispatch)
+    .then(response=>
+      {
+        if(response)
+        {
+          const queryObject = [{ key: "tenantId", value: getTenantId()}];
+          getSearchResults(queryObject, dispatch,"storeMaster")
+          .then(response =>{
+          // let response = await getSearchResults(queryObject, dispatch,"storeMaster");
+          if(response)
+          {
+          const userInfo = JSON.parse(getUserInfo());
+          let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+          // filter store based on login user role and assign business service
+          let roles = userInfo.roles
+          for (let index = 0; index < roles.length; index++) {
+          const element = roles[index];
+          businessService = businessService.filter(x=>x.role === element.code)
+          if(businessService.length==1)
+          response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
+          break;        
+          }
+          dispatch(prepareFinalObject("store.stores", response));
+        }
+        });
+        }
+      })
+   // return true;
+   // await getstoreData(action, state, dispatch);
   }
   const screenConfig = {
     uiFramework: "material-ui",
@@ -163,6 +192,8 @@ import {
         dispatch(prepareFinalObject("indents[0]",null));
       }
       getData(action, state, dispatch);
+      
+        const storedata = getstoreData(action,state, dispatch);
            // SEt Default data Start
      dispatch(prepareFinalObject("indents[0].indentType", "Transfer Indent"));
     // dispatch(prepareFinalObject("indents[0].designation", "MD",));

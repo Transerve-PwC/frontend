@@ -13,6 +13,7 @@ import {
   import {
     convertDateToEpoch,    
   } from "../../utils";
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import{GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
@@ -142,7 +143,8 @@ import {
                 },
                 required: true,
                 errorMessage:"STORE_VALIDATION_USER_RECEIVED_QUANTITY",
-                pattern: getPattern("Amount") || null,
+                //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "transferInwards[0].receiptDetails[0].userReceivedQty"
               }),
               beforeFieldChange: (action, state, dispatch) => {

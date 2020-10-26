@@ -50,12 +50,48 @@ import {
       console.log(e);
     }
   };
-  
+  const getData = async (action, state, dispatch) => {
+   
+    await getEmployeeData(action, state, dispatch);
+  }
+  const getEmployeeData = async (action, state, dispatch) => {
+    //fecthing employee details 
+    const queryParams = [{ key: "roles", value: "EMPLOYEE" },{ key: "tenantId", value:  getTenantId() }];
+    const payload = await httpRequest(
+      "post",
+      "/egov-hrms/employees/_search",
+      "_search",
+      queryParams,
+    );
+    if(payload){
+      if (payload.Employees) {
+        const empDetails =
+        payload.Employees.map((item, index) => {
+            const deptCode = item.assignments[0] && item.assignments[0].department;
+            const designation =   item.assignments[0] && item.assignments[0].designation;
+            const empCode = item.code;
+            const empName = `${item.user.name}`;
+          return {
+                  code : empCode,
+                  name : empName,
+                  dept : deptCode,
+                  designation:designation,
+          };
+        });
+      
+        if(empDetails){
+          dispatch(prepareFinalObject("createScreenMdmsData.employee",empDetails));  
+        }
+        
+      }
+    }
+
+  }
   const screenConfig = {
     uiFramework: "material-ui",
     name: "view-material-transfer-outward",
     beforeInitScreen: (action, state, dispatch) => {
-    
+      getData(action, state, dispatch);
       return action;
     },
     components: {

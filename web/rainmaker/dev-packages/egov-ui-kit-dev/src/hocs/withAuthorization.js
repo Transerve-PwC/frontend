@@ -37,7 +37,7 @@ const withAuthorization = (options = {}) => (Component) => {
       const { authenticated, hasLocalisation, defaultUrl } = this.props;
       const { redirectionUrl } = options;
       if (!authenticated && !getQueryArg("", "smsLink")) {
-        const baseUrl = hasLocalisation ? "/language-selection" : process.env.REACT_APP_NAME === "Citizen" ? defaultUrl.citizen : defaultUrl.employee;
+        const baseUrl = hasLocalisation ? "/language-selection" : process.env.REACT_APP_NAME === "Citizen" ? "/user/login" : "/user/login";
         this.props.history.replace(redirectionUrl || baseUrl);
       }
     }

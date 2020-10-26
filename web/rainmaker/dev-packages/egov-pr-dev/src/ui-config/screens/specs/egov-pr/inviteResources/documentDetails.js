@@ -59,7 +59,7 @@ export const documentDetails = getCommonCard({
       },
       description: "Only xls files. 2MB max file size.",
       inputProps: {
-        accept: "vnd.ms-excel,.ms-excel"
+        accept: "vnd.ms-excel,.ms-excel,application/vnd.ms-excel,application/ms-excel"
       },
       maxFileSize: 2000
     },

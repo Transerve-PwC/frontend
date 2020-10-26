@@ -275,10 +275,10 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
               code: "WRITEOFFORSCRAP",
               name: "write-off of material in stock to be scrapped"
             },
-            {
-              code: "RETURNTOSUPPLIER",
-              name: "return to supplier"
-            },
+            // {
+            //   code: "RETURNTOSUPPLIER",
+            //   name: "return to supplier"
+            // },
            
           ],
           optionValue: "code",

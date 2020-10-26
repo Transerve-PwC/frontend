@@ -189,7 +189,8 @@ import {
                 },
                 required: true,
                 errorMessage:"STORE_VALIDATION_RECEIVED_QUANTITY",
-                pattern: getPattern("Amount") || null,
+                 //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
               }),
               beforeFieldChange: (action, state, dispatch) => {

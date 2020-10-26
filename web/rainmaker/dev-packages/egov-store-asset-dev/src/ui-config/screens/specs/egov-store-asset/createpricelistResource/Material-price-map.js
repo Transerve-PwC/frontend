@@ -9,6 +9,7 @@ import {
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { getTodaysDateInYMD } from "../../utils";
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import get from "lodash/get";
   import set from "lodash/set";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -113,7 +114,8 @@ import {
                 },
                 required: true,
             errorMessage:"STORE_VALIDATION_RATER_PER_UNIT",
-                pattern: getPattern("Amount") || null,
+                //pattern: getPattern("Amount") || null,
+                pattern: getSTOREPattern("Quantity"),
                 jsonPath: "priceLists[0].priceListDetails[0].ratePerUnit"
               })
             },
@@ -129,7 +131,8 @@ import {
                 },
                 required: true,
             errorMessage:"STORE_VALIDATION_QUANTITY",
-                pattern: getPattern("Amount") || null,
+                //pattern: getPattern("Amount") || null,
+                pattern: getSTOREPattern("Quantity"),
                 jsonPath: "priceLists[0].priceListDetails[0].quantity"
               })
             },          

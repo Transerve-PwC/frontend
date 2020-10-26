@@ -12,6 +12,7 @@ import {
   import get from "lodash/get";
   import{GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
   import set from "lodash/set";
+  import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField , prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
   
   const arrayCrawler = (arr, n) => {
@@ -203,7 +204,8 @@ import {
                 },
                 required: true,
                 visible:false,
-                pattern: getPattern("Amount") || null,
+               // pattern: getPattern("Amount") || null,
+                pattern: getSTOREPattern("Quantity") || null,
                 jsonPath: "indents[0].indentDetails[0].indentQuantity"
               })
             },
@@ -223,8 +225,9 @@ import {
                 required: true,
                 errorMessage: "STORE_VALIDATION_QUANTITY",
                 minValue:1,
-                pattern: getPattern("Amount") || null,
-                jsonPath: "indents[0].indentDetails[0].userQuantity"
+               // pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity") || null,
+                jsonPath: "indents[0].indentDetails[0].indentQuantity"
               }),
               beforeFieldChange: (action, state, dispatch) => {
                 let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0];
