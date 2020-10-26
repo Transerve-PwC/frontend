@@ -434,33 +434,44 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
     });
   }
 };
-
+export const formatAmount = (x) => {
+  
+  return x.toString().split('.')[0].length > 3 ? x.toString().substring(0,x.toString().split('.')[0].length-3).replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + x.toString().substring(x.toString().split('.')[0].length-3): x.toString();
+  
+}
 export const setXLSTableData = async({demands, payments, componentJsonPath, screenKey}) => {
   let data = demands.map(item => {
     const findItem = payments.find(payData => moment(new Date(payData.dateOfPayment)).format("MMM YYYY") === moment(new Date(item.generationDate)).format("MMM YYYY"));
     return !!findItem ? {...item, ...findItem} : {...item}
   })
-  data = data.map(item => ({
+  const newdata=data.map(item=>({
     [RP_DEMAND_GENERATION_DATE]: !!item.generationDate && moment(new Date(item.generationDate)).format("DD MMM YYYY"),
     [RP_PAYMENT_DATE]: !!item.dateOfPayment && moment(new Date(item.dateOfPayment)).format("DD MMM YYYY"),
     [RP_ASSESSMENT_AMOUNT]: !!item.collectionPrincipal && item.collectionPrincipal.toFixed(2),
     [RP_REALIZATION_AMOUNT]: !!item.amountPaid && item.amountPaid.toFixed(2),
     [RP_RECEIPT_NO]: item.receiptNo
   }))
+  data = data.map(item => ({
+    [RP_DEMAND_GENERATION_DATE]: !!item.generationDate && moment(new Date(item.generationDate)).format("DD MMM YYYY"),
+    [RP_PAYMENT_DATE]: !!item.dateOfPayment && moment(new Date(item.dateOfPayment)).format("DD MMM YYYY"),
+    [RP_ASSESSMENT_AMOUNT]: !!item.collectionPrincipal && formatAmount(item.collectionPrincipal.toFixed(2)),
+    [RP_REALIZATION_AMOUNT]: !!item.amountPaid && formatAmount(item.amountPaid.toFixed(2)),
+    [RP_RECEIPT_NO]: item.receiptNo
+  }))
 
-  const {totalAssessment, totalRealization} = data.reduce((prev, curr) => {
+
+  const {totalAssessment, totalRealization} = newdata.reduce((prev, curr) => {
     prev = {
       totalAssessment: prev.totalAssessment + Number(curr[RP_ASSESSMENT_AMOUNT]),
       totalRealization: prev.totalRealization + Number(curr[RP_REALIZATION_AMOUNT])
     } 
     return prev
   }, {totalAssessment: 0, totalRealization: 0})
-
   data = [...data, {
     [RP_DEMAND_GENERATION_DATE]: getTextToLocalMapping("RP_TOTAL_AMOUNT"),
     [RP_PAYMENT_DATE]: "",
-    [RP_ASSESSMENT_AMOUNT]: totalAssessment.toFixed(2),
-    [RP_REALIZATION_AMOUNT]: totalRealization.toFixed(2),
+    [RP_ASSESSMENT_AMOUNT]: formatAmount(totalAssessment.toFixed(2)),
+    [RP_REALIZATION_AMOUNT]: formatAmount(totalRealization.toFixed(2)),
     [RP_RECEIPT_NO]: ""
   }]
   if(data.length > 1) {

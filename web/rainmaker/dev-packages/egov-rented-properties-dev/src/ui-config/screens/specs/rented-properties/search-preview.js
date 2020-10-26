@@ -17,6 +17,7 @@ import { editFooter,footerReviewTop } from "./applyResource/reviewFooter";
 import { httpRequest } from "egov-ui-framework/ui-utils/api.js";
 import{formatAmount} from "./searchResource/functions"
 import set from "lodash/set"
+import { get } from "lodash";
 import {applicationNumber} from './apply'
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
@@ -271,7 +272,7 @@ const buttonComponent = (label) => ({
   }
 })
 
-const handleClose = (state,dispatch) => {
+const handleClose = async (state,dispatch,action) => {
   dispatch(
     handleField(
       "search-preview",
@@ -280,10 +281,53 @@ const handleClose = (state,dispatch) => {
       false
   ),
 )
+let transitNo = getQueryArg(window.location.href, "transitNumber");
+await searchResults(action, state, dispatch, transitNo)
+let area=get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.address.area")
+let phone=get(state.screenConfiguration.preparedFinalObject,"Properties[0].owners[0].ownerDetails.phone")
+let pincode=get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.address.pincode")
+dispatch(
+  handleField(
+    "search-preview",
+    "components.div.children.adhocDialog.children.popup.children.area.children.rateField",
+    "props.value",
+    area
+),
+)
+dispatch(
+  handleField(
+    "search-preview",
+    "components.div.children.adhocDialog.children.popup.children.phoneNumber.children.phone",
+    "props.value",
+    phone
+),
+)
+dispatch(
+  handleField(
+    "search-preview",
+    "components.div.children.adhocDialog.children.popup.children.pinCode.children.rateField",
+    "props.value",
+    pincode
+),
+)
 };
 
 const update = async (state, dispatch) => {
   const {Properties} = state.screenConfiguration.preparedFinalObject
+  const locality=Properties[0].propertyDetails.address.area
+  const pincode=Properties[0].propertyDetails.address.pincode
+  const phone=Properties[0].owners[0].ownerDetails.phone
+  if(!locality || !pincode || !phone){
+    dispatch(
+    toggleSnackbar(
+      true,
+      { labelName: "Please enter the mandatory feilds", labelKey: "RP_ERR_FILL_RENTED_MANDATORY_FIELDS"},
+      "error"
+    )
+    );
+  return
+  }
+  else{
   try {
   const response = await httpRequest(
     "post",
@@ -299,7 +343,17 @@ const update = async (state, dispatch) => {
     false
   ))
   if(!!response && !!response.Properties.length) {
-    dispatch(prepareFinalObject("Properties", response.Properties))
+    let properties = response.Properties;
+    //dispatch(prepareFinalObject("Properties", response.Properties))
+    let {rentSummary} = properties[0]
+    let formatrentSummary = {
+      balancePrincipal: !!rentSummary ? formatAmount(rentSummary.balancePrincipal.toFixed(2)) : 0,
+      balanceInterest: !!rentSummary ? formatAmount(rentSummary.balanceInterest.toFixed(2)) : 0,
+      balanceAmount: !!rentSummary ? formatAmount(rentSummary.balanceAmount.toFixed(2)) : 0
+    }
+properties=[{...properties[0],formatrentSummary}]
+    dispatch(prepareFinalObject("Properties", properties))
+   // dispatch(prepareFinalObject("Properties", response.Properties))
   }
 } catch (error) {
   dispatch(
@@ -309,6 +363,7 @@ const update = async (state, dispatch) => {
       "error"
     )
   );
+}
 }
 }
 
@@ -560,8 +615,8 @@ export const editPopup = getCommonContainer({
             },
             onClickDefination: {
               action: "condition",
-              callBack: (state, dispatch) => {
-                handleClose(state, dispatch);
+              callBack: (state, dispatch,action) => {
+                handleClose(state, dispatch,action);
               }
             }
           }

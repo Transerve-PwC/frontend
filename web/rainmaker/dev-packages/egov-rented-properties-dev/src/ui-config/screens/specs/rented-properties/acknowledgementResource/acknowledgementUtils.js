@@ -9,7 +9,7 @@ import {
     bodyBox: {
       marginLeft: 16,
       flex: 2,
-      marginTop:"7px"
+      marginTop:"13px"
     },
     tailText: {
       color: "rgba(0, 0, 0, 0.6000000238418579)",
@@ -28,7 +28,7 @@ import {
       textAlign: "right",
       justifyContent: "center",
       flex: 1,
-      marginTop:"7px"
+      marginTop:"13px"
     },
     bodySub: {
       marginTop: "8px",

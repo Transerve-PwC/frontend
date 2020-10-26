@@ -18,7 +18,7 @@ class DialogContainer extends React.Component {
   render() {
     const { open, maxWidth, children } = this.props;
     return (
-      <Dialog open={open} maxWidth={maxWidth} onClose={this.handleClose}>
+      <Dialog open={open} maxWidth={maxWidth} onClose={this.handleClose} onBackdropClick="false">
         <DialogContent children={children} />
       </Dialog>
     );

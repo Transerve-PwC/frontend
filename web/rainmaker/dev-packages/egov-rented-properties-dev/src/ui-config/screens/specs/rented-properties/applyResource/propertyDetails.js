@@ -368,7 +368,7 @@ const transitNumberField = {
     required: true,
     minLength: 2,
     maxLength: 20,
-    pattern: getPattern("Numeric"),
+    pattern: getPattern("numeric-only"),
     jsonPath: "Properties[0].propertyDetails.area",
     // optionValue: "code",
     // optionLabel: "label",
