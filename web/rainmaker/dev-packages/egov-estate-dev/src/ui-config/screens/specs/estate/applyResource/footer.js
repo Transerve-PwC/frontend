@@ -175,6 +175,12 @@ const callBackForNext = async (state, dispatch) => {
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
         break;
       case "ET.PROPRIETORSHIP":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
         var isProprietorshipDetailsValid = validateFields(
           "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
           state,
@@ -206,7 +212,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid || isOwnerOrPartnerDetailsValid) || isProprietorshipDetailsValid) {
+    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) || (isFirmDetailsValid && isProprietorshipDetailsValid)) {
       const res = await applyEstates(state, dispatch, activeStep, "apply");
       if (!res) {
         return
@@ -325,7 +331,7 @@ const callBackForNext = async (state, dispatch) => {
         set(
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardSixthStep.children.previousOwnerDocuments_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Douments - ${purchaserName}`
+          `Documents - ${purchaserName}`
         )
         const reviewPurchaserDetails = getReviewPurchaser(true, i);
         set(
@@ -570,7 +576,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
       set(
         state.screenConfiguration.screenConfig,
         `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-        `Douments - ${ownerName}`
+        `Documents - ${ownerName}`
       )
 
       const reviewOwnerDetails = getReviewOwner(true, i);

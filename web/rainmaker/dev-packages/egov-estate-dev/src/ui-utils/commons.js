@@ -440,7 +440,7 @@ export const setXLSTableData = async({demands, payments ,componentJsonPath, scre
     [ES_DATE] : ' ',
     [ES_RENT_DUE_DATE]: !!item.demandDate && moment(new Date(item.demandDate)).format("DD MMM YYYY") || '',
     [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest.toFixed(2) || '',
-    [ES_ST_GST_RATE]:!!item.gst && item.gst.toFixed(2) || '',
+    [ES_ST_GST_RATE]:!!item.gst && item.gst || '',
     [ES_ST_GST_DUE]: !!item.collectedGST && item.collectedGST.toFixed(2) || '',
     [ES_PAID]: !!item.paid && item.paid.toFixed(2) || '',
     [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY") || '',

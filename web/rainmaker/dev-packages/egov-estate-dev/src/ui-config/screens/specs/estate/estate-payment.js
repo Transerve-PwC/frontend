@@ -13,7 +13,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
     labelKey: "ES_RENT_PAYMENT_HEADER"
   });
 
-  const getMdmsData = async (dispatch) => {
+ export const getMdmsData = async (dispatch) => {
     let mdmsBody = {
       MdmsCriteria: {
         tenantId: commonConfig.tenantId,
@@ -104,7 +104,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
                 labelKey: "ES_PAYMENT_TYPE_LABEL"
               },
             required: false,
-            jsonPath: "Properties[0].paymentType",
+            jsonPath: "payment.paymentType",
             optionValue: "code",
             optionLabel: "name",
             sourceJsonPath: "searchScreenMdmsData.EstateServices.paymentType",
@@ -117,11 +117,9 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
               labelName: "Select Payment Type",
               labelKey: "ES_SELECT_PAYMENT_TYPE_PLACEHOLDER"
           },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].paymentType"
+            required: true,
+            jsonPath: "Properties[0].paymentType",
+            visible: process.env.REACT_APP_NAME !== "Citizen"
           }),
         Amount: getTextField({
             label: {
@@ -142,11 +140,8 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
               labelName: "Enter amount",
               labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
           },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].amount"
+            required: true,
+            jsonPath: "payment.paymentAmount"
         }),
         bankName: getTextField({
             label: {
@@ -167,11 +162,9 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
               labelName: "Enter Bank Name",
               labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
           },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].amount"
+            required: true,
+            jsonPath: "payment.bankName",
+            visible: process.env.REACT_APP_NAME !== "Citizen"
         }),
         transactionId: getTextField({
             label: {
@@ -191,12 +184,10 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
             placeholder: {
               labelName: "Enter Transaction ID",
               labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
-          },
-            props: {
-              disabled: false
             },
-            required: false,
-            jsonPath: "Properties[0].transactionId"
+            required: true,
+            jsonPath: "payment.transactionId",
+            visible: process.env.REACT_APP_NAME !== "Citizen"
         }),
       })
   })

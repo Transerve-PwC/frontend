@@ -7,10 +7,11 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import {
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getBill } from "../../utils";
+import { getBill, validateFields } from "../../utils";
 import {
     getUserInfo,
   } from "egov-ui-kit/utils/localStorageUtils";
+import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 export const callPGService = async (state, dispatch, item, _businessService) => {
   const tenantId = getQueryArg(window.location.href, "tenantId");
@@ -169,11 +170,20 @@ export const getCommonApplyFooter = children => {
   };
 };
 
+const callBackForOfflinePayment = (state, dispatch) => {
+  let isValid = true;
+  isValid = validateFields("components.div.children.formwizardFirstStep.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "pay")
+  if(isValid) {
+    console.log("====hiii")
+  }
+}
+
 export const footer = getCommonApplyFooter({
   makePayment: {
     uiFramework: "custom-atoms-local",
     moduleName: "egov-estate",
     componentPath: "MenuButton",
+    visible: process.env.REACT_APP_NAME === "Citizen",
     props: {
       data: {
         label: {labelName : "MAKE PAYMENT" , labelKey :"COMMON_MAKE_PAYMENT"},
@@ -182,6 +192,30 @@ export const footer = getCommonApplyFooter({
         style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" } },
         menu: []
       }
+    },
+  },
+  paymentButton: {
+    componentPath: "Button",
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "180px",
+        height: "48px",
+        marginRight: "45px",
+        borderRadius: "inherit"
+      }
+    },
+    children: {
+          submitButtonLabel: getLabel({
+            labelName: "MAKE PAYMENT",
+            labelKey: "COMMON_MAKE_PAYMENT"
+          })
+        },
+    onClickDefination: {
+      action: "condition",
+      callBack: callBackForOfflinePayment
     },
   }
 });

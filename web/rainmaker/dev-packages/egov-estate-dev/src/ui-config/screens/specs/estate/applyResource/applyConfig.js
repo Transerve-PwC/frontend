@@ -122,14 +122,29 @@ export const paymentDetailsTable =  {
       ES_RENT_RECEIVED,
       ES_RECEIPT_NO,
       ES_DATE,
-      ES_RENT_DUE_DATE,
+      {
+        name: ES_RENT_DUE_DATE,
+        options: {
+          setCellProps: () => ({ style: { minWidth: "150px", maxWidth: "150px" }})
+        }
+      },
       ES_PENALTY_INTEREST,
       ES_ST_GST_RATE,
       ES_ST_GST_DUE,
       ES_PAID,
       ES_DATE_OF_RECEIPT,
-      ES_NO_OF_DAYS,
-      ES_INTEREST_ON_DELAYED_PAYMENT
+      {
+        name: ES_NO_OF_DAYS,
+        options: {
+          setCellProps: () => ({ style: { minWidth: "150px", maxWidth: "150px" }}),
+        }
+      },
+      {
+        name: ES_INTEREST_ON_DELAYED_PAYMENT,
+        options: {
+          setCellProps: () => ({ style: { minWidth: "200px", maxWidth: "200px" }}),
+        }
+      },
       
     ],
     options: {
