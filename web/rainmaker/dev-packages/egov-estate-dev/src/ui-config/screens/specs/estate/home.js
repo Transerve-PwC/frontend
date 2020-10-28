@@ -40,22 +40,6 @@ const cardItems = [
     icon: < FormIcon / > ,
     route: "search-application"
   },
-  // {
-  //   label: {
-  //     labelKey: "ES_PROPERTY_MASTER_ALLOTMENT_HEADER",
-  //     labelName: "Allotment"
-  //   },
-  //   icon: < FormIcon / > ,
-  //   route: `allotment?tenantId=${getTenantId()}`
-  // },
-  // {
-  //   label: {
-  //     labelKey: "ES_PROPERTY_MASTER_CANCELLATION_HEADER",
-  //     labelName: "Cancellation"
-  //   },
-  //   icon: < FormIcon / > ,
-  //   route: ""
-  // },
   {
     label: {
       labelKey: "ES_PROPERTY_MASTER_REFUND_HEADER",
@@ -146,6 +130,7 @@ const estateHome = {
           props: {
             items: process.env.REACT_APP_NAME === "Citizen" ? citizenCardItems : cardItems,
             history: {},
+            // isArray: process.env.REACT_APP_NAME === "Employee"
           }
         }
       }

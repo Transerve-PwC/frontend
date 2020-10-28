@@ -1099,149 +1099,188 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   }
 
-
-  switch (applicationType) {
-    case 'SaleDeed':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject
-        ]
-      break;
-    case 'LeaseDeed':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,
-         
-        ]
-      break;
-    case 'ScfToSco':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject
-        ]
-      break;
-    case 'LeaseholdToFreehold':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,
-          AmountLetterAfterConversionDownloadObject,
-          HousingBoardNotificationDownloadObject,
-          NoticeDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,
-          AmountLetterAfterConversionPrintObject,
-          HousingBoardNotificationPrintObject,NoticePrintObject
-        ]
-        
-      break;
-    case 'ChangeInTrade':
+  switch (applicationType && applicationState) {
+    case `${applicationType}` && 'ES_PENDING_DS_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_DA_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_SRA_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_SO_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_AC_APPROVAL':
+    case `${applicationType}` && 'ES_PENDING_DA_FEE': 
+    case `${applicationType}` && 'ES_PENDING_PAYMENT':
+    case `${applicationType}` && 'ES_PENDING_CLARIFICATION':
+    case `${applicationType}` && 'ES_REJECTED': 
+    
         downloadMenu = [
           applicationDownloadObject
         ]
-      
         printMenu = [
-          applicationPrintObject
-        ]
-      break;
-    case 'UnRegisteredWill':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-        ]
-      break;
-      case 'NOC':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'RegisteredWill':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-          ]
-      break;
-      case 'NDC':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
-          ]
-      break;
-      case 'PatnershipDeed':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'DuplicateCopy':
-          downloadMenu = [
-            applicationDownloadObject
-          ]
-        
-          printMenu = [
             applicationPrintObject
-          ]
-      break;
-      case 'Mortgage':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'FamilySettlement':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'IntestateDeath':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-          ]
-      break;
-  }
-  // downloadMenu = [
-  //   applicationDownloadObject,LetterDownloadObject
-  // ]
+       ] 
+        break;    
+    case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
+    case `${applicationType}` && 'ES_PENDING_SO_APPROVAL': 
+    case `${applicationType}` && 'ES_PENDING_PAYMENT': 
+          switch(applicationType) {
+            case 'ChangeInTrade':
+            case 'DuplicateCopy':  
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+                printMenu = [
+                  applicationPrintObject
+                ]
+              break;
+            default:
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+          } 
+        break;
 
-  // printMenu = [
-  //   applicationPrintObject,LetterPrintObject
-  // ]
+    case `${applicationType}` && 'ES_APPROVED':  
+      switch(applicationType) {
+            case 'SaleDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'LeaseDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,
+                
+                ]
+              break;
+            case 'ScfToSco':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+              break;
+            case 'LeaseholdToFreehold':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,
+                  AmountLetterAfterConversionDownloadObject,
+                  HousingBoardNotificationDownloadObject,
+                  NoticeDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,
+                  AmountLetterAfterConversionPrintObject,
+                  HousingBoardNotificationPrintObject,NoticePrintObject
+                ]
+                
+              break;
+            case 'ChangeInTrade':
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject
+                ]
+              break;
+            case 'UnRegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+              break;
+            case 'NOC':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'RegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+            case 'NDC':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
+                ]
+            break;
+            case 'PatnershipDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'DuplicateCopy':
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject
+                ]
+            break;
+            case 'Mortgage':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'FamilySettlement':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'IntestateDeath':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+          } 
+        break;   
+        
+  
+  }
 
   return {
     rightdiv: {

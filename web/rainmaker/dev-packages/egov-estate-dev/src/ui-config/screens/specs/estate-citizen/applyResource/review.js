@@ -79,13 +79,14 @@ export const viewFour = (section, application) => {
       }
     }
     case "LIST": {
+      const contents = section.fields.map(item => ({...item, callBack: item.type === "date" ? convertEpochToDate : null}))
       return {
         uiFramework: "custom-containers-local",
         moduleName: "egov-estate",
         componentPath: "MultipleCardContainer",
         props: {
           sourceJsonPath: section.sourceJsonPath,
-          contents: section.fields
+          contents
         }
       }
     }

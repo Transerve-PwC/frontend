@@ -61,10 +61,47 @@ class LandingPage extends React.Component {
   };
 
   render() {
-    const { classes, items, applicationCount } = this.props;
+    const { classes, items, applicationCount, isArray } = this.props;
     return (
       <Grid container className="landing-page-main-grid">
-        {items.map(obj => {
+        {!!isArray ? items.map(obj => {
+          return (
+            <React.Fragment>
+              <div>{obj.branchType}</div>
+              {obj.items.map(item => {
+                return !item.hide ? (
+                  <Grid
+                    className={classes.item}
+                    item
+                    xs={12}
+                    sm={items.length > 4 ? 12 / 4 : 12 / items.length}
+                    align="center"
+                  >
+                    <Card
+                      className={`${classes.paper} module-card-style`}
+                      onClick={() => this.onCardCLick(item.route)}
+                    >
+                      <CardContent classes={{ root: "card-content-style" }}>
+                        {item.icon}
+                        <div>
+                          <LabelContainer
+                            labelKey={item.label.labelKey}
+                            labelName={item.label.labelName}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.8700000047683716)"
+                            }}
+                            dynamicArray={applicationCount ? [applicationCount] : [0]}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ) : null;
+              })}
+            </React.Fragment>
+          )
+        })  : items.map(obj => {
           return !obj.hide ? (
             <Grid
               className={classes.item}
@@ -94,7 +131,8 @@ class LandingPage extends React.Component {
               </Card>
             </Grid>
           ) : null;
-        })}
+        })
+        }
       </Grid>
     );
   }
