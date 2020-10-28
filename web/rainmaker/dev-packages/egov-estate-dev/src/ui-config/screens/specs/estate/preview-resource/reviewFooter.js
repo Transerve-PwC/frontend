@@ -112,11 +112,11 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                 onClickDefination: {
                   action: "condition",
                   callBack: () => {
-                    // dispatch(
-                    //   setRoute(
-                    //    `/estate-citizen/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
-                    //   )
-                    // );
+                    dispatch(
+                      setRoute(
+                       `/estate/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
+                      )
+                    );
                   },
                 },
                 visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false

@@ -4,7 +4,7 @@ import { getMaterialTransferInwordNoteListDetailsView } from "./view-material-tr
  import { getMaterialTransferNoteDetailsView } from "./view-material-transfer-inword-note-details"
 // import { getOtherDetailsView } from "./view-other-details";
 import { masterCommonFooter } from "./footer";
-
+import {totalIssueValue} from "../creatematerialTransferInwordResource/totalIssueValue";
 export const MaterialTransferInwordReviewDetails = isReview => {
   const viewMaterialTransferInwordListDetails = getMaterialTransferInwordNoteListDetailsView(isReview);
     const viewMaterialTransferNoteDetails = getMaterialTransferNoteDetailsView(isReview); 
@@ -12,7 +12,8 @@ export const MaterialTransferInwordReviewDetails = isReview => {
   const footer = isReview ? masterCommonFooter() : {};
   return getCommonCard({
     viewMaterialTransferInwordListDetails, 
-    viewMaterialTransferNoteDetails,   
+    viewMaterialTransferNoteDetails,  
+    totalIssueValue, 
     // viewOtherDetails,
     footer
   });

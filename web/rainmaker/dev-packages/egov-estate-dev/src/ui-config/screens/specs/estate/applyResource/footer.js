@@ -150,43 +150,6 @@ const callBackForNext = async (state, dispatch) => {
       ""
     )
 
-    let isOwnerOrPartnerDetailsValid = true;
-
-    switch(entityType) {
-      case "ET.PUBLIC_LIMITED_COMPANY":
-      case "ET.PRIVATE_LIMITED_COMPANY":
-        var isCompanyDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        );
-
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        break;
-      case "ET.PARTNERSHIP_FIRM":
-        var isFirmDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        )
-
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
-        break;
-      case "ET.PROPRIETORSHIP":
-        var isProprietorshipDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        )
-        break;
-      default:
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        break;
-    }
-
     if (!!entityType) {
       if (entityType == "ET.PARTNERSHIP_FIRM") {
         dispatch(
@@ -206,13 +169,83 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid || isOwnerOrPartnerDetailsValid) || isProprietorshipDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep, "apply");
-      if (!res) {
-        return
-      }
-    } else {
-      isFormValid = false;
+    let isOwnerOrPartnerDetailsValid = true;
+
+    switch(entityType) {
+      case "ET.PUBLIC_LIMITED_COMPANY":
+      case "ET.PRIVATE_LIMITED_COMPANY":
+        var isCompanyDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        );
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      case "ET.PARTNERSHIP_FIRM":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
+
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      case "ET.PROPRIETORSHIP":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+        var isProprietorshipDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+
+        if (isFirmDetailsValid && isProprietorshipDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      default:
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+
+        if (isOwnerOrPartnerDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
     }
   }
 
@@ -325,7 +358,7 @@ const callBackForNext = async (state, dispatch) => {
         set(
           state.screenConfiguration.screenConfig,
           `apply.components.div.children.formwizardSixthStep.children.previousOwnerDocuments_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-          `Douments - ${purchaserName}`
+          `Documents - ${purchaserName}`
         )
         const reviewPurchaserDetails = getReviewPurchaser(true, i);
         set(
@@ -570,7 +603,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
       set(
         state.screenConfiguration.screenConfig,
         `apply.components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${i}.children.cardContent.children.header.children.key.props.labelKey`,
-        `Douments - ${ownerName}`
+        `Documents - ${ownerName}`
       )
 
       const reviewOwnerDetails = getReviewOwner(true, i);
@@ -1093,149 +1126,188 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   }
 
-
-  switch (applicationType) {
-    case 'SaleDeed':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject
-        ]
-      break;
-    case 'LeaseDeed':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,
-         
-        ]
-      break;
-    case 'ScfToSco':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject
-        ]
-      break;
-    case 'LeaseholdToFreehold':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,
-          AmountLetterAfterConversionDownloadObject,
-          HousingBoardNotificationDownloadObject,
-          NoticeDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,
-          AmountLetterAfterConversionPrintObject,
-          HousingBoardNotificationPrintObject,NoticePrintObject
-        ]
-        
-      break;
-    case 'ChangeInTrade':
+  switch (applicationType && applicationState) {
+    case `${applicationType}` && 'ES_PENDING_DS_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_DA_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_SRA_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_SO_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_AC_APPROVAL':
+    case `${applicationType}` && 'ES_PENDING_DA_FEE': 
+    case `${applicationType}` && 'ES_PENDING_PAYMENT':
+    case `${applicationType}` && 'ES_PENDING_CLARIFICATION':
+    case `${applicationType}` && 'ES_REJECTED': 
+    
         downloadMenu = [
           applicationDownloadObject
         ]
-      
         printMenu = [
-          applicationPrintObject
-        ]
-      break;
-    case 'UnRegisteredWill':
-        downloadMenu = [
-          applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-        ]
-      
-        printMenu = [
-          applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-        ]
-      break;
-      case 'NOC':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'RegisteredWill':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-          ]
-      break;
-      case 'NDC':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
-          ]
-      break;
-      case 'PatnershipDeed':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'DuplicateCopy':
-          downloadMenu = [
-            applicationDownloadObject
-          ]
-        
-          printMenu = [
             applicationPrintObject
-          ]
-      break;
-      case 'Mortgage':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'FamilySettlement':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject
-          ]
-      break;
-      case 'IntestateDeath':
-          downloadMenu = [
-            applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
-          ]
-        
-          printMenu = [
-            applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
-          ]
-      break;
-  }
-  // downloadMenu = [
-  //   applicationDownloadObject,LetterDownloadObject
-  // ]
+       ] 
+        break;    
+    case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
+    case `${applicationType}` && 'ES_PENDING_SO_APPROVAL': 
+    case `${applicationType}` && 'ES_PENDING_PAYMENT': 
+          switch(applicationType) {
+            case 'ChangeInTrade':
+            case 'DuplicateCopy':  
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+                printMenu = [
+                  applicationPrintObject
+                ]
+              break;
+            default:
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+          } 
+        break;
 
-  // printMenu = [
-  //   applicationPrintObject,LetterPrintObject
-  // ]
+    case `${applicationType}` && 'ES_APPROVED':  
+      switch(applicationType) {
+            case 'SaleDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'LeaseDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,
+                
+                ]
+              break;
+            case 'ScfToSco':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+              break;
+            case 'LeaseholdToFreehold':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,
+                  AmountLetterAfterConversionDownloadObject,
+                  HousingBoardNotificationDownloadObject,
+                  NoticeDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,
+                  AmountLetterAfterConversionPrintObject,
+                  HousingBoardNotificationPrintObject,NoticePrintObject
+                ]
+                
+              break;
+            case 'ChangeInTrade':
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject
+                ]
+              break;
+            case 'UnRegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+              break;
+            case 'NOC':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'RegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+            case 'NDC':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
+                ]
+            break;
+            case 'PatnershipDeed':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'DuplicateCopy':
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject
+                ]
+            break;
+            case 'Mortgage':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'FamilySettlement':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject
+                ]
+            break;
+            case 'IntestateDeath':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+          } 
+        break;   
+        
+  
+  }
 
   return {
     rightdiv: {

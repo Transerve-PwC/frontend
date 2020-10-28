@@ -13,7 +13,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
     labelKey: "ES_RENT_PAYMENT_HEADER"
   });
 
-  const getMdmsData = async (dispatch) => {
+ export const getMdmsData = async (dispatch) => {
     let mdmsBody = {
       MdmsCriteria: {
         tenantId: commonConfig.tenantId,
@@ -94,110 +94,118 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
     jsonPath: "searchScreenFileNo.fileNumber",
     disabled: true
   }
+
+  const paymentType = {
+    label: {
+        labelName: "Payment Type",
+        labelKey: "ES_PAYMENT_TYPE_LABEL"
+      },
+    required: false,
+    jsonPath: "payment.paymentType",
+    optionValue: "code",
+    optionLabel: "name",
+    sourceJsonPath: "searchScreenMdmsData.EstateServices.paymentType",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    errorMessage: "ES_ERR_PAYMENT_TYPE_FIELD",
+    placeholder: {
+      labelName: "Select Payment Type",
+      labelKey: "ES_SELECT_PAYMENT_TYPE_PLACEHOLDER"
+  },
+    required: true,
+    jsonPath: "Properties[0].paymentType",
+    visible: process.env.REACT_APP_NAME !== "Citizen"
+  }
+
+  const paymentAmount = {
+    label: {
+        labelName: "Amount",
+        labelKey: "ES_AMOUNT_LABEL"
+    },
+    
+    jsonPath: "Properties[0].amount",
+    optionValue: "code",
+    optionLabel: "label",
+    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    errorMessage: "ES_ERR_AMOUNT_FIELD",
+    placeholder: {
+      labelName: "Enter amount",
+      labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
+  },
+    required: true,
+    jsonPath: "payment.paymentAmount"
+  }
+
+  const bankName = {
+    label: {
+        labelName: "Bank Name",
+        labelKey: "ES_BANK_NAME_LABEL"
+    },
+    
+    jsonPath: "Properties[0].bankName",
+    optionValue: "code",
+    optionLabel: "label",
+    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    errorMessage: "ES_ERR_BANK_NAME_FIELD",
+    placeholder: {
+      labelName: "Enter Bank Name",
+      labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
+  },
+    required: true,
+    jsonPath: "payment.bankName",
+    visible: process.env.REACT_APP_NAME !== "Citizen"
+  }
+
+  const transactionId = {
+    label: {
+        labelName: "Transaction ID",
+        labelKey: "ES_TRANSACTION_ID_LABEL"
+    },
+    
+    jsonPath: "Properties[0].transactionId",
+    optionValue: "code",
+    optionLabel: "label",
+    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    errorMessage: "ES_ERR_TRANSACTION_ID_FIELD",
+    placeholder: {
+      labelName: "Enter Transaction ID",
+      labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
+    },
+    required: true,
+    jsonPath: "payment.transactionId",
+    visible: process.env.REACT_APP_NAME !== "Citizen"
+  }
+
+  export const applicationOfflinePaymentDetails = getCommonCard({
+    header: offlinePaymentDetailsHeader,
+    detailsContainer: getCommonContainer({
+        Amount: getTextField(paymentAmount),
+        bankName: getTextField(bankName),
+        transactionId: getTextField(transactionId)
+    })
+  })
   
   export const offlinePaymentDetails = getCommonCard({
       header: offlinePaymentDetailsHeader,
       detailsContainer: getCommonContainer({
-        paymentType: getSelectField({
-            label: {
-                labelName: "Payment Type",
-                labelKey: "ES_PAYMENT_TYPE_LABEL"
-              },
-            required: false,
-            jsonPath: "Properties[0].paymentType",
-            optionValue: "code",
-            optionLabel: "name",
-            sourceJsonPath: "searchScreenMdmsData.EstateServices.paymentType",
-            gridDefination: {
-                xs: 12,
-                sm: 6
-            },
-            errorMessage: "ES_ERR_PAYMENT_TYPE_FIELD",
-            placeholder: {
-              labelName: "Select Payment Type",
-              labelKey: "ES_SELECT_PAYMENT_TYPE_PLACEHOLDER"
-          },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].paymentType"
-          }),
-        Amount: getTextField({
-            label: {
-                labelName: "Amount",
-                labelKey: "ES_AMOUNT_LABEL"
-            },
-            
-            jsonPath: "Properties[0].amount",
-            optionValue: "code",
-            optionLabel: "label",
-            sourceJsonPath: "applyScreenMdmsData.propertyTypes",
-            gridDefination: {
-                xs: 12,
-                sm: 6
-            },
-            errorMessage: "ES_ERR_AMOUNT_FIELD",
-            placeholder: {
-              labelName: "Enter amount",
-              labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
-          },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].amount"
-        }),
-        bankName: getTextField({
-            label: {
-                labelName: "Bank Name",
-                labelKey: "ES_BANK_NAME_LABEL"
-            },
-            
-            jsonPath: "Properties[0].bankName",
-            optionValue: "code",
-            optionLabel: "label",
-            sourceJsonPath: "applyScreenMdmsData.propertyTypes",
-            gridDefination: {
-                xs: 12,
-                sm: 6
-            },
-            errorMessage: "ES_ERR_BANK_NAME_FIELD",
-            placeholder: {
-              labelName: "Enter Bank Name",
-              labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
-          },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].amount"
-        }),
-        transactionId: getTextField({
-            label: {
-                labelName: "Transaction ID",
-                labelKey: "ES_TRANSACTION_ID_LABEL"
-            },
-            
-            jsonPath: "Properties[0].transactionId",
-            optionValue: "code",
-            optionLabel: "label",
-            sourceJsonPath: "applyScreenMdmsData.propertyTypes",
-            gridDefination: {
-                xs: 12,
-                sm: 6
-            },
-            errorMessage: "ES_ERR_TRANSACTION_ID_FIELD",
-            placeholder: {
-              labelName: "Enter Transaction ID",
-              labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
-          },
-            props: {
-              disabled: false
-            },
-            required: false,
-            jsonPath: "Properties[0].transactionId"
-        }),
+        paymentType: getSelectField(paymentType),
+        Amount: getTextField(paymentAmount),
+        bankName: getTextField(bankName),
+        transactionId: getTextField(transactionId),
       })
   })
   

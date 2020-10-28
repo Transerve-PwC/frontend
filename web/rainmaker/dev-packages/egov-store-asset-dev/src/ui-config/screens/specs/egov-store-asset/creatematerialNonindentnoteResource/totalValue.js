@@ -18,6 +18,7 @@ import {
           props: {
             disabled: true
           },
+          visible:false,
           gridDefination: {
             xs: 12,
             sm: 4,
@@ -38,6 +39,7 @@ import {
             xs: 12,
             sm: 4,
           },
+          visible:true,
           jsonPath: "materialIssues[0].totalvalue"
         })
       },

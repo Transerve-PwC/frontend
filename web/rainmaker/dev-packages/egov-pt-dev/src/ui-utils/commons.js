@@ -17,7 +17,7 @@ import set from "lodash/set";
 import store from "ui-redux/store";
 import { getTranslatedLabel } from "../ui-config/screens/specs/utils";
 import DATA from "./documents";
-
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 const handleDeletedCards = (jsonObject, jsonPath, key) => {
   let originalArray = get(jsonObject, jsonPath, []);
   let modifiedArray = originalArray.filter(element => {

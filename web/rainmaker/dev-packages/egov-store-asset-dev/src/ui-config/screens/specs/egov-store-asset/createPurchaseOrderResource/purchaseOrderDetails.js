@@ -9,6 +9,7 @@ import {
   getPattern,
   getCommonSubHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -140,7 +141,8 @@ const purchaseOrderDetailsCard = {
                 labelName: "Enter Indent Quantity",
                 labelKey: "STORE_PURCHASE_ORDER_INDENTT_QUNTITY_PLACEHOLDER"
               },
-              pattern: getPattern("numeric-only"),
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               props: {
                 disabled:true,     
               },
@@ -161,7 +163,8 @@ const purchaseOrderDetailsCard = {
               props: {
                 disabled:true,     
               },
-              pattern: getPattern("numeric-only"),
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].issuedQuantity"
             })
           },
@@ -179,7 +182,8 @@ const purchaseOrderDetailsCard = {
               props: {
                 disabled:true,     
               },
-              pattern: getPattern("numeric-only"),
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].poOrderedQuantity"
             })
           },
@@ -193,7 +197,8 @@ const purchaseOrderDetailsCard = {
                 labelName: "Enter Order Quantity",
                 labelKey: "STORE_PURCHASE_ORDER_BLNC_ORDR_PLACEHOLDER"
               },
-              pattern: getPattern("numeric-only"),
+             // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].orderQuantity"
             }),
             beforeFieldChange: async (action, state, dispatch) => {
@@ -240,7 +245,8 @@ const purchaseOrderDetailsCard = {
                 labelName: "Enter Unit Price",
                 labelKey: "STORE_PURCHASE_ORDER_UNIT_PRC_PLACEHOLDER"
               },
-              pattern: getPattern("numeric-only"),
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].unitPrice"
             }),
             beforeFieldChange: async (action, state, dispatch) => {
@@ -285,7 +291,8 @@ const purchaseOrderDetailsCard = {
               props: {
                 disabled: true,       
               },
-              pattern: getPattern("numeric-only"),
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].totalValue"
             })
           },

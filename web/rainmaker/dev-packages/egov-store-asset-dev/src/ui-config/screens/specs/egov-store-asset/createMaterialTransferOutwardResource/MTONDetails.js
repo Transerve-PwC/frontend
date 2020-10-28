@@ -111,7 +111,8 @@ const MTONDetailsCard = {
                 labelKey: "STORE_MATERIAL_INDENT_QUANTITY_REQUIRED_PLACEHOLDER"
               },
               required:true,
-              pattern: getPattern("numeric-only"),
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].indentQuantity",
               props:{
                 disabled:true,
@@ -128,7 +129,8 @@ const MTONDetailsCard = {
                 labelName: "Enter Balance Quantity",
                 labelKey: "STORE_PURCHASE_ORDER_BLNC_QLTY_PLACEHOLDER"
               },
-              pattern: getPattern("numeric-only"),
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].balanceQuantity",
               props: {
                 disabled:true,
@@ -147,7 +149,8 @@ const MTONDetailsCard = {
               },
               required: true,
               errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
-              pattern: getPattern("numeric-only"),
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].userQuantityIssued",
               props:{
                 inputProps: {
@@ -208,7 +211,8 @@ const MTONDetailsCard = {
                 labelName: "Enter Unit Rate",
                 labelKey: "STORE_MATERIAL_RECEIPT__UNIT_RATE_PLACEHOLDER"
               },
-              pattern: getPattern("numeric-only"),
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].unitRate",
               props: {
                 disabled:true,

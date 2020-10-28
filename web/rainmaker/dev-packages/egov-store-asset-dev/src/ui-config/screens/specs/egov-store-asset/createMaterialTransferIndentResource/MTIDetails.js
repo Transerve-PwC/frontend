@@ -15,6 +15,7 @@ import set from "lodash/set";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import{GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
+import { getSTOREPattern} from "../../../../../ui-utils/commons";
 const MTIDetailsCard = {
   uiFramework: "custom-containers",
   componentPath: "MultiItem",
@@ -57,7 +58,7 @@ const MTIDetailsCard = {
               }
           }, 
           uomName: {
-            ...getSelectField({
+            ...getTextField({
               label: { labelName: "UOM Name", labelKey: "STORE_PURCHASE_ORDER_UOM" },
               placeholder: {
                 labelName: "Enter UOM Name",
@@ -66,7 +67,7 @@ const MTIDetailsCard = {
               required: true,
               errorMessage:"STORE_VALIDATION_UOM_NAME",
               jsonPath: "indents[0].indentDetails[0].uom.name",
-              sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
+              //sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
               props: {
                 disabled:true,
                 className: "hr-generic-selectfield",
@@ -77,7 +78,7 @@ const MTIDetailsCard = {
             beforeFieldChange: (action, state, dispatch) => {
               let name = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.UOM",action.value) 
               let cardindex  = action.componentJsonpath.split("items[")[1].split("]")[0];
-              dispatch(prepareFinalObject("indents[0].indentDetails[0].uom.name", name));
+              dispatch(prepareFinalObject(`indents[0].indentDetails[${cardindex}].uom.name`, name));
               }
           },
         
@@ -92,7 +93,9 @@ const MTIDetailsCard = {
                 labelKey: "STORE_MATERIAL_INDENT_QUANTITY_REQUIRED_PLACEHOLDER"
               },
               required:true,
-              pattern: getPattern("numeric-only"),
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
+               errorMessage: "STORE_VALIDATION_QUANTITY",
               jsonPath: "indents[0].indentDetails[0].indentQuantity"
             }),
             beforeFieldChange: (action, state, dispatch) => {

@@ -307,8 +307,12 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
   }, []);
   
   let Property = Properties[0];
-  Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments = myPDocuments
-  Property.propertyDetails.owners[0].ownerDetails.ownerDocuments = myODocuments
+  if(Property.propertyDetails.purchaser){
+    Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments = myPDocuments
+  }
+  if(Property.propertyDetails.owners){
+    Property.propertyDetails.owners[0].ownerDetails.ownerDocuments = myODocuments
+  }
 
   const DOWNLOADRECEIPT = {
     GET: {
@@ -1598,7 +1602,9 @@ export const _getPattern = (type) => {
     case "fileNumber":
       return /^[a-zA-Z0-9]{1,50}$/i;
     case "alphabet":
-      return /^[a-zA-Z ]*$/i;
+      return /^[a-zA-Z ]{1,150}$/i;
+    case "address":
+      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,150}$/i
   }
 }
 

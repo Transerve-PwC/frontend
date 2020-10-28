@@ -301,48 +301,48 @@ import {
                 jsonPath: "materialReceipt[0].receiptDetails[0].orderQuantity"
               })
             },
-            qtyasperChallan: {
-              ...getTextField({
-                label: {
-                  labelName: "Qty. as per Challan",
-                  labelKey: "STORE_MATERIAL_RECEIPT_QTY_AS_PER_CHALLAN"
-                },
-                placeholder: {
-                  labelName: "Qty. as per Challan",
-                  labelKey: "STORE_MATERIAL_RECEIPT_QTY_AS_PER_CHALLAN_PLACEHOLDER"
-                },
-                props:{
-                  disabled:false
-                },
-                required: false,
-                visible:false,
-                pattern: getPattern("Amount") || null,
-                jsonPath: "materialReceipt[0].receiptDetails[0].qtyasperChallan"
-              }),
-              beforeFieldChange: (action, state, dispatch) => {
-                  }
-            },
-            rateperunit: {
-              ...getTextField({
-                label: {
-                  labelName: "Qty Rate per unit",
-                  labelKey: "STORE_MATERIAL_RECEIPT_RATE_PER_UNIT"
-                },
-                placeholder: {
-                  labelName: "Enter Rate per unit",
-                  labelKey: "STORE_MATERIAL_RECEIPT_RATE_PER_UNIT_PLACEHOLDER"
-                },
-                props:{
-                  disabled:false
-                },
-                required: false,
-                visible:false,
-                pattern: getPattern("Amount") || null,
-                jsonPath: "materialReceipt[0].receiptDetails[0].rateperunit"
-              }),
-              beforeFieldChange: (action, state, dispatch) => {
-                 }
-            },
+            // qtyasperChallan: {
+            //   ...getTextField({
+            //     label: {
+            //       labelName: "Qty. as per Challan",
+            //       labelKey: "STORE_MATERIAL_RECEIPT_QTY_AS_PER_CHALLAN"
+            //     },
+            //     placeholder: {
+            //       labelName: "Qty. as per Challan",
+            //       labelKey: "STORE_MATERIAL_RECEIPT_QTY_AS_PER_CHALLAN_PLACEHOLDER"
+            //     },
+            //     props:{
+            //       disabled:false
+            //     },
+            //     required: false,
+            //     visible:false,
+            //     pattern: getPattern("Amount") || null,
+            //     jsonPath: "materialReceipt[0].receiptDetails[0].qtyasperChallan"
+            //   }),
+            //   beforeFieldChange: (action, state, dispatch) => {
+            //       }
+            // },
+            // rateperunit: {
+            //   ...getTextField({
+            //     label: {
+            //       labelName: "Qty Rate per unit",
+            //       labelKey: "STORE_MATERIAL_RECEIPT_RATE_PER_UNIT"
+            //     },
+            //     placeholder: {
+            //       labelName: "Enter Rate per unit",
+            //       labelKey: "STORE_MATERIAL_RECEIPT_RATE_PER_UNIT_PLACEHOLDER"
+            //     },
+            //     props:{
+            //       disabled:false
+            //     },
+            //     required: false,
+            //     visible:false,
+            //     pattern: getPattern("Amount") || null,
+            //     jsonPath: "materialReceipt[0].receiptDetails[0].rateperunit"
+            //   }),
+            //   beforeFieldChange: (action, state, dispatch) => {
+            //      }
+            // },
             QtyReceived: {
               ...getTextField({
                 label: {
@@ -357,6 +357,7 @@ import {
                   disabled:false
                 },
                 required: true,
+                visible:false,
                 errorMessage:"STORE_VALIDATION_RECEIVED_QUANTITY",
                 pattern: getPattern("Amount") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
@@ -379,7 +380,8 @@ import {
                 },
                 required: true,
                 errorMessage:"STORE_VALIDATION_USER_RECEIVED_QUANTITY",
-                pattern: getPattern("Amount") || null,
+                //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty"
               }),
               beforeFieldChange: (action, state, dispatch) => {
@@ -443,7 +445,8 @@ import {
                 },
                 required: true,
                 errorMessage:"STORE_VALIDATION_REMARK",
-                pattern: getPattern("Amount") || null,
+                //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].totalAcceptedvalue"
               }),
               beforeFieldChange: (action, state, dispatch) => {

@@ -5,6 +5,8 @@ import get from "lodash/get";
 import { getLocaleLabels} from "egov-ui-framework/ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { LabelContainer } from "egov-ui-framework/ui-containers";
+import {  setModule ,getLocale ,getUserInfo} from "egov-ui-kit/utils/localStorageUtils";
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 const styles = {
   color: "rgba(0, 0, 0, 0.87)",
   marginLeft: "3%",
@@ -19,9 +21,15 @@ const clickHereStyles = {
   color: "#FE7A51"
 }
 class  AddLinkForProperty extends React.Component {
-
+  citizenTenantId = () => {
+    const userInfo = JSON.parse(getUserInfo());
+    return userInfo.permanentCity || userInfo.tenantId;
+  }
 handleClick = (url) => {
   const {onsetRoute} = this.props;
+  setModule("rainmaker-pt");
+  const tenantId = process.env.REACT_APP_NAME === "Citizen" ? this.citizenTenantId(): getTenantId();
+  this.props.fetchLocalizationLabel(getLocale(), tenantId, tenantId);
   url = `/pt-common-screens/propertySearch?redirectUrl=${url}`;
     onsetRoute(url);
 }
@@ -50,6 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     onsetRoute: (url) => {
       dispatch(setRoute(url));
     },
+    fetchLocalizationLabel: (locale, moduleName, tenantId)=> dispatch(fetchLocalizationLabel(locale, moduleName, tenantId))
   };
 };
 export default  connect(mapStateToProps, mapDispatchToProps)(AddLinkForProperty) ;

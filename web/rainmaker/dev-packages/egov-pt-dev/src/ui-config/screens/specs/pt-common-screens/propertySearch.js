@@ -139,14 +139,14 @@ const screenConfig = {
                 },
 
                 buttonLabel: getLabel({
-                  labelName: "Register New Property",
-                  labelKey: "PT_COMMON_REGISTER_NEW_PROPERTY_BUTTON"
+                  labelName: "Verify Property Details",
+                  labelKey: "PT_COMMON_VERIFY_PROPERTY_BUTTON"
                 })
               },
               onClickDefination: {
                 action: "condition",
                 callBack: () => {
-                  let link="/pt-common-screens/register-property";
+                  let link="/pt-common-screens/verify-propertyDetails";
                   let moduleName = process.env.REACT_APP_NAME === "Citizen" ? '/citizen' : '/employee';
                   window.location.href = `${moduleName}${link}?redirectUrl=${url}`
                 }
@@ -154,9 +154,9 @@ const screenConfig = {
             }
           }
         },
-        searchPropertyDetails,
+        searchPropertyDetails : process.env.REACT_APP_NAME == "Citizen" ? {} : searchPropertyDetails,
         breakAfterSearch: getBreak(),
-        searchPropertyTable
+        searchPropertyTable 
 
       }
     }

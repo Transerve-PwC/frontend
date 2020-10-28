@@ -13,6 +13,7 @@ import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
 import { get } from "lodash";
+import {DocumentListContainer} from "../../ui-containers-local";
 
 const styles = theme => ({
   root: {
@@ -108,7 +109,8 @@ class ActionDialog extends React.Component {
       showEmployeeList,
       dialogHeader,
       moduleName,
-      isDocRequired
+      isDocRequired,
+      documentProps
     } = dialogData;
     const { getButtonLabelName } = this;
     let fullscreen = false;
@@ -217,7 +219,36 @@ class ActionDialog extends React.Component {
                     /> 
                     </Grid>
                   )}
-                  {(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION") || !!this.props.showDocuments && (<Grid item sm="12">
+
+                  {!!documentProps && (
+                    <Grid item sm="12">
+                    <Typography
+                    component="h3"
+                    variant="subheading"
+                    style={{
+                      color: "rgba(0, 0, 0, 0.8700000047683716)",
+                      fontFamily: "Roboto",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "20px",
+                      marginBottom: "8px"
+                    }}
+                  >
+                    <div className="rainmaker-displayInline">
+                      <LabelContainer
+                        labelName="Supporting Documents"
+                        labelKey="ES_WF_APPROVAL_UPLOAD_HEAD"
+                      />
+                      {isDocRequired && (
+                        <span style={{ marginLeft: 5, color: "red" }}>*</span>
+                      )}
+                    </div>
+                  </Typography>
+                  <DocumentListContainer {...documentProps}/>
+                  </Grid>
+                  )}
+
+                  {/* {(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION") && (<Grid item sm="12">
                   <Typography
                       component="h3"
                       variant="subheading"
@@ -263,7 +294,7 @@ class ActionDialog extends React.Component {
                       jsonPath={`${dataPath}.wfDocuments`}
                       maxFileSize={5000}
                     />
-                    </Grid>)}
+                    </Grid>)} */}
 
                   <Grid item sm="12">
                     <Typography

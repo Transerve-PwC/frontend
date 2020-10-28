@@ -407,6 +407,14 @@ export const setData = (properties, screenName, dispatch, state) => {
   /**********************************************************************************************/
 
   /* toggle display of entity owner divs based on the value of PropertyRegisteredTo and entityType */
+  dispatch(
+    handleField(
+      screenName,
+      "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.entityType",
+      "visible",
+      !!(propertyRegisteredTo == "ENTITY")
+    )
+  )
   if (propertyRegisteredTo == "ENTITY") {
     toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
   }

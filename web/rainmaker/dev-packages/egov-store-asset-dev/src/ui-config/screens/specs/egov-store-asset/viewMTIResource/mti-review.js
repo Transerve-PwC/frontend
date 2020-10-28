@@ -4,7 +4,7 @@ import { getMTIHeaderView } from "./view-mti-header";
 import { getMTIDetailsView } from "./view-mti-details";
 import { getApprovalInfoView } from "./view-approvalInfo-details";
 import { poCommonFooter } from "./footer";
-
+import {totalIssueValue} from "../creatematerialTransferInwordResource/totalIssueValue";
 export const MTIReviewDetails = isReview => {
   const viewMTIHeader = getMTIHeaderView(isReview);
   const viewMTIDetails = getMTIDetailsView(isReview);
@@ -13,6 +13,7 @@ export const MTIReviewDetails = isReview => {
   return getCommonCard({
     viewMTIHeader,
     viewMTIDetails,
+    //totalIssueValue,
    // viewApprovalInfo,
     footer
   });
