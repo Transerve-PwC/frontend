@@ -150,49 +150,6 @@ const callBackForNext = async (state, dispatch) => {
       ""
     )
 
-    let isOwnerOrPartnerDetailsValid = true;
-
-    switch(entityType) {
-      case "ET.PUBLIC_LIMITED_COMPANY":
-      case "ET.PRIVATE_LIMITED_COMPANY":
-        var isCompanyDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        );
-
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        break;
-      case "ET.PARTNERSHIP_FIRM":
-        var isFirmDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        )
-
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
-        break;
-      case "ET.PROPRIETORSHIP":
-        var isFirmDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        )
-        var isProprietorshipDetailsValid = validateFields(
-          "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
-          state,
-          dispatch,
-          "apply"
-        )
-        break;
-      default:
-        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        break;
-    }
-
     if (!!entityType) {
       if (entityType == "ET.PARTNERSHIP_FIRM") {
         dispatch(
@@ -212,13 +169,83 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if ((isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) || (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) || (isFirmDetailsValid && isProprietorshipDetailsValid)) {
-      const res = await applyEstates(state, dispatch, activeStep, "apply");
-      if (!res) {
-        return
-      }
-    } else {
-      isFormValid = false;
+    let isOwnerOrPartnerDetailsValid = true;
+
+    switch(entityType) {
+      case "ET.PUBLIC_LIMITED_COMPANY":
+      case "ET.PRIVATE_LIMITED_COMPANY":
+        var isCompanyDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        );
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      case "ET.PARTNERSHIP_FIRM":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
+
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      case "ET.PROPRIETORSHIP":
+        var isFirmDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+        var isProprietorshipDetailsValid = validateFields(
+          "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
+          state,
+          dispatch,
+          "apply"
+        )
+
+        if (isFirmDetailsValid && isProprietorshipDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
+      default:
+        isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
+
+        if (isOwnerOrPartnerDetailsValid) {
+          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          if (!res) {
+            return
+          }
+        } else {
+          isFormValid = false;
+        }
+        break;
     }
   }
 
