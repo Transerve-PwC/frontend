@@ -175,7 +175,7 @@ const newOwnerAddressField = {
     multiline: true,
     rows: 2
   },
-  pattern: _getPattern("alphabet"),
+  pattern: _getPattern("address"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
@@ -184,7 +184,7 @@ const newOwnerAddressField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
       else {
-          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
       }
     }
   }

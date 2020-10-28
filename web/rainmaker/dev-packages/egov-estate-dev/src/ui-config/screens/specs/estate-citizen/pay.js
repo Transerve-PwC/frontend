@@ -12,6 +12,7 @@ import {
   import { fetchBill, getFeesEstimateCard } from "../utils";
   import set from "lodash/set";
   import { getPaymentGateways } from "../../../../ui-utils/commons";
+import { applicationOfflinePaymentDetails, getMdmsData } from "../estate/estate-payment";
 
   const header = getCommonContainer({
     header: getCommonHeader({
@@ -40,7 +41,11 @@ import {
         { key: "tenantId", value: tenantId },
         { key: "businessServices", value: businessService }
       ];
-      setPaymentMethods(action, state, dispatch)
+      if(process.env.REACT_APP_NAME === "Citizen") {
+        setPaymentMethods(action, state, dispatch)
+      } else {
+        getMdmsData(dispatch)
+      }
       // setBusinessServiceDataToLocalStorage(queryObject, dispatch);
       await fetchBill(action, state, dispatch);
   }
@@ -85,7 +90,11 @@ import {
                 estimateDetails : getFeesEstimateCard({
                     sourceJsonPath: "temp[0].estimateCardData"
                   })
-              })
+              }),
+              offlinePaymentDetails : {
+                ...applicationOfflinePaymentDetails,
+                visible: process.env.REACT_APP_NAME === "Employee"
+              }
             }
           },
           footer

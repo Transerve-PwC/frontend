@@ -132,10 +132,18 @@ class WorkFlowContainer extends React.Component {
       preparedFinalObject,
       dataPath,
       moduleName,
-      updateUrl
+      updateUrl,
+      documentsJsonPath
     } = this.props;
     const tenant = getQueryArg(window.location.href, "tenantId");
     let data = get(preparedFinalObject, dataPath, []);
+
+    if(!!documentsJsonPath) {
+      let documents = get(preparedFinalObject, documentsJsonPath)
+      documents = documents.map(item => ({...item, isActive: true}))
+      data = [{...data[0], applicationDocuments: [...data[0].applicationDocuments, ...documents]}]
+    }
+
     if (moduleName === WF_ALLOTMENT_OF_SITE) {
       if (getQueryArg(window.location.href, "edited")) {
         // let owners = get(
@@ -199,7 +207,7 @@ class WorkFlowContainer extends React.Component {
     }
 
   createWorkFLow = async (label, isDocRequired) => {
-    const { toggleSnackbar, dataPath, preparedFinalObject } = this.props;
+    const { toggleSnackbar, dataPath, preparedFinalObject, documentsJsonPath } = this.props;
     let data = {};
 
     if (dataPath == "BPA" || dataPath == "Assessment" || dataPath == "Property") {
@@ -223,7 +231,7 @@ class WorkFlowContainer extends React.Component {
     set(data, `${appendToPath}action`, label);
 
     if (isDocRequired) {
-      const documents = get(data, "wfDocuments");
+      const documents = !!documentsJsonPath ? get(preparedFinalObject, documentsJsonPath) : get(data, "wfDocuments");
       if (documents && documents.length > 0) {
         this.wfUpdate(label);
       } else {
@@ -419,7 +427,8 @@ class WorkFlowContainer extends React.Component {
       ProcessInstances,
       prepareFinalObject,
       dataPath,
-      moduleName
+      moduleName,
+      documentProps
     } = this.props;
     const workflowContract =
       ProcessInstances &&
@@ -445,6 +454,7 @@ class WorkFlowContainer extends React.Component {
             contractData={workflowContract}
             dataPath={dataPath}
             moduleName={moduleName}
+            documentProps={documentProps}
           />}
       </div>
     );

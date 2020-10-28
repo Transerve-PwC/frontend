@@ -72,7 +72,8 @@ const searchApiCall = async (state, dispatch) => {
         [getTextToLocalMapping("Owner Name")]: item.owners.map(owner=>owner.name).join(",") || "-",
         [getTextToLocalMapping("Address")]:          getAddress(item) || "-",
         [getTextToLocalMapping("Action")]: (item.status !== 'INACTIVE')?"SELECT":"INACTIVE",
-        [getTextToLocalMapping("tenantId")]: item.tenantId
+        [getTextToLocalMapping("tenantId")]: item.tenantId,
+        ["Sync"] : item.auditDetails.lastModifiedTime
       }));
 
       dispatch(

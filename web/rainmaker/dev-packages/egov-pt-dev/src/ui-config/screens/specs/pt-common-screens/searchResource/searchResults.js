@@ -103,13 +103,33 @@ export const searchPropertyTable = {
         }
         }
       },
+
       {
         name:  getTextToLocalMapping("tenantId"),
         options: {
           display: false
         }
-      }
+      },
+      {
+        name:  "Sync",
+        options: {
+          filter: false,
+          customBodyRender: (value,data) =>{
+            const currentTime = new Date().getTime();
+            let styleSelect = {}
+                styleSelect.color = currentTime-value > 86400 ? "red" : "green"
+                styleSelect.cursor= "pointer";
+          return(
+            <LabelContainer style={styleSelect} onClick={() => { handleSync(data)}}
+              labelKey={"SYNC"}
+              labelName={"SYNC"}
+            />             
+          )
+        }
+        }
+      },
     ],    
+    
     title: getTextToLocalMapping("Search Results for Properties"),
     rows:"",
     options: {
@@ -142,6 +162,19 @@ const getSelect=data=>{
   if(data.rowData[3] === 'INACTIVE'){
     return false;
   }
+
+  if(process.env.REACT_APP_NAME == "Citizen"){
+    window.location.href=`/citizen${url}?redirectUrl=/wns/apply&propertyId=${data.rowData[0]}&tenantId=${data.rowData[4]}`
+  }else{
+    window.location.href=`/employee${url}?redirectUrl=/wns/apply&propertyId=${data.rowData[0]}&tenantId=${data.rowData[4]}`
+  }
+}
+
+const handleSync=data=>{
+  if(data.rowData[3] === 'INACTIVE'){
+    return false;
+  }
+  const url = "/pt-common-screens/verify-propertyDetails";
 
   if(process.env.REACT_APP_NAME == "Citizen"){
     window.location.href=`/citizen${url}?propertyId=${data.rowData[0]}&tenantId=${data.rowData[4]}`

@@ -111,7 +111,8 @@ import {
               },
               required: true,
               errorMessage:"STORE_VALIDATION_OPENING_QUANTITY",
-              pattern: getPattern("Amount") || null,
+              //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialReceipt[0].receiptDetails[0].userReceivedQty"
             })
           },
@@ -127,7 +128,8 @@ import {
               },
               required: true,
               errorMessage:"STORE_VALIDATION_OPENING_RATE",
-              pattern: getPattern("Amount") || null,
+              //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
               jsonPath: "materialReceipt[0].receiptDetails[0].unitRate"
             })
           },

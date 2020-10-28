@@ -372,21 +372,21 @@ export const getPropertyDetails = (isEditable = true) => {
                         labelName: "Total Due ",
                         labelKey: "ES_TOTAL_DUE_LABEL"
                     },
-                    { jsonPath: "Properties[0].formatrentSummary.balancePrincipal" }
+                    { jsonPath: "Properties[0].estateRentSummary.balanceRent" }
                 ),
                 amountPaid: getLabelWithValue(
                     {
                         labelName: "Amount Paid",
-                        labelKey: "ES_AMOUNT_PAID_LABEL"
+                        labelKey: "ES_AMOUNTPAID_LABEL"
                     },
-                    { jsonPath: "Properties[0].formatrentSummary.balanceInterest" }
+                    { jsonPath: "Properties[0].estateRentSummary.collectedRent" }
                 ),
                 outstanding: getLabelWithValue(
                     {
                         labelName: "Outstanding",
                         labelKey: "ES_OUTSTANDING_LABEL"
                     },
-                    { jsonPath: "Properties[0].formatrentSummary.balanceAmount" }
+                    { jsonPath: "Properties[0].estateRentSummary.balanceAmount" }
                 ),
         })
     })

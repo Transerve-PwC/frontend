@@ -60,23 +60,23 @@ import {
             
            }
           ),
-          // UnitRate: getLabelWithValue(
-          //   {
-          //     labelName: "Unit Rate",
-          //         labelKey: "STORE_MATERIAL_RECEIPT_UNIT_RATE"
-          //   },
-          //   { jsonPath: "transferInwards[0].receiptDetails[0].unitRate"
+           UnitRate: getLabelWithValue(
+            {
+              labelName: "Unit Rate",
+                  labelKey: "STORE_MATERIAL_RECEIPT_UNIT_RATE"
+            },
+            { jsonPath: "transferInwards[0].receiptDetails[0].unitRate"
             
-          //  }
-          // ),
-          // TotalValue: getLabelWithValue(
-          //   {    labelName: "Total Price",
-          //   labelKey: "STORE_MATERIAL_RECEIPT_TOTAL_PRICE" },
-          //   {
-          //     jsonPath: "transferInwards[0].receiptDetails[0].TotalValue",
+           }
+          ),
+          TotalValue: getLabelWithValue(
+            {    labelName: "Total Price",
+            labelKey: "STORE_MATERIAL_RECEIPT_TOTAL_PRICE" },
+            {
+              jsonPath: "transferInwards[0].receiptDetails[0].totalValue",
              
-          //   }
-          // ),
+            }
+          ),
           
           Remark: getLabelWithValue(
             {   labelName: "Remark",

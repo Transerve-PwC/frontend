@@ -21,9 +21,15 @@ import {
   displayDefaultErr
 } from "../../utils"
 
-let screenName = "apply";
+let screenName;
 if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
+}
+else if ((window.location.href).includes("owner-details")) {
+  screenName = "owner-details";
+}
+else {
+  screenName = "apply";
 }
 
 export const ownerHeader = getCommonTitle({
@@ -159,7 +165,7 @@ export const addressField = {
     multiline: true,
     rows: 2
   },
-  pattern: _getPattern("alphabet"),
+  pattern: _getPattern("address"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {

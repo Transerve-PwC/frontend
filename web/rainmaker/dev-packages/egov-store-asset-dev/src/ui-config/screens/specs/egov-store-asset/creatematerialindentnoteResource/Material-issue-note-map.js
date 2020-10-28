@@ -117,6 +117,11 @@ import {
                   `materialIssues[0].indent.indentDetails`,
                   []
                 ); 
+                let indent = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialIssues[0].indent`,
+                  []
+                ); 
                 let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0]; 
                 if(Material && Material[0])
                 {
@@ -169,10 +174,12 @@ import {
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.uom.code`,indentsmaterial[0].uomCode));                
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.balanceQty`,indentsmaterial[0].balance));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.unitRate`,indentsmaterial[0].unitRate));
-                //set indent qty indentDetails
+                //set indent qty indentDetails ,Indent Purpose ,Work details/Remarks
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentQuantity`,indentDetails[0].indentQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.issuedQuantity`,indentDetails[0].indentIssuedQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.poOrderedQuantity`,indentDetails[0].poOrderedQuantity));
+                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.projectCode.code`,indentDetails[0].projectCode.code));
+                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indent.indentPurpose`,indent.indentPurpose));
               //set total value on Qty Change
               let cardJsonPath =
               "components.div.children.formwizardSecondStep.children.materialIssue.children.cardContent.children.materialIssueCard.props.items";
@@ -281,7 +288,8 @@ import {
                 },
                 required: true,
                 errorMessage: "STORE_VALIDATION_QUANTITY_ISSUED",
-                pattern: getPattern("Amount") || null,
+                 //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.userQuantity"
               }),
               beforeFieldChange: (action, state, dispatch) => {
@@ -397,23 +405,22 @@ import {
                 jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.TotalValue"
               })
             },
-            AssestCode: {
+            IndentPurpose: {
               ...getTextField({
                 label: {
-                  labelName: "Assest Code",
-                  labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
+                  labelName: "Indent Purpose",
+                  labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE"
                 },
                 placeholder: {
-                  labelName: "Assest Code",
-                  labelKey: "STORE_MATERIAL_INDENT_NOTE_ASSEST_CODE"
+                  labelName: "Indent Purpose",
+                  labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE"
                 },
                 props:{
                   disabled:true
                 },
-                visible:false,
                 required: false,
                 pattern: getPattern("Name") || null,
-                jsonPath: "materialIssues[0].materialIssueDetails[0].assestCode"
+                jsonPath: "materialIssues[0].materialIssueDetails[0].indent.indentPurpose"
               })
             },
             ProjectCode: {
@@ -430,9 +437,9 @@ import {
                   disabled:true
                 },
                 required: false,
-                visible:false,
+                visible:true,
                 pattern: getPattern("Name") || null,
-                jsonPath: "materialIssues[0].materialIssueDetails[0].projectCode"
+                jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.projectCode.code"
               })
             },
             Remark: {

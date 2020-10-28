@@ -279,6 +279,69 @@ const callBackForApply = async (state, dispatch) => {
   }
 }
 
+
+const callBackForVerifyProperty = async(state , dispatch)=> {
+  try {
+   let  propertyPayload = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Properties[0]"
+  );
+
+  propertyPayload.creationReason = 'CREATE';
+  set(propertyPayload, "channel", "SYSTEM");
+  set(propertyPayload, "source", "MUNICIPAL_RECORDS");
+  set(propertyPayload, "noOfFloors", 1);
+  propertyPayload.tenantId = "ch.chandigarh";
+  propertyPayload.rainWaterHarvesting=false;
+  propertyPayload.owners.map(owner => {
+    owner.status = "ACTIVE";
+    owner.ownerType = 'NONE';
+  })
+
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/property-services/property/_create",
+      "_update",
+      [],
+      { Property: propertyPayload }
+
+    );
+    if (payload) {
+      store.dispatch(handleField("view-property-detail", "components.adhocDialog", "props.open", true));
+      setTimeout(() => {         
+        store.dispatch(
+          setRoute(
+            `${redirectUrl}?propertyId=${payload.Properties[0].propertyId}&tenantId=${propertyPayload.tenantId}`
+          )
+        );
+      }, 3000);
+    }
+    else {
+      dispatch(
+        toggleSnackbar(
+          true, {
+          labelKey: "PT_COMMON_FAILED_TO_REGISTER_PROPERTY",
+          labelName: "Failed to register property"
+        },
+          "warning"
+        )
+      )
+    }
+  } catch (e) {
+    console.log(e);
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "PT_COMMON_FAILED_TO_REGISTER_PROPERTY",
+        labelName: "Failed to register property"
+      },
+        "warning"
+      )
+    )
+  }
+
+}
 export const footer = getCommonApplyFooter({
   payButton: {
     componentPath: "Button",
@@ -300,6 +363,32 @@ export const footer = getCommonApplyFooter({
     onClickDefination: {
       action: "condition",
       callBack: callBackForApply
+    },
+    visible: true
+  }
+});
+
+export const verifyPropertyFooter = getCommonApplyFooter({
+  payButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "45px"
+      }
+    },
+    children: {
+      submitButtonLabel: getLabel({
+        labelName: "Submit",
+        labelKey: "PT_COMMON_BUTTON_SUBMIT"
+      }),
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: callBackForVerifyProperty
     },
     visible: true
   }

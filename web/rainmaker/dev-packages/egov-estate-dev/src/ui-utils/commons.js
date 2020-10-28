@@ -427,28 +427,26 @@ export const setDocuments = async (
 };
 
 export const setXLSTableData = async({demands, payments ,componentJsonPath, screenKey}) => {
-
   let data = demands.map(item => {
     const findItem = payments.find(payData => moment(new Date(payData.receiptDate)).format("MMM YYYY") === moment(new Date(item.demandDate)).format("MMM YYYY"));
     return !!findItem ? {...item, ...findItem} : {...item}
   })
   
   data  = data.map(item => ({
-    [ES_MONTH]:  !!item.demandDate && moment(new Date(item.demandDate)).format("MMM") || '',
+    [ES_MONTH]:  !!item.demandDate && moment(new Date(item.demandDate)).format("MMM YYYY") || '',
     [ES_RENT_DUE]: !!item.rent && item.rent.toFixed(2) || ' ',
     [ES_RENT_RECEIVED]:!!item.collectedRent && item.collectedRent.toFixed(2) || ' ',
     [ES_RECEIPT_NO]: !!item.receiptNo && item.receiptNo || ' ',
     [ES_DATE] : ' ',
     [ES_RENT_DUE_DATE]: !!item.demandDate && moment(new Date(item.demandDate)).format("DD MMM YYYY") || '',
     [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest.toFixed(2) || '',
-    [ES_ST_GST_RATE]:!!item.gst && item.gst.toFixed(2) || '',
+    [ES_ST_GST_RATE]:!!item.gst && item.gst || '',
     [ES_ST_GST_DUE]: !!item.collectedGST && item.collectedGST.toFixed(2) || '',
     [ES_PAID]: !!item.paid && item.paid.toFixed(2) || '',
     [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY") || '',
     [ES_NO_OF_DAYS]: !!item.noOfDays && item.noOfDays || '',
     [ES_INTEREST_ON_DELAYED_PAYMENT]: !!item.gstInterest && item.gstInterest.toFixed(2) || ''
   }))
-
   if(data.length > 1) {
     store.dispatch(
       handleField(
@@ -467,9 +465,12 @@ export const setXLSTableData = async({demands, payments ,componentJsonPath, scre
       )
     );
   }
-  // store.dispatch(
-  //   prepareFinalObject("Properties[0].Calculations", Calculations)
-  // )
+  store.dispatch(
+    prepareFinalObject("Properties[0].propertyDetails.estateDemands", demands)
+  )
+  store.dispatch(
+    prepareFinalObject("Properties[0].propertyDetails.estatePayments", payments)
+  )
  
 }
 

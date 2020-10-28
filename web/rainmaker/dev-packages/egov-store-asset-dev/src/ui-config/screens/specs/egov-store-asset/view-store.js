@@ -114,7 +114,7 @@ export const renderService = () => {
       },
       isFieldValid: true,
       required: false,
-
+      visible:false,
       props: {
         content: "STORE_DETAILS_CENTRAL_STORE",
         jsonPath: "stores[0].isCentralStore",

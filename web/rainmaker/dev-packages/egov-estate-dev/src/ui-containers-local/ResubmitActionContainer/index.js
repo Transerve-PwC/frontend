@@ -23,14 +23,17 @@ class ResubmitActionContainer extends React.Component {
       toggleSnackbar,
       preparedFinalObject,
       dataPath,
-      updateUrl
+      updateUrl,
+      documentsJsonPath
     } = this.props;
     let data = get(preparedFinalObject, dataPath, []);
 
-    const applicationNumber = getQueryArg(
-      window.location.href,
-      "applicationNumber"
-    );
+    if(!!documentsJsonPath) {
+      let documents = get(preparedFinalObject, documentsJsonPath) || [];
+      documents = documents.map(item => ({...item, isActive: true}))
+      data = [{...data[0], applicationDocuments: [...data[0].applicationDocuments, ...documents]}] 
+    }
+
     try {
       const payload = await httpRequest("post", updateUrl, "", [], {
         [dataPath]: data
@@ -45,7 +48,7 @@ class ResubmitActionContainer extends React.Component {
         const {branchType, moduleType, applicationType} = data[0];
         const type = `${branchType}_${moduleType}_${applicationType}`;
         path = `&applicationNumber=${data[0].applicationNumber}&tenantId=${tenant}&type=${type}`;
-        window.location.href = `acknowledgement?purpose=resubmit&status=success${path}`;
+        window.location.href = `acknowledgement?purpose=submit&status=success${path}`;
       }
     } catch (e) {
       toggleSnackbar(
@@ -60,7 +63,7 @@ class ResubmitActionContainer extends React.Component {
   };
 
   createWorkFLow = async (label, isDocRequired) => {
-    const { toggleSnackbar, dataPath, preparedFinalObject } = this.props;
+    const { toggleSnackbar, dataPath, preparedFinalObject, documentsJsonPath } = this.props;
     let data = get(preparedFinalObject, dataPath, []);
 
     if (dataPath !== "BPA") {
@@ -72,16 +75,16 @@ class ResubmitActionContainer extends React.Component {
     set(data, `${appendToPath}action`, label);
 
     if (isDocRequired) {
-      const documents = get(data, "wfDocuments");
-      if (documents && documents.length > 0) {
-        this.wfUpdate(label);
-      } else {
-        toggleSnackbar(
-          true,
-          { labelName: "Please Upload file !", labelKey: "ES_ERR_UPLOAD_FILE" },
-          "error"
-        );
-      }
+        const documents = !!documentsJsonPath ? get(preparedFinalObject, documentsJsonPath) : get(data, "wfDocuments");
+        if (documents && documents.length > 0) {
+          this.wfUpdate(label);
+        } else {
+          toggleSnackbar(
+            true,
+            { labelName: "Please Upload file !", labelKey: "ES_ERR_UPLOAD_FILE" },
+            "error"
+          );
+        }
     } else {
       this.wfUpdate(label);
     }
@@ -106,7 +109,7 @@ class ResubmitActionContainer extends React.Component {
       dataPath,
     } = this.props;
     const { open, data } = this.props;
-
+    console.log("===this.props", this.props)
     return (
       <div className="apply-wizard-footer" id="custom-atoms-footer">
         <ActionDialog
@@ -116,9 +119,7 @@ class ResubmitActionContainer extends React.Component {
           handleFieldChange={prepareFinalObject}
           onButtonClick={this.createWorkFLow}
           dataPath={dataPath}
-          showDocumentUpload={true}
           state={this.props.state}
-          showDocuments={this.props.showDocuments}
         />
       </div>
     );

@@ -229,7 +229,8 @@ let mrnNumber = get(state,"screenConfiguration.preparedFinalObject.materialIssue
                 },
                 required: true,
                 errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
-                pattern: getPattern("Amount") || null,
+                 //pattern: getPattern("Amount") || null,
+              pattern: getSTOREPattern("Quantity"),
                 jsonPath: "materialIssues[0].materialIssueDetails[0].userQuantityIssued"
               }),
               beforeFieldChange: (action, state, dispatch) => { 
