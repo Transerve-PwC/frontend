@@ -306,13 +306,31 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
-  
+  debugger
   let Property = Properties[0];
-  if(Property.propertyDetails.purchaser){
-    Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments = myPDocuments
+  if(Property.propertyDetails.purchaser.length > 0){
+     Property = {
+       ...Property , propertyDetails : {
+        ...Property.propertyDetails , purchaser  : [{
+          ...Property.propertyDetails.purchaser[0], ownerDetails :{
+            ...Property.propertyDetails.purchaser[0].ownerDetails , ownerDocuments : myPDocuments
+          }
+        }]
+       }
+     }
+    //  Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments = myPDocuments
   }
-  if(Property.propertyDetails.owners){
-    Property.propertyDetails.owners[0].ownerDetails.ownerDocuments = myODocuments
+  if(Property.propertyDetails.owners.length > 0){
+    Property = {
+      ...Property , propertyDetails : {
+       ...Property.propertyDetails , owners  : [{
+         ...Property.propertyDetails.owners[0], ownerDetails :{
+           ...Property.propertyDetails.owners[0].ownerDetails , ownerDocuments : myODocuments
+         }
+       }]
+      }
+    }
+    // Property.propertyDetails.owners[0].ownerDetails.ownerDocuments = myODocuments
   }
 
   const DOWNLOADRECEIPT = {

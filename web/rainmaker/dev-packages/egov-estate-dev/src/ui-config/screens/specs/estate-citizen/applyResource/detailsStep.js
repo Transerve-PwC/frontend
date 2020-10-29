@@ -255,7 +255,6 @@ const getField = async (item, fieldData = {}, state) => {
                       key: labelItem
                   },
                   buttons,
-                  disabled: true,
                   jsonPath: rest.jsonPath,
                   required
               },

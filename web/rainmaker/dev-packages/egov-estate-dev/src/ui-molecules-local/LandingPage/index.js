@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
 import LabelContainer from 'egov-ui-framework/ui-containers/LabelContainer'
-// import LabelContainer from "../../ui-containers/LabelContainer";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import Icon from "egov-ui-kit/components/Icon";
 import "./index.css";
+import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -34,7 +34,7 @@ const styles = theme => ({
   },
   leftIcon: {
     marginRight: theme.spacing.unit
-  },
+  }
 });
 
 class LandingPage extends React.Component {
@@ -107,8 +107,10 @@ class LandingPage extends React.Component {
         {!!isArray ? items.map(obj => {
           return (
             <React.Fragment>
-              <Grid xs={12} sm={12}>
-              <div>{obj.parentModule}</div>
+              <Grid xs={12} sm={12} className={classes.item}>
+              <Typography component="h2" variant="subheading">
+                <LabelContainer labelKey={`ES_${obj.parentModule.toUpperCase()}_HEADER`} labelName={`ES_${obj.parentModule.toUpperCase()}_HEADER`} />
+              </Typography>
               </Grid>
               {obj.items.map(item => this.renderCard(item, obj.items.length))}
             </React.Fragment>

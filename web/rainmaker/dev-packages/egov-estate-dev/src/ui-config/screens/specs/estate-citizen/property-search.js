@@ -4,7 +4,7 @@ import {
   getBreak,
   getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { estateApplication } from './citizenSearchResource/estateApplication';
+import { estateApplication, resetFields } from './citizenSearchResource/estateApplication';
 import { searchResults } from './citizenSearchResource/searchResults';
 import commonConfig from "config/common.js";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -50,6 +50,7 @@ const citizenEstateSearchAndResult = {
   name: "property-search",
   beforeInitScreen: (action, state, dispatch) => {
     state.screenConfiguration.preparedFinalObject.citizenSearchScreen = {}
+    resetFields(state, dispatch);
     getMdmsData(dispatch);
     return action
   },

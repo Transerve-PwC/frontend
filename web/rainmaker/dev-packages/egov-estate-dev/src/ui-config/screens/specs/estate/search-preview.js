@@ -29,7 +29,7 @@ export const headerrow = getCommonContainer({
 const reviewPropertyDetails = getPropertyDetails(false);
 const reviewAllotmentDetails = getAllotmentDetails(false);
 const additionalDetails = getAdditionalDetails(false)
-const reviewRentSummary = getReviewRentSummary(true);
+const reviewRentSummary = getReviewRentSummary(false);
 
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
@@ -49,7 +49,17 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
-
+    
+    let {estateRentSummary} = properties[0]
+    if(!!estateRentSummary){
+        estateRentSummary.outstanding =  (parseInt(estateRentSummary.balanceRent) + 
+        parseInt(estateRentSummary.balanceGST) + parseInt(estateRentSummary.balanceGSTPenalty) +
+        parseInt(estateRentSummary.balanceRentPenalty)).toFixed(1)
+    }
+    properties = {
+      ...properties , estateRentSummary : estateRentSummary
+    }
+  
     dispatch(
       handleField(
         "search-preview",

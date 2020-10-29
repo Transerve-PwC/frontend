@@ -381,13 +381,34 @@ export const getPropertyDetails = (isEditable = true) => {
                     },
                     { jsonPath: "Properties[0].estateRentSummary.collectedRent" }
                 ),
+                balanceGST: getLabelWithValue(
+                  {
+                      labelName: "Balance GST",
+                      labelKey: "ES_BALANCE_GST_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.balanceGST" }
+              ),
+              balanceGSTPenalty: getLabelWithValue(
+                  {
+                      labelName: "Balance GST Penalty",
+                      labelKey: "ES_BALANCE_GST_PENALTY_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.balanceGSTPenalty" }
+              ),
+              balanceRentPenalty: getLabelWithValue(
+                  {
+                      labelName: "Balance Rent Penalty",
+                      labelKey: "ES_BALANCE_RENT_PENALTY_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.balanceRentPenalty" }
+              ),
                 outstanding: getLabelWithValue(
                     {
                         labelName: "Outstanding",
                         labelKey: "ES_OUTSTANDING_LABEL"
                     },
-                    { jsonPath: "Properties[0].estateRentSummary.balanceAmount" }
-                ),
+                    { jsonPath: "Properties[0].estateRentSummary.outstanding" }
+                )
         })
     })
   } 

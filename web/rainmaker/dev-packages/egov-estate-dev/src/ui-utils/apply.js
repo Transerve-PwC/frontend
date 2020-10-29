@@ -370,6 +370,14 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //   }
     // }]
 
+    let {estateRentSummary} = Properties[0]
+    if(!!estateRentSummary){
+        estateRentSummary.outstanding =  (parseInt(estateRentSummary.balanceRent) + 
+        parseInt(estateRentSummary.balanceGST) + parseInt(estateRentSummary.balanceGSTPenalty) +
+        parseInt(estateRentSummary.balanceRentPenalty)).toFixed(1)
+    }
+    Properties = [{...Properties[0], estateRentSummary: estateRentSummary}]
+
     dispatch(prepareFinalObject("Properties", Properties));
     
     // dispatch(
