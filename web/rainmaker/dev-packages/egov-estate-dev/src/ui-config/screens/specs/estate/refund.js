@@ -233,7 +233,7 @@ const refund = {
   uiFramework: "material-ui",
   name: "refund",
   beforeInitScreen: (action, state, dispatch) => {
-    let fileNumber = getQueryArg(window.location.href, "filenumber");
+    let fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },

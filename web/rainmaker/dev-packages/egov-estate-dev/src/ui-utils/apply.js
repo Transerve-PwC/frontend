@@ -207,7 +207,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     if (!id) {
       console.log(queryObject[0]);
       set(queryObject[0], "propertyDetails.owners", [])
-      set(queryObject[0], "propertyDetails.purchaseDetails", [])
+      set(queryObject[0], "propertyDetails.purchaser", [])
       set(queryObject[0], "action", "");
       response = await httpRequest(
         "post",
@@ -262,21 +262,26 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       if (screenName == "allotment") {
         tabsArr.pop();
       }
+      else if (screenName == "apply-building-branch") {
+        tabsArr = tabsArr.splice(0, tabsArr.length - 5);
+      }
       if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")
       } else {
         set(queryObject[0], "action", "SUBMIT")
       }
 
-      owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
-      prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
-      owners = [...owners, ...prevOwners];
-
-      set(
-        queryObject[0],
-        "propertyDetails.owners",
-        owners
-      )
+      if (screenName != "apply-building-branch") {
+        owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+        prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
+        owners = [...owners, ...prevOwners];
+      
+        set(
+          queryObject[0],
+          "propertyDetails.owners",
+          owners
+        )
+      }
 
       if (owners) {
         owners.map((item, index) => {
@@ -302,7 +307,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       ownerDocuments = [...ownerDocuments, ...removedDocs]
       set(queryObject[0], "ownerDetails.ownerDocuments", ownerDocuments) */
 
-      
+      console.log(JSON.stringify(queryObject));
 
       response = await httpRequest(
         "post",
@@ -317,8 +322,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       Properties
     } = response
 
-    let ratePerSqft = (Properties[0].propertyDetails.ratePerSqft).toString();
-    let areaSqft = (Properties[0].propertyDetails.areaSqft).toString();
+    let ratePerSqft = Properties[0].propertyDetails.ratePerSqft;
+    let areaSqft = Properties[0].propertyDetails.areaSqft;
+    ratePerSqft = !!ratePerSqft ? ratePerSqft.toString() : ratePerSqft;
+    areaSqft = !!areaSqft ? areaSqft.toString() : areaSqft;
 
     let owners = get(
       Properties[0],
@@ -335,20 +342,22 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
         Properties[0].propertyDetails.owners[index].ownerDetails.removedDocs = removedDocs;
       })
-
-      let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
-      let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
-
       
-      currOwners.map((item, index) => {
-        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
-      })
+      if (screenName != "apply-building-branch") {
+        let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+        let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-      prevOwners.map((item, index) => {
-        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
-      })
+        
+        currOwners.map((item, index) => {
+          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
+        })
 
-      Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
+        prevOwners.map((item, index) => {
+          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
+        })
+
+        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
+      }
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
     // const removedDocs = ownerDocuments.filter(item => !item.active)

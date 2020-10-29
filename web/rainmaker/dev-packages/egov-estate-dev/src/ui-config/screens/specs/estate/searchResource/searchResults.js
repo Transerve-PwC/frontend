@@ -116,17 +116,17 @@ const onRowClick = rowData => {
   let type = getQueryArg(window.location.href, "type");
 
   if (type == "refund" && rowData[2].toUpperCase() == ESTATE_APPROVED_STATE && !!findItem) {
-    return window.location.href = `refund?filenumber=${rowData[0]}&tenantId=${tenantId}`
+    return window.location.href = `refund?fileNumber=${rowData[0]}&tenantId=${tenantId}`
   }
 
   if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
     if (rowData[4] == "PROPERTY_MASTER")
-      window.location.href = `apply?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+      window.location.href = `apply?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
     else
-      window.location.href = `allotment?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+      window.location.href = `allotment?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
   else {
-    window.location.href = `search-preview?filenumber=${rowData[0]}&tenantId=${tenantId}`;
+    window.location.href = `search-preview?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
 };
 

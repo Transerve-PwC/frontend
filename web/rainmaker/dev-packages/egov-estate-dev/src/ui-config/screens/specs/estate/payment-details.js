@@ -9,10 +9,10 @@ import {onTabChange, headerrow, tabs} from './search-preview'
 import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 
-const beforeInitFn = async (action, state, dispatch, filenumber) => {
-  if(filenumber){
+const beforeInitFn = async (action, state, dispatch, fileNumber) => {
+  if(fileNumber){
       let queryObject = [
-          { key: "fileNumber", value: filenumber }
+          { key: "fileNumber", value: fileNumber }
         ];
    const response =  await getSearchResults(queryObject);
     if(!!response) {
@@ -29,7 +29,7 @@ const EstatePaymentDetails = {
   uiFramework: "material-ui",
   name: "payment-details",
   beforeInitScreen: (action, state, dispatch) => {
-    const fileNumber = getQueryArg(window.location.href, "filenumber");
+    const fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },

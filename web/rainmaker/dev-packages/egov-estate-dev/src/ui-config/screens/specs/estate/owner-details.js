@@ -338,7 +338,7 @@ const EstateOwnerDetails = {
   uiFramework: "material-ui",
   name: "owner-details",
   beforeInitScreen: (action, state, dispatch) => {
-    fileNumber = getQueryArg(window.location.href, "filenumber");
+    fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },

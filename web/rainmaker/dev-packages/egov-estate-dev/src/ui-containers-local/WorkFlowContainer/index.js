@@ -34,7 +34,7 @@ class WorkFlowContainer extends React.Component {
     const { prepareFinalObject, toggleSnackbar } = this.props;
     const fileNumber = getQueryArg(
       window.location.href,
-      "filenumber"
+      "fileNumber"
     );
     const applicationNumber = getQueryArg(
       window.location.href, "applicationNumber"

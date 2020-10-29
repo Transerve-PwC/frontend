@@ -30,7 +30,7 @@ export const getStatusList = async (state, dispatch, queryObject, screen, path, 
   }
 }
 
-export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
+export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true, branchType = "ESTATE_BRANCH", screenKey = "search") => {
   !!hideTable && showHideTable(false, dispatch, "search");
   let queryObject = [
     // {
@@ -38,7 +38,8 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
     //   value: getTenantId()
     // },
     { key: "offset", value: offset },
-    { key: "limit", value: limit }
+    { key: "limit", value: limit },
+    { key: "branchType", value: branchType }
   ];
   queryObject = queryObject.filter(({value}) => !!value)
   let searchScreenObject = get(
@@ -53,14 +54,14 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
     "components.div.children.rentedPropertyApplication.children.cardContent.children.colonyContainer.children",
     state,
     dispatch,
-    "search"
+    screenKey
   );
 
   const isSearchBoxSecondRowValid = validateFields(
     "components.div.children.rentedPropertyApplication.children.cardContent.children.transitNumberContainer.children",
     state,
     dispatch,
-    "search"
+    screenKey
   );
 
   if (!(isSearchBoxFirstRowValid && isSearchBoxSecondRowValid) && typeof onInit != "boolean") {
@@ -108,13 +109,13 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
       }));
       dispatch(
         handleField(
-          "search",
+          screenKey,
           "components.div.children.searchResults",
           "props.data",
           data
         )
       );
-      !!hideTable && showHideTable(true, dispatch, "search");
+      !!hideTable && showHideTable(true, dispatch, screenKey);
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
       console.log(error);

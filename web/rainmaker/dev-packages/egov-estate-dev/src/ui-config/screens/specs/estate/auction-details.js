@@ -74,7 +74,7 @@ const auctionDetails = {
   uiFramework: "material-ui",
   name: "auction-details",
   beforeInitScreen: (action, state, dispatch) => {
-    let fileNumber = getQueryArg(window.location.href, "filenumber");
+    let fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },

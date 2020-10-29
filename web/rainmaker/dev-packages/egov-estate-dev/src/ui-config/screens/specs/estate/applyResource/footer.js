@@ -182,7 +182,6 @@ const callBackForNext = async (state, dispatch) => {
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-
         if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
@@ -201,7 +200,6 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
-
         if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
@@ -224,7 +222,6 @@ const callBackForNext = async (state, dispatch) => {
           dispatch,
           "apply"
         )
-
         if (isFirmDetailsValid && isProprietorshipDetailsValid) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
@@ -236,7 +233,6 @@ const callBackForNext = async (state, dispatch) => {
         break;
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-
         if (isOwnerOrPartnerDetailsValid) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {

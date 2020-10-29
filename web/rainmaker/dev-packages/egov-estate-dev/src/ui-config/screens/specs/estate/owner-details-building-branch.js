@@ -1,23 +1,28 @@
 import {
-    getCommonCard
+  getCommonCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { 
+prepareFinalObject,
+handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { getPurchaserDetails } from "./preview-resource/purchaser-details";
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow} from './search-preview-building-branch';
+import {
+getUserInfo
+} from "egov-ui-kit/utils/localStorageUtils";
+import { getReviewOwner } from "./applyResourceBuildingBranch/reviewDetails";
+import { BUILDING_BRANCH_TABS as tabs } from "../../../../ui-constants";
+
+const userInfo = JSON.parse(getUserInfo());
+const {
+    roles = []
+} = userInfo
+const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 
-
-// const purchaserDetails = getPurchaserDetails(false);
-
-
-// export const propertyReviewDetails = getCommonCard({
-//   purchaserDetails,
-// });
-
-const purchaserContainer = {
+const ownerContainer = {
   uiFramework: "custom-atoms",
   componentPath: "Div",
   props: {
@@ -33,26 +38,24 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     {key: "relations", value: "owner"}
   ];
   let payload = await getSearchResults(queryObject);
-  if(payload) {
+
+  if (payload) {
     let properties = payload.Properties;
-    let owners = properties[0].propertyDetails.owners;
-    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, purchaser: prevOwners}}]
+
     dispatch(prepareFinalObject("Properties", properties));
     
     let containers={}
-    if(properties[0].propertyDetails.purchaser){
-      properties[0].propertyDetails.purchaser.forEach((element,index) => { 
-        let purchaseDetailContainer = getPurchaserDetails(false,index);
-        containers[index] = getCommonCard({purchaseDetailContainer})
+    if (properties[0].propertyDetails.owners){
+      properties[0].propertyDetails.owners.forEach((element,index) => { 
+        let ownerDetailContainer = getReviewOwner(false,index);
+        containers[index] = getCommonCard({ownerDetailContainer})
       });
-      
     }
     
     dispatch(
       handleField(
-      "purchaser-details",
-      "components.div.children.purchaserContainer",
+      "owner-details-building-branch",
+      "components.div.children.ownerContainer",
       "children",
       containers
       )
@@ -62,17 +65,15 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
-  if(fileNumber){
+  if (fileNumber){
       await searchResults(action, state, dispatch, fileNumber)
     }
 }
 
-
-const EstatePurchaserDetails = {
+const BuildingBranchOwnerDetails = {
   uiFramework: "material-ui",
-  name: "purchaser-details",
+  name: "owner-details-building-branch",
   beforeInitScreen: (action, state, dispatch) => {
-    fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },
@@ -103,15 +104,15 @@ const EstatePurchaserDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 4,
+              activeIndex: 1,
               onTabChange
             },
             type: "array",
           },
-          purchaserContainer
+          ownerContainer
       }
     }
   }
 };
 
-export default EstatePurchaserDetails;
+export default BuildingBranchOwnerDetails;

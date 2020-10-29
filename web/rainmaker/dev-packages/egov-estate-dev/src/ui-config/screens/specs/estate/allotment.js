@@ -180,12 +180,17 @@ const header = getCommonContainer({
 })
 
 const getData = async (action, state, dispatch) => {
-  const fileNumber = getQueryArg(window.location.href, "filenumber");
+  const fileNumber = getQueryArg(window.location.href, "fileNumber");
   if (!fileNumber) {
     dispatch(
       prepareFinalObject(
         "Properties",
-        [{propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE"}]
+        [{
+          propertyMasterOrAllotmentOfSite: "ALLOTMENT_OF_SITE",
+          propertyDetails: {
+            branchType: "ESTATE_BRANCH"
+          }
+        }]
       )
     )
   }
