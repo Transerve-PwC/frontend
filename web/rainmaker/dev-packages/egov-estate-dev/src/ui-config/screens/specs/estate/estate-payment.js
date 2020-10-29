@@ -1,12 +1,13 @@
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getCommonHeader, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel  } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonHeader, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel, getDateField  } from "egov-ui-framework/ui-config/screens/specs/utils";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../ui-utils";
 import get from "lodash/get";
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { propertyInfo } from "./preview-resource/preview-properties";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+import { convertDateToEpoch } from "../utils";
 
   const header = getCommonHeader({
     labelName: "Rent Payment",
@@ -119,16 +120,35 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
     visible: process.env.REACT_APP_NAME !== "Citizen"
   }
 
+  const paymentDate = {
+    label: {
+      labelName: "Date of Payment",
+      labelKey: "ES_DATE_OF_PAYMENT"
+    },
+    placeholder: {
+        labelName: "Enter Date of paymet",
+        labelKey: "ES_DATE_OF_PAYMENT_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "payment.dateOfPayment",
+    props: {
+      inputProps: {
+        max: getTodaysDateInYMD()
+    }
+    },
+    afterFieldChange: (action, state, dispatch) => {
+      dispatch(prepareFinalObject(
+        "payment.dateOfPayment", convertDateToEpoch(action.value)
+      ))
+    }
+  }
+
   const paymentAmount = {
     label: {
         labelName: "Amount",
         labelKey: "ES_AMOUNT_LABEL"
     },
-    
-    jsonPath: "Properties[0].amount",
-    optionValue: "code",
-    optionLabel: "label",
-    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -147,11 +167,6 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
         labelName: "Bank Name",
         labelKey: "ES_BANK_NAME_LABEL"
     },
-    
-    jsonPath: "Properties[0].bankName",
-    optionValue: "code",
-    optionLabel: "label",
-    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -171,11 +186,6 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
         labelName: "Transaction ID",
         labelKey: "ES_TRANSACTION_ID_LABEL"
     },
-    
-    jsonPath: "Properties[0].transactionId",
-    optionValue: "code",
-    optionLabel: "label",
-    sourceJsonPath: "applyScreenMdmsData.propertyTypes",
     gridDefination: {
         xs: 12,
         sm: 6
@@ -193,7 +203,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   export const applicationOfflinePaymentDetails = getCommonCard({
     header: offlinePaymentDetailsHeader,
     detailsContainer: getCommonContainer({
-        Amount: getTextField(paymentAmount),
+        dateOfPayment: getDateField(paymentDate),
         bankName: getTextField(bankName),
         transactionId: getTextField(transactionId)
     })
@@ -204,6 +214,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
       detailsContainer: getCommonContainer({
         paymentType: getSelectField(paymentType),
         Amount: getTextField(paymentAmount),
+        dateOfPayment: getDateField(paymentDate),
         bankName: getTextField(bankName),
         transactionId: getTextField(transactionId),
       })

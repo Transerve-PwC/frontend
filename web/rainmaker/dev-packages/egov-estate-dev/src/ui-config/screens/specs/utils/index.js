@@ -47,6 +47,7 @@ import axios from 'axios';
 import {
   getSearchApplicationsResults
 } from "../../../../ui-utils/commons";
+import moment from "moment";
 
 export const getCommonApplyHeader = ({label, number}) => {
   return getCommonContainer({
@@ -557,6 +558,98 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
     alert('Some Error Occured while downloading Acknowledgement form!');
   }
 }
+
+export const downloadPaymentReceipt = (receiptQueryString, Applications, data, generatedBy,type, mode = "download") => {
+  const FETCHRECEIPT = {
+    GET: {
+      URL: "/collection-services/payments/_search",
+      ACTION: "_get",
+    },
+  };
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
+      const queryStr = [{
+          key: "key",
+          value: "application-payment-receipt"
+        },
+        {
+          key: "tenantId",
+          value: receiptQueryString[1].value.split('.')[0]
+        }
+      ]
+      
+      if (payloadReceiptDetails && payloadReceiptDetails.Payments && payloadReceiptDetails.Payments.length == 0) {
+        console.log("Could not find any receipts");
+        return;
+      }
+      let {
+        Payments
+      } = payloadReceiptDetails;
+      let time = Payments[0].paymentDetails[0].auditDetails.lastModifiedTime
+      let {
+        billAccountDetails
+      } = Payments[0].paymentDetails[0].bill.billDetails[0];
+      billAccountDetails = billAccountDetails.map(({
+        taxHeadCode,
+        ...rest
+      }) => ({
+        ...rest,
+        taxHeadCode: taxHeadCode.includes("_APPLICATION_FEE") ? "RP_DUE" : taxHeadCode.includes("_PENALTY") ? "RP_PENALTY" : taxHeadCode.includes("_TAX") ? "RP_TAX" : taxHeadCode.includes("_ROUNDOFF") ? "RP_ROUNDOFF" : taxHeadCode.includes("_PUBLICATION_FEE") ? "RP_CHARGES" : taxHeadCode
+      }))
+      Payments = [{
+        ...Payments[0],
+        paymentDetails: [{
+          ...Payments[0].paymentDetails[0],
+          bill: {
+            ...Payments[0].paymentDetails[0].bill,
+            billDetails: [{
+              ...Payments[0].paymentDetails[0].bill.billDetails[0],
+              billAccountDetails
+            }]
+          }
+        }]
+      }]
+      if(time){
+        time = moment(new Date(time)).format("h:mm:ss a")
+      }
+      Payments = [{
+        ...Payments[0],paymentDetails:[{
+          ...Payments[0].paymentDetails[0],auditDetails:{
+            ...Payments[0].paymentDetails[0].auditDetails,lastModifiedTime:time
+          }
+        }]
+      }]
+      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+          Payments,
+          Applications,
+          generatedBy
+        }, {
+          'Accept': 'application/json'
+        }, {
+          responseType: 'arraybuffer'
+        })
+        .then(res => {
+          res.filestoreIds[0]
+          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            res.filestoreIds.map(fileStoreId => {
+              downloadReceiptFromFilestoreID(fileStoreId, mode)
+            })
+          } else {
+            console.log("Error In Receipt Download");
+          }
+        });
+    })
+  } catch (exception) {
+    alert('Some Error Occured while downloading Receipt!');
+  }
+}
+
 export const downloadAmountLetter = (Applications, applicationType, mode = 'download') => {
 
   let queryStr = []
@@ -1459,66 +1552,109 @@ export const getTextToLocalMapping = label => {
         "ES_SEARCH_RESULTS_TABLE_HEADING",
         localisationLabels
       );
-      case "Month":
-      return getLocaleLabels(
-        "Month",
-        "ES_COMMON_TABLE_COL_MONTH",
-        localisationLabels
-      );
-      case "Rent Due":
-      return getLocaleLabels(
-        "Rent Due",
-        "ES_COMMON_TABLE_COL_RENT_DUE",
-        localisationLabels
-      );
-      case "Receipt No.":
-      return getLocaleLabels(
-        "Receipt No.",
-        "ES_COMMON_TABLE_RECEIPT_NO",
-        localisationLabels
-      );
       case "Date":
       return getLocaleLabels(
         "Date",
         "ES_COMMON_TABLE_COL_DATE",
         localisationLabels
       );
-      case "Penalty/Interest":
-      return getLocaleLabels(
-        "Penalty/Interest",
-        "ES_COMMON_TABLE_COL_PENALTY_INTEREST",
-        localisationLabels
-      );
-      case "ST/GST rate":
-      return getLocaleLabels(
-        "ST/GST rate",
-        "ES_COMMON_TABLE_COL_ST_GST_RATE",
-        localisationLabels
-      );
-      case "Paid":
-      return getLocaleLabels(
-        "Paid",
-        "ES_COMMON_TABLE_COL_PAID",
-        localisationLabels
-      );
-      case "Date of Receipt":
-      return getLocaleLabels(
-        "Date of Receipt",
-        "ES_COMMON_TABLE_COL_DATE_OF_RECEIPT",
-        localisationLabels
-      );
-      case "No. of days":
-      return getLocaleLabels(
-        "No. of days",
-        "ES_COMMON_TABLE_COL_NO_OF_DAYS",
-        localisationLabels
-      );
-      case "Int. on delayed payment of GST":
-      return getLocaleLabels(
-        "Int. on delayed payment of GST",
-        "ES_COMMON_TABLE_COL_INT_ON_DELAYED_PAYMENT_GST",
-        localisationLabels
-      );
+      case "Amount":
+        return getLocaleLabels(
+          "Amount",
+          "ES_COMMON_TABLE_COL_AMOUNT",
+          localisationLabels
+        );
+      case "Type(Payment)":
+        return getLocaleLabels(
+          "Type(Payment)",
+          "ES_COMMON_TABLE_COL_PAYMENTTYPE",
+          localisationLabels
+        );
+      case "Type(Rent)":
+        return getLocaleLabels(
+          "Type(Rent)",
+          "ES_COMMON_TABLE_COL_RENTTYPE",
+          localisationLabels
+        );
+      case "Principal Due":
+        return getLocaleLabels(
+          "Principal Due",
+          "ES_COMMON_TABLE_COL_PRINCIPALDUE",
+          localisationLabels
+        );
+      case "GST Due":
+        return getLocaleLabels(
+          "GST Due",
+          "ES_COMMON_TABLE_COL_GSTDUE",
+          localisationLabels
+        );
+      case "Interest Due":
+        return getLocaleLabels(
+          "Interest Due",
+          "ES_COMMON_TABLE_COL_INTERESTDUE",
+          localisationLabels
+        );
+      case "GST Penalty Due":
+        return getLocaleLabels(
+          "GST Penalty Due",
+          "ES_COMMON_TABLE_COL_GSTPENALTYDUE",
+          localisationLabels
+        );
+      case "Total Due":
+        return getLocaleLabels(
+          "Total Due",
+          "ES_COMMON_TABLE_COL_TOTALDUE",
+          localisationLabels
+        );
+      case "Account Balance":
+        return getLocaleLabels(
+          "Account Balance",
+          "ES_COMMON_TABLE_COL_ACCOUNTBALANCE",
+          localisationLabels
+        );
+      case "Receipt No.":
+        return getLocaleLabels(
+          "Receipt No.",
+          "ES_COMMON_TABLE_RECEIPT_NO",
+          localisationLabels
+        );
+            
+      // case "Penalty/Interest":
+      // return getLocaleLabels(
+      //   "Penalty/Interest",
+      //   "ES_COMMON_TABLE_COL_PENALTY_INTEREST",
+      //   localisationLabels
+      // );
+      // case "ST/GST rate":
+      // return getLocaleLabels(
+      //   "ST/GST rate",
+      //   "ES_COMMON_TABLE_COL_ST_GST_RATE",
+      //   localisationLabels
+      // );
+      // case "Paid":
+      // return getLocaleLabels(
+      //   "Paid",
+      //   "ES_COMMON_TABLE_COL_PAID",
+      //   localisationLabels
+      // );
+      // case "Date of Receipt":
+      // return getLocaleLabels(
+      //   "Date of Receipt",
+      //   "ES_COMMON_TABLE_COL_DATE_OF_RECEIPT",
+      //   localisationLabels
+      // );
+      // case "No. of days":
+      // return getLocaleLabels(
+      //   "No. of days",
+      //   "ES_COMMON_TABLE_COL_NO_OF_DAYS",
+      //   localisationLabels
+      // );
+      // case "Int. on delayed payment of GST":
+      // return getLocaleLabels(
+      //   "Int. on delayed payment of GST",
+      //   "ES_COMMON_TABLE_COL_INT_ON_DELAYED_PAYMENT_GST",
+      //   localisationLabels
+      // );
     case "Last Modified On":
       return getLocaleLabels(
         "Last Modified On",

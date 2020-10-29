@@ -2,10 +2,14 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  ifUserRoleExists,downloadAcknowledgementForm,downloadSummary
+  ifUserRoleExists,downloadAcknowledgementForm,downloadSummary,downloadPaymentReceipt
 } from "../../utils";
 import set from "lodash/set";
-
+import get from "lodash/get";
+const { getQueryArg } = require("egov-ui-framework/ui-utils/commons");
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import {getSearchApplicationsResults} from '../../../../../ui-utils/commons'
+const userInfo = JSON.parse(getUserInfo());
 const getCommonApplyFooter = children => {
   return {
     uiFramework: "custom-atoms",
@@ -23,6 +27,8 @@ export const applicationSuccessFooter = (
   applicationNumber,
   tenant
 ) => {
+  const fileNumber = getQueryArg(window.location.href, "fileNumber");
+  const purpose  = getQueryArg(window.location.href, "purpose");
   const roleExists = ifUserRoleExists("CITIZEN");
   const redirectionURL = roleExists ? "/" : "/inbox";
   if(roleExists){
@@ -69,12 +75,38 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
-            const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
-            const { applicationType} = Applications[0];
-            const documents = temp[0].reviewDocData;
-            set(Applications[0],"additionalDetails.documents",documents)
-            downloadAcknowledgementForm(Applications,applicationType); 
+          callBack: async() => {
+            const purpose = getQueryArg(window.location.href, "purpose");
+            let tenantId = getQueryArg(window.location.href, "tenantId");
+            if(purpose === 'pay'){
+                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                const queryObject = [
+                  {
+                    key: "tenantId",
+                    value: tenantId
+                  },
+                  {
+                    key: "applicationNumber",
+                    value: consumerCodes
+                  }
+                ];
+                const response = await getSearchApplicationsResults(queryObject);
+                const Applications = get(response, "Applications");
+                
+                  const receiptQuery = [
+                    { key: "consumerCodes", value:consumerCodes},
+                    { key: "tenantId", value: tenantId }
+                ]
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'rent-payment');
+              
+                  
+            }else{
+              const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+              const { applicationType} = Applications[0];
+              const documents = temp[0].reviewDocData;
+              set(Applications[0],"additionalDetails.documents",documents)
+              downloadAcknowledgementForm(Applications,applicationType);
+            }
           }
         },
         visible: true
@@ -98,12 +130,38 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
-            const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
-            const { applicationType} = Applications[0];
-            const documents = temp[0].reviewDocData;
-            set(Applications[0],"additionalDetails.documents",documents)
-            downloadAcknowledgementForm(Applications,applicationType,'print'); 
+          callBack: async() => {
+            const purpose = getQueryArg(window.location.href, "purpose");
+            let tenantId = getQueryArg(window.location.href, "tenantId");
+            if(purpose === 'pay'){
+                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                const queryObject = [
+                  {
+                    key: "tenantId",
+                    value: tenantId
+                  },
+                  {
+                    key: "applicationNumber",
+                    value: consumerCodes
+                  }
+                ];
+                const response = await getSearchApplicationsResults(queryObject);
+                const Applications = get(response, "Applications");
+                
+                  const receiptQuery = [
+                    { key: "consumerCodes", value:consumerCodes},
+                    { key: "tenantId", value: tenantId }
+                ]
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'rent-payment','print');
+              
+                  
+            }else{
+              const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+              const { applicationType} = Applications[0];
+              const documents = temp[0].reviewDocData;
+              set(Applications[0],"additionalDetails.documents",documents)
+              downloadAcknowledgementForm(Applications,applicationType,'print');
+            }
           }
         },
         visible: true
@@ -153,12 +211,38 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
-            const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
-            downloadSummary(Properties, PropertiesTemp); 
+          callBack: async() => {
+            switch(purpose){
+              case 'apply':
+                const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
+                downloadSummary(Properties, PropertiesTemp);
+                break;
+              case 'pay': 
+                let tenantId = getQueryArg(window.location.href, "tenantId");
+                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                const queryObject = [
+                  {
+                    key: "tenantId",
+                    value: tenantId
+                  },
+                  {
+                    key: "applicationNumber",
+                    value: consumerCodes
+                  }
+                ];
+                const response = await getSearchApplicationsResults(queryObject);
+                const Applications = get(response, "Applications");
+                
+                  const receiptQuery = [
+                    { key: "consumerCodes", value:consumerCodes},
+                    { key: "tenantId", value: tenantId }
+                ]
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'rent-payment');
+              break; 
+            }   
           }
         },
-        visible: true
+        visible: purpose === 'apply' ? true : purpose === 'pay' ? true : false
       },
       printFormButton: {
         componentPath: "Button",
@@ -179,12 +263,39 @@ export const applicationSuccessFooter = (
         },
         onClickDefination: {
           action: "condition",
-          callBack: () => {
-            const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
-            downloadSummary(Properties, PropertiesTemp,'print');
+          callBack: async() => {
+            switch(purpose){
+              case 'apply':
+                const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
+                downloadSummary(Properties, PropertiesTemp,'print');
+                break;
+              case 'pay': 
+                let tenantId = getQueryArg(window.location.href, "tenantId");
+                let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
+                const queryObject = [
+                  {
+                    key: "tenantId",
+                    value: tenantId
+                  },
+                  {
+                    key: "applicationNumber",
+                    value: consumerCodes
+                  }
+                ];
+                const response = await getSearchApplicationsResults(queryObject);
+                const Applications = get(response, "Applications");
+                
+                  const receiptQuery = [
+                    { key: "consumerCodes", value:consumerCodes},
+                    { key: "tenantId", value: tenantId }
+                ]
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'rent-payment','print');
+              break; 
+            }
+           
           }
         },
-        visible: true
+        visible: purpose === 'apply' ? true : purpose === 'pay' ? true : false
       }
     });
   }

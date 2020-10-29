@@ -9,7 +9,7 @@ import {
     getDateField,
     getLabel
   } from "egov-ui-framework/ui-config/screens/specs/utils";
-  import { getSearchResults, getCount } from "../../../../..//ui-utils/commons";
+  import { getSearchResults, getCount } from "../../../../../ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
     searchApiCallAccountStatement
@@ -34,9 +34,8 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
           },
           gridDefination: {
-            xs: 14,
-            sm: 6,
-            align: "center"
+            xs: 12,
+            sm: 6
           },
           required: true,
           jsonPath: "searchScreenFileNo.fileNumber",
@@ -111,75 +110,25 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             labelName: "Category",
             labelKey: "ES_CATEGORY_LABEL"
           },
-          // placeholder: {
-          //   labelName: "Enter Category",
-          //   labelKey: "ES_CATEGORY_PLACEHOLDER"
-          // },
-          // required: false,
+          placeholder: {
+            labelName: "Enter Category",
+            labelKey: "ES_CATEGORY_PLACEHOLDER"
+          },
+          required: false,
+          props: {
+            disabled: true
+          },
           jsonPath: "Properties[0].category",
             optionValue: "code",
             optionLabel: "name",
             sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
             gridDefination: {
                 xs: 12,
-                sm: 6,
-                align: "center"
+                sm: 6
             },
             errorMessage: "ES_ERR_CATEGORY_FIELD",
-            beforeFieldChange: (action, state, dispatch) => {
-              dispatch(
-                prepareFinalObject(
-                  "Properties[0].subcatvar",
-                  []
-                )
-              )
-
-              let categorySelected = action.value;
-              let subcatvar = get(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar");
-              let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstateServices.categories")
-            
-              if(categorySelected === "CAT.RESIDENTIAL"){
-                subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.RESIDENTIAL")
-                dispatch(
-                  prepareFinalObject(
-                    "Properties[0].subcatvar",
-                    subcatvar
-                  )
-                )
-                // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-              }
-              else if(categorySelected === "CAT.COMMERCIAL"){
-                subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.COMMERCIAL")
-                dispatch(
-                  prepareFinalObject(
-                    "Properties[0].subcatvar",
-                    subcatvar
-                  )
-                )
-                // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-                }
-                else if(categorySelected === "CAT.INDUSTRIAL" || categorySelected === "CAT.INSTITUTIONAL" || categorySelected === "CAT.GOVPROPERTY" || categorySelected === "CAT.RELIGIOUS" || categorySelected === "CAT.HOSPITAL"){
-                  dispatch(
-                    prepareFinalObject(
-                      "Properties[0].subcatvar",
-                      ""
-                    )
-                  )
-                  // let path = "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.categoryContainer.children.subCategory"
-                  // dispatch(
-                  //   handleField(
-                  //     "estate-search-account-statement",
-                  //     path,
-                  //     "visible",
-                  //     true
-                  //   )
-                  // );
-                  // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-                }
-                
-            }
         }),
-        subCategory: getSelectField({
+        subCategory: getTextField({
           label: {
             labelName: "Sub Category",
             labelKey: "ES_SUB_CATEGORY_LABEL"
@@ -189,10 +138,13 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
           },
           // required: false,
-          jsonPath: "Properties[0].subCategory",
-          optionValue: "code",
-          optionLabel: "name",
-          sourceJsonPath: "Properties[0].subcatvar[0].SubCategory",
+          jsonPath: "singleSubCategory",
+          props: {
+            disabled: true
+          },
+          // optionValue: "code",
+          // optionLabel: "label",
+          sourceJsonPath: "singleSubCategory",
           gridDefination: {
               xs: 12,
               sm: 6
@@ -216,8 +168,10 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             sourceJsonPath: "applyScreenMdmsData.propertyTypes",
             gridDefination: {
                 xs: 12,
-                sm: 6,
-                align: "center"
+                sm: 6
+            },
+            props: {
+              disabled: true
             },
             errorMessage: "ES_ERR_SITE_NUMBER_FIELD"
       })
@@ -235,8 +189,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
         pattern: getPattern("Date"),
         gridDefination:{
           xs: 12,
-          sm: 6,
-          align: "center"
+          sm: 6
         },
         required: true,
         jsonPath: "searchScreen.fromDate",
@@ -268,55 +221,30 @@ export const estateApplicationAccountStatementGen = getCommonCard({
     
     button: getCommonContainer({
       buttonContainer: getCommonContainer({
-        resetButton: {
-          componentPath: "Button",
+        firstCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
           gridDefination: {
-            xs: 6,
-            sm: 6,
-            align: "center"
-          },
-          props: {
-            variant: "outlined",
-            style: {
-            //   color: "rgba(0, 0, 0, 0.6000000238418579)",
-            //   borderColor: "rgba(0, 0, 0, 0.6000000238418579)",
-              color: "white",
-              backgroundColor: "rgba(85,85,85,1)",
-              width: "70%",
-              height: "48px",
-              margin: "8px", 
-            //   float: "right"
-            }
-          },
-          children: {
-            buttonLabel: getLabel({
-              labelName: "Reset",
-              labelKey: "ES_HOME_SEARCH_RESULTS_BUTTON_RESET"
-            })
-          },
-          onClickDefination: {
-            action: "condition",
-            callBack: resetFields
+            xs: 12,
+            sm: 4
           }
         },
-        searchButton: {
+        filterButton: {
           componentPath: "Button",
           gridDefination: {
-            xs: 6,
-            sm: 6,
-            align: "left"
+            xs: 12,
+            sm: 4
           },
           props: {
             variant: "contained",
             style: {
               color: "white",
-              margin: "8px",
-              backgroundColor: "rgba(255,153,51,1)",
+              backgroundColor: "#fe7a51",
               borderRadius: "2px",
-              width: "70%",
+              width: "80%",
               height: "48px",
-            //   align: "center"
-                }
+              margin: "0px 0px 20px 0px"      
+            }
           },
           children: {
             buttonLabel: getLabel({
@@ -328,14 +256,20 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             action: "condition",
             callBack: searchApiCallAccountStatement
           }
+        }, lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
         }
       })
     })
 }),
   });
 
-
-  const getAccountStatementProperty = async (state, dispatch) => {
+  export const getAccountStatementProperty = async (state, dispatch) => {
     try {
       const fileNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreenFileNo.fileNumber")
       if(!!fileNumber) {
@@ -348,6 +282,73 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           const {Properties} = payload;
           // const {owners = []} = Properties[0]
           // const findOwner = owners.find(item => !!item.activeState) || {}
+          
+          dispatch(
+            prepareFinalObject(
+              "singleSubCategory",
+              []
+            )
+          )
+
+          let categorySelected = Properties[0].category
+          let subcatPropertyData = Properties[0].subCategory
+          let subcatvar;
+          let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstateServices.categories")
+        
+          if(categorySelected === "CAT.RESIDENTIAL"){
+            subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.RESIDENTIAL")
+            let i = 0, len = subcatvar[0].SubCategory.length;
+              while (i < len) {
+                  if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
+                    dispatch(
+                      prepareFinalObject(
+                        "singleSubCategory",
+                        subcatvar[0].SubCategory[i].name
+                      )
+                    )
+                  }
+                  i++
+              }
+            // dispatch(
+            //   prepareFinalObject(
+            //     "subCategory1",
+            //     subcatvar
+            //   )
+            // )
+            // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
+          }
+          else if(categorySelected === "CAT.COMMERCIAL"){
+            subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.COMMERCIAL")
+            
+            let i = 0, len = subcatvar[0].SubCategory.length;
+            while (i < len) {
+                if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
+                  dispatch(
+                    prepareFinalObject(
+                      "singleSubCategory",
+                      subcatvar[0].SubCategory[i].name
+                    )
+                  )
+                }
+                i++
+            }
+            // dispatch(
+            //   prepareFinalObject(
+            //     "subCategory1",
+            //     subcatvar
+            //   )
+            // )
+            // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
+            }
+            else if(categorySelected === "CAT.INDUSTRIAL" || categorySelected === "CAT.INSTITUTIONAL" || categorySelected === "CAT.GOVPROPERTY" || categorySelected === "CAT.RELIGIOUS" || categorySelected === "CAT.HOSPITAL"){
+              dispatch(
+                prepareFinalObject(
+                  "singleSubCategory",
+                  ""
+                )
+              )
+            }
+
           dispatch(
             prepareFinalObject(
               "searchScreen.sectorNumber",
@@ -439,63 +440,4 @@ export const estateApplicationAccountStatementGen = getCommonCard({
         return payload
       }
     }
-  }
-
-  function resetFields(state, dispatch) {
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.dateContainer.children.from",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.dateContainer.children.to",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumberContainer.children.fileNumber",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.categoryContainer.children.category",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.categoryContainer.children.subCategory",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.siteContainer.children.siteNumber",
-        "props.value",
-        ""
-      )
-    )
-    dispatch(
-      handleField(
-        "estate-search-account-statement",
-        "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumberContainer.children.sectorNumber",
-        "props.value",
-        ""
-      )
-    )
   }

@@ -247,6 +247,9 @@ class WorkFlowContainer extends React.Component {
   };
 
   getRedirectUrl = (action, businessId, moduleName) => {
+    const {preparedFinalObject, dataPath} = this.props
+    let data = get(preparedFinalObject, dataPath, []) || []
+    const {billingBusinessService} = data[0]
     console.log("modulenamewater", moduleName);
     const isAlreadyEdited = getQueryArg(window.location.href, "edited");
     const tenant = getQueryArg(window.location.href, "tenantId");
@@ -258,9 +261,9 @@ class WorkFlowContainer extends React.Component {
     let baseUrl = "";
     let bservice = "";
     baseUrl = "estate"
-    const payUrl = `/egov-common/pay?consumerCode=${businessId}&tenantId=${tenant}`;
+    const payUrl = `/estate/pay?consumerCode=${businessId}&tenantId=${tenant}`;
     switch (action) {
-      case "PAY": return bservice ? `${payUrl}&businessService=${bservice}` : payUrl;
+      case "PAY": return billingBusinessService ? `${payUrl}&businessService=${billingBusinessService}` : payUrl;
       case "EDIT": return isAlreadyEdited
         ? `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit&edited=true`
         : `/${baseUrl}/apply?applicationNumber=${businessId}&tenantId=${tenant}&action=edit`;

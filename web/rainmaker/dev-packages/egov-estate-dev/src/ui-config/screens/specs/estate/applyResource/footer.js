@@ -14,7 +14,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import {
-  applyEstates
+  applyEstates, applyforApplication
 } from "../../../../../ui-utils/apply";
 import {
   setRoute
@@ -1134,9 +1134,14 @@ export const downloadPrintContainer = (
     case `${applicationType}` && 'ES_PENDING_AC_APPROVAL':
     case `${applicationType}` && 'ES_PENDING_DA_FEE': 
     case `${applicationType}` && 'ES_PENDING_PAYMENT':
-    case `${applicationType}` && 'ES_PENDING_CLARIFICATION':
+    case `${applicationType}` && 'ES_PENDING_CLARIFICATION':     
     case `${applicationType}` && 'ES_REJECTED': 
-    
+    case `${applicationType}` && 'ES_PENDING_SO_TEMPLATE_CREATION':
+    case `${applicationType}` && 'ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION':
+    case `${applicationType}` && 'ES_PENDING_DS_TEMPLATE_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_DA_TEMPLATE_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_SRA_TEMPLATE_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_SO_TEMPLATE_VERIFICATION':
         downloadMenu = [
           applicationDownloadObject
         ]
@@ -1161,13 +1166,29 @@ export const downloadPrintContainer = (
                 downloadMenu = [
                   applicationDownloadObject,LetterDownloadObject
                 ]
-              
                 printMenu = [
                   applicationPrintObject,LetterPrintObject
                 ]
           } 
         break;
-
+    case `${applicationType}` && 'ES_PENDING_CITIZEN_NOTICE_DOCUMENTS':
+    case `${applicationType}` && 'ES_PENDING_DS_NOTICE_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_DA_NOTICE_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_SRA_NOTICE_VERIFICATION': 
+    case `${applicationType}` && 'ES_PENDING_SO_NOTICE_VERIFICATION':  
+          switch(applicationType){
+            case 'LeaseholdToFreehold':
+                downloadMenu = [
+                  applicationDownloadObject,LetterDownloadObject,
+                  NoticeDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,LetterPrintObject,
+                  NoticePrintObject
+                ]
+          }
+          break;
     case `${applicationType}` && 'ES_APPROVED':  
       switch(applicationType) {
             case 'SaleDeed':

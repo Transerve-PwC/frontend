@@ -113,7 +113,7 @@ export const callPGService = async (state, dispatch, item, _businessService) => 
         searchResponse,
         "Payments[0].paymentDetails[0].receiptNumber"
       );
-
+     
       dispatch(
         setRoute(
           `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
@@ -179,17 +179,23 @@ const callBackForOfflinePayment = async (state, dispatch) => {
     const tenantId = getTenantId()
     const type = getQueryArg(window.location.href, "businessService")
     const paymentDetails = get(state, "screenConfiguration.preparedFinalObject.payment")
-    const payload = [{...paymentDetails, applicationNumber, tenantId}]
-    const response = await httpRequest("post",
-    "/est-services/application/_collect_payment",
-    "",
-    [],
-    { Applications : payload })
-    if(!!response) {
-      const path = `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
-      dispatch(
-        setRoute(path)
-      );
+    const estimateDetails = get(state, "screenConfiguration.preparedFinalObject.temp[0].estimateCardData")
+    const paymentAmount = estimateDetails.reduce((prev, curr)=> prev + Number(curr.value) ,0)
+    const payload = [{...paymentDetails, paymentAmount, applicationNumber, tenantId}]
+    try {
+      const response = await httpRequest("post",
+      "/est-services/application/_collect_payment",
+      "",
+      [],
+      { Applications : payload })
+      if(!!response) {
+        const path = `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+        dispatch(
+          setRoute(path)
+        );
+      }
+    } catch (error) {
+      console.log("error", error)
     }
   }
 }
