@@ -263,7 +263,7 @@ const sizeOfAreaPurchasedField = {
   },
   pattern: _getPattern("areaOfProperty"),
   required: true,
-  jsonPath: "Properties[0].propertyDetails.sizeOfAreaPurchased"
+  jsonPath: "Properties[0].propertyDetails.areaSqft"
 }
 
 const propertyDetailsHeader = getCommonTitle({
