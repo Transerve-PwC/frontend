@@ -18,6 +18,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {ValidateCard , ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
+import { findLastKey } from "lodash";
 // import "./index.css";
 
 const moveToReview = dispatch => {
@@ -43,10 +44,42 @@ export const callBackForNext = async (state, dispatch) => {
       dispatch,
       "createMaterialReceiptNoteMisc"
     );
-    
-    if (!(isMaterialDetailsValid)) {
-      isFormValid = false;
-    }
+    let issueNumber = get(
+      state.screenConfiguration.preparedFinalObject,
+      `materialReceipt[0].issueNumber`,
+      ''
+    ); 
+    let isAdHoc = get(
+      state.screenConfiguration.preparedFinalObject,
+      `materialReceipt[0].isAdHoc`,
+      ''
+    ); 
+
+    // if(isAdHoc)
+    // {
+    //   if(issueNumber)
+    //   {
+    //     if (!(isMaterialDetailsValid)) {
+    //       isFormValid = false;
+    //     }
+    //   }
+    //   else{
+    //     const errorMessage = {
+    //       labelName: "Please Enter Issuen Number for Search",
+    //       labelKey: "STORE_ISSUENUMBER_SEARCH_VALIDATION"
+    //     };
+    //     dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+    //   }
+
+    // }
+    // else
+    // {
+      if (!(isMaterialDetailsValid)) {
+        isFormValid = false;
+      }
+   // }
+
   }
   if (activeStep === 1) {
     let storeDetailsCardPath =
@@ -233,7 +266,55 @@ export const callBackForNext = async (state, dispatch) => {
         if(activeStep ===1)
               moveToReview(dispatch)
               else
-              changeStep(state, dispatch);  
+              {
+                let issueNumber = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialReceipt[0].issueNumber`,
+                  ''
+                ); 
+                let isAdHoc = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialReceipt[0].isAdHoc`,
+                  ''
+                ); 
+                let storeUpdate = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialReceiptRead[0].storeUpdate`,
+                  false
+                ); 
+            
+                if(isAdHoc ==='YES')
+                {
+                  if(issueNumber && storeUpdate)
+                  {
+                    changeStep(state, dispatch);  
+                  }
+                  else{                    
+                    const step = getQueryArg(window.location.href, "step");
+                    const tenantId = getQueryArg(window.location.href, "tenantId");
+                    if(!step && !tenantId){                   
+                    const errorMessage = {
+                      labelName: "Please Enter Issuen Number for Search",
+                      labelKey: "STORE_ISSUENUMBER_SEARCH_VALIDATION"
+                    };
+                    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                  }
+                  else
+                  {
+                    changeStep(state, dispatch); 
+                  }
+                    
+            
+                  }
+            
+                }
+                else
+                {
+                  changeStep(state, dispatch);  
+                }
+                
+              }
+             
       }
 
       
@@ -250,11 +331,48 @@ export const callBackForNext = async (state, dispatch) => {
      
     } 
     else {
-      const errorMessage = {
-        labelName: "Please fill all fields",
-        labelKey: "ERR_FILL_ALL_FIELDS"
-      };
-      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+
+      let issueNumber = get(
+        state.screenConfiguration.preparedFinalObject,
+        `materialReceipt[0].issueNumber`,
+        ''
+      ); 
+      let isAdHoc = get(
+        state.screenConfiguration.preparedFinalObject,
+        `materialReceipt[0].isAdHoc`,
+        ''
+      ); 
+      let storeUpdate = get(
+        state.screenConfiguration.preparedFinalObject,
+        `materialReceiptRead[0].storeUpdate`,
+        false
+      ); 
+  
+      if(isAdHoc ==='YES')
+      {
+        if(issueNumber && storeUpdate)
+        {
+        }
+        else{
+          const errorMessage = {
+            labelName: "Please Enter Issuen Number for Search",
+            labelKey: "STORE_ISSUENUMBER_SEARCH_VALIDATION"
+          };
+          dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+        }
+      }
+      else
+      {
+        const errorMessage = {
+          labelName: "Please fill all fields",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+      }
+      
     }
   }
 };
@@ -547,6 +665,7 @@ export const footer = getCommonApplyFooter({
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name", response.materialIssues[0].toStore.department.name));
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName", response.materialIssues[0].toStore.divisionName));
            dispatch(prepareFinalObject("MiscMaterilList", material));
+           dispatch(prepareFinalObject("materialReceiptRead[0].storeUpdate",true));
         }
         else{
           dispatch(
@@ -573,11 +692,42 @@ export const footer = getCommonApplyFooter({
 
   }
   else{
+    const step = getQueryArg(window.location.href, "step");
+    const tenantId = getQueryArg(window.location.href, "tenantId");    
+    if(!step && !tenantId){
     const errorMessage = {
       labelName: "Please Enter Issuen Number for Search",
       labelKey: "STORE_ISSUENUMBER_SEARCH_VALIDATION"
     };
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
+  }
+  let material=[];
+  let materialReceipt = get(
+    state.screenConfiguration.preparedFinalObject,
+    `materialReceipt`,
+    []
+  ); 
+  if(materialReceipt && materialReceipt[0])
+  {
+  for (let index = 0; index < materialReceipt[0].receiptDetails.length; index++) {
+    const element = materialReceipt[0].receiptDetails[index];
+    material.push(
+      {
+        materialcode:element.material.code,
+        //dispatch(prepareFinalObject("materialIssues[0].materialIssueDetails[0].material.name",GetMdmsNameBycode(action,state, dispatch,"createScreenMdmsData.store-asset.Material",Material[0].materialCode)));
+        materialName:GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",element.material.code),
+        uom:element.uom,
+        id:element.id,
+        quantityIssued:element.receivedQty,
+        orderNumber:0,
+        issuedToEmployee:"",
+        issuedToDesignation:"",
+        //unitRate://to be deside
+      })
+  }
+}
+  dispatch(prepareFinalObject("MiscMaterilList", material));
+  dispatch(prepareFinalObject("materialReceiptRead[0].storeUpdate",true));
 
   }
 

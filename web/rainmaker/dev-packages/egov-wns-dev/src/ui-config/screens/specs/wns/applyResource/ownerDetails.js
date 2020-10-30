@@ -205,26 +205,26 @@ export const getOwnerDetails = (isEditable = true) => {
                 callBack: handleNA
               }
             ),
-            gender: getLabelWithValue(
-              {
-                labelName: "Gender",
-                labelKey: "WS_OWN_DETAIL_GENDER_LABEL"
-              },
-              {
-                jsonPath: "applyScreen.property.owners[0].gender",
-                callBack: handleNA
-              }
-            ),
-            dateOfBirth: getLabelWithValue(
-              {
-                labelName: "Date Of Birth",
-                labelKey: "WS_OWN_DETAIL_DOB_LABEL"
-              },
-              {
-                jsonPath: "applyScreen.property.owners[0].dob",
-                callBack: convertEpochToDateAndHandleNA
-              }
-            ),
+            // gender: getLabelWithValue(
+            //   {
+            //     labelName: "Gender",
+            //     labelKey: "WS_OWN_DETAIL_GENDER_LABEL"
+            //   },
+            //   {
+            //     jsonPath: "applyScreen.property.owners[0].gender",
+            //     callBack: handleNA
+            //   }
+            // ),
+            // dateOfBirth: getLabelWithValue(
+            //   {
+            //     labelName: "Date Of Birth",
+            //     labelKey: "WS_OWN_DETAIL_DOB_LABEL"
+            //   },
+            //   {
+            //     jsonPath: "applyScreen.property.owners[0].dob",
+            //     callBack: convertEpochToDateAndHandleNA
+            //   }
+            // ),
             email: getLabelWithValue(
               {
                 labelName: "Email",
@@ -245,14 +245,14 @@ export const getOwnerDetails = (isEditable = true) => {
                 callBack: handleNA
               }
             ),
-            Relationship: getLabelWithValue(
-              {
-                labelName: "Relationship",
-                labelKey: "WS_OWN_DETAIL_RELATION_LABEL"
-              },
-              { jsonPath: "applyScreen.property.owners[0].relationship",
-              callBack: handleNA }
-            ),
+            // Relationship: getLabelWithValue(
+            //   {
+            //     labelName: "Relationship",
+            //     labelKey: "WS_OWN_DETAIL_RELATION_LABEL"
+            //   },
+            //   { jsonPath: "applyScreen.property.owners[0].relationship",
+            //   callBack: handleNA }
+            // ),
             //   ownerCategory,
 
             correspondenceAddress: getLabelWithValue(
@@ -263,14 +263,14 @@ export const getOwnerDetails = (isEditable = true) => {
               { jsonPath: "applyScreen.property.owners[0].correspondenceAddress",
               callBack: handleNA}
             ),
-            specialApplicantCategory: getLabelWithValue(
-              {
-                labelName: "Special Applicant Category",
-                labelKey: "WS_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
-              },
-              { jsonPath: "applyScreen.property.owners[0].ownerType",
-              callBack: handleNA }
-            )
+            // specialApplicantCategory: getLabelWithValue(
+            //   {
+            //     labelName: "Special Applicant Category",
+            //     labelKey: "WS_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
+            //   },
+            //   { jsonPath: "applyScreen.property.owners[0].ownerType",
+            //   callBack: handleNA }
+            // )
           }),
         }),
         items: [],

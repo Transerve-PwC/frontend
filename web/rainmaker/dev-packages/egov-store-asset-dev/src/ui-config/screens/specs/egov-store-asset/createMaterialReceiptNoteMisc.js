@@ -13,8 +13,9 @@ import {
   import get from "lodash/get";
   import map from "lodash/map";
   import { httpRequest } from "../../../../ui-utils";
+  import {handleSearchMaterial} from './creatematerialReceiptNoteMiscResource/footer'
   import { commonTransform, objectArrayToDropdown } from "../utils";
-  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { prepareFinalObject , handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   //import { getEmployeeData } from "./viewResource/functions";
@@ -23,6 +24,22 @@ import {
   import {
     IndentConfiguration
   } from "../../../../ui-utils/sampleResponses";
+  export const prepareEditFlow = async (
+    state,
+    dispatch,    
+  ) => {
+    let isAdHoc =  get(state.screenConfiguration.preparedFinalObject, "materialReceipt[0].isAdHoc",false)
+    
+    dispatch(
+     handleField(
+       "createMaterialReceiptNoteMisc",
+       "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.isAdhoc",
+       "props.value",
+       isAdHoc
+     )
+   );
+
+  }
   export const stepsData = [
     { labelName: "Miscellaneous Material Receipt", labelKey: "STORE_MATERIAL_RECEIPT_MATERIAL_MISC" },
     {
@@ -94,6 +111,7 @@ export const header = getCommonContainer({
             masterDetails: [
               { name: "Material",},
               { name: "ReceiptType", },
+              { name: "businessService" }, 
               
             ],
           },
@@ -229,12 +247,88 @@ export const header = getCommonContainer({
     beforeInitScreen: (action, state, dispatch) => {
      
       let tenantId = getstoreTenantId();
-      const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
+      //const mdmsDataStatus = getMdmsData(state, dispatch, tenantId);
+      getMdmsData(state, dispatch, tenantId)
+      .then(response=>
+        {
+         if(response)
+         {
+           //
+           // getstoreData(action,state, dispatch)
+           // .then(response=>{
+             // if(response)
+             // {
+               const queryObject = [{ key: "tenantId", value: getTenantId()}];
+           getSearchResults(queryObject, dispatch,"storeMaster")
+           .then(response =>{
+           // let response = await getSearchResults(queryObject, dispatch,"storeMaster");
+           if(response)
+           {
+           const userInfo = JSON.parse(getUserInfo());
+           let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+           // filter store based on login user role and assign business service
+           let roles = userInfo.roles
+           for (let index = 0; index < roles.length; index++) {
+           const element = roles[index];
+           businessService = businessService.filter(x=>x.role === element.code)
+           if(businessService.length==1)
+           response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
+           break;        
+           }
+           dispatch(prepareFinalObject("store.stores", response));
+            }
+           });
+                 
+        
+         }
+        }
+      )
+     
       const storedata = getstoreData(action,state, dispatch);
       const step = getQueryArg(window.location.href, "step");
       tenantId = getQueryArg(window.location.href, "tenantId");
+     
+      let isAdHoc =  get(state.screenConfiguration.preparedFinalObject, "materialReceipt[0].isAdHoc",false)
       if(!step && !tenantId){
+        dispatch(prepareFinalObject("materialReceipt[0].isAdHoc", false));
+        isAdHoc =  get(state.screenConfiguration.preparedFinalObject, "materialReceipt[0].isAdHoc",false)
         dispatch(prepareFinalObject("materialReceipt[0]",null));
+       
+      }
+      else
+      {
+        
+        if(isAdHoc)
+        handleSearchMaterial( state,dispatch)
+        else{
+          let code =  get(state.screenConfiguration.preparedFinalObject, "materialReceipt[0].receivingStore.code",'')
+          const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "store", value: code}];
+              getSearchResults(queryObject, dispatch,"materials")
+              .then(async response =>{
+                if(response){
+                  let indentingMaterial =[];
+                  let  materialNames = response.materials.map(material => {
+                      const materialName = material.name;
+                      const materialcode = material.code;
+                      const id = material.id
+                      const description = material.description;
+                      const uom = material.baseUom;
+                      const quantityIssued = 0;
+                      const issuedToEmployee = '';
+                      const issuedToDesignation = '';
+                     // const poOrderedQuantity = 0;
+                      return{ materialName, materialcode,description,uom ,quantityIssued,issuedToEmployee,issuedToDesignation}
+                  })
+  
+                  dispatch(prepareFinalObject("MiscMaterilList", materialNames));          
+               }
+                
+              });   
+              
+
+        }
+
+       
       }
      // SEt Default data Start
 
@@ -247,10 +341,89 @@ export const header = getCommonContainer({
      dispatch(prepareFinalObject("materialReceipt[0].challanDate", 1512365762000,));
      dispatch(prepareFinalObject("materialReceipt[0].inspectionDate", 45698756,));
      dispatch(prepareFinalObject("materialReceipt[0].inspectionRemarks", '',));
-
-   
+//isAdHoc
+//dispatch(prepareFinalObject("materialReceipt[0].isAdHoc", "NO"));
      // SEt Default data End
+    
+    
+     if(isAdHoc)
+     dispatch(prepareFinalObject("materialReceipt[0].isAdHoc", "YES"));
+     else
+     {
+      dispatch(prepareFinalObject("materialReceipt[0].isAdHoc", "NO"));
+     }
+    //  let isAdHoc_ =
+    //  isAdHoc === false
+    //    ? "YES"
+    //    : "NO";
+    //  dispatch(
+    //   handleField(
+    //     "createMaterialReceiptNoteMisc",
+    //     "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.isAdhoc",
+    //     "props.value",
+    //     isAdHoc_
+    //   )
+    // );
+    // set(
+    //   action.screenConfig,
+    //   "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.ViewButton.props.style",
+    //   { marginTop: "20px" }
+    // );
+     if(!isAdHoc)
+     {
+       
+       set(
+         action.screenConfig,
+         "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreName.props.style",
+         { display: "none",width:"40%" }
+       );
+       set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreNameAd.props.style",
+        { display: "inline-block",width:"40%" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.issueNumber.props.style",
+        { display: "none" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.ViewButton.props.style",
+        { display: "none",marginTop: "20px"  }
+      );
+    
+     }     
      
+     else
+     {
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreName.props.style",
+        { display: "inline-block",width:"40%" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreNameAd.props.style",
+        { display: "none",width:"40%" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.issueNumber.props.style",
+        { display: "inline-block" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.ViewButton.props.style",
+        { display: "inline-block",marginTop: "20px"  }
+      );
+     }
+     
+     prepareEditFlow(state, dispatch).then(res=>
+      {
+    
+      }
+    );
       return action;
     },
   

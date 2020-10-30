@@ -291,6 +291,8 @@ const callBackForVerifyProperty = async(state , dispatch)=> {
   set(propertyPayload, "channel", "SYSTEM");
   set(propertyPayload, "source", "MUNICIPAL_RECORDS");
   set(propertyPayload, "noOfFloors", 1);
+  set(propertyPayload, "propertyType", "BUILTUP.INDEPENDENTPROPERTY");  
+  set(propertyPayload, "propertyId", propertyPayload.propertyUID );
   propertyPayload.tenantId = "ch.chandigarh";
   propertyPayload.rainWaterHarvesting=false;
   propertyPayload.owners.map(owner => {

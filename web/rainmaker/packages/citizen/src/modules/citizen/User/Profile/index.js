@@ -6,6 +6,7 @@ import ProfileForm from "./components/ProfileForm";
 import { Screen } from "modules/common";
 import img from "egov-ui-kit/assets/images/download.png";
 import { fileUpload, removeFile } from "egov-ui-kit/redux/form/actions";
+import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import "./index.css";
 
 const ProfileFormHOC = formHoc({ formKey: "profile" })(ProfileForm);
@@ -17,13 +18,21 @@ class Profile extends Component {
 
   setProfilePic = (file = null, imageUri = "") => {
     const { fileUpload } = this.props;
-    this.removeProfilePic();
+    
+    this.removeProfilePic('UPLOAD');
     fileUpload("profile", "photo", { module: "rainmaker-pgr", file, imageUri }, true);
   };
 
-  removeProfilePic = () => {
+  removeProfilePic = (type) => {
     const { removeFile } = this.props;
+    const { toggleSnackbarAndSetText } = this.props;
     removeFile("profile", "photo", 0);
+    //toggleSnackbarAndSetText(true, { labelName: "File remove success", labelKey: "CORE_COMMON_IMAGE_FILE_REMOVE_SUCCESS1" }, "success");
+    if(type === "REMOVE")
+    {
+      toggleSnackbarAndSetText(true, { labelName: "File remove success", labelKey: "CORE_COMMON_IMAGE_FILE_REMOVE_SUCCESS" }, "success");
+    }
+    
   };
 
   onClickAddPic = (isOpen) => {
@@ -43,7 +52,7 @@ class Profile extends Component {
           <ProfileFormHOC onClickAddPic={onClickAddPic} img={img} profilePic={profilePic} />
         </div>
         {openUploadSlide && (
-          <UploadDrawer removeFile={removeProfilePic} setProfilePic={setProfilePic} onClickAddPic={onClickAddPic} openUploadSlide={openUploadSlide} />
+          <UploadDrawer removeFile={() =>removeProfilePic('REMOVE')} setProfilePic={setProfilePic} onClickAddPic={onClickAddPic} openUploadSlide={openUploadSlide} />
         )}
       </Screen>
     );
@@ -69,6 +78,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fileUpload: (formKey, fieldKey, module, fileObject) => dispatch(fileUpload(formKey, fieldKey, module, fileObject)),
     removeFile: (formKey, fieldKey, index) => dispatch(removeFile(formKey, fieldKey, index)),
+    toggleSnackbarAndSetText: (open, message, error) => dispatch(toggleSnackbarAndSetText(open, message, error)),
   };
 };
 

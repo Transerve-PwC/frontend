@@ -297,7 +297,10 @@ for (let index = 0; index < response[0].materialIssueDetails.length; index++) {
     totalvalue = totalvalue+ Number(element.value)   
     TotalQty = TotalQty + Number(element.quantityIssued)
 }
-
+if(response[0].issuePurpose ==='WRITEOFFORSCRAP')
+set(response[0],`issuePurposeText`, "write-off of material in stock to be scrapped");
+else
+set(response[0],`issuePurposeText`, "return to supplier");
 set(response[0],`totalQty`, TotalQty);
 set(response[0],`totalvalue`, totalvalue);
 }

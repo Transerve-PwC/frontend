@@ -2,7 +2,7 @@ import get from "lodash/get";
 import find from "lodash/find";
 import {
   handleScreenConfigurationFieldChange as handleField,
-  toggleSnackbar,
+  toggleSnackbar,toggleSpinner,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getmiscellaneousreceiptnotesSearchResults } from "../../../../../ui-utils/storecommonsapi";
 import { getTextToLocalMapping } from "./searchResults";
@@ -10,7 +10,7 @@ import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
 import { validateFields } from "../../utils";
 import { ReceiptType } from "../../../../../ui-utils/sampleResponses";
 import { getTenantId,getOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+import store from "ui-redux/store";
 export const getDeptName = (state, codes) => {
   let deptMdmsData = get(
     state.screenConfiguration.preparedFinalObject,
@@ -108,8 +108,9 @@ export const searchApiCall = async (state, dispatch) => {
                  queryObject.push({ key: key, value: searchScreenObject[key].trim() });
       }
     }
-    let response = await getmiscellaneousreceiptnotesSearchResults(queryObject, dispatch);
     try {
+    let response = await getmiscellaneousreceiptnotesSearchResults(queryObject, dispatch);
+  
 
       if(response.MaterialReceipt.length===0)
       {
@@ -165,6 +166,7 @@ export const searchApiCall = async (state, dispatch) => {
           "error"
         )
       );
+      store.dispatch(toggleSpinner());
     }
   }
 };

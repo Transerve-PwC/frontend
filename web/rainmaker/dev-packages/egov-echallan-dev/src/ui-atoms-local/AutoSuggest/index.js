@@ -6,6 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import get from "lodash/get";
+import store from "ui-redux/store";
 
 const getSuggestions = suggestions => {
   return (
@@ -93,9 +96,34 @@ function Control(props) {
       {...props.selectProps.textFieldProps}
       helperText={props.selectProps.helperText}
       error={props.selectProps.error}
+	  onChange={event => {
+        handleTextChange(event,props.selectProps.isFilterData)
+      }}
     />
   );
 }
+
+const handleTextChange = (e,isFilterData) => {
+  if (isFilterData) {
+    let vendorvalue = get(store.getState(), 'screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.vendorList', []);
+    let finalVendorValues = [];
+    let inputValue = e.target.value;
+    if (vendorvalue) {
+      console.log(e.target.value);
+      if (inputValue.length >= 3) {
+        if (isNaN(inputValue)) {
+          finalVendorValues = vendorvalue.filter(vendor =>
+            vendor.fullname && vendor.fullname.includes(inputValue));
+        } else { 
+          finalVendorValues = vendorvalue.filter(vendor =>
+            vendor.code && vendor.code.includes(inputValue));
+        }
+        store.dispatch(prepareFinalObject("applyScreenMdmsData.egec.vendorList2", finalVendorValues));
+      }
+    }
+  }
+}
+
 
 function Option(props) {
   return (

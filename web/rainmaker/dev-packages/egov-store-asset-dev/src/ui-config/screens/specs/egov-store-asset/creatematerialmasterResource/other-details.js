@@ -100,6 +100,7 @@ import {
             },
             
             jsonPath: "materials[0].materialClass",
+            visible:false,
            // sourceJsonPath: "searchScreenMdmsData.store-asset.MaterialType",
             props: {
               data: [
@@ -124,6 +125,7 @@ import {
            
             jsonPath: "materials[0].stockingUom.code",
             sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
+            visible:false,
             props: {
               optionLabel: "name",
             optionValue: "code"
@@ -206,7 +208,7 @@ import {
           },
           isFieldValid: true,
           required: false,
-    
+          visible:false,
           props: {
             content: "STORE_MATERIAL_LOT_CONTROL",
             jsonPath: "materials[0].lotControl",
@@ -226,7 +228,7 @@ import {
           },
           isFieldValid: true,
           required: false,
-    
+          visible:false,
           props: {
             content: "STORE_MATERIAL_SHELF_LIFE_CONTROL",
             jsonPath: "materials[0].shelfLifeControl",

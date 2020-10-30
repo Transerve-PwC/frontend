@@ -43,9 +43,17 @@ import {
             
            }
           ),
+           unitRate: getLabelWithValue(
+            { labelName: "Unit Rate",
+            labelKey: "STORE_MATERIAL_RECEIPT_UNIT_RATE"},
+            {
+              jsonPath: "materialReceipt[0].receiptDetails[0].unitRate"
+             
+            }
+          ),
           QtyIssued: getLabelWithValue(
-            { labelName: "Available Qty",
-            labelKey: "STORE_MATERIAL_RECEIPT_QTY_ISSUED"},
+            { labelName: "Qty. Received",
+            labelKey: "STORE_MATERIAL_RECEIPT_QTY_RECEIVED"},
             {
               jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
              

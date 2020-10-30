@@ -71,21 +71,21 @@ export const propertyID = getCommonContainer({
 })
 
 const propertyDetails = getCommonContainer({
-  propertyType: getLabelWithValue(
-    {
-      labelKey: "WS_PROPERTY_TYPE_LABEL"
-    },
-    {
-      jsonPath:
-        "applyScreen.property.propertyType",
-      callBack: handleNA,
-      localePrefix: {
-        moduleName: "WS",
-        masterName: "PROPTYPE"
-      }
+  // propertyType: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_PROPERTY_TYPE_LABEL"
+  //   },
+  //   {
+  //     jsonPath:
+  //       "applyScreen.property.propertyType",
+  //     callBack: handleNA,
+  //     localePrefix: {
+  //       moduleName: "WS",
+  //       masterName: "PROPTYPE"
+  //     }
 
-    }
-  ),
+  //   }
+  // ),
   propertyUsageType: getLabelWithValue(
     {
       labelKey: "WS_PROPERTY_USAGE_TYPE_LABEL"
@@ -123,26 +123,26 @@ const propertyDetails = getCommonContainer({
 
     }
   ),
-  numberOfFloors: getLabelWithValue(
-    {
-      labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL",
-      labelName: "Number Of Floors"
-    },
-    {
-      jsonPath: "applyScreen.property.noOfFloors",
-      callBack: handleNA
-    }
-  ),
-  rainwaterHarvestingFacility: getLabelWithValue(
-    {
-      labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
-      labelName: "Rainwater Harvesting Facility"
-    },
-    {
-      jsonPath: "applyScreen.property.rainWaterHarvesting",
-      callBack: handleNA
-    }
-  )
+  // numberOfFloors: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL",
+  //     labelName: "Number Of Floors"
+  //   },
+  //   {
+  //     jsonPath: "applyScreen.property.noOfFloors",
+  //     callBack: handleNA
+  //   }
+  // ),
+  // rainwaterHarvestingFacility: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
+  //     labelName: "Rainwater Harvesting Facility"
+  //   },
+  //   {
+  //     jsonPath: "applyScreen.property.rainWaterHarvesting",
+  //     callBack: handleNA
+  //   }
+  // )
 })
 
 

@@ -102,13 +102,19 @@ export const getIndentNoteListDetailsView = (isReview = true) => {
         {
           labelName: "Purpose of Issue", labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_PURPOSE"
         },
-        { jsonPath: "materialIssues[0].issuePurpose" }
+        { jsonPath: "materialIssues[0].issuePurposeText" }
       ),
-      supplier: getLabelWithValue(
-        { labelName: "supplier Name",
-        labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME" },
+      // supplier: getLabelWithValue(
+      //   { labelName: "supplier Name",
+      //   labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME" },
+      //   {
+      //     jsonPath: "materialIssues[0].supplier.name",
+      //   }
+      // ),
+      createdBy: getLabelWithValue(
+        { labelName: "Created by", labelKey: "STORE_CREATEBY_MR_ISSUE" },
         {
-          jsonPath: "materialIssues[0].supplier.name",
+          jsonPath: "materialIssues[0].createdByName",
         }
       ),
       Remark: getLabelWithValue(
@@ -118,12 +124,7 @@ export const getIndentNoteListDetailsView = (isReview = true) => {
           jsonPath: "materialIssues[0].description",
         }
       ),
-      createdBy: getLabelWithValue(
-        { labelName: "Created by", labelKey: "STORE_CREATEBY_MR_ISSUE" },
-        {
-          jsonPath: "materialIssues[0].createdByName",
-        }
-      ),
+     
       designation: getLabelWithValue(
         { labelName: "Designation", labelKey: "STORE_DSGNTN_MR_ISSUE" },
         {

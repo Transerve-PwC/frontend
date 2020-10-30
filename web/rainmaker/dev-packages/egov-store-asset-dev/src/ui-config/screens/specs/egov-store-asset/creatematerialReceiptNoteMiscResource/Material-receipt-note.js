@@ -117,9 +117,13 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             labelName: "Select  Store Name",
             labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
           },
-          required: true,
+          required: false,
           errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
           jsonPath: "materialReceipt[0].receivingStore.name",
+          gridDefination: {
+            xs: 12,
+            sm: 12,
+          },
          // sourceJsonPath: "store.stores",
             props: {
               disabled: true, 
@@ -145,6 +149,82 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
 
 
           // }
+         
+          
+        }
+      },
+      StoreNameAd: {
+        ...getSelectField({
+          label: {
+            labelName: " Store Name",
+            labelKey: "STORE_DETAILS_STORE_NAME"
+          },
+          placeholder: {
+            labelName: "Select  Store Name",
+            labelKey: "STORE_DETAILS_STORE_NAME_SELECT"
+          },
+          required: true,
+          errorMessage:"STORE_VALIDATION_STORE_NAME_SELECT",
+          jsonPath: "materialReceipt[0].receivingStore.code",
+          gridDefination: {
+            xs: 12,
+            sm: 12,
+          },
+          sourceJsonPath: "store.stores",
+            props: {
+              disabled: false, 
+              optionValue: "code",
+              optionLabel: "name",
+            },
+        }),
+        beforeFieldChange: (action, state, dispatch) => {
+          let store = get(
+            state.screenConfiguration.preparedFinalObject,
+            `store.stores`,
+            []
+          ); 
+          // call api to get mrnNumber List
+          getmrnNumber(action,state, dispatch,action.value)
+          store =  store.filter(x=> x.code === action.value) 
+          if(store && store[0])  
+          {
+            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",store[0].name)); 
+            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.code",store[0].code));           
+            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name", store[0].department.name));
+            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName", store[0].divisionName));
+            // get material from material store map calling api store-asset-services/materials/_search?
+
+            const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "store", value: action.value}];
+            getSearchResults(queryObject, dispatch,"materials")
+            .then(async response =>{
+              if(response){
+                let indentingMaterial =[];
+                let  materialNames = response.materials.map(material => {
+                    const materialName = material.name;
+                    const materialcode = material.code;
+                    const id = material.id
+                    const description = material.description;
+                    const uom = material.baseUom;
+                    const quantityIssued = 0;
+                    const issuedToEmployee = '';
+                    const issuedToDesignation = '';
+                   // const poOrderedQuantity = 0;
+                    return{ materialName, materialcode,description,uom ,quantityIssued,issuedToEmployee,issuedToDesignation}
+                })
+
+                dispatch(prepareFinalObject("MiscMaterilList", materialNames));          
+             }
+              
+            });   
+            
+             
+           // dispatch(prepareFinalObject("MiscMaterilList", material));          
+           
+          }
+          else{
+
+
+          }
          
           
         }
@@ -333,6 +413,114 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
   export const MaterialSearch = getCommonCard({
     
     MaterialSearchContainer: getCommonContainer({
+      isAdHoc: {
+        uiFramework: "custom-containers",
+        componentPath: "RadioGroupContainer",
+        gridDefination: {
+          xs: 4
+        },
+        jsonPath: "materialReceipt[0].isAdHoc",
+        type: "array",
+        props: {
+          required: true,
+          jsonPath: "materialReceipt[0].isAdHoc",
+          label: { name: "Insurance", key: "STORE_ISSUE_NUMBER_EXIST" },
+          buttons: [
+            {
+              labelName: "YES",
+              labelKey: "SCORE_YES",
+              value:"YES",           
+            },
+            {
+              label: "NO",
+              labelKey: "SCORE_NO",
+              value:"NO",           
+            },
+           
+          ],      
+          defaultValue: "NO"
+        },
+        type: "array",
+        beforeFieldChange: (action, state, dispatch) => {
+         // dispatch(prepareFinalObject("materialReceipt[0]",null));
+          //  dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",null)); 
+          //  dispatch(prepareFinalObject("materialReceipt[0].receivingStore.code",null)); 
+          dispatch(prepareFinalObject("materialReceiptRead[0].storeUpdate",false)); 
+          if (action.value === "NO") {
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreName",
+                "props.style",
+                { display: "none" ,width:"40%" }
+              )
+            );
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreNameAd",
+                "props.style",
+                { display: "inline-block",width:"40%" }
+              )
+            ); 
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.issueNumber",
+                "props.style",
+                { display: "none" }
+              )
+            );
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.ViewButton",
+                "props.style",
+                { display: "none" }
+              )
+            );
+           // dispatch(prepareFinalObject("NULMSMIDRequest.insuranceThrough",null));
+           
+          }
+          else  if (action.value === "YES") {
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreName",
+                "props.style",
+                { display: "inline-block" ,width:"40%" }
+              )
+            ); 
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreNameAd",
+                "props.style",
+                { display: "none",width:"40%" }
+              )
+            );
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.issueNumber",
+                "props.style",
+                { display: "inline-block" }
+              )
+            );
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                "components.div.children.formwizardFirstStep.children.MaterialSearch.children.cardContent.children.MaterialSearchContainer.children.ViewButton",
+                "props.style",
+                { display: "inline-block",marginTop: "20px"  }
+              )
+            );
+           
+          }
+             
+        }
+       
+      },
  
       issueNumber: {
         ...getTextField({
@@ -349,13 +537,20 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
            
           },
           required: false,
+          gridDefination: {
+            xs: 12,
+            sm: 4,
+          },
           pattern: getPattern("eventDescription") || null,
           jsonPath: "materialReceipt[0].issueNumber"
         })
       }, 
       Break:getBreak(),
       ViewButton: {
-        componentPath: "Button",       
+        componentPath: "Button",  
+        gridDefination: {
+          xs: 4
+        },     
         props: {
           variant: "contained",
           color: "primary",
@@ -363,14 +558,15 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             //minWidth: "200px",
             height: "48px",
             marginRight: "10px",
+            marginTop: "10px",
     
           }
         },
         children: {
          
           submitButtonLabel: getLabel({
-            labelName: "Submit",
-            labelKey: "STORE_SUBMIT_LABEL"
+            labelName: "Search",
+            labelKey: "STORE_COMMON_SEARCH_BUTTON"
           }),
          
          

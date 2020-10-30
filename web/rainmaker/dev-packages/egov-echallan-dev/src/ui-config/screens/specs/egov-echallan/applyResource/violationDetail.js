@@ -464,6 +464,7 @@ export const violationsDetails = getCommonCard({
       required: false,
       visible: false,
       props: {
+        isFilterData: true,
         required: false,
         style: {
           width: "100%",
@@ -476,7 +477,7 @@ export const violationsDetails = getCommonCard({
         },
         errorMessage: "EC_ERR_DEFAULT_INPUT_LICENSE_NUMBER_FIELD_MSG",
         jsonPath: "eChallan.licenseNoCov",
-        sourceJsonPath: "applyScreenMdmsData.egec.vendorList",
+        sourceJsonPath: "applyScreenMdmsData.egec.vendorList2",
         labelsFromLocalisation: true,
         setDataInField: true,
         suggestions: [],

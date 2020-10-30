@@ -1,7 +1,8 @@
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import {
   prepareFinalObject,
-  toggleSnackbar
+  toggleSnackbar,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import{GetMdmsNameBycode, getWFPayload} from '../../../../../ui-utils/storecommonsapi'
 import get from "lodash/get";
@@ -12,6 +13,7 @@ import {
   updatemiscellaneousreceiptnotes,
   
 } from "../../../../../ui-utils/storecommonsapi";
+import store from "ui-redux/store";
 import {
   convertDateToEpoch,
   epochToYmdDate,
@@ -120,7 +122,15 @@ export const createUpdateMR = async (state, dispatch, action) => {
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDate",0) 
   receiptDate = convertDateToEpoch(receiptDate);
   set(materialReceipt[0],"receiptDate", receiptDate);
- 
+
+  let isAdHoc = get(
+    state.screenConfiguration.preparedFinalObject,
+    "materialReceipt[0].isAdHoc",false);
+if(isAdHoc ==='YES')
+  set(materialReceipt[0], "isAdHoc", true);
+  else
+  set(materialReceipt[0], "isAdHoc", false);
+
 
 
 
@@ -197,7 +207,7 @@ export const getmiscellaneousreceiptnotes = async (
       value: tenantId
     }
   ];
-
+  try {
  let response = await getmiscellaneousreceiptnotesSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
  //response = response.MaterialReceipt.filter(x=>x.id === id)
@@ -228,4 +238,15 @@ set(response[0],`totalvalue`, totalvalue);
   //dispatch(prepareFinalObject("materialReceipt", get(response, "MaterialReceipt")));
  
   furnishindentData(state, dispatch);
+}
+catch (error) {
+  dispatch(
+    toggleSnackbar(
+      true,
+      { labelName: "Unable to parse search results!" },
+      "error"
+    )
+  );
+  store.dispatch(toggleSpinner());
+}
 };

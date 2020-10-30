@@ -103,19 +103,19 @@ export const getOtherDetailsView = (isReview = true) => {
     }),
     break2: getBreak(),
     viewTwo: getCommonContainer({
-      reviewUsageClass: getLabelWithValue(
-        {
-          labelName: "Usage Class",
-          labelKey: "STORE_MATERIAL_USAGE_CLASS"
-        },
-        { jsonPath: "materials[0].materialClass" }
-      ),
-      reviewStockingUOMName: getLabelWithValue(
-        { labelName: "Stocking UOM Name", labelKey: "STORE_MATERIAL_STOCKING_UOM_NAME" },
-        {
-          jsonPath: "materials[0].stockingUom.name"
-        }
-      ),
+      // reviewUsageClass: getLabelWithValue(
+      //   {
+      //     labelName: "Usage Class",
+      //     labelKey: "STORE_MATERIAL_USAGE_CLASS"
+      //   },
+      //   { jsonPath: "materials[0].materialClass" }
+      // ),
+      // reviewStockingUOMName: getLabelWithValue(
+      //   { labelName: "Stocking UOM Name", labelKey: "STORE_MATERIAL_STOCKING_UOM_NAME" },
+      //   {
+      //     jsonPath: "materials[0].stockingUom.name"
+      //   }
+      // ),
       reviewMaximunQty: getLabelWithValue(
         { labelName: "Maximun Qty", labelKey: "STORE_MATERIAL_MAXIMUN_QTY" },
         {
@@ -142,18 +142,18 @@ export const getOtherDetailsView = (isReview = true) => {
           jsonPath: "materials[0].reorderQuantity",
         }
       ),
-      reviewLOTControl: getLabelWithValue(
-        { labelName: "LOT Control", labelKey: "STORE_MATERIAL_LOT_CONTROL" },
-        {
-          jsonPath: "materials[0].lotControl",
-        }
-      ),
-      reviewShelfLifeControll: getLabelWithValue(
-        { labelName: "Shelf-Life Control", labelKey: "STORE_MATERIAL_SHELF_LIFE_CONTROL" },
-        {
-          jsonPath: "materials[0].shelfLifeControl",
-        }
-      )
+      // reviewLOTControl: getLabelWithValue(
+      //   { labelName: "LOT Control", labelKey: "STORE_MATERIAL_LOT_CONTROL" },
+      //   {
+      //     jsonPath: "materials[0].lotControl",
+      //   }
+      // ),
+      // reviewShelfLifeControll: getLabelWithValue(
+      //   { labelName: "Shelf-Life Control", labelKey: "STORE_MATERIAL_SHELF_LIFE_CONTROL" },
+      //   {
+      //     jsonPath: "materials[0].shelfLifeControl",
+      //   }
+      // )
     }),
     SpecificationDetailsHeader: getHeader({
       labelName: "Specification Details",

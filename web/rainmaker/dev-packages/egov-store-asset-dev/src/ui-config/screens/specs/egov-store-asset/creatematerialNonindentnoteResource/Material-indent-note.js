@@ -289,6 +289,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           //ReturntoSupplier In case user has selected ‘return to supplier’
           if(action.value === "RETURNTOSUPPLIER")
           {
+            dispatch(prepareFinalObject("materialIssues[0].issuePurposeText","return to supplier"));
           dispatch(
             handleField(
               "createMaterialNonIndentNote",
@@ -309,6 +310,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             }
           else
           {
+            dispatch(prepareFinalObject("materialIssues[0].issuePurposeText","write-off of material in stock to be scrapped"));
           dispatch(
             handleField(
               "createMaterialNonIndentNote",

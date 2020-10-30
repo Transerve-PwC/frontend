@@ -1019,12 +1019,35 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
           }
           else
           {
-            matcode.push(
-              {
-                code:code,
-                InputQtyValue:1
-              }
-            )
+            let isAdHoc = get(
+              state.screenConfiguration.preparedFinalObject,
+              `materialReceipt[0].isAdHoc`,
+              ''
+            ); 
+            if(pagename ==='createMaterialReceiptNoteMisc' && isAdHoc ==="YES" )
+            {
+              matcode.push(
+                {
+                  code:code,
+                  InputQtyValue:1
+                }
+              )
+
+            }
+            else if(pagename ==='createMaterialReceiptNoteMisc' && isAdHoc ==="NO" )
+            {
+              matcode =[];
+            }
+            else
+            {
+              matcode.push(
+                {
+                  code:code,
+                  InputQtyValue:1
+                }
+              )
+            }
+           
           }
 
         } 
