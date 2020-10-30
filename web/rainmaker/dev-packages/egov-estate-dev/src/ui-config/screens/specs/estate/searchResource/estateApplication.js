@@ -9,6 +9,9 @@ import {
   import { searchApiCall, searchApplicationApiCall} from "./functions";
   import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { get } from "lodash";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+
+const branchType = getQueryArg(window.location.href, "branchType");
 
   const sectorNumberField = {
     label: {
@@ -171,7 +174,7 @@ import { get } from "lodash";
         {...buttonItem, searchButton: {...buttonItem.searchButton, 
           onClickDefination: {
             action: "condition",
-            callBack: searchApiCall
+            callBack: (state, dispatch) => searchApiCall(state, dispatch, false, "", "", true, branchType)
           }
         }, lastCont: {
           uiFramework: "custom-atoms",
@@ -243,7 +246,7 @@ import { get } from "lodash";
         }, searchButton: {...buttonItem.searchButton, 
           onClickDefination: {
             action: "condition",
-            callBack: searchApplicationApiCall
+            callBack: (state, dispatch) => searchApplicationApiCall(state, dispatch, false, "", "", true, branchType)
           }
         }, resetButton: {
           componentPath: "Button",

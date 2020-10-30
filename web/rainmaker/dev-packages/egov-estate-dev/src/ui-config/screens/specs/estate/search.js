@@ -33,12 +33,13 @@ import {
 } from "egov-ui-kit/utils/localStorageUtils";
 import { WF_ALLOTMENT_OF_SITE } from "../../../../ui-constants";
 
+const branchType = getQueryArg(window.location.href, "branchType")
 const userInfo = JSON.parse(getUserInfo());
 const {
   roles = []
 } = userInfo
 console.log(roles);
-const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
+const findItem = branchType == "BUILDING_BRANCH" ? roles.find(item => item.code === "ES_BB_DISPATCH_OFFICER") : roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 const header = getCommonHeader({
   labelName: "Search Property Master",
   labelKey: "ES_SEARCH_PROPERTY_MASTER_HEADER"
@@ -57,9 +58,10 @@ const estateSearchAndResult = {
         value: WF_ALLOTMENT_OF_SITE
       }
     ]
+    
     dispatch(prepareFinalObject("searchScreen", {}))
-      searchApiCall(state, dispatch, true)
-      getStatusList( state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", WF_ALLOTMENT_OF_SITE)
+    searchApiCall(state, dispatch, true, "", "", true, branchType)
+    getStatusList( state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", WF_ALLOTMENT_OF_SITE)
     return action
   },
   components: {
@@ -110,7 +112,12 @@ const estateSearchAndResult = {
               onClickDefination: {
                 action: "condition",
                 callBack: (state, dispatch) => {
-                  dispatch(setRoute(`/estate/apply?tenantId=${getTenantId()}`));
+                  if (branchType == "BUILDING_BRANCH") {
+                    dispatch(setRoute(`/estate/apply-building-branch?tenantId=${getTenantId()}`));
+                  }
+                  else {
+                    dispatch(setRoute(`/estate/apply?tenantId=${getTenantId()}`));
+                  }
                 }
               }
             }

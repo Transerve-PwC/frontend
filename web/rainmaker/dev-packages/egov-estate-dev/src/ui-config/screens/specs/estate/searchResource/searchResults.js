@@ -114,6 +114,17 @@ const onApplicationRowClick = rowData => {
 const onRowClick = rowData => {
   console.log(rowData);
   let type = getQueryArg(window.location.href, "type");
+  let branchType = getQueryArg(window.location.href, "branchType");
+
+  if (branchType == "BUILDING_BRANCH") {
+    if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
+      window.location.href = `apply-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+    }
+    else {
+      window.location.href = `search-preview-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+    }
+    return;
+  }
 
   if (type == "refund" && rowData[2].toUpperCase() == ESTATE_APPROVED_STATE && !!findItem) {
     return window.location.href = `refund?fileNumber=${rowData[0]}&tenantId=${tenantId}`

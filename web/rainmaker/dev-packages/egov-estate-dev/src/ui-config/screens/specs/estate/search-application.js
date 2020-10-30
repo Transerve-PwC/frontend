@@ -12,7 +12,7 @@ import {
 import { estateApplicationSearch } from './searchResource/estateApplication';
 import { getStatusList, searchApplicationApiCall } from './searchResource/functions';
 import { searchApplicationResults } from './searchResource/searchResults';
-
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {
     getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
@@ -28,12 +28,14 @@ const header = getCommonHeader({
     labelKey: "ES_SEARCH_APPLICATION"
 });
 
+const branchType = getQueryArg(window.location.href, "branchType")
+
 const estateSearchAndResult = {
     uiFramework: "material-ui",
     name: "search-application",
     beforeInitScreen: (action, state, dispatch) => {
         dispatch(prepareFinalObject("searchScreen", {}))
-        searchApplicationApiCall(state, dispatch, true)
+        searchApplicationApiCall(state, dispatch, true, "", "", true, branchType)
         getApplicationStatusList({state, dispatch, action, screenKey: "search-application", componentJsonPath: "components.div.children.estateApplicationSearch.children.cardContent.children.fileStatusContainer.children.status"})
         getApplicationTypes({state, dispatch, action, screenKey: "search-application", componentJsonPath: "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationType"})
         return action

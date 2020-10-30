@@ -123,7 +123,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit , hid
   }
 };
 
-export const searchApplicationApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true) => {
+export const searchApplicationApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true, branchType="ESTATE_BRANCH") => {
   !!hideTable && showHideTable(false, dispatch, "search-application");
   let queryObject = [
     // {
@@ -131,7 +131,8 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
     //   value: getTenantId()
     // },
     { key: "offset", value: offset },
-    { key: "limit", value: limit }
+    { key: "limit", value: limit },
+    { key: "branchType", value: branchType }
   ];
   queryObject = queryObject.filter(({value}) => !!value)
   let searchScreenObject = get(
