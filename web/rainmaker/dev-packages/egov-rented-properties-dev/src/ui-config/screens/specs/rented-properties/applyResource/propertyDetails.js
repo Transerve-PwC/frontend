@@ -129,6 +129,7 @@ export const pincodeField = {
     minLength: 6,
     maxLength: 6,
     required: true,
+    pattern:getPattern("Pincode"),
     errorMessage: "RP_ERR_PINCODE_FIELD",
     afterFieldChange: (action, state, dispatch) => {
       if (action.value.length > 6) {
@@ -148,6 +149,24 @@ export const pincodeField = {
                 "RP_ERR_PINCODE_FIELD_MAXLENGTH"
               )
           )
+      }
+      else if(action.value.length < 6){
+        dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "errorMessage",
+            "RP_ERR_PINCODE_FIELD_MINLENGTH"
+          )
+      )
+      dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "props.errorMessage",
+            "RP_ERR_PINCODE_FIELD_MINLENGTH"
+          )
+      )
       }
       else {
           dispatch(
@@ -396,6 +415,24 @@ const transitNumberField = {
                 "RP_ERR_AREA_FIELD_MAXLENGTH"
               )
           )
+      }
+      else if(action.value.length < 2){
+        dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "errorMessage",
+            "RP_ERR_AREA_FIELD_MINLENGTH"
+          )
+      )
+      dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "props.errorMessage",
+            "RP_ERR_AREA_FIELD_MINLENGTH"
+          )
+      )
       }
       else {
           dispatch(

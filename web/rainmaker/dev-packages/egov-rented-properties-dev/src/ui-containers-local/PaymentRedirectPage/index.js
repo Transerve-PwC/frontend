@@ -7,6 +7,8 @@ class PaymentRedirect extends Component {
   componentDidMount = async () => {
     let { search } = this.props.location;
     const txnQuery=search.split('&')[0].replace('eg_pg_txnid','transactionId');
+    const service=search.split('=')[6]
+    const buisenessservice=service.split("&")[0] 
     try {
       let pgUpdateResponse = await httpRequest(
         "post",
@@ -30,7 +32,7 @@ class PaymentRedirect extends Component {
       if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
         window.location.href = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/rented-properties/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
+        }/rented-properties/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&businessService=${buisenessservice}`;
       } else {
         let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
         window.location.href = `${

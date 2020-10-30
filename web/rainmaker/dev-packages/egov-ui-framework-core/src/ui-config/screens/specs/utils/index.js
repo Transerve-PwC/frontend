@@ -608,6 +608,8 @@ export const getPattern = type => {
       return /^[a-z0-9]+$/i;
     case "alpha-only":
       return /^[a-z]+$/i;
+      case "alpha-only-with-space":
+      return /^[a-z ]+$/i;
     case "numeric-only":
       return /^[0-9]*$/i;
       case "twodigit-number":

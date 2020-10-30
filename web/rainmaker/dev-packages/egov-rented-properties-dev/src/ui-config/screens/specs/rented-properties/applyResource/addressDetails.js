@@ -65,6 +65,24 @@ placeholder: {
               )
           )
       }
+      else if(action.value.length < 3){
+        dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "errorMessage",
+            "RP_ERR_AREA_LOCALITY_FIELD_MINLENGTH"
+          )
+      )
+      dispatch(
+          handleField(
+            "apply",
+            action.componentJsonpath,
+            "props.errorMessage",
+            "RP_ERR_AREA_LOCALITY_FIELD_MINLENGTH"
+          )
+      )
+      }
       else {
           dispatch(
               handleField(

@@ -142,6 +142,7 @@ const fatherOrHusbandsNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
+    pattern:getPattern("alpha-only-with-space"),
     jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband",
     errorMessage: "RP_ERR_FATHER_OR_HUSBAND_FIELD",
     afterFieldChange: (action, state, dispatch) => {
@@ -162,6 +163,24 @@ const fatherOrHusbandsNameField = {
                   "RP_ERR_FATHER_OR_HUSBAND_FIELD_MAXLENGTH"
                 )
             )
+        }
+        else if(action.value.length < 4){
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_FATHER_OR_HUSBAND_FIELD_MINLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_FATHER_OR_HUSBAND_FIELD_MINLENGTH"
+            )
+        )
         }
         else {
             dispatch(
@@ -200,6 +219,7 @@ export const ownerNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
+    pattern:getPattern("alpha-only-with-space"),
     jsonPath: "Properties[0].owners[0].ownerDetails.name",
     errorMessage: "RP_ERR_OWNER_NAME_FIELD",
     afterFieldChange: (action, state, dispatch) => {
@@ -220,6 +240,24 @@ export const ownerNameField = {
                   "RP_ERR_OWNER_NAME_FIELD_MAXLENGTH"
                 )
             )
+        }
+        else if(action.value.length < 4){
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_OWNER_NAME_FIELD_MINLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_OWNER_NAME_FIELD_MINLENGTH"
+            )
+        )
         }
         else {
             dispatch(
@@ -278,6 +316,24 @@ const phoneNumberConfig = {
                   "RP_ERR_PHONE_NUMBER_FIELD_MAXLENGTH"
                 )
             )
+        }
+        else if(action.value.length < 10){
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
+            )
+        )
         }
         else {
             dispatch(
@@ -508,6 +564,24 @@ const allotmentDateField = {
                 )
             )
         }
+        else if(action.value.length < 3){
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_ALLOTMENT_NUMBER_FIELD_MINLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_ALLOTMENT_NUMBER_FIELD_MINLENGTH"
+            )
+        )
+        }
         else {
             dispatch(
                 handleField(
@@ -581,8 +655,9 @@ const applicantNameField = {
         xs: 12,
         sm: 6
     },
-    minLength: 1,
+    minLength: 4,
     maxLength: 100,
+    pattern:getPattern("alpha-only-with-space"),
     required: true,
     jsonPath: "Owners[0].ownerDetails.name",
     errorMessage:"RP_ERR_APPLICANT_NAME_FIELD",
@@ -604,6 +679,24 @@ const applicantNameField = {
                   "RP_ERR_APPLICANT_NAME_MAXLENGTH"
                 )
             )
+        }
+        else if(action.value.length <4){
+          dispatch(
+            handleField(
+              "ownership-apply",
+              action.componentJsonpath,
+              "errorMessage",
+              "RP_ERR_APPLICANT_NAME_MINLENGTH"
+            )
+        )
+        dispatch(
+            handleField(
+              "ownership-apply",
+              action.componentJsonpath,
+              "props.errorMessage",
+              "RP_ERR_APPLICANT_NAME_MINLENGTH"
+            )
+        )
         }
         else {
             dispatch(
