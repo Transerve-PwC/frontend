@@ -151,17 +151,17 @@ export const getReviewPropertyDetails = (isEditable = true) => {
       ),
       houseNumber: getLabelWithValue(
         houseNumberLabel, {
-          jsonPath: "Properties[0].houseNumber"
+          jsonPath: "Properties[0].propertyDetails.houseNumber"
         }
       ),
       mohalla: getLabelWithValue(
         mohallaLabel, {
-          jsonPath: "Properties[0].mohalla"
+          jsonPath: "Properties[0].propertyDetails.mohalla"
         }
       ),
       village: getLabelWithValue(
         villageLabel, {
-          jsonPath: "Properties[0].village"
+          jsonPath: "Properties[0].propertyDetails.village"
         }
       ),
       sizeOfAreaPurchased: getLabelWithValue(
