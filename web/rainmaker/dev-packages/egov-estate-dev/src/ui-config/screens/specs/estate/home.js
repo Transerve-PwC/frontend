@@ -133,7 +133,12 @@ const estateHome = {
             history: {},
             isArray: process.env.REACT_APP_NAME === "Employee"
           }
-        }
+        },
+        // sample: {
+        //   moduleName: "egov-estate",
+        //   uiFramework: "custom-containers-local",
+        //   componentPath: "MultiSelectContainer"
+        // }
       }
     }
   }

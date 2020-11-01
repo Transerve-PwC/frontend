@@ -20,7 +20,9 @@ import {
 } from "egov-ui-kit/utils/localStorageUtils";
 import React from 'react';
 import { getAccountStatementProperty } from "./estateApplicationAccountStatementGen";
-
+import {
+  downloadReceiptFromFilestoreID
+} from "egov-common/ui-utils/commons"
 export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(label));
 
 export const searchApiCallAccountStatement = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
@@ -146,6 +148,75 @@ var isfileNumberValid = validateFields(
   //     // showHideTable(true, dispatch);
       dispatch(toggleSpinner());
 };
+
+export const downloadAccountStatementPdf = async(state, dispatch) => {
+  const { EstateAccountStatement } = state.screenConfiguration.preparedFinalObject;
+  const {Properties} = state.screenConfiguration.preparedFinalObject;
+  let properties = Properties
+  const data = EstateAccountStatement.map(item =>
+    ({
+      ...item,
+      date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+      amount: formatAmount(item.amount.toFixed(2)) || "-",
+      typeP:  changeTypePayment(item.type) || "-",
+      typeR:  changePTypeRent(item.type) || "-",
+      remainingPrincipal: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
+      remainingGST:  formatAmount(item.remainingGST.toFixed(2)) || "-",
+      remainingRentPenalty: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
+      remainingGSTPenalty: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+      dueAmount: formatAmount(item.dueAmount.toFixed(2)) || "-",
+      remainingBalance: formatAmount(item.remainingBalance.toFixed(2)) || "-",
+      receiptNo: item.receiptNo || "-",
+    })
+  )
+
+  let lastElement = data.pop();
+  lastElement.date = "Balance as on "+ lastElement.date
+  // lastElement.typeP = '-'
+  // lastElement.typeR = '-'
+  // lastElement.amount = '-'
+  data.push(lastElement)  
+
+  const mode = "download"
+  let   queryStr = [{
+    key: "key",
+    value: "account-statement-generation"
+  },
+  {
+    key: "tenantId",
+    value: "ch"
+  }
+]
+
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+        httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+          Properties : properties,EstateAccountStatement: data 
+          }, {
+            'Accept': 'application/json'
+          }, {
+            responseType: 'arraybuffer'
+          })
+          .then(res => {
+            res.filestoreIds[0]
+            if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+              res.filestoreIds.map(fileStoreId => {
+                downloadReceiptFromFilestoreID(fileStoreId, mode)
+              })
+            } else {
+              console.log("Error In Account Statement Pdf Download");
+            }
+          });
+   
+  } catch (exception) {
+    alert('Some Error Occured while downloading Account Statement Pdf!');
+  }
+}
 
 export const formatAmount = (x) => {
   

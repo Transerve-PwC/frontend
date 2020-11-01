@@ -49,6 +49,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let propertyRegisteredTo = properties[0].propertyDetails.propertyRegisteredTo;
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
+    let category = properties[0].category;
     
     let {estateRentSummary} = properties[0]
     if(!!estateRentSummary){
@@ -59,6 +60,16 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     properties = {
       ...properties , estateRentSummary : estateRentSummary
     }
+
+    /* based on selected category toggle display of sub-category field */
+    dispatch(
+      handleField(
+        "search-preview",
+        `components.div.children.propertyReviewDetails.children.cardContent.children.reviewPropertyDetails.children.cardContent.children.viewFour.children.subCategory`,
+        "visible",
+        !!(category == "CAT.RESIDENTIAL" || category == "CAT.COMMERCIAL")
+      )
+    );
   
     dispatch(
       handleField(

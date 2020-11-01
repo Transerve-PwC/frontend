@@ -17,7 +17,7 @@ const cardItems = [{
       labelName: "Apply"
     },
     icon: < EstateIcon / > ,
-    route: `property-search`
+    route: `property-search?branchType=ESTATE_BRANCH`
   },
   {
     label: {
@@ -25,7 +25,7 @@ const cardItems = [{
       labelName: "My Applications/Search Applications"
     },
     icon: < EstateIcon / > ,
-    route: "estate-branch-my-applications"
+    route: "my-applications?branchType=EstateBranch"
   },
   {
     label: {

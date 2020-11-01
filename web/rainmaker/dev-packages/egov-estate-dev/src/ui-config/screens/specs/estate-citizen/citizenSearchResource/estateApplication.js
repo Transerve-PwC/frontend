@@ -23,7 +23,8 @@ import {
 import {
   displayCustomErr,
   displayDefaultErr
-} from "../../utils"
+} from "../../utils";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const searchBy = {
   uiFramework: "custom-containers",
@@ -370,7 +371,13 @@ export const estateApplication = getCommonCard({
         },
         onClickDefination: {
           action: "condition",
-          callBack: (state, dispatch) => searchApiCall(state, dispatch, [{key: "state",value: ESTATE_APPROVED_STATE}])
+          callBack: (state, dispatch) => {
+            const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
+            searchApiCall(state, dispatch, [
+              { key: "state", value: ESTATE_APPROVED_STATE },
+              { key: "branchType", value: branchType }
+            ])
+          }
         }
       }
     })

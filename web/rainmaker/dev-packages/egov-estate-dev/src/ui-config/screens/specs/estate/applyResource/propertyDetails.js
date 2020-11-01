@@ -204,10 +204,14 @@ const categoryField = {
     afterFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
         let step = "formwizardFirstStep";
+        let stepSummary = "formwizardNinthStep";
+        let reviewContainer = "reviewDetails";
                 
         if ((window.location.href).includes("allotment")) {
             screenName = "allotment";
             step = "formwizardFirstStepAllotment";
+            stepSummary = "formwizardSeventhStepAllotment";
+            reviewContainer = "reviewAllotmentDetails"
         }
 
         dispatch(
@@ -224,6 +228,14 @@ const categoryField = {
                 handleField(
                     screenName,
                     `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                    "visible",
+                    true
+                )
+            );
+            dispatch(
+                handleField(
+                    screenName,
+                    `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.subCategory`,
                     "visible",
                     true
                 )
@@ -248,6 +260,14 @@ const categoryField = {
                 handleField(
                     screenName,
                     `components.div.children.${step}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.subCategory`,
+                    "visible",
+                    false
+                )
+            );
+            dispatch(
+                handleField(
+                    screenName,
+                    `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.subCategory`,
                     "visible",
                     false
                 )

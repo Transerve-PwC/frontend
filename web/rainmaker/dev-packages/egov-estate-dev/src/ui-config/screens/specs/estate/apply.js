@@ -367,15 +367,21 @@ export const setData = (properties, screenName, dispatch, state) => {
   let propertyType = properties[0].propertyDetails.propertyType;
   let category = properties[0].category;
   let stepFirst;
+  let stepSummary;
+  let reviewContainer;
 
   switch(screenName) {
     case "apply":
       stepFirst = "formwizardFirstStep";
       stepSecond = "formwizardSecondStep";
+      stepSummary = "formwizardNinthStep";
+      reviewContainer = "reviewDetails";
       break;
     case "allotment":
       stepFirst = "formwizardFirstStepAllotment";
       stepSecond = "formwizardSecondStepAllotment";
+      stepSummary = "formwizardSeventhStepAllotment";
+      reviewContainer = "reviewAllotmentDetails"
       break;
   }
 
@@ -453,6 +459,14 @@ export const setData = (properties, screenName, dispatch, state) => {
   /*************************************************************************************************/
 
   /* based on selected category toggle display of sub-category field */
+  dispatch(
+    handleField(
+        screenName,
+        `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.subCategory`,
+        "visible",
+        !!(category == "CAT.RESIDENTIAL" || category == "CAT.COMMERCIAL")
+    )
+  );
   if (category == "CAT.RESIDENTIAL" || category == "CAT.COMMERCIAL") {
     dispatch(
       handleField(

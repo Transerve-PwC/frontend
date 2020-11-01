@@ -77,6 +77,11 @@ const MultipleCardContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const MultiSelectContainer = Loadable({
+  loader: () => import("./MultiSelectContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -93,5 +98,6 @@ export {
   ExpansionPanelContainer,
   MultipleDocumentsContainer,
   NestedListContainer,
-  MultipleCardContainer
+  MultipleCardContainer,
+  MultiSelectContainer
 };

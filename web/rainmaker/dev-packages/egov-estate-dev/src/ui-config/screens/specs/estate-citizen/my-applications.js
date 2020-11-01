@@ -30,6 +30,7 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { applicationTypeField } from "../estate/searchResource/estateApplication";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const header = getCommonHeader({
   labelName: "My Applications",
@@ -39,6 +40,8 @@ const header = getCommonHeader({
     root: "common-header-cont"
   }
 });
+
+var homeURL;
 
 const searchApplications = (state, dispatch) => {
   const preparedFinalObject = get(state, "screenConfiguration.preparedFinalObject");
@@ -68,7 +71,7 @@ const clearSearch = (state, dispatch) => {
   if (!!searchScreen.applicationNumber || !!searchScreen.status) {
     dispatch(
       handleField(
-        "estate-branch-my-applications",
+        "my-applications",
         "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationNo",
         "props.value",
         ""
@@ -76,7 +79,7 @@ const clearSearch = (state, dispatch) => {
     )
     dispatch(
       handleField(
-        "estate-branch-my-applications",
+        "my-applications",
         "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status",
         "props.value",
         ""
@@ -84,7 +87,7 @@ const clearSearch = (state, dispatch) => {
     )
     dispatch(
       handleField(
-        "estate-branch-my-applications",
+        "my-applications",
         "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType",
         "props.value",
         ""
@@ -238,7 +241,13 @@ const searchCard = getCommonCard({
 })
 
 const getData = async (action, state, dispatch) => {
-  const response = await getSearchApplicationsResults();
+  const branchType = getQueryArg(window.location.href, "branchType");
+  homeURL = branchType == "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_OtherCitizenService_NOC" :"/estate-citizen/estate-branch-apply";
+
+  const queryObject = [
+    {key: "branchType", value: branchType}
+  ]
+  const response = await getSearchApplicationsResults(queryObject);
   console.log(response)
   if (!!response && !!response.Applications && !!response.Applications.length) {
     dispatch(prepareFinalObject("actualResults", response.Applications));
@@ -248,14 +257,14 @@ const getData = async (action, state, dispatch) => {
 
 const screenConfig = {
   uiFramework: "material-ui",
-  name: "estate-branch-my-applications",
+  name: "my-applications",
   beforeInitScreen: (action, state, dispatch) => {
     dispatch(prepareFinalObject("actualResults", []));
     dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);
     getData(action, state, dispatch)
-    getApplicationStatusList({action, state, dispatch, screenKey: "estate-branch-my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status"})
-    getApplicationTypes({action, state, dispatch, screenKey: "estate-branch-my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType"})
+    getApplicationStatusList({action, state, dispatch, screenKey: "my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status"})
+    getApplicationTypes({action, state, dispatch, screenKey: "my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType"})
     return action
   },
   components: {

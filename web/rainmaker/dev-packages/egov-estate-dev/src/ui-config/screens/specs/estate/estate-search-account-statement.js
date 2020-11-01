@@ -9,6 +9,7 @@ import {
   import commonConfig from "config/common.js";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { httpRequest } from "../../../../ui-utils";
+  import {downloadAccountStatementPdf} from '../estate/searchResource/searchAccountStatementFunction'
   import {
     handleScreenConfigurationFieldChange as handleField
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -114,7 +115,7 @@ import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
                 },
                 onClickDefination: {
                   action: "condition",
-                  // callBack: downloadAccountStatementPdf
+                  callBack: downloadAccountStatementPdf
                 },
               },
               downloadXLSButton: {

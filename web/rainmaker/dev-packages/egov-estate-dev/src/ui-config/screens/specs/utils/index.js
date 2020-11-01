@@ -1636,43 +1636,6 @@ export const getTextToLocalMapping = label => {
           "ES_COMMON_TABLE_RECEIPT_NO",
           localisationLabels
         );
-            
-      // case "Penalty/Interest":
-      // return getLocaleLabels(
-      //   "Penalty/Interest",
-      //   "ES_COMMON_TABLE_COL_PENALTY_INTEREST",
-      //   localisationLabels
-      // );
-      // case "ST/GST rate":
-      // return getLocaleLabels(
-      //   "ST/GST rate",
-      //   "ES_COMMON_TABLE_COL_ST_GST_RATE",
-      //   localisationLabels
-      // );
-      // case "Paid":
-      // return getLocaleLabels(
-      //   "Paid",
-      //   "ES_COMMON_TABLE_COL_PAID",
-      //   localisationLabels
-      // );
-      // case "Date of Receipt":
-      // return getLocaleLabels(
-      //   "Date of Receipt",
-      //   "ES_COMMON_TABLE_COL_DATE_OF_RECEIPT",
-      //   localisationLabels
-      // );
-      // case "No. of days":
-      // return getLocaleLabels(
-      //   "No. of days",
-      //   "ES_COMMON_TABLE_COL_NO_OF_DAYS",
-      //   localisationLabels
-      // );
-      // case "Int. on delayed payment of GST":
-      // return getLocaleLabels(
-      //   "Int. on delayed payment of GST",
-      //   "ES_COMMON_TABLE_COL_INT_ON_DELAYED_PAYMENT_GST",
-      //   localisationLabels
-      // );
     case "Last Modified On":
       return getLocaleLabels(
         "Last Modified On",
