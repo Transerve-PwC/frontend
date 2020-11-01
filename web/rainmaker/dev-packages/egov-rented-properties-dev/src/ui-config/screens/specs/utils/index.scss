@@ -46,7 +46,11 @@
     .city-picker-dialog-style {
       min-width: 250px;
     }
-  
+    #material-ui-applicationSuccessContainer #custom-atoms-body #material-ui-header {
+      display: flex;
+      align-items: center;
+      padding-left: 5px;
+    }
   }
   @media only screen and (min-width: 768px){
     .common-header-cont{
