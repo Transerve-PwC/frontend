@@ -317,24 +317,6 @@ const phoneNumberConfig = {
                 )
             )
         }
-        else if(action.value.length < 10){
-          dispatch(
-            handleField(
-              "apply",
-              action.componentJsonpath,
-              "errorMessage",
-              "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
-            )
-        )
-        dispatch(
-            handleField(
-              "apply",
-              action.componentJsonpath,
-              "props.errorMessage",
-              "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
-            )
-        )
-        }
         else {
             dispatch(
                 handleField(

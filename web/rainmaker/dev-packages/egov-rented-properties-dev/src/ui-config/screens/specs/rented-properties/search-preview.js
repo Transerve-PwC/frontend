@@ -406,24 +406,6 @@ const phoneField = {
             )
         )
     }
-    else if(action.value.length < 10){
-      dispatch(
-        handleField(
-          "search-preview",
-          action.componentJsonpath,
-          "errorMessage",
-          "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
-        )
-    )
-    dispatch(
-        handleField(
-          "search-preview",
-          action.componentJsonpath,
-          "props.errorMessage",
-          "RP_ERR_PHONE_NUMBER_FIELD_MINLENGTH"
-        )
-    )
-    }
     else {
         dispatch(
             handleField(
@@ -481,24 +463,6 @@ const pincodeField = {
               "RP_ERR_PINCODE_FIELD_MAXLENGTH"
             )
         )
-    }
-    else if(action.value.length < 6){
-      dispatch(
-        handleField(
-          "search-preview",
-          action.componentJsonpath,
-          "errorMessage",
-          "RP_ERR_PINCODE_FIELD_MINLENGTH"
-        )
-    )
-    dispatch(
-        handleField(
-          "search-preview",
-          action.componentJsonpath,
-          "props.errorMessage",
-          "RP_ERR_PINCODE_FIELD_MINLENGTH"
-        )
-    )
     }
     else {
         dispatch(

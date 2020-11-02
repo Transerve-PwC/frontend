@@ -606,8 +606,8 @@ const accountStatementTransitNumber = {
   },
   title: {
     value:
-      "If you have already assessed your property, then please search your property by your transit Number",
-    key: "If you have already assessed your property, then please search your property by your transit Number"
+      "If you have already assessed your property, then please search your property by your transit number",
+    key: "If you have already assessed your property, then please search your property by your transit number"
   },
   infoIcon: "info_circle",
   beforeFieldChange: (action, state, dispatch) => {

@@ -150,24 +150,6 @@ export const pincodeField = {
               )
           )
       }
-      else if(action.value.length < 6){
-        dispatch(
-          handleField(
-            "apply",
-            action.componentJsonpath,
-            "errorMessage",
-            "RP_ERR_PINCODE_FIELD_MINLENGTH"
-          )
-      )
-      dispatch(
-          handleField(
-            "apply",
-            action.componentJsonpath,
-            "props.errorMessage",
-            "RP_ERR_PINCODE_FIELD_MINLENGTH"
-          )
-      )
-      }
       else {
           dispatch(
               handleField(
@@ -260,8 +242,8 @@ export const transitNumberLookUp = {
     },
     title: {
       value:
-        "If you have already assessed your property, then please search your property by your transit Number",
-      key: "If you have already assessed your property, then please search your property by your transit Number"
+        "If you have already assessed your property, then please search your property by your transit number",
+      key: "If you have already assessed your property, then please search your property by your transit number"
     },
     infoIcon: "info_circle",
     errorMessage: "RP_SITE_PLOT_SEARCH_PLACEHOLDER"
