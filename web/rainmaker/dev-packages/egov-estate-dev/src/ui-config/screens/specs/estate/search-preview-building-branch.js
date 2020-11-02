@@ -12,7 +12,7 @@ handleScreenConfigurationFieldChange as handleField
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
-import { WF_ALLOTMENT_OF_SITE, BUILDING_BRANCH_TABS as tabs } from "../../../../ui-constants";
+import { BUILDING_BRANCH_TABS as tabs, WF_BB_PROPERTY_MASTER } from "../../../../ui-constants";
 import { getReviewPropertyDetails } from "./applyResourceBuildingBranch/reviewDetails";
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
@@ -127,7 +127,7 @@ const estateDetailPreview = {
             componentPath: "WorkFlowContainer",
             props: {
               dataPath: "Properties",
-              moduleName: WF_ALLOTMENT_OF_SITE,
+              moduleName: WF_BB_PROPERTY_MASTER,
               updateUrl: "/est-services/property-master/_update",
               style: {
                 wordBreak: "break-word"

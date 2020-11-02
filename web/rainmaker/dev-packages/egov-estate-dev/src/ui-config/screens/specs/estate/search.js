@@ -31,7 +31,7 @@ import {searchResults} from './searchResource/searchResults';
 import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
-import { WF_ALLOTMENT_OF_SITE } from "../../../../ui-constants";
+import { WF_ALLOTMENT_OF_SITE, WF_BB_PROPERTY_MASTER } from "../../../../ui-constants";
 
 const branchType = getQueryArg(window.location.href, "branchType")
 const userInfo = JSON.parse(getUserInfo());
@@ -49,19 +49,20 @@ const estateSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
   beforeInitScreen: (action, state, dispatch) => {
+    let wkfConstant = branchType == "BUILDING_BRANCH" ? WF_BB_PROPERTY_MASTER : WF_ALLOTMENT_OF_SITE
     const queryObject = [{
         key: "tenantId",
         value: getTenantId()
       },
       {
         key: "businessServices",
-        value: WF_ALLOTMENT_OF_SITE
+        value: wkfConstant
       }
     ]
     
     dispatch(prepareFinalObject("searchScreen", {}))
-    searchApiCall(state, dispatch, true, "", "", true, branchType)
-    getStatusList( state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", WF_ALLOTMENT_OF_SITE)
+    searchApiCall(state, dispatch, true, "", "", true, branchType);
+    getStatusList( state, dispatch, queryObject, "search", "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status", wkfConstant)
     return action
   },
   components: {

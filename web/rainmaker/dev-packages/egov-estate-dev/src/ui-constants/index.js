@@ -18,6 +18,8 @@ export const ESTATE_SERVICES_MDMS_MODULE = "EstateServices"
 export const WF_ALLOTMENT_OF_SITE = "ES-EB-AllotmentOfSite";
 export const ESTATE_APPROVED_STATE = "ES_APPROVED";
 export const ESTATE_DRAFTED_STATE = "ES_DRAFTED";
+export const WF_BB_PROPERTY_MASTER = "ES-BB-PropertyMaster";
+
 export const BUILDING_BRANCH_TABS = [
   {
     tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" }

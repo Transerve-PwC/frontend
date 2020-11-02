@@ -35,6 +35,41 @@ export const purchaserHeader = getCommonTitle({
   }
 })
 
+const getPreviousOwnerRequiredRadioButton = {
+  uiFramework: "custom-containers",
+  componentPath: "RadioGroupContainer",
+  gridDefination: {
+    xs: 12,
+    sm: 12,
+  },
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.previousOwnerRequired",
+  props: {
+    label: {
+      name: "Previous Owner Required ?",
+      key: "ES_PREVIOUS_OWNER_REQUIRED_LABEL"
+    },
+    buttons: [{
+        labelName: "Father",
+        labelKey: "ES_COMMON_YES",
+        value: "true",
+      },
+      {
+        label: "Husband",
+        labelKey: "ES_COMMON_NO",
+        value: "false",
+      }
+    ],
+    jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.previousOwnerRequired",
+    required: true,
+  },
+  required: true,
+  type: "array",
+  afterFieldChange: (action, state, dispatch) => {
+    markUnmarkFieldsMandatory(action, dispatch);
+  }
+};
+
+
 const newOwnerNameField = {
   label: {
     labelName: "Previous Owner Name",
@@ -53,7 +88,6 @@ const newOwnerNameField = {
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
-      markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
@@ -82,8 +116,6 @@ const newOwnerFatherHusbandNameField = {
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
-      markFieldsMandatory(action, dispatch);
-
       if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
@@ -119,15 +151,8 @@ const getRelationshipRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.guardianRelation",
-    // required: true,
   },
-  // required: true,
-  type: "array",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
+  type: "array"
 };
 
 const dateOfBirthField = {
@@ -148,11 +173,6 @@ const dateOfBirthField = {
         style: {
             lineHeight: "initial"
         }
-    }
-  },
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
     }
   }
 }
@@ -179,7 +199,6 @@ const newOwnerAddressField = {
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
-      markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
@@ -204,12 +223,7 @@ const newOwnerMobileNumberField = {
   //   value: userInfo.userName,
   //   disabled: true
   // },
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.mobileNumber",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.mobileNumber"
 }
 
 const sellerNameField = {
@@ -229,9 +243,6 @@ const sellerNameField = {
   pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerName",
   afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
     if (action.value.length > 150) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
@@ -259,7 +270,6 @@ const sellerFatherHusbandNameField = {
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerGuardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value) {
-      markFieldsMandatory(action, dispatch);
       if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
       }
@@ -286,24 +296,17 @@ const getSellerRelationshipRadioButton = {
     buttons: [{
         labelName: "Father",
         labelKey: "ES_COMMON_RELATION_FATHER",
-        value: "FATHER",
+        value: "FATHER"
       },
       {
         label: "Husband",
         labelKey: "ES_COMMON_RELATION_HUSBAND",
-        value: "HUSBAND",
+        value: "HUSBAND"
       }
     ],
     jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.sellerRelation",
-    // required: true,
   },
-  // required: true,
-  type: "array",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
+  type: "array"
 };
 
 const shareField = {
@@ -321,12 +324,7 @@ const shareField = {
   },
   // required: true,
   pattern: _getPattern("share"),
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].share",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
-  }
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].share"
 }
 
 const modeOfTransferField = {
@@ -344,11 +342,6 @@ const modeOfTransferField = {
   gridDefination: {
     xs: 12,
     sm: 6
-  },
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value) {
-      markFieldsMandatory(action, dispatch);
-    }
   }
 }
 
@@ -363,6 +356,7 @@ const commonPurchaserInformation = () => {
       }
     }),
     purchaserCard: getCommonContainer({
+      previousOwnerRequired: getPreviousOwnerRequiredRadioButton,
       newOwnerName: getTextField(newOwnerNameField),
       newOwnerFatherHusbandName: getTextField(newOwnerFatherHusbandNameField),
       guardianRelation: getRelationshipRadioButton,
@@ -413,7 +407,7 @@ export const purchaserDetails = getCommonCard({
   })
 })
 
-export const markFieldsMandatory = (param, dispatch) => {
+export const markUnmarkFieldsMandatory = (param, dispatch) => {
   let commonPathArr = (param.componentJsonpath).split(".");
   commonPathArr.pop();
   let commonpath = commonPathArr.join(".");
@@ -425,7 +419,7 @@ export const markFieldsMandatory = (param, dispatch) => {
         param.screenKey,
         `${commonpath}.${item}`,
         `props.required`,
-        !!param.value
+        !!(param.value == "true")
       )
     )
     dispatch(
@@ -433,7 +427,7 @@ export const markFieldsMandatory = (param, dispatch) => {
         param.screenKey,
         `${commonpath}.${item}`,
         `required`,
-        !!param.value
+        !!(param.value == "true")
       )
     )
   })

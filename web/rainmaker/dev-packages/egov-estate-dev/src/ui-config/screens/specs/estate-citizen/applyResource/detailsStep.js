@@ -261,6 +261,27 @@ const getField = async (item, fieldData = {}, state) => {
               ...rest
           }
       }
+      case "MULTI_SELECT": {
+        const options = !!item.dataSource ? await getOptions(item.dataSource) : []
+        return {
+          moduleName: "egov-estate",
+          uiFramework: "custom-containers-local",
+          componentPath: "MultiSelectContainer",
+          props: {
+            label: {
+              name: labelItem,
+              key: labelItem
+            },
+            placeholder: {
+              name: placeholder,
+              key: placeholder
+            },
+            options,
+            jsonPath: rest.jsonPath,
+            required
+          }
+        }
+      }
       default: return getTextField({
         ...fieldProps,
         ...rest

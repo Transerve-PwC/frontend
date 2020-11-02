@@ -10,8 +10,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {connect} from 'react-redux'
 import LabelContainer from "egov-ui-framework/ui-containers/LabelContainer";
 import { getLocaleLabels, appendModulePrefix } from "egov-ui-framework/ui-utils/commons";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const styles = theme => ({
     root: {
@@ -31,7 +33,7 @@ const styles = theme => ({
   });
 
 
-  const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
@@ -42,34 +44,24 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
 class MultipleSelect extends React.Component {
-    state = {
-      name: [],
-    };
+    constructor(props){
+      super(props)
+      this.state = {
+        name: this.props.value || []
+      }
+    }
   
     handleChange = event => {
       this.setState({ name: event.target.value });
+      this.props.prepareFinalObject(this.props.jsonPath, event.target.value)
     };
   
     render() {
-      const { classes, theme, label, options, localizationLabels } = this.props;
-  
+      const { classes, theme, label, options, localizationLabels, localePrefix, required, error, helperText } = this.props;
       return (
         <div className={classes.root}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required={required}>
           <FormLabel className={classes.formLabel}>
             {label && label.key && (
               <LabelContainer
@@ -84,22 +76,31 @@ class MultipleSelect extends React.Component {
               value={this.state.name}
               onChange={this.handleChange}
               input={<Input id="select-multiple-checkbox" />}
-              renderValue={selected => selected.join(', ')}
+              renderValue={selected => selected.map(item => getLocaleLabels(item, localePrefix && !isEmpty(localePrefix)
+                ? appendModulePrefix(item, localePrefix)
+                : item, localizationLabels)).join(', ')}
               MenuProps={MenuProps}
             >
+              <MenuItem value="" disabled>
+              <LabelContainer
+                labelName={placeholder.name}
+                labelKey={placeholder.key}
+              />
+              </MenuItem>
               {options.map((option, key) => (
-                <MenuItem key={key} value={option.value}>
-                    <Checkbox checked={this.state.name.indexOf(name) > -1} />
+                <MenuItem key={key} value={option.code}>
+                    <Checkbox checked={this.state.name.indexOf(option.code) > -1} color="primary"/>
                     <ListItemText primary={getLocaleLabels(
-                    option.value,
+                    option.code,
                     localePrefix && !isEmpty(localePrefix)
-                        ? appendModulePrefix(option.value, localePrefix)
+                        ? appendModulePrefix(option.code, localePrefix)
                         : option.label,
                     localizationLabels
                     )} />
                 </MenuItem>
               ))}
             </Select>
+            {!!error && (<FormHelperText>{helperText}</FormHelperText>)}
           </FormControl>
         </div>
       );

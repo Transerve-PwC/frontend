@@ -160,28 +160,28 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     set(queryObject[0], "propertyDetails.companyRegistrationDate", convertDateToEpoch(queryObject[0].propertyDetails.companyRegistrationDate))
     set(queryObject[0], "propertyDetails.emdDate", convertDateToEpoch(queryObject[0].propertyDetails.emdDate))
 
-    var purchaserDetails = get(
+    var prevOwners = get(
       queryObject[0],
       "propertyDetails.purchaser",
       []
     )
     
-    if (purchaserDetails) {
-      purchaserDetails.map((item, index) => {
+    if (prevOwners.length) {
+      prevOwners = prevOwners.filter(item => item.ownerDetails.previousOwnerRequired == "true");prevOwners.map((item, index) => {
         if (typeof item.isDeleted === "undefined") {
           set(queryObject[0], `propertyDetails.purchaser[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.purchaser[index].ownerDetails.dob))
         }
       })
     }
 
-    var ownerDetails = get(
+    var owners = get(
       queryObject[0],
       "propertyDetails.owners",
       []
     )
     
-    if (ownerDetails) {
-      ownerDetails.map((item, index) => {
+    if (owners.length) {
+      owners.map((item, index) => {
         if (typeof item.isDeleted === "undefined") {
           set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
           set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
@@ -249,16 +249,16 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       }
     } else {
       let tabsArr = [0,1,2,3,4,5,6,7];
-      let owners = get(
-        queryObject[0],
-        "propertyDetails.owners",
-        []
-      )
-      let prevOwners = get(
-        queryObject[0],
-        "propertyDetails.purchaser",
-        []
-      )
+      // let owners = get(
+      //   queryObject[0],
+      //   "propertyDetails.owners",
+      //   []
+      // )
+      // let prevOwners = get(
+      //   queryObject[0],
+      //   "propertyDetails.purchaser",
+      //   []
+      // )
       if (screenName == "allotment") {
         tabsArr.pop();
       }
@@ -327,7 +327,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     ratePerSqft = !!ratePerSqft ? ratePerSqft.toString() : ratePerSqft;
     areaSqft = !!areaSqft ? areaSqft.toString() : areaSqft;
 
-    let owners = get(
+    owners = get(
       Properties[0],
       "propertyDetails.owners",
       []
