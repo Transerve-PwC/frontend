@@ -263,11 +263,11 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
             let billingBuisnessService=response.Properties[0].billingBusinessService
             type === "ONLINE" ? dispatch(
               setRoute(
-               `/esate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
+               `/estate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
               )
             ) : dispatch(
               setRoute(
-              `/esate/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
+              `/estate/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
               )
             )
           dispatch(prepareFinalObject("Properties", response.Properties))
