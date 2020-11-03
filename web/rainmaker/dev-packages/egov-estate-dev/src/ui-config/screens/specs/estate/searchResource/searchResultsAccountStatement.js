@@ -67,15 +67,78 @@ export const accountStatementResults = {
   props: {...searchResultsAccountStatement.props, 
     columns: [
       DATE,
-      AMOUNT,
+      {
+        name: AMOUNT,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
       PAYMENTTYPE,
       RENTTYPE,
-      PRINCIPALDUE,
-      GSTDUE,
-      INTERESTDUE,
-      GSTPENALTYDUE,
-      TOTALDUE,
-      ACCOUNTBALANCE,
+      {
+        name: PRINCIPALDUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: GSTDUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: INTERESTDUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: GSTPENALTYDUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: TOTALDUE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      {
+        name: ACCOUNTBALANCE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none',width: 250}}>
+          {value}
+        </span> 
+          )
+        }
+      },
       RECEIPT_NO
     ],
     options: {...searchResultsAccountStatement.props.options,

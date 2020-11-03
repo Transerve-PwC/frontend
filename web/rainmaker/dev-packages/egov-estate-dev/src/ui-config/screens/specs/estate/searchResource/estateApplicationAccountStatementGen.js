@@ -38,50 +38,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             sm: 6
           },
           required: true,
-          jsonPath: "searchScreenFileNo.fileNumber",
-          iconObj: {
-            iconName: "search",
-            position: "end",
-            color: "#FE7A51",
-            onClickDefination: {
-              action: "condition",
-              callBack: (state, dispatch) => {
-                getAccountStatementProperty(state, dispatch);
-              }
-            }
-          },
-          title: {
-            value:
-              "If you have already assessed your property, then please search your property by your File Number",
-            key: "If you have already assessed your property, then please search your property by your File Number"
-          },
-          infoIcon: "info_circle",
-          afterFieldChange: (action, state, dispatch) => {
-            dispatch(
-                prepareFinalObject(
-                  "searchScreen.sectorNumber",
-                  ""
-                )
-              )
-            dispatch(
-                prepareFinalObject(
-                  "searchScreen.category",
-                  ""
-                )
-              )
-              dispatch(
-                prepareFinalObject(
-                  "searchScreen.subCategory",
-                  ""
-                )
-              )
-              dispatch(
-                prepareFinalObject(
-                  "searchScreen.siteNumber",
-                  ""
-                )
-              )
-          }
+          jsonPath: "Properties[0].fileNumber",
         }),
         sectorNumber: getSelectField({
             label: {
@@ -138,7 +95,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
           },
           // required: false,
-          jsonPath: "singleSubCategory",
+          jsonPath: "Properties[0].subCategory",
           props: {
             disabled: true
           },
@@ -271,128 +228,23 @@ export const estateApplicationAccountStatementGen = getCommonCard({
 
   export const getAccountStatementProperty = async (state, dispatch) => {
     try {
-      const fileNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreenFileNo.fileNumber")
+      const fileNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].fileNumber")
       if(!!fileNumber) {
         const payload = await getPropertyDetails({
           state, dispatch, fileNumber, screenKey: "estate-search-account-statement",
-          jsonPath: "searchScreenFileNo.fileNumber",
+          jsonPath: "Properties[0].fileNumber",
           componentJsonPath:"components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumber"
         })
         if(!!payload) {
           const {Properties} = payload;
-          // const {owners = []} = Properties[0]
-          // const findOwner = owners.find(item => !!item.activeState) || {}
           
-          dispatch(
-            prepareFinalObject(
-              "singleSubCategory",
-              []
-            )
-          )
-
-          let categorySelected = Properties[0].category
-          let subcatPropertyData = Properties[0].subCategory
-          let subcatvar;
-          let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstateServices.categories")
-        
-          if(categorySelected === "CAT.RESIDENTIAL"){
-            subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.RESIDENTIAL")
-            let i = 0, len = subcatvar[0].SubCategory.length;
-              while (i < len) {
-                  if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
-                    dispatch(
-                      prepareFinalObject(
-                        "singleSubCategory",
-                        subcatvar[0].SubCategory[i].name
-                      )
-                    )
-                  }
-                  i++
-              }
-            // dispatch(
-            //   prepareFinalObject(
-            //     "subCategory1",
-            //     subcatvar
-            //   )
-            // )
-            // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-          }
-          else if(categorySelected === "CAT.COMMERCIAL"){
-            subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.COMMERCIAL")
-            
-            let i = 0, len = subcatvar[0].SubCategory.length;
-            while (i < len) {
-                if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
-                  dispatch(
-                    prepareFinalObject(
-                      "singleSubCategory",
-                      subcatvar[0].SubCategory[i].name
-                    )
-                  )
-                }
-                i++
-            }
-            // dispatch(
-            //   prepareFinalObject(
-            //     "subCategory1",
-            //     subcatvar
-            //   )
-            // )
-            // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-            }
-            else if(categorySelected === "CAT.INDUSTRIAL" || categorySelected === "CAT.INSTITUTIONAL" || categorySelected === "CAT.GOVPROPERTY" || categorySelected === "CAT.RELIGIOUS" || categorySelected === "CAT.HOSPITAL"){
-              dispatch(
-                prepareFinalObject(
-                  "singleSubCategory",
-                  ""
-                )
-              )
-            }
-
-          dispatch(
-            prepareFinalObject(
-              "searchScreen.sectorNumber",
-              Properties[0].sectorNumber
-            )
-          )
-          dispatch(
-            prepareFinalObject(
-              "searchScreen.category",
-              Properties[0].category
-            )
-          )
-          dispatch(
-            prepareFinalObject(
-              "searchScreen.subCategory",
-              Properties[0].subCategory
-            )
-          )
-          dispatch(
-            prepareFinalObject(
-              "searchScreen.siteNumber",
-              Properties[0].siteNumber
-            )
-          )
           dispatch(
             prepareFinalObject(
               "searchScreen.propertyId",
               Properties[0].propertyDetails.propertyId
             )
           )
-          // dispatch(
-          //   prepareFinalObject(
-          //     "searchScreen.ownername",
-          //     findOwner.ownerDetails.name
-          //   )
-          // )
-  
-          dispatch(
-            prepareFinalObject(
-              "Properties",
-              Properties
-            )
-          )
-  
+          
           return Properties[0].propertyDetails.propertyId
         }
       }

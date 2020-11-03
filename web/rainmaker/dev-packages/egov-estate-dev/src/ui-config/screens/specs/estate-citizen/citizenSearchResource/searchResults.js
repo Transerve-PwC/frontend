@@ -43,7 +43,7 @@ const onRowClick = rowData => {
   const type = getQueryArg(window.location.href, "type");
   const branchType = getQueryArg(window.location.href, "branchType");
   if (branchType == "BUILDING_BRANCH") {
-    window.location.href = `_apply?propertyId=${rowData[4]}&applicationType=${type}`;
+    window.location.href = `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`;
     return;
   }
   
@@ -56,7 +56,10 @@ const onRowClick = rowData => {
   else if (type == "refund") {
     window.location.href = `refund?fileNumber=${rowData[1]}`
   }
+  else if(type == "account-statement"){
+    window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`
+  }
   else {
-    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}`
+    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`
   }
 };

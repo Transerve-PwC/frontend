@@ -58,7 +58,7 @@ class MultipleSelect extends React.Component {
     };
   
     render() {
-      const { classes, theme, label, options, localizationLabels, localePrefix, required, error, helperText } = this.props;
+      const { classes, theme, label, options, localizationLabels, localePrefix, required, error, helperText, placeholder } = this.props;
       return (
         <div className={classes.root}>
           <FormControl className={classes.formControl} required={required}>

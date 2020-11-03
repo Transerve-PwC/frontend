@@ -172,9 +172,9 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
 
   let lastElement = data.pop();
   lastElement.date = "Balance as on "+ lastElement.date
-  // lastElement.typeP = '-'
-  // lastElement.typeR = '-'
-  // lastElement.amount = '-'
+  lastElement.typeP = '-'
+  lastElement.typeR = '-'
+  lastElement.amount = '-'
   data.push(lastElement)  
 
   const mode = "download"

@@ -37,6 +37,7 @@ const getData = async (action, state, dispatch) => {
   let applicationType = getQueryArg(window.location.href, "applicationType");
   const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
   let propertyId = getQueryArg(window.location.href, "propertyId")
+  let fileNumber = getQueryArg(window.location.href, "fileNumber")
   let property = {};
   if(!!applicationNumber) {
     const applicationQueryObject = [
@@ -56,7 +57,8 @@ const getData = async (action, state, dispatch) => {
   } 
   // else {
     const queryObject = [
-      {key: "propertyId", value: propertyId}
+      {key: "propertyIds", value: propertyId},
+      {key: "fileNumber", value: fileNumber}
     ]
     const response = await getSearchResults(queryObject)
     if(!!response.Properties && !!response.Properties.length) {

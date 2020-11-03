@@ -7,7 +7,8 @@ import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { propertyInfo } from "./preview-resource/preview-properties";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch } from "../utils";
+import { convertDateToEpoch, validateFields } from "../utils";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
   const header = getCommonHeader({
     labelName: "Rent Payment",
@@ -116,7 +117,7 @@ import { convertDateToEpoch } from "../utils";
       labelKey: "ES_SELECT_PAYMENT_TYPE_PLACEHOLDER"
   },
     required: true,
-    jsonPath: "Properties[0].paymentType",
+    jsonPath: "payment.paymentType",
     visible: process.env.REACT_APP_NAME !== "Citizen"
   }
 
@@ -234,6 +235,49 @@ import { convertDateToEpoch } from "../utils";
     },
     visible: true
   }
+
+  const goToPayment = async (state, dispatch, type) => {
+    let isValid = true;
+    isValid = validateFields("components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "estate-payment")
+    if(!!isValid) {
+      const propertyId = getQueryArg(window.location.href, "propertyId")
+      const offlinePaymentDetails = get(state.screenConfiguration.preparedFinalObject, "payment")
+      const {paymentAmount, ...rest} = offlinePaymentDetails
+      if(!!propertyId) {
+        const payload = [
+          { id: propertyId, 
+            propertyDetails: {
+              offlinePaymentDetails: [{...rest, amount: paymentAmount}]
+            }
+          }
+        ]
+        try {
+          const response = await httpRequest("post",
+          "/est-services/property-master/_payrent",
+          "",
+          [],
+          { Properties : payload })
+          if(!!response && !!response.Properties.length) {
+            console.log("=====response", response)
+            const {rentPaymentConsumerCode, tenantId} = response.Properties[0]
+            let billingBuisnessService=response.Properties[0].billingBusinessService
+            type === "ONLINE" ? dispatch(
+              setRoute(
+               `/esate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
+              )
+            ) : dispatch(
+              setRoute(
+              `/esate/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
+              )
+            )
+          dispatch(prepareFinalObject("Properties", response.Properties))
+          }
+        } catch (error) {
+          console.log("error", error)
+        }
+      }
+    }
+  }
   
   export const getCommonApplyFooter = children => {
     return {
@@ -265,12 +309,13 @@ import { convertDateToEpoch } from "../utils";
           labelKey: "COMMON_MAKE_PAYMENT"
         })
       },
-      // onClickDefination: {
-      //   action: "condition",
-      //   callBack: (state, dispatch) => {
-      //     goToPayment(state, dispatch, ONLINE)
-      //   },
-      // },
+      onClickDefination: {
+        action: "condition",
+        callBack: (state, dispatch) => {
+          const paymentType = process.env.REACT_APP_NAME === "Citizen" ? "ONLINE" : "OFFLINE"
+          goToPayment(state, dispatch, paymentType)
+        },
+      },
       visible: true
     }
   })

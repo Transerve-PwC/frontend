@@ -137,8 +137,10 @@ const getData = async (action, state, dispatch) => {
     }
     const response = await getMdmsData(queryObject);
     const propertyId = getQueryArg(window.location.href, "propertyId")
+    const fileNumber = getQueryArg(window.location.href, "fileNumber")
     const propertyQueryObject = [
-      {key: "propertyId", value: propertyId}
+      {key: "propertyIds", value: propertyId},
+      {key: "fileNumber", value: fileNumber}
     ]
     const propertyResponse = await getSearchResults(propertyQueryObject)
     try {
@@ -149,14 +151,14 @@ const getData = async (action, state, dispatch) => {
           let type = {}
           const findIndex = prev.findIndex(item => item.code === curr.category);
           if(findIndex !== -1) {
-            type = {...prev[findIndex], SubTypes: [...prev[findIndex].SubTypes, {...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}`}]}
+            type = {...prev[findIndex], SubTypes: [...prev[findIndex].SubTypes, {...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}&fileNumber=${fileNumber}`}]}
             return [...prev.slice(0, findIndex), type, ...prev.slice(findIndex+1)]
           } else {
-            type = {code: curr.category, name: curr.category, SubTypes: [{...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}`}] }
+            type = {code: curr.category, name: curr.category, SubTypes: [{...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}&fileNumber=${fileNumber}`}] }
             return [...prev, type]
           }
         } else {
-          return [...prev, {...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}`}]
+          return [...prev, {...curr, route: `_apply?applicationType=${curr.type}&propertyId=${propertyId}&fileNumber=${fileNumber}`}]
         }
       }, [])
     return {
