@@ -13,7 +13,6 @@ import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-f
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
 import { APPLICATION_TYPE, LAST_MODIFIED_ON } from "./searchResults";
-
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
