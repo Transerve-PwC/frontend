@@ -98,11 +98,12 @@ const getData = async (action, state, dispatch) => {
        const headerLabel = `ES_${type.toUpperCase()}`
 
        const headerrow = getCommonApplyHeader({label: headerLabel, number: applicationNumber});
-       let {uiConfig, wfDocumentList = []} = await getApplicationConfig({dispatch, applicationType: type})
+       let {uiConfig, wfDocumentList = [],feePercentGST} = await getApplicationConfig({dispatch, applicationType: type})
        wfDocumentList = wfDocumentList.filter(item => eval(item.filter))
        let {preview} = uiConfig
        let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
-       const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
+      //  const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
+      let estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href,feePercentGST)
        if(!!estimateResponse) {
          const estimate = !!estimateResponse ? getCommonGrayCard({
            estimateSection: getFeesEstimateCard({

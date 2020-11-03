@@ -306,7 +306,6 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
-  debugger
   let Property = Properties[0];
   if(Property.propertyDetails.purchaser.length > 0){
      Property = {
@@ -1229,7 +1228,8 @@ export const createEstimateData = async (
   applicationData,
   // jsonPath ,
   dispatch,
-  href = {}
+  href = {},
+  feePercentGST
 ) => {
   const workflowCode = get(applicationData, "workFlowBusinessService")
   const applicationNo =
@@ -1275,12 +1275,17 @@ export const createEstimateData = async (
     ) :
     payload && getEstimateData(payload, false) :
     [];
-  estimateData = estimateData || [];
-  set(
-    estimateData,
-    "payStatus",
-    isPAID
-  );
+    estimateData = estimateData || [];
+    set(
+      estimateData,
+      "payStatus",
+      isPAID
+    );
+    estimateData.push(
+          {"name": {"labelName": "GST", "labelKey": "ES_GST_VALUE_LABEL"},
+          "order": 0,
+          "value": feePercentGST[0].gst
+        })
   dispatch(prepareFinalObject("temp[0].estimateCardData", estimateData));
   /** Waiting for estimate to load while downloading confirmation form */
   var event = new CustomEvent("estimateLoaded", {
