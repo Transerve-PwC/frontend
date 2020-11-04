@@ -91,6 +91,11 @@ const MultipleCards = Loadable({
   loading: () => <Loading />
 })
 
+const RentSummaryCard = Loadable({
+  loader: () => import("./RentSummaryCard"),
+  loading: () => <Loading />
+})
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -107,5 +112,6 @@ export {
   VerticalCardItems,
   ExpansionPanelMolecule,
   NestedList,
-  MultipleCards
+  MultipleCards,
+  RentSummaryCard
 };

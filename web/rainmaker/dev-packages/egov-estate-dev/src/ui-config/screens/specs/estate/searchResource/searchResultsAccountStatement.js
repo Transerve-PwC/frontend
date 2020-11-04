@@ -47,6 +47,9 @@ export const searchResultsAccountStatement = {
         }
       }
     ],
+    style:{
+      textAlign: "right"
+    },
     options: {
       filter: false,
       download: false,
@@ -65,6 +68,7 @@ export const accountStatementResults = {
   ...searchResultsAccountStatement,
   visible: false,
   props: {...searchResultsAccountStatement.props, 
+  ...searchResultsAccountStatement.props.style,
     columns: [
       DATE,
       {
@@ -83,7 +87,7 @@ export const accountStatementResults = {
         name: PRINCIPALDUE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+            <span style={{ display: 'flex', justifyContent: 'right',float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )
@@ -93,7 +97,7 @@ export const accountStatementResults = {
         name: GSTDUE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+            <span style={{ display: 'flex', justifyContent: 'right',float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )
@@ -103,7 +107,7 @@ export const accountStatementResults = {
         name: INTERESTDUE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+            <span style={{ display: 'flex', justifyContent: 'right',float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )
@@ -113,7 +117,7 @@ export const accountStatementResults = {
         name: GSTPENALTYDUE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+            <span style={{ display: 'flex', justifyContent: 'right', float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )
@@ -123,7 +127,7 @@ export const accountStatementResults = {
         name: TOTALDUE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+            <span style={{ display: 'flex', justifyContent: 'right', float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )
@@ -133,7 +137,7 @@ export const accountStatementResults = {
         name: ACCOUNTBALANCE,
         options: {
           customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none',width: 250}}>
+            <span style={{ display: 'flex', justifyContent: 'right', float: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
           {value}
         </span> 
           )

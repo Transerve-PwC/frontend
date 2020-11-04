@@ -171,17 +171,55 @@ const branchType = getQueryArg(window.location.href, "branchType");
     }),
     button: getCommonContainer({
       buttonContainer: getCommonContainer(
-        {...buttonItem, searchButton: {...buttonItem.searchButton, 
+        {...buttonItem, 
+          firstCont: {
+            uiFramework: "custom-atoms",
+            componentPath: "Div",
+            gridDefination: {
+              xs: 12,
+              sm: 2
+            }
+          },searchButton: {...buttonItem.searchButton, 
           onClickDefination: {
             action: "condition",
             callBack: (state, dispatch) => searchApiCall(state, dispatch, false, "", "", true, branchType)
+          }
+        },
+        resetButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          },
+          props: {
+            variant: "outlined",
+            style: {
+              color: "#fe7a51",
+              borderColor: "#fe7a51",
+              backgroundColor: "white",
+              borderRadius: "2px",
+              width: "80%",
+              height: "48px"
+            }
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Clear",
+              labelKey: "ES_SEARCH_RESET"
+            })
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: (state, dispatch) => {
+              clearPropertySearch(state, dispatch)
+            }
           }
         }, lastCont: {
           uiFramework: "custom-atoms",
           componentPath: "Div",
           gridDefination: {
             xs: 12,
-            sm: 4
+            sm: 2
           }
         }
       })
@@ -212,6 +250,39 @@ const branchType = getQueryArg(window.location.href, "branchType");
       handleField(
         "search",
         "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationNumber",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(prepareFinalObject("searchScreen", {}))
+    searchApplicationApiCall(state, dispatch, true)
+    }
+  }
+
+  const clearPropertySearch = (state, dispatch) => {
+    const preparedFinalObject = get(state, "screenConfiguration.preparedFinalObject");
+    const {searchScreen = {}} = preparedFinalObject
+    if(!!searchScreen.fileNumber || !!searchScreen.state || !!searchScreen.SECTORNumber) {
+    dispatch(
+      handleField(
+        "search",
+        "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.fileNumber",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "search",
+        "components.div.children.estateApplication.children.cardContent.children.colonyContainer.children.status",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "search",
+        "components.div.children.estateApplication.children.cardContent.children.transitNumberContainer.children.sectorNumber",
         "props.value",
         ""
       )

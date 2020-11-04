@@ -14,12 +14,33 @@ import {
 import {
   getLocaleLabels,  getTransformedLocalStorgaeLabels} from "egov-ui-framework/ui-utils/commons";
 
+import { LabelContainer } from "egov-ui-framework/ui-containers";
+import {
+  handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 const getLocalTextFromCode = localCode => {
   return JSON.parse(getLocalization("localization_en_IN")).find(
     item => item.code === localCode
   );
 };
 
+const handleSync=(data,value)=>{
+  let gridData=get(store.getState(), 'screenConfiguration.preparedFinalObject.articleSeizedGridDetails', [])
+  gridData = gridData.filter(function (value, index) { return index != data.rowIndex; })
+  store.dispatch(prepareFinalObject('articleSeizedGridDetails', gridData));
+  store.dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardSecondStep.children.ArticleGridDetails",
+      "props.data",
+      gridData
+    )
+  );
+
+  console.log(data);
+}
 export const ArticleGridDetails = {
   uiFramework: "custom-molecules-local",
   moduleName: "egov-echallan",
@@ -34,6 +55,24 @@ export const ArticleGridDetails = {
       getTextToLocalMappingArticleGrid("SeizedQty"),
       getTextToLocalMappingArticleGrid("VehicleNumber"),
       getTextToLocalMappingArticleGrid("Remark"),      
+      {
+        name:  "Action",
+        options: {
+          filter: false,
+          customBodyRender: (value,data,index) =>{
+            const currentTime = new Date().getTime();
+            let styleSelect = {}
+                styleSelect.color = "red" 
+                styleSelect.cursor= "pointer";
+          return(
+            <LabelContainer style={styleSelect} onClick={() => { handleSync(data,value)}}
+              labelKey={"Delete"}
+              labelName={"Delete"}
+            />             
+          )
+        }
+        }
+      }
     ],
     // columns: [
     //   {
@@ -151,6 +190,7 @@ export const ArticleGridDetails = {
       }
     }
   }
+
 };
 
 

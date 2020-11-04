@@ -180,12 +180,12 @@ export const createUpdatePO = async (state, dispatch, action) => {
       "purchaseOrders[0].priceList",
       []
     );
-    const {rateContractNumber} = priceListgem[0];
-    const {rateContractDate} = priceListgem[0];
-    const {agreementNumber} = priceListgem[0];
-    const {agreementDate} = priceListgem[0];
-    const {agreementStartDate} = priceListgem[0];
-    const {agreementEndDate} = priceListgem[0];
+    // const {rateContractNumber} = priceListgem[0];
+    // const {rateContractDate} = priceListgem[0];
+    // const {agreementNumber} = priceListgem[0];
+    // const {agreementDate} = priceListgem[0];
+    // const {agreementStartDate} = priceListgem[0];
+    // const {agreementEndDate} = priceListgem[0];
     if(rateType.toLocaleUpperCase() === 'GEM')
     {
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.tenantId`, null);
@@ -194,12 +194,12 @@ export const createUpdatePO = async (state, dispatch, action) => {
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateType`, "Gem");
       set(purchaseOrders[0], `rateType`, "Gem");
       dispatch(prepareFinalObject("purchaseOrders[0].rateType", "Gem"));  
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateContractNumber`, rateContractNumber);
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateContractDate`, convertDateToEpoch(rateContractDate));
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementNumber`, (agreementNumber));
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementDate`,convertDateToEpoch( agreementDate));
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementStartDate`, convertDateToEpoch(agreementStartDate));
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementEndDate`, convertDateToEpoch(agreementEndDate));
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateContractNumber`, null);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateContractDate`, null);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementNumber`, null);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementDate`,null);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementStartDate`, null);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.agreementEndDate`, null);
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.active`, true);
     }
     else{

@@ -372,10 +372,15 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     let {estateRentSummary} = Properties[0]
     if(!!estateRentSummary){
-        estateRentSummary.outstanding =  (parseInt(estateRentSummary.balanceRent) + 
-        parseInt(estateRentSummary.balanceGST) + parseInt(estateRentSummary.balanceGSTPenalty) +
-        parseInt(estateRentSummary.balanceRentPenalty)).toFixed(1)
-    }
+      estateRentSummary.outstanding =  (Number(estateRentSummary.balanceRent) + 
+      Number(estateRentSummary.balanceGST) + Number(estateRentSummary.balanceGSTPenalty) +
+      Number(estateRentSummary.balanceRentPenalty)).toFixed(2)
+      estateRentSummary.balanceGST =  Number(estateRentSummary.balanceGST).toFixed(2)
+      estateRentSummary.balanceRent = Number(estateRentSummary.balanceRent).toFixed(2)
+      estateRentSummary.collectedRent = Number(estateRentSummary.collectedRent).toFixed(2)
+      estateRentSummary.balanceGSTPenalty = Number(estateRentSummary.balanceGSTPenalty).toFixed(2)
+      estateRentSummary.balanceRentPenalty = Number(estateRentSummary.balanceRentPenalty).toFixed(2)
+  }
     Properties = [{...Properties[0], estateRentSummary: estateRentSummary}]
 
     dispatch(prepareFinalObject("Properties", Properties));

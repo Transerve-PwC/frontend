@@ -8,6 +8,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import {  checkValueForNA } from "../../utils";
 const indentNumber = getQueryArg(window.location.href, "indentNumber");
 const gotoCreatePage = (state, dispatch) => {
   let createUrl="";
@@ -75,35 +76,41 @@ export const getRCDetailsView = (isReview = true) => {
           labelName: "Rate Contract/Tender/Quotation No.",
           labelKey: "STORE_PURCHASE_ORDER_RC_NO"
         },
-        { jsonPath: "purchaseOrders[0].priceList[0].rateContractNumber" }
+        { jsonPath: "purchaseOrders[0].priceList[0].rateContractNumber",
+        callBack: checkValueForNA }
       ),
       rateContractDate: getLabelWithValue(
         { labelName: "Rate Contract/Tender/Quotation Date", labelKey: "STORE_PURCHASE_ORDER_RC_DATE" },
-        { jsonPath: "purchaseOrders[0].priceList[0].rateContractDate" }
+        { jsonPath: "purchaseOrders[0].priceList[0].rateContractDate" ,
+        callBack: checkValueForNA}
       ),
       agreementNumber: getLabelWithValue(
         {
           labelName: "Agreement No.",
           labelKey: "STORE_PURCHASE_ORDER_AGRMENT_NO"
         },
-        { jsonPath: "purchaseOrders[0].priceList[0].agreementNumber" }
+        { jsonPath: "purchaseOrders[0].priceList[0].agreementNumber",
+        callBack: checkValueForNA }
       ),
       agreementDate: getLabelWithValue(
         { labelName: "Agreement Date", labelKey: "STORE_PURCHASE_ORDER_AGREEMNT_DT" },
         {
           jsonPath: "purchaseOrders[0].priceList[0].agreementDate",
+          callBack: checkValueForNA
         }
       ),
       agreementStartDate: getLabelWithValue(
         { labelName: "Agreement From Date", labelKey: "STORE_PURCHASE_ORDER_AGREEMNT_FRM_DT" },
         {
-          jsonPath: "purchaseOrders[0].priceList[0].agreementStartDate"
+          jsonPath: "purchaseOrders[0].priceList[0].agreementStartDate",
+          callBack: checkValueForNA
         }
       ),
       agreementEndDate: getLabelWithValue(
         { labelName: "Agreement To Date", labelKey: "STORE_PURCHASE_ORDER_AGREEMNT_TO_DT" },
         {
-          jsonPath: "purchaseOrders[0].priceList[0].agreementEndDate"
+          jsonPath: "purchaseOrders[0].priceList[0].agreementEndDate",
+          callBack: checkValueForNA
         }
       ),
     }),

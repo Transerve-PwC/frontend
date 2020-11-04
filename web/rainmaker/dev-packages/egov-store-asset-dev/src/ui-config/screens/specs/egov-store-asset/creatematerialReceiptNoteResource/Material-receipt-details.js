@@ -163,10 +163,10 @@ import {
                 //
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,purchaseOrderDetails[0].receivedQuantity));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,purchaseOrderDetails[0].orderQuantity));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,purchaseOrderDetails[0].orderQuantity));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,purchaseOrderDetails[0].orderQuantity));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,purchaseOrderDetails[0].orderQuantity * purchaseOrderDetails[0].unitPrice));
+                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
+                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,purchaseOrderDetails[0].orderQuantity));
+                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,purchaseOrderDetails[0].orderQuantity));
+                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,purchaseOrderDetails[0].orderQuantity * purchaseOrderDetails[0].unitPrice));
 
                  //set total value on Qty Change
                  let cardJsonPath =
@@ -363,6 +363,9 @@ import {
                 jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty"
               }),
               beforeFieldChange: (action, state, dispatch) => {
+
+
+                
                      }
             },
             QtyAccepted: {
@@ -396,6 +399,13 @@ import {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].userReceivedQty`,receivedQty));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].isScrapItem`,false));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,totalAcceptedvalue));
+
+
+               // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,Number(action.value)));
+               // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,purchaseOrderDetails[0].orderQuantity));
+               // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,purchaseOrderDetails[0].orderQuantity * purchaseOrderDetails[0].unitPrice));
+
                  //set total value on Qty Change
                  let cardJsonPath =
                  "components.div.children.formwizardSecondStep.children.materialReceiptDetail.children.cardContent.children.materialReceiptCard.props.items";

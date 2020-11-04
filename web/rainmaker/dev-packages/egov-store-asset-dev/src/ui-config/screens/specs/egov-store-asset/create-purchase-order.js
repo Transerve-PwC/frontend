@@ -318,6 +318,44 @@ import {
         );  
 
       }
+      let rateType =  get(state.screenConfiguration.preparedFinalObject, "purchaseOrders[0].rateType",'')
+      if(rateType ==='Gem')
+      {
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier.props.style",
+          { display: "none" }
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber.props.style",
+          { display: "inline-block" }
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem.props.style",
+          { display: "inline-block" }
+        );
+
+      }
+      else{
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier.props.style",
+          { display: "inline-block",width:"40%" }
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem.props.style",
+          { display: "none" }
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber.props.style",
+          { display: "none" }
+        );
+
+      }
       return action;
     },
   

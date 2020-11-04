@@ -82,6 +82,11 @@ const MultiSelectContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const RentSummaryCardContainer = Loadable({
+  loader: () => import("./RentSummaryCardContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -99,5 +104,6 @@ export {
   MultipleDocumentsContainer,
   NestedListContainer,
   MultipleCardContainer,
-  MultiSelectContainer
+  MultiSelectContainer,
+  RentSummaryCardContainer
 };

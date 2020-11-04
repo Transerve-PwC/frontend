@@ -235,22 +235,22 @@ export const propertyDetails={
     { jsonPath: "WaterConnection[0].property.landArea",
     callBack: handleNA }
   ),
-  reviewNumberOfFloors: getLabelWithValue(
-    {
-      labelName: "Number Of Floors",
-      labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
-    },
-    { jsonPath: "WaterConnection[0].property.noOfFloors",
-    callBack: handleNA }
-  ),
-  rainwaterHarvestingFacility: getLabelWithValue(
-    {
-      labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
-      labelName: "Rain Water Harvesting Facility"
-    },
-    { jsonPath: "WaterConnection[0].property.additionalDetails.isRainwaterHarvesting",
-    callBack: handleNA }
-  )
+  // reviewNumberOfFloors: getLabelWithValue(
+  //   {
+  //     labelName: "Number Of Floors",
+  //     labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
+  //   },
+  //   { jsonPath: "WaterConnection[0].property.noOfFloors",
+  //   callBack: handleNA }
+  // ),
+  // rainwaterHarvestingFacility: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
+  //     labelName: "Rain Water Harvesting Facility"
+  //   },
+  //   { jsonPath: "WaterConnection[0].property.additionalDetails.isRainwaterHarvesting",
+  //   callBack: handleNA }
+  // )
 }
 
 const getPropertyDetails = {

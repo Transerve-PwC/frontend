@@ -52,11 +52,18 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let category = properties[0].category;
     
     let {estateRentSummary} = properties[0]
+   
     if(!!estateRentSummary){
-        estateRentSummary.outstanding =  (parseInt(estateRentSummary.balanceRent) + 
-        parseInt(estateRentSummary.balanceGST) + parseInt(estateRentSummary.balanceGSTPenalty) +
-        parseInt(estateRentSummary.balanceRentPenalty)).toFixed(1)
-    }
+      estateRentSummary.outstanding =  (Number(estateRentSummary.balanceRent) + 
+      Number(estateRentSummary.balanceGST) + Number(estateRentSummary.balanceGSTPenalty) +
+      Number(estateRentSummary.balanceRentPenalty)).toFixed(2)
+      estateRentSummary.balanceGST =  Number(estateRentSummary.balanceGST).toFixed(2)
+      estateRentSummary.balanceRent = Number(estateRentSummary.balanceRent).toFixed(2)
+      estateRentSummary.collectedRent = Number(estateRentSummary.collectedRent).toFixed(2)
+      estateRentSummary.balanceGSTPenalty = Number(estateRentSummary.balanceGSTPenalty).toFixed(2)
+      estateRentSummary.balanceRentPenalty = Number(estateRentSummary.balanceRentPenalty).toFixed(2)
+  }
+
     properties = {
       ...properties , estateRentSummary : estateRentSummary
     }

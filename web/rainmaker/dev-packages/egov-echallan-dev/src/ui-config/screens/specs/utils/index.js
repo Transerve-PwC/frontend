@@ -249,6 +249,16 @@ export const showHideDeleteConfirmation = (state, dispatch, screenKey) => {
   );
 };
 
+export const showHideChallanReturnAndCloseConfirmation = (state, dispatch, screenKey) => {
+  let toggle = get(
+    state.screenConfiguration.screenConfig[screenKey],
+    "components.returnConfirmation.props.open",
+    false
+  );
+  dispatch(
+    handleField(screenKey, "components.returnConfirmation", "props.open", !toggle)
+  );
+};
 
 export const showHideChallanConfirmation = (state, dispatch, screenKey) => {
   let toggle = get(

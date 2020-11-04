@@ -51,6 +51,7 @@ const getData = async (action, state, dispatch) => {
       applicationType = `${branchType}_${moduleType}_${type}`;
       property = Applications[0].property
       propertyId = Applications[0].property.id
+      fileNumber = Applications[0].property.fileNumber
     } catch (error) {
       return {}
     }

@@ -14,7 +14,8 @@ import { ViolationDocumentDetailsUpload, ViolatorIDProofUpload, ViolatorImageIDU
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTenantId, setapplicationType } from "egov-ui-kit/utils/localStorageUtils";
 import set from "lodash/set";
@@ -147,12 +148,13 @@ const getMdmsData = async (action, state, dispatch) => {
   }
 };
 
-const getVendorDetail = async (action, state, dispatch) => {
+export const getVendorDetail = async (action, state, dispatch) => {
   try {
     let payload = null;
     payload = await fetchVendorDetails(state, dispatch);
     dispatch(prepareFinalObject("applyScreenMdmsData.egec.vendorList", payload));
   } catch (e) {
+    dispatch(toggleSpinner())
     console.log(e);
   }
 };
@@ -172,7 +174,7 @@ const screenConfig = {
       // Set Dropdowns Data
       // Set Documents Data (TEMP)
       prepareDocumentsUploadData(state, dispatch);
-      getVendorDetail(action, state, dispatch);
+      //getVendorDetail(action, state, dispatch);
     });
 
     let dateString = new Date();

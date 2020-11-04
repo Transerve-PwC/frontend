@@ -309,34 +309,34 @@ const getPropertyDetails = {
             },
             { jsonPath: "applyScreenOld.property.landArea", callBack: handleNA },
           ),
-          reviewNumberOfFloors: getLabelWithValueForModifiedLabel(
-            {
-              labelName: "Number Of Floors",
-              labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
-            },
-            { jsonPath: "applyScreen.property.noOfFloors", callBack: handleNA },
-            {
-              labelKey: "WS_OLD_LABEL_NAME"
-            },
-            { jsonPath: "applyScreenOld.property.noOfFloors", callBack: handleNA },
-          ),
-          rainwaterHarvestingFacility: getLabelWithValueForModifiedLabel(
-            {
-              labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
-              labelName: "Rain Water Harvesting Facility"
-            },
-            {
-              jsonPath: "applyScreen.property.additionalDetails.isRainwaterHarvesting",
-              callBack: handleNA
-            },
-            {
-              labelKey: "WS_OLD_LABEL_NAME"
-            },
-            {
-              jsonPath: "applyScreenOld.property.additionalDetails.isRainwaterHarvesting",
-              callBack: handleNA
-            },
-          )
+          // reviewNumberOfFloors: getLabelWithValueForModifiedLabel(
+          //   {
+          //     labelName: "Number Of Floors",
+          //     labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
+          //   },
+          //   { jsonPath: "applyScreen.property.noOfFloors", callBack: handleNA },
+          //   {
+          //     labelKey: "WS_OLD_LABEL_NAME"
+          //   },
+          //   { jsonPath: "applyScreenOld.property.noOfFloors", callBack: handleNA },
+          // ),
+          // rainwaterHarvestingFacility: getLabelWithValueForModifiedLabel(
+          //   {
+          //     labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
+          //     labelName: "Rain Water Harvesting Facility"
+          //   },
+          //   {
+          //     jsonPath: "applyScreen.property.additionalDetails.isRainwaterHarvesting",
+          //     callBack: handleNA
+          //   },
+          //   {
+          //     labelKey: "WS_OLD_LABEL_NAME"
+          //   },
+          //   {
+          //     jsonPath: "applyScreenOld.property.additionalDetails.isRainwaterHarvesting",
+          //     callBack: handleNA
+          //   },
+          // )
         })
     }),
     items: [],

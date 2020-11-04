@@ -175,11 +175,13 @@ printMenu = [receiptPrintObject];
           furnishindentData(state, dispatch);
       if(response.purchaseOrders && response.purchaseOrders[0].supplier.code){
         const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "suppliers", value: response.purchaseOrders[0].supplier.code}];
-       
+        if(response.purchaseOrders[0].rateType !=="Gem")
+        {
         getSearchResults(queryObject, dispatch,"priceList")
         .then(response =>{
           if(response){
             let priceList = [{rateContractNumber:"",rateContractDate:"",agreementNumber:"",agreementDate:"",agreementStartDate:"",agreementEndDate:""}];
+            
             priceList[0].rateContractNumber  =  response.priceLists[0].rateContractNumber;
             priceList[0].rateContractDate   = new Date(response.priceLists[0].rateContractDate).toISOString().substr(0,10);
             priceList[0].agreementNumber   =   response.priceLists[0].agreementNumber;
@@ -189,7 +191,8 @@ printMenu = [receiptPrintObject];
             dispatch(prepareFinalObject("searchMaster.priceList", response.priceLists));  
                 dispatch(prepareFinalObject("purchaseOrders[0].priceList", priceList));          
            }  
-        });     
+        }); 
+      }    
        }
       }
     });  

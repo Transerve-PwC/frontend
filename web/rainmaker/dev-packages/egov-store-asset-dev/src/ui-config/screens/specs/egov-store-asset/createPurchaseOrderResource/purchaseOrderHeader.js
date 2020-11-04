@@ -260,20 +260,114 @@ export const purchaseOrderHeader = getCommonCard({
         if(action.value.toLocaleUpperCase() ==="GEM")
         {
          
-          dispatch(prepareFinalObject("purchaseOrders[0].rateType", "Gem"));  
+          dispatch(prepareFinalObject("purchaseOrders[0].rateType", "Gem")); 
+          dispatch(prepareFinalObject("purchaseOrders[0].supplier.code", null));
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
+              "props.style",
+              { display: "none"  }
+            )
+          );
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem",
+              "props.style",
+              { display: "inline-block" }
+            )
+          ); 
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber",
+              "props.style",
+              { display: "inline-block" }
+            )
+          ); 
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber",
+              "required",
+              true
+            )
+          );
+            dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem",
+              "required",
+              true
+            )
+          );
         }
-        // dispatch(
-        //   handleField(
-        //     `create-purchase-order`,
-        //     "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
-        //     "props.style",
-        //     { display: "inline-block" }
-            
-        //   )
-        // );
+        else{
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier",
+              "props.style",
+              { display: "inline-block",width:"40%" }
+            )
+          );
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem",
+              "props.style",
+              { display: "none"  }
+            )
+          );
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber",
+              "props.style",
+              { display: "none"  }
+            )
+          );
+          dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.externalPoNumber",
+              "required",
+              false
+            )
+          );
+            dispatch(
+            handleField(
+              "create-purchase-order",
+              "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplierGem",
+              "required",
+              false
+            )
+          ); 
+        }
         
       }
     },
+    deliveryTerms: getTextField({
+      label: {
+        labelName: "Delivery Terms",
+        labelKey: "STORE_PURCHASE_ORDER_DLVRY_TERM",
+      },
+      props: {
+        className: "applicant-details-error",
+        multiline: "multiline",
+        rowsMax: 2,
+      },
+      placeholder: {
+        labelName: "Enter Delivery Terms",
+        labelKey: "STORE_PURCHASE_ORDER_DLVRY_TERM_PLCEHLDER",
+      },
+      required: true,
+            errorMessage:"STORE_VALIDATION_DELIVERY_TERMS",
+      pattern: getSTOREPattern("Comment"),
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "purchaseOrders[0].deliveryTerms",
+    }),
     supplier: {
       ...getSelectField({
         label: { labelName: "Supplier", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
@@ -283,6 +377,9 @@ export const purchaseOrderHeader = getCommonCard({
         },
         required: true,
             errorMessage:"STORE_VALIDATION_SUPPLIER_NAME_SELECT",
+            gridDefination: {
+              xs: 12
+            },
         jsonPath: "purchaseOrders[0].supplier.code",
         sourceJsonPath: "searchMaster.supplierName",
         props: {
@@ -306,12 +403,13 @@ export const purchaseOrderHeader = getCommonCard({
             if(rateType.toLocaleUpperCase() === 'GEM')
             {
               
-              priceList[0].rateContractNumber  =  "";
-              priceList[0].rateContractDate   = new Date().toISOString().slice(0, 10);
-              priceList[0].agreementNumber   =   "";
-              priceList[0].agreementDate   =   new Date().toISOString().slice(0, 10);
-              priceList[0].agreementStartDate   = new Date().toISOString().slice(0, 10);
-              priceList[0].agreementEndDate   =  new Date().toISOString().slice(0, 10);
+              // priceList[0].rateContractNumber  =  "";
+              // priceList[0].rateContractDate   = new Date().toISOString().slice(0, 10);
+              // priceList[0].agreementNumber   =   "";
+              // priceList[0].agreementDate   =   new Date().toISOString().slice(0, 10);
+              // priceList[0].agreementStartDate   = new Date().toISOString().slice(0, 10);
+              // priceList[0].agreementEndDate   =  new Date().toISOString().slice(0, 10);
+              priceList = null
 
             }
             else{
@@ -333,12 +431,73 @@ export const purchaseOrderHeader = getCommonCard({
            if(state.screenConfiguration.preparedFinalObject.searchMaster && state.screenConfiguration.preparedFinalObject.searchMaster.supplierName){
            const {supplierName} = state.screenConfiguration.preparedFinalObject.searchMaster;
            const supplierObj =  supplierName.filter(ele => ele.code === action.value);
-           if(supplierObj){
+           if (supplierObj && supplierObj[0]){
              dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplierObj[0].name));         
+           }
+           else
+           {
+            // const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
+            // const {supplier} = purchaseOrders[0];
+            // dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplier.code));
            }
           }
         });     
        }
+     }
+    },
+    supplierGem: {
+      ...getTextField({
+        label: { labelName: "Supplier", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
+        placeholder: {
+          labelName: "Select supplier",
+          labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME"
+        },
+        required: true,
+        errorMessage:"STORE_VALIDATION_SUPPLIER_NAME",
+        gridDefination: {
+          xs: 6
+        },
+        pattern: getPattern("non-empty-alpha-numeric"),
+        jsonPath: "purchaseOrders[0].supplier.code",
+       // sourceJsonPath: "searchMaster.supplierName",
+        // props: {
+        //   className: "hr-generic-selectfield",
+        //   optionValue: "code",
+        //   optionLabel: "name"
+        // }
+      }),
+      beforeFieldChange: async (action, state, dispatch) => {
+        if(action.value){
+       
+      }
+     }
+    },
+    externalPoNumber: {
+      ...getTextField({
+        label: { labelName: "External PO Number", labelKey: "STORE_EXTERNAL_PO_NUMBER" },
+        placeholder: {
+          labelName: "Enter external PO number",
+          labelKey: "STORE_EXTERNAL_PO_NUMBER_PLACEHOLDER"
+        },
+        required: true,
+        errorMessage:"STORE_VALIDATION_EXTERNAL_PO_NUMBER",
+        gridDefination: {
+          xs: 6
+        },
+        pattern: getPattern("non-empty-alpha-numeric"),
+       
+        jsonPath: "purchaseOrders[0].externalPoNumber",
+       // sourceJsonPath: "searchMaster.supplierName",
+        // props: {
+        //   className: "hr-generic-selectfield",
+        //   optionValue: "code",
+        //   optionLabel: "name"
+        // }
+      }),
+      beforeFieldChange: async (action, state, dispatch) => {
+        if(action.value){
+       
+      }
      }
     },
     // advancePercentage: {
@@ -390,26 +549,7 @@ export const purchaseOrderHeader = getCommonCard({
         }
       })
     },
-    deliveryTerms: getTextField({
-      label: {
-        labelName: "Delivery Terms",
-        labelKey: "STORE_PURCHASE_ORDER_DLVRY_TERM",
-      },
-      props: {
-        className: "applicant-details-error",
-        multiline: "multiline",
-        rowsMax: 2,
-      },
-      placeholder: {
-        labelName: "Enter Delivery Terms",
-        labelKey: "STORE_PURCHASE_ORDER_DLVRY_TERM_PLCEHLDER",
-      },
-      required: true,
-            errorMessage:"STORE_VALIDATION_DELIVERY_TERMS",
-      pattern: getSTOREPattern("Comment"),
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-      jsonPath: "purchaseOrders[0].deliveryTerms",
-    }),
+
     paymentTerms: getTextField({
       label: {
         labelName: "Payment Terms",

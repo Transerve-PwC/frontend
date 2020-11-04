@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import cloneDeep from "lodash/cloneDeep";
 import { createMuiTheme, MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import "./index.css";
+import { connect } from "react-redux";
 
 
 const customStyles = {
@@ -90,6 +91,49 @@ class CustomizeTable extends React.Component {
       }, [])
     );
   };
+
+  columnLocalisation = (localizationLabels, columns) => {
+    const  localisationArray = Object.values(localizationLabels);
+    const {columns : stateColumn} = this.state;
+    const { title } = this.state;
+    let columnName = [];
+    let tempColumnName = "";
+    columns.forEach(column => {
+      // Handling the case where column name is an object with options
+      tempColumnName = typeof column === "object" ? get(column, "name") : column;
+
+      const locMessageObj =  localisationArray.find(locMessage => locMessage.code === tempColumnName);
+
+      if(locMessageObj){
+      
+         columnName.push(locMessageObj.message);
+      }
+      else{
+        columnName.push(column);
+      }
+
+    });
+    
+    let oldColumnData = [...stateColumn];
+    let newColumnData = [...columnName];
+    const checkFlag = _.isEqual(newColumnData.sort(), oldColumnData.sort());
+    if(!checkFlag){
+      this.setState({columns : columnName});
+    }
+    const locMessageTitleObj = localisationArray.find(locMessage => locMessage.code === title);
+    
+    if (title && title != undefined && locMessageTitleObj!=undefined && locMessageTitleObj[0]!=undefined)  { 
+      this.setState({title : locMessageTitleObj[0].message});
+    }
+    
+  }
+  
+  
+    componentDidUpdate (prevProps, prevState){
+    const {localizationLabels} = this.props;
+    const { data, columns } = this.props;
+    this.columnLocalisation(localizationLabels, columns);
+  }
 
   componentWillReceiveProps(nextProps) {
     const { data, columns, options } = nextProps;
@@ -262,4 +306,15 @@ class CustomizeTable extends React.Component {
   }
 }
 
-export default withStyles(customStyles)(CustomizeTable);
+const mapStateToProps = (state, ownProps) => {
+  let localizationLabels = get(
+      state,
+      "app.localizationLabels",
+      []
+  );
+  return { localizationLabels };
+};
+
+// export default connect(mapStateToProps, null)(CustomizeTable);
+// export default withStyles(customStyles)(CustomizeTable);
+export default connect(mapStateToProps)((withStyles(customStyles)(CustomizeTable)));

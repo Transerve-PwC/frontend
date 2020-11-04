@@ -7,7 +7,7 @@ import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { propertyInfo } from "./preview-resource/preview-properties";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch, validateFields } from "../utils";
+import { convertDateToEpoch, validateFields, getRentSummaryCard } from "../utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
   const header = getCommonHeader({
@@ -44,8 +44,10 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   const beforeInitFn = async(action, state, dispatch)=>{
     getMdmsData(dispatch);
     let propertyId = getQueryArg(window.location.href, "propertyId")
+    const fileNumber = getQueryArg(window.location.href, "fileNumber")
     const queryObject = [
-      {key: "propertyId", value: propertyId}
+      {key: "propertyIds", value: propertyId},
+      {key: "fileNumber", value: fileNumber}
     ]
     const response = await getSearchResults(queryObject)
     if(!!response.Properties && !!response.Properties.length) {
@@ -223,6 +225,34 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   
   const propertyDetails = getCommonCard(propertyInfo(false))
 
+  const rentSummaryHeader = getCommonTitle({
+    labelName: "Rent Summary",
+    labelKey: "ES_RENT_SUMMARY_HEADER"
+  }, {
+    style: {
+      marginBottom: 18,
+      marginTop: 18
+    }
+  })
+  
+  const rentSummary = getCommonGrayCard({
+    rentSection: getRentSummaryCard({
+      sourceJsonPath: "Properties[0].estateRentSummary",
+      dataArray: ["balanceRent", "balanceGST", "balanceGSTPenalty", "balanceRentPenalty", "balanceAmount"]
+    })
+  });
+
+  const rentSummaryDetails = {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    children: {
+    rentCard: getCommonCard({
+      header: rentSummaryHeader,
+      detailsContainer: rentSummary
+    })
+    }
+  }
+
   const detailsContainer = {
     uiFramework: "custom-atoms",
     componentPath: "Form",
@@ -231,6 +261,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     },
     children: {
       propertyDetails,
+      rentSummaryDetails,
       offlinePaymentDetails
     },
     visible: true
@@ -258,12 +289,11 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
           [],
           { Properties : payload })
           if(!!response && !!response.Properties.length) {
-            console.log("=====response", response)
             const {rentPaymentConsumerCode, tenantId} = response.Properties[0]
-            let billingBuisnessService=response.Properties[0].billingBusinessService
+            let billingBuisnessService=response.Properties[0].propertyDetails.billingBusinessService
             type === "ONLINE" ? dispatch(
               setRoute(
-               `/esate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
+               `/estate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
               )
             ) : dispatch(
               setRoute(

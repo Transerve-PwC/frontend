@@ -30,7 +30,7 @@ export const propertyID = getCommonContainer({
       value: "Fill the form by searching your old approved trade license",
       // key: "TL_OLD_TL_NO"
     },
-    pattern: /^[a-zA-Z0-9-]*$/i,
+    // pattern: /^[a-zA-Z0-9-]*$/i,
     errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
     jsonPath: "searchScreen.propertyIds",
   }),

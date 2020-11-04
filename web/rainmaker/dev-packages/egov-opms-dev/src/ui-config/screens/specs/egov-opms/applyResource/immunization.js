@@ -229,7 +229,7 @@ const immunizationData = buildingType => {
             labelName: "Select Sector",
             labelKey: "NOC_PET_DETAILS_VETERINARY_SECTOR_PLACEHOLDER"
           },
-          sourceJsonPath: "applyScreenMdmsData.egpm.sector",
+          sourceJsonPath: "applyScreenMdmsData.egpm.immunizationSector",
           jsonPath: "PETNOC.immunizationSector",
           required: false,
 		  gridDefination: {

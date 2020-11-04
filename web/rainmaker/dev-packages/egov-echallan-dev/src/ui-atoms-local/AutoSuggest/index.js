@@ -96,9 +96,11 @@ function Control(props) {
       {...props.selectProps.textFieldProps}
       helperText={props.selectProps.helperText}
       error={props.selectProps.error}
-	  onChange={event => {
+      //onChange={handleTextChange}
+      onChange={event => {
         handleTextChange(event,props.selectProps.isFilterData)
       }}
+
     />
   );
 }
@@ -123,8 +125,6 @@ const handleTextChange = (e,isFilterData) => {
     }
   }
 }
-
-
 function Option(props) {
   return (
     <MenuItem

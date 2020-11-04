@@ -8,6 +8,7 @@ class PaymentRedirect extends Component {
   componentDidMount = async () => {
     let { search } = this.props.location;
     const txnQuery=search.split('&')[0].replace('eg_pg_txnid','transactionId');
+    const businessService = (search.split("=")[13]).split("&")[0]
     try {
       let pgUpdateResponse = await httpRequest(
         "post",
@@ -30,18 +31,25 @@ class PaymentRedirect extends Component {
       ];
       const response = await getSearchApplicationsResults(queryObject);
       const Applications = get(response, "Applications");
-      const {branchType, moduleType, applicationType} = Applications[0];
-       const type = `${branchType}_${moduleType}_${applicationType}`;
+      let path = ""
       if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
-        window.location.href = `${
+        path = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/estate/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&type=${type}`;
+        }/estate/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
       } else {
         let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
-        window.location.href = `${
+        path = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&type=${type}`;
+        }/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
       }
+      if(!!Applications.length) {
+        const {branchType, moduleType, applicationType} = Applications[0];
+         const type = `${branchType}_${moduleType}_${applicationType}`;
+         path = `${path}&type=${type}`
+      } else {
+        path = `${path}&type=${businessService}`
+      }
+      window.location.href = path
     } catch (e) {
       alert(e);
     }

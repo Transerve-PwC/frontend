@@ -199,6 +199,7 @@ class NavPills extends React.Component {
                 <LabelContainer
                   labelName={prop.tabButton.labelName}
                   labelKey={prop.tabButton.labelKey}
+                  style = {{ fontSize : "14px" }}
                 />
               }
               key={key}

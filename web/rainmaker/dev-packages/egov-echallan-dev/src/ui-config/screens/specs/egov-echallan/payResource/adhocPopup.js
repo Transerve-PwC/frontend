@@ -6,7 +6,8 @@ import {
   resetAllFields,
   showHideAdhocPopup, showHideAdhocPopupReceivePayment, showHideAdhocPopupForwardUploadDocs, 
   callbackforsearchPreviewAction, generateReceiptNumber, showHideDeleteConfirmation,
-  showHideChallanConfirmation
+  showHideChallanConfirmation,
+  showHideChallanReturnAndCloseConfirmation
 } from "../../utils";
 import get from "lodash/get";
 import { httpRequest } from "../../../../../ui-utils/api";
@@ -24,6 +25,8 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { onItemMasterRowClick } from "../../egov-echallan-item-master/searchResource/serachResultGrid";
+import { returnandClosePayment } from "../summaryResource/footer";
+
 
 const ItemMasterDeleteRowClick = async(state,dispatch) => {
  let rowdata =   get(state, 'screenConfiguration.preparedFinalObject.tableMetarowData', {});
@@ -1096,3 +1099,147 @@ export const challanDeletionPopup = getCommonContainer({
     }
   }
 });
+
+export const returnAndCloseConfirmationPopup = getCommonContainer({
+  header: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div1: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonHeader(
+            {
+              labelName: "Manage Challan",
+              labelKey: "EC_MANAGE_CHALLAN"
+            },
+            {
+              style: {
+                fontSize: "16px"
+              }
+            }
+          )
+        }
+      },      
+    }
+  },
+  subheader: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: {
+        width: "100%",
+        float: "right"
+      }
+    },
+    children: {
+      div2: {
+        uiFramework: "custom-atoms",
+        componentPath: "Div",
+        gridDefination: {
+          xs: 12,
+          sm: 12
+        },
+        props: {
+          style: {
+            width: "100%",
+            float: "right"
+          }
+        },
+        children: {
+          div: getCommonSubHeader(
+            {
+              labelName: "Are you sure you want to Return & Close the Challan?",
+              labelKey: "EC_CHALLAN_RETURN_CLOSE_POPUP_CONFIRMATION_MESSAGE"
+            },
+            {
+              style: {
+                fontSize: "16px",
+                marginTop:"20px",
+                marginBottom:"20px",
+              }
+            }
+          )
+        }
+      },
+
+    }
+  },
+  div: {
+    uiFramework: "custom-atoms",
+    componentPath: "Div",
+    props: {
+      style: {
+        width: "100%",
+        // textAlign: "right"
+      }
+    },
+    children: {
+      cancelButton: {
+        componentPath: "Button",
+        props: {
+          variant: "outlined",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginRight: "16px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "CANCEL",
+            labelKey: "EC_CHALLAN_POPUP_BUTTON_CANCEL"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: (state, dispatch) => {
+            showHideChallanReturnAndCloseConfirmation(state, dispatch, "search-preview")
+          }
+        }
+      },
+      addButton: {
+        componentPath: "Button",
+        props: {
+          variant: "contained",
+          color: "primary",
+          style: {
+            minWidth: "180px",
+            height: "48px",
+            marginBottom: "8px",
+          }
+        },
+        children: {
+          previousButtonLabel: getLabel({
+            labelName: "Yes",
+            labelKey: "EC_CHALLAN_POPUP_BUTTON_YES"
+          })
+        },
+        onClickDefination: {
+          action: "condition",
+          callBack: returnandClosePayment
+        }
+      }
+    }
+  }
+});
+

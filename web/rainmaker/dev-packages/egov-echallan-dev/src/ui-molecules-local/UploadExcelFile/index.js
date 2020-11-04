@@ -82,9 +82,8 @@ class UploadExcelFile extends React.Component {
 
   onChange(e) {
     let files = e.target.files;
-    const fileType =  ["vnd.ms-excel",".ms-excel","application/vnd.ms-excel","application/ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","vnd.openxmlformats-officedocument.spreadsheetml.sheet"];  
-    if ((files[0].name.split('.')[1] === ('xlsx' || 'xls')) ||(fileType.includes(files[0].type))) {
-      store.dispatch(toggleSpinner());
+    const fileType =  ["vnd.ms-excel",".ms-excel","application/vnd.ms-excel","application/ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","vnd.openxmlformats-officedocument.spreadsheetml.sheet"];  
+    if ((files[0].name.split('.')[1] === ('xlsx' || 'xls')) ||(fileType.includes(files[0].type))) {      store.dispatch(toggleSpinner());
       var f = files[0];
       let reader = new FileReader();
       reader.onload = e => {

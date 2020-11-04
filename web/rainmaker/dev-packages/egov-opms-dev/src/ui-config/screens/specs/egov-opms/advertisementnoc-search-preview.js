@@ -290,18 +290,8 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
     "screenConfig.components.adhocDialog.children.popup.children.adhocPopupAdvertisementOSDWithdraApprovalAmountCard.children.advertisementOSDWithdraApprovalAmountContainer.children.employeeList.required",
     checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
 
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footer.children.withdrawapprove.visible",
-  //   checkForRole(roles, 'OSD') || checkForRole(roles, 'JEX')
-  //     ? localStorageGet('pms_iswithdrawn') === "yes"
-  //       ? exemptedcategory == 0
-  //         ? true
-  //         : false
-  //       : false
-  //     : false);
 
-/*withdraw button hide*/
+/* withdraw button disabled*/
 /*
   set(
     action,

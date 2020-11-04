@@ -627,7 +627,7 @@ export const getPattern = type => {
     case "DecimalAmount":
       return /^\d{0,6}$/i
     case "ECViolatorAddress":
-      return /^[a-zA-Z.0-9 @#%&-:]{1,512}$/i;
+      return /^[a-zA-Z.0-9 @#%&-:\n\r]{1,512}$/i;
     case "SeizedQuantity":
       return /^[0-9]{0,9}$/i;
     case "ECViolatorName":

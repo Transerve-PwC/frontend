@@ -1,13 +1,14 @@
 import {
   getTodaysDateInYMD, getBreak, getCommonCard, getCommonContainer, getTimeField, getCommonTitle, getDateField, getTextField, getSelectField, getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, fetchItemListMasterData } from "../../../../../ui-utils/commons";
 import { resetAllFields } from "../../utils";
 import "./index.css";
 import { set } from "lodash";
+import { getVendorDetail } from "../apply";
 
 const getArticleData = async (action, state, dispatch) => {
   try {
@@ -264,6 +265,14 @@ export const violationsDetails = getCommonCard({
         jsonPath: "eChallan.encroachmentType",
         required: true,
         errorMessage: "EC_ERR_DEFAULT_INPUT_ENCROACHMENT_TYPE_FIELD_MSG",
+        afterFieldChange: (action, state, dispatch) => {
+          if (action.value == "Registered Street Vendors") { 
+            dispatch(toggleSpinner())
+            getVendorDetail(action, state, dispatch);
+            dispatch(toggleSpinner())
+          }
+         }
+        ,
         beforeFieldChange: (action, state, dispatch) => {
           try {
             if (action.value !== "") {
@@ -808,7 +817,7 @@ export const violatorDetails = getCommonCard(
 
         pattern: getPattern("ECViolatorName"),
         errorMessage: "EC_ERR_DEFAULT_INPUT_FATHER_NAME_FIELD_MSG",
-        required: true,
+        required: false,
         jsonPath: "eChallan.fatherName",
       }),
       ContactNo: getTextField({

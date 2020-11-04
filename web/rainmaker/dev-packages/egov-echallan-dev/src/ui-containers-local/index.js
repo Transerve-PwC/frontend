@@ -67,6 +67,12 @@ const ForwardContainer = Loadable({
   loading: () => <Loading />
 })
 
+const ReturnCloseConfirmationContainer = Loadable({
+  loader: () => import("./ReturnCloseConfirmationContainer"),
+  loading: () => <Loading />
+})
+
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -81,5 +87,6 @@ export {
   DeleteConfirmationContainer,
   PopupContainer,
   CustomizeTableContainer,
-  ForwardContainer
+  ForwardContainer,
+  ReturnCloseConfirmationContainer
 };

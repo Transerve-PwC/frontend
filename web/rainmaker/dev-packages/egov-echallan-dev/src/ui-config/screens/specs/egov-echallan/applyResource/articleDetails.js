@@ -101,19 +101,21 @@ const ValidateFormData = async (state, dispatch, apply) => {
                 )
               );
             }
-            if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
-              isrowvalidated = false;
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  {
-                    labelName: "Remark is required!",
-                    labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
-                  },
-                  "warning"
-                )
-              );
-            }
+            
+            // if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
+            //   isrowvalidated = false;
+            //   dispatch(
+            //     toggleSnackbar(
+            //       true,
+            //       {
+            //         labelName: "Remark is required!",
+            //         labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
+            //       },
+            //       "warning"
+            //     )
+            //   );
+            // }
+
             if (acutionjsonDetails.other === '' || acutionjsonDetails.other === undefined) {
               isrowvalidated = false;
               dispatch(
@@ -142,19 +144,19 @@ const ValidateFormData = async (state, dispatch, apply) => {
                 )
               );
             }
-            if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
-              isrowvalidated = false;
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  {
-                    labelName: "Remark is required!",
-                    labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
-                  },
-                  "warning"
-                )
-              );
-            }
+            // if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
+            //   isrowvalidated = false;
+            //   dispatch(
+            //     toggleSnackbar(
+            //       true,
+            //       {
+            //         labelName: "Remark is required!",
+            //         labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
+            //       },
+            //       "warning"
+            //     )
+            //   );
+            // }
             if (acutionjsonDetails.ItemName == 'Other' && (acutionjsonDetails.other === '' || acutionjsonDetails.other === undefined)) {
               isrowvalidated = false;
               dispatch(
@@ -187,19 +189,19 @@ const ValidateFormData = async (state, dispatch, apply) => {
                 )
               );
             }
-            if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
-              isrowvalidated = false;
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  {
-                    labelName: "Remark is required!",
-                    labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
-                  },
-                  "warning"
-                )
-              );
-            }
+            // if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
+            //   isrowvalidated = false;
+            //   dispatch(
+            //     toggleSnackbar(
+            //       true,
+            //       {
+            //         labelName: "Remark is required!",
+            //         labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
+            //       },
+            //       "warning"
+            //     )
+            //   );
+            // }
             if (acutionjsonDetails.other === '' || acutionjsonDetails.VehicleNumber === undefined) {
               isrowvalidated = false;
               dispatch(
@@ -227,19 +229,19 @@ const ValidateFormData = async (state, dispatch, apply) => {
                 )
               );
             }
-            if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
-              isrowvalidated = false;
-              dispatch(
-                toggleSnackbar(
-                  true,
-                  {
-                    labelName: "Remark is required!",
-                    labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
-                  },
-                  "warning"
-                )
-              );
-            }
+            // if (acutionjsonDetails.Remark === '' || acutionjsonDetails.Remark === undefined) {
+            //   isrowvalidated = false;
+            //   dispatch(
+            //     toggleSnackbar(
+            //       true,
+            //       {
+            //         labelName: "Remark is required!",
+            //         labelKey: "EC_ARTICLE_MASTER_REMARK_TOASTER"
+            //       },
+            //       "warning"
+            //     )
+            //   );
+            // }
             if (acutionjsonDetails.ItemName == 'Other' && (acutionjsonDetails.other === '' || acutionjsonDetails.other === undefined)) {
               isrowvalidated = false;
               dispatch(
@@ -260,7 +262,8 @@ const ValidateFormData = async (state, dispatch, apply) => {
 
     if (isrowvalidated) {
       dispatch(toggleSpinner());
-      await AddArticletoGrid(state, dispatch, apply);
+      // await AddArticletoGrid(state, dispatch, apply);
+      AddArticletoGrid(state, dispatch, apply);
       set(state, 'screenConfiguration.preparedFinalObject.articleSeizedDetails', []);
       const objectJsonPath = `components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children`;
       const children = get(
@@ -455,7 +458,7 @@ const clearFields = (dispatch) => {
   );
 };
 
-const AddArticletoGrid = async (state, dispatch) => {
+const AddArticletoGrid =  (state, dispatch) => {
   let obj = []
   obj = get(state.screenConfiguration.preparedFinalObject, "articleSeizedDetails");
   let encroachmentType = get(state.screenConfiguration.preparedFinalObject, "eChallan.encroachmentType");
@@ -485,6 +488,8 @@ const AddArticletoGrid = async (state, dispatch) => {
       temp[getTextToLocalMappingArticleGrid("SeizedQty")] = encroachmentType === 'Seizure of Vehicles' ? 1 : obj['SeizedQty'] === undefined ? '' : obj['SeizedQty'];
       temp[getTextToLocalMappingArticleGrid("VehicleNumber")] = obj['VehicleNumber'] === undefined ? '' : obj['VehicleNumber'];
       temp[getTextToLocalMappingArticleGrid("Remark")] = obj['Remark'] === undefined ? '' : obj['Remark'];
+      temp["Action"] = obj['ItemName'] === undefined ? '' : obj['ItemName'];
+
       dataarray.push(temp);
 
       dispatch(prepareFinalObject('articleSeizedGridDetails', dataarray));
@@ -498,6 +503,16 @@ const AddArticletoGrid = async (state, dispatch) => {
         )
       );
 
+      dispatch(
+        toggleSnackbar(
+          true,
+          {
+            labelName: "Item Inserted successfully!",
+            labelKey: "EC_ADD_ITEM_SUCCESS_TOASTER"
+          },
+          "success"
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -649,7 +664,7 @@ const articleDetailData = () => {
           labelKey: "EC_SEZIURE_REMARK_PLACEHOLDER"
         },
         jsonPath: "articleSeizedDetails.Remark",
-        required: true,
+        required: false,
         pattern: getPattern("ECItemDescription"),
         errorMessage: "EC_ERR_SEZIURE_REMARK_DEFAULT_INPUT_FIELD_MSG",
         gridDefination: {
