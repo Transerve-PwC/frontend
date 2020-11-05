@@ -78,8 +78,8 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
   const paymentDocuments=[{
     type:"PAYMENT_DOCUMENT",
     description: {
-      labelName: "ONLY_CSV",
-      labelKey: "ONLY_CSV",
+      labelName: "ONLY_XLSX",
+      labelKey: "ONLY_XLSX",
     },
       formatProps :{
         accept : ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
@@ -87,8 +87,8 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
       maxFileSize: 6000,
       moduleName: "Estate",
       statement: {
-       labelName: "UPLOAD_CSV",
-       labelKey: "UPLOAD_CSV"
+       labelName: "UPLOAD_XLSX",
+       labelKey: "UPLOAD_XLSX"
   }
   }]
   const documentsType=[
@@ -96,7 +96,7 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
     name: "PAYMENT_DOCUMENT",
     required: true,
     jsonPath: `paymentDocuments`,
-    statement: "UPLOAD_CSV"
+    statement: "UPLOAD_XLSX"
     }
   ]
   dispatch(

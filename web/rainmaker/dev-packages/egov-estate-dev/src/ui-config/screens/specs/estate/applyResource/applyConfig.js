@@ -95,6 +95,10 @@ export const ownerDocumentDetails_0 = getCommonCard({
 
 export const paymentDocumentsDetails = getCommonCard({
   ...documentCardConfig,
+  header: getCommonTitle({
+    labelName: "Documents",
+    labelKey: "ES_UPLOAD_PAYMENT_DOCS_HEADER"
+  }),
   documentList : {
     ...documentList,
     props: {
@@ -128,23 +132,23 @@ export const paymentDetailsTable =  {
           setCellProps: () => ({ style: { minWidth: "150px", maxWidth: "150px" }})
         }
       },
-      ES_PENALTY_INTEREST,
+      // ES_PENALTY_INTEREST,
       ES_ST_GST_RATE,
       ES_ST_GST_DUE,
-      ES_PAID,
+      // ES_PAID,
       ES_DATE_OF_RECEIPT,
-      {
-        name: ES_NO_OF_DAYS,
-        options: {
-          setCellProps: () => ({ style: { minWidth: "150px", maxWidth: "150px" }}),
-        }
-      },
-      {
-        name: ES_INTEREST_ON_DELAYED_PAYMENT,
-        options: {
-          setCellProps: () => ({ style: { minWidth: "200px", maxWidth: "200px" }}),
-        }
-      },
+      // {
+      //   name: ES_NO_OF_DAYS,
+      //   options: {
+      //     setCellProps: () => ({ style: { minWidth: "150px", maxWidth: "150px" }}),
+      //   }
+      // },
+      // {
+      //   name: ES_INTEREST_ON_DELAYED_PAYMENT,
+      //   options: {
+      //     setCellProps: () => ({ style: { minWidth: "200px", maxWidth: "200px" }}),
+      //   }
+      // },
       
     ],
     options: {
