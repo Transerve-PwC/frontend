@@ -135,6 +135,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     required: true,
     pattern: getPattern("Date"),
     jsonPath: "payment.dateOfPayment",
+    visible: process.env.REACT_APP_NAME !== "Citizen",
     props: {
       inputProps: {
         max: getTodaysDateInYMD()
@@ -297,7 +298,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
               )
             ) : dispatch(
               setRoute(
-              `/esate/acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
+              `acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
               )
             )
           dispatch(prepareFinalObject("Properties", response.Properties))
