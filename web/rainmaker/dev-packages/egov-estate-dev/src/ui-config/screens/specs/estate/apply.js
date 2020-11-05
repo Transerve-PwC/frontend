@@ -13,7 +13,8 @@ import {
   formwizardSixthStep,
   formwizardSeventhStep,
   formwizardEighthStep,
-  formwizardNinthStep
+  formwizardNinthStep,
+  formwizardTenthStep
 } from './applyResource/applyConfig'
 import {
   httpRequest
@@ -102,7 +103,7 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
   dispatch(
     handleField(
         "apply",
-        `components.div.children.formwizardEighthStep.children.paymentDocumentsDetails.children.cardContent.children.documentList`,
+        `components.div.children.formwizardNinthStep.children.paymentDocumentsDetails.children.cardContent.children.documentList`,
         "props.inputProps",
         paymentDocuments
     )
@@ -374,7 +375,7 @@ export const setData = (properties, screenName, dispatch, state) => {
     case "apply":
       stepFirst = "formwizardFirstStep";
       stepSecond = "formwizardSecondStep";
-      stepSummary = "formwizardNinthStep";
+      stepSummary = "formwizardTenthStep";
       reviewContainer = "reviewDetails";
       break;
     case "allotment":
@@ -618,6 +619,23 @@ const getData = async (action, state, dispatch) => {
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
     )
   )
+
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardEighthStep.children.groundRentDetails",
+      "visible",
+      false
+    )
+  )
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardEighthStep.children.licenseFeeDetails",
+      "visible",
+      false
+    )
+  )
 }
 
 const applyEstate = {
@@ -658,6 +676,7 @@ const applyEstate = {
         formwizardSeventhStep,
         formwizardEighthStep,
         formwizardNinthStep,
+        formwizardTenthStep,
         footer
       }
     }

@@ -50,8 +50,9 @@ export const ENTITY_OWNER_DOCUMENT_UPLOAD_STEP = 3;
 export const PURCHASER_DETAILS_STEP = 4;
 export const PURCHASER_DOCUMENTS_STEP = 5;
 export const COURT_CASE_DETAILS_STEP = 6;
-export const PAYMENT_DETAILS_STEP = 7;
-export const SUMMARY_STEP = 8;
+export const RENT_INFO_DETAILS_STEP = 7;
+export const PAYMENT_DETAILS_STEP = 8;
+export const SUMMARY_STEP = 9;
 
 export const moveToSuccess = (data, dispatch, type) => {
   const id = get(data, "id");
@@ -109,7 +110,7 @@ const callBackForNext = async (state, dispatch) => {
     dispatch(
       handleField(
         "apply",
-        "components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.entityType",
+        "components.div.children.formwizardTenththStep.children.reviewDetails.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.entityType",
         "visible",
         propertyRegisteredTo == "ENTITY"
       )
@@ -302,7 +303,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
+          `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
       }
@@ -364,7 +365,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
+          `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewPurchaserDetails_${i}`,
           reviewPurchaserDetails
         )
       }
@@ -437,7 +438,7 @@ const callBackForNext = async (state, dispatch) => {
         )
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewDocumentsPrevOwner_${i}`,
+          `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewDocumentsPrevOwner_${i}`,
           reviewDocuments
         )
       }
@@ -468,7 +469,7 @@ const callBackForNext = async (state, dispatch) => {
         const reviewCourtCaseDetails = getReviewCourtCase(true, i);
         set(
           state.screenConfiguration.screenConfig,
-          `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
+          `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
           reviewCourtCaseDetails
         )
       }
@@ -484,16 +485,20 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
+  if (activeStep === RENT_INFO_DETAILS_STEP) {
+
+  }
+
   if (activeStep === PAYMENT_DETAILS_STEP) {
     var isGroundRentDetailsValid = validateFields(
-      `components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children`,
+      `components.div.children.formwizardNinthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children`,
       state,
       dispatch,
       "apply"
     )
 
     var isServiceTaxDetailsValid = validateFields(
-      `components.div.children.formwizardEighthStep.children.serviceTaxDetails.children.cardContent.children.detailsContainer.children`,
+      `components.div.children.formwizardNinthStep.children.serviceTaxDetails.children.cardContent.children.detailsContainer.children`,
       state,
       dispatch,
       "apply"
@@ -534,6 +539,7 @@ const callBackForNext = async (state, dispatch) => {
         case ENTITY_OWNER_DETAILS_STEP:
         case PURCHASER_DETAILS_STEP:
         case COURT_CASE_DETAILS_STEP:
+        case RENT_INFO_DETAILS_STEP:
         case PAYMENT_DETAILS_STEP:
           errorMessage = {
             labelName: "Please fill all mandatory fields, then do next !",
@@ -610,7 +616,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
       )
       set(
         state.screenConfiguration.screenConfig,
-        `apply.components.div.children.formwizardNinthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
+        `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
         reviewOwnerDetails
       )
     }
@@ -734,7 +740,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    case PAYMENT_DETAILS_STEP:
+    case RENT_INFO_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
@@ -743,11 +749,20 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    default:
+    case PAYMENT_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
           "components.div.children.formwizardNinthStep"
+        ),
+        dispatch
+      );
+      break;
+    default:
+      dispatchMultipleFieldChangeAction(
+        screenName,
+        getActionDefinationForStepper(
+          "components.div.children.formwizardTenthStep"
         ),
         dispatch
       );
@@ -797,6 +812,11 @@ export const getActionDefinationForStepper = path => {
   },
   {
     path: "components.div.children.formwizardNinthStep",
+    property: "visible",
+    value: false
+  },
+  {
+    path: "components.div.children.formwizardTenthStep",
     property: "visible",
     value: false
   }

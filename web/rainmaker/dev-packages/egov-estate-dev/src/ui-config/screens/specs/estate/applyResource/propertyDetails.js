@@ -22,8 +22,10 @@ import {
    
 
 let screenName = "apply";
+let paymentStep = "formwizardEighthStep"
 if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
+    paymentStep = "formwizardSixthStepAllotment";
 }
 
 export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
@@ -401,8 +403,8 @@ const propertyTypeField = {
     beforeFieldChange: (action, state, dispatch) => {
         dispatch(
             handleField(
-                "allotment",
-                "components.div.children.formwizardSixthStepAllotment.children.demandSelect",
+                screenName,
+                `components.div.children.${paymentStep}.children.demandSelect`,
                 "visible",
                 !!(action.value == "PROPERTY_TYPE.LEASEHOLD")
             )

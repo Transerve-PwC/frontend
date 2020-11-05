@@ -37,6 +37,7 @@ import {
   premiumAmountDetails,
   groundRentDetails,
   licenseFeeDetails,
+  interestDetails,
   securityDetails,
   demandSelect
 } from './paymentDetailsAllotment';
@@ -109,7 +110,7 @@ export const paymentDocumentsDetails = getCommonCard({
        removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
        getUrl: "/est-services/estate/_calculation",
        screenKey: "apply",
-       componentJsonPath: "components.div.children.formwizardEighthStep.children.paymentDetailsTable",
+       componentJsonPath: "components.div.children.formwizardNinthStep.children.paymentDetailsTable",
       // removedJsonPath: "PropertiesTemp[0].removedPaymentDocs"
     }
   }
@@ -240,6 +241,10 @@ export const stepsData = [{
   labelKey: "ES_COMMON_COURT_CASE_DETAILS"
 },
 {
+  labelName: "Rent Information",
+  labelKey: "ES_COMMON_RENT_INFORMATION"
+},
+{
   labelName: "Payment Details",
   labelKey: "ES_COMMON_PAYMENT_DETAILS"
 },
@@ -353,6 +358,22 @@ export const formwizardEighthStep = {
     id: "apply_form8"
   },
   children: {
+    demandSelect,
+    groundRentDetails,
+    licenseFeeDetails,
+    interestDetails,
+    securityDetails
+  },
+  visible: false
+}
+
+export const formwizardNinthStep = {
+  uiFramework: "custom-atoms",
+  componentPath: "Form",
+  props: {
+    id: "apply_form9"
+  },
+  children: {
     paymentDocumentsDetails,
     breakAfterSearch: getBreak(),
     paymentDetailsTable
@@ -363,7 +384,7 @@ export const formwizardEighthStep = {
   visible: false
 }
 
-export const formwizardNinthStep = {
+export const formwizardTenthStep = {
   uiFramework: "custom-atoms",
   componentPath: "Form",
   props: {
@@ -489,6 +510,7 @@ export const formwizardSixthStepAllotment = {
     demandSelect,
     groundRentDetails,
     licenseFeeDetails,
+    interestDetails,
     securityDetails
   },
   visible: false
