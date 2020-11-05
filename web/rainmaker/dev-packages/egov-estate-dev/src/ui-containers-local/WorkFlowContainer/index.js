@@ -108,6 +108,8 @@ class WorkFlowContainer extends React.Component {
         return "purpose=apply&status=success";
       case "FORWARD":
       case "RESUBMIT":
+      case "FORWARD_COMMERCIAL":
+      case "FORWARD_RESIDENTIAL":
         return "purpose=forward&status=success";
       case "MARK":
         return "purpose=mark&status=success";

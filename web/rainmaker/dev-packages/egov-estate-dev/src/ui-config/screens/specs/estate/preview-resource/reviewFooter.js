@@ -120,6 +120,36 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                   },
                 },
                 visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
+              },
+              nocVerification: {
+                componentPath: "Button",
+                props: {
+                  variant: "contained",
+                  color: "primary",
+                  style: {
+                    minWidth: "180px",
+                    height: "60px",
+                    marginRight: "45px",
+                    borderRadius: "inherit"
+                  }
+                },
+                children: {
+                  submitButtonLabel: getLabel({
+                    labelName: "NOC Verification",
+                    labelKey: "COMMON_NOC_VERIFICATION"
+                  })
+                },
+                onClickDefination: {
+                  action: "condition",
+                  callBack: () => {
+                    dispatch(
+                      setRoute(
+                       `/estate/noc-verification?applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+                      )
+                    );
+                  },
+                },
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "NOCVERIFICATION") ? true : false
               }
             },
             gridDefination: {
