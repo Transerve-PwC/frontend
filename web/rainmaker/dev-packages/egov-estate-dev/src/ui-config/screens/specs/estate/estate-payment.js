@@ -70,8 +70,8 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
   const offlinePaymentDetailsHeader = getCommonTitle(
     {
-        labelName: "Offline Payment Details",
-        labelKey: "ES_OFFLINE_PAYMENT_DETAILS_HEADER"
+        labelName: "Payment Details",
+        labelKey: "ES_PAYMENT_DETAILS_HEADER"
     },
     {
         style: {

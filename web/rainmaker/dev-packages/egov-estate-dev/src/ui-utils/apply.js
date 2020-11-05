@@ -19,6 +19,7 @@ import {
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 let userInfo = JSON.parse(getUserInfo());
 
@@ -86,7 +87,7 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
 export const applyforApplication = async (state, dispatch, activeIndex) => {
   try {
     let queryObject = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Applications", {})))
-    const tenantId = userInfo.permanentCity;
+    const tenantId = userInfo.permanentCity || getTenantId();
     set(queryObject[0], "tenantId", tenantId);
 
     const id = get(queryObject[0], "id");
