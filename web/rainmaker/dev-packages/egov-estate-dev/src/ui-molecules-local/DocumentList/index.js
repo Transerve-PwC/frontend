@@ -301,7 +301,7 @@ class DocumentList extends Component {
             );
           })}
       </div>
-      {!!showLoader && <LoadingIndicator status={"loading"} />}
+      {/* {!!showLoader && <LoadingIndicator status={"loading"} />} */}
       </div>
     );
   }

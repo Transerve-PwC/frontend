@@ -39,7 +39,8 @@ class MDMSDatasource {
             [],
             payload)
             if(!!response && !!response.MdmsRes) {
-                this.values = response.MdmsRes[moduleName][masterName];
+                const values = response.MdmsRes[moduleName][masterName];
+                this.values = values.map(value => ({code: value.code, label: value.code}))
             }
         } catch (error) {
             console.log(error);

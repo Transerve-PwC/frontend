@@ -26,9 +26,14 @@ const getMdmsData = async (dispatch) => {
       tenantId: commonConfig.tenantId,
       moduleDetails: [{
         moduleName: ESTATE_SERVICES_MDMS_MODULE,
-        masterDetails: [{
-          name: "categories"
-        }]
+        masterDetails: [
+          {
+            name: "categories"
+          },
+          {
+            name: "sector"
+          }
+      ]
       }]
     }
   };

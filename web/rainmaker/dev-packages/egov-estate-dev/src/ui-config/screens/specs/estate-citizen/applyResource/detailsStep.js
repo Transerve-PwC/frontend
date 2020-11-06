@@ -198,7 +198,8 @@ const getField = async (item, fieldData = {}, state) => {
       })
       }
       case "DROP_DOWN": {
-        const values = !!item.dataSource ? await getOptions(item.dataSource) : []
+        let values = !!item.dataSource ? await getOptions(item.dataSource) : []
+        values = values.map(datum => ({...datum, label: getLocaleLabels(datum.label, datum.label)}))
         return getSelectField({
           ...fieldProps,
           ...rest,

@@ -309,7 +309,7 @@ export const estateApplication = getCommonCard({
         // required: true,
         visible: false,
         jsonPath: "searchScreenSiteNo.sectorNumber",
-        sourceJsonPath: "searchScreenMdmsData.EstateServices.SectorNumber",
+        sourceJsonPath: "searchScreenMdmsData.EstateServices.sector",
         gridDefination: {
             xs: 12,
             sm: 6
