@@ -206,7 +206,7 @@ const categoryField = {
     afterFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
         let step = "formwizardFirstStep";
-        let stepSummary = "formwizardNinthStep";
+        let stepSummary = "formwizardTenthStep";
         let reviewContainer = "reviewDetails";
                 
         if ((window.location.href).includes("allotment")) {
@@ -570,7 +570,7 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
     let screenName = "apply";
     let stepNameFirst = "formwizardFirstStep";
     let stepNameThird = "formwizardThirdStep";
-    let stepNameReview = "formwizardNinthStep";
+    let stepNameReview = "formwizardTenthStep";
     let reviewContainer = "reviewDetails";
 
     if ((window.location.href.includes("allotment"))) {
@@ -666,7 +666,7 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
 export const toggleEntityOwnersDivsBasedOnEntityType = (value, dispatch) => {
     let screenName = "apply";
     let stepName = "formwizardThirdStep";
-    let stepNameReview = "formwizardNinthStep";
+    let stepNameReview = "formwizardTenthStep";
     let reviewContainer = "reviewDetails";
 
     if ((window.location.href.includes("allotment"))) {

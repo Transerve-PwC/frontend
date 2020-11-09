@@ -168,7 +168,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     )
     
     if (prevOwners.length) {
-      prevOwners = prevOwners.filter(item => item.ownerDetails.previousOwnerRequired == "true");prevOwners.map((item, index) => {
+      prevOwners = prevOwners.filter(item => item.ownerDetails.isPreviousOwnerRequired == "true");
+      prevOwners.map((item, index) => {
         if (typeof item.isDeleted === "undefined") {
           set(queryObject[0], `propertyDetails.purchaser[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.purchaser[index].ownerDetails.dob))
         }
@@ -249,7 +250,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         /*****************************************************************************************/
       }
     } else {
-      let tabsArr = [0,1,2,3,4,5,6,7];
+      let tabsArr = [0,1,2,3,4,5,6,7,8];
       // let owners = get(
       //   queryObject[0],
       //   "propertyDetails.owners",
@@ -261,10 +262,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       //   []
       // )
       if (screenName == "allotment") {
-        tabsArr.pop();
+        tabsArr.splice(-2, 2);
       }
       else if (screenName == "apply-building-branch") {
-        tabsArr = tabsArr.splice(0, tabsArr.length - 5);
+        tabsArr = tabsArr.splice(0, tabsArr.length - 6);
       }
       if (tabsArr.indexOf(activeIndex) !== -1) {
         set(queryObject[0], "action", "")

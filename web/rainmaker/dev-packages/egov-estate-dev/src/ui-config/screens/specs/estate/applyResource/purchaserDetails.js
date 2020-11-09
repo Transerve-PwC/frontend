@@ -42,7 +42,7 @@ const getPreviousOwnerRequiredRadioButton = {
     xs: 12,
     sm: 12,
   },
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.previousOwnerRequired",
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.isPreviousOwnerRequired",
   props: {
     label: {
       name: "Previous Owner Required ?",
@@ -59,7 +59,7 @@ const getPreviousOwnerRequiredRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.previousOwnerRequired",
+    jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.isPreviousOwnerRequired",
     required: true,
   },
   required: true,
