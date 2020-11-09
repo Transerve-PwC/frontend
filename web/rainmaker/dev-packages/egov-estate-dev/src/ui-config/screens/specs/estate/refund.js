@@ -187,10 +187,13 @@ const saveButton = {
 
 const callBackForSaveOrSubmit = async (state, dispatch) => {
   try {
-    let reqBody = get(
+    let properties = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties"
     )
+
+    let bidders = properties[0].propertyDetails.bidders;
+    bidders = bidders.map(item => item.action = "SUBMIT");
 
     const response = await httpRequest(
       "post",
@@ -198,7 +201,8 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
       "",
       [], 
       {
-        Properties: reqBody
+        Properties: properties
+
       }
     );
     if (!!response) {

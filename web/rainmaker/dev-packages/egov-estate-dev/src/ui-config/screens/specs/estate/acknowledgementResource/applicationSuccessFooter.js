@@ -105,7 +105,7 @@ export const applicationSuccessFooter = (
               const { applicationType} = Applications[0];
               const documents = temp[0].reviewDocData;
               set(Applications[0],"additionalDetails.documents",documents)
-              downloadAcknowledgementForm(Applications,applicationType);
+              downloadAcknowledgementForm(Applications,applicationType,[],"");
             }
           }
         },
@@ -160,7 +160,7 @@ export const applicationSuccessFooter = (
               const { applicationType} = Applications[0];
               const documents = temp[0].reviewDocData;
               set(Applications[0],"additionalDetails.documents",documents)
-              downloadAcknowledgementForm(Applications,applicationType,'print');
+              downloadAcknowledgementForm(Applications,applicationType,[],"",'print');
             }
           }
         },

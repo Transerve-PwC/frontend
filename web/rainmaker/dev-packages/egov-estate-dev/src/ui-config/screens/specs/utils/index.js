@@ -45,7 +45,7 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import axios from 'axios';
 import {
-  getSearchApplicationsResults
+  getSearchApplicationsResults, getSearchResults
 } from "../../../../ui-utils/commons";
 import moment from "moment";
 import { ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE } from "../../../../ui-constants";
@@ -380,108 +380,124 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
 }
 
 
-export const downloadAcknowledgementForm = (Applications, applicationType, mode = "download") => {
+export const downloadAcknowledgementForm = (Applications, applicationType,feeEstimate,state, mode = "download") => {
+  
   let queryStr = []
   switch (applicationType) {
     case 'SaleDeed':
-      queryStr = [{
+        queryStr = [{
           key: "key",
-          value: `est-sale-deed-application-fresh`
+          value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+          state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-sale-deed-application-fresh-paid` : `est-sale-deed-application-fresh`
         }
       ]
       break;
     case 'LeaseDeed':
       queryStr = [{
-          key: "key",
-          value: `est-lease-deed-application`
-        }
-      ]
+        key: "key",
+        value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+        state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-lease-deed-application-paid` : `est-lease-deed-application`
+      }
+    ]
       break;
     case 'ResidentailToCommercial':
     case 'ScfToSco':
-      queryStr = [{
+        queryStr = [{
           key: "key",
-          value: `est-scf-to-sco-application`
+          value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+          state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-scf-to-sco-application-paid` : `est-scf-to-sco-application`
         }
       ]
       break;
     case 'LeaseholdToFreehold':
-      queryStr = [{
+        queryStr = [{
           key: "key",
-          value: `est-leaseholdToFreehold-Application`
+          value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+          state == "ES_PENDING_SO_APPROVAL" || state == "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS" || state == "ES_PENDING_DS_NOTICE_VERIFICATION" || state == "ES_PENDING_NOTICE_CLARIFICATION" ||
+          state == "ES_PENDING_DA_NOTICE_VERIFICATION" || state == "ES_PENDING_SRA_NOTICE_VERIFICATION" || state == "ES_PENDING_SO_NOTICE_VERIFICATION" || state == "ES_APPROVED")  ? `est-leaseholdToFreehold-Application-paid` : `est-leaseholdToFreehold-Application`
         }
       ]
       break;
     case 'ChangeInTrade':
-      queryStr = [{
+        queryStr = [{
           key: "key",
-          value: `est-change-trade-application`
+          value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+          state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-change-trade-application-paid` : `est-change-trade-application`
         }
       ]
       break;
     case 'UnRegisteredWill':
-      queryStr = [{
+        queryStr = [{
           key: "key",
-          value: `est-unregisteredWill-application-fresh`
+          value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+          state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-unregisteredWill-application-fresh-paid` : `est-unregisteredWill-application-fresh`
         }
       ]
       break;
       case 'NOC':
-      queryStr = [{
-          key: "key",
-          value: `est-noc-application-fresh`
-        }
-      ]
+          queryStr = [{
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-noc-application-fresh-paid` : `est-noc-application-fresh`
+          }
+        ]
       break;
       case 'RegisteredWill':
       queryStr = [{
-          key: "key",
-          value: `est-registeredWill-application-fresh`
-        }
-      ]
+        key: "key",
+        value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+        state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-registeredWill-application-fresh-paid` : `est-registeredWill-application-fresh`
+      }
+    ]
       break;
       case 'NDC':
       queryStr = [{
-          key: "key",
-          value: `est-ndc-application-fresh`
-        }
-        
-      ]
+        key: "key",
+        value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+        state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-ndc-application-fresh-paid` : `est-ndc-application-fresh`
+      }
+    ]
       break;
       case 'PatnershipDeed':
       queryStr = [{
-          key: "key",
-          value: `est-partnership-deed-application-fresh`
-        }
-      ]
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-partnership-deed-application-fresh-paid` : `est-partnership-deed-application-fresh`
+          }
+        ]
       break;
       case 'DuplicateCopy':
-      queryStr = [{
-          key: "key",
-          value: `est-duplicate-copy-application-fresh`
-        }
-      ]
+          queryStr = [{
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-duplicate-copy-application-fresh-paid` : `est-duplicate-copy-application-fresh`
+          }
+        ]
       break;
       case 'Mortgage':
-      queryStr = [{
-          key: "key",
-          value: `est-mortgage-application-fresh`
-        }
-      ]
+          queryStr = [{
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-mortgage-application-fresh-paid` : `est-mortgage-application-fresh`
+          }
+        ]
       break;
       case 'FamilySettlement':
-      queryStr = [{
-          key: "key",
-          value: `est-court-decree-family-settlement-application`
-        }
-      ]
+          queryStr = [{
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-court-decree-family-settlement-application-paid` : `est-court-decree-family-settlement-application`
+          }
+        ]  
+
       break;
       case 'IntestateDeath':
       queryStr = [{
-          key: "key",
-          value: `est-inestate-death-application-fresh`
-        }
-      ]
+        key: "key",
+        value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+        state == "ES_PENDING_SO_APPROVAL" || state == "ES_APPROVED")  ? `est-inestate-death-application-fresh-paid` : `est-inestate-death-application-fresh`
+      }
+    ]
       break;
   }
   queryStr[1] = {
@@ -520,7 +536,7 @@ export const downloadAcknowledgementForm = (Applications, applicationType, mode 
   };
   try {
     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
-        Applications: [Application]
+        Applications: [Application] ,feeEstimate
       }, {
         'Accept': 'application/json'
       }, {
@@ -1397,11 +1413,20 @@ export const fetchBill = async (action, state, dispatch) => {
   ];
   let payload;
   if(businessService === ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE) {
-    const propertyPayload = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
+    const applicationNumber = getQueryArg(window.location.href, "consumerCode")
+    let propertyPayload = get(state.screenConfiguration.preparedFinalObject, "Properties")
+    if(applicationNumber.startsWith("SITE")) {
+      const array = applicationNumber.split("-");
+      array.splice(array.length-6)
+      array.splice(0,1)
+      const fileNumber = array.join("-");
+      propertyPayload = await getSearchResults([{key: "fileNumber", value: fileNumber}])
+    }
     payload =
       propertyPayload &&
+      propertyPayload.Properties &&
       (await createEstimateData(
-        propertyPayload,
+        propertyPayload.Properties[0],
         dispatch,
         window.location.href
       ));
@@ -1746,7 +1771,7 @@ export const _getPattern = (type) => {
     case "alphaNumeric":
       return /^[a-zA-Z0-9]{1,100}$/i;
     case "fileNumber":
-      return /^[a-zA-Z0-9]{1,50}$/i;
+      return /^[A-Za-z0-9_@./#&+-]{1,50}$/i;
     case "alphabet":
       return /^[a-zA-Z ]{1,150}$/i;
     case "address":

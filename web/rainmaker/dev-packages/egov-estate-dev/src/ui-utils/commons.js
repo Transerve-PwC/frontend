@@ -271,6 +271,12 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 
       let { Bidders } = response;
 
+      Bidders = Bidders.map(item => {
+        item.state = "";
+        item.action = "";
+        return item;
+      })
+
       store.dispatch(
         prepareFinalObject(
           "Properties[0].propertyDetails.bidders",
@@ -318,20 +324,15 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                 let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
                 let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
 
-                biddersList.map((item, index) => {
+                biddersList = biddersList.map((item, index) => {
                   if (bidderData[1] == item.bidderName) {
-                    item.refundStatus = isMarked ? "Initiated" : "";
-                    store.dispatch(
-                      handleField(
-                        `refund`,
-                        `components.div.children.auctionTableContainer.props.data[${index}]`,
-                        `ES_REFUND_STATUS`,
-                        item.refundStatus
-                      )
-                    )
+                    item.refundStatus = isMarked ? "Initiated" : "-";
                   }
                   return item;
-                })
+                });
+
+                populateBiddersTable(biddersList, screenKey, componentJsonPath)
+
                 let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
                 store.dispatch(
                   handleField(
@@ -349,10 +350,8 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                     (biddersList.length !== refundedBidders.length)
                   )
                 )
-                let action = (biddersList.length == refundedBidders.length) ? "SUBMIT" : "";
-                let state = (biddersList.length == refundedBidders.length) ? "" : Properties[0].state;
 
-                let properties = [{...Properties[0], action: action, state: state, propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
+                let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
                 store.dispatch(
                   prepareFinalObject(
                     "Properties",

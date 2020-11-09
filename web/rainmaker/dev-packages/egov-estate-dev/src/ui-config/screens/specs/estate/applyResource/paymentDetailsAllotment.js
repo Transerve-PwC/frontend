@@ -6,7 +6,8 @@ import {
   getCommonTitle,
   getPattern,
   getCommonContainer,
-  getCommonGrayCard
+  getCommonGrayCard,
+  getLabelWithValue as _getLabelWithValue
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
@@ -18,6 +19,12 @@ import {
 } from "../../utils";
 import get from "lodash/get";
 import { set } from "lodash";
+
+function getLabelWithValue(labelName, path) {
+  const label = _getLabelWithValue(labelName, path);
+  label.gridDefination.sm = 3;
+  return label;
+}
 
 let screenName = "apply";
 let paymentStep = "formwizardEighthStep"
@@ -354,16 +361,16 @@ const dateToGenerateDemandRentField = {
 
 const rentAmountField = {
   label: {
-      labelName: "Rent Amount",
-      labelKey: "ES_RENT_AMOUNT_LABEL"
+      labelName: "Monthly Rent",
+      labelKey: "ES_MONTHLY_RENT_LABEL"
   },
   placeholder: {
-      labelName: "Enter Rent Amount",
-      labelKey: "ES_RENT_AMOUNT_PLACEHOLDER"
+      labelName: "Enter Monthly Rent",
+      labelKey: "ES_MONTHLY_RENT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].rentAmount"
@@ -371,57 +378,65 @@ const rentAmountField = {
 
 const startYearField = {
   label: {
-      labelName: "Start Year",
-      labelKey: "ES_START_YEAR_LABEL"
+      labelName: "Start Month",
+      labelKey: "ES_START_MONTH_LABEL"
   },
   placeholder: {
-      labelName: "Enter Start Year",
-      labelKey: "ES_START_YEAR_PLACEHOLDER"
+      labelName: "Enter Start Month",
+      labelKey: "ES_START_MONTH_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
   },
   maxLength: 100,
+  props: {
+    disabled: true,
+    value: 0
+  },
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].startYear"
 }
 
 const endYearField = {
   label: {
-      labelName: "End Year",
-      labelKey: "ES_END_YEAR_LABEL"
+      labelName: "End Month",
+      labelKey: "ES_END_MONTH_LABEL"
   },
   placeholder: {
-      labelName: "Enter End Year",
-      labelKey: "ES_END_YEAR_PLACEHOLDER"
+      labelName: "Enter End Month",
+      labelKey: "ES_END_MONTH_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
   },
   maxLength: 100,
+  props: {
+    type: "number",
+    helperText: "HIII"
+  },
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear"
 }
 
 const commonRentInformation = () => {
   return getCommonGrayCard({
-    header: getCommonTitle({
-      labelName: "Rent",
-      labelKey: "ES_RENT"
-    }, {
-      style: {
-        marginBottom: 18
-      }
-    }),
     rentCard: getCommonContainer({
       rentAmount: getTextField(rentAmountField),
       startYear: getTextField(startYearField),
-      endYear: getTextField(endYearField)
+      endYear: getTextField(endYearField),
+      totalMonths: getLabelWithValue({
+        labelName: "Till Date",
+        labelKey: "ES_TILL_DATE_LABEL"
+      },
+      {
+        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear"
+      }
+      )
     })
   });
 };
 
-export const rentDetails = getCommonCard({
+export const rentDetails = getCommonGrayCard({
   detailsContainer: getCommonContainer({
     multipleRentContainer: {
       uiFramework: "custom-atoms",
@@ -432,8 +447,17 @@ export const rentDetails = getCommonCard({
         }
       },
       children: {
+        header: getCommonTitle({
+          labelName: "Rent",
+          labelKey: "ES_RENT"
+        }, {
+          style: {
+            marginBottom: 18
+          }
+        }),
         multipleRentInfo: {
-          uiFramework: "custom-containers",
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
           componentPath: "MultiItem",
           props: {
             scheama: commonRentInformation(),
@@ -443,22 +467,41 @@ export const rentDetails = getCommonCard({
               labelKey: "ES_COMMON_ADD_RENT_LABEL"
             },
             headerName: "Rent",
-            // headerJsonPath: "children.cardContent.children.header.children.key.props.labelKey",
             headerJsonPath: "children.cardContent.children.header.children.Rent.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent",
             prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
+            afterPrefixJsonPath: "children.value.children.key",
             onMultiItemAdd: (state, multiItemContent) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
                 "Properties[0].propertyDetails.paymentDetails[0].rent",
                 []
               );
-              if (rent.length) {
+              if (rent.length && rent[rent.length - 1].endYear) {
                 let lastAddedEndYear = rent[rent.length - 1].endYear;
-                multiItemContent.startYear.props.value = lastAddedEndYear;
-              }
-                
+                multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
+              } 
+              // else {
+              //   multiItemContent.startYear.props.disabled = false
+              // }
               return multiItemContent;
+            },
+            onMultiItemDelete: (state, deletedIndex, changeField) => {
+              let rent = get(
+                state.screenConfiguration.preparedFinalObject,
+                "Properties[0].propertyDetails.paymentDetails[0].rent",
+                []
+              );
+              if(deletedIndex !== rent.length - 1) {
+                const previewYearObj = rent.filter((item, index) => index < deletedIndex && item.isDeleted !== false).pop()
+                const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && item.isDeleted !== false)
+                nextYearObj !== -1 && changeField(
+                  "allotment",
+                  `components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`,
+                  "props.value",
+                  !!previewYearObj && !!previewYearObj.endYear ? Number(previewYearObj.endYear)+1 : 0
+                )
+              }
             }
           },
           type: "array"

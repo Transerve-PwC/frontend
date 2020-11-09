@@ -87,6 +87,11 @@ const RentSummaryCardContainer = Loadable({
   loading: () => <Loading/>
 })
 
+const MultiItem = Loadable({
+  loader: () => import("./MultiItem"),
+  loading: () => <Loading />
+});
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -105,5 +110,6 @@ export {
   NestedListContainer,
   MultipleCardContainer,
   MultiSelectContainer,
-  RentSummaryCardContainer
+  RentSummaryCardContainer,
+  MultiItem
 };

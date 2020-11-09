@@ -24,6 +24,7 @@ import {
   downloadReceiptFromFilestoreID
 } from "egov-common/ui-utils/commons"
 export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(label));
+import {downloadCSVFromFilestoreID} from '../searchResource/functions'
 
 export const searchApiCallAccountStatement = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
   dispatch(toggleSpinner());
@@ -215,6 +216,50 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
    
   } catch (exception) {
     alert('Some Error Occured while downloading Account Statement Pdf!');
+  }
+}
+
+export const downloadAccountStatementXLS = async (state, dispatch) => {
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  const isSearchBoxFirstRowValid = validateFields(
+    "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumberContainer", 
+    state,
+    dispatch,
+    "estate-search-account-statement"
+  );
+
+  if(!!isSearchBoxFirstRowValid) {
+    let Criteria = {
+      fromDate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+      toDate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+    }
+    const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
+      if(!!propertyId) {
+        Criteria = {...Criteria, propertyid: propertyId}
+        const res = await httpRequest(
+          "post",
+          '/est-services/property-master/_accountstatementxlsx',
+          "",
+          [],
+          {Criteria}
+        )
+
+        try {
+          if (res && res[0].fileStoreId) {
+            console.log(res[0].fileStoreId)
+            console.log(res[0].tenantId)
+
+            downloadCSVFromFilestoreID(res[0].fileStoreId, 'download' ,res[0].tenantId)
+          }
+        } catch (error) {
+          dispatch(toggleSnackbar(true, error.message, "error"));
+        }
+    }
   }
 }
 

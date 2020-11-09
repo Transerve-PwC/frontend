@@ -13,7 +13,6 @@ import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-f
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
 import { APPLICATION_TYPE, LAST_MODIFIED_ON } from "./searchResults";
-
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
@@ -224,6 +223,58 @@ const showHideTable = (booleanHideOrShow, dispatch, screenKey) => {
     )
   );
 };
+
+export const getFileUrlAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	//{ key: "tenantId", value: tenantId||commonConfig.tenantId },
+    { key: "tenantId", value: tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const downloadCSVFromFilestoreID=(fileStoreId,mode,tenantId)=>{
+  getFileUrlAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    if (mode === 'download') {
+      var win = window.open(fileRes[fileStoreId], '_blank');
+      if(win){
+        win.focus();
+      }
+    }
+    else {
+     // printJS(fileRes[fileStoreId])
+      var response =await axios.get(fileRes[fileStoreId], {
+        //responseType: "blob",
+        responseType: "arraybuffer",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf"
+        }
+      });
+      console.log("responseData---",response);
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      var myWindow = window.open(fileURL);
+      if (myWindow != undefined) {
+        myWindow.addEventListener("load", event => {
+          myWindow.focus();
+          myWindow.print();
+        });
+      }
+
+    }
+  });
+}
 
 const getMdmsData = async (dispatch, body) => {
   let mdmsBody = {

@@ -140,7 +140,7 @@ const getData = async(action, state, dispatch) => {
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
   if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber)
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply-building-branch")
   }
 
   setDocumentData(action, state, dispatch);

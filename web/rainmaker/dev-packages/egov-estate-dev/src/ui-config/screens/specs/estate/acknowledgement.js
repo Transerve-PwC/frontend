@@ -83,19 +83,31 @@ const getAcknowledgementCard = (
           labelKey: `${label}`
         }
       }
+    }else if(purpose === "penalty"){
+      header = {
+        labelName: "Penalty is Added successfully",
+        labelKey: "ES_ADD_PENALTY_SUCCESS_MESSAGE_HEAD"
+      }
     } else {
-      header = {}
+      if(!type && purpose === "pay") {
+        header = {
+          labelName: "Payment is collected successfully",
+          labelKey: "ES_PAYMENT_SUCCESS_MESSAGE_HEAD"
+        }
+      } else {
+        header = {}
+      }
     }
   }
 
-    const tailText = !!applicationNumber ? 
+    const tailText = !!fileNumber ?
+    {
+      labelName: "File Number",
+      labelKey: "ES_FILE_NUMBER_LABEL"
+    } : 
     {
       labelName: "Application Number",
       labelKey: "ES_APPLICATION_NUMBER_LABEL"
-    }
-    : {
-      labelName: "File Number",
-      labelKey: "ES_FILE_NUMBER_LABEL"
     }
 
     const commonHeader = type === WF_ALLOTMENT_OF_SITE ? {
@@ -103,7 +115,7 @@ const getAcknowledgementCard = (
       labelKey: "ES_PROPERTY_MASTER_ENTRY",
     } : !!type ? 
     {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
-    {}
+    {labelName: "ES_ESTATE_SERVICES", lableKey: "ES_ESTATE_SERVICES"}
 
     return {
       header: getCommonHeader(commonHeader),
@@ -116,7 +128,7 @@ const getAcknowledgementCard = (
             backgroundColor: purpose === "reject" ? "#E54D42" : "#39CB74",
             header,
             tailText: tailText,
-            number: applicationNumber || fileNumber
+            number: fileNumber || applicationNumber
           })
         }
       },
@@ -191,11 +203,17 @@ const screenConfig = {
   beforeInitScreen: (action, state, dispatch) => {
     const purpose = getQueryArg(window.location.href, "purpose");
     const status = getQueryArg(window.location.href, "status");
-    const fileNumber = getQueryArg(
+    let fileNumber = getQueryArg(
       window.location.href,
       "fileNumber"
     );
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
+    if(applicationNumber.startsWith("SITE")) {
+      const array = applicationNumber.split("-");
+      array.splice(array.length-6)
+      array.splice(0,1)
+      fileNumber = array.join("-");
+    }
     const tenant = getQueryArg(window.location.href, "tenantId");
     const type = getQueryArg(window.location.href, "type")
     const businessService = getQueryArg(window.location.href, "businessService")

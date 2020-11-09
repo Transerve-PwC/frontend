@@ -8,7 +8,7 @@ class PaymentRedirect extends Component {
   componentDidMount = async () => {
     let { search } = this.props.location;
     const txnQuery=search.split('&')[0].replace('eg_pg_txnid','transactionId');
-    const businessService = (search.split("=")[13]).split("&")[0]
+    // const businessService = (search.split("=")[13]).split("&")[0]
     try {
       let pgUpdateResponse = await httpRequest(
         "post",
@@ -47,7 +47,7 @@ class PaymentRedirect extends Component {
          const type = `${branchType}_${moduleType}_${applicationType}`;
          path = `${path}&type=${type}`
       } else {
-        path = `${path}&type=${businessService}`
+        path = `${path}`
       }
       window.location.href = path
     } catch (e) {

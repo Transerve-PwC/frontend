@@ -541,7 +541,13 @@ export const getPMDetailsByFileNumber = async (
   if (payload) {
     let properties = payload.Properties;
     let owners = properties[0].propertyDetails.owners;
-    owners = owners.map(item => ({...item, share: (item.share).toString()}))
+
+    if (screenName == "apply") {
+      owners = owners.map(item => ({...item, share: (item.share).toString(), ownerDetails: {...item.ownerDetails, isPreviousOwnerRequired: (item.ownerDetails.isPreviousOwnerRequired).toString()}}));
+    }
+    else {
+      owners = owners.map(item => ({...item, share: (item.share).toString()}));
+    }
 
     let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
     let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);

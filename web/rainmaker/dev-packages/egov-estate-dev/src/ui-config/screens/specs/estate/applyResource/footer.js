@@ -994,7 +994,8 @@ export const downloadPrintContainer = (
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadAcknowledgementForm(Applications,applicationType);
+      const feeEstimate = temp[0].estimateCardData;
+      downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState);
     },
     leftIcon: "assignment"
   };
@@ -1049,8 +1050,8 @@ export const downloadPrintContainer = (
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadAcknowledgementForm(Applications,applicationType,'print');
-    },
+      const feeEstimate = temp[0].estimateCardData;
+      downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState);    },
     leftIcon: "assignment"
   };
 
