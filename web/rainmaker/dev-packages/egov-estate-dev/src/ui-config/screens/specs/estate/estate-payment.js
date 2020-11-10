@@ -369,7 +369,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
       tabButton: { labelName: "Rent Payment", labelKey: "ES_RENT_PAYMENT" }
     },
     {
-      tabButton: { labelName: "Penalty ", labelKey: "ES_PENALTY" }
+      tabButton: { labelName: "Penalty Statement", labelKey: "ES_PENALTY_STATEMENT" }
     },
   ]
 

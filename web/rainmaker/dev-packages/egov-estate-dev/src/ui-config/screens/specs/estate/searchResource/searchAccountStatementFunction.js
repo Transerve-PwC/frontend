@@ -27,6 +27,8 @@ export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(l
 import {downloadCSVFromFilestoreID} from '../searchResource/functions'
 
 export const searchApiCallAccountStatement = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+  var isDateValid = true;
+
   dispatch(toggleSpinner());
   !!hideTable && showHideTable(false, dispatch);
   // showHideTable(false, dispatch);
@@ -62,8 +64,11 @@ var isfileNumberValid = validateFields(
   //   dispatch,
   //   "estate-search-account-statement"
   //   );
+  if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
+    isDateValid=false;
+  }
 
-    if(!!isfileNumberValid) {
+    if(!!isfileNumberValid && !!isDateValid) {
       let Criteria = {
         fromdate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
         todate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
@@ -78,7 +83,31 @@ var isfileNumberValid = validateFields(
             [],
             {Criteria}
           )
-  
+          if(response.EstateAccountStatement.length===1){
+            let errorMessage = {
+              labelName:
+                  "No records found",
+              labelKey: "EST_ERR_NO_RECORDS_FOUND"
+          };
+          
+          dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          dispatch(
+            handleField(
+              "estate-search-account-statement",
+              "components.div.children.searchResultsAccountStatement",
+              "visible",
+              false
+            )
+          );
+          dispatch(
+            handleField(
+              "estate-search-account-statement",
+              "components.div.children.downloadButton",
+              "visible",
+              false
+            )
+          );
+            }
           try {
             dispatch(
               prepareFinalObject(
@@ -129,25 +158,25 @@ var isfileNumberValid = validateFields(
                 data
               )
             );
-      //     dispatch(
-      //     handleField(
-      //       "estate-search-account-statement",
-      //       "components.div.children.downloadButton",
-      //       "visible",
-      //       true
-      //   ),
-      // );
           } catch (error) {
             console.log(error)
             dispatch(toggleSnackbar(true, error.message, "error"));
           }
       }
     }
-
-  
+    if(!isDateValid){
+      let errorMessage = {
+        labelName:
+            "From date cannot be greater than To date!",
+        labelKey: "EST_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+    };
+    
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
       !!hideTable && showHideTable(true, dispatch);
-  //     // showHideTable(true, dispatch);
-      dispatch(toggleSpinner());
+      
+  }
+  dispatch(toggleSpinner());
+  
 };
 
 export const downloadAccountStatementPdf = async(state, dispatch) => {

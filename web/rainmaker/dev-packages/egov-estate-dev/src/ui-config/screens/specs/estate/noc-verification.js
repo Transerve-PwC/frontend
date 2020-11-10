@@ -33,7 +33,8 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import {
-  _getPattern
+  _getPattern,
+  validateFields
 } from "../utils"
 import {
  getStatusList
@@ -41,6 +42,7 @@ import {
 import {
   getTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
+import store from "../../../../ui-redux/store";
 
 const beforeInitFn = async (action, state, dispatch) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
@@ -109,7 +111,7 @@ const hardCopyDocumentsReceivedDateField = {
     labelKey: "ES_HARD_COPY_DOCUMENTS_RECEIVED_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Applications[0].applicationDetails.hardCopyDocumentsReceivedDate",
+  jsonPath: "Applications[0].hardCopyDocumentsReceivedDate",
   props: {
     inputProps: {
       max: getTodaysDateInYMD()
@@ -128,6 +130,14 @@ const mohallaLabel = {
 const villageLabel = {
   labelName: "Village",
   labelKey: "ES_VILLAGE_LABEL"
+}
+const ownedByLabel = {
+  labelName: "Owned By",
+  labelKey: "ES_OWNED_BY_LABEL"
+}
+const soLabel = {
+  labelName: "S/O",
+  labelKey: "ES_SO_LABEL"
 }
 
 const propertyInfo = () => ({
@@ -161,6 +171,16 @@ const propertyInfo = () => ({
       villageLabel, {
         jsonPath: "Applications[0].property.propertyDetails.village"
       }
+    ),
+    ownedBy: getLabelWithValue(
+      ownedByLabel, {
+        jsonPath: "Applications[0].applicationDetails.owner.transferorDetails.ownerName"
+      }
+    ),
+    so: getLabelWithValue(
+      soLabel, {
+        jsonPath: "Applications[0].applicationDetails.owner.transferorDetails.guardianName"
+      }
     )
   })
 })
@@ -172,40 +192,6 @@ const header = getCommonHeader({
   labelKey: "ES_NOC_VERIFICATION_HEADER"
 });
 
-const ownedByField = {
-  label: {
-    labelName: "Owned By",
-    labelKey: "ES_OWNED_BY_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Owned By",
-    labelKey: "ES_OWNED_BY_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.ownedBy"
-}
-
-const soField = {
-  label: {
-    labelName: "S/O",
-    labelKey: "ES_SO_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter S/O",
-    labelKey: "ES_SO_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.so"
-}
-
 const getWhetherWholeHouseHasBeenPurchasedRadioButton = {
   uiFramework: "custom-containers",
   componentPath: "RadioGroupContainer",
@@ -213,11 +199,11 @@ const getWhetherWholeHouseHasBeenPurchasedRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.whetherWholeHouseHasBeenPurchased",
+  jsonPath: "Applications[0].applicationDetails.wholeHousePurchased",
   props: {
     label: {
-      name: "Whether whole house has been purchased",
-      key: "ES_WHETHER_WHOLE_HOUSE_HAS_BEEN_PURCHASED_LABEL"
+      name: "Whether whole house has been purchased?",
+      key: "ES_WHOLE_HOUSE_PURCHASED_LABEL"
     },
     buttons: [{
         labelName: "Yes",
@@ -230,29 +216,43 @@ const getWhetherWholeHouseHasBeenPurchasedRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.whetherWholeHouseHasBeenPurchased",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.wholeHousePurchased",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
+  afterFieldChange: (action, state, dispatch) => {
+    dispatch(
+      handleField(
+        "noc-verification",
+        "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children.sizeOfAreaPurchased",
+        "props.disabled",
+        (action.value != "false")
+      )
+    )
+  }
 };
 
 const sizeOfAreaPurchasedField = {
   label: {
     labelName: "The size of area purchased",
-    labelKey: "ES_SIZE_OF_AREA_PURCHASED_LABEL"
+    labelKey: "ES_AREA_PURCHASED_LABEL"
   },
   placeholder: {
     labelName: "Enter the size of area purchased",
-    labelKey: "ES_SIZE_OF_AREA_PURCHASED_PLACEHOLDER"
+    labelKey: "ES_AREA_PURCHASED_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,
     sm: 6
   },
   pattern: _getPattern("areaOfProperty"),
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.areaSqft"
+  minLength: 2,
+  maxLength: 150,
+  props: {
+    disabled: true
+  },
+  jsonPath: "Applications[0].applicationDetails.areaPurchased"
 }
 
 const khasraNoField = {
@@ -268,8 +268,10 @@ const khasraNoField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.khasraNumber"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.khasraNo"
 }
 
 const hadbastNoField = {
@@ -285,8 +287,10 @@ const hadbastNoField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.hadbastNumber"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.hadbastNo"
 }
 
 const mutationNoField = {
@@ -302,8 +306,10 @@ const mutationNoField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.mutationNumber"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.mutationNo"
 }
 
 const khewatNoField = {
@@ -319,8 +325,10 @@ const khewatNoField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.khewatNumber"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.khewatNo"
 }
 
 const housesOfEastField = {
@@ -336,8 +344,10 @@ const housesOfEastField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.housesOfEast"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.boundedOnEast"
 }
 
 const housesOfWestField = {
@@ -353,8 +363,10 @@ const housesOfWestField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.housesOfWest"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.boundedOnWest"
 }
 
 const housesOfNorthField = {
@@ -370,8 +382,10 @@ const housesOfNorthField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.housesOfNorth"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.boundedOnNorth"
 }
 
 const housesOfSouthField = {
@@ -387,8 +401,10 @@ const housesOfSouthField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.housesOfSouth"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.boundedOnSouth"
 }
 
 const widthOfFrontElevationOfHouseField = {
@@ -404,8 +420,10 @@ const widthOfFrontElevationOfHouseField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.widthOfFrontElevationOfHouse"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.frontElevationWidth"
 }
 
 const totalWidthOfPublicStreetField = {
@@ -421,8 +439,10 @@ const totalWidthOfPublicStreetField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.totalWidthOfPublicStreet"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.streetWidth"
 }
 
 const getWhetherThereIsStreetOnOtherSideOfHouseRadioButton = {
@@ -432,7 +452,7 @@ const getWhetherThereIsStreetOnOtherSideOfHouseRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.whetherThereIsStreetOnOtherSideOfHouse",
+  jsonPath: "Applications[0].applicationDetails.otherSideStreet",
   props: {
     label: {
       name: "Whether there is street on the other side of house?",
@@ -449,10 +469,10 @@ const getWhetherThereIsStreetOnOtherSideOfHouseRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.whetherThereIsStreetOnOtherSideOfHouse",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.otherSideStreet",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
   afterFieldChange: (action, state, dispatch) => {
     dispatch(
@@ -481,7 +501,7 @@ const widthOfStreetWithLengthOfHouseField = {
   },
   // required: true,
   visible: false,
-  jsonPath: "Applications[0].applicationDetails.widthOfStreetWithLengthOfHouse"
+  jsonPath: "Applications[0].applicationDetails.sameWidthOfSideStreet"
 }
 
 const getWhetherAreaOfHouseAtSiteIsSameRadioButton = {
@@ -491,7 +511,7 @@ const getWhetherAreaOfHouseAtSiteIsSameRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.whetherThereIsStreetOnOtherSideOfHouse",
+  jsonPath: "Applications[0].applicationDetails.areaIsSame",
   props: {
     label: {
       name: "Whether the area of the house at site is the same",
@@ -508,10 +528,10 @@ const getWhetherAreaOfHouseAtSiteIsSameRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.whetherAreaOfHouseAtSiteIsSame",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.areaIsSame",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -528,8 +548,10 @@ const variationDetailField = {
     xs: 12,
     sm: 6
   },
+  minLength: 2,
+  maxLength: 150,
   // required: true,
-  jsonPath: "Applications[0].applicationDetails.variationDetail"
+  jsonPath: "Applications[0].applicationDetails.varations"
 }
 
 const getWhetherHouseWithinLalLakirRadioButton = {
@@ -539,7 +561,7 @@ const getWhetherHouseWithinLalLakirRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.houseWithinLalLakir",
+  jsonPath: "Applications[0].applicationDetails.lalLakirOrUnacquiredAbadi",
   props: {
     label: {
       name: "Whether the house/ plot is within the Lal Lakir or within the unacquired abadi area?",
@@ -556,10 +578,10 @@ const getWhetherHouseWithinLalLakirRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.houseWithinLalLakir",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.lalLakirOrUnacquiredAbadi",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -570,7 +592,7 @@ const getElectricityMeterExistRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.electricityMeterExist",
+  jsonPath: "Applications[0].applicationDetails.electricityMeterExists",
   props: {
     label: {
       name: "Whether electricity meter exists?",
@@ -587,10 +609,10 @@ const getElectricityMeterExistRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.electricityMeterExist",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.electricityMeterExists",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -601,7 +623,7 @@ const getWaterMeterExistRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.waterMeterExist",
+  jsonPath: "Applications[0].applicationDetails.waterMeterExists",
   props: {
     label: {
       name: "Whether water meter exists?",
@@ -618,10 +640,10 @@ const getWaterMeterExistRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.waterMeterExist",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.waterMeterExists",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -638,8 +660,10 @@ const heightOfBuildingField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.heightOfBuilding"
+  required: true,
+  minLength: 2,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.heightExcludingMumty"
 }
 
 const heightOfMumtyField = {
@@ -655,8 +679,10 @@ const heightOfMumtyField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.heightOfMumty"
+  required: true,
+  minLength: 1,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.heightofMumty"
 }
 
 const getCattleKeptInPremisesRadioButton = {
@@ -666,7 +692,7 @@ const getCattleKeptInPremisesRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.cattleKeptInPremises",
+  jsonPath: "Applications[0].applicationDetails.milkCattleInPremises",
   props: {
     label: {
       name: "Are any milk cattle kept in the premises?",
@@ -683,10 +709,10 @@ const getCattleKeptInPremisesRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.cattleKeptInPremises",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.milkCattleInPremises",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -697,7 +723,7 @@ const getAnyCantileverRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.anyCantilever",
+  jsonPath: "Applications[0].applicationDetails.cantileverOrprojection",
   props: {
     label: {
       name: "Is there any cantilever/ projection more than 3 feet over hanging structure existing at site falling over the Govt. land public street?",
@@ -714,10 +740,10 @@ const getAnyCantileverRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.anyCantilever",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.cantileverOrprojection",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
   afterFieldChange: (action, state, dispatch) => {
     dispatch(
@@ -746,7 +772,9 @@ const cantileverDetailsField = {
   },
   // required: true,
   visible: false,
-  jsonPath: "Applications[0].applicationDetails.cantileverDetails"
+  minLength: 5,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.cantileverOrprojectionDetails"
 }
 
 const getAnyCommercialActivityGoingOnRadioButton = {
@@ -756,7 +784,7 @@ const getAnyCommercialActivityGoingOnRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.anyCommercialActivityGoingOn",
+  jsonPath: "Applications[0].applicationDetails.commercialActivity",
   props: {
     label: {
       name: "Whether any commercial activity is going on Ground/ 1st floor/ 2nd floor of the house?",
@@ -773,10 +801,10 @@ const getAnyCommercialActivityGoingOnRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.anyCommercialActivityGoingOn",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.commercialActivity",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -787,7 +815,7 @@ const getAnyBasementsOnRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.anyBasements",
+  jsonPath: "Applications[0].applicationDetails.basement",
   props: {
     label: {
       name: "Whether there exist any basements to the house?",
@@ -804,10 +832,10 @@ const getAnyBasementsOnRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.anyBasements",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.basement",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -824,8 +852,10 @@ const otherViolationDetailsField = {
     xs: 12,
     sm: 6
   },
-  // required: true,
-  jsonPath: "Applications[0].applicationDetails.otherViolation"
+  required: true,
+  minLength: 5,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.otherViolations"
 }
 
 const getRecommendedForIssueOfNocOnRadioButton = {
@@ -835,7 +865,7 @@ const getRecommendedForIssueOfNocOnRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.recommendedForIssueOfNoc",
+  jsonPath: "Applications[0].applicationDetails.issueOfNoc",
   props: {
     label: {
       name: "Whether recommended for issue of NOC or not?",
@@ -852,10 +882,10 @@ const getRecommendedForIssueOfNocOnRadioButton = {
         value: "false",
       }
     ],
-    jsonPath: "Applications[0].applicationDetails.recommendedForIssueOfNoc",
-    // required: true,
+    jsonPath: "Applications[0].applicationDetails.issueOfNoc",
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
   afterFieldChange: (action, state, dispatch) => {
     dispatch(
@@ -883,7 +913,9 @@ const reasonForNotIssuingNocField = {
     sm: 6
   },
   // required: true,
-  jsonPath: "Applications[0].applicationDetails.reasonForNotIssuingNoc"
+  minLength: 5,
+  maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.issueOfNocDetails"
 }
 
 const getArchitectsReportRadioButton = {
@@ -893,7 +925,7 @@ const getArchitectsReportRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Applications[0].applicationDetails.architectsReport",
+  jsonPath: "Applications[0].applicationDetails.ArchitectsReport",
   props: {
     label: {
       name: "Architect’s report, whether recommended for NOC or not?",
@@ -911,9 +943,9 @@ const getArchitectsReportRadioButton = {
       }
     ],
     jsonPath: "Applications[0].applicationDetails.architectsReport",
-    // required: true,
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -942,9 +974,9 @@ const getFireNocRadioButton = {
       }
     ],
     jsonPath: "Applications[0].applicationDetails.fireNoc",
-    // required: true,
+    required: true,
   },
-  // required: true,
+  required: true,
   type: "array",
 };
 
@@ -957,6 +989,7 @@ const dateOfVisitField = {
     labelName: "Enter Date of Visit",
     labelKey: "ES_DATE_OF_VISIT_PLACEHOLDER"
   },
+  required: true,
   pattern: getPattern("Date"),
   jsonPath: "Applications[0].applicationDetails.dateOfVisit",
   props: {
@@ -985,37 +1018,12 @@ export const commentField = {
     rows: 2
   },
   pattern: _getPattern("alphabet"),
-  jsonPath: "Applications[0].applicationDetails.comment"
+  jsonPath: "Applications[0].comments"
 }
-
-export const auditTrailDetailsField = {
-  label: {
-    labelName: "Audit Trail Details",
-    labelKey: "ES_AUDIT_TRAIL_DETAILS_LABEL"
-  },
-  placeholder: {
-    labelName: "Audit Trail Details",
-    labelKey: "ES_AUDIT_TRAIL_DETAILS_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  },
-  // required: true,
-  props: {
-    multiline: true,
-    rows: 2
-  },
-  pattern: _getPattern("alphabet"),
-  jsonPath: "Applications[0].applicationDetails.auditTrailDetails"
-}
-
 
 export const nocVerificationDetails = getCommonCard({
   detailsContainer: getCommonContainer({
     hardCopyDocumentsReceivedDate: getDateField(hardCopyDocumentsReceivedDateField),
-    ownedBy: getTextField(ownedByField),
-    so: getTextField(soField),
     houseHasBeenPurchased: getWhetherWholeHouseHasBeenPurchasedRadioButton,
     sizeOfAreaPurchased: getTextField(sizeOfAreaPurchasedField),
     khasraNo: getTextField(khasraNoField),
@@ -1048,8 +1056,7 @@ export const nocVerificationDetails = getCommonCard({
     architectsReport: getArchitectsReportRadioButton,
     fireNoc: getFireNocRadioButton,
     dateOfVisit: getDateField(dateOfVisitField),
-    comment: getTextField(commentField),
-    auditTrailDetails: getTextField(auditTrailDetailsField)
+    comment: getTextField(commentField)
   })
 })
 
@@ -1064,6 +1071,17 @@ const detailsContainer = {
     nocVerificationDetails
   },
   visible: true
+}
+
+const validateNocForm = (state) => {
+  const isNocVerificationDetailValid = validateFields(
+    "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children",
+    state,
+    store.dispatch,
+    "noc-verification"
+  )
+
+  return isNocVerificationDetailValid;
 }
 
 const nocVerification = {
@@ -1101,6 +1119,8 @@ const nocVerification = {
           props: {
             dataPath: "Applications",
             // moduleName: WF_ALLOTMENT_OF_SITE,
+            screenName: "noc-verification",
+            validateFn: validateNocForm,
             updateUrl: "/est-services/application/_update",
             style: {
               wordBreak: "break-word"

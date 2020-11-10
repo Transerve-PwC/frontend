@@ -183,7 +183,7 @@ class InboxData extends React.Component {
     }
 	  else if (row[0].subtext == "NULM") {
       queryParams += `&status=${wfStatus}`;
-    } else if(row[0].subtext === "ES-EB-AllotmentOfSite" || row[0].subtext === "ES-EB-PropertyMaster") {
+    } else if(row[0].subtext === "ES-EB-AllotmentOfSite" || row[0].subtext === "ES-EB-PropertyMaster" || row[0].subtext === "ES-BB-PropertyMaster") {
       queryParams = `fileNumber=${taskId}&tenantId=${tenantId}`
     }
 

@@ -115,7 +115,7 @@ function RentSummaryCard(props) {
         <Typography
           variant="body2"
           align="right"
-          className="rp-total-amount-text"
+          className="es-total-amount-text"
         >
           <LabelContainer
             labelName="Total Due"

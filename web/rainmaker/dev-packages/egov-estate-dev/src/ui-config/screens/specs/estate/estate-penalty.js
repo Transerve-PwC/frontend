@@ -25,6 +25,8 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import {addPenalty} from '../../../../ui-utils/apply'
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+
 const header = getCommonHeader({
   labelName: "Penalty",
   labelKey: "ES_PENALTY_HEADER"
@@ -169,6 +171,28 @@ const submitFooter = getCommonApplyFooter({
   }
 })
 
+export const onTabChange = async(tabIndex, dispatch, state) => {
+  const fileNumber = getQueryArg(window.location.href, "fileNumber");
+  const propertyId = getQueryArg(window.location.href, "propertyId")
+  let path = "";
+  if (tabIndex === 0) {
+    path = `/estate/estate-penalty?propertyId=${propertyId}&fileNumber=${fileNumber}`;
+  }
+  else if (tabIndex === 1) {
+    path = `/estate/generatePenaltyStatement?propertyId=${propertyId}&fileNumber=${fileNumber}`
+  }
+  dispatch(setRoute(path))
+}
+
+export const tabs = [
+  {
+    tabButton: { labelName: "Add Penalty", labelKey: "ES_PENALTY_HEADER" }
+  },
+  {
+    tabButton: { labelName: "Penalty Statement", labelKey: "ES_PENALTY_STATEMENT" }
+  }
+]
+
 const estatePenalty = {
   uiFramework: "material-ui",
   name: "estate-penalty",
@@ -196,6 +220,17 @@ const estatePenalty = {
               ...header
             }
           }
+        },
+        tabSection: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
+          componentPath: "CustomTabContainer",
+          props: {
+            tabs,
+            activeIndex: 0,
+            onTabChange
+          },
+          type: "array",
         },
         detailsContainer,
         footer: submitFooter

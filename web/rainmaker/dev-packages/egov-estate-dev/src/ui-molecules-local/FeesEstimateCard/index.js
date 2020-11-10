@@ -61,7 +61,7 @@ function FeesEstimateCard(props) {
   const { classes, estimate } = props;
   const total = totalAmount(estimate.fees).toFixed(2);
   const isPaid=estimate.fees.payStatus
-  const totalHeadClassName = "tl-total-amount-value " + classes.bigheader;
+  const totalHeadClassName = "es-total-amount-value " + classes.bigheader;
   return (
     <Grid container>
       <Grid xs={12} sm={7}>
@@ -139,7 +139,7 @@ function FeesEstimateCard(props) {
         <Typography
           variant="body2"
           align="right"
-          className="tl-total-amount-text"
+          className="es-total-amount-text"
         >
           <LabelContainer
             labelName="Total Amount"

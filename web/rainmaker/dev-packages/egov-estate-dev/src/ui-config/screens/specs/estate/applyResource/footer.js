@@ -1056,23 +1056,133 @@ export const downloadPrintContainer = (
   };
 
   let NoticePrintObject = {
-    label: { labelName: "Letter", labelKey: "ES_LETTER" },
+    label: { labelName: "Notice", labelKey: applicationType === 'IssuanceOfNotice' ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadNotice(Applications,applicationType,'print');
+      downloadNotice(Applications,applicationType,'','print');
     },
     leftIcon: "assignment"
   }
 
   let NoticeDownloadObject = {
-    label: { labelName: "Notice", labelKey: "ES_NOTICE" },
+    label: { labelName: "Notice", labelKey: applicationType === 'IssuanceOfNotice' ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadNotice(Applications,applicationType);
+      downloadNotice(Applications,applicationType,'');
+    },
+    leftIcon: "assignment"
+  };
+
+  let IssuanceViolationOrderPrintObject = {
+    label: { labelName: "Violation Order", labelKey: "ES_VIOLATION_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'order','print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let IssuanceViolationOrderDownloadObject = {
+    label: { labelName: "Violation Order", labelKey: "ES_VIOLATION_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'order');
+    },
+    leftIcon: "assignment"
+  };
+
+  let cancellationOrderPrintObject = {
+    label: { labelName: "Cancellation Order", labelKey: "ES_CANCELLATION_SEALING_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'cancellation order','print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let cancellationOrderDownloadObject = {
+    label: { labelName: "Cancellation Order", labelKey: "ES_CANCELLATION_SEALING_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'cancellation order');
+    },
+    leftIcon: "assignment"
+  };
+
+  let nonPaymentNoticePrintObject = {
+    label: { labelName: "Non Payment Notice", labelKey: "ES_NON_PAYMENT_NOTICE" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'non payment notice','print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let nonPaymentNoticeDownloadObject = {
+    label: { labelName: "Non Payment Notice", labelKey: "ES_NON_PAYMENT_NOTICE" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'non payment notice');
+    },
+    leftIcon: "assignment"
+  };
+
+  let nonPaymentOrderPrintObject = {
+    label: { labelName: "Non Payment Order", labelKey: "ES_NON_PAYMENT_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'non payment order','print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let nonPaymentOrderDownloadObject = {
+    label: { labelName: "Non Payment Order", labelKey: "ES_NON_PAYMENT_ORDER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'non payment order');
+    },
+    leftIcon: "assignment"
+  };
+
+  let occupationCertificatePrintObject = {
+    label: { labelName: "Occupation Certificate Notice", labelKey: "ES_OCCUPATION_CERTIFICATE_NOTICE" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'occupation certificate','print');
+    },
+    leftIcon: "assignment"
+  }
+
+  let occupationCertificateDownloadObject = {
+    label: { labelName: "Occupation Certificate Notice", labelKey: "ES_OCCUPATION_CERTIFICATE_NOTICE" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadNotice(Applications,applicationType,'occupation certificate');
     },
     leftIcon: "assignment"
   };
@@ -1159,12 +1269,31 @@ export const downloadPrintContainer = (
     case `${applicationType}` && 'ES_PENDING_DA_TEMPLATE_VERIFICATION':
     case `${applicationType}` && 'ES_PENDING_SRA_TEMPLATE_VERIFICATION':
     case `${applicationType}` && 'ES_PENDING_SO_TEMPLATE_VERIFICATION':
-        downloadMenu = [
-          applicationDownloadObject
-        ]
-        printMenu = [
-            applicationPrintObject
-       ] 
+      //   downloadMenu = [
+      //     applicationDownloadObject
+      //   ]
+      //   printMenu = [
+      //       applicationPrintObject
+      //  ] 
+      downloadMenu = [
+        applicationDownloadObject,
+        NoticeDownloadObject,
+        IssuanceViolationOrderDownloadObject,
+        cancellationOrderDownloadObject,
+        nonPaymentNoticeDownloadObject,
+        nonPaymentOrderDownloadObject,
+        occupationCertificateDownloadObject
+      ]
+    
+      printMenu = [
+        applicationPrintObject,
+        NoticePrintObject,
+        IssuanceViolationOrderPrintObject,
+        cancellationOrderPrintObject,
+        nonPaymentNoticePrintObject,
+        nonPaymentOrderPrintObject,
+        occupationCertificatePrintObject
+      ]
         break;    
     case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
     case `${applicationType}` && 'ES_PENDING_SO_APPROVAL': 
@@ -1188,11 +1317,20 @@ export const downloadPrintContainer = (
                 ]
           } 
         break;
+    case `${applicationType}` && 'ES_PENDING_DA_NOTICE_CREATION':    
     case `${applicationType}` && 'ES_PENDING_CITIZEN_NOTICE_DOCUMENTS':
     case `${applicationType}` && 'ES_PENDING_DS_NOTICE_VERIFICATION': 
     case `${applicationType}` && 'ES_PENDING_DA_NOTICE_VERIFICATION':
     case `${applicationType}` && 'ES_PENDING_SRA_NOTICE_VERIFICATION': 
-    case `${applicationType}` && 'ES_PENDING_SO_NOTICE_VERIFICATION':  
+    case `${applicationType}` && 'ES_PENDING_SO_NOTICE_VERIFICATION':
+    case `${applicationType}` && 'ES_PENDING_AC_NOTICE_APPROVAL': 
+    case `${applicationType}` && 'ES_PENDING_DA_HEARING_APPROVAL':
+    case `${applicationType}` && 'ES_PENDING_AC_HEARING_APPROVAL': 
+    case `${applicationType}` && 'PENDING_DA_PENALTY':
+    case `${applicationType}` && 'PENDING_SRA_PENALTY_VERIFICATION':
+    case `${applicationType}` && 'PENDING_SO_PENALTY_VERIFICATION':
+    case `${applicationType}` && 'PENDING_AC_PENALTY_APPROVAL':
+    case `${applicationType}` && 'PENDING_DA_PENALTY_APPROVAL':      
           switch(applicationType){
             case 'LeaseholdToFreehold':
                 downloadMenu = [
@@ -1203,6 +1341,19 @@ export const downloadPrintContainer = (
                 printMenu = [
                   applicationPrintObject,LetterPrintObject,
                   NoticePrintObject
+                ]
+                break;
+            case 'IssuanceOfNotice':
+                downloadMenu = [
+                  applicationDownloadObject,
+                  NoticeDownloadObject,
+                  IssuanceViolationOrderDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,
+                  NoticePrintObject,
+                  IssuanceViolationOrderPrintObject
                 ]
           }
           break;

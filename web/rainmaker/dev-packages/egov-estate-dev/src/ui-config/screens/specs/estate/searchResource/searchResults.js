@@ -21,6 +21,10 @@ const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 export const LAST_MODIFIED_ON = getLocaleLabels("LAST MODIFIED ON", "ES_LAST_MODIFIED_ON_LABEL")
 export const APPLICATION_TYPE = getLocaleLabels("Application Type", "ES_APPLICATION_TYPE_LABEL")
+export const DATE = getLocaleLabels("ES_COMMON_TABLE_COL_DATE")
+export const AMOUNT = getLocaleLabels("ES_COMMON_TABLE_COL_AMOUNT") + " (₹)"
+export const TYPE = getLocaleLabels("ES_COMMON_TABLE_COL_TYPE")
+export const PENALTY_STATUS = getLocaleLabels("ES_COMMON_TABLE_COL_PENALTY_STATUS")
 
 export const searchResults = {
   uiFramework: "custom-molecules",
@@ -108,7 +112,13 @@ export const searchApplicationResults = {
 };
 
 const onApplicationRowClick = rowData => {
-  window.location.href = `preview?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
+  let applicationState = rowData[2];
+  if (applicationState == "-") {
+    window.location.href = `_apply?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
+  }
+  else {
+    window.location.href = `preview?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
+  }
 }
 
 const onRowClick = rowData => {
@@ -140,6 +150,38 @@ const onRowClick = rowData => {
     window.location.href = `search-preview?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
 };
+
+export const penaltyDetailsTable = {
+  ...searchResults,
+  visible: true,
+  props: {...searchResults.props, 
+    columns: [
+      DATE,
+      TYPE,
+      {
+        name: AMOUNT,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
+      PENALTY_STATUS 
+    ],
+    options: {...searchResults.props.options,
+      pagination: false,
+      filter: false,
+      download: true,
+      print: true,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
+    }
+  }
+}
 
 
 

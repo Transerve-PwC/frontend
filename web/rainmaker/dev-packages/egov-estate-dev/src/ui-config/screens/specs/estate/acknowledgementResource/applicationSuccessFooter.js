@@ -29,6 +29,7 @@ export const applicationSuccessFooter = (
 ) => {
   const fileNumber = getQueryArg(window.location.href, "fileNumber");
   const purpose  = getQueryArg(window.location.href, "purpose");
+  const type = getQueryArg(window.location.href, "type");
   const roleExists = ifUserRoleExists("CITIZEN");
   const redirectionURL = roleExists ? "/" : "/inbox";
   if(roleExists){
@@ -68,7 +69,10 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          downloadFormButtonLabel: getLabel({
+          downloadFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+            labelName: "DOWNLOAD RECEIPT",
+            labelKey: "ES_APPLICATION_BUTTON_DOWN_RECEIPT"
+          }) : getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
             labelKey: "ES_APPLICATION_BUTTON_DOWN_CONF"
           })
@@ -123,10 +127,14 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          printFormButtonLabel: getLabel({
+          printFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+            labelName: "PRINT RECEIPT",
+            labelKey: "ES_APPLICATION_BUTTON_PRINT_RECEIPT"
+          }) : getLabel({
             labelName: "PRINT CONFIRMATION FORM",
             labelKey: "ES_APPLICATION_BUTTON_PRINT_CONF"
           })
+
         },
         onClickDefination: {
           action: "condition",
@@ -204,18 +212,32 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          downloadFormButtonLabel: getLabel({
+          downloadFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+            labelName: "DOWNLOAD RECEIPT",
+            labelKey: "ES_APPLICATION_BUTTON_DOWN_RECEIPT"
+          }): getLabel({
             labelName: "DOWNLOAD CONFIRMATION FORM",
             labelKey: "ES_APPLICATION_BUTTON_DOWN_CONF"
           })
+
         },
         onClickDefination: {
           action: "condition",
           callBack: async() => {
             switch(purpose){
+              
               case 'apply':
-                const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
-                downloadSummary(Properties, PropertiesTemp);
+                if(type === 'EstateBranch_InternalServices_IssuanceOfNotice'){
+                  const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+                  const { applicationType} = Applications[0];
+                  const documents = temp[0].reviewDocData;
+                  set(Applications[0],"additionalDetails.documents",documents)
+                  downloadAcknowledgementForm(Applications,applicationType,[],"");
+                }else{
+                  const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject; 
+                  downloadSummary(Properties, PropertiesTemp);
+                }
+  
                 break;
               case 'pay': 
                 let tenantId = getQueryArg(window.location.href, "tenantId");
@@ -256,7 +278,10 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          printFormButtonLabel: getLabel({
+          printFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+            labelName: "PRINT RECEIPT",
+            labelKey: "ES_APPLICATION_BUTTON_PRINT_RECEIPT"
+          }) : getLabel({
             labelName: "PRINT CONFIRMATION FORM",
             labelKey: "ES_APPLICATION_BUTTON_PRINT_CONF"
           })

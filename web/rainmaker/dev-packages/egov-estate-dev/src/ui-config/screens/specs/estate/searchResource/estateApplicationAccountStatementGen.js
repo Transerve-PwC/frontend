@@ -40,7 +40,7 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           required: true,
           jsonPath: "Properties[0].fileNumber",
         }),
-        sectorNumber: getSelectField({
+        sectorNumber: getTextField({
             label: {
               labelName: "sector number",
               labelKey: "ES_SECTOR NUMBER_LABEL"
@@ -49,11 +49,14 @@ export const estateApplicationAccountStatementGen = getCommonCard({
               labelName: "Enter sector number",
               labelKey: "ES_SECTOR NUMBER_PLACEHOLDER"
             },
-            // required: false,
+            required: false,
+            props: {
+              disabled: true
+            },
             jsonPath: "Properties[0].sectorNumber",
-            optionValue: "code",
-            optionLabel: "label",
-            sourceJsonPath: "applyScreenMdmsData.propertyTypes",
+            // optionValue: "code",
+            // optionLabel: "label",
+            sourceJsonPath: "Properties[0].sectorNumber",
             gridDefination: {
                 xs: 12,
                 sm: 6
@@ -95,12 +98,14 @@ export const estateApplicationAccountStatementGen = getCommonCard({
             labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
           },
           // required: false,
-          jsonPath: "Properties[0].subCategory",
+          // jsonPath: "Properties[0].subCategory",
+          jsonPath: "singleSubCategory",
           props: {
             disabled: true
           },
           // optionValue: "code",
           // optionLabel: "label",
+          // sourceJsonPath: "Properties[0].subCategory",
           sourceJsonPath: "singleSubCategory",
           gridDefination: {
               xs: 12,

@@ -192,9 +192,6 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
       "Properties"
     )
 
-    let bidders = properties[0].propertyDetails.bidders;
-    bidders = bidders.map(item => item.action = "SUBMIT");
-
     const response = await httpRequest(
       "post",
       "/est-services/property-master/_update",

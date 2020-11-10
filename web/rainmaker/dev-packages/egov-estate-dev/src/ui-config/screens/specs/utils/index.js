@@ -499,6 +499,12 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
       }
     ]
       break;
+      case 'IssuanceOfNotice':
+        queryStr = [{
+          key :"key",
+          value:"issuance-of-notice-application"
+        }]
+        break;
   }
   queryStr[1] = {
     key: "tenantId",
@@ -1008,8 +1014,7 @@ export const downloadEmailNotice = (Applications, applicationType, mode = 'downl
   }
 
 
-export const downloadNotice = (Applications, applicationType, mode = 'download') => {
-
+export const downloadNotice = (Applications, applicationType,noticeType, mode = 'download') => {
   let queryStr = []
   switch (applicationType) {
     
@@ -1052,6 +1057,58 @@ export const downloadNotice = (Applications, applicationType, mode = 'download')
           }
         ]
         break;
+      case 'IssuanceOfNotice':
+        switch(noticeType){
+          case 'order':
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-cause-violation-order"
+                }
+              ]
+          break;    
+          case 'cancellation order':
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-show-cause-cancellation-sealing-order"
+                }
+              ]
+          break;    
+          case 'non payment notice':
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-show-cause-non-payment-notice"
+                }
+              ]
+          break;     
+          case 'non payment order':
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-show-cause-non-payment-order"
+                }
+              ]
+          break;    
+          case 'occupation certificate':
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-show-cause-occupation-certificate-notice"
+                }
+              ]
+          break; 
+          
+          default:
+              queryStr = [
+                {
+                  key:"key",
+                  value:"est-cause-violation-notice"
+                }
+              ]
+        }
+        break;  
   }
     queryStr[1] = {
       key: "tenantId",

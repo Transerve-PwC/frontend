@@ -425,11 +425,12 @@ const commonRentInformation = () => {
       startYear: getTextField(startYearField),
       endYear: getTextField(endYearField),
       totalMonths: getLabelWithValue({
-        labelName: "Till Date",
-        labelKey: "ES_TILL_DATE_LABEL"
+        labelName: "Till",
+        labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear"
+        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear",
+        callBack: (value) => (Number(value)/12).toFixed(2)
       }
       )
     })
@@ -632,7 +633,7 @@ const licenseFeeField = {
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].licenseFee"
@@ -640,16 +641,20 @@ const licenseFeeField = {
 
 const startYearLfField = {
   label: {
-      labelName: "Start Year",
-      labelKey: "ES_START_YEAR_LABEL"
+      labelName: "Start Month",
+      labelKey: "ES_START_MONTH_LABEL"
   },
   placeholder: {
-      labelName: "Enter Start Year",
-      labelKey: "ES_START_YEAR_PLACEHOLDER"
+      labelName: "Enter Start Month",
+      labelKey: "ES_START_MONTH_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
+  },
+  props: {
+    disabled: true,
+    value: 0
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].startYear"
@@ -657,16 +662,16 @@ const startYearLfField = {
 
 const endYearLfField = {
   label: {
-      labelName: "End Year",
-      labelKey: "ES_END_YEAR_LABEL"
+      labelName: "End Month",
+      labelKey: "ES_END_MONTH_LABEL"
   },
   placeholder: {
-      labelName: "Enter End Year",
-      labelKey: "ES_END_YEAR_PLACEHOLDER"
+      labelName: "Enter End Month",
+      labelKey: "ES_END_MONTH_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
-      sm: 4
+      sm: 3
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].endYear"
@@ -675,23 +680,24 @@ const endYearLfField = {
 
 const commonLicenseInformation = () => {
   return getCommonGrayCard({
-    header: getCommonTitle({
-      labelName: "License Fee for Year",
-      labelKey: "ES_LICENSE_FEE_FOR_YEAR"
-    }, {
-      style: {
-        marginBottom: 18
-      }
-    }),
     licenseCard: getCommonContainer({
       licenseFee: getTextField(licenseFeeField),
       startYear: getTextField(startYearLfField),
-      endYear: getTextField(endYearLfField)
+      endYear: getTextField(endYearLfField),
+      totalMonths: getLabelWithValue({
+        labelName: "Till",
+        labelKey: "ES_TILL_LABEL_IN_YEARS"
+      },
+      {
+        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].endYear",
+        callBack: (value) => (Number(value)/12).toFixed(2)
+      }
+      )
     })
   });
 };
 
-export const licenseFeeForYearDetails = getCommonCard({
+export const licenseFeeForYearDetails = getCommonGrayCard({
   detailsContainer: getCommonContainer({
     multipleLicenseContainer: {
       uiFramework: "custom-atoms",
@@ -702,8 +708,17 @@ export const licenseFeeForYearDetails = getCommonCard({
         }
       },
       children: {
+        header: getCommonTitle({
+          labelName: "License Fee for Year",
+          labelKey: "ES_LICENSE_FEE_FOR_YEAR"
+        }, {
+          style: {
+            marginBottom: 18
+          }
+        }),
         multipleLicenseInfo: {
-          uiFramework: "custom-containers",
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
           componentPath: "MultiItem",
           props: {
             scheama: commonLicenseInformation(),
@@ -717,18 +732,39 @@ export const licenseFeeForYearDetails = getCommonCard({
             headerJsonPath: "children.cardContent.children.header.children.License Fee.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
+
+            afterPrefixJsonPath: "children.value.children.key",
             onMultiItemAdd: (state, multiItemContent) => {
-              let licenseFees = get(
+              let rent = get(
                 state.screenConfiguration.preparedFinalObject,
                 "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
                 []
               );
-              if (licenseFees.length) {
-                let lastAddedEndYear = licenseFees[licenseFees.length - 1].endYear;
-                multiItemContent.startYear.props.value = lastAddedEndYear;
-              }
-                
+              if (rent.length && rent[rent.length - 1].endYear) {
+                let lastAddedEndYear = rent[rent.length - 1].endYear;
+                multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
+              } 
+              // else {
+              //   multiItemContent.startYear.props.disabled = false
+              // }
               return multiItemContent;
+            },
+            onMultiItemDelete: (state, deletedIndex, changeField) => {
+              let rent = get(
+                state.screenConfiguration.preparedFinalObject,
+                "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
+                []
+              );
+              if(deletedIndex !== rent.length - 1) {
+                const previewYearObj = rent.filter((item, index) => index < deletedIndex && item.isDeleted !== false).pop()
+                const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && item.isDeleted !== false)
+                nextYearObj !== -1 && changeField(
+                  "allotment",
+                  `components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.licenseCard.children.startYear`,
+                  "props.value",
+                  !!previewYearObj && !!previewYearObj.endYear ? Number(previewYearObj.endYear)+1 : 0
+                )
+              }
             }
           },
           type: "array"

@@ -438,7 +438,9 @@ class WorkFlowContainer extends React.Component {
       prepareFinalObject,
       dataPath,
       moduleName,
-      documentProps
+      documentProps,
+      screenName,
+      validateFn
     } = this.props;
     const workflowContract =
       ProcessInstances &&
@@ -465,6 +467,8 @@ class WorkFlowContainer extends React.Component {
             dataPath={dataPath}
             moduleName={moduleName}
             documentProps={documentProps}
+            screenName={screenName}
+            validateFn={validateFn}
           />}
       </div>
     );

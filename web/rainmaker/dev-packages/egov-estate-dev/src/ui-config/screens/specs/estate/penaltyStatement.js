@@ -1,5 +1,5 @@
 import {
-    getCommonCard
+    getCommonCard,getCommonHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -8,6 +8,12 @@ import {getReviewPayment} from './preview-resource/payment-details'
 import {onTabChange, headerrow, tabs} from './estate-payment'
 import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {penaltyDetailsTable} from "./searchResource/searchResults"
+
+const header = getCommonHeader({
+  labelName: "Penalty",
+  labelKey: "ES_PENALTY_STATEMENT"
+});
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 //   if(fileNumber){
@@ -45,12 +51,12 @@ const penaltyStatementDetails = {
           uiFramework: "custom-atoms",
           componentPath: "Container",
           children: {
-            header1: {
+            header: {
               gridDefination: {
                 xs: 12,
                 sm: 8
               },
-             ...headerrow
+             ...header
             },
             }
           },
@@ -66,7 +72,7 @@ const penaltyStatementDetails = {
             type: "array",
           },
           breakAfterSearch: getBreak(),
-        //   paymentDetailsTable
+          penaltyDetailsTable
       }
     }
   }

@@ -18,9 +18,14 @@ import {
   getSearchResults
 } from "../../../../ui-utils/commons";
 import {
+  getLocaleLabels,
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
+import {
+  getTransformedLocalStorgaeLabels,
+  getTransformedLocale,
+} from "egov-ui-framework/ui-utils/commons";
   
   const header = getCommonHeader({
     labelName: "Account Statement Generation",
@@ -40,109 +45,61 @@ import get from "lodash/get";
     let queryObject = [
       { key: "fileNumber", value: fileNumber }
     ];
+    dispatch(
+      prepareFinalObject(
+        "singleSubCategory",
+        []
+      )
+    )
     let mdmsCategory = get(state.screenConfiguration.preparedFinalObject,"searchScreenMdmsData.EstateServices.categories")
-    setTimeout(() => { console.log("World!"); }, 2000);
+    let singleSubCategory = get(state.screenConfiguration.preparedFinalObject,"singleSubCategory")
     let payload = await getSearchResults(queryObject);
     if (payload) {
       let properties = payload.Properties;
-      dispatch(prepareFinalObject("Properties", properties));
-      dispatch(
-        prepareFinalObject(
-          "singleSubCategory",
-          []
-        )
-      )
+      let categorySelected = mdmsCategory.filter(item => item.code === properties[0].category && !!item.SubCategory);
+      let subCatSelected = categorySelected[0].SubCategory.filter(item => item.code === properties[0].subCategory)
 
-      // let categorySelected = properties[0].category
-      // let subcatPropertyData = properties[0].subCategory
-      // let subcatvar;
+      dispatch(prepareFinalObject("singleSubCategory", subCatSelected[0].name));
       
-    
-      // if(categorySelected === "CAT.RESIDENTIAL"){
-      //   subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.RESIDENTIAL")
-      //   let i = 0, len = subcatvar[0].SubCategory.length;
-      //     while (i < len) {
-      //         if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
-      //           dispatch(
-      //             prepareFinalObject(
-      //               "singleSubCategory",
-      //               subcatvar[0].SubCategory[i].name
-      //             )
-      //           )
-      //         }
-      //         i++
-      //     }
-        // dispatch(
-        //   prepareFinalObject(
-        //     "subCategory1",
-        //     subcatvar
-        //   )
-        // )
-        // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-      // }
-      // else if(categorySelected === "CAT.COMMERCIAL"){
-      //   subcatvar = mdmsCategory.filter(item => !!item.SubCategory && item.code === "CAT.COMMERCIAL")
-        
-      //   let i = 0, len = subcatvar[0].SubCategory.length;
-      //   while (i < len) {
-      //       if(subcatvar[0].SubCategory[i].code === subcatPropertyData){
-      //         dispatch(
-      //           prepareFinalObject(
-      //             "singleSubCategory",
-      //             subcatvar[0].SubCategory[i].name
-      //           )
-      //         )
-      //       }
-      //       i++
-      //   }
-        // dispatch(
-        //   prepareFinalObject(
-        //     "subCategory1",
-        //     subcatvar
-        //   )
-        // )
-        // set(state.screenConfiguration.preparedFinalObject,"Properties[0].subcatvar",subcatvar);
-        // }
-        // else if(categorySelected === "CAT.INDUSTRIAL" || categorySelected === "CAT.INSTITUTIONAL" || categorySelected === "CAT.GOVPROPERTY" || categorySelected === "CAT.RELIGIOUS" || categorySelected === "CAT.HOSPITAL"){
-        //   dispatch(
-        //     prepareFinalObject(
-        //       "singleSubCategory",
-        //       ""
-        //     )
-        //   )
-        // }
+      dispatch(prepareFinalObject("Properties", properties));
+  
     }
   }
 
-  const getMdmsData = async (dispatch) => {
-    let mdmsBody = {
-      MdmsCriteria: {
-        tenantId: commonConfig.tenantId,
-        moduleDetails: [{
-          moduleName: ESTATE_SERVICES_MDMS_MODULE,
-          masterDetails: [{
-           name: "categories"
-          }]
-        }]
-      }
-    };
-    try {
-      let payload = await httpRequest(
-        "post",
-        "/egov-mdms-service/v1/_search",
-        "_search",
-        [],
-        mdmsBody
-      );
-      return dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  
 
   const beforeInitFn = async (action, state, dispatch, fileNumber) => {
     dispatch(prepareFinalObject("workflow.ProcessInstances", []))
+
+    const getMdmsData = async (dispatch) => {
+      let mdmsBody = {
+        MdmsCriteria: {
+          tenantId: commonConfig.tenantId,
+          moduleDetails: [{
+            moduleName: ESTATE_SERVICES_MDMS_MODULE,
+            masterDetails: [{
+             name: "categories"
+            }]
+          }]
+        }
+      };
+      try {
+        let payload = await httpRequest(
+          "post",
+          "/egov-mdms-service/v1/_search",
+          "_search",
+          [],
+          mdmsBody
+        );
+        return dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+
     if (fileNumber) {
+      await getMdmsData(dispatch)
       await searchResults(action, state, dispatch, fileNumber);
       dispatch(
         handleField(
@@ -161,7 +118,6 @@ import get from "lodash/get";
     name: "estate-search-account-statement",
     beforeInitScreen: (action, state, dispatch) => {
       let fileNumber = getQueryArg(window.location.href, "fileNumber");
-      getMdmsData(dispatch);
       beforeInitFn(action, state, dispatch, fileNumber);
       return action
     },
@@ -213,7 +169,7 @@ import get from "lodash/get";
                     backgroundColor: "#fe7a51",
                     borderColor:"#fe7a51",
                     borderRadius: "2px",
-                    width: "25%",
+                    // width: "50%",
                     height: "48px",
                     margin:"10px"
                   }
@@ -244,7 +200,7 @@ import get from "lodash/get";
                     backgroundColor: "#fe7a51",
                     borderColor:"#fe7a51",
                     borderRadius: "2px",
-                    width: "25%",
+                    // width: "25%",
                     height: "48px",
                     margin:"10px"
                   }
