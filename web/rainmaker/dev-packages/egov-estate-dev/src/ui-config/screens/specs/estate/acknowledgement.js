@@ -208,7 +208,7 @@ const screenConfig = {
       "fileNumber"
     );
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
-    if(applicationNumber.startsWith("SITE")) {
+    if(!!applicationNumber && applicationNumber.startsWith("SITE")) {
       const array = applicationNumber.split("-");
       array.splice(array.length-6)
       array.splice(0,1)
