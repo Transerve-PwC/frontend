@@ -20,7 +20,7 @@ const header = getCommonHeader(
     }
   );
 
-const cardItems = [{
+let cardItems = [{
     label: {
         labelKey: "Apply",
         labelName: "Apply"

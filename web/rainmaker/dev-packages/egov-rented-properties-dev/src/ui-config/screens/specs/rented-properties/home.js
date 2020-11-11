@@ -90,7 +90,7 @@ cardItems = !!isSurveyor ? [...cardItems, {
 }] : cardItems
 
 
-const citizenCardItems = [{
+let citizenCardItems = [{
   label: {
     labelName: "Transfer of Transit site In case of Legal Heir (Ownership Transfer)",
     labelKey: "RP_OWNER_SHIP_TRANSFER_HEADER"

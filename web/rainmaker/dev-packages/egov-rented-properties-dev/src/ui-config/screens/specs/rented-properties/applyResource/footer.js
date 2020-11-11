@@ -77,6 +77,8 @@ const callBackForNext = async(state, dispatch) => {
       value.toString()
     )
     let isDateValid=true;
+    let isAllotmentDateValid=true;
+    let isPossesionDateValid=true;
     let isFormValid = true;
     let hasFieldToaster = true;
     if(activeStep === DETAILS_STEP) {
@@ -106,11 +108,19 @@ const callBackForNext = async(state, dispatch) => {
             dispatch
         )
         const dateFrom = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardFirstStep.children.rentHolderDetails.children.cardContent.children.detailsContainer.children.dateOfAllotment.props.value")
+        const dateofAllotmentTo = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardFirstStep.children.rentHolderDetails.children.cardContent.children.detailsContainer.children.dateOfAllotment.props.inputProps.max")
         const dateTo = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardFirstStep.children.rentHolderDetails.children.cardContent.children.detailsContainer.children.posessionDate.props.value")
+        const datePossesionTo = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardFirstStep.children.rentHolderDetails.children.cardContent.children.detailsContainer.children.posessionDate.props.inputProps.max") 
         if(convertDateToEpoch(dateTo) - convertDateToEpoch(dateFrom) < 0){
           isDateValid = false
         }
-        if(!!isPropertyDetailsValid && !!isRentHolderValid && !!isRentValid && !!isPaymentValid && !!isAddressValid && !!isDateValid
+        if(convertDateToEpoch(dateofAllotmentTo) - convertDateToEpoch(dateFrom) < 0){
+          isAllotmentDateValid = false
+        }
+        if(convertDateToEpoch(datePossesionTo) - convertDateToEpoch(dateTo) < 0){
+          isPossesionDateValid = false
+        }
+        if(!!isPropertyDetailsValid && !!isRentHolderValid && !!isRentValid && !!isPaymentValid && !!isAddressValid && !!isDateValid && !!isAllotmentDateValid && !!isPossesionDateValid
             ) {
               const res = await applyRentedProperties(state, dispatch, activeStep)
               if(!res) {
@@ -240,6 +250,18 @@ const callBackForNext = async(state, dispatch) => {
                       labelName:
                           "Date of allotment is greater than date of possession",
                       labelKey: "RP_ERR_DATE_ALLOTMENT_FIELDS"
+                  };
+                  }else if(!isAllotmentDateValid){
+                    errorMessage = {
+                      labelName:
+                          "Date of allotment is greater than current date",
+                      labelKey: "RP_ERR_DATE_ALLOTMENT_FIELDS_CURRENT_DATE"
+                  };
+                  }else if(!isPossesionDateValid){
+                    errorMessage = {
+                      labelName:
+                          "Date of possession is greater than current date",
+                      labelKey: "RP_ERR_DATE_POSESSION_FIELDS_CURRENT_DATE"
                   };
                   }else{
                     errorMessage = {

@@ -27,7 +27,7 @@ const header = getCommonHeader(
   }
   );
 
-const cardItems = [{
+let cardItems = [{
     label: {
         labelKey: "RP_APPLY_OWNERSHIP_TRANFER",
         labelName: "Apply for Ownership Transfer"

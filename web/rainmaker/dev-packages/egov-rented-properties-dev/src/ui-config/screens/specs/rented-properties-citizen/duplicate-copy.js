@@ -21,7 +21,7 @@ const header = getCommonHeader(
     }
   );
 
-const cardItems = [{
+let cardItems = [{
     label: {
         labelKey: "RP_APPLY_DUPLICATE_COPY",
         labelName: "Apply for Duplicate Copy of Allotment Letter"
