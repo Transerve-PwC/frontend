@@ -42,7 +42,7 @@ export const reviewDocuments = (isEditable = true) => {
             },
             buttonLabel: getLabel({
               labelName: "Edit",
-              labelKey: "TL_SUMMARY_EDIT"
+              labelKey: "HR_SUMMARY_EDIT"
             })
           },
           onClickDefination: {

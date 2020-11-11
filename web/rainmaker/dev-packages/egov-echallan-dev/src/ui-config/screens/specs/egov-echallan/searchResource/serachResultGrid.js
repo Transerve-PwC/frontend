@@ -91,6 +91,12 @@ export const serachResultGrid = {
         options: {
           filter: true,
         }
+      }, {
+        name: getTextToLocalMappingManageChallan("itemList"),
+        label: getTextToLocalMappingManageChallan("itemList"),
+        options: {
+          filter: true,
+        }
       }
 
     ],

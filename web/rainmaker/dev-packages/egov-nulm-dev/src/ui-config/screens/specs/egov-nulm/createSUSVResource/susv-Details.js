@@ -68,6 +68,21 @@ export const SUSVDetails = getCommonCard({
         jsonPath: "NulmSusvRequest.motherName"
       })
     },
+    mobileNo: {
+      ...getTextField({
+        label: {
+          labelName: "Mobile Number",
+          labelKey: "NULM_SMID_MOBILE_NUMBER"
+        },
+        placeholder: {
+          labelName: "Enter Mobile Number",
+          labelKey: "NULM_SMID_MOBILE_NUMBER_PLACEHOLDER"
+        },
+        
+        pattern: getPattern("numeric-only") || null,
+        jsonPath: "NulmSusvRequest.mobileNo"
+      })
+    }, 
     age: {
       ...getTextField({
         label: {
@@ -78,9 +93,29 @@ export const SUSVDetails = getCommonCard({
           labelName: "Enter age",
           labelKey: "NULM_SEP_AGE_PLACEHOLDER"
         },
-        required: true,
+        required: false,
         pattern: getPattern("age") || null,
         jsonPath: "NulmSusvRequest.age"
+      })
+    },
+    dob: {
+      ...getDateField({
+        label: {
+          labelName: "Date Of Birth",
+          labelKey: "NULM_SMID_DOB"
+        },
+        placeholder: {
+          labelName: "Enter Date Of Birth",
+          labelKey: "NULM_SMID_DOB_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "NulmSusvRequest.dob",
+        props: {
+          inputProps: {
+            max:  new Date().toISOString().slice(0, 10),
+          }
+        }
       })
     },
     gender: {
@@ -97,22 +132,27 @@ export const SUSVDetails = getCommonCard({
         label: { name: "Gender", key: "NULM_SMID_GENDER" },
         buttons: [
           {
-            label: "MALE",
+            label: "Male",
             labelKey: "COMMON_GENDER_MALE",
-            value:"MALE",           
+            value:"Male",           
           },
           {
-            labelName: "FEMALE",
+            labelName: "Female",
             labelKey: "COMMON_GENDER_FEMALE",
-            value:"FEMALE",           
+            value:"Female",           
           },
           {
-            label: "OTHERS",
-            labelKey: "NULM_SMID_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            label: "Transgender",
+            labelKey: "NULM_SEP_GENDER_TRANSGENDER",
+            value:"Transgender",           
+          },
+          {
+            label: "Others",
+            labelKey: "NULM_SEP_GENDER_OTHERS",
+            value:"Others",           
+          },
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",
      
@@ -131,6 +171,11 @@ export const SUSVDetails = getCommonCard({
         label: { name: "Caste of Applicant", key: "NULM_SMID_CASTE_OF_APPLICANT" },
         buttons: [
           {
+            label: "General",
+            labelKey: "NULM_SEP_GENDER_GENERAL",
+            value:"General",           
+          },
+          {
             labelName: "SC",
             labelKey: "NULM_SEP_SC",
             value:"SC",           
@@ -145,13 +190,10 @@ export const SUSVDetails = getCommonCard({
             labelKey: "NULM_SEP_OBC",
             value:"OBC",           
           },
-          {
-            label: "OTHERS",
-            labelKey: "NULM_SEP_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+         
+          
         ],
-     //   defaultValue: "OTHERS"
+     //   defaultValue: "Others"
       },
       type: "array",     
     },
@@ -186,21 +228,7 @@ export const SUSVDetails = getCommonCard({
         jsonPath: "NulmSusvRequest.permanentAddress"
       })
     },
-    mobileNo: {
-      ...getTextField({
-        label: {
-          labelName: "Mobile Number",
-          labelKey: "NULM_SMID_MOBILE_NUMBER"
-        },
-        placeholder: {
-          labelName: "Enter Mobile Number",
-          labelKey: "NULM_SMID_MOBILE_NUMBER_PLACEHOLDER"
-        },
-        
-        pattern: getPattern("numeric-only") || null,
-        jsonPath: "NulmSusvRequest.mobileNo"
-      })
-    },   
+    
     qualification: {
       ...getTextField({
         label: {
@@ -243,17 +271,17 @@ export const SUSVDetails = getCommonCard({
         label: { name: "Disable", key: "NULM_SUSV_DISABLE" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },

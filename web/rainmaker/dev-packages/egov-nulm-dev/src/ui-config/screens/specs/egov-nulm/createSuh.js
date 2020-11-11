@@ -17,7 +17,7 @@ import {
     prepareFinalObject,
     toggleSnackbar,
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  import { getCommonApplyFooter, validateFields } from "../utils";
+  import { getCommonApplyFooter, validateFields ,convertDateToEpoch} from "../utils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -101,6 +101,10 @@ import {
       dispatch,
       "createSuh"
     );
+    const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
+    if(NulmSuhCitizenNGORequest && ( !NulmSuhCitizenNGORequest.hasOwnProperty("gender"))){
+      isFormValid = false;
+    }
   
     if (!isFormValid) {
       const errorMessage = {
@@ -109,7 +113,7 @@ import {
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } else {
-        const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
+        
 
         if(NulmSuhCitizenNGORequest && NulmSuhCitizenNGORequest.nominatedBy && NulmSuhCitizenNGORequest.nominatedBy==="Others"){
                 if(!(NulmSuhCitizenNGORequest.nameOfNominatedPerson && NulmSuhCitizenNGORequest.contactNo)){
@@ -120,9 +124,44 @@ import {
                       dispatch(toggleSnackbar(true, errorMessage, "warning"));
                       return;
                 }
-        }else{
+                
+        }
+        else if(NulmSuhCitizenNGORequest){
+          if(!NulmSuhCitizenNGORequest.dob && !NulmSuhCitizenNGORequest.age ){
+            const errorMessage = {
+              labelName: "Please select the Minority",
+              labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            return;
+          }
+
+        }        
+        else{
             NulmSuhCitizenNGORequest.nominatedBy ="Self";
         }
+
+            // show validation mewssage and clear age value from json
+    if(NulmSuhCitizenNGORequest && NulmSuhCitizenNGORequest.dob && NulmSuhCitizenNGORequest.age ){
+      if(NulmSuhCitizenNGORequest.dob && NulmSuhCitizenNGORequest.age ){
+        const errorMessage = {
+          labelName: "Please select the Minority",
+          labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        // dispatch(
+        //   handleField(
+        //     `createSuh`,
+        //     "components.div.children.formwizardFirstStep.children.formDetail.children.cardContent.children.addSUH.children.age",
+        //     "props.value",
+        //     ''
+        //   )
+        // );
+        //dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest.age`, null ));
+        return;
+      }
+    }
+    //
 
       //trigger api for create store
       const { screenConfiguration } = state;
@@ -132,12 +171,16 @@ import {
       const radioButtonValue = ["isDisabled",];
     
       radioButtonValue.forEach(value => {
-        if(NulmSuhCitizenNGORequest[value] && NulmSuhCitizenNGORequest[value]==="YES" ){
+        if(NulmSuhCitizenNGORequest[value] && NulmSuhCitizenNGORequest[value]==="Yes" ){
           set( NulmSuhCitizenNGORequest, value, true );
         }else{
           set( NulmSuhCitizenNGORequest, value, false );
         }
       })
+      // const datefieldvalue =["dob"]
+      // datefieldvalue.forEach(value => {
+      //   set( NulmSuhCitizenNGORequest, value, convertDateToEpoch(NulmSuhCitizenNGORequest[value]) );
+      // })
       const queryObject = [];
       const requestBody = { NulmSuhCitizenNGORequest };
       console.log("requestbody", requestBody);
@@ -346,22 +389,28 @@ import {
                   label: { name: "Gender", key: "NULM_SEP_GENDER" },
                   buttons: [
                     {
-                      labelName: "FEMALE",
+                      labelName: "Female",
                       labelKey: "COMMON_GENDER_MALE",
-                      value:"FEMALE",           
+                      value:"Female",           
                     },
                     {
-                      label: "MALE",
+                      label: "Male",
                       labelKey: "COMMON_GENDER_FEMALE",
-                      value:"MALE",           
+                      value:"Male",           
                     },
                     {
-                      label: "OTHERS",
+                      label: "Transgender",
+                      labelKey: "NULM_SEP_GENDER_TRANSGENDER",
+                      value:"Transgender",           
+                    },
+                    {
+                      label: "Others",
                       labelKey: "NULM_SEP_GENDER_OTHERS",
-                      value:"OTHERS",           
-                    }
+                      value:"Others",           
+                    },
+                    
                   ],      
-                 // defaultValue: "MALE"
+                 // defaultValue: "Male"
                 },
                 type: "array",
                
@@ -377,11 +426,36 @@ import {
                     labelName: "Enter age",
                     labelKey: "NULM_SEP_AGE_PLACEHOLDER"
                   },
-                  required: true,
+                  required: false,
                   pattern: getPattern("age") || null,
                   jsonPath: "NulmSuhCitizenNGORequest.age"
+                }),
+                beforeFieldChange: (action, state, dispatch) => {
+                  if(action.value)
+                  dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest.age`,Number(action.value)));
+
+                }
+              },  
+              dob: {
+                ...getDateField({
+                  label: {
+                    labelName: "Date Of Birth",
+                    labelKey: "NULM_SMID_DOB"
+                  },
+                  placeholder: {
+                    labelName: "Enter Date Of Birth",
+                    labelKey: "NULM_SMID_DOB_PLACEHOLDER"
+                  },
+                  required: false,
+                  pattern: getPattern("Date") || null,
+                  jsonPath: "NulmSuhCitizenNGORequest.dob",
+                  props: {
+                    inputProps: {
+                      max:  new Date().toISOString().slice(0, 10),
+                    }
+                  }
                 })
-              },          
+              },        
               address: {
                 ...getTextField({
                   label: {
@@ -426,17 +500,17 @@ import {
                   label: { name: "Urban Poor", key: "NULM_SEP_HANDICAPPED" },
                   buttons: [
                     {
-                      labelName: "YES",
+                      labelName: "Yes",
                       labelKey: "NULM_SEP_YES",
-                      value:"YES",           
+                      value:"Yes",           
                     },
                     {
-                      label: "NO",
+                      label: "No",
                       labelKey: "NULM_SEP_NO",
-                      value:"NO",           
+                      value:"No",           
                     },        
                   ],      
-                  defaultValue: "NO"
+                  defaultValue: "No"
                 },
                 type: "array",   
               },
@@ -543,7 +617,8 @@ dispatch( handleField("createSuh", nomineeNamePath, "props.value",""));
 
        const {NulmSuhCitizenNGORequest} = state.screenConfiguration.preparedFinalObject;
        if(NulmSuhCitizenNGORequest!== undefined)
-       {       
+       { 
+        dispatch(prepareFinalObject("NulmSuhCitizenNGORequest",null));      
        if(NulmSuhCitizenNGORequest.shelterRequestedForPerson !== undefined)
        {
        if(!NulmSuhCitizenNGORequest &&  !NulmSuhCitizenNGORequest.shelterRequestedForPerson)

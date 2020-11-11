@@ -8,7 +8,7 @@ import {
 } from "../../../../../ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject ,handleScreenConfigurationFieldChange as handleField} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getFileUrl } from "egov-ui-framework/ui-utils/commons";
 import {
   getButtonVisibility,
@@ -51,9 +51,12 @@ export const callBackForNext = async (state, dispatch) => {
       dispatch,
       "create-smid"
     );
+    //
+   
+    //
     
 if(NULMSMIDRequest && NULMSMIDRequest.isMinority){
-  if(NULMSMIDRequest.isMinority =="YES" && !NULMSMIDRequest.minority ){
+  if(NULMSMIDRequest.isMinority =="Yes" && !NULMSMIDRequest.minority ){
     const errorMessage = {
       labelName: "Please select the Minority",
       labelKey: "ERR_NULM_MINORTY"
@@ -64,7 +67,7 @@ if(NULMSMIDRequest && NULMSMIDRequest.isMinority){
 }
 
 if(NULMSMIDRequest && NULMSMIDRequest.isUrbanPoor){
-  if(NULMSMIDRequest.isUrbanPoor =="YES" && !NULMSMIDRequest.bplNo ){
+  if(NULMSMIDRequest.isUrbanPoor =="Yes" && !NULMSMIDRequest.bplNo ){
     const errorMessage = {
       labelName: "Please fill BPL Number",
       labelKey: "ERR_NULM_FILL_BPL_NUMBER"
@@ -74,7 +77,7 @@ if(NULMSMIDRequest && NULMSMIDRequest.isUrbanPoor){
   }
 }
 if(NULMSMIDRequest && NULMSMIDRequest.isInsurance){
-  if(NULMSMIDRequest.isInsurance =="YES" && !NULMSMIDRequest.insuranceThrough ){
+  if(NULMSMIDRequest.isInsurance =="Yes" && !NULMSMIDRequest.insuranceThrough ){
     const errorMessage = {
       labelName: "Please fill insurance through",
       labelKey: "ERR_NULM_FILL_INSURANCE_THROUGH"
@@ -94,7 +97,7 @@ if(NULMSMIDRequest ){
   }
 }
 if(NULMSMIDRequest && NULMSMIDRequest.isRegistered){
-  if(NULMSMIDRequest.isRegistered =="YES" && !NULMSMIDRequest.cobNumber ){
+  if(NULMSMIDRequest.isRegistered =="Yes" && !NULMSMIDRequest.cobNumber ){
     const errorMessage = {
       labelName: "Please provide the COB Number",
       labelKey: "NULM_SEP_COB_NUMBER_INPUT_VALIDATION"
@@ -141,7 +144,25 @@ if(NULMSMIDRequest && ( !NULMSMIDRequest.hasOwnProperty("gender") || !NULMSMIDRe
             }
             else
             {
-              isFormValid = true;
+              if(NULMSMIDRequest && ( !NULMSMIDRequest.hasOwnProperty("gender") || !NULMSMIDRequest.hasOwnProperty("caste"))){
+                isFormValid = false;
+              }
+              else if(NULMSMIDRequest ){
+                  if(!NULMSMIDRequest.dob && !NULMSMIDRequest.age ){
+                    const errorMessage = {
+                      labelName: "Please select the Minority",
+                      labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+                    };
+                    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                    return;
+                  }
+                
+              }
+              else
+              {
+                isFormValid = true;
+              }
+             
             }
         }
       
@@ -221,6 +242,27 @@ else if(activeStep == 1 && isFormValid){
   moveToReview(dispatch);
 }
   else{
+    // show validation mewssage and clear age value from json
+    if(NULMSMIDRequest && NULMSMIDRequest.dob && NULMSMIDRequest.age ){
+      if(NULMSMIDRequest.dob && NULMSMIDRequest.age ){
+        const errorMessage = {
+          labelName: "Please select the Minority",
+          labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        // dispatch(
+        //   handleField(
+        //     `create-smid`,
+        //     "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.age",
+        //     "props.value",
+        //     ''
+        //   )
+        // );
+        // dispatch(prepareFinalObject(`NULMSMIDRequest.age`, null ));
+        return;
+      }
+    }
+    //
     changeStep(state, dispatch);
   }
 };
@@ -347,6 +389,13 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
+  const {NULMSMIDRequest} = state.screenConfiguration.preparedFinalObject;
+  if(NULMSMIDRequest && NULMSMIDRequest.dob && NULMSMIDRequest.age ){
+    if(NULMSMIDRequest.dob && NULMSMIDRequest.age ){
+      
+      dispatch(prepareFinalObject(`NULMSMIDRequest.age`, '' ));
+    }
+  }
   changeStep(state, dispatch, "previous");
 };
 

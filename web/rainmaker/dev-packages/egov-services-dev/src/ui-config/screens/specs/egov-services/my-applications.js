@@ -69,7 +69,18 @@ const getMdmsData = async (action, state, dispatch) => {
             mdmsBody
         );
         payload.MdmsRes.Booking.ApplicationType = payload.MdmsRes.Booking.ApplicationType.filter(el => el.code !== "NLUJM")
+        let park = {"name":"Parks","id":"7","code":"Parks","tenantId":"ch.chandigarh","active":"true"};
+        payload.MdmsRes.Booking.ApplicationType.push(park);
 
+        let parkStatus = {"name":"Parks","id":"7","code":"Parks","tenantId":"ch.chandigarh","active":"true","status":[{"name":"Initiated","code":"INITIATED","active":true},{"name":"Approved","code":"APPROVED","active":true},{"name":"Rejected","code":"REJECTED","active":true},{"name":"Panding Payment","code":"PENDINGPAYMENT","active":true},{"name":"Panding Approval","code":"PENDINGAPPROVAL","active":true}]};
+        payload.MdmsRes.Booking.Status.push(parkStatus);
+
+        let cc = {"name":"Community Center","id":"8","code":"Community Center","tenantId":"ch.chandigarh","active":"true"};
+        payload.MdmsRes.Booking.ApplicationType.push(cc);
+
+        let ccStatus = {"name":"Community Center","id":"8","code":"Community Center","tenantId":"ch.chandigarh","active":"true","status":[{"name":"Initiated","code":"INITIATED","active":true},{"name":"Approved","code":"APPROVED","active":true},{"name":"Rejected","code":"REJECTED","active":true},{"name":"Panding Payment","code":"PENDINGPAYMENT","active":true},{"name":"Panding Approval","code":"PENDINGAPPROVAL","active":true}]};
+        payload.MdmsRes.Booking.Status.push(ccStatus);
+        console.log(payload.MdmsRes, "Type Application");
         dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
     } catch (e) {
         console.log(e);
@@ -164,7 +175,7 @@ const screenConfig = {
                             {
                                 label: "BK_MY_BK_APPLICATION_NUMBER_LABEL",
                                 jsonPath: "bkApplicationNumber",
-                                
+
                             },
                             {
                                 label: "BK_MY_BK_APPLICATION_STATUS_LABEL",

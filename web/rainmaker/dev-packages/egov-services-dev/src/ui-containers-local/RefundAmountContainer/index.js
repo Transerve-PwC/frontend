@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import get from "lodash/get";
 
 class RefundAmountContainer extends Component {
-    
+
     render() {
         const { refundAmount } = this.props;
         return (
@@ -20,14 +20,29 @@ class RefundAmountContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
     const { screenConfiguration } = state;
 
-    
+
 
     const bookingDate = get(
         screenConfiguration,
         "preparedFinalObject.Booking.bkFromDate",
         []
     )
-    const bookingAmount = get(
+    var billAccountDetails = get(
+        screenConfiguration,
+        "preparedFinalObject.ReceiptTemp[0].Bill[0].billDetails[0].billAccountDetails",
+        []
+    );
+    let bookingAmount = 0;
+    for(let i = 0; i<billAccountDetails.length; i++){
+        if(billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY"){
+            bookingAmount += billAccountDetails[i].amount;
+        }
+        if(billAccountDetails[i].taxHeadCode == "PACC"){
+            bookingAmount += billAccountDetails[i].amount;
+        }
+    }
+
+    const txnTotalAmount = get(
         screenConfiguration,
         "preparedFinalObject.ReceiptTemp[0].Bill[0].totalAmount",
         []
@@ -37,9 +52,9 @@ const mapStateToProps = (state, ownProps) => {
 
     var Difference_In_Time = date1.getTime() - date2.getTime();
 
-    // To calculate the no. of days between two dates 
+    // To calculate the no. of days between two dates
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    console.log(Difference_In_Days, "Neor days");
+
     let refundAmount = 0
     if (Difference_In_Days > 29) {
         const refundPercent = get(

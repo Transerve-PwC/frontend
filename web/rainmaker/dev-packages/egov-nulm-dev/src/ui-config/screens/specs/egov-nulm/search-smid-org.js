@@ -59,24 +59,24 @@ import {
 
     const  data =  process.env.REACT_APP_NAME === "Employee" ?  [
      {
-       value: "AWAITINGFORAPPROVAL",
+       value: "Awaiting for Approval",
        label: "Awaiting for Approval"
      },
      {
-       value: "APPROVED",
+       value: "Approved",
        label: "Approved"
      }
     ]:[
        {
-         value: "CREATED",
+         value: "Created",
          label: "Created"
        },
        {
-         value: "REJECTED",
+         value: "Rejected",
          label: "Rejected"
        },
        {
-         value: "APPROVED",
+         value: "Approved",
          label: "Approved"
        }
      ];

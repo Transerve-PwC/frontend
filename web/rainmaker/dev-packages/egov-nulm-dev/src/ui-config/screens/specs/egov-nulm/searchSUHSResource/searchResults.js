@@ -36,6 +36,12 @@ export const getTextToLocalMapping = (label) => {
         "NULM_SUH_CITIZEN_SHELTER_NOMINEE_CONTACT",
         localisationLabels
       );
+      case "Creation Date":
+      return getLocaleLabels(
+        "Creation Date",
+        "NULM_SEP_CREATION_DATE",
+        localisationLabels
+      );
       
         case "Search Results for SUH":
       return getLocaleLabels(
@@ -54,9 +60,12 @@ export const searchResults = {
     columns: [
       getTextToLocalMapping("shelterRequestedForPerson"),
       getTextToLocalMapping("reasonForStaying"),
-      getTextToLocalMapping("nominatedBy"),
       getTextToLocalMapping("nameOfNominatedPerson"),
       getTextToLocalMapping("contactNo"),
+      getTextToLocalMapping("nominatedBy"),
+      getTextToLocalMapping("Creation Date"),
+      
+     
       {
         name: "code",
         options: {
@@ -81,7 +90,7 @@ export const searchResults = {
 
 const onRowClick = (rowData) => {
   const tenantId = "ch.chandigarh" // process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
-  window.location.href = `viewSuh?tenantId=${tenantId}&code=${rowData[5]}`;
+  window.location.href = `viewSuh?tenantId=${tenantId}&code=${rowData[6]}`;
 };
 
 

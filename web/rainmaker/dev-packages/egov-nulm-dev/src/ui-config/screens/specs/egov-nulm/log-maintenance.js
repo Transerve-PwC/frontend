@@ -59,7 +59,7 @@ const getShelterName = async(action, state, dispatch) => {
     try{
       let NulmSuhRequest = {};
       NulmSuhRequest.tenantId = "ch.chandigarh";
-      NulmSuhRequest.applicationStatus = "APPROVED";
+      NulmSuhRequest.applicationStatus = "Approved";
       const requestBody = {NulmSuhRequest}
       let response = await getSearchResults([],requestBody, dispatch,"suhShelterName");
       if(response){

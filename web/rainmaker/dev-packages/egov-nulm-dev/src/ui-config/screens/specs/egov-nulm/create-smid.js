@@ -163,7 +163,7 @@ import {
       get(state.screenConfiguration.preparedFinalObject, "NULMSMIDRequest.isHomeless",false) 
 
       if(!isHomeless)
-        dispatch(prepareFinalObject("NULMSMIDRequest.isHomeless","NO"));
+        dispatch(prepareFinalObject("NULMSMIDRequest.isHomeless",isHomeless));
       // if(minority)
       // {
       //  dispatch(
@@ -207,7 +207,7 @@ import {
         //   )
         // );  
         
-        dispatch(prepareFinalObject("NULMSMIDRequest.minority","NO"));
+        dispatch(prepareFinalObject("NULMSMIDRequest.minority",false));
       }
  
       else
@@ -230,7 +230,7 @@ import {
       if(!isInsurance)
       {
         dispatch(prepareFinalObject("NULMSMIDRequest.insuranceThrough",null));
-        dispatch(prepareFinalObject("NULMSMIDRequest.isInsurance","NO"));
+        dispatch(prepareFinalObject("NULMSMIDRequest.isInsurance",isInsurance));
         set(
           action.screenConfig,
           "components.div.children.formwizardFirstStep.children.SMIDDetails.children.cardContent.children.SMIDDetailsContainer.children.insuranceThrough.props.style",
@@ -247,8 +247,8 @@ import {
     
       if(!isStreetVendor)
       {
-         dispatch(prepareFinalObject("NULMSMIDRequest.isRegistered","NO"));
-         dispatch(prepareFinalObject("NULMSMIDRequest.isStreetVendor","NO"));
+         dispatch(prepareFinalObject("NULMSMIDRequest.isRegistered",isStreetVendor));
+         dispatch(prepareFinalObject("NULMSMIDRequest.isStreetVendor",isStreetVendor));
         // dispatch(
         //   handleField(
         //     `create-smid`,

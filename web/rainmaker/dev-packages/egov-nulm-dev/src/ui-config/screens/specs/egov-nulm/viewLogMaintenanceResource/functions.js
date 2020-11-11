@@ -24,16 +24,16 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 
 export const handleSubmit = (state, dispatch) =>{
-  handleCreateUpdate(state, dispatch,"CREATED")
+  handleCreateUpdate(state, dispatch,"Created")
 };
 export const handlesave = (state, dispatch) =>{
-  handleCreateUpdate(state, dispatch,"DRAFTED")
+  handleCreateUpdate(state, dispatch,"Drafted")
 };
 export const handleReject = (state, dispatch) =>{
-handleRejectApprove(state, dispatch,"REJECTED");
+handleRejectApprove(state, dispatch,"Rejected");
 };
 export const handleApprove = async(state, dispatch) =>{
-handleRejectApprove(state, dispatch,"APPROVED");
+handleRejectApprove(state, dispatch,"Approved");
 };
 export const handleDelete  = async(state, dispatch) =>{
   const tenantId = process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;

@@ -120,16 +120,16 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
 };
 
 export const handleSubmitSMID = (state, dispatch) =>{
-  handleCreateUpdateSMID(state, dispatch,"CREATED")
+  handleCreateUpdateSMID(state, dispatch,"Created")
 };
 export const handlesaveSMID = (state, dispatch) =>{
-  handleCreateUpdateSMID(state, dispatch,"DRAFTED")
+  handleCreateUpdateSMID(state, dispatch,"Drafted")
 };
 export const handleRejectSMID = (state, dispatch) =>{
-  handleCreateUpdateSMID(state, dispatch,"REJECTED")
+  handleCreateUpdateSMID(state, dispatch,"Rejected")
 };
 export const handleApproveSMID = (state, dispatch) =>{
-  handleCreateUpdateSMID(state, dispatch,"APPROVED")
+  handleCreateUpdateSMID(state, dispatch,"Approved")
 };
 export const handleCreateUpdateSMID = (state, dispatch,status) => {
   let uuid = get(
@@ -163,7 +163,7 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
   const radioButtonValue = ["isDisability"];
     
   radioButtonValue.forEach(value => {
-    if(NulmSusvRequest[value] && NulmSusvRequest[value]==="YES" ){
+    if(NulmSusvRequest[value] && NulmSusvRequest[value]==="Yes" ){
       set( NulmSusvRequest, value, true );
     }else{
       set( NulmSusvRequest, value, false );
@@ -175,9 +175,9 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
   console.log("requestbody", requestBody);
   if (action === "CREATE") {
     try {
-      if (status == "DRAFTED") {
+      if (status == "Drafted") {
         requestBody.NulmSusvRequest.action = "Drafted";
-      } else if (status == "CREATED") { 
+      } else if (status == "Created") { 
         requestBody.NulmSusvRequest.action = "Created";
       }
       const response = await httpRequest(
@@ -196,9 +196,9 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
     }
   } else if (action === "UPDATE") {
     try {
-      if (status == "DRAFTED") {
+      if (status == "Drafted") {
         requestBody.NulmSusvRequest.action = "Drafted";
-      } else if (requestBody.NulmSusvRequest.applicationStatus=="Drafted" && status == "CREATED") { 
+      } else if (requestBody.NulmSusvRequest.applicationStatus=="Drafted" && status == "Created") { 
         requestBody.NulmSusvRequest.action = "Created";
       }else if (requestBody.NulmSusvRequest.applicationStatus == "Reassign To Citizen") {
         requestBody.NulmSusvRequest.action = 'Forward To JA';

@@ -136,14 +136,14 @@ export const handleSubmitSEP = (state, dispatch) =>{
   if(process.env.REACT_APP_NAME === "Employee"){
       if(status === FORWARD_TO_TASK_FORCE_COMMITTEE){
       const tfcStatus =  get(state, 'screenConfiguration.preparedFinalObject.NULMSEPRequest.taskCommitteeStatus');
-        if(tfcStatus === "Approved by Task force committee")
+        if(tfcStatus === "Approved by Task Force Committee")
             handleCreateUpdateSEP(state, dispatch,APPROVED_BY_TASK_FORCE_COMMITTEE);
         else 
           handleCreateUpdateSEP(state, dispatch,REJECTED_BY_TASK_FORCE_COMMITTEE); 
       }
     else if (status === APPROVED_BY_TASK_FORCE_COMMITTEE){
       const tfcStatus =  get(state, 'screenConfiguration.preparedFinalObject.NULMSEPRequest.taskCommitteeStatus');
-      if(tfcStatus === "Approved by Task force committee")
+      if(tfcStatus === "Approved by Task Force Committee")
           handleCreateUpdateSEP(state, dispatch,SENT_TO_BANK_FOR_PROCESSING);
       else 
         handleCreateUpdateSEP(state, dispatch,REJECTED_BY_TASK_FORCE_COMMITTEE); 
@@ -155,18 +155,18 @@ export const handleSubmitSEP = (state, dispatch) =>{
     window.localStorage.removeItem("SEP_Status");
   }
   else{
-    handleCreateUpdateSEP(state, dispatch,"CREATED");
+    handleCreateUpdateSEP(state, dispatch,"Created");
   }
   
 };
 export const handlesaveSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"DRAFTED")
+  handleCreateUpdateSEP(state, dispatch,"Drafted")
 };
 export const handleRejectSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"REJECTED")
+  handleCreateUpdateSEP(state, dispatch,"Rejected")
 };
 export const handleApproveSEP = async(state, dispatch) =>{
- handleCreateUpdateSEP(state, dispatch,"APPROVED");
+ handleCreateUpdateSEP(state, dispatch,"Approved");
  const tenantId = process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
  let uuid = get(
   state.screenConfiguration.preparedFinalObject,
@@ -181,7 +181,7 @@ let applicationId = get(
 // let NULMSEPRequest ={}
 // NULMSEPRequest.applicationUuid = uuid;
 // NULMSEPRequest.tenantId = tenantId;
-// NULMSEPRequest.applicationStatus = "APPROVED";
+// NULMSEPRequest.applicationStatus = "Approved";
 
 // const requestBody = {NULMSEPRequest}
 // try {
@@ -229,8 +229,9 @@ export const createUpdatePO = async (state, dispatch, action,status) => {
   let queryObject = [{ key: "tenantId", value: tenantId }];
  //setting status
    NULMSEPRequest.applicationStatus = status;
+
 let dob = get(NULMSEPRequest, "dob");
-   const formattedDOB = dob.split("-").reverse().join("-");
+  // const formattedDOB = dob.split("-").reverse().join("-");
 
   // set(
   //   NULMSEPRequest,
@@ -238,17 +239,17 @@ let dob = get(NULMSEPRequest, "dob");
   //   formattedDOB
   // );
 
-  const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute"];
+  const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute","isDisabilityCertificateAvailable"];
     
   radioButtonValue.forEach(value => {
-    if(NULMSEPRequest[value] && NULMSEPRequest[value]==="YES" ){
+    if(NULMSEPRequest[value] && NULMSEPRequest[value]==="Yes" ){
       set( NULMSEPRequest, value, true );
     }else{
       set( NULMSEPRequest, value, false );
     }
   })
   
-
+ set( NULMSEPRequest, "age", Number(NULMSEPRequest["age"]) );
   const requestBody = {NULMSEPRequest};
   console.log("requestbody", requestBody);
 

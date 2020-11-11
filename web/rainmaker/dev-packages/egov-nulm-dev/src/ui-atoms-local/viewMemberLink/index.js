@@ -41,7 +41,7 @@ const mapStateToProps = (state, ownprops) => {
   const applicationId = get(preparedFinalObject,jsonPath, "");
   const jsonPathStatus = jsonPath.replace("applicationId","applicationStatus")
   const status = get(preparedFinalObject,jsonPathStatus, "");
-  const isDisabled = status ==="DELETED"?true : false;
+  const isDisabled = status ==="Deleted"?true : false;
   const url = `${urlLink}?applicationId=${applicationId}&status=${status}`;
   const { localizationLabels } = app;
   return { preparedFinalObject, jsonPath, url,localizationLabels,isDisabled };

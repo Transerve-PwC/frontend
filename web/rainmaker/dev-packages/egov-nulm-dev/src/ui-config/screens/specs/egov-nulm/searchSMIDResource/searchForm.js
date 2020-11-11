@@ -128,12 +128,12 @@ export const searchForm = getCommonCard({
         },
         data: [
           {
-            value: "CREATED",
-            label: "CREATED"
+            value: "Created",
+            label: "Created"
           },
           {
-            value: "DRAFTED",
-            label: "DRAFTED"
+            value: "Drafted",
+            label: "Drafted"
           }
         ],
       },

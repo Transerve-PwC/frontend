@@ -7,7 +7,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import {  checkValueForNA } from "../../utils";
 const gotoCreatePage = (state, dispatch) => {
    const createUrl = `/egov-nulm/log-maintenance?step=0`;
   dispatch(setRoute(createUrl));
@@ -104,7 +104,16 @@ export const getSUHLogDetailsView = (isReview = true) => {
           labelName: "age",
           labelKey: "NULM_SEP_AGE"
         },
-        { jsonPath: "NulmSuhLogRequest.age" }
+        { jsonPath: "NulmSuhLogRequest.age",
+        callBack: checkValueForNA  }
+      ),
+      dateofbirth: getLabelWithValue(
+        {
+          labelName: "Date Of Birth",
+          labelKey: "NULM_SEP_DOB"
+        },
+        { jsonPath: "NulmSuhLogRequest.dob",
+        callBack: checkValueForNA  }
       ),       
       address: getLabelWithValue(
         {

@@ -122,7 +122,7 @@ import {
                                         if(viewScreenMdmsData && viewScreenMdmsData.NULM && viewScreenMdmsData.NULM.SEPDocuments){
 
                                           const {SEPDocuments} = viewScreenMdmsData.NULM;
-                                          const documentsDes = ["Copy of Ration card / Priority household card","Copy of Election commissioner id proof","Copy of Aadhar card","Copy of Pan Card","Photo copy of Applicant","Disability Certificate"]
+                                          const documentsDes = ["Copy of Ration card / Priority household card","Copy of Voter ID","Copy of Aadhar card","Copy of Pan Card","Applicant Photo – Passport Size","Disability Certificate"]
                                           const indexOfDoc = documentsDes.findIndex(doc =>  doc === docInfo.documentType )
 
                                             documentsUploadRedux[indexOfDoc] = {                          
@@ -176,12 +176,12 @@ const getSEPDetails = async(state, dispatch) =>{
     
       radioButtonValue.forEach(value => {
         if(NULMSEPRequest[value] && NULMSEPRequest[value]=== true ){
-          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "YES" ));
+          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "Yes" ));
         }else{
-          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "NO" ));
+          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "No" ));
         }
       })
-
+if(NULMSEPRequest.dob !== null)
       dispatch(prepareFinalObject(`NULMSEPRequest.dob`, NULMSEPRequest.dob.split(" ")[0] ));
 
       if(NULMSEPRequest.taskCommitteeActionDate){
@@ -202,7 +202,7 @@ const roleBasedValidationForFooter = () => {
       return poViewFooter();
   }
   else{
-    if(status==="DRAFTED")
+    if(status==="Drafted")
         return poViewFooter() 
     else
       return{};

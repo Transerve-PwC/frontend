@@ -152,7 +152,15 @@ class WorkFlowContainer extends React.Component {
       ];
       let wfUpdatePayload = {}
       wfUpdatePayload[`${dataPath}`] = data;
-      
+      if (dataPath === "NulmSusvRenewRequest") { 
+
+        if (wfUpdatePayload.NulmSusvRenewRequest.hasOwnProperty("changeOfLocation")) { 
+          wfUpdatePayload.NulmSusvRenewRequest['changeOfLocation'] == "No" ?
+          wfUpdatePayload.NulmSusvRenewRequest['changeOfLocation'] = false :
+          wfUpdatePayload.NulmSusvRenewRequest['changeOfLocation'] = true;
+        }
+        
+      }
       toggleSpinner();
       const payload = await httpRequest("post", updateUrl, "", queryObject, wfUpdatePayload);
       this.setState({
@@ -186,7 +194,7 @@ class WorkFlowContainer extends React.Component {
     //setting the action to send in RequestInfo
     let appendToPath = ""
 
-    if (dataPath === "NulmSusvRequest" ) {
+    if (dataPath === "NulmSusvRequest" || dataPath === "NulmSusvRenewRequest" ) {
 
       var validated = true;
 
@@ -251,6 +259,10 @@ class WorkFlowContainer extends React.Component {
  if (dataPath === "NulmSusvRequest") {
       // localhost:3006/egov-store-asset/create-purchase-order?poNumber=PO/00039/2020&tenantId=ch.chandigarh
       editUrl = `/egov-nulm/create-susv`;
+
+    } else if (dataPath === "NulmSusvRenewRequest") {
+      // localhost:3006/egov-store-asset/create-purchase-order?poNumber=PO/00039/2020&tenantId=ch.chandigarh
+      editUrl = `/egov-nulm/create-svru`;
 
     } 
     return editUrl;

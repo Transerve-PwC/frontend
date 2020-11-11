@@ -222,43 +222,43 @@ const getSUHDetails = async(state, dispatch) =>{
       facilityArray.forEach(value => {
         if(NulmSuhRequest && NulmSuhRequest.suhFacilitiesDetails && NulmSuhRequest.suhFacilitiesDetails[0][value]===true)
       {
-         set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "YES" );
+         set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "Yes" );
        }else{
-         set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "NO" );
+         set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "No" );
        }
      })
    
      const recordArray = ["isAssetInventoryRegister","isAccountRegister", "isAttendanceRegisterOfStaff","isShelterManagementCommitteeRegister", "isPersonnelAndSalaryRegister", "isHousekeepingAndMaintenanceRegister","isComplaintAndSuggestionRegister", "isVisitorRegister","isProfileRegister"];
       recordArray.forEach((value,index) => {
          if(NulmSuhRequest && NulmSuhRequest.suhRecordMaintenance && NulmSuhRequest.suhRecordMaintenance[0][value]===true  ){
-           set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "YES" );
+           set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "Yes" );
          }else{
-           set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "NO" );
+           set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "No" );
          }
        })
    
        const staffArray = ["isManager","isSecurityStaff","isCleaner"];
        staffArray.forEach((value,index) => {
          if(NulmSuhRequest && NulmSuhRequest.suhStaffMaintenance && NulmSuhRequest.suhStaffMaintenance[0][value]===true  ){
-           set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "YES" );
+           set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "Yes" );
          }else{
-           set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "NO" );
+           set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "No" );
          }
        })
    
        const otherDetailArray = ["isConstitutionOfShelterManagementCommittee", "isSocialAudit", "isLinkageToCentralGovtWelfareSchemes", "isLinkageToPublicHealthInitiatives", "isLinkageToOtherGovtSchemes", "isLinkageToLocalCommunity","isLinkageToSocialWorkersAndPhilanthropists","isUserCharges", "isIECAndPromotionalInitiatives", "isQuarterlyReporting","isVisits"];
        otherDetailArray.forEach((value,index) => {
          if(NulmSuhRequest && NulmSuhRequest[value]===true  ){
-           set( NulmSuhRequest, `${value}`, "YES" );
+           set( NulmSuhRequest, `${value}`, "Yes" );
          }else{
-           set( NulmSuhRequest, `${value}`, "NO" );
+           set( NulmSuhRequest, `${value}`, "No" );
          }
        })
    
        if(NulmSuhRequest  && NulmSuhRequest.weatherCondition =="true"){
-         set( NulmSuhRequest, "weatherCondition", "YES" );
+         set( NulmSuhRequest, "weatherCondition", "Yes" );
        }else{
-         set( NulmSuhRequest, "weatherCondition", "NO" );
+         set( NulmSuhRequest, "weatherCondition", "No" );
        }
 
        dispatch(prepareFinalObject(`NulmSuhRequest`, NulmSuhRequest ));
@@ -269,7 +269,7 @@ const getSUHDetails = async(state, dispatch) =>{
 
 const roleBasedValidationForFooter = () => {
   if(process.env.REACT_APP_NAME === "Employee"){
-      if(status === "CREATED"){
+      if(status === "Created"){
         return poViewFooter();
       }
       else{
@@ -277,7 +277,7 @@ const roleBasedValidationForFooter = () => {
       }
   }     
   else{
-    if(status==="DRAFTED")
+    if(status==="Drafted")
         return poViewFooter() 
     else
       return{};

@@ -24,11 +24,20 @@ export const getWFConfig = (module, businessService, taskId) => {
     }
   }
   else if (businessService == "NULM") {
-		  return {
-			INITIATED: "/egov-nulm/view-susv",
-			DEFAULT: "/egov-nulm/view-susv",
-		  };
-	}
+     if (taskId.includes('SUSVR')) {
+      return {
+        INITIATED: "/egov-nulm/view-svru",
+        DEFAULT: "/egov-nulm/view-svru",
+      };
+    }
+    else if (taskId.includes('SUSV')) {
+      return {
+        INITIATED: "/egov-nulm/view-susv",
+        DEFAULT: "/egov-nulm/view-susv",
+      };
+    }
+  }
+
   else if (businessService == "Engineering" || businessService == "IT" || businessService == "Caretaker" || businessService == "MOH") {
     if (taskId.includes('MRNIN')) {
       return {

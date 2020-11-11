@@ -136,7 +136,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                 children: {
                   submitButtonLabel: getLabel({
                     labelName: "NOC Verification",
-                    labelKey: "COMMON_NOC_VERIFICATION"
+                    labelKey: "ES_NOC_VERIFICATION"
                   })
                 },
                 onClickDefination: {

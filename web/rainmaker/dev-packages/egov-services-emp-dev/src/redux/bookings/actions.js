@@ -534,10 +534,10 @@ export const sendMessageMedia = (message) => {
 
 
 export const fetchApplicaionSector = () => {
-	//Fetching Application sector from MDMS
+	//Fetching Complaint Categories from MDMS
 	let requestBody = {
 		MdmsCriteria: {
-			tenantId: "ch",//commonConfig.tenantId,
+			tenantId: commonConfig.tenantId,
 			moduleDetails: [
 				{
 					moduleName: "Booking",
@@ -549,6 +549,12 @@ export const fetchApplicaionSector = () => {
 						{
 							"name": "PropertyType"
 						},
+						{
+							name: "Payment_Mode",
+						},
+						{
+							name: "Booking_Config",
+						},
 					],
 				},
 			],
@@ -557,7 +563,7 @@ export const fetchApplicaionSector = () => {
 	return async (dispatch) => {
 		try {
 			const payload = await httpRequest(CATEGORY.GET.URL, CATEGORY.GET.ACTION, [], requestBody);
-			console.log('payload in fetch sector',payload)
+			console.log('payload in application',payload)
 			dispatch(applicationSectorFetchSucess(payload));
 		} catch (error) {
 			dispatch(applicationSectorFetchError(error.message));

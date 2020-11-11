@@ -125,20 +125,20 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
 
 
 export const handleSubmit = (state, dispatch) =>{
-  handleCreateUpdate(state, dispatch,"CREATED")
+  handleCreateUpdate(state, dispatch,"Created")
 };
 export const handlesave = (state, dispatch) =>{
-  handleCreateUpdate(state, dispatch,"DRAFTED")
+  handleCreateUpdate(state, dispatch,"Drafted")
 };
 export const handleReject = (state, dispatch) =>{
-handleRejectApprove(state, dispatch,"REJECTED");
+handleRejectApprove(state, dispatch,"Rejected");
 };
 export const handleApprove = async(state, dispatch) =>{
-handleRejectApprove(state, dispatch,"APPROVED");
+handleRejectApprove(state, dispatch,"Approved");
 };
 export const handleApprovalAwait  = async(state, dispatch) =>{
  //forward to employee if shg members more than 10
- if(status !=="AWAITINGFORAPPROVAL"){
+ if(status !=="Awaiting for Approval"){
  const tenantId = process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
  let queryObject = [{ key: "tenantId", value: tenantId }];
  let uuid = get(

@@ -8,7 +8,7 @@ import {
 } from "../../../../../ui-utils/storecommonsapi";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getFileUrl } from "egov-ui-framework/ui-utils/commons";
 import {
   getButtonVisibility,
@@ -53,9 +53,21 @@ export const callBackForNext = async (state, dispatch) => {
       dispatch,
       "create-sep"
     );
+    if (isSepDetailsValid) {
+    if(NULMSEPRequest ){
+      if(!NULMSEPRequest.dob && !NULMSEPRequest.age ){
+        const errorMessage = {
+          labelName: "Please select the Minority",
+          labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }
+  }
     
 if(NULMSEPRequest && NULMSEPRequest.isMinority){
-  if(NULMSEPRequest.isMinority =="YES" && !NULMSEPRequest.minority ){
+  if(NULMSEPRequest.isMinority =="Yes" && !NULMSEPRequest.minority ){
     const errorMessage = {
       labelName: "Please select the Minority",
       labelKey: "ERR_NULM_MINORTY"
@@ -66,7 +78,7 @@ if(NULMSEPRequest && NULMSEPRequest.isMinority){
 }
 
 if(NULMSEPRequest && NULMSEPRequest.isUrbanPoor){
-  if(NULMSEPRequest.isUrbanPoor =="YES" && !NULMSEPRequest.bplNo ){
+  if(NULMSEPRequest.isUrbanPoor =="Yes" && !NULMSEPRequest.bplNo ){
     const errorMessage = {
       labelName: "Please fill BPL Number",
       labelKey: "ERR_NULM_FILL_BPL_NUMBER"
@@ -76,7 +88,7 @@ if(NULMSEPRequest && NULMSEPRequest.isUrbanPoor){
   }
 }
 if(NULMSEPRequest && NULMSEPRequest.isHandicapped){
-  if(NULMSEPRequest.isHandicapped =="YES" && (NULMSEPRequest.isDisabilityCertificateAvailable === undefined) ){
+  if(NULMSEPRequest.isHandicapped =="Yes" && (NULMSEPRequest.isDisabilityCertificateAvailable === undefined) ){
     const errorMessage = {
       labelName: "Please chose disability certificate available option",
       labelKey: "ERR_NULM_FILL_DISABILITY_CERTIFICATE"
@@ -246,6 +258,27 @@ else if(activeStep == 1 && isFormValid){
       {
         // setting documents for conditional doc mandatory
     prepareDocumentsUploadData(state, dispatch, 'SEPApplication');
+
+    // show validation mewssage and clear age value from json
+    if(NULMSEPRequest && NULMSEPRequest.dob && NULMSEPRequest.age ){
+      if(NULMSEPRequest.dob && NULMSEPRequest.age ){
+        const errorMessage = {
+          labelName: "Please select the Minority",
+          labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        // dispatch(
+        //   handleField(
+        //     `create-sep`,
+        //     "components.div.children.formwizardFirstStep.children.SepDetails.children.cardContent.children.SepDetailsContainer.children.age",
+        //     "props.value",
+        //     ''
+        //   )
+        // );
+        // dispatch(prepareFinalObject(`NULMSEPRequest.age`, null ));
+        return;
+      }
+    }
       changeStep(state, dispatch);
       }
     }
@@ -376,6 +409,20 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
+  const {NULMSEPRequest} = state.screenConfiguration.preparedFinalObject;
+  if(NULMSEPRequest && NULMSEPRequest.dob && NULMSEPRequest.age ){
+    if(NULMSEPRequest.dob && NULMSEPRequest.age ){
+      dispatch(
+        handleField(
+          `create-sep`,
+          "components.div.children.formwizardFirstStep.children.SepDetails.children.cardContent.children.SepDetailsContainer.children.age",
+          "props.value",
+          ''
+        )
+      );
+      dispatch(prepareFinalObject(`NULMSEPRequest.age`, null ));
+    }
+  }
   changeStep(state, dispatch, "previous");
 };
 

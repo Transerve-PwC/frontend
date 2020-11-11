@@ -35,17 +35,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Bedding", key: "NULM_SUH_BEDDING" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -76,17 +76,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Washing of linen", key: "NULM_SUH_WASHING_OF_LINEN" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -117,17 +117,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Cleaning of premises on regular basis", key: "NULM_SUH_CLEANING_OF_PREMISES_ON_REGULAR_BASIS" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -158,17 +158,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Recreation facilities (television, indoor sports, newspapers, books)", key: "NULM_SUH_RECREATION_FACILITIES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -199,17 +199,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Drinking water fridge/camphor/dispenser", key: "NULM_SUH_DRINKING_WATER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -240,17 +240,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Meals", key: "NULM_SUH_MEALS" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -281,17 +281,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Locker for inmates", key: "NULM_SUH_LOCKER_FOR_INMATES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -322,17 +322,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Fire safety measure", key: "NULM_SUH_FIRE_SAFETY_MEASURE" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -363,17 +363,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Office set up", key: "NULM_SUH_OFFICE_SET_UP" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -404,17 +404,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "First aid kit & training to staff", key: "NULM_SUH_FIRST_AID_KIT_TRAINING_TO_STAFF " },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -445,17 +445,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Display of emergency numbers", key: "NULM_SUH_DISPLAY_OF_EMERGENCY_NUMBERS" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -486,17 +486,17 @@ export const facilityDetails = getCommonCard({
                 label: { name: "Toilet", key: "NULM_SUH_TOILET" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },

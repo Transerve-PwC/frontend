@@ -121,7 +121,7 @@ const callBackForNext = async (state, dispatch) => {
         let response = await createUpdatePCCApplication(
             state,
             dispatch,
-            paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "RE_INITIATED" : "INITIATE"
+            paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "RE_INITIATE" : "INITIATE"
         );
         let responseStatus = get(response, "status", "");
         if (responseStatus == "SUCCESS" || responseStatus == "success") {

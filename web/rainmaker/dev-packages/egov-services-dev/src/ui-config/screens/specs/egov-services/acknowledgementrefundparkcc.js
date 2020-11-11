@@ -8,7 +8,7 @@ import { getSearchResultsView, getSearchResultsViewForNewLocOswmcc } from "../..
 import {
     downloadReceipt,
     downloadCertificate,
-    downloadApplication,
+    downloadCancelledBookingReceipt,
 } from "../utils";
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import set from "lodash/set";
@@ -63,7 +63,7 @@ export const applicationSuccessFooter = (
                 action: "condition",
                 callBack: (state, dispatch) => {
                     //// generatePdf(state, dispatch, "receipt_download");
-                    downloadApplication(state, applicationNumber, tenantId);
+                    downloadCancelledBookingReceipt(state, applicationNumber, tenantId);
                 },
             },
         },
@@ -189,7 +189,7 @@ const setApplicationDataForNewLocOSWMCC = async (dispatch, applicationNumber, te
 
 
     const response = await getSearchResultsViewForNewLocOswmcc(queryObject);
-    
+
     dispatch(
         prepareFinalObject("Booking", get(response, "osujmNewLocationModelList[0]", []))
     );

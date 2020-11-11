@@ -121,40 +121,30 @@ export const SUHLogDetails = getCommonCard({
         label: { name: "Gender", key: "NULM_SMID_GENDER" },
         buttons: [
           {
-            label: "MALE",
+            label: "Male",
             labelKey: "COMMON_GENDER_MALE",
-            value:"MALE",           
+            value:"Male",           
           },
           {
-            labelName: "FEMALE",
+            labelName: "Female",
             labelKey: "COMMON_GENDER_FEMALE",
-            value:"FEMALE",           
+            value:"Female",           
           },
           {
-            label: "OTHERS",
-            labelKey: "NULM_SMID_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            label: "Transgender",
+            labelKey: "NULM_SEP_GENDER_TRANSGENDER",
+            value:"Transgender",           
+          },
+          {
+            label: "Others",
+            labelKey: "NULM_SEP_GENDER_OTHERS",
+            value:"Others",           
+          },
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",
      
-    },
-    age: {
-      ...getTextField({
-        label: {
-          labelName: "age",
-          labelKey: "NULM_SEP_AGE"
-        },
-        placeholder: {
-          labelName: "Enter age",
-          labelKey: "NULM_SEP_AGE_PLACEHOLDER"
-        },
-        required: true,
-        pattern: getPattern("age") || null,
-        jsonPath: "NulmSuhLogRequest.age"
-      })
     },
     address: {
       ...getTextField({
@@ -169,6 +159,41 @@ export const SUHLogDetails = getCommonCard({
         required: true,
         pattern: getPattern("Address") || null,
         jsonPath: "NulmSuhLogRequest.address"
+      })
+    },
+    age: {
+      ...getTextField({
+        label: {
+          labelName: "age",
+          labelKey: "NULM_SEP_AGE"
+        },
+        placeholder: {
+          labelName: "Enter age",
+          labelKey: "NULM_SEP_AGE_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("age") || null,
+        jsonPath: "NulmSuhLogRequest.age"
+      })
+    },
+    dateofbirth: {
+      ...getDateField({
+        label: {
+          labelName: "Date Of Birth",
+          labelKey: "NULM_SEP_DOB"
+        },
+        placeholder: {
+          labelName: "Enter Date Of Birth",
+          labelKey: "NULM_SEP_DOB_PLACEHOLDER"
+        },
+        required: false,
+        pattern: getPattern("Date") || null,
+        jsonPath: "NulmSuhLogRequest.dob",
+        props: {
+          inputProps: {
+            max:  new Date().toISOString().slice(0, 10),
+          }
+        }
       })
     },
   

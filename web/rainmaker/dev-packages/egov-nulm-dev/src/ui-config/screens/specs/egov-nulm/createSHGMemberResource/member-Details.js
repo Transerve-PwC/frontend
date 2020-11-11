@@ -75,6 +75,11 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Caste of Applicant", key: "NULM_SMID_CASTE_OF_APPLICANT" },
         buttons: [
           {
+            label: "General",
+            labelKey: "NULM_SEP_GENDER_GENERAL",
+            value:"General",           
+          },,
+          {
             labelName: "SC",
             labelKey: "NULM_SEP_SC",
             value:"SC",           
@@ -90,12 +95,13 @@ export const SMIDDetails = getCommonCard({
             value:"OBC",           
           },
           {
-            label: "OTHERS",
+            label: "Others",
             labelKey: "NULM_SEP_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            value:"Others",           
+          },
+          
         ],
-     //   defaultValue: "OTHERS"
+     //   defaultValue: "Others"
       },
       type: "array",     
     },
@@ -114,17 +120,17 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Urban Poor", key: "NULM_SMID_URBAN_POOR" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -159,17 +165,17 @@ export const SMIDDetails = getCommonCard({
         label: { name: "PWD", key: "NULM_SMID_PWD" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -333,22 +339,27 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Gender", key: "NULM_SMID_GENDER" },
         buttons: [
           {
-            label: "MALE",
+            label: "Male",
             labelKey: "COMMON_GENDER_MALE",
-            value:"MALE",           
+            value:"Male",           
           },
           {
-            labelName: "FEMALE",
+            labelName: "Female",
             labelKey: "COMMON_GENDER_FEMALE",
-            value:"FEMALE",           
+            value:"Female",           
           },
           {
-            label: "OTHERS",
-            labelKey: "NULM_SMID_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            label: "Transgender",
+            labelKey: "NULM_SEP_GENDER_TRANSGENDER",
+            value:"Transgender",           
+          },
+          {
+            label: "Others",
+            labelKey: "NULM_SEP_GENDER_OTHERS",
+            value:"Others",           
+          },
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",
      
@@ -367,17 +378,17 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Minority", key: "NULM_SEP_MINORITY" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -505,18 +516,18 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Insurance", key: "NULM_SMID_INSURANCE" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },
          
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",
      
@@ -551,18 +562,18 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Street vendor", key: "NULM_SMID_STREET_VENDOR" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },
          
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",
      
@@ -581,18 +592,18 @@ export const SMIDDetails = getCommonCard({
         label: { name: "Homeless", key: "NULM_SMID_HOMELESS" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SMID_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SMID_NO",
-            value:"NO",           
+            value:"No",           
           },
          
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array", 
     },

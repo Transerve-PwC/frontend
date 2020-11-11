@@ -685,7 +685,7 @@ export const violationsDetails = getCommonCard({
           labelName: "Enter Nature Of Violation",
           labelKey: "EC_NATURE_OF_VIOLATION_PLACEHOLDER"
         },
-        pattern: getPattern("ECItemDescription"),
+        pattern: getPattern("ECNatureOfViolation"),
         errorMessage: "EC_ERR_DEFAULT_INPUT_NATURE_OF_VIOLATION_FIELD_MSG",
         required: true,
         jsonPath: "eChallan.natureOfViolation",

@@ -56,7 +56,7 @@ export const callBackForNext = async (state, dispatch) => {
       isFormValid = false;
     }
     if(NulmSuhRequest && ( !NulmSuhRequest.hasOwnProperty("weatherCondition") )){
-      set( NulmSuhRequest, "weatherCondition", "NO" );
+      set( NulmSuhRequest, "weatherCondition", "No" );
     }
     if (!isSepDetailsValid) {
      isFormValid = false;
@@ -69,12 +69,12 @@ export const callBackForNext = async (state, dispatch) => {
     const facilityRemark = [ "beddingRemark", "washingOfLinenRemark", "cleaningOfPremiseRemark","recreationfacilitiesRemark","drinkingWaterRemark","mealsRemark","lockerForInmatetRemark","fireSafetyMeasureRemark","officeSetUpRemark", "firstAidKitAndTrainingToStaffRemark","displayOfEmergencyNumbersRemark","toiletRemark"];          
   
     facilityArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest.suhFacilitiesDetails && NulmSuhRequest.suhFacilitiesDetails[0][value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest.suhFacilitiesDetails && NulmSuhRequest.suhFacilitiesDetails[0][value]==="Yes"  ){
         if( !NulmSuhRequest.suhFacilitiesDetails[0][facilityRemark[index]]){
           isFacilityValid = false;
         }    
       }else{
-        set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "NO" );
+        set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, "No" );
       }
     })
 
@@ -93,12 +93,12 @@ export const callBackForNext = async (state, dispatch) => {
    const recordArray = ["isAssetInventoryRegister","isAccountRegister", "isAttendanceRegisterOfStaff","isShelterManagementCommitteeRegister", "isPersonnelAndSalaryRegister", "isHousekeepingAndMaintenanceRegister","isComplaintAndSuggestionRegister", "isVisitorRegister","isProfileRegister"];
   const recordRemark = [ "assetInventoryRegisterRemark", "accountRegisterRemark",  "attendanceRegisterOfStaffRemark", "shelterManagementCommitteeRegisteRemark", "personnelAndSalaryRegisterRemark", "housekeepingAndMaintenanceRegisterRemark", "complaintAndSuggestionRegisterRemark","visitorRegisterRemark","profileRegisterRemark"];         
   recordArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest.suhRecordMaintenance && NulmSuhRequest.suhRecordMaintenance[0][value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest.suhRecordMaintenance && NulmSuhRequest.suhRecordMaintenance[0][value]==="Yes"  ){
         if( !NulmSuhRequest.suhRecordMaintenance[0][recordRemark[index]]){
           isRecordValid = false;
         }    
       }else{
-        set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "NO" );
+        set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, "No" );
       }
     })
 
@@ -117,12 +117,12 @@ export const callBackForNext = async (state, dispatch) => {
     const staffArray = ["isManager","isSecurityStaff","isCleaner"];
     const staffRemark = ["managerRemark", "securityStaffRemark", "cleanerRemark"];
     staffArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest.suhStaffMaintenance && NulmSuhRequest.suhStaffMaintenance[0][value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest.suhStaffMaintenance && NulmSuhRequest.suhStaffMaintenance[0][value]==="Yes"  ){
         if( !NulmSuhRequest.suhStaffMaintenance[0][staffRemark[index]]){
           isStaffValid = false;
         }    
       }else{
-        set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "NO" );
+        set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, "No" );
       }
     })
 
@@ -141,12 +141,12 @@ export const callBackForNext = async (state, dispatch) => {
     const otherDetailArray = ["isConstitutionOfShelterManagementCommittee", "isSocialAudit", "isLinkageToCentralGovtWelfareSchemes", "isLinkageToPublicHealthInitiatives", "isLinkageToOtherGovtSchemes", "isLinkageToLocalCommunity","isLinkageToSocialWorkersAndPhilanthropists","isUserCharges", "isIECAndPromotionalInitiatives", "isQuarterlyReporting","isVisits"];
     const otherDetailRemark =["constitutionOfShelterManagementCommitteeRemark","socialAuditRemark","linkageToCentralGovtWelfareSchemesRemark","linkageToPublicHealthInitiativesRemark", "linkageToOtherGovtSchemesRemark", "linkageToLocalCommunityRemark","linkageToSocialWorkersAndPhilanthropistsRemark","userChargesRemark","iecAndPromotionalInitiativesRemark","quarterlyReportingRemark","visitsRemark"];
     otherDetailArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest[value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest[value]==="Yes"  ){
         if( !NulmSuhRequest[otherDetailRemark[index]]){
           isOtherValid = false;
         }    
       }else{
-        set( NulmSuhRequest, `${value}`, "NO" );
+        set( NulmSuhRequest, `${value}`, "No" );
       }
     })
 

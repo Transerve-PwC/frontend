@@ -507,7 +507,7 @@ const AddArticletoGrid =  (state, dispatch) => {
         toggleSnackbar(
           true,
           {
-            labelName: "Item Inserted successfully!",
+            labelName: "Item Added Successfully!",
             labelKey: "EC_ADD_ITEM_SUCCESS_TOASTER"
           },
           "success"
@@ -665,7 +665,7 @@ const articleDetailData = () => {
         },
         jsonPath: "articleSeizedDetails.Remark",
         required: false,
-        pattern: getPattern("ECItemDescription"),
+        pattern: getPattern("ECItemRemark"),
         errorMessage: "EC_ERR_SEZIURE_REMARK_DEFAULT_INPUT_FIELD_MSG",
         gridDefination: {
           xs: 12,

@@ -72,7 +72,10 @@ const RefundAmountContainer = Loadable({
   loading: () => <Loading />
 });
 
-
+const RefundFeeAmountContainer = Loadable({
+  loader: () => import("./RefundFeeAmountContainer"),
+  loading: () => <Loading />
+});
 
 export {
   RadioGroupWithIconContainer,
@@ -90,5 +93,6 @@ export {
   WorkFlowContainer,
   BookingCalenderContainer,
   BookingMediaContainer,
-  RefundAmountContainer
+  RefundAmountContainer,
+  RefundFeeAmountContainer
 };

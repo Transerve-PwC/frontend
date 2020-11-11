@@ -130,6 +130,10 @@ class WorkFlowContainer extends React.Component {
         return "purpose=sendbacktocitizen&status=success";
       case "SUBMIT_APPLICATION":
         return "purpose=apply&status=success";
+      case "MODIFY": 
+        return "purpose=modify&status=success";
+      case "SUBMIT": 
+        return "purpose=submit&status=success";
     }
   };
 
@@ -189,6 +193,7 @@ class WorkFlowContainer extends React.Component {
         let path = "";
         switch(this.props.moduleName) {
           case WF_ALLOTMENT_OF_SITE: 
+          case WF_BB_PROPERTY_MASTER: 
             path = `&fileNumber=${data[0].fileNumber}&tenantId=${tenant}&type=${this.props.moduleName}`
             break;
           default: {

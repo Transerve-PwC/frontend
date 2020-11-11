@@ -1,0 +1,50 @@
+.common-padding-for-new-complaint-card {
+  padding: 0 8px 8px 8px !important;
+}
+
+.add-complaint-button-cont {
+  z-index: 1000;
+}
+
+.create-comp-csr-cont {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.csr-create-comp-main-screen {
+  padding-bottom: 0 !important;
+  max-height: calc(100vh - 140px);
+}
+
+.fix-for-layout-break {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+// <div class="jss898"></div>
+
+.forOne {width: 36px;
+    color: rgba(0, 0, 0, 0.8700000047683716);
+    height: 36px;
+    display: flex;
+    font-size: 20px;
+    align-items: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    border-radius: 100%;
+    letter-spacing: 0.83px;
+    justify-content: center;
+    background-color: #FFFFFF;
+}
+
+.greyBox {padding: 16px;
+    margin-top: 10px;
+    margin-bottom: 16px;
+    background-color: #F2F2F2;
+}
+
+.removeFirstButton {
+  display: none;
+}

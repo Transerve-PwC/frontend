@@ -172,12 +172,12 @@ import {
       
         radioButtonValue.forEach(value => {
           if(NULMSMIDRequest[value] && NULMSMIDRequest[value]=== true ){
-            dispatch(prepareFinalObject(`NULMSMIDRequest[${value}]`, "YES" ));
+            dispatch(prepareFinalObject(`NULMSMIDRequest[${value}]`, "Yes" ));
           }else{
-            dispatch(prepareFinalObject(`NULMSMIDRequest[${value}]`, "NO" ));
+            dispatch(prepareFinalObject(`NULMSMIDRequest[${value}]`, "No" ));
           }
         })
-  
+        if(NULMSMIDRequest.dob !== null)
         dispatch(prepareFinalObject(`NULMSMIDRequest.dob`, NULMSMIDRequest.dob.split(" ")[0] ));
       }
     }
@@ -187,7 +187,7 @@ import {
         return poViewFooter();
     }
     else{
-      if(status==="DRAFTED")
+      if(status==="Drafted")
           return poViewFooter() 
       else
         return{};

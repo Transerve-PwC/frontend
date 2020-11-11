@@ -330,7 +330,7 @@ class ApplicationDetails extends Component {
 	}
 
 	downloadApplicationFunction = async (e) => {
-		
+		console.log('in download application page');
 		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication,paymentDetails,userInfo } = this.props;
 		const { complaint } = transformedComplaint;
 		let bookingDataOsbm = {
@@ -351,13 +351,7 @@ class ApplicationDetails extends Component {
                     : `${complaint.bkDuration} Months`,
             categoryImage: "",
         };
-		const queryStr = [
-            {
-                key: "key",
-                value:"bk-osbm-app-form"
-            },
-            { key: "tenantId", value: "ch" },
-		];
+	
 		
 		let appData = [
             {
@@ -390,8 +384,8 @@ class ApplicationDetails extends Component {
 				}
             },
         ];
-
-
+		// let tenantId= userInfo&&userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "";
+		// console.log('tenantId==in applicaion details page',tenantId);
 		downloadApplication( { BookingInfo: appData })
 		
 

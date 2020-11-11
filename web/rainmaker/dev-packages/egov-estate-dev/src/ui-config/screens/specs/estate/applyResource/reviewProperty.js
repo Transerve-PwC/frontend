@@ -1123,7 +1123,7 @@ export const getReviewAuction = (isEditable = true, screenName) => {
       schemeName: getLabelWithValue(
         {
           labelName: "Scheme Name",
-          labelKey: "ES_ESTATE_SCHEME_NAME_LABEL"
+          labelKey: "ES_SCHEME_NAME_LABEL"
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.schemeName`

@@ -91,9 +91,12 @@ export const searchApiCall = async (state, dispatch) => {
         return {
           [getTextToLocalMapping("shelterRequestedForPerson")]: get(item, "shelterRequestedForPerson", "-") || "-",
           [getTextToLocalMapping("reasonForStaying")]: get(item, "reasonForStaying", "-") || "-",
-          [getTextToLocalMapping("nominatedBy")]: get(item, "nominatedBy", "-") || "-",
           [getTextToLocalMapping("nameOfNominatedPerson")]: get(item, "nameOfNominatedPerson", "-") || "-",
           [getTextToLocalMapping("contactNo")]: get(item, "contactNo", "-") || "-",
+          [getTextToLocalMapping("nominatedBy")]: get(item, "nominatedBy", "-") || "-",
+          [getTextToLocalMapping("Creation Date")]: get(item, "auditDetails.createdTime", "")? new Date(get(item, "auditDetails.createdTime", "-")).toISOString().substr(0,10) : "-",
+          
+          
           ["code"]: get(item, "suhCitizenNGOUuid", "-")
         };
       });

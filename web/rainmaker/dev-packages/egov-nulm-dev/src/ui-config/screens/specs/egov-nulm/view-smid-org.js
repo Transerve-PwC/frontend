@@ -144,7 +144,7 @@ import {
   
 
 const roleBasedValidationForFooter = () => {
-  if(process.env.REACT_APP_NAME === "Employee" && status === "CREATED"){
+  if(process.env.REACT_APP_NAME === "Employee" && status === "Created"){
       return poViewFooter();
   }
   else{ 

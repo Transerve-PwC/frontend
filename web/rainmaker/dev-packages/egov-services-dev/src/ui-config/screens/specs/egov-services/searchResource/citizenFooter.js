@@ -58,7 +58,28 @@ export const callBackForCancelParkAndCC = (state, dispatch) => {
     );
 };
 
+
+export const callBackForRefundSecurityFee = (state, dispatch) => {
+    const applicationNumber = getQueryArg(
+        window.location.href,
+        "applicationNumber"
+    );
+    const businessService = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.businessService",
+        {}
+    );
+    dispatch(
+        setRoute(
+            `/egov-services/refundsecfeeparkccbooking?applicationNumber=${applicationNumber}&tenantId=${
+            getTenantId().split(".")[0]
+            }&businessService=${businessService}`
+        )
+    );
+};
+
 export const footer = getCommonApplyFooter({
+
     cancelButton: {
         componentPath: "Button",
         props: {
@@ -90,6 +111,8 @@ export const footer = getCommonApplyFooter({
         },
         visible: false,
     },
+
+
 
     submitButton: {
         componentPath: "Button",
@@ -133,6 +156,31 @@ export const footer = getCommonApplyFooter({
 
 
 export const footerForParkAndCC = getCommonApplyFooter({
+    refundSecurityFeeButton: {
+        componentPath: "Button",
+        props: {
+            variant: "outlined",
+            color: "primary",
+            style: {
+                minWidth: "180px",
+                height: "48px",
+                marginRight: "16px",
+                borderRadius: "inherit",
+            },
+        },
+        children: {
+
+            previousButtonLabel: getLabel({
+                labelName: "REFUND SECURITY",
+                labelKey: "REFUND SECURITY",
+            }),
+        },
+        onClickDefination: {
+            action: "condition",
+            callBack: callBackForRefundSecurityFee,
+        },
+        visible: false,
+    },
     cancelButton: {
         componentPath: "Button",
         props: {

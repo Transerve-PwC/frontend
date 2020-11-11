@@ -247,17 +247,28 @@ const complaintsReducer = (state = intialState, action) => {
           ...complaintDepartment,
         },
       };
-    case actionTypes.APPLICATION_SECTOR_FETCH_SUCCESS:
-         let applicationSector = transformById(action.payload.MdmsRes["Booking"].Sector, "code");
-      console.log('action.payload i reducer0----', applicationSector)
-      return {
-        ...state,
-        loading: false,
-        fetchSuccess: true,
-        applicationSector: {
-          ...state.applicationSector,
-          ...applicationSector}
-      };
+
+      case actionTypes.APPLICATION_SECTOR_FETCH_SUCCESS:
+        let applicationSector = transformById(action.payload.MdmsRes["Booking"].Sector, "code");
+        let applicationPmode = transformById(action.payload.MdmsRes["Booking"].Payment_Mode, "code");
+        let sImageUrl = action.payload.MdmsRes["Booking"].Booking_Config
+       
+        return {
+          ...state,
+          loading: false,
+          applicationSector: {
+            ...state.applicationSector,
+            ...applicationSector,
+          },
+          applicationPmode: {
+            ...state.applicationPmode,
+            ...applicationPmode,
+          },
+          sImageUrl: {
+            ...state.sImageUrl,
+            ...sImageUrl,
+          },
+        };
 
     case actionTypes.APPLICATION_TYPE_FETCH_SUCCESS:
        let applicationType = action.payload.MdmsRes["Booking"];

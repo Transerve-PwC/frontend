@@ -35,17 +35,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Asset inventory register", key: "NULM_SUH_ASSET_INVENTORY_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -76,17 +76,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Account register/cash book of receipts", key: "NULM_SUH_ACCOUNT_REGISTER_CASH_BOOK_OF_RECEIPTS" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -117,17 +117,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Attendance register of staff", key: "NULM_SUH_ATTENDANCE_REGISTER_OF_STAFF" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -158,17 +158,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Shelter management committee register", key: "NULM_SUH_SHELTER_MANAGEMENT_COMMITTEE_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -199,17 +199,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Personnel register and salary register", key: "NULM_SUH_PERSONNEL_REGISTER_AND_SALARY_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -240,17 +240,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Housekeeping and maintenance register", key: "NULM_SUH_HOUSEKEEPING_AND_MAINTENANCE_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -281,17 +281,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Complaint and suggestion register", key: "NULM_SUH_COMPLAINT_AND_SUGGESTION_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -322,17 +322,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Visitor register", key: "NULM_SUH_VISITOR_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -363,17 +363,17 @@ export const recordMaintenance = getCommonCard({
                 label: { name: "Profile register", key: "NULM_SUH_PROFILE_REGISTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },

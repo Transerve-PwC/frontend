@@ -111,30 +111,19 @@ export const NumInWords = (number) => {
     return word + "Rupees Only";
 };
 export const getFileUrlFromAPI = async (fileStoreId,tenantId) => {
-  console.log('fileStoreId=========',fileStoreId)
+
 
     const queryObject = [
       { key: "tenantId", value: tenantId},
       { key: "fileStoreIds", value: fileStoreId }
     ];
-    console.log('queryObject=========',queryObject)
     try {
       const fileUrl = await httpRequest(
         "/filestore/v1/files/url","_search",
         queryObject,{},[],{},true,true
       );
-      console.log('fileUrlsbbbbbbbbbbb=========',fileUrl)
       return fileUrl;
     } catch (e) {
       console.log(e);
     }
   };
-  // endPoint,
-  // action,
-  // queryObject = [],
-  // requestBody = {},
-  // headers = [],
-  // customRequestInfo = {},
-  // ignoreTenantId = false,
-  // isGetMethod=false
-  

@@ -13,7 +13,7 @@ import {
     prepareFinalObject,
     toggleSnackbar,
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  import { getCommonApplyFooter, validateFields } from "../utils";
+  import { getCommonApplyFooter, validateFields,checkValueForNA } from "../utils";
   import { getSearchResults } from "../../../../ui-utils/commons";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -76,7 +76,7 @@ import {
     return getCommonContainer({
     personName: getLabelWithValue(
         { labelKey: "NULM_SUH_CITIZEN_SHELTER_PERSON_NAME" },
-        { jsonPath: "NulmSuhCitizenNGORequest.nameOfNominatedPerson" }
+        { jsonPath: "NulmSuhCitizenNGORequest.shelterRequestedForPerson" }
       ),
       gender: getLabelWithValue(
         { labelKey: "NULM_SEP_GENDER" },
@@ -84,7 +84,12 @@ import {
       ),
       age: getLabelWithValue(
         { labelKey: "NULM_SEP_AGE" },
-        { jsonPath: "NulmSuhCitizenNGORequest.age" }
+        { jsonPath: "NulmSuhCitizenNGORequest.age",
+        callBack: checkValueForNA  }
+      ),
+      dob: getLabelWithValue(
+        { labelKey: "NULM_SEP_DOB" },
+        { jsonPath: "NulmSuhCitizenNGORequest.dob",callBack: checkValueForNA  }
       ),
       address: getLabelWithValue(
         { labelKey: "NULM_SMID_ADDRESS" },
@@ -104,11 +109,15 @@ import {
       ),
       nomineeName: getLabelWithValue(
         { labelKey: "NULM_SUH_CITIZEN_SHELTER_NOMINEE_NAME" },
-        { jsonPath: "NulmSuhCitizenNGORequest.shelterRequestedForPerson" }
+        { jsonPath: "NulmSuhCitizenNGORequest.nameOfNominatedPerson" }
       ),
       nomineeNumber: getLabelWithValue(
         { labelKey: "NULM_SUH_CITIZEN_SHELTER_NOMINEE_CONTACT" },
         { jsonPath: "NulmSuhCitizenNGORequest.contactNo" }
+      ),
+      nomineeNumber: getLabelWithValue(
+        { labelKey: "NULM_SEP_CREATION_DATE" },
+        { jsonPath: "NulmSuhCitizenNGORequest.auditDetails.createdTime" }
       ),
     });
   };
@@ -157,11 +166,15 @@ import {
         
           radioButtonValue.forEach(value => {
             if(NulmSuhCitizenNGORequest[value] && NulmSuhCitizenNGORequest[value]=== true ){
-              dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest[${value}]`, "YES" ));
+              dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest[${value}]`, "Yes" ));
             }else{
-              dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest[${value}]`, "NO" ));
+              dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest[${value}]`, "No" ));
             }
           })
+          if(NulmSuhCitizenNGORequest.dob!== null)
+          dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest.dob`, NulmSuhCitizenNGORequest.dob.split(" ")[0] ));
+          //dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest.auditDetails.createdTime`, NulmSuhCitizenNGORequest.auditDetails.createdTime.split(" ")[0] ));
+          dispatch(prepareFinalObject(`NulmSuhCitizenNGORequest.auditDetails.createdTime`, new Date(NulmSuhCitizenNGORequest.auditDetails.createdTime).toISOString().substr(0,10) ));
              // dispatch(prepareFinalObject("NulmSuhCitizenNGORequest", response.ResponseBody[0]));
         }
       });

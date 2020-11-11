@@ -84,7 +84,7 @@ const getApplicationDisplayCode =() => {
         break;
     default :  labelValue = {
       labelName: "Application No.",
-      labelKey: "NOC_HOME_SEARCH_RESULTS_APP_NO_LABEL",
+      labelKey: "NULM_SEP_APPLICATION_ID",
     }
 
   }

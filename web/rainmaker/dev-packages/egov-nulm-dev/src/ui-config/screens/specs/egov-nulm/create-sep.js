@@ -148,20 +148,26 @@ const screenConfig = {
 
       const {NULMSEPRequest} = state.screenConfiguration.preparedFinalObject ;
       if(NULMSEPRequest && NULMSEPRequest.applicationUuid){
-      const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute","disabilityCertificate"];
+      const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute","isDisabilityCertificateAvailable"];
     
       radioButtonValue.forEach(value => {
         if(NULMSEPRequest[value] && NULMSEPRequest[value]=== true ){
-          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "YES" ));
+          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "Yes" ));
         }else{
-          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "NO" ));
+          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "No" ));
         }
       })
 
       dispatch(prepareFinalObject(`NULMSEPRequest.dob`, NULMSEPRequest.dob.split(" ")[0] ));
     }
     else{
-      dispatch(prepareFinalObject(`NULMSEPRequest.disabilityCertificate`, "NO" ));
+      const radioButtonValue = ["isUrbanPoor","isMinority","isHandicapped","isRepaymentMade","isLoanFromBankinginstitute","isDisabilityCertificateAvailable"];
+      radioButtonValue.forEach(value => {
+        
+          dispatch(prepareFinalObject(`NULMSEPRequest[${value}]`, "No" ));
+        
+      })
+     // dispatch(prepareFinalObject(`NULMSEPRequest.isDisabilityCertificateAvailable`, "No" ));
     }
   }
 

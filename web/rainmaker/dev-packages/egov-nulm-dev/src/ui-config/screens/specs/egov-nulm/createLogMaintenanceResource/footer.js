@@ -8,7 +8,7 @@ import {
 } from "../../../../../ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getFileUrl } from "egov-ui-framework/ui-utils/commons";
 import {
   getButtonVisibility,
@@ -53,6 +53,40 @@ export const callBackForNext = async (state, dispatch) => {
     if(NulmSuhLogRequest && ( !NulmSuhLogRequest.hasOwnProperty("gender") )){
       isFormValid = false;
     }
+    if(isSUHLogDetailsValid)
+    {
+    if(NulmSuhLogRequest ){
+      if(!NulmSuhLogRequest.dob && !NulmSuhLogRequest.age ){
+        const errorMessage = {
+          labelName: "Please select the Minority",
+          labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }      
+  }
+   // show validation mewssage and clear age value from json
+   if(NulmSuhLogRequest && NulmSuhLogRequest.dob && NulmSuhLogRequest.age ){
+    if(NulmSuhLogRequest.dob && NulmSuhLogRequest.age ){
+      const errorMessage = {
+        labelName: "Please select the Minority",
+        labelKey: "ERR_NULM_DOB_AGE_VALIDATION"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      // dispatch(
+      //   handleField(
+      //     `create-susv`,
+      //     "components.div.children.formwizardFirstStep.children.SUHLogDetails.children.cardContent.children.SUHLogDetailsContainer.children.age",
+      //     "props.value",
+      //     ''
+      //   )
+      // );
+     // dispatch(prepareFinalObject(`NulmSuhLogRequest.age`, null ));
+      return;
+    }
+  }
+  //
   }
  
  if( !isFormValid){

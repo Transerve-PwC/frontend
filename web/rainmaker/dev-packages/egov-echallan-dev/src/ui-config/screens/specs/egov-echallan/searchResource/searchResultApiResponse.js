@@ -111,7 +111,7 @@ export const searchResultApiResponse = async (state, dispatch) => {
         response.ResponseBody.map(function (item, index) {
           // alert(item)
           let temp = [];
-
+          let itemList = "";
           let __FOUND = sectorValue.find(function (sectorRecord, index) {
             if (sectorRecord.code == item['sector'])
               return true;
@@ -132,7 +132,13 @@ export const searchResultApiResponse = async (state, dispatch) => {
           temp[7] = item['status'];
           temp[8] = item['tenantId'];
           temp[9] = item['challanUuid'];
-          temp[10] = paymentStatus
+          temp[10] = paymentStatus;
+          if (item['violationItem'].length > 0) { 
+          item['violationItem'].map(violationItem => {
+              itemList = itemList.concat(` (Item : ${violationItem.itemName},Qty : ${violationItem.quantity}), `);
+            })
+          }
+          temp[11] = itemList.substring(0,itemList.lastIndexOf(','));
           dataarray.push(temp);
         });
 

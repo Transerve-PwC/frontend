@@ -123,16 +123,16 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
 
 
 export const handleSubmitSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"APPROVED")
+  handleCreateUpdateSEP(state, dispatch,"Approved")
 };
 export const handlesaveSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"DRAFTED")
+  handleCreateUpdateSEP(state, dispatch,"Drafted")
 };
 export const handleRejectSEP = (state, dispatch) =>{
-  handleCreateUpdateSEP(state, dispatch,"REJECTED")
+  handleCreateUpdateSEP(state, dispatch,"Rejected")
 };
 export const handleApproveSEP = async(state, dispatch) =>{
- handleCreateUpdateSEP(state, dispatch,"APPROVED");
+ handleCreateUpdateSEP(state, dispatch,"Approved");
 };
 
 
@@ -166,7 +166,7 @@ export const createUpdatePO = async (state, dispatch, action,status) => {
 
    const facilityArray =  ["isBedding","isWashingOfLinen","isCleaningOfPremises","isRecreationfacilities","isDrinkingWater","isMeals","isLockerForInmates","isFireSafetyMeasure","isOfficeSetUp","isFirstAidKitAndTrainingToStaff", "isDisplayOfEmergencyNumbers","isToilet"]
    facilityArray.forEach(value => {
-     if(NulmSuhRequest && NulmSuhRequest.suhFacilitiesDetails && NulmSuhRequest.suhFacilitiesDetails[0][value]==="YES")
+     if(NulmSuhRequest && NulmSuhRequest.suhFacilitiesDetails && NulmSuhRequest.suhFacilitiesDetails[0][value]==="Yes")
    {
       set( NulmSuhRequest, `suhFacilitiesDetails[0]${value}`, true );
     }else{
@@ -176,7 +176,7 @@ export const createUpdatePO = async (state, dispatch, action,status) => {
 
   const recordArray = ["isAssetInventoryRegister","isAccountRegister", "isAttendanceRegisterOfStaff","isShelterManagementCommitteeRegister", "isPersonnelAndSalaryRegister", "isHousekeepingAndMaintenanceRegister","isComplaintAndSuggestionRegister", "isVisitorRegister","isProfileRegister"];
    recordArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest.suhRecordMaintenance && NulmSuhRequest.suhRecordMaintenance[0][value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest.suhRecordMaintenance && NulmSuhRequest.suhRecordMaintenance[0][value]==="Yes"  ){
         set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, true );
       }else{
         set( NulmSuhRequest, `suhRecordMaintenance[0]${value}`, false );
@@ -185,7 +185,7 @@ export const createUpdatePO = async (state, dispatch, action,status) => {
 
     const staffArray = ["isManager","isSecurityStaff","isCleaner"];
     staffArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest.suhStaffMaintenance && NulmSuhRequest.suhStaffMaintenance[0][value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest.suhStaffMaintenance && NulmSuhRequest.suhStaffMaintenance[0][value]==="Yes"  ){
         set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, true );
       }else{
         set( NulmSuhRequest, `suhStaffMaintenance[0]${value}`, false );
@@ -194,14 +194,14 @@ export const createUpdatePO = async (state, dispatch, action,status) => {
 
     const otherDetailArray = ["isConstitutionOfShelterManagementCommittee", "isSocialAudit", "isLinkageToCentralGovtWelfareSchemes", "isLinkageToPublicHealthInitiatives", "isLinkageToOtherGovtSchemes", "isLinkageToLocalCommunity","isLinkageToSocialWorkersAndPhilanthropists","isUserCharges", "isIECAndPromotionalInitiatives", "isQuarterlyReporting","isVisits"];
     otherDetailArray.forEach((value,index) => {
-      if(NulmSuhRequest && NulmSuhRequest[value]==="YES"  ){
+      if(NulmSuhRequest && NulmSuhRequest[value]==="Yes"  ){
         set( NulmSuhRequest, `${value}`, true );
       }else{
         set( NulmSuhRequest, `${value}`, false );
       }
     })
 
-    if(NulmSuhRequest && NulmSuhRequest.weatherCondition && NulmSuhRequest.weatherCondition==="YES"){
+    if(NulmSuhRequest && NulmSuhRequest.weatherCondition && NulmSuhRequest.weatherCondition==="Yes"){
       set( NulmSuhRequest, "weatherCondition", true );
     }else{
       set( NulmSuhRequest, "weatherCondition", false );

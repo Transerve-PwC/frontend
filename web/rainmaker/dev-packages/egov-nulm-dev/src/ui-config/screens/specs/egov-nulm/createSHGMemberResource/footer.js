@@ -43,7 +43,7 @@ export const callBackForNext = async (state, dispatch) => {
     );
     
 if(NulmShgMemberRequest && NulmShgMemberRequest.isMinority){
-  if(NulmShgMemberRequest.isMinority =="YES" && !NulmShgMemberRequest.minority ){
+  if(NulmShgMemberRequest.isMinority =="Yes" && !NulmShgMemberRequest.minority ){
     const errorMessage = {
       labelName: "Please select the Minority",
       labelKey: "ERR_NULM_MINORTY"
@@ -54,7 +54,7 @@ if(NulmShgMemberRequest && NulmShgMemberRequest.isMinority){
 }
 
 if(NulmShgMemberRequest && NulmShgMemberRequest.isUrbanPoor){
-  if(NulmShgMemberRequest.isUrbanPoor =="YES" && !NulmShgMemberRequest.bplNo ){
+  if(NulmShgMemberRequest.isUrbanPoor =="Yes" && !NulmShgMemberRequest.bplNo ){
     const errorMessage = {
       labelName: "Please fill BPL Number",
       labelKey: "ERR_NULM_FILL_BPL_NUMBER"
@@ -64,7 +64,7 @@ if(NulmShgMemberRequest && NulmShgMemberRequest.isUrbanPoor){
   }
 }
 if(NulmShgMemberRequest && NulmShgMemberRequest.isInsurance){
-  if(NulmShgMemberRequest.isInsurance =="YES" && !NulmShgMemberRequest.insuranceThrough ){
+  if(NulmShgMemberRequest.isInsurance =="Yes" && !NulmShgMemberRequest.insuranceThrough ){
     const errorMessage = {
       labelName: "Please fill insurance through",
       labelKey: "ERR_NULM_FILL_INSURANCE_THROUGH"

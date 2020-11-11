@@ -15,6 +15,7 @@ import {
     getCommonCaption,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
+import { getBookingWorkflowHistory } from "../../../../ui-utils/commons";
 import axios from "axios";
 
 export const getCommonApplyFooter = (children) => {
@@ -973,6 +974,26 @@ export const downloadCertificate = async (
         "Booking"
     );
 
+    let bookingWfHistory = await getBookingWorkflowHistory(applicationNumber, tenantId);
+
+    let apporvedByDetail = {
+        approvedBy: "Renil Commissioner",
+        role: "Additional Commissioner",
+    };
+    if (bookingWfHistory && bookingWfHistory.length > 0) {
+        for (let i = 0; i < bookingWfHistory.length; i++) {
+            if (bookingWfHistory[i].assignee != null) {
+                apporvedByDetail.approvedBy = bookingWfHistory[i].assignee.name;
+                let filteredRole = bookingWfHistory[i].assignee.roles.filter((role) => {
+                    return role.code == "BK_OSBM_APPROVER";
+                });
+
+                apporvedByDetail.role = filteredRole[0].name;
+            }
+        }
+    }
+
+
     const DOWNLOADCERTIFICATE = {
         GET: {
             URL: "/pdf-service/v1/_create",
@@ -1077,10 +1098,7 @@ export const downloadCertificate = async (
                     categoryImage: "",
                     // categoryImage: "http://3.6.65.87:3000/static/media/cat-a.4e1bc5ec.jpeg"
                 },
-                approvedBy: {
-                    approvedBy: "Renil Commissioner",
-                    role: "Additional Commissioner",
-                },
+                approvedBy: apporvedByDetail,
                 tenantInfo: {
                     municipalityName:
                         tenantData.tenants[0].city.municipalityName,
@@ -1725,3 +1743,288 @@ export const getAvailabilityDataPCC = async (requestBody) => {
         console.log(exception);
     }
 };
+
+export const getRefundDetails = async (bookingId, tenantId) => {
+
+
+    const queryStr = [
+        {
+            key: "consumerCode",
+            value: bookingId,
+        },
+        { key: "tenantId", value: "ch.chandigarh" },
+    ];
+
+
+    try {
+        const response = await httpRequest(
+            "post",
+            "/pg-service/transaction/v1/_search",
+            "",
+            queryStr,
+            []
+        );
+
+        return { status: "success", data: response.Transaction };
+    } catch (exception) {
+        console.log(exception);
+    }
+};
+
+export const goForRefund = async (refundDataObj) => {
+
+
+    let requestBody = { RefundTransaction: refundDataObj };
+
+
+    try {
+        const response = await httpRequest(
+            "post",
+            "/pg-service/transaction/v1/_refund",
+            "",
+            [],
+            requestBody
+        );
+
+        return { status: "success", data: response };
+    } catch (exception) {
+        console.log(exception);
+    }
+};
+
+export const downloadCancelledBookingReceipt = async (
+    state,
+    applicationNumber,
+    tenantId,
+    mode = "download"
+) => {
+    let applicationData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Booking"
+    );
+    const receiptQueryString = [
+        { key: "consumerCodes", value: applicationNumber },
+        {
+            key: "tenantId",
+            value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+        },
+    ];
+    const FETCHRECEIPT = {
+        GET: {
+            URL: "/collection-services/payments/_search",
+            ACTION: "_get",
+        },
+    };
+    const DOWNLOADRECEIPT = {
+        GET: {
+            URL: "/pdf-service/v1/_create",
+            // ACTION: "_get",
+        },
+    };
+    let tenantData = await getMdmsTenantsData();
+    let refundAmount = await calculateCancelledBookingRefundAmount(applicationNumber, tenantId, applicationData.bkFromDate);
+    try {
+        httpRequest(
+            "post",
+            FETCHRECEIPT.GET.URL,
+            FETCHRECEIPT.GET.ACTION,
+            receiptQueryString
+        ).then((payloadReceiptDetails) => {
+            let queryStr = "";
+            if (applicationData.businessService === "PACC") {
+                queryStr = [
+                    { key: "key", value: "bk-cancel-receipt" },
+                    {
+                        key: "tenantId",
+                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+                    },
+                ];
+
+
+            }
+            if (
+                payloadReceiptDetails &&
+                payloadReceiptDetails.Payments &&
+                payloadReceiptDetails.Payments.length == 0
+            ) {
+                console.log("Could not find any receipts");
+                return;
+            }
+
+            let paymentInfoData = "";
+            let date2obj = new Date(payloadReceiptDetails.Payments[0].transactionDate);
+            const txnDate = date2obj.toDateString();
+            const [txnTime] = date2obj.toTimeString().split(" ");
+            const txnDateTime = `${txnDate}, ${txnTime}`;
+
+            var date2 = new Date();
+
+            var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+            if (applicationData.businessService === "PACC") {
+                paymentInfoData = {
+
+                    totalAmountPaid: (
+                        parseFloat(applicationData.bkRent) +
+                        parseFloat(applicationData.bkCleansingCharges) +
+                        parseFloat(applicationData.bkSurchargeRent)
+                    ).toFixed(2),
+
+                    refundAmountInWords: NumInWords(
+                        parseFloat(refundAmount)
+                    ),
+                    refundAmount: parseFloat(refundAmount).toFixed(2),
+
+
+                };
+            }
+            let receiptData = [
+                {
+                    applicantDetail: {
+                        name: payloadReceiptDetails.Payments[0].payerName,
+                        mobileNumber:
+                            payloadReceiptDetails.Payments[0].mobileNumber,
+                        houseNo: applicationData.bkHouseNo,
+                        permanentAddress: applicationData.bkCompleteAddress,
+                        permanentCity:
+                            payloadReceiptDetails.Payments[0].tenantId,
+                        sector: applicationData.bkSector,
+                    },
+                    booking: {
+                        bkApplicationNumber:
+                            payloadReceiptDetails.Payments[0].paymentDetails[0]
+                                .bill.consumerCode,
+                        bookingCancellationDate: "12-03-2020",
+                        bookingVenue: applicationData.bkLocation,
+                        bookingDuration: getDurationDate(
+                            applicationData.bkFromDate,
+                            applicationData.bkToDate
+                        ),
+                    },
+                    paymentInfo: paymentInfoData,
+                    tenantInfo: {
+                        municipalityName: tenantData.tenants[0].city.municipalityName,
+                        address: tenantData.tenants[0].address,
+                        contactNumber: tenantData.tenants[0].contactNumber,
+                        webSite: tenantData.tenants[0].domainUrl,
+                    },
+                    generatedBy: {
+                        generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
+                    },
+                },
+            ];
+
+            httpRequest(
+                "post",
+                DOWNLOADRECEIPT.GET.URL,
+                "",
+                queryStr,
+                { BookingInfo: receiptData },
+                { Accept: "application/json" },
+                { responseType: "arraybuffer" }
+            ).then((res) => {
+                res.filestoreIds[0];
+                if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+                    res.filestoreIds.map((fileStoreId) => {
+                        downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                    });
+                } else {
+                    console.log("Error In Receipt Download");
+                }
+            });
+        });
+    } catch (exception) {
+        alert("Some Error Occured while downloading Receipt!");
+    }
+};
+
+export const calculateCancelledBookingRefundAmount = async (applicationNumber, tenantId, bookingDate) => {
+
+    if (applicationNumber && tenantId) {
+        let queryObject = [
+            { key: "tenantId", value: tenantId },
+            { key: "consumerCodes", value: applicationNumber },
+        ];
+        const payload = await httpRequest(
+            "post",
+            "/collection-services/payments/_search",
+            "",
+            queryObject
+        );
+        console.log(payload, "Payment Details");
+        if (payload) {
+
+            let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
+            let bookingAmount = 0;
+            for (let i = 0; i < billAccountDetails.length; i++) {
+                if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                    bookingAmount += billAccountDetails[i].amount;
+                }
+                if (billAccountDetails[i].taxHeadCode == "PACC") {
+                    bookingAmount += billAccountDetails[i].amount;
+                }
+            }
+
+
+
+            let mdmsBody = {
+                MdmsCriteria: {
+                    tenantId: tenantId,
+                    moduleDetails: [
+
+                        {
+                            moduleName: "Booking",
+                            masterDetails: [
+                                {
+                                    name: "bookingCancellationRefundCalc",
+                                }
+                            ],
+                        },
+
+                    ],
+                },
+            };
+
+            let refundPercentage = '';
+
+            let payloadRes = null;
+            payloadRes = await httpRequest(
+                "post",
+                "/egov-mdms-service/v1/_search",
+                "_search",
+                [],
+                mdmsBody
+            );
+
+            console.log(payloadRes, "RefundPercentage");
+            refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
+
+
+            var date1 = new Date(bookingDate);
+            var date2 = new Date();
+
+            var Difference_In_Time = date1.getTime() - date2.getTime();
+
+            // To calculate the no. of days between two dates
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+            let refundAmount = 0
+            if (Difference_In_Days > 29) {
+                let refundPercent = refundPercentage.MORETHAN30DAYS.refundpercentage;
+
+                refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
+            } else if (Difference_In_Days > 15 && Difference_In_Days < 30) {
+
+                let refundPercent = refundPercentage.LETTHAN30MORETHAN15DAYS.refundpercentage;
+                refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
+            }
+
+
+            return refundAmount;
+
+
+        }
+    }
+
+
+}

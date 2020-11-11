@@ -297,7 +297,7 @@ const screenConfig = {
               }
             ],
             moduleName: "EST",
-            homeURL: "/estate-citizen/estate-branch-apply"
+            homeURL: getQueryArg(window.location.href, "branchType") === "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC" : "/estate-citizen/property-search?branchType=ESTATE_BRANCH"
           }
         }
       }

@@ -4,7 +4,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 //import Cities from "./cities";
-
+import set from "lodash/set";
 import get from "lodash/get";
 import PropTypes from "prop-types";
 import cloneDeep from "lodash/cloneDeep";
@@ -101,19 +101,20 @@ class CustomizeTable extends React.Component {
     columns.forEach(column => {
       // Handling the case where column name is an object with options
       tempColumnName = typeof column === "object" ? get(column, "name") : column;
-
       const locMessageObj =  localisationArray.find(locMessage => locMessage.code === tempColumnName);
-
-      if(locMessageObj){
-      
-         columnName.push(locMessageObj.message);
+      if (locMessageObj) {
+        if (typeof column === "object") {
+          set(column, "name", locMessageObj.message);
+          set(column, "label", locMessageObj.message);
+          columnName.push(column);
+        } else {
+          columnName.push(locMessageObj.message);
+        }
       }
       else{
         columnName.push(column);
       }
-
     });
-    
     let oldColumnData = [...stateColumn];
     let newColumnData = [...columnName];
     const checkFlag = _.isEqual(newColumnData.sort(), oldColumnData.sort());
@@ -121,9 +122,9 @@ class CustomizeTable extends React.Component {
       this.setState({columns : columnName});
     }
     const locMessageTitleObj = localisationArray.find(locMessage => locMessage.code === title);
-    
-    if (title && title != undefined && locMessageTitleObj!=undefined && locMessageTitleObj[0]!=undefined)  { 
-      this.setState({title : locMessageTitleObj[0].message});
+    if (title && title != undefined && locMessageTitleObj != undefined) {
+      if(locMessageTitleObj.message!=title)
+        this.setState({title : locMessageTitleObj.message});
     }
     
   }

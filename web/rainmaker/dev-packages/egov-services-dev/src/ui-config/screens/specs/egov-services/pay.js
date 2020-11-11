@@ -66,6 +66,7 @@ const setSearchResponse = async (
     dispatch(
         prepareFinalObject("BookingDocument", get(response, "documentMap", {}))
     );
+console.log(recData[0], "Search Result");
 
     await generateBill(
         state,

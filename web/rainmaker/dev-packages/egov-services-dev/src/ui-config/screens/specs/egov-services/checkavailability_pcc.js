@@ -142,6 +142,7 @@ const prepareEditFlow = async (
         let bookingsModelList = get(response, "bookingsModelList", []);
         let documentMap = get(response, "documentMap", {});
         if (bookingsModelList !== null && bookingsModelList.length > 0) {
+
             dispatch(prepareFinalObject("Booking", bookingsModelList[0]));
             dispatch(
                 prepareFinalObject(
@@ -150,9 +151,9 @@ const prepareEditFlow = async (
                 )
             );
             let oldAvailabilityCheckData = {
-                bkFromDate :  bookingsModelList[0].bkFromDate,
-                bkToDate :  bookingsModelList[0].bkToDate,
-                bkBookingVenue :  bookingsModelList[0].bkBookingVenue,
+                bkFromDate: bookingsModelList[0].bkFromDate,
+                bkToDate: bookingsModelList[0].bkToDate,
+                bkBookingVenue: bookingsModelList[0].bkBookingVenue,
             }
             dispatch(
                 prepareFinalObject(
@@ -179,6 +180,7 @@ const prepareEditFlow = async (
                     bookingType: bookingsModelList[0].bkBookingType,
                     bookingVenue: bookingsModelList[0].bkBookingVenue,
                     sector: bookingsModelList[0].bkSector,
+                    applicationNumber: bookingsModelList[0].bkApplicationStatus == "APPLIED" ? applicationNumber : null
                 };
 
                 const availabilityData = await getAvailabilityDataPCC(
@@ -224,20 +226,20 @@ const prepareEditFlow = async (
                             prepareFinalObject(
                                 "DisplayPacc.bkDisplayFromDateTime",
                                 bookingsModelList[0].bkFromDate +
-                                    ", " +
-                                    bookingsModelList[0].timeslots[0].slot.split(
-                                        "-"
-                                    )[0]
+                                ", " +
+                                bookingsModelList[0].timeslots[0].slot.split(
+                                    "-"
+                                )[0]
                             )
                         );
                         dispatch(
                             prepareFinalObject(
                                 "DisplayPacc.bkDisplayToDateTime",
                                 bookingsModelList[0].bkToDate +
-                                    ", " +
-                                    bookingsModelList[0].timeslots[0].slot.split(
-                                        "-"
-                                    )[1]
+                                ", " +
+                                bookingsModelList[0].timeslots[0].slot.split(
+                                    "-"
+                                )[1]
                             )
                         );
                     }

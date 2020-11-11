@@ -24,7 +24,8 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
 import {
-  footer
+  footer,
+  changeStep
 } from './applyResource/footer';
 import {
   getQueryArg
@@ -645,6 +646,10 @@ const getData = async (action, state, dispatch) => {
       false
     )
   )
+  const stepNumber = getQueryArg(window.location.href, "stepNumber");
+  if(!!stepNumber) {
+    changeStep(state, dispatch, "apply", "", Number(stepNumber))
+  }
 }
 
 const applyEstate = {

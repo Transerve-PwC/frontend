@@ -35,17 +35,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Constitution of shelter management committee", key: "NULM_SUH_CONSTITUTION_OF_SHELTER_MANAGEMENT_COMMITTEE" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -76,17 +76,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Social audit of shelter", key: "NULM_SUH_SOCIAL_AUDIT_OF_SHELTER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -117,17 +117,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Linkage to central govt. Welfare schemes eg. Day nulm", key: "NULM_SUH_LINKAGE_TO_CENTRAL_GOVT_WELFARE_SCHEMES_EG_DAY_NULM" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -158,17 +158,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Linkage to public health initiatives", key: "NULM_SUH_LINKAGE_TO_PUBLIC_HEALTH_INITIATIVES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -199,17 +199,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Linkage to other govt. Schemes on education, swachhata abhiyan etc.", key: "NULM_SUH_LINKAGE_TO_OTHER_GOVT_SCHEMES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -240,17 +240,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Linkage to local community ", key: "NULM_SUH_LINKAGE_TO_LOCAL_COMMUNITY " },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -281,17 +281,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Linkage to social workers and philanthropists", key: "NULM_SUH_LINKAGE_TO_SOCIAL_WORKERS_AND_PHILANTHROPISTS " },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -322,17 +322,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "User charges", key: "NULM_SUH_USER_CHARGES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -363,17 +363,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "IEC and promotional initiatives", key: "NULM_SUH_IEC_AND_PROMOTIONAL_INITIATIVES" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -404,17 +404,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Quarterly reporting", key: "NULM_SUH_QUARTERLY_REPORTING" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -445,17 +445,17 @@ export const otherDetails = getCommonCard({
                 label: { name: "Visits by local ward legislative members/administrative officers", key: "NULM_SUH_VISITS_BY_LOCAL_WARD_LEGISLATIVE_MEMBERS_ADMINISTRATIVE_OFFICERS" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },

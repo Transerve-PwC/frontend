@@ -35,17 +35,17 @@ export const staffDetails = getCommonCard({
                 label: { name: "Manager", key: "NULM_SUH_MANAGER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -76,17 +76,17 @@ export const staffDetails = getCommonCard({
                 label: { name: "Security staff", key: "NULM_SUH_SECURITY_STAFF" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },
@@ -117,17 +117,17 @@ export const staffDetails = getCommonCard({
                 label: { name: "Cleaner", key: "NULM_SUH_CLEANER" },
                 buttons: [
                     {
-                        labelName: "YES",
+                        labelName: "Yes",
                         labelKey: "NULM_SEP_YES",
-                        value: "YES",
+                        value: "Yes",
                     },
                     {
-                        label: "NO",
+                        label: "No",
                         labelKey: "NULM_SEP_NO",
-                        value: "NO",
+                        value: "No",
                     },
                 ],
-                defaultValue: "NO"
+                defaultValue: "No"
             },
             type: "array",
         },

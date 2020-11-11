@@ -444,8 +444,6 @@ export const searchBill = async (dispatch, applicationNumber, tenantId, paymentS
     );
 
     // Get Bill
-
-    http://localhost:9002/billing-service/bill/v2/_fetchbill?tenantId=ch.chandigarh&consumerCode=MCC-EC-000202&businessService=EC
     const queryObj = [
       {
         key: "tenantId",
@@ -466,7 +464,6 @@ export const searchBill = async (dispatch, applicationNumber, tenantId, paymentS
     }
     // If pending payment then get bill else get receipt
     let billData = get(payload, "Payment[0].Bill") || get(response, "Bill");
-
     if (billData) {
       dispatch(prepareFinalObject("ReceiptTemp[0].Bill", billData));
       const estimateData = createEstimateData(billData[0]);
@@ -483,6 +480,9 @@ export const searchBill = async (dispatch, applicationNumber, tenantId, paymentS
     console.log(e);
   }
 };
+
+
+
 
 export const createEstimateData = billObject => {
 
@@ -1020,6 +1020,13 @@ export const getTextToLocalMappingManageChallan = label => {
         "EC_COMMON_TABLE_COL_SI_CHALLAN_PAYMENT_STATUS",
         localisationLabels
       );
+    case "itemList":
+      return getLocaleLabels(
+        "itemList",
+        "EC_COMMON_TABLE_COL_SI_CHALLAN_ITEM_LIST",
+        localisationLabels
+      );
+
   }
 };
 
@@ -1524,6 +1531,12 @@ export const getTextToLocalMappingPaymentDetail = label => {
         "EC_COMMON_TABLE_COL_PAYMENT_MAPPING_CHALLAN_NO",
         localisationLabels
       );
+    case "transactionId":
+      return getLocaleLabels(
+        "Challan No",
+        "EC_COMMON_TABLE_COL_PAYMENT_MAPPING_TRANSACTION_ID",
+        localisationLabels
+      );      
     case "violatorName":
       return getLocaleLabels(
         "Violator Name",

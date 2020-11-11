@@ -56,22 +56,27 @@ export const SepDetails = getCommonCard({
         label: { name: "Gender", key: "NULM_SEP_GENDER" },
         buttons: [
           {
-            labelName: "FEMALE",
+            labelName: "Female",
             labelKey: "COMMON_GENDER_MALE",
-            value:"FEMALE",           
+            value:"Female",           
           },
           {
-            label: "MALE",
+            label: "Male",
             labelKey: "COMMON_GENDER_FEMALE",
-            value:"MALE",           
+            value:"Male",           
           },
           {
-            label: "OTHERS",
+            label: "Transgender",
+            labelKey: "NULM_SEP_GENDER_TRANSGENDER",
+            value:"Transgender",           
+          },
+          {
+            label: "Others",
             labelKey: "NULM_SEP_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            value:"Others",           
+          },
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",
      
@@ -87,8 +92,8 @@ export const SepDetails = getCommonCard({
           labelName: "Enter age",
           labelKey: "NULM_SEP_AGE_PLACEHOLDER"
         },
-        visible:false,
-        required: true,
+        visible:true,
+        required: false,
         pattern: getPattern("age") || null,
         jsonPath: "NULMSEPRequest.age"
       })
@@ -104,7 +109,7 @@ export const SepDetails = getCommonCard({
           labelName: "Enter Date Of Birth",
           labelKey: "NULM_SEP_DOB_PLACEHOLDER"
         },
-        required: true,
+        required: false,
         pattern: getPattern("Date") || null,
         jsonPath: "NULMSEPRequest.dob",
         props: {
@@ -265,6 +270,11 @@ export const SepDetails = getCommonCard({
         label: { name: "Category", key: "NULM_SEP_CATEGORY" },
         buttons: [
           {
+            label: "General",
+            labelKey: "NULM_SEP_GENDER_GENERAL",
+            value:"General",           
+          },
+          {
             labelName: "SC",
             labelKey: "NULM_SEP_SC",
             value:"SC",           
@@ -280,12 +290,13 @@ export const SepDetails = getCommonCard({
             value:"OBC",           
           },
           {
-            label: "OTHERS",
+            label: "Others",
             labelKey: "NULM_SEP_GENDER_OTHERS",
-            value:"OTHERS",           
-          }
+            value:"Others",           
+          },
+         
         ],
-     //   defaultValue: "OTHERS"
+     //   defaultValue: "Others"
       },
       type: "array",     
     },
@@ -305,17 +316,17 @@ export const SepDetails = getCommonCard({
         label: { name: "Urban Poor", key: "NULM_SEP_URBAN_ROOR" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -350,17 +361,17 @@ export const SepDetails = getCommonCard({
         label: { name: "Minority", key: "NULM_SEP_MINORITY" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -429,17 +440,17 @@ export const SepDetails = getCommonCard({
         label: { name: "Urban Poor", key: "NULM_SEP_HANDICAPPED" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",   
       beforeFieldChange: (action, state, dispatch) => {
@@ -453,7 +464,7 @@ export const SepDetails = getCommonCard({
               "create-sep",
               isDisabilityCertificateAvailablePath,
               "props.value",
-              "NO"
+              "No"
             )
           );
       } 
@@ -473,17 +484,17 @@ export const SepDetails = getCommonCard({
         label: { name: "Disability Certificate Available", key: "NULM_SEP_NULM_DISABILITY_CERTIFICATE" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",    
     },
@@ -665,17 +676,17 @@ export const SepDetails = getCommonCard({
         key: "NULM_SEP_WHETHER_TAKEN_LOAN_FROM_ANY_BANKING/FINANCIAL_INSTITUTE" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -695,17 +706,17 @@ export const SepDetails = getCommonCard({
         key: "NULM_SEP_IF_YES_WHEATHER_ALL_REPAYMENT_MADE?" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",          
+            value:"No",          
           },       
         ],    
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },

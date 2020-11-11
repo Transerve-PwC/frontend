@@ -141,6 +141,7 @@ class PlotArea extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+console.log(state, "Change date  State");
     return {
         calendarVisiblity: state.screenConfiguration.screenConfig,
     };

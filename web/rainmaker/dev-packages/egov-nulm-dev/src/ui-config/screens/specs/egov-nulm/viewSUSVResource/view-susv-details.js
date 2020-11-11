@@ -7,7 +7,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import {  checkValueForNA } from "../../utils";
 const gotoCreatePage = (state, dispatch) => {
    const createUrl = `/egov-nulm/create-susv?step=0`;
   dispatch(setRoute(createUrl));
@@ -90,8 +90,17 @@ export const getSUSVDetailsView = (isReview = true) => {
           labelName: "Age",
           labelKey: "NULM_SEP_AGE"
         },
-        { jsonPath: "NulmSusvRequest.age" }
+        { jsonPath: "NulmSusvRequest.age",
+        callBack: checkValueForNA  }
       ),
+      dateofbirth: getLabelWithValue(
+        {
+          labelName: "Date Of Birth",
+          labelKey: "NULM_SEP_DOB"
+        },
+        { jsonPath: "NulmSusvRequest.dob",
+        callBack: checkValueForNA  }
+      ), 
       gender: getLabelWithValue(
         {
           labelName: "Gender",

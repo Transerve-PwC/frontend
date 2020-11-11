@@ -151,9 +151,9 @@ const getMdmsData = async (action, state, dispatch) => {
                         {
                             name: "Type_of_Construction",
                         },
-                        // {
-                        //     name: "Documents",
-                        // },
+                        {
+                            name: "Documents",
+                        },
                     ],
                 },
             ],
@@ -169,18 +169,18 @@ const getMdmsData = async (action, state, dispatch) => {
             mdmsBody
         );
 
-        payload.MdmsRes.Booking.Documents = [
-            {
+        // payload.MdmsRes.Booking.Documents = [
+        //     {
 
-                "code": "DOC.DOC_PICTURE",
-                "description":"DOC.DOC_PICTURE.PICTURE_DESCRIPTION",
-                "active":true,
-                "documentType":"DOC",
-                "dropdownData":[],
-                "hasDropdown":false,
-                "required":false
+        //         "code": "DOC.DOC_PICTURE",
+        //         "description":"DOC.DOC_PICTURE.PICTURE_DESCRIPTION",
+        //         "active":true,
+        //         "documentType":"DOC",
+        //         "dropdownData":[],
+        //         "hasDropdown":false,
+        //         "required":true
 
-            }];
+        //     }];
 
         dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
     } catch (e) {

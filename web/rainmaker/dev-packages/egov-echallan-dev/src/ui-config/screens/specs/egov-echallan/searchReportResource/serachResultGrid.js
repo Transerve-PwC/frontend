@@ -81,14 +81,20 @@ export const serachReportPaymentDetailGrid = {
         }
       },
       {
+        name: getTextToLocalMappingPaymentDetail("transactionId"),
+        label: getTextToLocalMappingPaymentDetail("transactionId"),
+        options: {
+          filter: true,
+        }
+      },
+      {
         name: getTextToLocalMappingPaymentDetail("sector"),
         label: getTextToLocalMappingPaymentDetail("sector"),
         options: {
           filter: true,
           display: false,
         }
-      },
-
+      }
     ],
     title: getTextToLocalMappingPaymentDetail(
       "EC_VIEW_PAYMENT_REPORT_TITLE_HEADER"

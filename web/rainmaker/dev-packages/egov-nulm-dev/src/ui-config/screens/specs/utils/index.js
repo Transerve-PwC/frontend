@@ -987,9 +987,9 @@ export const getTextToLocalMapping = label => {
     case "PAID":
       getLocaleLabels("Paid", "WF_NEWPM_PENDINGAPPROVAL", localisationLabels);
 
-    case "APPROVED":
+    case "Approved":
       return getLocaleLabels("Approved", "NOC_APPROVED", localisationLabels);
-    case "REJECTED":
+    case "Rejected":
       return getLocaleLabels("Rejected", "NOC_REJECTED", localisationLabels);
     case "CANCELLED":
       return getLocaleLabels("Cancelled", "NOC_CANCELLED", localisationLabels);

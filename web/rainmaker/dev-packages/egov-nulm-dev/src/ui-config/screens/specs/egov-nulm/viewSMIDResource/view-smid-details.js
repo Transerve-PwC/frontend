@@ -120,7 +120,16 @@ export const getSMIDDetailsView = (isReview = true) => {
           labelName: "Date Of Birth",
           labelKey: "NULM_SMID_DOB"
         },
-        { jsonPath: "NULMSMIDRequest.dob" }
+        { jsonPath: "NULMSMIDRequest.dob",
+        callBack: checkValueForNA }
+      ),
+      age: getLabelWithValue(
+        {
+          labelName: "Age",
+          labelKey: "NULM_SEP_AGE"
+        },
+        { jsonPath: "NULMSMIDRequest.age",
+        callBack: checkValueForNA }
       ),
 
       emailId: getLabelWithValue(

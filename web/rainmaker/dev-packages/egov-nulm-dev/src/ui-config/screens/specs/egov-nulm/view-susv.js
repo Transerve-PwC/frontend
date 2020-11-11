@@ -174,9 +174,9 @@ import {
       
         radioButtonValue.forEach(value => {
           if(NulmSusvRequest[value] && NulmSusvRequest[value]=== true ){
-            dispatch(prepareFinalObject(`NulmSusvRequest[${value}]`, "YES" ));
+            dispatch(prepareFinalObject(`NulmSusvRequest[${value}]`, "Yes" ));
           }else{
-            dispatch(prepareFinalObject(`NulmSusvRequest[${value}]`, "NO" ));
+            dispatch(prepareFinalObject(`NulmSusvRequest[${value}]`, "No" ));
           }
         });
 

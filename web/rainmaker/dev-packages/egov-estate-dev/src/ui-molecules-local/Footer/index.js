@@ -14,6 +14,7 @@ import store from "../../ui-redux/store";
 import {
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 class Footer extends React.Component {
   state = {
     open: false,
@@ -122,12 +123,18 @@ class Footer extends React.Component {
       documentProps,
       screenName,
       validateFn,
-      toggleSnackbar
+      toggleSnackbar,
+      setRoute
     } = this.props;
     const { open, data, employeeList } = this.state;
-
+    const {preparedFinalObject} = this.props.state.screenConfiguration;
+    const _data = get(
+      preparedFinalObject,
+      dataPath
+    );
     const dialogData = {...data, documentProps}
-
+    const fileNumber = getQueryArg(window.location.href, "fileNumber")
+    const tenant = getQueryArg(window.location.href, "tenantId");
     const downloadMenu =
       contractData &&
       contractData.map(item => {
@@ -135,7 +142,11 @@ class Footer extends React.Component {
         return {
           labelName: { buttonLabel },
           labelKey: `WF_${moduleName.toUpperCase()}_${buttonLabel}`,
-          link: () => {
+          link: moduleName === "ES-EB-AllotmentOfSite" && buttonLabel === "MODIFY" ? 
+          _data[0].propertyMasterOrAllotmentOfSite === "PROPERTY_MASTER" ? 
+          () => setRoute(`/estate/apply?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=9`) :
+          () => setRoute(`/estate/allotment?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=6`)
+          : () => {
             if (screenName == "noc-verification") {
               let isNocFormValid = validateFn(this.props.state);
               if (isNocFormValid) {
@@ -148,14 +159,13 @@ class Footer extends React.Component {
                 };
                 toggleSnackbar(true, errorMessage, "warning");
               }
-            }
+            } 
             else {
               this.openActionDialog(item);
             }
           }
         };
       });
-    
     const buttonItems = {
       label: { labelName: "Take Action", labelKey: "WF_TAKE_ACTION" },
       rightIcon: "arrow_drop_down",

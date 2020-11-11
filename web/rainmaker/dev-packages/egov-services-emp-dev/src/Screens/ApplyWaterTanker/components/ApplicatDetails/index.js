@@ -70,6 +70,7 @@ class ApplicatInfo extends Component {
             id="name"
             name="name"
             type="text"
+            required = {true}
             value={firstName}
             required = {true} 
             hintText={

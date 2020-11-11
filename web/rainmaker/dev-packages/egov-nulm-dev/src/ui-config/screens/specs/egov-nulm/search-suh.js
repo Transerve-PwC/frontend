@@ -59,32 +59,32 @@ import {
 
    const  data =  process.env.REACT_APP_NAME === "Employee" ?  [
     {
-      value: "CREATED",
+      value: "Created",
       label: "Created"
     },
     {
-      value: "APPROVED",
+      value: "Approved",
       label: "Approved"
     },
     {
-      value: "REJECTED",
+      value: "Rejected",
       label: "Rejected"
     }
    ]:[
       {
-        value: "CREATED",
+        value: "Created",
         label: "Created"
       },
       {
-        value: "DRAFTED",
+        value: "Drafted",
         label: "Drafted"
       },
       {
-        value: "APPROVED",
+        value: "Approved",
         label: "Approved"
       },
       {
-        value: "REJECTED",
+        value: "Rejected",
         label: "Rejected"
       }
     ];

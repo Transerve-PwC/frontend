@@ -109,7 +109,7 @@ export const SuhDetails = getCommonCard({
             value:"Temporary",           
           }
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",  
     },
@@ -127,17 +127,17 @@ export const SuhDetails = getCommonCard({
         label: { name: "All weather conditioned classification", key: "NULM_SUH_ALL_WEATHER_CONDITIONED_CLASSIFICATION" },
         buttons: [
           {
-            labelName: "YES",
+            labelName: "Yes",
             labelKey: "NULM_SEP_YES",
-            value:"YES",           
+            value:"Yes",           
           },
           {
-            label: "NO",
+            label: "No",
             labelKey: "NULM_SEP_NO",
-            value:"NO",           
+            value:"No",           
           },        
         ],      
-        defaultValue: "NO"
+        defaultValue: "No"
       },
       type: "array",     
     },
@@ -237,7 +237,7 @@ export const SuhDetails = getCommonCard({
             value:"Private",           
           }
         ],      
-       // defaultValue: "MALE"
+       // defaultValue: "Male"
       },
       type: "array",  
     },

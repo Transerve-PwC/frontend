@@ -149,7 +149,7 @@ class Footer extends React.Component {
 
 
     }
-	if (dataPath === "NulmSusvRequest" ) {
+	if (dataPath === "NulmSusvRequest" || dataPath === "NulmSusvRenewRequest" ) {
       var { state } = this.props;
       const applicationNumberNULM = get(
         state.screenConfiguration.preparedFinalObject.workflow,
@@ -404,7 +404,7 @@ class Footer extends React.Component {
         </div>
       );
     }
-	else if (dataPath === "NulmSusvRequest"  && data.length != 0) {
+	else if (dataPath === "NulmSusvRequest" || dataPath ==="NulmSusvRenewRequest"  && data.length != 0) {
       return (
         <div className="apply-wizard-footer" id="custom-atoms-footer">
           {!isEmpty(downloadMenu) && (

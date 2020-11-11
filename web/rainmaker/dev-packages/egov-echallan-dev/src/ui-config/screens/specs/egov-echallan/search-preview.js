@@ -759,7 +759,7 @@ const setSearchResponse = async (
     prepareDocumentsView(state, dispatch);
     prepareItemSeizedDetails(state, dispatch, encroachmentType, appstatus);
 
-    createDemandforChallanCertificate(state, dispatch, tenantId);
+    await createDemandforChallanCertificate(state, dispatch, tenantId);
     if (checkForRole(roles, 'challanSM') || checkForRole(roles, 'challanSI') || checkForRole(roles, 'CITIZEN')) {
       setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
     }
@@ -1035,19 +1035,17 @@ const setSearchResponseForNocCretificate = async (
 
 const createDemandforChallanCertificate = async (state, dispatch, tenantId) => {
 
-  let response = await createDemandForChallan(state, dispatch, tenantId);
   let applicationNumber = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].challanId', '');
-  let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
-
-  if (response) {
-    response.Calculations[0].taxHeadEstimates.forEach(element => {
-      if (element.taxHeadCode === 'EC_ECHALLAN_FEE' && element.estimateAmount > 0) {
-        searchBill(dispatch, applicationNumber, tenantId, paymentStatus);
-        //generateBill(dispatch, applicationNumber, getTenantId());
-      }
-    });
-  }
-
+    let response = await createDemandForChallan(state, dispatch, tenantId);
+    let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');
+    if (response) {
+      response.Calculations[0].taxHeadEstimates.forEach(element => {
+        if (element.taxHeadCode === 'EC_ECHALLAN_FEE' && element.estimateAmount > 0) {
+          searchBill(dispatch, applicationNumber, tenantId, paymentStatus);
+          //generateBill(dispatch, applicationNumber, getTenantId());
+        }
+      });
+    }
 }
 
 

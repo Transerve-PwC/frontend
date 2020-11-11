@@ -65,21 +65,33 @@ class PaymentRedirect extends Component {
                     bookingType === "OSBM" || bookingType === "OSUJM"
                         ? "PAY"
                         : bookingType === "GFCP"
-                        ? "APPLY"
-                        : bookingType === "PACC"
-                        ? paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "MODIFY" : "APPLY"
-                        : "PAIDAPPLY"
+                            ? "APPLY"
+                            : bookingType === "PACC"
+                                ? paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "MODIFY" : "APPLY"
+                                : "PAIDAPPLY"
                 );
                 set(payload, "bkPaymentStatus", transactionStatus);
-                response = await httpRequest(
-                    "post",
-                    "/bookings/api/_update",
-                    "",
-                    [],
-                    {
-                        Booking: payload,
-                    }
-                );
+                if (bookingType === "PACC") {
+                    response = await httpRequest(
+                        "post",
+                        "/bookings/park/community/_update",
+                        "",
+                        [],
+                        {
+                            Booking: payload,
+                        }
+                    );
+                } else {
+                    response = await httpRequest(
+                        "post",
+                        "/bookings/api/_update",
+                        "",
+                        [],
+                        {
+                            Booking: payload,
+                        }
+                    );
+                }
                 this.props.setRoute(
                     `/egov-services/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}&businessService=${bookingType}`
                 );

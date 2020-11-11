@@ -249,7 +249,7 @@ export const searchResultPaymentDetailsApiResponse = async (state, dispatch) => 
           [getTextToLocalMappingPaymentDetail("sector")]: "-",
           [getTextToLocalMappingPaymentDetail("paymentAmount")]: "-",
           [getTextToLocalMappingPaymentDetail("violatorName")]: "-",
-
+          [getTextToLocalMappingPaymentDetail("transactionId")]: "-"
         }
       } else {
 
@@ -270,7 +270,8 @@ export const searchResultPaymentDetailsApiResponse = async (state, dispatch) => 
           temp[6] = item['paymentMode'] || "NA";
           temp[7] = item['challanStatus'] || "NA";
           temp[8] = item['paymentStatus'] === 'PENDING' ? 'UNPAID' : 'PAID' || "-";
-          temp[9] = __FOUND.name || "-";
+          temp[9] = item['transactionId'] || "-";
+          temp[10] = __FOUND.name || "-";
           data.push(temp);
         });
 

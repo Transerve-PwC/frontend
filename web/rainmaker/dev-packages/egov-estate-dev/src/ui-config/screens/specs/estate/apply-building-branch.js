@@ -146,7 +146,14 @@ const getData = async(action, state, dispatch) => {
   setDocumentData(action, state, dispatch);
 }
 
-export const setDocumentData = (action, state, dispatch, ownerIndex = 0) => {
+export const setDocumentData = async (action, state, dispatch, ownerIndex = 0) => {
+  const documentTypePayload = [{
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
+    masterDetails: [{
+      name: "buildingBranchOwnerDocs"
+    }]
+  }]
+  const docsData = await getMdmsData(dispatch, documentTypePayload);
   const {
     EstateServices
   } = docsData && docsData.MdmsRes ? docsData.MdmsRes : {}

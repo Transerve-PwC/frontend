@@ -293,10 +293,11 @@ export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") =
   }
 ]
 
-let previousOwnerDocuments = PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.reviewDocDataPrevOwner
-let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.reviewDocData
-  const olength = ownerDocuments.length % 4
-  ownerDocuments = !!olength ? [...ownerDocuments, ...new Array(4 - olength).fill({
+let PropertiesTempOwners = PropertiesTemp[0].propertyDetails.owners;
+const modifiedOwner = PropertiesTempOwners.map((owner) => {
+  let ownerDocuments = owner.ownerDetails.reviewDocData
+  const plength = ownerDocuments.length % 4
+  ownerDocuments = !!plength ? [...ownerDocuments, ...new Array(4 - plength).fill({
     title: "",
     name: ""
   })] : ownerDocuments
@@ -309,8 +310,23 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
+  owner.ownerDetails.ownerDocuments = myODocuments;
+  return owner;
+})
 
-  const plength = previousOwnerDocuments.plength % 4
+  let Property = Properties[0];
+  if(Property.propertyDetails.purchaser.length > 0){
+    let propertyOwners = Property.propertyDetails.owners;
+    const owners = propertyOwners.map((owner , index) => {
+       owner.ownerDetails.ownerDocuments = modifiedOwner[index].ownerDetails.ownerDocuments
+       return owner
+    })
+  }
+
+let previousOwners = PropertiesTemp[0].propertyDetails.purchaser;
+const modifedPurchaser = previousOwners.map((previousOwn) => {
+  let previousOwnerDocuments = previousOwn.ownerDetails.reviewDocDataPrevOwner
+  const plength = previousOwnerDocuments.length % 4
   previousOwnerDocuments = !!plength ? [...previousOwnerDocuments, ...new Array(4 - plength).fill({
     title: "",
     name: ""
@@ -324,31 +340,17 @@ let ownerDocuments = PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.re
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
-  let Property = Properties[0];
-  if(Property.propertyDetails.purchaser.length > 0){
-     Property = {
-       ...Property , propertyDetails : {
-        ...Property.propertyDetails , purchaser  : [{
-          ...Property.propertyDetails.purchaser[0], ownerDetails :{
-            ...Property.propertyDetails.purchaser[0].ownerDetails , ownerDocuments : myPDocuments
-          }
-        }]
-       }
-     }
-    //  Property.propertyDetails.purchaser[0].ownerDetails.ownerDocuments = myPDocuments
-  }
-  if(Property.propertyDetails.owners.length > 0){
-    Property = {
-      ...Property , propertyDetails : {
-       ...Property.propertyDetails , owners  : [{
-         ...Property.propertyDetails.owners[0], ownerDetails :{
-           ...Property.propertyDetails.owners[0].ownerDetails , ownerDocuments : myODocuments
-         }
-       }]
-      }
-    }
-    // Property.propertyDetails.owners[0].ownerDetails.ownerDocuments = myODocuments
-  }
+  previousOwn.ownerDetails.ownerDocuments = myPDocuments;
+  return previousOwn;
+})
+
+if(Property.propertyDetails.purchaser.length > 0){
+  let purchasers = Property.propertyDetails.purchaser;
+  const purchaser = purchasers.map((purchaser , index) => {
+     purchaser.ownerDetails.ownerDocuments = modifedPurchaser[index].ownerDetails.ownerDocuments
+     return purchaser
+  })
+}
 
   const DOWNLOADRECEIPT = {
     GET: {

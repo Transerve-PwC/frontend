@@ -7,6 +7,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import {  checkValueForNA } from "../../utils";
 
 const gotoCreatePage = (state, dispatch) => {
    const createUrl = `/egov-nulm/create-sep?step=0`;
@@ -91,8 +92,18 @@ export const getSEPDetailsView = (isReview = true) => {
           labelName: "Date Of Birth",
           labelKey: "NULM_SEP_DOB"
         },
-        { jsonPath: "NULMSEPRequest.dob" }
+        { jsonPath: "NULMSEPRequest.dob",
+        callBack: checkValueForNA  }
       ),
+      age: getLabelWithValue(
+        {
+          labelName: "Age",
+          labelKey: "NULM_SEP_AGE"
+        },
+        { jsonPath: "NULMSEPRequest.age",
+        callBack: checkValueForNA }
+      ),
+      
 
       adharNo: getLabelWithValue(
         {
