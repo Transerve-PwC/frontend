@@ -230,7 +230,7 @@ if (horticultureBusinessServices.includes(currentObj.businessService)){
     <Grid
       container={true}
       spacing={12}
-      style={{ paddingLeft: 10, paddingBottom: 20 ,wordBreak: "break-word"}}
+      style={{ paddingLeft: 10, paddingBottom: 20 ,wordBreak: "break-word",whiteSpace:"pre-line"}}
     >
       <Grid
         item

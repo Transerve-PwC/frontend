@@ -34,7 +34,7 @@ const TaskDialog = props => {
         children={
           <Container
             children={
-              <Grid container="true" sm="12" spacing={16} marginTop={16} style={{wordBreak: "break-word"}}>
+              <Grid container="true" sm="12" spacing={16} marginTop={16} style={{wordBreak: "break-word",whiteSpace:"pre-line"}}>
                 <Grid
                   style={{ alignItems: "center", display: "flex" }}
                   item
