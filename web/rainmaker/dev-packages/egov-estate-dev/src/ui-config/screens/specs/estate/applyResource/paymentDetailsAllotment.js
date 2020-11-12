@@ -230,42 +230,46 @@ const getDemandRadioButton = {
   required: true,
   type: "array",
   beforeFieldChange: (action, state, dispatch) => {
-    if (action.value == "GROUNDRENT") {
-      dispatch(
-        handleField(
-          screenName,
-          `components.div.children.${paymentStep}.children.groundRentDetails`,
-          "visible",
-          true
-        )
+    dispatch(
+      handleField(
+        screenName,
+        `components.div.children.${paymentStep}.children.groundRentDetails`,
+        "visible",
+        !!(action.value == "GROUNDRENT")
       )
-      dispatch(
-        handleField(
-          screenName,
-          `components.div.children.${paymentStep}.children.licenseFeeDetails`,
-          "visible",
-          false
-        )
+    )
+    dispatch(
+      handleField(
+        screenName,
+        `components.div.children.${paymentStep}.children.licenseFeeDetails`,
+        "visible",
+        !!(action.value == "LICENSEFEE")
       )
-    }
-    else {
-      dispatch(
-        handleField(
-          screenName,
-          `components.div.children.${paymentStep}.children.licenseFeeDetails`,
-          "visible",
-          true
-        )
+    )
+    dispatch(
+      handleField(
+        "allotment",
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent",
+        "visible",
+        !!(action.value == "GROUNDRENT")
       )
-      dispatch(
-        handleField(
-          screenName,
-          `components.div.children.${paymentStep}.children.groundRentDetails`,
-          "visible",
-          false
-        )
+    )
+    dispatch(
+      handleField(
+        "allotment",
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee",
+        "visible",
+        !!(action.value == "LICENSEFEE")
       )
-    }
+    )
+    dispatch(
+      handleField(
+        "allotment",
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewAdvanceRent",
+        "visible",
+        !!(action.value)
+      )
+    )
   }
 };
 

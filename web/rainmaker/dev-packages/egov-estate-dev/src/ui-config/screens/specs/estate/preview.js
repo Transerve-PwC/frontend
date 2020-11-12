@@ -165,7 +165,8 @@ const getData = async (action, state, dispatch) => {
           state,
           dispatch,
           applicationState,
-          applicationType
+          applicationType,
+          branchType
         );        
         reviewDetails = getCommonCard({...reviewDetails})
         return {

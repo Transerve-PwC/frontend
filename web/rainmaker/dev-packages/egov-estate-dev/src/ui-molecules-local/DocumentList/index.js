@@ -74,7 +74,11 @@ class DocumentList extends Component {
     showLoader: false
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
+    this.initializeData()
+  }
+
+  initializeData = () => {
     let {
       prepareFinalObject,
       uploadedDocsInRedux: uploadedDocuments,
@@ -108,16 +112,36 @@ class DocumentList extends Component {
         ...uploadedDocumentsArranged
       });
     }
-    getQueryArg(window.location.href, "action") !== "edit" &&
-      Object.values(uploadedDocumentsArranged).forEach((item, index) => {
-        const documentType = item.documentType || item[0].documentType
-        const findItem = documents.find(document => document.name === documentType)
-        const { jsonPath, name } = findItem || {};
-        documentType === name && prepareFinalObject(
-          jsonPath,
-          { ...item[0] }
-        );
-      });
+
+    const documentValues = Object.values(uploadedDocumentsArranged);
+
+    documents.forEach((item, index) => {
+      const {name: documentType, jsonPath} = item;
+      const findItem = documentValues.find(document => {
+        const type = document.documentType || document[0].documentType
+        return type === documentType
+      })
+      prepareFinalObject(jsonPath, !!findItem ? {...findItem[0]} : null)
+    })
+
+    // if(getQueryArg(window.location.href, "action") !== "edit") {
+
+    // }
+      // Object.values(uploadedDocumentsArranged).forEach((item, index) => {
+      //   const documentType = item.documentType || item[0].documentType
+      //   const findItem = documents.find(document => document.name === documentType)
+      //   const { jsonPath, name } = findItem || {};
+      //   documentType === name && prepareFinalObject(
+      //     jsonPath,
+      //     { ...item[0] }
+      //   );
+      // });
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if(JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.initializeData()
+    }
   };
 
   onUploadClick = uploadedDocIndex => {

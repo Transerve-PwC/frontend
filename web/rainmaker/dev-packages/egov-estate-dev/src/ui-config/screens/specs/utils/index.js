@@ -383,7 +383,6 @@ if(Property.propertyDetails.purchaser.length > 0){
 
 
 export const downloadAcknowledgementForm = (Applications, applicationType,feeEstimate,state, mode = "download") => {
-  
   let queryStr = []
   switch (applicationType) {
     case 'SaleDeed':
@@ -507,6 +506,18 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
           value:"issuance-of-notice-application"
         }]
         break;
+      case 'BB-NOC':
+          queryStr = [{
+            key :"key",
+            value:"bb-noc-application-fresh"
+          }]
+          break;
+      case 'BB-IssuanceOfNotice':
+          queryStr = [{
+            key:"key",
+            value:"bb-IssuanceOfNotice-application"
+          }] 
+          break; 
   }
   queryStr[1] = {
     key: "tenantId",
@@ -913,6 +924,23 @@ let queryStr = []
         }
       ]
       break;
+
+      case 'BB-NOC':
+          queryStr = [{
+            key: "key",
+            value: `building-branch-final-letter`
+          }
+        ]
+
+      break;  
+
+      case 'BB-NOC-Proposal-letter':
+          queryStr = [{
+            key: "key",
+            value: ` noc-proposal-letter`
+          }
+        ]
+         
       
   }
   queryStr[1] = {
@@ -1110,7 +1138,24 @@ export const downloadNotice = (Applications, applicationType,noticeType, mode = 
                 }
               ]
         }
-        break;  
+        break; 
+     
+     case "BB-IssuanceOfNotice":
+          queryStr = [
+            {
+              key:"key",
+              value:"bb-violation-notice"              
+            }
+          ]
+        break;
+     default:
+        queryStr = [
+          {
+            key:"key",
+            value:""
+          }
+        ]
+
   }
     queryStr[1] = {
       key: "tenantId",

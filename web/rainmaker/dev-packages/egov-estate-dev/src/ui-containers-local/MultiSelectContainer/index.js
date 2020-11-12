@@ -18,12 +18,13 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 const styles = theme => ({
     root: {
       display: 'flex',
-      flexWrap: 'wrap',
+      // flexWrap: 'wrap',
     },
     formControl: {
+      flex: 1,
       margin: theme.spacing.unit,
-      minWidth: 120,
-      maxWidth: 300,
+      // minWidth: 120,
+      // maxWidth: 300,
     },
     formLabel: {
         fontSize: 12,
@@ -81,7 +82,7 @@ class MultipleSelect extends React.Component {
                 : item, localizationLabels)).join(', ')}
               MenuProps={MenuProps}
             >
-              <MenuItem value="" disabled>
+              <MenuItem disabled>
               <LabelContainer
                 labelName={placeholder.name}
                 labelKey={placeholder.key}
@@ -90,13 +91,13 @@ class MultipleSelect extends React.Component {
               {options.map((option, key) => (
                 <MenuItem key={key} value={option.code}>
                     <Checkbox checked={this.state.name.indexOf(option.code) > -1} color="primary"/>
-                    <ListItemText primary={getLocaleLabels(
+                    {getLocaleLabels(
                     option.code,
                     localePrefix && !isEmpty(localePrefix)
                         ? appendModulePrefix(option.code, localePrefix)
                         : option.label,
                     localizationLabels
-                    )} />
+                    )}
                 </MenuItem>
               ))}
             </Select>

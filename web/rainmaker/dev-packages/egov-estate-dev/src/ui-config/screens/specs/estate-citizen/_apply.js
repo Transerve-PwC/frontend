@@ -1,4 +1,4 @@
-import { getCommonCard, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { dispatchMultipleFieldChangeAction, getCommonCard, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {footer, stepsData} from './footer'
@@ -30,6 +30,29 @@ export const getApplicationConfig = async({dispatch, applicationType}) => {
   }
 }
 
+const hideFooter = async (action, state, dispatch) => {
+  const screenConfig = get(state.screenConfiguration, "screenConfig");
+  const {_apply} = screenConfig;
+  if(!!_apply) {
+    const actionDefination = [{
+                path: "components.div.children.footer.children.previousButton",
+                property: "visible",
+                value: false
+            },
+            {
+                path: "components.div.children.footer.children.nextButton",
+                property: "visible",
+                value: true
+            },
+            {
+                path: "components.div.children.footer.children.submitButton",
+                property: "visible",
+                value: false
+            }]
+    await dispatchMultipleFieldChangeAction("_apply", actionDefination, dispatch);
+  }
+}
+
 
 const getData = async (action, state, dispatch) => {
   await dispatch(prepareFinalObject("Applications", []))
@@ -44,6 +67,7 @@ const getData = async (action, state, dispatch) => {
       {key: "applicationNumber", value: applicationNumber}
     ] 
     try {
+      await hideFooter(action, state, dispatch)
       const applicationRes = await getSearchApplicationsResults(applicationQueryObject)
       const {Applications = []} = applicationRes;
       dispatch(prepareFinalObject("Applications", Applications))
@@ -96,7 +120,6 @@ const getData = async (action, state, dispatch) => {
     );
 
     const applyFooter = footer;
-
     const first_step_sections = await setFirstStep(state, dispatch, { data_config, format_config: first_step})
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step, documentList})
     let third_step = await setThirdStep({state, dispatch, applicationType, preview})

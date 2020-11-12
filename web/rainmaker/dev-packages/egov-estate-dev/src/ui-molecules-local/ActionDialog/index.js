@@ -70,7 +70,8 @@ const getEpoch = (dateString, dayStartOrEnd = "dayend") => {
 class ActionDialog extends React.Component {
   state = {
     employeeList: [],
-    roles: ""
+    roles: "",
+    hardCopyReceivedDateError: false
   };
 
   getButtonLabelName = label => {
@@ -92,6 +93,20 @@ class ActionDialog extends React.Component {
         return label;
     }
   };
+
+  handleValidation = (buttonLabel, isDocRequired) => {
+      let {dataPath, state} = this.props;
+      dataPath = `${dataPath}[0]`;
+      const data = get(state.screenConfiguration.preparedFinalObject, dataPath)
+      const validationDate = data.hardCopyReceivedDate;
+      if(!!validationDate) {
+        this.props.onButtonClick(buttonLabel, isDocRequired)
+      } else {
+        this.setState({
+          hardCopyReceivedDateError: true
+        })
+      }
+  }
 
   render() {  
     let {
@@ -217,6 +232,7 @@ class ActionDialog extends React.Component {
                    }
                    jsonPath={`${dataPath}.hardCopyReceivedDate`}
                     /> 
+                    {!!this.state.hardCopyReceivedDateError && (<span style={{color: "red"}}>Please enter hard copy received date</span>)}
                     </Grid>
                   )}
 
@@ -320,7 +336,7 @@ class ActionDialog extends React.Component {
                         }}
                         className="bottom-button"
                         onClick={() =>
-                          onButtonClick(buttonLabel, isDocRequired)
+                          buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" ? this.handleValidation(buttonLabel, isDocRequired) : onButtonClick(buttonLabel, isDocRequired)
                         }
                       >
                         <LabelContainer

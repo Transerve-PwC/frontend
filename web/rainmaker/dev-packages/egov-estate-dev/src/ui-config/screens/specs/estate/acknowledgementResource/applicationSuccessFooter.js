@@ -106,7 +106,11 @@ export const applicationSuccessFooter = (
                   
             }else{
               const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
-              const { applicationType} = Applications[0];
+              let { applicationType} = Applications[0];
+              const {branchType} = Applications[0];
+              if(branchType === "BuildingBranch"){
+                applicationType =  "BB-" + applicationType 
+              }
               const documents = temp[0].reviewDocData;
               set(Applications[0],"additionalDetails.documents",documents)
               downloadAcknowledgementForm(Applications,applicationType,[],"");
@@ -165,8 +169,12 @@ export const applicationSuccessFooter = (
                   
             }else{
               const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
-              const { applicationType} = Applications[0];
+              let { applicationType} = Applications[0];
               const documents = temp[0].reviewDocData;
+              const {branchType} = Applications[0];
+              if(branchType === "BuildingBranch"){
+                applicationType =  "BB-" + applicationType 
+              }
               set(Applications[0],"additionalDetails.documents",documents)
               downloadAcknowledgementForm(Applications,applicationType,[],"",'print');
             }
@@ -225,12 +233,15 @@ export const applicationSuccessFooter = (
           action: "condition",
           callBack: async() => {
             switch(purpose){
-              
               case 'apply':
-                if(type === 'EstateBranch_InternalServices_IssuanceOfNotice'){
+                if(type === 'EstateBranch_InternalServices_IssuanceOfNotice' || type === 'BuildingBranch_CitizenService_IssuanceOfNotice'){
                   const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
-                  const { applicationType} = Applications[0];
+                  let { applicationType} = Applications[0];
                   const documents = temp[0].reviewDocData;
+                  const {branchType} = Applications[0];
+                  if(branchType === "BuildingBranch"){
+                    applicationType =  "BB-" + applicationType 
+                  }
                   set(Applications[0],"additionalDetails.documents",documents)
                   downloadAcknowledgementForm(Applications,applicationType,[],"");
                 }else{
@@ -291,9 +302,20 @@ export const applicationSuccessFooter = (
           callBack: async() => {
             switch(purpose){
               case 'apply':
-                const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject;
-                downloadSummary(Properties, PropertiesTemp,'print');
-                break;
+                  if(type === 'EstateBranch_InternalServices_IssuanceOfNotice' || type === 'BuildingBranch_CitizenService_IssuanceOfNotice'){
+                    const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+                    let { applicationType} = Applications[0];
+                    const documents = temp[0].reviewDocData;
+                    const {branchType} = Applications[0];
+                    if(branchType === "BuildingBranch"){
+                      applicationType =  "BB-" + applicationType 
+                    }
+                    set(Applications[0],"additionalDetails.documents",documents)
+                    downloadAcknowledgementForm(Applications,applicationType,[],"",'print');
+                  }else{
+                    const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject; 
+                    downloadSummary(Properties, PropertiesTemp);
+                  }
               case 'pay': 
                 let tenantId = getQueryArg(window.location.href, "tenantId");
                 let consumerCodes = getQueryArg(window.location.href, "applicationNumber");

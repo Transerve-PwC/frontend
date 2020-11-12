@@ -268,6 +268,11 @@ const getField = async (item, fieldData = {}, state) => {
           moduleName: "egov-estate",
           uiFramework: "custom-containers-local",
           componentPath: "MultiSelectContainer",
+          gridDefination: {
+            xs: 12,
+            sm: 12,
+            md: 6
+          },
           props: {
             label: {
               name: labelItem,
