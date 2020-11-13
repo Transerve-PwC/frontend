@@ -40,6 +40,7 @@ import {
 import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
 import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
+import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 
 
 export const DEFAULT_STEP = -1;
@@ -258,7 +259,7 @@ const callBackForNext = async (state, dispatch) => {
     );
 
     for (var i = 0; i < propertyOwnersTemp.length; i++) {
-      const uploadedDocData = get(
+      let uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
         `Properties[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
         []
@@ -281,16 +282,28 @@ const callBackForNext = async (state, dispatch) => {
         }
       }
       if (isFormValid) {
+        uploadedDocData = uploadedDocData.filter(item => !!item);
+        const fileStoreIds = uploadedDocData && uploadedDocData.map(item => item && item.fileStoreId).filter(item => !!item).join(",");
+        const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+        
         const reviewDocData =
           uploadedDocData &&
-          uploadedDocData.map(item => {
+          uploadedDocData.map((item, index) => {
             return {
               title: `ES_${item.documentType}`,
-              link: item.fileUrl && item.fileUrl.split(",")[0],
+              link: item.fileUrl ? item.fileUrl.toString().split(",")[0] : !!fileUrlPayload && Object.values(fileUrlPayload)[index],
               linkText: "View",
-              name: item.fileName
+              name: item.fileName || (fileUrlPayload &&
+                fileUrlPayload[item.fileStoreId] &&
+                decodeURIComponent(
+                  getFileUrl(fileUrlPayload[item.fileStoreId])
+                    .split("?")[0]
+                    .split("/")
+                    .pop()
+                    .slice(13)
+                ))
             };
-          });
+          }).filter(item => !!item && !!item.link && !!item.name);
         dispatch(
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
         );
@@ -306,6 +319,11 @@ const callBackForNext = async (state, dispatch) => {
           `apply.components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewDocuments_${i}`,
           reviewDocuments
         )
+
+        const res = await applyEstates(state, dispatch, activeStep, "apply");
+        if(!res) {
+          return
+        }
       }
     }
   }
@@ -393,7 +411,7 @@ const callBackForNext = async (state, dispatch) => {
     );
 
     for (var i = 0; i < propertyPrevOwnersTemp.length; i++) {
-      const uploadedDocData = get(
+      let uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
         `Properties[0].propertyDetails.purchaser[${i}].ownerDetails.ownerDocuments`,
         []
@@ -416,16 +434,27 @@ const callBackForNext = async (state, dispatch) => {
         }
       }
       if (isFormValid) {
+        uploadedDocData = uploadedDocData.filter(item => !!item);
+        const fileStoreIds = uploadedDocData && uploadedDocData.map(item => item && item.fileStoreId).filter(item => !!item).join(",");
+        const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
         const reviewDocData =
           uploadedDocData &&
-          uploadedDocData.map(item => {
+          uploadedDocData.map((item, index) => {
             return {
               title: `ES_${item.documentType}`,
-              link: item.fileUrl && item.fileUrl.split(",")[0],
+              link: item.fileUrl ? item.fileUrl.toString().split(",")[0] : !!fileUrlPayload && Object.values(fileUrlPayload)[index],
               linkText: "View",
-              name: item.fileName
+              name: item.fileName || (fileUrlPayload &&
+                fileUrlPayload[item.fileStoreId] &&
+                decodeURIComponent(
+                  getFileUrl(fileUrlPayload[item.fileStoreId])
+                    .split("?")[0]
+                    .split("/")
+                    .pop()
+                    .slice(13)
+                ))
             };
-          });
+          }).filter(item => !!item && !!item.link && !!item.name);
         dispatch(
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, reviewDocData)
         );
@@ -1403,8 +1432,6 @@ export const downloadPrintContainer = (
       case `${applicationType}` && 'ES_PENDING_SRA_VERIFICATION':
       case `${applicationType}` && 'ES_PENDING_SO_VERIFICATION': 
       case `${applicationType}` && 'ES_PENDING_AC_APPROVAL':
-      case `${applicationType}` && 'ES_PENDING_DA_FEE': 
-      case `${applicationType}` && 'ES_PENDING_PAYMENT':
       case `${applicationType}` && 'ES_PENDING_CLARIFICATION':     
       case `${applicationType}` && 'ES_REJECTED': 
       case `${applicationType}` && 'ES_PENDING_SO_TEMPLATE_CREATION':
@@ -1421,26 +1448,92 @@ export const downloadPrintContainer = (
          ] 
           break;    
       case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
+      case `${applicationType}` && 'ES_PENDING_DA_FEE':  
       case `${applicationType}` && 'ES_PENDING_SO_APPROVAL': 
-      case `${applicationType}` && 'ES_PENDING_PAYMENT': 
-            switch(applicationType) {
-              case 'ChangeInTrade':
-              case 'DuplicateCopy':  
-                  downloadMenu = [
-                    applicationDownloadObject
-                  ]
-                  printMenu = [
-                    applicationPrintObject
-                  ]
+      case `${applicationType}` && 'ES_PENDING_PAYMENT':
+          switch(applicationType) {
+            case 'SaleDeed':
+            case 'ScfToSco':
+            case 'ChangeInTrade':
+            case 'NOC':
+            case 'NDC':
+            case 'PatnershipDeed':
+            case 'DuplicateCopy':
+            case 'Mortgage':
+            case 'FamilySettlement':
+            case 'LeaseDeed':
+                downloadMenu = [
+                  applicationDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject
+                ]
+            break;
+            case 'LeaseholdToFreehold':
+                downloadMenu = [
+                  applicationDownloadObject,
+                  NoticeDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject
+                ]
+                
+              break;
+            
+            case 'UnRegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+              break;
+               
+            case 'RegisteredWill':
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+                      
+            case 'IntestateDeath':
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ]
+            break;
+
+            case 'IssuanceOfNotice':
+                downloadMenu = [
+                  applicationDownloadObject,
+                  NoticeDownloadObject,
+                  IssuanceViolationOrderDownloadObject,
+                  cancellationOrderDownloadObject,
+                  nonPaymentNoticeDownloadObject,
+                  nonPaymentOrderDownloadObject,
+                  occupationCertificateDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,
+                  NoticePrintObject,
+                  IssuanceViolationOrderPrintObject,
+                  cancellationOrderPrintObject,
+                  nonPaymentNoticePrintObject,
+                  nonPaymentOrderPrintObject,
+                  occupationCertificatePrintObject
+                ]
                 break;
-              default:
-                  downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
-                  ]
-                  printMenu = [
-                    applicationPrintObject,LetterPrintObject
-                  ]
-            } 
+          }  
           break;
       case `${applicationType}` && 'ES_PENDING_DA_NOTICE_CREATION':    
       case `${applicationType}` && 'ES_PENDING_CITIZEN_NOTICE_DOCUMENTS':
@@ -1459,12 +1552,12 @@ export const downloadPrintContainer = (
             switch(applicationType){
               case 'LeaseholdToFreehold':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,
+                    applicationDownloadObject,
                     NoticeDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,
+                    applicationPrintObject,
                     NoticePrintObject
                   ]
                   break;

@@ -49,11 +49,9 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
     sourceJsonPath,
     []
   ) || []
-  applicationDocuments = applicationDocuments.filter(item => !!item && !!item.isActive)
+  applicationDocuments = applicationDocuments.filter(item => !!item && !!item.isActive && !!item.fileStoreId)
   let uploadedDocuments = {};
-  let fileStoreIds =
-    applicationDocuments &&
-    applicationDocuments.map(item => item.fileStoreId).join(",");
+  let fileStoreIds = applicationDocuments && applicationDocuments.map(item => item && item.fileStoreId).filter(item => !!item).join(",");
   const fileUrlPayload =
     fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
   applicationDocuments &&
@@ -72,7 +70,7 @@ export const setDocsForEditFlow = async (state, dispatch, sourceJsonPath, destin
               )) ||
             `Document - ${index + 1}`,
           fileStoreId: item.fileStoreId,
-          fileUrl: Object.values(fileUrlPayload)[index],
+          fileUrl: fileUrlPayload[item.fileStoreId],
           documentType: item.documentType,
           tenantId: item.tenantId,
           id: item.id
@@ -289,6 +287,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       if (owners) {
         owners.map((item, index) => {
           let ownerDocuments = get(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`) || [];
+          ownerDocuments = ownerDocuments.filter(item => !!item && !!item.fileStoreId);
           ownerDocuments = ownerDocuments.map(item => ({
             ...item,
             isActive: true
@@ -352,17 +351,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       })
       
       if (screenName != "apply-building-branch") {
-        let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
-        let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
-
-        
-        currOwners.map((item, index) => {
-          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
-        })
-
-        prevOwners.map((item, index) => {
-          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
-        })
+        var currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+        var prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
         Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
       }
@@ -392,6 +382,18 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     Properties = [{...Properties[0], estateRentSummary: estateRentSummary}]
 
     dispatch(prepareFinalObject("Properties", Properties));
+
+    if (activeIndex == 3) {
+      currOwners.map((item, index) => {
+        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
+      })
+    }
+
+    if (activeIndex == 5) {
+      prevOwners.map((item, index) => {
+        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
+      })
+    }
     
     // dispatch(
     //   prepareFinalObject(
