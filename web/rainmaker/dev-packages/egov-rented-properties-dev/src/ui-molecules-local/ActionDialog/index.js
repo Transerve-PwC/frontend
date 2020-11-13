@@ -156,9 +156,57 @@ const fieldConfig = {
 class ActionDialog extends React.Component {
   state = {
     employeeList: [],
-    roles: ""
+    roles: "",
+    fields: {
+      "comments": ""
+    },
+    errors: {
+      "comments": ""
+    },
+    dueamount:{
+      "dueamount":""
+    },
+    dueamounterror:{
+      "dueamount":""
+    },
+    publicationcharges:{
+      "publicationcharge":""
+    },
+    publicationchargeserror:{
+      "publicationcharge":""
+    },
+    mortagage:{
+      "mortagage":""
+    },
+    mortagageerror:{
+      "mortagage":""
+    },
+    bankname:{
+      "bankname":""
+    },
+    banknameerror:{
+      "bankname":""
+    },
+    mortgageAmount:{
+      "mortgageAmount":""
+    },
+    mortgageAmountError:{
+      "mortgageAmount":""
+    },
+    sanctionLetterNumber:{
+      "sanctionLetterNumber":""
+    },
+    sanctionLetterNumberError:{
+      "sanctionLetterNumber":""
+    },
+    sanctionDate:{
+      "sanctionDate":""
+    },
+    sanctionDateError:{
+      "sanctionDate":""
+    }
   };
-
+  
   // onEmployeeClick = e => {
   //   const { handleFieldChange, toggleSnackbar } = this.props;
   //   const selectedValue = e.target.value;
@@ -181,100 +229,115 @@ class ActionDialog extends React.Component {
     const applicationState = data.applicationState
     const duplicateCopyApplicationState = data.state    
   if(this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") ) {
+    let formIsValid = true;
     const value = applicationState === "OT_PENDINGSAVERIFICATION" ? data.ownerDetails.dueAmount : data.ownerDetails.aproCharge
     if(!value) {
-      toggleSnackbar(
-              true,
-              { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
-              "error"
-            );
-      return
+      let dueamount = this.state.dueamount;
+    let dueamounterror = {};
+       formIsValid = false;
+       dueamounterror["dueamount"] = "Please enter all required fields";
+    this.setState({errors: dueamounterror});
+    return formIsValid;
     }
     else if(isNaN(value)) {
-      toggleSnackbar(
-              true,
-              { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
-              "error"
-            );
-      return
+      let dueamount = this.state.dueamount;
+      let dueamounterror = {};
+         formIsValid = false;
+         dueamounterror["dueamount"] = "Please enter only numbers";
+  
+      this.setState({errors: dueamounterror});
+      return formIsValid;
     }
     else if(parseInt(value)===0){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
-        "error"
-      );
-return
+let dueamount = this.state.dueamount;
+let dueamounterror = {};
+   formIsValid = false;
+   dueamounterror["dueamount"] = "Please enter number greater than zero";
+
+this.setState({errors: dueamounterror});
+return formIsValid;
     }
     else if(value.toString().indexOf(' ')>=0){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
-        "error"
-      );
-return
+let dueamount = this.state.dueamount;
+let dueamounterror = {};
+   formIsValid = false;
+   dueamounterror["dueamount"] = "Please enter only numbers";
+
+this.setState({errors: dueamounterror});
+return formIsValid;
     }
     else if((value.toString().length)<2 || (value.toString().length)>4){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter charges 2-4 digits", labelKey: "RP_ERR_CHARGES"},
-        "error"
-      );
-return
+let dueamount = this.state.dueamount;
+let dueamounterror = {};
+   formIsValid = false;
+   dueamounterror["dueamount"] = "Please enter charges 2-4 digits";
+
+this.setState({errors: dueamounterror});
+return formIsValid;
     }
   } else if(this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_DC && (duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" || duplicateCopyApplicationState === "DC_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT")) {
+    let formIsValid = true;
     const value = duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? data.applicant[0].feeAmount : data.applicant[0].aproCharge
     if(!value) {
-      toggleSnackbar(
-              true,
-              { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
-              "error"
-            );
-      return
+      let publicationcharges = this.state.publicationcharges;
+      let publicationchargeserror = {};
+         formIsValid = false;
+         publicationchargeserror["publicationcharge"] = "Please enter all required fields";
+  
+      this.setState({errors: publicationchargeserror});
+      return formIsValid;
     }
     else if(isNaN(value)) {
-      toggleSnackbar(
-              true,
-              { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
-              "error"
-            );
-      return
+      let publicationcharges = this.state.publicationcharges;
+      let publicationchargeserror = {};
+         formIsValid = false;
+         publicationchargeserror["publicationcharge"] = "Please enter only numbers";
+  
+      this.setState({errors: publicationchargeserror});
+      return formIsValid;
     }
     else if(parseInt(value)===0){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter number greater than zero", labelKey: "Please enter number greater than zero"},
-        "error"
-      );
-return
+let publicationcharges = this.state.publicationcharges;
+      let publicationchargeserror = {};
+         formIsValid = false;
+         publicationchargeserror["publicationcharge"] = "Please enter number greater than zero";
+      this.setState({errors: publicationchargeserror});
+      return formIsValid;
     }
     else if(value.toString().indexOf(' ')>=0){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter only numbers", labelKey: "Please enter only numbers"},
-        "error"
-      );
-return
+
+let publicationcharges = this.state.publicationcharges;
+let publicationchargeserror = {};
+   formIsValid = false;
+   publicationchargeserror["publicationcharge"] = "Please enter only numbers";
+
+
+this.setState({errors: publicationchargeserror});
+return formIsValid;
     }
     else if((value.toString().length)<2 || (value.toString().length)>4){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter charges 2-4 digits", labelKey: "RP_ERR_CHARGES"},
-        "error"
-      );
-return
+
+let publicationcharges = this.state.publicationcharges;
+let publicationchargeserror = {};
+   formIsValid = false;
+   publicationchargeserror["publicationcharge"] = "Please enter charges 2-4 digits";
+
+this.setState({errors: publicationchargeserror});
+return formIsValid;
     }
   }
   else if(this.props.moduleName === "PermissionToMortgage" && (duplicateCopyApplicationState === "MG_PENDINGGRANTDETAIL" )){
+    let formIsValid = true;
     let mortgageApplication = get(state.screenConfiguration.preparedFinalObject,dataPath)
     
     if(mortgageApplication.mortgageApprovedGrantDetails === null){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
-        "error"
-      );
-return
+let mortagage=this.state.mortagage
+let mortagageerror = {};
+   formIsValid = false;
+   mortagageerror["mortagage"] = "Please enter all required fields";
+
+this.setState({errors: mortagageerror});
+return formIsValid;
     }
     let bankName = (!!mortgageApplication.mortgageApprovedGrantDetails[0].bankName) ? mortgageApplication.mortgageApprovedGrantDetails[0].bankName : ""
     bankName = bankName.trim()
@@ -285,69 +348,167 @@ return
     const mortgageEndDateEpoch = (!!mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) ? parseInt(mortgageApplication.mortgageApprovedGrantDetails[0].mortgageEndDate) : ""
 
     if(!bankName || !mortgageAmountValid || ! sanctionLetterNumber || !sanctionDateEpoch || !mortgageEndDateEpoch){
-      toggleSnackbar(
-        true,
-        { labelName: "Please enter all required fields", labelKey: "Please enter all required fields"},
-        "error"
-      );
-return
+
+let mortagage=this.state.mortagage
+let mortagageerror = {};
+   formIsValid = false;
+   mortagageerror["mortagage"] = "Please enter all required fields";
+
+this.setState({errors: mortagageerror});
+return formIsValid;
     }
     else if(!(bankName.length >= 3 && bankName.length <= 25)) {
-      toggleSnackbar(
-              true,
-              { labelName: "Enter Bank Name between 1 and 25 Characters", labelKey: "RP_ERR_BANKNAME_RANGE"},
-              "error"
-            );
-      return
+      let bankname=this.state.bankname
+      let banknameerror = {};
+   formIsValid = false;
+   banknameerror["bankname"] = "Enter Bank Name between 3 and 25 Characters";
+
+this.setState({errors: banknameerror});
+return formIsValid;
     }
     else if(isNaN(mortgageAmountValid)){
-      toggleSnackbar(
-        true,
-        { labelName: "Amount should be a numeric value", labelKey: "RP_ERR_MORTGAGEAMOUNT_NUMBER"},
-        "error"
-      );
-      return
+      let mortgageAmount=this.state.mortgageAmount
+      let mortgageAmountError = {};
+         formIsValid = false;
+         mortgageAmountError["mortgageAmount"] = "Amount should be a numeric value";
+      
+      this.setState({errors: mortgageAmountError});
+      return formIsValid;
     }
     else if(!(mortgageAmountValid.length >= 3 && mortgageAmountValid.length <= 8)){
-      toggleSnackbar(
-        true,
-        { labelName: "Enter Mortgage Amount between 3 and 8 digits only", labelKey: "RP_ERR_MORTGAGEAMOUNT_RANGE"},
-        "error"
-      );
-      return
+      let mortgageAmount=this.state.mortgageAmount
+      let mortgageAmountError = {};
+         formIsValid = false;
+         mortgageAmountError["mortgageAmount"] = "Enter Mortgage Amount between 3 and 8 digits only";
+      
+      this.setState({errors: mortgageAmountError});
+      return formIsValid;
     }
     else if(!(sanctionLetterNumber.length >= 1 && sanctionLetterNumber.length <= 25)){
-      toggleSnackbar(
-        true,
-        { labelName: "Enter Sanction Letter Number between 1 and 25 Characters", labelKey: "RP_ERR_SANCTION_LETTER_NUMBER_RANGE"},
-        "error"
-      );
-      return
+      let sanctionLetterNumber=this.state.sanctionLetterNumber
+      let sanctionLetterNumberError = {};
+
+         formIsValid = false;
+         sanctionLetterNumberError["sanctionLetterNumber"] = "Enter Sanction Letter Number between 1 and 25 Characters";
+      
+      this.setState({errors: sanctionLetterNumberError});
+      return formIsValid;
     }
     else if((sanctionDateEpoch - mortgageEndDateEpoch) > 0){
-      toggleSnackbar(
-        true,
-        { labelName: "Date of sanctioning should not be greater than mortgage end date", labelKey: "DATE_OF_SANCTION_GREATER_THAN_MORTGAGE_END_DATE"},
-        "error"
-      );
-      return
+      let sanctionDate=this.state.sanctionDate
+      let sanctionDateError = {};
+         formIsValid = false;
+         sanctionDateError["sanctionLetterNumber"] = "Date of sanctioning should not be greater than mortgage end date";
+      
+      this.setState({errors: sanctionDateError});
+      return formIsValid;
     }
   }
   else if((this.props.moduleName==="MasterRP"||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_OT||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_DC||this.props.moduleName==="PermissionToMortgage")&&(buttonLabel==="REJECT" || buttonLabel==="APPROVE"))
   {
+    let formIsValid = true;
 const comments=data.comment
 if(!comments || !comments.replace(/\s/g, '').length){
-  toggleSnackbar(
-    true,
-    { labelName: "Please enter the comments", labelKey: "RP_ERR_ENTER_COMMENTS"},
-    "error"
-  );
-return
+let fields = this.state.fields;
+    let errors = {};
+       formIsValid = false;
+       errors["comments"] = "Please enter comments";
+    this.setState({errors: errors});
+    return formIsValid;
 }
   }
     this.props.onButtonClick(buttonLabel, isDocRequired)
  }
+ handleChange(field, e){         
+  let fields = this.state.fields;
+  let errors = this.state.errors;
+  let dueamount = this.state.dueamount;
+  let dueamounterror = this.state.dueamounterror;
+  let publicationcharges = this.state.publicationcharges;
+  let publicationchargeserror = this.state.publicationchargeserror;
+  let mortagage = this.state.mortagage;
+  let mortagageerror = this.state.mortagageerror;
+  let bankname = this.state.bankname;
+  let banknameerror = this.state.banknameerror;
+  let mortgageAmount = this.state.mortgageAmount;
+  let mortgageAmountError = this.state.mortgageAmountError;
+  let sanctionLetterNumber = this.state.sanctionLetterNumber;
+  let sanctionLetterNumberError = this.state.sanctionLetterNumberError;
+  let sanctionDate = this.state.sanctionDate;
+  let sanctionDateError = this.state.sanctionDateError;
+  if (Object.keys(fields).length) {
+    fields[field] = e.target.value;        
+    this.setState({fields});
 
+    if (e.target.value) {
+      errors["comments"] = "";
+      this.setState({errors: errors});
+    }
+  }
+  if (Object.keys(dueamount).length) {
+    dueamount[field] = e.target.value;        
+    this.setState({dueamount});
+
+    if (e.target.value) {
+      dueamounterror["dueamount"] = "";
+      this.setState({errors: dueamounterror});
+    }
+  }
+  if (Object.keys(publicationcharges).length) {
+    publicationcharges[field] = e.target.value;        
+    this.setState({publicationcharges});
+
+    if (e.target.value) {
+      publicationchargeserror["publicationcharge"] = "";
+      this.setState({errors: publicationchargeserror});
+    }
+  }
+  if (Object.keys(mortagage).length) {
+    mortagage[field] = e.target.value;        
+    this.setState({mortagage});
+
+    if (e.target.value) {
+      mortagageerror["mortagage"] = "";
+      this.setState({errors: mortagageerror});
+    }
+  }
+  if (Object.keys(bankname).length) {
+    bankname[field] = e.target.value;        
+    this.setState({bankname});
+
+    if (e.target.value) {
+      banknameerror["bankname"] = "";
+      this.setState({errors: banknameerror});
+    }
+  }
+  if (Object.keys(mortgageAmount).length) {
+    mortgageAmount[field] = e.target.value;        
+    this.setState({mortgageAmount});
+
+    if (e.target.value) {
+      mortgageAmountError["mortgageAmount"] = "";
+      this.setState({errors: mortgageAmountError});
+    }
+  }
+  if (Object.keys(sanctionLetterNumber).length) {
+    sanctionLetterNumber[field] = e.target.value;        
+    this.setState({sanctionLetterNumber});
+
+    if (e.target.value) {
+      sanctionLetterNumberError["sanctionLetterNumber"] = "";
+      this.setState({errors: sanctionLetterNumberError});
+    }
+  }
+  if (Object.keys(sanctionDate).length) {
+    sanctionDate[field] = e.target.value;        
+    this.setState({sanctionDate});
+
+    if (e.target.value) {
+      sanctionDateError["sanctionDate"] = "";
+      this.setState({errors: sanctionDateError});
+    }
+  }
+}
   getButtonLabelName = label => {
     switch (label) {
       case "FORWARD":
@@ -489,7 +650,11 @@ return
                     /> */}
                      {(moduleName==="MasterRP" && ((mastrerstate ==="PM_PENDINGJAVERIFICATION" && buttonLabel==="SENDBACK") || buttonLabel === "REJECT"))? <div style={{height: "10px"}}></div>: (showEmployeeList && !!dropDownData.length) ? <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label> :<div style={{height: "10px"}}></div>
                     }
-                    <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/>
+                    {/* <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/> */}
+                    <textarea refs="comments" className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} value={this.state.fields["comments"]} onChange={e => {
+                    this.handleChange("comments", e);handleFieldChange(`${dataPath}.comment`, e.target.value)}
+                    }/>
+                    <span style={{color: "red"}}>{this.state.errors["comments"]}</span>
                   </Grid>
                   )}
                   {moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
@@ -499,12 +664,13 @@ return
                       style={{ width: "90%" }}
                       InputLabelProps={{ shrink: true }}
                       label={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
-                      onChange={e =>
-                        handleFieldChange(applicationState === "OT_PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge` , e.target.value)
-                      }
+                      onChange={e =>{
+                        this.handleChange("dueamount", e); handleFieldChange(applicationState === "OT_PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge` , e.target.value)
+                      }}
                       jsonPath={applicationState === "OT_PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge`}
                       placeholder={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.placeholder : fieldConfig.publicationCharges.placeholder}
                     />
+                    <span style={{color: "red"}}>{this.state.errors["dueamount"]}</span>
                   </Grid>
                   )}
 
@@ -515,12 +681,13 @@ return
                       style={{ width: "90%" }}
                       InputLabelProps={{ shrink: true }}
                       label={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.duplicateCopyCharges.label : fieldConfig.publicationCharges.label}
-                      onChange={e =>
-                        handleFieldChange(duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? `${dataPath}.applicant[0].feeAmount` : `${dataPath}.applicant[0].aproCharge` , e.target.value)
-                      }
+                      onChange={e =>{
+                        this.handleChange("publicationcharge", e);handleFieldChange(duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? `${dataPath}.applicant[0].feeAmount` : `${dataPath}.applicant[0].aproCharge` , e.target.value)
+                      }}
                       jsonPath={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? `${dataPath}.applicant[0].feeAmount` : `${dataPath}.applicant[0].aproCharge`}
                       placeholder={duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" ? fieldConfig.duplicateCopyCharges.placeholder : fieldConfig.publicationCharges.placeholder}
                     />
+                    <span style={{color: "red"}}>{this.state.errors["publicationcharge"]}</span>
                   </Grid>
                   )}
 
@@ -530,43 +697,47 @@ return
                       InputLabelProps={{ shrink: true }}
                       required={true}  
                       label= {fieldConfig.nameOfTheBank.label}
-                      onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].bankName` , e.target.value)
-                      }
+                      onChange={e =>{
+                        this.handleChange("bankname", e);handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].bankName` , e.target.value)
+                      }}
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].bankName`}
                       placeholder={fieldConfig.nameOfTheBank.placeholder }
                     />
+                    <span style={{color: "red"}}>{this.state.errors["bankname"]}</span>
                     <TextFieldContainer
                       InputLabelProps={{ shrink: true }}
                       required={true}
                       label= {fieldConfig.mortageAmount.label}
-                      onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].mortgageAmount` , e.target.value)
-                      }
+                      onChange={e =>{
+                        this.handleChange("mortgageAmount", e); handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].mortgageAmount` , e.target.value)
+                      }}
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].mortgageAmount`}
                       placeholder={fieldConfig.mortageAmount.placeholder }
                     />
+                    <span style={{color: "red"}}>{this.state.errors["mortgageAmount"]}</span>
                       <TextFieldContainer
                       required={true}
                       InputLabelProps={{ shrink: true }}
                       label= {fieldConfig.sanctionLetterNo.label}
-                      onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionLetterNumber` , e.target.value)
-                      }
+                      onChange={e =>{
+                        this.handleChange("sanctionLetterNumber", e);handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionLetterNumber` , e.target.value)
+                      }}
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].sanctionLetterNumber`}
                       placeholder={fieldConfig.sanctionLetterNo.placeholder }
                     />
+                    <span style={{color: "red"}}>{this.state.errors["sanctionLetterNumber"]}</span>
                     <TextFieldContainer
                       required={true}
                        type="date"
                        defaultValue={new Date()}
                        InputLabelProps={{ shrink: true }}
                        label= {fieldConfig.sanctioningDate.label}
-                       onChange={e =>
-                        handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate` , getEpochForDateGrant(e.target.value))
-                      }
+                       onChange={e =>{
+                        this.handleChange("sanctionDate", e);handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate` , getEpochForDateGrant(e.target.value))
+                      }}
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].sanctionDate`}
                        />
+                       <span style={{color: "red"}}>{this.state.errors["sanctionDate"]}</span>
                         <TextFieldContainer
                        type="date"
                        required={true}
@@ -577,7 +748,8 @@ return
                         handleFieldChange( `${dataPath}.mortgageApprovedGrantDetails[0].mortgageEndDate` , getEpochForDateGrant(e.target.value))
                       }
                       jsonPath={`${dataPath}.mortgageApprovedGrantDetails[0].mortgageEndDate`}
-                       />   
+                       />
+                       <span style={{color: "red"}}>{this.state.errors["mortagage"]}</span>   
                      </Grid>
                   )}
                   {((moduleName === WORKFLOW_BUSINESS_SERVICE_OT && applicationState === "OT_PENDINGCLAPPROVAL") || (moduleName === WORKFLOW_BUSINESS_SERVICE_DC && duplicateCopyApplicationState === "DC_PENDINGCLAPPROVAL")) && buttonLabel === "REJECT" && (<Grid item sm="12">

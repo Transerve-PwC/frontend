@@ -182,7 +182,46 @@ const duplicateCopyPhoneNumberField = {
   },
   required: false,
   pattern: getPattern("MobileNo"),
-  jsonPath: "searchScreen.applicantMobNo"
+  jsonPath: "searchScreen.applicantMobNo",
+  errorMessage: "RP_ERR_PHONE_NUMBER_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 10) {
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_PHONE_NUMBER_FIELD_MAXLENGTH"
+              )
+          )
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_PHONE_NUMBER_FIELD_MAXLENGTH"
+              )
+          )
+      }
+      else {
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "errorMessage",
+                "RP_ERR_PHONE_NUMBER_FIELD"
+              )
+          )
+          dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "props.errorMessage",
+                "RP_ERR_PHONE_NUMBER_FIELD"
+              )
+          )
+      }
+    }
 }
 
 

@@ -171,7 +171,7 @@ export const accountStatementResults = {
       onRowClick: () => {},
       pagination: false,
       filter: false,
-      download: true,
+      download: false,
       print: true,
       search:false,
       viewColumns:false,
