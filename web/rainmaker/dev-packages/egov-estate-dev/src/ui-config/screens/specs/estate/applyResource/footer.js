@@ -1127,7 +1127,7 @@ export const downloadPrintContainer = (
       }
       set(Applications[0],"additionalDetails.documents",documents)
       const feeEstimate = temp[0].estimateCardData;
-      downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState);    },
+      downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState,'print');    },
     leftIcon: "assignment"
   };
 
