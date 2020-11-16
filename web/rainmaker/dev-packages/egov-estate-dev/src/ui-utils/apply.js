@@ -383,15 +383,21 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     dispatch(prepareFinalObject("Properties", Properties));
 
-    if (activeIndex == 3) {
+    if (screenName == "apply") {
+      if (activeIndex == 2 || activeIndex == 3) {
+        currOwners.map((item, index) => {
+          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
+        })
+      }
+      if (activeIndex == 4 || activeIndex == 5) {
+        prevOwners.map((item, index) => {
+          setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
+        })
+      }
+    }
+    else {
       currOwners.map((item, index) => {
         setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
-      })
-    }
-
-    if (activeIndex == 5) {
-      prevOwners.map((item, index) => {
-        setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
       })
     }
     
