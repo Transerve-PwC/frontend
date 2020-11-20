@@ -4,15 +4,17 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
 import { getSearchResults, getSearchApplicationsResults} from "../../../../..//ui-utils/commons";
 import {
   convertEpochToDate,
-  getTextToLocalMapping
+  getTextToLocalMapping,convertDateToEpoch
 } from "../../utils/index";
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,toggleSpinner ,prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_TYPE, LAST_MODIFIED_ON } from "./searchResults";
+import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , PENALTY_STATUS , AMOUNT , TYPE } from "./searchResults";
+import moment from 'moment'
+import {penaltySummary} from '../../estate/generatePenaltyStatement'
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
@@ -295,4 +297,92 @@ const getMdmsData = async (dispatch, body) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export const penaltyStatmentResult = async(state, dispatch ,Criteria) => {
+  try {
+    const response = await httpRequest(
+      "post",
+      '/est-services/violation/_penalty_statement',
+      "",
+      [],
+      {Criteria}
+    )
+  
+    dispatch(
+      prepareFinalObject(
+        "PenaltyStatementSummary",
+        response.PenaltyStatementSummary
+      )
+    );
+
+    dispatch(
+      prepareFinalObject(
+        "PropertyPenalty",
+        response.PropertyPenalty
+      )
+    )
+
+    let data = response.PropertyPenalty.map(item => ({
+      [getTextToLocalMapping("Date")]: moment(new Date(item.generationDate)).format("DD-MMM-YYYY") || "-",
+      [TYPE]: (item.violationType) || "-",
+      [AMOUNT]:(item.penaltyAmount.toFixed(2)) || "-",
+      [PENALTY_STATUS]: (item.status) || "-"
+    }));
+    
+    dispatch(
+      handleField(
+        "generatePenaltyStatement",
+        "components.div.children.penaltyDetailsTable",
+        "props.data",
+        data
+      )
+    );
+  } catch (error) {
+    console.log(error)
+    dispatch(toggleSnackbar(true, error.message, "error"));
+  }
+}
+
+export const generatePenaltyStatementApiCall = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+  var isDateValid = true;
+
+  dispatch(toggleSpinner());
+  !!hideTable && showHideTable(false, dispatch);
+  // showHideTable(false, dispatch);
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
+    isDateValid=false;
+  }
+
+    if(!!isDateValid) {
+      let Criteria = {
+        fromdate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+        todate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+      }
+      let properties = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Properties", [])))
+      const propertyId = properties[0].id;        
+      if(!!propertyId) {
+          Criteria = {...Criteria, propertyid: propertyId}
+          await penaltyStatmentResult(state, dispatch , Criteria)
+      }
+    }
+    if(!isDateValid){
+      let errorMessage = {
+        labelName:
+            "From date cannot be greater than To date!",
+        labelKey: "EST_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+    };
+    
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      !!hideTable && showHideTable(true, dispatch);
+      
+  }
+  dispatch(toggleSpinner());
+  
 };

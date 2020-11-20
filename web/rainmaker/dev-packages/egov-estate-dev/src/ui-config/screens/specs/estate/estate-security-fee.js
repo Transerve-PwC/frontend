@@ -13,14 +13,14 @@ import {getReviewPayment} from './preview-resource/payment-details'
 import {onTabChange, headerrow, tabs} from './estate-penalty'
 import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {propertyInfo,penaltyInfo} from './preview-resource/preview-properties'
+import {propertyInfo,securityInfo} from './preview-resource/preview-properties'
 import { getTodaysDateInYMD } from "../utils";
 import {penaltyDetailsTable} from "./searchResource/searchResults"
 import {generatePenaltyStatementApiCall} from './searchResource/functions'
 import {penaltyStatmentResult} from './searchResource/functions'
 const header = getCommonHeader({
-    labelName: "Penalty",
-    labelKey: "ES_PENALTY_HEADER"
+    labelName: "Security Fee",
+    labelKey: "ES_SECURITY_FEE_HEADER"
   });
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
@@ -33,8 +33,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
     if (!!response.Properties && !!response.Properties.length) {
     dispatch(prepareFinalObject("Properties", response.Properties))
     dispatch(prepareFinalObject("propertyPenalties", []))
-
-      if(!!response) {
+    if(!!response) {
       let properties = response.Properties
       const propertyId = properties[0].id;   
       let Criteria = {
@@ -49,7 +48,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 }
 
 export const propertyDetails = getCommonCard(propertyInfo(false))
-export const penaltySummary = getCommonCard(penaltyInfo(false))
+export const securitySummary = getCommonCard(securityInfo(false))
 
 export const penaltyStatementFilter = getCommonCard({  
     dateContainer: getCommonContainer({
@@ -143,9 +142,9 @@ export const penaltyStatementFilter = getCommonCard({
       })
   })
 
-const generatePenaltyStatement = {
+const securityFeeContainer = {
   uiFramework: "material-ui",
-  name: "generatePenaltyStatement",
+  name: "securityFee",
   beforeInitScreen: (action, state, dispatch) => {
     const fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
@@ -171,22 +170,10 @@ const generatePenaltyStatement = {
               ...header
             },
             }
-          },
-          tabSection: {
-            uiFramework: "custom-containers-local",
-            moduleName: "egov-estate",
-            componentPath: "CustomTabContainer",
-            props: {
-              tabs,
-              activeIndex: 1,
-              onTabChange
-            },
-            type: "array",
-          },
-          
+          },   
           propertyDetails,
-          penaltySummary,
-          penaltyStatementFilter,
+          securitySummary,
+        //   penaltyStatementFilter,
           breakAfterSearch: getBreak(),
           penaltyDetailsTable
       }
@@ -194,4 +181,4 @@ const generatePenaltyStatement = {
   }
 };
 
-export default generatePenaltyStatement;
+export default securityFeeContainer;

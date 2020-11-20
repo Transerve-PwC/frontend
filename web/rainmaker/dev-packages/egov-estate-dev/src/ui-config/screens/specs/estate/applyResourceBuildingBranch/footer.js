@@ -33,7 +33,8 @@ import {
 } from "./reviewDetails";
 import {
  setDocumentData
-} from "../apply-building-branch"
+} from "../apply-building-branch";
+import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -179,7 +180,7 @@ const callBackForNext = async (state, dispatch) => {
     );
 
     for (var i = 0; i < propertyOwnersTemp.length; i++) {
-      const uploadedDocData = get(
+      var uploadedDocData = get(
         state.screenConfiguration.preparedFinalObject,
         `Properties[0].propertyDetails.owners[${i}].ownerDetails.ownerDocuments`,
         []
@@ -202,16 +203,28 @@ const callBackForNext = async (state, dispatch) => {
         }
       }
       if (isFormValid) {
+        uploadedDocData = uploadedDocData.filter(item => !!item);
+        const fileStoreIds = uploadedDocData && uploadedDocData.map(item => item && item.fileStoreId).filter(item => !!item).join(",");
+        const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+
         const reviewDocData =
           uploadedDocData &&
-          uploadedDocData.map(item => {
+          uploadedDocData.map((item, index) => {
             return {
               title: `ES_${item.documentType}`,
-              link: item.fileUrl && item.fileUrl.split(",")[0],
+              link: item.fileUrl ? item.fileUrl.toString().split(",")[0] : !!fileUrlPayload && Object.values(fileUrlPayload)[index],
               linkText: "View",
-              name: item.fileName
+              name: item.fileName || (fileUrlPayload &&
+                fileUrlPayload[item.fileStoreId] &&
+                decodeURIComponent(
+                  getFileUrl(fileUrlPayload[item.fileStoreId])
+                    .split("?")[0]
+                    .split("/")
+                    .pop()
+                    .slice(13)
+                ))
             };
-          });
+          }).filter(item => !!item && !!item.link && !!item.name);
         dispatch(
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
         );

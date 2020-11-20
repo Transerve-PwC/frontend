@@ -491,7 +491,7 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0) => {
 }
 
 /* Ground rent review */
-const dueDateOfPaymentLabel = {
+/* const dueDateOfPaymentLabel = {
   labelName: "Due Date of payment",
   labelKey: "ES_DUE_DATE_OF_PAYMENT_LABEL"
 }
@@ -572,10 +572,10 @@ export const serviceTaxHeader = getCommonTitle({
     marginTop: 18,
     width: "100%"
   }
-})
+})*/
 
 /* Service tax review */
-const rateOfStOrGstLabel = {
+/* const rateOfStOrGstLabel = {
   labelName: "Rate of ST/GST",
   labelKey: "ES_RATE_ST_GST_LABEL"
 }
@@ -784,7 +784,7 @@ export const getReviewPayment = (isEditable = true, owner) => {
       )
     })
   })
-}
+} */
 
 
 /* Court case review */

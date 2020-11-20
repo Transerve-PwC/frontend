@@ -63,6 +63,9 @@ switch(tabIndex){
     case 1:
       path = `/estate-citizen/estate-branch-owner-details?fileNumber=${fileNumber}`
       break
+    case 2:
+      path = `/estate-citizen/estate-branch-payment-summary?fileNumber=${fileNumber}`
+      break
 }
 dispatch(setRoute(path))
 }
@@ -73,6 +76,9 @@ export const tabs = [
 },
 {
   tabButton: { labelName: "Owner Details", labelKey: "ESTATE_OWNER_DETAILS" },
+},
+{
+  tabButton: { labelName: "Payment Summary", labelKey: "ESTATE_PAYMENT_SUMMARY" },
 }
 ]
 

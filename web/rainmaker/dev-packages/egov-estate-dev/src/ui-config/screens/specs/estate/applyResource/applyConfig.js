@@ -23,9 +23,7 @@ import {
   courtCaseDetails
 } from './courtCaseDetails';
 import {
-  groundRentDetailsPM,
-  serviceTaxDetails,
-  paymentMadeBy
+  paymentDetails
 } from './paymentDetails';
 import {
   reviewDetails
@@ -374,10 +372,10 @@ export const formwizardNinthStep = {
     id: "apply_form9"
   },
   children: {
-    paymentDocumentsDetails,
-    breakAfterSearch: getBreak(),
-    paymentDetailsTable
-    // groundRentDetailsPM,
+    // paymentDocumentsDetails,
+    // breakAfterSearch: getBreak(),
+    // paymentDetailsTable
+    paymentDetails,
     // serviceTaxDetails,
     // paymentMadeBy
   },

@@ -24,7 +24,6 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
-import * as docsData from './applyResourceBuildingBranch/buildingBranchOwnerDocs.json';
 import {
   prepareDocumentTypeObjMaster
 } from "../utils";

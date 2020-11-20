@@ -315,12 +315,14 @@ const modifiedOwner = PropertiesTempOwners.map((owner) => {
 })
 
   let Property = Properties[0];
-  if(Property.propertyDetails.purchaser.length > 0){
+  if(Property.propertyDetails.owners.length > 0){
     let propertyOwners = Property.propertyDetails.owners;
     const owners = propertyOwners.map((owner , index) => {
        owner.ownerDetails.ownerDocuments = modifiedOwner[index].ownerDetails.ownerDocuments
+       owner.ownerDetails.guardianRelation = getLocaleLabels(owner.ownerDetails.guardianRelation, owner.ownerDetails.guardianRelation)
        return owner
     })
+
   }
 
 let previousOwners = PropertiesTemp[0].propertyDetails.purchaser;
@@ -348,9 +350,13 @@ if(Property.propertyDetails.purchaser.length > 0){
   let purchasers = Property.propertyDetails.purchaser;
   const purchaser = purchasers.map((purchaser , index) => {
      purchaser.ownerDetails.ownerDocuments = modifedPurchaser[index].ownerDetails.ownerDocuments
+     purchaser.ownerDetails.guardianRelation = getLocaleLabels(purchaser.ownerDetails.guardianRelation, purchaser.ownerDetails.guardianRelation)
+     purchaser.ownerDetails.dob = moment(new Date(purchaser.ownerDetails.dob)).format("DD-MMM-YYYY")
      return purchaser
   })
+ 
 }
+
 
   const DOWNLOADRECEIPT = {
     GET: {
@@ -629,7 +635,7 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
   }
 }
 
-export const downloadPaymentReceipt = (receiptQueryString, Applications, data, generatedBy,type, mode = "download") => {
+export const downloadPaymentReceipt = (receiptQueryString, payload, data, generatedBy,type, mode = "download") => {
   const FETCHRECEIPT = {
     GET: {
       URL: "/collection-services/payments/_search",
@@ -644,14 +650,15 @@ export const downloadPaymentReceipt = (receiptQueryString, Applications, data, g
   };
   try {
     httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
-      const queryStr = [{
-          key: "key",
-          value: "application-payment-receipt"
-        },
-        {
-          key: "tenantId",
-          value: receiptQueryString[1].value.split('.')[0]
-        }
+      let queryStr = [
+        // {
+        //   key: "key",
+        //   value: "application-payment-receipt"
+        // },
+        // {
+        //   key: "tenantId",
+        //   value: receiptQueryString[1].value.split('.')[0]
+        // }
       ]
       
       if (payloadReceiptDetails && payloadReceiptDetails.Payments && payloadReceiptDetails.Payments.length == 0) {
@@ -695,25 +702,69 @@ export const downloadPaymentReceipt = (receiptQueryString, Applications, data, g
           }
         }]
       }]
-      httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
-          Payments,
-          Applications,
-          generatedBy
-        }, {
-          'Accept': 'application/json'
-        }, {
-          responseType: 'arraybuffer'
-        })
-        .then(res => {
-          res.filestoreIds[0]
-          if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-            res.filestoreIds.map(fileStoreId => {
-              downloadReceiptFromFilestoreID(fileStoreId, mode)
+      switch(type){
+        case 'rent-payment':
+           queryStr = [{
+              key: "key",
+              value: "rent-payment-receipt"
+            },
+            {
+              key: "tenantId",
+              value: receiptQueryString[1].value.split('.')[0]
+            }
+          ]
+            httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+              Payments,
+              Properties : payload,
+              generatedBy
+            }, {
+              'Accept': 'application/json'
+            }, {
+              responseType: 'arraybuffer'
             })
-          } else {
-            console.log("Error In Receipt Download");
-          }
-        });
+            .then(res => {
+              res.filestoreIds[0]
+              if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+                res.filestoreIds.map(fileStoreId => {
+                  downloadReceiptFromFilestoreID(fileStoreId, mode)
+                })
+              } else {
+                console.log("Error In Receipt Download");
+              }
+            });
+          break
+        case 'application-payment':
+           queryStr = [{
+              key: "key",
+              value: "application-payment-receipt"
+            },
+            {
+              key: "tenantId",
+              value: receiptQueryString[1].value.split('.')[0]
+            }
+          ]
+            httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+              Payments,
+              Applications :payload,
+              generatedBy
+            }, {
+              'Accept': 'application/json'
+            }, {
+              responseType: 'arraybuffer'
+            })
+            .then(res => {
+              res.filestoreIds[0]
+              if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+                res.filestoreIds.map(fileStoreId => {
+                  downloadReceiptFromFilestoreID(fileStoreId, mode)
+                })
+              } else {
+                console.log("Error In Receipt Download");
+              }
+            });
+          break;  
+      }
+      
     })
   } catch (exception) {
     alert('Some Error Occured while downloading Receipt!');

@@ -157,6 +157,8 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
         xs: 12,
         sm: 6
     },
+    minLength: 3,
+    maxLength: 7,
     errorMessage: "ES_ERR_AMOUNT_FIELD",
     placeholder: {
       labelName: "Enter amount",
@@ -270,8 +272,19 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
   const goToPayment = async (state, dispatch, type) => {
     let isValid = true;
+    let amountValue = get(state.screenConfiguration.screenConfig["estate-payment"],"components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children.Amount.props.value")
     isValid = validateFields("components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "estate-payment")
-    if(!!isValid) {
+    if (!(Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7)) {
+  
+      let errorMessage = {
+        labelName:
+            "Please enter value between 3 and 7 digits",
+        labelKey: "ES_ERR_VALUE_BETWEEN_3_AND_7_DIGITS"
+    };
+    
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }   
+    if(!!isValid && ((Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7))) {
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const offlinePaymentDetails = get(state.screenConfiguration.preparedFinalObject, "payment")
       const {paymentAmount, ...rest} = offlinePaymentDetails
@@ -290,7 +303,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
           [],
           { Properties : payload })
           if(!!response && !!response.Properties.length) {
-            const {rentPaymentConsumerCode, tenantId} = response.Properties[0]
+            const {rentPaymentConsumerCode,fileNumber, tenantId} = response.Properties[0]
             let billingBuisnessService=response.Properties[0].propertyDetails.billingBusinessService
             type === "ONLINE" ? dispatch(
               setRoute(
@@ -298,7 +311,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
               )
             ) : dispatch(
               setRoute(
-              `acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}`
+              `acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}&fileNumber=${fileNumber}`
               )
             )
           dispatch(prepareFinalObject("Properties", response.Properties))
@@ -351,28 +364,6 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     }
   })
 
-  export const onTabChange = async(tabIndex, dispatch, state) => {
-    const fileNumber = getQueryArg(window.location.href, "fileNumber");
-    const propertyId = getQueryArg(window.location.href, "propertyId")
-    let path = "";
-    if (tabIndex === 0) {
-      path = `/estate/estate-payment?propertyId=${propertyId}&fileNumber=${fileNumber}`;
-    }
-    else if (tabIndex === 1) {
-      path = `/estate/penaltyStatement?propertyId=${propertyId}&fileNumber=${fileNumber}`
-    }
-    dispatch(setRoute(path))
-  }
-
-  export const tabs = [
-    {
-      tabButton: { labelName: "Rent Payment", labelKey: "ES_RENT_PAYMENT" }
-    },
-    {
-      tabButton: { labelName: "Penalty Statement", labelKey: "ES_PENALTY_STATEMENT" }
-    },
-  ]
-
 const payment = {
     uiFramework: "material-ui",
     name: "estate-payment",
@@ -400,17 +391,6 @@ const payment = {
                   ...header
                 }
               }
-            },
-            tabSection: {
-              uiFramework: "custom-containers-local",
-              moduleName: "egov-estate",
-              componentPath: "CustomTabContainer",
-              props: {
-                tabs,
-                activeIndex: 0,
-                onTabChange
-              },
-              type: "array",
             },
             detailsContainer,
             footer: paymentFooter

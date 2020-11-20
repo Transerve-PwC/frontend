@@ -59,6 +59,12 @@ const onRowClick = rowData => {
   else if(type == "account-statement"){
     window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`
   }
+  else if(type =="security-fee"){
+    window.location.href = `estate-security-fee?fileNumber=${rowData[1]}`
+  }
+  else if(type == "extension-fee"){
+    window.location.href = `addExtensionFee?fileNumber=${rowData[1]}`
+  }
   else {
     window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`
   }

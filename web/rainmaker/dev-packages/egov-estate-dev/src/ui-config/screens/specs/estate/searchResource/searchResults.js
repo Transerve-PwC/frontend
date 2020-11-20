@@ -158,16 +158,7 @@ export const penaltyDetailsTable = {
     columns: [
       DATE,
       TYPE,
-      {
-        name: AMOUNT,
-        options: {
-          customBodyRender: value => (
-            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
-          {value}
-        </span> 
-          )
-        }
-      },
+      AMOUNT,
       PENALTY_STATUS 
     ],
     options: {...searchResults.props.options,
@@ -182,6 +173,31 @@ export const penaltyDetailsTable = {
     }
   }
 }
+
+export const extensionFeeDetailsTable = {
+  ...searchResults,
+  visible: true,
+  props: {...searchResults.props, 
+    columns: [
+      DATE,
+      TYPE,
+      AMOUNT,
+      PENALTY_STATUS 
+    ],
+    options: {...searchResults.props.options,
+      pagination: false,
+      filter: false,
+      download: true,
+      print: true,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
+    }
+  }
+}
+
+
 
 
 

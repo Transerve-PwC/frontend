@@ -354,6 +354,9 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
                 if (biddersList.length == refundedBidders.length) {
                   biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
                 }
+                else {
+                  biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
+                }
 
                 let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
                 store.dispatch(

@@ -5,7 +5,8 @@ import {
 import {
   getLabel,
   dispatchMultipleFieldChangeAction,
-  getPattern
+  getPattern,
+  convertDateToEpoch
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   toggleSnackbar,
@@ -39,9 +40,10 @@ import {
 } from "./reviewDocuments";
 import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 import { download } from "../../../../../ui-utils/commons";
-import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
+import { downloadAcknowledgementForm,downloadLetter,downloadPaymentReceipt,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
 import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
-
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+const userInfo = JSON.parse(getUserInfo());
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -86,6 +88,8 @@ const callBackForNext = async (state, dispatch) => {
   );
   let isFormValid = true;
   let hasFieldToaster = true;
+  let ownerOnePosAllotDateValid = true;
+  let ownerTwoPosAllotDateValid = true;
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
@@ -151,7 +155,19 @@ const callBackForNext = async (state, dispatch) => {
       "Properties[0].propertyDetails.entityType",
       ""
     )
+    let ownerOnePossessionDate = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[0].item0.children.cardContent.children.ownerCard.children.possessionDate.props.value");
+    let ownerOneDateOfAllotment = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[0].item0.children.cardContent.children.ownerCard.children.dateOfAllotment.props.value");
+    let ownerTwoPossessionDate = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[1].item1.children.cardContent.children.ownerCard.children.possessionDate.props.value") || "";
+    let ownerTwoDateOfAllotment = get(state.screenConfiguration.screenConfig["apply"],"components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[1].item1.children.cardContent.children.ownerCard.children.dateOfAllotment.props.value") || "";
+    
+    let ownerOnePossessionDateEpoch = convertDateToEpoch(ownerOnePossessionDate)
+    let ownerOneDateOfAllotmentEpoch = convertDateToEpoch(ownerOneDateOfAllotment)
+    let ownerTwoPossessionDateEpoch = ownerTwoPossessionDate.length > 0 ? convertDateToEpoch(ownerTwoPossessionDate) : 0
+    let ownerTwoDateOfAllotmentEpoch = ownerTwoDateOfAllotment.length > 0 ? convertDateToEpoch(ownerTwoDateOfAllotment) : 0
 
+    ownerOnePosAllotDateValid = ownerOnePossessionDateEpoch - ownerOneDateOfAllotmentEpoch > 0 ? true : false
+    ownerTwoPosAllotDateValid = ownerTwoPossessionDateEpoch - ownerTwoDateOfAllotmentEpoch > 0 ? true : false
+  
     if (!!entityType) {
       if (entityType == "ET.PARTNERSHIP_FIRM") {
         dispatch(
@@ -184,7 +200,7 @@ const callBackForNext = async (state, dispatch) => {
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) {
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
             return
@@ -202,7 +218,7 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
-        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) {
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
             return
@@ -224,7 +240,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch,
           "apply"
         )
-        if (isFirmDetailsValid && isProprietorshipDetailsValid) {
+        if (isFirmDetailsValid && isProprietorshipDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
             return
@@ -235,7 +251,7 @@ const callBackForNext = async (state, dispatch) => {
         break;
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        if (isOwnerOrPartnerDetailsValid) {
+        if (isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
           const res = await applyEstates(state, dispatch, activeStep, "apply");
           if (!res) {
             return
@@ -557,7 +573,14 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep !== SUMMARY_STEP) {
     if (isFormValid) {
       changeStep(state, dispatch, "apply");
-    } else if (hasFieldToaster) {
+    }else if(!(ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)){
+        let errorMessage = {
+          labelName: "Date of possession should be on and after date of allotment",
+          labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
+    else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",
         labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
@@ -1017,6 +1040,36 @@ export const downloadPrintContainer = (
   let downloadMenu = [];
   let printMenu = [];  
  
+
+  let receiptDownloadObject = {
+    label: { labelName: "Payment Receipt", labelKey: "ES_PAYMENT_RECEIPT" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      let { applicationNumber,tenantId} = Applications[0];
+      const receiptQuery = [
+        { key: "consumerCodes", value:applicationNumber},
+        { key: "tenantId", value: tenantId }
+     ]
+      const feeEstimate = temp[0].estimateCardData;
+      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment');
+    },
+    leftIcon: "assignment"
+  }
+
+  let receiptPrintObject = {
+    label: { labelName: "Payment Receipt", labelKey: "ES_PAYMENT_RECEIPT" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      let { applicationNumber,tenantId} = Applications[0];
+      const feeEstimate = temp[0].estimateCardData;
+      const receiptQuery = [
+        { key: "consumerCodes", value:applicationNumber},
+        { key: "tenantId", value: tenantId }
+     ]
+      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment','print');
+    },
+    leftIcon: "assignment"
+  }
 
   let applicationDownloadObject = {
     label: { labelName: "Application", labelKey: "ES_APPLICATION" },
@@ -1587,30 +1640,30 @@ export const downloadPrintContainer = (
         switch(applicationType) {
               case 'SaleDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
               break;
               case 'LeaseDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   
                   ]
                 break;
               case 'ScfToSco':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
                 break;
               case 'LeaseholdToFreehold':
@@ -1618,104 +1671,108 @@ export const downloadPrintContainer = (
                     applicationDownloadObject,LetterDownloadObject,
                     AmountLetterAfterConversionDownloadObject,
                     HousingBoardNotificationDownloadObject,
-                    NoticeDownloadObject
+                    NoticeDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
                     applicationPrintObject,LetterPrintObject,
                     AmountLetterAfterConversionPrintObject,
-                    HousingBoardNotificationPrintObject,NoticePrintObject
+                    HousingBoardNotificationPrintObject,NoticePrintObject,
+                    receiptPrintObject
                   ]
                   
                 break;
               case 'ChangeInTrade':
                   downloadMenu = [
-                    applicationDownloadObject
+                    applicationDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject
+                    applicationPrintObject,receiptPrintObject
                   ]
                 break;
               case 'UnRegisteredWill':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,
+                    receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,
+                    receiptPrintObject
                   ]
                 break;
               case 'NOC':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
               break;
               case 'RegisteredWill':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,receiptPrintObject
                   ]
               break;
               case 'NDC':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
+                    applicationPrintObject,LetterPrintObject,NDCWHOPrintObject,receiptPrintObject
                   ]
               break;
               case 'PatnershipDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
               break;
               case 'DuplicateCopy':
                   downloadMenu = [
-                    applicationDownloadObject
+                    applicationDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject
+                    applicationPrintObject,
+                    receiptPrintObject
                   ]
               break;
               case 'Mortgage':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
               break;
               case 'FamilySettlement':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject
+                    applicationPrintObject,LetterPrintObject,receiptPrintObject
                   ]
               break;
               case 'IntestateDeath':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,receiptDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,receiptPrintObject
                   ]
               break;
 
@@ -1727,7 +1784,8 @@ export const downloadPrintContainer = (
                     cancellationOrderDownloadObject,
                     nonPaymentNoticeDownloadObject,
                     nonPaymentOrderDownloadObject,
-                    occupationCertificateDownloadObject
+                    occupationCertificateDownloadObject,
+                    receiptDownloadObject
                   ]
                 
                   printMenu = [
@@ -1737,7 +1795,8 @@ export const downloadPrintContainer = (
                     cancellationOrderPrintObject,
                     nonPaymentNoticePrintObject,
                     nonPaymentOrderPrintObject,
-                    occupationCertificatePrintObject
+                    occupationCertificatePrintObject,
+                    receiptPrintObject
                   ]
                   break;
             } 

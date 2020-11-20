@@ -74,7 +74,10 @@ export const viewFour = (section, application) => {
         componentPath: "DownloadFileContainer",
         props: {
           sourceJsonPath: section.sourceJsonPath,
-          className: "review-documents"
+          className: "review-documents",
+          style: {
+            wordBreak: "break-word"
+          }
         }
       }
     }

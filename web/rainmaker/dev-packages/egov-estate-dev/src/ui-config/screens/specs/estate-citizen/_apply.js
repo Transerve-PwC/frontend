@@ -1,6 +1,7 @@
 import { dispatchMultipleFieldChangeAction, getCommonCard, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {footer, stepsData} from './footer'
 import { setThirdStep } from "./applyResource/review";
 import { getSearchApplicationsResults, getSearchResults } from "../../../../ui-utils/commons";
@@ -67,7 +68,6 @@ const getData = async (action, state, dispatch) => {
       {key: "applicationNumber", value: applicationNumber}
     ] 
     try {
-      await hideFooter(action, state, dispatch)
       const applicationRes = await getSearchApplicationsResults(applicationQueryObject)
       const {Applications = []} = applicationRes;
       dispatch(prepareFinalObject("Applications", Applications))
@@ -91,7 +91,7 @@ const getData = async (action, state, dispatch) => {
        dispatch(prepareFinalObject("Applications[0].property.id", propertyId ))
     }
   // }
-
+    await hideFooter(action, state, dispatch)
     const owners = property.propertyDetails.owners.filter(item => !!item.ownerDetails.isCurrentOwner)
     property = {...property, propertyDetails: {...property.propertyDetails, owners}}
     
@@ -173,7 +173,8 @@ const getData = async (action, state, dispatch) => {
               id: "apply_form3"
             },
             children: {
-              reviewDetails: third_step
+              reviewDetails: third_step,
+              declarationSummary: declarationSummary
             },
             visible: false
           } ,
@@ -182,6 +183,34 @@ const getData = async (action, state, dispatch) => {
       }
     }
 }
+const declarationDetails = getCommonContainer({
+  checkbox:{
+   uiFramework: "ui-atoms-local",
+   moduleName: "egov-estate-dev",
+   componentPath: "Checkbox",
+   props: {
+     content:'ES_DECLARATION_BOX'
+   },
+  //  visible: process.env.REACT_APP_NAME === "Citizen" ? true : false
+  visible: true
+ }
+ });
+
+
+export const declarationSummary = getCommonContainer({
+ header: {
+   uiFramework: "custom-atoms",
+   componentPath: "Container",
+   props: {
+     style: { margin: "10px" }
+   },
+   children: {
+     body: declarationDetails
+   }
+ },
+
+});
+
 
 const commonApply = {
     uiFramework: "material-ui",

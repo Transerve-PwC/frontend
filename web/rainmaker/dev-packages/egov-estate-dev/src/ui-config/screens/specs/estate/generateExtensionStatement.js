@@ -8,19 +8,15 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
-import {getReviewPayment} from './preview-resource/payment-details'
-import {onTabChange, headerrow, tabs} from './estate-penalty'
-import {paymentDetailsTable} from './applyResource/applyConfig'
+import { getSearchResults  } from "../../../../ui-utils/commons";
+import {onTabChange, tabs} from './addExtensionFee'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {propertyInfo,penaltyInfo} from './preview-resource/preview-properties'
+import {propertyInfo,extensionFeeInfo} from './preview-resource/preview-properties'
 import { getTodaysDateInYMD } from "../utils";
-import {penaltyDetailsTable} from "./searchResource/searchResults"
-import {generatePenaltyStatementApiCall} from './searchResource/functions'
-import {penaltyStatmentResult} from './searchResource/functions'
+import {extensionFeeDetailsTable} from "./searchResource/searchResults"
 const header = getCommonHeader({
-    labelName: "Penalty",
-    labelKey: "ES_PENALTY_HEADER"
+    labelName: "Security Fee",
+    labelKey: "ES_SECURITY_FEE_HEADER"
   });
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
@@ -32,26 +28,25 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
     const response = await getSearchResults(queryObject)
     if (!!response.Properties && !!response.Properties.length) {
     dispatch(prepareFinalObject("Properties", response.Properties))
-    dispatch(prepareFinalObject("propertyPenalties", []))
-
-      if(!!response) {
-      let properties = response.Properties
-      const propertyId = properties[0].id;   
-      let Criteria = {
-        fromdate: properties[0].propertyDetails.auditDetails.createdTime || "",
-        todate:   ""
-      }
-      Criteria = {...Criteria, propertyid: propertyId}
-      await penaltyStatmentResult (state,dispatch, Criteria)
-    }
+    // dispatch(prepareFinalObject("propertyPenalties", []))
+    // if(!!response) {
+    //   let properties = response.Properties
+    //   const propertyId = properties[0].id;   
+    //   let Criteria = {
+    //     fromdate: properties[0].propertyDetails.auditDetails.createdTime || "",
+    //     todate:   ""
+    //   }
+    //   Criteria = {...Criteria, propertyid: propertyId}
+    //   await penaltyStatmentResult (state,dispatch, Criteria)
+    // }
 
     }
 }
 
 export const propertyDetails = getCommonCard(propertyInfo(false))
-export const penaltySummary = getCommonCard(penaltyInfo(false))
+export const extensionFeeSummary = getCommonCard(extensionFeeInfo(false))
 
-export const penaltyStatementFilter = getCommonCard({  
+export const extensionStatementFilter = getCommonCard({  
     dateContainer: getCommonContainer({
         from:getDateField({
           label: {
@@ -123,13 +118,13 @@ export const penaltyStatementFilter = getCommonCard({
             },
             children: {
               buttonLabel: getLabel({
-                labelName: "Generate Penalty Statement",
-                labelKey: "ES_GENERATE_PENALTY_STATEMENT"
+                labelName: "Generate Statement",
+                labelKey: "ES_GENERATE_STATEMENT"
               })
             },
             onClickDefination: {
               action: "condition",
-              callBack: generatePenaltyStatementApiCall
+            //   callBack: generatePenaltyStatementApiCall
             }
           }, lastCont: {
             uiFramework: "custom-atoms",
@@ -143,9 +138,9 @@ export const penaltyStatementFilter = getCommonCard({
       })
   })
 
-const generatePenaltyStatement = {
+const extensionFeeContainer = {
   uiFramework: "material-ui",
-  name: "generatePenaltyStatement",
+  name: "generateExtensionStatement",
   beforeInitScreen: (action, state, dispatch) => {
     const fileNumber = getQueryArg(window.location.href, "fileNumber");
     beforeInitFn(action, state, dispatch, fileNumber);
@@ -171,7 +166,7 @@ const generatePenaltyStatement = {
               ...header
             },
             }
-          },
+          },  
           tabSection: {
             uiFramework: "custom-containers-local",
             moduleName: "egov-estate",
@@ -182,16 +177,15 @@ const generatePenaltyStatement = {
               onTabChange
             },
             type: "array",
-          },
-          
+          }, 
           propertyDetails,
-          penaltySummary,
-          penaltyStatementFilter,
+          extensionFeeSummary,
+          extensionStatementFilter,
           breakAfterSearch: getBreak(),
-          penaltyDetailsTable
+          extensionFeeDetailsTable
       }
     }
   }
 };
 
-export default generatePenaltyStatement;
+export default extensionFeeContainer;

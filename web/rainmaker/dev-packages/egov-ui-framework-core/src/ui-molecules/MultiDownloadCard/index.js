@@ -35,7 +35,8 @@ const documentTitle = {
   fontWeight: 400,
   letterSpacing: "0.67px",
   lineHeight: "19px",
-  wordBreak: "break-all"
+  wordWrap: "break-word"
+	// wordBreak: "break-all"
 };
 
 function MultiCardDownloadGrid(props) {
