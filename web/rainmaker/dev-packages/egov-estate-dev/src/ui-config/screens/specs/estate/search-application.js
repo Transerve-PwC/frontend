@@ -13,16 +13,8 @@ import { estateApplicationSearch } from './searchResource/estateApplication';
 import { getStatusList, searchApplicationApiCall } from './searchResource/functions';
 import { searchApplicationResults } from './searchResource/searchResults';
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import {
-    getUserInfo
-} from "egov-ui-kit/utils/localStorageUtils";
 import { getApplicationStatusList, getApplicationTypes } from "../../../../ui-utils/commons";
 
-const userInfo = JSON.parse(getUserInfo());
-const {
-    roles = []
-} = userInfo
-const findItem = roles.find(item => item.code === "ES_EB_DISPATCH_OFFICER");
 const header = getCommonHeader({
     labelName: "Search Applications",
     labelKey: "ES_SEARCH_APPLICATION"

@@ -15,14 +15,11 @@ import {
 import get from "lodash/get";
 import {
   displayDefaultErr,
-  displayMaxLengthErr,
-  _getPattern,
-  getTodaysDateInYMD
+  displayCustomErr,
+  _getPattern
 } from "../../utils";
 
-let screenName = "apply-building-branch";
-
-const categoryField = {
+export const categoryField = {
   label: {
     labelName: "Category",
     labelKey: "ES_CATEGORY_LABEL"
@@ -41,7 +38,7 @@ const categoryField = {
   afterFieldChange: (action, state, dispatch) => {
     dispatch(
       handleField(
-        screenName,
+        action.screenKey,
         `components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.subCategory`,
         "props.value",
         ""
@@ -51,7 +48,7 @@ const categoryField = {
     if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
       dispatch(
         handleField(
-          screenName,
+          action.screenKey,
           `components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.subCategory`,
           "visible",
           true
@@ -66,7 +63,7 @@ const categoryField = {
       const filteredCategory = categories.filter(item => item.code === action.value);
       dispatch(
         handleField(
-          screenName,
+          action.screenKey,
           `components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.subCategory`,
           "props.data",
           filteredCategory[0].SubCategory
@@ -75,7 +72,7 @@ const categoryField = {
     } else {
       dispatch(
         handleField(
-          screenName,
+          action.screenKey,
           `components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.subCategory`,
           "visible",
           false
@@ -85,7 +82,7 @@ const categoryField = {
   }
 }
 
-const subCategoryField = {
+export const subCategoryField = {
   label: {
     labelName: "Sub Category",
     labelKey: "ES_SUBCATEGORY_LABEL"
@@ -103,7 +100,7 @@ const subCategoryField = {
   }
 }
 
-const siteNumberField = {
+export const siteNumberField = {
   label: {
     labelName: "Site Number/SCO/Booth",
     labelKey: "ES_SITE_NUMBER_LABEL"
@@ -121,14 +118,14 @@ const siteNumberField = {
   jsonPath: "Properties[0].siteNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
     }
   }
 }
 
-const sectorNumberField = {
+export const sectorNumberField = {
   label: {
     labelName: "Sector Number",
     labelKey: "ES_SECTOR_NUMBER_LABEL"
@@ -164,9 +161,9 @@ const fileNumberField = {
   jsonPath: "Properties[0].fileNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
     }
   }
 }
@@ -189,14 +186,14 @@ const houseNumberField = {
   jsonPath: "Properties[0].propertyDetails.houseNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
     }
   }
 }
 
-const mohallaField = {
+export const mohallaField = {
   label: {
       labelName: "Mohalla",
       labelKey: "ES_MOHALLA_LABEL"
@@ -214,10 +211,10 @@ const mohallaField = {
   jsonPath: "Properties[0].propertyDetails.mohalla",
   afterFieldChange: (action, state, dispatch) => {
       if (action.value.length > 150) {
-          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
       }
       else {
-          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+          displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
       }
   }
 }
@@ -240,10 +237,10 @@ const villageField = {
   jsonPath: "Properties[0].propertyDetails.village",
   afterFieldChange: (action, state, dispatch) => {
       if (action.value.length > 150) {
-          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
       }
       else {
-          displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+          displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
       }
   }
 }
@@ -266,7 +263,7 @@ const sizeOfAreaPurchasedField = {
   jsonPath: "Properties[0].propertyDetails.areaSqft"
 }
 
-const propertyDetailsHeader = getCommonTitle({
+export const propertyDetailsHeader = getCommonTitle({
   labelName: "Property Details",
   labelKey: "ES_PROPERTY_DETAILS_HEADER"
 }, {

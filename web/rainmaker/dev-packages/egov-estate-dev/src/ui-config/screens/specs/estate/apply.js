@@ -113,7 +113,7 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
 dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.applicationPaymentDocuments`, documentsType))
 }
 
-export const setDocumentData = async (action, state, dispatch, owner = 0) => {
+export const setDocumentData = async (action, state, dispatch, owner = 0, documentStep = "formwizardFourthStep") => {
   const documentTypePayload = [{
     moduleName: ESTATE_SERVICES_MDMS_MODULE,
     masterDetails: [{
@@ -175,19 +175,21 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
     );
   dispatch(
     handleField(
-      "apply",
-      `components.div.children.formwizardFourthStep.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
+      action.screenKey,
+      `components.div.children.${documentStep}.children.ownerDocumentDetails_${owner}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )
   );
   dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`, documentTypes))
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
-  setPaymentDocumentData(action, state, dispatch,owner)
+  if (action.screenKey == "apply") {
+    setPaymentDocumentData(action, state, dispatch,owner);
+  }
 
 }
 
-export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) => {
+export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0, documentStep = "formwizardSixthStep") => {
   const {
     EstateServices
   } = previousDocsData && previousDocsData.MdmsRes ? previousDocsData.MdmsRes : {}
@@ -242,8 +244,8 @@ export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0) =>
     );
   dispatch(
     handleField(
-      "apply",
-      `components.div.children.formwizardSixthStep.children.previousOwnerDocuments_${prevOwnerIndex}.children.cardContent.children.documentList`,
+      action.screenKey,
+      `components.div.children.${documentStep}.children.previousOwnerDocuments_${prevOwnerIndex}.children.cardContent.children.documentList`,
       "props.inputProps",
       estateMasterDocuments
     )

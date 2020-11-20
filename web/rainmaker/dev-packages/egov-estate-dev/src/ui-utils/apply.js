@@ -163,6 +163,18 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     set(queryObject[0], "propertyDetails.companyRegistrationDate", convertDateToEpoch(queryObject[0].propertyDetails.companyRegistrationDate))
     set(queryObject[0], "propertyDetails.emdDate", convertDateToEpoch(queryObject[0].propertyDetails.emdDate));
 
+    if (queryObject[0].propertyDetails.paymentConfig) {
+      set(queryObject[0], "propertyDetails.paymentConfig.dueDateOfPayment", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.dueDateOfPayment));
+      set(queryObject[0], "propertyDetails.paymentConfig.groundRentAdvanceRentDate", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.groundRentAdvanceRentDate));
+      set(queryObject[0], "propertyDetails.paymentConfig.groundRentBillStartDate", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.groundRentBillStartDate));
+
+      if (queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems && queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems.length) {
+        for (var i=0; i<queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems.length; i++) {
+          set(queryObject[0], `propertyDetails.paymentConfig.premiumAmountConfigItems[${i}].premiumAmountDate`, convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems[i].premiumAmountDate));
+        }
+      }
+    }
+
     if (queryObject[0].propertyDetails.estateDemands && queryObject[0].propertyDetails.estateDemands.length) {
       set(queryObject[0], "propertyDetails.estateDemands[0].generationDate", convertDateToEpoch(queryObject[0].propertyDetails.estateDemands[0].generationDate))
     }
@@ -271,7 +283,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       //   "propertyDetails.purchaser",
       //   []
       // )
-      if (screenName == "allotment") {
+      if (screenName == "allotment" || screenName == "apply-manimajra") {
         tabsArr.splice(-2, 2);
       }
       else if (screenName == "apply-building-branch") {
@@ -394,8 +406,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     dispatch(prepareFinalObject("Properties", Properties));
 
-    if (screenName == "apply") {
-      if (activeIndex == 4 || activeIndex == 5) {
+    let activeIndexArr = screenName == "apply-manimajra" ? [3,4] : [4,5];
+
+    if (screenName == "apply" || screenName == "apply-manimajra") {
+      if (activeIndex == activeIndexArr[0] || activeIndex == activeIndexArr[1]) {
         prevOwners.map((item, index) => {
           setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.purchaser[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.purchaser[${index}].ownerDetails.uploadedDocsInRedux`);
         })

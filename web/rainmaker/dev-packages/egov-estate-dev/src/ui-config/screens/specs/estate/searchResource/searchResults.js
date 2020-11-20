@@ -122,18 +122,21 @@ const onApplicationRowClick = rowData => {
 }
 
 const onRowClick = rowData => {
-  console.log(rowData);
   let type = getQueryArg(window.location.href, "type");
   let branchType = getQueryArg(window.location.href, "branchType");
 
   if (branchType == "BUILDING_BRANCH") {
     if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
-      window.location.href = `apply-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+      return window.location.href = `apply-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
     }
-    else {
-      window.location.href = `search-preview-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+    return window.location.href = `search-preview-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+  }
+
+  if (branchType == "MANIMAJRA_BRANCH") {
+    if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
+      return window.location.href = `apply-manimajra?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
     }
-    return;
+    return window.location.href = `search-preview-manimajra?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
 
   if (type == "refund" && rowData[2].toUpperCase() == ESTATE_APPROVED_STATE && !!findItem) {
@@ -141,14 +144,13 @@ const onRowClick = rowData => {
   }
 
   if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
-    if (rowData[4] == "PROPERTY_MASTER")
-      window.location.href = `apply?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
-    else
-      window.location.href = `allotment?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+    if (rowData[4] == "PROPERTY_MASTER") {
+      return window.location.href = `apply?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
+    }
+    return window.location.href = `allotment?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
-  else {
-    window.location.href = `search-preview?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
-  }
+
+  window.location.href = `search-preview?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
 };
 
 export const penaltyDetailsTable = {

@@ -458,7 +458,7 @@ const callBackForNext = async (state, dispatch) => {
       "allotment.components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
     )
 
-    if (selectedDemand == "GROUNDRENT") {
+    if (selectedDemand == "true") {
       if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {
@@ -468,7 +468,7 @@ const callBackForNext = async (state, dispatch) => {
         isFormValid = false;
       }
     }
-    else if (selectedDemand == "LICENSEFEE") {
+    else if (selectedDemand == "false") {
       if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch) {
         const res = await applyEstates(state, dispatch, activeStep, "allotment");
         if (!res) {

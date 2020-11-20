@@ -27,7 +27,7 @@ const branchType = getQueryArg(window.location.href, "branchType");
         sm: 6
     },
     required: false,
-    jsonPath: "searchScreen.SECTORNumber"
+    jsonPath: "searchScreen.sectorNumber"
   }
 
   const applicationNumberField = {

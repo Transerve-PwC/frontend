@@ -52,7 +52,7 @@ const advancedRentField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].advanceRent"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }
 
 const dateOfPaymentOfAdvanceRentField = {
@@ -65,7 +65,7 @@ const dateOfPaymentOfAdvanceRentField = {
       labelKey: "ES_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateOfPaymentOfAdvanceRent",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRentDate",
   // props: {
   //     inputProps: {
   //         max: getTodaysDateInYMD()
@@ -88,7 +88,7 @@ const premiumAmountField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].premiumAmount"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.totalAmount"
 }
 
 const installmentField = {
@@ -105,7 +105,7 @@ const installmentField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].installmentAmount"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems[0].premiumAmount"
 }
 
 const dueDateForInstallmentField = {
@@ -118,7 +118,7 @@ const dueDateForInstallmentField = {
       labelKey: "ES_DUE_DATE_INSTALLMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].installments[0].dueDate",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems[0].premiumAmountDate",
   // props: {
   //     inputProps: {
   //         max: getTodaysDateInYMD()
@@ -207,7 +207,7 @@ const getDemandRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].demand",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.isGroundRent",
   props: {
     label: {
       name: "Demand",
@@ -216,15 +216,15 @@ const getDemandRadioButton = {
     buttons: [{
         labelName: "Ground Rent",
         labelKey: "ES_GROUND_RENT_LABEL",
-        value: "GROUNDRENT"
+        value: "true"
       },
       {
         label: "License Fee",
         labelKey: "ES_LICENSE_FEE_LABEL",
-        value: "LICENSEFEE"
+        value: "false"
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.paymentDetails[0].demand",
+    jsonPath: "Properties[0].propertyDetails.paymentConfig.isGroundRent",
     required: true
   },
   required: true,
@@ -235,7 +235,7 @@ const getDemandRadioButton = {
         screenName,
         `components.div.children.${paymentStep}.children.groundRentDetails`,
         "visible",
-        !!(action.value == "GROUNDRENT")
+        !!(action.value == "true")
       )
     )
     dispatch(
@@ -243,7 +243,7 @@ const getDemandRadioButton = {
         screenName,
         `components.div.children.${paymentStep}.children.licenseFeeDetails`,
         "visible",
-        !!(action.value == "LICENSEFEE")
+        !!(action.value == "false")
       )
     )
     dispatch(
@@ -251,7 +251,7 @@ const getDemandRadioButton = {
         "allotment",
         "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent",
         "visible",
-        !!(action.value == "GROUNDRENT")
+        !!(action.value == "true")
       )
     )
     dispatch(
@@ -259,7 +259,7 @@ const getDemandRadioButton = {
         "allotment",
         "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee",
         "visible",
-        !!(action.value == "LICENSEFEE")
+        !!(action.value == "false")
       )
     )
     dispatch(
@@ -294,7 +294,7 @@ const groundRentGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].groundRentGenerationType",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
       {code: "Monthly"},
@@ -335,7 +335,7 @@ const billingStartDateField = {
       labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDate",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentBillStartDate",
   // props: {
   //     inputProps: {
   //         max: getTodaysDateInYMD()
@@ -352,7 +352,7 @@ const dateToGenerateDemandRentField = {
     labelName: "Select Date to Generate the Demand/Rent",
     labelKey: "ES_DATE_TO_GENERATE_DEMAND_RENT_PLACEHOLDER"
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandRent",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerateDemand",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -377,7 +377,7 @@ const rentAmountField = {
       sm: 3
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].rentAmount"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 
 const startYearField = {
@@ -398,7 +398,7 @@ const startYearField = {
     disabled: true,
     value: 0
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].startYear"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentStartMonth"
 }
 
 const endYearField = {
@@ -419,7 +419,7 @@ const endYearField = {
     type: "number",
     helperText: "HIII"
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
 }
 
 const commonRentInformation = () => {
@@ -553,7 +553,7 @@ const licenseFeeGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFeeGenerationType",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
       {code: "Monthly"},
@@ -593,7 +593,7 @@ const dateToGenerateDemandLicenseFeeField = {
     labelName: "Select Date to Generate the Demand/License Fee",
     labelKey: "ES_DATE_TO_GENERATE_DEMAND_LICENSE_FEE_PLACEHOLDER"
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].dateToGenerateDemandLf",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerateDemand",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -614,7 +614,7 @@ const billingStartDateLicenseFeeField = {
       labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].billingStartDateLf",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentBillStartDate",
   gridDefination: {
     xs: 12,
     sm: 6
@@ -640,7 +640,7 @@ const licenseFeeField = {
       sm: 3
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].licenseFee"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 
 const startYearLfField = {
@@ -661,7 +661,7 @@ const startYearLfField = {
     value: 0
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].startYear"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentStartMonth"
 }
 
 const endYearLfField = {
@@ -678,9 +678,8 @@ const endYearLfField = {
       sm: 3
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].endYear"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
 }
-
 
 const commonLicenseInformation = () => {
   return getCommonGrayCard({
@@ -816,7 +815,7 @@ const securityFeeAmountField = {
       sm: 6
   },
   maxLength: 100,
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeAmount"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.securityAmount"
 }
 
 const dateOfPaymentField = {
@@ -829,7 +828,7 @@ const dateOfPaymentField = {
       labelKey: "ES_DATE_OF_PAYMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].securityFeeDateOfPayment",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.dueDateOfPayment",
   // props: {
   //     inputProps: {
   //         max: getTodaysDateInYMD()
@@ -844,20 +843,20 @@ const getMonthsOfRentRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].monthsOfRent",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",
   props: {
     buttons: [{
         labelName: "2 months of rent",
         labelKey: "ES_TWO_MONTHS_RENT_LABEL",
-        value: "TWOMONTHSRENT"
+        value: "2"
       },
       {
         label: "3 months rent",
         labelKey: "ES_THREE_MONTHS_RENT_LABEL",
-        value: "THREEMONTHSRENT"
+        value: "3"
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.paymentDetails[0].monthsOfRent",
+    jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",
     // required: true
   },
   // required: true,
@@ -892,7 +891,7 @@ const getInterestFixedRadioButton = {
     xs: 12,
     sm: 6,
   },
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].interestFixed",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.isIntrestApplicable",
   props: {
     label: {
       name: "Interest fixed?",
@@ -909,7 +908,7 @@ const getInterestFixedRadioButton = {
         value: "false"
       }
     ],
-    jsonPath: "Properties[0].propertyDetails.paymentDetails[0].interestFixed",
+    jsonPath: "Properties[0].propertyDetails.paymentConfig.isIntrestApplicable",
     // required: true
   },
   // required: true,
@@ -930,7 +929,7 @@ const percentageOfInterestField = {
       sm: 6
   },
   pattern: _getPattern("float"),
-  jsonPath: "Properties[0].propertyDetails.paymentDetails[0].percentageOfInterest"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.rateOfInterest"
 }
 
 const interestDetailsHeader = getCommonTitle({

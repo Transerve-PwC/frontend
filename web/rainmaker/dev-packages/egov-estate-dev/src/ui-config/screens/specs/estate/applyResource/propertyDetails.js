@@ -204,6 +204,7 @@ const categoryField = {
         sm: 6
     },
     afterFieldChange: (action, state, dispatch) => {
+      debugger
         let screenName = "apply";
         let step = "formwizardFirstStep";
         let stepSummary = "formwizardTenthStep";
@@ -340,7 +341,7 @@ const sectorNumberField = {
     }
 }
 
-const fileNumberField = {
+export const fileNumberField = {
     label: {
         labelName: "File Number",
         labelKey: "ES_FILE_NUMBER_LABEL"
@@ -384,7 +385,7 @@ const lastNocDateField = {
     // }
 }
 
-const propertyTypeField = {
+export const propertyTypeField = {
     label: {
         labelName: "Property Type",
         labelKey: "ES_PROPERTY_TYPE_LABEL"
@@ -393,7 +394,7 @@ const propertyTypeField = {
         labelName: "Select Property Type",
         labelKey: "ES_PROPERTY_TYPE_PLACEHOLDER"
     },
-    required: true,
+    // required: true,
     jsonPath: "Properties[0].propertyDetails.propertyType",
     sourceJsonPath: "applyScreenMdmsData.EstateServices.propertyType",
     gridDefination: {

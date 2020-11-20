@@ -599,6 +599,7 @@ const callBackForNext = async (state, dispatch) => {
           };
           break;
         case DOCUMENT_UPLOAD_STEP:
+        case PURCHASER_DOCUMENTS_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
             labelKey: "ES_ERR_UPLOAD_REQUIRED_DOCUMENTS"

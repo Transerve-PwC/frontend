@@ -5,6 +5,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import { changeStep } from "./footer";
+import { changeStep as changeStepManimajra } from "../applyResourceManimajra/footer"
 
 export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 3) => {
   return getCommonGrayCard({
@@ -49,7 +50,12 @@ export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath 
           onClickDefination: {
             action: "condition",
             callBack: (state, dispatch) => {
-              changeStep(state, dispatch, screenkey, "", step);
+              if (screenkey == "apply-building-branch") {
+                changeStep(state, dispatch, screenkey, "", step);
+              }
+              else if (screenkey == "apply-manimajra") {
+                changeStepManimajra(state, dispatch, screenkey, "", step);
+              }
             }
           }
         },
