@@ -1,0 +1,27 @@
+name: A workflow to build egov citizen
+on: workflow_dispatch
+jobs:
+  build:
+    name: Build citizen
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '8' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install lerna globally
+        run: npm install --global lerna
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./web/rainmaker
+      - name: Lerna bootstrap
+        run: lerna bootstrap
+        working-directory: ./web/rainmaker
+      - name: Build
+        run: npm run prod:citizen
+        working-directory: ./web/rainmaker
+
