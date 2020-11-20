@@ -349,8 +349,19 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     let ratePerSqft = Properties[0].propertyDetails.ratePerSqft;
     let areaSqft = Properties[0].propertyDetails.areaSqft;
+    
     ratePerSqft = !!ratePerSqft ? ratePerSqft.toString() : ratePerSqft;
     areaSqft = !!areaSqft ? areaSqft.toString() : areaSqft;
+
+    if (Properties[0].propertyDetails.paymentConfig) {
+      var isGroundRent = Properties[0].propertyDetails.paymentConfig.isGroundRent;
+      var isIntrestApplicable = Properties[0].propertyDetails.paymentConfig.isIntrestApplicable;
+      var noOfMonths = Properties[0].propertyDetails.paymentConfig.noOfMonths;
+
+      isGroundRent = isGroundRent != null ? isGroundRent.toString() : isGroundRent;
+      isIntrestApplicable = isIntrestApplicable != null ? isIntrestApplicable.toString() : isIntrestApplicable;
+      noOfMonths = noOfMonths != null ? noOfMonths.toString() : noOfMonths;
+    }
 
     owners = get(
       Properties[0],
@@ -377,7 +388,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
         prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft}}]
+        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths}}}]
       }
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];

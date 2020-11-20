@@ -204,7 +204,6 @@ const categoryField = {
         sm: 6
     },
     afterFieldChange: (action, state, dispatch) => {
-      debugger
         let screenName = "apply";
         let step = "formwizardFirstStep";
         let stepSummary = "formwizardTenthStep";
@@ -394,7 +393,7 @@ export const propertyTypeField = {
         labelName: "Select Property Type",
         labelKey: "ES_PROPERTY_TYPE_PLACEHOLDER"
     },
-    // required: true,
+    required: true,
     jsonPath: "Properties[0].propertyDetails.propertyType",
     sourceJsonPath: "applyScreenMdmsData.EstateServices.propertyType",
     gridDefination: {

@@ -180,8 +180,11 @@ const callBackForOfflinePayment = async (state, dispatch) => {
     const type = getQueryArg(window.location.href, "businessService")
     const paymentDetails = get(state, "screenConfiguration.preparedFinalObject.payment")
     const estimateDetails = get(state, "screenConfiguration.preparedFinalObject.temp[0].estimateCardData")
-    const paymentAmount = estimateDetails.reduce((prev, curr)=> prev + Number(curr.value) ,0)
-    const payload = [{...paymentDetails, paymentAmount, applicationNumber, tenantId}]
+    const tax = estimateDetails.find(item => item.name.labelKey.includes("TAX"));
+    const non_tax = estimateDetails.filter(item => !item.name.labelKey.includes("TAX"))
+    const paymentAmount = non_tax.reduce((prev, curr)=> prev + Number(curr.value) ,0)
+    const gst = !!tax ? tax.value : 0
+    const payload = [{...paymentDetails, paymentAmount, gst: Number(gst), applicationNumber, tenantId}]
     try {
       const response = await httpRequest("post",
       "/est-services/application/_collect_payment",

@@ -27,10 +27,14 @@ function getLabelWithValue(labelName, path) {
 }
 
 let screenName = "apply";
-let paymentStep = "formwizardEighthStep"
+let paymentStep = "formwizardEighthStep";
+let summaryStep = "formwizardTenthStep";
+let reviewContainer = "reviewDetails";
 if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
     paymentStep = "formwizardSixthStepAllotment";
+    summaryStep = "formwizardSeventhStepAllotment";
+    reviewContainer = "reviewAllotmentDetails"
 }
 
 var data = []
@@ -232,7 +236,7 @@ const getDemandRadioButton = {
   beforeFieldChange: (action, state, dispatch) => {
     dispatch(
       handleField(
-        screenName,
+        action.screenKey,
         `components.div.children.${paymentStep}.children.groundRentDetails`,
         "visible",
         !!(action.value == "true")
@@ -240,7 +244,7 @@ const getDemandRadioButton = {
     )
     dispatch(
       handleField(
-        screenName,
+        action.screenKey,
         `components.div.children.${paymentStep}.children.licenseFeeDetails`,
         "visible",
         !!(action.value == "false")
@@ -248,24 +252,24 @@ const getDemandRadioButton = {
     )
     dispatch(
       handleField(
-        "allotment",
-        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent",
+        action.screenKey,
+        `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewGroundRent`,
         "visible",
         !!(action.value == "true")
       )
     )
     dispatch(
       handleField(
-        "allotment",
-        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee",
+        action.screenKey,
+        `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewLicenseFee`,
         "visible",
         !!(action.value == "false")
       )
     )
     dispatch(
       handleField(
-        "allotment",
-        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewAdvanceRent",
+        action.screenKey,
+        `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewAdvanceRent`,
         "visible",
         !!(action.value)
       )
@@ -302,11 +306,15 @@ const groundRentGenerationTypeField = {
     ]
   },
   beforeFieldChange: (action, state, dispatch) => {
+    let jsonpath = action.componentJsonpath.split(".");
+    jsonpath.pop();
+    jsonpath = jsonpath.join(".")
+
     if (action.value == "Monthly") {
       dispatch(
         handleField(
-          "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          action.screenKey,
+          `${jsonpath}.dateToGenerateDemandRent`,
           "visible",
           true
         )
@@ -315,8 +323,8 @@ const groundRentGenerationTypeField = {
     else {
       dispatch(
         handleField(
-          "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children.dateToGenerateDemandRent",
+          action.screenKey,
+          `${jsonpath}.dateToGenerateDemandRent`,
           "visible",
           false
         )
@@ -416,8 +424,7 @@ const endYearField = {
   },
   maxLength: 100,
   props: {
-    type: "number",
-    helperText: "HIII"
+    type: "number"
   },
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
 }
@@ -433,7 +440,7 @@ const commonRentInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent[0].endYear",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
         callBack: (value) => (Number(value)/12).toFixed(2)
       }
       )
@@ -473,17 +480,17 @@ export const rentDetails = getCommonGrayCard({
             },
             headerName: "Rent",
             headerJsonPath: "children.cardContent.children.header.children.Rent.props.label",
-            sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].rent",
+            sourceJsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
             prefixSourceJsonPath: "children.cardContent.children.rentCard.children",
             afterPrefixJsonPath: "children.value.children.key",
             onMultiItemAdd: (state, multiItemContent) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
-                "Properties[0].propertyDetails.paymentDetails[0].rent",
+                "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              if (rent.length && rent[rent.length - 1].endYear) {
-                let lastAddedEndYear = rent[rent.length - 1].endYear;
+              if (rent.length && rent[rent.length - 1].groundRentEndMonth) {
+                let lastAddedEndYear = rent[rent.length - 1].groundRentEndMonth;
                 multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
               } 
               // else {
@@ -494,17 +501,17 @@ export const rentDetails = getCommonGrayCard({
             onMultiItemDelete: (state, deletedIndex, changeField) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
-                "Properties[0].propertyDetails.paymentDetails[0].rent",
+                "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
               if(deletedIndex !== rent.length - 1) {
                 const previewYearObj = rent.filter((item, index) => index < deletedIndex && item.isDeleted !== false).pop()
                 const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && item.isDeleted !== false)
                 nextYearObj !== -1 && changeField(
-                  "allotment",
-                  `components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`,
+                  screenName,
+                  `components.div.children.${paymentStep}.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`,
                   "props.value",
-                  !!previewYearObj && !!previewYearObj.endYear ? Number(previewYearObj.endYear)+1 : 0
+                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 : 0
                 )
               }
             }
@@ -692,7 +699,7 @@ const commonLicenseInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees[0].endYear",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
         callBack: (value) => (Number(value)/12).toFixed(2)
       }
       )
@@ -733,18 +740,18 @@ export const licenseFeeForYearDetails = getCommonGrayCard({
             headerName: "License Fee for Year",
             // headerJsonPath: "children.cardContent.children.header.children.key.props.labelKey",
             headerJsonPath: "children.cardContent.children.header.children.License Fee.props.label",
-            sourceJsonPath: "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
+            sourceJsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
 
             afterPrefixJsonPath: "children.value.children.key",
             onMultiItemAdd: (state, multiItemContent) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
-                "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
+                "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              if (rent.length && rent[rent.length - 1].endYear) {
-                let lastAddedEndYear = rent[rent.length - 1].endYear;
+              if (rent.length && rent[rent.length - 1].groundRentEndMonth) {
+                let lastAddedEndYear = rent[rent.length - 1].groundRentEndMonth;
                 multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
               } 
               // else {
@@ -755,17 +762,17 @@ export const licenseFeeForYearDetails = getCommonGrayCard({
             onMultiItemDelete: (state, deletedIndex, changeField) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
-                "Properties[0].propertyDetails.paymentDetails[0].licenseFees",
+                "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
               if(deletedIndex !== rent.length - 1) {
                 const previewYearObj = rent.filter((item, index) => index < deletedIndex && item.isDeleted !== false).pop()
                 const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && item.isDeleted !== false)
                 nextYearObj !== -1 && changeField(
-                  "allotment",
-                  `components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.licenseCard.children.startYear`,
+                  screenName,
+                  `components.div.children.${paymentStep}.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.licenseCard.children.startYear`,
                   "props.value",
-                  !!previewYearObj && !!previewYearObj.endYear ? Number(previewYearObj.endYear)+1 : 0
+                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 : 0
                 )
               }
             }

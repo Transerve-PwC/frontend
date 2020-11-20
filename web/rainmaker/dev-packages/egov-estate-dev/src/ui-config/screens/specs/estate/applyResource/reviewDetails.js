@@ -8,7 +8,11 @@ import {
   getReviewAdditional,
   getReviewCompanyDetails,
   getReviewFirmDetails,
-  getReviewProprietorshipDetails
+  getReviewProprietorshipDetails,
+  getReviewGroundRent,
+  getReviewLicenseFee,
+  getReviewAdvanceRent,
+  getReviewSecurity
 } from "./reviewProperty";
 import {getReviewRentSummary} from '../preview-resource/preview-properties'
 const reviewRentSummary = getReviewRentSummary(true);
@@ -25,6 +29,10 @@ if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "u
   var companyDetails = getReviewCompanyDetails();
   var firmDetails = getReviewFirmDetails();
   var proprietorDetails = getReviewProprietorshipDetails();
+  var reviewGroundRent = getReviewGroundRent();
+  var reviewLicenseFee = getReviewLicenseFee();
+  var reviewAdvanceRent = getReviewAdvanceRent();
+  var reviewSecurity = getReviewSecurity();
 }
 
 export const reviewDetails = getCommonCard({
@@ -35,5 +43,9 @@ export const reviewDetails = getCommonCard({
   companyDetails,
   firmDetails, 
   proprietorDetails,
+  reviewGroundRent,
+  reviewLicenseFee,
+  reviewAdvanceRent,
+  reviewSecurity,
   reviewRentSummary
 })

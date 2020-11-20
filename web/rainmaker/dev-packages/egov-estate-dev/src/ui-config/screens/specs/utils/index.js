@@ -746,6 +746,7 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
             httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
               Payments,
               Applications :payload,
+              feeEstimate:data,
               generatedBy
             }, {
               'Accept': 'application/json'

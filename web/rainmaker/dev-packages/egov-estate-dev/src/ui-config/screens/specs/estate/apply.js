@@ -609,7 +609,7 @@ const getData = async (action, state, dispatch) => {
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
   if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
   }
   setDocumentData(action, state, dispatch);
   setPrevOwnerDocs(action, state, dispatch);
@@ -617,7 +617,7 @@ const getData = async (action, state, dispatch) => {
 
   dispatch(
     handleField(
-      "apply",
+      action.screenKey,
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
       "props.screenKey",
       "apply"
@@ -625,7 +625,7 @@ const getData = async (action, state, dispatch) => {
   )
   dispatch(
     handleField(
-      "apply",
+      action.screenKey,
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
       "props.componentJsonPath",
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
@@ -634,7 +634,7 @@ const getData = async (action, state, dispatch) => {
 
   dispatch(
     handleField(
-      "apply",
+      action.screenKey,
       "components.div.children.formwizardEighthStep.children.groundRentDetails",
       "visible",
       false
@@ -642,8 +642,33 @@ const getData = async (action, state, dispatch) => {
   )
   dispatch(
     handleField(
-      "apply",
+      action.screenKey,
       "components.div.children.formwizardEighthStep.children.licenseFeeDetails",
+      "visible",
+      false
+    )
+  )
+
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent",
+      "visible",
+      false
+    )
+  )
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee",
+      "visible",
+      false
+    )
+  )
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewAdvanceRent",
       "visible",
       false
     )

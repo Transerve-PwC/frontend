@@ -958,7 +958,6 @@ export const getReviewGroundRent = (isEditable = true) => {
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.paymentConfig.groundRentGenerateDemand`,
-          callBack: convertEpochToDate
         }
       )
     }),
@@ -1043,7 +1042,6 @@ export const getReviewLicenseFee = (isEditable = true) => {
         }, 
         {
           jsonPath: `Properties[0].propertyDetails.paymentConfig.groundRentGenerateDemand`,
-          callBack: convertEpochToDate
         }
       ),
       billingStartDate: getLabelWithValue(
