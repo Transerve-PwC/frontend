@@ -11,7 +11,7 @@ import { set } from "lodash";
 import { getreviewPropertyAddressDetailsMortgage, getReviewApplicantDetailsMortgage,getreviewGrantDetailsMortgage } from "./applyResource/review-applications-mortgage";
 import { getMortgageSearchResults } from "../../../../ui-utils/commons";
 import { getReviewDocuments } from "./applyResource/review-documents";
-import { footerReviewTop} from "./applyResource/reviewFooter";
+import { footerReviewTop, footerReview } from "./applyResource/reviewFooter";
 import {downloadPrintContainer} from './applyResource/footer';
 import { setApplicationNumberBox } from "../../../../ui-utils/apply";
 import {applicationNumber} from './apply'
@@ -39,7 +39,8 @@ const mortgageReviewDetails = getCommonCard({
 const beforeInitFn = async(action, state, dispatch) => {
     dispatch(prepareFinalObject("workflow.ProcessInstances", []))
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
-    const tenantId = getQueryArg(window.location.href, "tenantId")
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const applicationType = "mortage-apply";
     if(!!applicationNumber) {
       const queryObject = [
         {key: "applicationNumber", value: applicationNumber}
@@ -89,6 +90,20 @@ const beforeInitFn = async(action, state, dispatch) => {
       "screenConfig.components.div.children.headerDiv.children.helpSection.children",
       printCont
     );
+
+    const footer = footerReview(
+      action,
+      state,
+      dispatch,
+      status,
+      applicationNumber,
+      tenantId,
+      "",
+      applicationType
+    );
+    process.env.REACT_APP_NAME === "Citizen"
+        ? set(action, "screenConfig.components.div.children.footer", footer)
+        : set(action, "screenConfig.components.div.children.footer", {});
     // const CitizenprintCont=footerReviewTop(
     //   action,
     //   state,

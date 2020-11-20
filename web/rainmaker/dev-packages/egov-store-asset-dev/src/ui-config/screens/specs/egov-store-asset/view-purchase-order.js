@@ -16,6 +16,7 @@ import {
     showHideAdhocPopup,
     validateFields
   } from "../utils";
+  import { IndentConfigType } from "../../../../ui-utils/sampleResponses";
   import { httpRequest } from "../../../../ui-utils";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getSearchResults } from "../../../../ui-utils/commons";
@@ -173,6 +174,29 @@ printMenu = [receiptPrintObject];
         if(response){
           dispatch(prepareFinalObject("purchaseOrders", [...response.purchaseOrders]));       
           furnishindentData(state, dispatch);
+
+          //call indent api for Approved indent
+
+          let queryObjectI = [
+            {
+              key: "tenantId",
+              value: tenantId
+            },
+            {
+              key: "indentType",
+              value: IndentConfigType().IndntType.INEDENT
+            },
+            {
+              key: "indentStatus",
+              value: IndentConfigType().indentStatus
+            },
+          ];
+          getSearchResults(queryObjectI, dispatch,"indents")
+          .then(response =>{
+            if(response){
+              dispatch(prepareFinalObject("indents", [...response.indents])); 
+            }
+          });
       if(response.purchaseOrders && response.purchaseOrders[0].supplier.code){
         const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "suppliers", value: response.purchaseOrders[0].supplier.code}];
         if(response.purchaseOrders[0].rateType !=="Gem")

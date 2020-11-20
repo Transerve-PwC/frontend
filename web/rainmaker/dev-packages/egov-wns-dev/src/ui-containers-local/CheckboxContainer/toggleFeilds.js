@@ -267,7 +267,7 @@ export const toggleConnHolderDetails=(onFieldChange, value)=>{
     "apply",
     "components.div.children.formwizardFirstStep.children.connectionHolderDetails.children.cardContent.children.holderDetails.children.holderDetails",
     "visible",
-    value
+    true
   );
 }
 

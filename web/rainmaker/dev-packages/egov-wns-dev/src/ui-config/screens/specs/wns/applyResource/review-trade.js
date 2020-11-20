@@ -423,15 +423,15 @@ export const connectionHolderDetails={
        callBack: handleNA
      }
    ),
-    specialApplicantCategory : getLabelWithValue(
-     {
-       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
-     },
-     {
-       jsonPath: "WaterConnection[0].connectionHolders[0].ownerType",
-       callBack: handleNA
-     }
-   )
+    // specialApplicantCategory : getLabelWithValue(
+    //  {
+    //    labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
+    //  },
+    //  {
+    //    jsonPath: "WaterConnection[0].connectionHolders[0].ownerType",
+    //    callBack: handleNA
+    //  }
+   //)
  };
 const taskConnHolderDetailsSummary = () => {
   return ({

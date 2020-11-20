@@ -94,6 +94,14 @@ const waterAndSewerageSearchAndResult = {
                         route: "my-connections"
                     }
                 },
+                listCard4: {
+                    uiFramework: "custom-molecules-local",
+                    moduleName: "egov-wns",
+                    componentPath: "LinkConnection",
+                    props: {
+                        route: "link-connection"
+                    }
+                },
                 listCard3: {
                     uiFramework: "custom-molecules-local",
                     moduleName: "egov-wns",

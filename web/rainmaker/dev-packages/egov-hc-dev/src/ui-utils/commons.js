@@ -579,7 +579,6 @@ try {
 
     response = await httpRequest("post", "hc-services/serviceRequest/_create", "", [], {services: arraypayload });
     
-    
     if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
       dispatch(prepareFinalObject("SERVICES", response));
     

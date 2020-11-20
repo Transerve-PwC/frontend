@@ -27,7 +27,8 @@ class  AddLinkForProperty extends React.Component {
   }
 handleClick = (url) => {
   const {onsetRoute} = this.props;
-  setModule("rainmaker-pt");
+  setModule("rainmaker-pt,rainmaker-ws");
+  
   const tenantId = process.env.REACT_APP_NAME === "Citizen" ? this.citizenTenantId(): getTenantId();
   this.props.fetchLocalizationLabel(getLocale(), tenantId, tenantId);
   url = `/pt-common-screens/propertySearch?redirectUrl=${url}`;
@@ -42,7 +43,7 @@ render() {
   );
   return (   
     <div style={styles}>
-       <Button  style={clickHereStyles}  onClick = {()=> this.handleClick(url)}>{translatedLabel}</Button>   
+       <Button  style={clickHereStyles}  onClick = {()=> this.handleClick(url)} visible={false}>{translatedLabel}</Button>   
        </div>
   );
 

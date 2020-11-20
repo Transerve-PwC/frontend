@@ -44,9 +44,15 @@ export const fetchLocalizationLabel = (locale, module, tenantId) => {
     // const commonModules =
     // "rainmaker-pgr,rainmaker-pt,rainmaker-tl,finance-erp,rainmaker-common,rainmaker-hr,rainmaker-uc,rainmaker-noc,rainmaker-abg,rainmaker-bpareg,rainmaker-ws,rainmaker-dss,rainmaker-bpa,rainmaker-pm,rainmaker-pension,rainmaker-pr,rainmaker-hc,rainmaker-ec,rainmaker-store-asset,rainmaker-nulm";
      
-   
+    let  moduleNamecmn ='rainmaker-common'
     const moduleName = getModule();
-    const localeModule = (moduleName === 'rainmaker-common'||moduleName === null) ? 'rainmaker-common' : `rainmaker-common,${moduleName}`;
+    if(moduleName ==='rainmaker-pt')
+    moduleNamecmn = 'rainmaker-common,rainmaker-ws'
+    else  if(moduleName ==='rainmaker-ws')
+    moduleNamecmn = 'rainmaker-common,rainmaker-pt'
+    
+    //const localeModule = (moduleName === 'rainmaker-common'||moduleName === null) ? 'rainmaker-common' : `rainmaker-common,${moduleName}`;
+    const localeModule = (moduleName === 'rainmaker-common'||moduleName === null) ? 'rainmaker-common' : `${moduleNamecmn},${moduleName}`;
    
     try {
       const payload1 = await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [

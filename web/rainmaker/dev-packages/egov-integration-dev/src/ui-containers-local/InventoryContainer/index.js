@@ -26,44 +26,11 @@ class InventoryContainer extends Component {
     action: ""
   };
 
-  onPrintClick=async(Reportname)=>{  
+  onPayClick=async()=>{  
     const { prepareFinalObject, toggleSnackbar, state,ProcessInstances } = this.props;
 
-    try{
-      let searchScreenObject = get(
-              state.screenConfiguration.preparedFinalObject,
-              "searchScreen",
-              {}
-            );
-           if( Object.keys(searchScreenObject).length > 0)           
-            downloadInventoryPdf(searchScreenObject,Reportname);
-            else
-            {
-              toggleSnackbar(
-                true,
-                {
-                labelName: "Fill Required Field !",
-                labelKey: "ERR_FILL_ALL_FIELDS"
-                },
-                "warning"
-                );
-
-            }
-    }
-    catch(e)
-    {
-      toggleSnackbar(
-        true,
-        {
-        labelName: "Workflow returned empty object !",
-        labelKey: "PENSION_API_EXCEPTION_ERROR"
-        },
-        "error"
-        );
-        store.dispatch(toggleSpinner());
-
-    }
-   
+    //window.location.href = `http://sampark.chd.nic.in/Epayment/Services/PAID/PropertyTax/PropertyTaxbyPID.aspx`,`_blank`;
+    window.open(`http://sampark.chd.nic.in/Epayment/Services/PAID/PropertyTax/PropertyTaxbyPID.aspx`,`_blank`);
   
     }
     componentDidMount = async () => {
@@ -89,6 +56,45 @@ class InventoryContainer extends Component {
                 style={{
                   width: "100%",
                 }}>
+
+<tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="INTIGRATION_TH_PT_HOUSE" /></td>
+                {/* <td><Label labelClassName="" label={APIData[0].PropertyDetail[0].HOUSENO}/></td> */}
+                <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].HouseNo}/></td>
+               
+                {/* <td  style={{
+                  textAlign: "right",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="PT_CODE" /></td>
+                <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].PropertyId}/></td> */}
+                </tr> 
+                <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="INTIGRATION_DF_SECTOR_NAME" /></td>
+                <td><Label labelClassName="" label={APIData[0].PropertyDetail[0].SECTORNAME}/></td>
+                <td  style={{
+                  textAlign: "right",
+                  width:"15%"
+                }}><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="INTIGRATION_DF_PROPERTY_TYPE" /></td>
+                <td style={{
+                  textAlign: "right",                 
+                }}><Label labelClassName="" label={APIData[0].PropertyDetail[0].PROPERTYTYPE}/></td>
+                </tr> 
                <tr><td  style={{
                   textAlign: "left",
                   width:"15%"
@@ -115,14 +121,23 @@ class InventoryContainer extends Component {
                   
                 }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
                 <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td>
-                {/* <td  style={{
+                <td style={{
+                  width: "35%",
+                 
+                }}>
+
+                </td>
+                <td style={{
                   textAlign: "right",
-                  width:"15%"
-                }}><Label labelClassName="" style={{
-                  fontWeight: "bold",
-                                
-                }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
-                <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td> */}
+                 
+                }}> 
+    
+                <Button  color="primary" onClick={() => this.onPayClick()}  target="_blank" style={{ alignItems: "right"}}>
+                                         <LabelContainer
+                                                 labelName="Pay"
+                                                 labelKey="INTIGRATION_PAY"
+                                                 color="#FE7A51"/> </Button>
+                </td>
                 </tr>            
                      
               </table>
@@ -140,12 +155,169 @@ class InventoryContainer extends Component {
                // APIData&&APIData[0]( 
                <div style={{ overscrollBehaviorX:"overlay",overflow:"overlay"}}>
                  
+<table  id="reportTable"
+                 style={{
+                   width: "100%",
+                   marginBottom:"20px"
+                 }}
+                 className="table table-striped table-bordered">
+                   {/* <thead>
+                   <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}colSpan="2"><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="INTIGRATION_TH_BASIC_DETAILS" /></td>
+                </tr> 
+                   </thead> */}
+                 <thead>
+                 <tr className="report-table-header">
+                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_DEPOSITER_NAME"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_FATER_HUSBAND_NAME"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_PLOT_COVERED"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_PLOT_AREA_UNCOVERED"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_AREA_COVERED"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_FIRST_FLOOR"
+                  />
+                  </th>  
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_SECOND_FLOOR"
+                  />
+                  </th>  
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="INTIGRATION_BASEMENT"
+                  />
+                  </th>                  
+                 </tr>
+                
+                 {
+                   APIData&&(
+                     <tr>
+                       {
+                          APIData.length==0?(                     
+                            
+                              <th  style={{ verticalAlign:"middle", textAlign: "center"}}colSpan="9" ><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
+                           
+                           
+                          ):(
+                            <div  style={{ display:"none"}}></div>
+                          )
+                       }
+                     </tr>
+                   )
+                 }
+                 </thead>
+                 {
+                    APIData&&(
+                      <tbody>
+                         {
+                           APIData.length==0?(
+                            
+                             <tr  style={{ display:"none"}}>
+                               <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2"><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
+                             </tr>
+                            
+                           ):(
+                            <tr>
+                            {/* <th>{item.srNo}</th> */}
+                            
+                            <th>{get(APIData[0].PropertyDetail[0], `Depositer Name`, "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], `FatherName`, "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], `ACTUALAREA`, "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], "Plot Area", "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], "Area Covered on Ground Floor", "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], "1st Floor", "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], "2nd Floor1", "-") || "-"}</th>
+                            <th>{get(APIData[0].PropertyDetail[0], "Basement", "-") || "-"}</th>
+                            {/* <th>{item.totalAmount}</th>
+                            <th>{item.remarks}</th> */}
+                           
+                          </tr>
+                            // APIData[0].PropertyTaxCalculation.map((item,i)=>{
+                            //   return(
+                            //     <tr>
+                            //       {/* <th>{item.srNo}</th> */}
+                            //       <th>{item.Session}</th>
+                            //       <th>{item.AmountDue}</th>
+                            //       <th>{item.Discount}</th>
+                            //       <th>{item.DepositAmount}</th>
+                            //       <th>{item.AmtOfInt}</th>
+                            //       <th>{item.BalanceAmount}</th>
+                            //       {/* <th>{item.totalAmount}</th>
+                            //       <th>{item.remarks}</th> */}
+                                 
+                            //     </tr>
+                            //   )
+                            
+                            // })
+                           )
+                          
+                         }
+    
+                    </tbody>
+                    )                
+                  }
+                 </table>
+                 <br>
+                 {/* Payment Detail */}
+                 </br>
                   <table  id="reportTable"
                  style={{
                    width: "100%",
                    marginBottom:"20px"
                  }}
                  className="table table-striped table-bordered">
+                   {/* <thead>
+                   <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}colSpan="2"><Label labelClassName="" style={{
+                  fontWeight: "bold",
+                  
+                }} label="INTIGRATION_TH_PROPERTY_DETAILS" /></td>
+                </tr> 
+                   </thead> */}
                  <thead>
                  <tr className="report-table-header">
                  <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="1">

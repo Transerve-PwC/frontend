@@ -314,7 +314,7 @@ const screenConfig = {
           props: {
             moduleName: "StoreManagement",
             dataPath: "materialIssues",
-            updateUrl: "/store-asset-services/materialissues/_updateStatus"
+            updateUrl: "/store-asset-services/materialissues-ni/_updateStatus"
 
           }
         },

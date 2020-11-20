@@ -11,6 +11,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import { footer } from "./applyResource/footer";
 import { getPropertyIDDetails, propertyID, propertyHeader } from "./applyResource/propertyDetails";
 import { getPropertyDetails } from "./applyResource/property-locationDetails";
@@ -36,7 +37,7 @@ import { reviewDocuments } from "./applyResource/reviewDocuments";
 import { reviewOwner } from "./applyResource/reviewOwner";
 import { reviewConnectionDetails } from "./applyResource/reviewConnectionDetails";
 import { togglePropertyFeilds, toggleSewerageFeilds, toggleWaterFeilds } from '../../../../ui-containers-local/CheckboxContainer/toggleFeilds';
-
+import { getLocale,getTenantId,getUserInfo,setModule } from "egov-ui-kit/utils/localStorageUtils";
 import cloneDeep from "lodash/cloneDeep";
 export const stepperData = () => {
   if (process.env.REACT_APP_NAME === "Citizen") {
@@ -232,9 +233,14 @@ export const getMdmsData = async dispatch => {
 
 export const getData = async (action, state, dispatch) => {
   const applicationNo = getQueryArg(window.location.href, "applicationNumber");
-  const tenantId = getQueryArg(window.location.href, "tenantId");
+  let tenantId = getQueryArg(window.location.href, "tenantId");
   const propertyID = getQueryArg(window.location.href, "propertyId");
   await getMdmsData(dispatch);
+  setModule("rainmaker-ws,rainmaker-pt");
+ // setModule("rainmaker-pt");
+    const userInfo = JSON.parse(getUserInfo());
+     tenantId = process.env.REACT_APP_NAME === "Citizen" ? (userInfo.permanentCity || userInfo.tenantId): getTenantId();
+      dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
   if (applicationNo) {
     //Edit/Update Flow ----
     let queryObject = [{ key: "tenantId", value: tenantId }, { key: "applicationNumber", value: applicationNo }];
@@ -258,7 +264,7 @@ export const getData = async (action, state, dispatch) => {
           toggleWaterFeilds(action, false);
         }
         dispatch(prepareFinalObject("WaterConnection", payloadWater.WaterConnection));
-
+       
         if(payloadWater && payloadWater.WaterConnection.length > 0){
           const {usageCategory } = payloadWater.WaterConnection[0].waterProperty;
           const {applicationStatus,proposedPipeSize} = payloadWater.WaterConnection[0];
@@ -450,6 +456,21 @@ export const getData = async (action, state, dispatch) => {
     let propertyObj = payload.Properties[0];
     dispatch(prepareFinalObject("applyScreen.property", findAndReplace(propertyObj, null, "NA")));
     dispatch(prepareFinalObject("searchScreen.propertyIds", propertyID));
+     //set applyScreen.waterProperty.usageCategory
+     if(propertyObj)
+     {
+       //set Connection Holder Details same as in Owner Information
+
+    //connectionHolders[0].mobileNumber
+    dispatch(prepareFinalObject("applyScreen.waterProperty.usageCategory",  propertyObj.usageCategory));
+    dispatch(prepareFinalObject("connectionHolders[0].name", propertyObj.owners[0].name ==='NA'?'':propertyObj.owners[0].name));
+    dispatch(prepareFinalObject("connectionHolders[0].mobileNumber", propertyObj.owners[0].mobileNumber==='NA'?'':propertyObj.owners[0].mobileNumber));
+    dispatch(prepareFinalObject("connectionHolders[0].fatherOrHusbandName", propertyObj.owners[0].fatherOrHusbandName==='NA'?'':propertyObj.owners[0].fatherOrHusbandName));
+    dispatch(prepareFinalObject("connectionHolders[0].correspondenceAddress", propertyObj.owners[0].correspondenceAddress==='NA'?'':propertyObj.owners[0].correspondenceAddress));
+    dispatch(prepareFinalObject("connectionHolders[0].ownerType", propertyObj.owners[0].ownerType==='NA'?'NONE':propertyObj.owners[0].ownerType));
+    prepareDocumentsUploadData(state, dispatch);
+     }
+     
   }
 };
 
@@ -597,7 +618,7 @@ const screenConfig = {
 
     // const tenantId = getTenantId();
     // dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
-    prepareDocumentsUploadData(state, dispatch);
+    
     return action;
   },
 

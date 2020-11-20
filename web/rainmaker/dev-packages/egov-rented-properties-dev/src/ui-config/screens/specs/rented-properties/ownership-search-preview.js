@@ -60,7 +60,8 @@ const transferReviewDetails = getCommonCard({
 const beforeInitFn = async(action, state, dispatch) => {
 dispatch(prepareFinalObject("workflow.ProcessInstances", []))
 const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
-const tenantId = getQueryArg(window.location.href, "tenantId")
+const tenantId = getQueryArg(window.location.href, "tenantId");
+const applicationType = "ownership-apply";
   if(!!applicationNumber) {
     const queryObject = [
       {key: "applicationNumber", value: applicationNumber}
@@ -173,7 +174,8 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
       status,
       applicationNumber,
       tenantId,
-      billingBuisinessService
+      billingBuisinessService,
+      applicationType
     );
     process.env.REACT_APP_NAME === "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)

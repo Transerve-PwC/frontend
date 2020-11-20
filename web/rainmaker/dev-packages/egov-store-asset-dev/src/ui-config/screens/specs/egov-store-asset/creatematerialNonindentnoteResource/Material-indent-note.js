@@ -32,10 +32,10 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
       key: "receivingStore",
       value: storecode
     });
-    // queryObject.push({
-    //   key: "supplierCode",
-    //   value: suppliercode
-    // });
+    queryObject.push({
+      key: "mrnStatus",
+      value: "Approved"
+    });
   try {
     let response = await getSearchResults(queryObject, dispatch,"mrnNumber");
     dispatch(prepareFinalObject("mrnNumber", response.MaterialReceipt));
@@ -343,7 +343,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME"
           },
           required:true,
-         visible: true,
+         visible: false,
           jsonPath: "materialIssues[0].supplier.code",
           sourceJsonPath: "supplier.suppliers",
             props: {

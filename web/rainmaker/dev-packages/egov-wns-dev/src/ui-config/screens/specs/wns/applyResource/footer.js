@@ -46,6 +46,7 @@ const moveToReview = (state, dispatch) => {
   );
 
   let validateDocumentField = false;
+let validateDocumentselect = false;
 
   for (let i = 0; i < documentsFormat.length; i++) {
     let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
@@ -68,6 +69,7 @@ const moveToReview = (state, dispatch) => {
               )
             );
             validateDocumentField = false;
+            validateDocumentselect = false;
             break;
           }
         } else {
@@ -542,11 +544,13 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
       };
       switch (activeStep) {
         case 1:
-          errorMessage = {
-            labelName:
-              "Please upload all Mandatory Document!",
-            labelKey: "WS_UPLOAD_MANDATORY_DOCUMENTS"
-          };
+          // errorMessage = {
+          //   labelName:
+          //     "Please upload all Mandatory Document!",
+          //   labelKey: "WS_UPLOAD_MANDATORY_DOCUMENTS"
+          // };
+          moveToReview(state,dispatch)
+          return;
           break;
         case 2:
           errorMessage = {

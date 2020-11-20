@@ -316,7 +316,7 @@ class WorkFlowContainer extends React.Component {
   };
 
   createWorkFLow = async (label, isDocRequired) => {
-    const { toggleSnackbar, dataPath, preparedFinalObject } = this.props;
+    const { toggleSnackbar, dataPath, preparedFinalObject,moduleName } = this.props;
     let data = {};
 
     if (dataPath == "BPA" || dataPath == "Assessment" || dataPath == "Property") {
@@ -350,8 +350,37 @@ class WorkFlowContainer extends React.Component {
           "error"
         );
       }
-    } else {
-      this.wfUpdate(label);
+    } 
+    else {
+      var validated = true;
+      const{WaterConnection} = preparedFinalObject
+      if(moduleName === "NewWS1" || moduleName === "NewSW1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL" ){
+        if (WaterConnection[0].comment.length === 0) {
+          validated = false;
+          toggleSnackbar(
+            true,
+            { labelName: "Please provide comments", labelKey: "ERR_PLEASE_PROVIDE_COMMENTS" },
+            "error"
+          );
+        }
+  
+        if (WaterConnection[0].comment.length > 128) {
+          validated = false;
+          toggleSnackbar(
+            true,
+            { labelName: "Invalid comment length", labelKey: "ERR_INVALID_COMMENT_LENGTH" },
+            "error"
+          );
+        }
+      } 
+
+      if (validated) {
+        data.workFlowDetails = data.workFlowDetails
+        this.wfUpdate(label);
+
+      }
+
+     // this.wfUpdate(label);
     }
   };
 

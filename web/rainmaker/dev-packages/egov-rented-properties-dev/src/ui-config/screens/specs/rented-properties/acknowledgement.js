@@ -40,7 +40,13 @@ const getAcknowledgementCard = (
       } : purpose === "submit" ? {
         labelName: "Ownership transfer application is Submitted Successfully",
         labelKey: "RP_OWNER_SHIP_SUBMISSION_SUCCESS_MESSAGE_HEAD"
-      } : {
+      }: purpose === "complete" ? {
+        labelName: "Ownership transfer successfully completed",
+        labelKey: "RP_OWNER_SHIP_COMPLETION_SUCCESS_MESSAGE_HEAD"
+      } : purpose === "sentforreject" ? {
+        labelName: "Ownership transfer application sent for rejection",
+        labelKey: "RP_OWNER_SHIP_SENTFORREJECTION_MESSAGE_HEAD"
+      }: {
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       } :
@@ -63,7 +69,13 @@ const getAcknowledgementCard = (
       } : purpose === "submit" ? {
         labelName: "Duplicate Copy Allotment application is Submitted Successfully",
         labelKey: "RP_DUPLICATE_COPY_SUBMISSION_SUCCESS_MESSAGE_HEAD"
-      } : {
+      } : purpose === "complete" ? {
+        labelName: "Duplicate copy of allotment successfully completed",
+        labelKey: "RP_DUPLICATE_COPY_COMPLETION_SUCCESS_MESSAGE_HEAD"
+      } : purpose === "sentforreject" ? {
+        labelName: "Duplicate copy of allotment  sent for rejection",
+        labelKey: "RP_DUPLICATE_COPY_SENTFORREJECTION_MESSAGE_HEAD"
+      }: {
         labelName: "Payment is collected successfully",
         labelKey: "RP_PAYMENT_SUCCESS_MESSAGE_HEAD"
       } 

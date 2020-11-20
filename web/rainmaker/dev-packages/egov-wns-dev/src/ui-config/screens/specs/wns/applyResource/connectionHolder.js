@@ -154,6 +154,7 @@ import {
       },
       jsonPath: "connectionHolders[0].ownerType",
       required: true,
+      visible:false,
       localePrefix: {
         moduleName: "common-masters",
         masterName: "OwnerType"

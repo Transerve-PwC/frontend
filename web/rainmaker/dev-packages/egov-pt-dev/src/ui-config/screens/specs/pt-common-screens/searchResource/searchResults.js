@@ -114,6 +114,7 @@ export const searchPropertyTable = {
         name:  "Sync",
         options: {
           filter: false,
+          display: false,
           customBodyRender: (value,data) =>{
             const currentTime = new Date().getTime();
             let styleSelect = {}

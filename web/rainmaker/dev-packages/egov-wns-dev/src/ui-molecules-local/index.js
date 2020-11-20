@@ -55,6 +55,10 @@ const NewConnection = Loadable({
   loader: () => import("./NewConnection"),
   loading: () => <Loading />
 });
+const LinkConnection = Loadable({
+  loader: () => import("./LinkConnection"),
+  loading: () => <Loading />
+});
 const MyApplications = Loadable({
   loader: () => import("./MyApplications"),
   loading: () => <Loading />
@@ -141,6 +145,7 @@ export {
   WnsHowItWorks,
   FeesEstimateOverviewCard,
   OwnerHeader,
+  LinkConnection,
   Footer
 
   // PropertyTaxDetails

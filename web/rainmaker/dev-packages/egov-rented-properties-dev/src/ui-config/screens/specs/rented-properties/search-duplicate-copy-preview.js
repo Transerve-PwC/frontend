@@ -48,7 +48,8 @@ const duplicateReviewDetails = getCommonCard({
   const beforeInitFn = async(action, state, dispatch) => {
     dispatch(prepareFinalObject("workflow.ProcessInstances", []))
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
-    const tenantId = getQueryArg(window.location.href, "tenantId")
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const applicationType = "duplicate-copy-apply";
       if(!!applicationNumber) {
         const queryObject = [
           {key: "applicationNumber", value: applicationNumber}
@@ -117,7 +118,8 @@ const duplicateReviewDetails = getCommonCard({
           status,
           applicationNumber,
           tenantId,
-          billingBuisinessService
+          billingBuisinessService,
+          applicationType
         );
 
         process.env.REACT_APP_NAME === "Citizen"

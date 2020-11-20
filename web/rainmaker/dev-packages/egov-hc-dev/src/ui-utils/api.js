@@ -6,7 +6,6 @@ import store from "../ui-redux/store";
 
 const instance = axios.create({
   baseURL: window.location.origin,
-  // baseURL: "http://49.248.20.174:8096/",
   headers: {
     "Content-Type": "application/json",
     "X-Content-Type-Options":"nosniff"

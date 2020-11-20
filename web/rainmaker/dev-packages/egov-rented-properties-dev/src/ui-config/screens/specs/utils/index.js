@@ -153,6 +153,7 @@ export const getButtonVisibility = (status, button) => {
   if (status === "EXPIRED" && button === "EXPIRED") return true;
   if ((status === "OT_PENDINGPAYMENT" || status === "DC_PENDINGPAYMENT") && button === "PENDINGPAYMENT") return true;
   if ((status === "PM_APPROVED") && button === "APPROVED") return true;
+  if ((status === "OT_PENDINGCLARIFICATION" || status === "DC_PENDINGCLARIFICATION" || status === "MG_PENDINGCLARIFICATION" || status === "PM_PENDINGCLARIFICATION" || status === "PM_REJECTED") && button === "EDIT") return true;
 
   return false;
 };
@@ -810,6 +811,15 @@ export const download = (receiptQueryString, Properties, data, generatedBy,type,
           }
         }]
       }]
+      
+      const roleExists = ifUserRoleExists("CITIZEN");
+      if(roleExists){
+          Properties[0]["offlinePaymentDetails"] = []
+          let transactionNumber = {
+            "transactionNumber" : Payments[0].transactionNumber
+          }
+          Properties[0].offlinePaymentDetails.push(transactionNumber)
+      }
       
       httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
           Payments,

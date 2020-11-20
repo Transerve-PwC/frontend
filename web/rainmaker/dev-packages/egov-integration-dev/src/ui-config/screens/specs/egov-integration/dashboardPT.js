@@ -13,7 +13,7 @@ import {
     getBreak
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   //import { DOEApplyApplication} from "./applydoeResources/DOEApplyApplication";
-  
+  import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { validateFields, getTextToLocalMapping } from "../utils";
   import { getSearchPensioner,getPTPattern } from "../../../../ui-utils/commons";
@@ -35,8 +35,12 @@ import {
     } from "../../../../ui-utils/sampleResponses";
     import { httpRequest } from "../../../../ui-utils";
     import { getSearchResults } from "../../../../ui-utils/commons"; 
+
+    const redirecthouse = async (state, dispatch) => {
+      dispatch(setRoute(`/egov-integration/search-house`));
+    };
     const resetFields = (state, dispatch) => {
-      const textFields = ["propertyTaxId","code",];
+      const textFields = ["propertyTaxId","code","mobileNo","otp" ];
       for (let i = 0; i < textFields.length; i++) {
         if (
           `state.screenConfiguration.screenConfig.dashboardPT.components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}.props.value`
@@ -51,9 +55,505 @@ import {
           );
         }
       }
+      dispatch(
+        handleField(
+          `dashboardPT`,
+          "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton",
+          "props.style",
+          { display: "none" }
+        )
+      );
+      dispatch(
+        handleField(
+          `dashboardPT`,
+          "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.searchButton",
+          "props.style",
+          { display: "inline-block",marginTop:"8px" }
+        )
+      );
+      dispatch(
+        handleField(
+        "dashboardPT",
+        `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp`,
+        "props.style",
+        { display: "none" }
+        )
+        );
+        dispatch(
+          handleField(
+          "dashboardPT",
+          `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code`,
+          "props.style",
+          { display: "none" }
+          )
+          );
       dispatch(prepareFinalObject("searchScreen", {}));
+     
+      dispatch(prepareFinalObject("APIData", []));
+      // dispatch(
+      //   handleField(
+      //     `dashboardPT`,
+      //     "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+      //     "label",
+      //     { labelName: "property Tax Id", labelKey: "PT_CODE"  }
+      //   )
+      // );
+      // dispatch(
+      //   handleField(
+      //     `dashboardPT`,
+      //     "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer",
+      //     "props",
+      //     { disabled : false, }
+      //   )
+      // );
+      // set(
+      //   action.screenConfig,
+      //   "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.props",
+      //   { disabled : false, }
+      // );
+      dispatch(
+        handleField(
+          `dashboardPT`,
+          "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+          "props.disabled",
+            false
+        )
+      );
+      dispatch(
+        handleField(
+          `dashboardPT`,
+          "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.propertyTaxId",
+          "props.disabled",
+            false
+        )
+      );
+      dispatch(
+        handleField(
+          `dashboardPT`,
+          "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.mobileNo",
+          "props.disabled",
+            false
+        )
+      );
+      
     }; 
-  const ActionSubmit = async (state, dispatch) => {
+    const ValidateOTP = async (state, dispatch) => {
+     
+      let ValidateOTPobj = get(
+        state.screenConfiguration.preparedFinalObject,
+        "getOTP.ResponseBody[0]",
+        {}
+      );
+      let searchScreenObject = get(
+        state.screenConfiguration.preparedFinalObject,
+        "searchScreen",
+        {}
+      );
+      let OtpValid = false
+      const fields = get(
+        state.screenConfiguration.screenConfig[`dashboardPT`],
+        "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+        {}
+      );
+      if(fields.otp!==undefined )
+    {
+      if(fields.otp.isFieldValid ===false)
+      {
+        dispatch(
+          toggleSnackbar(
+            true,
+            {
+              labelName: "Enter valid OTP",
+              labelKey: "INTIGRATION_OTP_INPUT_VALIDATION"
+            },
+            "warning"
+          )
+        );
+
+      }
+      else{
+        if(ValidateOTPobj.OTP === searchScreenObject.otp)
+        OtpValid = true
+        else{
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Incorrect OTP",
+                labelKey: "INTIGRATION_OTP_INPUT_COMPARE_VALIDATION"
+              },
+              "warning"
+            )
+          );
+
+        }
+
+      }
+    } 
+    let uid ='';
+    let code = get(
+      state.screenConfiguration.preparedFinalObject,
+      "searchScreen.code",
+      null
+    );
+    let propertyTaxId = get(
+      state.screenConfiguration.preparedFinalObject,
+      "searchScreen.propertyTaxId",
+      null
+    );
+    
+    if(fields.code.props.style.display ==="none")
+    {
+      uid = propertyTaxId
+    }
+    else{
+      uid = code
+    }
+      if(OtpValid)
+      {
+      const requestBody = {
+        uid:uid,
+        otp:searchScreenObject.otp,
+        mobileNo:searchScreenObject.mobileNo,
+        TokenId:ValidateOTPobj.TokenId,
+      }
+      dispatch(toggleSpinner())
+      let response = await getSearchResults([],requestBody, dispatch, "verifyOTP");
+      if(response)
+      {
+        dispatch(
+          handleField(
+            `dashboardPT`,
+            "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton",
+            "props.style",
+            { display: "none" }
+          )
+        );
+        dispatch(
+          handleField(
+          "dashboardPT",
+          `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp`,
+          "props.style",
+          { display: "none" }
+          )
+          );
+
+            if(get(response,"ResponseBody",[]))
+            {
+            dispatch(prepareFinalObject("APIData", get(response,"ResponseBody",[])));
+            }
+            dispatch(toggleSpinner())
+        //GetData(state, dispatch)
+         // call save api
+        let {result} = state.screenConfiguration.preparedFinalObject.searchScreenMdmsData;
+        let uidExist = false;
+        // check id in list
+        if(result)
+        {
+          result = result.filter(x=>x.propertyTaxId == uid)
+          if(result.length >0)
+          uidExist = true;
+        }
+       
+        if(!uidExist)
+        {
+          try
+          {
+            const userInfo = JSON.parse(getUserInfo());
+          let  payload = await httpRequest(
+              "post",
+              "/integration-services/pt-mapping/v1/_save",
+              "_save",    
+              [],
+                {
+                  
+                  PtMappingRequest:{
+                    userId:userInfo.id,
+                    propertyTaxId:`${uid}`,
+                    tenantId: "ch",
+                  }
+                }
+            );
+            if(payload)
+            {
+              await getMdmsData(state, dispatch);
+            }
+    
+          }
+          catch(error)
+          {
+            dispatch(
+              toggleSnackbar(
+                true,
+                { labelName: error.message, labelKey: error.message },
+                "error"
+              )
+            );
+    
+          }
+      }
+      }
+    }
+    }
+    const GetOTP = async (state, dispatch) => {
+      let searchScreenObject = get(
+        state.screenConfiguration.preparedFinalObject,
+        "searchScreen",
+        {}
+      );
+      if(searchScreenObject.mobileNo !== undefined && searchScreenObject.code !== undefined )
+      {
+     
+let validmobileNo = false;
+let validcode = false;
+      const fields = get(
+        state.screenConfiguration.screenConfig[`dashboardPT`],
+        "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+        {}
+      );
+      if(fields.code!==undefined )
+      {
+        if(fields.code.isFieldValid ===false)
+        { 
+          if(fields.code.props.style.display !=="none")
+          {
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Please enter valid property Id",
+                labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_CODE"
+              },
+              "warning"
+            )
+          );
+          validcode = false;
+          return;
+            }
+            else{
+              validcode = true;
+            }
+          
+        }
+        if(fields.code.isFieldValid ===true)
+        {
+          validcode = true
+        }
+        else{
+          if(fields.code.props.style.display ==="none")
+          {
+            validcode = true
+          }
+          else{
+            validcode = false
+          }
+          
+
+        }
+      }
+       if(fields.mobileNo!==undefined )
+      {
+        if(fields.mobileNo.isFieldValid ===false)
+        { 
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Please enter mobile Number",
+                labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_MOBIL_NUMBER"
+              },
+              "warning"
+            )
+          );
+          validmobileNo = false;
+          return;
+        }
+        else{
+          validmobileNo = true;
+        }
+      }
+      if(validmobileNo && validcode)
+      {
+        let uid ='';
+        let code = get(
+          state.screenConfiguration.preparedFinalObject,
+          "searchScreen.code",
+          null
+        );
+        let propertyTaxId = get(
+          state.screenConfiguration.preparedFinalObject,
+          "searchScreen.propertyTaxId",
+          null
+        );
+        
+        if(fields.code.props.style.display ==="none")
+        {
+          uid = propertyTaxId
+        }
+        else{
+          uid = code
+        }
+        const requestBody = {
+          uid:uid,
+          mobileNo:searchScreenObject.mobileNo,
+        }
+        dispatch(toggleSpinner())
+        let response = await getSearchResults([],requestBody, dispatch, "getOTP");
+        if(response)
+        {
+          if(response.ResponseBody[0].Status ==='F')
+          {
+            const errorMessage = {
+              labelName: "Please select the Minority",
+              labelKey: response.ResponseBody[0].Msg
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton",
+                "props.style",
+                { display: "none" }
+              )
+            );
+            dispatch(
+              handleField(
+              "dashboardPT",
+              `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp`,
+              "props.style",
+              { display: "none" }
+              )
+              );
+
+          }
+          else  if(response.ResponseBody[0].Status ==='S')
+          {
+            const errorMessage = {
+              labelName: "Please select the Minority",
+              labelKey: response.ResponseBody[0].Msg
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "success"));
+
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton",
+                "props.style",
+                { display: "inline-block",marginTop:"8px" }
+              )
+            );
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.searchButton",
+                "props.style",
+                { display: "none" }
+              )
+            );
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp",
+                "props.style",
+                { display: "inline-block" }
+              )
+            );
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+               "props.disabled",
+                true
+              )
+            );
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.propertyTaxId",
+                "props.disabled",
+                true
+              )
+            );
+            dispatch(
+              handleField(
+                `dashboardPT`,
+                "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.mobileNo",
+                "props.disabled",
+                true
+              )
+            );
+
+
+          }
+          
+          dispatch(prepareFinalObject("getOTP",response));
+          dispatch(toggleSpinner())
+        }
+      }
+      else{
+        if(!validmobileNo)
+        {
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Please enter mobile Number",
+                labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_MOBIL_NUMBER"
+              },
+              "warning"
+            )
+          );
+
+        }
+        else if(!validcode)
+        {
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Please enter valid property Id",
+                labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_CODE"
+              },
+              "warning"
+            )
+          );
+
+        }
+
+      }
+        }
+        else{
+          if(searchScreenObject.code === undefined)
+          {
+            dispatch(
+              toggleSnackbar(
+                true,
+                {
+                  labelName: "Please enter valid property Id",
+                  labelKey: "INTIGRATION_ERR_FILL_VALID_FIELDS_PT_CODE"
+                },
+                "warning"
+              )
+            );
+          }
+          else if (searchScreenObject.mobileNo === undefined)
+
+          dispatch(
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Please enter mobile Number",
+                labelKey: "INTIGRATION_ERR_FILL_FIELDS_PT_MOBIL_NUMBER"
+              },
+              "warning"
+            )
+          );
+
+
+        }
+     
+    }
+  const GetData = async (state, dispatch) => {
     let queryObject = [
     {
       key: "tenantId",
@@ -425,7 +925,14 @@ import {
     //  resetFields(state, dispatch);
       const tenantId = getTenantId();   
       dispatch(prepareFinalObject("searchScreen",{}));
+      const propertyTaxId = getQueryArg(
+        window.location.href,
+        "propertyId"
+      );
       getData(action, state, dispatch).then(responseAction => {
+
+        dispatch(prepareFinalObject("searchScreen.code",propertyTaxId));
+        dispatch(prepareFinalObject("searchScreen.propertyTaxId","others"));
       
       }); 
          
@@ -439,11 +946,79 @@ import {
     { display: "none" }
     )
     );
+    if(propertyTaxId)
+    {
     set(
       action.screenConfig,
       "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code.props.style",
-      { display: "none" }
+      { display: "inline-block" }
     );
+    dispatch(
+          handleField(
+            `dashboardPT`,
+            "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+            "props.value",
+            propertyTaxId
+          )
+        );
+        dispatch(
+          handleField(
+            `dashboardPT`,
+            "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+            "isFieldValid",
+            true  
+          )        
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton.props.style",
+          { display: "none" }
+        );
+        set(
+          action.screenConfig,
+          "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp.props.style",
+          { display: "none" }
+        );
+    }
+    else{
+     
+      set(
+        action.screenConfig,
+        "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code.props.style",
+        { display: "inline-block" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.mobileNo.props.style",
+        { display: "inline-block" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.otp.props.style",
+        { display: "none" }
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton.props.style",
+        { display: "none" }
+      );
+      // set(
+      //   action.screenConfig,
+      //   "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+      //   "isFieldValid",
+      //   false
+      // );
+      // dispatch(
+      //   handleField(
+      //     `dashboardPT`,
+      //     "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.code",
+      //     "isFieldValid",
+      //     false
+      //   )
+      // );
+
+
+    }
     set(
       action.screenConfig,
       "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.newPropertycodePTButton.props.style",
@@ -472,7 +1047,47 @@ import {
                 },
                 ...header
               },
-              
+              newApplicationButton: {
+                componentPath: "Button",
+                gridDefination: {
+                  xs: 12,
+                  sm: 6,
+                  align: "right",
+                },
+                visible: process.env.REACT_APP_NAME === "Employee"? false : true,
+                props: {
+                  variant: "contained",
+                  color: "primary",
+                  style: {
+                    color: "white",
+                    borderRadius: "2px",
+                    width: "250px",
+                    height: "48px",
+                  },
+                },
+  
+                children: {
+                  plusIconInsideButton: {
+                    uiFramework: "custom-atoms",
+                    componentPath: "Icon",
+                    props: {
+                     // iconName: "add",
+                      style: {
+                        fontSize: "24px",
+                      },
+                    },
+                  },
+  
+                  buttonLabel: getLabel({
+                    labelName: "Search By HouseNo",
+                    labelKey: "INTIGRATION_SEARCH_BY_HOUSE",
+                  }),
+                },
+                onClickDefination: {
+                  action: "condition",
+                  callBack: redirecthouse,
+                },
+              },
             }
           },
    
@@ -488,7 +1103,7 @@ import {
               },
               gridDefination: {
                 xs: 12,
-                sm: 4,
+                sm: 6,
               },
               required: true,
               jsonPath: "searchScreen.propertyTaxId",
@@ -520,6 +1135,14 @@ import {
                     { display: "inline-block" }
                     )
                     );
+                    dispatch(
+                      handleField(
+                      "dashboardPT",
+                      `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.mobileNo`,
+                      "props.style",
+                      { display: "inline-block" }
+                      )
+                      );
                 }
                 else{
                   dispatch(
@@ -530,6 +1153,14 @@ import {
                     { display: "none" }
                     )
                     );
+                    dispatch(
+                      handleField(
+                      "dashboardPT",
+                      `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.mobileNo`,
+                      "props.style",
+                      { display: "inline-block" }
+                      )
+                      );
                     dispatch(
                       handleField(
                       "dashboardPT",
@@ -561,101 +1192,60 @@ import {
               },
               required: true,
               jsonPath: "searchScreen.code",
+              isFieldValid:true,
              pattern: getPTPattern("PropertycodePT"),
               gridDefination: {
                 xs: 12,
-                sm: 4,
+                sm: 6,
               },
                
             })
           },
-          // newPropertycodePTButton: {
-          //   componentPath: "Button",
-          //   gridDefination: {
-          //     xs: 12,
-          //     sm: 4,
-          //     align: "left",
-          //     style: {
-          //       paddingTop:"16px"
-                
-          //     },
-          //   },
-          //   visible: false,
-          //   props: {
-          //     variant: "contained",
-          //     color: "primary",
-          //     style: {
-          //       color: "white",
-          //       borderRadius: "2px",
-          //       // width: "250px",
-          //       // height: "48px",
-          //     },
-          //   },
-
-          //   children: {
-          //     plusIconInsideButton: {
-          //       uiFramework: "custom-atoms",
-          //       componentPath: "Icon",
-          //       props: {
-          //         iconName: "add",
-          //         style: {
-          //           fontSize: "24px",
-          //         },
-          //       },
-          //     },
-
-          //     // buttonLabel: getLabel({
-          //     //   labelName: "Add Purchase Order",
-          //     //   labelKey: "STORE_ADD_NEW_PURCHASE_ORDR_BUTTON",
-          //     // }),
-          //   },
-          //   onClickDefination: {
-          //     action: "condition",
-          //     callBack: addPropertyIdHandle,
-          //   },
-          //   // roleDefination: {
-          //   //   rolePath: "user-info.roles",
-          //   //   roles: roles
-          //   // }
-          // }, 
+          mobileNo: {
+            ...getTextField({
+              label: { labelName: "mobileNo", labelKey: "INTIGRATION_MOBILE_NUMBER" },
+              placeholder: {
+                labelName: "Enter mobileNo",
+                labelKey: "INTIGRATION_MOBILE_NUMBER_PLACEHOLDER"
+              },
+              required: true,
+              jsonPath: "searchScreen.mobileNo",
+              pattern: getPattern("MobileNo") || null,
+              gridDefination: {
+                xs: 12,
+                sm: 6,
+              },
+               
+            })
+          },
+          otp: {
+            ...getTextField({
+              label: { labelName: "otp", labelKey: "INTIGRATION_OTP" },
+              placeholder: {
+                labelName: "Enter OTP",
+                labelKey: "INTIGRATION_OTP"
+              },
+              required: true,
+              jsonPath: "searchScreen.otp",
+              pattern: getPattern("UOMValue") || null,
+              errorMessage: "INTIGRATION_OTP_INPUT_VALIDATION",
+              gridDefination: {
+                xs: 12,
+                sm: 6,
+              },
+               
+            })
+          },
+     
     }),
     button: getCommonContainer({
       buttonContainer: getCommonContainer({
-        resetButton: {
-          componentPath: "Button",
-          gridDefination: {
-            xs: 12,
-            sm: 6,
-            // align: "center"
-          },
-          props: {
-            variant: "outlined",
-            style: {
-              color: "#FE7A51",
-              borderColor: "#FE7A51",
-              //   borderRadius: "2px",
-              width: "220px",
-              height: "48px",
-              margin: "8px",
-              float: "right",
-            },
-          },
-          children: {
-            buttonLabel: getLabel({
-              labelName: "Reset",
-              labelKey: "COMMON_RESET_BUTTON",
-            }),
-          },
-          onClickDefination: {
-            action: "condition",
-            callBack: resetFields,
-          },
-        },
+
         searchButton: {
           componentPath: "Button",
           gridDefination: {
             xs: 12,
-            sm: 6,
+            sm: 2,
             // align: "center"
           },
           props: {
@@ -665,19 +1255,78 @@ import {
               margin: "8px",
               backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
               borderRadius: "2px",
-              width: "220px",
-              height: "48px",
+              // width: "220px",
+              // height: "48px",
+            },
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Send OTP",
+              labelKey: "INTIGRATION_GET_OTP_BUTTON",
+            }),
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: GetOTP,
+          },
+        },
+        validateOTPButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 2,
+            // align: "center"
+          },
+          props: {
+            variant: "contained",
+            style: {
+              color: "white",
+              margin: "8px",
+              backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
+              borderRadius: "2px",
+              // width: "220px",
+              // height: "48px",
             },
           },
           children: {
             buttonLabel: getLabel({
               labelName: "Search",
-              labelKey: "COMMON_SEARCH_BUTTON",
+              labelKey: "INTIGRATION_VALID_OTP_BUTTON",
             }),
           },
           onClickDefination: {
             action: "condition",
-            callBack: ActionSubmit,
+            callBack: ValidateOTP,
+          },
+        },
+        resetButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 2,
+            //align: "left"
+          },
+          props: {
+            variant: "outlined",
+            style: {
+              color: "#FE7A51",
+              borderColor: "#FE7A51",
+              //   borderRadius: "2px",
+              // width: "220px",
+              // height: "48px",
+              margin: "8px",
+              float: "left",
+            },
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Cancel",
+              labelKey: "INTIGRATION_CANCEL_BUTTON",
+            }),
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: resetFields,
           },
         },
       }),

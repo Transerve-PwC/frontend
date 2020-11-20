@@ -204,6 +204,12 @@ class ActionDialog extends React.Component {
     },
     sanctionDateError:{
       "sanctionDate":""
+    },
+    uploadfile:{
+      "uploadfile":""
+    },
+    uploadfileerror:{
+      "uploadfile":""
     }
   };
   
@@ -404,7 +410,7 @@ return formIsValid;
       return formIsValid;
     }
   }
-  else if((this.props.moduleName==="MasterRP"||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_OT||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_DC||this.props.moduleName==="PermissionToMortgage")&&(buttonLabel==="REJECT" || buttonLabel==="APPROVE"))
+  else if((this.props.moduleName==="MasterRP"||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_OT||this.props.moduleName===WORKFLOW_BUSINESS_SERVICE_DC||this.props.moduleName==="PermissionToMortgage")&&(buttonLabel==="REJECT" || buttonLabel==="APPROVE"||buttonLabel==="COMPLETE"))
   {
     let formIsValid = true;
 const comments=data.comment
@@ -416,6 +422,28 @@ let fields = this.state.fields;
     this.setState({errors: errors});
     return formIsValid;
 }
+  }
+  else if(((this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_OT && applicationState === "OT_PENDINGCLAPPROVAL") || (this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_DC && duplicateCopyApplicationState === "DC_PENDINGCLAPPROVAL")) && buttonLabel === "SENDFORREJECT" )
+  {
+    let formIsValid = true;
+const comments=data.comment
+const document=data.wfDocuments
+if(!comments || !comments.replace(/\s/g, '').length){
+let fields = this.state.fields;
+    let errors = {};
+       formIsValid = false;
+       errors["comments"] = "Please enter comments";
+    this.setState({errors: errors});
+    return formIsValid;
+}
+if(!document || document.length===0){
+  let uploadfile = this.state.uploadfile;
+      let uploadfileerror = {};
+         formIsValid = false;
+         uploadfileerror["uploadfile"] = "Please upload documents";
+      this.setState({errors: uploadfileerror});
+      return formIsValid;
+  }
   }
     this.props.onButtonClick(buttonLabel, isDocRequired)
  }
@@ -559,7 +587,25 @@ let fields = this.state.fields;
     } else {
       dataPath = `${dataPath}[0]`;
     }
-
+if(isDocRequired===true){
+  let errors = this.state.errors;
+  const document=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).wfDocuments
+  if(document && document.length>0){
+    errors["uploadfile"] = "";
+  }
+}
+if(open==false){
+  let errors = this.state.errors;
+  errors["comments"] = "";
+  errors["dueamount"]="";
+  errors["publicationcharge"]="";
+  errors["mortgageAmount"]="";
+  errors["sanctionLetterNumber"]="";
+  errors["sanctionDate"]="";
+  errors["mortagage"]="";
+errors["bankname"]="";
+errors["uploadfile"] = "";
+}
     const mastrerstate=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).masterDataState
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
     const duplicateCopyApplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).state
@@ -651,7 +697,7 @@ let fields = this.state.fields;
                      {(moduleName==="MasterRP" && ((mastrerstate ==="PM_PENDINGJAVERIFICATION" && buttonLabel==="SENDBACK") || buttonLabel === "REJECT"))? <div style={{height: "10px"}}></div>: (showEmployeeList && !!dropDownData.length) ? <label className="commentsLabel">{fieldConfig.comments.label.labelName}</label> :<div style={{height: "10px"}}></div>
                     }
                     {/* <textarea className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} onChange={e => handleFieldChange(`${dataPath}.comment`, e.target.value)}/> */}
-                    <textarea refs="comments" className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName} value={this.state.fields["comments"]} onChange={e => {
+                    <textarea refs="comments" className="form-control comments" rows="5" placeholder={fieldConfig.comments.placeholder.labelName}  onChange={e => {
                     this.handleChange("comments", e);handleFieldChange(`${dataPath}.comment`, e.target.value)}
                     }/>
                     <span style={{color: "red"}}>{this.state.errors["comments"]}</span>
@@ -752,7 +798,7 @@ let fields = this.state.fields;
                        <span style={{color: "red"}}>{this.state.errors["mortagage"]}</span>   
                      </Grid>
                   )}
-                  {((moduleName === WORKFLOW_BUSINESS_SERVICE_OT && applicationState === "OT_PENDINGCLAPPROVAL") || (moduleName === WORKFLOW_BUSINESS_SERVICE_DC && duplicateCopyApplicationState === "DC_PENDINGCLAPPROVAL")) && buttonLabel === "REJECT" && (<Grid item sm="12">
+                  {((moduleName === WORKFLOW_BUSINESS_SERVICE_OT && applicationState === "OT_PENDINGCLAPPROVAL") || (moduleName === WORKFLOW_BUSINESS_SERVICE_DC && duplicateCopyApplicationState === "DC_PENDINGCLAPPROVAL")) && buttonLabel === "SENDFORREJECT" && (<Grid item sm="12">
                   <Typography
                       component="h3"
                       variant="subheading"
@@ -798,6 +844,7 @@ let fields = this.state.fields;
                       jsonPath={`${dataPath}.wfDocuments`}
                       maxFileSize={5000}
                     />
+                      <span style={{color: "red"}}>{this.state.errors["uploadfile"]}</span>  
                     </Grid>)}
                     <Grid sm={12} style={{ textAlign: "right" }} className="bottom-button-container">
                       <Button

@@ -167,7 +167,7 @@ const handleOtpVerifyAndPropertyRegistration = async(state, dispatch)=>{
                     props: {
                       className: "applicant-details-error",
                       style: {
-                        display: process.env.REACT_APP_NAME == "Citizen" ? "none" :""
+                        display: process.env.REACT_APP_NAME == "Citizen" ? "inline-none" :"none"
                       },
                     },
                     
@@ -292,7 +292,9 @@ const handleOtpVerifyAndPropertyRegistration = async(state, dispatch)=>{
         if(process.env.REACT_APP_NAME == "Citizen"){
             let userName = JSON.parse(getUserInfo()).userName;
             let tenant =  JSON.parse(getUserInfo()).permanentCity;
-            dispatch( prepareFinalObject( "propertyVerify.mobileNumber",  "9933590035" ));
+            let mobileNumber = JSON.parse(getUserInfo()).mobileNumber
+           // dispatch( prepareFinalObject( "propertyVerify.mobileNumber",  "9933590035" ));
+          dispatch( prepareFinalObject( "propertyVerify.mobileNumber",  mobileNumber ));
             dispatch( prepareFinalObject( "propertyVerify.tenantId", tenant ));
 
             if(property_id){

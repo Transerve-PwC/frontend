@@ -1,5 +1,5 @@
 
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar,toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getFileUrlFromAPI, getMultiUnits, getQueryArg, getTransformedLocale, setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 import { getapplicationNumber, getapplicationType, getOPMSTenantId, getUserInfo, setapplicationNumber, lSRemoveItemlocal, lSRemoveItem, localStorageGet, setapplicationMode, localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 import jp from "jsonpath";
@@ -41,36 +41,20 @@ export const handleCardDelete = (prepareFinalObject , arrayPath , isActive = fal
   }
 
 
-export const getSearchResults = async (queryObject,dispatch,screenName) => {
+export const getSearchResults = async (queryObject=[],requestBody={},dispatch,screenName) => {
   let url =""
   switch(screenName){
-    case "storeMaster": url =  "/store-asset-services/stores/_search";
+    case "house": url =  "/integration-services/pt/v1/_getPropertyByPID";
     break;
-    case "materialType": url = "store-asset-services/materialtypes/_search";
+    case "getOTP": url =  "/integration-services/pt/v1/_getOTP";
     break;
-    case "supplier" : url = "store-asset-services/suppliers/_search";
+    case "verifyOTP": url =  "/integration-services/pt/v1/_verifyOTP";
     break;
-    case "materials" : url = "store-asset-services/materials/_search";
-    break;
-     case "purchaseOrder" : url = "store-asset-services/purchaseorders/_search";
-    break;
-    case "materialissues" : url = "store-asset-services/materialissues/_search";
-    break;
-    case "priceList" : url = "store-asset-services/pricelists/_search";
-    break;
-    case "mrnNumber" : url = "store-asset-services/receiptnotes/_search";
-    break;
-    case "indents" : url = "store-asset-services/indents/_search";
-    break;
-    case "materialBalanceAndName" : url ="store-asset-services/receiptnotes/_balance";
-    break;
-    case "scrap" : url = "store-asset-services/scraps/_search";
-    break;
-    case "disposals":  url = "store-asset-services/disposals/_search";
-    break;
+    
   }
   try {
-    const response = await httpRequest("post", url, "", queryObject, {} );
+    const response = await httpRequest("post", url, "", queryObject, requestBody );
+    //store.dispatch(toggleSpinner());
     return response;
 
   } catch (error) {

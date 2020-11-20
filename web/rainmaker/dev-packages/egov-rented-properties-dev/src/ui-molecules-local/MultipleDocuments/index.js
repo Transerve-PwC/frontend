@@ -61,9 +61,9 @@ const styles = {
     lineHeight: "19px"
   }
   const labelHeader = {
-    color: "rgba(0, 0, 0, 0.87)",
+    color: "rgb(255, 0, 0)",
     fontFamily: "Roboto",
-    fontSize: "25px",
+    fontSize: "14px",
     fontWeight: 400,
     letterSpacing: "0.67px",
     lineHeight: "19px"
@@ -90,7 +90,7 @@ class MultipleDocuments extends Component {
         }
         {!btnhide && (
             <LabelContainer
-              labelName= "No Notices generated."
+              labelName= "No notices generated."
               style={labelHeader}
           />)
         }

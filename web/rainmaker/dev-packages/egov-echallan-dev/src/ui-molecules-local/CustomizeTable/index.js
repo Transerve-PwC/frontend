@@ -104,9 +104,10 @@ class CustomizeTable extends React.Component {
       const locMessageObj =  localisationArray.find(locMessage => locMessage.code === tempColumnName);
       if (locMessageObj) {
         if (typeof column === "object") {
-          set(column, "name", locMessageObj.message);
-          set(column, "label", locMessageObj.message);
-          columnName.push(column);
+          const tempObject = {...column,name:locMessageObj.message,label:locMessageObj.message}
+          // set(column, "name", locMessageObj.message);
+          // set(column, "label", locMessageObj.message);
+          columnName.push(tempObject);
         } else {
           columnName.push(locMessageObj.message);
         }

@@ -55,6 +55,10 @@ const getpurchaseOrder = async ( state,dispatch)=>{
       value: suppliercode
     });
   }
+  queryObject.push({
+    key: "status",
+    value: "Approved,Partially Receipted"
+  });
   try {
     let response = await getSearchResults(queryObject, dispatch,"purchaseOrder");
     dispatch(prepareFinalObject("purchaseOrder", response));

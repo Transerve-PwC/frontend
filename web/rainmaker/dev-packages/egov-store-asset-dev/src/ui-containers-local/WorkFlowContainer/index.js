@@ -33,7 +33,7 @@ class WorkFlowContainer extends React.Component {
   };
 
   componentDidMount = async () => {
-    const { prepareFinalObject, toggleSnackbar } = this.props;
+    const { prepareFinalObject, toggleSnackbar,preparedFinalObject } = this.props;
     const applicationNumber = getQueryArg(
       window.location.href,
       "applicationNumber"
@@ -57,6 +57,15 @@ class WorkFlowContainer extends React.Component {
         );
         addWflowFileUrl(processInstances, prepareFinalObject);
       } else {
+
+const {purchaseOrders}= preparedFinalObject;
+if(purchaseOrders)
+{
+const {rateType} = purchaseOrders[0]
+if(rateType)
+{
+        if(rateType !=='Gem')
+        {
         toggleSnackbar(
           true,
           {
@@ -65,7 +74,32 @@ class WorkFlowContainer extends React.Component {
           },
           "error"
         );
+        }
       }
+      else{
+        toggleSnackbar(
+          true,
+          {
+            labelName: "Workflow returned empty object !",
+            labelKey: "WRR_WORKFLOW_ERROR"
+          },
+          "error"
+        );
+
+      }
+    }
+    else{
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Workflow returned empty object !",
+          labelKey: "WRR_WORKFLOW_ERROR"
+        },
+        "error"
+      );
+
+    }
+    }
     } catch (e) {
       toggleSnackbar(
         true,

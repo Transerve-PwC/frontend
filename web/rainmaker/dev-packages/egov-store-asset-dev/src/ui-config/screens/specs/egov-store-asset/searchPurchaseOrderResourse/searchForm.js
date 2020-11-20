@@ -95,7 +95,7 @@ export const searchForm = getCommonCard({
           sm: 3,
         },
         jsonPath: "searchScreen.rateType",
-        sourceJsonPath: "searchScreenMdmsData.store-asset.RateType",
+        sourceJsonPath: "searchScreenMdmsData.store-asset.PORateType",
         props: {
           className: "hr-generic-selectfield",
           optionValue: "code",

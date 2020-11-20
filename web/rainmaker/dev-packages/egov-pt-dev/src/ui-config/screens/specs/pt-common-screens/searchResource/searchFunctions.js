@@ -42,7 +42,8 @@ const searchApiCall = async (state, dispatch) => {
     dispatch,
     "propertySearch"
   );
-
+  if(Object.keys(searchScreenObject).length == 0)
+  {
   if (!(isSearchBoxFirstRowValid && isSearchBoxSecondRowValid)) {
     dispatch(toggleSnackbar(true, {labelName:"Please provide the city and any one other field information to search for property.", labelKey: "ERR_PT_COMMON_FILL_MANDATORY_FIELDS" }, "warning"));
   } else if (
@@ -56,7 +57,9 @@ const searchApiCall = async (state, dispatch) => {
     (searchScreenObject["oldpropertyids"] === undefined || searchScreenObject["oldpropertyids"] === "")
   ) {
     dispatch(toggleSnackbar(true, { labelName:"In addition to City, please provide any one of the other parameters to search for property.",labelKey: "ERR_PT_COMMON_FILL_VALID_FIELDS" }, "warning"));
-  }else{
+  }
+}
+  else{
     for (var key in searchScreenObject) {
       if (
         searchScreenObject.hasOwnProperty(key) &&
@@ -73,7 +76,7 @@ const searchApiCall = async (state, dispatch) => {
         [getTextToLocalMapping("Address")]:          getAddress(item) || "-",
         [getTextToLocalMapping("Action")]: (item.status !== 'INACTIVE')?"SELECT":"INACTIVE",
         [getTextToLocalMapping("tenantId")]: item.tenantId,
-        ["Sync"] : item.auditDetails.lastModifiedTime
+        // ["Sync"] : item.auditDetails.lastModifiedTime
       }));
 
       dispatch(

@@ -61,13 +61,13 @@ export const propertyID = getCommonContainer({
       callBack: propertySearchApiCall
     },
   },
-  clickHereLink: {
-    uiFramework: "custom-atoms-local",
-    moduleName: "egov-wns",
-    componentPath: "AddLinkForProperty",
-    props: { url: "/wns/apply" },
-    gridDefination: { xs: 12, sm: 4, md: 4 }
-  }
+  // clickHereLink: {
+  //   uiFramework: "custom-atoms-local",
+  //   moduleName: "egov-wns",
+  //   componentPath: "AddLinkForProperty",
+  //   props: { url: "/wns/apply" },
+  //   gridDefination: { xs: 12, sm: 4, md: 4 }
+  // }
 })
 
 const propertyDetails = getCommonContainer({

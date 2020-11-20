@@ -422,14 +422,18 @@ export const getNoticeViolationPreviewReviewRentDetails = (isEditable = true) =>
                         labelName: "Violations",
                         labelKey: "RP_VIOLATIONS_LABEL"
                     },
-                    { jsonPath: "SingleProperties[0].violations" }
+                    { style:{
+                        whiteSpace:"pre-line"
+                },jsonPath: "SingleProperties[0].violations" }
                 ),
                 editor: getLabelWithValue(
                     {
                         labelName: "Editor",
                         labelKey: "RP_EDITOR_LABEL"
                     },
-                    { jsonPath: "SingleProperties[0].description" }
+                    {style:{
+                        whiteSpace:"pre-line"
+                }, jsonPath: "SingleProperties[0].description" }
                 ),
                 // demandNoticeFromDate: getLabelWithValue(
                 //     {
@@ -509,7 +513,9 @@ export const getNoticeRecoveryPreviewReviewRentDetails = (isEditable = true) => 
                         labelName: "Editor",
                         labelKey: "RP_EDITOR_LABEL"
                     },
-                    { jsonPath: "SingleProperties[0].description" }
+                    {style:{
+                        whiteSpace:"pre-line"
+                }, jsonPath: "SingleProperties[0].description" }
                 ),
                 recoveryType: getLabelWithValue(
                     {

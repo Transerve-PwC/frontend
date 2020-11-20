@@ -191,10 +191,10 @@ export const servicerequestdetailsEdit = getCommonCard({
       buttons: [
        
         {
-          labelName: "DEAD",
-          labelKey: "HC_COMMON_SUBTYPE_DEAD",
+          labelName: "Dead and Dry Trees",
+          labelKey: "HC_COMMON_SUBTYPE_DEAD_AND_DRY",
           disabled: true,
-          value: "DEAD"
+          value: "DEAD_AND_DRY"
         },
         {
           labelName: "DANGEROUS",
@@ -203,10 +203,10 @@ export const servicerequestdetailsEdit = getCommonCard({
           value: "DANGEROUS"
         },
         {
-          labelName: "DRY",
-          labelKey: "HC_COMMON_SUBTYPE_DRY",
+          labelName: "Pollarding of Trees",
+          labelKey: "HC_COMMON_SUBTYPE_POLLARDINGOFTREES",
           disabled: true,
-          value: "DRY"
+          value: "POLLARDINGOFTREES"
         }
       ],
       jsonPath:"SERVICEREQUEST.subType",
@@ -313,7 +313,7 @@ export const servicerequestdetailsEdit = getCommonCard({
                 md: 12,
                 lg: 12
               },
-              required: true,
+              required: false,
               props: {
                 disabled: true,
                 cursor: "pointer",
@@ -451,6 +451,7 @@ export const servicerequestdetailsEdit = getCommonCard({
           md: 12,
           lg: 12
         },
+        required: true,
         pattern: getPattern("location"),
         errorMessage: "ERR_INVALID_LANDMARK_FIELD_MSG",
         jsonPath: "SERVICEREQUEST.landmark"

@@ -338,6 +338,7 @@ export const validatestepform = (state, dispatch, isFormValid, hasFieldToaster) 
   if(typeOfService && noOfTrees && description)
   {
     validationPause = true;
+/*
     if(!address)
     {
       dispatch(
@@ -347,7 +348,10 @@ export const validatestepform = (state, dispatch, isFormValid, hasFieldToaster) 
           "warning"
         )
       );
-    }else if(!locality)
+    }else
+    
+    */
+    if (!locality)
     {
       dispatch(
         toggleSnackbar(

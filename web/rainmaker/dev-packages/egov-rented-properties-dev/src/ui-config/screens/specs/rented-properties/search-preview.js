@@ -67,6 +67,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
   let queryObject = [
     { key: "transitNumber", value: transitNumber }
   ];
+  const tenantId = getQueryArg(window.location.href, "tenantId");
   let payload = await getSearchResults(queryObject);
   if(payload) {
     let properties = payload.Properties;
@@ -184,6 +185,31 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       "applicationNumber",
       "tenantId",
       "OwnershipTransferRP"
+    );
+    process.env.REACT_APP_NAME != "Citizen"
+        ? set(action, "screenConfig.components.div.children.footer", footer)
+        : set(action, "screenConfig.components.div.children.footer", {});
+        dispatch(
+          handleField(
+            "search-preview",
+            "components.div.children.footer",
+            "visible",
+            true
+          )
+        );
+        
+  }
+    if((state == "PM_PENDINGCLARIFICATION" || state == "PM_REJECTED") && !!findItem){
+    const footer = editFooter(
+      action,
+      state,
+      dispatch,
+      status,
+      "applicationNumber",
+      tenantId,
+      "OwnershipTransferRP",
+      transitNumber
+
     );
     process.env.REACT_APP_NAME != "Citizen"
         ? set(action, "screenConfig.components.div.children.footer", footer)

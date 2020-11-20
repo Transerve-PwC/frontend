@@ -189,7 +189,7 @@ export const createUpdatePO = async (state, dispatch, action) => {
     if(rateType.toLocaleUpperCase() === 'GEM')
     {
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.tenantId`, null);
-      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.supplier.code`, supplier.code);
+      set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.supplier.code`, supplier.name);
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.supplier.name`, supplier.name);
       set(purchaseOrders[0], `purchaseOrderDetails[${i}].priceList.rateType`, "Gem");
       set(purchaseOrders[0], `rateType`, "Gem");

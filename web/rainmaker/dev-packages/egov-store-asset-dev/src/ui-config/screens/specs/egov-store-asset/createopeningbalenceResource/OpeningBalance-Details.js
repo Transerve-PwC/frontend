@@ -298,6 +298,8 @@ import {
              businessServiceName =businessService[0].name;
             if(stores &&stores[0])
                   {
+                    if(businessServiceName!=='')
+                    {
                     if(stores[0].department.deptCategory !== businessServiceName )
                     {
                       const errorMessage = {
@@ -306,6 +308,7 @@ import {
                       };
                       dispatch(toggleSnackbar(true, errorMessage, "warning"));
                     }
+                  }
                   }
           }
         },

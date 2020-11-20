@@ -263,22 +263,22 @@ export const connectionHolderDetails={
       callBack: handleNA
     }
   ),
-  specialApplicantCategory: getLabelWithValueForModifiedLabel(
-    {
-      labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
-    },
-    {
-      jsonPath: "WaterConnection[0].connectionHolders[0].ownerType",
-      callBack: handleNA
-    },
-    {
-      labelKey: "WS_OLD_LABEL_NAME"
-    },
-    {
-      jsonPath: "applyScreenOld.connectionHolders[0].ownerType",
-      callBack: handleNA
-    }
-  )
+  // specialApplicantCategory: getLabelWithValueForModifiedLabel(
+  //   {
+  //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
+  //   },
+  //   {
+  //     jsonPath: "WaterConnection[0].connectionHolders[0].ownerType",
+  //     callBack: handleNA
+  //   },
+  //   {
+  //     labelKey: "WS_OLD_LABEL_NAME"
+  //   },
+  //   {
+  //     jsonPath: "applyScreenOld.connectionHolders[0].ownerType",
+  //     callBack: handleNA
+  //   }
+  // )
 };
 
 export const connHolderDetailsSummary = () => {

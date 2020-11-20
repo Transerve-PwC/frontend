@@ -428,6 +428,7 @@ export const getprintpdf = async (queryObject , api) => {
         "error"
       )
     );
+    store.dispatch(toggleSpinner());
    // throw error;
   }
 
@@ -452,6 +453,7 @@ export const getMaterialBalanceRateResults = async queryObject => {
         "error"
       )
     );
+    store.dispatch(toggleSpinner());
    // throw error;
   }
 

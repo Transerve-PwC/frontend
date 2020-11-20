@@ -182,67 +182,68 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
         };
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
-    }
-    else  if(DuplicatItem && DuplicatItem[0])
-    {
-      const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
-        const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
-        if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsZeroQty)
-                {
-                    // refresh card item
-                    var storeMappingTemp = [];
-                    let  storeMapping =  get(
-                      state.screenConfiguration.preparedFinalObject,
-                      `materialReceipt[0].receiptDetails`,
-                      []
-                    );
-                    for(var i = 0; i < storeMapping.length; i++){
-                        if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
-                          storeMappingTemp.push(storeMapping[i]);
+      else  if(DuplicatItem && DuplicatItem[0])
+      {
+        const LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
+          const LocalizationCodeValueZeroQty = getLocalizationCodeValue("STORE_MATERIAL_INVALLID_QTY_VALIDATION")
+          if(!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsZeroQty)
+                  {
+                      // refresh card item
+                      var storeMappingTemp = [];
+                      let  storeMapping =  get(
+                        state.screenConfiguration.preparedFinalObject,
+                        `materialReceipt[0].receiptDetails`,
+                        []
+                      );
+                      for(var i = 0; i < storeMapping.length; i++){
+                          if(storeMappingTemp.indexOf(storeMapping[i]) == -1){
+                            storeMappingTemp.push(storeMapping[i]);
+                          }
+                      }
+                      storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
+                      if(storeMappingTemp.length>0)
+                      {
+                        dispatch(prepareFinalObject("materialReceipt[0].receiptDetails",storeMappingTemp)
+                      );
                         }
-                    }
-                    storeMappingTemp = storeMappingTemp.filter((item) => item.isDeleted === undefined || item.isDeleted !== false);
-                    if(storeMappingTemp.length>0)
-                    {
-                      dispatch(prepareFinalObject("materialReceipt[0].receiptDetails",storeMappingTemp)
-                    );
-                      }
-                      if (id) {
-                        createUpdateOpeningBalence(state, dispatch, "UPDATE");
-                      } else {
-                        createUpdateOpeningBalence(state, dispatch, "CREATE");
-                      }
-          }
-          else{
-            if(DuplicatItem[0].IsDuplicatItem)
-            {
-              const errorMessage = {
-                labelName: "Duplicate Material Added",
-                //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
-                labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
-              };
-              dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                        if (id) {
+                          createUpdateOpeningBalence(state, dispatch, "UPDATE");
+                        } else {
+                          createUpdateOpeningBalence(state, dispatch, "CREATE");
+                        }
             }
-            else if (InvaldQtyCard[0].IsZeroQty)
-            {
-              const errorMessage = {                
-                labelName: "Quantity can not be Zero for",
-                labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
-              };
-              dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            else{
+              if(DuplicatItem[0].IsDuplicatItem)
+              {
+                const errorMessage = {
+                  labelName: "Duplicate Material Added",
+                  //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+                  labelKey:   LocalizationCodeValue+' '+DuplicatItem[0].duplicates
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+              }
+              else if (InvaldQtyCard[0].IsZeroQty)
+              {
+                const errorMessage = {                
+                  labelName: "Quantity can not be Zero for",
+                  labelKey:   LocalizationCodeValueZeroQty+' '+InvaldQtyCard[0].duplicates
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+              }
+              
             }
-            
-          }
-
+  
+      }
+     else{
+  
+      if (id) {
+        createUpdateOpeningBalence(state, dispatch, "UPDATE");
+      } else {
+        createUpdateOpeningBalence(state, dispatch, "CREATE");
+      }
     }
-   else{
-
-    if (id) {
-      createUpdateOpeningBalence(state, dispatch, "UPDATE");
-    } else {
-      createUpdateOpeningBalence(state, dispatch, "CREATE");
     }
-  }
+   
   }
   };
   const returnEmptyArrayIfNull = value => {

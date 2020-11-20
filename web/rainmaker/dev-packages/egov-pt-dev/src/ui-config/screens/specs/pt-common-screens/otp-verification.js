@@ -23,6 +23,7 @@ import {
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import { getSearchResults } from "../../../../ui-utils/commons";
   import get from "lodash/get";
+  import set from "lodash/set";
   import { httpRequest } from "../../../../ui-utils/api";
   import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
   import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
@@ -301,6 +302,11 @@ const handleOtpVerifyAndPropertyRegistration = async(state, dispatch)=>{
               ""
             )
           );
+          set(
+            action.screenConfig,
+            "components.div.children.formwizardFirstStep.children.otpGeneratorDetail.props.style",
+            { display: "none" }
+          ); 
       return action;
     },
     components: {

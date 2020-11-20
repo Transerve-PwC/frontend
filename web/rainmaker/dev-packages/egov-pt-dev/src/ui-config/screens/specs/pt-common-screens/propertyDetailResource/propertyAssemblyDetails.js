@@ -119,23 +119,23 @@ export const propertyAssemblyDetails = getCommonCard({
         // }
       }
     }),
-    totalLandArea: getTextField({
-      label: {
-        labelName: "Total Land Area",
-        labelKey: "PT_COMMON_TOTAL_LAND_AREA"
-      },
-      props: {
-      disabled :true,
-      },
-      placeholder: {
-        labelName: "Select Total Land Area",
-        labelKey: "PT_COMMON_TOTAL_LAND_AREA_PLACEHOLDER"
-      },
-      required: true,
-      pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-      jsonPath: "Properties[0].landArea"
-    }),
+//     totalLandArea: getTextField({
+//       label: {
+//         labelName: "Total Land Area",
+//         labelKey: "PT_COMMON_TOTAL_LAND_AREA"
+//       },
+//       props: {
+//       disabled :true,
+//       },
+//       placeholder: {
+//         labelName: "Select Total Land Area",
+//         labelKey: "PT_COMMON_TOTAL_LAND_AREA_PLACEHOLDER"
+//       },
+//       required: true,
+//       pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
+//       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+//       jsonPath: "Properties[0].landArea"
+//     }),
     totalConstructedArea: getTextField({
       label: {
         labelName: "Total Constructed Area",
@@ -143,6 +143,7 @@ export const propertyAssemblyDetails = getCommonCard({
       },
       props: {
        disabled :true,
+       //disabled : property_id ? true : false,
       },
       placeholder: {
         labelName: "Enter Total Constructed Area",
@@ -151,7 +152,7 @@ export const propertyAssemblyDetails = getCommonCard({
       required: true,
       pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-      jsonPath: "Properties[0].totalConstructedArea"
+      jsonPath: "Properties[0].landArea"
     }),
 //     usageType: getSelectField({
 //       label: {

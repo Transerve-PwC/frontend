@@ -7,13 +7,15 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchPropertyTable} from "./searchResource/searchResults";
 import { httpRequest } from "../../../../ui-utils";
-import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId,getUserInfo,setModule,getLocale } from "egov-ui-kit/utils/localStorageUtils";
 import commonConfig from "config/common.js";
 // import { showHideAdhocPopup } from "../utils";
 import { resetFields } from "./mutation-methods";
 import { propertySearch} from "./searchResource/searchFunctions";
 import "./index.css"
 import {searchPropertyDetails} from "./mutation-methods"
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
+
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
@@ -75,13 +77,18 @@ const screenConfig = {
   beforeInitScreen: (action, state, dispatch) => {
     resetFields(state, dispatch);
     getMDMSData(dispatch);
-   
+  setModule("rainmaker-ws,rainmaker-pt");
+  const userInfo = JSON.parse(getUserInfo());
+  const tenantId = process.env.REACT_APP_NAME === "Citizen" ? (userInfo.permanentCity || userInfo.tenantId): getTenantId();
+    dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
     if(process.env.REACT_APP_NAME == "Citizen"){
       let userName = JSON.parse(getUserInfo()).userName;
-      let tenant =  JSON.parse(getUserInfo()).permanentCity;
+     // let tenant =  JSON.parse(getUserInfo()).permanentCity;
       dispatch( prepareFinalObject( "searchScreen.mobileNumber",  userName ));
-      dispatch( prepareFinalObject( "searchScreen.tenantId", tenant ));
+      dispatch( prepareFinalObject( "searchScreen.tenantId", tenantId ));
       getPropertyResults(state, dispatch);
+      // setModule("rainmaker-pt");
+      // dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
     }
     return action;
   },
