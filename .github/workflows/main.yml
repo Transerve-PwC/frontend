@@ -27,7 +27,35 @@ jobs:
       - name: Archive Citizen build
         uses: actions/upload-artifact@v2
         with:
-          name: citizen-build
+          name: citizen-build.zip
           path: ./web/rainmaker/packages/citizen/build
+  build-employee:
+    name: Build Employee
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '10' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install lerna globally
+        run: npm install --global lerna
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./web/rainmaker
+      - name: Build
+        run: npm run prod:employee
+        working-directory: ./web/rainmaker
+        env:
+          NODE_OPTIONS: --max-old-space-size=6800
+          CI: ""
+      - name: Archive Employee build
+        uses: actions/upload-artifact@v2
+        with:
+          name: employee-build.zip
+          path: ./web/rainmaker/packages/employee/build
 
 
