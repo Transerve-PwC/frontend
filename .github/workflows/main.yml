@@ -24,4 +24,10 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=6800
           CI: ""
+      - name: Archive Citizen build
+        uses: actions/upload-artifact@v2
+        with:
+          name: citizen-build
+          path: ./web/rainmaker/packages/citizen/build
+
 
