@@ -23,4 +23,5 @@ jobs:
         working-directory: ./web/rainmaker
         env:
           NODE_OPTIONS: --max-old-space-size=6800
+          CI: ""
 
