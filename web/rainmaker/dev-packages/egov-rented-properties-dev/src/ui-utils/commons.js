@@ -372,7 +372,7 @@ const isValid = (file, acceptedFiles) => {
     return {valid: true}
    } else {
     return {  valid: false, 
-              errorMessage: `Please upload the allowed type files only.`
+              errorMessage: `Please upload the allowed file types only.`
             }
   }
 }
