@@ -121,7 +121,7 @@ const phoneNumberField = {
   },
   required: false,
   pattern: getPattern("MobileNo"),
-  jsonPath: "searchScreen.phone",
+  jsonPath: "searchScreen.applicantMobNo",
   errorMessage: "RP_ERR_PHONE_NUMBER_FIELD",
   afterFieldChange: (action, state, dispatch) => {
       if (action.value.length > 10) {

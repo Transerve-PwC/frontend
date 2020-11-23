@@ -111,7 +111,15 @@ export const accountStatementResults = {
   visible: false,
   props: {...searchResults.props, 
     columns: [
-      DATE,
+      {name:DATE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
       {
         name: AMOUNT,
         options: {
@@ -123,8 +131,22 @@ export const accountStatementResults = {
         }
       },
       // AMOUNT,
-      TYPE,
-      TYPES,
+      {name:TYPE,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }},
+      {name:TYPES,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }},
       {
         name: REMAINING_PRINCIPAL,
         options: {
@@ -165,7 +187,14 @@ export const accountStatementResults = {
           )
         }
       },
-      RECIEPT_NO 
+      {name:RECIEPT_NO,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right', flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        } }
     ],
     options: {...searchResults.props.options,
       onRowClick: () => {},

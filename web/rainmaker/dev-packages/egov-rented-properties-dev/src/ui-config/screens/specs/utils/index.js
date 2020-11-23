@@ -813,8 +813,10 @@ export const download = (receiptQueryString, Properties, data, generatedBy,type,
       }]
       
       const roleExists = ifUserRoleExists("CITIZEN");
-      if(roleExists){
+       if(roleExists && type==="rent-payment"){
+      
           Properties[0]["offlinePaymentDetails"] = []
+        
           let transactionNumber = {
             "transactionNumber" : Payments[0].transactionNumber
           }

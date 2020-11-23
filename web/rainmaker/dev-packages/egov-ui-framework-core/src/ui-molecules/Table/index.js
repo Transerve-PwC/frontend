@@ -25,6 +25,11 @@ class Table extends React.Component {
             overflowX: "scroll"
           }
         },
+        MUIDataTableHeadCell:{
+          fixedHeader:{
+            zIndex:"0"
+          }
+        },
         MUIDataTableBodyCell: {
           root: {
             "&:nth-child(2)": {

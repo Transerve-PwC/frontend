@@ -93,8 +93,10 @@ import {
                 },
                 onClickDefination: {
                   action: "condition",
-                  callBack: (state, dispatch) => {
-                    window.location.href = `/rented-properties-citizen/${applicationType}?applicationNumber=${applicationNumber}&tenantId=${tenantId}`;
+                  callBack: () => {
+                    dispatch(
+                      setRoute(`/rented-properties-citizen/${applicationType}?applicationNumber=${applicationNumber}&tenantId=${tenantId}`)
+                    )
                   }  
                 },
                 visible: process.env.REACT_APP_NAME == "Citizen" &&  getButtonVisibility(status, "EDIT") ? true : false
