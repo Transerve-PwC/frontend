@@ -26,7 +26,8 @@ export const AMOUNT = getLocaleLabels("ES_COMMON_TABLE_COL_AMOUNT") + " (₹)"
 export const TYPE = getLocaleLabels("ES_COMMON_TABLE_COL_TYPE")
 export const PENALTY_STATUS = getLocaleLabels("ES_COMMON_TABLE_COL_PENALTY_STATUS")
 export const STATUS = getLocaleLabels("ES_COMMON_TABLE_COL_STATUS")
-
+export const OFFLINE_PAYMENT_DATE = getLocaleLabels("ES_COMMON_OFFLINE_PAYMENT_DATE")
+export const TRANSACTION_ID = getLocaleLabels("ES_COMMON_TRANSACTION_ID")
 
 
 export const searchResults = {
@@ -135,7 +136,7 @@ const onRowClick = rowData => {
     return window.location.href = `search-preview-building-branch?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
   }
 
-  if (branchType == "MANIMAJRA_BRANCH") {
+  if (branchType == "MANI_MAJRA") {
     if (rowData[2].toUpperCase() === ESTATE_DRAFTED_STATE) {
       return window.location.href = `apply-manimajra?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
     }
@@ -156,6 +157,31 @@ const onRowClick = rowData => {
   window.location.href = `search-preview?fileNumber=${rowData[0]}&tenantId=${tenantId}`;
 };
 
+export const securityDetailsTable = {
+  ...searchResults,
+  visible: true,
+  props: {...searchResults.props, 
+    columns: [
+      DATE,
+      OFFLINE_PAYMENT_DATE,
+      AMOUNT,
+      TRANSACTION_ID
+      
+    ],
+    options: {...searchResults.props.options,
+      pagination: false,
+      filter: false,
+      download: true,
+      print: true,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
+    }
+  }
+}
+
+
 export const penaltyDetailsTable = {
   ...searchResults,
   visible: true,
@@ -164,7 +190,8 @@ export const penaltyDetailsTable = {
       DATE,
       TYPE,
       AMOUNT,
-      PENALTY_STATUS 
+      PENALTY_STATUS,
+      OFFLINE_PAYMENT_DATE
     ],
     options: {...searchResults.props.options,
       pagination: false,
@@ -186,7 +213,8 @@ export const extensionFeeDetailsTable = {
     columns: [
       DATE,
       AMOUNT,
-      STATUS 
+      STATUS,
+      OFFLINE_PAYMENT_DATE
     ],
     options: {...searchResults.props.options,
       pagination: false,

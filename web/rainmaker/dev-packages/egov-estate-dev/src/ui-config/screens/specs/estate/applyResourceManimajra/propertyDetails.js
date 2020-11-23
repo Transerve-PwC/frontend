@@ -8,7 +8,7 @@ import {
   getCommonContainer,
   dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { fileNumberField, propertyTypeField } from "../applyResource/propertyDetails";
+import { fileNumberField } from "../applyResource/propertyDetails";
 import { mohallaField, categoryField, subCategoryField, siteNumberField, sectorNumberField, propertyDetailsHeader } from "../applyResourceBuildingBranch/propertyDetails";
 import {
   displayDefaultErr,
@@ -85,6 +85,27 @@ const areaofPropertyField = {
   pattern: _getPattern("areaOfProperty"),
   required: true,
   jsonPath: "Properties[0].propertyDetails.areaSqft"
+}
+
+export const propertyTypeField = {
+  label: {
+      labelName: "Property Type",
+      labelKey: "ES_PROPERTY_TYPE_LABEL"
+  },
+  placeholder: {
+      labelName: "Select Property Type",
+      labelKey: "ES_PROPERTY_TYPE_PLACEHOLDER"
+  },
+  required: true,
+  jsonPath: "Properties[0].propertyDetails.propertyType",
+  sourceJsonPath: "applyScreenMdmsData.EstateServices.propertyTypeMM",
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  beforeFieldChange: (action, state, dispatch) => {
+      
+  }
 }
 
 export const propertyDetails = getCommonCard({

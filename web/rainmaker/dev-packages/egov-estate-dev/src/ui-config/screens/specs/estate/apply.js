@@ -279,73 +279,6 @@ const setBiddersDoc = (action, state, dispatch) => {
   dispatch(prepareFinalObject(`temp[0].documents`, documentTypes))
 }
 
-const getCompanyDocs = (action, state, dispatch, owner = 0) => {
-  const {
-    EstateServices
-  } = companyDocsData && companyDocsData.MdmsRes ? companyDocsData.MdmsRes : {}
-  const {
-    documents = []
-  } = EstateServices || {}
-  const findMasterItem = documents.find(item => item.code === "MasterEst")
-  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
-
-  const estateMasterDocuments = masterDocuments.map(item => ({
-    type: item.code,
-    description: {
-      labelName: "Only .jpg and .pdf files. 6MB max file size.",
-      labelKey: item.fileType
-    },
-    formatProps: {
-      accept: item.accept || "image/*, .pdf, .png, .jpeg",
-    },
-    maxFileSize: 6000,
-    downloadUrl: item.downloadUrl,
-    moduleName: "Estate",
-    statement: {
-      labelName: "Allowed documents are Aadhar Card / Voter ID Card / Driving License",
-      labelKey: item.description
-    }
-  }))
-  var documentTypes;
-  var applicationDocs;
-  documentTypes = prepareDocumentTypeObjMaster(masterDocuments, owner);
-  applicationDocs = get(
-    state.screenConfiguration.preparedFinalObject,
-    `Properties[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`,
-    []
-  ) || [];
-
-
-  applicationDocs = applicationDocs.filter(item => !!item)
-  let applicationDocsReArranged =
-    applicationDocs &&
-    applicationDocs.length &&
-    documentTypes.map(item => {
-      const index = applicationDocs.findIndex(
-        i => i.documentType === item.name
-      );
-      return applicationDocs[index];
-    }).filter(item => !!item)
-  applicationDocsReArranged &&
-    dispatch(
-      prepareFinalObject(
-        `Properties[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`,
-        applicationDocsReArranged
-      )
-    );
-  dispatch(
-    handleField(
-      "apply",
-      `components.div.children.formwizardFourthStep.children.companyDocuments_${owner}.children.cardContent.children.documentList`,
-      "props.inputProps",
-      estateMasterDocuments
-    )
-  );
-  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${owner}].ownerDetails.ownerDocuments`, documentTypes))
-  dispatch(prepareFinalObject("applyScreenMdmsData.estateApplicationsCompanyDocs", documents))
-
-}
-
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Add Estate",
@@ -374,8 +307,7 @@ export const setData = (properties, screenName, dispatch, state) => {
   let stepSummary;
   let reviewContainer;
   let stepPayment;
-  let isGroundRent = properties[0].propertyDetails.paymentConfig.isGroundRent;
-  isGroundRent = isGroundRent != null ? isGroundRent.toString() : isGroundRent;
+  let isGroundRent = properties[0].propertyDetails.paymentConfig ? properties[0].propertyDetails.paymentConfig.isGroundRent ? properties[0].propertyDetails.paymentConfig.isGroundRent : false : false;
 
   switch(screenName) {
     case "apply":
@@ -469,7 +401,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepPayment}.children.groundRentDetails`,
       "visible",
-      (isGroundRent == "true")
+      !!isGroundRent
     )
   )
   dispatch(
@@ -477,7 +409,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepPayment}.children.licenseFeeDetails`,
       "visible",
-      (isGroundRent == "false")
+      !isGroundRent
     )
   )
 
@@ -486,7 +418,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewGroundRent`,
       "visible",
-      (isGroundRent == "true")
+      !!isGroundRent
     )
   )
   dispatch(
@@ -494,7 +426,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewLicenseFee`,
       "visible",
-      (isGroundRent == "false")
+      !isGroundRent
     )
   )
   /*************************************************************************************************/

@@ -18,7 +18,8 @@ import {
  headerDiv
 } from "../applyResourceBuildingBranch/reviewDetails";
 import {
-  propertyTypeLabel
+  propertyTypeLabel,
+  getReviewAdditional
 } from "../applyResource/reviewProperty";
 import { editSection } from "../applyResourceBuildingBranch/reviewDetails";
 import { changeStep } from "./footer";
@@ -123,5 +124,6 @@ export const getReviewPropertyDetails = (isEditable = true) => {
 
 export const reviewDetails = getCommonCard({
   header,
-  reviewPropertyDetails: getReviewPropertyDetails()
+  reviewPropertyDetails: getReviewPropertyDetails(),
+  reviewAdditional: getReviewAdditional(true, "apply-manimajra")
 })

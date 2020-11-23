@@ -287,18 +287,19 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     if(!!isValid && ((Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7))) {
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const offlinePaymentDetails = get(state.screenConfiguration.preparedFinalObject, "payment")
-      const {paymentAmount, ...rest} = offlinePaymentDetails
+      const {paymentAmount, paymentType, ...rest} = offlinePaymentDetails
       if(!!propertyId) {
         const payload = [
           { id: propertyId, 
             propertyDetails: {
-              offlinePaymentDetails: [{...rest, amount: paymentAmount}]
+              offlinePaymentDetails: [{...rest, amount: paymentAmount, paymentType}]
             }
           }
         ]
         try {
+          const url = paymentType === "PAYMENTTYPE.PENALTY" ? "/est-services/violation/_penalty_payment" : paymentType === "PAYMENTTYPE.EXTENSIONFEE" ? "/est-services/extension-fee/_create" : "/est-services/property-master/_payrent"
           const response = await httpRequest("post",
-          "/est-services/property-master/_payrent",
+          url,
           "",
           [],
           { Properties : payload })

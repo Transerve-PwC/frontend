@@ -47,7 +47,7 @@ switch(branchType) {
   case "BUILDING_BRANCH":
     findItem = roles.find(item => item.code === "ES_BB_DISPATCH_OFFICER");
     break;
-  case "MANIMAJRA_BRANCH":
+  case "MANI_MAJRA":
     findItem = roles.find(item => item.code === "ES_MM_DISPATCH_OFFICER");
     break;
   default:
@@ -72,7 +72,7 @@ const estateSearchAndResult = {
       case "BUILDING_BRANCH":
         wkfConstant = WF_BB_PROPERTY_MASTER;
         break;
-      case "MANIMAJRA_BRANCH":
+      case "MANI_MAJRA":
         wkfConstant = WF_MM_PROPERTY_MASTER;
         break;
       default:
@@ -150,7 +150,7 @@ const estateSearchAndResult = {
                     case "BUILDING_BRANCH":
                       dispatch(setRoute(`/estate/apply-building-branch?tenantId=${getTenantId()}`));
                       break;
-                    case "MANIMAJRA_BRANCH":
+                    case "MANI_MAJRA":
                       dispatch(setRoute(`/estate/apply-manimajra?tenantId=${getTenantId()}`));
                       break;
                     default:

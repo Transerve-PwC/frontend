@@ -14,8 +14,9 @@ import {onTabChange, headerrow, tabs} from './estate-penalty'
 import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {propertyInfo,securityInfo} from './preview-resource/preview-properties'
+import {getReviewSecurity} from './applyResource/reviewProperty'
 import { getTodaysDateInYMD } from "../utils";
-import {penaltyDetailsTable} from "./searchResource/searchResults"
+import {securityDetailsTable} from "./searchResource/searchResults"
 import {generatePenaltyStatementApiCall} from './searchResource/functions'
 import {penaltyStatmentResult} from './searchResource/functions'
 const header = getCommonHeader({
@@ -175,7 +176,7 @@ const securityFeeContainer = {
           securitySummary,
         //   penaltyStatementFilter,
           breakAfterSearch: getBreak(),
-          penaltyDetailsTable
+          securityDetailsTable
       }
     }
   }

@@ -357,6 +357,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       var isGroundRent = Properties[0].propertyDetails.paymentConfig.isGroundRent;
       var isIntrestApplicable = Properties[0].propertyDetails.paymentConfig.isIntrestApplicable;
       var noOfMonths = Properties[0].propertyDetails.paymentConfig.noOfMonths;
+      var premiumAmountConfigItems = Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems ? Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems : []
 
       isGroundRent = isGroundRent != null ? isGroundRent.toString() : isGroundRent;
       isIntrestApplicable = isIntrestApplicable != null ? isIntrestApplicable.toString() : isIntrestApplicable;
@@ -388,7 +389,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
         prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths}}}]
+        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths, premiumAmountConfigItems: premiumAmountConfigItems}}}]
       }
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];

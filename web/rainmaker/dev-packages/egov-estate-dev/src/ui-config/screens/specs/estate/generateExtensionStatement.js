@@ -16,8 +16,8 @@ import { getTodaysDateInYMD } from "../utils";
 import {extensionFeeDetailsTable} from "./searchResource/searchResults"
 import {generateExtensionStatementApiCall,extensionStatmentResult} from "./searchResource/functions"
 const header = getCommonHeader({
-    labelName: "Security Fee",
-    labelKey: "ES_SECURITY_FEE_HEADER"
+    labelName: "Extension Fee",
+    labelKey: "ES_EXTENSION_FEE_HEADER"
   });
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
@@ -120,7 +120,7 @@ export const extensionStatementFilter = getCommonCard({
             children: {
               buttonLabel: getLabel({
                 labelName: "Generate Statement",
-                labelKey: "ES_GENERATE_STATEMENT"
+                labelKey: "ES_GENERATE_EXTENSION_STATEMENT"
               })
             },
             onClickDefination: {

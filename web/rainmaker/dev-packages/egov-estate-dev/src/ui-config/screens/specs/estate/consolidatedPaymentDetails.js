@@ -6,16 +6,9 @@ import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField 
 import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
 import {getReviewPayment} from './preview-resource/payment-details'
 import {onTabChange, headerrow, tabs} from './search-preview'
-import {paymentDetailsTable} from './applyResource/applyConfig'
+// import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {getReviewConsolidatedPaymentDetails} from "./applyResource/reviewProperty"
-
-var reviewConsolidatedPayment = getReviewConsolidatedPaymentDetails(false);
-
-const reviewConsolidatedPaymentDetails = getCommonCard({
-  reviewConsolidatedPayment
-
-})
+import { getReviewConsolidatedPaymentDetails} from "./applyResource/reviewProperty"
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if(fileNumber){
@@ -24,7 +17,22 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
         ];
    const response =  await getSearchResults(queryObject)
     if(!!response) {
-      dispatch(prepareFinalObject("Properties", response.Properties))
+      // let {estateDemands, estatePayments} = response.Properties[0].propertyDetails;
+      // estateDemands = estateDemands || []
+      // estatePayments = estatePayments || []
+      // setXLSTableData({demands:estateDemands,payments:estatePayments, componentJsonPath: "components.div.children.paymentDetailsTable", screenKey: "payment-details"})
+      let properties = response.Properties;
+      let propertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
+      dispatch(prepareFinalObject("Properties[0]", properties[0]));
+
+      dispatch(
+        handleField(
+          "payment-details",
+          "components.div.children.reviewConsolidatedPayments",
+          "visible",
+          !!(propertyMasterOrAllotmentOfSite == "PROPERTY_MASTER")
+        )
+      )
     }
   }
 }
@@ -71,7 +79,10 @@ const consolidatedPaymentDetails = {
             type: "array",
           },
           breakAfterSearch: getBreak(),
-          reviewConsolidatedPaymentDetails 
+          reviewConsolidatedPayments : getCommonCard({
+            consolidatedPaymentDetails: getReviewConsolidatedPaymentDetails(false, "apply")
+          })
+          
       }
     }
   }

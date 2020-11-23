@@ -40,24 +40,6 @@ const rentField = {
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].rent`
 }
 
-const balanceField = {
-  label: {
-    labelName: "Consolidated Balance",
-    labelKey: "ES_CONSOLIDATED_BALANCE_LABEL"
-  },
-  placeholder: {
-    labelName: "Enter Consolidated Balance",
-    labelKey: "ES_CONSOLIDATED_BALANCE_PLACEHOLDER"
-  },
-  gridDefination: {
-    xs: 12,
-    sm: 6
-  },
-  pattern: _getPattern("areaOfProperty"),
-  required: true,
-  jsonPath: `Properties[0].propertyDetails.estateDemands[0].balance`
-}
-
 const gstField = {
   label: {
     labelName: "Consolidated GST",
@@ -131,7 +113,6 @@ export const paymentDetails = getCommonCard({
   header: paymentHeader,
   detailsContainer: getCommonContainer({
     rent: getTextField(rentField),
-    balance: getTextField(balanceField),
     gst: getTextField(gstField),
     interestOnRent: getTextField(interestOnRentField),
     interestOnGst: getTextField(interestOnGstField),
