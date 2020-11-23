@@ -134,12 +134,15 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
     path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
   else if (tabIndex === 6) {
-    path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
+    path = `/estate/rentInformation?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
-  else if (tabIndex === 7) {
-    path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}`
+  else if(tabIndex === 7){
+    path = `/estate/consolidatedPaymentDetails?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
   else if (tabIndex === 8) {
+    path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}`
+  }
+  else if (tabIndex === 9) {
     path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
   dispatch(setRoute(path))
@@ -165,7 +168,10 @@ export const tabs = [
     tabButton: { labelName: "Previous Owner Documents", labelKey: "ES_PREVIOUS_OWNER_DOCUMENTS" }
   },
   {
-    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" }
+    tabButton: { labelName: "Rent Information", labelKey: "ES_RENT_INFORMATION" }
+  },
+  {
+    tabButton: { labelName: "Consolidated Payment Details", labelKey: "ES_CONSOLIDATED_PAYMENT_DETAILS" }
   },
   {
     tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" }

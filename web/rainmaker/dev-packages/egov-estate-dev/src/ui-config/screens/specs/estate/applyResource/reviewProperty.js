@@ -965,7 +965,87 @@ export const getReviewGroundRent = (isEditable = true, step = 5, screenKey = "al
   })
 }
 
-export const getReviewAdvanceRent = (isEditable = true, step = 5, screenKey = "allotment") => {
+export const getReviewConsolidatedPaymentDetails = (isEditable = true) => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Consolidated Payment Details",
+            labelKey: "ES_CONSOLIDATED_PAYMENT_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+      }
+    },
+    viewConsolidatedPayment: getCommonContainer({
+      consolidatedRentDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated Rent Label",
+          labelKey: "ES_CONSOLIDATED_RENT_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].rent`
+        }
+      ),
+      consolidatedBalanceDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated Balance Label",
+          labelKey: "ES_CONSOLIDATED_BALANCE_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].balance`
+        }
+      ),
+      consolidatedGSTDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated GST Label",
+          labelKey: "ES_CONSOLIDATED_GST_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].gst`,
+        }
+      ),
+      consolidatedInterestDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated Interest Label",
+          labelKey: "ES_CONSOLIDATED_INTEREST_ON_RENT_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].penaltyInterest`,
+        }
+      ),
+      consolidatedInterestOnGSTDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated Interest On GST Label",
+          labelKey: "ES_CONSOLIDATED_INTEREST_ON_GST_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].gstInterest`,
+        }
+      ),
+      consolidatedInterestTillDetails: getLabelWithValue(
+        {
+          labelName: "Consolidated Interest Till Label",
+          labelKey: "ES_CONSOLIDATED_TILL_LABEL"
+        }, 
+        {
+          jsonPath: `Properties[0].propertyDetails.estateDemands[0].generationDate`,
+          callBack : convertEpochToDate
+        },
+        
+      )
+    }),
+    viewRents: getCommonContainer({})
+  })
+}
+
+export const getReviewAdvanceRent = (isEditable = true) => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -980,7 +1060,7 @@ export const getReviewAdvanceRent = (isEditable = true, step = 5, screenKey = "a
             labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, step, screenKey)
+        editSection: masterEntryEditSection(isEditable, 5, "allotment")
       }
     },
     viewAdvanceRent: getCommonContainer({

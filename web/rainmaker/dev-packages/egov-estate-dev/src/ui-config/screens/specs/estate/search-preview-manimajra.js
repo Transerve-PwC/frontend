@@ -99,7 +99,7 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
     path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
   else if (tabIndex === 6) {
-    path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
+    path = `/estate/rentInformation?fileNumber=${fileNumber}&tenantId=${tenantId}`
   }
   else if (tabIndex === 8) {
     path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`

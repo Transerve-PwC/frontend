@@ -91,7 +91,7 @@ components: {
           componentPath: "CustomTabContainer",
           props: {
             tabs,
-            activeIndex: 8,
+            activeIndex: 9,
             onTabChange
           },
           type: "array",
