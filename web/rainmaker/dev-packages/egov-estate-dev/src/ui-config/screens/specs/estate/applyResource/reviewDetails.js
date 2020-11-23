@@ -29,10 +29,10 @@ if (typeof getReviewPropertyInfo != "undefined" && typeof getReviewAuction != "u
   var companyDetails = getReviewCompanyDetails();
   var firmDetails = getReviewFirmDetails();
   var proprietorDetails = getReviewProprietorshipDetails();
-  var reviewGroundRent = getReviewGroundRent();
-  var reviewLicenseFee = getReviewLicenseFee();
-  var reviewAdvanceRent = getReviewAdvanceRent();
-  var reviewSecurity = getReviewSecurity();
+  var reviewGroundRent = getReviewGroundRent(true, 7, "apply");
+  var reviewLicenseFee = getReviewLicenseFee(true, 7, "apply");
+  var reviewAdvanceRent = getReviewAdvanceRent(true, 7, "apply");
+  var reviewSecurity = getReviewSecurity(true, 7, "apply");
 }
 
 export const reviewDetails = getCommonCard({

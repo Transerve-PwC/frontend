@@ -12,7 +12,7 @@ import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , PENALTY_STATUS , AMOUNT , TYPE } from "./searchResults";
+import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT , TYPE } from "./searchResults";
 import moment from 'moment'
 import {penaltySummary} from '../../estate/generatePenaltyStatement'
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
@@ -344,6 +344,51 @@ export const penaltyStatmentResult = async(state, dispatch ,Criteria) => {
   }
 }
 
+export const extensionStatmentResult = async(state, dispatch ,Criteria) => {
+  try {
+    const response = await httpRequest(
+      "post",
+      '/est-services/extension-fee/_statement',
+      "",
+      [],
+      {Criteria}
+    )
+    
+    dispatch(
+      prepareFinalObject(
+        "ExtensionStatementSummary",
+        response.ExtensionFeeStatementSummary
+      )
+    );
+
+    dispatch(
+      prepareFinalObject(
+        "ExtensionFee",
+        response.ExtensionFee
+      )
+    )
+
+    let data = response.ExtensionFee.map(item => ({
+      [getTextToLocalMapping("Date")]: moment(new Date(item.generationDate)).format("DD-MMM-YYYY") || "-",
+      [AMOUNT]:(item.amount.toFixed(2)) || "-",
+      [STATUS]: (item.status) || "-"
+    }));
+    
+    dispatch(
+      handleField(
+        "generateExtensionStatement",
+        "components.div.children.extensionFeeDetailsTable",
+        "props.data",
+        data
+      )
+    );
+  } catch (error) {
+    console.log(error)
+    dispatch(toggleSnackbar(true, error.message, "error"));
+  }
+}
+
+
 export const generatePenaltyStatementApiCall = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
   var isDateValid = true;
 
@@ -370,6 +415,49 @@ export const generatePenaltyStatementApiCall = async (state, dispatch, onInit, o
       if(!!propertyId) {
           Criteria = {...Criteria, propertyid: propertyId}
           await penaltyStatmentResult(state, dispatch , Criteria)
+      }
+    }
+    if(!isDateValid){
+      let errorMessage = {
+        labelName:
+            "From date cannot be greater than To date!",
+        labelKey: "EST_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+    };
+    
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      !!hideTable && showHideTable(true, dispatch);
+      
+  }
+  dispatch(toggleSpinner());
+  
+};
+
+export const generateExtensionStatementApiCall = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+  var isDateValid = true;
+
+  dispatch(toggleSpinner());
+  !!hideTable && showHideTable(false, dispatch);
+  // showHideTable(false, dispatch);
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+  if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
+    isDateValid=false;
+  }
+
+    if(!!isDateValid) {
+      let Criteria = {
+        fromDate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+        toDate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+      }
+      let properties = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Properties", [])))
+      const propertyId = properties[0].id;        
+      if(!!propertyId) {
+          Criteria = {...Criteria, propertyid: propertyId}
+          await extensionStatmentResult(state, dispatch , Criteria)
       }
     }
     if(!isDateValid){

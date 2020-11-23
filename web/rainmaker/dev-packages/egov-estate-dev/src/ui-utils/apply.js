@@ -490,4 +490,41 @@ export const addPenalty = async (state, dispatch, activeIndex) => {
   }
 }
 
+export const createExtensionFee = async (state, dispatch, activeIndex) => {
+  try {
+    let queryObject = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "ExtensionFees", [])))
+    const tenantId = userInfo.permanentCity || getTenantId();
+    let properties = JSON.parse(JSON.stringify(get(state.screenConfiguration.preparedFinalObject, "Properties", [])))
+    const propertyId = properties[0].id;
+    const fileNumber = properties[0].fileNumber
+    set(queryObject[0], "property", {
+      "id":propertyId
+    });
+    let response;
+    if(queryObject) {  
+      response = await httpRequest(
+        "post",
+        "/est-services/extension-fee/_create",
+        "",
+        [],
+        { ExtensionFees : queryObject }
+      );
+    } 
+      let {ExtensionFees} = response
+      if(response){
+        dispatch(
+          setRoute(
+          `acknowledgement?purpose=extensionFee&fileNumber=${fileNumber}&status=success&tenantId=${tenantId}`
+          )
+        )
+      }
+      dispatch(prepareFinalObject("ExtensionFees", ExtensionFees));
+      return true;
+  } catch (error) {
+    dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+    console.log(error);
+    return false;
+  }
+}
+
 

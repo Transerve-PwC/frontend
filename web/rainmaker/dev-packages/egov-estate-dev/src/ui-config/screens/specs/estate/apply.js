@@ -373,6 +373,9 @@ export const setData = (properties, screenName, dispatch, state) => {
   let stepFirst;
   let stepSummary;
   let reviewContainer;
+  let stepPayment;
+  let isGroundRent = properties[0].propertyDetails.paymentConfig.isGroundRent;
+  isGroundRent = isGroundRent != null ? isGroundRent.toString() : isGroundRent;
 
   switch(screenName) {
     case "apply":
@@ -380,12 +383,14 @@ export const setData = (properties, screenName, dispatch, state) => {
       stepSecond = "formwizardSecondStep";
       stepSummary = "formwizardTenthStep";
       reviewContainer = "reviewDetails";
+      stepPayment = "formwizardEighthStep";
       break;
     case "allotment":
       stepFirst = "formwizardFirstStepAllotment";
       stepSecond = "formwizardSecondStepAllotment";
       stepSummary = "formwizardSeventhStepAllotment";
-      reviewContainer = "reviewAllotmentDetails"
+      reviewContainer = "reviewAllotmentDetails";
+      stepPayment = "formwizardSixthStepAllotment"
       break;
   }
 
@@ -450,16 +455,48 @@ export const setData = (properties, screenName, dispatch, state) => {
   /*************************************************************************************************/
 
   /* based on the propertyType toggle display of groundRent and licenseFee containers */
-  if (screenName == "allotment") {
-    dispatch(
-      handleField(
-          "allotment",
-          "components.div.children.formwizardSixthStepAllotment.children.demandSelect",
-          "visible",
-          !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
-      )
-    ) 
-  }
+  dispatch(
+    handleField(
+      screenName,
+        `components.div.children.${stepPayment}.children.demandSelect`,
+        "visible",
+        !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+    )
+  ) 
+
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.${stepPayment}.children.groundRentDetails`,
+      "visible",
+      (isGroundRent == "true")
+    )
+  )
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.${stepPayment}.children.licenseFeeDetails`,
+      "visible",
+      (isGroundRent == "false")
+    )
+  )
+
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewGroundRent`,
+      "visible",
+      (isGroundRent == "true")
+    )
+  )
+  dispatch(
+    handleField(
+      screenName,
+      `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewLicenseFee`,
+      "visible",
+      (isGroundRent == "false")
+    )
+  )
   /*************************************************************************************************/
 
   /* based on selected category toggle display of sub-category field */
@@ -605,17 +642,7 @@ const getData = async (action, state, dispatch) => {
     ]
   }]
 
-  const response = await getMdmsData(dispatch, mdmsPayload);
-  dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
-
-  if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
-  }
-  setDocumentData(action, state, dispatch);
-  setPrevOwnerDocs(action, state, dispatch);
-  setBiddersDoc(action, state, dispatch);
-
-  dispatch(
+   dispatch(
     handleField(
       action.screenKey,
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
@@ -665,14 +692,17 @@ const getData = async (action, state, dispatch) => {
       false
     )
   )
-  dispatch(
-    handleField(
-      action.screenKey,
-      "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewAdvanceRent",
-      "visible",
-      false
-    )
-  )
+
+  const response = await getMdmsData(dispatch, mdmsPayload);
+  dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+
+  if (!!fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
+  }
+  setDocumentData(action, state, dispatch);
+  setPrevOwnerDocs(action, state, dispatch);
+  setBiddersDoc(action, state, dispatch);
+
   const stepNumber = getQueryArg(window.location.href, "stepNumber");
   if(!!stepNumber) {
     changeStep(state, dispatch, "apply", "", Number(stepNumber))

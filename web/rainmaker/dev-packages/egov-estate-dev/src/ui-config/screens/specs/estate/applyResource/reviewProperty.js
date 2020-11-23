@@ -913,7 +913,7 @@ export const getReviewPremiumAmount = (isEditable = true) => {
   })
 }
 
-export const getReviewGroundRent = (isEditable = true) => {
+export const getReviewGroundRent = (isEditable = true, step = 5, screenKey = "allotment") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -928,7 +928,7 @@ export const getReviewGroundRent = (isEditable = true) => {
             labelKey: "ES_GROUND_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewGroundRent: getCommonContainer({
@@ -965,7 +965,7 @@ export const getReviewGroundRent = (isEditable = true) => {
   })
 }
 
-export const getReviewAdvanceRent = (isEditable = true) => {
+export const getReviewAdvanceRent = (isEditable = true, step = 5, screenKey = "allotment") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -980,7 +980,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
             labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewAdvanceRent: getCommonContainer({
@@ -1007,7 +1007,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
   })
 }
 
-export const getReviewLicenseFee = (isEditable = true) => {
+export const getReviewLicenseFee = (isEditable = true, step = 5, screenKey = "allotment") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -1022,7 +1022,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
             labelKey: "ES_LICENSE_FEE_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewLicenseFee: getCommonContainer({
@@ -1059,7 +1059,7 @@ export const getReviewLicenseFee = (isEditable = true) => {
   })
 }
 
-export const getReviewSecurity = (isEditable = true) => {
+export const getReviewSecurity = (isEditable = true, step = 5, screenKey = "allotment") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -1074,7 +1074,7 @@ export const getReviewSecurity = (isEditable = true) => {
             labelKey: "ES_SECURITY_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewSecurity: getCommonContainer({

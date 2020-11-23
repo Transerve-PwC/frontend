@@ -25,6 +25,9 @@ export const DATE = getLocaleLabels("ES_COMMON_TABLE_COL_DATE")
 export const AMOUNT = getLocaleLabels("ES_COMMON_TABLE_COL_AMOUNT") + " (₹)"
 export const TYPE = getLocaleLabels("ES_COMMON_TABLE_COL_TYPE")
 export const PENALTY_STATUS = getLocaleLabels("ES_COMMON_TABLE_COL_PENALTY_STATUS")
+export const STATUS = getLocaleLabels("ES_COMMON_TABLE_COL_STATUS")
+
+
 
 export const searchResults = {
   uiFramework: "custom-molecules",
@@ -182,9 +185,8 @@ export const extensionFeeDetailsTable = {
   props: {...searchResults.props, 
     columns: [
       DATE,
-      TYPE,
       AMOUNT,
-      PENALTY_STATUS 
+      STATUS 
     ],
     options: {...searchResults.props.options,
       pagination: false,

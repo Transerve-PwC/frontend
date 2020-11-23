@@ -24,7 +24,7 @@ import {
   import {
     getQueryArg
   } from "egov-ui-framework/ui-utils/commons";
-  import {addPenalty} from '../../../../ui-utils/apply'
+  import {createExtensionFee} from '../../../../ui-utils/apply'
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   
   const beforeInitFn = async (action, state, dispatch) => {
@@ -36,7 +36,7 @@ import {
     const response = await getSearchResults(queryObject)
     if (!!response.Properties && !!response.Properties.length) {
       dispatch(prepareFinalObject("Properties", response.Properties))
-      dispatch(prepareFinalObject("propertyPenalties", []))
+      dispatch(prepareFinalObject("ExtensionFees", []))
     }
   }
 
@@ -65,7 +65,7 @@ import {
     },
     pattern: getPattern("Amount"),
     required: true,
-    jsonPath: "propertyPenalties[0].penaltyAmount"
+    jsonPath: "ExtensionFees[0].amount"
   }
   
   export const extensionFeeDetails = getCommonCard({
@@ -102,7 +102,7 @@ import {
   };
   
   const callBackForSubmit = (state, dispatch) => {
-    addPenalty(state,dispatch)
+    createExtensionFee(state,dispatch)
   }
   
   const submitFooter = getCommonApplyFooter({

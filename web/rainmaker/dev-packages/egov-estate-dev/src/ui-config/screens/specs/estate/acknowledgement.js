@@ -100,6 +100,11 @@ const getAcknowledgementCard = (
         labelName: "Penalty is Added successfully",
         labelKey: "ES_ADD_PENALTY_SUCCESS_MESSAGE_HEAD"
       }
+    }else if(purpose === "extensionFee"){
+      header = {
+        labelName: "Extension Fee is Added successfully",
+        labelKey: "ES_ADD_EXTENSION_FEE_SUCCESS_MESSAGE_HEAD"
+      }
     } else {
       if(!type && purpose === "pay") {
         header = {

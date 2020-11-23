@@ -16,17 +16,19 @@ import {
   getReviewProprietorshipDetails
 } from "./reviewProperty";
 
-var reviewPropertyInfo = getReviewPropertyInfo(true, "allotment");
-var reviewAdditional = getReviewAdditional(true, "allotment");
-var reviewAuctionAllotment = getReviewAuction(true, "allotment");
-var reviewPremiumAmount = getReviewPremiumAmount();
-var reviewGroundRent = getReviewGroundRent();
-var reviewLicenseFee = getReviewLicenseFee();
-var reviewAdvanceRent = getReviewAdvanceRent();
-var reviewSecurity = getReviewSecurity();
-var companyDetails = getReviewCompanyDetails(true, "allotment");
-var firmDetails = getReviewFirmDetails(true, "allotment");
-var proprietorDetails = getReviewProprietorshipDetails(true, "allotment");
+if (typeof getReviewPropertyInfo != "undefined") {
+  var reviewPropertyInfo = getReviewPropertyInfo(true, "allotment");
+  var reviewAdditional = getReviewAdditional(true, "allotment");
+  var reviewAuctionAllotment = getReviewAuction(true, "allotment");
+  var reviewPremiumAmount = getReviewPremiumAmount();
+  var reviewGroundRent = getReviewGroundRent();
+  var reviewLicenseFee = getReviewLicenseFee();
+  var reviewAdvanceRent = getReviewAdvanceRent();
+  var reviewSecurity = getReviewSecurity();
+  var companyDetails = getReviewCompanyDetails(true, "allotment");
+  var firmDetails = getReviewFirmDetails(true, "allotment");
+  var proprietorDetails = getReviewProprietorshipDetails(true, "allotment");
+}
 
 const header = getCommonTitle({
   labelName: "Please review your Application and Submit",

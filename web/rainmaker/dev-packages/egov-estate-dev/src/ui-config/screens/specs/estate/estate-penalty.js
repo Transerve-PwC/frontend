@@ -158,7 +158,7 @@ const submitFooter = getCommonApplyFooter({
     children: {
       submitButtonLabel: getLabel({
         labelName: "Submit",
-        labelKey: "ES_COMMON_SUBMIT"
+        labelKey: "ES_COMMON_ADD_PENALTY"
       })
     },
     onClickDefination: {

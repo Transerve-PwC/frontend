@@ -33,7 +33,8 @@ import {
   getReviewOwner,
   getReviewPurchaser,
   getReviewPayment,
-  getReviewCourtCase
+  getReviewCourtCase,
+  getReviewAllotmentMultipleSectionDetails
 } from "./reviewProperty";
 import {
   getReviewDocuments
@@ -90,6 +91,8 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
   let ownerOnePosAllotDateValid = true;
   let ownerTwoPosAllotDateValid = true;
+  let rentYearMismatch = false;
+  let licenseFeeYearMismatch = false;
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
@@ -531,7 +534,131 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === RENT_INFO_DETAILS_STEP) {
+    const isGroundRentValid = validateFields(
+      "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isLicenseFeeValid = validateFields(
+      "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isSecurityDetailsValid = validateFields(
+      "components.div.children.formwizardEighthStep.children.securityDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
+    const isDemandValid = validateFields(
+      "components.div.children.formwizardEighthStep.children.demandSelect.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "allotment"
+    )
 
+    let rentItems = get(
+      state.screenConfiguration.screenConfig,
+      "apply.components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
+    );
+
+    let rentArr = get(
+      state.screenConfiguration.preparedFinalObject,
+      `Properties[0].propertyDetails.paymentDetails[0].rent`,
+      []
+    )
+
+    if (rentItems && rentItems.length > 0) {
+      for (var i = 0; i < rentItems.length; i++) {
+        if (typeof rentItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isRentDetailsValid = validateFields(
+          `apply.components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${i}].item${i}.children.cardContent.children.rentCard.children`,
+          state,
+          dispatch
+        )
+
+        if (!!rentArr[i] && !!rentArr[i+1]) {
+          if (rentArr[i].endYear !== rentArr[i+1].startYear) {
+            rentYearMismatch = true;
+            isRentDetailsValid = false
+          }
+        }
+
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", `components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents`, "groundRent", rentItems.length);
+      }
+    }
+
+    let licenseFeeItems = get(
+      state.screenConfiguration.screenConfig,
+      "apply.components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
+    );
+    let licenseFeeArr = get(
+      state.screenConfiguration.preparedFinalObject,
+      `Properties[0].propertyDetails.paymentDetails[0].licenseFees`,
+      []
+    )
+
+    if (licenseFeeItems && licenseFeeItems.length > 0) {
+      for (var i = 0; i < licenseFeeItems.length; i++) {
+        if (typeof licenseFeeItems[i].isDeleted !== "undefined") {
+          continue;
+        }
+        var isLicenseFeeDetailsForYearValid = validateFields(
+          `apply.components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${i}].item${i}.children.cardContent.children.licenseCard.children`,
+          state,
+          dispatch
+        )
+
+        if (!!licenseFeeArr[i] && !!licenseFeeArr[i+1]) {
+          if (licenseFeeArr[i].endYear !== licenseFeeArr[i+1].startYear) {
+            licenseFeeYearMismatch = true;
+            isLicenseFeeDetailsForYearValid = false
+          }
+        }
+
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", `components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
+      }
+    }
+
+    let selectedDemand = get(
+      state.screenConfiguration.screenConfig,
+      "apply.components.div.children.formwizardEighthStep.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
+    )
+
+    if (selectedDemand == "true") {
+      if (isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch) {
+        const res = await applyEstates(state, dispatch, activeStep, "apply");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    else if (selectedDemand == "false") {
+      if (isLicenseFeeValid && isSecurityDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch) {
+        const res = await applyEstates(state, dispatch, activeStep, "apply");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
+    else {
+      if (isSecurityDetailsValid) {
+        const res = await applyEstates(state, dispatch, activeStep, "apply");
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
+    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {

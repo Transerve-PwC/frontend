@@ -14,6 +14,7 @@ import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {propertyInfo,extensionFeeInfo} from './preview-resource/preview-properties'
 import { getTodaysDateInYMD } from "../utils";
 import {extensionFeeDetailsTable} from "./searchResource/searchResults"
+import {generateExtensionStatementApiCall,extensionStatmentResult} from "./searchResource/functions"
 const header = getCommonHeader({
     labelName: "Security Fee",
     labelKey: "ES_SECURITY_FEE_HEADER"
@@ -28,17 +29,17 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
     const response = await getSearchResults(queryObject)
     if (!!response.Properties && !!response.Properties.length) {
     dispatch(prepareFinalObject("Properties", response.Properties))
-    // dispatch(prepareFinalObject("propertyPenalties", []))
-    // if(!!response) {
-    //   let properties = response.Properties
-    //   const propertyId = properties[0].id;   
-    //   let Criteria = {
-    //     fromdate: properties[0].propertyDetails.auditDetails.createdTime || "",
-    //     todate:   ""
-    //   }
-    //   Criteria = {...Criteria, propertyid: propertyId}
-    //   await penaltyStatmentResult (state,dispatch, Criteria)
-    // }
+    dispatch(prepareFinalObject("ExtensionFees", []))
+    if(!!response) {
+      let properties = response.Properties
+      const propertyId = properties[0].id;   
+      let Criteria = {
+        fromDate: properties[0].propertyDetails.auditDetails.createdTime || "",
+        toDate:   ""
+      }
+      Criteria = {...Criteria, propertyid: propertyId}
+      await extensionStatmentResult (state,dispatch, Criteria)
+    }
 
     }
 }
@@ -124,7 +125,7 @@ export const extensionStatementFilter = getCommonCard({
             },
             onClickDefination: {
               action: "condition",
-            //   callBack: generatePenaltyStatementApiCall
+              callBack: generateExtensionStatementApiCall
             }
           }, lastCont: {
             uiFramework: "custom-atoms",
