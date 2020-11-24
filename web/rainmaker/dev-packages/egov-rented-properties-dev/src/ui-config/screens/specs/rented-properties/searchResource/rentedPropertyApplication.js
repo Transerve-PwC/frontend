@@ -223,7 +223,10 @@ const duplicateCopyPhoneNumberField = {
       }
     }
 }
-
+const propertyMasterphoneNumberField={
+  ...phoneNumberField,
+  jsonPath: "searchScreen.phone"
+}
 
 
 const applicantMobileNumberField = {
@@ -527,7 +530,7 @@ export const rentedPropertyApplication = getCommonCard({
   }),
   transitNumberContainer: getCommonContainer({
     transitNumber: getTextField(transitNumberField),
-    phone: getTextField(phoneNumberField)
+    phone: getTextField(propertyMasterphoneNumberField)
   }),
   button: getCommonContainer({
     buttonContainer: getCommonContainer(
