@@ -916,9 +916,9 @@ const getInterestFixedRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.isIntrestApplicable",
-    // required: true
+    required: true
   },
-  // required: true,
+  required: true,
   type: "array",
   afterFieldChange: (action, state, dispatch) => {
     let isInterestFixedLabel = (action.value == "true") ? "ES_FIXED_INTEREST_LABEL" : "ES_YEARLY_INTEREST_LABEL";
@@ -955,6 +955,7 @@ const percentageOfInterestField = {
       xs: 12,
       sm: 6
   },
+  required: true,
   pattern: _getPattern("float"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.rateOfInterest"
 }

@@ -538,25 +538,31 @@ const callBackForNext = async (state, dispatch) => {
       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      "apply"
     )
     const isLicenseFeeValid = validateFields(
       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      "apply"
     )
     const isSecurityDetailsValid = validateFields(
       "components.div.children.formwizardEighthStep.children.securityDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      "apply"
     )
     const isDemandValid = validateFields(
       "components.div.children.formwizardEighthStep.children.demandSelect.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      "apply"
+    )
+    const isInterestDetailsValid = validateFields(
+      "components.div.children.formwizardEighthStep.children.interestDetails.children.cardContent.children.detailsContainer.children",
+      state,
+      dispatch,
+      "apply"
     )
 
     let rentItems = get(
@@ -630,7 +636,7 @@ const callBackForNext = async (state, dispatch) => {
     )
 
     if (selectedDemand == "true") {
-      if (isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch) {
+      if (isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch && isInterestDetailsValid) {
         const res = await applyEstates(state, dispatch, activeStep, "apply");
         if (!res) {
           return
@@ -640,7 +646,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
     else if (selectedDemand == "false") {
-      if (isLicenseFeeValid && isSecurityDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch) {
+      if (isLicenseFeeValid && isSecurityDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch && isInterestDetailsValid) {
         const res = await applyEstates(state, dispatch, activeStep, "apply");
         if (!res) {
           return
@@ -650,7 +656,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
     else {
-      if (isSecurityDetailsValid) {
+      if (isSecurityDetailsValid && isInterestDetailsValid) {
         const res = await applyEstates(state, dispatch, activeStep, "apply");
         if (!res) {
           return

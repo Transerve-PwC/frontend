@@ -389,7 +389,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
         prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
-        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths, premiumAmountConfigItems: premiumAmountConfigItems}}}]
+        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: Properties[0].propertyDetails.paymentConfig ? {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths, premiumAmountConfigItems: premiumAmountConfigItems} : null }}]
       }
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
