@@ -1630,15 +1630,36 @@ export const downloadPrintContainer = (
       case `${applicationType}` && 'ES_PENDING_SO_APPROVAL':
         switch(applicationType) {
           case 'SaleDeed':
-          case 'ScfToSco':
-          case 'ChangeInTrade':
-          case 'NOC':
-          case 'NDC':
           case 'PatnershipDeed':
-          case 'DuplicateCopy':
-          case 'Mortgage':
           case 'FamilySettlement':
           case 'LeaseDeed':
+          case 'NOC':
+          case 'Mortgage':
+          case 'ScfToSco':
+          if(process.env.REACT_APP_NAME === "Citizen"){
+            downloadMenu = [
+              applicationDownloadObject
+              
+            ]
+            printMenu = [
+              applicationPrintObject
+              
+            ]
+          }else{
+            downloadMenu = [
+              applicationDownloadObject,
+              LetterDownloadObject
+            ]
+            printMenu = [
+              applicationPrintObject,
+              LetterPrintObject
+            ]
+          }
+            
+            break;    
+          
+          case 'ChangeInTrade':
+          case 'DuplicateCopy':
             downloadMenu = [
               applicationDownloadObject
             ]
@@ -1647,24 +1668,34 @@ export const downloadPrintContainer = (
               applicationPrintObject
             ]
         break;
+
+        case 'NDC':
+            downloadMenu = [
+              applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
+            ]
+          
+            printMenu = [
+              applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
+            ]
+          break;
         case 'LeaseholdToFreehold':
             if(process.env.REACT_APP_NAME === "Citizen"){
               downloadMenu = [
-                applicationDownloadObject,
-                LetterDownloadObject
+                applicationDownloadObject   
               ]
             
               printMenu = [
-                applicationPrintObject,LetterPrintObject
+                applicationPrintObject
               ]
             }else{
               downloadMenu = [
                 applicationDownloadObject,
+                LetterDownloadObject,
                 NoticeDownloadObject
               ]
             
               printMenu = [
-                applicationPrintObject,NoticePrintObject
+                applicationPrintObject,LetterPrintObject,NoticePrintObject
               ]
             }
           
@@ -1673,19 +1704,19 @@ export const downloadPrintContainer = (
         case 'UnRegisteredWill':
             if(process.env.REACT_APP_NAME === "Citizen"){
               downloadMenu = [
-                applicationDownloadObject,EmailDownloadObject
+                applicationDownloadObject,
               ]
             
               printMenu = [
-                applicationPrintObject,EmailPrintObject
+                applicationPrintObject,
               ]
             }else{
               downloadMenu = [
-                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject,LetterDownloadObject
               ]
             
               printMenu = [
-                applicationPrintObject,NoticePrintObject,EmailPrintObject
+                applicationPrintObject,NoticePrintObject,EmailPrintObject,LetterPrintObject
               ]
             }
          
@@ -1694,19 +1725,19 @@ export const downloadPrintContainer = (
         case 'RegisteredWill':
             if(process.env.REACT_APP_NAME === "Citizen"){
               downloadMenu = [
-                applicationDownloadObject,EmailDownloadObject
+                applicationDownloadObject
               ]
             
               printMenu = [
-                applicationPrintObject,EmailPrintObject
+                applicationPrintObject
               ]
             }else{
               downloadMenu = [
-                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject,LetterDownloadObject
               ]
             
               printMenu = [
-                applicationPrintObject,NoticePrintObject,EmailPrintObject
+                applicationPrintObject,NoticePrintObject,EmailPrintObject,LetterPrintObject
               ]
             }
            
@@ -1723,11 +1754,11 @@ export const downloadPrintContainer = (
               ]
             }else{
               downloadMenu = [
-                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject,LetterDownloadObject
               ]
             
               printMenu = [
-                applicationPrintObject,NoticePrintObject,EmailPrintObject
+                applicationPrintObject,NoticePrintObject,EmailPrintObject,LetterPrintObject
               ]
             }
             
@@ -1769,7 +1800,6 @@ export const downloadPrintContainer = (
       break;                 
       case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
       case `${applicationType}` && 'ES_PENDING_DA_FEE':  
-      case `${applicationType}` && 'ES_PENDING_SO_APPROVAL': 
       case `${applicationType}` && 'ES_PENDING_PAYMENT':
           switch(applicationType) {
             case 'SaleDeed':
@@ -1919,17 +1949,6 @@ export const downloadPrintContainer = (
             switch(applicationType){
               
               case 'LeaseholdToFreehold':
-                  if(process.env.REACT_APP_NAME === "Citizen"){
-                    downloadMenu = [
-                      applicationDownloadObject,
-                      LetterDownloadObject
-                    ]
-                  
-                    printMenu = [
-                      applicationPrintObject,
-                      LetterPrintObject
-                    ]
-                  }else{
                     downloadMenu = [
                       applicationDownloadObject,
                       NoticeDownloadObject,
@@ -1941,7 +1960,6 @@ export const downloadPrintContainer = (
                       NoticePrintObject,
                       LetterPrintObject
                     ]
-                  }
                   
                   break;
               case 'IssuanceOfNotice':

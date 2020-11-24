@@ -26,7 +26,8 @@ import {
   } from "egov-ui-framework/ui-utils/commons";
   import {createExtensionFee} from '../../../../ui-utils/apply'
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-  
+  import { validateFields } from "../utils";
+
   const beforeInitFn = async (action, state, dispatch) => {
     let fileNumber = getQueryArg(window.location.href, "fileNumber")
     const queryObject = [{
@@ -63,6 +64,7 @@ import {
         xs: 12,
         sm: 6
     },
+    errorMessage: "ES_ERR_EXTENSION_AMOUNT_FIELD",
     pattern: getPattern("Amount"),
     required: true,
     jsonPath: "ExtensionFees[0].amount"
@@ -102,7 +104,19 @@ import {
   };
   
   const callBackForSubmit = (state, dispatch) => {
-    createExtensionFee(state,dispatch)
+    let isValid = true;
+    isValid = validateFields("components.div.children.detailsContainer.children.extensionFeeDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "addExtensionFee")
+    if(!isValid){
+      let errorMessage = {
+        labelName:
+            "Please Enter Mandatory Fields",
+        labelKey: "ES_ERR_MANDATORY_FIELDS"
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    if(!!isValid){
+      createExtensionFee(state,dispatch)
+    }
   }
   
   const submitFooter = getCommonApplyFooter({

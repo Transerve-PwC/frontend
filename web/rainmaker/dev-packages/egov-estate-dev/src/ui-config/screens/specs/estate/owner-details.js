@@ -13,7 +13,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults, getSearchApplicationsResults } from "../../../../ui-utils/commons";
 import { getOwnerDetails,getAllotmentDetails, getModeOfTransferDetailsForApprovedProperty, getCompanyDetails, getFirmDetails } from "./preview-resource/owner-properties";
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview'
 import { mobileNumberField, addressField } from "./applyResource/ownerDetails";
 import {
   getUserInfo
@@ -36,6 +36,7 @@ const {
 const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
+let isPropertyMasterOrAllotmentOfSite;
 
 
 // const OwnerDetails = getOwnerDetails(false);
@@ -85,9 +86,19 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let owners = properties[0].propertyDetails.owners;
     let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
     let companyOrFirm = properties[0].propertyDetails.companyOrFirm;
+    isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
     properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners}}]
 
     dispatch(prepareFinalObject("Properties", properties));
+
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.tabs",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+      )
+    )
 
     let applicationState = properties[0].state;
     let entityType = properties[0].propertyDetails.entityType;
@@ -368,7 +379,7 @@ const EstateOwnerDetails = {
             moduleName: "egov-estate",
             componentPath: "CustomTabContainer",
             props: {
-              tabs,
+              tabs: tabs,
               activeIndex: 2,
               onTabChange
             },

@@ -26,6 +26,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {addPenalty} from '../../../../ui-utils/apply'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import get from "lodash/get";
+import { validateFields } from "../utils";
 
 const header = getCommonHeader({
   labelName: "Penalty",
@@ -79,6 +81,7 @@ const getPenaltyTypeRadioButton = {
           labelKey: "ES_COMMON_PENALTY_FOR_CHEQUE_BOUNCE",
           value: "check bounse"
       }],
+      errorMessage: "ES_ERR_PENALTY_TYPE_FIELD",
       jsonPath: "propertyPenalties[0].violationType",
       required: true,
   },
@@ -95,6 +98,7 @@ const amountField = {
       labelName: "Enter Amount",
       labelKey: "ES_AMOUNT_PLACEHOLDER"
   },
+  errorMessage: "ES_ERR_PENALTY_AMOUNT_FIELD",
   gridDefination: {
       xs: 12,
       sm: 6
@@ -139,7 +143,21 @@ export const getCommonApplyFooter = children => {
 };
 
 const callBackForSubmit = (state, dispatch) => {
-  addPenalty(state,dispatch)
+
+  let isValid = true;
+  isValid = validateFields("components.div.children.detailsContainer.children.penaltyDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "estate-penalty")
+  if(!isValid){
+    let errorMessage = {
+      labelName:
+          "Please Enter Mandatory Fields",
+      labelKey: "ES_ERR_MANDATORY_FIELDS"
+  };
+  dispatch(toggleSnackbar(true, errorMessage, "warning"));
+  }
+  if(!!isValid){
+    addPenalty(state,dispatch)
+  }
+ 
 }
 
 const submitFooter = getCommonApplyFooter({

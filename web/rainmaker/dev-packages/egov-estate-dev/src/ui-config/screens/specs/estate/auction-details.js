@@ -23,7 +23,8 @@ import {
 import {
   onTabChange,
   headerrow,
-  tabs
+  tabs,
+  tabsAllotment
 } from './search-preview';
 import {
   auctionTable
@@ -31,6 +32,8 @@ import {
 import {
   getTextToLocalMapping
 } from '../utils'
+
+let isPropertyMasterOrAllotmentOfSite;
 
 const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
@@ -40,6 +43,7 @@ const searchResults = async (action, state, dispatch, fileNumber) => {
   let payload = await getSearchResults(queryObject);
   if (payload) {
     let properties = payload.Properties;
+    isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
     dispatch(prepareFinalObject("Properties", properties));
     if (properties[0].propertyDetails.bidders) {
       dispatch(
@@ -53,6 +57,15 @@ const searchResults = async (action, state, dispatch, fileNumber) => {
       let { bidders } = properties[0].propertyDetails;
       populateBiddersTable(bidders, "auction-details", "components.div.children.auctionTableContainer")
     }
+
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.tabs",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+      )
+    )
   }
 }
 
@@ -104,7 +117,7 @@ const auctionDetails = {
           moduleName: "egov-estate",
           componentPath: "CustomTabContainer",
           props: {
-            tabs,
+            tabs: tabs,
             activeIndex: 1,
             onTabChange
           },

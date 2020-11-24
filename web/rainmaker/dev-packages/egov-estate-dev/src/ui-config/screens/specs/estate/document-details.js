@@ -5,11 +5,12 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import {getReviewDocuments} from "./applyResource/reviewDocuments"
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview'
 import { setDocuments } from '../../../../ui-utils/commons'
 
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
+let isPropertyMasterOrAllotmentOfSite;
 
 const documentContainer = {
   uiFramework: "custom-atoms",
@@ -31,8 +32,18 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let properties = payload.Properties;
     let owners = properties[0].propertyDetails.owners;
     let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
+    isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
     properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners}}]
     dispatch(prepareFinalObject("Properties", properties));
+
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.tabs",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+      )
+    )
 
     payload.Properties = properties;
 
@@ -101,7 +112,7 @@ const DocumentReviewDetails = {
             moduleName: "egov-estate",
             componentPath: "CustomTabContainer",
             props: {
-              tabs,
+              tabs: tabs,
               activeIndex: 3,
               onTabChange
             },

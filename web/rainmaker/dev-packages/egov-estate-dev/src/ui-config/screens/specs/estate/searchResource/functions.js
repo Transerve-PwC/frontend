@@ -12,7 +12,7 @@ import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT , TYPE } from "./searchResults";
+import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT , TYPE ,PENALTY_STATUS } from "./searchResults";
 import moment from 'moment'
 import {penaltySummary} from '../../estate/generatePenaltyStatement'
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {

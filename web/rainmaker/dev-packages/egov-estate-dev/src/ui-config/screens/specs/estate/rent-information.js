@@ -4,10 +4,15 @@ import {
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewLicenseFee, getReviewInterest, getReviewSecurity, getReviewGroundRent, rentDetailsTable, getReviewPremiumAmount, installmentTable, getReviewAdvanceRent } from "./applyResource/reviewProperty";
-import { getTextToLocalMapping } from "../utils"
+import { getTextToLocalMapping } from "../utils";
+import {
+  get
+} from "lodash";
+
+let isPropertyMasterOrAllotmentOfSite;
 
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if(fileNumber){
@@ -19,7 +24,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       let demandGenerationType = properties[0].propertyDetails.paymentConfig.isGroundRent;
       let installments = properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems ? properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems : []
       let rentInfo = properties[0].propertyDetails.paymentConfig.paymentConfigItems ? properties[0].propertyDetails.paymentConfig.paymentConfigItems : [];
-      let propertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
+      isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
 
       let rentData = rentInfo.map(item => ({
         [getTextToLocalMapping("Rent amount")]: item.groundRentAmount || 0,
@@ -38,9 +43,26 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       dispatch(
         handleField(
           action.screenKey,
+          "components.div.children.tabSection",
+          "props.tabs",
+          (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+        )
+      )
+      dispatch(
+        handleField(
+          action.screenKey,
+          "components.div.children.tabSection",
+          "props.activeIndex",
+          (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 7 : 4,
+        )
+      )
+
+      dispatch(
+        handleField(
+          action.screenKey,
           "components.div.children.reviewRentInfo.children.cardContent.children.premiumAmountDetails",
           "visible",
-          !!(propertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
+          !!(isPropertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
         )
       )
       dispatch(
@@ -48,7 +70,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           action.screenKey,
           "components.div.children.reviewRentInfo.children.cardContent.children.installmentTable",
           "visible",
-          !!(propertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
+          !!(isPropertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
         )
       )
       dispatch(
@@ -56,7 +78,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           action.screenKey,
           "components.div.children.reviewRentInfo.children.cardContent.children.breakAfterSearch1",
           "visible",
-          !!(propertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
+          !!(isPropertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
         )
       )
 
@@ -111,6 +133,25 @@ uiFramework: "material-ui",
 name: "rent-information",
 beforeInitScreen: (action, state, dispatch) => {
   const fileNumber = getQueryArg(window.location.href, "fileNumber");
+  const type = getQueryArg(window.location.href, "type");
+
+
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.tabSection",
+      "props.tabs",
+      (type == "apply") ? tabs : tabsAllotment
+    )
+  )
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.tabSection",
+      "props.activeIndex",
+      (type == "apply") ? 7 : 4,
+    )
+  )
   beforeInitFn(action, state, dispatch, fileNumber);
   return action;
 },
@@ -140,8 +181,8 @@ components: {
           moduleName: "egov-estate",
           componentPath: "CustomTabContainer",
           props: {
-            tabs,
-            activeIndex: 7,
+            tabs: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment,
+            activeIndex: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 7 : 4,
             onTabChange
           },
           type: "array",

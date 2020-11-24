@@ -10,6 +10,8 @@ import {onTabChange, headerrow, tabs} from './search-preview'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewConsolidatedPaymentDetails} from "./applyResource/reviewProperty"
 
+let isPropertyMasterOrAllotmentOfSite;
+
 const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if(fileNumber){
       let queryObject = [
@@ -24,6 +26,15 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       let properties = response.Properties;
       let propertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
       dispatch(prepareFinalObject("Properties[0]", properties[0]));
+
+      dispatch(
+        handleField(
+          action.screenKey,
+          "components.div.children.tabSection",
+          "props.tabs",
+          (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+        )
+      )
 
       dispatch(
         handleField(
@@ -73,7 +84,7 @@ const consolidatedPaymentDetails = {
             componentPath: "CustomTabContainer",
             props: {
               tabs,
-              activeIndex: 7,
+              activeIndex: 6,
               onTabChange
             },
             type: "array",

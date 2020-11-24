@@ -14,10 +14,14 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getReviewAuction, getPropertyDetails,getAllotmentDetails,getAdditionalDetails ,getReviewRentSummary} from "./preview-resource/preview-properties";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { WF_ALLOTMENT_OF_SITE } from "../../../../ui-constants";
+import {
+  get
+} from "lodash";
 
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
-let tenantId = getTenantId()
+let tenantId = getTenantId();
+let isPropertyMasterOrAllotmentOfSite;
 
 export const headerrow = getCommonContainer({
   header: getCommonHeader({
@@ -50,6 +54,7 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     let applicationDocuments = properties[0].propertyDetails.applicationDocuments || [];
     const removedDocs = applicationDocuments.filter(item => !item.active)
     let category = properties[0].category;
+    isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
     
     let {estateRentSummary} = properties[0]
    
@@ -67,6 +72,15 @@ export const searchResults = async (action, state, dispatch, fileNumber) => {
     properties = {
       ...properties , estateRentSummary : estateRentSummary
     }
+
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.tabs",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+      )
+    )
 
     /* based on selected category toggle display of sub-category field */
     dispatch(
@@ -114,39 +128,72 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
 
 export const onTabChange = async(tabIndex, dispatch, state) => {
   fileNumber = getQueryArg(window.location.href, "fileNumber");
+
+  isPropertyMasterOrAllotmentOfSite = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyMasterOrAllotmentOfSite",
+    ""
+  );
+  
   let path = "";
-  if (tabIndex === 0) {
-    path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}`;
+  if (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") {
+    if (tabIndex === 0) {
+      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`;
+    }
+    else if (tabIndex === 1) {
+      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 2) {
+      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 3) {
+      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 4) {
+      path = `/estate/purchaser-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 5) {
+      path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 6) {
+      path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 7) {
+      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 8) {
+      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
+    else if (tabIndex === 9) {
+      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+    }
   }
-  else if (tabIndex === 1) {
-    path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 2) {
-    path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 3) {
-    path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 4) {
-    path = `/estate/purchaser-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 5) {
-    path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 6) {
-    path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 7) {
-    path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 8) {
-    path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 9) {
-    path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`
+  else {
+    if (tabIndex === 0) {
+      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`;
+    }
+    else if (tabIndex === 1) {
+      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
+    else if (tabIndex === 2) {
+      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
+    else if (tabIndex === 3) {
+      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
+    else if (tabIndex === 4) {
+      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
+    else if (tabIndex === 5) {
+      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
+    else if (tabIndex === 6) {
+      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+    }
   }
   dispatch(setRoute(path))
 }
+
 
 export const tabs = [
   {
@@ -169,6 +216,29 @@ export const tabs = [
   },
   {
     tabButton: { labelName: "Consoliated Payment Details", labelKey: "ES_CONSOLIDATED_PAYMENT_DETAILS" }
+  },
+  {
+    tabButton: { labelName: "Rent Information", labelKey: "ES_RENT_INFORMATION" }
+  },
+  {
+    tabButton: { labelName: "Notices", labelKey: "ES_NOTICES" }
+  },
+  {
+    tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
+  }
+]
+export const tabsAllotment = [
+  {
+    tabButton: { labelName: "Property Details", labelKey: "ES_PROPERTY_DETAILS" }
+  },
+  {
+    tabButton: { labelName: "Auction Details", labelKey: "ES_AUCTION_DETAILS" }
+  },
+  {
+    tabButton: { labelName: "Entity/Owner Details", labelKey: "ES_ENTITY_OWNER_DETAILS" }
+  },
+  {
+    tabButton: { labelName: "Entity/Owner Documents", labelKey: "ES_ENTITY_OWNER_DOCUMENTS" }
   },
   {
     tabButton: { labelName: "Rent Information", labelKey: "ES_RENT_INFORMATION" }
@@ -248,7 +318,7 @@ const estateDetailPreview = {
             moduleName: "egov-estate",
             componentPath: "CustomTabContainer",
             props: {
-              tabs,
+              tabs: tabs,
               activeIndex: 0,
               onTabChange
             },

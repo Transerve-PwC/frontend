@@ -5,9 +5,10 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getCourtCaseDetails } from "./preview-resource/courtCase-details";
-import {onTabChange, headerrow, tabs} from './search-preview'
+import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview'
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
+let isPropertyMasterOrAllotmentOfSite;
 
 const courtCaseContainer = {
   uiFramework: "custom-atoms",
@@ -27,7 +28,25 @@ let queryObject = [
 let payload = await getSearchResults(queryObject);
 if(payload) {
   let properties = payload.Properties;
+  isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
     dispatch(prepareFinalObject("Properties", properties));
+
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.tabs",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+      )
+    )
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.tabSection",
+        "props.activeIndex",
+        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 9 : 6,
+      )
+    )
     
     let containers={}
     if(properties[0].propertyDetails.courtCases){
@@ -90,8 +109,8 @@ components: {
           moduleName: "egov-estate",
           componentPath: "CustomTabContainer",
           props: {
-            tabs,
-            activeIndex: 9,
+            tabs: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment,
+            activeIndex: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 9 : 6,
             onTabChange
           },
           type: "array",

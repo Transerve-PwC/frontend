@@ -145,13 +145,16 @@ const estateSearchAndResult = {
                   branchType = getQueryArg(window.location.href, "branchType");
                   switch(branchType) {
                     case "ESTATE_BRANCH":
-                      dispatch(setRoute(`/estate/apply?tenantId=${getTenantId()}`));
+                      window.location.href = `/estate/apply?tenantId=${getTenantId()}`;
+                      // dispatch(setRoute(`/estate/apply?tenantId=${getTenantId()}`));
                       break;
                     case "BUILDING_BRANCH":
-                      dispatch(setRoute(`/estate/apply-building-branch?tenantId=${getTenantId()}`));
+                      window.location.href = `/estate/apply-building-branch?tenantId=${getTenantId()}`;
+                      // dispatch(setRoute(`/estate/apply-building-branch?tenantId=${getTenantId()}`));
                       break;
                     case "MANI_MAJRA":
-                      dispatch(setRoute(`/estate/apply-manimajra?tenantId=${getTenantId()}`));
+                      window.location.href = `/estate/apply-manimajra?tenantId=${getTenantId()}`;
+                      // dispatch(setRoute(`/estate/apply-manimajra?tenantId=${getTenantId()}`));
                       break;
                     default:
                       break;
