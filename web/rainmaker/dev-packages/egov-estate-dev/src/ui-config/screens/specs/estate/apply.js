@@ -46,7 +46,6 @@ import {
   getSearchResults,
   populateBiddersTable
 } from "../../../../ui-utils/commons";
-import * as companyDocsData from './applyResource/company-docs.json';
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as biddersListData from './applyResource/biddersListDoc.json';

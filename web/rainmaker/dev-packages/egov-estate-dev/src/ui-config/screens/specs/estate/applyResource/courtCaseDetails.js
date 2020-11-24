@@ -145,19 +145,6 @@ const honbleSupremeCourtField = {
   jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableSupremeCourt"
 }
 
-// export const courtCaseDetails = getCommonCard({
-//   header: courtCaseHeader,
-//   detailsContainer: getCommonContainer({
-//     estateOfficerCourt: getTextField(estateOfficerCourtField),
-//     commissionersCourt: getTextField(commissionersCourtField),
-//     chiefAdministratorsCourt: getTextField(chiefAdministratorsCourtField),
-//     advisorToAdminCourt: getTextField(advisorToAdminCourtField),
-//     honbleDistrictCourt: getTextField(honbleDistrictCourtField),
-//     honbleHighCourt: getTextField(honbleHighCourtField),
-//     honbleSupremeCourt: getTextField(honbleSupremeCourtField)
-//   })
-// })
-
 const commonCourtCaseInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({

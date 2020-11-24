@@ -9,8 +9,6 @@ import {
 import { getEpochForDate, sortByEpoch } from "../../utils";
 import {
   propertyInfoDetails,
-  auctionDetails,
-  // allotmentDetails,
   additionalDetails
 } from './propertyDetails';
 import {
@@ -45,9 +43,6 @@ import {
 import {
   AllotmentAuctionDetails
 } from './auction-details'
-import {
-  CompanyDetails
-} from './company-details';
 import {
   companyDetails,
   firmDetails,
@@ -179,20 +174,6 @@ export const paymentDetailsTable =  {
     }
   }
 }
-
-export const companyDocuments_0 = getCommonCard({
-  ...documentCardConfig,
-  documentList: {
-    ...documentList,
-    props: {
-      ...documentList.props,
-      documentsJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.partnerDocuments",
-      uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.uploadedDocsInRedux",
-      tenantIdJsonPath: "Properties[0].tenantId",
-      removedJsonPath: "PropertiesTemp[0].propertyDetails.partners[0].partnerDetails.removedDocs"
-    }
-  }
-});
 
 export const previousOwnerDocuments_0 = getCommonCard({
   ...documentCardConfig,
@@ -372,12 +353,7 @@ export const formwizardNinthStep = {
     id: "apply_form9"
   },
   children: {
-    // paymentDocumentsDetails,
-    // breakAfterSearch: getBreak(),
-    // paymentDetailsTable
-    paymentDetails,
-    // serviceTaxDetails,
-    // paymentMadeBy
+    paymentDetails
   },
   visible: false
 }

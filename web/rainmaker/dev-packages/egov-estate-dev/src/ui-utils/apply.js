@@ -273,16 +273,6 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       }
     } else {
       let tabsArr = [0,1,2,3,4,5,6,7,8];
-      // let owners = get(
-      //   queryObject[0],
-      //   "propertyDetails.owners",
-      //   []
-      // )
-      // let prevOwners = get(
-      //   queryObject[0],
-      //   "propertyDetails.purchaser",
-      //   []
-      // )
       if (screenName == "allotment" || screenName == "apply-manimajra") {
         tabsArr.splice(-2, 2);
       }
@@ -321,16 +311,6 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
           set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, ownerDocuments)
         })
       }
-
-      
-      /* let ownerDocuments = get(queryObject[0], "ownerDetails.ownerDocuments") || [];
-      ownerDocuments = ownerDocuments.map(item => ({
-        ...item,
-        active: true
-      }))
-      const removedDocs = get(state.screenConfiguration.preparedFinalObject, "PropertiesTemp[0].removedDocs") || [];
-      ownerDocuments = [...ownerDocuments, ...removedDocs]
-      set(queryObject[0], "ownerDetails.ownerDocuments", ownerDocuments) */
 
       console.log(JSON.stringify(queryObject));
 
@@ -392,16 +372,6 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths, premiumAmountConfigItems: premiumAmountConfigItems}}}]
       }
     }
-    // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];
-    // const removedDocs = ownerDocuments.filter(item => !item.active)
-    // ownerDocuments = ownerDocuments.filter(item => !!item.active)
-    // Properties = [{
-    //   ...Properties[0],
-    //   propertyDetails: {
-    //     ...Properties[0].propertyDetails,
-    //     ownerDocuments
-    //   }
-    // }]
 
     let {estateRentSummary} = Properties[0]
     if(!!estateRentSummary){
@@ -437,13 +407,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
         setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerDocuments`, `PropertiesTemp[0].propertyDetails.owners[${index}].ownerDetails.uploadedDocsInRedux`);
       })
     }
-    
-    // dispatch(
-    //   prepareFinalObject(
-    //     "Properties[0].removedDocs",
-    //     removedDocs
-    //   )
-    // );
+
     return true;
   } catch (error) {
     dispatch(toggleSnackbar(true, {

@@ -25,8 +25,7 @@ import {
 } from "lodash";
 import "./index.css";
 import {
-  setDocumentData,
-  setCompanyDocs
+  setDocumentData
 } from '../allotment'
 import {
   getReviewOwner,

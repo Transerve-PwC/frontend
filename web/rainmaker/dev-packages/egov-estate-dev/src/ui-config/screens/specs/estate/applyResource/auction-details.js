@@ -78,16 +78,6 @@ export const auctionDetailsHeader = getCommonTitle({
   }
 })
 
-// export const biddersListHeader = getCommonTitle({
-//   labelName: "Bidders List Upload",
-//   labelKey: "ES_BIDDERS_LIST_HEADER"
-// }, {
-//   style: {
-//     marginBottom: 18,
-//     marginTop: 18
-//   }
-// })
-
 const auctionIdField = {
   label: {
     labelName: "Auction Id",
@@ -209,41 +199,6 @@ const emdAmountDate = {
   jsonPath: "Properties[0].propertyDetails.emdDate"
 }
 
-const buttonItem = {
-  firstCont: {
-    uiFramework: "custom-atoms",
-    componentPath: "Div",
-    gridDefination: {
-      xs: 12,
-      sm: 4
-    }
-  },
-  searchButton: {
-    componentPath: "Button",
-    gridDefination: {
-      xs: 12,
-      sm: 4
-    },
-    props: {
-      variant: "contained",
-      style: {
-        color: "white",
-
-        backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
-        borderRadius: "2px",
-        width: "80%",
-        height: "48px"
-      }
-    },
-    children: {
-      buttonLabel: getLabel({
-        labelName: "Upload",
-        labelKey: "ES_UPLOAD_BUTTON"
-      })
-    }
-  }
-}
-
 const commonAuctionInformation = () => {
   return getCommonGrayCard({
     header: getCommonTitle({
@@ -264,25 +219,6 @@ const commonAuctionInformation = () => {
     })
   });
 };
-
-// const UploadButtonContainer = getCommonGrayCard({
-//   header: biddersListHeader,
-//   buttonContainer: getCommonContainer(
-//     {...buttonItem, searchButton: {...buttonItem.searchButton, 
-//       onClickDefination: {
-//         action: "condition",
-//         // callBack: searchApiCall
-//       }
-//     }, lastCont: {
-//       uiFramework: "custom-atoms",
-//       componentPath: "Div",
-//       gridDefination: {
-//         xs: 12,
-//         sm: 4
-//       }
-//     }
-//   })
-// });
 
 export const auctionTable = {
   uiFramework: "custom-molecules",
