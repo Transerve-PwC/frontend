@@ -1,5 +1,8 @@
-name: A workflow to build egov citizen
-on: workflow_dispatch
+name: A workflow to build egov frontend
+on: 
+ push:
+    branches:
+      - feature/deploy
 jobs:
   build:
     name: Build citizen
@@ -27,8 +30,13 @@ jobs:
       - name: Archive Citizen build
         uses: actions/upload-artifact@v2
         with:
-          name: citizen-build.zip
+          name: citizen-build
           path: ./web/rainmaker/packages/citizen/build
+      - name: Inform Dev server to deploy
+        uses: satak/webrequest-action@master
+        with:
+          url: https://egov.transerve.com/github/deploy/frontend
+          method: GET
   build-employee:
     name: Build Employee
     runs-on: ubuntu-latest
@@ -55,7 +63,7 @@ jobs:
       - name: Archive Employee build
         uses: actions/upload-artifact@v2
         with:
-          name: employee-build.zip
+          name: employee-build
           path: ./web/rainmaker/packages/employee/build
 
 
