@@ -87,7 +87,10 @@ export const applicationSuccessFooter = (
             if(purpose === 'pay'){
               if(consumerCodes.startsWith('SITE')){
                 let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
-                let fileNumber = consumerCodes.split('-')[1]
+                var array = consumerCodes.split("-");
+                array.splice(array.length - 6);
+                array.splice(0, 1);
+                let fileNumber = array.join("-");
                 let queryObject = [
                   { key: "fileNumber", value: fileNumber }
                 ];
@@ -173,7 +176,11 @@ export const applicationSuccessFooter = (
             if(purpose === 'pay'){
               if(consumerCodes.startsWith('SITE')){
                 let consumerCodes = getQueryArg(window.location.href, "applicationNumber");
-                let fileNumber = consumerCodes.split('-')[1]
+                var array = consumerCodes.split("-");
+                array.splice(array.length - 6);
+                array.splice(0, 1);
+                let fileNumber = array.join("-");
+                // let fileNumber = consumerCodes.split('-')[1]
                 let queryObject = [
                   { key: "fileNumber", value: fileNumber }
                 ];

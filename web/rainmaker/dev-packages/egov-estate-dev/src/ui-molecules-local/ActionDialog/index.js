@@ -225,7 +225,7 @@ class ActionDialog extends React.Component {
                     type="date"
                     required={true}
                     defaultValue={new Date()}
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{ shrink: true, max: new Date() }}
                     label= {fieldConfig.hardCopyReceivedDate.label}
                     onChange={e =>
                      handleFieldChange( `${dataPath}.hardCopyReceivedDate` , getEpoch(e.target.value))

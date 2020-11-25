@@ -283,6 +283,8 @@ export const getMdmsData = async queryObject => {
 };
 
 export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") => {
+
+  const isGroundRent = Properties[0].propertyDetails.paymentConfig.isGroundRent
   let queryStr = [{
     key: "key",
     value: `property-summary`
@@ -354,9 +356,21 @@ if(Property.propertyDetails.purchaser.length > 0){
      purchaser.ownerDetails.dob = moment(new Date(purchaser.ownerDetails.dob)).format("DD-MMM-YYYY")
      return purchaser
   })
- 
 }
 
+if(isGroundRent){
+  Property.propertyDetails["groundRentDetails"] = {
+    "groundRentGenerationType" : Property.propertyDetails.paymentConfig.groundRentGenerationType,
+    "groundRentGenerateDemand" : Property.propertyDetails.paymentConfig.groundRentGenerateDemand,
+    "groundRentBillStartDate"  : Property.propertyDetails.paymentConfig.groundRentBillStartDate
+  }
+}else{
+  Property.propertyDetails["licenceDetails"] = {
+    "groundRentGenerationType" : Property.propertyDetails.paymentConfig.groundRentGenerationType,
+    "groundRentGenerateDemand" : Property.propertyDetails.paymentConfig.groundRentGenerateDemand,
+    "groundRentBillStartDate"  : Property.propertyDetails.paymentConfig.groundRentBillStartDate
+  }
+}
 
   const DOWNLOADRECEIPT = {
     GET: {
@@ -651,14 +665,6 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
   try {
     httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
       let queryStr = [
-        // {
-        //   key: "key",
-        //   value: "application-payment-receipt"
-        // },
-        // {
-        //   key: "tenantId",
-        //   value: receiptQueryString[1].value.split('.')[0]
-        // }
       ]
       
       if (payloadReceiptDetails && payloadReceiptDetails.Payments && payloadReceiptDetails.Payments.length == 0) {
@@ -703,7 +709,7 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
         }]
       }]
       switch(type){
-        case 'rent-payment':
+        case 'rent-payment':         
            queryStr = [{
               key: "key",
               value: "rent-payment-receipt"
@@ -713,6 +719,17 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
               value: receiptQueryString[1].value.split('.')[0]
             }
           ]
+            if(process.env.REACT_APP_NAME === "Citizen"){
+              payload[0].propertyDetails["offlinePaymentDetails"] = []
+            
+              let transactionNumber = {
+                "transactionNumber" : Payments[0].transactionNumber
+              }
+              payload[0].propertyDetails.offlinePaymentDetails.push(transactionNumber)
+             }
+             if(process.env.REACT_APP_NAME === "Employee"){
+              Payments[0].transactionDate = moment(new Date(payload[0].propertyDetails.offlinePaymentDetails.dateOfPayment)).format("DD MM YY")
+             }
             httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
               Payments,
               Properties : payload,
@@ -1258,14 +1275,14 @@ export const downloadNotice = (Applications, applicationType,noticeType, mode = 
 
 
 
-export const prepareDocumentTypeObj = documents => {
+export const prepareDocumentTypeObj = (documents, ownerIndex) => {
   let documentsArr =
     documents.length > 0 ?
     documents.reduce((documentsArr, item, ind) => {
       documentsArr.push({
         name: item.code,
         required: item.required,
-        jsonPath: `Properties[0].propertyDetails.owners[0].ownerDetails.ownerDocuments[${ind}]`,
+        jsonPath: `Properties[0].propertyDetails.owners[${ownerIndex}].ownerDetails.ownerDocuments[${ind}]`,
         statement: item.description
       });
       return documentsArr;

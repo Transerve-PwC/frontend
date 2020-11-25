@@ -1,4 +1,4 @@
-import { dispatchMultipleFieldChangeAction, getCommonCard, getCommonHeader, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { dispatchMultipleFieldChangeAction, getCommonCard, getCommonHeader, getStepperObject,getCommonTitle } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
@@ -98,6 +98,7 @@ const getData = async (action, state, dispatch) => {
     const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
 
     const header = getCommonApplyHeader({label: headerLabel, number: applicationNumber})
+    const headerDeclaration = getCommonTitle({labelName: "Declaration", labelKey: "ES_DECLARATION_CHECKBOX_LABEL"})
     
     dispatch(prepareFinalObject("property", property));
 
@@ -109,6 +110,7 @@ const getData = async (action, state, dispatch) => {
     dispatch(prepareFinalObject("Applications[0].branchType", values[0] ))
     dispatch(prepareFinalObject("Applications[0].moduleType", values[1] ))
     dispatch(prepareFinalObject("Applications[0].applicationType", values[2] ))
+    // dispatch(prepareFinalObject("temp[0].declaration", false));
     //Register all the datasources in the config.
     !!dataSources && dataSources.forEach(dataSource => dataSource.type === "path" ?
       registerDatasource({...dataSource, data: property})
@@ -174,7 +176,37 @@ const getData = async (action, state, dispatch) => {
             },
             children: {
               reviewDetails: third_step,
-              declarationSummary: declarationSummary
+              headerDiv: {
+                uiFramework: "custom-atoms",
+                componentPath: "Container",
+                props: {	
+                  style: { marginBottom: "5px" }	
+                },
+                children: {
+                  header: {
+                    gridDefination: {
+                      xs: 12,
+                      sm: 10
+                    },
+                    ...headerDeclaration
+                  }
+                }
+              },
+              declarationSummary: {
+                uiFramework: "custom-containers-local",
+                moduleName: "egov-estate",
+                componentPath: "CheckboxContainer",
+                jsonPath: "temp[0].declaration",
+                props: {
+                  label: {
+                    labelName: "I hereby declare and affirm that the above-furnished information is true and correct and nothing has been concealed therefrom. I am also aware of the fact that in case this information is found false/inconect, the authorities are at liberty to initiate recovery of amount/interest/penalty/fine as providod in Punjab Municipal Act 1911 or Punjab Municipal Corporation Act 1976.",
+                    labelKey: "ES_DECLARATION_SUMMARY_VALUE"
+                  },
+                  style: { margin: "10px" },
+                  jsonPath: "temp[0].declaration"
+                },
+                type: "array"
+              }
             },
             visible: false
           } ,
@@ -183,34 +215,6 @@ const getData = async (action, state, dispatch) => {
       }
     }
 }
-const declarationDetails = getCommonContainer({
-  checkbox:{
-   uiFramework: "ui-atoms-local",
-   moduleName: "egov-estate-dev",
-   componentPath: "Checkbox",
-   props: {
-     content:'ES_DECLARATION_BOX'
-   },
-  //  visible: process.env.REACT_APP_NAME === "Citizen" ? true : false
-  visible: true
- }
- });
-
-
-export const declarationSummary = getCommonContainer({
- header: {
-   uiFramework: "custom-atoms",
-   componentPath: "Container",
-   props: {
-     style: { margin: "10px" }
-   },
-   children: {
-     body: declarationDetails
-   }
- },
-
-});
-
 
 const commonApply = {
     uiFramework: "material-ui",

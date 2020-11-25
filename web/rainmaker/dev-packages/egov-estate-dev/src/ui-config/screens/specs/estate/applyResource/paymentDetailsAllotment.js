@@ -55,6 +55,8 @@ const advancedRentField = {
       xs: 12,
       sm: 6
   },
+  required: true,
+  minLength: 1,
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }
@@ -70,11 +72,7 @@ const dateOfPaymentOfAdvanceRentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRentDate",
-  // props: {
-  //     inputProps: {
-  //         max: getTodaysDateInYMD()
-  //     }
-  // }
+  required: true
 }
 
 /************************ Premium Amount Deatails *******************/
@@ -92,6 +90,8 @@ const premiumAmountField = {
       sm: 6
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.totalAmount"
 }
 
@@ -109,6 +109,8 @@ const installmentField = {
       sm: 6
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems[0].premiumAmount"
 }
 
@@ -122,12 +124,8 @@ const dueDateForInstallmentField = {
       labelKey: "ES_DUE_DATE_INSTALLMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems[0].premiumAmountDate",
-  // props: {
-  //     inputProps: {
-  //         max: getTodaysDateInYMD()
-  //     }
-  // }
 }
 
 const commonInstallmentInformation = () => {
@@ -297,7 +295,7 @@ const groundRentGenerationTypeField = {
       xs: 12,
       sm: 6
   },
-  maxLength: 100,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
@@ -344,11 +342,7 @@ const billingStartDateField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentBillStartDate",
-  // props: {
-  //     inputProps: {
-  //         max: getTodaysDateInYMD()
-  //     }
-  // }
+  required: true
 }
 
 const dateToGenerateDemandRentField = {
@@ -365,6 +359,7 @@ const dateToGenerateDemandRentField = {
     xs: 12,
     sm: 6
   },
+  required: true,
   props: {
       data: data
   },
@@ -385,6 +380,8 @@ const rentAmountField = {
       sm: 3
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 
@@ -402,6 +399,8 @@ const startYearField = {
       sm: 3
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   props: {
     disabled: true,
     value: 0
@@ -423,6 +422,8 @@ const endYearField = {
       sm: 3
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   props: {
     type: "number"
   },
@@ -441,7 +442,16 @@ const commonRentInformation = () => {
       },
       {
         jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
-        callBack: (value) => (Number(value)/12).toFixed(2)
+        callBack: (value) =>  {
+          if (value) {
+            let till = ((Number(value)/12).toFixed(1)).toString();
+            till = till.includes(".") ? till.split(".") : till
+            let year = till[0] + " year ";
+            let month = !!till[1] ? till[1] + " month" : ""
+            return year + month;
+          }
+          return "-"
+        }
       }
       )
     })
@@ -560,6 +570,8 @@ const licenseFeeGenerationTypeField = {
       sm: 6
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
@@ -605,6 +617,7 @@ const dateToGenerateDemandLicenseFeeField = {
     xs: 12,
     sm: 6
   },
+  required: true,
   props: {
       data: data
   },
@@ -626,11 +639,7 @@ const billingStartDateLicenseFeeField = {
     xs: 12,
     sm: 6
   },
-  // props: {
-  //     inputProps: {
-  //         max: getTodaysDateInYMD()
-  //     }
-  // }
+  required: true
 }
 
 const licenseFeeField = {
@@ -647,6 +656,8 @@ const licenseFeeField = {
       sm: 3
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 
@@ -668,6 +679,8 @@ const startYearLfField = {
     value: 0
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentStartMonth"
 }
 
@@ -685,6 +698,8 @@ const endYearLfField = {
       sm: 3
   },
   maxLength: 100,
+  minLength: 1,
+  required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
 }
 
@@ -808,7 +823,7 @@ export const licenseFeeDetails = getCommonCard({
 
 
 /******************** Security Fee Details ********************/ 
-const securityFeeAmountField = {
+/* const securityFeeAmountField = {
   label: {
       labelName: "Security Fee Amount",
       labelKey: "ES_SECURITY_FEE_AMOUNT_LABEL"
@@ -823,7 +838,7 @@ const securityFeeAmountField = {
   },
   maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.securityAmount"
-}
+} */
 
 const dateOfPaymentField = {
   label: {
@@ -836,11 +851,7 @@ const dateOfPaymentField = {
   },
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.dueDateOfPayment",
-  // props: {
-  //     inputProps: {
-  //         max: getTodaysDateInYMD()
-  //     }
-  // }
+  required: true
 }
 
 const getMonthsOfRentRadioButton = {
@@ -864,9 +875,9 @@ const getMonthsOfRentRadioButton = {
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",
-    // required: true
+    required: true
   },
-  // required: true,
+  required: true,
   type: "array"
 }
 
@@ -883,7 +894,7 @@ const securityDetailsHeader = getCommonTitle({
 export const securityDetails = getCommonCard({
   header: securityDetailsHeader,
   detailsContainer: getCommonContainer({
-      securityFeeAmount: getTextField(securityFeeAmountField),
+      // securityFeeAmount: getTextField(securityFeeAmountField),
       monthsOfRent: getMonthsOfRentRadioButton,
       securityFeeDateOfPayment: getDateField(dateOfPaymentField),
       

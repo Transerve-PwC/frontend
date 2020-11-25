@@ -6,7 +6,15 @@ import { connect } from "react-redux";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-//import "./index.css";
+import { getLocalization } from "egov-ui-kit/utils/localStorageUtils";
+import {
+  getTranslatedLabel,
+  transformById
+} from "../../ui-config/screens/specs/utils";
+import get from "lodash/get";
+import "./index.scss";
+
+
 
 const styles = {
   root: {
@@ -18,37 +26,80 @@ const styles = {
   checked: {}
 };
 
+const localizationLabels = JSON.parse(getLocalization("localization_en_IN"));
+
+const getLocaleLabelsforTL = (label, labelKey, localizationLabels) => {
+  if (labelKey) {
+    let translatedLabel = getTranslatedLabel(labelKey, localizationLabels);
+    if (!translatedLabel || labelKey === translatedLabel) {
+      return label;
+    } else {
+      return translatedLabel;
+    }
+  } else {
+    return label;
+  }
+};
+
 class CheckboxLabels extends React.Component {
   state = {
-    checkedG: true
+    fieldValue: true
   };
 
   handleChange = name => event => {
-    const { jsonPath, approveCheck } = this.props;
-    this.setState({ [name]: event.target.checked }, () =>
-      approveCheck(jsonPath, this.state.checkedG)
-    );
+    const { jsonPath, approveCheck, fieldValue } = this.props;
+    approveCheck(jsonPath, !fieldValue);
   };
 
+  componentWillReceiveProps(nextProps) {
+    let { fieldValue, jsonPath, approveCheck } = nextProps;
+    if (this.props.fieldValue != fieldValue) {
+      approveCheck(jsonPath, fieldValue)
+    }
+  }
+
   render() {
-    const { classes, content } = this.props;
+    let {
+      label = {},
+      placeholder = {},
+      jsonPath,
+      iconObj = {},
+      value,
+      dropdownData,
+      data = [],
+      optionValue = "code",
+      optionLabel = "code",
+      sourceJsonPath,
+      classes,
+      componentJsonpath,
+      fieldValue,
+      ...rest
+    } = this.props;
+
+    let transfomedKeys = transformById(localizationLabels, "code");
+    let translatedLabel = getLocaleLabelsforTL(
+      label.labelName,
+      label.labelKey,
+      transfomedKeys
+    );
 
     return (
       <FormGroup row>
         <FormControlLabel
           classes={{ label: "checkbox-label" }}
+          key={fieldValue}
           control={
             <Checkbox
-              checked={this.state.checkedG}
-              onChange={this.handleChange("checkedG")}
-              value={this.state.checkedG}
+              checked={fieldValue}
+              onChange={this.handleChange(fieldValue)}
+              value={fieldValue}
               classes={{
                 root: classes.root,
                 checked: classes.checked
               }}
             />
           }
-          label={content}
+          label={translatedLabel}
         />
       </FormGroup>
     );
@@ -56,10 +107,12 @@ class CheckboxLabels extends React.Component {
 }
 
 const mapStateToProps = (state, ownprops) => {
+  let fieldValue = false;
   const { screenConfiguration } = state;
   const { jsonPath } = ownprops;
   const { preparedFinalObject } = screenConfiguration;
-  return { preparedFinalObject, jsonPath };
+  if (jsonPath) fieldValue = get(preparedFinalObject, jsonPath);
+  return { preparedFinalObject, jsonPath, fieldValue };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -239,6 +239,7 @@ export const previousButton = {
     );
     let isFormValid = true;
     let hasFieldToaster = true;
+    let isDeclarationboxvalid;
     if(activeStep === DETAILS_STEP) {
 
       let cardItems = get(state.screenConfiguration.screenConfig["_apply"], "components.div.children.formwizardFirstStep.children", {}) || {}
@@ -308,7 +309,10 @@ export const previousButton = {
     }
     }
     if(activeStep === SUMMARY_STEP) {
+      isDeclarationboxvalid = get(state.screenConfiguration.preparedFinalObject,"temp[0].declaration") || false;
+  
       isFormValid = await applyforApplication(state, dispatch, activeStep);
+      isFormValid = isDeclarationboxvalid === true ? true : false;
         if (isFormValid) {
           const data = get(
             state.screenConfiguration.preparedFinalObject,
@@ -318,9 +322,19 @@ export const previousButton = {
         }
       }
     if(activeStep !== SUMMARY_STEP) {
-      if(!!isFormValid) {
-        changeStep(state, dispatch, "_apply");
-      } else if (hasFieldToaster) {
+      isDeclarationboxvalid = get(state.screenConfiguration.preparedFinalObject,"temp[0].declaration") || false;
+      if(isFormValid) {
+          changeStep(state, dispatch, "_apply");
+        }
+      // else if(!isDeclarationboxvalid){
+      //   let errorMessage = {
+      //     labelName:
+      //         "Please check the declaration!",
+      //     labelKey: "ES_ERR_DECLARATION_NOT_CHECKED"
+      //   };
+      //   dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      // }
+    else if (hasFieldToaster) {
         let errorMessage = {
           labelName:
               "Please fill all mandatory fields and upload the documents !",
@@ -339,6 +353,15 @@ export const previousButton = {
                       labelName: "Please upload all the required documents !",
                       labelKey: "ES_ERR_UPLOAD_REQUIRED_DOCUMENTS"
                   };
+              break;
+          case SUMMARY_STEP:
+            if(!isDeclarationboxvalid){
+                  errorMessage = {
+                    labelName:
+                        "Please check the declaration!",
+                    labelKey: "ES_ERR_DECLARATION_NOT_CHECKED"
+                  };
+                }
               break;
         }
         dispatch(toggleSnackbar(true, errorMessage, "warning"));

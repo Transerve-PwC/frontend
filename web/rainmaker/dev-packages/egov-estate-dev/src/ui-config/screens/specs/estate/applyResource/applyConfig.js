@@ -91,6 +91,21 @@ export const ownerDocumentDetails_0 = getCommonCard({
     }
   }
 });
+export const ownerDocumentDetails_1 = getCommonCard({
+  ...documentCardConfig,
+  documentList: {
+    ...documentList,
+    props: {
+      ...documentList.props,
+      documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.ownerDocuments",
+      uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.uploadedDocsInRedux",
+      tenantIdJsonPath: "Properties[0].tenantId",
+      removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.removedDocs",
+      callBack: applyEstates,
+      activeIndex: 3
+    }
+  }
+});
 
 export const paymentDocumentsDetails = getCommonCard({
   ...documentCardConfig,
@@ -309,6 +324,7 @@ export const formwizardFourthStep = {
   },
   children: {
     ownerDocumentDetails_0
+    // ownerDocumentDetails_1
   },
   visible: false
 };

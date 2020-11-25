@@ -35,7 +35,6 @@ import {
 import {
   get
 } from "lodash";
-import * as biddersListData from './applyResource/biddersListDoc.json';
 import {
   updatePFOforSearchResults
 } from "../../../../ui-utils/commons";
@@ -138,10 +137,17 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
-const setBiddersDoc = (action, state, dispatch) => {
+const setBiddersDoc = async (action, state, dispatch) => {
+  const documentTypePayload = [{
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
+    masterDetails: [{
+      name: "biddersListDoc"
+    }]
+  }]
+  const documentRes = await getMdmsData(dispatch, documentTypePayload);
   const {
     EstateServices
-  } = biddersListData && biddersListData.MdmsRes ? biddersListData.MdmsRes : {}
+  } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
     biddersListDoc = []
   } = EstateServices || {}
@@ -161,6 +167,22 @@ const setBiddersDoc = (action, state, dispatch) => {
     )
   );
   dispatch(prepareFinalObject(`temp[0].documents`, documentTypes))
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.screenKey",
+      "allotment"
+    )
+  )
+  dispatch(
+    handleField(
+      "allotment",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
+      "props.componentJsonPath",
+      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
+    )
+  )
 }
 
 const header = getCommonContainer({
@@ -266,23 +288,6 @@ const getData = async (action, state, dispatch) => {
   )
 
   setBiddersDoc(action, state, dispatch);
-
-  dispatch(
-    handleField(
-      "allotment",
-      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
-      "props.screenKey",
-      "allotment"
-    )
-  )
-  dispatch(
-    handleField(
-      "allotment",
-      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.biddersListContainer.children.cardContent.children.documentList",
-      "props.componentJsonPath",
-      "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.auctionTableContainer"
-    )
-  )
 }
 
 const applyAllotment = {
