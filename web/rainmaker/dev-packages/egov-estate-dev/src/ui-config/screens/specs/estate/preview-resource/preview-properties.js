@@ -312,7 +312,7 @@ export const securityInfo = (isEditable) => ({
           sm: 10
         },
         ...getCommonSubHeader({
-          labelName: " Security Fee Summary",
+          labelName: "Security Fee Summary",
           labelKey: "ES_SECURITY_FEE_SUMMARY"
         })
       },
@@ -320,17 +320,17 @@ export const securityInfo = (isEditable) => ({
     }
   },
   viewFour: getCommonContainer({
-    totalPenalty: getLabelWithValue(
+    totalSecurityFee: getLabelWithValue(
       totalSecurityFeeLabel, {
         jsonPath: "Properties[0].propertyDetails.paymentConfig.securityAmount"
       }
     ),
-    totalSecurityFeeLabel: getLabelWithValue(
+    totalSecurityFeeCollected: getLabelWithValue(
       totalSecurityFeeCollectedLabel, {
         jsonPath: ""
       }
     ),
-    totalPenaltyPaid: getLabelWithValue(
+    totalSecurityFeeDue: getLabelWithValue(
       totalSecurityFeeDueLabel, {
         jsonPath: "SecurityFee.totalPenaltyPaid"
       }

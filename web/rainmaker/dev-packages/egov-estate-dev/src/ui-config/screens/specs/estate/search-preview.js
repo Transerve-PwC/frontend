@@ -138,57 +138,63 @@ export const onTabChange = async(tabIndex, dispatch, state) => {
   let path = "";
   if (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") {
     if (tabIndex === 0) {
-      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`;
+      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}`;
     }
     else if (tabIndex === 1) {
-      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 2) {
-      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 3) {
-      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 4) {
-      path = `/estate/purchaser-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/purchaser-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 5) {
-      path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 6) {
-      path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/payment-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 7) {
-      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 8) {
-      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 9) {
-      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}&type=apply`
+      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`
+    }
+    else if (tabIndex === 10) {
+      path = `/estate/dues-summary?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
   }
   else {
     if (tabIndex === 0) {
-      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`;
+      path = `/estate/search-preview?fileNumber=${fileNumber}&tenantId=${tenantId}`;
     }
     else if (tabIndex === 1) {
-      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/auction-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 2) {
-      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 3) {
-      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 4) {
-      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 5) {
-      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/notices?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
     else if (tabIndex === 6) {
-      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}&type=allotment`
+      path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`
+    }
+    else if (tabIndex === 7) {
+      path = `/estate/dues-summary?fileNumber=${fileNumber}&tenantId=${tenantId}`
     }
   }
   dispatch(setRoute(path))
@@ -225,6 +231,9 @@ export const tabs = [
   },
   {
     tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
+  },
+  {
+    tabButton: { labelName: "Dues Summary", labelKey: "ES_DUES_SUMMARY" }
   }
 ]
 export const tabsAllotment = [
@@ -248,6 +257,9 @@ export const tabsAllotment = [
   },
   {
     tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
+  },
+  {
+    tabButton: { labelName: "Dues Summary", labelKey: "ES_DUES_SUMMARY" }
   }
 ]
 

@@ -8,9 +8,6 @@ import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewLicenseFee, getReviewInterest, getReviewSecurity, getReviewGroundRent, rentDetailsTable, getReviewPremiumAmount, installmentTable, getReviewAdvanceRent } from "./applyResource/reviewProperty";
 import { getTextToLocalMapping } from "../utils";
-import {
-  get
-} from "lodash";
 
 let isPropertyMasterOrAllotmentOfSite;
 
@@ -133,25 +130,6 @@ uiFramework: "material-ui",
 name: "rent-information",
 beforeInitScreen: (action, state, dispatch) => {
   const fileNumber = getQueryArg(window.location.href, "fileNumber");
-  const type = getQueryArg(window.location.href, "type");
-
-
-  dispatch(
-    handleField(
-      action.screenKey,
-      "components.div.children.tabSection",
-      "props.tabs",
-      (type == "apply") ? tabs : tabsAllotment
-    )
-  )
-  dispatch(
-    handleField(
-      action.screenKey,
-      "components.div.children.tabSection",
-      "props.activeIndex",
-      (type == "apply") ? 7 : 4,
-    )
-  )
   beforeInitFn(action, state, dispatch, fileNumber);
   return action;
 },
