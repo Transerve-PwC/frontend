@@ -42,7 +42,7 @@ class PaymentRedirect extends Component {
           process.env.NODE_ENV === "production" ? "/citizen" : ""
         }/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
       }
-      if(!!Applications.length) {
+      if(!!Applications && !!Applications.length) {
         const {branchType, moduleType, applicationType} = Applications[0];
          const type = `${branchType}_${moduleType}_${applicationType}`;
          path = `${path}&type=${type}`
