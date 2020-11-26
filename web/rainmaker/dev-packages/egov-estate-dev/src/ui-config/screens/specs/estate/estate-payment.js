@@ -305,7 +305,8 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
           [],
           { Properties : payload })
           if(!!response && ((!!response.Properties && !!response.Properties.length) || (!!response.OfflinePayments && !!response.OfflinePayments.length))) {
-            const {rentPaymentConsumerCode,fileNumber, tenantId} = !!response.Properties ? response.Properties[0] : response.OfflinePayments[0]
+            let {rentPaymentConsumerCode,fileNumber, tenantId, consumerCode} = !!response.Properties ? response.Properties[0] : response.OfflinePayments[0]
+            rentPaymentConsumerCode = rentPaymentConsumerCode || consumerCode;
             let billingBuisnessService=!!response.Properties ? response.Properties[0].propertyDetails.billingBusinessService : response.OfflinePayments[0].billingBusinessService
             type === "ONLINE" ? dispatch(
               setRoute(

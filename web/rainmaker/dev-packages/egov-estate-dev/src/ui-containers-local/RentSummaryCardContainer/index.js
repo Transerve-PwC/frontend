@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
   const rent = get(
     screenConfiguration.preparedFinalObject,
     ownProps.sourceJsonPath,
-    []
+    {}
   );
   const rentSummary = {
     header: { labelName: "Rent Summary", labelKey: "ES_RENT_SUMMARY_HEADER" },

@@ -52,12 +52,14 @@ const getData = async (action, state, dispatch) => {
     await dispatch(prepareFinalObject("templateDocuments", []))
     await dispatch(prepareFinalObject("temp", []))
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+    const branchType = getQueryArg(window.location.href, "branchType");
     if(!applicationNumber) {
         return {}
     }
     const tenantId = getQueryArg(window.location.href, "tenantId");
     const queryObject = [
-        {key: "applicationNumber", value: applicationNumber}
+        {key: "applicationNumber", value: applicationNumber},
+        {key: "branchType", value: branchType}
       ]
     let footer = {},printCont = {},taskStatusProps = {};
     const response = await getSearchApplicationsResults(queryObject)

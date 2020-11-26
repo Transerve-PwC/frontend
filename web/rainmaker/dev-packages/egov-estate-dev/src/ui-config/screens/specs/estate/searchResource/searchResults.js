@@ -117,11 +117,12 @@ export const searchApplicationResults = {
 
 const onApplicationRowClick = rowData => {
   let applicationState = rowData[2];
+  let branchType = getQueryArg(window.location.href, "branchType");
   if (applicationState == "-") {
     window.location.href = `_apply?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
   }
   else {
-    window.location.href = `preview?applicationNumber=${rowData[1]}&tenantId=${tenantId}`
+    window.location.href = `preview?applicationNumber=${rowData[1]}&tenantId=${tenantId}&branchType=${branchType}`
   }
 }
 

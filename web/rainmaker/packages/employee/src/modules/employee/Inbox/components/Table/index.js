@@ -183,9 +183,11 @@ class InboxData extends React.Component {
     }
 	  else if (row[0].subtext == "NULM") {
       queryParams += `&status=${wfStatus}`;
+    } else if(row[0].subtext.startsWith("ES-")) {
+      queryParams = `applicationNumber=${taskId}&tenantId=${tenantId}&branchType=${row[0].hiddenText}`
     } else if(row[0].subtext === "ES-EB-AllotmentOfSite" || row[0].subtext === "ES-EB-PropertyMaster" || row[0].subtext === "ES-BB-PropertyMaster") {
       queryParams = `fileNumber=${taskId}&tenantId=${tenantId}`
-    }
+    } 
 
     if(contextPath=='/egov-services/application-details'||contextPath=='/egov-services/bwt-application-details'||contextPath== "/egov-services/newLocation-application-details"){
       this.props.setRoute(`${contextPath}/${queryParams}`);

@@ -82,8 +82,8 @@ function RentSummaryCard(props) {
                 </Grid>
                 <Grid xs={4} align="right">
                   <LabelContainer
-                    labelName={formatAmount(rent[item])}
-                    labelKey={formatAmount(rent[item]) ? formatAmount(rent[item].toFixed(2)) : 0}
+                    labelName={rent[item] ? formatAmount(rent[item]) : 0}
+                    labelKey={rent[item] && formatAmount(rent[item]) ? formatAmount(rent[item].toFixed(2)) : 0}
                     style={styles.taxStyles}
                   />
                 </Grid>
