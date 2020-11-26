@@ -57,10 +57,10 @@ const getData = async (action, state, dispatch) => {
         return {}
     }
     const tenantId = getQueryArg(window.location.href, "tenantId");
-    const queryObject = [
+    let queryObject = [
         {key: "applicationNumber", value: applicationNumber},
-        {key: "branchType", value: branchType}
       ]
+      queryObject = !!branchType ? [...queryObject, {key: "branchType", value: branchType}] : queryObject
     let footer = {},printCont = {},taskStatusProps = {};
     const response = await getSearchApplicationsResults(queryObject)
     try {
