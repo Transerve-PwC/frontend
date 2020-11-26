@@ -30,12 +30,12 @@ jobs:
       - name: Archive Citizen build
         uses: actions/upload-artifact@v2
         with:
-          name: citizen-build
+          name: citizen
           path: ./web/rainmaker/packages/citizen/build
       - name: Inform Dev server to deploy
         uses: satak/webrequest-action@master
         with:
-          url: https://egov.transerve.com/github/deploy/frontend
+          url: https://egov.transerve.com/github/deploy/Transerve-PwC/frontend/citizen
           method: GET
   build-employee:
     name: Build Employee
@@ -63,12 +63,12 @@ jobs:
       - name: Archive Employee build
         uses: actions/upload-artifact@v2
         with:
-          name: employee-build
+          name: employee
           path: ./web/rainmaker/packages/employee/build
       - name: Inform Dev server to deploy
         uses: satak/webrequest-action@master
         with:
-          url: https://egov.transerve.com/github/deploy/frontend
+          url: https://egov.transerve.com/github/deploy/Transerve-PwC/frontend/employee
           method: GET
 
 
