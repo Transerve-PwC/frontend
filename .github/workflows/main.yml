@@ -32,6 +32,11 @@ jobs:
         with:
           name: citizen-build
           path: ./web/rainmaker/packages/citizen/build
+      - name: Inform Dev server to deploy
+        uses: satak/webrequest-action@master
+        with:
+          url: https://egov.transerve.com/github/deploy/frontend
+          method: GET
   build-employee:
     name: Build Employee
     runs-on: ubuntu-latest
