@@ -221,6 +221,7 @@ const getData = async(action, state, dispatch) => {
   }
   setDocumentData(action, state, dispatch)
   const id=get(state.screenConfiguration.preparedFinalObject,"Properties[0].id")
+  const colony=get(state.screenConfiguration.preparedFinalObject,"Properties[0].colony")
   if(id!=null){
     dispatch(
       handleField(
@@ -230,6 +231,25 @@ const getData = async(action, state, dispatch) => {
         true
       )
     )
+    if(colony === 'COLONY_KUMHAR' || colony === 'COLONY_MILK'){
+        dispatch(
+            handleField(
+                "apply",
+                "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                "props.getUrl",
+                "/rp-services/v1/excel/read?fileFormat=0"
+            )
+        );
+    }else{
+        dispatch(
+            handleField(
+                "apply",
+                "components.div.children.formwizardThirdStep.children.paymentDocumentsDetails.children.cardContent.children.documentList",
+                "props.getUrl",
+                "/rp-services/v1/excel/read?fileFormat=1"
+            )
+        );
+    }
   }
 }
 

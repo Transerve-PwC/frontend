@@ -90,7 +90,7 @@ const colonyField = {
                     )
                 )
               }
-        if(action.value === 'COLONY.KUMHAR' || action.value === 'COLONY.MILK'){
+        if(action.value === 'COLONY_KUMHAR' || action.value === 'COLONY_MILK'){
             dispatch(
                 handleField(
                     "apply",
