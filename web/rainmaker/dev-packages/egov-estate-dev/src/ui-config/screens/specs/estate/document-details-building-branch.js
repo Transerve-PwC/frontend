@@ -5,10 +5,10 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import {getReviewDocuments} from "./applyResource/reviewDocuments"
-import {onTabChange, headerrow} from './search-preview-building-branch'
+import {headerrow} from './search-preview-building-branch'
 import { setDocuments } from '../../../../ui-utils/commons';
-import { BUILDING_BRANCH_TABS as tabs } from "../../../../ui-constants"
-
+import { BUILDING_BRANCH_TABS as tabs } from "../../../../ui-constants";
+import { onTabChange } from "./search-preview";
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 

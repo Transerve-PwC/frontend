@@ -24,28 +24,30 @@ const checkActiveItems = items => {
 };
 
 const checkActiveItem = item => {
-  return item && (item.isDeleted === undefined || item.isDeleted !== false);
+  return item && !item.isDeleted;
 };
 
 class MultiItem extends React.Component {
   componentDidMount = () => {
+    debugger
     this.initMultiItem(this.props);
   };
 
   initMultiItem = props => {
+    debugger
     const { items, sourceJsonPath, preparedFinalObject } = props;
     const editItems = get(preparedFinalObject, sourceJsonPath, []);
     if (editItems) {
       if (!items.length && !editItems.length) {
-        this.addItem();
+        this.addItem(false);
       } else {
         if (items.length < editItems.length) {
           for (var i = 0; i < editItems.length; i++) {
             if (checkActiveItem(editItems[i])) {
               if (i) {
-                this.addItem();
+                this.addItem(false);
               } else {
-                this.addItem(true);
+                this.addItem(false, true);
               }
               // this.addItem(true);
             }
@@ -56,6 +58,7 @@ class MultiItem extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    debugger
     if (!isEqual(nextProps, this.props)) {
       this.initMultiItem(nextProps);
     }
@@ -71,7 +74,7 @@ class MultiItem extends React.Component {
     return dropDown;
   };
 
-  addItem = (isNew = false) => {
+  addItem = (isUpdateRequired = true, isNew = false) => {
     const {
       onFieldChange: addItemToState,
       screenKey,
@@ -144,8 +147,8 @@ class MultiItem extends React.Component {
           }
         }
       }
-      if (onMultiItemAdd) {
-        multiItemContent = onMultiItemAdd(this.props.state, multiItemContent);
+      if (!!isUpdateRequired && onMultiItemAdd) {
+        multiItemContent = onMultiItemAdd(this.props.state, multiItemContent, this.props.updatePreparedFormObject);
       }
       set(scheama, prefixSourceJsonPath, multiItemContent);
     }
@@ -175,8 +178,8 @@ class MultiItem extends React.Component {
     if (onMultiItemDelete) {
          onMultiItemDelete(this.props.state, index, this.props.handleField);
     }
-    updatePreparedFormObject(`${sourceJsonPath}[${index}].isDeleted`, false);
-    items[index].isDeleted = false;
+    updatePreparedFormObject(`${sourceJsonPath}[${index}].isDeleted`, true);
+    items[index].isDeleted = true;
     // items.splice(index,1);
     removeItem(screenKey, componentJsonpath, `props.items`, items);
   };

@@ -9,6 +9,7 @@ import { propertyInfo } from "./preview-resource/preview-properties";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import { convertDateToEpoch, validateFields, getRentSummaryCard } from "../utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import {penaltyStatmentResult,extensionStatmentResult} from './searchResource/functions'
 
   const header = getCommonHeader({
     labelName: "Rent Payment",
@@ -54,6 +55,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     if(!!response.Properties && !!response.Properties.length) {
        dispatch(prepareFinalObject("Properties", response.Properties))
     }
+    dispatch(prepareFinalObject("payment.paymentType","PAYMENTTYPE.RENT"))
   }
 
   const propertyDetailsHeader = getCommonTitle(
@@ -82,6 +84,20 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     }
   )
 
+  const offlinePaymentTypeHeader = getCommonTitle(
+    {
+        labelName: "Payment Type",
+        labelKey: "ES_PAYMENT_TYPE_HEADER"
+    },
+    {
+        style: {
+                marginBottom: 18,
+                marginTop: 18
+        }
+    }
+  )
+  
+
   const fileNumberField = {
     label: {
         labelName: "File Number",
@@ -107,6 +123,93 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
       },
     required: false,
     jsonPath: "payment.paymentType",
+    beforeFieldChange: async (action, state, dispatch) => {
+      if (action.value) {
+
+        let Properties = get(state.screenConfiguration.preparedFinalObject, "Properties")
+        const {id} = Properties[0];   
+        let Criteria = {
+          fromdate: Properties[0].propertyDetails.auditDetails.createdTime || "",
+          todate:   ""
+        }
+        Criteria = {...Criteria, propertyid: id}
+
+        const penaltyCard = getCommonCard({
+          header: getCommonTitle({
+            labelName: "Penalty Summary",
+            labelKey: "ES_PENALTY_SUMMARY_HEADER"
+          }, {
+            style: {
+              marginBottom: 18,
+              marginTop: 18
+            }
+          }),
+          detailsContainer: getCommonGrayCard({
+            rentSection: getRentSummaryCard({
+              sourceJsonPath: "PenaltyStatementSummary",
+              dataArray: ["totalPenalty","totalPenaltyPaid","totalPenaltyDue"],
+              type:"Penalty"
+            })
+          })
+        })
+
+        const exntensionCard = getCommonCard({
+          header: getCommonTitle({
+            labelName: "Extension Summary",
+            labelKey: "ES_EXTENSION_SUMMARY_HEADER"
+          }, {
+            style: {
+              marginBottom: 18,
+              marginTop: 18
+            }
+          }),
+          detailsContainer: getCommonGrayCard({
+            rentSection: getRentSummaryCard({
+              sourceJsonPath: "ExtensionFeeStatementSummary",
+              dataArray: ["totalExtensionFee","totalExtensionFeePaid","totalExtensionFeeDue"],
+              type:"Extension-Fee"
+            })
+          })
+        })
+        
+
+        switch(action.value){
+          case 'PAYMENTTYPE.PENALTY':
+              let penaltyResponse = await penaltyStatmentResult (state,dispatch, Criteria)
+              dispatch(prepareFinalObject("PenaltyStatementSummary", penaltyResponse.PenaltyStatementSummary))
+              dispatch(handleField(
+                "estate-payment",
+                "components.div.children.detailsContainer.children.rentSummaryDetails.children",
+                "rentCard",
+                penaltyCard     
+            ));
+            break;
+          case "PAYMENTTYPE.EXTENSIONFEE":
+              let extensionResponse = await extensionStatmentResult (state,dispatch, Criteria)
+              dispatch(prepareFinalObject("ExtensionFeeStatementSummary", extensionResponse.ExtensionFeeStatementSummary))
+              dispatch(handleField(
+                "estate-payment",
+                "components.div.children.detailsContainer.children.rentSummaryDetails.children",
+                "rentCard",
+                exntensionCard     
+            ));
+            break;  
+          default : 
+              const rentCard = getCommonCard({
+                header: rentSummaryHeader,
+                detailsContainer: rentSummary
+              })
+
+              dispatch(handleField(
+                "estate-payment",
+                "components.div.children.detailsContainer.children.rentSummaryDetails.children",
+                "rentCard",
+                rentCard     
+              ));
+            break;  
+        }
+      }
+    },
     optionValue: "code",
     optionLabel: "name",
     sourceJsonPath: "searchScreenMdmsData.EstateServices.paymentType",
@@ -219,13 +322,20 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   export const offlinePaymentDetails = getCommonCard({
       header: offlinePaymentDetailsHeader,
       detailsContainer: getCommonContainer({
-        paymentType: getSelectField(paymentType),
+        // paymentType: getSelectField(paymentType),
         Amount: getTextField(paymentAmount),
         dateOfPayment: getDateField(paymentDate),
         bankName: getTextField(bankName),
         transactionId: getTextField(transactionId),
       })
   })
+
+  export const offlinePaymentType = getCommonCard({
+    header: offlinePaymentTypeHeader,
+    detailsContainer: getCommonContainer({
+      paymentType: getSelectField(paymentType)
+    })
+})
   
   const propertyDetails = getCommonCard(propertyInfo(false))
 
@@ -265,11 +375,28 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
     },
     children: {
       propertyDetails,
+      offlinePaymentType,
       rentSummaryDetails,
       offlinePaymentDetails
     },
     visible: true
   }
+
+  const detailsContainerCitizen = {
+    uiFramework: "custom-atoms",
+    componentPath: "Form",
+    props: {
+      id: "apply_form1"
+    },
+    children: {
+      propertyDetails,
+      rentSummaryDetails,
+      offlinePaymentDetails
+    },
+    visible: true
+  }
+  
+
 
   const goToPayment = async (state, dispatch, type) => {
     let isValid = true;
@@ -298,7 +425,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
           }
         ]
         try {
-          const url = paymentType === "PAYMENTTYPE.PENALTY" ? "/est-services/violation/_penalty_payment" : paymentType === "PAYMENTTYPE.EXTENSIONFEE" ? "/est-services/extension-fee/_payment" : "/est-services/property-master/_payrent"
+          const url = paymentType === "PAYMENTTYPE.PENALTY" ? "/est-services/violation/_penalty_payment" : paymentType === "PAYMENTTYPE.EXTENSIONFEE" ? "/est-services/extension-fee/_payment" : paymentType === "PAYMENTTYPE.SECURITYFEE" ? "/est-services/security_deposit/_payment" : "/est-services/property-master/_payrent"
           const response = await httpRequest("post",
           url,
           "",
@@ -395,7 +522,7 @@ const payment = {
                 }
               }
             },
-            detailsContainer,
+            detailsContainer :  process.env.REACT_APP_NAME !== "Citizen" ? detailsContainer : detailsContainerCitizen,
             footer: paymentFooter
           }
         }

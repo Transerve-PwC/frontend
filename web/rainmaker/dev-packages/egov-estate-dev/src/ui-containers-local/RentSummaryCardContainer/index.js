@@ -5,8 +5,8 @@ import get from "lodash/get";
 
 class RentSummaryCardContainer extends Component {
   render() {
-      const {dataArray} = this.props
-    return <RentSummaryCard rentSummary={this.props.rentSummary} dataArray={dataArray}/>;
+      const {dataArray , type} = this.props
+    return <RentSummaryCard rentSummary={this.props.rentSummary} dataArray={dataArray} type={type}/>;
   }
 }
 

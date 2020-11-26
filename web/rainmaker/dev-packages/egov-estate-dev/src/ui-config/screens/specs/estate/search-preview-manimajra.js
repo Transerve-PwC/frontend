@@ -14,6 +14,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { MANIMAJRA_BRANCH_TABS as tabs, WF_MM_PROPERTY_MASTER } from "../../../../ui-constants";
 import { getPropertyDetails, getAdditionalDetails} from "./preview-resource/preview-properties"
+import { onTabChange } from "./search-preview";
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 let tenantId = getTenantId();
@@ -78,33 +79,6 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if (fileNumber){
     await searchResults(action, state, dispatch, fileNumber);
   }
-}
-
-export const onTabChange = async(tabIndex, dispatch, state) => {
-  fileNumber = getQueryArg(window.location.href, "fileNumber");
-  let path = "";
-  if (tabIndex === 0) {
-    path = `/estate/search-preview-manimajra?fileNumber=${fileNumber}&tenantId=${tenantId}`;
-  }
-  else if (tabIndex === 1) {
-    path = `/estate/owner-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 2) {
-    path = `/estate/document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 3) {
-    path = `/estate/purchaser-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 4) {
-    path = `/estate/previous-owner-document-details?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 6) {
-    path = `/estate/rent-information?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 8) {
-    path = `/estate/court-case?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  dispatch(setRoute(path))
 }
 
 const propertyMasterPreview = {

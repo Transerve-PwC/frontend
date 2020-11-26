@@ -7,12 +7,13 @@ prepareFinalObject,
 handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import {onTabChange, headerrow} from './search-preview-building-branch';
+import {headerrow} from './search-preview-building-branch';
 import {
 getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
 import { getReviewOwner } from "./applyResourceBuildingBranch/reviewDetails";
 import { BUILDING_BRANCH_TABS as tabs } from "../../../../ui-constants";
+import { onTabChange } from "./search-preview";
 
 const userInfo = JSON.parse(getUserInfo());
 const {

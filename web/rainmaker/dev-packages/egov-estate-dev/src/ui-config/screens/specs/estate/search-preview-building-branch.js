@@ -14,6 +14,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { BUILDING_BRANCH_TABS as tabs, WF_BB_PROPERTY_MASTER } from "../../../../ui-constants";
 import { getReviewPropertyDetails } from "./applyResourceBuildingBranch/reviewDetails";
+import { onTabChange } from "./search-preview";
 
 let fileNumber = getQueryArg(window.location.href, "fileNumber");
 let tenantId = getTenantId();
@@ -64,21 +65,6 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if (fileNumber){
     await searchResults(action, state, dispatch, fileNumber);
   }
-}
-
-export const onTabChange = async(tabIndex, dispatch, state) => {
-  fileNumber = getQueryArg(window.location.href, "fileNumber");
-  let path = "";
-  if (tabIndex === 0) {
-    path = `/estate/search-preview-building-branch?fileNumber=${fileNumber}&tenantId=${tenantId}`;
-  }
-  else if (tabIndex === 1) {
-    path = `/estate/owner-details-building-branch?fileNumber=${fileNumber}&tenantId=${tenantId}`
-  }
-  else if (tabIndex === 2) {
-    path = `/estate/document-details-building-branch?fileNumber=${fileNumber}&tenantId=${tenantId}&tabIndex=${2}`
-  }
-  dispatch(setRoute(path))
 }
 
 const estateDetailPreview = {

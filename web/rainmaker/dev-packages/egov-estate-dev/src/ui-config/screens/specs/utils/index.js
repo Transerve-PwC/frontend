@@ -649,7 +649,7 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
   }
 }
 
-export const downloadPaymentReceipt = (receiptQueryString, payload, data, generatedBy,type, mode = "download") => {
+export const downloadPaymentReceipt = (receiptQueryString, payload, data, generatedBy,type, state,mode = "download") => {
   const FETCHRECEIPT = {
     GET: {
       URL: "/collection-services/payments/_search",
@@ -709,16 +709,61 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
         }]
       }]
       switch(type){
-        case 'rent-payment':         
-           queryStr = [{
-              key: "key",
-              value: "rent-payment-receipt"
-            },
-            {
-              key: "tenantId",
-              value: receiptQueryString[1].value.split('.')[0]
+        case 'rent-payment':
+           if(process.env.REACT_APP_NAME != "Citizen"){
+            const {payment} = state.screenConfiguration.preparedFinalObject
+            const {paymentType} = payment
+             switch(paymentType){
+              case 'PAYMENTTYPE.EXTENSIONFEE':
+                 const {ExtensionStatementSummary} = state.screenConfiguration.preparedFinalObject
+                 queryStr = [{
+                   key: "key",
+                   value: "extension-fee-payment-receipt"
+                 },
+                 {
+                   key: "tenantId",
+                   value: receiptQueryString[1].value.split('.')[0]
+                 }
+               ]
+                payload[0]["ExtensionFeeStatementSummary"] = ExtensionStatementSummary
+                
+                break;
+              case 'PAYMENTTYPE.PENALTY':
+                 const {PenaltyStatementSummary} = state.screenConfiguration.preparedFinalObject
+                 queryStr = [{
+                   key: "key",
+                   value: "penalty-payment-receipt"
+                 },
+                 {
+                   key: "tenantId",
+                   value: receiptQueryString[1].value.split('.')[0]
+                 }
+               ]
+               payload[0]["PenaltyStatementSummary"] = PenaltyStatementSummary
+                break;  
+              default:
+                 queryStr = [{
+                   key: "key",
+                   value: "rent-payment-receipt"
+                 },
+                 {
+                   key: "tenantId",
+                   value: receiptQueryString[1].value.split('.')[0]
+                 }
+               ]
             }
-          ]
+           }else{
+              queryStr = [{
+                key: "key",
+                value: "rent-payment-receipt"
+                },
+                {
+                key: "tenantId",
+                value: receiptQueryString[1].value.split('.')[0]
+                }
+              ]
+           }
+           
             if(process.env.REACT_APP_NAME === "Citizen"){
               payload[0].propertyDetails["offlinePaymentDetails"] = []
             

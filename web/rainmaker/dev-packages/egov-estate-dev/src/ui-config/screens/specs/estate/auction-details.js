@@ -7,7 +7,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getSearchResults,
@@ -31,7 +32,8 @@ import {
 } from './applyResource/auction-details';
 import {
   getTextToLocalMapping
-} from '../utils'
+} from '../utils';
+import get from "lodash/get";
 
 let isPropertyMasterOrAllotmentOfSite;
 
@@ -69,10 +71,59 @@ const searchResults = async (action, state, dispatch, fileNumber) => {
   }
 }
 
-const beforeInitFn = async (action, state, dispatch, fileNumber) => {
+const getData = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-      await searchResults(action, state, dispatch, fileNumber);
+      // await searchResults(action, state, dispatch, fileNumber);
+    let queryObject = [
+      { key: "fileNumber", value: fileNumber },
+      {key: "relations", value: "bidder"}
+    ];
+    let payload = await getSearchResults(queryObject);
+    if (payload) {
+      let properties = payload.Properties;
+      isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
+      dispatch(prepareFinalObject("Properties", properties));
+
+      return {
+        div: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          props: {
+            className: "common-div-css search-preview"
+          },
+          children: {
+            headerDiv: {
+              uiFramework: "custom-atoms",
+              componentPath: "Container",
+              children: {
+                header1: {
+                  gridDefination: {
+                    xs: 12,
+                    sm: 8
+                  },
+                  ...headerrow
+                },
+              }
+            },
+            tabSection: {
+              uiFramework: "custom-containers-local",
+              moduleName: "egov-estate",
+              componentPath: "CustomTabContainer",
+              props: {
+                tabs: tabs,
+                activeIndex: 1,
+                onTabChange
+              },
+              type: "array",
+            },
+            auctionDetailsContainer,
+            breakAfterSearch: getBreak(),
+            auctionTableContainer
+          }
+        }
+      }
+    }
   }
 }
 
@@ -83,52 +134,52 @@ const auctionDetailsContainer = getCommonCard({
 
 const auctionTableContainer = auctionTable;
 
-const auctionDetails = {
+const updateAllFields = (action, state, dispatch) => {
+  const properties = get(state, "screenConfiguration.preparedFinalObject.Properties");
+
+  if (properties[0].propertyDetails.bidders) {
+    dispatch(
+      handleField(
+        "auction-details",
+        "components.div.children.auctionTableContainer",
+        "visible",
+        true
+      )
+    );
+    let { bidders } = properties[0].propertyDetails;
+    populateBiddersTable(bidders, "auction-details", "components.div.children.auctionTableContainer")
+  }
+
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.tabSection",
+      "props.tabs",
+      (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
+    )
+  )
+}
+
+const commonAuctionDetails = {
   uiFramework: "material-ui",
   name: "auction-details",
-  beforeInitScreen: (action, state, dispatch) => {
-    let fileNumber = getQueryArg(window.location.href, "fileNumber");
-    beforeInitFn(action, state, dispatch, fileNumber);
-    return action;
-  },
-  components: {
-    div: {
-      uiFramework: "custom-atoms",
-      componentPath: "Div",
-      props: {
-        className: "common-div-css search-preview"
-      },
-      children: {
-        headerDiv: {
-          uiFramework: "custom-atoms",
-          componentPath: "Container",
-          children: {
-            header1: {
-              gridDefination: {
-                xs: 12,
-                sm: 8
-              },
-              ...headerrow
-            },
-          }
-        },
-        tabSection: {
-          uiFramework: "custom-containers-local",
-          moduleName: "egov-estate",
-          componentPath: "CustomTabContainer",
-          props: {
-            tabs: tabs,
-            activeIndex: 1,
-            onTabChange
-          },
-          type: "array",
-        },
-        auctionDetailsContainer,
-        breakAfterSearch: getBreak(),
-        auctionTableContainer
+  hasBeforeInitAsync: true,
+  beforeInitScreen: async (action, state, dispatch) => {
+      const fileNumber = getQueryArg(window.location.href, "fileNumber");
+      dispatch(toggleSpinner())
+      const components = await getData(action, state, dispatch, fileNumber)
+      dispatch(toggleSpinner())
+      setTimeout(() => updateAllFields(action, state, dispatch), 100)
+      return {
+        "type": "INIT_SCREEN",
+        "screenKey": "auction-details",
+        "screenConfig": {
+          "uiFramework": "material-ui",
+          "name": "auction-details",
+          components
+        }
       }
-    }
   }
-};
+}
 
-export default auctionDetails;
+export default commonAuctionDetails;

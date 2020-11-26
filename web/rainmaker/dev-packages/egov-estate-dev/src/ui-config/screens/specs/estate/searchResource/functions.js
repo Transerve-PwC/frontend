@@ -338,6 +338,8 @@ export const penaltyStatmentResult = async(state, dispatch ,Criteria) => {
         data
       )
     );
+
+    return response
   } catch (error) {
     console.log(error)
     dispatch(toggleSnackbar(true, error.message, "error"));
@@ -382,6 +384,7 @@ export const extensionStatmentResult = async(state, dispatch ,Criteria) => {
         data
       )
     );
+    return response
   } catch (error) {
     console.log(error)
     dispatch(toggleSnackbar(true, error.message, "error"));

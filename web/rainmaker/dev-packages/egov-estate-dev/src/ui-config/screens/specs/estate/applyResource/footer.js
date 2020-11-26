@@ -589,69 +589,42 @@ const callBackForNext = async (state, dispatch) => {
       "apply"
     )
 
+    const isGroundRent = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.isGroundRent")
+    const _componentJsonPath = !!isGroundRent ? 
+    "apply.components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
+    : "apply.components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
+    const _components = get(
+      state.screenConfiguration.screenConfig,
+      _componentJsonPath
+    );
     let rentItems = get(
-      state.screenConfiguration.screenConfig,
-      "apply.components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
-    );
-
-    let rentArr = get(
       state.screenConfiguration.preparedFinalObject,
-      `Properties[0].propertyDetails.paymentDetails[0].rent`,
+      `Properties[0].propertyDetails.paymentConfig.paymentConfigItems`,
       []
     )
+    const reviewJsonPath = !!isGroundRent ? "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents" : "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses"
 
-    if (rentItems && rentItems.length > 0) {
-      for (var i = 0; i < rentItems.length; i++) {
-        if (typeof rentItems[i].isDeleted !== "undefined") {
-          continue;
-        }
+    const _cardName = !!isGroundRent ? "groundRent" : "licenseFee"
+
+    if (_components && _components.length > 0) {
+      for (var i = 0; i < _components.length; i++) {
+        if (!_components[i].isDeleted) {
         var isRentDetailsValid = validateFields(
-          `apply.components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${i}].item${i}.children.cardContent.children.rentCard.children`,
+          `${_componentJsonPath}[${i}].item${i}.children.cardContent.children.rentCard.children`,
           state,
           dispatch
         )
-
-        if (!!rentArr[i] && !!rentArr[i+1]) {
-          if (rentArr[i].endYear !== rentArr[i+1].startYear) {
-            rentYearMismatch = true;
-            isRentDetailsValid = false
-          }
         }
-
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", `components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents`, "groundRent", rentItems.length);
       }
-    }
 
-    let licenseFeeItems = get(
-      state.screenConfiguration.screenConfig,
-      "apply.components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
-    );
-    let licenseFeeArr = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Properties[0].propertyDetails.paymentDetails[0].licenseFees`,
-      []
-    )
+      const filterRentArr = rentItems.filter(item => !item.isDeleted)
+      rentItems = filterRentArr.map((item, index) => ({...item, groundRentStartMonth: !!index ? Number(filterRentArr[index-1].groundRentEndMonth) + 1 : 0, groundRentEndMonth: item.groundRentEndMonth, groundRentAmount: item.groundRentAmount}))
 
-    if (licenseFeeItems && licenseFeeItems.length > 0) {
-      for (var i = 0; i < licenseFeeItems.length; i++) {
-        if (typeof licenseFeeItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isLicenseFeeDetailsForYearValid = validateFields(
-          `apply.components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${i}].item${i}.children.cardContent.children.licenseCard.children`,
-          state,
-          dispatch
-        )
+      const rentValidation = rentItems.filter(item => !item.groundRentAmount)
+      isRentDetailsValid = !rentValidation.length
 
-        if (!!licenseFeeArr[i] && !!licenseFeeArr[i+1]) {
-          if (licenseFeeArr[i].endYear !== licenseFeeArr[i+1].startYear) {
-            licenseFeeYearMismatch = true;
-            isLicenseFeeDetailsForYearValid = false
-          }
-        }
-
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", `components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
-      }
+      dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
+      getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", reviewJsonPath, _cardName, rentItems.length);
     }
 
     let selectedDemand = get(
@@ -1220,7 +1193,7 @@ export const downloadPrintContainer = (
         { key: "tenantId", value: tenantId }
      ]
       const feeEstimate = temp[0].estimateCardData;
-      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment');
+      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state);
     },
     leftIcon: "assignment"
   }
@@ -1235,7 +1208,7 @@ export const downloadPrintContainer = (
         { key: "consumerCodes", value:applicationNumber},
         { key: "tenantId", value: tenantId }
      ]
-      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment','print');
+      downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state,'print');
     },
     leftIcon: "assignment"
   }
