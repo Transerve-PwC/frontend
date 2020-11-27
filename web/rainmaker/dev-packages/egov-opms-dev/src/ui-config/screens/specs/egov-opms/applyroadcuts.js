@@ -140,12 +140,14 @@ const getMdmsData = async (action, state, dispatch) => {
             {
               name: "RoadCutTypeOfApplicant"
             },
-
             {
               name: "roadCutDivision"
             },
             {
               name: "roadCutType"
+            },
+            {
+              name: "applicationType"
             }
           ]
         },

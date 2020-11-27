@@ -338,8 +338,25 @@ export const roadcutapplicantSummary = getCommonGrayCard({
                 }
               }
             }
+          ),
+          isAnyChangeInRoadCutEstimation: getLabelWithValue(
+            {
+              labelName: "Is there is any change in Road cut estimation ?",
+              labelKey: "NOC_ROAD_CUT_FORWARD_POPUP_ISANYCHANGEINESTIMATION_LABEL"
+            },
+            {
+              jsonPath:
+                "nocApplicationDetail[0].applicationdetail",
+              callBack: value => {
+                if (value != undefined) {
+                  let isAnyChangeInRoadCutEstimation = JSON.parse(value).hasOwnProperty('isAnyChangeInRoadCutEstimation') ? JSON.parse(value)['isAnyChangeInRoadCutEstimation'] : '';
+                  return isAnyChangeInRoadCutEstimation;
+                } else {
+                  return '';
+                }
+              }
+            }
           )
-
         })
       }),
       items: [],

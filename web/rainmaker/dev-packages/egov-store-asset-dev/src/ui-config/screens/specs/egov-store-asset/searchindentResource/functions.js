@@ -3,6 +3,7 @@ import find from "lodash/find";
 import {
   handleScreenConfigurationFieldChange as handleField,
   toggleSnackbar,
+  toggleSpinner,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getMaterialIndentSearchResults } from "../../../../../ui-utils/storecommonsapi";
 import { getTextToLocalMapping } from "./searchResults";
@@ -10,7 +11,7 @@ import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
 import { validateFields } from "../../utils";
 import { IndentConfigType } from "../../../../../ui-utils/sampleResponses";
 import { getTenantId,getOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+import store from "ui-redux/store";
 export const getDeptName = (state, codes) => {
   let deptMdmsData = get(
     state.screenConfiguration.preparedFinalObject,
@@ -36,6 +37,7 @@ export const getDesigName = (state, codes) => {
 };
 
 export const searchApiCall = async (state, dispatch) => {
+ // store.dispatch(toggleSpinner());
   let { localisationLabels } = state.app || {};
   let Dateselect = true;
   showHideTable(false, dispatch);
@@ -97,11 +99,11 @@ export const searchApiCall = async (state, dispatch) => {
         searchScreenObject[key].trim() !== ""
       ) {
 
-        if (key === "indentDate") {
+        if (key === "indentDate" ||key === "indentFromDate"|| key === "indentToDate" ) {
           Dateselect = true;
           queryObject.push({
             key: key,
-            value: convertDateToEpoch(searchScreenObject[key])
+            value:  key === "indentToDate" ? convertDateToEpoch(searchScreenObject[key]):  convertDateToEpoch(searchScreenObject[key], "dayStart")
           });
         } 
         else
@@ -165,6 +167,7 @@ export const searchApiCall = async (state, dispatch) => {
           "error"
         )
       );
+      store.dispatch(toggleSpinner());
     }
   }
 };

@@ -1,7 +1,6 @@
 import {
-  getCommonCard, getCommonContainer, getCommonHeader, getLabelWithValue, getLabel, getBreak
+  getCommonCard, getCommonContainer, getCommonHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { gotoApplyWithStep } from "../utils/index";
 import {
   handleScreenConfigurationFieldChange as handleField,
   prepareFinalObject
@@ -9,7 +8,6 @@ import {
 import {
   getFileUrlFromAPI,
   getQueryArg,
-  getTransformedLocale,
   setBusinessServiceDataToLocalStorage
 } from "egov-ui-framework/ui-utils/commons";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
@@ -24,19 +22,15 @@ import {
   adhocPopupForJeRoadCutForward, adhocPopupForJeRoadCutReassign, adhocPopupForCeRoadCutApprove,
   adhocPopupForSeRoadCutForward, adhocPopupForCeRoadCutReject
 } from "./payResource/adhocPopup";
-
-import { getRequiredDocuments } from "./requiredDocuments/reqDocs";
-
 import { roadcutapplicantSummary } from "./summaryResource/roadcutapplicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary } from "./summaryResource/estimateSummary";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-
 import { checkForRole } from "../utils";
 import { httpRequest } from "../../../../ui-utils";
 import {
-  localStorageGet, localStorageSet, setapplicationNumber, getOPMSTenantId, setapplicationType,
-  getAccessToken, getLocale, getUserInfo, getapplicationType, getapplicationNumber, setOPMSTenantId
+   localStorageSet, setapplicationNumber, getOPMSTenantId,
+   getLocale, getUserInfo, getapplicationNumber, setOPMSTenantId
 } from "egov-ui-kit/utils/localStorageUtils";
 
 import {
@@ -47,45 +41,6 @@ import { taskStatusSummary } from './summaryResource/taskStatusSummary';
 import { checkVisibility } from '../../../../ui-utils/commons'
 
 let roles = JSON.parse(getUserInfo()).roles
-
-const ReassignButton = getCommonContainer({
-  resendButton: {
-    componentPath: "Button",
-    props: {
-      variant: "contained",
-      color: "primary",
-      style: {
-        minWidth: "180px",
-        height: "48px",
-        marginRight: "45px",
-        // borderRadius: "inherit",
-        // align: "right"
-      }
-    },
-    children: {
-      submitButtonLabel: getLabel({
-        labelName: "Resend",
-        labelKey: "PM_COMMON_BUTTON_RESEND"
-      }),
-      submitButtonIcon: {
-        uiFramework: "custom-atoms",
-        componentPath: "Icon",
-        props: {
-          iconName: "keyboard_arrow_right"
-        }
-      }
-    },
-    onClickDefination: {
-      action: "condition",
-      callBack: (state, dispatch) => {
-        gotoApplyWithStep(state, dispatch, 0);
-      }
-    },
-    visible: localStorageGet("app_noc_status") == "REASSIGN" ? true : false
-
-  }
-});
-
 
 
 const getMdmsData = async (action, state, dispatch) => {
@@ -197,80 +152,15 @@ const titlebar = getCommonContainer({
         menu: []
       }
     }
-  }//,
-  // printMenu: {
-  //   uiFramework: "custom-atoms",
-  //   componentPath: "MenuButton",
-  //   props: {
-  //     data: {
-  //       label: "Print",
-  //       leftIcon: "print",
-  //       rightIcon: "arrow_drop_down",
-  //       props: { variant: "outlined", style: { marginLeft: 10 } },
-  //       menu: []
-  //     }
-  //   }
-  // }
+  }
 });
 
 
 
 const prepareDocumentsView = async (state, dispatch) => {
-  //  let documentsPreview = [];
-
-  // Get all documents from response
-  // let ROADCUTNOC = get(
-  //   state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
-  // let uploadDocuments = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('uploadDocuments') ?
-  //   JSON.parse(ROADCUTNOC.applicationdetail).uploadDocuments[0]['fileStoreId'] : '';
-
-  // let uploadPetPicture=JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('uploadPetPicture')?
-  // JSON.parse(ROADCUTNOC.applicationdetail).uploadPetPicture[0]['fileStoreId']:'';
-
-  // let allDocuments = [];
-  // allDocuments.push(uploadDocuments)
-
-  // if (uploadDocuments !== '') {
-  //   documentsPreview.push(
-  //     {
-  //       title: "ROAD_CUT_STAMP_DOC",
-  //       fileStoreId: uploadDocuments,
-  //       linkText: "View"
-  //     });
-
-  //   let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
-  //   let fileUrls =
-  //     fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
-  //   documentsPreview = documentsPreview.map(function (doc, index) {
-
-  //     doc["link"] = fileUrls && fileUrls[doc.fileStoreId] && fileUrls[doc.fileStoreId].split(",")[0] || "";
-  //     doc["name"] =
-  //       (fileUrls[doc.fileStoreId] &&
-  //         decodeURIComponent(
-  //           fileUrls[doc.fileStoreId]
-  //             .split(",")[0]
-  //             .split("?")[0]
-  //             .split("/")
-  //             .pop()
-  //             .slice(13)
-  //         )) ||
-  //       `Document - ${index + 1}`;
-  //     return doc;
-  //   });
-
-  //   dispatch(prepareFinalObject("documentsPreview", documentsPreview));
-  // }
   let documentsPreview = [];
-  // Get all documents from response
-  //  let roadcutnocdetail = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
-
   let ROADCUTNOC = get(
     state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
-  // let uploadDocuments = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('uploadDocuments') ?
-  //   JSON.parse(ROADCUTNOC.applicationdetail).uploadDocuments[0]['fileStoreId'] : '';
-
-  //    let documentsPreview = [];
-
   let doc = JSON.parse(ROADCUTNOC.applicationdetail).uploadDocuments
 
   let doctitle = []
@@ -373,39 +263,16 @@ const HideshowEdit = (state, action, nocStatus, amount, applicationNumber) => {
     false
   );
 
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footerEmp.children.approve.visible",
-  //   amount < 50000 && checkForRole(roles, 'EE') ? true
-  //     : checkForRole(roles, 'CE') ? true : false
-  // );
-  //check visibile true
-  //amount and role combination
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footerEmp.children.reject.visible",
-  //   amount < 50000 && checkForRole(roles, 'EE') ? true : checkForRole(roles, 'CE') ? true : false
-  // );
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footerEmp.children.nextButton.visible",
-  //   checkVisibility("INITIATED,REVIEWSDO,REVIEWOFSE,REVIEWOFEE") ? true : false
-  // );
-  // set(
-  //   action,
-  //   "screenConfig.components.div.children.footerEmp.children.reassign.visible",
-  //   checkVisibility("INITIATED,REASSIGNTOEE,REASSIGNTOJE,REASSIGNTOSDO,REASSIGNTOSE") ? true : false
-  // );            
   set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
   checkVisibility(state, "REJECT,REJECTED", "reject", action, "screenConfig.components.div.children.footerEmp.children.reject.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWAPPROVEEE" || nocStatus == "REASSIGNAPPROVEEE")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWAPPROVESE") || nocStatus == "REASSIGNAPPROVESE") || checkForRole(roles, 'CE'))
 
-  checkVisibility(state, "APPROVED", "approve", action, "screenConfig.components.div.children.footerEmp.children.approve.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWAPPROVEEE" || nocStatus == "REASSIGNAPPROVEEE")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWAPPROVESE" || nocStatus == "REASSIGNAPPROVESE")) || checkForRole(roles, 'CE'))
+  checkVisibility(state, "APPROVED,COMPLETED", "approve", action, "screenConfig.components.div.children.footerEmp.children.approve.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWAPPROVEEE" || nocStatus == "REASSIGNAPPROVEEE")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWAPPROVESE" || nocStatus == "REASSIGNAPPROVESE")) || checkForRole(roles, 'CE') || (nocStatus === "VERIFYANDFORWARD" && checkForRole(roles, 'EE')))
 
   checkVisibility(state, "REASSIGN,REASSIGNAPPROVESE,REASSIGNAPPROVEEE,REASSIGNTOJE,REASSIGNTOSDO", "reassign", action, "screenConfig.components.div.children.footerEmp.children.reassign.visible", null)
 
   checkVisibility(state, "REASSIGNDOEE,REASSIGNDOSE,REASSIGNDOCE", "reassignToDO", action, "screenConfig.components.div.children.footerEmp.children.reassignToDO.visible", null)
 
-  checkVisibility(state, "INITIATED,VERIFYDOEE,VERIFYDOSE,VERIFYDOCE,REVIEWSDO,REVIEWOFSE,REVIEWOFCE,REVIEWOFEE,REVIEWAPPROVEEE,REVIEWAPPROVESE,REVIEWOFWD,PENDINGAPPROVAL", "nextButton", action, "screenConfig.components.div.children.footerEmp.children.nextButton.visible", null)
+  checkVisibility(state, "INITIATED,VERIFYDOEE,VERIFYDOSE,VERIFYDOCE,REVIEWSDO,REVIEWOFSE,REVIEWOFCE,REVIEWOFEE,REVIEWAPPROVEEE,REVIEWAPPROVESE,REVIEWOFWD,PENDINGAPPROVAL,VERIFYANDFORWARD", "nextButton", action, "screenConfig.components.div.children.footerEmp.children.nextButton.visible", null)
 
   set(
     action,
@@ -713,18 +580,13 @@ const screenConfig = {
           documentsSummary: documentsSummary,
           taskStatusSummary: taskStatusSummary,
           //   footerCitizen
-          //ReassignButton
         }) : getCommonCard({
-          // estimateSummary: estimateSummary,
           roadcutapplicantSummary: roadcutapplicantSummary,
           documentsSummary: documentsSummary,
 
         }),
         footerEmp,
         takeactionfooter
-
-
-
       }
     },
     adhocDialog: {

@@ -145,7 +145,7 @@ export const handleCreateUpdateIT = (state, dispatch) => {
   );
   let indentDate =
   get(state, "screenConfiguration.preparedFinalObject.indents[0].indentDate",0) 
-  indentDate = convertDateToEpoch(indentDate);
+  indentDate = convertDateToEpoch(indentDate, "dayStart");
   set(indents[0],"indentDate", indentDate);
   //furnishindentData(state, dispatch);
   if (uuid) {

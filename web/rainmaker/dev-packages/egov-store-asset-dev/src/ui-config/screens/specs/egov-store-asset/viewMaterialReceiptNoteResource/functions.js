@@ -238,19 +238,19 @@ export const createUpdateMR = async (state, dispatch, action) => {
 
   let receiptDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDate",0) 
-  receiptDate = convertDateToEpoch(receiptDate);
+  receiptDate = convertDateToEpoch(receiptDate, "dayStart");
   set(materialReceipt[0],"receiptDate", receiptDate);
   let supplierBillDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].supplierBillDate",0) 
-  supplierBillDate = convertDateToEpoch(supplierBillDate);
+  supplierBillDate = convertDateToEpoch(supplierBillDate, "dayStart");
   set(materialReceipt[0],"supplierBillDate", supplierBillDate);
   let challanDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].challanDate",0) 
-  challanDate = convertDateToEpoch(challanDate);
+  challanDate = convertDateToEpoch(challanDate, "dayStart");
   set(materialReceipt[0],"challanDate", challanDate);
   let inspectionDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].inspectionDate",0) 
-  inspectionDate = convertDateToEpoch(inspectionDate);
+  inspectionDate = convertDateToEpoch(inspectionDate, "dayStart");
   set(materialReceipt[0],"inspectionDate", inspectionDate);
   let fileStoreId =
   get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux[0].documents[0].fileStoreId",0)  
@@ -264,8 +264,8 @@ export const createUpdateMR = async (state, dispatch, action) => {
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].lotNo`, element.lotNo);
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].serialNo`, element.serialNo);
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].batchNo`, element.batchNo);
-       set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].manufactureDate`, convertDateToEpoch(element.manufactureDate));
-       set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].expiryDate`, convertDateToEpoch(element.expiryDate));
+       set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].manufactureDate`, convertDateToEpoch(element.manufactureDate, "dayStart"));
+       set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].expiryDate`, convertDateToEpoch(element.expiryDate, "dayStart"));
        
   }
 

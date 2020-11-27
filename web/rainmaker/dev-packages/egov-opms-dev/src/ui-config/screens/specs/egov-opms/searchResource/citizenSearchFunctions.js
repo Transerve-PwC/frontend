@@ -867,7 +867,11 @@ export const getTextForRoadCuttNoc = label => {
       return 'Review of CE'
     case "REVIEWOFWD":
       return 'Review of WD'
-    default:
+    case "VERIFYANDFORWARD":
+      return 'Verify And Forward'
+    case "COMPLETED":
+      return 'Completed'
+      default:
       return '-'
   }
 }

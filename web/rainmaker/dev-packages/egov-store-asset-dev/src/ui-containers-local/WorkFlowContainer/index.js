@@ -61,32 +61,35 @@ class WorkFlowContainer extends React.Component {
 const {purchaseOrders}= preparedFinalObject;
 if(purchaseOrders)
 {
-const {rateType} = purchaseOrders[0]
-if(rateType)
-{
-        if(rateType !=='Gem')
-        {
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Workflow returned empty object !",
-            labelKey: "WRR_WORKFLOW_ERROR"
-          },
-          "error"
-        );
-        }
-      }
-      else{
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Workflow returned empty object !",
-            labelKey: "WRR_WORKFLOW_ERROR"
-          },
-          "error"
-        );
+  if(purchaseOrders && purchaseOrders[0] )
+  {
+    const {rateType} = purchaseOrders[0]
+    if(rateType)
+    {
+            if(rateType !=='Gem')
+            {
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Workflow returned empty object !",
+                labelKey: "WRR_WORKFLOW_ERROR"
+              },
+              "error"
+            );
+            }
+          }
+          else{
+            toggleSnackbar(
+              true,
+              {
+                labelName: "Workflow returned empty object !",
+                labelKey: "WRR_WORKFLOW_ERROR"
+              },
+              "error"
+            );
 
-      }
+          }
+        }
     }
     else{
       toggleSnackbar(

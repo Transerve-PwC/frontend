@@ -152,6 +152,9 @@ const getMdmsData = async (action, state, dispatch) => {
             },
             {
               name: "age"
+            },
+            {
+              name: "applicationType"
             }
           ]
         },

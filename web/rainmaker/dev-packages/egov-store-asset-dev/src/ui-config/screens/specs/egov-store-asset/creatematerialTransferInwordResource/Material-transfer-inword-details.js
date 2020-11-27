@@ -92,7 +92,7 @@ import {
                 //set received date 
                 let receiptDate =
                get(state, "screenConfiguration.preparedFinalObject.transferInwards[0].receiptDate",0) 
-               receiptDate = convertDateToEpoch(receiptDate);
+               receiptDate = convertDateToEpoch(receiptDate, "dayStart");
                 dispatch(prepareFinalObject(`transferInwards[0].receiptDetails[${cardIndex}].receiptDetailsAddnInfo[0].receivedDate`, receiptDate));
                 //set total value on Qty Change
                 let cardJsonPath =
@@ -166,7 +166,7 @@ import {
              //set received date 
              let receiptDate =
             get(state, "screenConfiguration.preparedFinalObject.transferInwards[0].receiptDate",0) 
-            receiptDate = convertDateToEpoch(receiptDate);
+            receiptDate = convertDateToEpoch(receiptDate, "dayStart");
              dispatch(prepareFinalObject(`transferInwards[0].receiptDetails[${cardIndex}].receiptDetailsAddnInfo[0].receivedDate`, receiptDate));
 
 

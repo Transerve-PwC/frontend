@@ -207,17 +207,17 @@ export const createUpdatePriceList = async (state, dispatch, action) => {
 
   let rateContractDate =
   get(state, "screenConfiguration.preparedFinalObject.priceLists[0].rateContractDate",0) 
-  rateContractDate = convertDateToEpoch(rateContractDate);
+  rateContractDate = convertDateToEpoch(rateContractDate, "dayStart");
   set(priceLists[0],"rateContractDate", rateContractDate);
 
   let agreementDate =
   get(state, "screenConfiguration.preparedFinalObject.priceLists[0].agreementDate",0) 
-  agreementDate = convertDateToEpoch(agreementDate);
+  agreementDate = convertDateToEpoch(agreementDate, "dayStart");
   set(priceLists[0],"agreementDate", agreementDate);
 
   let agreementStartDate =
   get(state, "screenConfiguration.preparedFinalObject.priceLists[0].agreementStartDate",0) 
-  agreementStartDate = convertDateToEpoch(agreementStartDate);
+  agreementStartDate = convertDateToEpoch(agreementStartDate, "dayStart");
   set(priceLists[0],"agreementStartDate", agreementStartDate);
 
   let agreementEndDate =

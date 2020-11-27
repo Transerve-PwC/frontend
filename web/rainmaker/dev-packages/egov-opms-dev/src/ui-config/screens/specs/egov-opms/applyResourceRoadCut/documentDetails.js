@@ -36,17 +36,17 @@ export const documentDetails = getCommonCard({
         uiFramework: "custom-molecules",
         componentPath: "UploadMultipleFiles",
         props: {
-          maxFiles: 5,
+          maxFiles: 8,
           jsonPath: "RoadCutDocuments",
           inputProps: {
             //accept: ".pdf,.png,.jpeg,.zip,.WAV,.AIFF,.AU,.PCM,.BWF,.mp3,.mpeg,.mp4"
-            accept: ".pdf,.png,.jpeg"
+            accept: ".pdf,.png,.jpeg,.xls,.xlsx,.dwg,.doc,.docx,vnd.ms-excel,.ms-excel,vnd.openxmlformats-officedocument.spreadsheetml.sheet,msword,vnd.openxmlformats-officedocument.wordprocessingml.document"
           },
           buttonLabel: {
             labelName: "UPLOAD FILE",
             labelKey: "PM_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
           },
-          maxFileSize: 2000,
+          maxFileSize: 5000,
           moduleName: "egov-opms",
           hasLocalization: false
         }

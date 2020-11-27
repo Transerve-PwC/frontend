@@ -170,11 +170,12 @@ export const createUpdatePO = async (state, dispatch, action) => {
   let poDetailArray = returnEmptyArrayIfNull(
     get(purchaseOrders[0], "purchaseOrderDetails", [])
   );
+  const {rateType} = purchaseOrders[0];  
+    const {supplier} = purchaseOrders[0]; 
   for (let i = 0; i < poDetailArray.length; i++) {
     set(purchaseOrders[0], `purchaseOrderDetails[${i}].tenantId`, tenantId);
     // if ratebtype is GEM
-    const {rateType} = purchaseOrders[0];  
-    const {supplier} = purchaseOrders[0];  
+     
     let priceListgem = get(
       state.screenConfiguration.preparedFinalObject,
       "purchaseOrders[0].priceList",
@@ -242,7 +243,12 @@ export const createUpdatePO = async (state, dispatch, action) => {
    else
     set(purchaseOrders[0], `purchaseOrderDetails[${i}].purchaseIndentDetails`, []);
   }
-
+  
+  if(rateType.toLocaleUpperCase() === 'GEM')
+  {  
+  set(purchaseOrders[0], `supplier.code`, supplier.name);
+  }
+ 
   set(
     purchaseOrders[0],
     "purchaseOrderDate",
@@ -272,7 +278,7 @@ export const createUpdatePO = async (state, dispatch, action) => {
   set(
     purchaseOrders[0],
     "agreementEndDate",
-    convertDateToEpoch(get(purchaseOrders[0], "agreementEndDate"), "dayStart")
+    convertDateToEpoch(get(purchaseOrders[0], "agreementEndDate"))
   );
   set(
     purchaseOrders[0],
@@ -292,7 +298,7 @@ export const createUpdatePO = async (state, dispatch, action) => {
   set(
     purchaseOrders[0],
     "priceList[0].agreementEndDate",
-    convertDateToEpoch(get(purchaseOrders[0], "priceList[0].agreementEndDate"), "dayStart")
+    convertDateToEpoch(get(purchaseOrders[0], "priceList[0].agreementEndDate"))
   );
 
   const requestBody = {purchaseOrders};

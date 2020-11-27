@@ -130,7 +130,7 @@ export const handleCreateUpdatePO = (state, dispatch) => {
   );
   let indentDate =
   get(state, "screenConfiguration.preparedFinalObject.materialIssues[0].indent.indentDate",0) 
-  indentDate = convertDateToEpoch(indentDate);
+  indentDate = convertDateToEpoch(indentDate, "dayStart");
   set(state,"screenConfiguration.preparedFinalObject.materialIssues[0].indent.indentDate", indentDate);
   if (uuid) {
       // get set date field into epoch

@@ -1,115 +1,25 @@
 import {
-  getCommonHeader, getTextField, getSelectField, getCommonContainer, getCommonSubHeader, getLabel, getPattern
+  getCommonHeader, getTextField, getSelectField, getCommonContainer, getLabel, getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { showHideAdhocPopupopmsForward, showHideAdhocPopup, getBill, showHideAdhocPopupopmsReject, showHideAdhocPopupopmsReassign, showHideAdhocPopupopmsApprove } from "../../utils";
+import { showHideAdhocPopupopmsForward, showHideAdhocPopup, showHideAdhocPopupopmsReject, showHideAdhocPopupopmsReassign, showHideAdhocPopupopmsApprove } from "../../utils";
 import get from "lodash/get";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import set from "lodash/set";
-import { UpdateStatus, getWFStatus } from "../../../../../ui-utils/commons";
+import { UpdateStatus } from "../../../../../ui-utils/commons";
 import { documentDetails } from "./documentDetails";
-import { getAccessToken, getOPMSTenantId, getLocale, getUserInfo, getapplicationNumber } from "egov-ui-kit/utils/localStorageUtils";
+import {  getOPMSTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import store from "redux/store";
 import {
-  localStorageGet, localStorageSet
+  localStorageGet
 } from "egov-ui-kit/utils/localStorageUtils";
 import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {  handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import './index.css'
 import { callPGService } from "./footer";
-import { getOPMSPattern, checkForRole } from '../../utils/index';
-
-//let role_name = JSON.parse(getUserInfo()).roles[0].code
+import { getOPMSPattern } from '../../utils/index';
 import { validateFields } from "../../utils";
 
-let roles = JSON.parse(getUserInfo()).roles
 
-const popupvalidate = () => {
-
-  let allAreFilled = true;
-  let isFormValid = true;
-  let hasFieldToaster = false;
-  document.getElementById("material-ui-popup").querySelectorAll("[required]").forEach(function (i) {
-    i.parentNode.classList.remove("MuiInput-error-853");
-    i.parentNode.parentNode.classList.remove("MuiFormLabel-error-844");
-    if (!i.value) {
-      i.focus();
-      allAreFilled = false;
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-    }
-    if (i.getAttribute("aria-invalid") === 'true' && allAreFilled) {
-      i.parentNode.classList.add("MuiInput-error-853");
-      i.parentNode.parentNode.classList.add("MuiFormLabel-error-844");
-      allAreFilled = false;
-      isFormValid = false;
-      hasFieldToaster = true;
-    }
-  })
-  if (!allAreFilled) {
-    //  //alert('Fill all fields1')
-    isFormValid = false;
-    hasFieldToaster = true;
-  }
-  else {
-    // //alert('Submit1')
-
-    isFormValid = true;
-    hasFieldToaster = false;
-  }
-  return [isFormValid, hasFieldToaster]
-}
-const moveToReview = (state, dispatch, applnid) => {
-  const documentsFormat = Object.values(get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
-  );
-
-  let validateDocumentField = false;
-
-  for (let i = 0; i < documentsFormat.length; i++) {
-    let isDocumentRequired = get(documentsFormat[i], "isDocumentRequired");
-    let isDocumentTypeRequired = get(
-      documentsFormat[i], "isDocumentTypeRequired");
-
-    let documents = get(documentsFormat[i], "documents");
-    if (isDocumentRequired) {
-      if (documents && documents.length > 0) {
-        if (isDocumentTypeRequired) {
-          if (get(documentsFormat[i], "dropdown.value")) {
-            validateDocumentField = true;
-          } else {
-            dispatch(
-              toggleSnackbar(
-                true,
-                { labelName: "Please select type of Document!", labelKey: "" },
-                "warning"
-              )
-            );
-            validateDocumentField = false;
-            break;
-          }
-        } else {
-          validateDocumentField = true;
-        }
-      } else {
-        dispatch(
-          toggleSnackbar(
-            true,
-            { labelName: "Please uplaod mandatory documents!", labelKey: "" },
-            "warning"
-          )
-        );
-        validateDocumentField = false;
-        break;
-      }
-    } else {
-      validateDocumentField = true;
-    }
-  }
-
-  validateDocumentField = true;
-  if (validateDocumentField) {
-    return true
-  }
-};
 const updateAdhoc1 = (state, dispatch) => {
 
   let isFormValid = validateFields(
@@ -125,8 +35,6 @@ const updateAdhoc1 = (state, dispatch) => {
   )
   if (isFormValid) {
     dispatch(toggleSpinner());
-
-    // let res=moveToReview(state, dispatch);
 
     const badgeNumber = get(
       state.screenConfiguration.preparedFinalObject,
@@ -1098,6 +1006,11 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
       state.screenConfiguration.preparedFinalObject,
       "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.RoadCutForwardPerformanceBankGuaranteeCharges"
     );
+    const RoadCutForwardIsAnyChangeInRoadCutEstimation = get(
+      state.screenConfiguration.preparedFinalObject,
+      "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.isAnyChangeInRoadCutEstimation"
+    );
+
     let data = {}
     if (RoadCutForwardAmount > 0) {
       if (nocStatus == "INITIATED" || nocStatus == "REASSIGNTOJE" || nocStatus == "RESENT") {
@@ -1112,7 +1025,8 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
             "remarks": remarks,
             "gstAmount": RoadCutForwardGstAmount,
             "amount": RoadCutForwardAmount,
-            "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges
+            "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges,
+            "isAnyChangeInRoadCutEstimation":RoadCutForwardIsAnyChangeInRoadCutEstimation
           }
         } else {
           data = {
@@ -1122,7 +1036,8 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
             "remarks": remarks,
             "gstAmount": RoadCutForwardGstAmount,
             "amount": RoadCutForwardAmount,
-            "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges
+            "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges,
+            "isAnyChangeInRoadCutEstimation":RoadCutForwardIsAnyChangeInRoadCutEstimation
           }
         }
       }
@@ -1157,16 +1072,16 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
       let wfstatus = wfstatuslist.find(item => {
         return item.buttonName == "nextButton";
       });
-      //alert(wfstatus.status)
-
+       if (localStorageGet("applicationStatus") == "VERIFYANDFORWARD") {
+          wfstatus=wfstatuslist.find(item => {
+          return item.buttonName == "approve";
+        });
+      }
       UpdateStatus(state, dispatch, '/egov-opms/roadcut-search', [],
         {
-
           "applicationType": "ROADCUTNOC",
           "tenantId": getOPMSTenantId(),
           "applicationStatus": wfstatus.status,
-          //checkForRole(roles, 'JE') ? "REVIEWSDO" : checkForRole(roles, 'SDO') ? "REVIEWOFEE" : checkForRole(roles, 'EE') ? "REVIEWOFSE" : checkForRole(roles, 'SE') ? "PENDINGAPRROVAL" : checkForRole(roles, 'CE') ? "PAYMENTPENDING" : '',
-
           "applicationId": localStorage.getItem('ApplicationNumber'),
           "dataPayload": data
         }
@@ -4613,7 +4528,56 @@ export const adhocPopupForJeRoadCutForward = getCommonContainer({
     {
       documentDetails,
       ForwardContainerRoadCutForward: getCommonContainer({
-
+          isAnyChangeInRoadCutEstimation: {
+            uiFramework: "custom-containers",
+            gridDefination: {
+              xs: 12,
+              sm: 6
+            },
+            componentPath: "RadioGroupContainer",
+            jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.isAnyChangeInRoadCutEstimation",
+          required: true,
+          beforeFieldChange: (action, state, dispatch) => {
+            
+            if (action.value === "Yes") {
+              let ROADCUTNOC = get(
+                state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
+              let typeOfApplicant = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('typeOfApplicant') ?
+                JSON.parse(ROADCUTNOC.applicationdetail).typeOfApplicant : undefined;
+              if (typeOfApplicant && (typeOfApplicant === "TELECOM" || typeOfApplicant === "NATURAL_GAS_PIPELINE_PNG")) {
+                showHideAdhocPopup(state, dispatch, "roadcutnoc-search-preview")
+                dispatch(
+                  toggleSnackbar(
+                    true,
+                    { labelName: "Please reassign to the applicant for estimation modification.", labelKey: "NOC_ROAD_CUT_FORWARD_POPUP_ISANYCHANGEINESTIMATION_WARNING_LABEL" },
+                    "warning"
+                  )
+                );
+              }
+            }
+          },
+            props: {
+              required: true,
+              label: { name: "Is there is any change in Road cut estimation ?", key: "NOC_ROAD_CUT_FORWARD_POPUP_ISANYCHANGEINESTIMATION_LABEL" },
+              buttons: [
+                {
+                  labelName: "Yes",
+                  labelKey: "NOC_ROAD_CUT_FORWARD_POPUP_ISANYCHANGEINESTIMATION_LABEL_YES",
+                  value: "Yes",
+                  disabled: false
+                },
+                {
+                  labelName: "No",
+                  labelKey: "NOC_ROAD_CUT_FORWARD_POPUP_ISANYCHANGEINESTIMATION_LABEL_NO",
+                  value: "No",
+                  disabled: false
+                }
+              ],
+              jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.isAnyChangeInRoadCutEstimation",
+              defaultValue: "No"
+            },
+            type: "array",
+          },
         RoadCutForwardAmount: getTextField({
           label: {
             labelName: "Enter Amount",

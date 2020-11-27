@@ -201,7 +201,7 @@ export const createUpdateIndent = async (state, dispatch, action) => {
 
   let issueDate =
   get(state, "screenConfiguration.preparedFinalObject.materialIssues[0].issueDate",0) 
-  issueDate = convertDateToEpoch(issueDate);
+  issueDate = convertDateToEpoch(issueDate, "dayStart");
   set(materialIssues[0],"issueDate", issueDate);
 
 

@@ -120,7 +120,7 @@ export const createUpdateMR = async (state, dispatch, action) => {
 
   let receiptDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDate",0) 
-  receiptDate = convertDateToEpoch(receiptDate);
+  receiptDate = convertDateToEpoch(receiptDate, "dayStart");
   set(materialReceipt[0],"receiptDate", receiptDate);
 
   let isAdHoc = get(

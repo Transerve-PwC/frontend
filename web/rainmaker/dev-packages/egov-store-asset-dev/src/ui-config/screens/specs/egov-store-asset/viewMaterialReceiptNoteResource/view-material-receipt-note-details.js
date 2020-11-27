@@ -104,14 +104,14 @@ import {
              
             }
           ),
-          acceptedQty: getLabelWithValue(
-            {   labelName: "Qty. Accepted",
-            labelKey: "STORE_MATERIAL_RECEIPT_QTY_ACCEPTED"},
-            {
-              jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty",
+          // acceptedQty: getLabelWithValue(
+          //   {   labelName: "Qty. Accepted",
+          //   labelKey: "STORE_MATERIAL_RECEIPT_QTY_ACCEPTED"},
+          //   {
+          //     jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty",
              
-            }
-          ),
+          //   }
+          // ),
          
           UnitRate: getLabelWithValue(
             {   labelName: "Unit Rate",

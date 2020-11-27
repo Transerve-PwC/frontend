@@ -119,7 +119,7 @@ export const createUpdateIndentInword = async (state, dispatch, action) => {
 
   let receiptDate =
   get(state, "screenConfiguration.preparedFinalObject.transferInwards[0].receiptDate",0) 
-  receiptDate = convertDateToEpoch(receiptDate);
+  receiptDate = convertDateToEpoch(receiptDate, "dayStart");
   set(transferInwards[0],"receiptDate", receiptDate);
  
 

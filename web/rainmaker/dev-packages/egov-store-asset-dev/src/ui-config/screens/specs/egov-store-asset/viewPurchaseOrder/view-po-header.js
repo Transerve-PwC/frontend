@@ -8,6 +8,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import {  checkValueForNA } from "../../utils";
 const indentNumber = getQueryArg(window.location.href, "indentNumber");
 const gotoCreatePage = (state, dispatch) => {
   let createUrl="";
@@ -106,6 +107,13 @@ export const getPurchaseOrderHeaderView = (isReview = true) => {
         { labelName: "Supplier", labelKey: "STORE_SUPPLIER_MASTER_SUPPLIER_NAME" },
         {
           jsonPath: "purchaseOrders[0].supplier.name",
+        }
+      ),
+      externalPoNumber: getLabelWithValue(
+        { labelName: "External PO Number", labelKey: "STORE_EXTERNAL_PO_NUMBER" },
+        {
+          jsonPath: "purchaseOrders[0].externalPoNumber",
+          callBack: checkValueForNA
         }
       ),
       // advancePercentage: getLabelWithValue(

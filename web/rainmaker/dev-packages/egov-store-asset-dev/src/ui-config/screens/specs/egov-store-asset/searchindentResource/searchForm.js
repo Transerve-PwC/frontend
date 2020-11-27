@@ -17,7 +17,7 @@ import { searchApiCall } from "./functions";
 import { convertDateToEpoch, convertDateToEpochIST } from "../../utils";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["indentNumber","indentDate","indentPurpose", "inventoryType","indentStore","indentType","indentToDate","indentFromDate","indentRaisedBy"];
+  const textFields = ["indentNumber","indentPurpose", "inventoryType","indentStore","indentToDate","indentFromDate","indentRaisedBy"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.search-indent.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`

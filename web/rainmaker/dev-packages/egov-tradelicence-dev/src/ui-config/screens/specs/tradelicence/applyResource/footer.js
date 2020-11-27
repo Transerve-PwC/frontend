@@ -2,6 +2,7 @@ import {
   getLabel,
   dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import store from "redux/store";
 import { applyTradeLicense,getNextFinancialYearForRenewal, download, organizeLicenseData, getSearchResults } from "../../../../../ui-utils/commons";
 import {
   getButtonVisibility,
@@ -34,7 +35,7 @@ import set from "lodash/set";
 import some from "lodash/some";
 import { documentList } from "./documentList";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField,toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { LICENSE_DHOBI_GHAT, RENEWAL_RENT_DEED_SHOP, RC_PEDAL_RICKSHAW_LOADING_REHRI, DL_PEDAL_RICKSHAW_LOADING_REHRI } from "../../../../../ui-constants"
 import { getReviewDetails } from "./review-trade";
 
@@ -140,7 +141,7 @@ export const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
   let ageFieldError = false;
   let businessStartDateFieldError = false;
-
+  store.dispatch(toggleSpinner());
   if (activeStep === TRADE_DETAILS_STEP) {
       const data = get(state.screenConfiguration, "preparedFinalObject");
       // setOwnerShipDropDownFieldChange(state, dispatch, data);
@@ -397,6 +398,7 @@ export const callBackForNext = async (state, dispatch) => {
           dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
   }
+  store.dispatch(toggleSpinner());
 };
 
 export const changeStep = (

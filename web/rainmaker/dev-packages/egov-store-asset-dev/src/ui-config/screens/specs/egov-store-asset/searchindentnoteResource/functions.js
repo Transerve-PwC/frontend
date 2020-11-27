@@ -85,7 +85,7 @@ export const searchApiCall = async (state, dispatch) => {
       )
     );
   } else {
-    // Add selected search fields to queryobject
+    // Add selected search fields to queryobject 
     for (var key in searchScreenObject) {
       if (
         searchScreenObject.hasOwnProperty(key) &&
@@ -96,7 +96,7 @@ export const searchApiCall = async (state, dispatch) => {
          let Dateselect = true;
           queryObject.push({
             key: key,
-            value: convertDateToEpoch(searchScreenObject[key])
+            value: key === 'issueT0Date'?  convertDateToEpoch(searchScreenObject[key]) : convertDateToEpoch(searchScreenObject[key], "dayStart")
           });
         } 
         else

@@ -164,7 +164,7 @@ import {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,purchaseOrderDetails[0].receivedQuantity));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,purchaseOrderDetails[0].orderQuantity));
                  dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
-                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,purchaseOrderDetails[0].orderQuantity));
+                 //dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,purchaseOrderDetails[0].receivedQuantity));
                 // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,purchaseOrderDetails[0].orderQuantity));
                 // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,purchaseOrderDetails[0].orderQuantity * purchaseOrderDetails[0].unitPrice));
 
@@ -220,7 +220,7 @@ import {
                 if(materials && materials[0])
                 {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.name`,materials[0].name));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].MaterialNameDesc`,materials[0].description));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.description`,materials[0].description));
                 //dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].baseUom.code));
                // dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].name));
                 }
@@ -243,7 +243,7 @@ import {
                 },
                 required: false,
                 pattern: getPattern("Name") || null,
-                jsonPath: "materialReceipt[0].receiptDetails[0].MaterialNameDesc"
+                jsonPath: "materialReceipt[0].receiptDetails[0].material.description"
               })
             },
             UOMName: {
@@ -393,10 +393,10 @@ import {
                 let unitRate =   get(state.screenConfiguration.preparedFinalObject,`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,0)
                 let QtyRejected = Number(receivedQty) - Number(action.value)
                 let totalAcceptedvalue = unitRate * Number(action.value)
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].qtyRejected`,QtyRejected));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].qtyRejected`,0));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,Number(action.value)));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receiptDetailsAddnInfo[0].quantity`,Number(action.value)));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].userReceivedQty`,receivedQty));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].userReceivedQty`,Number(action.value)));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].isScrapItem`,false));
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,totalAcceptedvalue));
 

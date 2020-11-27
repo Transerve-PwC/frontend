@@ -1,6 +1,5 @@
 import {
   getLabel,
-  dispatchMultipleFieldChangeAction
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   getCommonApplyFooter,
@@ -12,26 +11,18 @@ import {
 } from "../../utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import {
-  toggleSnackbar,
-  prepareFinalObject
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
 import "./customfooter.css";
-
 import {
-  getAccessToken,
   getOPMSTenantId,
-  getLocale,
   getUserInfo,
   localStorageGet
 } from "egov-ui-kit/utils/localStorageUtils";
-import { getapplicationType } from "egov-ui-kit/utils/localStorageUtils";
 import { callbackforSummaryActionCancel, callbackforSummaryActionSubmit } from '../roadcutnoc_summary'
-import { checkVisibility } from '../../../../../ui-utils/commons'
 import set from "lodash/set";
+import get from "lodash/get";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
-let roles = JSON.parse(getUserInfo()).roles
 const toggleactionmenu = (state, dispatch) => {
 
   var x = document.getElementById("custom-atoms-footerEmp");
@@ -227,13 +218,37 @@ export const footerEmp = getCommonApplyFooter({
     onClickDefination: {
       action: "condition",
       callBack: (state, dispatch) => {
-        set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
-        if (localStorageGet("applicationStatus") == "INITIATED" || localStorageGet("applicationStatus") == "REASSIGNTOJE" || localStorageGet("applicationStatus") == "RESENT") {
-          showHideAdhocPopup(state, dispatch, "roadcutnoc-search-preview")
-        } else {
-          showHideAdhocPopupopmsForward(state, dispatch, "roadcutnoc-search-preview", "nextButton")
+        try {
+          
+          set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
+          if (localStorageGet("applicationStatus") == "INITIATED" || localStorageGet("applicationStatus") == "REASSIGNTOJE" || localStorageGet("applicationStatus") == "RESENT") {
+            const ROADCUTNOC = get(
+              state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
+            const typeOfApplicant = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('typeOfApplicant') ?
+              JSON.parse(ROADCUTNOC.applicationdetail).typeOfApplicant : undefined;
+            if (typeOfApplicant && (typeOfApplicant === "TELECOM" || typeOfApplicant === "NATURAL_GAS_PIPELINE_PNG")) {
+              set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.isAnyChangeInRoadCutEstimation", "No");
+              dispatch(
+                handleField(
+                  "roadcutnoc-search-preview",
+                  "components.adhocDialog.children.popup.children.adhocRebateCardRoadCutForward.children.ForwardContainerRoadCutForward.children.isAnyChangeInRoadCutEstimation",
+                  "props.value", "No"));
+            } else {
+              const isAnyChangeInRoadCutEstimation = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('isAnyChangeInRoadCutEstimation') ?
+                JSON.parse(ROADCUTNOC.applicationdetail).isAnyChangeInRoadCutEstimation : undefined;
+              if (isAnyChangeInRoadCutEstimation) {
+                set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.isAnyChangeInRoadCutEstimation", isAnyChangeInRoadCutEstimation);
+              }
+            }
+            showHideAdhocPopup(state, dispatch, "roadcutnoc-search-preview")
+          } else {
+            showHideAdhocPopupopmsForward(state, dispatch, "roadcutnoc-search-preview", "nextButton")
+          }
+        } catch (e) { 
+          
+          console.error(e)
         }
-      }
+        }
     },
     //    visible: checkForRole(roles, 'JE') || checkForRole(roles, 'SDO') || checkForRole(roles, 'EE') || checkForRole(roles, 'SE') ? true : false
     visible: false//checkVisibility("REVIEWSDO,REVIEWOFSE,REVIEWOFEE")
@@ -403,7 +418,11 @@ export const footerEmp = getCommonApplyFooter({
       action: "condition",
       callBack: (state, dispatch) => {
         set(state, 'screenConfiguration.preparedFinalObject.ROADCUTNOCWF.REASSIGNDO', false);
-        showHideAdhocPopupopmsApprove(state, dispatch, "roadcutnoc-search-preview", "reject")
+        if (localStorageGet("applicationStatus") == "VERIFYANDFORWARD" ) {
+          showHideAdhocPopupopmsForward(state, dispatch, "roadcutnoc-search-preview", "nextButton")
+        } else {
+          showHideAdhocPopupopmsApprove(state, dispatch, "roadcutnoc-search-preview", "reject")
+        }
       }
     },
     visible: false

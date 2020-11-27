@@ -208,18 +208,18 @@ export const createUpdateIndent = async (state, dispatch, action) => {
 
   let issueDate =
   get(state, "screenConfiguration.preparedFinalObject.materialIssues[0].issueDate",0) 
-  issueDate = convertDateToEpoch(issueDate);
+  issueDate = convertDateToEpoch(issueDate, "dayStart");
   set(materialIssues[0],"issueDate", issueDate);
 
 
   let indentDate =
   get(state, "screenConfiguration.preparedFinalObject.materialIssues[0].indent.indentDate",0) 
-  indentDate = convertDateToEpoch(indentDate);
+  indentDate = convertDateToEpoch(indentDate, "dayStart");
   set(materialIssues[0],"indent.indentDate", indentDate);
 
   let expectedDeliveryDate =
   get(state, "screenConfiguration.preparedFinalObject.materialIssues[0].expectedDeliveryDate",0) 
-  expectedDeliveryDate = convertDateToEpoch(expectedDeliveryDate);
+  expectedDeliveryDate = convertDateToEpoch(expectedDeliveryDate, "dayStart");
   set(materialIssues[0],"indent.expectedDeliveryDate", expectedDeliveryDate);
 
   

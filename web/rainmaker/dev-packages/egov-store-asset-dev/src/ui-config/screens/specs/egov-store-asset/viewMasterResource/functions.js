@@ -265,8 +265,7 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
       employeeObject[0],
       `assignments[${i}].toDate`,
       convertDateToEpoch(
-        get(employeeObject[0], `assignments[${i}].toDate`),
-        "dayStart"
+        get(employeeObject[0], `assignments[${i}].toDate`)
       )
     );
 
@@ -298,8 +297,7 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
       employeeObject[0],
       `serviceHistory[${i}].serviceTo`,
       convertDateToEpoch(
-        get(employeeObject[0], `serviceHistory[${i}].serviceTo`),
-        "dayStart"
+        get(employeeObject[0], `serviceHistory[${i}].serviceTo`)
       )
     );
   }

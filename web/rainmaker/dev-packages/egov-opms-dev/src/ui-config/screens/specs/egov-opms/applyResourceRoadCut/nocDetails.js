@@ -109,7 +109,7 @@ export const nocDetails = getCommonCard({
     applicantName: {
       ...getTextField({
         label: {
-          labelName: "Applicant Name",
+          labelName: "Applicant Name/ Authorize Signatory",
           labelKey: "ROADCUT_APPLICANT_NAME_LABEL_NOC"
         },
         placeholder: {
@@ -157,11 +157,13 @@ export const nocDetails = getCommonCard({
         sourceJsonPath: "applyScreenMdmsData.egpm.roadCutDivision",
         jsonPath: "ROADCUTNOC.division",
         required: true,
+        disabled: true,
         props: {
           className: "hr-generic-selectfield",
-          optionLabel: "name"
+          optionLabel: "name",
           // hasLocalization: false
-          // disabled: true
+          disabled: true,
+
         },
         
       }),
@@ -176,7 +178,7 @@ export const nocDetails = getCommonCard({
           labelName: "Enter Ward",
           labelKey: "ROADCUT_WARD_PLACEHOLDER"
         },
-        required: true,
+        required: false,
         pattern: getOPMSPattern("Division"),
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
         jsonPath: "ROADCUTNOC.ward"
@@ -199,7 +201,31 @@ export const nocDetails = getCommonCard({
           required: true
           // disabled: true
         },
+        afterFieldChange: (action, state, dispatch) => {
+          try {
+            
 
+            let divisionData =
+              get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egpm.sector", []).find(
+                item => item.code === action.value
+              );
+
+            dispatch(
+              prepareFinalObject(
+                "ROADCUTNOC.division", divisionData.division
+              )
+            );
+
+            dispatch(
+              handleField(
+                "applyroadcuts",
+                "components.div.children.formwizardFirstStep.children.nocDetails.children.cardContent.children.nocDetailsContainer.children.applicantDivision",
+                "props.value", divisionData.division));
+ 
+          } catch (e) {
+            console.log(e);
+          }
+        }
       }),
     },
     requestedLocation: {

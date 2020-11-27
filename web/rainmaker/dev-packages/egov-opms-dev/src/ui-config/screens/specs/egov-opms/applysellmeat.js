@@ -120,6 +120,9 @@ const getMdmsData = async (action, state, dispatch) => {
             },
             {
               name: "sector"
+            },
+            {
+              name: "applicationType"
             }
           ]
         },

@@ -704,7 +704,7 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       ];
       set(payload, "uploadVaccinationCertificate", otherDocuments_Vaccine);
       set(payload, "uploadPetPicture", otherDocuments_pet);
-
+      set(payload, "idName", getIdName(state,"PETNOC",get(payload, null)));
       response = await httpRequest("post", "/pm-services/noc/_create", "", [], { dataPayload: payload });
       console.log('pet response : ', response)
 
@@ -1001,25 +1001,6 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 
 
 
-export const getOPMSCards = async () => {
-  let queryObject = [];
-  var requestBody = {
-
-  }
-
-  try {
-    const payload = await httpRequest(
-      "post",
-      "/egov-mdms-service/v1/_get?moduleName=egpm&masterName=ApplicationType&tenantId="`${getOPMSTenantId()}`,
-      "",
-      queryObject,
-      requestBody
-    );
-    return payload;
-  } catch (error) {
-    store.dispatch(toggleSnackbar(true, error.message, "error"));
-  }
-};
 
 
 export const getCitizenGridData = async () => {
@@ -1264,6 +1245,7 @@ export const createUpdateSellMeatNocApplication = async (state, dispatch, status
     setapplicationMode(status);
 
     if (method === "CREATE") {
+      set(payload, "idName", getIdName(state,"SELLMEATNOC",get(payload, null)));
 
       response = await httpRequest("post", "/pm-services/noc/_create", "", [], { dataPayload: payload });
       console.log('pet response : ', response)
@@ -1297,6 +1279,19 @@ export const createUpdateSellMeatNocApplication = async (state, dispatch, status
   }
 };
 
+export const getIdName = (state, typeName, key) => { 
+  
+  let applicationTypeList = get(
+    state,
+    "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egpm.applicationType",
+    []
+  );
+  // const locMessageObj =  localisationArray.find(locMessage => locMessage.code === tempColumnName);
+  const applicationType = applicationTypeList.find(item => item.code === typeName);
+  let idName  = typeof applicationType['idName'] === "object" ? get(applicationType, `idName[${key}]`) : get(applicationType, `idName`);
+  return idName
+
+}
 
 export const createUpdateRoadCutNocApplication = async (state, dispatch, status) => {
   let response = '';
@@ -1332,6 +1327,7 @@ export const createUpdateRoadCutNocApplication = async (state, dispatch, status)
 
     payload.hasOwnProperty("roadCutType") === false ? set(payload, "roadCutType", "") : ''
     payload.hasOwnProperty("requestedLocation") === false ? set(payload, "requestedLocation", "") : ''
+    payload.hasOwnProperty("ward") === false ? set(payload, "ward", "") : ''
     payload.hasOwnProperty("gstin") === false ? set(payload, "gstin", "") : ''
     set(payload, "uploadDocuments", roadcutdocuments);
     set(payload, "remarks", Remarks);
@@ -1340,12 +1336,14 @@ export const createUpdateRoadCutNocApplication = async (state, dispatch, status)
     setapplicationMode(status);
 
     if (method === "CREATE") {
+      set(payload, "idName", getIdName(state,"ROADCUTNOC",get(payload, "division")));
       response = await httpRequest("post", "/pm-services/noc/_create", "", [], { dataPayload: payload });
       console.log('pet response : ', response)
       if (response.applicationId !== 'null' || response.applicationId !== '') {
         dispatch(prepareFinalObject("ROADCUTNOC", response));
         setapplicationNumber(response.applicationId);
         setApplicationNumberBox(state, dispatch);
+
         return { status: "success", message: response };
       } else {
         return { status: "fail", message: response };
@@ -1397,6 +1395,7 @@ export const createUpdateADVNocApplication = async (state, dispatch, status) => 
     let responsecreateDemand = '';
     if (method === "CREATE") {
       //specially for calculating service
+      set(payload, "idName", getIdName(state,"ADVERTISEMENTNOC",get(payload, null)));
       dispatch(prepareFinalObject("ADVTCALCULATENOC", payload));
 
       response = await httpRequest("post", "/pm-services/noc/_create", "", [], { dataPayload: payload });

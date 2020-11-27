@@ -75,7 +75,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             dispatch(prepareFinalObject("transferInwards[0].receivingStore.name",materialIssues[0].toStore.name));
             dispatch(prepareFinalObject("transferInwards[0].issueingStore.code",materialIssues[0].fromStore.code));
             dispatch(prepareFinalObject("transferInwards[0].issueingStore.name",materialIssues[0].fromStore.name));
-            dispatch(prepareFinalObject("transferInwards[0].issueDate", convertDateToEpoch(materialIssues[0].issueDate)));
+            dispatch(prepareFinalObject("transferInwards[0].issueDate", convertDateToEpoch(materialIssues[0].issueDate, "dayStart")));
             dispatch(prepareFinalObject("transferInwards[0].indent.issueStore.code",materialIssues[0].indent.issueStore.code));
             dispatch(prepareFinalObject("transferInwards[0].indent.issueStore.name",materialIssues[0].indent.issueStore.name));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.code",materialIssues[0].indent.indentStore.code));

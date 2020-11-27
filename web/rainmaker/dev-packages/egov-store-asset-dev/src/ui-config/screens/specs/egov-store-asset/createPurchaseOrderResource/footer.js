@@ -117,7 +117,7 @@ export const callBackForNext = async (state, dispatch) => {
       // priceList[0].agreementEndDate   =  new Date().toISOString().slice(0, 10);
       const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
       const {supplier} = purchaseOrders[0];
-      dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplier.code));
+      dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplier.name));
      // dispatch(prepareFinalObject("searchMaster.priceList", response.priceLists));  
         dispatch(prepareFinalObject("purchaseOrders[0].priceList", priceList)); 
         const {externalPoNumber} = purchaseOrders[0];

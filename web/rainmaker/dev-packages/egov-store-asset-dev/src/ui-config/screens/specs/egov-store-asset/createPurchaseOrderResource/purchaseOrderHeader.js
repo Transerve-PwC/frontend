@@ -12,6 +12,7 @@ import { getSearchResults ,getSTOREPattern} from "../../../../../ui-utils/common
 import { getMaterialIndentSearchResults } from "../../../../../ui-utils/storecommonsapi";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as  handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import get from "lodash/get";
 
 let indentNumber="";
 indentNumber = getQueryArg(window.location.href, "indentNumber");
@@ -261,7 +262,7 @@ export const purchaseOrderHeader = getCommonCard({
         {
          
           dispatch(prepareFinalObject("purchaseOrders[0].rateType", "Gem")); 
-          dispatch(prepareFinalObject("purchaseOrders[0].supplier.code", null));
+         //dispatch(prepareFinalObject("purchaseOrders[0].supplier.code", null));
           dispatch(
             handleField(
               "create-purchase-order",
@@ -325,6 +326,12 @@ export const purchaseOrderHeader = getCommonCard({
             }
         }
         else{
+          let purchaseOrders = get(
+            state.screenConfiguration.preparedFinalObject,
+            "purchaseOrders",
+            []
+          );
+         
           dispatch(
             handleField(
               "create-purchase-order",
@@ -381,6 +388,22 @@ export const purchaseOrderHeader = getCommonCard({
               ''
             )
           );
+          if(state.screenConfiguration.preparedFinalObject.searchMaster && state.screenConfiguration.preparedFinalObject.searchMaster.supplierName)
+          {
+            const {supplierName} = state.screenConfiguration.preparedFinalObject.searchMaster;
+            if(purchaseOrders && purchaseOrders[0])
+            {
+              const {supplier} = purchaseOrders[0];
+              if(supplier)
+              {
+                const supplierObj =  supplierName.filter(ele => ele.code === supplier.code);
+                if (supplierObj && supplierObj[0]){
+                  dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplierObj[0].name));         
+                }
+              }
+            }
+            
+           }
         }
         
       }
@@ -450,6 +473,7 @@ export const purchaseOrderHeader = getCommonCard({
 
             }
             else{
+
               if(response.priceLists[0])
                 {
                     priceList[0].rateContractNumber  =  response.priceLists[0].rateContractNumber;
@@ -473,12 +497,7 @@ export const purchaseOrderHeader = getCommonCard({
            if (supplierObj && supplierObj[0]){
              dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplierObj[0].name));         
            }
-           else
-           {
-            // const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
-            // const {supplier} = purchaseOrders[0];
-            // dispatch(prepareFinalObject("purchaseOrders[0].supplier.name", supplier.code));
-           }
+           
           }
         });     
        }
