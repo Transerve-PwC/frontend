@@ -29,12 +29,10 @@ const checkActiveItem = item => {
 
 class MultiItem extends React.Component {
   componentDidMount = () => {
-    debugger
     this.initMultiItem(this.props);
   };
 
   initMultiItem = props => {
-    debugger
     const { items, sourceJsonPath, preparedFinalObject } = props;
     const editItems = get(preparedFinalObject, sourceJsonPath, []);
     if (editItems) {
@@ -58,8 +56,7 @@ class MultiItem extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    debugger
-    if (!isEqual(nextProps, this.props)) {
+    if(JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
       this.initMultiItem(nextProps);
     }
   }

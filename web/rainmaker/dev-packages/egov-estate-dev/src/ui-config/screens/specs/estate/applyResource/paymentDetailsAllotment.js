@@ -402,7 +402,6 @@ const startYearField = {
   minLength: 1,
   props: {
     disabled: true,
-    value: 0
   },
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentStartMonth"
 }
@@ -426,7 +425,24 @@ const endYearField = {
   props: {
     type: "number"
   },
-  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
+  afterFieldChange: (action, state, dispatch) => {
+    const {componentJsonpath, value} = action
+    const index = Number((componentJsonpath.split("]")[0]).split("[")[1])
+    const items = get(state, "screenConfiguration.preparedFinalObject.Properties[0].propertyDetails.paymentConfig.paymentConfigItems");
+    const findIndex = items.findIndex((item, ind) =>  ind > index && !item.isDeleted)
+    if(findIndex !== -1) {
+      const groundRentStartMonth = Number(value) + 1 + ""
+      dispatch(handleField(
+        screenName,
+        `components.div.children.${paymentStep}.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${findIndex}].item${findIndex}.children.cardContent.children.rentCard.children.startYear`,
+        "props.value",
+        groundRentStartMonth
+      ))
+    }
+    const startValue = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].groundRentStartMonth`)
+    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, value-startValue))
+  }
 }
 
 const commonRentInformation = () => {
@@ -440,14 +456,18 @@ const commonRentInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
         callBack: (value) =>  {
           if (value) {
-            let till = ((Number(value)/12).toFixed(1)).toString();
-            till = till.includes(".") ? till.split(".") : till
-            let year = till[0] + " year ";
-            let month = !!till[1] ? till[1] + " month" : ""
-            return year + month;
+            const years = (Number(value) / 12 | 0)
+            const months = Number(value) % 12
+            if(years > 0 && months > 0) {
+              return years + " Years " + months +" Months"
+            } else if(years < 1) {
+              return months + " Months"
+            } else if(months < 1) {
+              return years + " Years"
+            }
           }
           return "-"
         }
@@ -502,12 +522,9 @@ export const rentDetails = getCommonGrayCard({
               if (rentItems.length) {
                 let lastAddedEndYear = rentItems[rentItems.length - 1].groundRentEndMonth;
                 multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
-                updatePreparedFormObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${rent.length}]`, {groundRentStartMonth: Number(lastAddedEndYear) + 1})
+                updatePreparedFormObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${rent.length}]`, {groundRentStartMonth: Number(lastAddedEndYear) + 1 + ""})
               } 
               return multiItemContent;
-              // else {
-              //   multiItemContent.startYear.props.disabled = false
-              // }
             },
             onMultiItemDelete: (state, deletedIndex, changeField) => {
               let rent = get(
@@ -515,16 +532,14 @@ export const rentDetails = getCommonGrayCard({
                 "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              // if(deletedIndex !== rent.length - 1) {
                 const previewYearObj = rent.filter((item, index) => index < deletedIndex && !item.isDeleted).pop()
                 const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && !item.isDeleted)
                 nextYearObj !== -1 && changeField(
                   screenName,
                   `components.div.children.${paymentStep}.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`,
                   "props.value",
-                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 : 0
+                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 + "" : "0"
                 )
-              // }
             }
           },
           type: "array"
@@ -677,7 +692,6 @@ const startYearLfField = {
   },
   props: {
     disabled: true,
-    value: 0
   },
   maxLength: 100,
   minLength: 1,
@@ -700,7 +714,24 @@ const endYearLfField = {
   maxLength: 100,
   minLength: 1,
   required: true,
-  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth"
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
+  afterFieldChange: (action, state, dispatch) => {
+    const {componentJsonpath, value} = action
+    const index = Number((componentJsonpath.split("]")[0]).split("[")[1])
+    const items = get(state, "screenConfiguration.preparedFinalObject.Properties[0].propertyDetails.paymentConfig.paymentConfigItems");
+    const findIndex = items.findIndex((item, ind) =>  ind > index && !item.isDeleted)
+    if(findIndex !== -1) {
+      const groundRentStartMonth = Number(value) + 1 + ""
+      dispatch(handleField(
+        screenName,
+        `components.div.children.${paymentStep}.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${findIndex}].item${findIndex}.children.cardContent.children.licenseCard.children.startYear`,
+        "props.value",
+        groundRentStartMonth
+      ))
+    }
+    const startValue = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].groundRentStartMonth`)
+    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, value-startValue))
+  }
 }
 
 const commonLicenseInformation = () => {
@@ -714,14 +745,18 @@ const commonLicenseInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentEndMonth",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
         callBack: (value) =>  {
           if (value) {
-            let till = ((Number(value)/12).toFixed(1)).toString();
-            till = till.includes(".") ? till.split(".") : till
-            let year = till[0] + " year ";
-            let month = !!till[1] ? till[1] + " month" : ""
-            return year + month;
+            const years = (Number(value) / 12 | 0)
+            const months = Number(value) % 12
+            if(years > 0 && months > 0) {
+              return years + " Years " + months +" Months"
+            } else if(years < 1) {
+              return months + " Months"
+            } else if(months < 1) {
+              return years + " Years"
+            }
           }
           return "-"
         }
@@ -768,23 +803,20 @@ export const licenseFeeForYearDetails = getCommonGrayCard({
             prefixSourceJsonPath: "children.cardContent.children.licenseCard.children",
 
             afterPrefixJsonPath: "children.value.children.key",
+
             onMultiItemAdd: (state, multiItemContent, updatePreparedFormObject) => {
               let rent = get(
                 state.screenConfiguration.preparedFinalObject,
                 "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              rent = rent.filter(item => !item.isDeleted)
               const rentItems = rent.filter(item => !item.isDeleted)
               if (rentItems.length) {
                 let lastAddedEndYear = rentItems[rentItems.length - 1].groundRentEndMonth;
                 multiItemContent.startYear.props.value = Number(lastAddedEndYear) + 1;
-                updatePreparedFormObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${rent.length}]`, {groundRentStartMonth: Number(lastAddedEndYear) + 1})
+                updatePreparedFormObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${rent.length}]`, {groundRentStartMonth: Number(lastAddedEndYear) + 1 + ""})
               } 
               return multiItemContent;
-              // else {
-              //   multiItemContent.startYear.props.disabled = false
-              // }
             },
             onMultiItemDelete: (state, deletedIndex, changeField) => {
               let rent = get(
@@ -792,17 +824,15 @@ export const licenseFeeForYearDetails = getCommonGrayCard({
                 "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              // if(deletedIndex !== rent.length - 1) {
                 const previewYearObj = rent.filter((item, index) => index < deletedIndex && !item.isDeleted).pop()
                 const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && !item.isDeleted)
                 nextYearObj !== -1 && changeField(
                   screenName,
                   `components.div.children.${paymentStep}.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.licenseCard.children.startYear`,
                   "props.value",
-                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 : 0
+                  !!previewYearObj && !!previewYearObj.groundRentEndMonth ? Number(previewYearObj.groundRentEndMonth)+1 + "" : "0"
                 )
-              }
-            // }
+            }
           },
           type: "array"
         }

@@ -403,7 +403,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //   }
     // }]
 
-    let {estateRentSummary} = Properties[0]
+    let {estateRentSummary, propertyDetails} = Properties[0]
     if(!!estateRentSummary){
       estateRentSummary.outstanding =  (Number(estateRentSummary.balanceRent) + 
       Number(estateRentSummary.balanceGST) + Number(estateRentSummary.balanceGSTPenalty) +
@@ -414,7 +414,17 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       estateRentSummary.balanceGSTPenalty = Number(estateRentSummary.balanceGSTPenalty).toFixed(2)
       estateRentSummary.balanceRentPenalty = Number(estateRentSummary.balanceRentPenalty).toFixed(2)
   }
-    Properties = [{...Properties[0], estateRentSummary: estateRentSummary}]
+  let {paymentConfig = {}} = propertyDetails
+  let paymentConfigItems = []
+  if(!!paymentConfig && !!paymentConfig.paymentConfigItems && !!paymentConfig.paymentConfigItems.length) {
+    paymentConfigItems = paymentConfig.paymentConfigItems.sort((a, b) => {
+      return a.groundRentStartMonth - b.groundRentStartMonth
+    });
+    paymentConfigItems = paymentConfigItems.map(item => ({...item, tillDate: item.groundRentEndMonth - item.groundRentStartMonth}))
+  } else {
+    paymentConfigItems = [{groundRentStartMonth: "0"}]
+  }
+    Properties = [{...Properties[0], estateRentSummary: estateRentSummary, propertyDetails: {...propertyDetails, paymentConfig : {...paymentConfig, paymentConfigItems}}}]
 
     dispatch(prepareFinalObject("Properties", Properties));
 

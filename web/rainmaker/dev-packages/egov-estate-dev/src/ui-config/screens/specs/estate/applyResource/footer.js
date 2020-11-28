@@ -92,8 +92,7 @@ const callBackForNext = async (state, dispatch) => {
   let ownerOnePosAllotDateValid = true;
   let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
-  let rentYearMismatch = false;
-  let licenseFeeYearMismatch = false;
+  let isStartAndEndYearValid = true
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
@@ -620,20 +619,16 @@ const callBackForNext = async (state, dispatch) => {
       const filterRentArr = rentItems.filter(item => !item.isDeleted)
       rentItems = filterRentArr.map((item, index) => ({...item, groundRentStartMonth: !!index ? Number(filterRentArr[index-1].groundRentEndMonth) + 1 : 0, groundRentEndMonth: item.groundRentEndMonth, groundRentAmount: item.groundRentAmount}))
 
-      const rentValidation = rentItems.filter(item => !item.groundRentAmount)
-      isRentDetailsValid = !rentValidation.length
-
-      dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
-      getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", reviewJsonPath, _cardName, rentItems.length);
+      const rentValidation = rentItems.filter(item => !item.groundRentAmount || !item.groundRentEndMonth)
+      isRentDetailsValid = rentValidation.length === 0
+      isStartAndEndYearValid = rentItems.every(item => item.groundRentEndMonth > item.groundRentStartMonth)
+      if(!!isRentDetailsValid) {
+        dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", reviewJsonPath, _cardName, rentItems.length);
+      }
     }
-
-    let selectedDemand = get(
-      state.screenConfiguration.screenConfig,
-      "apply.components.div.children.formwizardEighthStep.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
-    )
-
-    if (selectedDemand == "true") {
-      if (isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch && isInterestDetailsValid) {
+    const hasValidation = !!isGroundRent ? isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid : isLicenseFeeValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid
+      if (hasValidation) {
         const res = await applyEstates(state, dispatch, activeStep, "apply");
         if (!res) {
           return
@@ -641,27 +636,6 @@ const callBackForNext = async (state, dispatch) => {
       } else {
         isFormValid = false;
       }
-    }
-    else if (selectedDemand == "false") {
-      if (isLicenseFeeValid && isSecurityDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch && isInterestDetailsValid) {
-        const res = await applyEstates(state, dispatch, activeStep, "apply");
-        if (!res) {
-          return
-        }
-      } else {
-        isFormValid = false;
-      }
-    }
-    else {
-      if (isSecurityDetailsValid && isInterestDetailsValid) {
-        const res = await applyEstates(state, dispatch, activeStep, "apply");
-        if (!res) {
-          return
-        }
-      } else {
-        isFormValid = false;
-      }
-    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
@@ -720,6 +694,12 @@ const callBackForNext = async (state, dispatch) => {
       labelKey: "ES_ERR_EMD_DATE_BEFORE_AUCTION_DATE"
   };
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } else if(!isStartAndEndYearValid) {
+      let errorMessage = {
+        labelName: "End Month should be greater than Start Month",
+        labelKey: "ES_ERR_END_MONTH_START_MONTH"
+      }
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
     else if (hasFieldToaster) {
       let errorMessage = {
