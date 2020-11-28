@@ -647,6 +647,7 @@ const getData = async (action, state, dispatch) => {
   // setDocumentData(action, state, dispatch, owner = 1);
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
+  setLegacyAccStmtDoc(action, state, dispatch);
 
   dispatch(
     handleField(
@@ -681,19 +682,6 @@ const getData = async (action, state, dispatch) => {
       false
     )
   )
-
-  const response = await getMdmsData(dispatch, mdmsPayload);
-  dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
-
-  if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
-  }
-  let owner;
-  setDocumentData(action, state, dispatch);
-  // setDocumentData(action, state, dispatch, owner = 1);
-  setPrevOwnerDocs(action, state, dispatch);
-  setBiddersDoc(action, state, dispatch);
-  setLegacyAccStmtDoc(action, state, dispatch);
 
   const stepNumber = getQueryArg(window.location.href, "stepNumber");
   if(!!stepNumber) {
