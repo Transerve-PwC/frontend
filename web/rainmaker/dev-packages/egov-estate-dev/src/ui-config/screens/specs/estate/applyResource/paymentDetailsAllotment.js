@@ -236,7 +236,7 @@ const getDemandRadioButton = {
         action.screenKey,
         `components.div.children.${paymentStep}.children.groundRentDetails`,
         "visible",
-        !!(action.value == "true")
+        action.value === "true"
       )
     )
     dispatch(
@@ -244,7 +244,7 @@ const getDemandRadioButton = {
         action.screenKey,
         `components.div.children.${paymentStep}.children.licenseFeeDetails`,
         "visible",
-        !!(action.value == "false")
+        action.value === "false"
       )
     )
     dispatch(
@@ -252,7 +252,7 @@ const getDemandRadioButton = {
         action.screenKey,
         `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewGroundRent`,
         "visible",
-        !!(action.value == "true")
+        action.value === "true"
       )
     )
     dispatch(
@@ -260,7 +260,7 @@ const getDemandRadioButton = {
         action.screenKey,
         `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewLicenseFee`,
         "visible",
-        !!(action.value == "false")
+        action.value === "false"
       )
     )
     dispatch(
@@ -268,7 +268,7 @@ const getDemandRadioButton = {
         action.screenKey,
         `components.div.children.${summaryStep}.children.${reviewContainer}.children.cardContent.children.reviewAdvanceRent`,
         "visible",
-        !!(action.value)
+        true
       )
     )
   }
