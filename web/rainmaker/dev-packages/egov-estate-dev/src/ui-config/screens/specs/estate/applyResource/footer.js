@@ -661,6 +661,7 @@ const callBackForNext = async (state, dispatch) => {
         }
       }
   }
+  }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
     if (propertyType == "PROPERTY_TYPE.LEASEHOLD") {
