@@ -19,6 +19,11 @@ class Table extends React.Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
+        MUIDataTableBody:{
+          emptyTitle: {
+          marginLeft:window.innerWidth <900 ?"-100% !important":"0px",
+          marginTop: window.innerWidth <900 ?"8% !important":"0px"
+        }},
         MuiPaper: {
           root: {
             backgroundColor: "#FFF",

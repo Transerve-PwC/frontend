@@ -128,10 +128,14 @@ class DocumentList extends Component {
   handleDocument = async (file, fileStoreId) => {
     let fileUrl = {}
     let { uploadedDocIndex, uploadedDocuments } = this.state;
-    const { prepareFinalObject, documents, tenantId, uploadedDocumentsJsonPath, getUrl, screenKey, componentJsonPath } = this.props;
+    const { prepareFinalObject,dispatch,preparedFinalObject, documents, tenantId, uploadedDocumentsJsonPath, getUrl, screenKey, componentJsonPath } = this.props;
     const { jsonPath, name } = documents[uploadedDocIndex];
     fileUrl = await getFileUrlFromAPI(fileStoreId);
     if(getUrl) {
+      let demands=preparedFinalObject.Properties[0].demands
+      let payments=preparedFinalObject.Properties[0].payments
+     prepareFinalObject("Properties[0].inActiveDemands",demands)
+     prepareFinalObject("Properties[0].inActivePayments",payments)
       getXLSData(getUrl, componentJsonPath, screenKey, fileStoreId)
     }
     uploadedDocuments = {
