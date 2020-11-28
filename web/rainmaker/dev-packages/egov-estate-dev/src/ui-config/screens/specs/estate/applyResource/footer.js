@@ -93,6 +93,11 @@ const callBackForNext = async (state, dispatch) => {
   let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
   let isStartAndEndYearValid = true
+  let propertyType = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyDetails.propertyType",
+    ""
+  )
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
