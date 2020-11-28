@@ -92,6 +92,11 @@ const MultiItem = Loadable({
   loading: () => <Loading />
 });
 
+const RadioGroupContainer = Loadable({
+  loader: () => import("./RadioGroupContainer"),
+  loading: () => <Loading />
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -111,5 +116,6 @@ export {
   MultipleCardContainer,
   MultiSelectContainer,
   RentSummaryCardContainer,
-  MultiItem
+  MultiItem,
+  RadioGroupContainer
 };

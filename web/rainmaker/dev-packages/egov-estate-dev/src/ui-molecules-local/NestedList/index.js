@@ -16,7 +16,8 @@ import {
 const styles = theme => ({
     root: {
       backgroundColor: theme.palette.background.paper,
-      marginBottom: theme.spacing.unit * 2
+      marginBottom: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 5
     },
     listItem: {
         display: "flex", 

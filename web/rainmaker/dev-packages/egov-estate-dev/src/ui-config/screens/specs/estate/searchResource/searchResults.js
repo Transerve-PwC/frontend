@@ -163,7 +163,6 @@ export const securityDetailsTable = {
   visible: true,
   props: {...searchResults.props, 
     columns: [
-      DATE,
       OFFLINE_PAYMENT_DATE,
       AMOUNT,
       TRANSACTION_ID

@@ -401,14 +401,14 @@ export const propertyTypeField = {
         sm: 6
     },
     beforeFieldChange: (action, state, dispatch) => {
-        dispatch(
-            handleField(
-                screenName,
-                `components.div.children.${paymentStep}.children.demandSelect`,
-                "visible",
-                !!(action.value == "PROPERTY_TYPE.LEASEHOLD")
-            )
-        )
+        // dispatch(
+        //     handleField(
+        //         screenName,
+        //         `components.div.children.${paymentStep}.children.demandSelect`,
+        //         "visible",
+        //         !!(action.value == "PROPERTY_TYPE.LEASEHOLD")
+        //     )
+        // )
     }
 }
 

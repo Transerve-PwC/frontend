@@ -36,10 +36,25 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           { Criteria }
         )
 
+        const responseSecurity = await httpRequest(
+          "post",
+          '/est-services/security_deposit/_statement',
+          "",
+          [],
+         { Criteria : { propertyid: propertyId }}
+        )
+
         dispatch(
           prepareFinalObject(
             "PenaltyStatementSummary",
             responsePenalty.PenaltyStatementSummary
+          )
+        );
+
+        dispatch(
+          prepareFinalObject(
+            "SecurityStatementSummary",
+            responseSecurity.SecurityDepositStatementSummary
           )
         );
       } catch (error) {

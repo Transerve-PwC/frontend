@@ -91,7 +91,7 @@ export const masterEntryEditSection = (isEditable, step = 0, screenKey = "apply-
   onClickDefination: {
     action: "condition",
     callBack: (state, dispatch) => {
-      if (screenKey == "apply-buildimg-branch")
+      if (screenKey == "apply-building-branch")
         changeStep(state, dispatch, screenKey, "", step);
       else if (screenKey == "apply-manimajra") {
         changeStepManimajra(state, dispatch, screenKey, "", step);
@@ -208,7 +208,7 @@ const isCurrentOwnerLabel = {
   labelKey: "ES_IS_CURRENT_OWNER_LABEL"
 }
 
-export const getReviewOwner = (isEditable = true, owner = 0, step = 2, screenKey = "apply-building-branch") => {
+export const getReviewOwner = (isEditable = true, owner = 0, step = 1, screenKey = "apply-building-branch") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,

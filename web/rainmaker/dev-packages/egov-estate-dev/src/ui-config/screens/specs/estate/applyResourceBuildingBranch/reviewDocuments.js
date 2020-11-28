@@ -7,7 +7,7 @@ import {
 import { changeStep } from "./footer";
 import { changeStep as changeStepManimajra } from "../applyResourceManimajra/footer"
 
-export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 3) => {
+export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 2) => {
   return getCommonGrayCard({
     headerDiv: {
       uiFramework: "custom-atoms",

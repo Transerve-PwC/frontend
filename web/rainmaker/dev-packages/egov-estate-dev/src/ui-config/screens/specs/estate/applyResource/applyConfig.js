@@ -23,7 +23,8 @@ import {
   courtCaseDetails
 } from './courtCaseDetails';
 import {
-  paymentDetails
+  paymentDetails,
+  documentDetails
 } from './paymentDetails';
 import {
   reviewDetails
@@ -391,6 +392,7 @@ export const formwizardNinthStep = {
     // paymentDocumentsDetails,
     // breakAfterSearch: getBreak(),
     // paymentDetailsTable
+    documentDetails,
     paymentDetails,
     // serviceTaxDetails,
     // paymentMadeBy

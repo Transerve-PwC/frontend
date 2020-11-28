@@ -8,32 +8,53 @@ import {
 const style = {
   bodyBox: {
     marginLeft: 16,
-    flex: 2
+    flex: 2,
+    marginTop:"13px",
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    // justifyContent: "center"
   },
   tailText: {
     color: "rgba(0, 0, 0, 0.6000000238418579)",
     fontSize: 16,
-    fontWeight: 400
+    fontWeight: 400,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    flexDirection: "row"
   },
   tailNumber: {
     fontSize: 24,
-    fontWeight: 500
+    fontWeight: 500,
+    // display: "flex"
+    justifyContent: "center",
+    alignItems: "flex-end",
+    textAlign: "center",
+    flexDirection: "row"
   },
   tailBox: {
     textAlign: "right",
     justifyContent: "center",
-    flex: 1
+    flex: 1,
+    marginTop:"13px"
   },
   bodySub: {
     marginTop: "8px",
     marginBottom: "0px",
     color: "rgba(0, 0, 0, 0.60)",
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    justifyContent: "center"
   },
   container: {
     display: "flex",
     minHeight: "106px",
     justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center"
   }
 };

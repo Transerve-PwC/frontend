@@ -17,6 +17,45 @@ import {
 import get from "lodash/get";
 import { _getPattern } from "../../utils/"
 
+const documentList = {
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
+  componentPath: "DocumentListContainer",
+  props: {
+    buttonLabel: {
+      labelName: "UPLOAD FILE",
+      labelKey: "ES_BUTTON_UPLOAD_FILE"
+    },
+    inputProps: [],
+    documentTypePrefix: "ES_",
+    documentsJsonPath: "tempAccStmt[0].documents",
+    uploadedDocumentsJsonPath: "tempAccStmt[0].uploadedDocsInRedux",
+    tenantIdJsonPath: "Properties[0].tenantId",
+    removedJsonPath: "tempAccStmt[0].removedDocs",
+    // excelUrl: "/est-services/auctions/_parse?"
+  }
+};
+
+export const documentDetails = getCommonCard({
+  header: getCommonTitle(
+    {
+      labelName: "Upload Legacy Account Statement",
+      labelKey: "ES_UPLOAD_LEGACY_ACCOUNT_STMT_HEADER"
+    },
+    {
+      style: {
+        marginBottom: "18px"
+      }
+    }
+  ),
+  // paragraph: getCommonParagraph({
+  //   labelName:
+  //     "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
+  //   labelKey: "ES_NEW-UPLOAD-DOCS_SUBHEADER"
+  // }),
+  documentList
+})
+
 const paymentHeader = getCommonTitle({
   labelName: "Consolidated Payment Details",
   labelKey: "ES_CONSOLIDATED_PAYMENT_DETAILS_HEADER"

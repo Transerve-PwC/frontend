@@ -401,6 +401,79 @@ if(isGroundRent){
   }
 }
 
+export const downloadBuildingBranchPMPdf = (Properties, PropertiesTemp ,mode = "download") => {
+  let queryStr = [{
+    key: "key",
+    value: `bb-property-summary`
+  },
+  {
+    key: "tenantId",
+    value: `${getTenantId().split('.')[0]}`
+  }
+]
+
+let PropertiesTempOwners = PropertiesTemp[0].propertyDetails.owners;
+const modifiedOwner = PropertiesTempOwners.map((owner) => {
+  let ownerDocuments = owner.ownerDetails.reviewDocData
+  const plength = ownerDocuments.length % 4
+  ownerDocuments = !!plength ? [...ownerDocuments, ...new Array(4 - plength).fill({
+    title: "",
+    name: ""
+  })] : ownerDocuments
+  const myODocuments = ownerDocuments.map((item) => ({
+    ...item,
+    title: getLocaleLabels(item.title, item.title)
+  })).reduce((splits, i) => {
+    const length = splits.length
+    const rest = splits.slice(0, length - 1);
+    const lastArray = splits[length - 1] || [];
+    return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+  }, []);
+  owner.ownerDetails.ownerDocuments = myODocuments;
+  return owner;
+})
+
+  let Property = Properties[0];
+  if(Property.propertyDetails.owners.length > 0){
+    let propertyOwners = Property.propertyDetails.owners;
+     propertyOwners.map((owner , index) => {
+       owner.ownerDetails.ownerDocuments = modifiedOwner[index].ownerDetails.ownerDocuments
+       owner.ownerDetails.guardianRelation = getLocaleLabels(owner.ownerDetails.guardianRelation, owner.ownerDetails.guardianRelation)
+       owner.ownerDetails.possesionDate = moment(new Date(owner.ownerDetails.possesionDate)).format('DD-MMM-YYYY')
+       return owner
+    })
+
+  }
+
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+  try {
+    httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, {
+      Properties: [Property]
+      }, {
+        'Accept': 'application/json'
+      }, {
+        responseType: 'arraybuffer'
+      })
+      .then(res => {
+        res.filestoreIds[0]
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+          res.filestoreIds.map(fileStoreId => {
+            downloadReceiptFromFilestoreID(fileStoreId, mode)
+          })
+        } else {
+          console.log("Error In Acknowledgement form Download");
+        }
+      });
+  } catch (exception) {
+    alert('Some Error Occured while downloading Acknowledgement form!');
+  }
+}
+
 
 export const downloadAcknowledgementForm = (Applications, applicationType,feeEstimate,state, mode = "download") => {
   let queryStr = []
@@ -740,7 +813,20 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
                  }
                ]
                payload[0]["PenaltyStatementSummary"] = PenaltyStatementSummary
-                break;  
+                break; 
+              case 'PAYMENTTYPE.SECURITYFEE':
+                  const {SecurityDepositStatementSummary} = state.screenConfiguration.preparedFinalObject
+                  queryStr = [{
+                    key: "key",
+                    value: "security-payment-receipt"
+                  },
+                  {
+                    key: "tenantId",
+                    value: receiptQueryString[1].value.split('.')[0]
+                  }
+                ]
+                payload[0]["SecurityDepositStatementSummary"] = SecurityDepositStatementSummary
+                break;   
               default:
                  queryStr = [{
                    key: "key",
@@ -1377,6 +1463,22 @@ export const prepareBiddersDocumentTypeObjMaster = (documents) => {
           required: item.required,
           jsonPath: `bidders[0].documents[${ind}]`,
           statement: "BIDDERS_LIST_DESC"
+        });
+        return documentsArr;
+      }, [])
+      : [];
+  return documentsArr;
+};
+
+export const prepareAccStmtDocumentTypeObjMaster = (documents) => {
+  let documentsArr =
+    documents.length > 0
+      ? documents.reduce((documentsArr, item, ind) => {
+        documentsArr.push({
+          name: item.code,
+          required: item.required,
+          jsonPath: `legacyAccStmt[0].documents[${ind}]`,
+          statement: "ACC_STMT_DESC"
         });
         return documentsArr;
       }, [])

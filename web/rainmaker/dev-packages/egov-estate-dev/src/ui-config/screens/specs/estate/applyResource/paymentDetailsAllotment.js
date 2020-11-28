@@ -56,8 +56,6 @@ const advancedRentField = {
       sm: 6
   },
   required: true,
-  minLength: 1,
-  maxLength: 100,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }
 
@@ -203,7 +201,8 @@ export const premiumAmountDetails = getCommonCard({
 
 /******************** Select demand ******************/
 const getDemandRadioButton = {
-  uiFramework: "custom-containers",
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
   componentPath: "RadioGroupContainer",
   gridDefination: {
     xs: 12,
@@ -218,12 +217,12 @@ const getDemandRadioButton = {
     buttons: [{
         labelName: "Ground Rent",
         labelKey: "ES_GROUND_RENT_LABEL",
-        value: "true"
+        value: true
       },
       {
         label: "License Fee",
         labelKey: "ES_LICENSE_FEE_LABEL",
-        value: "false"
+        value: false
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.isGroundRent",
@@ -897,7 +896,8 @@ const dateOfPaymentField = {
 }
 
 const getMonthsOfRentRadioButton = {
-  uiFramework: "custom-containers",
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
   componentPath: "RadioGroupContainer",
   gridDefination: {
     xs: 12,
@@ -908,12 +908,12 @@ const getMonthsOfRentRadioButton = {
     buttons: [{
         labelName: "2 months of rent",
         labelKey: "ES_TWO_MONTHS_RENT_LABEL",
-        value: "2"
+        value: 2
       },
       {
         label: "3 months rent",
         labelKey: "ES_THREE_MONTHS_RENT_LABEL",
-        value: "3"
+        value: 3
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",
@@ -945,7 +945,8 @@ export const securityDetails = getCommonCard({
 
 /******************** Interest Details ********************/
 const getInterestFixedRadioButton = {
-  uiFramework: "custom-containers",
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
   componentPath: "RadioGroupContainer",
   gridDefination: {
     xs: 12,
@@ -960,12 +961,12 @@ const getInterestFixedRadioButton = {
     buttons: [{
         labelName: "Yes",
         labelKey: "ES_COMMON_YES",
-        value: "true"
+        value: true
       },
       {
         label: "No",
         labelKey: "ES_COMMON_NO",
-        value: "false"
+        value: false
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.isIntrestApplicable",

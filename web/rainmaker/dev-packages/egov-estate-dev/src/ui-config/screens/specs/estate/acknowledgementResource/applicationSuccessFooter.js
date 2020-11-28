@@ -2,7 +2,7 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
-  ifUserRoleExists,downloadAcknowledgementForm,downloadSummary,downloadPaymentReceipt
+  ifUserRoleExists,downloadAcknowledgementForm,downloadSummary,downloadPaymentReceipt,downloadBuildingBranchPMPdf
 } from "../../utils";
 import set from "lodash/set";
 import get from "lodash/get";
@@ -300,12 +300,18 @@ export const applicationSuccessFooter = (
                   downloadAcknowledgementForm(Applications,applicationType,[],"");
                 }else{
                   const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject; 
-                  downloadSummary(Properties, PropertiesTemp);
+                  let branch = Properties[0].propertyDetails.branchType
+                  if(branch === 'BUILDING_BRANCH'){
+                    downloadBuildingBranchPMPdf(Properties,PropertiesTemp)
+                  }else{
+                    downloadSummary(Properties, PropertiesTemp);
+                  }
                 }
   
                 break;
               case 'pay':
-                if(type === 'ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER' || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_VIOLATION" || type === "ESTATE_SERVICE_ESTATE_BRANCH.EXTENSION_FEE"){
+                if(type === 'ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER' || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_VIOLATION" || type === "ESTATE_SERVICE_ESTATE_BRANCH.EXTENSION_FEE"
+                || type === 'ESTATE_SERVICE_ESTATE_BRANCH.SECURITY_DEPOSIT'){
                   let fileNumber = getQueryArg(window.location.href, "fileNumber");
                   const consumerCodes = getQueryArg(window.location.href, "applicationNumber");
                   if(consumerCodes.startsWith('SITE') || consumerCodes.startsWith('ES') ){
@@ -396,10 +402,16 @@ export const applicationSuccessFooter = (
                     downloadAcknowledgementForm(Applications,applicationType,[],"",'print');
                   }else{
                     const { Properties,PropertiesTemp } = state.screenConfiguration.preparedFinalObject; 
-                    downloadSummary(Properties, PropertiesTemp);
+                    let branch = Properties[0].propertyDetails.branchType
+                    if(branch === 'BUILDING_BRANCH'){
+                      downloadBuildingBranchPMPdf(Properties,PropertiesTemp,'print')
+                    }else{
+                      downloadSummary(Properties, PropertiesTemp,'print');
+                    }
                   }
               case 'pay': 
-              if(type === 'ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER' || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_VIOLATION" || type === "ESTATE_SERVICE_ESTATE_BRANCH.EXTENSION_FEE"){
+              if(type === 'ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER' || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_VIOLATION" || type === "ESTATE_SERVICE_ESTATE_BRANCH.EXTENSION_FEE"
+              || type === 'ESTATE_SERVICE_ESTATE_BRANCH.SECURITY_DEPOSIT'){
                 let fileNumber = getQueryArg(window.location.href, "fileNumber");
                 const consumerCodes = getQueryArg(window.location.href, "applicationNumber");
                 if(consumerCodes.startsWith('SITE') || consumerCodes.startsWith('ES')){

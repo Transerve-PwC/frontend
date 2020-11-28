@@ -33,7 +33,8 @@ import {
 import {
   prepareDocumentTypeObjMaster,
   preparePrevOwnerDocumentTypeObjMaster,
-  prepareBiddersDocumentTypeObjMaster
+  prepareBiddersDocumentTypeObjMaster,
+  prepareAccStmtDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -47,6 +48,7 @@ import {
 } from "../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import * as previousDocsData from './applyResource/previousOwnerDocs.json';
+import * as legacyAccStmtData from "./applyResource/legacyAccountStmtDoc.json";
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
@@ -300,6 +302,29 @@ const setBiddersDoc = async (action, state, dispatch) => {
   )
 }
 
+export const setLegacyAccStmtDoc = (action, state, dispatch) => {
+  const {
+    EstateServices
+  } = legacyAccStmtData && legacyAccStmtData.MdmsRes ? legacyAccStmtData.MdmsRes : {}
+  const {
+    legacyAccountStmtDoc = []
+  } = EstateServices || {}
+  const findMasterItem = legacyAccountStmtDoc.find(item => item.code === "MasterEst")
+  const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
+  var documentTypes;
+  documentTypes = prepareAccStmtDocumentTypeObjMaster(masterDocuments);
+
+  dispatch(
+    handleField(
+      action.screenKey,
+      `components.div.children.formwizardNinthStep.children.documentDetails.children.cardContent.children.documentList`,
+      "props.inputProps",
+      masterDocuments
+    )
+  );
+  dispatch(prepareFinalObject(`tempAccStmt[0].documents`, documentTypes))
+}
+
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Add Estate",
@@ -408,21 +433,21 @@ export const setData = (properties, screenName, dispatch, state) => {
   /*************************************************************************************************/
 
   /* based on the propertyType toggle display of groundRent and licenseFee containers */
-  dispatch(
+  /* dispatch(
     handleField(
       screenName,
         `components.div.children.${stepPayment}.children.demandSelect`,
         "visible",
         !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
     )
-  ) 
+  )  */
 
   dispatch(
     handleField(
       screenName,
       `components.div.children.${stepPayment}.children.groundRentDetails`,
       "visible",
-      !!isGroundRent
+      !!isGroundRent && !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
     )
   )
   dispatch(
@@ -430,7 +455,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepPayment}.children.licenseFeeDetails`,
       "visible",
-      !isGroundRent
+      !isGroundRent && !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
     )
   )
 
@@ -439,7 +464,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewGroundRent`,
       "visible",
-      !!isGroundRent
+      !!isGroundRent && !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
     )
   )
   dispatch(
@@ -447,7 +472,7 @@ export const setData = (properties, screenName, dispatch, state) => {
       screenName,
       `components.div.children.${stepSummary}.children.${reviewContainer}.children.cardContent.children.reviewLicenseFee`,
       "visible",
-      !isGroundRent
+      !isGroundRent && !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
     )
   )
   /*************************************************************************************************/
@@ -611,6 +636,18 @@ const getData = async (action, state, dispatch) => {
     )
   )
 
+  const response = await getMdmsData(dispatch, mdmsPayload);
+  dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+
+  if (!!fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
+  }
+  let owner;
+  setDocumentData(action, state, dispatch);
+  // setDocumentData(action, state, dispatch, owner = 1);
+  setPrevOwnerDocs(action, state, dispatch);
+  setBiddersDoc(action, state, dispatch);
+
   dispatch(
     handleField(
       action.screenKey,
@@ -656,6 +693,7 @@ const getData = async (action, state, dispatch) => {
   // setDocumentData(action, state, dispatch, owner = 1);
   setPrevOwnerDocs(action, state, dispatch);
   setBiddersDoc(action, state, dispatch);
+  setLegacyAccStmtDoc(action, state, dispatch);
 
   const stepNumber = getQueryArg(window.location.href, "stepNumber");
   if(!!stepNumber) {

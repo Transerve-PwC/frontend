@@ -12,7 +12,7 @@ import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
-import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT , TYPE ,PENALTY_STATUS } from "./searchResults";
+import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT ,OFFLINE_PAYMENT_DATE,TRANSACTION_ID, TYPE ,PENALTY_STATUS } from "./searchResults";
 import moment from 'moment'
 import {penaltySummary} from '../../estate/generatePenaltyStatement'
 export const getStatusList = async (state, dispatch, queryObject, screen, path, moduleName) => {
@@ -380,6 +380,51 @@ export const extensionStatmentResult = async(state, dispatch ,Criteria) => {
       handleField(
         "generateExtensionStatement",
         "components.div.children.extensionFeeDetailsTable",
+        "props.data",
+        data
+      )
+    );
+    return response
+  } catch (error) {
+    console.log(error)
+    dispatch(toggleSnackbar(true, error.message, "error"));
+  }
+}
+
+export const securityStatmentResult = async(state, dispatch ,Criteria) => {
+  try {
+    const response = await httpRequest(
+      "post",
+      '/est-services/security_deposit/_statement',
+      "",
+      [],
+      {Criteria}
+    )
+    
+    dispatch(
+      prepareFinalObject(
+        "SecurityStatementSummary",
+        response.SecurityDepositStatementSummary
+      )
+    );
+
+    dispatch(
+      prepareFinalObject(
+        "SecurityPaymentDetails",
+        response.PaymentDetails
+      )
+    )
+
+    let data = response.PaymentDetails.map(item => ({
+      [OFFLINE_PAYMENT_DATE]: moment(new Date(item.dateOfPayment)).format("DD-MMM-YYYY") || "-",
+      [AMOUNT]:(item.amount.toFixed(2)) || "-",
+      [TRANSACTION_ID]: (item.transactionNumber) || "-"
+    }));
+    
+    dispatch(
+      handleField(
+        "estate-security-fee",
+        "components.div.children.securityDetailsTable",
         "props.data",
         data
       )

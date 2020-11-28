@@ -322,17 +322,17 @@ export const securityInfo = (isEditable) => ({
   viewFour: getCommonContainer({
     totalSecurityFee: getLabelWithValue(
       totalSecurityFeeLabel, {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig.securityAmount"
+        jsonPath: "SecurityStatementSummary.totalSecurityDeposit"
       }
     ),
     totalSecurityFeeCollected: getLabelWithValue(
       totalSecurityFeeCollectedLabel, {
-        jsonPath: ""
+        jsonPath: "SecurityStatementSummary.totalSecurityDepositPaid"
       }
     ),
     totalSecurityFeeDue: getLabelWithValue(
       totalSecurityFeeDueLabel, {
-        jsonPath: "SecurityFee.totalPenaltyPaid"
+        jsonPath: "SecurityStatementSummary.totalSecurityDepositDue"
       }
     )
   })

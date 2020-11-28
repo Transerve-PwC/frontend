@@ -1084,7 +1084,7 @@ export const getReviewGroundRent = (isEditable = true, step = 5, screenKey = "al
 //   })
 // }
 
-export const getReviewAdvanceRent = (isEditable = true) => {
+export const getReviewAdvanceRent = (isEditable = true, step = 5, screenKey = "allotment") => {
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -1099,7 +1099,7 @@ export const getReviewAdvanceRent = (isEditable = true) => {
             labelKey: "ES_ADVANCE_RENT_DETAILS_HEADER"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 5, "allotment")
+        editSection: masterEntryEditSection(isEditable, step, screenKey)
       }
     },
     viewAdvanceRent: getCommonContainer({
@@ -1689,7 +1689,7 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
             labelKey: "ES_CONSOLIDATED_PAYMENT_DETAILS"
           })
         },
-        editSection: masterEntryEditSection(isEditable, 2, screenkey)
+        editSection: masterEntryEditSection(isEditable, 8, screenkey)
       }
     },
     viewFour: getCommonContainer({
@@ -1740,5 +1740,70 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
         }
       )
     })
+  })
+}
+
+export const getReviewRentSummary = (isEditable = true, step = 5, screenKey = "allotment") => {
+  return getCommonGrayCard({
+      headerDiv: {
+          ...headerDiv,
+          children: {
+              header: {
+                  gridDefination: {
+                      xs: 12,
+                      sm: 10
+                  },
+                  ...getCommonSubHeader({
+                      labelName: "Rent Summary",
+                      labelKey: "ES_RENT_SUMMARY_HEADER"
+                  })
+              },
+              editSection: masterEntryEditSection(isEditable, step, screenKey)
+          }
+      },
+      viewFour: getCommonContainer({
+              totalDue: getLabelWithValue(
+                  {
+                      labelName: "Total Due ",
+                      labelKey: "ES_TOTAL_DUE_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.balanceRent" }
+              ),
+              amountPaid: getLabelWithValue(
+                  {
+                      labelName: "Amount Paid",
+                      labelKey: "ES_AMOUNT_PAID_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.collectedRent" }
+              ),
+              balanceGST: getLabelWithValue(
+                {
+                    labelName: "Balance GST",
+                    labelKey: "ES_BALANCE_GST_LABEL"
+                },
+                { jsonPath: "Properties[0].estateRentSummary.balanceGST" }
+            ),
+            balanceGSTPenalty: getLabelWithValue(
+                {
+                    labelName: "Balance GST Penalty",
+                    labelKey: "ES_BALANCE_GST_PENALTY_LABEL"
+                },
+                { jsonPath: "Properties[0].estateRentSummary.balanceGSTPenalty" }
+            ),
+            balanceRentPenalty: getLabelWithValue(
+                {
+                    labelName: "Balance Rent Penalty",
+                    labelKey: "ES_BALANCE_RENT_PENALTY_LABEL"
+                },
+                { jsonPath: "Properties[0].estateRentSummary.balanceRentPenalty" }
+            ),
+              outstanding: getLabelWithValue(
+                  {
+                      labelName: "Outstanding",
+                      labelKey: "ES_OUTSTANDING_LABEL"
+                  },
+                  { jsonPath: "Properties[0].estateRentSummary.outstanding" }
+              )
+      })
   })
 }

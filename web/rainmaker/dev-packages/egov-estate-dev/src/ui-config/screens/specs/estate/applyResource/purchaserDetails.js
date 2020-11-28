@@ -36,7 +36,8 @@ export const purchaserHeader = getCommonTitle({
 })
 
 const getPreviousOwnerRequiredRadioButton = {
-  uiFramework: "custom-containers",
+  uiFramework: "custom-containers-local",
+  moduleName: "egov-estate",
   componentPath: "RadioGroupContainer",
   gridDefination: {
     xs: 12,
@@ -49,14 +50,14 @@ const getPreviousOwnerRequiredRadioButton = {
       key: "ES_PREVIOUS_OWNER_REQUIRED_LABEL"
     },
     buttons: [{
-        labelName: "Father",
+        labelName: "Yes",
         labelKey: "ES_COMMON_YES",
-        value: "true",
+        value: true,
       },
       {
-        label: "Husband",
+        label: "No",
         labelKey: "ES_COMMON_NO",
-        value: "false",
+        value: false,
       }
     ],
     jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.isPreviousOwnerRequired",
