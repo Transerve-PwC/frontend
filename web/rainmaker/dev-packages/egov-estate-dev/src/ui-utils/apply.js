@@ -334,6 +334,11 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
       console.log(JSON.stringify(queryObject));
 
+      const paymentConfigItems = get(queryObject[0], "propertyDetails.paymentConfig.paymentConfigItems") || [];
+
+      if(paymentConfigItems.length === 1 && (!paymentConfigItems[0].groundRentEndMonth || !paymentConfigItems[0].groundRentAmount)) {
+        set(queryObject[0], "propertyDetails.paymentConfig", null);
+      }
       response = await httpRequest(
         "post",
         "/est-services/property-master/_update",
