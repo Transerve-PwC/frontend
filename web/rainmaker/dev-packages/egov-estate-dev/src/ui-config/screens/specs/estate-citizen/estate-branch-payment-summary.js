@@ -7,8 +7,8 @@ import { getSearchResults } from "../../../../ui-utils/commons";
 import { getOwnerDetails,getAllotmentDetails } from "../estate/preview-resource/owner-properties";
 import {onTabChange, headerrow, tabs} from './estate-branch-search-preview'
 import {getMdmsData} from "../estate/estate-payment"
-import { securityInfo ,penaltyInfo} from "../estate/preview-resource/preview-properties";
-import {penaltyStatmentResult} from "../estate/searchResource/functions"
+import { securityInfo, penaltyInfo, extensionFeeInfo} from "../estate/preview-resource/preview-properties";
+import {penaltyStatmentResult,securityStatmentResult,extensionStatmentResult} from "../estate/searchResource/functions"
 import {getRentSummaryCard} from "../utils"
 
 const rentSummaryHeader = getCommonTitle({
@@ -41,6 +41,7 @@ const rentSummaryDetails = {
 
 const penaltySummary = getCommonCard(penaltyInfo(false))
 const securitySummary = getCommonCard(securityInfo(false))
+const extensionSummary = getCommonCard(extensionFeeInfo(false))
 
 const detailsContainer = {
     uiFramework: "custom-atoms",
@@ -51,7 +52,8 @@ const detailsContainer = {
     children: {
       rentSummaryDetails,
       penaltySummary,
-      securitySummary
+      securitySummary,
+      extensionSummary
     },
     visible: true
   }
@@ -71,8 +73,13 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
           fromdate: properties[0].propertyDetails.auditDetails.createdTime || "",
           todate:   ""
         }
+        let payload = {
+          propertyid: propertyId
+        }
         Criteria = {...Criteria, propertyid: propertyId}
         await penaltyStatmentResult (state,dispatch, Criteria)
+        await securityStatmentResult(state,dispatch,payload)
+        await extensionStatmentResult(state,dispatch,Criteria)
    
     }
 }

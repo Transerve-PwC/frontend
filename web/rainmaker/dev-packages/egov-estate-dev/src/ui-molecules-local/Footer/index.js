@@ -139,14 +139,29 @@ class Footer extends React.Component {
       contractData &&
       contractData.map(item => {
         const { buttonLabel, moduleName } = item;
+        let redirectLink;
+        switch(moduleName) {
+          case "ES-EB-AllotmentOfSite":
+            if (_data[0].propertyMasterOrAllotmentOfSite === "PROPERTY_MASTER") {
+              redirectLink = `apply?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=9`;
+            }
+            else {
+              redirectLink = `allotment?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=6`;
+            }
+            break;
+          case "ES-BB-PropertyMaster":
+            redirectLink = `apply-building-branch?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=3`;
+            break;
+          case "ES-MM-PropertyMaster":
+            redirectLink = `apply-manimajra?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=7`;
+            break;
+          default:
+            break;
+        }
         return {
           labelName: { buttonLabel },
           labelKey: `WF_${moduleName.toUpperCase()}_${buttonLabel}`,
-          link: moduleName === "ES-EB-AllotmentOfSite" && buttonLabel === "MODIFY" ? 
-          _data[0].propertyMasterOrAllotmentOfSite === "PROPERTY_MASTER" ? 
-          () => setRoute(`/estate/apply?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=9`) :
-          () => setRoute(`/estate/allotment?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=6`)
-          : () => {
+          link: redirectLink ? () => window.location.href = redirectLink : () => {
             if (screenName == "noc-verification") {
               let isNocFormValid = validateFn(this.props.state);
               if (isNocFormValid) {

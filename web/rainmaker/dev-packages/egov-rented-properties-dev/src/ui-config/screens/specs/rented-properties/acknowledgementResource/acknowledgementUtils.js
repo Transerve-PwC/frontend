@@ -178,7 +178,10 @@ import {
                 props: {
                   iconName: icon,
                   style: {
-                    fontSize: "50px"
+                    fontSize: "50px",
+                    flexBasis: "auto", 
+                    flexGrow: 0, 
+                    flexShrink:1
                   },
                   iconSize: "50px",
                   className: "ack-avatar"

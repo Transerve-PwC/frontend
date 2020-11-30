@@ -15,7 +15,8 @@ import {
   getTodaysDateInYMD
 } from "../../utils";
 import get from "lodash/get";
-import { _getPattern } from "../../utils/"
+import { _getPattern } from "../../utils/";
+import { applyEstates } from "../../../../../ui-utils/apply"
 
 const documentList = {
   uiFramework: "custom-containers-local",
@@ -28,10 +29,12 @@ const documentList = {
     },
     inputProps: [],
     documentTypePrefix: "ES_",
-    documentsJsonPath: "tempAccStmt[0].documents",
-    uploadedDocumentsJsonPath: "tempAccStmt[0].uploadedDocsInRedux",
+    documentsJsonPath: "PropertiesTemp[0].propertyDetails.accountStatementDocument",
+    uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.accountStatementUploadedDocInRedux",
     tenantIdJsonPath: "Properties[0].tenantId",
-    removedJsonPath: "tempAccStmt[0].removedDocs",
+    removedJsonPath: "PropertiesTemp[0].propertyDetails.accountStatementRemovedDoc",
+    callBack: applyEstates,
+    activeIndex: 8
     // excelUrl: "/est-services/auctions/_parse?"
   }
 };

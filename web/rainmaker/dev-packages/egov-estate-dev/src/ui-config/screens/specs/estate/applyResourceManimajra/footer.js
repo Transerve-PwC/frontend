@@ -280,7 +280,21 @@ const callBackForNext = async (state, dispatch) => {
           "apply-manimajra"
         )
 
-        const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].ownerDetails.ownerName : "" : "";
+        const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].ownerDetails.ownerName ? propertyPurchasers[i].ownerDetails.ownerName : "NA" : "NA" : "NA";
+
+        const isPreviousOwnerRequired = get(
+          state.screenConfiguration.screenConfig,
+          `components.div.children.formwizardFourthStep.children.purchaserDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.purchaserCard.children.previousOwnerRequired.props.value`
+        )
+
+        dispatch(
+          handleField(
+            "apply-manimajra",
+            `components.div.children.formwizardFifthStep.children.previousOwnerDocuments_${i}`,
+            "props.style",
+            (propertyPurchasers && propertyPurchasers[i] && propertyPurchasers[i].ownerDetails.isPreviousOwnerRequired && (propertyPurchasers[i].ownerDetails.isPreviousOwnerRequired).toString() == "true") || (isPreviousOwnerRequired && isPreviousOwnerRequired.toString() == "true") ? {pointerEvents: "auto", opacity: "1"} : {pointerEvents: "none", opacity: "0.5"}
+          )
+        )
 
         if (i > 0) {
           var documentDetailsString = JSON.stringify(get(

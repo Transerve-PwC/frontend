@@ -17,6 +17,13 @@
   }
   
   @media only screen and (max-width: 768px) {
+    .apply-wizard-footer button {
+      width: 100% !important;
+      margin: initial;
+      border: none;
+      margin: 10px 0px 0px -16px !important;
+      /* border-radius: none !important;*/
+    }
     .city-picker-dialog-style {
       min-width: 250px;
     }

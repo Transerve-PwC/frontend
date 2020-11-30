@@ -322,7 +322,7 @@ export const setLegacyAccStmtDoc = (action, state, dispatch) => {
       masterDocuments
     )
   );
-  dispatch(prepareFinalObject(`tempAccStmt[0].documents`, documentTypes))
+  dispatch(prepareFinalObject(`PropertiesTemp[0].propertyDetails.accountStatementDocument`, documentTypes))
 }
 
 const header = getCommonContainer({

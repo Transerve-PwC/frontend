@@ -34,7 +34,8 @@ import {
 } from "../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
-import { setDocumentData, setPrevOwnerDocs } from "./apply"
+import { setDocumentData, setPrevOwnerDocs } from "./apply";
+import { changeStep } from "./applyResourceManimajra/footer"
 
 
 export const getMdmsData = async (dispatch, body) => {
@@ -164,6 +165,11 @@ const getData = async (action, state, dispatch) => {
       false
     )
   )
+
+  const stepNumber = getQueryArg(window.location.href, "stepNumber");
+  if(!!stepNumber) {
+    changeStep(state, dispatch, "apply-manimajra", "", Number(stepNumber))
+  }
 }
 
 const applyManimajra = {

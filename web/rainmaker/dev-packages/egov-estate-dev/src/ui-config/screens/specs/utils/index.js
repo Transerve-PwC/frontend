@@ -1477,7 +1477,7 @@ export const prepareAccStmtDocumentTypeObjMaster = (documents) => {
         documentsArr.push({
           name: item.code,
           required: item.required,
-          jsonPath: `legacyAccStmt[0].documents[${ind}]`,
+          jsonPath: `Properties[0].propertyDetails.accountStatementDocument[${ind}]`,
           statement: "ACC_STMT_DESC"
         });
         return documentsArr;
