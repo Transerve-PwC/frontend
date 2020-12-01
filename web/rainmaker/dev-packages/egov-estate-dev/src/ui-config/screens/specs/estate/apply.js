@@ -34,7 +34,6 @@ import {
   prepareDocumentTypeObjMaster,
   preparePrevOwnerDocumentTypeObjMaster,
   prepareBiddersDocumentTypeObjMaster,
-  prepareAccStmtDocumentTypeObjMaster
 } from "../utils";
 import {
   handleScreenConfigurationFieldChange as handleField
@@ -302,17 +301,28 @@ const setBiddersDoc = async (action, state, dispatch) => {
   )
 }
 
-export const setLegacyAccStmtDoc = (action, state, dispatch) => {
+export const setLegacyAccStmtDoc = async (action, state, dispatch) => {
+  const documentTypePayload = [{
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
+    masterDetails: [{
+      name: "legacyAccountStmtDoc"
+    }]
+  }]
+  const documentRes = await getMdmsData(dispatch, documentTypePayload);
   const {
     EstateServices
-  } = legacyAccStmtData && legacyAccStmtData.MdmsRes ? legacyAccStmtData.MdmsRes : {}
+  } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
     legacyAccountStmtDoc = []
   } = EstateServices || {}
   const findMasterItem = legacyAccountStmtDoc.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
-  var documentTypes;
-  documentTypes = prepareAccStmtDocumentTypeObjMaster(masterDocuments);
+  var documentTypes = [{
+    name: masterDocuments[0].code,
+    required: masterDocuments[0].required,
+    jsonPath: `Properties[0].propertyDetails.accountStatementDocument[0]`,
+    statement: "ACC_STMT_DESC"
+  }]
 
   dispatch(
     handleField(

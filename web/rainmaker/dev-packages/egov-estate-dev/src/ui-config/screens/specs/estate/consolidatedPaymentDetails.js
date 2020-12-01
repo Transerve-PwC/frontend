@@ -1,7 +1,8 @@
 import {
-    getCommonCard
+    getCommonCard,
+    getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
 import {getReviewPayment} from './preview-resource/payment-details'
@@ -10,6 +11,7 @@ import {onTabChange, headerrow, tabs} from './search-preview'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewConsolidatedPaymentDetails} from "./applyResource/reviewProperty";
 import get from "lodash/get";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 let isPropertyMasterOrAllotmentOfSite;
 let branchTabs = tabs;
@@ -21,7 +23,7 @@ const getData = async (action, state, dispatch, fileNumber) => {
     // await searchResults(action, state, dispatch, fileNumber)
     let queryObject = [
       { key: "fileNumber", value: fileNumber },
-      {key: "relations", value: "court"}
+      // {key: "relations", value: "court"}
     ];
     const response =  await getSearchResults(queryObject)
     if(!!response) {
@@ -49,22 +51,61 @@ const getData = async (action, state, dispatch, fileNumber) => {
                  ...headerrow
                 },
                 }
+            },
+            tabSection: {
+              uiFramework: "custom-containers-local",
+              moduleName: "egov-estate",
+              componentPath: "CustomTabContainer",
+              props: {
+                tabs: branchTabs,
+                activeIndex: activeIndex,
+                onTabChange
               },
-              tabSection: {
-                uiFramework: "custom-containers-local",
-                moduleName: "egov-estate",
-                componentPath: "CustomTabContainer",
-                props: {
-                  tabs: branchTabs,
-                  activeIndex: activeIndex,
-                  onTabChange
-                },
-                type: "array",
+              type: "array",
+            },
+            breakAfterSearch: getBreak(),
+            reviewConsolidatedPayments : getCommonCard({
+              consolidatedPaymentDetails: getReviewConsolidatedPaymentDetails(false, "apply")
+            }),
+            downloadLegacyAccStmtButton: {
+              componentPath: "Button",
+              props: {
+                variant: "contained",
+                color: "primary",
+                style: {
+                  minWidth: "180px",
+                  height: "48px",
+                  margin: "16px 0px",
+                  float: "right"
+                }
               },
-              breakAfterSearch: getBreak(),
-              reviewConsolidatedPayments : getCommonCard({
-                consolidatedPaymentDetails: getReviewConsolidatedPaymentDetails(false, "apply")
-              })
+              children: {
+                downloadFormButtonLabel: getLabel({
+                  labelName: "Download Legacy Account Statement",
+                  labelKey: "ES_DOWNLOAD_LEGACY_ACC_STMT"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: async(state, dispatch) => {
+                  let fileStoreId = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    "Properties[0].propertyDetails.accountStatementDocument[0].fileStoreId", 
+                    null
+                  )
+                  let tenantId = getTenantId();
+
+                  if (fileStoreId) {
+                    getFileUrlFromAPI(fileStoreId,tenantId).then(async(fileRes) => {
+                      var win = window.open(fileRes[fileStoreId], '_blank');
+                      if(win){
+                        win.focus();
+                      }
+                    })
+                  }
+                }
+              }
+            }
           }
         }
       }

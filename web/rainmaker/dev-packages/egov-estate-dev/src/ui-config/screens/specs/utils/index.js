@@ -1475,22 +1475,6 @@ export const prepareBiddersDocumentTypeObjMaster = (documents) => {
   return documentsArr;
 };
 
-export const prepareAccStmtDocumentTypeObjMaster = (documents) => {
-  let documentsArr =
-    documents.length > 0
-      ? documents.reduce((documentsArr, item, ind) => {
-        documentsArr.push({
-          name: item.code,
-          required: item.required,
-          jsonPath: `Properties[0].propertyDetails.accountStatementDocument[${ind}]`,
-          statement: "ACC_STMT_DESC"
-        });
-        return documentsArr;
-      }, [])
-      : [];
-  return documentsArr;
-};
-
 export const prepareCompanyDocumentTypeObjMaster = (documents, partner) => {
   let documentsArr =
     documents.length > 0 ?
