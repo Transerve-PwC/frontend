@@ -13,7 +13,8 @@ import {
   getReviewAdvanceRent,
   getReviewSecurity,
   getReviewFirmDetails,
-  getReviewProprietorshipDetails
+  getReviewProprietorshipDetails,
+  getReviewInterest
 } from "./reviewProperty";
 
 if (typeof getReviewPropertyInfo != "undefined") {
@@ -28,6 +29,7 @@ if (typeof getReviewPropertyInfo != "undefined") {
   var companyDetails = getReviewCompanyDetails(true, "allotment");
   var firmDetails = getReviewFirmDetails(true, "allotment");
   var proprietorDetails = getReviewProprietorshipDetails(true, "allotment");
+  var reviewInterestDetails = getReviewInterest(true, "allotment")
 }
 
 const header = getCommonTitle({
@@ -47,5 +49,6 @@ export const reviewAllotmentDetails = getCommonCard({
   reviewGroundRent,
   reviewLicenseFee,
   reviewAdvanceRent,
-  reviewSecurity
+  reviewSecurity,
+  reviewInterestDetails
 })

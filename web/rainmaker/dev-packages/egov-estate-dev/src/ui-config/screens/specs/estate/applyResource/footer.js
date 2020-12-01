@@ -57,13 +57,14 @@ export const COURT_CASE_DETAILS_STEP = 6;
 export const RENT_INFO_DETAILS_STEP = 7;
 export const PAYMENT_DETAILS_STEP = 8;
 export const SUMMARY_STEP = 9;
+const screenKey = "apply";
 
 export const moveToSuccess = (data, dispatch, type) => {
   const id = get(data, "id");
   const tenantId = get(data, "tenantId");
   const fileNumber = get(data, "fileNumber");
   const applicationNumber = get(data, "applicationNumber")
-  const purpose = "apply";
+  const purpose = screenKey;
   const status = "success";
   let path = "";
   switch(type) {
@@ -83,7 +84,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 
 const callBackForNext = async (state, dispatch) => {
   let activeStep = get(
-    state.screenConfiguration.screenConfig["apply"],
+    state.screenConfiguration.screenConfig[screenKey],
     "components.div.children.stepper.props.activeStep",
     0
   );
@@ -98,20 +99,21 @@ const callBackForNext = async (state, dispatch) => {
     "Properties[0].propertyDetails.propertyType",
     ""
   )
+  const paymentsReviewContArr = ["reviewSecurity", "reviewInterest", "consolidatedPayment", "reviewRentSummary", "reviewAdvanceRent", "reviewLicenseFee", "reviewGroundRent"]; 
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
       "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "apply"
+      screenKey
     )
 
     const isAdditionalValid = validateFields(
       "components.div.children.formwizardFirstStep.children.additionalDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "apply"
+      screenKey
     )
 
     let propertyRegisteredTo = get(
@@ -122,7 +124,7 @@ const callBackForNext = async (state, dispatch) => {
 
     dispatch(
       handleField(
-        "apply",
+        screenKey,
         "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.entityType",
         "visible",
         propertyRegisteredTo == "ENTITY"
@@ -131,7 +133,7 @@ const callBackForNext = async (state, dispatch) => {
 
     dispatch(
       handleField(
-        "apply",
+        screenKey,
         `components.div.children.formwizardEighthStep`,
         "props.style",
         (propertyType == "PROPERTY_TYPE.LEASEHOLD") ? {pointerEvents: "auto", opacity: "1"} : {pointerEvents: "none", opacity: "0.5"}
@@ -139,12 +141,23 @@ const callBackForNext = async (state, dispatch) => {
     )
     dispatch(
       handleField(
-        "apply",
+        screenKey,
         `components.div.children.formwizardNinthStep`,
         "props.style",
         (propertyType == "PROPERTY_TYPE.LEASEHOLD") ? {pointerEvents: "auto", opacity: "1"} : {pointerEvents: "none", opacity: "0.5"}
       )
     )
+
+    paymentsReviewContArr.forEach((item, index) => {
+      dispatch(
+        handleField(
+          screenKey,
+          `components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.${item}`,
+          "visible",
+          !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+        )
+      )
+    })
 
     if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep);
@@ -161,11 +174,11 @@ const callBackForNext = async (state, dispatch) => {
       "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children",
       state,
       dispatch,
-      "apply"
+      screenKey
     )
-    let auctionDate = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction.props.value");
+    let auctionDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction.props.value");
 
-    let emdDate = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate.props.value");
+    let emdDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate.props.value");
 
     
     let auctionDateEpoch = convertDateToEpoch(auctionDate)
@@ -245,12 +258,12 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStep.children.companyDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "apply"
+          screenKey
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
         if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
-          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -263,12 +276,12 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "apply"
+          screenKey
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
         if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
-          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -281,16 +294,16 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStep.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "apply"
+          screenKey
         )
         var isProprietorshipDetailsValid = validateFields(
           "components.div.children.formwizardThirdStep.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "apply"
+          screenKey
         )
         if (isFirmDetailsValid && isProprietorshipDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
-          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -301,7 +314,7 @@ const callBackForNext = async (state, dispatch) => {
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
         if (isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
-          const res = await applyEstates(state, dispatch, activeStep, "apply");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -373,7 +386,7 @@ const callBackForNext = async (state, dispatch) => {
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
         );
 
-        const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
+        const reviewDocuments = getReviewDocuments(true, screenKey, `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
@@ -385,7 +398,7 @@ const callBackForNext = async (state, dispatch) => {
           reviewDocuments
         )
 
-        // const res = await applyEstates(state, dispatch, activeStep, "apply");
+        // const res = await applyEstates(state, dispatch, activeStep, screenKey);
         // if(!res) {
         //   return
         // }
@@ -413,7 +426,7 @@ const callBackForNext = async (state, dispatch) => {
           `components.div.children.formwizardFifthStep.children.purchaserDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.purchaserCard.children`,
           state,
           dispatch,
-          "apply"
+          screenKey
         )
 
         const purchaserName = propertyPurchasers ? propertyPurchasers[i] ? propertyPurchasers[i].ownerDetails.ownerName ? propertyPurchasers[i].ownerDetails.ownerName : "NA" : "NA" : "NA";
@@ -538,7 +551,7 @@ const callBackForNext = async (state, dispatch) => {
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, reviewDocData)
         );
 
-        const reviewDocuments = getReviewDocuments(true, "apply", `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, 5);
+        const reviewDocuments = getReviewDocuments(true, screenKey, `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, 5);
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
@@ -599,31 +612,31 @@ const callBackForNext = async (state, dispatch) => {
         "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
         state,
         dispatch,
-        "apply"
+        screenKey
       )
       const isLicenseFeeValid = validateFields(
         "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
         state,
         dispatch,
-        "apply"
+        screenKey
       )
       const isSecurityDetailsValid = validateFields(
         "components.div.children.formwizardEighthStep.children.securityDetails.children.cardContent.children.detailsContainer.children",
         state,
         dispatch,
-        "apply"
+        screenKey
       )
       const isDemandValid = validateFields(
         "components.div.children.formwizardEighthStep.children.demandSelect.children.cardContent.children.detailsContainer.children",
         state,
         dispatch,
-        "apply"
+        screenKey
       )
       const isInterestDetailsValid = validateFields(
         "components.div.children.formwizardEighthStep.children.interestDetails.children.cardContent.children.detailsContainer.children",
         state,
         dispatch,
-        "apply"
+        screenKey
       )
 
     const noOfMonths = get(
@@ -646,7 +659,8 @@ const callBackForNext = async (state, dispatch) => {
     )
     const reviewJsonPath = !!isGroundRent ? "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents" : "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses";
 
-    let securityAmount = rentItems[0].groundRentAmount * noOfMonths
+    let securityAmount = rentItems[0].groundRentAmount * noOfMonths;
+    dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.securityAmount", securityAmount));
 
       const _cardName = !!isGroundRent ? "groundRent" : "licenseFee"
 
@@ -669,17 +683,19 @@ const callBackForNext = async (state, dispatch) => {
       isStartAndEndYearValid = rentItems.every(item => item.groundRentEndMonth > item.groundRentStartMonth)
       if(!!isRentDetailsValid) {
         dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "apply", reviewJsonPath, _cardName, rentItems.length);
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, screenKey, reviewJsonPath, _cardName, rentItems.length);
       }
     }
     const hasValidation = !!isGroundRent ? isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid : isLicenseFeeValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid
       if (hasValidation) {
-        const res = await applyEstates(state, dispatch, activeStep, "apply");
+        const res = await applyEstates(state, dispatch, activeStep, screenKey);
         if (!res) {
           return
         }
+      } else {
+        isFormValid = false;
       }
-  }
+    }
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
@@ -688,7 +704,7 @@ const callBackForNext = async (state, dispatch) => {
         `components.div.children.formwizardNinthStep.children.paymentDetails.children.cardContent.children.detailsContainer.children`,
         state,
         dispatch,
-        "apply"
+        screenKey
       )
 
       if (isPaymentDetailsValid) {
@@ -715,7 +731,7 @@ const callBackForNext = async (state, dispatch) => {
 
   if (activeStep !== SUMMARY_STEP) {
     if (isFormValid) {
-      changeStep(state, dispatch, "apply");
+      changeStep(state, dispatch, screenKey);
     }else if(ownerOnePosAllotDateValid === false){
       let errorMessage = {
         labelName: "Date of possession should be on and after date of allotment",
@@ -811,7 +827,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
         `components.div.children.formwizardThirdStep.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
         state,
         dispatch,
-        "apply"
+        screenKey
       )
 
       var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName ?  propertyOwners[i].ownerDetails.ownerName : "NA" : "NA" : "NA";
@@ -1068,7 +1084,7 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
-  changeStep(state, dispatch, "apply", "previous");
+  changeStep(state, dispatch, screenKey, "previous");
 };
 
 export const previousButton = {

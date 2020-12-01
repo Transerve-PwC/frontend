@@ -50,11 +50,13 @@ export const COURT_CASE_DETAILS_STEP = 4;
 export const PAYMENT_DETAILS_STEP = 5;
 export const SUMMARY_STEP = 6;
 
+const screenKey = "allotment"
+
 export const moveToSuccess = (estatesData, dispatch, type) => {
   const id = get(estatesData, "id");
   const tenantId = get(estatesData, "tenantId");
   const fileNumber = get(estatesData, "fileNumber");
-  const purpose = "allotment";
+  const purpose = screenKey;
   const status = "success";
 
   const path = `/estate/acknowledgement?purpose=${purpose}&status=${status}&fileNumber=${fileNumber}&tenantId=${tenantId}&type=${type}`
@@ -65,7 +67,7 @@ export const moveToSuccess = (estatesData, dispatch, type) => {
 
 const callBackForNext = async (state, dispatch) => {
   let activeStep = get(
-    state.screenConfiguration.screenConfig["allotment"],
+    state.screenConfiguration.screenConfig[screenKey],
     "components.div.children.stepperAllotment.props.activeStep",
     0
   );
@@ -73,24 +75,96 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
   let rentYearMismatch = false;
   let licenseFeeYearMismatch = false;
+  let isStartAndEndYearValid = true;
+  let propertyType = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyDetails.propertyType",
+    ""
+  )
 
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
       "components.div.children.formwizardFirstStepAllotment.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      screenKey
     )
     
     const isAdditionalValid = validateFields(
       "components.div.children.formwizardFirstStepAllotment.children.additionalDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      screenKey
+    )
+
+    let propertyRegisteredTo = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.propertyRegisteredTo",
+      ""
+    )
+
+    dispatch(
+      handleField(
+        screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewPropertyInfo.children.cardContent.children.viewFour.children.entityType",
+        "visible",
+        propertyRegisteredTo == "ENTITY"
+      )
+    )
+
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSixthStepAllotment`,
+        "props.style",
+        (propertyType == "PROPERTY_TYPE.LEASEHOLD") ? {pointerEvents: "auto", opacity: "1"} : {pointerEvents: "none", opacity: "0.5"}
+      )
+    )
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSixthStepAllotment`,
+        "props.style",
+        (propertyType == "PROPERTY_TYPE.LEASEHOLD") ? {pointerEvents: "auto", opacity: "1"} : {pointerEvents: "none", opacity: "0.5"}
+      )
+    )
+
+    debugger
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewPremiumAmount`,
+        "visible",
+        !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+      )
+    )
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewSecurity`,
+        "visible",
+        !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+      )
+    )
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewInterestDetails`,
+        "visible",
+        !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+      )
+    )
+    dispatch(
+      handleField(
+        screenKey,
+        `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewAdvanceRent`,
+        "visible",
+        !!(propertyType == "PROPERTY_TYPE.LEASEHOLD")
+      )
     )
 
     if (isPropertyInfoValid && isAdditionalValid) {
-      const res = await applyEstates(state, dispatch, activeStep, "allotment");
+      const res = await applyEstates(state, dispatch, activeStep, screenKey);
       if (!res) {
         return
       }
@@ -104,11 +178,11 @@ const callBackForNext = async (state, dispatch) => {
       "components.div.children.formwizardSecondStepAllotment.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
-      "allotment"
+      screenKey
     )
     
     if (isAuctionValid) {
-      const res = await applyEstates(state, dispatch, activeStep, "allotment");
+      const res = await applyEstates(state, dispatch, activeStep, screenKey);
       if (!res) {
         return
       }
@@ -151,13 +225,13 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStepAllotment.children.companyDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "allotment"
+          screenKey
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
 
         if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid) {
-          const res = await applyEstates(state, dispatch, activeStep, "allotment");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -170,13 +244,13 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStepAllotment.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "allotment"
+          screenKey
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
 
         if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid) {
-          const res = await applyEstates(state, dispatch, activeStep, "allotment");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -189,16 +263,16 @@ const callBackForNext = async (state, dispatch) => {
           "components.div.children.formwizardThirdStepAllotment.children.firmDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "allotment"
+          screenKey
         )
         var isProprietorshipDetailsValid = validateFields(
           "components.div.children.formwizardThirdStepAllotment.children.proprietorshipDetails.children.cardContent.children.detailsContainer.children",
           state,
           dispatch,
-          "allotment"
+          screenKey
         )
         if (isFirmDetailsValid && isProprietorshipDetailsValid) {
-          const res = await applyEstates(state, dispatch, activeStep, "allotment");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -210,7 +284,7 @@ const callBackForNext = async (state, dispatch) => {
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
 
         if (isOwnerOrPartnerDetailsValid) {
-          const res = await applyEstates(state, dispatch, activeStep, "allotment");
+          const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
           }
@@ -281,7 +355,7 @@ const callBackForNext = async (state, dispatch) => {
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`, reviewDocData)
         );
 
-        const reviewDocuments = getReviewDocuments(true, "allotment", `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
+        const reviewDocuments = getReviewDocuments(true, screenKey, `PropertiesTemp[0].propertyDetails.owners[${i}].ownerDetails.reviewDocData`);
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
@@ -317,7 +391,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
-        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 4, "allotment");
+        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 4, screenKey);
         set(
           state.screenConfiguration.screenConfig,
           `allotment.components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
@@ -327,7 +401,7 @@ const callBackForNext = async (state, dispatch) => {
     }
 
     if (isCourtCaseDetailsValid) {
-      const res = await applyEstates(state, dispatch, activeStep, "allotment");
+      const res = await applyEstates(state, dispatch, activeStep, screenKey);
       if (!res) {
         return
       }
@@ -337,150 +411,113 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
-    const isPremiumAmountValid = validateFields(
-      "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "allotment"
-    )
-    const isGroundRentValid = validateFields(
-      "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "allotment"
-    )
-    const isLicenseFeeValid = validateFields(
-      "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "allotment"
-    )
-    const isSecurityDetailsValid = validateFields(
-      "components.div.children.formwizardSixthStepAllotment.children.securityDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "allotment"
-    )
-    const isDemandValid = validateFields(
-      "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "allotment"
-    )
+    if (propertyType == "PROPERTY_TYPE.LEASEHOLD") {
+      const isPremiumAmountValid = validateFields(
+        "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      const isGroundRentValid = validateFields(
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      const isLicenseFeeValid = validateFields(
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      const isSecurityDetailsValid = validateFields(
+        "components.div.children.formwizardSixthStepAllotment.children.securityDetails.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      const isDemandValid = validateFields(
+        "components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      const isInterestDetailsValid = validateFields(
+        "components.div.children.formwizardEighthStep.children.interestDetails.children.cardContent.children.detailsContainer.children",
+        state,
+        dispatch,
+        screenKey
+      )
+      let installmentItems = get(
+        state.screenConfiguration.screenConfig,
+        "allotment.components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items"
+      );
+      const noOfMonths = get(
+        state.screenConfiguration.preparedFinalObject, 
+        "Properties[0].propertyDetails.paymentConfig.noOfMonths"
+      )
 
-    let installmentItems = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items"
-    );
+      if (installmentItems && installmentItems.length > 0) {
+        for (var i = 0; i < installmentItems.length; i++) {
+          if (typeof installmentItems[i].isDeleted !== "undefined") {
+            continue;
+          }
+          var isInstallmentDetailsValid = validateFields(
+            `allotment.components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items[${i}].item${i}.children.cardContent.children.installmentCard.children`,
+            state,
+            dispatch
+          )
 
-    if (installmentItems && installmentItems.length > 0) {
-      for (var i = 0; i < installmentItems.length; i++) {
-        if (typeof installmentItems[i].isDeleted !== "undefined") {
-          continue;
+          getReviewAllotmentMultipleSectionDetails(state, dispatch, screenKey, `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewPremiumAmount.children.cardContent.children.viewInstallments`, "premiumAmount", installmentItems.length);
         }
-        var isInstallmentDetailsValid = validateFields(
-          `allotment.components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.installmentContainer.children.cardContent.children.detailsContainer.children.multipleInstallmentContainer.children.multipleInstallmentInfo.props.items[${i}].item${i}.children.cardContent.children.installmentCard.children`,
-          state,
-          dispatch
-        )
-
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewPremiumAmount.children.cardContent.children.viewInstallments`, "premiumAmount", installmentItems.length);
       }
-    }
 
+    const isGroundRent = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.isGroundRent")
+    const _componentJsonPath = !!isGroundRent ? 
+    "allotment.components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
+    : "allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
+    const _components = get(
+      state.screenConfiguration.screenConfig,
+      _componentJsonPath
+    );
     let rentItems = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items"
-    );
-
-    let rentArr = get(
       state.screenConfiguration.preparedFinalObject,
-      `Properties[0].propertyDetails.paymentDetails[0].rent`,
+      `Properties[0].propertyDetails.paymentConfig.paymentConfigItems`,
       []
     )
+    const reviewJsonPath = !!isGroundRent ? "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents" : "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses";
 
-    if (rentItems && rentItems.length > 0) {
-      for (var i = 0; i < rentItems.length; i++) {
-        if (typeof rentItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isRentDetailsValid = validateFields(
-          `allotment.components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${i}].item${i}.children.cardContent.children.rentCard.children`,
-          state,
-          dispatch
-        )
+    let securityAmount = rentItems[0].groundRentAmount * noOfMonths;
 
-        if (!!rentArr[i] && !!rentArr[i+1]) {
-          if (rentArr[i].endYear !== rentArr[i+1].startYear) {
-            rentYearMismatch = true;
-            isRentDetailsValid = false
+    dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.securityAmount", securityAmount))
+
+      const _cardName = !!isGroundRent ? "groundRent" : "licenseFee"
+
+      if (_components && _components.length > 0) {
+        for (var i = 0; i < _components.length; i++) {
+          if (!_components[i].isDeleted) {
+          var isRentDetailsValid = validateFields(
+            `${_componentJsonPath}[${i}].item${i}.children.cardContent.children.rentCard.children`,
+            state,
+            dispatch
+          )
           }
         }
 
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents`, "groundRent", rentItems.length);
+        const filterRentArr = rentItems.filter(item => !item.isDeleted)
+        rentItems = filterRentArr.map((item, index) => ({...item, groundRentStartMonth: !!index ? Number(filterRentArr[index-1].groundRentEndMonth) + 1 : 0, groundRentEndMonth: item.groundRentEndMonth, groundRentAmount: item.groundRentAmount}))
+
+      const rentValidation = rentItems.filter(item => !item.groundRentAmount || !item.groundRentEndMonth)
+      isRentDetailsValid = rentValidation.length === 0
+      isStartAndEndYearValid = rentItems.every(item => item.groundRentEndMonth > item.groundRentStartMonth)
+      if(!!isRentDetailsValid) {
+        dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, screenKey, reviewJsonPath, _cardName, rentItems.length);
       }
     }
-
-    let licenseFeeItems = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items"
-    );
-    let licenseFeeArr = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Properties[0].propertyDetails.paymentDetails[0].licenseFees`,
-      []
-    )
-
-    if (licenseFeeItems && licenseFeeItems.length > 0) {
-      for (var i = 0; i < licenseFeeItems.length; i++) {
-        if (typeof licenseFeeItems[i].isDeleted !== "undefined") {
-          continue;
-        }
-        var isLicenseFeeDetailsForYearValid = validateFields(
-          `allotment.components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[${i}].item${i}.children.cardContent.children.licenseCard.children`,
-          state,
-          dispatch
-        )
-
-        if (!!licenseFeeArr[i] && !!licenseFeeArr[i+1]) {
-          if (licenseFeeArr[i].endYear !== licenseFeeArr[i+1].startYear) {
-            licenseFeeYearMismatch = true;
-            isLicenseFeeDetailsForYearValid = false
-          }
-        }
-
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, "allotment", `components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses`, "licenseFee", licenseFeeItems.length)
-      }
-    }
-
-    let selectedDemand = get(
-      state.screenConfiguration.screenConfig,
-      "allotment.components.div.children.formwizardSixthStepAllotment.children.demandSelect.children.cardContent.children.detailsContainer.children.demand.props.value"
-    )
-
-    if (selectedDemand == "true") {
-      if (isPremiumAmountValid && isGroundRentValid && isSecurityDetailsValid && isInstallmentDetailsValid && isRentDetailsValid && isDemandValid && !rentYearMismatch) {
-        const res = await applyEstates(state, dispatch, activeStep, "allotment");
-        if (!res) {
-          return
-        }
-      } else {
-        isFormValid = false;
-      }
-    }
-    else if (selectedDemand == "false") {
-      if (isPremiumAmountValid && isLicenseFeeValid && isSecurityDetailsValid && isInstallmentDetailsValid && isLicenseFeeDetailsForYearValid && isDemandValid && !licenseFeeYearMismatch) {
-        const res = await applyEstates(state, dispatch, activeStep, "allotment");
-        if (!res) {
-          return
-        }
-      } else {
-        isFormValid = false;
-      }
-    }
-    else {
-      if (isPremiumAmountValid && isSecurityDetailsValid && isInstallmentDetailsValid) {
-        const res = await applyEstates(state, dispatch, activeStep, "allotment");
+    const hasValidation = !!isGroundRent ? isPremiumAmountValid && isInstallmentDetailsValid && isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid : isPremiumAmountValid && isInstallmentDetailsValid && isLicenseFeeValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid
+      if (hasValidation) {
+        const res = await applyEstates(state, dispatch, activeStep, screenKey);
         if (!res) {
           return
         }
@@ -491,7 +528,7 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === SUMMARY_STEP) {
-    isFormValid = await applyEstates(state, dispatch, "", "allotment");
+    isFormValid = await applyEstates(state, dispatch, "", screenKey);
     if (isFormValid) {
       const estatesData = get(
         state.screenConfiguration.preparedFinalObject,
@@ -503,8 +540,16 @@ const callBackForNext = async (state, dispatch) => {
 
   if (activeStep !== SUMMARY_STEP) {
     if (isFormValid) {
-      changeStep(state, dispatch, "allotment");
-    } else if (hasFieldToaster) {
+      changeStep(state, dispatch, screenKey);
+    } 
+    else if(!isStartAndEndYearValid) {
+      let errorMessage = {
+        labelName: "End Month should be greater than Start Month",
+        labelKey: "ES_ERR_END_MONTH_START_MONTH"
+      }
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",
         labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
@@ -568,7 +613,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
         `components.div.children.formwizardThirdStepAllotment.children.${container}.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children`,
         state,
         dispatch,
-        "allotment"
+        screenKey
       )
 
       var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
@@ -784,7 +829,7 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
-  changeStep(state, dispatch, "allotment", "previous");
+  changeStep(state, dispatch, screenKey, "previous");
 };
 
 export const previousButton = {
