@@ -5,11 +5,7 @@ import { UploadFile, UploadedDocument } from "egov-ui-framework/ui-atoms";
 export default class UploadSingleFile extends Component {
      
  render() {
-  
-  console.log("propsOfUploadSingleFile--",this.props)
   let {uploaded,classes,handleFileUpload,removeDocument,documents,onButtonClick,inputProps,buttonLabel} = this.props
-
-   console.log("uploadedData--",uploaded)
   return (
     <div>
     {!uploaded && (

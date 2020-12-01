@@ -60,7 +60,6 @@ class CheckAvailability extends Component {
     })
   };
   handleChange = (event) => {
-    // console.log('event.target.value in radio', event.target.value)
     this.setState({ vanueType: event.target.value });
     this.setState({ availabilityCheckData: { bkBookingType: event.target.value } })
   };
@@ -68,7 +67,6 @@ class CheckAvailability extends Component {
   getSectorDataFromAPI = async (availabilityCheck) => {
     let venueType = availabilityCheck.bkBookingType;
     let sector = availabilityCheck.bkSector.toUpperCase()
-    // console.log('hello in sector getSectorDataFromAPI', availabilityCheck, this.props);
     let { userInfo } = this.props;
     let requestbody = {
       "venueType": venueType,
@@ -81,13 +79,16 @@ class CheckAvailability extends Component {
       "_search", [],
       requestbody
     );
+    console.log("sectorDataFromMaster--",sectorDataFromMaster)
     this.setState({ masterDataPCC: sectorDataFromMaster.data })
+    console.log("this.state-of-masterData--",this.state.masterDataPCC)
 
   }
 
 
   sectorHandleChange = input => e => {
-    // let sector= e.target.value.toUpperCase();
+  
+   this.setState({ masterDataPCC: [] })
     let availabilityCheck = { "bkSector": e.target.value, bkBookingType: this.state.vanueType };
     this.setState({ availabilityCheckData: availabilityCheck })
     this.getSectorDataFromAPI(availabilityCheck);
@@ -119,9 +120,8 @@ class CheckAvailability extends Component {
   render() {
     const { firstName, email, mobileNo, lastName, stateData,handleChange,sImageUrl,applicationSector, complaintSector , classes} = this.props;
     let sectorData = [];
-// console.log('this.props in check avail render availabilityCheckData',this.state.availabilityCheckData)
-let vanueData=this.props.stateData.screenConfiguration.preparedFinalObject.bkBookingData;
-// console.log('vanueData in render check vail---',vanueData)
+    let vanueData=this.props.stateData.screenConfiguration.preparedFinalObject.bkBookingData;
+    console.log("vanueData--",vanueData)
     sectorData.push(applicationSector);
 
     let arrayData = [];
@@ -159,10 +159,18 @@ return (
           <div>
             <div style={{ paddingBottom: '5px', marginLeft: '15px' }}>
               <Label label="BK_MYBK_CHECK_AVAILABILITY" labelClassName="dark-heading" />
+              {/* <Label  
+              labelName= "Apply for Parks &amp; Community Center/Banquet Halls"
+              labelKey= "BK_PCC_APPLY" 
+              labelClassName="dark-heading" /> */}
             </div>
             <div className="col-sm-6 col-xs-6">
               <FormControl component="fieldset">
                 <FormLabel component="legend"><Label label="BK_MYBK_BOOKING_TYPE" /></FormLabel>
+                {/* <FormLabel component="legend"><Label 
+               labelName= "Booking Type"
+               labelKey= "BK_PCC_BOOKING_TYPE_LABEL"              
+                /></FormLabel> */}
                  <RadioGroup row aria-label="position" name="gender1" value={this.state.vanueType} onChange={this.handleChange}>
                   <FormControlLabel  value="Community Center" control={<Radio color="primary" />} 
                   label="Community Center"     
@@ -270,7 +278,9 @@ const mapStateToProps = state => {
   let stateData = state;
   const { complaintSector,sImageUrl,applicationSector } = bookings;
   var bookingVenueData = state && state.screenConfiguration.preparedFinalObject.availabilityCheckData;
+  console.log("bookingVenueData--map--",bookingVenueData)
   let bookingVenue = bookingVenueData && bookingVenueData.bkLocation ? bookingVenueData.bkLocation : '';
+  console.log("bookingVenue--map",bookingVenue)
   return {
     complaintSector, bookingVenue,stateData,sImageUrl,applicationSector
   }
@@ -289,4 +299,3 @@ export default (connect(
   mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(CheckAvailability)))
-

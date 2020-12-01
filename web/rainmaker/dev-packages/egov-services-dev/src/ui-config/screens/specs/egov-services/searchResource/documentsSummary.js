@@ -38,3 +38,33 @@ export const documentsSummary = getCommonGrayCard({
     }
   }
 });
+
+export const documentsSummary1 = getCommonGrayCard({
+  header: {
+    uiFramework: "custom-atoms",
+    componentPath: "Container",
+    props: {
+      style: { marginBottom: "10px" }
+    },
+    children: {
+      header: {
+        gridDefination: {
+          xs: 8
+        },
+        ...getCommonSubHeader({
+          labelName: "Documents",
+          labelKey: "Other Documents"
+        }),
+      },
+    }
+  },
+  body: {
+    uiFramework: "custom-containers-local",
+    moduleName: "egov-services",
+    componentPath: "DownloadFileContainer",
+    props: {
+      sourceJsonPath: "approvalDocument",
+      className: "noc-review-documents"
+    }
+  }
+});

@@ -9,6 +9,7 @@ import {
     getCommonApplyFooter,
     validateFields,
     generateBill,
+    updateBillDemand
 } from "../../utils";
 import "./index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -116,73 +117,126 @@ const callBackForNext = async (state, dispatch) => {
     }
     if (activeStep === 2 && isFormValid != false) {
         // prepareDocumentsUploadData(state, dispatch);
+        let tenantId = getTenantId().split(".")[0];
         let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.Booking.bkPaymentStatus", "");
-
-        let response = await createUpdatePCCApplication(
-            state,
-            dispatch,
-            paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "RE_INITIATE" : "INITIATE"
-        );
-        let responseStatus = get(response, "status", "");
-        if (responseStatus == "SUCCESS" || responseStatus == "success") {
-            // DISPLAY SUCCESS MESSAGE
-            // let successMessage = {
-            //     labelName: "APPLICATION INITIATED SUCCESSFULLY! ",
-            //     labelKey: "", //UPLOAD_FILE_TOAST
-            // };
-            // dispatch(toggleSnackbar(true, successMessage, "success"));
-
-            // GET FEE DETAILS
-            let tenantId = getTenantId().split(".")[0];
-            let applicationNumber = get(
-                response,
-                "data.bkApplicationNumber",
-                ""
-            );
-            let businessService = get(response, "data.businessService", "");
+       /* let appStatus = get(state, "screenConfiguration.preparedFinalObject.Booking.bkApplicationStatus", "");
+        if ((paymentStatus === "SUCCESS" || paymentStatus === "succes") && appStatus == "APPLIED") {
+            let businessService = get(state, "screenConfiguration.preparedFinalObject.Booking.businessService", "");
+            let applicationNumber = get(state, "screenConfiguration.preparedFinalObject.Booking.bkApplicationNumber", "");
             const reviewUrl = `/egov-services/applyparkcommunitycenter?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
-            dispatch(setRoute(reviewUrl));
+                dispatch(setRoute(reviewUrl));
 
-            set(
-                state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
-                "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
-                true
-            );
+                set(
+                    state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
+                    "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
+                    true
+                );
 
-            await generateBill(
+
+                await updateBillDemand(
+                    state,
+                    dispatch,
+                    applicationNumber,
+                    tenantId,
+                    businessService
+                );
+
+                await generateBill(
+                    state,
+                    dispatch,
+                    applicationNumber,
+                    tenantId,
+                    businessService
+                );
+
+                // GET DOCUMENT DATA FOR DOWNLOAD
+                const uploadedDocData = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    "documentsUploadRedux[0].documents",
+                    []
+                );
+                const documentsPreview =
+                    uploadedDocData &&
+                    uploadedDocData.map((item) => {
+                        return {
+                            title: "BK_PCC_DOCUMENT",
+                            link: item.fileUrl && item.fileUrl.split(",")[0],
+                            linkText: "View",
+                            name: item.fileName,
+                            fileStoreId: item.fileStoreId,
+                        };
+                    });
+
+                dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+
+        }else { */
+
+            let action = "INITIATE";
+            let appStatus = get(state, "screenConfiguration.preparedFinalObject.Booking.bkApplicationStatus", "");
+            if(appStatus == "APPLIED" || appStatus == "RE_INITIATED"){
+                action = "RE_INITIATE";
+            }
+            console.log(appStatus, "Nero appStatus");
+            let response = await createUpdatePCCApplication(
                 state,
                 dispatch,
-                applicationNumber,
-                tenantId,
-                businessService
-            );
+                action
+               // paymentStatus === "SUCCESS" || paymentStatus === "succes" ? "RE_INITIATE" : "INITIATE"
 
-            // GET DOCUMENT DATA FOR DOWNLOAD
-            const uploadedDocData = get(
-                state.screenConfiguration.preparedFinalObject,
-                "documentsUploadRedux[0].documents",
-                []
             );
-            const documentsPreview =
-                uploadedDocData &&
-                uploadedDocData.map((item) => {
-                    return {
-                        title: "BK_PCC_DOCUMENT",
-                        link: item.fileUrl && item.fileUrl.split(",")[0],
-                        linkText: "View",
-                        name: item.fileName,
-                        fileStoreId: item.fileStoreId,
-                    };
-                });
+            let responseStatus = get(response, "status", "");
+            if (responseStatus == "SUCCESS" || responseStatus == "success") {
+                let applicationNumber = get(
+                    response,
+                    "data.bkApplicationNumber",
+                    ""
+                );
+                let businessService = get(response, "data.businessService", "");
+                const reviewUrl = `/egov-services/applyparkcommunitycenter?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
+                dispatch(setRoute(reviewUrl));
 
-            dispatch(prepareFinalObject("documentsPreview", documentsPreview));
-        } else {
-            let errorMessage = {
-                labelName: "Submission Falied, Try Again later!",
-                labelKey: "", //UPLOAD_FILE_TOAST
-            };
-            dispatch(toggleSnackbar(true, errorMessage, "error"));
-        }
+                set(
+                    state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
+                    "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
+                    true
+                );
+
+                await generateBill(
+                    state,
+                    dispatch,
+                    applicationNumber,
+                    tenantId,
+                    businessService
+                );
+
+                // GET DOCUMENT DATA FOR DOWNLOAD
+                const uploadedDocData = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    "documentsUploadRedux[0].documents",
+                    []
+                );
+                const documentsPreview =
+                    uploadedDocData &&
+                    uploadedDocData.map((item) => {
+                        return {
+                            title: "BK_PCC_DOCUMENT",
+                            link: item.fileUrl && item.fileUrl.split(",")[0],
+                            linkText: "View",
+                            name: item.fileName,
+                            fileStoreId: item.fileStoreId,
+                        };
+                    });
+
+                dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+
+            } else {
+                let errorMessage = {
+                    labelName: "Submission Falied, Try Again later!",
+                    labelKey: "", //UPLOAD_FILE_TOAST
+                };
+                dispatch(toggleSnackbar(true, errorMessage, "error"));
+            }
+       // }
     }
     if (activeStep === 3) {
         // prepareDocumentsUploadData(state, dispatch);

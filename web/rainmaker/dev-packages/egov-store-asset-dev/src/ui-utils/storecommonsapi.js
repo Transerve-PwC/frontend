@@ -909,6 +909,39 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
      }
      else if (balanceQuantity_<=CompareQtyValue_)
      {
+      if(pagename ==='createMaterialIndentNote')
+      {
+
+        let IssueQty = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.issuedQuantity`,0))
+        let poOrderedQuantity = Number(get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].indentDetail.poOrderedQuantity`,0))
+        
+        balanceQuantity_ = balanceQuantity_ - (IssueQty+poOrderedQuantity);
+        if(InputQtyValue_>balanceQuantity_ || InputQtyValue_ === 0)  
+        {
+          if(InputQtyValue_ === 0)
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:0
+              }
+            )
+          }
+          else
+          {
+            matcode.push(
+              {
+                code:code,
+                InputQtyValue:1
+              }
+            )
+          }
+
+        }     
+        
+      }
+      else
+      {
       if(InputQtyValue_>balanceQuantity_ || InputQtyValue_ === 0)       
       {
         if(InputQtyValue_ === 0)
@@ -931,6 +964,7 @@ export const ValidateCardUserQty = (state,dispatch,cardJsonPath,pagename,jasonpa
         }
 
       } 
+    }
      }
 
     }

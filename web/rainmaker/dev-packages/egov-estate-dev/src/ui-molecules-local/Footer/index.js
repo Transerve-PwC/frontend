@@ -74,7 +74,7 @@ class Footer extends React.Component {
       setRoute(url);
       return;
     }
-    if (item.showEmployeeList && !item.roles.includes("ES_EB_FINANCIAL_OFFICER")) {
+    if (item.showEmployeeList && !item.roles.includes("ES_EB_FINANCIAL_OFFICER") && !item.roles.includes("ES_BB_FINANCIAL_OFFICER")) {
 
      // commented to test the application status change flow as below API is failing.
       const tenantId = getTenantId();

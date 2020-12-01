@@ -516,7 +516,7 @@ export const purchaseOrderHeader = getCommonCard({
           xs: 6
         },
         isFieldValid:true,
-        pattern: getPattern("non-empty-alpha-numeric"),
+        pattern: getPattern("Name"),
         jsonPath: "purchaseOrders[0].supplier.name",
        // sourceJsonPath: "searchMaster.supplierName",
         // props: {

@@ -57,13 +57,13 @@ const NewLocationResolvedForm = ({ form,handleChangeAssignee,assignToMe,foundFir
   if (form && form.fields) {
     let formValue = { ...form.fields };
 
-    const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'MCC_APPROVER');
+    const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_APPROVER');
     if (foundFirstLavel) {
       formValue.action.value = 'APPROVE';
     }
  
 
-    const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'OSD_APPROVER');
+    const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD_APPROVER');
 
     if (foundSecondLavel) {
       formValue.action.value = 'APPROVEOSD';
@@ -85,7 +85,7 @@ const NewLocationResolvedForm = ({ form,handleChangeAssignee,assignToMe,foundFir
   }
   const fields = form.fields || {};
   const submit = form.submit;
-  // console.log('foundFirstLavel',foundFirstLavel)
+
   return (
     <div>
       <div className="custom-padding-for-screens">
@@ -105,7 +105,6 @@ const NewLocationResolvedForm = ({ form,handleChangeAssignee,assignToMe,foundFir
               onChange={handleChangeAssignee}
             >
               {assignToMe.map((child, index) => (
-               // console.log('child',child)
             <MenuItem value={child.uuid}>{child.userName}</MenuItem>
             ))}
               {/* <MenuItem value='sumit kumar'>sumit kumar</MenuItem>

@@ -50,6 +50,8 @@ export const getSearchResults = async (queryObject=[],requestBody={},dispatch,sc
     break;
     case "verifyOTP": url =  "/integration-services/pt/v1/_verifyOTP";
     break;
+    case "getpayslip": url =  "/integration-services/hrms/v1/_getpayslip";
+    break;
     
   }
   try {

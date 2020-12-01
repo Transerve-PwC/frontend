@@ -23,26 +23,21 @@ const styles = theme => ({
 });
 
 class ApplicatInfo extends Component {
-  /// constructor(props) {
-  //	super(props);
+  
   state = {
     documentsContract: [],
     UploadType:[],
     documentOne: "",
     name: "Vandana",
   };
-  //	};
+  
 
   prepareDocumentsUploadData = (documentData, type, documentCode) => {
     this.setState(
       {
         name: "changeName",
-      },
-      () => {
-        console.log("Praveen ------> : ", this.state);
       }
     );
-    console.log("this.state.name1==>>", this.state.name);
     let documents = "";
     if (type == "apply_pcc") {
       documents = documentData;
@@ -63,7 +58,7 @@ class ApplicatInfo extends Component {
     });
 
     documents.forEach((doc) => {
-      // Handle the case for multiple
+    
       if (
         doc.code === "BK_DOC_DOC_PICTURE" &&
         doc.hasMultipleRows &&
@@ -116,30 +111,15 @@ class ApplicatInfo extends Component {
     Object.keys(tempDoc).forEach((key) => {
       documentsContract.push(tempDoc[key]);
     });
-    console.log("The Value of documentsContract--", documentsContract);
-    // this.props.prepareFinalObject("documentsContract", documentsContract);
-    console.log("thisState--", this.state);
+   
 
     this.setState({
       documentsContract: documentsContract,
       UploadType: documentCode
     });
-
-    
-    // this.setState({
-    //   documentOne: documentsContract
-    // })
-    // console.log("BeforeUpdateName", this.state.name)
-    // this.setState({
-    //   name: name2
-    // })
-    // console.log("AfterUpdateName", this.state.name)
-    // console.log("exactdocumentsContract2--", documentsContract)
-    // console.log("afterUPDATE2documentsContract--", this.state.documentsContract)
   };
 
   componentDidMount() {
-    console.log("Vandana was here in arrow functioned ");
     let documentData = [
       {
         active: true,
@@ -166,46 +146,22 @@ let documentCode = [
     this.prepareDocumentsUploadData(documentData, type, documentCode);
   }
 
-  // preparemyObj = ()=>{
-
-  //   console.log('Vandana 2 was here');
-  //   let documentData=[
-  //     {
-  //         active: true,
-  //         code: "PCC_DOCUMENT",
-  //         description: "PCC_DOCUMENT_DESCRIPTION",
-  //         documentType: "DOC",
-  //         dropdownData: [],
-  //         hasDropdown: false,
-  //         required: true,
-  //     },
-  //   ]
-
-  //   let type = "apply_pcc"
-  // //this.propsprepareDocumentsUploadData(documentData,dispatch,"apply_pcc", this.props.mydispatch );
-  // this.prepareDocumentsUploadData(documentData,type);
-
-  //   this.prepareDocumentsUploadData(documentData,type);
-  // }
-
   continue = (e) => {
-
-    
-    let re = /\S+@\S+\.\S+/;
-    let mb = /^\d{10}$/;
+    const { toggleSnackbarAndSetText,docVal,documentMAP2 } = this.props;
     e.preventDefault();
-    if ( this.props.documentMap === "Document Not Found")
-     {
+
+   if(docVal === false || documentMAP2 === "Document Not Found"){
       this.props.toggleSnackbarAndSetText(
-        true,
-        {
-          labelName: "Please upload mandatory documents!",
-          labelKey: `Please upload mandatory documents!`,
-        },
-        "warning"
-      );
-    }  
-    else {
+            true,
+            {
+              labelName: "Please upload mandatory documents!",
+              labelKey: `Please upload mandatory documents!`,
+            },
+            "warning"
+          );
+    }
+
+    else if(docVal === true){
       this.props.nextStep();
     }
   };
@@ -215,22 +171,15 @@ let documentCode = [
     this.props.prevStep();
   };
   handleFileChange(e) {
-    console.log("Vandana 3 was here");
-
     e.preventDefault();
     var files;
-    if (e.dataTransfer) {
-      console.log("e.data", e.dataTransfer);
+    if (e.dataTransfer) {  
       files = e.dataTransfer.files;
-    } else if (e.target) {
-      console.log("e.target", e.target.files);
+    } else if (e.target) {  
       files = e.target.files;
     }
   }
   render() {
-    console.log("TheNameStateInRender--", this.state.name);
-    console.log("mainstateOfComponent--", this.state.documentsContract);
-    console.log("documentsUploadReduxFirstOne--", this.state.UploadType);
     const { firstName, email, mobileNo, lastName, handleChange, classes } = this.props;
     const hintTextStyle = {
       letterSpacing: "0.7px",
@@ -239,15 +188,9 @@ let documentCode = [
       width: "90%",
       overflow: "hidden",
     };
-
-    // let buttonLabel = {
-    //   labelName: "UPLOAD FILE",
-    //   labelKey: "BK_OSB_DOCUMENT_UPLOAD_BUTTON",
-    // };
-
-
-    let buttonLabel = {    
-      label:"BK_UPLOAD_FILE"
+    let buttonLabel = {
+        labelName: "UPLOAD FILE",
+        labelKey: "BK_OSB_DOCUMENT_UPLOAD_BUTTON"
     };
   
     let description =
@@ -272,8 +215,6 @@ let documentCode = [
       },
     ];
 
-    console.log("documentDatatwo--", documentDatatwo);
-
     return (
       <div>
         
@@ -284,7 +225,6 @@ let documentCode = [
           <DocumentList
             documentsList={this.state.documentsContract}
             documentsUploadRedux ={this.state.UploadType}
-            // buttonLabel="UPLOAD FILE"  //{<Label buttonLabel={true} label="BK_CORE_COMMON_GOBACK" />}
             buttonLabel={buttonLabel}
             description={description}
             inputProps={inputProps}
@@ -329,9 +269,12 @@ const mapStateToProps = (state) => {
   const { complaints, common, auth, form } = state;
   let documentMap = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject:"";
   let documentMAP2 = documentMap ? documentMap.documentMap:" "
+  let docVal = state.screenConfiguration.preparedFinalObject.documentsUploadRedux ? state.screenConfiguration.preparedFinalObject.documentsUploadRedux[0].mydocstate : "notFound";
+ 
   return {
     documentMap,
     documentMAP2,
+    docVal
   };
 };
 const mapDispatchToProps = (dispatch) => {

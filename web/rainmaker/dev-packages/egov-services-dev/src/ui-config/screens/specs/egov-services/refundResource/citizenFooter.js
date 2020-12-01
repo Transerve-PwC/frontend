@@ -148,6 +148,16 @@ export const callBackForCancelParkAndCC = async (state, dispatch) => {
 
 export const callBackForRefundSecFee = async (state, dispatch) => {
 
+    const applicationNumber = getQueryArg(
+        window.location.href,
+        "applicationNumber"
+    );
+
+    const businessService = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.businessService",
+        {}
+    );
     /*
     const { screenConfiguration } = state;
     const bookingDate = get(
@@ -177,17 +187,17 @@ export const callBackForRefundSecFee = async (state, dispatch) => {
         }
 
     }*/
-    dispatch(
-        setRoute(
-            `/egov-services/acknowledgementsecurityfeerefundparkcc?purpose=confirmed&applicationNumber=${applicationNumber}&tenantId=${getTenantId().split(".")[0]
-            }&businessService=${businessService}`
-        )
-    );
-    /*
+    // dispatch(
+    //     setRoute(
+    //         `/egov-services/acknowledgementsecurityfeerefundparkcc?purpose=confirmed&applicationNumber=${applicationNumber}&tenantId=${getTenantId().split(".")[0]
+    //         }&businessService=${businessService}`
+    //     )
+    // );
+
             let response = await createUpdatePCCApplication(
                 state,
                 dispatch,
-                "CANCEL"
+                "SECURITY_REFUND"
             );
 
             let responseStatus = get(response, "status", "");
@@ -204,7 +214,7 @@ export const callBackForRefundSecFee = async (state, dispatch) => {
                     labelKey: "", //UPLOAD_FILE_TOAST
                 };
                 dispatch(toggleSnackbar(true, errorMessage, "error"));
-            }*/
+            }
 
 
 
@@ -282,7 +292,7 @@ export const footerForSecFeeRefundParkAndCC = getCommonApplyFooter({
         children: {
             previousButtonLabel: getLabel({
                 labelName: "SUBMIT",
-                labelKey: "SUBMIT",
+                labelKey: "BK_COMMON_BUTTON_SUBMIT",
             }),
         },
         onClickDefination: {

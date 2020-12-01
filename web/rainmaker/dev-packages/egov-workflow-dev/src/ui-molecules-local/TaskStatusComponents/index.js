@@ -237,7 +237,7 @@ if (horticultureBusinessServices.includes(currentObj.businessService)){
         xs={12}
         sm={6}
         md={4}
-        lg={2}
+        lg={3}
         style={{ marginTop: 15, paddingRight: 20 }}
       >
         <Typography variant="caption">
@@ -276,7 +276,7 @@ if (horticultureBusinessServices.includes(currentObj.businessService)){
         xs={12}
         sm={6}
         md={4}
-        lg={3}
+        lg={2}
         style={{ marginTop: 15, paddingRight: 20 }}
       >
         <Typography variant="caption">

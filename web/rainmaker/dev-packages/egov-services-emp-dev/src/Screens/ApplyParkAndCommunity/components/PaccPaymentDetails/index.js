@@ -41,27 +41,7 @@ class ApplicatInfo extends Component {
         "warning"
       );
     }
-    // }else if(!re.test(this.props.email)){
-    //   this.props.toggleSnackbarAndSetText(
-    //     true,
-    //     {
-    //       labelName: "Please enter valid email address",
-    //       labelKey: `BK_ERROR_MESSAGE_EMAIL_VALIDATION`
-    //     },
-    //     "warning"
-    //   );
-    // }else if(!mb.test(this.props.mobileNo)){
-    //   this.props.toggleSnackbarAndSetText(
-    //     true,
-    //     {
-    //       labelName: "Please enter valid mobile number",
-    //       labelKey: `BK_ERROR_MESSAGE_FOR_MOBILE_VALIDATION`
-    //     },
-    //     "warning"
-    //   );
-
-    // }
-    else{this.props.nextStep();}
+ else{this.props.nextStep();}
     
   }
   onCitizenNameChange = e => {
@@ -84,9 +64,7 @@ class ApplicatInfo extends Component {
   }
   render() {
     let { bankName, transactionNumber,finalRent,facilitationCharges,applicationPmode,  discountType,rent, paymentMode, amount,transactionDate,transactionDateChange, handleChange } = this.props;
-    console.log('facilitationCharges==1',facilitationCharges,'finalRent===1',applicationPmode)
-    // finalRent=Math.round((finalRent + Number.EPSILON) * 100) / 100;
-   
+
     let sectorData=[];
     sectorData.push(applicationPmode);
     let arrayData=[];
@@ -98,7 +76,7 @@ class ApplicatInfo extends Component {
       })
     }
     })
-console.log('arrayData',arrayData)
+
 
     const hintTextStyle = {
       letterSpacing: "0.7px",
@@ -110,36 +88,6 @@ console.log('arrayData',arrayData)
     return (
       <div style={{float: 'left', width: '100%', padding: '36px 15px' }}>
       <div className="col-xs-12" style={{background:'#fff', padding: '15px 0'}}>
-        
-       {/* <div className="col-sm-6 col-xs-6">
-          <TextField
-            id="bankName"
-            name="bankName"
-            type="text"
-            value={bankName}
-            hintText={
-              <Label
-                label="BK_MYBK_BANK_NAME_PLACEHOLDER"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="BK_MYBK_CREATE_BANK_NAME"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('bankName')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          />
-        </div>
-         */}
         <div className="col-sm-6 col-xs-6">
           <TextField
             id="transactionNumber"
@@ -196,35 +144,6 @@ console.log('arrayData',arrayData)
            
           </Select>
         </FormControl>
-
-
-
-          {/* <TextField
-            id="paymentMode"
-            name="paymentMode"
-            type="text"
-            value={paymentMode}
-            hintText={
-              <Label
-                label="BK_MYBK_PAYMENTMODE_PLACEHOLDER"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="BK_MYBK_CREATE_PAYMENTMODE"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('paymentMode')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          /> */}
         
         </div>    
         
@@ -299,36 +218,6 @@ console.log('arrayData',arrayData)
                     }}
                   />
         
-{/*         
-        
-        
-          <TextField
-            id="transactionDate"
-            name="transactionDate"
-            type="text"
-            value={transactionDate}
-            hintText={
-              <Label
-                label="BK_MYBK_TRDATE_PLACEHOLDER"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="BK_MYBK_CREATE_TRDATE"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('transactionDate')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          /> */}
-        
         </div>    
       
         <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
@@ -366,7 +255,6 @@ console.log('arrayData',arrayData)
 const mapStateToProps = state => {
   const { bookings, common, auth, form } = state;
   let {applicationPmode}=bookings
-  console.log('state 22222222222222222',state)
   return {
     applicationPmode
   }

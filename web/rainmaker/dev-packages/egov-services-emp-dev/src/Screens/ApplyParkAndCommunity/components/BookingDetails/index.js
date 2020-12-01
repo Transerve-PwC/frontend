@@ -10,17 +10,16 @@ import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { connect } from "react-redux";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { fetchApplicaionSector,fetchfacilationCharges,fetchfacilationtry } from "egov-ui-kit/redux/bookings/actions";
+import { fetchApplicaionSector, fetchfacilationCharges } from "egov-ui-kit/redux/bookings/actions";
 import "./index.css";
 import Footer from "../../../../modules/footer"
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormControl from '@material-ui/core/FormControl';
+
 import FormLabel from '@material-ui/core/FormLabel';
 
-// import { RadioButton } from '../RadioButton'
 
 class BookingsDetails extends Component {
   state = {
@@ -30,15 +29,14 @@ class BookingsDetails extends Component {
 
 
   componentDidMount = async () => {
-    let { fetchApplicaionSector, fetchfacilationCharges, fetchfacilationtry} = this.props;
+    let { fetchApplicaionSector } = this.props;
     fetchApplicaionSector();
-    fetchfacilationCharges();
-    fetchfacilationtry();
+    this.props.fetchfacilationCharges();
+
   }
   continue = e => {
     e.preventDefault();
     const { jobTitle, jobCompany, toggleSnackbarAndSetText, utGST, GSTnumber, jobLocation, handleChange, facilitationCharges, approverName, dimension, location, cleaningCharges, comment, houseNo, rent, purpose, surcharge, cGST, locality, type, residenials, fromDate, toDate } = this.props;
-    //|| purpose == "" || locality == "" || residenials == "" || dimension == "" || location == "" || cleaningCharges == "" || rent == "" || facilitationCharges == "" || surcharge == "" || utGST == "" || cGST== "" || GSTnumber == "" || type == ""||fromDate==""||toDate==""
     if (purpose == "" || residenials == "") {
 
 
@@ -81,41 +79,16 @@ class BookingsDetails extends Component {
     })
   };
   handleChangeDiscount = (event) => {
-    console.log('event.target.value gnser',event.target.value)
+   
     this.setState({ genderValue: event.target.value });
   };
 
-  options = [
-    {
-      value: "Not a valid application",
-      label: <Label label="ES_REASSIGN_OPTION_ONE" />
-    },
-    {
-      value: "Out of operational scope",
-      label: <Label label="ES_REJECT_OPTION_TWO" />
-    },
-    { value: "Operation already underway", label: <Label label="ES_REJECT_OPTION_THREE" /> },
-    { value: "Other", label: <Label label="ES_REJECT_OPTION_FOUR" /> }
-  ];
+ 
   render() {
-    const { arrayName, result,jobTitle, jobCompany, jobLocation, handleChangeDiscount,discountType,dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess} = this.props;
-    // let dimension="Wed Sep 23 2020 12:00:00 GMT+0530 (India Standard Time)"
-    console.log("facilationChargesSuccess--props-",this.props)
-    console.log("arrayNameinbookingcomponent--",arrayName)
-    console.log(' in booking rent in', rent)
-    // console.log("result--",result)
+    const { arrayName, result,fCharges, jobTitle, jobCompany, jobLocation, handleChangeDiscount, discountType, dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess } = this.props;
     let sectorData = [];
     sectorData.push(complaintSector);
-    let fc = 100;
-    // let arrayData = [];
-
-    // let y = sectorData.forEach((item, index) => {
-    //   let finalValues = Object.values(item);
-    //   finalValues.forEach((event) => {
-    //     arrayData.push(event);
-    //   })
-    // })
-
+    let fc = fCharges?fCharges.facilitationCharge:'100';
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -135,7 +108,7 @@ class BookingsDetails extends Component {
               name="purpose"
               type="text"
               value={purpose}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_NAME_PURPOSE_PLACEHOLDER"
@@ -164,7 +137,7 @@ class BookingsDetails extends Component {
               name="location"
               type="text"
               value={location}
-              required = {true}
+              required={true}
               disabled
               hintText={
                 <Label
@@ -194,7 +167,7 @@ class BookingsDetails extends Component {
               name="cleaningCharges"
               type="text"
               value={cleaningCharges}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_CLEANING_CHARGES_PLACEHOLDER"
@@ -223,7 +196,7 @@ class BookingsDetails extends Component {
               name="rent"
               type="text"
               value={rent}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_RENT_PLACEHOLDER"
@@ -252,7 +225,7 @@ class BookingsDetails extends Component {
               name="facilitationCharges"
               type="text"
               value={fc}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_FACILITATION_CHARGES_PLACEHOLDER"
@@ -281,7 +254,7 @@ class BookingsDetails extends Component {
               name="surcharge"
               type="text"
               value={surcharge}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_NAME_SURCHARGE_PLACEHOLDER"
@@ -310,7 +283,7 @@ class BookingsDetails extends Component {
               name="utGST"
               type="text"
               value={utGST}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_UTGST_PLACEHOLDER"
@@ -339,7 +312,7 @@ class BookingsDetails extends Component {
               name="cGST"
               type="text"
               value={cGST}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_CGST_PLACEHOLDER"
@@ -390,14 +363,14 @@ class BookingsDetails extends Component {
               hintStyle={{ width: "100%" }}
             />
           </div>
-       
-         <div className="col-sm-6 col-xs-6">
+
+          <div className="col-sm-6 col-xs-6">
             <TextField
               id="locality"
               name="locality"
               type="text"
               value={locality}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_SETCOR_PLACEHOLDER"
@@ -419,38 +392,38 @@ class BookingsDetails extends Component {
               underlineFocusStyle={{ bottom: 7 }}
               hintStyle={{ width: "100%" }}
             />
-          </div> 
+          </div>
           <div className="col-sm-6 col-xs-6">
-          
-            <TextField
-            id="from-Date"
-            name="from-Date"
-            type="text"
 
-            value={fromDate}
-            required = {true}
-            disabled={true}
-            hintText={
-              <Label
-                label="BK_From_Date"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="BK_From_Date"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('toDate')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          />
+            <TextField
+              id="from-Date"
+              name="from-Date"
+              type="text"
+
+              value={fromDate}
+              required={true}
+              disabled={true}
+              hintText={
+                <Label
+                  label="BK_From_Date"
+                  color="rgba(0, 0, 0, 0.3799999952316284)"
+                  fontSize={16}
+                  labelStyle={hintTextStyle}
+                />
+              }
+              floatingLabelText={
+                <Label
+                  key={0}
+                  label="BK_From_Date"
+                  color="rgba(0,0,0,0.60)"
+                  fontSize="12px"
+                />
+              }
+              onChange={handleChange('toDate')}
+              underlineStyle={{ bottom: 7 }}
+              underlineFocusStyle={{ bottom: 7 }}
+              hintStyle={{ width: "100%" }}
+            />
           </div>
           <div className="col-sm-6 col-xs-6">
             <TextField
@@ -459,7 +432,7 @@ class BookingsDetails extends Component {
               type="text"
 
               value={toDate}
-              required = {true}
+              required={true}
               disabled={true}
               hintText={
                 <Label
@@ -490,7 +463,7 @@ class BookingsDetails extends Component {
               type="text"
 
               value={dimension}
-              required = {true}
+              required={true}
               hintText={
                 <Label
                   label="BK_MYBK_DIMENSION_PLACEHOLDER"
@@ -539,13 +512,13 @@ class BookingsDetails extends Component {
 
           <div className="col-sm-6 col-xs-6">
             <FormControl style={{ width: '100%' }}>
-            <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label  
-                  required = {true}   
-                  label="BK_MYBK_NORMAL_RESIDENTIAL"
-                /></InputLabel>
+              <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label
+                required={true}
+                label="BK_MYBK_NORMAL_RESIDENTIAL"
+              /></InputLabel>
               <Select
                 maxWidth={false}
-                required = {true} 
+                required={true}
                 labelId="demo-controlled-open-select-label"
                 id="demo-controlled-open-select"
                 open={this.state.SetOpen}
@@ -561,7 +534,7 @@ class BookingsDetails extends Component {
               </Select>
             </FormControl>
           </div>
-{/* 
+          {/* 
           <div className="col-sm-6 col-xs-6" style={{marginTop: '19px'}}>
             <FormControl component="fieldset">
               <FormLabel component="legend"><Label label="BK_MYBK_CATEGORY_TYPE" /></FormLabel>
@@ -602,68 +575,33 @@ class BookingsDetails extends Component {
   }
 }
 const mapStateToProps = state => {
-  const { complaints, common, auth, form ,bookings} = state;
+  const { complaints, common, auth, form, bookings } = state;
   const { complaintSector } = complaints;
-  const {facilationChargesSuccess, arrayName} = bookings;
-  console.log("arrayName----",arrayName)
-//   let fcharges;
-//   let arrayData2 = [];
-//   if(arrayName && arrayName.length > 0 ){
-//   for(let i = 0; i < arrayName.length; i++){
-//     if(arrayName[i].code == "FACILITATION_CHARGE")
-//     {
-//       console.log()
-//       fcharges = arrayName[i].facilitationCharge
-//     }   
-//   } 
-// }
-// console.log("fcharges--",fcharges)
-
-// if(arrayName && arrayName.length > 0 ){
-//   for(let i = 0; i < arrayName.length; i++){
-//     if(arrayName[i].code == "FACILITATION_CHARGE")
-//     {
-//       arrayData2.push(arrayName[i]);
-//     }   
-//   } 
-// }
-// console.log("arrayData--2",arrayData2)
-
-
-// let arrayData = [];
-
-//     let y = sectorData.forEach((item, index) => {
-//       if(item){
-//       let finalValues = Object.values(item);
-//       finalValues.forEach((event) => {
-//         arrayData.push(event);
-//       })
-//     }
-//     })
-// let x;
-// if(arrayName && arrayName.length >0 ){
-// arrayName.forEach((item)=>{
-//   if(item.code == "FACILITATION_CHARGE"){
-//     x = item
-//   }
-// })
-// }
-// console.log("Xin Foreach--",x)
-//   const result = arrayName&&arrayName.length>0  ?arrayName.filter(item => item.code == "FACILITATION_CHARGE"):'';
-// console.log("result--",result)
-//   return {
-//     complaintSector,
-//     facilationChargesSuccess,
-//     arrayName
-//   }
+  const { facilationChargesSuccess, arrayName } = bookings;
+  
+  let fCharges;
+  if (arrayName && arrayName.length > 0) {
+    arrayName.forEach((item) => {
+      item.forEach((value) => {
+        if (value.code == "FACILITATION_CHARGE") { 
+          fCharges = value
+        }
+      })
+    })
+  }
+  return {
+    complaintSector,
+    facilationChargesSuccess,
+    fCharges
+  }
 }
 const mapDispatchToProps = dispatch => {
   return {
     toggleSnackbarAndSetText: (open, message, error) =>
       dispatch(toggleSnackbarAndSetText(open, message, error)),
     fetchApplicaionSector: criteria => dispatch(fetchApplicaionSector(criteria)),
-    fetchfacilationCharges: () => dispatch(fetchfacilationCharges()),  
-    fetchfacilationtry: () => dispatch(fetchfacilationtry()),
+    fetchfacilationCharges: () => dispatch(fetchfacilationCharges()),
+    
   }
 }
 

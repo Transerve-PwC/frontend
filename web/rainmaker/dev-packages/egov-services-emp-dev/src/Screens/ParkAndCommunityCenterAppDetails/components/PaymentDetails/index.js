@@ -49,8 +49,7 @@ class PayDetails extends Component {
   // };
 
   render() {
-    const { bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus } = this.props;
-    console.log('paymentDetails====>>>>',paymentDetails)
+    const { bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus,PayMentOne,PayMentTwo } = this.props;
 
     return (
       <div>
@@ -72,7 +71,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_REGISTRATION_RENT" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[1].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
                 </div>
               </div>
 
@@ -81,7 +80,15 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[3].amount}</h5>
+                </div>
+              </div>
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT_PACC" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[4].amount}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>

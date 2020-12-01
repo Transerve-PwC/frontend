@@ -53,7 +53,7 @@ export const personalDetails = getCommonCard({
                     labelName: "Enter Email Address",
                     labelKey: "BK_WTB_EMAIL_PLACEHOLDER",
                 },
-                required: true,
+                required: false,
                 pattern: getPattern("Email"),
                 errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
                 jsonPath: "Booking.bkEmail",

@@ -14,7 +14,7 @@ class PublishSuccess extends Component {
     }
   };
   continueComplaintSubmit = () => {
-    this.props.history.push("/egov-services/all-MccApplications");
+    this.props.history.push(`/egov-services/all-MccApplications`);
   };
   render() {
     let {applicationNumber} = this.props;
@@ -48,10 +48,8 @@ const mapStateToProps = state => {
   const { bookings, common, auth, form } = state;
   const { MccApplicationData } = bookings;
   let bookingDetails = MccApplicationData ? MccApplicationData.osujmNewLocationModelList[0] : '';
-  console.log("bookingDetailsinResolveSuccess--",bookingDetails)
-  //bkApplicationNumber
   let applicationNumber = MccApplicationData ? MccApplicationData.osujmNewLocationModelList[0].applicationNumber : '';
-  console.log("applicationNumber--",applicationNumber)
+ 
   return {
     bookingDetails,
     applicationNumber

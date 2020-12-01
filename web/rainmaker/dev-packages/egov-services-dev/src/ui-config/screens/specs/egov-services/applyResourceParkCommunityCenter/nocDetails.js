@@ -54,7 +54,7 @@ export const personalDetails = getCommonCard({
             ...getTextField({
                 label: {
                     labelName: "Email Address",
-                    labelKey: "BK_PCC_EMAIL_LABEL",
+                    labelKey: "BK_OSB_EMAIL_LABEL",
                 },
                 placeholder: {
                     labelName: "Enter Email Address",
@@ -484,6 +484,25 @@ export const bookingDetails = getCommonCard({
                 },
                 errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
                 jsonPath: "Booking.bkCgst",
+            }),
+        },
+        bkRefundAmount: {
+            ...getTextField({
+                label: {
+                    labelName: "Refundable Amount",
+                    labelKey: "BK_PCC_RefundAmount_LABEL",
+                },
+                placeholder: {
+                    labelName: "Refundable Amount",
+                    labelKey: "BK_PCC_RefundAmount_PLACEHOLDER",
+                },
+
+                required: true,
+                props: {
+                    disabled: true,
+                },
+                errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+                jsonPath: "Booking.bkRefundAmount",
             }),
         },
         bkCustomerGstNo: {

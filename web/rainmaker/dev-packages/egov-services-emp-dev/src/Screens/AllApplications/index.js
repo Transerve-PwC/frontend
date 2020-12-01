@@ -66,6 +66,7 @@ class AllRequests extends Component {
       role,
       userInfo, fetchApplicationType,
     } = this.props;
+
     fetchApplicationType();
     let rawRole =
       userInfo && userInfo.roles && userInfo.roles[0].code.toUpperCase();
@@ -80,6 +81,54 @@ class AllRequests extends Component {
       true,
       true
     );
+
+// let moduleName = localStorage.getItem(Employee.module);
+//    console.log("moduleName--",moduleName)
+
+// let codes = localStorage.getItem(localization_en_IN);
+// console.log("codes--",codes)
+
+// let abc = localStorage.getItem("localization_en_IN")
+// console.log("abc--",abc)
+
+// let xyz = window.localStorage.getItem("module")
+// console.log("xyz--",xyz)
+
+// let ui = window.localStorage.getItem("localization_en_IN")
+// console.log("ui--",ui)
+
+// let myLabelsOne;
+// let myLabelsTwo;
+// let myLabelsThree;
+// let myLabelsfour;
+
+//   if (abc && abc.length > 0) {
+//     abc.forEach((item) => {
+//       item.forEach((value) => {
+//         if (value.code == "BK_MYBK_PCC_APPLICATION_REQUEST") { 
+//           myLabelsOne = value
+//         }
+//         if (value.code == "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER") { 
+//           myLabelsTwo = value
+//         }
+//         if (value.code == "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE") { 
+//           myLabelsThree = value
+//         }
+//         if (value.code == "BK_CS_COMMON_SEND_MESSAGE") { 
+//           myLabelsfour = value
+//         }
+
+//       })
+//     })
+//   }
+// console.log("myLabelsOne--",myLabelsOne)
+// console.log("myLabelsTwo--",myLabelsTwo)
+// console.log("myLabelsThree--",myLabelsThree)
+// console.log("myLabelsfour--",myLabelsfour)
+
+
+  
+
 
     // let appListFromAPI = await httpRequest(
     //   "egov-workflow-v2/egov-wf/process/_search?",
@@ -199,7 +248,7 @@ class AllRequests extends Component {
     if(e.target.value==item.code){
         appStats=item.status}
       })
-      console.log('appStats',appStats)
+    
       this.setState({ appStatusArray: appStats });
 
   };
@@ -533,8 +582,7 @@ class AllRequests extends Component {
     };
 
     const { loading, histor, userInfo, applicationType } = this.props;
-    console.log('applicationType in render file',applicationType)
-    const {
+      const {
       mobileNo,
       bookingType,
       complaintNo,
@@ -586,10 +634,12 @@ class AllRequests extends Component {
       props: { variant: "outlined", style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" } },
       menu: downloadMenu
     }
-    const foundWaterTanker = userInfo && userInfo.roles.some(el => el.code === 'MCC_HELPDESK_USER');
-    const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'MCC_APPROVER');
-    const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'OSD_APPROVER');
-    const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'ADMIN_APPROVER');
+    const foundWaterTanker = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_HELPDESK_USER');
+    const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_APPROVER');
+    const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD_APPROVER');
+    const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_ADMIN_APPROVER');
+    const foundfourthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_E-SAMPARK-CENTER');
+    const foundfifthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_USER');
 
     return role === "ao" ? (
       <div>
@@ -727,9 +777,7 @@ class AllRequests extends Component {
       </div>
     ) : role === "employee" ? (
       <Screen loading={loading}>
-
-        {/* <div className="col-xs-12"> */}
-        {foundWaterTanker ?
+         {foundWaterTanker ?
           <Button
             className="responsive-action-button"
             label={<Label buttonLabel={true} label="BK_MYBK_WATER_TANKER_APPLY" />}
@@ -738,7 +786,7 @@ class AllRequests extends Component {
             style={{ float: 'right', marginRight: '50px', marginTop: '40px' }}
             onClick={() => this.gotoWaterTanker()
             } /> : ''
-        }
+        } 
         {foundFirstLavel || foundSecondLavel || foundthirdLavel ?
           <Button
             className="responsive-action-button"
@@ -752,21 +800,17 @@ class AllRequests extends Component {
             onClick={() => this.gotoMcc()}
           /> : ''
         }
-      
-          <Button
+      {foundfourthLavel || foundfifthLavel ? 
+      <Button
             className="responsive-action-button"
             label={<Label buttonLabel={true} label="Apply E-Sampark" />}
             fullWidth={true}
             primary={true}
             style={{ float: 'right', marginRight: '50px', marginTop: '40px' }}
             onClick={() => this.gotoPArkAndCommunityTanker()
-            } /> : '' 
-
-
-
+            } /> : '' }
         <div className="form-without-button-cont-generic">
           {/* <Grid container spacing={8}>{this.handleFormFields()}</Grid> */}
-
           <Card
             id="complaint-search-card"
             className="complaint-search-main-card"
@@ -1173,7 +1217,12 @@ class AllRequests extends Component {
                 status="open"
               />
               <CustomComplaints
-                noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
+                //noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
+                noComplaintMessage={
+                  search
+                    ? "No Search Results Found"
+                    : "BK_MYBK_NO_APPLICATION_ASSIGNED"
+                }
                 onComplaintClick={onComplaintClick}
                 complaints={
                   search ? searchFilterEmployeeComplaints : employeeComplaints
@@ -1198,7 +1247,6 @@ const roleFromUserInfo = (roles = [], role) => {
 };
 
 const mapStateToProps = state => {
-  console.log('state in all app', state)
   const { bookings, common, screenConfiguration = {} } = state || {};
   const { fetchSuccess, applicationData,applicationType } = bookings;
   const loading = false;

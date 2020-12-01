@@ -2,25 +2,28 @@ import {
   getCommonCard, convertEpochToDate, getCommonTitle, getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField, toggleSnackbar, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { onTabChange, headerrow, tabs, tabsAllotment } from './search-preview'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getRentSummaryCard } from "../utils";
 import { securityInfo, penaltyInfo } from "./preview-resource/preview-properties";
-import { httpRequest } from "../../../../ui-utils/api"
+import { httpRequest } from "../../../../ui-utils/api";
+import get from "lodash/get";
 
 let isPropertyMasterOrAllotmentOfSite;
 
-const beforeInitFn = async (action, state, dispatch, fileNumber) => {
+const getData = async (action, state, dispatch, fileNumber) => {
   if (fileNumber) {
     let queryObject = [{ key: "fileNumber", value: fileNumber }];
     const response = await getSearchResults(queryObject)
 
     if (!!response.Properties) {
       dispatch(prepareFinalObject("Properties", response.Properties))
-      let properties = response.Properties
+      let properties = response.Properties;
+      isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
       const propertyId = properties[0].id;
+
       let Criteria = {
         fromdate: properties[0].propertyDetails.auditDetails.createdTime || "",
         todate: ""
@@ -60,6 +63,43 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       } catch (error) {
         console.log(error)
         dispatch(toggleSnackbar(true, error.message, "error"));
+      }
+      return {
+        div: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          props: {
+            className: "common-div-css search-preview"
+          },
+          children: {
+            headerDiv: {
+              uiFramework: "custom-atoms",
+              componentPath: "Container",
+              children: {
+                header1: {
+                  gridDefination: {
+                    xs: 12,
+                    sm: 8
+                  },
+                  ...headerrow
+                },
+              }
+            },
+            tabSection: {
+              uiFramework: "custom-containers-local",
+              moduleName: "egov-estate",
+              componentPath: "CustomTabContainer",
+              props: {
+                tabs: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment,
+                activeIndex: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 10 : 7,
+                onTabChange
+              },
+              type: "array",
+            },
+            breakAfterSearch: getBreak(),
+            detailsContainer
+          }
+        }
       }
     }
   }
@@ -104,42 +144,35 @@ const EstateDuesSummary = {
     return action;
   },
   components: {
-    div: {
-      uiFramework: "custom-atoms",
-      componentPath: "Div",
-      props: {
-        className: "common-div-css search-preview"
-      },
-      children: {
-        headerDiv: {
-          uiFramework: "custom-atoms",
-          componentPath: "Container",
-          children: {
-            header1: {
-              gridDefination: {
-                xs: 12,
-                sm: 8
-              },
-              ...headerrow
-            },
-          }
-        },
-        tabSection: {
-          uiFramework: "custom-containers-local",
-          moduleName: "egov-estate",
-          componentPath: "CustomTabContainer",
-          props: {
-            tabs: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment,
-            activeIndex: (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? 10 : 7,
-            onTabChange
-          },
-          type: "array",
-        },
-        breakAfterSearch: getBreak(),
-        detailsContainer
-      }
-    }
+    
   }
 };
 
-export default EstateDuesSummary;
+const updateAllFields = (action, state, dispatch) => {
+  const properties = get(state, "screenConfiguration.preparedFinalObject.Properties");
+}
+
+const commonDuesSummary = {
+  uiFramework: "material-ui",
+  name: "dues-summary",
+  hasBeforeInitAsync: true,
+  beforeInitScreen: async (action, state, dispatch) => {
+      const fileNumber = getQueryArg(window.location.href, "fileNumber");
+      dispatch(toggleSpinner())
+      const components = await getData(action, state, dispatch, fileNumber)
+      dispatch(toggleSpinner())
+      setTimeout(() => updateAllFields(action, state, dispatch), 100)
+      return {
+        "type": "INIT_SCREEN",
+        "screenKey": "dues-summary",
+        "screenConfig": {
+          "uiFramework": "material-ui",
+          "name": "dues-summary",
+          components
+        }
+      }
+  }
+}
+
+
+export default commonDuesSummary;

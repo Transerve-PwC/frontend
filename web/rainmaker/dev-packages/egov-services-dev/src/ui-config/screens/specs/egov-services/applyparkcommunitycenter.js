@@ -8,7 +8,7 @@ import {
     personalDetails,
     bookingDetails,
 } from "./applyResourceParkCommunityCenter/nocDetails";
-import { convertDateInYMD } from "../utils";
+import { convertDateInYMD, getBill } from "../utils";
 import { documentDetails } from "./applyResourceParkCommunityCenter/documentDetails";
 import { summaryDetails } from "./applyResourceParkCommunityCenter/summaryDetails";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -27,6 +27,7 @@ import {
 import { httpRequest } from "../../../../ui-utils";
 import set from "lodash/set";
 import get from "lodash/get";
+
 
 import { getPreviousBill } from "../utils";
 import {
@@ -263,7 +264,7 @@ export const prepareEditFlow = async (
                 availabilityCheckData.bkToDate
             );
 
-            console.log(daysCount, "daysCount");
+
 
             dispatch(
                 prepareFinalObject(
@@ -462,7 +463,7 @@ const screenConfig = {
                 availabilityCheckData.bkToDate
             );
 
-            console.log(daysCount, "daysCount");
+
 
             dispatch(
                 prepareFinalObject(
@@ -502,7 +503,22 @@ const screenConfig = {
             let cleaningCharges = Number(masterDataItem[0].cleaningCharges);
             let amount = rent + cleaningCharges;
             let totalAmount = amount * daysCount;
-
+            // console.log(availabilityCheckData.bkApplicationStatus, "Nero Status");
+            // console.log(totalAmount, "Nero Amount");
+            // let queryObject = [
+            //     { key: "tenantId", value: "ch.chandigarh" },
+            //     { key: "consumerCode", value: applicationNumber },
+            //     { key: "businessService", value: "PACC" },
+            // ];
+            // const payload = await getBill(queryObject);
+            // console.log(payload, "nero Payload");
+            // if(payload && payload.Bill[0].totalAmount == 0){
+            // set(
+            //     action.screenConfig,
+            //     "components.div.children.formwizardFourthStep.children.summaryDetails.children.cardContent.children.estimateSummary.visible",
+            //     (availabilityCheckData.bkApplicationStatus == "RE_INITIATED" && payload.Bill[0].totalAmount == 0) ? true : false
+            // );
+            // }
             dispatch(
                 prepareFinalObject(
                     "Booking.bkCleansingCharges",

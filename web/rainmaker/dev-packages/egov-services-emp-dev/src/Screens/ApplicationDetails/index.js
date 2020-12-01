@@ -330,8 +330,9 @@ class ApplicationDetails extends Component {
 	}
 
 	downloadApplicationFunction = async (e) => {
-		console.log('in download application page');
-		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication,paymentDetails,userInfo } = this.props;
+		
+		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication,paymentDetails,userInfo,documentMap } = this.props;
+		let fdocname = Object.entries(documentMap)[0][1]
 		const { complaint } = transformedComplaint;
 		let bookingDataOsbm = {
             applicationNumber: complaint.applicationNo,
@@ -381,7 +382,11 @@ class ApplicationDetails extends Component {
 				},
 				generatedBy: {
 					generatedBy: userInfo.name,
+				},
+				documentDetail:{
+					documentName: fdocname
 				}
+
             },
         ];
 		// let tenantId= userInfo&&userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "";
@@ -403,10 +408,12 @@ class ApplicationDetails extends Component {
 					fileStoreId: documentsPreviewData,
 					linkText: "View",
 				});
+				
 				let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+				
 				let fileUrls =
 					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
-			
+			   
 					
 				documentsPreview = documentsPreview.map(function (doc, index) {
 					doc["link"] =
@@ -607,9 +614,10 @@ downloadPermissionLetterFunction = async (e) => {
 				fileStoreId: id,
 				linkText: "View",
 			});
+			let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,changetenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -854,7 +862,7 @@ downloadPermissionLetterFunction = async (e) => {
 													rightIcon: "arrow_drop_down",
 													props: {
 														variant: "outlined",
-														style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" }
+														style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "48px", width: "250px" }
 													},
 													menu: [{
 														label: {
@@ -911,10 +919,7 @@ const roleFromUserInfo = (roles = [], role) => {
 
 const mapStateToProps = (state, ownProps) => {
 	const { bookings, common, auth, form } = state;
-	console.log('state in all applications details',state)
 	const { applicationData } = bookings;
-
-	console.log('applicationData in all applications details',applicationData)
 	const { DownloadPaymentReceiptDetails,DownloadApplicationDetails,DownloadPermissionLetterDetails } = bookings;
 	const { id } = auth.userInfo;
 	const { citizenById } = common || {};
@@ -1012,7 +1017,7 @@ const mapStateToProps = (state, ownProps) => {
 			serviceRequestId,
 			isAssignedToEmployee,
 			complaintTypeLocalised,
-			
+			userInfo
 		};
 	} else {
 		return {
@@ -1026,7 +1031,7 @@ const mapStateToProps = (state, ownProps) => {
 			role,
 			serviceRequestId,
 			isAssignedToEmployee,
-			
+			userInfo
 		};
 	}
 };

@@ -7,9 +7,10 @@ import {
     getCommonSubHeader,
     getLabel,
     dispatchMultipleFieldChangeAction,
+    getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from "lodash/get";
-import { pccSummary } from "../summaryResource/pccSummary";
+import { pccSummary, changedVenueDatepccSummary } from "../summaryResource/pccSummary";
 import { pccApplicantSummary } from "../summaryResource/pccApplicantSummary";
 import { documentsSummary } from "../summaryResource/documentsSummary";
 import { estimateSummary } from "../summaryResource/estimateSummary";
@@ -143,6 +144,19 @@ export const getActionDefinationForStepper = (path) => {
     return actionDefination;
 };
 
+export const confirmationStatement = getCommonGrayCard({
+
+    header: getCommonHeader({
+        labelName: "Recalculated fee is zero. No payment required. just submit your booking.",
+        labelKey: "Recalculated fee is zero. No payment required. just submit your booking.",
+        props: {
+            visible: false
+        }
+
+    })
+
+
+})
 export const summaryDetails = getCommonCard({
     header: {
         uiFramework: "custom-atoms",
@@ -196,8 +210,10 @@ export const summaryDetails = getCommonCard({
             },
         },
     },
+   // confirmationStatement: confirmationStatement,
     estimateSummary: estimateSummary,
     pccApplicantSummary: pccApplicantSummary,
     pccSummary: pccSummary,
+  //  changedVenueDatepccSummary: changedVenueDatepccSummary,
     documentsSummary: documentsSummary
 });

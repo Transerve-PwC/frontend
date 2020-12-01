@@ -192,6 +192,8 @@ const RegisterReviewResult = {
   //  resetFields(state, dispatch);
     const tenantId = getTenantId();   
     dispatch(prepareFinalObject("searchScreen",{}));
+    let  InventoryAPIData =[] 
+    dispatch(prepareFinalObject("InventoryAPIData",InventoryAPIData));
     getData(action, state, dispatch).then(responseAction => {
     
     }); 

@@ -169,18 +169,30 @@ const getMdmsData = async (action, state, dispatch) => {
             mdmsBody
         );
 
-        // payload.MdmsRes.Booking.Documents = [
-        //     {
+        payload.MdmsRes.Booking.Documents = [
+            {
 
-        //         "code": "DOC.DOC_PICTURE",
-        //         "description":"DOC.DOC_PICTURE.PICTURE_DESCRIPTION",
-        //         "active":true,
-        //         "documentType":"DOC",
-        //         "dropdownData":[],
-        //         "hasDropdown":false,
-        //         "required":true
+                "code": "DOC.DOC_PICTURE",
+                "description":"DOC.DOC_PICTURE.PICTURE_DESCRIPTION",
+                "active":true,
+                "documentType":"DOC",
+                "dropdownData":[],
+                "hasDropdown":false,
+                "required":true
 
-        //     }];
+            },
+            {
+
+                "code": "BUILDING_PLAN_APPROVAL",
+                "description":"BUILDING_PLAN_APPROVAL_DESCRIPTION",
+                "active":true,
+                "documentType":"BUILDING_PLAN_APPROVAL",
+                "dropdownData":[],
+                "hasDropdown":false,
+                "required":true
+
+            }
+        ];
 
         dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
     } catch (e) {

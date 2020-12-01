@@ -41,8 +41,7 @@ class SummaryDetails extends Component {
                 "tenantId": userInfo.tenantId,
                 "Booking": Booking
             });
-        	
-            this.props.history.push("/egov-services/create-success");
+            this.props.history.push(`/egov-services/create-success`);
 
     }
 

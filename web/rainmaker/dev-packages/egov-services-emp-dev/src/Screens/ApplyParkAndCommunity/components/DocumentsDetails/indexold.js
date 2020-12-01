@@ -58,11 +58,9 @@ class ApplicatInfo extends Component {
     e.preventDefault();
    
     var files;
-    if (e.dataTransfer) {
-      console.log('e.data', e.dataTransfer)
+    if (e.dataTransfer) { 
       files = e.dataTransfer.files;
     } else if (e.target) {
-      console.log('e.target', e.target.files)
       files = e.target.files;
     }
   }

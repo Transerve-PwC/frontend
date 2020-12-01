@@ -21,7 +21,7 @@ import {
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   export const stepsData = [
     { labelName: "Purchase Order", labelKey: "STORE_PO_HEADER" },
-    { labelName: "Tender/Quotation/Rate Contract Detail",  labelKey: "STORE_PO_RC_DETAIL_HEADER"},
+    { labelName: "Price Details",  labelKey: "STORE_PO_RC_DETAIL_HEADER_STEP"},
     { labelName: "Purchase Order Details", labelKey: "STORE_PO_DETAILS_HEADER" },
   //  { labelName: "Approval Information", labelKey: "STORE_PO_APPROVAL_INFO_HEADER" },
   ];

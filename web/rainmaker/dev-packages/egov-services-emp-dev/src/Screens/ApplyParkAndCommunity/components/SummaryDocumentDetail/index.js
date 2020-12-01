@@ -5,22 +5,12 @@ import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 import "./index.css";
 import jp from "jsonpath";
+import { getFileUrlFromAPI } from '../../../../modules/commonFunction'
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 class CGBookingDetails extends Component {
-//   convertEpochToDate = (dateEpoch) => {
-//     const dateFromApi = new Date(dateEpoch);
-//     let month = dateFromApi.getMonth() + 1;
-//     let day = dateFromApi.getDate();
-//     let year = dateFromApi.getFullYear();
-//     month = (month > 9 ? "" : "0") + month;
-//     day = (day > 9 ? "" : "0") + day;
-//     return `${day}-${month}-${year}`;
-//   };
-
-
 
 callApiForDocumentData = async (e) => {
-  alert("hello callApiForDocumentData")
   const { documentMap,userInfo } = this.props;
   var documentsPreview = [];
   if (documentMap && Object.keys(documentMap).length > 0) {
@@ -34,9 +24,10 @@ callApiForDocumentData = async (e) => {
           fileStoreId: id,
           linkText: "View",
       });
+      let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
       let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
       let fileUrls =
-          fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+          fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,changetenantId) : {};
 
 
       documentsPreview = documentsPreview.map(function (doc, index) {
@@ -69,7 +60,7 @@ callApiForDocumentData = async (e) => {
 
   render() {
     const { documentMap } = this.props;
-      console.log("propsInSummarydocumentsetails--",this.props)
+     
 return (
       <div>
         <Card
@@ -107,11 +98,10 @@ const mapStateToProps = state => {
   const { createPACCApplicationData } = bookings;
   let documentMap = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.documentMap : "";
   let bkLocation = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkLocation : "";
-
-  console.log('createPACCApplicationData', createPACCApplicationData, "state---", state)
+  const { userInfo } = state.auth;
   return {
       createPACCApplicationData,
-      documentMap, bkLocation
+      documentMap, bkLocation,userInfo
   }
 
 }

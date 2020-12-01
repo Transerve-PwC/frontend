@@ -39,26 +39,7 @@ export const pccSummary = getCommonGrayCard({
             className: "sellmeatapplicant-summary",
             scheama: getCommonGrayCard({
                 applicationContainer: getCommonContainer({
-                    // HouseNo: getLabelWithValue(
-                    //     {
-                    //         labelName: "House No.",
-                    //         labelKey: "BK_PCC_HOUSE_NUMBER_LABEL",
-                    //     },
-                    //     {
-                    //         jsonPath: "Booking.bkHouseNo",
-                    //         callBack: (value) => {
-                    //             if (
-                    //                 value === undefined ||
-                    //                 value === "" ||
-                    //                 value === null
-                    //             ) {
-                    //                 return "NA";
-                    //             } else {
-                    //                 return value;
-                    //             }
-                    //         },
-                    //     }
-                    // ),
+
                     Purpose: getLabelWithValue(
                         {
                             labelName: "Purpose",
@@ -163,15 +144,7 @@ export const pccSummary = getCommonGrayCard({
                             jsonPath: "Booking.bkRent",
                         }
                     ),
-                    // FacilitationCharges: getLabelWithValue(
-                    //     {
-                    //         labelName: "Facilitation Charges",
-                    //         labelKey: "BK_PCC_FACILITATION_CHARGES_LABEL",
-                    //     },
-                    //     {
-                    //         jsonPath: "Booking.bkFacilitationCharges",
-                    //     }
-                    // ),
+
                     SurchargeRent: getLabelWithValue(
                         {
                             labelName: "Surcharge on Rent",
@@ -197,6 +170,15 @@ export const pccSummary = getCommonGrayCard({
                         },
                         {
                             jsonPath: "Booking.bkCgst",
+                        }
+                    ),
+                    bkRefundAmount: getLabelWithValue(
+                        {
+                            labelName: "Refundable Amount",
+                            labelKey: "BK_PCC_RefundAmount_LABEL",
+                        },
+                        {
+                            jsonPath: "Booking.bkRefundAmount",
                         }
                     ),
                     CustomerGstNo: getLabelWithValue(

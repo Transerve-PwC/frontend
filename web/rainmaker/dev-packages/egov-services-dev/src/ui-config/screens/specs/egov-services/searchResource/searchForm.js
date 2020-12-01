@@ -169,7 +169,7 @@ export const searchForm = getCommonCard({
                 // pattern: getPattern("DoorHouseNo"),
                 // errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
                 // required: true,
-                sourceJsonPath: "applyScreenMdmsData.Booking.ApplicationType",
+                sourceJsonPath: "applyScreenMdmsData.Booking.BookingType",
                 jsonPath: "MyBooking.bookingType",
                 gridDefination: {
                     xs: 12,
@@ -178,7 +178,7 @@ export const searchForm = getCommonCard({
                 },
             }),
             beforeFieldChange: (action, state, dispatch) => {
-                
+
                 if (action.value) {
                     let bookingType = get(
                         state,

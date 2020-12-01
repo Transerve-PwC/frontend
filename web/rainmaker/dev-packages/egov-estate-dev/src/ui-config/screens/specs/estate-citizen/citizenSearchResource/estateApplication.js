@@ -19,7 +19,8 @@ import {
 import get from "lodash/get";
 import {
   ESTATE_APPROVED_STATE,
-  BB_PM_APPROVED_STATE
+  BB_PM_APPROVED_STATE,
+  MM_APPROVED_STATE
 } from "../../../../../ui-constants";
 import {
   displayCustomErr,
@@ -374,7 +375,18 @@ export const estateApplication = getCommonCard({
           action: "condition",
           callBack: (state, dispatch) => {
             const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
-            const approvedState = branchType == "BUILDING_BRANCH" ? BB_PM_APPROVED_STATE : ESTATE_APPROVED_STATE;
+            let approvedState;
+            switch (branchType) {
+              case "BUILDING_BRANCH":
+                approvedState = BB_PM_APPROVED_STATE;
+                break;
+              case "MANI_MAJRA":
+                approvedState = MM_APPROVED_STATE;
+                break;
+              default:
+                approvedState = ESTATE_APPROVED_STATE;
+                break;
+            }
             searchApiCall(state, dispatch, [
               { key: "state", value: approvedState },
               { key: "branchType", value: branchType }

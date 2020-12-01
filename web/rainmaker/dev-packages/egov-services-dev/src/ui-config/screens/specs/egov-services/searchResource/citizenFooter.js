@@ -93,13 +93,7 @@ export const footer = getCommonApplyFooter({
             },
         },
         children: {
-            // previousButtonIcon: {
-            //     uiFramework: "custom-atoms",
-            //     componentPath: "Icon",
-            //     props: {
-            //         iconName: "keyboard_arrow_left",
-            //     },
-            // },
+
             previousButtonLabel: getLabel({
                 labelName: "CANCEL",
                 labelKey: "BK_MY_BK_BUTTON_CANCEL",
@@ -131,13 +125,7 @@ export const footer = getCommonApplyFooter({
                 labelName: "Make Payment",
                 labelKey: "BK_MY_BK_BUTTON_PAYMENT",
             }),
-            // nextButtonIcon: {
-            //     uiFramework: "custom-atoms",
-            //     componentPath: "Icon",
-            //     props: {
-            //         iconName: "keyboard_arrow_right",
-            //     },
-            // },
+
         },
         onClickDefination: {
             action: "condition",
@@ -146,11 +134,7 @@ export const footer = getCommonApplyFooter({
                 callBackForNext(state, dispatch, "pay"),
         },
         visible: false,
-        // roleDefination: {
-        //     rolePath: "user-info.roles",
-        //     roles: ["CITIZEN"],
-        //     action: "PAY",
-        // },
+
     },
 });
 
@@ -194,13 +178,6 @@ export const footerForParkAndCC = getCommonApplyFooter({
             },
         },
         children: {
-            // previousButtonIcon: {
-            //     uiFramework: "custom-atoms",
-            //     componentPath: "Icon",
-            //     props: {
-            //         iconName: "keyboard_arrow_left",
-            //     },
-            // },
             previousButtonLabel: getLabel({
                 labelName: "CANCEL BOOKING",
                 labelKey: "BK_PACC_BUTTON_CANCEL_BOOKING",
@@ -212,45 +189,6 @@ export const footerForParkAndCC = getCommonApplyFooter({
         },
         visible: false,
     },
-
-    // submitButton: {
-    //     componentPath: "Button",
-    //     props: {
-    //         variant: "contained",
-    //         color: "primary",
-    //         style: {
-    //             minWidth: "180px",
-    //             height: "48px",
-    //             marginRight: "45px",
-    //             borderRadius: "inherit",
-    //         },
-    //     },
-    //     children: {
-    //         nextButtonLabel: getLabel({
-    //             labelName: "Make Payment",
-    //             labelKey: "BK_MY_BK_BUTTON_PAYMENT",
-    //         }),
-    //         // nextButtonIcon: {
-    //         //     uiFramework: "custom-atoms",
-    //         //     componentPath: "Icon",
-    //         //     props: {
-    //         //         iconName: "keyboard_arrow_right",
-    //         //     },
-    //         // },
-    //     },
-    //     onClickDefination: {
-    //         action: "condition",
-    //         // callBack: callBackForNext,
-    //         callBack: (state, dispatch) =>
-    //             callBackForNext(state, dispatch, "pay"),
-    //     },
-    //     visible: false,
-    //     // roleDefination: {
-    //     //     rolePath: "user-info.roles",
-    //     //     roles: ["CITIZEN"],
-    //     //     action: "PAY",
-    //     // },
-    // },
     editButton: {
         componentPath: "Button",
         props: {
@@ -268,23 +206,13 @@ export const footerForParkAndCC = getCommonApplyFooter({
                 labelName: "CHANGE DATE/VENUE",
                 labelKey: "BK_PACC_CHANGE_DATE_VENUE_BUTTON_EDIT",
             }),
-            // nextButtonIcon: {
-            //     uiFramework: "custom-atoms",
-            //     componentPath: "Icon",
-            //     props: {
-            //         iconName: "keyboard_arrow_right",
-            //     },
-            // },
+
         },
         onClickDefination: {
             action: "condition",
             callBack: callBackForEdit,
         },
         visible: false,
-        // roleDefination: {
-        //     rolePath: "user-info.roles",
-        //     roles: ["CITIZEN"],
-        //     action: "PAY",
-        // },
+
     },
 });

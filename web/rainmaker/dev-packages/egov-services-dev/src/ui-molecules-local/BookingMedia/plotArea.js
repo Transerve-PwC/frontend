@@ -18,7 +18,7 @@ class PlotArea extends React.Component {
     }
 
     getAvailabilityData = async (e, item) => {
-        console.log(item, "GEOPROP");
+
         const { availabilityCheckData } = this.props;
         if (
             availabilityCheckData.bkBookingType == "Community Center" &&
@@ -64,6 +64,15 @@ class PlotArea extends React.Component {
         this.props.prepareFinalObject(
             "Booking.bkDuration",
             item.bkDuration
+        );
+        this.props.prepareFinalObject(
+            "Booking.bkRefundAmount",
+            item.refundabelSecurity
+        );
+
+        this.props.prepareFinalObject(
+            "availabilityCheckData.bkRefundAmount",
+            item.refundabelSecurity
         );
 
         let requestBody = {
@@ -112,7 +121,7 @@ class PlotArea extends React.Component {
     };
 
     render() {
-        console.log(this.props, "Nerosss");
+
         const { masterDataPCC, availabilityCheckData } = this.props;
         return masterDataPCC.map((item) => {
             let coords = `${item.x},${item.y},${item.radius}`;

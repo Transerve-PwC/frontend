@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 class AssignToDriverSuccess extends Component {
   continueComplaintSubmit = () => {
-    this.props.history.push("/egov-services/all-applications");
+    this.props.history.push(`/egov-services/all-applications`);
   };
   render() {
     let {applicationNumber} = this.props;

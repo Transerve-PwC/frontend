@@ -17,7 +17,6 @@ const styles = (theme) => ({
 class SelectedTimeSlotInfo extends Component {
     render() {
         const { bookingLocation, fromDate, toDate, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDateTime} = this.props;
-        console.log(this.props,"nero rops");
         return (
             <Grid container={true}>
                 <Grid item={true} xs={1}>
@@ -113,7 +112,6 @@ class SelectedTimeSlotInfo extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state, "Nero State");
     let bookingLocation = get(
         state,
         "screenConfiguration.preparedFinalObject.availabilityCheckData.bkLocation",

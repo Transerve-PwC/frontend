@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PersonalInfo from './components/ApplicatDetails';
 import JobDetails from './components/BookingDetails';
 import AllInfo from './components/SummaryDetails';
+import Label from "egov-ui-kit/utils/translationNode";
 import { Box, Button, Card, CardContent, CircularProgress, Grid, Step, StepLabel, Stepper } from '@material-ui/core';
 
 export class StepForm extends Component {

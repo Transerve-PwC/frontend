@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 class DeliveredBWTApplicationSuccess extends Component {
   continueComplaintSubmit = () => {
-    this.props.history.push("/egov-services/all-applications");
+    this.props.history.push(`/egov-services/all-applications`);
   };
   render() {
     let {applicationNumber} = this.props;
@@ -41,10 +41,10 @@ const mapStateToProps = state => {
   const { bookings, common, auth, form } = state;
   const { applicationData } = bookings;
   let bookingDetails = applicationData ? applicationData.bookingsModelList[0] : '';
-  console.log("bookingDetailsinResolveSuccess--",bookingDetails)
+ 
   //bkApplicationNumber
   let applicationNumber = applicationData ? applicationData.bookingsModelList[0].bkApplicationNumber : '';
-  console.log("applicationNumber--",applicationNumber)
+ 
   return {
     bookingDetails,
     applicationNumber

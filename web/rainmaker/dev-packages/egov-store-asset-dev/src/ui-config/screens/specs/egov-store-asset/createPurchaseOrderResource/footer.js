@@ -464,8 +464,38 @@ export const callBackForNext = async (state, dispatch) => {
                 "props.disabled",true));
 
         }
+        if(activeStep ===1)
+        {
+          const {priceList} = purchaseOrders[0];
+          if(priceList && priceList[0])
+          {
+            if(priceList[0].agreementDate ==='' 
+            && priceList[0].agreementEndDate ==='' 
+            && priceList[0].agreementNumber ===''
+            && priceList[0].agreementStartDate ===''
+            && priceList[0].rateContractDate ===''
+            && priceList[0].rateContractNumber ==='') 
+            {
+              const errorMessage = {
+                labelName: "Price is not available for selected supplier",
+                labelKey: "STORE_INVALID_PRICE_LIST_SUPPLIER"
+              };
+              dispatch(toggleSnackbar(true, errorMessage, "warning"));
+
+            }
+            else{
+              changeStep(state, dispatch);
+
+            }
+          }
+
+        }
+        else
+        {
+          changeStep(state, dispatch);
+
+        }
         
-        changeStep(state, dispatch);
       }
      
     } else {

@@ -225,7 +225,7 @@ export const createUpdateIndent = async (state, dispatch, action) => {
     set(indents[0],"indentNumber", "");
     set(indents[0],"indentType", "Indent");
     set(indents[0],"materialHandOverTo", "Test");
-    set(indents[0],"designation", "");
+    //set(indents[0],"designation", "");
   }
   else
   {

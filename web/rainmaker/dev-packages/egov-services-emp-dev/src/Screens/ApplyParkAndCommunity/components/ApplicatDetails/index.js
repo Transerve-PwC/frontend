@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Grid from '@material-ui/core/Grid';
 import Footer from "../../../../modules/footer"
-
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
  import FormControl from '@material-ui/core/FormControl';
@@ -33,8 +33,7 @@ class ApplicatInfo extends Component {
     let mb=/^\d{10}$/;
     let fname = /^[a-zA-Z'-]+$/;
     e.preventDefault();
-    if(this.props.firstName==""||this.props.email==""||this.props.mobileNo==""||this.props.houseNo==""){
-
+    if(this.props.email==""||this.props.mobileNo==""||this.props.houseNo==""){
       this.props.toggleSnackbarAndSetText(
         true,
         {
@@ -44,15 +43,6 @@ class ApplicatInfo extends Component {
         "warning"
       );
     }
-    else if(!fname.test(this.props.firstName)){
-      this.props.toggleSnackbarAndSetText(
-        true,
-        {
-          labelName: "please enter valid User Name",
-          labelKey: `please enter valid User Name`
-        },
-        "warning"
-      )}
     else if(!re.test(this.props.email)){
       this.props.toggleSnackbarAndSetText(
         true,
@@ -81,13 +71,10 @@ class ApplicatInfo extends Component {
   }
 
   render() {
-    const { firstName, email, mobileNo, lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes } = this.props;
-   let number = 778.8897544667;
-   console.log("number--",number)
-   let number2 = Math.round((number + Number.EPSILON) * 100) / 100
-    console.log("number2--",number2)
-    let number3 = (Math.round(number * 100) / 100).toFixed(2);
-console.log("number3--",number3)
+    const { firstName, email, mobileNo, lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes,prepareFinalObject } = this.props;
+
+    prepareFinalObject("MNumToCreateCitizen", mobileNo);
+
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -234,6 +221,7 @@ console.log("number3--",number3)
                 <FormControlLabel className={classes.cool} value="ReligiousFunction" control={<Radio color="primary" />} label="Religious Function" />
             </RadioGroup>
             </FormControl>
+            
           </div>
   
         <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
@@ -267,6 +255,8 @@ const mapDispatchToProps = dispatch => {
   return {
       toggleSnackbarAndSetText: (open, message, error) =>
       dispatch(toggleSnackbarAndSetText(open, message, error)),
+      prepareFinalObject: (jsonPath, value) =>
+      dispatch(prepareFinalObject(jsonPath, value)),
   }
 }
 

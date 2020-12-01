@@ -626,9 +626,10 @@ const {documentMap,userInfo}=this.props;
 				fileStoreId: id,
 				linkText: "View",
 			});
+			let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,changetenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -966,7 +967,7 @@ const mapStateToProps = (state, ownProps) => {
 			DownloadApplicationDetailsforCG,
 			paymentDetailsForReceipt,
 			perDayRupees,
-			
+			userInfo,
 			documentMap,
 			form,
 			transformedComplaint,
@@ -986,7 +987,7 @@ const mapStateToProps = (state, ownProps) => {
 			DownloadApplicationDetailsforCG,
 			paymentDetailsForReceipt,
 			perDayRupees,
-			
+			userInfo,
 			documentMap,
 			form,
 			transformedComplaint: {},

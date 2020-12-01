@@ -6,7 +6,8 @@ import {
 import get from "lodash/get";
 import { openSpaceSummary } from "../summaryResource/openSpaceSummary";
 import { applicantSummary } from "../summaryResource/applicantSummary";
-import { documentsSummary } from "../summaryResource/documentsSummary";
+import { documentsSummary, documentsSummary1 } from "../summaryResource/documentsSummary";
+
 import { estimateSummary } from "../summaryResource/estimateSummary";
 
 export const callBackForPrevious = (state, dispatch) => {
@@ -194,5 +195,6 @@ export const summaryDetails = getCommonCard({
     estimateSummary: estimateSummary,
     applicantSummary: applicantSummary,
     openSpaceSummary: openSpaceSummary,
-    documentsSummary: documentsSummary
+    documentsSummary: documentsSummary,
+    documentsSummary1: documentsSummary1,
 });

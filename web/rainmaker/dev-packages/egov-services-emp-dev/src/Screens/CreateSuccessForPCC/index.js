@@ -21,17 +21,20 @@ class CreateWBTApplicationSuccess extends Component {
     let { createPACCApplicationData,userInfo,fetchSuccess } = this.props;
     createPACCApplicationData={}
     fetchSuccess=false;
-    this.props.history.push("/egov-services/all-applications");
+  
+    this.props.history.push(`/egov-services/all-applications`);
+    window.location.reload(); 
   };
   componentDidMount = async () => {   
   }
 
   downloadApplicationFunction = async (e) => {
     const { downloadEsamparkApp, userInfo,createPACCApplicationData,documentMap} = this.props;
-    console.log("createPACCApplicationData--this.props--",this.props)
-    let applicationDetails = createPACCApplicationData ? createPACCApplicationData.data : '';
+    
+    let applicationDetails = createPACCApplicationData ? createPACCApplicationData : 'dataNotFound';
+    console.log("applicationDetails--",applicationDetails)
     let fdocname = Object.entries(documentMap)[0][1]
-    console.log("fname--",fdocname)
+    
    let BookingInfo = [
       {
           "applicantDetail": {
@@ -127,21 +130,27 @@ class CreateWBTApplicationSuccess extends Component {
   
   }
   render() {
-    const { createWaterTankerApplicationData,downloadBWTApplication,loading,createPACCApplicationData, updatePACCApplicationData } = this.props;
+    const { createWaterTankerApplicationData,myLocationtwo, downloadBWTApplication,loading,createPACCApplicationData, updatePACCApplicationData } = this.props;
     //BK_MYBK_PCC_CREATE_APPLICATION_HEADER
     // Park And Community Centre
-   console.log("updatePACCApplicationData--render-props--",this.props)
+
+    console.log("InSuccessPage--",
+    { labelName: "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER-Value", labelKey: "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER" },
+    { labelName: "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE--", labelKey: "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE" },
+    { labelName: "BK_CS_COMMON_SEND_MESSAGE--", labelKey: "BK_CS_COMMON_SEND_MESSAGE" },
+)
+
     return (
       <Screen loading={loading}>
       <div className="success-message-main-screen resolve-success">
-        <SuccessMessageForPCC
+      <SuccessMessageForPCC
          headermessage="BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER"
           successmessage="BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE"
           secondaryLabel="BK_CS_COMMON_SEND_MESSAGE"
           containerStyle={{ display: "inline-block" }}
           icon={<Icon action="navigation" name="check" />}
           backgroundColor={"#22b25f"}
-          applicationNumber={createPACCApplicationData&&createPACCApplicationData.data?createPACCApplicationData.data.bkApplicationNumber:''}
+          applicationNumber={createPACCApplicationData&&createPACCApplicationData?createPACCApplicationData.bkApplicationNumber:''}
         />
         <div className="responsive-action-button-cont">
           <Button
@@ -171,16 +180,22 @@ class CreateWBTApplicationSuccess extends Component {
 const mapStateToProps = state => {
   const { complaints, bookings,common, auth, form } = state;
   const { userInfo } = auth;
-  const { updatePACCApplicationData, createPACCApplicationData,fetchSuccess, Downloadesamparkdetails} = bookings;
+  const { updatePACCApplicationData,fetchSuccess, Downloadesamparkdetails} = bookings;
   const { createWaterTankerApplicationData, DownloadBWTApplicationDetails,categoriesById } = complaints;
   let documentMap = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.documentMap : "";
-  const loading = !isEmpty(createPACCApplicationData)
-  ? fetchSuccess
-    ? false
-    : true
-  : true;
+  let createPACCApplicationData = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.CreatePaccAppData : "NotAnyMore";
+  console.log("createPACCApplicationData--",createPACCApplicationData)
 
-  console.log("createPACCApplicationData--123--",createPACCApplicationData)
+
+  // const loading = !isEmpty(createPACCApplicationData)
+  // ? fetchSuccess
+  //   ? false
+  //   : true
+  // : true;
+
+  const loading = false;
+
+  
   return {
     createWaterTankerApplicationData, DownloadBWTApplicationDetails,loading,fetchSuccess,createPACCApplicationData,
     updatePACCApplicationData,Downloadesamparkdetails,userInfo,documentMap

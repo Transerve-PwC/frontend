@@ -27,11 +27,15 @@ convertEpochToDate = (dateEpoch) => {
     render(){
         const {complaints, complaintLocation, role, onComplaintClick, noComplaintMessage, heightOffset} = this.props
        
-       console.log('complaints in component list',complaints)
-        return !complaints ? (
-          <div className="no-complaints-message-cont" style={heightOffset && { height: `calc(100vh - ${heightOffset})` }}>
-            <Label label={noComplaintMessage} dark={true} fontSize={"16px"} labelStyle={{ letterSpacing: "0.7px" }} />
-          </div>
+     
+        return complaints===null || complaints.length === 0 ? (
+         
+        <div  style={{textAlign: 'center', marginTop: '50px'}}>
+          <Label label={noComplaintMessage} dark={true} fontSize={"16px"} labelStyle={{ letterSpacing: "0.7px" }} />
+        </div>
+          // <div className="no-complaints-message-cont" style={heightOffset && { height: `calc(100vh - ${heightOffset})` }}>
+          //   <Label label={noComplaintMessage} dark={true} fontSize={"16px"} labelStyle={{ letterSpacing: "0.7px" }} />
+          // </div>
         ) : (
           complaints.map((complaint, complaintIndex) => {
           

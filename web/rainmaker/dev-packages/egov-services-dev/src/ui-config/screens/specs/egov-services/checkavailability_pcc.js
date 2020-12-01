@@ -175,12 +175,13 @@ const prepareEditFlow = async (
             let response = await getMasterDataPCC(requestBody);
             let responseStatus = get(response, "status", "");
             if (responseStatus == "SUCCESS" || responseStatus == "success") {
+
                 dispatch(prepareFinalObject("masterData", response.data));
                 requestBody = {
                     bookingType: bookingsModelList[0].bkBookingType,
                     bookingVenue: bookingsModelList[0].bkBookingVenue,
                     sector: bookingsModelList[0].bkSector,
-                    applicationNumber: bookingsModelList[0].bkApplicationStatus == "APPLIED" ? applicationNumber : null
+                    applicationNumber: bookingsModelList[0].bkApplicationStatus == "APPLIED" || bookingsModelList[0].bkApplicationStatus == "RE_INITIATED" ? applicationNumber : null
                 };
 
                 const availabilityData = await getAvailabilityDataPCC(

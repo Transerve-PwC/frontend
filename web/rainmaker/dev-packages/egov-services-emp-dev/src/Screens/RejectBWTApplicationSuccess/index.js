@@ -6,7 +6,7 @@ import CommonSuccessMessage from "../../modules/CommonSuccessMessage";
 class RejectBWTApplicationSuccess extends Component {
   continueComplaintSubmit = () => {
    
-    this.props.history.push("/egov-services/all-applications");
+    this.props.history.push(`/egov-services/all-applications`);
   };
   render() {
     return (

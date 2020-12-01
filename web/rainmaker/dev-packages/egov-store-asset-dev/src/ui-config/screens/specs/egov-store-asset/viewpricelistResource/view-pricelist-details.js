@@ -141,15 +141,15 @@ export const getPriceListDetailsView = (isReview = true) => {
           jsonPath: "priceLists[0].agreementEndDate",
         }
       ),
-      active: getLabelWithValue(
-        {
-          labelName: "Active",
-          labelKey: "STORE_PRICE_ACTIVE"
-        },
-        {
-          jsonPath: "priceLists[0].active"
-        }
-      )
+      // active: getLabelWithValue(
+      //   {
+      //     labelName: "Active",
+      //     labelKey: "STORE_PRICE_ACTIVE"
+      //   },
+      //   {
+      //     jsonPath: "priceLists[0].active"
+      //   }
+      // )
     }),
    
 

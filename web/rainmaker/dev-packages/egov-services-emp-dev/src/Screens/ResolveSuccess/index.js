@@ -15,7 +15,7 @@ class ResolveSuccess extends Component {
 
   continueComplaintSubmit = () => {
     
-    this.props.history.push("/egov-services/all-applications");
+    this.props.history.push(`/egov-services/all-applications`);
   
   };
 

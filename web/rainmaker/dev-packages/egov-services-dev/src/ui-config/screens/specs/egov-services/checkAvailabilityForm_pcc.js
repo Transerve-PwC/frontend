@@ -188,37 +188,39 @@ const callBackForBook = async (state, dispatch) => {
   );
   console.log(availabilityCheckData, "availabilityCheckData");
   console.log(oldAvailabilityCheckData, "oldAvailabilityCheckData");
-  if (availabilityCheckData === undefined) {
+  if (availabilityCheckData === undefined || !("bkToDate" in availabilityCheckData) || (availabilityCheckData.bkToDate == null)) {
     let warrningMsg = {
       labelName: "Please Select Date Range",
       labelKey: "",
     };
     dispatch(toggleSnackbar(true, warrningMsg, "warning"));
   } else {
+
+    let daysCount = calculateBetweenDaysCount(
+        availabilityCheckData.bkFromDate,
+        availabilityCheckData.bkToDate
+    );
+
+    if(daysCount > 2){
+      let warrningMsg = {
+        labelName: "You can not book venue for more than 2 days",
+        labelKey: "",
+      };
+      dispatch(toggleSnackbar(true, warrningMsg, "warning"));
+      return false;
+    }
+
+
     if (oldAvailabilityCheckData !== undefined) {
-      console.log(
-        convertDateInYMD(availabilityCheckData.bkFromDate),
-        oldAvailabilityCheckData.bkFromDate,
-        convertDateInYMD(availabilityCheckData.bkToDate),
-        oldAvailabilityCheckData.bkToDate,
-        availabilityCheckData.bkBookingVenue,
-        oldAvailabilityCheckData.bkBookingVenue
-      );
-      console.log(
-        convertDateInYMD(availabilityCheckData.bkFromDate) ===
-        oldAvailabilityCheckData.bkFromDate &&
-        convertDateInYMD(availabilityCheckData.bkToDate) ===
-        oldAvailabilityCheckData.bkToDate &&
-        availabilityCheckData.bkBookingVenue ===
-        oldAvailabilityCheckData.bkBookingVenue
-      );
+
       if (
         convertDateInYMD(availabilityCheckData.bkFromDate) ===
         oldAvailabilityCheckData.bkFromDate &&
         convertDateInYMD(availabilityCheckData.bkToDate) ===
         oldAvailabilityCheckData.bkToDate &&
         availabilityCheckData.bkBookingVenue ===
-        oldAvailabilityCheckData.bkBookingVenue
+        oldAvailabilityCheckData.bkBookingVenue &&
+        oldAvailabilityCheckData.bkApplicationStatus == "APPLIED"
       ) {
         let warrningMsg = {
           labelName: "Please Change Date/Venue",
@@ -262,6 +264,15 @@ const callBackForBook = async (state, dispatch) => {
   }
 };
 
+const calculateBetweenDaysCount = (startDate, endDate) => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const firstDate = new Date(startDate);
+    const secondDate = new Date(endDate);
+
+    const daysCount =
+        Math.round(Math.abs((firstDate - secondDate) / oneDay))+1;
+    return daysCount;
+};
 const callBackForResetCalender = (state, dispatch, action) => {
   const availabilityCheckData = get(
     state,
@@ -273,175 +284,6 @@ const callBackForResetCalender = (state, dispatch, action) => {
     dispatch(prepareFinalObject("availabilityCheckData.bkToDate", null));
   }
 };
-
-// const callBackForSearch = async (state, dispatch) => {
-//     let isFormValid = false;
-//     let hasFieldToaster = true;
-
-//     let validatestepformflag = validatestepform(1);
-
-//     isFormValid = validatestepformflag[0];
-//     hasFieldToaster = validatestepformflag[1];
-
-//     if (isFormValid !== false) {
-//         let availabilityCheckData = get(
-//             state,
-//             "screenConfiguration.preparedFinalObject.availabilityCheckData"
-//         );
-//         // if (availabilityCheckData === undefined) {
-//         //     dispatch(
-//         //         toggleSnackbar(
-//         //             true,
-//         //             { labelName: "Please Select Booking Venue!", labelKey: "" },
-//         //             "warning"
-//         //         )
-//         //     );
-//         // } else {
-//         if (
-//             "bkSector" in availabilityCheckData &&
-//             "bkBookingVenue" in availabilityCheckData
-//         ) {
-//             let bookingSector = availabilityCheckData.bkSector;
-//             let bookingVenue = availabilityCheckData.bkBookingVenue;
-//             let response = await getAvailabilityDataOSWMCC(
-//                 bookingSector,
-//                 bookingVenue
-//             );
-
-//             let responseStatus = get(response, "status", "");
-//             if (responseStatus == "SUCCESS" || responseStatus == "success") {
-//                 let data = response.data;
-//                 let reservedDates = [];
-//                 var daylist = [];
-//                 data.map((dataitem) => {
-//                     let start = dataitem.fromDate;
-//                     let end = dataitem.toDate;
-//                     daylist = getBetweenDays(start, end);
-//                     daylist.map((v) => {
-//                         reservedDates.push(v.toISOString().slice(0, 10));
-//                     });
-//                 });
-//                 dispatch(
-//                     prepareFinalObject(
-//                         "availabilityCheckData.reservedDays",
-//                         reservedDates
-//                     )
-//                 );
-//             } else {
-//                 let errorMessage = {
-//                     labelName: "Something went wrong, Try Again later!",
-//                     labelKey: "", //UPLOAD_FILE_TOAST
-//                 };
-//                 dispatch(toggleSnackbar(true, errorMessage, "error"));
-//             }
-//         }
-//         // else {
-//         //     let errorMessage = {
-//         //         labelName: "Please fill all mandatory fields! new",
-//         //         labelKey: "Please fill all mandatory fields! new",
-//         //     };
-
-//         //     dispatch(toggleSnackbar(true, errorMessage, "warning"));
-//         // }
-//         // }
-//     } else {
-//         let errorMessage = {
-//             labelName: "Please fill all mandatory fields!",
-//             labelKey: "BK_ERR_FILL_ALL_MANDATORY_FIELDS",
-//         };
-
-//         dispatch(toggleSnackbar(true, errorMessage, "warning"));
-//     }
-// };
-
-// const callBackForVenue = async (state, dispatch) => {
-//     let bkSector = get(
-//         state,
-//         "screenConfiguration.preparedFinalObject.availabilityCheckData.bkSector"
-//     );
-//     let bkBookingVenue = get(
-//         state,
-//         "screenConfiguration.preparedFinalObject.availabilityCheckData.bkBookingVenue"
-//     );
-//     let bkAreaRequired = get(
-//         state,
-//         "screenConfiguration.preparedFinalObject.Booking.bkAreaRequired"
-//     );
-//     try {
-//         let responseImage = await getNewLocatonImages(bkSector, bkBookingVenue);
-//         let responseImageStatus = get(responseImage, "status", "");
-//         if (
-//             responseImageStatus == "SUCCESS" ||
-//             responseImageStatus == "success"
-//         ) {
-//             let documentsAndLocImages = responseImage.data;
-//             let onlyLocationImages =
-//                 documentsAndLocImages &&
-//                 documentsAndLocImages.filter(
-//                     (item) => item.documentType != "IDPROOF"
-//                 );
-
-//             let fileStoreIds =
-//                 onlyLocationImages &&
-//                 onlyLocationImages.map((item) => item.fileStoreId).join(",");
-//             const fileUrlPayload =
-//                 fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
-//             let newLocationImagesPreview = [];
-//             onlyLocationImages &&
-//                 onlyLocationImages.forEach((item, index) => {
-//                     newLocationImagesPreview[index] = {
-//                         name:
-//                             (fileUrlPayload &&
-//                                 fileUrlPayload[item.fileStoreId] &&
-//                                 decodeURIComponent(
-//                                     fileUrlPayload[item.fileStoreId]
-//                                         .split(",")[0]
-//                                         .split("?")[0]
-//                                         .split("/")
-//                                         .pop()
-//                                         .slice(13)
-//                                 )) ||
-//                             `Document - ${index + 1}`,
-//                         fileStoreId: item.fileStoreId,
-//                         link: Object.values(fileUrlPayload)[index],
-//                         title: item.documentType,
-//                     };
-//                 });
-
-//             dispatch(
-//                 prepareFinalObject(
-//                     "mccNewLocImagesPreview",
-//                     newLocationImagesPreview
-//                 )
-//             );
-
-//             let response = await getPerDayRateOSWMCC(bkSector, bkAreaRequired);
-//             let responseStatus = get(response, "status", "");
-//             if (responseStatus == "SUCCESS" || responseStatus == "success") {
-//                 response.data.displayArea =
-//                     response.data.areaFrom + " - " + response.data.areaTo;
-//                 dispatch(prepareFinalObject("perDayRate", response.data));
-//             }
-//             // else {
-//             //     let errorMessage = {
-//             //         labelName: "Something went wrong, Try Again later!",
-//             //         labelKey: "", //UPLOAD_FILE_TOAST
-//             //     };
-//             //     dispatch(toggleSnackbar(true, errorMessage, "error"));
-//             // }
-//         }
-//         // else {
-//         //     let errorMessage = {
-//         //         labelName: "Something went wrong, Try Again later!",
-//         //         labelKey: "", //UPLOAD_FILE_TOAST
-//         //     };
-//         //     dispatch(toggleSnackbar(true, errorMessage, "error"));
-//         // }
-//         showHideAdhocPopup(state, dispatch, "checkavailability_oswmcc");
-//     } catch (error) {
-//         console.log(error, "myerror");
-//     }
-// };
 
 export const availabilityForm = getCommonCard({
   header: {

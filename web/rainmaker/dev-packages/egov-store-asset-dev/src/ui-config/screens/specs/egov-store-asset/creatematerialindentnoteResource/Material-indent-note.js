@@ -16,6 +16,12 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
  import {  handleScreenConfigurationFieldChange as handleField, prepareFinalObject  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import { httpRequest } from "../../../../../ui-utils/api";
  import { getSTOREPattern} from "../../../../../ui-utils/commons";
+ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+ let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+ let disabled = false
+ if(applicationNumber)
+ disabled = true
+
  const getMaterialData = async (action, state, dispatch) => {
   const tenantId = getTenantId();
   let queryObject = [
@@ -170,7 +176,9 @@ console.log(matcodes)
             props: {
               optionValue: "code",
               optionLabel: "name",
+              disabled: disabled, 
             },
+           
         }),
         beforeFieldChange: (action, state, dispatch) => {
           //alert(action.value)
@@ -300,6 +308,9 @@ console.log(matcodes)
             labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUE_DATE_PLACEHOLDER"
           },
           required: true,
+          props:{
+            disabled: disabled, 
+          },
           errorMessage: "STORE_VALIDATION_ISSUE_DATE_SELECT",
           pattern: getPattern("Date") ,
           jsonPath: "materialIssues[0].issueDate",

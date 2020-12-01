@@ -10,7 +10,8 @@ import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { connect } from "react-redux";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { fetchApplicaionSector } from "../../../../redux/bookings/actions";
+import { fetchApplicaionSector } from "egov-ui-kit/redux/bookings/actions";
+// import { fetchApplicaionSector } from "../../../../redux/bookings/actions";
 import "./index.css";
 class BookingsDetails extends Component {
 
@@ -90,9 +91,8 @@ class BookingsDetails extends Component {
               id="houseNo"
               name="houseNo"
               type="text"
-
               value={houseNo}
-              required = {true} 
+              required = {true}
               hintText={
                 <Label
                   label="BK_MYBK_CITIZEN_HOUSE_NUMBER_PLACEHOLDER"
@@ -121,6 +121,7 @@ class BookingsDetails extends Component {
               id="address"
               name="address"
               type="text"
+              required = {true}
               value={address}
               required = {true} 
               hintText={
@@ -160,6 +161,7 @@ class BookingsDetails extends Component {
                 open={this.state.SetOpen}
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
+                required = {true}
                 value={locality}
                 displayEmpty
                 onChange={handleChange('locality')}
@@ -188,6 +190,7 @@ class BookingsDetails extends Component {
                 displayEmpty
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
+                required = {true}
                 value={residenials}
                 onChange={handleChange('residenials')}
               >
@@ -206,7 +209,7 @@ class BookingsDetails extends Component {
               id="approver-name"
               name="approver-name"
               type="text"
-
+              required = {true}
               value={approverName}
               required = {true} 
               hintText={
@@ -237,7 +240,7 @@ class BookingsDetails extends Component {
               id="comemnt"
               name="comment"
               type="text"
-
+              required = {true}
               value={comment}
               required = {true} 
               hintText={
@@ -290,8 +293,6 @@ class BookingsDetails extends Component {
 }
 const mapStateToProps = state => {
   const { bookings, common, auth, form } = state;
-  console.log('state in bookdetails==', state)
-
   let { complaintSector, applicationSector } = bookings;
 
   return {

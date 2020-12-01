@@ -4,17 +4,19 @@ import Label from "egov-ui-kit/utils/translationNode";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import "./index.css";
 
+
+
 class SuccessMessage extends Component {
   render() {
     const { successmessage, employeeName, secondaryLabel, applicationNumber, tertiaryLabel, icon, backgroundColor } = this.props;
     const label1 = `Application No.${applicationNumber}`
+   
+
     return (
       <div className="wt-app-details">
         <div className="container-fluid">
           <div className="row spl-application-header" style={{ marginTop: '40px', marginBottom: '30px', marginLeft: '-6px' }}>
             <div className="col-sm-6 spl-app-header-text">  <Label label={"BK_MYBK_WATER_TANKER_REQUEST"} /></div>
-            <div className="col-sm-5 spl-app-header-number" > <Label label={label1} /></div>
-            {/* <div class="col-sm-5">  </div> */}
           </div>
 
         </div>
@@ -78,3 +80,16 @@ class SuccessMessage extends Component {
 }
 
 export default SuccessMessage;
+
+
+
+
+
+
+
+
+
+
+
+
+

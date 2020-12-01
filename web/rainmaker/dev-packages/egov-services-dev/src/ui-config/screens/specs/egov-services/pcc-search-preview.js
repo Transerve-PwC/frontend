@@ -2,7 +2,7 @@ import {
     getCommonCard,
     getCommonContainer,
     getCommonHeader,
-    getBreak,
+    getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
     handleScreenConfigurationFieldChange as handleField,
@@ -25,8 +25,8 @@ import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
-import { generageBillCollection, generateBill, clearlocalstorageAppDetails } from "../utils";
-import { pccSummary } from "./summaryResource/pccSummary";
+import { generageBillCollection, generateBill, clearlocalstorageAppDetails, calculateCancelledBookingRefundAmount } from "../utils";
+import { pccSummary, changedVenueDatepccSummary } from "./summaryResource/pccSummary";
 import { pccApplicantSummary } from "./summaryResource/pccApplicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary } from "./summaryResource/estimateSummary";
@@ -36,6 +36,7 @@ import { footerReviewTop } from "./searchResource/footer";
 import { getLocale, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getSearchResultsView } from "../../../../ui-utils/commons";
 import { httpRequest } from "../../../../ui-utils";
+import { getMasterDataPCC, calculateBetweenDaysCount, convertDateInYMD } from "../utils";
 
 let role_name = JSON.parse(getUserInfo()).roles[0].code;
 let bookingStatus = "";
@@ -104,10 +105,16 @@ const prepareDocumentsView = async (state, dispatch) => {
     }
 };
 
-const HideshowFooter = (action, bookingStatus, fromDate, bookingObj, state) => {
+const HideshowFooter = async (action, bookingStatus, fromDate, bookingObj, state) => {
     const { screenConfiguration } = state;
     let bookingTimeStamp = new Date(fromDate).getTime();
     let currentTimeStamp = new Date().getTime();
+    const applicationNumber = get(
+        screenConfiguration,
+        "preparedFinalObject.Booking.applicationNumber",
+        []
+    );
+
     let showFooter = false;
     if (bookingObj.timeslots.length > 0) {
         let [fromTime] = bookingObj.timeslots[0].slot.split("-");
@@ -134,6 +141,7 @@ const HideshowFooter = (action, bookingStatus, fromDate, bookingObj, state) => {
 
     let bookingAmount = 0;
     let refundSecAmount = 0;
+    // let refundAmount = 0;
     for (let i = 0; i < billAccountDetails.length; i++) {
         if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
             bookingAmount += billAccountDetails[i].amount;
@@ -143,6 +151,10 @@ const HideshowFooter = (action, bookingStatus, fromDate, bookingObj, state) => {
             bookingAmount += billAccountDetails[i].amount;
         }
     }
+
+    // refundAmount = await calculateCancelledBookingRefundAmount(applicationNumber, "ch.chandigarh", fromDate).then( function(result){
+
+    // })
 
     var date1 = new Date(fromDate);
     var date2 = new Date();
@@ -174,8 +186,10 @@ const HideshowFooter = (action, bookingStatus, fromDate, bookingObj, state) => {
             []
         )
         refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
+    } else if (refundSecAmount > 0) {
+        refundAmount = refundSecAmount;
     }
-console.log(bookingTimeStamp +"========="+ currentTimeStamp+"====="+refundAmount);
+    console.log(bookingTimeStamp + "=========" + currentTimeStamp + "=====" + refundAmount);
 
     if ((bookingTimeStamp > currentTimeStamp) && (refundAmount > 0)) {
         set(
@@ -186,12 +200,12 @@ console.log(bookingTimeStamp +"========="+ currentTimeStamp+"====="+refundAmount
 
     }
 
-    if (bookingTimeStamp > currentTimeStamp) {
+    if ((bookingTimeStamp > currentTimeStamp) && (bookingStatus === "APPLIED" || bookingStatus === "RE_INITIATED")) {
 
         set(
             action,
             "screenConfig.components.div.children.footer.children.editButton.visible",
-            showFooter === true ? true : false
+            true
         );
     }
 
@@ -254,6 +268,13 @@ const setSearchResponse = async (
             "components.div.children.body.children.cardContent.children.pccSummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.applicationContainer.children.bkDisplayToTime.visible",
             recData[0].bkDuration === "HOURLY" ? true : false
         );
+
+        //screenConfiguration.screenConfig["pcc-search-preview"].components.div.children.body.children.cardContent.children.pccSummary.props.style.display
+        set(
+            action.screenConfig,
+            "components.div.children.body.children.cardContent.children.pccSummary.visible",
+            false
+        );
         dispatch(
             prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
         );
@@ -266,7 +287,8 @@ const setSearchResponse = async (
 
         bookingStatus = recData[0].bkApplicationStatus;
         console.log(recData[0], "Booking");
-        if (bookingStatus === "APPLIED" || bookingStatus === "MODIFIED") {
+        //if (bookingStatus === "APPLIED" || bookingStatus === "MODIFIED") {
+        if (recData[0].bkPaymentStatus == "SUCCESS" || recData[0].bkPaymentStatus == "success") {
             await generageBillCollection(
                 state,
                 dispatch,
@@ -308,6 +330,117 @@ const setSearchResponse = async (
             "screenConfig.components.div.children.headerDiv.children.helpSection.children",
             CitizenprintCont
         );
+
+        let requestBody = {
+            venueType: recData[0].bkBookingType,
+            sector: recData[0].bkSector,
+        };
+        let masterData = await getMasterDataPCC(requestBody);
+        console.log(masterData, "Mam");
+        let masterItemData = ''
+        if (masterData && masterData.data.length > 0) {
+            masterItemData = masterData.data.filter(
+                (el) => el.id === recData[0].bkBookingVenue
+            );
+        }
+        console.log(masterItemData, "Nero MasterData");
+
+
+        let daysCount = calculateBetweenDaysCount(
+            recData[0].bkFromDate,
+            recData[0].bkToDate
+        );
+
+console.log(daysCount, "Nero from file");
+
+dispatch(
+    prepareFinalObject(
+        "paccBooking",
+        recData[0]
+    )
+);
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkDimension",
+                masterItemData[0].dimensionSqrYards
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkLocationChangeAmount",
+                masterItemData[0].locationChangeAmount
+            )
+        );
+        dispatch(
+            prepareFinalObject("paccBooking.bkLocation", masterItemData[0].name)
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkFromDate",
+                convertDateInYMD(recData[0].bkFromDate)
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkToDate",
+                convertDateInYMD(recData[0].bkToDate)
+            )
+        );
+        let rent = Number(masterItemData[0].rent);
+        let cleaningCharges = Number(masterItemData[0].cleaningCharges);
+        let amount = rent + cleaningCharges;
+        let totalAmount = amount * daysCount;
+
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkCleansingCharges",
+                masterItemData[0].cleaningCharges * daysCount
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkRent",
+                masterItemData[0].rent * daysCount
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkSurchargeRent",
+                (totalAmount * Number(masterItemData[0].surcharge)) / 100
+            )
+        );
+
+        // dispatch(
+        //     prepareFinalObject("Booking.bkFacilitationCharges", masterDataItem[0])
+        // );
+
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkUtgst",
+                (totalAmount * Number(masterItemData[0].utgstRate)) / 100
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkCgst",
+                (totalAmount * Number(masterItemData[0].cgstRate)) / 100
+            )
+        );
+
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkBookingVenue",
+                recData[0].bkBookingVenue
+            )
+        );
+        dispatch(
+            prepareFinalObject(
+                "paccBooking.bkSector",
+                recData[0].bkSector
+            )
+        );
+
+
     }
 };
 
@@ -470,6 +603,7 @@ const screenConfig = {
                     estimateSummary: estimateSummary,
                     pccApplicantSummary: pccApplicantSummary,
                     pccSummary: pccSummary,
+                    changedVenueDatepccSummary: changedVenueDatepccSummary,
                     documentsSummary: documentsSummary,
                     // remarksSummary: remarksSummary,
                 }),

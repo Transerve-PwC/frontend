@@ -66,6 +66,15 @@ const onRowClick = rowData => {
     window.location.href = `addExtensionFee?fileNumber=${rowData[1]}`
   }
   else {
-    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`
+    if (process.env.REACT_APP_NAME === "Citizen" && branchType == "ESTATE_BRANCH") {
+      window.location.href = `estate-branch-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`;
+    }
+    else if (process.env.REACT_APP_NAME === "Citizen" && branchType == "MANI_MAJRA") {
+      window.location.href = `manimajra-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`;
+    }
+    else {
+      window.location.href = `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`;
+    }
+    // window.location.href = process.env.REACT_APP_NAME === "Citizen" ? `estate-branch-apply?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`
   }
 };

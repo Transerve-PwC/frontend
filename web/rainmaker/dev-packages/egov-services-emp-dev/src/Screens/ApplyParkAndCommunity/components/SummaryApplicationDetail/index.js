@@ -6,24 +6,76 @@ import { connect } from "react-redux";
 import "./index.css";
 
 class CGBookingDetails extends Component {
-//   convertEpochToDate = (dateEpoch) => {
-//     const dateFromApi = new Date(dateEpoch);
-//     let month = dateFromApi.getMonth() + 1;
-//     let day = dateFromApi.getDate();
-//     let year = dateFromApi.getFullYear();
-//     month = (month > 9 ? "" : "0") + month;
-//     day = (day > 9 ? "" : "0") + day;
-//     return `${day}-${month}-${year}`;
-//   };
 
   render() {
-    const { locality, surcharge, fromDate, toDate,
-       utGST, cGST, GSTnumber, cgstone,
-       utgstRateOne,surchargeOne,
+    const { locality, surcharge, fromDate, toDate,SummaryutGST,SummarycGST,Summarysurcharge,
+        utGST, cGST, GSTnumber, cgstone, PrintutGST2,
+        PrintcGST,
+        Printsurcharge,
+       utgstRateOne,surchargeOne,fCharges,
       dimension, cleaningCharges, rent, purpose, bkLocation, myLocation, secondRate ,myLocationtwo,firstrent, cleanOne} = this.props;
-      console.log("propsInSummaryApplicationDetails--",this.props)
+      console.log("propsInbookingSummaryPage--",this.props)
+      if(PrintutGST2 != "notfound"){
+        let UTGST = PrintutGST2
+        console.log("UTGST--",UTGST)
+      }
+      if(PrintcGST !== "notfound"){
+        let CGST = PrintcGST
+        console.log("CGST--",CGST)
+      }
+      if(Printsurcharge !== "notfound"){
+        let surCharges = Printsurcharge
+        console.log("surCharges--",surCharges)
+      }
+ var vandanaOne = 0;
+
+      if (SummaryutGST) {
+       // do something
+       vandanaOne = SummaryutGST
+       console.log("vandanaOne--",vandanaOne)
+    }
+   
+    console.log("vandanaOne-vandanaOne--",vandanaOne)
+
+    const n = vandanaOne.toString();
+
+    const printvandanaOne = n ? n : "NA"
+    console.log("printvandanaOne--",printvandanaOne)
+
+var vandanaTwo = 0;
+
+   if (SummarycGST) {
+    // do something
+    vandanaTwo = SummarycGST
+    console.log("vandanaTwo--",vandanaTwo)
+  }
+
+  const m = vandanaTwo.toString();
+
+  const printvandanaTwo = m ? m : "NA"
+  console.log("printvandanaOne--",printvandanaOne)
+
+  console.log("vandanaTwo--vandanaTwo-",vandanaTwo)
+
+
+ var vandanaThree = 0;
+
+   if (Summarysurcharge) {
+    // do something
+    vandanaThree = Summarysurcharge
+    console.log("vandanaThree--",vandanaTwo)
+  }
+
+  const o = vandanaThree.toString();
+
+  var printvandanaThree = o ? o : "NA"
+  console.log("printvandanaThree--",printvandanaThree)
+
+  console.log("vandanaTwo,vandanaOne--",vandanaTwo,vandanaOne)
+  var abc = 89;
 return (
       <div>
+        {console.log("vandanaThree-In-render--",vandanaThree)} 
         <Card
           textChildren={
             <div>
@@ -117,7 +169,7 @@ return (
                                     className="col-xs-12  col-sm-12 col-md-12  status-result-color"
                                     id="complaint-details-current-status"
                                     labelStyle={{ color: "inherit" }}
-                                    label={surchargeOne}
+                                    label={printvandanaThree}
                                 />
                             </div>
                             <div className="col-md-4">
@@ -125,9 +177,8 @@ return (
                                 <Label
                                     className="col-xs-12  col-sm-12 col-md-12  status-result-color"
                                     id="complaint-details-current-status"
-                                    labelStyle={{ color: "inherit" }}
-                                    label={utgstRateOne}
-                                   
+                                    labelStyle={{ color: "inherit" }}                
+                                    label={printvandanaOne}
          
                                 />
                             </div>
@@ -137,7 +188,7 @@ return (
                                     className="col-xs-12  col-sm-12 col-md-12  status-result-color"
                                     id="complaint-details-current-status"
                                     labelStyle={{ color: "inherit" }}
-                                    label={cgstone}
+                                    label={printvandanaTwo}
                                 />
                             </div>
                             <div className="col-md-4">
@@ -162,28 +213,70 @@ return (
 
 const mapStateToProps = state => {
 
-    const { complaints, common, auth, form } = state;
-    console.log("stateoFsummaryPage--",state)
+    const { complaints, common, auth, form,bookings } = state;
     let myLocation = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.availabilityCheckData:"";  
-    console.log("mylocation--",myLocation)
     let myLocationtwo = myLocation?myLocation.bkLocation:"";  
-    console.log("mylocation2--",myLocationtwo)
+
+    const { facilationChargesSuccess, arrayName } = bookings;
+  
+  let fCharges;
+  if (arrayName && arrayName.length > 0) {
+    arrayName.forEach((item) => {
+      item.forEach((value) => {
+        if (value.code == "FACILITATION_CHARGE") { 
+          fCharges = value
+        }
+      })
+    })
+  }
+  
     let firstrent = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.bkBookingData: "";
-    console.log("firstrent--",firstrent)
+   
     let secondRate = firstrent ?firstrent.rent:"";
-    console.log("secondRate--",secondRate)
+  
     let cleanOne =  firstrent?firstrent.cleaningCharges:""; 
-    console.log("cleanOne--",cleanOne)   //surcharge
+   
     let surchargeOne =  firstrent?firstrent.surcharge:""; 
-    console.log("surcharge--",surchargeOne)
+   
     let cgstone =  firstrent?firstrent.cgstRate:""; 
-    console.log("cleanOne--",cgstone)
+  
     let utgstRateOne =  firstrent?firstrent.utgstRate:""; 
-    console.log("cleanOne--",utgstRateOne)
+
+    let SummaryutGST = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.SummaryutGST: "NotFound";
+   console.log("SummaryutGST-2-",SummaryutGST)
+
+   
+
+   let PrintutGST2 = SummaryutGST && SummaryutGST ? SummaryutGST : " notfound";
+   console.log("PrintutGST2--",PrintutGST2)
+
+   let SummarycGST = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.SummarycGST: "NotFound";
+   console.log("SummarycGST-2-",SummarycGST)
+
+   
+
+   let PrintcGST = SummarycGST && SummarycGST ? SummarycGST : " notfound";
+   console.log("PrintcGST--",PrintcGST)
+
+   let Summarysurcharge = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.Summarysurcharge: "NotFound";
+   console.log("Summarysurcharge-2-",Summarysurcharge)
+
+   let Printsurcharge = Summarysurcharge && Summarysurcharge ? Summarysurcharge : " notfound";
+   console.log("Printsurcharge--",Printsurcharge) 
+
+   
+
+
     const { createPACCApplicationData } = complaints;
-    console.log('createPACCApplicationData', createPACCApplicationData)
+   
     return {
         createPACCApplicationData,
+        SummarycGST,
+        Summarysurcharge,
+        SummaryutGST,
+        PrintutGST2,
+        PrintcGST,
+        Printsurcharge,
          myLocation,
          firstrent,
          secondRate,
@@ -191,7 +284,9 @@ const mapStateToProps = state => {
          cleanOne,
          cgstone,
          utgstRateOne,
-         surchargeOne
+         surchargeOne,
+         facilationChargesSuccess,
+         fCharges
     }
 
 }

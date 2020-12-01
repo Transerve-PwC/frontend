@@ -12,7 +12,7 @@ export default class BookingMedia extends React.Component {
     }
     render() {
         const { masterDataPCC, availabilityCheckData,pacc_image_initial_path } = this.props;
-        console.log('pacc_image_initial_path bk media',pacc_image_initial_path)
+      
         let pacc_image = 'No data found in selected Locality. Please select other Locality';
         let masterDataExists = 0;
         if (masterDataPCC.length > 0) {
@@ -49,18 +49,3 @@ export default class BookingMedia extends React.Component {
         );
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         availabilityCheckData: state.screenConfiguration.preparedFinalObject.availabilityCheckData,
-//     };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         prepareFinalObject: (jsonPath, value) =>
-//             dispatch(prepareFinalObject(jsonPath, value)),
-//         changeRoute: (path) => dispatch(setRoute(path)),
-//     };
-// };
-
-// export default connect(null, null)(BookingMedia);

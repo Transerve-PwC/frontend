@@ -164,9 +164,12 @@ class ApplicationDetails extends Component {
 		);
 
 		let bookingDocs = imageListFromAPI && imageListFromAPI.documentList;
+	
 		let fileStoreIds = bookingDocs.map(e => e.fileStoreId).join(",");
-
-		const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId));
+		
+		let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
+		const fileUrlPayload = fileStoreIds && (await getFileUrlFromAPI(fileStoreIds,changetenantId));
+	
 		let newLocationImagesPreview = [];
 		bookingDocs && bookingDocs.forEach((item, index) => {
 
@@ -661,7 +664,7 @@ class ApplicationDetails extends Component {
 	}
 
 	callApiForDocumentData = async (e) => {
-		const { part1 } = this.props;
+		const { part1,userInfo } = this.props;
 		var documentsPreview = [];
 		if (part1 && part1.length > 0) {
 			let keys = part1[0].fileStoreId;
@@ -674,9 +677,10 @@ class ApplicationDetails extends Component {
 				fileStoreId: id,
 				linkText: "View",
 			});
+			let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,changetenantId) : {};
 
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -798,9 +802,9 @@ class ApplicationDetails extends Component {
 		if (timeLine && timeLine[0]) {
 			action = timeLine[0].action;
 		}
-		const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'MCC_APPROVER');
-		const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'OSD_APPROVER');
-		const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'ADMIN_APPROVER');
+		const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_APPROVER');
+		const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD_APPROVER');
+		const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_ADMIN_APPROVER');
 
 
 		return (
@@ -1148,6 +1152,7 @@ const mapStateToProps = (state, ownProps) => {
 			serviceRequestId,
 			isAssignedToEmployee,
 			complaintTypeLocalised,
+			userInfo
 			// reopenValidChecker
 		};
 	} else {
@@ -1162,6 +1167,7 @@ const mapStateToProps = (state, ownProps) => {
 			role,
 			serviceRequestId,
 			isAssignedToEmployee,
+			userInfo
 			// reopenValidChecker
 		};
 	}

@@ -24,9 +24,6 @@ import ApproveBooking from "../ApplicationResolved";
 import RejectBooking from "../RejectComplaint";
 import { httpRequest } from "egov-ui-kit/utils/api";
 import jp from "jsonpath";
-// import {
-// 	getFileUrlFromAPI,
-//} from "egov-ui-framework/ui-utils/commons";
 import {getFileUrlFromAPI} from '../../modules/commonFunction'
 import {
 	getDateFromEpoch,
@@ -330,12 +327,14 @@ class ApplicationDetails extends Component {
 	
 		await this.downloadReceiptFunction();
 	
-	
 		let documentsPreviewData;
-		const { DownloadReceiptDetailsforCG,userInfo} = this.props;
+		const { DownloadReceiptDetailsforCG,userInfo } = this.props;
+	
 		
 		var documentsPreview = [];
 		if (DownloadReceiptDetailsforCG && DownloadReceiptDetailsforCG.filestoreIds.length > 0) {
+	
+		
 			 documentsPreviewData=DownloadReceiptDetailsforCG.filestoreIds[0];
 			documentsPreview.push({
 				title: "DOC_DOC_PICTURE",
@@ -343,8 +342,9 @@ class ApplicationDetails extends Component {
 				linkText: "View",
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+		
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenanId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
 	
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -353,7 +353,7 @@ class ApplicationDetails extends Component {
 						fileUrls[doc.fileStoreId] &&
 						fileUrls[doc.fileStoreId].split(",")[0]) ||
 					"";
-			
+				
 				doc["name"] =
 					(fileUrls[doc.fileStoreId] &&
 						decodeURIComponent(
@@ -373,6 +373,49 @@ class ApplicationDetails extends Component {
 			}, 100);
 			prepareFinalObject('documentsPreview', documentsPreview)
 		}
+	
+		// let documentsPreviewData;
+		// const { DownloadReceiptDetailsforCG,userInfo} = this.props;
+		
+		// var documentsPreview = [];
+		// if (DownloadReceiptDetailsforCG && DownloadReceiptDetailsforCG.filestoreIds.length > 0) {
+		// 	 documentsPreviewData=DownloadReceiptDetailsforCG.filestoreIds[0];
+		// 	documentsPreview.push({
+		// 		title: "DOC_DOC_PICTURE",
+		// 		fileStoreId: documentsPreviewData,
+		// 		linkText: "View",
+		// 	});
+		// 	let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+		// 	let fileUrls =
+		// 		fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenanId) : {};
+		
+	
+		// 	documentsPreview = documentsPreview.map(function (doc, index) {
+		// 		doc["link"] =
+		// 			(fileUrls &&
+		// 				fileUrls[doc.fileStoreId] &&
+		// 				fileUrls[doc.fileStoreId].split(",")[0]) ||
+		// 			"";
+			
+		// 		doc["name"] =
+		// 			(fileUrls[doc.fileStoreId] &&
+		// 				decodeURIComponent(
+		// 					fileUrls[doc.fileStoreId]
+		// 						.split(",")[0]
+		// 						.split("?")[0]
+		// 						.split("/")
+		// 						.pop()
+		// 						.slice(13)
+		// 				)) ||
+		// 			`Document - ${index + 1}`;
+		// 		return doc;
+		// 	});
+		
+		// 	setTimeout(() => {
+		// 		window.open(documentsPreview[0].link);
+		// 	}, 100);
+		// 	prepareFinalObject('documentsPreview', documentsPreview)
+		// }
 	}
 
 	downloadReceiptFunction = async (e) => {
@@ -435,7 +478,7 @@ class ApplicationDetails extends Component {
 		await this.downloadApplicationFunction();
 	
 		let documentsPreviewData;
-		const { DownloadMccAppp,userInfo } = this.props;
+		const { DownloadMccAppp, userInfo} = this.props;
 		
 		var documentsPreview = [];
 		if (DownloadMccAppp && DownloadMccAppp.filestoreIds.length > 0) {
@@ -449,7 +492,7 @@ class ApplicationDetails extends Component {
 			});
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenanId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds, userInfo.tenantId) : {};
 		
 	
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -644,9 +687,10 @@ class ApplicationDetails extends Component {
 				fileStoreId: id,
 				linkText: "View",
 			});
+			let changetenantId = userInfo.tenantId ? userInfo.tenantId.split(".")[0] : "ch";
 			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
 			let fileUrls =
-				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,changetenantId) : {};
 		
 
 			documentsPreview = documentsPreview.map(function (doc, index) {
@@ -1123,7 +1167,7 @@ const mapStateToProps = (state, ownProps) => {
 			serviceRequestId,
 			isAssignedToEmployee,
 			complaintTypeLocalised,
-			
+			userInfo
 		};
 	} else {
 		return {
@@ -1146,7 +1190,7 @@ const mapStateToProps = (state, ownProps) => {
 			role,
 			serviceRequestId,
 			isAssignedToEmployee,
-			
+			userInfo
 		};
 	}
 };

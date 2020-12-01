@@ -15,8 +15,8 @@ import {
 } from "../../utils";
 import{getmaterialissuesSearchResults,GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { prepareFinalObject , handleScreenConfigurationFieldChange as handleField, } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {ValidateCard , ValidateCardUserQty} from '../../../../../ui-utils/storecommonsapi'
 import { findLastKey } from "lodash";
 // import "./index.css";
@@ -75,6 +75,61 @@ export const callBackForNext = async (state, dispatch) => {
     // }
     // else
     // {
+      if(isMaterialDetailsValid)
+      {
+        const userInfo = JSON.parse(getUserInfo());
+        let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+        // filter store based on login user role and assign business service
+        let roles = userInfo.roles
+        for (let index = 0; index < roles.length; index++) {
+        const element = roles[index];
+        businessService = businessService.filter(x=>x.role === element.code)
+        if(businessService.length==1)
+        {
+          let deptCategory =
+        get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receivingStore.department.deptCategory",'') 
+          dispatch(prepareFinalObject("businessService",businessService[0].name));
+          dispatch(prepareFinalObject("deptCategory",deptCategory));
+          //isAdHoc: "YES"
+          let isAdHoc = get(
+            state.screenConfiguration.preparedFinalObject,
+            `materialReceipt[0].isAdHoc`,
+            ''
+          ); 
+          if(isAdHoc === 'YES')
+          {
+          
+          if(businessService[0].name !== deptCategory)
+          {
+            dispatch(
+              toggleSnackbar(
+                true,
+                { labelName: "Indenting department name and loged user role must be same", labelKey: "STORE_MISC_BUSINESS_SERVICE_VALIDATION" },
+                "warning"
+              )
+            );
+            return;
+
+          }
+          else
+          {
+            isFormValid = true;
+          }
+        }
+        else
+        {
+          isFormValid = true;
+        }
+
+        }
+              
+        }
+        
+      }
+      else{
+       
+        isFormValid = false;
+      }
       if (!(isMaterialDetailsValid)) {
         isFormValid = false;
       }
@@ -353,6 +408,19 @@ export const callBackForNext = async (state, dispatch) => {
       {
         if(issueNumber && storeUpdate)
         {
+         
+          if(!isFormValid)
+          {
+            const errorMessage = {
+              labelName: "Please fill all fields",
+              labelKey: "ERR_FILL_ALL_FIELDS"
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          }
+          else
+          {
+            changeStep(state, dispatch); 
+          }
         }
         else{
           const errorMessage = {
@@ -662,10 +730,44 @@ export const footer = getCommonApplyFooter({
            }
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.code", response.materialIssues[0].toStore.code));
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name", response.materialIssues[0].toStore.name));
+           dispatch(
+          handleField(
+            `createMaterialReceiptNoteMisc`,
+            "components.div.children.formwizardFirstStep.children.MaterialReceiptMiscNote.children.cardContent.children.MaterialReceiptNoteContainer.children.StoreName",
+            "props.value",
+            response.materialIssues[0].toStore.name
+          )
+        );
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name", response.materialIssues[0].toStore.department.name));
+           dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.deptCategory", response.materialIssues[0].toStore.department.deptCategory));
            dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName", response.materialIssues[0].toStore.divisionName));
            dispatch(prepareFinalObject("MiscMaterilList", material));
            dispatch(prepareFinalObject("materialReceiptRead[0].storeUpdate",true));
+
+           const userInfo = JSON.parse(getUserInfo());
+          let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+          // filter store based on login user role and assign business service
+          let roles = userInfo.roles
+          for (let index = 0; index < roles.length; index++) {
+          const element = roles[index];
+          businessService = businessService.filter(x=>x.role === element.code)
+          if(businessService.length==1)
+          {
+            // dispatch(prepareFinalObject("businessService",businessService[0].name));
+            // dispatch(prepareFinalObject("deptCategory",response.materialIssues[0].toStore.department.deptCategory));
+            if(businessService[0].name !== response.materialIssues[0].toStore.department.deptCategory)
+            dispatch(
+              toggleSnackbar(
+                true,
+                { labelName: "Indenting department name and loged user role must be same", labelKey: "STORE_MISC_BUSINESS_SERVICE_VALIDATION" },
+                "warning"
+              )
+            );
+          }
+         // console.log(businessService[0].name)
+          // response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
+          // break;        
+          }
         }
         else{
           dispatch(

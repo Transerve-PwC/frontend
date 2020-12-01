@@ -24,7 +24,7 @@ export const pccApplicantSummary = getCommonGrayCard({
                 },
                 ...getCommonSubHeader({
                     labelName: "Applicant Details",
-                    labelKey: "BK_CGB_APPLICATION_DETAILS_HEADER",
+                    labelKey: "BK_CGB_APPLICANT_DETAILS_HEADER",
                 }),
             },
             // editSection: {

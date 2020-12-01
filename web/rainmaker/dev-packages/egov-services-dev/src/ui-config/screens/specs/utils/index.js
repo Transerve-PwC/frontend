@@ -15,7 +15,7 @@ import {
     getCommonCaption,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
-import { getBookingWorkflowHistory } from "../../../../ui-utils/commons";
+import { getBookingWorkflowHistory, getSearchResultsView } from "../../../../ui-utils/commons";
 import axios from "axios";
 
 export const getCommonApplyFooter = (children) => {
@@ -543,6 +543,14 @@ export const getNextMonthDateInYMD = () => {
     return date;
 };
 
+
+export const getReceiptUrlFromFilestoreID = async (fileStoreId, mode, tenantId) => {
+    const fileRes = await getFileUrlFromAPI(fileStoreId, tenantId)
+    return fileRes[fileStoreId]
+
+}
+
+
 export const downloadReceiptFromFilestoreID = (fileStoreId, mode, tenantId) => {
     getFileUrlFromAPI(fileStoreId, tenantId).then(async (fileRes) => {
         if (mode === "download") {
@@ -740,21 +748,60 @@ const getMdmsTenantsData = async () => {
         console.log(e);
     }
 };
-export const downloadReceipt = (
+export const downloadReceipt = async (
     state,
     applicationNumber,
     tenantId,
+    flag = 'false',
     mode = "download"
 ) => {
-    let applicationData = get(
-        state.screenConfiguration.preparedFinalObject,
-        "Booking"
-    );
+
+
+    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    // let applicationData = get(
+    //     state.screenConfiguration.preparedFinalObject,
+    //     "Booking"
+    // );
+
+    let applicationData = {}
+    let receiptUrl = ""
+    let receiptVal
+    if (flag === 'false') {
+        const response = await getSearchResultsView([
+            { key: "tenantId", value: tenantId },
+            { key: "applicationNumber", value: applicationNumber },
+        ]);
+        let recData = get(response, "bookingsModelList", []);
+        /*
+            dispatch(
+                prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
+            );
+
+
+               applicationData = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    "Booking"
+                );*/
+
+        applicationData = recData[0];
+
+    }
+    else if (flag === 'true') {
+        applicationData = state
+
+    }
+
+const refundDetailsResp = await getRefundDetails(applicationNumber, tenantId);
+
+let bankName = refundDetailsResp.data[0].gateway;
     const receiptQueryString = [
         { key: "consumerCodes", value: applicationNumber },
         {
             key: "tenantId",
-            value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+
+            // value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+            value: tenantId,
+
         },
     ];
     const FETCHRECEIPT = {
@@ -770,106 +817,118 @@ export const downloadReceipt = (
         },
     };
     try {
-        httpRequest(
+        let payloadReceiptDetails = await httpRequest(
             "post",
             FETCHRECEIPT.GET.URL,
             FETCHRECEIPT.GET.ACTION,
             receiptQueryString
-        ).then((payloadReceiptDetails) => {
-            let queryStr = "";
-            if (applicationData.businessService === "PACC") {
-                queryStr = [
-                    { key: "key", value: "pacc-payment-receipt" },
-                    {
-                        key: "tenantId",
-                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
-                    },
-                ];
-            } else {
-                queryStr = [
-                    { key: "key", value: "bk-payment-receipt" },
-                    {
-                        key: "tenantId",
-                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
-                    },
-                ];
-            }
-            if (
-                payloadReceiptDetails &&
-                payloadReceiptDetails.Payments &&
-                payloadReceiptDetails.Payments.length == 0
-            ) {
-                console.log("Could not find any receipts");
-                return;
-            }
+        )
 
-            let paymentInfoData = "";
-            let date2obj = new Date(payloadReceiptDetails.Payments[0].transactionDate);
-            const txnDate = date2obj.toDateString();
-            const [txnTime] = date2obj.toTimeString().split(" ");
-            const txnDateTime = `${txnDate}, ${txnTime}`;
 
-            var date2 = new Date();
+        let queryStr = "";
+        if (applicationData.businessService === "PACC") {
+            queryStr = [
+                { key: "key", value: "pacc-payment-receipt" },
+                {
+                    key: "tenantId",
+                    value: tenantId,
 
-            var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
-            if (applicationData.businessService === "PACC") {
-                paymentInfoData = {
-                    paymentDate: txnDateTime,
-                    transactionId:
-                        payloadReceiptDetails.Payments[0].transactionNumber,
-                    bookingPeriod: getDurationDate(
-                        applicationData.bkFromDate,
-                        applicationData.bkToDate
-                    ),
-                    bookingItem: `Online Payment Against Booking of ${applicationData.bkLocation}`,
-                    baseCharge: parseFloat(applicationData.bkRent).toFixed(2),
-                    cleaningCharges: parseFloat(
-                        applicationData.bkCleansingCharges
-                    ).toFixed(2),
-                    surcharges: parseFloat(
-                        applicationData.bkSurchargeRent
-                    ).toFixed(2),
-                    facilitationCharge: "0.00",
-                    gst: (
-                        parseFloat(applicationData.bkUtgst) +
-                        parseFloat(applicationData.bkCgst)
-                    ).toFixed(2),
-                    totalAmount: (
-                        parseFloat(applicationData.bkRent) +
-                        parseFloat(applicationData.bkCleansingCharges) +
-                        parseFloat(applicationData.bkSurchargeRent)
-                    ).toFixed(2),
+                },
+            ];
+        } else if (applicationData.businessService === "BWT") {
+            queryStr = [
+                { key: "key", value: "bk-wt-payment-receipt" },
+                {
+                    key: "tenantId",
+                    value: tenantId,
 
-                    amountInWords: NumInWords(
-                        parseFloat(applicationData.bkRent) +
-                        parseFloat(applicationData.bkCleansingCharges) +
-                        parseFloat(applicationData.bkSurchargeRent)
-                    ),
-                    paymentItemExtraColumnLabel: "Booking Period",
+                },
+            ];
+        } else {
+            queryStr = [
+                { key: "key", value: "bk-payment-receipt" },
+                {
+                    key: "tenantId",
+                    value: tenantId,
 
-                    paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
-                    receiptNo:
-                        payloadReceiptDetails.Payments[0].paymentDetails[0]
-                            .receiptNumber,
-                };
-            } else {
-                paymentInfoData = {
-                    paymentDate: txnDateTime,
-                    transactionId:
-                        payloadReceiptDetails.Payments[0].transactionNumber,
-                    bookingPeriod:
+                },
+            ];
+        }
+        if (
+            payloadReceiptDetails &&
+            payloadReceiptDetails.Payments &&
+            payloadReceiptDetails.Payments.length == 0
+        ) {
+            console.log("Could not find any receipts");
+            return;
+        }
+
+        let paymentInfoData = "";
+        if (applicationData.businessService === "PACC") {
+            paymentInfoData = {
+                paymentDate: convertEpochToDate(
+                    payloadReceiptDetails.Payments[0].transactionDate,
+                    "dayend"
+                ),
+                transactionId:
+                    payloadReceiptDetails.Payments[0].transactionNumber,
+                bookingPeriod: getDurationDate(
+                    applicationData.bkFromDate,
+                    applicationData.bkToDate
+                ),
+                bookingItem: `Online Payment Against Booking of ${applicationData.bkLocation}`,
+                baseCharge: parseFloat(applicationData.bkRent).toFixed(2),
+                cleaningCharges: parseFloat(
+                    applicationData.bkCleansingCharges
+                ).toFixed(2),
+                surcharges: parseFloat(
+                    applicationData.bkSurchargeRent
+                ).toFixed(2),
+                facilitationCharge: "0.00",
+                gst: (
+                    parseFloat(applicationData.bkUtgst) +
+                    parseFloat(applicationData.bkCgst)
+                ).toFixed(2),
+                totalAmount: (
+                    parseFloat(applicationData.bkRent) +
+                    parseFloat(applicationData.bkCleansingCharges) +
+                    parseFloat(applicationData.bkSurchargeRent)
+                ).toFixed(2),
+
+                amountInWords: NumInWords(
+                    parseFloat(applicationData.bkRent) +
+                    parseFloat(applicationData.bkCleansingCharges) +
+                    parseFloat(applicationData.bkSurchargeRent)
+                ),
+                paymentItemExtraColumnLabel: "Booking Period",
+
+                paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
+                bankName: bankName,
+                receiptNo:
+                    payloadReceiptDetails.Payments[0].paymentDetails[0]
+                        .receiptNumber,
+            };
+        } else {
+            paymentInfoData = {
+                paymentDate: convertEpochToDate(
+                    payloadReceiptDetails.Payments[0].transactionDate,
+                    "dayend"
+                ),
+                transactionId:
+                    payloadReceiptDetails.Payments[0].transactionNumber,
+                bookingPeriod:
+                    payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                        .businessService === "OSBM" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "OSBM" ||
-                            payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                                .businessService === "GFCP" ||
-                            payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                                .businessService === "OSUJM"
-                            ? getDurationDate(
-                                applicationData.bkFromDate,
-                                applicationData.bkToDate
-                            )
-                            : `${applicationData.bkDate} , ${applicationData.bkTime} `,
-                    bookingItem: `Online Payment Against Booking of ${payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                            .businessService === "GFCP" ||
+                        payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                            .businessService === "OSUJM"
+                        ? getDurationDate(
+                            applicationData.bkFromDate,
+                            applicationData.bkToDate
+                        )
+                        : `${applicationData.bkDate} , ${applicationData.bkTime} `,
+                bookingItem: `Online Payment Against Booking of ${payloadReceiptDetails.Payments[0].paymentDetails[0].bill
                         .businessService === "GFCP"
                         ? "Commercial Ground"
                         : payloadReceiptDetails.Payments[0]
@@ -881,105 +940,122 @@ export const downloadReceipt = (
                                 "OSUJM"
                                 ? "Open Space within MCC jurisdiction"
                                 : "Water Tanker"
-                        }`,
-                    amount: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                        (el) => !el.taxHeadCode.includes("TAX")
-                    )[0].amount,
-                    tax: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                        (el) => el.taxHeadCode.includes("TAX")
-                    )[0].amount,
-                    grandTotal:
-                        payloadReceiptDetails.Payments[0].totalAmountPaid,
-                    amountInWords: NumInWords(
-                        payloadReceiptDetails.Payments[0].totalAmountPaid
-                    ),
-                    paymentItemExtraColumnLabel:
+                    }`,
+                amount: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => !el.taxHeadCode.includes("TAX")
+                )[0].amount,
+                tax: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("TAX")
+                )[0].amount,
+                grandTotal:
+                    payloadReceiptDetails.Payments[0].totalAmountPaid,
+                amountInWords: NumInWords(
+                    payloadReceiptDetails.Payments[0].totalAmountPaid
+                ),
+                paymentItemExtraColumnLabel:
+                    payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                        .businessService === "OSBM" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "OSBM" ||
-                            payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                                .businessService === "GFCP" ||
-                            payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                                .businessService === "OSUJM"
-                            ? "Booking Period"
-                            : "Date & Time",
-                    paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
-                    receiptNo:
-                        payloadReceiptDetails.Payments[0].paymentDetails[0]
-                            .receiptNumber,
-                };
-            }
-            let receiptData = [
-                {
-                    applicantDetail: {
-                        name: payloadReceiptDetails.Payments[0].payerName,
-                        mobileNumber:
-                            payloadReceiptDetails.Payments[0].mobileNumber,
-                        houseNo: applicationData.bkHouseNo,
-                        permanentAddress: applicationData.bkCompleteAddress,
-                        permanentCity:
-                            payloadReceiptDetails.Payments[0].tenantId,
-                        sector: applicationData.bkSector,
-                    },
-                    booking: {
-                        bkApplicationNumber:
-                            payloadReceiptDetails.Payments[0].paymentDetails[0]
-                                .bill.consumerCode,
-                    },
-                    paymentInfo: paymentInfoData,
-                    payerInfo: {
-                        payerName: payloadReceiptDetails.Payments[0].payerName,
-                        payerMobile:
-                            payloadReceiptDetails.Payments[0].mobileNumber,
-                    },
-                    generatedBy: {
-                        generatedBy: JSON.parse(getUserInfo()).name,
-                        generatedDateTime: generatedDateTime
-                    },
+                            .businessService === "GFCP" ||
+                        payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                            .businessService === "OSUJM"
+                        ? "Booking Period"
+                        : "Date & Time",
+                paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
+                bankName: bankName,
+                receiptNo:
+                    payloadReceiptDetails.Payments[0].paymentDetails[0]
+                        .receiptNumber,
+            };
+        }
+        let receiptData = [
+            {
+                applicantDetail: {
+                    name: payloadReceiptDetails.Payments[0].payerName,
+                    mobileNumber:
+                        payloadReceiptDetails.Payments[0].mobileNumber,
+                    houseNo: applicationData.bkHouseNo,
+                    permanentAddress: applicationData.bkCompleteAddress,
+                    permanentCity:
+                        payloadReceiptDetails.Payments[0].tenantId,
+                    sector: applicationData.bkSector,
                 },
-            ];
+                booking: {
+                    bkApplicationNumber:
+                        payloadReceiptDetails.Payments[0].paymentDetails[0]
+                            .bill.consumerCode,
+                },
+                paymentInfo: paymentInfoData,
+                payerInfo: {
+                    payerName: payloadReceiptDetails.Payments[0].payerName,
+                    payerMobile:
+                        payloadReceiptDetails.Payments[0].mobileNumber,
+                },
+                generatedBy: {
+                    generatedBy: JSON.parse(getUserInfo()).name,
+                },
+            },
+        ];
 
-            httpRequest(
-                "post",
-                DOWNLOADRECEIPT.GET.URL,
-                "",
-                queryStr,
-                { BookingInfo: receiptData },
-                { Accept: "application/json" },
-                { responseType: "arraybuffer" }
-            ).then((res) => {
-                res.filestoreIds[0];
-                if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-                    res.filestoreIds.map((fileStoreId) => {
-                        downloadReceiptFromFilestoreID(fileStoreId, mode);
-                    });
-                } else {
-                    console.log("Error In Receipt Download");
+        let res = await httpRequest(
+            "post",
+            DOWNLOADRECEIPT.GET.URL,
+            "",
+            queryStr,
+            { BookingInfo: receiptData },
+            { Accept: "application/json" },
+            { responseType: "arraybuffer" }
+        )
+        res.filestoreIds[0];
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+            receiptVal = res.filestoreIds.map(async (fileStoreId) => {
+
+                if (flag === 'false') {
+                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                }
+                else if (flag === 'true') {
+
+
+                    receiptUrl = await getReceiptUrlFromFilestoreID(fileStoreId, mode, tenantId)
+                    return receiptUrl
+
                 }
             });
-        });
+
+        } else {
+            console.log("Error In Receipt Download");
+        }
+
+
+
     } catch (exception) {
         alert("Some Error Occured while downloading Receipt!");
     }
+
+
+    return receiptVal
+
+
 };
 
 export const downloadCertificate = async (
     state,
     applicationNumber,
     tenantId,
+    flag = 'false',
     mode = "download"
 ) => {
-    let tenantData = await getMdmsTenantsData();
-    let applicationData = get(
-        state.screenConfiguration.preparedFinalObject,
-        "Booking"
-    );
+    let applicationData = {}
 
+    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     let bookingWfHistory = await getBookingWorkflowHistory(applicationNumber, tenantId);
 
     let apporvedByDetail = {
         approvedBy: "Renil Commissioner",
         role: "Additional Commissioner",
     };
+
+    console.log(bookingWfHistory, "Nero bookingWfHistory");
     if (bookingWfHistory && bookingWfHistory.length > 0) {
         for (let i = 0; i < bookingWfHistory.length; i++) {
             if (bookingWfHistory[i].assignee != null) {
@@ -992,6 +1068,22 @@ export const downloadCertificate = async (
             }
         }
     }
+
+
+    let receiptUrl = ""
+    let receiptVal
+    if (flag === 'false') {
+        applicationData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Booking"
+        );
+
+    }
+    else if (flag === 'true') {
+        applicationData = state
+    }
+
+    let tenantData = await getMdmsTenantsData();
 
 
     const DOWNLOADCERTIFICATE = {
@@ -1013,7 +1105,9 @@ export const downloadCertificate = async (
                                 ? "bk-oswmcc-booking-pl"
                                 : "bk-cg-pl",
             },
-            { key: "tenantId", value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId },
+
+            { key: "tenantId", value: tenantId },
+
         ];
 
         // applicationData.businessService == "OSBM"
@@ -1112,7 +1206,7 @@ export const downloadCertificate = async (
             },
         ];
 
-        httpRequest(
+        let res = await httpRequest(
             "post",
             DOWNLOADCERTIFICATE.GET.URL,
             "",
@@ -1120,20 +1214,35 @@ export const downloadCertificate = async (
             { BookingInfo: certificateData },
             { Accept: "application/json" },
             { responseType: "arraybuffer" }
-        ).then((res) => {
-            res.filestoreIds[0];
-            if (res && res.filestoreIds && res.filestoreIds.length > 0) {
-                res.filestoreIds.map((fileStoreId) => {
-                    downloadReceiptFromFilestoreID(fileStoreId, mode);
-                });
-            } else {
-                console.log("Error In Permission Letter Download");
-            }
-        });
+        )
+
+
+        res.filestoreIds[0];
+        if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+
+            receiptVal = res.filestoreIds.map(async (fileStoreId) => {
+
+                if (flag === 'false') {
+                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                }
+                else if (flag === 'true') {
+
+
+                    receiptUrl = await getReceiptUrlFromFilestoreID(fileStoreId, mode, tenantId)
+                    return receiptUrl
+
+                }
+
+            });
+        } else {
+            console.log("Error In Permission Letter Download");
+        }
+
         //   })
     } catch (exception) {
         alert("Some Error Occured while downloading Permission Letter!");
     }
+    return receiptVal
 };
 
 export const downloadApplication = async (
@@ -1143,18 +1252,34 @@ export const downloadApplication = async (
     mode = "download"
 ) => {
     let tenantData = await getMdmsTenantsData();
-
+    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     let applicationData = get(
         state.screenConfiguration.preparedFinalObject,
         "Booking"
     );
+
+    const response = await getSearchResultsView([
+        { key: "tenantId", value: tenantId },
+        { key: "applicationNumber", value: applicationNumber },
+    ]);
+    let recData = get(response, "bookingsModelList", []);
+    
     let documentName = '';
+    let document2 = '';
     if (applicationData.businessService != "NLUJM") {
         let attachedDocuments = get(
             state.screenConfiguration.preparedFinalObject,
             "documentsPreview"
         );
         documentName = attachedDocuments && attachedDocuments[0].name;
+        console.log(attachedDocuments, "Nero AttachedDocument");
+        if (applicationData.businessService == "OSBM") {
+            let attachedDocuments = get(
+                state.screenConfiguration.preparedFinalObject,
+                "approvalDocument"
+            );
+            document2 = attachedDocuments && attachedDocuments[0].name;
+        }
     }
     let paymentData = get(
         state.screenConfiguration.preparedFinalObject,
@@ -1187,7 +1312,7 @@ export const downloadApplication = async (
                                             ? "bk-wt-app-form"
                                             : "bk-wt-unpaid-app-form",
             },
-            { key: "tenantId", value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId },
+            { key: "tenantId", value: tenantId },
         ];
 
         let bookingDataOsbm = {
@@ -1365,6 +1490,18 @@ export const downloadApplication = async (
                                 : paymentData.billDetails[0].billAccountDetails.filter(
                                     (el) => el.taxHeadCode.includes("TAX")
                                 )[0].amount,
+                        ugst:
+                            paymentData === undefined
+                                ? null
+                                : paymentData.billDetails[0].billAccountDetails.filter(
+                                    (el) => el.taxHeadCode.includes("TAX")
+                                )[0].amount/2,
+                        cgst:
+                            paymentData === undefined
+                                ? null
+                                : paymentData.billDetails[0].billAccountDetails.filter(
+                                    (el) => el.taxHeadCode.includes("TAX")
+                                )[0].amount/2,
                         totalAmount:
                             paymentData === undefined
                                 ? null
@@ -1375,7 +1512,8 @@ export const downloadApplication = async (
                         generatedDateTime: generatedDateTime
                     },
                     documentDetail: {
-                        documentName: documentName
+                        documentName: documentName,
+                        document2: document2
                     },
                 },
             ];
@@ -1393,7 +1531,7 @@ export const downloadApplication = async (
             res.filestoreIds[0];
             if (res && res.filestoreIds && res.filestoreIds.length > 0) {
                 res.filestoreIds.map((fileStoreId) => {
-                    downloadReceiptFromFilestoreID(fileStoreId, mode);
+                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
                 });
             } else {
                 console.log("Error In Application Download");
@@ -1798,6 +1936,11 @@ export const downloadCancelledBookingReceipt = async (
     tenantId,
     mode = "download"
 ) => {
+
+
+    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+
+
     let applicationData = get(
         state.screenConfiguration.preparedFinalObject,
         "Booking"
@@ -1806,7 +1949,7 @@ export const downloadCancelledBookingReceipt = async (
         { key: "consumerCodes", value: applicationNumber },
         {
             key: "tenantId",
-            value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+            value: tenantId,
         },
     ];
     const FETCHRECEIPT = {
@@ -1823,6 +1966,7 @@ export const downloadCancelledBookingReceipt = async (
     };
     let tenantData = await getMdmsTenantsData();
     let refundAmount = await calculateCancelledBookingRefundAmount(applicationNumber, tenantId, applicationData.bkFromDate);
+    let bookingCancelledDate = await getBookingCancelledDate(applicationNumber, tenantId);
     try {
         httpRequest(
             "post",
@@ -1836,7 +1980,7 @@ export const downloadCancelledBookingReceipt = async (
                     { key: "key", value: "bk-cancel-receipt" },
                     {
                         key: "tenantId",
-                        value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+                        value: tenantId,
                     },
                 ];
 
@@ -1893,7 +2037,7 @@ export const downloadCancelledBookingReceipt = async (
                         bkApplicationNumber:
                             payloadReceiptDetails.Payments[0].paymentDetails[0]
                                 .bill.consumerCode,
-                        bookingCancellationDate: "12-03-2020",
+                        bookingCancellationDate: bookingCancelledDate,
                         bookingVenue: applicationData.bkLocation,
                         bookingDuration: getDurationDate(
                             applicationData.bkFromDate,
@@ -1939,7 +2083,7 @@ export const downloadCancelledBookingReceipt = async (
 };
 
 export const calculateCancelledBookingRefundAmount = async (applicationNumber, tenantId, bookingDate) => {
-
+    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     if (applicationNumber && tenantId) {
         let queryObject = [
             { key: "tenantId", value: tenantId },
@@ -1951,14 +2095,15 @@ export const calculateCancelledBookingRefundAmount = async (applicationNumber, t
             "",
             queryObject
         );
-        console.log(payload, "Payment Details");
         if (payload) {
 
             let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
             let bookingAmount = 0;
+            let refundSecurity = 0;
             for (let i = 0; i < billAccountDetails.length; i++) {
                 if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
                     bookingAmount += billAccountDetails[i].amount;
+                    refundSecurity += billAccountDetails[i].amount;
                 }
                 if (billAccountDetails[i].taxHeadCode == "PACC") {
                     bookingAmount += billAccountDetails[i].amount;
@@ -1996,7 +2141,6 @@ export const calculateCancelledBookingRefundAmount = async (applicationNumber, t
                 mdmsBody
             );
 
-            console.log(payloadRes, "RefundPercentage");
             refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
 
 
@@ -2017,14 +2161,95 @@ export const calculateCancelledBookingRefundAmount = async (applicationNumber, t
 
                 let refundPercent = refundPercentage.LETTHAN30MORETHAN15DAYS.refundpercentage;
                 refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
+            } else if (refundSecurity > 0) {
+                refundAmount = refundSecurity;
             }
 
-
             return refundAmount;
-
 
         }
     }
 
 
 }
+
+export const getBookingCancelledDate = async (applicationNumber, tenantId) => {
+    if (applicationNumber && tenantId) {
+        let queryObject = [
+            { key: "tenantId", value: tenantId },
+            { key: "businessIds", value: applicationNumber },
+        ];
+        const payload = await httpRequest(
+            "post",
+            "/egov-workflow-v2/egov-wf/process/_search",
+            "",
+            queryObject
+        );
+
+        if (payload) {
+
+            let cancelledTimeStamp = payload.ProcessInstances[0].auditDetails.createdTime;
+
+            let date2 = new Date(cancelledTimeStamp);
+
+            let gdate = ('0' + date2.getDate()).slice(-2) + '/'
+                + ('0' + (date2.getMonth() + 1)).slice(-2) + '/'
+                + date2.getFullYear();
+            return gdate;
+
+
+        }
+    }
+}
+
+export const updateBillDemand = async (
+    state,
+    dispatch,
+    applicationNumber,
+    tenantId,
+    bookingType
+) => {
+    const tenantIdn = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    let applicationData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Booking"
+    );
+
+    console.log(applicationNumber, tenantIdn, bookingType, "Neor App");
+    //try {
+    if (applicationNumber && tenantIdn && bookingType) {
+        let applicationData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Booking"
+        );
+
+        console.log(applicationData, "Neor App");
+        try {
+            const response = await httpRequest(
+                "post",
+                "/bookings/park/community/demand/_update",
+                "",
+                [],
+                {
+                    Booking: applicationData,
+                }
+            );
+            return response;
+        } catch (error) {
+            console.log(error, "errornew");
+        }
+    }
+    // } catch (e) {
+    //     console.log(e);
+    // }
+};
+
+export const calculateBetweenDaysCount = (startDate, endDate) => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const firstDate = new Date(startDate);
+    const secondDate = new Date(endDate);
+
+    const daysCount =
+        Math.round(Math.abs((firstDate - secondDate) / oneDay)) + 1;
+    return daysCount;
+};

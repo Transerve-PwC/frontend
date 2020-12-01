@@ -101,6 +101,7 @@ class ApplicatInfo extends Component {
             id="email"
             name="email"
             type="string"
+            required = {true}
             value={email}
             required = {true} 
             hintText={
@@ -132,6 +133,7 @@ class ApplicatInfo extends Component {
             id="mobile-no"
             name="mobile-no"
             type="text"
+            required = {true}
             value={mobileNo}
             required = {true} 
             hintText={

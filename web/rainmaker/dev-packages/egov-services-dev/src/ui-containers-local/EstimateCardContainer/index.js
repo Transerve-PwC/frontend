@@ -52,6 +52,34 @@ const mapStateToProps = (state, ownProps) => {
             )
         )[0]
     );
+    
+		let businessService = get(screenConfiguration,
+                "preparedFinalObject.ReceiptTemp[0].Bill[0].businessService",
+                []
+            )
+    if(businessService == "OSBM"){
+		let tax = fees[1].value;
+		fees.splice(1, 1);
+		let ugstValue = tax/2;
+		let cgstValue = tax/2;
+		let ugst = {
+		info: {labelKey: "9% UGST", labelName: "9% UGST"},
+		name: {labelKey: "9% UGST", labelName: "9% UGST"},
+		order: 0,
+		value: ugstValue.toFixed(2)
+		};
+		fees.push(ugst);
+		let cgst = {
+		info: {labelKey: "9% CGST", labelName: "9% CGST"},
+		name: {labelKey: "9% CGST", labelName: "9% CGST"},
+		order: 0,
+		value: cgstValue.toFixed(2)
+		};
+		fees.push(cgst);
+    
+		
+		}
+    
     const baseCharge = get(
         screenConfiguration,
         "preparedFinalObject.BaseCharge",

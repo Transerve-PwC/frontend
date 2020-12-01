@@ -1,6 +1,6 @@
 import React from "react";
-// import Helmet from "react-helmet";
-  import DayPicker, { DateUtils } from "../../../../contributed-modules/react-day-picker";
+
+//   import DayPicker, { DateUtils } from "react-day-picker";
   import { httpRequest } from "egov-ui-kit/utils/api";
 import {
     prepareFinalObject,
@@ -28,7 +28,6 @@ class PlotArea extends React.Component {
             item
         );
         const { availabilityCheckData } = this.props;
-        // console.log('availabilityCheckData in getAvailabilityData function', availabilityCheckData,item);
         set(
             this.props.calendarVisiblity.checkavailability_pcc,
             "components.div.children.availabilityCalendarWrapper.visible",
@@ -49,22 +48,21 @@ class PlotArea extends React.Component {
             bookingVenue:item.id,
             sector: availabilityCheckData.bkSector,
         };
-// console.log('requestBody4321',requestBody)
-        //  const response = await getAvailabilityDataPCC(requestBody);
 
         let responseData = await httpRequest(
             "/bookings/park/community/availability/_search",
             "_search", [],
             requestBody
           );
-            console.log('response in response', responseData)
+           
 
          let response= { status: "success", data: responseData.data };
 
         let responseStatus = get(response, "status", "");
-        // console.log('response in checkData', response)
+       
         if (responseStatus == "SUCCESS" || responseStatus == "success") {
-            // console.log('in if condition data')
+            
+           
             let data = response.data;
             let reservedDates = [];
             var daylist = [];
@@ -81,7 +79,10 @@ class PlotArea extends React.Component {
                 "availabilityCheckData.reservedDays",
                 reservedDates
             );
-            // console.log('availabilityCheckData in rsv date',availabilityCheckData)
+            this.props.prepareFinalObject(
+                "availabilityCheckData.reservedTimeSlotsData",
+                data
+            )
             window.scrollTo({
                 top: document.body.scrollHeight,
                 behavior: "smooth",
@@ -89,19 +90,17 @@ class PlotArea extends React.Component {
         } else {
             let errorMessage = {
                 labelName: "Something went wrong, Try Again later!",
-                labelKey: "", //UPLOAD_FILE_TOAST
+                labelKey: "", 
             };
             this.props.toggleSnackbar(true, errorMessage, "error");
         }
     };
 
     render() {
-        // console.log("render in ploatArea",this.props);
+       
         const { masterDataPCC, availabilityCheckData } = this.props;
-        return masterDataPCC.map((item) => {
-            // console.log('itemmmmm',item)
-            let coords = `${item.x},${item.y},${item.radius}`;
-            // console.log('coords',coords)
+        return masterDataPCC.map((item) => {     
+            let coords = `${item.x},${item.y},${item.radius}`;     
             let venueId = item.id;
             return (
                 <area
@@ -109,12 +108,6 @@ class PlotArea extends React.Component {
                     alt={item.name}
                     title={item.name}
                     onClick={(e) => this.getAvailabilityData(e, item)}
-                    // onClick={(item.id) => {
-                    //     window.scrollTo({
-                    //         top: document.body.scrollHeight,
-                    //         behavior: "smooth",
-                    //     });
-                    // }}
                     shape="circle"
                     coords={coords}
                     style={{
@@ -127,7 +120,7 @@ class PlotArea extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log('state in mapstatetoprops',state)
+   
     return {
         calendarVisiblity: state.screenConfiguration.screenConfig,
     };

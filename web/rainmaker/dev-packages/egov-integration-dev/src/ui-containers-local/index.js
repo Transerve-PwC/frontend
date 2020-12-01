@@ -84,6 +84,16 @@ const InventoryContainer = Loadable({
   loader: () => import("./InventoryContainer"),
   loading: () => <Loading />
 })
+//EofficestatContainer
+const EofficestatContainer = Loadable({
+  loader: () => import("./EofficestatContainer"),
+  loading: () => <Loading />
+})
+//Payslip
+const PayslipContainer = Loadable({
+  loader: () => import("./PayslipContainer"),
+  loading: () => <Loading />
+})
 export {
   CustomTabContainer,
   LabelContainer,
@@ -103,5 +113,7 @@ export {
   DynamicTableContainer,
   MultiItem,
   WorkFlowContainer,
-  InventoryContainer
+  InventoryContainer,
+  EofficestatContainer,
+  PayslipContainer
 };

@@ -11,7 +11,6 @@ export default class CustomComplaints extends React.Component{
         this.state = {
 
         }
-        // alert("hello world")
     }
 
 convertEpochToDate = (dateEpoch) => {

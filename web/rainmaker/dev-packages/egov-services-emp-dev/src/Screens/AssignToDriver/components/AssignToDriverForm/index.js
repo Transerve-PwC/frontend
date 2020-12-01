@@ -199,7 +199,7 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
       <div className={classes.btnWrapper}>
         {(() => {
           if(!bkStatus.includes("Paid")){
-          if (driverFullName && mobileNumber && approverName) {
+          if (driverFullName && mobileNumber.length===10 && approverName) {
             return <button
             onClick={handleValidation}
             className={classes.button}
@@ -221,7 +221,7 @@ const RejectComplaintForm = ({ form, options,classes, bkStatus, mobileNumber, dr
             >Assign</button>
            }
           }else{
-            if (driverFullName && mobileNumber ) {
+            if (driverFullName && mobileNumber.length===10 ) {
               return <button
               onClick={handleValidation}
               className={classes.button}

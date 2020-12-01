@@ -46,7 +46,7 @@ const moveToReview = (state, dispatch, applnid) => {
                     );
                     validateDocumentField = false;
                     break;
-                }else{
+                } else {
                     validateDocumentField = true;
                 }
                 // if (isDocumentTypeRequired) {
@@ -156,6 +156,13 @@ const callBackForNext = async (state, dispatch) => {
                 "documentsUploadRedux[0].documents",
                 []
             );
+            const uploadedDocData1 = get(
+                state.screenConfiguration.preparedFinalObject,
+                "documentsUploadRedux[1].documents",
+                []
+            );
+
+            
             const documentsPreview =
                 uploadedDocData &&
                 uploadedDocData.map((item) => {
@@ -167,8 +174,20 @@ const callBackForNext = async (state, dispatch) => {
                         fileStoreId: item.fileStoreId,
                     };
                 });
+            const documentsPreview1 =
+            uploadedDocData1 &&
+            uploadedDocData1.map((item) => {
+                    return {
+                        title: "BUILDING_PLAN_APPROVAL",
+                        link: item.fileUrl && item.fileUrl.split(",")[0],
+                        linkText: "View",
+                        name: item.fileName,
+                        fileStoreId: item.fileStoreId,
+                    };
+                });
 
             dispatch(prepareFinalObject("documentsPreview", documentsPreview));
+            dispatch(prepareFinalObject("approvalDocument", documentsPreview1));
         } else {
             let errorMessage = {
                 labelName: "Submission Falied, Try Again later!",

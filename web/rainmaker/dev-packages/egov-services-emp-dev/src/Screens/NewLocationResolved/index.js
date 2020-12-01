@@ -38,7 +38,7 @@ class NewLocationResolved extends Component {
 			"_search",[],
 			requestbody
     );
-    console.log('AssigneeFromAPI',AssigneeFromAPI)
+   
     this.setState({
 			assignToMe: AssigneeFromAPI
 		})
@@ -105,7 +105,7 @@ class NewLocationResolved extends Component {
     const { handleCommentsChange, handleOptionsChange, onSubmit,handleChangeAssigneeData ,handleOpen,handleClose} = this;
     const { valueSelected, commentValue ,assignee,assignToMe} = this.state;
     const { trasformData, businessServiceData,applicationNumber } = this.props;
-    const foundFirstLavels = userInfo && userInfo.roles.some(el => el.code === 'MCC_APPROVER');
+    const foundFirstLavels = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_APPROVER');
    
     return (
       
