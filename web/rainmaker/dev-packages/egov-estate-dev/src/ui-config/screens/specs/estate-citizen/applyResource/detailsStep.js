@@ -1,4 +1,4 @@
-import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField, getCommonGrayCard } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getLocaleLabels, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import {getOptions} from '../dataSources'
@@ -62,7 +62,10 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
    */
   const objectValues = Object.values(_conf);
   const fields = objectValues.reduce((prev, curr) => {
-    const fieldItems = !!curr.children && curr.componentPath !== "Div" ? curr.children.cardContent.children.details_container.children : {};
+    let fieldItems = {}
+    if(!!curr.children && curr.componentPath !== "Div") {
+      fieldItems =  !!curr.children.cardContent.children.details_container.children.multiContainer ? curr.children.cardContent.children.details_container.children.multiContainer.children.multiInfo.props.scheama.children.cardContent.children.multiCard.children : curr.children.cardContent.children.details_container.children;
+    }
     prev = [...prev, ...Object.values(fieldItems)]
     return prev
   }, []).filter(item => item.componentPath !== "Div")
@@ -295,6 +298,47 @@ const getField = async (item, fieldData = {}, state) => {
     }
   }
 
+const commonMultiCard = async (section, data_config, state) => {
+  const multiCard = await getDetailsContainer(section, data_config, state)
+  return getCommonGrayCard({multiCard})
+}
+
+const getSubDetailsContainer = async (section, data_config, state) => {
+  const {buttonLabel, sourceJsonPath} = section
+  const scheama = await commonMultiCard(section, data_config, state)
+  const detailsContainer = getCommonContainer({
+    multiContainer: {
+      uiFramework: "custom-atoms",
+      componentPath: "Div",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      children: {
+        multiInfo: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
+          componentPath: "MultiItem",
+          props: {
+            scheama,
+            items: [],
+            addItemLabel: {
+              labelName: buttonLabel,
+              labelKey: buttonLabel
+            },
+            sourceJsonPath,
+            prefixSourceJsonPath: "children.cardContent.children.multiCard.children",
+            afterPrefixJsonPath: "children.value.children.key",
+          },
+          type: "array"
+        }
+      }
+    }
+  })
+  return detailsContainer;
+}
+
 const getDetailsContainer = async (section, data_config, state) => {
     const {fields = []} = section;
     const values = await arrayReduce(fields, async (acc, field) => {
@@ -339,7 +383,8 @@ const tableSection = (section, state) => {
     props: {
       style: { height: 20 }
     }
-    } , table: {
+    }, 
+    table: {
     uiFramework: "custom-molecules",
     componentPath: "Table",
     visible: true,
@@ -375,7 +420,7 @@ export const setFirstStep = async (state, dispatch, {data_config, format_config}
         ...acc, 
         [section.header]: section.type === "TABLE" ? tableSection(section, state) : section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
             header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : await getDetailsContainer(section, data_config, state)
+            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : section.subType === "ARRAY" ? await getSubDetailsContainer(section, data_config, state) : await getDetailsContainer(section, data_config, state)
         })
     }
     }, {})

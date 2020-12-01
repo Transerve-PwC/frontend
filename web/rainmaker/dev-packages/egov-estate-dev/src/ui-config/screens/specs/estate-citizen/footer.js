@@ -243,11 +243,29 @@ export const previousButton = {
     if(activeStep === DETAILS_STEP) {
 
       let cardItems = get(state.screenConfiguration.screenConfig["_apply"], "components.div.children.formwizardFirstStep.children", {}) || {}
-      cardItems = Object.keys(cardItems);
-
-      cardItems.forEach((cardItem) => {
-        const isValid = validateFields(`components.div.children.formwizardFirstStep.children.${cardItem}.children.cardContent.children.details_container.children`, state,
-        dispatch, "_apply");
+      let cardKeys = Object.keys(cardItems);
+      let cardValues = Object.values(cardItems)
+      cardKeys.forEach((cardItem, index) => {
+        let isValid = true
+        if(!!cardValues[index].children.cardContent && !!cardValues[index].children.cardContent.children.details_container.children.multiContainer) {
+          const _componentJsonPath = `components.div.children.formwizardFirstStep.children.${cardItem}.children.cardContent.children.details_container.children.multiContainer.children.multiInfo.props.items`
+          const _components = get(
+            state.screenConfiguration.screenConfig["_apply"],
+            _componentJsonPath
+          );
+          for (var i = 0; i < _components.length; i++) {
+            if (!_components[i].isDeleted) {
+              isValid = validateFields(
+              `${_componentJsonPath}[${i}].item${i}.children.cardContent.children.multiCard.children`,
+              state,
+              dispatch, "_apply"
+            )
+            }
+          }
+        } else {
+          isValid = validateFields(`components.div.children.formwizardFirstStep.children.${cardItem}.children.cardContent.children.details_container.children`, state,
+          dispatch, "_apply");
+        }
         isFormValid = isFormValid && isValid
       })
     if(!!isFormValid) {

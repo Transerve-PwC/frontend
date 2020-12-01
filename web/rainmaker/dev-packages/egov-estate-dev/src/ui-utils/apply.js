@@ -90,6 +90,16 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     set(queryObject[0], "tenantId", tenantId);
 
     const id = get(queryObject[0], "id");
+    const keys = Object.keys(queryObject[0].applicationDetails);
+    const values = Object.values(queryObject[0].applicationDetails);
+
+    keys.forEach((key, index) => {
+     if(Array.isArray(values[index])) {
+       let arr = values[index]
+       arr = arr.filter(item => !item.isDeleted)
+       set(queryObject[0], `applicationDetails[${key}]`, arr)
+     }
+    })
     let response;
     if(!id) {
       set(queryObject[0], "state", "");
