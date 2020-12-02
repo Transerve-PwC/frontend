@@ -44,7 +44,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                     height: "48px",
                     marginRight: "45px",
                     borderRadius: "inherit"
-                  }
+                  },
+                  className: "make-payment-footer-button"
                 },
                 children: {
                   submitButtonLabel: getLabel({

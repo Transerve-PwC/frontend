@@ -129,7 +129,6 @@ const callBackForNext = async (state, dispatch) => {
       )
     )
 
-    debugger
     dispatch(
       handleField(
         screenKey,

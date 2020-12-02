@@ -115,7 +115,8 @@ var isfileNumberValid = validateFields(
                 response.EstateAccountStatement
               )
             );
-            let data = response.EstateAccountStatement.map(item => ({
+            let sortedData = response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
+            let data = sortedData.map(item => ({
               [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
               [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
               [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",

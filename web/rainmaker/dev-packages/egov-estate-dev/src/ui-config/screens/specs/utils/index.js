@@ -601,8 +601,9 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
         break;
       case 'BB-NOC':
           queryStr = [{
-            key :"key",
-            value:"bb-noc-application-fresh"
+            key: "key",
+            value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
+            state == "ES_PENDING_SDE_APPROVAL" || state == "ES_APPROVED")  ? `bb-noc-application-paid` : `bb-noc-application-fresh`
           }]
           break;
       case 'BB-IssuanceOfNotice':
@@ -722,7 +723,7 @@ export const downloadCertificateForm = (Licenses, data, mode = 'download') => {
   }
 }
 
-export const downloadPaymentReceipt = (receiptQueryString, payload, data, generatedBy,type, state,mode = "download") => {
+export const downloadPaymentReceipt = (receiptQueryString, payload, data , generatedBy,type, state,mode = "download") => {
   const FETCHRECEIPT = {
     GET: {
       URL: "/collection-services/payments/_search",
@@ -748,29 +749,6 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
         Payments
       } = payloadReceiptDetails;
       let time = Payments[0].paymentDetails[0].auditDetails.lastModifiedTime
-      let {
-        billAccountDetails
-      } = Payments[0].paymentDetails[0].bill.billDetails[0];
-      billAccountDetails = billAccountDetails.map(({
-        taxHeadCode,
-        ...rest
-      }) => ({
-        ...rest,
-        taxHeadCode: taxHeadCode.includes("_APPLICATION_FEE") ? "RP_DUE" : taxHeadCode.includes("_PENALTY") ? "RP_PENALTY" : taxHeadCode.includes("_TAX") ? "RP_TAX" : taxHeadCode.includes("_ROUNDOFF") ? "RP_ROUNDOFF" : taxHeadCode.includes("_PUBLICATION_FEE") ? "RP_CHARGES" : taxHeadCode
-      }))
-      Payments = [{
-        ...Payments[0],
-        paymentDetails: [{
-          ...Payments[0].paymentDetails[0],
-          bill: {
-            ...Payments[0].paymentDetails[0].bill,
-            billDetails: [{
-              ...Payments[0].paymentDetails[0].bill.billDetails[0],
-              billAccountDetails
-            }]
-          }
-        }]
-      }]
       if(time){
         time = moment(new Date(time)).format("h:mm:ss a")
       }
@@ -781,6 +759,7 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
           }
         }]
       }]
+
       switch(type){
         case 'rent-payment':
            if(process.env.REACT_APP_NAME != "Citizen"){
@@ -887,6 +866,29 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data, genera
             });
           break
         case 'application-payment':
+            let {
+              billAccountDetails
+            } = Payments[0].paymentDetails[0].bill.billDetails[0];
+            billAccountDetails = billAccountDetails.map(({
+              taxHeadCode,
+              ...rest
+            }) => ({
+              ...rest,
+              taxHeadCode: taxHeadCode.includes("_APPLICATION_FEE") ? "ES_FEE" : taxHeadCode.includes("_APPLICATION_TAX") ? "ES_TAX" : taxHeadCode
+            }))
+            Payments = [{
+              ...Payments[0],
+              paymentDetails: [{
+                ...Payments[0].paymentDetails[0],
+                bill: {
+                  ...Payments[0].paymentDetails[0].bill,
+                  billDetails: [{
+                    ...Payments[0].paymentDetails[0].bill.billDetails[0],
+                    billAccountDetails
+                  }]
+                }
+              }]
+            }]
            queryStr = [{
               key: "key",
               value: "application-payment-receipt"
@@ -1142,9 +1144,18 @@ let queryStr = []
       case 'BB-NOC-Proposal-letter':
           queryStr = [{
             key: "key",
-            value: ` noc-proposal-letter`
+            value: `noc-proposal-letter`
           }
         ]
+      break;
+      
+      case 'BB-NOC-Payment-letter':
+      queryStr = [{
+        key: "key",
+        value: `payment-letter`
+      }
+      ]
+      break;
          
       
   }

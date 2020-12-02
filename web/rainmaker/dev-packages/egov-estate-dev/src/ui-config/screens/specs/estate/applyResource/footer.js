@@ -700,6 +700,7 @@ const callBackForNext = async (state, dispatch) => {
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
     if (propertyType == "PROPERTY_TYPE.LEASEHOLD") {
+      var isLegacyDocUploaded = true;
       var isPaymentDetailsValid = validateFields(
         `components.div.children.formwizardNinthStep.children.paymentDetails.children.cardContent.children.detailsContainer.children`,
         state,
@@ -707,7 +708,30 @@ const callBackForNext = async (state, dispatch) => {
         screenKey
       )
 
-      if (isPaymentDetailsValid) {
+      let uploadedLegacyDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Properties[0].propertyDetails.accountStatementDocument`,
+        []
+      );
+
+      const uploadedTempLegacyDocData = get(
+        state.screenConfiguration.preparedFinalObject,
+        `PropertiesTemp[0].propertyDetails.accountStatementDocument`,
+        []
+      );
+
+      for (var y = 0; y < uploadedTempLegacyDocData.length; y++) {
+        if (
+          uploadedTempLegacyDocData[y].required &&
+          !some(uploadedLegacyDocData, {
+            documentType: uploadedTempLegacyDocData[y].name
+          })
+        ) {
+          isLegacyDocUploaded = false;
+        }
+      }
+
+      if (isPaymentDetailsValid && isLegacyDocUploaded) {
         const res = await applyEstates(state, dispatch, activeStep);
         if (!res) {
           return
@@ -787,10 +811,18 @@ const callBackForNext = async (state, dispatch) => {
         case COURT_CASE_DETAILS_STEP:
         case RENT_INFO_DETAILS_STEP:
         case PAYMENT_DETAILS_STEP:
-          errorMessage = {
-            labelName: "Please fill all mandatory fields, then do next !",
-            labelKey: "ES_ERR_FILL_MANDATORY_FIELDS"
-          };
+          if (!isLegacyDocUploaded) {
+            errorMessage = {
+              labelName: "Please fill all mandatory fields and upload the required document !",
+              labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+            };
+          }
+          else {
+            errorMessage = {
+              labelName: "Please fill all mandatory fields, then do next !",
+              labelKey: "ES_ERR_FILL_MANDATORY_FIELDS"
+            };
+          }
           break;
         case DOCUMENT_UPLOAD_STEP:
         case PURCHASER_DOCUMENTS_STEP:
@@ -1315,6 +1347,38 @@ export const downloadPrintContainer = (
     leftIcon: "assignment"
   }
 
+  let paymentLetterDownloadObject = {
+    label: { labelName: "Payment Letter", labelKey: "ES_PAYMENT_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === "BuildingBranch"){
+        applicationType =  "BB-" + applicationType
+      }
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType + '-Payment-letter');
+    },
+    leftIcon: "assignment"
+  }
+
+  let paymentLetterPrintObject = {
+    label: { labelName: "Payment Letter", labelKey: "ES_PAYMENT_LETTER" },
+    link: () => {
+      const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
+      const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === "BuildingBranch"){
+        applicationType =  "BB-" + applicationType 
+      }
+      set(Applications[0],"additionalDetails.documents",documents)
+      downloadLetter(Applications,applicationType + '-Payment-letter','print');
+    },
+    leftIcon: "assignment"
+  }
+
   let NOCproposalLetterDownloadObject = {
     label: { labelName: "Letter", labelKey: "ES_NOC_PROPOSAL_LETTER" },
     link: () => {
@@ -1620,7 +1684,8 @@ export const downloadPrintContainer = (
         case 'NOC' && 'ES_PENDING_AC_APPROVAL':
         case 'NOC' && 'ES_PENDING_SDE_PROPOSAL_APPROVAL':
         case 'NOC' && 'ES_PENDING_DA_FEE':
-        case 'NOC' && 'ES_PENDING_PAYMENT':  
+        case 'NOC' && 'ES_PENDING_PAYMENT': 
+        case 'NOC' && 'ES_PENDING_DA_PREPARE_LETTER': 
         
             downloadMenu = [
               applicationDownloadObject
@@ -1629,19 +1694,21 @@ export const downloadPrintContainer = (
               applicationPrintObject
            ] 
           break;
-        case 'NOC' && 'ES_PENDING_DA_PREPARE_LETTER':
-        case 'NOC' && 'ES_PENDING_SDE_APPROVAL':
+
+        case 'NOC' && 'ES_PENDING_SDE_APPROVAL': 
         case 'NOC' && 'ES_APPROVED' : 
             downloadMenu = [
               applicationDownloadObject,
               LetterDownloadObject,
-              NOCproposalLetterDownloadObject
+              NOCproposalLetterDownloadObject,
+              paymentLetterDownloadObject
               
             ]
             printMenu = [
               applicationPrintObject,
               LetterPrintObject,
-              NOCproposalLetterPrintObject
+              NOCproposalLetterPrintObject,
+              paymentLetterPrintObject
             ] 
           break;
         case 'IssuanceOfNotice' && 'PENDING_SDE_VERIFICATION':
@@ -2056,30 +2123,31 @@ export const downloadPrintContainer = (
         switch(applicationType) {
               case 'SaleDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
+                    
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
               break;
               case 'LeaseDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   
                   ]
                 break;
               case 'ScfToSco':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
                 break;
               case 'LeaseholdToFreehold':
@@ -2087,108 +2155,104 @@ export const downloadPrintContainer = (
                     applicationDownloadObject,LetterDownloadObject,
                     AmountLetterAfterConversionDownloadObject,
                     HousingBoardNotificationDownloadObject,
-                    NoticeDownloadObject,receiptDownloadObject
+                    NoticeDownloadObject
                   ]
                 
                   printMenu = [
                     applicationPrintObject,LetterPrintObject,
                     AmountLetterAfterConversionPrintObject,
-                    HousingBoardNotificationPrintObject,NoticePrintObject,
-                    receiptPrintObject
+                    HousingBoardNotificationPrintObject,NoticePrintObject
                   ]
                   
                 break;
               case 'ChangeInTrade':
                   downloadMenu = [
-                    applicationDownloadObject,receiptDownloadObject
+                    applicationDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,receiptPrintObject
+                    applicationPrintObject
                   ]
                 break;
               case 'UnRegisteredWill':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,
-                    receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,
-                    receiptPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
                   ]
                 break;
               case 'NOC':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
               break;
               case 'RegisteredWill':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
                   ]
               break;
               case 'NDC':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NDCWHODownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NDCWHOPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
                   ]
               break;
               case 'PatnershipDeed':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
               break;
               case 'DuplicateCopy':
                   downloadMenu = [
-                    applicationDownloadObject,receiptDownloadObject
+                    applicationDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,
-                    receiptPrintObject
+                    applicationPrintObject
                   ]
               break;
               case 'Mortgage':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
               break;
               case 'FamilySettlement':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject
                   ]
               break;
               case 'IntestateDeath':
                   downloadMenu = [
-                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject,receiptDownloadObject
+                    applicationDownloadObject,LetterDownloadObject,NoticeDownloadObject,EmailDownloadObject
                   ]
                 
                   printMenu = [
-                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject,receiptPrintObject
+                    applicationPrintObject,LetterPrintObject,NoticePrintObject,EmailPrintObject
                   ]
               break;
 
@@ -2200,8 +2264,7 @@ export const downloadPrintContainer = (
                     cancellationOrderDownloadObject,
                     nonPaymentNoticeDownloadObject,
                     nonPaymentOrderDownloadObject,
-                    occupationCertificateDownloadObject,
-                    receiptDownloadObject
+                    occupationCertificateDownloadObject
                   ]
                 
                   printMenu = [
@@ -2211,8 +2274,7 @@ export const downloadPrintContainer = (
                     cancellationOrderPrintObject,
                     nonPaymentNoticePrintObject,
                     nonPaymentOrderPrintObject,
-                    occupationCertificatePrintObject,
-                    receiptPrintObject
+                    occupationCertificatePrintObject
                   ]
                   break;
             } 

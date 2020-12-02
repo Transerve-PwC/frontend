@@ -122,13 +122,11 @@ export const applicationSuccessFooter = (
                 ];
                 const response = await getSearchApplicationsResults(queryObject);
                 const Applications = get(response, "Applications");
-                const { temp } = state.screenConfiguration.preparedFinalObject;
-                  const feeEstimate = temp[0].estimateCardData;
                   const receiptQuery = [
                     { key: "consumerCodes", value:consumerCodes},
                     { key: "tenantId", value: tenantId }
                 ]
-                downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state);
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'application-payment',state);
               }
                   
             }else{
@@ -212,13 +210,11 @@ export const applicationSuccessFooter = (
                 ];
                 const response = await getSearchApplicationsResults(queryObject);
                 const Applications = get(response, "Applications");
-                const { temp } = state.screenConfiguration.preparedFinalObject;
-                const feeEstimate = temp[0].estimateCardData;
                 const receiptQuery = [
                     { key: "consumerCodes", value:consumerCodes},
                     { key: "tenantId", value: tenantId }
                 ]
-                downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state,'print');
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'application-payment',state,'print');
               }
                   
             }else{
@@ -350,13 +346,11 @@ export const applicationSuccessFooter = (
                   ];
                   const response = await getSearchApplicationsResults(queryObject);
                   const Applications = get(response, "Applications");
-                  const { temp } = state.screenConfiguration.preparedFinalObject;
-                  const feeEstimate = temp[0].estimateCardData;
                     const receiptQuery = [
                       { key: "consumerCodes", value:consumerCodes},
                       { key: "tenantId", value: tenantId }
                   ]
-                  downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state);
+                  downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'application-payment',state);
                 }
                 
               break; 
@@ -450,13 +444,11 @@ export const applicationSuccessFooter = (
                 ];
                 const response = await getSearchApplicationsResults(queryObject);
                 const Applications = get(response, "Applications");
-                const { temp } = state.screenConfiguration.preparedFinalObject;
-                const feeEstimate = temp[0].estimateCardData;
                 const receiptQuery = [
                     { key: "consumerCodes", value:consumerCodes},
                     { key: "tenantId", value: tenantId }
                 ]
-                downloadPaymentReceipt(receiptQuery, Applications,feeEstimate, userInfo.name,'application-payment',state,'print');
+                downloadPaymentReceipt(receiptQuery, Applications,[], userInfo.name,'application-payment',state,'print');
               }
               
               break; 
