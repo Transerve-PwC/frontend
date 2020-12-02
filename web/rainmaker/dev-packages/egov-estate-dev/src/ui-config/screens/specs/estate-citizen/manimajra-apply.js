@@ -32,14 +32,13 @@ const _applicationTypes = [
     "category": "ES_OWNERSHIP_TRANSFER",
     "filter": true
   },
-  // {
-  //   "name": "Allotment of new house number",
-  //   "code": "ES_ALLOTMENT_OF_NEW_HOUSE_NUMBER",
-  //   "type": "ManiMajra_CitizenService_UnRegisteredWill",
-  //   "active": true,
-  //   "category": "ES_ALLOTMENT_OF_NEW_HOUSE_NUMBER",
-  //   "filter": true
-  // }
+  {
+    "name": "Allotment of new house number",
+    "code": "ES_ALLOTMENT_OF_NEW_HOUSE_NUMBER",
+    "type": "ManiMajra_OtherCitizenService_AllotmentOfHouse",
+    "active": true,
+    "filter": true
+  }
 ]
 
 const getData = async (action, state, dispatch) => {

@@ -1,0 +1,545 @@
+{
+  "tenantId": "ch",
+  "moduleName": "EstateServices",
+  "ManiMajra_OtherCitizenService_AllotmentOfHouse": [
+    {
+      "fields": [
+        {
+          "path": "modeOfAllotment",
+          "required": true,
+          "validations": [
+            {
+              "type": "mdms",
+              "params": {
+                "moduleName": "EstateServices",
+                "masterName": "modeOfAllotment",
+                "filter": "modeOfAllotment..code"
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.relation",
+          "required": true,
+          "validations": [
+            {
+              "type": "enum",
+              "params": {
+                "values": ["FATHER", "HUSBAND"]
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.name",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.fatherOrHusbandName",
+          "required": true,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.dob",
+          "required": true,
+          "validations": [
+            {
+              "type": "date-range",
+              "params": {
+                "start": {
+                  "unit": "year",
+                  "value": -100
+                },
+                "end": {
+                  "unit": "second",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.address",
+          "required": false,
+          "validations": [
+            {
+              "type": "length",
+              "params": {
+                "min": 5,
+                "max": 150
+              }
+            }
+          ]
+        },
+        {
+          "path": "owner.mobileNo",
+          "required": false,
+          "validations": [
+            {
+              "type": "mobile"
+            }
+          ]
+        },
+        {
+          "path": "owner.percentageOfShareTransferred",
+          "required": true,
+          "validations": [
+            {
+              "type": "numeric"
+            },
+            {
+              "type": "minmax",
+              "params": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ]
+        }
+      ],
+      "documentList": [
+        {
+          "code": "MM_OWNERSHIP_PROOF_OF_PROPERTY",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_OWNERSHIP_PROOF_OF_PROPERTY_DESCRIPTION"
+        },
+        {
+          "code": "MM_AFFIDAVIT_INSTRUCTION",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_AFFIDAVIT_INSTRUCTION_DESCRIPTION"
+        },
+        {
+          "code": "MM_REPORT_OF_HALKA_PATWARI",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_REPORT_OF_HALKA_PATWARI_DESCRIPTION"
+        },
+        {
+          "code": "MM_SITE_PLAN",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_SITE_PLAN_DESCRIPTION"
+        },
+        {
+          "code": "MM_ORIGINAL_INTKAL",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_ORIGINAL_INTKAL_DESCRIPTION"
+        },
+        {
+          "code": "MM_INDEMNITY_BOND_ATTESTED_AND_WITNESSED",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_INDEMNITY_BOND_ATTESTED_AND_WITNESSED_DESCRIPTION"
+        },
+        {
+          "code": "MM_DECLARATION_FROM_APPLICANT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_DECLARATION_FROM_APPLICANT_DESCRIPTION"
+        },
+        {
+          "code": "MM_IDENTIFICATION_OF_APPLICANT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_IDENTIFICATION_OF_APPLICANT_DESCRIPTION"
+        },
+        {
+          "code": "MM_NO_OBJECTION_FROM_OTHER_NON_BENEFICIARY",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_NO_OBJECTION_FROM_OTHER_NON_BENEFICIARY_DESCRIPTION"
+        },
+        {
+          "code": "MM_ORIGINAL_DEATH_CERTIFICATE",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_ORIGINAL_DEATH_CERTIFICATE_DESCRIPTION"
+        },
+        {
+          "code": "MM_LIABILITY_AFFIDAVIT",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_LIABILITY_AFFIDAVIT_DESCRIPTION"
+        },
+        {
+          "code": "MM_ATTESTED_PHOTOGRAPH",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "SELF_ATTESTED_PHOTO_IDENTITY_PROOF_OF_THE_APPLICANT_DESCRIPTION"
+        },
+        {
+          "code": "MM_ORIGINAL_DEATH_CERTIFICATE_OF_DECEASED_OWNER",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_ATTESTED_PHOTOGRAPH_DESCRIPTION"
+        },
+        {
+          "code": "MM_LEGAL_HEIRS_CERTIFICATE_UNREG",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_LEGAL_HEIRS_CERTIFICATE_UNREG_DESCRIPTION"
+        },
+        {
+          "code": "MM_IDENTIFICATION_OF_APPLICANTS",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_IDENTIFICATION_OF_APPLICANTS_DESCRIPTION"
+        },
+        {
+          "code": "MM_NO_DUE_CERTIFICATE",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_NO_DUE_CERTIFICATE_DESCRIPTION"
+        },
+        {
+          "code": "MM_NDC_FROM_PROPERTY_TAX_BRANCH",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_NDC_FROM_PROPERTY_TAX_BRANCH_DESCRIPTION"
+        },
+        {
+          "code": "MM_CERTIFIED_COPY_OF_SALE_DEED",
+          "required": true,
+          "accept": "application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*",
+          "fileType": "ALLTYPES",
+          "description": "MM_CERTIFIED_COPY_OF_SALE_DEED_DESCRIPTION"
+        }
+      ],
+      "uiConfig": {
+        "dataSources": [
+          {
+            "name": "owners",
+            "type": "path",
+            "jsonPath": "propertyDetails.owners",
+            "code": "ownerDetails.ownerId",
+            "label": "ownerDetails.ownerName"
+          },
+          {
+            "name": "modeOfAllotment",
+            "type": "mdms",
+            "cacheable": true,
+            "lazyload": true,
+            "options": {
+              "moduleName": "EstateServices",
+              "masterName": "modeOfAllotment"
+            }
+          }
+        ],
+        "first_step": {
+          "sections": [
+            {
+              "header": "ES_PROPERTY_DETAILS_HEADER",
+              "type": "CARD_DETAIL",
+              "fields": [
+                {
+                  "label": "ES_FILE_NUMBER_LABEL",
+                  "jsonPath": "property.fileNumber"
+                },
+                {
+                  "label": "ES_HOUSE_NUMBER_LABEL",
+                  "jsonPath": "property.propertyDetails.houseNumber"
+                },
+                {
+                  "label": "ES_MOHALLA_LABEL",
+                  "jsonPath": "property.propertyDetails.mohalla"
+                },
+                {
+                  "label": "ES_STREET_LABEL",
+                  "jsonPath": "property.propertyDetails.street"
+                },
+                {
+                  "label": "ES_AREA_YDS_LABEL",
+                  "jsonPath": "property.propertyDetails.areaSqft"
+                },
+                {
+                  "label": "ES_PROPERTY_TYPE_LABEL",
+                  "jsonPath": "property.propertyDetails.propertyType"
+                },
+                {
+                  "label": "ES_CATEGORY_LABEL",
+                  "jsonPath": "property.category"
+                },
+                {
+                  "label": "ES_SUB_CATEGORY_LABEL",
+                  "jsonPath": "property.subCategory"
+                },
+                {
+                  "label": "ES_SITE_NO_LABEL",
+                  "jsonPath": "property.siteNumber"
+                },
+                {
+                  "label": "ES_SECTOR_NO_LABEL",
+                  "jsonPath": "property.sectorNumber"
+                },
+                {
+                  "label": "ES_LAST_NOC_DATE_LABEL",
+                  "jsonPath": "property.propertyDetails.lastNocDate",
+                  "type": "date"
+                },
+                {
+                  "label": "ES_SERVICE_CATEGORY_LABEL",
+                  "jsonPath": "property.propertyDetails.serviceCategory"
+                }
+              ]
+            },
+            {
+              "header": "ES_PROPERTY_OWNER_LIST_HEADER",
+              "type": "TABLE",
+              "sourceJsonPath": "property.propertyDetails.owners",
+              "fields": [
+                {
+                  "label": "ES_OWNER_NAME_LABEL",
+                  "jsonPath": "ownerDetails.ownerName"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "jsonPath": "share",
+                  "symbol": "%"
+                },
+                {
+                  "label": "ES_OWNER_ADDRESS_LABEL",
+                  "jsonPath": "ownerDetails.address"
+                }
+              ]
+            },
+            {
+              "header": "ES_APPLICANT_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_OWNER_NAME_LABEL",
+                  "placeholder": "ES_OWNER_NAME_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.name",
+                  "path": "owner.name"
+                },
+                {
+                  "label": "ES_DOB_LABEL",
+                  "placeholder": "ES_DOB_PLACEHOLDER",
+                  "type": "DATE_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.dob",
+                  "path": "owner.dob"
+                },
+                {
+                  "label": "ES_OWNER_FATHER_HUSBAND_NAME_LABEL",
+                  "placeholder": "ES_SELLER_TRANSFEROR_FATHER_HUSBAND_NAME_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.fatherOrHusbandName",
+                  "path": "owner.fatherOrHusbandName"
+                },
+                {
+                  "label": "ES_RELATION_SHIP_LABEL",
+                  "type": "RADIO_BUTTON",
+                  "jsonPath": "Applications[0].applicationDetails.owner.relation",
+                  "path": "owner.relation"
+                  
+                },
+                {
+                  "label": "ES_OWNER_ADDRESS_LABEL",
+                  "placeholder": "ES_OWNER_ADDRESS_PLACEHOLDER",
+                  "type": "TEXT_AREA",
+                  "jsonPath": "Applications[0].applicationDetails.owner.address",
+                  "path": "owner.address"
+                },
+                {
+                  "label": "ES_MOBILE_NUMBER_LABEL",
+                  "placeholder": "ES_MOBILE_NUMBER_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.mobileNo",
+                  "path": "owner.mobileNo"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "placeholder": "ES_OWNER_SHARE_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.owner.percentageOfShare",
+                  "path": "owner.percentageOfShareTransferred"
+                }
+              ]
+            },
+            {
+              "header": "ES_ALLOTMENT_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_MODE_OF_ALLOTMENT_OF_HOUSE_LABEL",
+                  "placeholder": "ES_MODE_OF_ALLOTMENT_OF_HOUSE_PLACEHOLDER",
+                  "type": "DROP_DOWN",
+                  "jsonPath": "Applications[0].applicationDetails.modeOfAllotment",
+                  "path": "modeOfAllotment",
+                  "dataSource": "modeOfAllotment"
+                }
+              ]
+            },
+            {
+              "header": "ES_REGISTRATION_DETAILS_HEADER",
+              "type": "FORM",
+              "fields": [
+                {
+                  "label": "ES_REGISTRATION_NUMBER_LABEL",
+                  "placeholder": "ES_REGISTRATION_NUMBER_PLACEHOLDER",
+                  "type": "TEXT_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.registrationNumber",
+                  "path": "registrationNumber",
+                  "errorMessage": "ES_ERR_REGISTRATION_NUMBER"
+                },
+                {
+                  "label": "ES_DATE_OF_REGISTRATION_LABEL",
+                  "type": "DATE_FIELD",
+                  "jsonPath": "Applications[0].applicationDetails.dateOfRegistration",
+                  "path": "dateOfRegistration"
+                }
+              ]
+            }
+          ]
+        },
+        "second_step": {
+          "header": "ES_DOCUMENT_DETAILS_HEADER",
+          "jsonPath": "Applications[0].applicationDocuments"
+        },
+        "preview": {
+          "sections": [
+            {
+              "header": "ES_PROPERTY_DETAILS_HEADER",
+              "isEditable": false,
+              "fields": [
+                {
+                  "label": "ES_FILE_NUMBER_LABEL",
+                  "jsonPath": "Applications[0].property.fileNumber"
+                },
+                {
+                  "label": "ES_HOUSE_NUMBER_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.houseNumber"
+                },
+                {
+                  "label": "ES_MOHALLA_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.mohalla"
+                },
+                {
+                  "label": "ES_STREET_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.street"
+                },
+                {
+                  "label": "ES_AREA_YDS_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.areaSqft"
+                },
+                {
+                  "label": "ES_PROPERTY_TYPE_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.propertyType"
+                },
+                {
+                  "label": "ES_CATEGORY_LABEL",
+                  "jsonPath": "Applications[0].property.category"
+                },
+                {
+                  "label": "ES_SUB_CATEGORY_LABEL",
+                  "jsonPath": "Applications[0].property.subCategory"
+                },
+                {
+                  "label": "ES_SITE_NO_LABEL",
+                  "jsonPath": "Applications[0].property.siteNumber"
+                },
+                {
+                  "label": "ES_SECTOR_NO_LABEL",
+                  "jsonPath": "Applications[0].property.sectorNumber"
+                },
+                {
+                  "label": "ES_LAST_NOC_DATE_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.lastNocDate",
+                  "type": "date"
+                },
+                {
+                  "label": "ES_SERVICE_CATEGORY_LABEL",
+                  "jsonPath": "Applications[0].property.propertyDetails.serviceCategory"
+                }
+              ]
+            },
+            {
+              "header": "ES_APPLICANT_DETAILS_HEADER",
+              "isEditable": false,
+              "fields": [
+                {
+                  "label": "ES_OWNER_NAME_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.name"
+                },
+                {
+                  "label": "ES_OWNER_FATHER_HUSBAND_NAME_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.fatherOrHusbandName"
+                },
+                {
+                  "label": "ES_RELATION_SHIP_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.relation"
+                },
+                {
+                  "label": "ES_OWNER_ADDRESS_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.address"
+                },
+                {
+                  "label": "ES_MOBILE_NUMBER_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.mobileNo"
+                },
+                {
+                  "label": "ES_OWNER_SHARE_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.owner.percentageOfShare"
+                }
+              ]
+            },
+            {
+              "header": "ES_ALLOTMENT_DETAILS_HEADER",
+              "isEditable": false,
+              "fields": [
+                {
+                  "label": "ES_MODE_OF_ALLOTMENT_OF_HOUSE_LABEL",
+                  "jsonPath": "Applications[0].applicationDetails.modeOfAllotment"
+                }
+              ]
+            },
+            {
+              "header": "ES_DOCUMENT_DETAILS_HEADER",
+              "type": "DOCUMENTS",
+              "step": 1,
+              "sourceJsonPath": "temp[0].reviewDocData"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
