@@ -11,7 +11,7 @@ const _applicationTypes = [
   {
     "name": "Entry of Ownership on the basis of Sale/gift/exchange/family transfer deed",
     "code": "ES_ENTRY_OF_OWNERSHIP_SALE_GIFT",
-    "type": "ManiMajra_OwnershipTransfer_SaleDeed",
+    "type": "ManiMajra_CitizenService_SaleGift",
     "active": true,
     "category": "ES_OWNERSHIP_TRANSFER",
     "filter": true
@@ -19,11 +19,27 @@ const _applicationTypes = [
   {
     "name": "Entry of Ownership on the basis of Registered Will",
     "code": "ES_ENTRY_OF_OWNERSHIP_REGISTERED_WILL",
-    "type": "ManiMajra_OwnershipTransfer_RegisteredWill",
+    "type": "ManiMajra_CitizenService_RegisteredWill",
     "active": true,
     "category": "ES_OWNERSHIP_TRANSFER",
     "filter": true
-  }
+  },
+  {
+    "name": "Entry of Ownership on the basis of Registered Will",
+    "code": "ES_ENTRY_OF_OWNERSHIP_UNREGISTERED_WILL",
+    "type": "ManiMajra_CitizenService_UnRegisteredWill",
+    "active": true,
+    "category": "ES_OWNERSHIP_TRANSFER",
+    "filter": true
+  },
+  // {
+  //   "name": "Allotment of new house number",
+  //   "code": "ES_ALLOTMENT_OF_NEW_HOUSE_NUMBER",
+  //   "type": "ManiMajra_CitizenService_UnRegisteredWill",
+  //   "active": true,
+  //   "category": "ES_ALLOTMENT_OF_NEW_HOUSE_NUMBER",
+  //   "filter": true
+  // }
 ]
 
 const getData = async (action, state, dispatch) => {
