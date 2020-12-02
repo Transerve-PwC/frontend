@@ -262,7 +262,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
           `Document - ${index + 1}`,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
-          "documentType" :  `PROPERTYIMAGE ${index + 1}`,
+          "documentType" :  `PROPERTY IMAGE ${index + 1}`,
           "tenantId" : tenantId,
           "active": true
         })
@@ -321,7 +321,7 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
           "fileName" : fileitem.name,
           "fileStoreId" : fileitem.fileStoreId,
           "fileUrl" : Object.values(fileUrlPayload)[index],
-          "documentType" : `PROPERTYIMAGE ${index + 1}`,
+          "documentType" : `PROPERTY IMAGE ${index + 1}`,
           "tenantId" : tenantId,
           "active": true
         })

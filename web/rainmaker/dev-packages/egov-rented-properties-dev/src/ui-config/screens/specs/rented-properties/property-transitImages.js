@@ -57,7 +57,7 @@ import { setApplicationNumberBox } from "../../../../ui-utils/apply";
           images = await getImages(data);
           images = images.map(item => {
             let { applicationDocuments, urls } = item;
-            applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: urls[index].split("?")[0].split("/").pop().slice(13) }));
+            applicationDocuments = applicationDocuments.map((image, index) => ({ ...image, url: urls[index], name: decodeURIComponent(urls[index].split("?")[0].split("/").pop().slice(13)) }));
             return { ...item, applicationDocuments };
           });
         }

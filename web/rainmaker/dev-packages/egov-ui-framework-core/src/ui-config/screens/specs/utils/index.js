@@ -514,7 +514,7 @@ export const getPattern = type => {
     case "Amount":
       return /^[0-9]{0,9}$/i;
     case "AmountFeild":
-      return /^[1-9][0-9]{2,6}$/i;
+      return /^[1-9][0-9]{0,6}$/i;
      case "comments":
       return /^([\s\S]){1,1000}$/i;
     case "Email":

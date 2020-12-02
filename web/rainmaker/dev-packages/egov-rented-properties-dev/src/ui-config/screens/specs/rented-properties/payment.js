@@ -158,7 +158,7 @@ const amountField = {
   },
   pattern: getPattern("AmountFeild"),
   required: true,
-  minLength: 3,
+  minLength: 1,
   maxLength: 7,
   jsonPath: "paymentInfo.amount",
   errorMessage: "RP_ERR_AMOUNT_FIELD",
