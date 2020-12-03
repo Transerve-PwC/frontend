@@ -138,6 +138,7 @@ const getData = async (action, state, dispatch) => {
     const response = await getMdmsData(queryObject);
     const propertyId = getQueryArg(window.location.href, "propertyId")
     const fileNumber = getQueryArg(window.location.href, "fileNumber")
+    const branchType = getQueryArg(window.location.href, "branchType")
     const propertyQueryObject = [
       {key: "propertyIds", value: propertyId},
       {key: "fileNumber", value: fileNumber}
@@ -146,7 +147,7 @@ const getData = async (action, state, dispatch) => {
     try {
       const property = propertyResponse.Properties[0]
       const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
-      const listItems = applicationTypes.filter(item => eval(item.filter)).reduce((prev, curr) => {
+      const listItems = applicationTypes.filter(item => item.branchType === branchType).filter(item => eval(item.filter)).reduce((prev, curr) => {
         if(!!curr.category) {
           let type = {}
           const findIndex = prev.findIndex(item => item.code === curr.category);
@@ -191,9 +192,9 @@ const getData = async (action, state, dispatch) => {
   }
 }
 
-const estateBranchHome = {
+const applicationTypesHome = {
   uiFramework: "material-ui",
-  name: "estate-branch-apply",
+  name: "application-types",
   hasBeforeInitAsync: true,
   beforeInitScreen: async (action, state, dispatch) => {
     dispatch(toggleSpinner())
@@ -202,14 +203,14 @@ const estateBranchHome = {
         dispatch(toggleSpinner())
         return {
           "type": "INIT_SCREEN",
-          "screenKey": "estate-branch-apply",
+          "screenKey": "application-types",
           "screenConfig": {
             "uiFramework": "material-ui",
-            "name": "estate-branch-apply",
+            "name": "application-types",
             components
           }
         }
   }
 }
 
-export default estateBranchHome
+export default applicationTypesHome

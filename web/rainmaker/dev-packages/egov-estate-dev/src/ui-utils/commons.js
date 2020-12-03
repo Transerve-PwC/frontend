@@ -48,7 +48,7 @@ try {
 }
 }
 
-export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
+export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath, name = "applicationTypes"}) => {
   try {
     const queryObject = {
       MdmsCriteria: {
@@ -57,7 +57,7 @@ export const getApplicationTypes = async ({action, state, dispatch, screenKey, c
           {
             moduleName: ESTATE_SERVICES_MDMS_MODULE,
             masterDetails: [
-              { name: "applicationTypes" }
+              { name: name }
             ]
           }
         ]

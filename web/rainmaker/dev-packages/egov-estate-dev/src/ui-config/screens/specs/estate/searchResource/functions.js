@@ -373,7 +373,7 @@ export const extensionStatmentResult = async(state, dispatch ,Criteria) => {
     let data = response.ExtensionFee.map(item => ({
       [getTextToLocalMapping("Date")]: moment(new Date(item.generationDate)).format("DD-MMM-YYYY") || "-",
       [AMOUNT]:(item.amount.toFixed(2)) || "-",
-      [STATUS]: (item.status) || "-"
+      [getTextToLocalMapping("Status")]: (item.status) || "-"
     }));
     
     dispatch(

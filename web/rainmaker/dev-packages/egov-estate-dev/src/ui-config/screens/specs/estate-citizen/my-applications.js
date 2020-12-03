@@ -242,13 +242,12 @@ const searchCard = getCommonCard({
 
 const getData = async (action, state, dispatch) => {
   const branchType = getQueryArg(window.location.href, "branchType");
-  homeURL = branchType == "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC" :"/estate-citizen/estate-branch-apply";
+  homeURL = branchType == "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC" : `/estate-citizen/property-search?branchType=${branchType}`;
 
   const queryObject = [
     {key: "branchType", value: branchType}
   ]
   const response = await getSearchApplicationsResults(queryObject);
-  console.log(response)
   if (!!response && !!response.Applications && !!response.Applications.length) {
     dispatch(prepareFinalObject("actualResults", response.Applications));
     dispatch(prepareFinalObject("searchResults", response.Applications));
@@ -259,12 +258,25 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "my-applications",
   beforeInitScreen: (action, state, dispatch) => {
+    let branchType = getQueryArg(window.location.href, "branchType");
+    let applicationType;
+    switch(branchType) {
+      case "BuildingBranch":
+        applicationType = "applicationTypesBB";
+        break;
+      case "ManiMajra":
+        applicationType = "applicationTypesMM";
+        break;
+      default:
+        applicationType = "applicationTypes";
+        break
+    } 
     dispatch(prepareFinalObject("actualResults", []));
     dispatch(prepareFinalObject("searchResults", []));
     clearSearch(state, dispatch);
     getData(action, state, dispatch)
     getApplicationStatusList({action, state, dispatch, screenKey: "my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.status"})
-    getApplicationTypes({action, state, dispatch, screenKey: "my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType"})
+    getApplicationTypes({action, state, dispatch, screenKey: "my-applications", componentJsonPath : "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType", name: applicationType})
     return action
   },
   components: {
