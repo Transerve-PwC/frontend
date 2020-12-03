@@ -9,6 +9,7 @@ import {
 } from "../../utils/index";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
+
 export const DATE = getTextToLocalMapping("ES_COMMON_TABLE_COL_DATE")
 export const AMOUNT = getTextToLocalMapping("ES_COMMON_TABLE_COL_AMOUNT") + " (₹)"
 export const PAYMENTTYPE = getTextToLocalMapping("ES_COMMON_TABLE_COL_PAYMENTTYPE") + " (₹)"
@@ -20,6 +21,7 @@ export const GSTPENALTYDUE = getTextToLocalMapping("ES_COMMON_TABLE_COL_GSTPENAL
 export const TOTALDUE = getTextToLocalMapping("ES_COMMON_TABLE_COL_TOTALDUE") + " (₹)"
 export const ACCOUNTBALANCE = getTextToLocalMapping("ES_COMMON_TABLE_COL_ACCOUNTBALANCE") + " (₹)"
 export const RECEIPT_NO = getTextToLocalMapping("ES_COMMON_TABLE_RECEIPT_NO")
+export const CONSOLIDATED_DEMAND = getTextToLocalMapping("ES_COMMON_TABLE_CONSOLIDATED_DEMAND")
 
 export const searchResultsAccountStatement = {
   uiFramework: "custom-molecules",
@@ -29,6 +31,7 @@ export const searchResultsAccountStatement = {
   props: {
     columns: [
         getTextToLocalMapping("Date"),
+        getTextToLocalMapping("Consolidated Demand"),
         getTextToLocalMapping("Amount"),
         getTextToLocalMapping("Type(Payment)"),
         getTextToLocalMapping("Type(Rent)"),
@@ -72,6 +75,16 @@ export const accountStatementResults = {
   ...searchResultsAccountStatement.props.style,
     columns: [
       DATE,
+      {
+        name: CONSOLIDATED_DEMAND,
+        options: {
+          customBodyRender: value => (
+            <span style={{ display: 'flex', justifyContent: 'right',flexDirection: 'row-reverse',marginBottom:'none'}}>
+          {value}
+        </span> 
+          )
+        }
+      },
       {
         name: AMOUNT,
         options: {
