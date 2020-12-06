@@ -23,10 +23,10 @@ import {
   import {
     getQueryArg
   } from "egov-ui-framework/ui-utils/commons";
-  import {addPenalty} from '../../../../ui-utils/apply'
+  import {addHocDemandUpdate} from '../../../../ui-utils/apply'
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import get from "lodash/get";
-  import { validateFields } from "../utils";
+  import { validateFields,getTodaysDateInYMD } from "../utils";
   
   const header = getCommonHeader({
     labelName: "Adhoc Demand",
@@ -70,7 +70,7 @@ import {
         sm: 6
     },
     required: true,
-    jsonPath: ""
+    jsonPath: "adhocDetails.rent"
   }
 
   const gstField = {
@@ -87,7 +87,7 @@ import {
         sm: 6
     },
     required: true,
-    jsonPath: ""
+    jsonPath: "adhocDetails.gst"
   }
 
   const interestOnRentField = {
@@ -104,7 +104,7 @@ import {
         sm: 6
     },
     required: true,
-    jsonPath: ""
+    jsonPath: "adhocDetails.penaltyInterest"
   }
 
   const intestOnGstField = {
@@ -121,21 +121,42 @@ import {
         sm: 6
     },
     required: true,
-    jsonPath: ""
+    jsonPath: "adhocDetails.gstInterest"
   }
 
-  const dateOfAdjustmentEntryField = {
-    label: {
-        labelName: "Date of Adjustment entry",
-        labelKey: "ADJUSTMENT_ENTRY_DATE_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Date",
-        labelKey: "ADJUSTMENT_ENTRY_PLACEHOLDER"
-      },
-      required: true,
-      pattern: getPattern("Date"),
-      // jsonPath: "searchScreen.date"
+const dateOfAdjustmentEntryField = {
+  label: {
+    labelName: "Date of Adjustment entry",
+    labelKey: "ADJUSTMENT_ENTRY_DATE_LABEL"
+  },
+  placeholder: {
+    labelName: "Select Date",
+    labelKey: "ADJUSTMENT_ENTRY_PLACEHOLDER"
+  },
+  required: true,
+  pattern: getPattern("Date"),
+  jsonPath: "adhocDetails.adjustmentDate",
+  props: {
+      inputProps: {
+          max: getTodaysDateInYMD()
+      }
+  }
+}
+
+const commentsField = {
+  label: {
+      labelName: "Comments",
+      labelKey: "ES_COMMENTS_LABEL"
+  },
+  placeholder: {
+      labelName: "Enter Comments",
+      labelKey: "ES_COMMENTS_PLACEHOLDER"
+  },
+  gridDefination: {
+      xs: 12,
+      sm: 6
+  },
+  jsonPath: "adhocDetails.comments"
 }
     
   
@@ -146,7 +167,8 @@ import {
       rentInterest: getTextField(interestOnRentField),
       gst:getTextField(gstField),
       gstInterest:getTextField(intestOnGstField) ,
-      adjustmentEntryDate: getDateField(dateOfAdjustmentEntryField)
+      adjustmentEntryDate: getDateField(dateOfAdjustmentEntryField),
+      comments : getTextField(commentsField)
     })
   })
     
@@ -176,7 +198,7 @@ import {
   const callBackForSubmit = (state, dispatch) => {
   
     let isValid = true;
-    isValid = validateFields("components.div.children.detailsContainer.children.adhocDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "adHocDemand")
+    isValid = validateFields("components.div.children.detailsContainer.children.adhocDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "adhocDemand")
     if(!isValid){
       let errorMessage = {
         labelName:
@@ -186,8 +208,9 @@ import {
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
     if(!!isValid){
+
         console.log("adhhoc function")
-    //   addPenalty(state,dispatch)
+      addHocDemandUpdate(state,dispatch)
     }
    
   }
@@ -223,8 +246,9 @@ import {
   
   const adHocDemand = {
     uiFramework: "material-ui",
-    name: "adHocDemand",
+    name: "adhocDemand",
     beforeInitScreen: (action, state, dispatch) => {
+      dispatch(prepareFinalObject("adhocDetails",{}))
       beforeInitFn(action, state, dispatch);
       return action
     },

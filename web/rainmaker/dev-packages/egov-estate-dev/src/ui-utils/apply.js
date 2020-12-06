@@ -10,6 +10,8 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
+import moment from 'moment';
+
 import {
   getFileUrl,
   getFileUrlFromAPI,
@@ -191,6 +193,17 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (queryObject[0].propertyDetails.estateDemands && queryObject[0].propertyDetails.estateDemands.length) {
       set(queryObject[0], "propertyDetails.estateDemands[0].isPrevious", true);
+    }
+
+    if (queryObject[0].propertyDetails.accountStatementDocument) {
+      let legacyAccStmtDoc = queryObject[0].propertyDetails.accountStatementDocument;
+      legacyAccStmtDoc[0].isActive = true;
+
+      set(
+        queryObject[0],
+        "propertyDetails.accountStatementDocument",
+        legacyAccStmtDoc
+      )
     }
 
     prevOwners = get(
@@ -379,6 +392,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       noOfMonths = noOfMonths != null ? noOfMonths.toString() : noOfMonths;
     }
 
+    if (Properties[0].propertyDetails.accountStatementDocument) {
+      setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.accountStatementDocument`, `PropertiesTemp[0].propertyDetails.accountStatementUploadedDocInRedux`);
+    }
+
     owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -435,9 +452,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     paymentConfigItems = paymentConfig.paymentConfigItems.sort((a, b) => {
       return a.groundRentStartMonth - b.groundRentStartMonth
     });
-    paymentConfigItems = paymentConfigItems.map(item => ({...item, tillDate: item.groundRentEndMonth - item.groundRentStartMonth}))
+    paymentConfigItems = paymentConfigItems.map(item => ({...item, tillDate: item.groundRentEndMonth - item.groundRentStartMonth + 1}))
   } else {
-    paymentConfigItems = [{groundRentStartMonth: "0"}]
+    paymentConfigItems = [{groundRentStartMonth: "1"}]
   }
     Properties = [{...Properties[0], estateRentSummary: estateRentSummary, propertyDetails: {...propertyDetails, paymentConfig : {...paymentConfig, paymentConfigItems}}}]
 
@@ -474,6 +491,59 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     dispatch(toggleSnackbar(true, {
       labelName: error.message
     }, "error"));
+    console.log(error);
+    return false;
+  }
+}
+
+export const addHocDemandUpdate = async (state, dispatch) => {
+  try {
+    let queryObject = JSON.parse(
+      JSON.stringify(
+        get(state.screenConfiguration.preparedFinalObject, "Properties", [])
+      )
+    );
+
+    let adhocDetails = JSON.parse(
+      JSON.stringify(
+        get(state.screenConfiguration.preparedFinalObject, "adhocDetails", {})
+      )
+    );
+
+    set(adhocDetails , "isAdjustment","true")
+    set(adhocDetails, "adjustmentDate", convertDateToEpoch(adhocDetails.adjustmentDate))
+    set(adhocDetails, "generationDate", convertDateToEpoch(moment(new Date()).format('YYYY-MM-DD')));
+    set(adhocDetails , "remainingGST" ,adhocDetails.gst )
+    set(adhocDetails , "remainingRent" ,adhocDetails.rent )
+    set(adhocDetails , "remainingRentPenalty" ,adhocDetails.penaltyInterest )
+    set(adhocDetails , "remainingGSTPenalty" ,adhocDetails.gstInterest )
+    set(adhocDetails , "interestSince",adhocDetails.generationDate )
+    set(adhocDetails , "collectedRent",0 )
+    set(adhocDetails , "collectedGST",0)
+    set(adhocDetails , "collectedRentPenalty",0 )
+    set(adhocDetails , "collectedGSTPenalty",0 )
+    set(queryObject[0], "propertyDetails.estateDemands[0]", adhocDetails);
+    
+    let response;
+    if(queryObject) {  
+      response = await httpRequest(
+        "post",
+        "/est-services/property-master/_update",
+        "",
+        [],
+        { Properties : queryObject }
+      );
+    } 
+    if(response){
+        dispatch(
+          setRoute(
+          `acknowledgement?purpose=adHocDemand&fileNumber=${response.Properties[0].fileNumber}&status=success&tenantId=${response.Properties[0].tenantId}`
+          )
+        )
+      }
+      return true;
+  } catch (error) {
+    dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
     console.log(error);
     return false;
   }

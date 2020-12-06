@@ -403,6 +403,7 @@ export const applicationSuccessFooter = (
                       downloadSummary(Properties, PropertiesTemp,'print');
                     }
                   }
+              break;    
               case 'pay': 
               if(type === 'ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER' || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_VIOLATION" || type === "ESTATE_SERVICE_ESTATE_BRANCH.EXTENSION_FEE"
               || type === 'ESTATE_SERVICE_ESTATE_BRANCH.SECURITY_DEPOSIT'){

@@ -48,8 +48,14 @@ try {
 }
 }
 
-export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath, name = "applicationTypes"}) => {
+export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
   try {
+    const branchType = getQueryArg(window.location.href, "branchType");
+    let filter = "ESTATE_BRANCH";
+
+    if (branchType == "ManiMajra") {
+      filter = "MANI_MAJRA"
+    }
     const queryObject = {
       MdmsCriteria: {
         tenantId: commonConfig.tenantId,
@@ -57,15 +63,15 @@ export const getApplicationTypes = async ({action, state, dispatch, screenKey, c
           {
             moduleName: ESTATE_SERVICES_MDMS_MODULE,
             masterDetails: [
-              { name: name }
+              { name: "applicationTypes" }
             ]
           }
         ]
       }
     }
     const response = await getMdmsData(queryObject);
-    const applicationTypes = response.MdmsRes.EstateServices.applicationTypes
-    const data = applicationTypes.map(item => ({
+    const applicationTypes = response.MdmsRes.EstateServices.applicationTypes;
+    const data = applicationTypes.filter(item => item.branchType == filter).map(item => ({
       code: item.type.split("_").pop(),
       label: item.code
     }))

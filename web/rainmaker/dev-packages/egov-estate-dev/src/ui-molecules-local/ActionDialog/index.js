@@ -217,6 +217,7 @@ class ActionDialog extends React.Component {
                       }
                       jsonPath={`${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
+                      inputProps={{ maxLength: 120 }}
                     />
                   </Grid>
                   {buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" && (
@@ -224,8 +225,9 @@ class ActionDialog extends React.Component {
                     <TextFieldContainer
                     type="date"
                     required={true}
-                    defaultValue={new Date()}
-                    InputLabelProps={{ shrink: true, max: new Date() }}
+                    defaultValue={new Date().toISOString().split('T')[0]}
+                    InputLabelProps={{ shrink: true }}
+                    inputProps = {{max: new Date().toISOString().split('T')[0]}}
                     label= {fieldConfig.hardCopyReceivedDate.label}
                     onChange={e =>
                      handleFieldChange( `${dataPath}.hardCopyReceivedDate` , getEpoch(e.target.value))

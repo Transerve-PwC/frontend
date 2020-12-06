@@ -248,8 +248,9 @@ class WorkFlowContainer extends React.Component {
 
     set(data, `${appendToPath}action`, label);
 
-    if (isDocRequired) {
-      const documents = !!documentsJsonPath ? get(preparedFinalObject, documentsJsonPath) : get(data, "wfDocuments");
+    if (isDocRequired || !!this.props.documentProps) {
+      let documents = !!documentsJsonPath ? get(preparedFinalObject, documentsJsonPath) : get(data, "wfDocuments");
+      documents = documents.filter(item => !!item)
       if (documents && documents.length > 0) {
         this.wfUpdate(label);
       } else {

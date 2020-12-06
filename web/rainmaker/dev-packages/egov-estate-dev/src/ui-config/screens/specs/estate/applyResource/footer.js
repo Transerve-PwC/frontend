@@ -176,9 +176,9 @@ const callBackForNext = async (state, dispatch) => {
       dispatch,
       screenKey
     )
-    let auctionDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction.props.value");
+    let auctionDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.dateOfAuction.props.value") || get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.dateOfAuction");
 
-    let emdDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate.props.value");
+    let emdDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate.props.value") || get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.emdDate");
 
     
     let auctionDateEpoch = convertDateToEpoch(auctionDate)

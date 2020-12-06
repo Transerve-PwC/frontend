@@ -105,6 +105,11 @@ const getAcknowledgementCard = (
         labelName: "Extension Fee is Added successfully",
         labelKey: "ES_ADD_EXTENSION_FEE_SUCCESS_MESSAGE_HEAD"
       }
+    }else if(purpose === "adHocDemand"){
+      header = {
+        labelName: "Adhoc Demand Added successfully",
+        labelKey: "ES_ADHOC_DEMAND_SUCCESS_MESSAGE_HEAD"
+      }
     } else {
       if(!type && purpose === "pay") {
         header = {
