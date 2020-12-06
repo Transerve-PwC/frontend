@@ -52,6 +52,14 @@ const getData = async(action, state, dispatch) => {
   let propertyIdTransit = getQueryArg(window.location.href, "propertyIdTransit");
   const { screenConfiguration } = state;
   if(!!propertyIdTransit){
+    let docdata=get(   screenConfiguration.preparedFinalObject,
+      "SingleImage[0].applicationDocuments",
+      [])
+      if(docdata && docdata.length){
+        docdata.map((item,index)=>{
+item.documentType=`PROPERTYIMAGE${index+1}`
+        })
+      }
     payload = get(
       screenConfiguration.preparedFinalObject,
       "SingleImage",
@@ -74,6 +82,14 @@ const getData = async(action, state, dispatch) => {
       );
   }
   else if(propertyIdTransit === null || propertyIdTransit === undefined || !propertyIdTransit){
+    let docdata=get(   screenConfiguration.preparedFinalObject,
+      "SingleImage[0].applicationDocuments",
+      [])
+      if(docdata && docdata.length){
+        docdata.map((item,index)=>{
+item.documentType=`PROPERTYIMAGE${index+1}`
+        })
+      }
     payload = []
     dispatch(prepareFinalObject("workflow.ProcessInstances", []))
     await setDocuments(
