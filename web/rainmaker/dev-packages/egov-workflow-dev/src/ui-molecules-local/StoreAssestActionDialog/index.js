@@ -208,6 +208,8 @@ class StoreAssetActionDialog extends React.Component {
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
                       required={true}
+                      multiline="multiline"
+                      rowsMax={2}
                       onChange={e =>
                         handleFieldChange(`${dataPath}.workFlowDetails.comments`, e.target.value)
                       }

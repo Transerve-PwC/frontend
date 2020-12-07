@@ -63,7 +63,7 @@ const ApplicationResolvedForm = ({ form, options, onSubmit, onSubmitClick, booki
     <div>
       <div className="custom-padding-for-screens">
         <div className="complaint-resolved-main-container">
-          <TextField
+          {/* <TextField
             id="comment-value"
             name="comment-value"
             type="string"
@@ -87,7 +87,16 @@ const ApplicationResolvedForm = ({ form, options, onSubmit, onSubmitClick, booki
             underlineStyle={{ bottom: 7 }}
             underlineFocusStyle={{ bottom: 7 }}
             hintStyle={{ width: "100%" }}
+          /> */}
+          
+          <TextArea 
+
+            value={commentValue}
+            onChange={ontextAreaChange}
+            hintText= "BK_MYBK_ADD_COMMENTS_PLACEHOLDER"
+          
           />
+
 
 
         </div>

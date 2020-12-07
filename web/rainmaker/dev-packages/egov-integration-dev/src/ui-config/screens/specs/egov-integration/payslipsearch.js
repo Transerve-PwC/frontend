@@ -4,12 +4,12 @@ import {
     getLabel,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+  import { getQueryArg, } from "egov-ui-framework/ui-utils/commons";
   import set from "lodash/set";
   import { httpRequest } from "../../../../ui-utils";
   import { searchForm } from "./searchPayslipResource/searchForm";
   //import { searchResults } from "./searchPayslipResource/searchResults";
-  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+  import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import commonConfig from '../../../../config/common';
   import {  
@@ -24,7 +24,30 @@ import {
     labelKey: "INTIGRATION_PAYSLIP",
   });
   
+  const getEmployeeData = async (action, state, dispatch) => {
 
+    const tenantId = getTenantId();
+    const userInfo = JSON.parse(getUserInfo());
+    if(userInfo){
+      dispatch(prepareFinalObject("indents[0].indentCreatedBy", userInfo.name));
+      const queryParams = [{ key: "uuids", value: userInfo.uuid },{ key: "tenantId", value:  tenantId }];
+      try { 
+        const payload = await httpRequest(
+          "post",
+          "/egov-hrms/employees/_search",
+          "_search",
+          queryParams
+        );
+        if(payload){ 
+          dispatch(prepareFinalObject("searchScreen.empCode", payload.Employees[0].code));
+        }
+        
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    
+  };
   
   const getMDMSData = async (action, state, dispatch) => {
 
@@ -200,6 +223,7 @@ if(Allowances.length>Deductions.length)
       }
      // dispatch(prepareFinalObject("PaySlip",PaySlip));
       dispatch(prepareFinalObject("APIData.PaySlip.Allowances",[]));
+      const storedata = getEmployeeData(action,state, dispatch);
       return action;
     },
     components: {

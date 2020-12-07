@@ -22,7 +22,8 @@ import { dispatchMultipleFieldChangeAction } from "egov-ui-framework/ui-config/s
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
 import set from "lodash/set";
-import { convertDateInYMD } from "../utils";
+import { convertDateInYMD, calculateBetweenDaysCount } from "../utils";
+
 
 export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
   let allAreFilled = true;
@@ -212,7 +213,21 @@ const callBackForBook = async (state, dispatch) => {
 
 
     if (oldAvailabilityCheckData !== undefined) {
+console.log(convertDateInYMD(availabilityCheckData.bkFromDate)+ "----"+oldAvailabilityCheckData.bkFromDate);
+console.log(convertDateInYMD(availabilityCheckData.bkToDate)+ "----"+oldAvailabilityCheckData.bkToDate);
+console.log(availabilityCheckData.bkBookingVenue+"-----------"+
+oldAvailabilityCheckData.bkBookingVenue);
+console.log(oldAvailabilityCheckData.bkApplicationStatus);
+let alreadyBookedDaysCount = calculateBetweenDaysCount(
+    oldAvailabilityCheckData.bkFromDate,
+    oldAvailabilityCheckData.bkToDate
+);
 
+let selectedDaysCount = calculateBetweenDaysCount(
+    convertDateInYMD(availabilityCheckData.bkFromDate),
+    convertDateInYMD(availabilityCheckData.bkToDate)
+);
+console.log(alreadyBookedDaysCount, selectedDaysCount, "aNero from file");
       if (
         convertDateInYMD(availabilityCheckData.bkFromDate) ===
         oldAvailabilityCheckData.bkFromDate &&
@@ -220,13 +235,21 @@ const callBackForBook = async (state, dispatch) => {
         oldAvailabilityCheckData.bkToDate &&
         availabilityCheckData.bkBookingVenue ===
         oldAvailabilityCheckData.bkBookingVenue &&
-        oldAvailabilityCheckData.bkApplicationStatus == "APPLIED"
+        (availabilityCheckData.bkApplicationStatus == "APPLIED" || availabilityCheckData.bkApplicationStatus == "RE_INITIATED")
       ) {
         let warrningMsg = {
           labelName: "Please Change Date/Venue",
           labelKey: "",
         };
         dispatch(toggleSnackbar(true, warrningMsg, "warning"));
+      } else if(Number.isInteger(alreadyBookedDaysCount) && alreadyBookedDaysCount != selectedDaysCount){
+        let warrningMsg = {
+          labelName: "You can only change the dates but total no of days must be equal as original booking",
+          labelKey: "",
+        };
+        dispatch(toggleSnackbar(true, warrningMsg, "warning"));
+
+
       } else {
         if ("bkApplicationNumber" in availabilityCheckData) {
           dispatch(
@@ -264,7 +287,7 @@ const callBackForBook = async (state, dispatch) => {
   }
 };
 
-const calculateBetweenDaysCount = (startDate, endDate) => {
+const calculateBetweenDaysCount1 = (startDate, endDate) => {
     const oneDay = 24 * 60 * 60 * 1000;
     const firstDate = new Date(startDate);
     const secondDate = new Date(endDate);

@@ -8,6 +8,7 @@ import {
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {  checkValueForNA } from "../../utils";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 const indentNumber = getQueryArg(window.location.href, "indentNumber");
 const gotoCreatePage = (state, dispatch) => {
   let createUrl="";
@@ -15,6 +16,11 @@ const gotoCreatePage = (state, dispatch) => {
    createUrl = `/egov-store-asset/create-purchase-order?indentNumber=${indentNumber}&step=2`;
    else
    createUrl = `/egov-store-asset/create-purchase-order?step=2`;
+   const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;             
+    if(purchaseOrders &&purchaseOrders[0])
+    {
+      createUrl = `/egov-store-asset/create-purchase-order?poNumber=${purchaseOrders[0].purchaseOrderNumber}&tenantId=${getTenantId()}&step=2`;
+    }
   dispatch(setRoute(createUrl));
 };
 
@@ -56,10 +62,10 @@ const assignmentCard = {
             callBack: checkValueForNA
           }
         ),
-        poOrderedQuantity: getLabelWithValue(
+        balenceQty: getLabelWithValue(
           { labelName: "Balance Quantity", labelKey: "STORE_PURCHASE_ORDER_BLNC_QLTY" },
           {
-            jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].poOrderedQuantity",
+            jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].balenceQty",
           }
         ),
         orderQuantity: getLabelWithValue(

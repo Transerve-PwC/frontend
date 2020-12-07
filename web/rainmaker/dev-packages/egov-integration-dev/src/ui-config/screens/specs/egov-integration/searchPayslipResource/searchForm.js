@@ -54,6 +54,9 @@ export const searchForm = getCommonCard({
           labelName: "Enter Employee ID",
           labelKey: "INTIGRATION_SF_EMPLOYEE_ID_PLACEHOLDER"
         },
+        props:{
+          disabled:true
+        },
         required: true, 
         errorMessage:"INTIGRATION_ERROR_SF_EMPLOYEE_ID",      
         jsonPath: "searchScreen.empCode",     

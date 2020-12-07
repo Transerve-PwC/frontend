@@ -19,41 +19,48 @@ import {
   
   const tradeView = MTONReviewDetails(false);
   
-  const getMdmsData = async (action, state, dispatch, tenantId) => {
-    const tenant = getstoreTenantId();
+
+  const getData = async (action, state, dispatch) => {
+   
+    await getEmployeeData(action, state, dispatch);
+    await getMdmsData(action, state, dispatch);
+  }
+  const getMdmsData = async (action, state, dispatch) => {
     let mdmsBody = {
       MdmsCriteria: {
-        tenantId: tenant,
-        moduleDetails: [
+        tenantId: commonConfig.tenantId,
+        moduleDetails: [ 
           {
-            moduleName: "egov-hrms",
+            moduleName: "store-asset",
             masterDetails: [
-              {
-                name: "DeactivationReason",
-                filter: "[?(@.active == true)]"
-              }
+              { name: "Material", },
+              { name: "RateType", filter: "[?(@.active == true)]" },
+            ]
+          },
+          {
+            moduleName: "common-masters",
+            masterDetails: [
+              { name: "UOM", filter: "[?(@.active == true)]" },
+              { name: "Department", filter: "[?(@.active == true)]" },
+              { name: "Designation", filter: "[?(@.active == true)]" }
             ]
           }
         ]
       }
     };
     try {
-      const payload = await httpRequest(
+      const response = await httpRequest(
         "post",
         "/egov-mdms-service/v1/_search",
         "_search",
         [],
         mdmsBody
       );
-      dispatch(prepareFinalObject("viewScreenMdmsData", payload.MdmsRes));
+      dispatch( prepareFinalObject("createScreenMdmsData", get(response, "MdmsRes")) );
     } catch (e) {
       console.log(e);
     }
   };
-  const getData = async (action, state, dispatch) => {
-   
-    await getEmployeeData(action, state, dispatch);
-  }
   const getEmployeeData = async (action, state, dispatch) => {
     //fecthing employee details 
     const queryParams = [{ key: "roles", value: "EMPLOYEE" },{ key: "tenantId", value:  getTenantId() }];

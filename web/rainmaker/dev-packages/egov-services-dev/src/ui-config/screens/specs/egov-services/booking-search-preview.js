@@ -125,11 +125,13 @@ const prepareDocumentsView = async (state, dispatch) => {
             fileStoreIds1.length > 0
                 ? await getFileUrlFromAPI(fileStoreIds1)
                 : {};
+        
         documentsPreview1 = documentsPreview1.map(function (doc, index) {
+
             doc["link"] =
                 (fileUrls1 &&
-                    fileUrls1[doc.fileStoreId1] &&
-                    fileUrls1[doc.fileStoreId1].split(",")[0]) ||
+                    fileUrls1[doc.fileStoreId] &&
+                    fileUrls1[doc.fileStoreId].split(",")[0]) ||
                 "";
             doc["name"] =
                 (fileUrls1[doc.fileStoreId] &&

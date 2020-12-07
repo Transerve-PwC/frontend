@@ -269,7 +269,7 @@ class BookingDetails extends Component {
                       />
                     </Typography>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2" style={{wordBreak: "break-word"}}>
                     <Typography variant="caption">
                       <LabelContainer
                         labelName="Comments"

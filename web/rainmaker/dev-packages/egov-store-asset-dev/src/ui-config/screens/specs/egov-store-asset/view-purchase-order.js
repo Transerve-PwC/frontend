@@ -145,9 +145,12 @@ printMenu = [receiptPrintObject];
        let poOrderedQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].purchaseIndentDetails[0].indentDetail.poOrderedQuantity`,0)
        let indentNumber = get(purchaseOrders[0], `purchaseOrderDetails[${index}].indentNumber`,'')
        let orderQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].orderQuantity`,0)
+       let indentIssuedQuantity = get(purchaseOrders[0], `purchaseOrderDetails[${index}].indentIssuedQuantity`,0)
        set(purchaseOrders[0], `purchaseOrderDetails[${index}].indentNumber`,indentNumber);
        set(purchaseOrders[0], `purchaseOrderDetails[${index}].indentQuantity`,indentQuantity);
        set(purchaseOrders[0], `purchaseOrderDetails[${index}].poOrderedQuantity`,poOrderedQuantity);
+       let balenceQty = indentQuantity -(indentIssuedQuantity + poOrderedQuantity)
+       set(purchaseOrders[0], `purchaseOrderDetails[${index}].balenceQty`,balenceQty);
       
        totalvalue = totalvalue+(unitPrice*userQuantity)
        //totalIndentQty = totalIndentQty+ indentQuantity

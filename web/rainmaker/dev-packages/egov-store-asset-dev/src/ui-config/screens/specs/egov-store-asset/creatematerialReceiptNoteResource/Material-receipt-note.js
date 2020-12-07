@@ -223,6 +223,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME"
           },
           required: true,
+          visible:false,
           errorMessage:"STORE_VALIDATION_SUPPLIER_NAME_SELECT",
           jsonPath: "materialReceipt[0].supplier.code",
           sourceJsonPath: "supplier.suppliers",

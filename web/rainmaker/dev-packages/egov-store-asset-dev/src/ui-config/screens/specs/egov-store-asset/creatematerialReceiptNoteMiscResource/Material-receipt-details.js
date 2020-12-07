@@ -125,7 +125,7 @@ import {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[0].isScrapItem`,false));
                 dispatch(prepareFinalObject(`materialReceipt[0].receivedBy`, materials[0].issuedToEmployee,));
                 dispatch(prepareFinalObject(`materialReceipt[0].inspectedBy`, materials[0].issuedToEmployee,));
-                dispatch(prepareFinalObject(`materialReceipt[0].designation`, materials[0].issuedToDesignation,));
+               // dispatch(prepareFinalObject(`materialReceipt[0].designation`, materials[0].issuedToDesignation,));
 
               }
               dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].purchaseOrderDetail.id`,null));
@@ -265,6 +265,11 @@ import {
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
+                props: {
+                  className: "applicant-details-error",
+                  multiline: "multiline",
+                  rowsMax: 2,
+                },
                 errorMessage:"STORE_VALIDATION_REMARK",
                 pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialReceipt[0].receiptDetails[0].rejectionRemark"

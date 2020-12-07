@@ -68,6 +68,8 @@ const purchaseOrderDetailsCard = {
                   dispatch(prepareFinalObject(`purchaseOrders[0].totalIndentQty`, matObj[0].indentQuantity));
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].issuedQuantity`, matObj[0].indentIssuedQuantity));
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].poOrderedQuantity`, matObj[0].poOrderedQuantity));
+                  let balenceQty =matObj[0].indentQuantity -(matObj[0].indentIssuedQuantity + matObj[0].poOrderedQuantity)
+                  dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].balenceQty`, balenceQty));
                 }
                  }
                 }
@@ -194,6 +196,25 @@ const purchaseOrderDetailsCard = {
               // pattern: getPattern("numeric-only"),
               pattern: getSTOREPattern("Quantity"),
               jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].poOrderedQuantity"
+            })
+          },
+          balenceQty: {
+            ...getTextField({
+              label: {
+                labelName: "Balance Quantity",
+                labelKey: "STORE_PURCHASE_ORDER_BLNC_QLTY"
+              },
+              placeholder: {
+                labelName: "Balance Quantity",
+                labelKey: "STORE_PURCHASE_ORDER_BLNC_QLTY"
+              },
+              required: false,
+              props: {
+                disabled:true,     
+              },
+              // pattern: getPattern("numeric-only"),
+              pattern: getSTOREPattern("Quantity"),
+              jsonPath: "purchaseOrders[0].purchaseOrderDetails[0].balenceQty"
             })
           },
           orderQuantity: {

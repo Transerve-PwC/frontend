@@ -1011,7 +1011,7 @@ let bankName = refundDetailsResp.data[0].gateway;
             receiptVal = res.filestoreIds.map(async (fileStoreId) => {
 
                 if (flag === 'false') {
-                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                    downloadReceiptFromFilestoreIDForPdf(fileStoreId, mode, tenantId);
                 }
                 else if (flag === 'true') {
 
@@ -1217,13 +1217,13 @@ export const downloadCertificate = async (
         )
 
 
-        res.filestoreIds[0];
+
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
 
             receiptVal = res.filestoreIds.map(async (fileStoreId) => {
 
                 if (flag === 'false') {
-                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                    downloadReceiptFromFilestoreIDForPdf(fileStoreId, mode, tenantId);
                 }
                 else if (flag === 'true') {
 
@@ -1253,6 +1253,8 @@ export const downloadApplication = async (
 ) => {
     let tenantData = await getMdmsTenantsData();
     tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    //tenantId
+
     let applicationData = get(
         state.screenConfiguration.preparedFinalObject,
         "Booking"
@@ -1263,7 +1265,7 @@ export const downloadApplication = async (
         { key: "applicationNumber", value: applicationNumber },
     ]);
     let recData = get(response, "bookingsModelList", []);
-    
+
     let documentName = '';
     let document2 = '';
     if (applicationData.businessService != "NLUJM") {
@@ -1531,7 +1533,7 @@ export const downloadApplication = async (
             res.filestoreIds[0];
             if (res && res.filestoreIds && res.filestoreIds.length > 0) {
                 res.filestoreIds.map((fileStoreId) => {
-                    downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                    downloadReceiptFromFilestoreIDForPdf(fileStoreId, mode, tenantId);
                 });
             } else {
                 console.log("Error In Application Download");
@@ -2252,4 +2254,75 @@ export const calculateBetweenDaysCount = (startDate, endDate) => {
     const daysCount =
         Math.round(Math.abs((firstDate - secondDate) / oneDay)) + 1;
     return daysCount;
+};
+
+
+export const downloadReceiptFromFilestoreIDForPdf = (fileStoreId, mode, tenantId) => {
+    getFileUrlFromAPIForPdf(fileStoreId, tenantId).then(async (fileRes) => {
+        if (mode === "download") {
+            var win = window.open(fileRes[fileStoreId], "_blank");
+            if (win) {
+                win.focus();
+            }
+        } else {
+            // printJS(fileRes[fileStoreId])
+            var response = await axios.get(fileRes[fileStoreId], {
+                //responseType: "blob",
+                responseType: "arraybuffer",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/pdf",
+                },
+            });
+            console.log("responseData---", response);
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            var myWindow = window.open(fileURL);
+            if (myWindow != undefined) {
+                myWindow.addEventListener("load", (event) => {
+                    myWindow.focus();
+                    myWindow.print();
+                });
+            }
+        }
+    });
+};
+export const getFileUrlFromAPIForPdf = async (fileStoreId,tenantId) => {
+  console.log(tenantId, "My Tenant Id");
+
+  const queryObject = [
+  	{ key: "tenantId", value: tenantId },
+//    { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getAllbillsOfBooking = async (applicationNumber, tenantId) => {
+    let queryObject = [
+        { key: "tenantId", value: tenantId },
+        { key: "consumerCode", value: applicationNumber },
+
+    ];
+    try {
+        const response = await httpRequest(
+            "post",
+            "/billing-service/bill/v2/_search",
+            "",
+            queryObject
+        );
+        return response;
+    } catch (error) {
+        console.log(error, "errornew");
+    }
 };

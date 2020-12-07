@@ -125,13 +125,13 @@ export const getReceiptNoteListDetailsView = (isReview = true) => {
         },
         { jsonPath: "materialReceipt[0].receiptType" }
       ),
-      supplierName: getLabelWithValue(
-        { labelName: "Indenting Dept. Name",
-        labelKey: "STORE_MATERIAL_INDENT_NOTE_INDENTING_DEP_NAME" },
-        {
-          jsonPath: "materialReceipt[0].supplier.name",
-        }
-      ),
+      // supplierName: getLabelWithValue(
+      //   { labelName: "Supplier Name",
+      //   labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME" },
+      //   {
+      //     jsonPath: "materialReceipt[0].supplier.name",
+      //   }
+      // ),
       SupplierBillNO: getLabelWithValue(
         { labelName: "Supplier Bill NO.",
         labelKey: "STORE_MATERIAL_RECEIPT_SUPPLIER_BILL_NO" },

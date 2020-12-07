@@ -1965,7 +1965,7 @@ export const getSTOREPattern = type => {
     case "consumerNo":
       return /^[a-zA-Z0-9/-]*$/i;
     case "Comment":
-      return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,500}$/i;
+      return /^[^\$\"'<>\\\\~`@#$%^()+={}\[\]*:;]{1,500}$/i;
     case "WFComment":
     return /^[^\$\"'<>\\\\~`@$%^()+={}\[\]*:;]{1,120}$/i;
     case "Quantity":

@@ -192,7 +192,7 @@ export const summaryDetails = getCommonCard({
                 uiFramework: "custom-atoms",
                 componentPath: "Card",
                 props: {
-                    style: { width: "100%", margin: 0, 
+                    style: { width: "100%", margin: 0,
                     backgroundColor: "rgb(242, 242, 242)",
                     borderRadius: 0,
                     boxShadow: "none",
@@ -202,7 +202,7 @@ export const summaryDetails = getCommonCard({
                     estimateSummary
                 },
             },
-            applicantSummary: applicantSummary,
+           // applicantSummary: applicantSummary,
             waterTankerSummary: waterTankerSummary,
         },
     },

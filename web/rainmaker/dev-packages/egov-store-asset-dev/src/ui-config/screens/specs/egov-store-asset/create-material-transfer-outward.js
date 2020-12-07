@@ -214,10 +214,11 @@ const getTransferIndentData = async (action, state, dispatch) => {
     }
   };
   const getData = async (action, state, dispatch) => {
-    await getMdmsData(action, state, dispatch);
+    await getMdmsData(action, state, dispatch);    
     await getstoreData(action, state, dispatch);
     await getTransferIndentData(action, state, dispatch);
     await getEmployeeData(action, state, dispatch);
+    
   }
   const screenConfig = {
     uiFramework: "material-ui",

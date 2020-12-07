@@ -207,7 +207,42 @@ export const callBackForNext = async (state, dispatch) => {
       }
     }
     else
-            changeStep(state, dispatch);
+    {
+      let ValidreceiptDate = true
+      let issueDate = get(
+        state.screenConfiguration.preparedFinalObject,
+        "transferInwards[0].issueDate",
+        null
+      );    
+      if(Number(issueDate))
+      issueDate = epochToYmd(issueDate)
+
+      const  issueDate_ = new Date(issueDate)
+      if(receiptDate_ >issueDate_)
+      {
+        ValidreceiptDate = true
+      }
+      else
+      {
+        ValidreceiptDate = false
+      }
+      if(!ValidreceiptDate)
+      {
+        const errorMessage = {
+          labelName: "Receipt Date must be greater then Outword Date",
+          labelKey: "STORE_MATERIAL_MASTER_RECEIPT_DATE_VALIDATION_MSG"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
+      else
+      {
+        changeStep(state, dispatch);
+
+      }
+     
+
+    }
+            
 
       }
       else{

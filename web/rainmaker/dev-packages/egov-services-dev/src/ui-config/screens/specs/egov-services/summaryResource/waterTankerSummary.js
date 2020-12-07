@@ -23,7 +23,7 @@ export const waterTankerSummary = getCommonGrayCard({
                 },
                 ...getCommonSubHeader({
                     labelName: "Booking Details",
-                    labelKey: "BK_WTB_APPLICATION_DETAILS_HEADER",
+                    labelKey: "BK_MY_BK_APPLICATION_DETAILS_HEADER",
                 }),
             },
         },

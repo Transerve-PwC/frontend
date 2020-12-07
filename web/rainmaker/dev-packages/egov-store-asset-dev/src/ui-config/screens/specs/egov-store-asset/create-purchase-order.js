@@ -205,6 +205,7 @@ import {
         //   "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.supplier.props",
         //   { disabled: true }
         // );
+        //dispatch(prepareFinalObject("indents[0].indentDate",null));
         dispatch(prepareFinalObject("purchaseOrders[0].purchaseOrderDate",new Date().toISOString().substr(0,10))); 
       }
       let purchaseOrders = get(
@@ -283,6 +284,15 @@ import {
                        materialNames = indentingMaterial.filter(function(ele) {
                             return materialNames.findIndex(mat => mat.code === ele.code) !== -1;
                         })
+                        dispatch(
+                          handleField(`create-purchase-order`,
+                       // state.screenConfiguration.screenConfig["create-purchase-order"],
+                            "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.purchaseOrderDate",
+                            "props.inputProps",
+                            { min: new Date(indents[0].indentDate).toISOString().slice(0, 10),
+                              max: new Date().toISOString().slice(0, 10)}
+                          )
+                        );
                   }
                   else{
                     
@@ -298,15 +308,15 @@ import {
 
                   }
                  
-                  dispatch(
-                    handleField(`create-purchase-order`,
-                 // state.screenConfiguration.screenConfig["create-purchase-order"],
-                      "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.purchaseOrderDate",
-                      "props.inputProps",
-                      { min: new Date(indents[0].indentDate).toISOString().slice(0, 10),
-                        max: new Date().toISOString().slice(0, 10)}
-                    )
-                  ); 
+                //   dispatch(
+                //     handleField(`create-purchase-order`,
+                //  // state.screenConfiguration.screenConfig["create-purchase-order"],
+                //       "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.purchaseOrderDate",
+                //       "props.inputProps",
+                //       { min: new Date(indents[0].indentDate).toISOString().slice(0, 10),
+                //         max: new Date().toISOString().slice(0, 10)}
+                //     )
+                //   ); 
                       
                    
                 dispatch(prepareFinalObject("searchMaster.materialNames", materialNames));  
@@ -334,8 +344,16 @@ import {
             "props.inputProps",
             { max: new Date().toISOString().slice(0, 10)}
           )
+        ); 
+        dispatch(
+          handleField(`create-purchase-order`,
+       // state.screenConfiguration.screenConfig["create-purchase-order"],
+            "components.div.children.formwizardFirstStep.children.purchaseOrderHeader.children.cardContent.children.purchaseOrderHeaderContainer.children.indentDate",
+            "props.value",
+            null
+          )
         );  
-
+        dispatch(prepareFinalObject("indents[0].indentDate",null));
       }
       let rateType =  get(state.screenConfiguration.preparedFinalObject, "purchaseOrders[0].rateType",'')
       if(rateType ==='Gem')

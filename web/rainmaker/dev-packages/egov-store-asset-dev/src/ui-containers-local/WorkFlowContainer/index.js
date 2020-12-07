@@ -306,9 +306,9 @@ if(purchaseOrders)
         editUrl = `/egov-store-asset/createMaterialNonIndentNote?tenantId=${tenant}&issueNoteNumber=${businessId}`;
       } else if (businessId.includes("MROW")) {
         let indentissuedata = get(preparedFinalObject, dataPath, [])
-        indentissuedata = indentissuedata[0];
-        let id = indentissuedata.id;
-        editUrl = `/egov-store-asset/create-material-transfer-outward?id=${id}&tenantId=${tenant}`;
+        // indentissuedata = indentissuedata[0];
+        // let id = indentissuedata.id;
+        editUrl = `/egov-store-asset/create-material-transfer-outward?id=${businessId}&tenantId=${tenant}`;
       } else if (businessId.includes("MRIN")) {
         let indentissuedata = get(preparedFinalObject, dataPath, [])
         editUrl = `/egov-store-asset/createMaterialIndentNote?step=0&applicationNumber=${businessId}`;

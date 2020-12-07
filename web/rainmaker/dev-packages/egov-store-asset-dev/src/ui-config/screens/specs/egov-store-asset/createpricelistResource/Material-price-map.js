@@ -168,7 +168,7 @@ import {
               },
               isFieldValid: true,
               required: false,
-        
+        visible:false,
               props: {
                 content: "STORE_PRICE_ACTIVE",
                 screenName: "createpricelist",

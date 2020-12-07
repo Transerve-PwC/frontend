@@ -346,7 +346,7 @@ if(response && response[0])
    let Uomname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",element.uom.code)  
    let matname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.store-asset.Material",element.material.code)  
    set(response[0], `materialIssueDetails[${index}].material.name`, matname);
-   set(response[0], `materialIssueDetails[${index}].receiptId`, element.materialIssuedFromReceipts[index].materialReceiptId);
+   set(response[0], `materialIssueDetails[${index}].receiptId`, element.materialIssuedFromReceipts[0].materialReceiptId);
    //quantityIssued
    set(response[0], `materialIssueDetails[${index}].indentDetail.userQuantity`, Number(element.quantityIssued));
    set(response[0], `materialIssueDetails[${index}].uom.name`, Uomname);
@@ -362,7 +362,7 @@ if(response && response[0])
   let totalDeductionValue = response[0].totalDeductionValue
   set(response[0],`totalIndentQty`, Number(response[0].indent.indentDetails[0].indentQuantity));
   set(response[0],`totalQty`, TotalQty);
-  set(response[0],`totalvalue`, totalvalue - totalDeductionValue);
+  set(response[0],`totalvalue`, totalvalue + totalDeductionValue);
   // set(prepareFinalObject(`materialIssues[0].indentQuantity`, totalIndentQty));
   // set(prepareFinalObject(`materialIssues[0].indentQuantity`, totalIndentQty));
 

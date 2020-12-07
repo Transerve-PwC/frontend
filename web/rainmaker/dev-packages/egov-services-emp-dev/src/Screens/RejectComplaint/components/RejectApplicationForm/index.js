@@ -61,7 +61,7 @@ formValue.businessService.value=bookingservice
     <div>
           <div className="custom-padding-for-screens">
         <div className="reject-complaint-textArea">
-        <TextField
+        {/* <TextField
               id="comment-value"
               name="comment-value"
               type="string"
@@ -85,6 +85,14 @@ formValue.businessService.value=bookingservice
               underlineStyle={{ bottom: 7 }}
               underlineFocusStyle={{ bottom: 7 }}
               hintStyle={{ width: "100%" }}
+            /> */}
+
+            <TextArea 
+
+            value={commentValue}
+            onChange={ontextAreaChange}
+            hintText= "BK_MYBK_ADD_COMMENTS_PLACEHOLDER"
+
             />
           
         </div>

@@ -48,13 +48,13 @@ const getpurchaseOrder = async ( state,dispatch)=>{
       key: "store",
       value: storecode
     });
-    if(suppliercode)
-    {
-    queryObject.push({
-      key: "supplierCode",
-      value: suppliercode
-    });
-  }
+  //   if(suppliercode)
+  //   {
+  //   queryObject.push({
+  //     key: "supplierCode",
+  //     value: suppliercode
+  //   });
+  // }
   queryObject.push({
     key: "status",
     value: "Approved,Partially Receipted"
@@ -255,7 +255,10 @@ export const callBackForNext = async (state, dispatch) => {
         let jasonpath =  "materialReceipt[0].receiptDetails";
         let value = "purchaseOrderDetail.purchaseOrderNumber";
         let value2 ="material.code";
+        let value3 ="supplier.code"
         let DuplicatItem = ValidateCardMultiItem(state,dispatch,cardJsonPath,pagename,jasonpath,value,value2)
+       // let DuplicatItemsupllier = ValidateCardMultiItemSupplier(state,dispatch,cardJsonPath,pagename,jasonpath,value3,value2)
+        
         let InputQtyValue = "receivedQty";
         let InputQtyValue2= "acceptedQty";
         let CompareQtyValue = "orderQuantity";
@@ -267,6 +270,7 @@ export const callBackForNext = async (state, dispatch) => {
         {
           let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_DUPLICATE_VALIDATION")
           let LocalizationCodeValueQty = getLocalizationCodeValue("STORE_MATERIAL_INVALID_RECEIPT_QTY_VALIDATION")
+         
           if((!DuplicatItem[0].IsDuplicatItem && !InvaldQtyCard[0].IsInvalidQty) &&  !InvaldQtyCard[0].IsZeroQty)
     {
 
@@ -309,7 +313,59 @@ export const callBackForNext = async (state, dispatch) => {
 
                   if( uploadedDocs[0] && uploadedDocs[0].documents){
                    // isFormValid = true;
+                   let duplicatesupplier = false;
+                   //logic for different supplier
+
+                   let CardItem = get(
+                    state.screenConfiguration.screenConfig[`${pagename}`],
+                    cardJsonPath,
+                    []
+                  );
+                 let supcode =[];
+                  for (let index = 0; index < CardItem.length; index++) {
+                    if(CardItem[index].isDeleted === undefined ||
+                    CardItem[index].isDeleted !== false)
+                    {
+                    let code = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index}].${value3}`,'')  
+                    //code = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",code)  
+                      if(code ==="")  
+                      code =get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${index-1}].${value3}`,'') 
+                    supcode.push(code)
+                    }
+                  }
+                  if(supcode.length >1)
+                  {
+                    for (let index = 1; index < supcode.length; index++) {
+                      const element = supcode[index];
+                      if(element !== supcode[0] )
+                      {
+                        duplicatesupplier = true
+                        break;
+                      }
+                      
+                    }
+
+                  }
+                  
+                   //
+                   if(duplicatesupplier)
+                   {
+                    let LocalizationCodeValuesupplier = getLocalizationCodeValue("STORE_MATERIAL_INVALID_SUPPLIER_VALIDATION")
+                     const errorMessage = {              
+                       labelName: "Supplier must be same for different PO",
+                       //labelKey:   `STORE_MATERIAL_DUPLICATE_VALIDATION ${DuplicatItem[0].duplicates}`
+                        labelKey:   `${LocalizationCodeValuesupplier}`
+                       //labelKey:   LocalizationCodeValuesupplier+' '+DuplicatItemsupllier[0].duplicates
+                     };
+                     dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                   }
+                   else
+                   {
+                    let supname = get(state.screenConfiguration.preparedFinalObject,`${jasonpath}[${0}].${'supplier.name'}`,'') 
+                    dispatch(prepareFinalObject("materialReceipt[0].supplier.name",supname));
                     moveToReview(dispatch);
+                   }
+                      
                   }
                   else
                   {
@@ -368,6 +424,10 @@ export const callBackForNext = async (state, dispatch) => {
 
           }
         }
+        // else if(DuplicatItemsupllier && DuplicatItemsupllier[0])
+        // {
+
+        // }
       }
       else
       changeStep(state, dispatch);

@@ -10,7 +10,9 @@ import {
   import get from "lodash/get";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  import { convertDateToEpoch, convertDateToEpochIST } from "../../utils";
- import { getSTOREPattern} from "../../../../../ui-utils/commons";
+ import { getSTOREPattern,getSearchResults} from "../../../../../ui-utils/commons";
+ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+ //import { getSearchResults } from "../../../../ui-utils/commons";
   export const MaterialIndentDetails = getCommonCard({
     header: getCommonTitle(
       {
@@ -55,7 +57,35 @@ import {
           dispatch(prepareFinalObject("indents[0].indentStore.name",store[0].name));
           dispatch(prepareFinalObject("indents[0].indentStore.department.name",store[0].department.name));
           dispatch(prepareFinalObject("indents[0].indentStore.divisionName",store[0].divisionName));
+          let Material = get(state, "screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.Material",[]) 
+          if(store[0].code){
+            const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "store", value: store[0].code}];
+            getSearchResults(queryObject, dispatch,"materials")
+            .then(async response =>{
+              if(response){
+                let materials = []
+                for (let index = 0; index < Material.length; index++) {
+                  const element = Material[index];
+                  for (let index = 0; index < response.materials.length; index++) {
+                    const element_ = response.materials[index];
+                    if(element.code ===element_.code)
+                    {
+                      materials.push(element)
+                    }
+                    
+                  }
+                  
+                }
+                dispatch(prepareFinalObject("materials.materials", materials));
+                
+                        
+             }
+              
+            });   
+
+            }
           }
+         
           
       }
       },

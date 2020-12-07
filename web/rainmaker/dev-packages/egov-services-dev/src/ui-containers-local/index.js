@@ -76,6 +76,11 @@ const RefundFeeAmountContainer = Loadable({
   loader: () => import("./RefundFeeAmountContainer"),
   loading: () => <Loading />
 });
+const modifiedBookingPaymentCard = Loadable({
+  loader: () => import("./modifiedBookingPaymentCard"),
+  loading: () => <Loading />
+});
+
 
 export {
   RadioGroupWithIconContainer,
@@ -94,5 +99,6 @@ export {
   BookingCalenderContainer,
   BookingMediaContainer,
   RefundAmountContainer,
-  RefundFeeAmountContainer
+  RefundFeeAmountContainer,
+  modifiedBookingPaymentCard
 };

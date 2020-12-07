@@ -242,6 +242,29 @@ for (let index = 0; index < response[0].materialIssueDetails.length; index++) {
     TotalQty = TotalQty + Number(element.quantityIssued)   
   
 }
+//set issue to employee name from store incharge
+if(response[0].indent.issueStore.storeInCharge.code)
+{
+  set(response[0], `issuedToEmployeename`, response[0].indent.issueStore.storeInCharge.code);
+  let emp = get(state, "screenConfiguration.preparedFinalObject.createScreenMdmsData.employee",[]) 
+  
+  emp = emp.filter(x=>x.code ===response[0].indent.issueStore.storeInCharge.code)
+  if(emp&& emp[0])
+  {
+  //dispatch(prepareFinalObject("materialIssues[0].issuedToEmployeename", emp[0].name));
+  set(response[0], `issuedToEmployeename`,emp[0].name);
+  let issuedToDesignation =GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.Designation",emp[0].designation)          
+  const {designationsById} = state.common;
+  if(designationsById){
+    const desgnName = Object.values(designationsById).filter(item =>  item.code === emp[0].designation )
+   // dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", issuedToDesignation));
+   if(desgnName &&desgnName[0])
+    set(response[0], `issuedToDesignation`, desgnName[0].name); 
+    }
+  }
+}
+
+
 set(response[0],`totalQty`, TotalQty);
  set(response[0],`totalvalue`, totalvalue);
 }

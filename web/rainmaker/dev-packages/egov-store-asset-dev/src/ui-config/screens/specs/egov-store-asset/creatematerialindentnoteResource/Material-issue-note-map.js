@@ -239,12 +239,12 @@ import {
             poOrderedQuantity: {
               ...getTextField({
                 label: {
-                  labelName: "Total Indent Qty Required",
-                  labelKey: "STORE_MATERIAL_INDENT_PO_ISSUED_QTY_READONLY"
+                  labelName: "PO Ordered Quantity(Issued)",
+                  labelKey: "STORE_MATERIAL_PO_ISSUED"
                 },
                 placeholder: {
-                  labelName: "Total Indent Qty Required",
-                  labelKey: "STORE_MATERIAL_INDENT_PO_ISSUED_QTY_READONLY"
+                  labelName: "PO Ordered Quantity(Issued)",
+                  labelKey: "STORE_MATERIAL_PO_ISSUED"
                 },
                 props:{
                   disabled:true
@@ -453,6 +453,11 @@ import {
                   labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
                 },
                 required: true,
+                props: {
+                  className: "applicant-details-error",
+                  multiline: "multiline",
+                  rowsMax: 2,
+                },
                 errorMessage: "STORE_VALIDATION_REMARK",
                 pattern: getSTOREPattern("Comment"),
                 jsonPath: "materialIssues[0].materialIssueDetails[0].description"

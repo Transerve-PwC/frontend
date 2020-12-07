@@ -197,6 +197,14 @@ if(Allowances.length>Deductions.length)
  }
  else
  {
+  //dispatch(prepareFinalObject("APIData.PaySlip",{}));
+  
+  dispatch(prepareFinalObject("APIData.PaySlip.EmployeeCode",''));
+  dispatch(prepareFinalObject("APIData.PaySlip.Name",));
+  dispatch(prepareFinalObject("APIData.PaySlip.FatherName",));
+  dispatch(prepareFinalObject("APIData.PaySlip.Designation",));
+  dispatch(prepareFinalObject("APIData.PaySlip.DDOName",));
+
   dispatch(prepareFinalObject("APIData.PaySlip.Allowances",[]));
   dispatch(
         toggleSnackbar(
@@ -208,49 +216,8 @@ if(Allowances.length>Deductions.length)
 
 
  }
- 
-
-       dispatch(toggleSpinner())
-    try {
-      // let data = response.ResponseBody[0].RecordSet.map((item) => {
-  
-      //   return {
-      //     [getTextToLocalMapping("Property ID")]: get(item, "PROPERTYID", "-") || "-",
-      //     [getTextToLocalMapping("House No")]: get(item, "HOUSENO", "-") || "-",
-      //     [getTextToLocalMapping("Owner Name")]: get(item, "PROPERTYOWNER", "-") || "-",
-      //     [getTextToLocalMapping("Mobile No")]: get(item, "Number", "-") || "-",
-          
-      //   };
-      // });
-
-      // dispatch(
-      //   handleField(
-      //     "payslipsearch",
-      //     "components.div.children.searchResults",
-      //     "props.data",
-      //     data
-      //   )
-      // );
-      // dispatch(
-      //   handleField(
-      //     "payslipsearch",
-      //     "components.div.children.searchResults",
-      //     "props.title",
-      //     `${getTextToLocalMapping("Search Results for House")} (${
-      //       response.ResponseBody[0].RecordSet.length
-      //     })`
-      //   )
-      // );
-      // showHideTable(true, dispatch);
-    } catch (error) {
-      dispatch(
-        toggleSnackbar(
-          true,
-          { labelName: "Unable to parse search results!" },
-          "error"
-        )
-      );
-    }
+ dispatch(toggleSpinner())
+   
   }
 };
 

@@ -7,6 +7,7 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+  import {  checkValueForNA } from "../../utils";
   const gotoCreatePage = (state, dispatch) => {
     const IndentId = getQueryArg(window.location.href, "IndentId");
     const createUrl =
@@ -35,6 +36,14 @@ import {
           // },
             { jsonPath: "materialReceipt[0].receiptDetails[0].purchaseOrderDetail.purchaseOrderNumber",          
           }
+          ),
+          supplierName: getLabelWithValue(
+            { labelName: "Supplier Name",
+            labelKey: "STORE_COMMON_TABLE_COL_SUPPLIER_MASTER_NAME" },
+            {
+              jsonPath: "materialReceipt[0].supplier.name",
+              callBack: checkValueForNA
+            }
           ),
           MaterialName: getLabelWithValue(
             {

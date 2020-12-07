@@ -80,6 +80,43 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
             dispatch(prepareFinalObject("transferInwards[0].indent.issueStore.name",materialIssues[0].indent.issueStore.name));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.code",materialIssues[0].indent.indentStore.code));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.name",materialIssues[0].indent.indentStore.name));
+            const {transferInwards}  = state.screenConfiguration.preparedFinalObject;
+            if(transferInwards && transferInwards[0])
+            {
+              if(transferInwards[0].receiptDate === undefined)
+              {
+              //   dispatch(
+              //     handleField(`createMaterialTransferInword`,
+              //  // state.screenConfiguration.screenConfig["create-purchase-order"],
+              //       "components.div.children.formwizardFirstStep.children.MaterialTransferInwordNote.children.cardContent.children.MaterialReceiptNoteContainer.children.receiptDate",
+              //       "props.value",
+              //       convertDateToEpoch(materialIssues[0].issueDate),
+              //     )
+              //   );
+              dispatch(prepareFinalObject("transferInwards[0].receiptDate",new Date().toISOString().substr(0,10))); 
+              }
+            }
+            
+           // alert(materialIssues[0].issueDate);
+            console.log(materialIssues[0].issueDate)
+
+            //const parts = materialIssues[0].issueDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+            //const DateObj = new Date(Date.UTC(parts[1], parts[2] - 1, parts[3]));
+            const DateObj = new Date(materialIssues[0].issueDate);
+            DateObj.setMinutes(DateObj.getMinutes() + DateObj.getTimezoneOffset());            
+              DateObj.setHours(DateObj.getHours() + (24*2));
+              DateObj.setSeconds(DateObj.getSeconds() - 1);
+             // alert(DateObj.getTime());
+              console.log(DateObj.getTime())
+            dispatch(
+              handleField(`createMaterialTransferInword`,
+           // state.screenConfiguration.screenConfig["create-purchase-order"],
+                "components.div.children.formwizardFirstStep.children.MaterialTransferInwordNote.children.cardContent.children.MaterialReceiptNoteContainer.children.receiptDate",
+                "props.inputProps",
+                { min: new Date(DateObj.getTime()).toISOString().slice(0, 10),
+                  max: new Date().toISOString().slice(0, 10)}
+              )
+            );
             // dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.department.name",materialIssues[0].indent.indentStore.department.name));
             // dispatch(prepareFinalObject("transferInwards[0].indent.indentStore.divisionName",materialIssues[0].indent.indentStore.divisionName));
             dispatch(prepareFinalObject("transferInwards[0].indent.indentPurpose",materialIssues[0].indent.indentPurpose));
@@ -126,11 +163,11 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
           errorMessage:"STORE_VALIDATION_RECEIPT_DATE_SELECT",
           pattern: getPattern("Date") || null,
           jsonPath: "transferInwards[0].receiptDate",
-          props: {            
-            inputProps: {
-              max: new Date().toISOString().slice(0, 10),
-            }
-          }
+          // props: {            
+          //   inputProps: {
+          //     max: new Date().toISOString().slice(0, 10),
+          //   }
+          // }
         })
       },
 

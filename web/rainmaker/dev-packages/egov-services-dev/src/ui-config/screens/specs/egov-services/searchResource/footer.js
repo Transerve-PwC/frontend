@@ -74,7 +74,7 @@ export const footerReviewTop = (
     };
 
     if (
-        (status === "APPLIED" || status === "APPROVED")
+        (status === "APPLIED" || status === "APPROVED"  || status === "MODIFIED" || status === "RE_INITIATED")
     ) {
         downloadMenu = [
             applicationDownloadObject,

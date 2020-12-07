@@ -89,6 +89,10 @@ export const personalDetails = getCommonCard({
         },
     }),
 });
+
+var date2 = new Date();
+date2.setDate(date2.getDate() + 10);
+let gdate = `${date2.getFullYear()}-${date2.getMonth()+1}-${date2.getDate()}`;
 export const bookingDetails = getCommonCard({
     // header: getCommonTitle(
     //     {
@@ -282,7 +286,8 @@ export const bookingDetails = getCommonCard({
                     className: "applicant-details-error",
                     inputProps: {
                         min: getTodaysDateInYMD(),
-                        max: getFinancialYearDates("yyyy-mm-dd").endDate,
+                       // max: getFinancialYearDates("yyyy-mm-dd").endDate,
+                       max:gdate
                     },
                 },
                 gridDefination: {

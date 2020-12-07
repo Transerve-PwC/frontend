@@ -94,6 +94,18 @@ export const purchaseOrderHeader = getCommonCard({
                 const poOrderedQuantity = 0;
                 return{ name, code,description,uom ,indentQuantity,indentIssuedQuantity,poOrderedQuantity}
             })
+            if(indentNumber === null)
+            {
+              const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
+              const {purchaseOrderDetails} = purchaseOrders[0];
+              if(purchaseOrderDetails &&purchaseOrderDetails[0])
+              {
+                if(purchaseOrders[0].purchaseType ==="Indent")
+                {
+                  indentNumber = purchaseOrderDetails[0].indentNumber
+                }
+              }
+            }
               if(indentNumber){
                 const queryObj = [{ key: "tenantId", value: getTenantId()},{ key: "indentNumber", value: indentNumber}];               
                 let res = await getMaterialIndentSearchResults(queryObj, dispatch);

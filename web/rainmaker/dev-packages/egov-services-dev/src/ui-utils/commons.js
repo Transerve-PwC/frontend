@@ -250,6 +250,20 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
                             fileStoreId: doc.documents[0].fileStoreId,
                         },
                     ];
+                }else if (doc.documentCode === "BK_BUILDING_PLAN_APPROVAL") {
+                    bookingDocuments = [
+                        ...bookingDocuments,
+                        {
+                            fileStoreId: doc.documents[0].fileStoreId,
+                        },
+                    ];
+                }else if (doc.documentCode === "BUILDING_PLAN_APPROVAL") {
+                    bookingDocuments = [
+                        ...bookingDocuments,
+                        {
+                            fileStoreId: doc.documents[0].fileStoreId,
+                        },
+                    ];
                 } else if (!doc.documentSubCode) {
                     otherDocuments = [
                         ...otherDocuments,
@@ -260,7 +274,7 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
                 }
             }
         });
-
+console.log(bookingDocuments, "Nero Documents");
         set(payload, "wfDocuments", bookingDocuments);
         set(payload, "bkBookingType", "OSBM");
         set(payload, "tenantId", tenantId);

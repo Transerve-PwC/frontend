@@ -228,7 +228,7 @@ const screenConfig = {
 
                 body: getCommonCard({
                     estimateSummary: estimateSummary,
-                    applicantSummary: applicantSummary,
+                //  applicantSummary: applicantSummary,
                     waterTankerSummary: waterTankerSummary,
                     driverSummary: driverSummary,
                     remarksSummary: remarksSummary,

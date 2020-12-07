@@ -69,7 +69,7 @@ export const getMTONHeaderView = (isReview = true) => {
           labelName: "Issuing Store Name",
           labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME"
         },
-        { jsonPath: "materialIssues[0].toStore.code" }
+        { jsonPath: "materialIssues[0].toStore.name" }
       ),
       issueDate: getLabelWithValue(
         {
@@ -94,11 +94,11 @@ export const getMTONHeaderView = (isReview = true) => {
       ),
       indentingStore: getLabelWithValue(
         { labelName: "Indenting Store", labelKey: "STORE_MATERIAL_INDENT_NOTE_INDENTING_STORE" },
-        { jsonPath: "materialIssues[0].indent.indentStore.name" }
+        { jsonPath: "materialIssues[0].fromStore.code" }
       ),
       indentDeptName: getLabelWithValue(
         { labelName: "Indenting Dept. Name", labelKey: "STORE_MTON_INDENT_DEPT_NAME" },
-        { jsonPath: "materialIssues[0].indent.designation" }
+        { jsonPath: "materialIssues[0].indent.indentStore.department.name" }
       ),
       indentPurpose: getLabelWithValue(
         { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
@@ -116,7 +116,7 @@ export const getMTONHeaderView = (isReview = true) => {
         { jsonPath: "materialIssues[0].issuedToEmployeename" }
       ),
       issuedToDesignation: getLabelWithValue(
-        { labelName: "issuedToDesignation", labelKey: "STORE_PURCHASE_ORDER_DSGNTN" },
+        { labelName: "issuedToDesignation", labelKey: "STORE_PURCHASE_ORDER_DSGNTN_EMP" },
         {
           jsonPath: "materialIssues[0].issuedToDesignation",
         }

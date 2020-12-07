@@ -23,6 +23,7 @@ const moveToReview = dispatch => {
   else
   reviewUrl = "/egov-store-asset/review-purchase-order";
   dispatch(setRoute(reviewUrl));
+  //alert('1')
 };
 
 export const callBackForNext = async (state, dispatch) => {
@@ -356,6 +357,15 @@ export const callBackForNext = async (state, dispatch) => {
       {
         let indentNumber="";
         indentNumber = getQueryArg(window.location.href, "indentNumber");
+        const {purchaseOrders}  = state.screenConfiguration.preparedFinalObject;
+              const {purchaseOrderDetails} = purchaseOrders[0];
+              if(purchaseOrderDetails &&purchaseOrderDetails[0])
+              {
+                if(purchaseOrders[0].purchaseType ==="Indent")
+                {
+                  indentNumber = purchaseOrderDetails[0].indentNumber
+                }
+              } 
         if(indentNumber){
         const errorMessage = {
         

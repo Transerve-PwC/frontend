@@ -25,11 +25,11 @@ import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
-import { generageBillCollection, generateBill, clearlocalstorageAppDetails, calculateCancelledBookingRefundAmount } from "../utils";
+import { generageBillCollection, generateBill, clearlocalstorageAppDetails, calculateCancelledBookingRefundAmount, getAllbillsOfBooking } from "../utils";
 import { pccSummary, changedVenueDatepccSummary } from "./summaryResource/pccSummary";
 import { pccApplicantSummary } from "./summaryResource/pccApplicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
-import { estimateSummary } from "./summaryResource/estimateSummary";
+import { estimateSummary, modifiedBookingPaymentCard } from "./summaryResource/estimateSummary";
 import { remarksSummary } from "./searchResource/remarksSummary";
 import { footerForParkAndCC } from "./searchResource/citizenFooter";
 import { footerReviewTop } from "./searchResource/footer";
@@ -288,12 +288,38 @@ const setSearchResponse = async (
         bookingStatus = recData[0].bkApplicationStatus;
         console.log(recData[0], "Booking");
         //if (bookingStatus === "APPLIED" || bookingStatus === "MODIFIED") {
-        if (recData[0].bkPaymentStatus == "SUCCESS" || recData[0].bkPaymentStatus == "success") {
-            await generageBillCollection(
-                state,
-                dispatch,
+        if ((recData[0].bkPaymentStatus == "SUCCESS" || recData[0].bkPaymentStatus == "success") && bookingStatus === "MODIFIED") {
+
+            let allBills = await getAllbillsOfBooking(
                 applicationNumber,
                 tenantId
+            );
+            console.log(allBills, "Nero All Bills")
+            dispatch(
+                prepareFinalObject("ModifiedBookingOldBill[0].Bill", [
+                    //payload.Payments[0].paymentDetails[0].bill,
+                    allBills.Bill[1]
+                ])
+            );
+
+        }
+        if (recData[0].bkPaymentStatus == "SUCCESS" || recData[0].bkPaymentStatus == "success") {
+            // await generageBillCollection(
+            //     state,
+            //     dispatch,
+            //     applicationNumber,
+            //     tenantId
+            // );
+            let allBills = await getAllbillsOfBooking(
+                applicationNumber,
+                tenantId
+            );
+
+            dispatch(
+                prepareFinalObject("ReceiptTemp[0].Bill", [
+                    //payload.Payments[0].paymentDetails[0].bill,
+                    allBills.Bill[0]
+                ])
             );
         } else {
             await generateBill(
@@ -304,7 +330,13 @@ const setSearchResponse = async (
                 businessService
             );
         }
-
+        if ((recData[0].bkPaymentStatus == "SUCCESS" || recData[0].bkPaymentStatus == "success") && bookingStatus != "MODIFIED") {
+            set(
+                action.screenConfig,
+                "components.div.children.body.children.cardContent.children.modifiedBookingPaymentCard.visible",
+                false
+            );
+        }
         localStorageSet("bookingStatus", bookingStatus);
         // // recData[0].bkFromDate = "2020-06-06";
         // let bookingTimeStamp = new Date(recData[0].bkFromDate).getTime();
@@ -351,14 +383,14 @@ const setSearchResponse = async (
             recData[0].bkToDate
         );
 
-console.log(daysCount, "Nero from file");
 
-dispatch(
-    prepareFinalObject(
-        "paccBooking",
-        recData[0]
-    )
-);
+
+        dispatch(
+            prepareFinalObject(
+                "paccBooking",
+                recData[0]
+            )
+        );
         dispatch(
             prepareFinalObject(
                 "paccBooking.bkDimension",
@@ -601,6 +633,7 @@ const screenConfig = {
                 },
                 body: getCommonCard({
                     estimateSummary: estimateSummary,
+                    modifiedBookingPaymentCard: modifiedBookingPaymentCard,
                     pccApplicantSummary: pccApplicantSummary,
                     pccSummary: pccSummary,
                     changedVenueDatepccSummary: changedVenueDatepccSummary,

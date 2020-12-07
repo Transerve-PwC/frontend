@@ -207,6 +207,7 @@ export const handleCreateUpdateMaterialReceipt = (state, dispatch) => {
     "materialReceipt[0].id",
     null
   );
+ 
   if (id) {
     
     createUpdateMR(state, dispatch, "UPDATE");
@@ -260,12 +261,16 @@ export const createUpdateMR = async (state, dispatch, action) => {
     get(materialReceipt[0], "receiptDetails", [])
   );
   for (let index = 0; index < receiptDetails_.length; index++) {
-    const element = receiptDetails_[index];   
+    const element = receiptDetails_[index]; 
+    const sup =  receiptDetails_[0]
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].lotNo`, element.lotNo);
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].serialNo`, element.serialNo);
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].batchNo`, element.batchNo);
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].manufactureDate`, convertDateToEpoch(element.manufactureDate, "dayStart"));
        set(materialReceipt[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].expiryDate`, convertDateToEpoch(element.expiryDate, "dayStart"));
+        //set supplier
+        set(materialReceipt[0],"supplier.code", sup.supplier.code);
+        set(materialReceipt[0],"supplier.name", sup.supplier.name);
        
   }
 

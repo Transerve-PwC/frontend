@@ -263,6 +263,11 @@ const MTONDetailsCard = {
                 labelName: "Enter Remark",
                 labelKey: "STORE_MATERIAL_INDENT_NOTE_REMARK_PLACEHOLDER"
               },
+              props: {
+                className: "applicant-details-error",
+                multiline: "multiline",
+                rowsMax: 2,
+              },
               pattern: getSTOREPattern("Comment"),
               jsonPath: "materialIssues[0].materialIssueDetails[0].description"
             })
