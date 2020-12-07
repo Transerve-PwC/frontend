@@ -220,7 +220,7 @@ class ActionDialog extends React.Component {
                       inputProps={{ maxLength: 120 }}
                     />
                   </Grid>
-                  {buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" && (
+                  {buttonLabel === "FORWARD" && (applicationState === "ES_PENDING_DS_VERIFICATION" || applicationState == "ES_MM_PENDING_DS_VERIFICATION") && (
                     <Grid item sm="12">
                     <TextFieldContainer
                     type="date"

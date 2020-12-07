@@ -351,6 +351,7 @@ const updateAllFields = async (action, state, dispatch) => {
   let entityType = properties[0].propertyDetails.entityType;
   let companyDetails;
   let firmDetails;
+  let branchType = properties[0].propertyDetails.branchType;
 
   if (entityType == "ET.PUBLIC_LIMITED_COMPANY" || entityType == "ET.PRIVATE_LIMITED_COMPANY") {
     companyDetails = getCompanyDetails(false);
@@ -366,11 +367,21 @@ const updateAllFields = async (action, state, dispatch) => {
       if (!!element.ownerDetails.isCurrentOwner) {
         let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == ESTATE_APPROVED_STATE));
         let allotmentDetailsComponent = getAllotmentDetails(false,index);
+        let applicationBranchType = "EstateBranch";
 
         if (applicationState == ESTATE_APPROVED_STATE) {
+          switch(branchType) {
+            case "BUILDING_BRANCH":
+              applicationBranchType = "BuildingBranch";
+              break;
+            case "MANI_MAJRA":
+              applicationBranchType = "ManiMajra";
+              break;
+          }
           let ownerId = element.id;
           let queryObject = [
-            { key: "ownerId", value: ownerId }
+            { key: "ownerId", value: ownerId },
+            { key: "branchType", value: applicationBranchType }
           ]
           let payload = await getSearchApplicationsResults(queryObject);
           let modeOfTransferArr = [];
@@ -389,7 +400,7 @@ const updateAllFields = async (action, state, dispatch) => {
               prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransferArr`, modeOfTransferArr)
             )
   
-            var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty();
+            var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty(applicationBranchType);
           }
         }
 

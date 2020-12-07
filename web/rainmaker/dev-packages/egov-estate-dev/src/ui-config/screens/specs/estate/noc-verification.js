@@ -47,14 +47,16 @@ import store from "../../../../ui-redux/store";
 const beforeInitFn = async (action, state, dispatch) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+  const branchType = getQueryArg(window.location.href, "branchType");
 
   if (!applicationNumber) {
     return;
   }
-  const queryObject = [{
-    key: "applicationNumber",
-    value: applicationNumber
-  }]
+  const queryObject = [
+    { key: "applicationNumber", value: applicationNumber },
+    { key: "branchType", value: branchType },
+    { key: "tenantId", value: getTenantId() },
+  ]
   const response = await getSearchApplicationsResults(queryObject);
   try {
     let {

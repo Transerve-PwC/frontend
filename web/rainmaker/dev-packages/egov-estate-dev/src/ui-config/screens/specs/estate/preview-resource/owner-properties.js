@@ -376,7 +376,7 @@ export const headerDiv = {
     })
   }
 
-  export const getModeOfTransferDetailsForApprovedProperty = () => {
+  export const getModeOfTransferDetailsForApprovedProperty = (branchType) => {
     let modeOfTransferObj = {
       uiFramework: "custom-containers-local",
       moduleName: "egov-estate",
@@ -390,7 +390,7 @@ export const headerDiv = {
           {
             label: "ES_APPLICATION_NUMBER",
             jsonPath: "applicationNumber",
-            url: `/estate/preview?tenantId=${getTenantId()}`
+            url: `/estate/preview?tenantId=${getTenantId()}&branchType=${branchType}`
           },
           {
             label: "ES_MODE_OF_TRANSFER",

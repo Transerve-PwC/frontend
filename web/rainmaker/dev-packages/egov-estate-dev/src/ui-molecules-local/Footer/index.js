@@ -176,7 +176,20 @@ class Footer extends React.Component {
                 };
                 toggleSnackbar(true, errorMessage, "warning");
               }
-            } 
+            }
+            else if (screenName == "site-report") {
+              let isSiteReportFormValid = validateFn(this.props.state);
+              if (isSiteReportFormValid) {
+                this.openActionDialog(item);
+              }
+              else {
+                let errorMessage = {
+                  labelName: "Please fill all mandatory fields !",
+                  labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_NOC"
+                };
+                toggleSnackbar(true, errorMessage, "warning");
+              }
+            }
             else {
               this.openActionDialog(item);
             }

@@ -15,7 +15,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
     status,
     applicationNumber,
     tenantId,
-    businessService
+    businessService,
+    branchType
   ) => {
     /** MenuButton data based on status */
 
@@ -145,12 +146,49 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                   callBack: () => {
                     dispatch(
                       setRoute(
-                       `/estate/noc-verification?applicationNumber=${applicationNumber}&tenantId=${tenantId}`
+                       `/estate/noc-verification?applicationNumber=${applicationNumber}&tenantId=${tenantId}&branchType=${branchType}`
                       )
                     );
                   },
                 },
                 visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "NOCVERIFICATION") ? true : false
+              },
+              siteReport: {
+                componentPath: "Button",
+                props: {
+                  variant: "contained",
+                  color: "primary",
+                  style: {
+                    minWidth: "180px",
+                    height: "60px",
+                    marginRight: "45px",
+                    borderRadius: "inherit"
+                  }
+                },
+                children: {
+                  siteReportButtonLabel: getLabel({
+                    labelName: "Site Report",
+                    labelKey: "ES_SITE_REPORT"
+                  }),
+                  nextIcon: {
+                    uiFramework: "custom-atoms",
+                    componentPath: "Icon",
+                    props: {
+                      iconName: "keyboard_arrow_right"
+                    }
+                  }
+                },
+                onClickDefination: {
+                  action: "condition",
+                  callBack: () => {
+                    dispatch(
+                      setRoute(
+                       `/estate/site-report?applicationNumber=${applicationNumber}&tenantId=${tenantId}&branchType=${branchType}`
+                      )
+                    );
+                  },
+                },
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "SITEREPORT") ? true : false
               }
             },
             gridDefination: {

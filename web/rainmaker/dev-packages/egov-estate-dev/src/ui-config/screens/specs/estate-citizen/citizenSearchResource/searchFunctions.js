@@ -32,6 +32,10 @@ export const searchApiCall = async (state, dispatch, queryObject = [], offset, l
     {
       key: "limit",
       value: limit
+    },
+    {
+      key: "relations",
+      value: "owner"
     }
   ];
   queryObject = queryObject.filter(({

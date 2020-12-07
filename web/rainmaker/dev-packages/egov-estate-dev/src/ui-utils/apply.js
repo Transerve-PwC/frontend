@@ -197,13 +197,15 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (queryObject[0].propertyDetails.accountStatementDocument) {
       let legacyAccStmtDoc = queryObject[0].propertyDetails.accountStatementDocument;
-      legacyAccStmtDoc[0].isActive = true;
+      if (legacyAccStmtDoc[0]) {
+        legacyAccStmtDoc[0].isActive = true;
 
-      set(
-        queryObject[0],
-        "propertyDetails.accountStatementDocument",
-        legacyAccStmtDoc
-      )
+        set(
+          queryObject[0],
+          "propertyDetails.accountStatementDocument",
+          legacyAccStmtDoc
+        )
+      }
     }
 
     prevOwners = get(

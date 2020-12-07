@@ -23,7 +23,7 @@ const getData = async (action, state, dispatch, fileNumber) => {
     // await searchResults(action, state, dispatch, fileNumber)
     let queryObject = [
       { key: "fileNumber", value: fileNumber },
-      // {key: "relations", value: "court"}
+      {key: "relations", value: "accstmtdoc"}
     ];
     const response =  await getSearchResults(queryObject)
     if(!!response) {

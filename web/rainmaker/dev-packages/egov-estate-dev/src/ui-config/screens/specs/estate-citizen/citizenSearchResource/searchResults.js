@@ -5,7 +5,9 @@ import {
 } from "../../utils";
 import { getTextToLocalMapping } from "./searchFunctions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
+const tenantId = getTenantId();
 export const searchResults = {
   uiFramework: "custom-molecules",
   moduleName: "egov-estate",
@@ -54,7 +56,7 @@ const onRowClick = rowData => {
     window.location.href = `estate-penalty?fileNumber=${rowData[1]}`
   }
   else if (type == "refund") {
-    window.location.href = `refund?fileNumber=${rowData[1]}`
+    window.location.href = `refund?fileNumber=${rowData[1]}&tenantId=${tenantId}`
   }
   else if(type == "account-statement"){
     window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`

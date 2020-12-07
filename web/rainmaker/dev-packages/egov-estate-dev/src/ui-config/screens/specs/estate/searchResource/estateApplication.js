@@ -290,7 +290,7 @@ const branchType = getQueryArg(window.location.href, "branchType");
       )
     )
     dispatch(prepareFinalObject("searchScreen", {}))
-    searchApplicationApiCall(state, dispatch, true)
+    // searchApplicationApiCall(state, dispatch, true)
     }
   }
 

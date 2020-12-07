@@ -127,11 +127,11 @@ import {
 const dateOfAdjustmentEntryField = {
   label: {
     labelName: "Date of Adjustment entry",
-    labelKey: "ADJUSTMENT_ENTRY_DATE_LABEL"
+    labelKey: "ES_ADJUSTMENT_ENTRY_DATE_LABEL"
   },
   placeholder: {
     labelName: "Select Date",
-    labelKey: "ADJUSTMENT_ENTRY_PLACEHOLDER"
+    labelKey: "ES_ADJUSTMENT_ENTRY_PLACEHOLDER"
   },
   required: true,
   pattern: getPattern("Date"),
@@ -156,7 +156,7 @@ const commentsField = {
       xs: 12,
       sm: 6
   },
-  jsonPath: "adhocDetails.comments"
+  jsonPath: "adhocDetails.comment"
 }
     
   
@@ -196,7 +196,6 @@ const commentsField = {
   };
   
   const callBackForSubmit = (state, dispatch) => {
-  
     let isValid = true;
     isValid = validateFields("components.div.children.detailsContainer.children.adhocDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "adhocDemand")
     if(!isValid){
@@ -208,8 +207,6 @@ const commentsField = {
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
     if(!!isValid){
-
-        console.log("adhhoc function")
       addHocDemandUpdate(state,dispatch)
     }
    
