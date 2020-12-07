@@ -440,7 +440,7 @@ const endYearField = {
       ))
     }
     const startValue = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].groundRentStartMonth`)
-    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, value-startValue))
+    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, (value-startValue)+1))
   }
 }
 
@@ -729,7 +729,7 @@ const endYearLfField = {
       ))
     }
     const startValue = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].groundRentStartMonth`)
-    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, value-startValue))
+    dispatch(prepareFinalObject(`Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${index}].tillDate`, (value-startValue)+1))
   }
 }
 

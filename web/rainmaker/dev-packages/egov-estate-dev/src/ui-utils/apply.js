@@ -452,7 +452,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     paymentConfigItems = paymentConfig.paymentConfigItems.sort((a, b) => {
       return a.groundRentStartMonth - b.groundRentStartMonth
     });
-    paymentConfigItems = paymentConfigItems.map(item => ({...item, tillDate: item.groundRentEndMonth - item.groundRentStartMonth + 1}))
+    paymentConfigItems = paymentConfigItems.map(item => ({...item, tillDate: (item.groundRentEndMonth - item.groundRentStartMonth) + 1}))
   } else {
     paymentConfigItems = [{groundRentStartMonth: "1"}]
   }
