@@ -212,12 +212,16 @@ const getField = async (item, fieldData = {}, state) => {
         })
       }
       case "DATE_FIELD": {
+        const {minDate, maxDate = true} = item
+        const inputProps = !!minDate && !maxDate ? {
+          min: getTodaysDateInYMD()
+      } : {
+        max: getTodaysDateInYMD()
+      }
         return {...getDateField({
           ...fieldProps,
           ...rest,
-          props: {...fieldProps.props, inputProps: {
-            max: getTodaysDateInYMD()
-        }
+          props: {...fieldProps.props, inputProps
         },
           // pattern: getPattern("Date")
         }),
