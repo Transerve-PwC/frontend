@@ -280,7 +280,7 @@ export const setDocuments = async (
     uploadedDocData &&
     uploadedDocData.map((item, index) => {
       return {
-        title: `${businessService}_${item.documentType}` || "",
+        title: !!businessService ? `${businessService}_${item.documentType}` : item.documentType || "",
         link:
           (fileUrlPayload &&
             fileUrlPayload[item.fileStoreId] &&

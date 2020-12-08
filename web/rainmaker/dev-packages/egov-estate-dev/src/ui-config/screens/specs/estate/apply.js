@@ -324,6 +324,30 @@ export const setLegacyAccStmtDoc = async (action, state, dispatch) => {
     statement: "ACC_STMT_DESC"
   }]
 
+  let applicationDocs = get(
+    state.screenConfiguration.preparedFinalObject,
+    `Properties[0].propertyDetails.accountStatementDocument`,
+    []
+  ) || [];
+
+  applicationDocs = applicationDocs.filter(item => !!item)
+  let applicationDocsReArranged =
+    applicationDocs &&
+    applicationDocs.length &&
+    documentTypes.map(item => {
+      const index = applicationDocs.findIndex(
+        i => i.documentType === item.name
+      );
+      return applicationDocs[index];
+    }).filter(item => !!item)
+  applicationDocsReArranged &&
+    dispatch(
+      prepareFinalObject(
+        `Properties[0].propertyDetails.accountStatementDocument`,
+        applicationDocsReArranged
+      )
+    );
+
   dispatch(
     handleField(
       action.screenKey,

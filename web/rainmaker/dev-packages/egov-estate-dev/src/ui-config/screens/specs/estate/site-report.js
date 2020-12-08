@@ -57,9 +57,9 @@ export const setSampleSiteMapDoc = async (action, state, dispatch) => {
     EstateServices
   } = documentRes && documentRes.MdmsRes ? documentRes.MdmsRes : {}
   const {
-    sampleSiteMapDoc = []
+    sampleSiteMap = []
   } = EstateServices || {}
-  const findMasterItem = sampleSiteMapDoc.find(item => item.code === "MasterEst")
+  const findMasterItem = sampleSiteMap.find(item => item.code === "MasterEst")
   const masterDocuments = !!findMasterItem ? findMasterItem.documentList : [];
   if (masterDocuments.length) {
     var documentTypes = [{
@@ -775,13 +775,25 @@ const detailsContainer = {
 
 const validateSiteReportForm = (state) => {
   const isSiteReportValid = validateFields(
-    "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children",
+    "components.div.children.detailsContainer.children.siteReportDetails.children.cardContent.children.detailsContainer.children",
+    state,
+    store.dispatch,
+    "site-report"
+  )
+  const isBuildingDetailsValid = validateFields(
+    "components.div.children.detailsContainer.children.buldingDetails.children.cardContent.children.detailsContainer.children",
+    state,
+    store.dispatch,
+    "site-report"
+  )
+  const isChargesValid = validateFields(
+    "components.div.children.detailsContainer.children.charges.children.cardContent.children.detailsContainer.children",
     state,
     store.dispatch,
     "site-report"
   )
 
-  return isSiteReportValid;
+  return (isSiteReportValid && isBuildingDetailsValid && isChargesValid);
 }
 
 const siteReport = {

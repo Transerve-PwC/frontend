@@ -33,8 +33,8 @@ const documentList = {
     uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.accountStatementUploadedDocInRedux",
     tenantIdJsonPath: "Properties[0].tenantId",
     removedJsonPath: "PropertiesTemp[0].propertyDetails.accountStatementRemovedDoc",
-    callBack: applyEstates,
-    activeIndex: 8
+    // callBack: applyEstates,
+    // activeIndex: 8
     // excelUrl: "/est-services/auctions/_parse?"
   }
 };

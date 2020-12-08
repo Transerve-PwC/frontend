@@ -198,7 +198,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     if (queryObject[0].propertyDetails.accountStatementDocument) {
       let legacyAccStmtDoc = queryObject[0].propertyDetails.accountStatementDocument;
       if (legacyAccStmtDoc[0]) {
-        legacyAccStmtDoc[0].isActive = true;
+        legacyAccStmtDoc = legacyAccStmtDoc.map(item => ({...item, isActive: true}))
+
+        let removedDocs = get(state.screenConfiguration.preparedFinalObject, `PropertiesTemp[0].propertyDetails.accountStatementRemovedDoc`) || [];
+        legacyAccStmtDoc = [...legacyAccStmtDoc, ...removedDocs]
 
         set(
           queryObject[0],
@@ -394,10 +397,6 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       noOfMonths = noOfMonths != null ? noOfMonths.toString() : noOfMonths;
     }
 
-    if (Properties[0].propertyDetails.accountStatementDocument) {
-      setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.accountStatementDocument`, `PropertiesTemp[0].propertyDetails.accountStatementUploadedDocInRedux`);
-    }
-
     owners = get(
       Properties[0],
       "propertyDetails.owners",
@@ -461,6 +460,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     Properties = [{...Properties[0], estateRentSummary: estateRentSummary, propertyDetails: {...propertyDetails, paymentConfig : {...paymentConfig, paymentConfigItems}}}]
 
     dispatch(prepareFinalObject("Properties", Properties));
+
+    if (Properties[0].propertyDetails.accountStatementDocument) {
+      await setDocsForEditFlow(state, dispatch, `Properties[0].propertyDetails.accountStatementDocument`, `PropertiesTemp[0].propertyDetails.accountStatementUploadedDocInRedux`);
+    }
 
     let activeIndexArr = screenName == "apply-manimajra" ? [3,4] : [4,5];
 

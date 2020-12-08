@@ -117,6 +117,23 @@ import { penaltySummary } from "./generatePenaltyStatement";
     disabled: true
   }
 
+  const commentsField = {
+    label: {
+        labelName: "Comments",
+        labelKey: "ES_COMMENTS_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Comments",
+        labelKey: "ES_COMMENTS_PLACEHOLDER"
+    },
+    visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    },
+    jsonPath: "payment.comments"
+  }
+
   const paymentType = {
     label: {
         labelName: "Payment Type",
@@ -367,6 +384,7 @@ import { penaltySummary } from "./generatePenaltyStatement";
         dateOfPayment: getDateField(paymentDate),
         bankName: getTextField(bankName),
         transactionId: getTextField(transactionId),
+        comments : getTextField(commentsField)
       })
   })
 
@@ -440,6 +458,7 @@ import { penaltySummary } from "./generatePenaltyStatement";
 
   const goToPayment = async (state, dispatch, type) => {
     let isValid = true;
+    let isValidAmount = false;
     let amountValue = get(state.screenConfiguration.screenConfig["estate-payment"],"components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children.Amount.props.value")
     isValid = validateFields("components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "estate-payment")
     if (!(Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7)) {
@@ -451,12 +470,60 @@ import { penaltySummary } from "./generatePenaltyStatement";
     };
     
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
-    }   
+    }
+    
     if(!!isValid && ((Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7))) {
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const offlinePaymentDetails = get(state.screenConfiguration.preparedFinalObject, "payment")
       const {paymentAmount, paymentType, ...rest} = offlinePaymentDetails
-      if(!!propertyId) {
+      switch(paymentType){
+        case 'PAYMENTTYPE.PENALTY':
+          const PenaltyStatementSummary = get(state.screenConfiguration.preparedFinalObject, "PenaltyStatementSummary")
+          const {totalPenaltyDue} = PenaltyStatementSummary
+          if(Number(amountValue) > Number(totalPenaltyDue)){
+            let errorMessage = {
+              labelName:
+                  "Amount Cannot be greater than total penalty due",
+              labelKey: "ES_PENALTY_AMOUNT_ERR"
+          };
+          dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          }else{
+            isValidAmount = true
+          }
+
+          break;
+        case 'PAYMENTTYPE.EXTENSIONFEE':
+            const ExtensionFeeStatementSummary = get(state.screenConfiguration.preparedFinalObject, "ExtensionFeeStatementSummary")
+            const {totalExtensionFeeDue} = ExtensionFeeStatementSummary
+            if(Number(amountValue) > Number(totalExtensionFeeDue)){
+              let errorMessage = {
+                labelName:
+                    "Amount Cannot be greater than total extension fee Due",
+                labelKey: "ES_EXTENSION_AMOUNT_ERR"
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            }else{
+              isValidAmount = true
+            }
+          break;
+        case 'PAYMENTTYPE.SECURITYFEE':
+            const SecurityStatementSummary = get(state.screenConfiguration.preparedFinalObject, "SecurityStatementSummary")
+            const {totalSecurityDepositDue} = SecurityStatementSummary
+            if(Number(amountValue) > Number(totalSecurityDepositDue)){
+              let errorMessage = {
+                labelName:
+                    "Amount Cannot be greater than total security fee due",
+                labelKey: "ES_SECURITY_AMOUNT_ERR"
+            };
+            dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            }else{
+              isValidAmount = true
+            } 
+          break;
+        default :
+        isValidAmount = true
+      }
+      if(!!propertyId && isValidAmount) {
         const payload = [
           { id: propertyId, 
             propertyDetails: {
