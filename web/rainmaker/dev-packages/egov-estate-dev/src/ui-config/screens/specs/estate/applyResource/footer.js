@@ -1308,6 +1308,9 @@ export const downloadPrintContainer = (
       if(branchType === "BuildingBranch"){
         applicationType =  "BB-" + applicationType 
       }
+       if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       const feeEstimate = temp[0].estimateCardData;
       downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState);
@@ -1466,6 +1469,9 @@ export const downloadPrintContainer = (
       if(branchType === "BuildingBranch"){
         applicationType =  "BB-" + applicationType 
       }
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       const feeEstimate = temp[0].estimateCardData;
       downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState,'print');    },
@@ -1669,7 +1675,7 @@ export const downloadPrintContainer = (
     },
     leftIcon: "assignment"
   }
-
+  
   if(branchType === 'BuildingBranch'){
       switch(applicationType && applicationState){
         case 'NOC' && 'ES_PENDING_DS_VERIFICATION':
@@ -1740,6 +1746,62 @@ export const downloadPrintContainer = (
             downloadMenu = []
             printMenu = []      
       }
+  }
+  else if(branchType === 'ManiMajra'){
+     switch(applicationType && applicationState){
+      case `${applicationType}` && 'ES_MM_PENDING_DS_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_CLARIFICATION': 
+        case `${applicationType}` && 'ES_MM_PENDING_DA_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_BI_VERIFICATION': 
+        case `${applicationType}` && 'ES_MM_PENDING_BI_DA_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_TCM_VERIFICATION':     
+        case `${applicationType}` && 'ES_MM_PENDING_TCM_DA_VERIFICATION': 
+        case `${applicationType}` && 'ES_MM_PENDING_SRA_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_AC_APPROVAL': 
+        case `${applicationType}` && 'ES_MM_REJECTED':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_PH_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_DA_PN_CREATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SRA_PN_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_PN_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_NOTICE':
+        case `${applicationType}` && 'ES_MM_PENIDNG_CITIZEN_NOTICE':
+        case `${applicationType}` && 'ES_MM_PENDING_DS_NOTICE_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_DA_NOTICE_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SRA_NOTICE_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_NOTICE_VERIFICATION':
+        case `${applicationType}` && 'ES_MM_PENDING_AC_NOTICE_APPROVAL':
+        case `${applicationType}` && 'ES_MM_PENDING_PAYMENT':
+        case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
+        case `${applicationType}` && 'ES_MM_PENDING_SRA_REVIEW_LETTER':
+        case `${applicationType}` && 'ES_MM_PENDING_SO_APPROVAL':
+        case `${applicationType}` && 'ES_MM_PENDING_DA_FEE':
+        case `${applicationType}` && 'ES_MM_PENDING_SRA_REVIEW_LETTER':
+            downloadMenu = [
+              applicationDownloadObject
+            ]
+            printMenu = [
+                applicationPrintObject
+           ]
+       break;
+
+       case `${applicationType}` && 'ES_MM_APPROVED':
+          downloadMenu = [
+            applicationDownloadObject
+          ]
+          printMenu = [
+              applicationPrintObject
+         ]
+         break;
+       
+       default:
+          downloadMenu = [
+            
+          ]
+          printMenu = [
+              
+         ] 
+     }
   }else{
     switch (applicationType && applicationState) {
       case `${applicationType}` && 'ES_PENDING_DS_VERIFICATION':

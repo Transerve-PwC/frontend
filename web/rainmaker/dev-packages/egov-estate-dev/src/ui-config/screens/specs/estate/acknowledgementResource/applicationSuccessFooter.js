@@ -136,6 +136,9 @@ export const applicationSuccessFooter = (
               if(branchType === "BuildingBranch"){
                 applicationType =  "BB-" + applicationType 
               }
+              if(branchType === 'ManiMajra'){
+                applicationType =  "MM-" + applicationType 
+               }
               const documents = temp[0].reviewDocData;
               set(Applications[0],"additionalDetails.documents",documents)
               downloadAcknowledgementForm(Applications,applicationType,[],"");
@@ -225,6 +228,9 @@ export const applicationSuccessFooter = (
               if(branchType === "BuildingBranch"){
                 applicationType =  "BB-" + applicationType 
               }
+              if(branchType === 'ManiMajra'){
+                applicationType =  "MM-" + applicationType 
+               }
               set(Applications[0],"additionalDetails.documents",documents)
               downloadAcknowledgementForm(Applications,applicationType,[],"",'print');
             }

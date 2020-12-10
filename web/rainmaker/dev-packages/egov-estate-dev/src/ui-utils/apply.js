@@ -514,7 +514,7 @@ export const addHocDemandUpdate = async (state, dispatch) => {
         get(state.screenConfiguration.preparedFinalObject, "adhocDetails", {})
       )
     );
-
+    
     set(adhocDetails , "isAdjustment","true")
     set(adhocDetails, "adjustmentDate", convertDateToEpoch(adhocDetails.adjustmentDate))
     set(adhocDetails, "generationDate", convertDateToEpoch(moment(new Date()).format('YYYY-MM-DD')));
@@ -527,8 +527,7 @@ export const addHocDemandUpdate = async (state, dispatch) => {
     set(adhocDetails , "collectedGST",0)
     set(adhocDetails , "collectedRentPenalty",0 )
     set(adhocDetails , "collectedGSTPenalty",0 )
-    set(queryObject[0], "propertyDetails.estateDemands[0]", adhocDetails);
-    
+    queryObject[0].propertyDetails.estateDemands.push(adhocDetails)
     let response;
     if(queryObject) {  
       response = await httpRequest(
