@@ -266,6 +266,11 @@ const callBackForNext = async (state, dispatch) => {
       switch (activeStep) {
         case PROPERTY_DETAILS_STEP:
         case OWNER_DETAILS_STEP:
+          errorMessage = {
+            labelName: "Please fill all mandatory fields, then do next !",
+            labelKey: "ES_ERR_FILL_MANDATORY_FIELDS"
+          };
+          break;
         case OWNER_DOCUMENTS_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",

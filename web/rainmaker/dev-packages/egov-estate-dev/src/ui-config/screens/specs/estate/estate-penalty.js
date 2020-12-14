@@ -79,7 +79,7 @@ const getPenaltyTypeRadioButton = {
       {
           label: "Penalty for Cheque bounce",
           labelKey: "ES_COMMON_PENALTY_FOR_CHEQUE_BOUNCE",
-          value: "check bounse"
+          value: "check bounce"
       }],
       errorMessage: "ES_ERR_PENALTY_TYPE_FIELD",
       jsonPath: "propertyPenalties[0].violationType",

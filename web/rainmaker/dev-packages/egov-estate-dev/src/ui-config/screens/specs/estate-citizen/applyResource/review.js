@@ -107,13 +107,17 @@ export const viewFour = (section, application) => {
           labelKey: field.label
         },
         { jsonPath: field.jsonPath,
-          callBack: field.type === "date" ? convertEpochToDate : null
-        }, visible)
+          callBack: field.type === "date" ? convertEpochToDate : field.type == "boolean" ? setYesOrNo : null
+         }, visible)
         }
       }, {})
       return getCommonContainer(field_types)
     }
   }
+}
+
+export const setYesOrNo = (value) => {
+  return value == "true" ? "Yes" : "No";
 }
 
 export const setThirdStep = async ({state, dispatch, applicationType, preview, data: application = {}, isEdit = true, showHeader = true}) => {

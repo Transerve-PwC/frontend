@@ -810,6 +810,11 @@ const callBackForNext = async (state, dispatch) => {
         case PURCHASER_DETAILS_STEP:
         case COURT_CASE_DETAILS_STEP:
         case RENT_INFO_DETAILS_STEP:
+          errorMessage = {
+            labelName: "Please fill all mandatory fields, then do next !",
+            labelKey: "ES_ERR_FILL_MANDATORY_FIELDS"
+          };
+          break;
         case PAYMENT_DETAILS_STEP:
           if (!isLegacyDocUploaded) {
             errorMessage = {
