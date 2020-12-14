@@ -306,7 +306,7 @@ export const applicationSuccessFooter = (
                   if(branch === 'BUILDING_BRANCH'){
                     downloadBuildingBranchPMPdf(Properties,PropertiesTemp)
                   }else{
-                    downloadSummary(Properties, PropertiesTemp);
+                    downloadSummary(Properties, PropertiesTemp,branch);
                   }
                 }
   
@@ -406,7 +406,7 @@ export const applicationSuccessFooter = (
                     if(branch === 'BUILDING_BRANCH'){
                       downloadBuildingBranchPMPdf(Properties,PropertiesTemp,'print')
                     }else{
-                      downloadSummary(Properties, PropertiesTemp,'print');
+                      downloadSummary(Properties, PropertiesTemp, branch, 'print');
                     }
                   }
               break;    

@@ -56,6 +56,9 @@ export const getApplicationTypes = async ({action, state, dispatch, screenKey, c
     if (branchType == "ManiMajra") {
       filter = "MANI_MAJRA"
     }
+    else if (branchType == "BuildingBranch") {
+      filter = "BUILDING_BRANCH"
+    }
     const queryObject = {
       MdmsCriteria: {
         tenantId: commonConfig.tenantId,

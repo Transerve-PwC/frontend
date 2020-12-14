@@ -197,18 +197,16 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
     if (queryObject[0].propertyDetails.accountStatementDocument) {
       let legacyAccStmtDoc = queryObject[0].propertyDetails.accountStatementDocument;
-      if (legacyAccStmtDoc[0]) {
-        legacyAccStmtDoc = legacyAccStmtDoc.map(item => ({...item, isActive: true}))
+      legacyAccStmtDoc = legacyAccStmtDoc.filter(item => !!item).map(item => ({...item, isActive: true}))
 
-        let removedDocs = get(state.screenConfiguration.preparedFinalObject, `PropertiesTemp[0].propertyDetails.accountStatementRemovedDoc`) || [];
-        legacyAccStmtDoc = [...legacyAccStmtDoc, ...removedDocs]
+      let removedDocs = get(state.screenConfiguration.preparedFinalObject, `PropertiesTemp[0].propertyDetails.accountStatementRemovedDoc`) || [];
+      legacyAccStmtDoc = [...legacyAccStmtDoc, ...removedDocs]
 
-        set(
-          queryObject[0],
-          "propertyDetails.accountStatementDocument",
-          legacyAccStmtDoc
-        )
-      }
+      set(
+        queryObject[0],
+        "propertyDetails.accountStatementDocument",
+        legacyAccStmtDoc
+      )
     }
 
     prevOwners = get(

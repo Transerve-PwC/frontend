@@ -419,7 +419,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (propertyPurchaserItems && propertyPurchaserItems.length > 0) {
       for (var i = 0; i < propertyPurchaserItems.length; i++) {
-        if (typeof propertyPurchaserItems[i].isDeleted !== "undefined") {
+        if (!!propertyPurchaserItems[i].isDeleted) {
           continue;
         }
         var isPurchaserDetailsValid = validateFields(
@@ -578,7 +578,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (courtCaseItems && courtCaseItems.length > 0) {
       for (var i = 0; i < courtCaseItems.length; i++) {
-        if (typeof courtCaseItems[i].isDeleted !== "undefined") {
+        if (courtCaseItems[i].isDeleted) {
           continue;
         }
         var isCourtCaseDetailsValid = validateFields(
@@ -852,7 +852,7 @@ const setOwnersOrPartners = (state, dispatch, container) => {
 
   if (propertyOwnersItems && propertyOwnersItems.length > 0) {
     for (var i = 0; i < propertyOwnersItems.length; i++) {
-      if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
+      if (!!propertyOwnersItems[i].isDeleted) {
         continue;
       }
       isOwnerOrPartnerDetailsValid = validateFields(
@@ -1319,7 +1319,7 @@ export const downloadPrintContainer = (
   };
 
   let LetterDownloadObject = {
-    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_GENERAL_REASON":  applicationType === "PatnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON":  applicationType === "PatnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -1328,6 +1328,9 @@ export const downloadPrintContainer = (
       if(branchType === "BuildingBranch"){
         applicationType =  "BB-" + applicationType 
       }
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadLetter(Applications,applicationType);
     },
@@ -1335,7 +1338,7 @@ export const downloadPrintContainer = (
   }
 
   let LetterPrintObject = {
-    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_GENERAL_REASON": "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON": "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -1344,6 +1347,9 @@ export const downloadPrintContainer = (
       if(branchType === "BuildingBranch"){
         applicationType =  "BB-" + applicationType 
       }
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadLetter(Applications,applicationType,'print');
     },
@@ -1416,7 +1422,7 @@ export const downloadPrintContainer = (
   
 
   let NDCWHODownloadObject = {
-    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_AWHO_LETTER": "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_AWHO_LETTER": "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -1427,7 +1433,7 @@ export const downloadPrintContainer = (
   }
 
   let NDCWHOPrintObject = {
-    label: { labelName: "Letter", labelKey: applicationType === 'NDC' ? "ES_NDC_AWHO_LETTER": "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_AWHO_LETTER": "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -1479,10 +1485,15 @@ export const downloadPrintContainer = (
   };
 
   let NoticePrintObject = {
-    label: { labelName: "Notice", labelKey: applicationType === 'IssuanceOfNotice' ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
+    label: { labelName: "Notice", labelKey: (applicationType === 'IssuanceOfNotice' && branchType === 'EstateBranch') ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadNotice(Applications,applicationType,'','print');
     },
@@ -1490,10 +1501,15 @@ export const downloadPrintContainer = (
   }
 
   let NoticeDownloadObject = {
-    label: { labelName: "Notice", labelKey: applicationType === 'IssuanceOfNotice' ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
+    label: { labelName: "Notice", labelKey: (applicationType === 'IssuanceOfNotice' && branchType === 'EstateBranch') ? "ES_VIOLATION_NOTICE": "ES_NOTICE" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadNotice(Applications,applicationType,'');
     },
@@ -1659,6 +1675,11 @@ export const downloadPrintContainer = (
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadEmailNotice(Applications,applicationType);
     },
@@ -1670,6 +1691,11 @@ export const downloadPrintContainer = (
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      let { applicationType} = Applications[0];
+      const {branchType} = Applications[0];
+      if(branchType === 'ManiMajra'){
+        applicationType =  "MM-" + applicationType 
+       }
       set(Applications[0],"additionalDetails.documents",documents)
       downloadEmailNotice(Applications,applicationType,'print');
     },
@@ -1771,12 +1797,7 @@ export const downloadPrintContainer = (
         case `${applicationType}` && 'ES_MM_PENDING_SRA_NOTICE_VERIFICATION':
         case `${applicationType}` && 'ES_MM_PENDING_SO_NOTICE_VERIFICATION':
         case `${applicationType}` && 'ES_MM_PENDING_AC_NOTICE_APPROVAL':
-        case `${applicationType}` && 'ES_MM_PENDING_PAYMENT':
-        case `${applicationType}` && 'ES_PENDING_DA_PREPARE_LETTER':
-        case `${applicationType}` && 'ES_MM_PENDING_SRA_REVIEW_LETTER':
-        case `${applicationType}` && 'ES_MM_PENDING_SO_APPROVAL':
-        case `${applicationType}` && 'ES_MM_PENDING_DA_FEE':
-        case `${applicationType}` && 'ES_MM_PENDING_SRA_REVIEW_LETTER':
+          
             downloadMenu = [
               applicationDownloadObject
             ]
@@ -1785,22 +1806,164 @@ export const downloadPrintContainer = (
            ]
        break;
 
+       case `${applicationType}` && 'ES_MM_PENDING_DA_FEE':
+       case `${applicationType}` && 'ES_MM_PENDING_PAYMENT': 
+       case `${applicationType}` && 'ES_MM_PENDING_DA_PREPARE_LETTER':
+       case `${applicationType}` && 'ES_MM_PENDING_SRA_REVIEW_LETTER':
+       case `${applicationType}` && 'ES_MM_PENDING_PAYMENT':
+       switch(applicationType){
+          case 'UnRegisteredWill':
+              if(process.env.REACT_APP_NAME === "Citizen"){
+                downloadMenu = [
+                  applicationDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,EmailPrintObject
+                ]
+              }else{
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ] 
+              }
+              
+            break;
+          case 'RegisteredWill':
+              if(process.env.REACT_APP_NAME === "Citizen"){
+                downloadMenu = [
+                  applicationDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,EmailPrintObject
+                ]
+              }else{
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ] 
+              }
+            break;
+          case 'IntestateDeath':
+              if(process.env.REACT_APP_NAME === "Citizen"){
+                downloadMenu = [
+                  applicationDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,EmailPrintObject
+                ]
+              }else{
+                downloadMenu = [
+                  applicationDownloadObject,NoticeDownloadObject,EmailDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,NoticePrintObject,EmailPrintObject
+                ] 
+              }
+            break;
+        
+          default:
+              downloadMenu = [
+                applicationDownloadObject
+              ]
+              printMenu = [
+                  applicationPrintObject
+             ]
+       }
+         
+         break;
+       case `${applicationType}` && 'ES_MM_PENDING_SO_APPROVAL':
+          switch(applicationType){
+              case 'UnRegisteredWill':
+              case 'RegisteredWill':
+              case 'IntestateDeath':
+                if(process.env.REACT_APP_NAME === "Citizen"){
+                        downloadMenu = [
+                        applicationDownloadObject,EmailDownloadObject
+                        ]
+                        printMenu = [
+                          applicationPrintObject,EmailPrintObject
+                        ]
+                      }else{
+                        downloadMenu = [
+                        applicationDownloadObject,
+                        LetterDownloadObject,
+                        NoticeDownloadObject,EmailDownloadObject
+                      ]
+                        printMenu = [
+                        applicationPrintObject,
+                        LetterPrintObject,NoticePrintObject,EmailPrintObject
+                        ]
+                      } 
+                    break;
+                  default:      
+            if(process.env.REACT_APP_NAME === "Citizen")
+                  {
+                    downloadMenu = [
+                    applicationDownloadObject
+                    ]
+                    printMenu = [
+                      applicationPrintObject
+                    ]
+                  }else{
+                    downloadMenu = [
+                    applicationDownloadObject,
+                    LetterDownloadObject
+                  ]
+                    printMenu = [
+                    applicationPrintObject,
+                    LetterPrintObject
+                    ]
+                  } 
+             }
+        break;       
        case `${applicationType}` && 'ES_MM_APPROVED':
-          downloadMenu = [
-            applicationDownloadObject
-          ]
-          printMenu = [
-              applicationPrintObject
-         ]
+         switch(applicationType){
+          case 'FamilySettlement':
+          case 'NDC':
+          case 'NOC':
+          case 'SaleGift':
+          case 'AllotmentOfNewHouse':
+
+              downloadMenu = [
+                applicationDownloadObject,
+                LetterDownloadObject
+              ]
+                printMenu = [
+                applicationPrintObject,
+                LetterPrintObject
+              ]
+              break;
+
+            case 'UnRegisteredWill':
+            case 'RegisteredWill':
+            case 'IntestateDeath':
+                downloadMenu = [
+                  applicationDownloadObject,
+                  LetterDownloadObject,
+                  NoticeDownloadObject,EmailDownloadObject
+                ]
+                  printMenu = [
+                  applicationPrintObject,
+                  LetterPrintObject,NoticePrintObject,EmailPrintObject
+                  ]
+              break;
+             
+         }
          break;
        
        default:
-          downloadMenu = [
-            
-          ]
-          printMenu = [
-              
-         ] 
+          downloadMenu = []
+          printMenu = [] 
      }
   }else{
     switch (applicationType && applicationState) {
@@ -1853,7 +2016,7 @@ export const downloadPrintContainer = (
             ]
           }
             
-            break;    
+          break;    
           
           case 'ChangeInTrade':
           case 'DuplicateCopy':

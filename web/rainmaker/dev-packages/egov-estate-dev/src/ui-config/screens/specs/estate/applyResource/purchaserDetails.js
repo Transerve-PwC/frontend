@@ -386,7 +386,8 @@ export const purchaserDetails = getCommonCard({
       },
       children: {
         multipleApplicantInfo: {
-          uiFramework: "custom-containers",
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-estate",
           componentPath: "MultiItem",
           props: {
             scheama: commonPurchaserInformation(),

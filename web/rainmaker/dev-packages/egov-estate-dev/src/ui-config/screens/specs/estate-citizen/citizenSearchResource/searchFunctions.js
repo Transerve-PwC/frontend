@@ -145,7 +145,7 @@ export const searchApiCall = async (state, dispatch, queryObject = [], offset, l
         [getTextToLocalMapping("Action")]: React.createElement('div', {style: applyButtonStyle}, "SELECT"),
         [getTextToLocalMapping("File No")]: item.fileNumber || "-",
         [getTextToLocalMapping("Site Number")]: item.siteNumber,
-        [getTextToLocalMapping("Owner Name")]: !!item.propertyDetails.owners ? item.propertyDetails.owners.filter(item => item.ownerDetails.isCurrentOwner === true).map(owner => owner.ownerDetails.ownerName) || "-" : "-",
+        [getTextToLocalMapping("Owner Name")]: !!item.propertyDetails.owners ? item.propertyDetails.owners.filter(item => item.ownerDetails.isCurrentOwner === true).map(owner => owner.ownerDetails.ownerName).join(",") || "-" : "-",
         ["propertyId"]: item.propertyDetails.propertyId
       }));
 

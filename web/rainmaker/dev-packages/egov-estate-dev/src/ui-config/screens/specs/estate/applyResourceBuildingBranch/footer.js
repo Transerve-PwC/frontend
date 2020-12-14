@@ -108,7 +108,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
       for (var i = 0; i < propertyOwnersItems.length; i++) {
-        if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
+        if (!!propertyOwnersItems[i].isDeleted) {
           continue;
         }
         isOwnerDetailsValid = validateFields(

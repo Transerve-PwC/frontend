@@ -30,7 +30,16 @@ import {
   httpRequest
 } from '../../../../ui-utils/api';
 import get from "lodash/get";
-import { WF_EB_REFUND_OF_EMD } from "../../../../ui-constants"
+import { WF_EB_REFUND_OF_EMD } from "../../../../ui-constants";
+import {
+  getUserInfo
+  } from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {
+    roles = []
+} = userInfo
+const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 
 const searchResults = async (action, state, dispatch, fileNumber) => {
   let queryObject = [
@@ -60,7 +69,7 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
     )
     let refundInitiated = bidders.filter(item => !!item.refundStatus);
 
-    let refundInitiatedColDisplay = (bidders.length == refundInitiated.length) ? false : true;
+    let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
 
     dispatch(
       handleField(

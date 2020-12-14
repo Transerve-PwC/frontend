@@ -306,7 +306,7 @@ class WorkFlowContainer extends React.Component {
   getHeaderName = action => {
     return {
       labelName: `${action} Application`,
-      labelKey: `WF_${action}_APPLICATION`
+      labelKey: `WF_ES_${action}_APPLICATION`
     };
   };
 

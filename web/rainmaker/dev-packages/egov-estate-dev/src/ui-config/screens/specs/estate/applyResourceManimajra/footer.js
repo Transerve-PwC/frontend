@@ -118,7 +118,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (propertyOwnersItems && propertyOwnersItems.length > 0) {
       for (var i = 0; i < propertyOwnersItems.length; i++) {
-        if (typeof propertyOwnersItems[i].isDeleted !== "undefined") {
+        if (!!propertyOwnersItems[i].isDeleted) {
           continue;
         }
         isOwnerDetailsValid = validateFields(
@@ -270,7 +270,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (propertyPurchaserItems && propertyPurchaserItems.length > 0) {
       for (var i = 0; i < propertyPurchaserItems.length; i++) {
-        if (typeof propertyPurchaserItems[i].isDeleted !== "undefined") {
+        if (!!propertyPurchaserItems[i].isDeleted) {
           continue;
         }
         var isPurchaserDetailsValid = validateFields(
@@ -434,7 +434,7 @@ const callBackForNext = async (state, dispatch) => {
 
     if (courtCaseItems && courtCaseItems.length > 0) {
       for (var i = 0; i < courtCaseItems.length; i++) {
-        if (typeof courtCaseItems[i].isDeleted !== "undefined") {
+        if (!!courtCaseItems[i].isDeleted) {
           continue;
         }
         var isCourtCaseDetailsValid = validateFields(

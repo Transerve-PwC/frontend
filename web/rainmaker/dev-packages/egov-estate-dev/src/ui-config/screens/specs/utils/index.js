@@ -283,18 +283,33 @@ export const getMdmsData = async queryObject => {
   }
 };
 
-export const downloadSummary = (Properties, PropertiesTemp ,mode = "download") => {
-
-  const isGroundRent = Properties[0].propertyDetails.paymentConfig.isGroundRent
-  let queryStr = [{
-    key: "key",
-    value: `property-summary`
-  },
-  {
-    key: "tenantId",
-    value: `${getTenantId().split('.')[0]}`
+export const downloadSummary = (Properties, PropertiesTemp, branch, mode = "download") => {
+  let queryStr = []
+  switch(branch){
+    case "MANI_MAJRA":
+        queryStr = [{
+          key: "key",
+          value: `mm-property-master`
+        },
+        {
+          key: "tenantId",
+          value: `${getTenantId().split('.')[0]}`
+        }
+      ]
+      break;
+    default:
+     queryStr = [{
+          key: "key",
+          value: `property-summary`
+        },
+        {
+          key: "tenantId",
+          value: `${getTenantId().split('.')[0]}`
+        }
+      ]
   }
-]
+  const isGroundRent = Properties[0].propertyDetails.paymentConfig.isGroundRent
+  
 
 let PropertiesTempOwners = PropertiesTemp[0].propertyDetails.owners;
 const modifiedOwner = PropertiesTempOwners.map((owner) => {
@@ -1213,6 +1228,55 @@ let queryStr = []
       }
       ]
       break;
+
+      case 'MM-FamilySettlement':
+        queryStr = [{
+            key: "key",
+            value: `mm-court-decree-final-letter`
+        }]
+        break;
+      case 'MM-AllotmentOfNewHouse':
+        queryStr = [{
+            key: "key",
+            value: `mm-aos-letter`
+        }]
+        break;
+      case 'MM-IntestateDeath':
+        queryStr = [{
+            key: "key",
+            value: `mm-inestate-without-will-letter`
+        }]
+        break;
+      case 'MM-NOC':
+        queryStr = [{
+            key: "key",
+            value: `mm-noc-final-letter`
+        }]
+        break;
+      case 'MM-NDC':
+        queryStr = [{
+            key: "key",
+            value: `mm-ndc-final-letter`
+        }]
+        break;
+      case 'MM-UnRegisteredWill':
+        queryStr = [{
+            key: "key",
+            value: `mm-un-registeredWill-final-letter`
+        }]
+        break;
+      case 'MM-RegisteredWill':
+        queryStr = [{
+            key: "key",
+            value: `mm-registeredWill-final-letter`
+        }]
+        break;
+      case 'MM-SaleGift' :
+        queryStr = [{
+            key: "key",
+            value: `mm-sale-deed-final-letter`
+        }]
+        break;
          
       
   }
@@ -1271,6 +1335,33 @@ export const downloadEmailNotice = (Applications, applicationType, mode = 'downl
           }
         ]
       break;
+
+      case 'MM-UnRegisteredWill':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-unregistered-will-email-notice"              
+            }
+          ]  
+            break;
+
+      case 'MM-RegisteredWill':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-registered-will-email-notice"              
+            }
+          ]  
+            break;
+
+      case 'MM-IntestateDeath':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-inestate-death-without-will-email-notice"              
+            }
+          ]   
+          break;
   
     }
     queryStr[1] = {
@@ -1421,6 +1512,34 @@ export const downloadNotice = (Applications, applicationType,noticeType, mode = 
             }
           ]
         break;
+    
+      case 'MM-UnRegisteredWill':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-unregistered-will-notice"              
+            }
+          ]  
+            break;
+
+      case 'MM-RegisteredWill':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-registered-will-notice"              
+            }
+          ]  
+            break;
+
+      case 'MM-IntestateDeath':
+          queryStr = [
+            {
+              key:"key",
+              value:"mm-inestate-death-without-will-notice"              
+            }
+          ]   
+            break;
+
      default:
         queryStr = [
           {

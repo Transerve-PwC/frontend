@@ -92,6 +92,23 @@ const getData = async (action, state, dispatch, fileNumber) => {
   
 }
 
+const getFormattedTill = (startMonth, endMonth) => {
+  let till = (endMonth-startMonth)+1;
+
+  if (till) {
+    const years = (Number(till) / 12 | 0)
+    const months = Number(till) % 12
+    if(years > 0 && months > 0) {
+      return years + " Year(s) " + months +" Month(s)"
+    } else if(years < 1) {
+      return months + " Month(s)"
+    } else if(months < 1) {
+      return years + " Year(s)"
+    }
+  }
+  return "-"
+}
+
 const updateAllFields = (action, state, dispatch) => {
   const properties = get(state, "screenConfiguration.preparedFinalObject.Properties")
   let demandGenerationType = properties[0].propertyDetails.paymentConfig.isGroundRent;
@@ -103,7 +120,7 @@ const updateAllFields = (action, state, dispatch) => {
     [getTextToLocalMapping("Rent amount")]: item.groundRentAmount || 0,
     [getTextToLocalMapping("Start month")]: item.groundRentStartMonth || 0,
     [getTextToLocalMapping("End month")]: item.groundRentEndMonth || 0,
-    [getTextToLocalMapping("Till")]: (item.groundRentEndMonth/12).toFixed(2) || 0,
+    [getTextToLocalMapping("Till")]: getFormattedTill(item.groundRentStartMonth, item.groundRentEndMonth)
   }));
 
   let installmentData = installments.map(item => ({
