@@ -1,6 +1,6 @@
 import { getCommonSubHeader, getCommonGrayCard, getLabelWithValue as _getLabelWithValue, getCommonContainer, getCommonCard, getCommonTitle, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { changeStep } from "../footer";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { convertEpochToDate } from "../../utils";
 
 function getLabelWithValue(labelName, path, visible) {
@@ -68,6 +68,23 @@ const headerDiv = (isEditable = true, label, step) => {
   }
 }
 
+export const setYesOrNo = (value) => {
+  return value == "true" ? "Yes" : "No";
+}
+
+const setArrayValues = (value) => { 
+  const array = value.map(item => getLocaleLabels(item, item))
+  return !!array.length ? array.join(", ") : "-"
+}
+
+const callBackForPreview = (type) => (value) => {
+  switch(type) {
+    case "date": return convertEpochToDate(value)
+    case "boolean": return setYesOrNo(value)
+    case "array": return setArrayValues(value)
+  }
+}
+
 export const viewFour = (section, application) => {
   const {fields = [], type} = section
   switch(type) {
@@ -107,17 +124,13 @@ export const viewFour = (section, application) => {
           labelKey: field.label
         },
         { jsonPath: field.jsonPath,
-          callBack: field.type === "date" ? convertEpochToDate : field.type == "boolean" ? setYesOrNo : null
+          callBack: !!field.type ? callBackForPreview(field.type) : null
          }, visible)
         }
       }, {})
       return getCommonContainer(field_types)
     }
   }
-}
-
-export const setYesOrNo = (value) => {
-  return value == "true" ? "Yes" : "No";
 }
 
 export const setThirdStep = async ({state, dispatch, applicationType, preview, data: application = {}, isEdit = true, showHeader = true}) => {

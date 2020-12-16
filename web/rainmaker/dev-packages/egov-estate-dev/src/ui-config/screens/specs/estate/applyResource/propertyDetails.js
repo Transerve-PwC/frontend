@@ -182,7 +182,8 @@ const rateField = {
         xs: 12,
         sm: 6
     },
-    pattern: _getPattern("share"),
+    errorMessage:"ES_ERR_RATE_SQR_FIELD",
+    pattern: _getPattern("rateSqFeet"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.ratePerSqft"
 }

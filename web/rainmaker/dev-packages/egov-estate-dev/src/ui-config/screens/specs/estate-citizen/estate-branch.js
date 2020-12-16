@@ -76,7 +76,8 @@ const estateBranchHome = {
             history: {},
             style: {
               width: "100%"
-            }
+            },
+            isCitizen: process.env.REACT_APP_NAME === "Citizen" ? true : false
           }
         }
       }

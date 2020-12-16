@@ -324,7 +324,7 @@ const shareField = {
     sm: 6
   },
   // required: true,
-  pattern: _getPattern("share"),
+  pattern: _getPattern("ownerShare"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].share"
 }
 

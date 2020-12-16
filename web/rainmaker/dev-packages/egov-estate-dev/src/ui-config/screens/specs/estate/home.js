@@ -131,7 +131,8 @@ const estateHome = {
             items: process.env.REACT_APP_NAME === "Citizen" ? citizenCardItems : cardItems,
             jsonPath: process.env.REACT_APP_NAME === "Employee" ? "app.menu" : null,
             history: {},
-            isArray: process.env.REACT_APP_NAME === "Employee"
+            isArray: process.env.REACT_APP_NAME === "Employee",
+            isCitizen: process.env.REACT_APP_NAME === "Citizen" ? true : false
           }
         }
       }

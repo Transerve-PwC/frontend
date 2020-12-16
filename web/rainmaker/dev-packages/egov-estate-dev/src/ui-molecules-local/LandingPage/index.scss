@@ -1,18 +1,38 @@
 .card-content-style {
-    padding: 0;
+  padding: 0;
+}
+
+.landing-page-main-grid {
+  padding-top: 80px;
+}
+.landing-page-main-grid-citizen {
+  padding-top: 80px;
+}
+
+.common-header-cont {
+  display: block;
+}
+
+@media only screen and (min-width: 768px) {
+  .module-card-style {
+    min-height: 200px;
   }
-  
+
   .landing-page-main-grid {
-    padding-top: 80px;
+    padding: 0px 8px;
+    padding-top: 24px !important;
   }
-  
-  @media only screen and (min-width: 768px) {
-    .module-card-style {
-      min-height: 200px;
-    }
-  
-    .landing-page-main-grid {
-      padding-top: 24px !important;
-    }
+  .landing-page-main-grid-citizen {
+    padding: 0px 8px;
+    padding-top: 24px !important;
   }
-  
+}
+@media only screen and (max-width: 768px) {
+  .landing-page-main-grid {
+    // padding: 0px 8px;
+    padding-top: 32px !important;
+  }
+  .landing-page-main-grid-citizen {
+    padding-top: 70px !important;
+  }
+}

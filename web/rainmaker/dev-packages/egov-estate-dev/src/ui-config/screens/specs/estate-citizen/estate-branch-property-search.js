@@ -27,6 +27,9 @@ const getMdmsData = async (dispatch) => {
         moduleName: ESTATE_SERVICES_MDMS_MODULE,
         masterDetails: [{
           name: "categories"
+        },
+        {
+          name:"sector"
         }]
       }]
     }

@@ -101,9 +101,10 @@ class LandingPage extends React.Component {
 
 
   render() {
-    const { classes, items, applicationCount, isArray } = this.props;
+    const { classes, items, applicationCount, isArray, isCitizen } = this.props;
+    let landingGridClassname = isCitizen ? "landing-page-main-grid-citizen" : "landing-page-main-grid"
     return (
-      <Grid container className="landing-page-main-grid">
+      <Grid container className={landingGridClassname}>
         {!!isArray ? items.map(obj => {
           return (
             <React.Fragment>

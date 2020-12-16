@@ -2311,10 +2311,14 @@ export const _getPattern = (type) => {
       return /^[a-zA-Z0-9]{1,100}$/i;
     case "fileNumber":
       return /^[A-Za-z0-9_@./#&+-]{1,50}$/i;
-    case "alphabet":
+    case "alphabet":  
       return /^[a-zA-Z ]{1,150}$/i;
+    case "rateSqFeet":
+      return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
     case "address":
       return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,150}$/i
+    case "ownerShare":
+      return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;  
   }
 }
 
