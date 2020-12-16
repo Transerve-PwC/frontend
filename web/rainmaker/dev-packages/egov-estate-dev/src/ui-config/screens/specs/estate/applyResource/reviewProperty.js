@@ -1247,7 +1247,7 @@ export const getReviewInterest = (isEditable = true, step = 5, screenKey = "allo
         {
           jsonPath: `Properties[0].propertyDetails.paymentConfig.isIntrestApplicable`,
           callBack: (value) => {
-            return value == true ? "Yes" : "No"
+            return value == "true" ? "Yes" : "No"
           }
         }
       ),
@@ -1426,7 +1426,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`startYear_${i}`] = getLabelWithValue(
           {
             labelName: "Start Year",
-            labelKey: "ES_START_YEAR_LABEL"
+            labelKey: "ES_START_MONTH_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
@@ -1436,7 +1436,7 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
         detailsObj[`endYear_${i}`] = getLabelWithValue(
           {
             labelName: "End Year",
-            labelKey: "ES_END_YEAR_LABEL"
+            labelKey: "ES_END_MONTH_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`

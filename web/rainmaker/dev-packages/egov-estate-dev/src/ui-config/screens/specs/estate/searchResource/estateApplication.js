@@ -50,11 +50,11 @@ const branchType = getQueryArg(window.location.href, "branchType");
   const FileNameField = {
     label: {
         labelName: "File Name",
-        labelKey: "ES_FILE_NAME_LABEL"
+        labelKey: "ES_FILE_NUMBER_LABEL"
     },
     placeholder: {
         labelName: "Enter File Name",
-        labelKey: "ES_FILE_NAME_PLACEHOLDER"
+        labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
     },
     gridDefination: {
         xs: 12,

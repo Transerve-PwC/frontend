@@ -577,7 +577,7 @@ const compositionFeesField = {
   },
   placeholder: {
     labelName: "Enter Composition fees",
-    labelKey: "ES_OMPOSITION_FEES_PLACEHOLDER"
+    labelKey: "ES_COMPOSITION_FEES_PLACEHOLDER"
   },
   gridDefination: {
     xs: 12,

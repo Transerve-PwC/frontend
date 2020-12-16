@@ -199,6 +199,7 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
       dueAmount: formatAmount(item.dueAmount.toFixed(2)) || "-",
       remainingBalance: formatAmount(item.remainingBalance.toFixed(2)) || "-",
       receiptNo: item.receiptNo || "-",
+      consolidatedAmount : item.isPrevious ? "CF" : "-"
     })
   )
 

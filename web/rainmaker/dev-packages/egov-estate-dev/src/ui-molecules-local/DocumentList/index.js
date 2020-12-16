@@ -288,13 +288,15 @@ class DocumentList extends Component {
                       <sup style={{ color: "#E54D42" }}>*</sup>
                     )}
                     <Typography variant="caption">
-                      <LabelContainer
+                      <LabelContainer style={{ 
+                             wordBreak : "break-word"
+                        }}
                         labelName={"Allowed documents are Aadhar Card / Voter ID Card / Driving License"}
                         labelKey={!!document.statement ? documentTypePrefix + document.statement: ""}
                         />
                     </Typography>
                     <Typography variant="caption">
-                      <LabelContainer
+                      <LabelContainer 
                      labelName={currentDocumentProps[0].description.labelName}
                      labelKey={documentTypePrefix + currentDocumentProps[0].description.labelKey}
                       />
