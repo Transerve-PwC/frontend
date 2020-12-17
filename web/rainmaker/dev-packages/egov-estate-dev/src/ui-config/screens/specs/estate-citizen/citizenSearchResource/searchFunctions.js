@@ -146,7 +146,9 @@ export const searchApiCall = async (state, dispatch, queryObject = [], offset, l
         [getTextToLocalMapping("File No")]: item.fileNumber || "-",
         [getTextToLocalMapping("Site Number")]: item.siteNumber,
         [getTextToLocalMapping("Owner Name")]: !!item.propertyDetails.owners ? item.propertyDetails.owners.filter(item => item.ownerDetails.isCurrentOwner === true).map(owner => owner.ownerDetails.ownerName).join(",") || "-" : "-",
-        ["propertyId"]: item.propertyDetails.propertyId
+        ["propertyId"]: item.propertyDetails.propertyId,
+        ["dueAmount"]: !!item.estateRentSummary ? item.estateRentSummary.balanceRent + item.estateRentSummary.balanceRentPenalty + item.estateRentSummary.balanceGSTPenalty + item.estateRentSummary.balanceGST : 0,
+        ["dispatch"]: dispatch
       }));
 
       dispatch(

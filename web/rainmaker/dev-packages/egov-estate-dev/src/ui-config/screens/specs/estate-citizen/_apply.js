@@ -93,7 +93,9 @@ const getData = async (action, state, dispatch) => {
   // }
     await hideFooter(action, state, dispatch)
     const owners = property.propertyDetails.owners.filter(item => !!item.ownerDetails.isCurrentOwner)
-    property = {...property, propertyDetails: {...property.propertyDetails, owners}}
+    const estateRentSummary = property.estateRentSummary
+    const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
+    property = {...property, propertyDetails: {...property.propertyDetails, owners, dueAmount: dueAmount || "0"}}
     
     const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
 

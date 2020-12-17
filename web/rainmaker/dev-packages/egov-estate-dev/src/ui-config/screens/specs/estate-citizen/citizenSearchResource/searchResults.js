@@ -6,11 +6,12 @@ import {
 import { getTextToLocalMapping } from "./searchFunctions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import store from "../../../../../ui-redux/store";
+import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 const tenantId = getTenantId();
 export const searchResults = {
   uiFramework: "custom-molecules",
-  moduleName: "egov-estate",
   componentPath: "Table",
   visible: false,
   props: {
@@ -25,6 +26,20 @@ export const searchResults = {
           display: false,
           viewColumns: false
         }
+      },
+      {
+        name: "dueAmount",
+        options: {
+          display: false,
+          viewColumns: false
+        }
+      },
+      {
+        name: "dispatch",
+        options: {
+          display: false,
+          viewColumns: false
+        }
       }
     ],
     options: {
@@ -34,7 +49,7 @@ export const searchResults = {
       selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
-      onRowClick: (row, index) => {
+      onRowClick: (row) => {
         onRowClick(row);
       }
     }
@@ -71,11 +86,15 @@ const onRowClick = rowData => {
     window.location.href = `adhocDemand?fileNumber=${rowData[1]}`
   }
   else {
-    if (process.env.REACT_APP_NAME === "Citizen") {
-      window.location.href = `application-types?propertyId=${rowData[4]}&fileNumber=${rowData[1]}&branchType=${branchType}`;
-    }
-    else {
-      window.location.href = `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`;
+    if(rowData[5] > 0) {
+      rowData[6](toggleSnackbar(true, {labelName: "ES_ERR_DUE_AMOUNT", labelKey: "ES_ERR_DUE_AMOUNT"}, "warning"))
+    } else {
+      if (process.env.REACT_APP_NAME === "Citizen") {
+        window.location.href = `application-types?propertyId=${rowData[4]}&fileNumber=${rowData[1]}&branchType=${branchType}`;
+      }
+      else {
+        window.location.href = `_apply?propertyId=${rowData[4]}&applicationType=${type}&fileNumber=${rowData[1]}`;
+      }
     }
   }
 };

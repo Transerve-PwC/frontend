@@ -196,7 +196,7 @@ export const searchApplicationApiCall = async (state, dispatch, onInit, offset, 
         [getTextToLocalMapping("File Number")]: item.property.fileNumber || "-",
         [getTextToLocalMapping("Application Number")]: item.applicationNumber || "-",
         [getTextToLocalMapping("Application Status")]: getLocaleLabels(item.state, item.state) || "-",
-        [APPLICATION_TYPE]: getLocaleLabels(item.applicationType, item.applicationType) || "-",
+        [APPLICATION_TYPE]: getLocaleLabels(`ES_${item.applicationType.toUpperCase()}`, `ES_${item.applicationType.toUpperCase()}`) || "-",
         [LAST_MODIFIED_ON]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
       dispatch(

@@ -118,7 +118,7 @@ const rentSummaryHeader = getCommonTitle({
 const rentSummary = getCommonGrayCard({
   rentSection: getRentSummaryCard({
     sourceJsonPath: "Properties[0].estateRentSummary",
-    dataArray: ["balanceRent", "balanceGST", "balanceGSTPenalty", "balanceRentPenalty", "balanceAmount"]
+    dataArray: ["balanceRent", "balanceGST", "balanceGSTPenalty", "balanceRentPenalty"]
   })
 });
 
