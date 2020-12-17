@@ -357,6 +357,7 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 
 const isValid = (file, acceptedFiles) => {
   const mimeType = file["type"];
+  if(!!mimeType) {
   const mimes = mimeType.split("/");
   let acceptedTypes = acceptedFiles.split(",");
   acceptedTypes = acceptedTypes.reduce((prev, curr) => {
@@ -375,7 +376,12 @@ const isValid = (file, acceptedFiles) => {
               errorMessage: `Please upload the allowed file types only.`
             }
   }
-}
+  }
+  } else {
+    return {  valid: false, 
+      errorMessage: `Please upload the allowed file types only.`
+    }
+  }
 }
 
 export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
