@@ -166,25 +166,31 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 
 const isValid = (file, acceptedFiles) => {
   const mimeType = file["type"];
-  const mimes = mimeType.split("/");
-  let acceptedTypes = acceptedFiles.split(",");
-  acceptedTypes = acceptedTypes.reduce((prev, curr) => {
-    const accepted = curr.split("/");
-    prev = [...prev, {first: accepted[0], second: accepted[1]}]
-    return prev
-  }, [])
-  if(acceptedFiles.includes(mimeType)) {
-    return {valid: true}
-  } else  {
-   const findItem = acceptedTypes.find(item => item.first === mimes[0])
-   if(!!findItem && findItem.second === "*") {
-    return {valid: true}
-   } else {
+  if(!!mimeType) {
+    const mimes = mimeType.split("/");
+    let acceptedTypes = acceptedFiles.split(",");
+    acceptedTypes = acceptedTypes.reduce((prev, curr) => {
+      const accepted = curr.split("/");
+      prev = [...prev, {first: accepted[0], second: accepted[1]}]
+      return prev
+    }, [])
+    if(acceptedFiles.includes(mimeType)) {
+      return {valid: true}
+    } else  {
+     const findItem = acceptedTypes.find(item => item.first === mimes[0])
+     if(!!findItem && findItem.second === "*") {
+      return {valid: true}
+     } else {
+      return {  valid: false, 
+                errorMessage: `Please upload the allowed file types only.`
+              }
+    }
+    }
+  } else {
     return {  valid: false, 
-              errorMessage: `Please upload the allowed file types only.`
-            }
+      errorMessage: `Please upload the allowed file types only.`
+    }
   }
-}
 }
 
 export const handleFileUpload = (event, handleDocument, props, stopLoading) => {

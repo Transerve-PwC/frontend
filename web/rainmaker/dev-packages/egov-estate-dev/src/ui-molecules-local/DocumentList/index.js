@@ -250,7 +250,7 @@ class DocumentList extends Component {
   }
 
   render() {
-    const { classes, documents, documentTypePrefix, description ,imageDescription ,inputProps } = this.props;
+    const { classes, documents, documentTypePrefix, description ,imageDescription ,inputProps, documentKey } = this.props;
     const { uploadedIndex,showLoader } = this.state;
     return (
       <div>        
@@ -260,8 +260,8 @@ class DocumentList extends Component {
             const currentDocumentProps =  inputProps.filter(item => item.type === document.name);
             return (
               <div
-                key={key}
-                id={`document-upload-${key}`}
+                key={!!documentKey ? `${documentKey}_${key}` : key}
+                id={`document-upload-${!!documentKey ? `${documentKey}_${key}` : key}`}
                 className={classes.documentContainer}
               >
                 <Grid container={true}>
@@ -312,7 +312,7 @@ class DocumentList extends Component {
                     </label> : null}
                     <UploadSingleFile
                       classes={this.props.classes}
-                      id={`upload-button-${key}`}
+                      id={`upload-button-${!!documentKey ? `${documentKey}_${key}` : key}`}
                       handleFileUpload={this.changeFile(key)}
                       uploaded={uploadedIndex.indexOf(key) > -1}
                       removeDocument={() => this.removeDocument(key)}

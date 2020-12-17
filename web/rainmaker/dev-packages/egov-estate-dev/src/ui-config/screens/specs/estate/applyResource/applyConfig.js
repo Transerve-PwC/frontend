@@ -77,8 +77,38 @@ const documentCardConfig = {
   }),
 }
 
+const documentCardConfigOwner = {
+  header: getCommonTitle({
+    labelName: "Required Documents",
+    labelKey: "ES_UPLOAD_DOCS_HEADER"
+  }, {
+    style: {
+      marginBottom: 18
+    }
+  }),
+  paragraph: getCommonParagraph({
+    labelName: "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
+    labelKey: "ES_UPLOAD_DOCS_SUBHEADER"
+  }),
+}
+
+const documentCardConfigPurchaser = {
+  header: getCommonTitle({
+    labelName: "Required Documents",
+    labelKey: "ES_UPLOAD_DOCS_HEADER"
+  }, {
+    style: {
+      marginBottom: 18
+    }
+  }),
+  paragraph: getCommonParagraph({
+    labelName: "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
+    labelKey: "ES_UPLOAD_DOCS_SUBHEADER"
+  }),
+}
+
 export const ownerDocumentDetails_0 = getCommonCard({
-  ...documentCardConfig,
+  ...documentCardConfigOwner,
   documentList: {
     ...documentList,
     props: {
@@ -87,21 +117,7 @@ export const ownerDocumentDetails_0 = getCommonCard({
       uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux",
       tenantIdJsonPath: "Properties[0].tenantId",
       removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.removedDocs",
-      callBack: applyEstates,
-      activeIndex: 3
-    }
-  }
-});
-export const ownerDocumentDetails_1 = getCommonCard({
-  ...documentCardConfig,
-  documentList: {
-    ...documentList,
-    props: {
-      ...documentList.props,
-      documentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.ownerDocuments",
-      uploadedDocumentsJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.uploadedDocsInRedux",
-      tenantIdJsonPath: "Properties[0].tenantId",
-      removedJsonPath: "PropertiesTemp[0].propertyDetails.owners[1].ownerDetails.removedDocs",
+      documentKey:"owners_0",
       callBack: applyEstates,
       activeIndex: 3
     }
@@ -211,7 +227,7 @@ export const companyDocuments_0 = getCommonCard({
 });
 
 export const previousOwnerDocuments_0 = getCommonCard({
-  ...documentCardConfig,
+  ...documentCardConfigPurchaser,
   documentList: {
     ...documentList,
     props: {
@@ -221,6 +237,7 @@ export const previousOwnerDocuments_0 = getCommonCard({
       tenantIdJsonPath: "Properties[0].tenantId",
       removedJsonPath: "PropertiesTemp[0].propertyDetails.purchaser[0].ownerDetails.removedDocs",
       callBack: applyEstates,
+      documentKey: "owners_0",
       activeIndex: 5
     }
   }
@@ -325,7 +342,6 @@ export const formwizardFourthStep = {
   },
   children: {
     ownerDocumentDetails_0
-    // ownerDocumentDetails_1
   },
   visible: false
 };

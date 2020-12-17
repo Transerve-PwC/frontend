@@ -323,6 +323,7 @@ const shareField = {
     xs: 12,
     sm: 6
   },
+  errorMessage:"ES_ERR_SHARE_FIELD",
   // required: true,
   pattern: _getPattern("ownerShare"),
   jsonPath: "Properties[0].propertyDetails.purchaser[0].share"
