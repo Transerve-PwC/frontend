@@ -63,7 +63,9 @@ const documentTitle = {
   fontSize: "16px",
   fontWeight: 400,
   letterSpacing: "0.67px",
-  lineHeight: "19px"
+  lineHeight: "19px", 
+  wordBreak : "break-word"
+
 };
 
 class DocumentList extends Component {
@@ -279,7 +281,7 @@ class DocumentList extends Component {
                     )}
                   </Grid>
                   <Grid item={true} xs={6} sm={6} align="left">
-                    <LabelContainer
+                    <LabelContainer 
                       labelName={documentTypePrefix + document.name}
                       labelKey={documentTypePrefix + document.name}
                       style={documentTitle}

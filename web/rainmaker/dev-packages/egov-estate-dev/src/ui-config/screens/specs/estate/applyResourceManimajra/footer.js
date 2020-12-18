@@ -69,6 +69,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+  window.scrollTo(0,0)
   let activeStep = get(
     state.screenConfiguration.screenConfig["apply-manimajra"],
     "components.div.children.manimajraStepper.props.activeStep",
@@ -692,6 +693,7 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
+  window.scrollTo(0,0)
   changeStep(state, dispatch, "apply-manimajra", "previous");
 };
 

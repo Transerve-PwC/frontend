@@ -228,10 +228,12 @@ export const previousButton = {
 
 
   const callBackForPrevious = async (state, dispatch) => {
+    window.scrollTo(0,0)
     changeStep(state, dispatch, "_apply", "previous");
   };
 
   const callBackForNext = async(state, dispatch) => {
+    window.scrollTo(0,0)
     let activeStep = get(
         state.screenConfiguration.screenConfig["_apply"],
         "components.div.children.stepper.props.activeStep",

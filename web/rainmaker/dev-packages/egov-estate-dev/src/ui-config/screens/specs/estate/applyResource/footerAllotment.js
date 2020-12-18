@@ -66,6 +66,7 @@ export const moveToSuccess = (estatesData, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+  window.scrollTo(0,0)
   let activeStep = get(
     state.screenConfiguration.screenConfig[screenKey],
     "components.div.children.stepperAllotment.props.activeStep",
@@ -828,6 +829,7 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
+  window.scrollTo(0,0)
   changeStep(state, dispatch, screenKey, "previous");
 };
 
