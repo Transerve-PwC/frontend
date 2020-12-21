@@ -74,7 +74,11 @@ const onRowClick = rowData => {
     window.location.href = `refund?fileNumber=${rowData[1]}&tenantId=${tenantId}`
   }
   else if(type == "account-statement"){
-    window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`
+    if(branchType == 'ESTATE_BRANCH'){
+      window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`
+    }else{
+      window.location.href = `manimajra-account-statement?fileNumber=${rowData[1]}`
+    }
   }
   else if(type =="security-fee"){
     window.location.href = `estate-security-fee?fileNumber=${rowData[1]}`
