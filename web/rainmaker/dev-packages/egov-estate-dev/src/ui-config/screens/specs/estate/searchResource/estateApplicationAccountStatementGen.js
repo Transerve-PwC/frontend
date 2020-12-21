@@ -12,7 +12,7 @@ import {
   import { getSearchResults, getCount } from "../../../../../ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import {
-    searchApiCallAccountStatement
+    searchApiCallAccountStatement,generateAccountStatementMM
   } from "./searchAccountStatementFunction";
   import get from "lodash/get";
   import { getTodaysDateInYMD } from "../../utils";
@@ -217,6 +217,209 @@ export const estateApplicationAccountStatementGen = getCommonCard({
           onClickDefination: {
             action: "condition",
             callBack: searchApiCallAccountStatement
+          }
+        }, lastCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
+        }
+      })
+    })
+}),
+  });
+
+export const MMAccountStamentApplication = getCommonCard({   
+  searchBoxContainer: getCommonContainer({
+      fileNumberContainer: getCommonContainer({
+        fileNumber: getTextField({
+          label: {
+            labelName: "File Number",
+            labelKey: "ES_FILE_NUMBER_LABEL"
+          },
+          placeholder: {
+            labelName: "Enter File Number",
+            labelKey: "ES_FILE_NUMBER_PLACEHOLDER"
+          },
+          gridDefination: {
+            xs: 12,
+            sm: 6
+          },
+          required: true,
+          jsonPath: "Properties[0].fileNumber",
+        }),
+        sectorNumber: getTextField({
+            label: {
+              labelName: "sector number",
+              labelKey: "ES_SECTOR NUMBER_LABEL"
+            },
+            placeholder: {
+              labelName: "Enter sector number",
+              labelKey: "ES_SECTOR NUMBER_PLACEHOLDER"
+            },
+            required: false,
+            props: {
+              disabled: true
+            },
+            jsonPath: "Properties[0].sectorNumber",
+            sourceJsonPath: "Properties[0].sectorNumber",
+            gridDefination: {
+                xs: 12,
+                sm: 6
+            },
+            errorMessage: "ES_ERR_SECTOR_NUMBER_FIELD",
+          })
+      }),
+      categoryContainer: getCommonContainer({
+        category: getSelectField({
+          label: {
+            labelName: "Category",
+            labelKey: "ES_CATEGORY_LABEL"
+          },
+          placeholder: {
+            labelName: "Enter Category",
+            labelKey: "ES_CATEGORY_PLACEHOLDER"
+          },
+          required: false,
+          props: {
+            disabled: true
+          },
+          jsonPath: "Properties[0].category",
+            optionValue: "code",
+            optionLabel: "name",
+            sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
+            gridDefination: {
+                xs: 12,
+                sm: 6
+            },
+            errorMessage: "ES_ERR_CATEGORY_FIELD",
+        }),
+        subCategory: getTextField({
+          label: {
+            labelName: "Sub Category",
+            labelKey: "ES_SUB_CATEGORY_LABEL"
+          },
+          placeholder: {
+            labelName: "Enter Sub Category",
+            labelKey: "ES_SUB_CATEGORY_PLACEHOLDER"
+          },
+          jsonPath: "singleSubCategory",
+          props: {
+            disabled: true
+          },
+          sourceJsonPath: "singleSubCategory",
+          gridDefination: {
+              xs: 12,
+              sm: 6
+          },
+          errorMessage: "ES_ERR_SUB_CATEGORY_FIELD",
+        }),
+      }),
+      siteContainer:getCommonContainer({
+        siteNumber:getTextField({
+            label: {
+                labelName: "Site Number",
+                labelKey: "ES_SITE_NUMBER_LABEL"
+            },
+            placeholder: {
+                labelName: "Enter Site Number",
+                labelKey: "ES_SITE_NUMBER_PLACEHOLDER"
+            },
+            jsonPath: "Properties[0].siteNumber",
+            optionValue: "code",
+            optionLabel: "label",
+            sourceJsonPath: "applyScreenMdmsData.propertyTypes",
+            gridDefination: {
+                xs: 12,
+                sm: 6
+            },
+            props: {
+              disabled: true
+            },
+            errorMessage: "ES_ERR_SITE_NUMBER_FIELD"
+      })
+    }),
+    dateContainer: getCommonContainer({
+      from:getDateField({
+        label: {
+          labelName: "From",
+          labelKey: "ES_FROM_DATE_LABEL"
+      },
+      placeholder: {
+          labelName: "Enter From Date",
+          labelKey: "ES_FROM_DATE_PLACEHOLDER"
+      },
+        pattern: getPattern("Date"),
+        gridDefination:{
+          xs: 12,
+          sm: 6
+        },
+        required: true,
+        jsonPath: "searchScreen.fromDate",
+        props: {
+            inputProps: {
+                max: getTodaysDateInYMD()
+            }
+        }
+      }),
+      to:getDateField({
+        label: {
+          labelName: "To",
+          labelKey: "ES_TO_DATE_LABEL"
+      },
+      placeholder: {
+          labelName: "Enter To Date",
+          labelKey: "ES_TO_DATE_PLACEHOLDER"
+      },
+      pattern: getPattern("Date"),
+      required: true,
+      jsonPath: "searchScreen.toDate",
+      props: {
+          inputProps: {
+              max: getTodaysDateInYMD()
+          }
+      }
+      })
+    }),
+    
+    button: getCommonContainer({
+      buttonContainer: getCommonContainer({
+        firstCont: {
+          uiFramework: "custom-atoms",
+          componentPath: "Div",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          }
+        },
+        filterButton: {
+          componentPath: "Button",
+          gridDefination: {
+            xs: 12,
+            sm: 4
+          },
+          props: {
+            variant: "contained",
+            style: {
+              color: "white",
+              backgroundColor: "#fe7a51",
+              borderRadius: "2px",
+              width: "80%",
+              height: "48px",
+              margin: "0px 0px 20px 0px"      
+            }
+          },
+          children: {
+            buttonLabel: getLabel({
+              labelName: "Generate Account Statement",
+              labelKey: "ES_GENERATE_ACCOUNT_STATEMENT"
+            })
+          },
+          onClickDefination: {
+            action: "condition",
+            callBack: generateAccountStatementMM
           }
         }, lastCont: {
           uiFramework: "custom-atoms",

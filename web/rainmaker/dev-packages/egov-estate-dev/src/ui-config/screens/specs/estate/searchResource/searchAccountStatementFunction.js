@@ -181,6 +181,141 @@ var isfileNumberValid = validateFields(
   
 };
 
+export const generateAccountStatementMM = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+  var isDateValid = true;
+
+  dispatch(toggleSpinner());
+  !!hideTable && showHideTable(false, dispatch);
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject,
+    "searchScreen",
+    {}
+  );
+
+var isfileNumberValid = validateFields(
+  "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumberContainer",
+  state,
+  dispatch,
+  "estate-search-account-statement"
+  );
+
+  if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
+    isDateValid=false;
+  }
+
+    if(!!isfileNumberValid && !!isDateValid) {
+      let Criteria = {
+        fromdate: !!searchScreenObject.fromDate ? convertDateToEpoch(searchScreenObject.fromDate) : "",
+        todate: !!searchScreenObject.toDate ? convertDateToEpoch(searchScreenObject.toDate) : ""
+      }
+      const propertyId = !!searchScreenObject.propertyId ? searchScreenObject.propertyId : await getAccountStatementProperty(state, dispatch)
+        if(!!propertyId) {
+          Criteria = {...Criteria, propertyid: propertyId}
+          const response = await httpRequest(
+            "post",
+            '/est-services/property-master/_accountstatement',
+            "",
+            [],
+            {Criteria}
+          )
+          if(response.EstateAccountStatement.length===1){
+            let errorMessage = {
+              labelName:
+                  "No records found",
+              labelKey: "EST_ERR_NO_RECORDS_FOUND"
+          };
+          
+          dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          dispatch(
+            handleField(
+              "estate-search-account-statement",
+              "components.div.children.searchResultsAccountStatement",
+              "visible",
+              false
+            )
+          );
+          dispatch(
+            handleField(
+              "estate-search-account-statement",
+              "components.div.children.downloadButton",
+              "visible",
+              false
+            )
+          );
+            }
+          try {
+            dispatch(
+              prepareFinalObject(
+                "EstateAccountStatement",
+                response.EstateAccountStatement
+              )
+            );
+            let sortedData = response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
+            let data = sortedData.map(item => ({
+              [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+              [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
+              [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
+              [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
+              [getTextToLocalMapping("Principal Due")]: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
+              [getTextToLocalMapping("GST Due")]:  formatAmount(item.remainingGST.toFixed(2)) || "-",
+              [getTextToLocalMapping("Interest Due")]: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
+              [getTextToLocalMapping("GST Penalty Due")]: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+              [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
+              [getTextToLocalMapping("Account Balance")]: formatAmount(item.remainingBalance.toFixed(2)) || "-",
+              [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
+              [getTextToLocalMapping("Consolidated Demand")]: item.isPrevious ? "CF" : "-"
+              
+            }));
+            let lastElement = data.pop();
+            lastElement.Date = "Balance as on "+lastElement.Date
+            lastElement["Type(Payment)"] = "-"
+            lastElement["Type(Rent)"]= "-"
+            data.push(lastElement)
+            dispatch(
+              handleField(
+                "estate-search-account-statement",
+                "components.div.children.searchResultsAccountStatement",
+                "visible",
+                true
+              )
+            );
+            dispatch(
+              handleField(
+                "estate-search-account-statement",
+                "components.div.children.downloadButton",
+                "visible",
+                true
+              )
+            );
+            dispatch(
+              handleField(
+                "estate-search-account-statement",
+                "components.div.children.searchResultsAccountStatement",
+                "props.data",
+                data
+              )
+            );
+          } catch (error) {
+            console.log(error)
+            dispatch(toggleSnackbar(true, error.message, "error"));
+          }
+      }
+    }
+    if(!isDateValid){
+      let errorMessage = {
+        labelName:
+            "From date cannot be greater than To date!",
+        labelKey: "EST_ERR_FROM_DATE_GREATER_THAN_TO_DATE"
+    };
+    
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      !!hideTable && showHideTable(true, dispatch);
+      
+  }
+  dispatch(toggleSpinner());
+  
+};
+
 export const downloadAccountStatementPdf = async(state, dispatch) => {
   const { EstateAccountStatement } = state.screenConfiguration.preparedFinalObject;
   const {Properties} = state.screenConfiguration.preparedFinalObject;

@@ -68,6 +68,52 @@ export const searchResultsAccountStatement = {
   }
 };
 
+export const searchResultsManimajraAccountStatement = {
+  uiFramework: "custom-molecules",
+  moduleName: "egov-estate",
+  componentPath: "Table",
+  visible: false,
+  props: {
+    columns: [
+        getTextToLocalMapping("Date"),
+        getTextToLocalMapping("Consolidated Demand"),
+        getTextToLocalMapping("Amount"),
+        getTextToLocalMapping("Type(Payment)"),
+        getTextToLocalMapping("Type(Rent)"),
+        getTextToLocalMapping("Principal Due"),
+        getTextToLocalMapping("GST Due"),
+        getTextToLocalMapping("Interest Due"),
+        getTextToLocalMapping("GST Penalty Due"),
+        getTextToLocalMapping("Total Due"),
+        getTextToLocalMapping("Account Balance"),
+        getTextToLocalMapping("Receipt No."),
+      {
+        name: "propertyId",
+        options: {
+          display: false,
+          viewColumns: true
+        }
+      }
+    ],
+    style:{
+      align : "right"
+    },
+    options: {
+      filter: false,
+      download: false,
+      responsive: "stacked",
+      selectableRows: false,
+      hover: true,
+      pagination: false,
+      // rowsPerPageOptions: [10, 15, 20]
+    //   onRowClick: (row, index) => {
+    //     onRowClick(row);
+    //   }
+    }
+  }
+};
+
+
 export const accountStatementResults = {
   ...searchResultsAccountStatement,
   visible: false,
