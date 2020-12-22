@@ -19,7 +19,9 @@ import {
 } from "../applyResourceBuildingBranch/reviewDetails";
 import {
   propertyTypeLabel,
-  getReviewAdditional
+  getReviewAdditional,
+  getReviewMonthlyDetals,
+  getReviewAnnualDetails
 } from "../applyResource/reviewProperty";
 import { editSection } from "../applyResourceBuildingBranch/reviewDetails";
 import { changeStep } from "./footer";
@@ -125,5 +127,7 @@ export const getReviewPropertyDetails = (isEditable = true) => {
 export const reviewDetails = getCommonCard({
   header,
   reviewPropertyDetails: getReviewPropertyDetails(),
-  reviewAdditional: getReviewAdditional(true, "apply-manimajra")
+  reviewAdditional: getReviewAdditional(true, "apply-manimajra"),
+  annualDetails: getReviewAnnualDetails(true,"apply-manimajra"),
+  monthlyDetails: getReviewMonthlyDetals(true,"apply-manimajra")
 })

@@ -66,7 +66,6 @@ export const moveToSuccess = (estatesData, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
-  window.scrollTo(0,0)
   let activeStep = get(
     state.screenConfiguration.screenConfig[screenKey],
     "components.div.children.stepperAllotment.props.activeStep",
@@ -589,6 +588,7 @@ const callBackForNext = async (state, dispatch) => {
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
+  window.scrollTo(0,0)
 }
 
 const setOwnersOrPartners = (state, dispatch, container) => {

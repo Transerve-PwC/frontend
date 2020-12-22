@@ -81,6 +81,16 @@ const lastNocDateLabel = {
   labelName: "Last NOC Date",
   labelKey: "ES_LAST_NOC_DATE_LABEL"
 }
+const monthlyLabel = {
+  labelName: "Monthly Charges pending from",
+  labelKey: "ES_MONTHLY_CHARGES_PENDING_LABEL"
+}
+
+const annualLabel = {
+  labelName: "Annual License fee Pending from",
+  labelKey: "ES_ANNUAL_LICENSE_FEE_PENDING_LABEL"
+}
+
 export const propertyTypeLabel = {
   labelName: "Property Type",
   labelKey: "ES_PROPERTY_TYPE_LABEL"
@@ -262,6 +272,62 @@ export const getReviewAdditional = (isEditable = true, screenkey = "apply") => {
       serviceCategory: getLabelWithValue(
         serviceCategoryLabel, {
           jsonPath: "Properties[0].propertyDetails.serviceCategory"
+        }
+      )
+    })
+  })
+}
+
+export const getReviewMonthlyDetals = (isEditable = true, screenkey = "apply") => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Monthly Details",
+            labelKey: "ES_MONTHLY_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
+      }
+    },
+    viewFour: getCommonContainer({
+      monthlyLabel: getLabelWithValue(
+        monthlyLabel, {
+          jsonPath: "Properties[0].propertyDetails.mmDemandStartMonth"
+        }
+      )
+    })
+  })
+}
+
+export const getReviewAnnualDetails = (isEditable = true, screenkey = "apply") => {
+  return getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Annual Details",
+            labelKey: "ES_ANNUAL_DETAILS_HEADER"
+          })
+        },
+        editSection: masterEntryEditSection(isEditable, 0, screenkey)
+      }
+    },
+    viewFour: getCommonContainer({
+      annualLabel: getLabelWithValue(
+        annualLabel, {
+          jsonPath: "Properties[0].propertyDetails.mmDemandStartYear"
         }
       )
     })

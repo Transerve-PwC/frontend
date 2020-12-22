@@ -4,7 +4,7 @@ import {
   getCommonTitle,
   getCommonParagraph,getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { propertyDetails } from "./propertyDetails";
+import { propertyDetails,monthlyDetails,annualDetails } from "./propertyDetails";
 import { additionalDetails } from "../applyResource/propertyDetails";
 import { ownerDetails } from "../applyResourceBuildingBranch/ownerDetails";
 import { 
@@ -65,7 +65,9 @@ export const formwizardFirstStep = {
   },
   children: {
     propertyDetails,
-    additionalDetails
+    additionalDetails,
+    monthlyDetails,
+    annualDetails
   }
 };
 

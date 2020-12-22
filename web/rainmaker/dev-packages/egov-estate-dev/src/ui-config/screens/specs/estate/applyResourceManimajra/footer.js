@@ -69,7 +69,6 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
-  window.scrollTo(0,0)
   let activeStep = get(
     state.screenConfiguration.screenConfig["apply-manimajra"],
     "components.div.children.manimajraStepper.props.activeStep",
@@ -77,7 +76,6 @@ const callBackForNext = async (state, dispatch) => {
   );
   let isFormValid = true;
   let hasFieldToaster = true;
-
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
       "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
@@ -508,6 +506,7 @@ const callBackForNext = async (state, dispatch) => {
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
+  window.scrollTo(0,0)
 }
 
 export const changeStep = (

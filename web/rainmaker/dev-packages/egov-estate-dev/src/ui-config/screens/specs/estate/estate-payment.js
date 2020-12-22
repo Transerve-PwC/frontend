@@ -309,6 +309,15 @@ import { penaltySummary } from "./generatePenaltyStatement";
     }
   }
 
+  const getPatternAmount = (type) => {
+    switch (type) {
+      case "Amount":
+        return (/^[1-9][0-9]{0,9}$/i
+        );
+    }
+  }
+
+
   const paymentAmount = {
     label: {
         labelName: "Amount",
@@ -318,7 +327,7 @@ import { penaltySummary } from "./generatePenaltyStatement";
         xs: 12,
         sm: 6
     },
-    minLength: 3,
+    minLength: 1,
     maxLength: 7,
     errorMessage: "ES_ERR_AMOUNT_FIELD",
     placeholder: {
@@ -326,6 +335,7 @@ import { penaltySummary } from "./generatePenaltyStatement";
       labelKey: "ES_ENTER_AMOUNT_PLACEHOLDER"
   },
     required: true,
+    pattern: getPatternAmount("Amount"),
     jsonPath: "payment.paymentAmount"
   }
 

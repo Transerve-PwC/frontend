@@ -23,8 +23,8 @@ const styles = theme => ({
     formControl: {
       flex: 1,
       margin: theme.spacing.unit,
-      // minWidth: 120,
-      // maxWidth: 300,
+      minWidth: "fit-content",
+      maxWidth: "fit-content",
     },
     formLabel: {
         fontSize: 12,

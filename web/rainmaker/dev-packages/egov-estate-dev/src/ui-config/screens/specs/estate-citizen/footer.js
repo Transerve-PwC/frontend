@@ -233,7 +233,6 @@ export const previousButton = {
   };
 
   const callBackForNext = async(state, dispatch) => {
-    window.scrollTo(0,0)
     let activeStep = get(
         state.screenConfiguration.screenConfig["_apply"],
         "components.div.children.stepper.props.activeStep",
@@ -383,6 +382,7 @@ export const previousButton = {
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
     }
+    window.scrollTo(0,0)
   }
 
   export const footer = getCommonApplyFooter({

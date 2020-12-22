@@ -63,7 +63,7 @@ export const extensionStatementFilter = getCommonCard({
             xs: 12,
             sm: 6
           },
-          required: true,
+          required: false,
           jsonPath: "searchScreen.fromDate",
           props: {
               inputProps: {
@@ -81,7 +81,7 @@ export const extensionStatementFilter = getCommonCard({
             labelKey: "ES_TO_DATE_PLACEHOLDER"
         },
         pattern: getPattern("Date"),
-        required: true,
+        required: false,
         jsonPath: "searchScreen.toDate",
         props: {
             inputProps: {

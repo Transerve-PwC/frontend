@@ -219,6 +219,7 @@ export const estateApplication = getCommonCard({
           labelName: "Site Number",
           labelKey: "ES_SITE_NUMBER_LABEL"
         },
+        errorMessage: "ES_ERR_MAXLENGTH_50",
         placeholder: {
             labelName: "Enter Site Number",
             labelKey: "ES_SITE_NUMBER_PLACEHOLDER"

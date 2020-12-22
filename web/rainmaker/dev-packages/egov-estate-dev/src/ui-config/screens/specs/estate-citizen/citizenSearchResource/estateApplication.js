@@ -292,6 +292,7 @@ export const estateApplication = getCommonCard({
             xs: 12,
             sm: 6
         },
+        errorMessage: "ES_ERR_MAXLENGTH_50",
         required: true,
         visible: false,
         minLength: 1,
