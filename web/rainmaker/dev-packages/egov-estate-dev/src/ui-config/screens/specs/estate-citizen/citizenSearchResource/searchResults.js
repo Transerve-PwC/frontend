@@ -65,7 +65,11 @@ const onRowClick = rowData => {
   }
   
   if(type === "payment") {
-    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? process.env.NODE_ENV === "production" ? `/citizen/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`
+    if(branchType == 'MANI_MAJRA'){
+      window.location.href = process.env.REACT_APP_NAME === "Citizen" ? process.env.NODE_ENV === "production" ? `/citizen/estate/manimajra-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `/estate/manimajra-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`
+    }else{
+      window.location.href = process.env.REACT_APP_NAME === "Citizen" ? process.env.NODE_ENV === "production" ? `/citizen/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`
+    }
   }
   else if (type == "penalty") {
     window.location.href = `estate-penalty?fileNumber=${rowData[1]}`

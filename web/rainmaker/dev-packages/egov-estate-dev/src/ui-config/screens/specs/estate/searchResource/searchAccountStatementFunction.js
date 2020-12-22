@@ -27,43 +27,25 @@ export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(l
 import {downloadCSVFromFilestoreID} from '../searchResource/functions'
 
 export const searchApiCallAccountStatement = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
+  
+  let {Properties} = state.screenConfiguration.preparedFinalObject
+  let {branchType} = Properties[0].propertyDetails
   var isDateValid = true;
 
   dispatch(toggleSpinner());
   !!hideTable && showHideTable(false, dispatch);
-  // showHideTable(false, dispatch);
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
     "searchScreen",
     {}
   );
-  
-// Date, fileNumber/SiteNumber, sector  needs to be there, other optional 
-
-// var isDateValid = validateFields(
-// "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.dateContainer",
-// state,
-// dispatch,
-// "estate-search-account-statement"
-// );
-// var isCategoryValid = validateFields(
-//   "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.categoryContainer",
-//   state,
-//   dispatch,
-//   "estate-search-account-statement"
-//   );
 var isfileNumberValid = validateFields(
   "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.fileNumberContainer",
   state,
   dispatch,
   "estate-search-account-statement"
   );
-  // var isSiteNumberValid = validateFields(
-  //   "components.div.children.estateApplicationAccountStatementGen.children.cardContent.children.searchBoxContainer.children.siteContainer",
-  //   state,
-  //   dispatch,
-  //   "estate-search-account-statement"
-  //   );
+
   if(convertDateToEpoch(searchScreenObject.toDate)-convertDateToEpoch(searchScreenObject.fromDate)<0){
     isDateValid=false;
   }
@@ -83,7 +65,7 @@ var isfileNumberValid = validateFields(
             [],
             {Criteria}
           )
-          if(response.EstateAccountStatement.length===1){
+          if(branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement.length === 1 : response.EstateAccountStatement.length===1){
             let errorMessage = {
               labelName:
                   "No records found",
@@ -107,15 +89,15 @@ var isfileNumberValid = validateFields(
               false
             )
           );
-            }
+          }
           try {
             dispatch(
               prepareFinalObject(
                 "EstateAccountStatement",
-                response.EstateAccountStatement
+                branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement
               )
             );
-            let sortedData = response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
+            let sortedData = branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
             let data = sortedData.map(item => ({
               [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
               [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",

@@ -267,7 +267,7 @@ export const propertyDetails = getCommonCard({
       street: getTextField(streetField),
       areaOfProperty: getTextField(areaofPropertyField),
       propertyType: getSelectField(propertyTypeField),
-      demandType:getSelectField(demandTypeField),
+      // demandType:getSelectField(demandTypeField),
       category: getSelectField(categoryField),
       subCategory: getSelectField(subCategoryField),
       siteNumber: getTextField(siteNumberField),

@@ -33,7 +33,15 @@ const cardItems = [{
     },
     icon: < EstateIcon / > ,
     route: "my-applications?branchType=ManiMajra"
-  }
+  },
+{
+  label: {
+    labelKey: "ES_PAY_DUE",
+    labelName: "Pay Due"
+  },
+  icon: < EstateIcon / > ,
+  route: "property-search?type=payment&branchType=MANI_MAJRA"
+},
 ]
 
 
