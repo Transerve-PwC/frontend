@@ -8,7 +8,7 @@ import {
   getCommonContainer,
   getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import {getPattern
+import { _getPattern
 } from "../../utils";
 import {
   prepareFinalObject
