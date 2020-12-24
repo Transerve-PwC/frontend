@@ -5,7 +5,7 @@ import {
     getCommonContainer
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import { estateApplicationAccountStatementGen } from './searchResource/estateApplicationAccountStatementGen';
-  import { searchResultsAccountStatement } from './searchResource/searchResultsAccountStatement';
+  import { searchResultsAccountStatement, mmAccountStatementResult } from './searchResource/searchResultsAccountStatement';
   import commonConfig from "config/common.js";
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { httpRequest } from "../../../../ui-utils";
@@ -18,15 +18,12 @@ import {
   getSearchResults
 } from "../../../../ui-utils/commons";
 import {
-  getLocaleLabels,
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
-import {
-  getTransformedLocalStorgaeLabels,
-  getTransformedLocale,
-} from "egov-ui-framework/ui-utils/commons";
-  
+
+const branchType = getQueryArg(window.location.href, "branchType");
+
   const header = getCommonHeader({
     labelName: "Account Statement Generation",
     labelKey: "ES_ACCOUNT_STATEMENT_GENERATION_HEADER",
@@ -145,7 +142,7 @@ import {
           },
           estateApplicationAccountStatementGen,
           breakAfterSearch: getBreak(),
-          searchResultsAccountStatement,
+          searchResultsAccountStatement:branchType === 'ESTATE_BRANCH' ? searchResultsAccountStatement : mmAccountStatementResult,
           downloadButton:{
             uiFramework: "custom-atoms",
             componentPath: "Container",

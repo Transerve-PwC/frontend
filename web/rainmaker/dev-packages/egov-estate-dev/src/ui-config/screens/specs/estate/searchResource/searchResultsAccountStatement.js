@@ -68,6 +68,48 @@ export const searchResultsAccountStatement = {
   }
 };
 
+export const mmAccountStatementResult = {
+  uiFramework: "custom-molecules",
+  moduleName: "egov-estate",
+  componentPath: "Table",
+  visible: false,
+  props: {
+    columns: [
+        getTextToLocalMapping("Date"),
+        getTextToLocalMapping("Rent"),
+        getTextToLocalMapping("Amount"),
+        getTextToLocalMapping("Type(Payment)"),
+        getTextToLocalMapping("Type(Rent)"),
+        getTextToLocalMapping("GST"),
+        getTextToLocalMapping("Total Due"),
+        getTextToLocalMapping("Receipt No."),
+      {
+        name: "propertyId",
+        options: {
+          display: false,
+          viewColumns: true
+        }
+      }
+    ],
+    style:{
+      align : "right"
+    },
+    options: {
+      filter: false,
+      download: false,
+      responsive: "stacked",
+      selectableRows: false,
+      hover: true,
+      pagination: false,
+      // rowsPerPageOptions: [10, 15, 20]
+    //   onRowClick: (row, index) => {
+    //     onRowClick(row);
+    //   }
+    }
+  }
+};
+
+
 export const accountStatementResults = {
   ...searchResultsAccountStatement,
   visible: false,

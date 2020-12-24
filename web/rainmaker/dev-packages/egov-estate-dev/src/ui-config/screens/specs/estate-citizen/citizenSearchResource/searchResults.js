@@ -78,7 +78,7 @@ const onRowClick = rowData => {
     window.location.href = `refund?fileNumber=${rowData[1]}&tenantId=${tenantId}`
   }
   else if(type == "account-statement"){
-    window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}`
+    window.location.href = `estate-search-account-statement?fileNumber=${rowData[1]}&branchType=${branchType}`
   }
   else if(type =="security-fee"){
     window.location.href = `estate-security-fee?fileNumber=${rowData[1]}`
@@ -90,7 +90,7 @@ const onRowClick = rowData => {
     window.location.href = `adhocDemand?fileNumber=${rowData[1]}`
   }
   else {
-    if(rowData[5] > 0) {
+    if(rowData[5] > 0 && process.env.REACT_APP_NAME === "Citizen") {
       rowData[6](toggleSnackbar(true, {labelName: "ES_ERR_DUE_AMOUNT", labelKey: "ES_ERR_DUE_AMOUNT"}, "warning"))
     } else {
       if (process.env.REACT_APP_NAME === "Citizen") {

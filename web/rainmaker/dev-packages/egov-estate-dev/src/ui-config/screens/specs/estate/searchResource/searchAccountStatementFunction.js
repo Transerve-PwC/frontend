@@ -27,7 +27,7 @@ export const getTextToLocalMapping = memoize((label) => _getTextToLocalMapping(l
 import {downloadCSVFromFilestoreID} from '../searchResource/functions'
 
 export const searchApiCallAccountStatement = async (state, dispatch, onInit, offset, limit = 100, hideTable = true) => {
-  
+  let data = []
   let {Properties} = state.screenConfiguration.preparedFinalObject
   let {branchType} = Properties[0].propertyDetails
   var isDateValid = true;
@@ -65,7 +65,8 @@ var isfileNumberValid = validateFields(
             [],
             {Criteria}
           )
-          if(branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement.length === 1 : response.EstateAccountStatement.length===1){
+          if(branchType === 'MANI_MAJRA' ? (response.ManiMajraAccountStatement.length === 1  || response.ManiMajraAccountStatement == null) : (response.EstateAccountStatement.length===1 
+            || response.EstateAccountStatement == null)){
             let errorMessage = {
               labelName:
                   "No records found",
@@ -98,21 +99,37 @@ var isfileNumberValid = validateFields(
               )
             );
             let sortedData = branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
-            let data = sortedData.map(item => ({
-              [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
-              [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
-              [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
-              [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
-              [getTextToLocalMapping("Principal Due")]: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
-              [getTextToLocalMapping("GST Due")]:  formatAmount(item.remainingGST.toFixed(2)) || "-",
-              [getTextToLocalMapping("Interest Due")]: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
-              [getTextToLocalMapping("GST Penalty Due")]: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
-              [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
-              [getTextToLocalMapping("Account Balance")]: formatAmount(item.remainingBalance.toFixed(2)) || "-",
-              [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
-              [getTextToLocalMapping("Consolidated Demand")]: item.isPrevious ? "CF" : "-"
-              
-            }));
+            if(branchType === 'MANI_MAJRA'){
+              data = sortedData.map(item => ({
+                [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+                [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
+                [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
+                [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
+                [getTextToLocalMapping("GST")]:  formatAmount(item.gst.toFixed(2)) || "-",
+                [getTextToLocalMapping("Rent")]: formatAmount(item.rent.toFixed(2)) || "-",
+                [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
+                [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
+                
+              }));
+            }
+            else{
+              data = sortedData.map(item => ({
+                [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+                [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
+                [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
+                [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
+                [getTextToLocalMapping("Principal Due")]: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
+                [getTextToLocalMapping("GST Due")]:  formatAmount(item.remainingGST.toFixed(2)) || "-",
+                [getTextToLocalMapping("Interest Due")]: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
+                [getTextToLocalMapping("GST Penalty Due")]: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+                [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
+                [getTextToLocalMapping("Account Balance")]: formatAmount(item.remainingBalance.toFixed(2)) || "-",
+                [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
+                [getTextToLocalMapping("Consolidated Demand")]: item.isPrevious ? "CF" : "-"
+                
+              }));
+            }
+
             let lastElement = data.pop();
             lastElement.Date = "Balance as on "+lastElement.Date
             lastElement["Type(Payment)"] = "-"
@@ -139,7 +156,7 @@ var isfileNumberValid = validateFields(
                 "estate-search-account-statement",
                 "components.div.children.searchResultsAccountStatement",
                 "props.data",
-                data
+                 data
               )
             );
           } catch (error) {
@@ -166,24 +183,44 @@ var isfileNumberValid = validateFields(
 export const downloadAccountStatementPdf = async(state, dispatch) => {
   const { EstateAccountStatement } = state.screenConfiguration.preparedFinalObject;
   const {Properties} = state.screenConfiguration.preparedFinalObject;
+  const {branchType} = Properties[0].propertyDetails
+  let data = []
   let properties = Properties
-  const data = EstateAccountStatement.map(item =>
-    ({
-      ...item,
+
+  if(branchType === "MANI_MAJRA"){
+    data = EstateAccountStatement.map(item => ({
       date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
       amount: formatAmount(item.amount.toFixed(2)) || "-",
       typeP:  changeTypePayment(item.type) || "-",
-      typeR:  changePTypeRent(item.type) || "-",
+      typeR: changePTypeRent(item.type) || "-",
       remainingPrincipal: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
       remainingGST:  formatAmount(item.remainingGST.toFixed(2)) || "-",
-      remainingRentPenalty: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
-      remainingGSTPenalty: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+      rent: formatAmount(item.rent.toFixed(2)) || "-",
       dueAmount: formatAmount(item.dueAmount.toFixed(2)) || "-",
       remainingBalance: formatAmount(item.remainingBalance.toFixed(2)) || "-",
       receiptNo: item.receiptNo || "-",
-      consolidatedAmount : item.isPrevious ? "CF" : "-"
-    })
-  )
+      
+    }));
+  }else{
+    data = EstateAccountStatement.map(item =>
+      ({
+        ...item,
+        date: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+        amount: formatAmount(item.amount.toFixed(2)) || "-",
+        typeP:  changeTypePayment(item.type) || "-",
+        typeR:  changePTypeRent(item.type) || "-",
+        remainingPrincipal: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
+        remainingGST:  formatAmount(item.remainingGST.toFixed(2)) || "-",
+        remainingRentPenalty: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
+        remainingGSTPenalty: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+        dueAmount: formatAmount(item.dueAmount.toFixed(2)) || "-",
+        remainingBalance: formatAmount(item.remainingBalance.toFixed(2)) || "-",
+        receiptNo: item.receiptNo || "-",
+        consolidatedAmount : item.isPrevious ? "CF" : "-"
+      })
+    )
+  }
+ 
 
   let lastElement = data.pop();
   lastElement.date = "Balance as on "+ lastElement.date
@@ -193,15 +230,29 @@ export const downloadAccountStatementPdf = async(state, dispatch) => {
   data.push(lastElement)  
 
   const mode = "download"
-  let   queryStr = [{
-    key: "key",
-    value: "account-statement-generation"
-  },
-  {
-    key: "tenantId",
-    value: "ch"
+  let queryStr = []
+  if(branchType === "MANI_MAJRA"){
+    queryStr = [{
+      key: "key",
+      value: "mm-account-statement-generation"
+    },
+    {
+      key: "tenantId",
+      value: "ch"
+    }
+  ]
+  }else{
+    queryStr = [{
+      key: "key",
+      value: "account-statement-generation"
+    },
+    {
+      key: "tenantId",
+      value: "ch"
+    }
+  ]
   }
-]
+ 
 
   const DOWNLOADRECEIPT = {
     GET: {

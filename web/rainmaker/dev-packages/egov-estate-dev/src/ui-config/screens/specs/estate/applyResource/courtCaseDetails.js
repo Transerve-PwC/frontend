@@ -17,6 +17,10 @@ import {
   getTodaysDateInYMD
 } from "../../utils";
 import get from "lodash/get";
+import {
+  displayCustomErr,
+  displayDefaultErr
+} from "../../utils";
 
 export const courtCaseHeader = getCommonTitle({
   labelName: "Court Case Details",
@@ -79,7 +83,6 @@ const chiefAdministratorsCourtField = {
   },
   errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
   pattern: _getPattern("courtCase"),
-  // maxLength: 250,
   jsonPath: "Properties[0].propertyDetails.courtCases[0].chiefAdministartorsCourt"
 }
 
@@ -98,7 +101,6 @@ const advisorToAdminCourtField = {
   },
   errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
   pattern: _getPattern("courtCase"),
-  // maxLength: 250,
   jsonPath: "Properties[0].propertyDetails.courtCases[0].advisorToAdminCourt"
 }
 
@@ -117,7 +119,6 @@ const honbleDistrictCourtField = {
   },
   pattern: _getPattern("courtCase"),
   errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
-  // maxLength: 250,
   jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableDistrictCourt"
 }
 
@@ -136,7 +137,6 @@ const honbleHighCourtField = {
   },
   errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
   pattern: _getPattern("courtCase"),
-  // maxLength: 250,
   jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableHighCourt"
 }
 
@@ -155,7 +155,6 @@ const honbleSupremeCourtField = {
   },
   errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
   pattern: _getPattern("courtCase"),
-  // maxLength: 250,
   jsonPath: "Properties[0].propertyDetails.courtCases[0].honorableSupremeCourt"
 }
 

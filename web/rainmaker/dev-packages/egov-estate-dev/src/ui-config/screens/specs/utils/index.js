@@ -2276,6 +2276,12 @@ export const getTextToLocalMapping = label => {
         "ES_DUE_DATE_INSTALLMENT_LABEL",
         localisationLabels
       );
+    case "Rent" :
+        return getLocaleLabels(
+          "Rent",
+          "ES_RENT_LABEL",
+          localisationLabels
+        );
     default: return getLocaleLabels(label, label, localisationLabels)   
   }
 };
@@ -2318,7 +2324,9 @@ export const _getPattern = (type) => {
     case "address":
       return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,150}$/i
     case "ownerShare":
-      return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;  
+      return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
+    case "courtCase":
+      return /^[a-zA-Z0-9]{1,250}$/i;  
   }
 }
 
