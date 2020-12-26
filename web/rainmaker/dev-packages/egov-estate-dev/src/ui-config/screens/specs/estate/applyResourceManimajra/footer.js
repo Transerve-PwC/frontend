@@ -41,9 +41,9 @@ export const OWNER_DETAILS_STEP = 1;
 export const OWNER_DOCUMENT_UPLOAD_STEP = 2;
 export const PURCHASER_DETAILS_STEP = 3;
 export const PURCHASER_DOCUMENTS_STEP = 4;
-export const PAYMENT_DETAILS_STEP = 5;
-export const COURT_CASE_DETAILS_STEP = 6;
-export const SUMMARY_STEP = 7;
+// export const PAYMENT_DETAILS_STEP = 5;
+export const COURT_CASE_DETAILS_STEP = 5;
+export const SUMMARY_STEP = 6;
 
 export const moveToSuccess = (data, dispatch, type) => {
   const id = get(data, "id");
@@ -442,7 +442,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch
         )
 
-        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 6, "apply-manimajra");
+        const reviewCourtCaseDetails = getReviewCourtCase(true, i, 5, "apply-manimajra");
         set(
           state.screenConfiguration.screenConfig,
           `apply-manimajra.components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children.reviewCourtCaseDetails_${i}`,
@@ -461,9 +461,9 @@ const callBackForNext = async (state, dispatch) => {
     }
   }
 
-  if (activeStep === PAYMENT_DETAILS_STEP) {
+  // if (activeStep === PAYMENT_DETAILS_STEP) {
     
-  }
+  // }
 
   if (activeStep === SUMMARY_STEP) {
     isFormValid = await applyEstates(state, dispatch, activeStep, "apply-manimajra");
@@ -516,6 +516,7 @@ export const changeStep = (
   mode = "next",
   defaultActiveStep = -1
 ) => {
+
   let activeStep = get(
     state.screenConfiguration.screenConfig[screenName],
     "components.div.children.manimajraStepper.props.activeStep",
@@ -560,6 +561,7 @@ export const changeStep = (
 };
 
 export const renderSteps = (activeStep, dispatch, screenName) => {
+
   switch (activeStep) {
     case PROPERTY_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -606,15 +608,15 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         dispatch
       );
       break;
-    case PAYMENT_DETAILS_STEP:
-    dispatchMultipleFieldChangeAction(
-      screenName,
-      getActionDefinationForStepper(
-        "components.div.children.formwizardSixthStep"
-      ),
-      dispatch
-    );
-    break;
+    // case PAYMENT_DETAILS_STEP:
+    // dispatchMultipleFieldChangeAction(
+    //   screenName,
+    //   getActionDefinationForStepper(
+    //     "components.div.children.formwizardSixthStep"
+    //   ),
+    //   dispatch
+    // );
+    // break;
     case COURT_CASE_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,

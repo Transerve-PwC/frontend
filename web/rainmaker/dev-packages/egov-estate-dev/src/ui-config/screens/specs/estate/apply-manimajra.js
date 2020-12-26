@@ -223,7 +223,7 @@ const applyManimajra = {
         formwizardThirdStep,
         formwizardFourthStep,
         formwizardFifthStep,
-        formwizardSixthStep,
+        // formwizardSixthStep,
         formwizardSeventhStep,
         formwizardEighthStep,
         footer

@@ -71,6 +71,9 @@ const onRowClick = rowData => {
       window.location.href = process.env.REACT_APP_NAME === "Citizen" ? process.env.NODE_ENV === "production" ? `/citizen/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `/estate/estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `estate-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`
     }
   }
+  else if(type === 'manimajra-payment'){
+    window.location.href = process.env.REACT_APP_NAME === "Citizen" ? process.env.NODE_ENV === "production" ? `/citizen/estate/manimajra-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `/estate/manimajra-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}` : `manimajra-payment?propertyId=${rowData[4]}&fileNumber=${rowData[1]}`
+  }
   else if (type == "penalty") {
     window.location.href = `estate-penalty?fileNumber=${rowData[1]}`
   }

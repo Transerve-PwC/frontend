@@ -1,17 +1,13 @@
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getCommonHeader,getBreak, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel, getDateField  } from "egov-ui-framework/ui-config/screens/specs/utils";
-import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../ui-utils";
-import get from "lodash/get";
-import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { propertyInfo } from "./preview-resource/preview-properties";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch, validateFields, getRentSummaryCard } from "../utils";
+import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalMapping } from "../utils";
 import {demandResults} from './searchResource/searchResults'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import {penaltyStatmentResult,extensionStatmentResult,securityStatmentResult} from './searchResource/functions'
-import { penaltySummary } from "./generatePenaltyStatement";
+
 import moment from 'moment'
   const header = getCommonHeader({
     labelName: "Rent Payment",
@@ -28,21 +24,53 @@ import moment from 'moment'
     ]
     const response = await getSearchResults(queryObject)
     if(!!response.Properties && !!response.Properties.length) {
-      var yearlyData = []
-    const min = 1992
-    const max = moment(new Date()).format('YYYY')
-    for(var i = min; i <= max; i++){
-      yearlyData.push({"code": i})
-    }
-    dispatch(
-      handleField(
-        "manimajra-payment",
-        "components.div.children.detailsContainer.children.paymentDetails.children.cardContent.children.detailsContainer.children.annual",
-        "props.data",
-        yearlyData
-      )
-    )
        dispatch(prepareFinalObject("Properties", response.Properties))
+       let Criteria = {
+        fromdate:  "",
+        todate:  ""
+       }
+         Criteria = {...Criteria, propertyid: propertyId}
+         const _accountstatement = await httpRequest(
+           "post",
+           '/est-services/property-master/_accountstatement',
+           "",
+           [],
+           {Criteria}
+         )
+        
+        if(_accountstatement){
+
+          // to get demands which are unpaid
+          _accountstatement.ManiMajraAccountStatement = _accountstatement.ManiMajraAccountStatement.filter((demand) => {
+              if(demand.status == 'UNPAID' || demand.type == 'D'){
+                return demand
+              }
+          })
+
+          dispatch(
+            prepareFinalObject(
+              "ManiMajraAccountStatement",
+              _accountstatement.ManiMajraAccountStatement
+            )
+          );
+          // let sortedData = _accountstatement.ManiMajraAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
+          let data = _accountstatement.ManiMajraAccountStatement.map(item => ({
+            [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+            [getTextToLocalMapping("GST")]:  (item.gst.toFixed(2)) || "-",
+            [getTextToLocalMapping("Total Due")]: (item.dueAmount.toFixed(2)) || "-",
+            [getTextToLocalMapping("Rent")]: item.rent || "-"
+          }));
+
+          dispatch(
+            handleField(
+              "manimajra-payment",
+              "components.div.children.detailsContainer.children.demandResults",
+              "props.data",
+              data
+            )
+          );
+        }
+        
     }
     // dispatch(prepareFinalObject("payment.paymentType","PAYMENTTYPE.RENT"))
   }
@@ -140,11 +168,15 @@ export const monthField = {
     beforeFieldChange: async (action, state, dispatch) => {
 
     },
-    // jsonPath:"Properties[0].demandType",
+    jsonPath:"Properties[0].propertyDetails.demandType",
     data:[{name:"Monthly",code:"Monthly"},{name:"Annually",code:"Annually"}],
     gridDefination: {
         xs: 12,
         sm: 6
+    },
+    props:{
+      disabled:true,
+      value:"Monthly"
     },
     errorMessage: "ES_ERR_DEMAND_TYPE_FIELD",
     placeholder: {
@@ -164,8 +196,6 @@ export const monthField = {
         xs: 12,
         sm: 6
     },
-    minLength: 3,
-    maxLength: 7,
     errorMessage: "ES_ERR_AMOUNT_FIELD",
     placeholder: {
       labelName: "Enter amount",
@@ -175,7 +205,7 @@ export const monthField = {
       disabled:true
     },
     required: true,
-    jsonPath: "payment.paymentAmount"
+    jsonPath: "payment.amount"
   }
 
   const bankName = {
@@ -212,17 +242,114 @@ export const monthField = {
       labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
     },
     required: true,
-    jsonPath: "payment.transactionNumber",
+    jsonPath: "payment.transactionId",
     visible: process.env.REACT_APP_NAME !== "Citizen"
+  }
+  
+  const paymentDate = {
+    label: {
+      labelName: "Date of Payment",
+      labelKey: "ES_DATE_OF_PAYMENT"
+    },
+    placeholder: {
+        labelName: "Enter Date of paymet",
+        labelKey: "ES_DATE_OF_PAYMENT_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "payment.dateOfPayment",
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    props: {
+      inputProps: {
+        max: getTodaysDateInYMD()
+    }
+    },
+    afterFieldChange: (action, state, dispatch) => {
+      dispatch(prepareFinalObject(
+        "payment.dateOfPayment", convertDateToEpoch(action.value)
+      ))
+    }
+  }
+
+  const toDate = {
+    label: {
+      labelName: "to date",
+      labelKey: "ES_TO_DATE_LABEL"
+    },
+    placeholder: {
+        labelName: "Select Date",
+        labelKey: "ES_SELECT_DATE_PLACEHOLDER"
+    },
+    required: true,
+    pattern: getPattern("Date"),
+    jsonPath: "offlinePaymentDetails.toDate",
+    props: {
+      inputProps: {
+        max: getTodaysDateInYMD()
+    }
+    },
+    afterFieldChange: (action, state, dispatch) => {
+    let {toDate} = state.screenConfiguration.preparedFinalObject.offlinePaymentDetails
+    toDate = convertDateToEpoch(toDate)
+    var fromDate = ""
+    const {ManiMajraAccountStatement} = state.screenConfiguration.preparedFinalObject
+    if(ManiMajraAccountStatement && ManiMajraAccountStatement!=null){
+      fromDate = ManiMajraAccountStatement[0].date
+   }
+   fromDate = convertDateToEpoch(fromDate)
+
+   // to get demands between to and from date
+    let demands = ManiMajraAccountStatement.filter(item => {
+      if(((item.date - toDate === 0 || item.date -toDate <= 0) ? true :false) && ((item.date - fromDate === 0 || item.date -fromDate >= 0) ? true :false)){
+        return item
+      }
+    })
+  
+    const gst = demands.reduce(function (acc, obj) { return acc + parseInt(obj.gst); }, 0);
+    const rent = demands.reduce(function (acc, obj) { return acc + parseInt(obj.rent); }, 0);
+    const amount = (gst + rent).toFixed(2)
+      
+    dispatch(
+      handleField(
+        "manimajra-payment",
+        "components.div.children.detailsContainer.children.paymentDetails.children.cardContent.children.detailsContainer.children.Amount",
+        "props.value",
+        amount
+      )
+    );
+   
+    }
+  }
+
+  //prefilled -First demand date
+  const fromDate = {
+    label: {
+      labelName: "From Date",
+      labelKey: "ES_FROM_DATE_LABEL"
+    },
+    placeholder: {
+        labelName: "From Date Placeholder",
+        labelKey: "ES_FROM_DATE_PLACEHOLDER"
+    },
+    pattern: getPattern("Date"),
+    jsonPath: "ManiMajraAccountStatement[0].date",
+    props: {
+      disabled:true,
+    //   inputProps: {
+    //     max: getTodaysDateInYMD()
+    // }
+    }
+   
   }
   
   export const paymentDetails = getCommonCard({
       header: paymentDetailsHeader,
       detailsContainer: getCommonContainer({
+        from: getDateField(fromDate),
+        to: getDateField(toDate),
         Amount: getTextField(paymentAmount),
         bankName: getTextField(bankName),
-        month:getSelectField(monthField),
-        annual:getSelectField(annualField),
+        dateOfPayment: getDateField(paymentDate),
         transactionId: getTextField(transactionId),
         comments : getTextField(commentsField)
       })
@@ -254,7 +381,56 @@ export const monthField = {
   }
 
   const goToPayment = async (state, dispatch, type) => {
-  
+    let isValid = true;
+    isValid = validateFields("components.div.children.detailsContainer.children.paymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "manimajra-payment")
+    if(!isValid){
+      let errorMessage = {
+        labelName:
+            "Please Enter Mandatory Fields",
+        labelKey: "ES_ERR_MANDATORY_FIELDS"
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+
+    if(!!isValid) {
+      let {amount} = state.screenConfiguration.preparedFinalObject.payment
+      const propertyId = getQueryArg(window.location.href, "propertyId")
+      const {payment} = state.screenConfiguration.preparedFinalObject
+      if(!!propertyId ) {
+        const payload = [
+          { id: propertyId, 
+            propertyDetails: {
+              offlinePaymentDetails: [payment]
+            }
+          }
+        ]
+        try {
+          const url =  "/est-services/property-master/_payrent"
+          const response = await httpRequest("post",
+          url,
+          "",
+          [],
+          { Properties : payload })
+          if(!!response && ((!!response.Properties && !!response.Properties.length) || (!!response.OfflinePayments && !!response.OfflinePayments.length))) {
+            let {rentPaymentConsumerCode,fileNumber, tenantId, consumerCode} = !!response.Properties ? response.Properties[0] : response.OfflinePayments[0]
+            rentPaymentConsumerCode = rentPaymentConsumerCode || consumerCode;
+            let billingBuisnessService=!!response.Properties ? response.Properties[0].propertyDetails.billingBusinessService : response.OfflinePayments[0].billingBusinessService
+            type === "ONLINE" ? dispatch(
+              setRoute(
+               `/estate-citizen/pay?consumerCode=${rentPaymentConsumerCode}&tenantId=${tenantId}&businessService=${billingBuisnessService}`
+              )
+            ) : dispatch(
+              setRoute(
+              `acknowledgement?purpose=pay&applicationNumber=${rentPaymentConsumerCode}&status=success&tenantId=${tenantId}&type=${billingBuisnessService}&fileNumber=${fileNumber}`
+              )
+            )
+          dispatch(prepareFinalObject("Properties", response.Properties))
+          }
+        } catch (error) {
+          console.log("error", error)
+        }
+      }
+    }
   }
   
   export const getCommonApplyFooter = children => {

@@ -48,7 +48,7 @@ import {
   getSearchApplicationsResults, getSearchResults
 } from "../../../../ui-utils/commons";
 import moment from "moment";
-import { ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE } from "../../../../ui-constants";
+import { ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE,ESTATE_SERVICE_MANI_MAJRA_PROPERTY_MASTER} from "../../../../ui-constants";
 
 export const getCommonApplyHeader = ({label, number}) => {
   return getCommonContainer({
@@ -836,7 +836,7 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data , gener
         case 'rent-payment':
            if(process.env.REACT_APP_NAME != "Citizen"){
             const {payment} = state.screenConfiguration.preparedFinalObject
-            const {paymentType} = payment
+            const {paymentType} = payment || ""
              switch(paymentType){
               case 'PAYMENTTYPE.EXTENSIONFEE':
                  const {ExtensionStatementSummary} = state.screenConfiguration.preparedFinalObject
@@ -1908,7 +1908,9 @@ export const fetchBill = async (action, state, dispatch) => {
     }
   ];
   let payload;
-  if(businessService === ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE) {
+  
+  if(businessService === ESTATE_PROPERTY_MASTER_BILLING_BUSINESS_SERVICE 
+    || businessService === ESTATE_SERVICE_MANI_MAJRA_PROPERTY_MASTER) {
     const applicationNumber = getQueryArg(window.location.href, "consumerCode")
     let propertyPayload = get(state.screenConfiguration.preparedFinalObject, "Properties")
     if(applicationNumber.startsWith("SITE")) {

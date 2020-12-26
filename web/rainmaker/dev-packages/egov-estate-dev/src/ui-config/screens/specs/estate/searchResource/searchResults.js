@@ -121,18 +121,16 @@ export const demandResults = {
   visible: true,
   props: {
     columns: [
-      getTextToLocalMapping("File Number"),
-      getTextToLocalMapping("Application Number"),
-      getTextToLocalMapping("Application Status"),
-      APPLICATION_TYPE,
-      LAST_MODIFIED_ON
+      getTextToLocalMapping("Date"),
+      getTextToLocalMapping("Rent"),
+      getTextToLocalMapping("Total Due"),
+      getTextToLocalMapping("GST"),
     ],
     options: {
       filter: false,
       download: false,
       responsive: "stacked",
-      selectableRowsHeader:true,
-      selectableRows: true,
+      selectableRows: false,
       hover: true,
       rowsPerPageOptions: [10, 15, 20],
       onRowClick: (row, index) => {
