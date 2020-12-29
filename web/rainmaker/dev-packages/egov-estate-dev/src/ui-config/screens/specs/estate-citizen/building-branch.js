@@ -11,6 +11,15 @@ import { EstateIcon } from "../../../../ui-atoms-local";
 
 const tenantId = getTenantId();
 
+const header = getCommonHeader({
+  labelName: "Building Branch",
+  labelKey: "ES_BUILDING_BRANCH_HEADER"
+}, {
+  classes: {
+    root: "common-header-cont"
+  }
+});
+
 const cardItems = [{
     label: {
       labelKey: "ES_APPLY_NOC_BUILDING_BRANCH",
@@ -41,6 +50,7 @@ const buildingBranchHome = {
       uiFramework: "custom-atoms",
       componentPath: "Div",
       children: {
+        header,
         applyCard: {
           moduleName: "egov-estate",
           uiFramework: "custom-molecules-local",

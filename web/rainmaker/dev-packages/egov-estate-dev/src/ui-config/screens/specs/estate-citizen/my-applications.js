@@ -242,8 +242,6 @@ const searchCard = getCommonCard({
 
 const getData = async (action, state, dispatch) => {
   const branchType = getQueryArg(window.location.href, "branchType");
-  homeURL = branchType == "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC" : `/estate-citizen/property-search?branchType=${branchType}`;
-
   const queryObject = [
     {key: "branchType", value: branchType}
   ]
@@ -259,6 +257,23 @@ const getData = async (action, state, dispatch) => {
       "components.div.children.searchCard.children.cardContent.children.statusApplicationNumberContainer.children.applicationType",
       "visible", 
       branchType != "BuildingBranch"
+    )
+  )
+  let homeURL;
+  switch(branchType) {
+    case "BuildingBranch" : homeURL = "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC"
+    break;
+    case "EstateBranch" : homeURL = "/estate-citizen/property-search?branchType=ESTATE_BRANCH"
+    break;
+    case "ManiMajra": homeURL = "/estate-citizen/property-search?branchType=MANI_MAJRA"
+    break
+  }
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.applicationsCard.props",
+      "homeURL",
+      homeURL
     )
   )
 }
@@ -305,7 +320,7 @@ const screenConfig = {
               }
             ],
             moduleName: "EST",
-            homeURL: getQueryArg(window.location.href, "branchType") === "BuildingBranch" ? "/estate-citizen/property-search?branchType=BUILDING_BRANCH&type=BuildingBranch_CitizenService_NOC" : "/estate-citizen/property-search?branchType=ESTATE_BRANCH"
+            homeURL: "/estate-citizen/property-search?branchType=ESTATE_BRANCH"
           }
         }
       }
