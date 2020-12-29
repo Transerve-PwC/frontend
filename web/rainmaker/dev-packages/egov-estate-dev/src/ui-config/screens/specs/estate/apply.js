@@ -82,7 +82,7 @@ const setPaymentDocumentData = async (action, state, dispatch,owner = 0) => {
       labelKey: "ONLY_XLSX",
     },
       formatProps :{
-        accept : ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+        accept : ".xlsx,.xls,vnd.ms-excel,.ms-excel,application/vnd.ms-excel,application/ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       }, 
       maxFileSize: 6000,
       moduleName: "Estate",

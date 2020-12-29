@@ -9,14 +9,14 @@
           "type": "ACC_STMT_LIST",
           "code": "ACC_STMT_LIST",
           "required": true,
-          "accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+          "accept" : ".xlsx,.xls,vnd.ms-excel,.ms-excel,application/vnd.ms-excel,application/ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           "fileType": "ALLTYPES",
           "description": {
             "labelName": "Only .jpg and .pdf files. 6MB max file size.",
             "labelKey": "ACC_STMT_ALLOWED_TYPES"
           },
           "formatProps": {
-            "accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            "accept" : ".xlsx,.xls,vnd.ms-excel,.ms-excel,application/vnd.ms-excel,application/ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           },
           "maxFileSize": 6000,
           "moduleName": "Estate",
