@@ -92,8 +92,12 @@ class HCActionDialog extends React.Component {
   }
   componentDidMount() {
 
-    var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData"))
-    this.getProcessInstanceDataForServiceRequest()
+    //var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData"))
+        var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData")).filter(businessSerivceData => 
+      businessSerivceData.businessService == localStorage.getItem("HCBusinessService")
+    );
+
+	this.getProcessInstanceDataForServiceRequest()
 
     // var finalRequestClarificationRoles = this.getCommonValuesFromHCRoles(requestClarificationRoleArrayFromProcessInstance, HCRoles)
 

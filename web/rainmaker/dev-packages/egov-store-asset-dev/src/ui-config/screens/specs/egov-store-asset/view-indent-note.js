@@ -129,10 +129,9 @@ const getMdmsData = async (action, state, dispatch, tenantId) => {
         {
           moduleName: "common-masters",
           masterDetails: [
-            {
-              name: "UOM",
-              filter: "[?(@.active == true)]"
-            },
+            { name: "UOM", filter: "[?(@.active == true)]" },
+              { name: "Department", filter: "[?(@.active == true)]" },
+              { name: "Designation", filter: "[?(@.active == true)]" }
             
           ]
         },
@@ -153,7 +152,43 @@ const getMdmsData = async (action, state, dispatch, tenantId) => {
     console.log(e);
   }
 };
+const getData = async (action, state, dispatch) => {
+   
+  await getEmployeeData(action, state, dispatch);
+}
+const getEmployeeData = async (action, state, dispatch) => {
+  //fecthing employee details 
+  const queryParams = [{ key: "roles", value: "EMPLOYEE" },{ key: "tenantId", value:  getTenantId() }];
+  const payload = await httpRequest(
+    "post",
+    "/egov-hrms/employees/_search",
+    "_search",
+    queryParams,
+  );
+  if(payload){
+    if (payload.Employees) {
+      const empDetails =
+      payload.Employees.map((item, index) => {
+          const deptCode = item.assignments[0] && item.assignments[0].department;
+          const designation =   item.assignments[0] && item.assignments[0].designation;
+          const empCode = item.code;
+          const empName = `${item.user.name}`;
+        return {
+                code : empCode,
+                name : empName,
+                dept : deptCode,
+                designation:designation,
+        };
+      });
+    
+      if(empDetails){
+        dispatch(prepareFinalObject("createScreenMdmsData.employee",empDetails));  
+      }
+      
+    }
+  }
 
+}
 const screenConfig = {
   uiFramework: "material-ui",
   name: "view-indent-note",
@@ -162,6 +197,7 @@ const screenConfig = {
     let tenantId = getQueryArg(window.location.href, "tenantId");
     let issueNumber = getQueryArg(window.location.href, "applicationNumber");
     getMdmsData(action, state, dispatch, tenantId);
+   // getData(action, state, dispatch);
     getMaterialIndentData(state, dispatch, issueNumber, tenantId);
    // showHideAdhocPopup(state, dispatch);
    

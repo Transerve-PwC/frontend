@@ -9,14 +9,14 @@ import { masterViewFooter } from "./viewindentResource/footer";
 import { getMaterialIndentData } from "./viewindentResource/functions";
 import { showHideAdhocPopup } from "../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import { httpRequest } from "../../../../ui-utils";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { httpRequest  } from "../../../../ui-utils";
+import { prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getstoreTenantId } from "../../../../ui-utils/storecommonsapi";
 import{WorkFllowStatus} from '../../../../ui-utils/sampleResponses'
 //print function UI start SE0001
-import { downloadAcknowledgementForm} from '../utils'
+import { downloadAcknowledgementForm,epochToYmd} from '../utils'
 //print function UI end SE0001
 import{UserRoles} from '../../../../ui-utils/sampleResponses'
 let roles = UserRoles().UserRoles;
@@ -83,7 +83,25 @@ const createMatrialIndentNoteHandle = async (state, dispatch) => {
     []
   );
   let IndentId = indents[0].id;
-  dispatch(setRoute(`/egov-store-asset/createMaterialIndentNote?IndentId=${IndentId}`));
+  const CurrentDate = new Date();
+  let expectedDeliveryDate = new Date(indents[0].expectedDeliveryDate)
+  // if(Number(expectedDeliveryDate))
+  //   expectedDeliveryDate = epochToYmd(expectedDeliveryDate)
+  //   const  expectedDeliveryDate_ = new Date(expectedDeliveryDate) 
+    if(CurrentDate> expectedDeliveryDate)
+    {
+      const errorMessage = {
+        labelName: "Can not initiate Issue note against an approved Indent after the ‘Expected Delivery Date’ of the indent ",
+        labelKey: "STORE_MATERIAL_INDENT_NOTE_CREATE_VALIDATION"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else
+    {
+      dispatch(setRoute(`/egov-store-asset/createMaterialIndentNote?IndentId=${IndentId}`));
+
+    }
+  
 };
 const creatPOHandle = async (state, dispatch) => {
   let indents = get(
@@ -92,7 +110,24 @@ const creatPOHandle = async (state, dispatch) => {
     []
   );
   let indentNumber = indents[0].indentNumber;
-  dispatch(setRoute(`/egov-store-asset/create-purchase-order?indentNumber=${indentNumber}`));
+  const CurrentDate = new Date();
+  let expectedDeliveryDate = new Date(indents[0].expectedDeliveryDate)
+  // if(Number(expectedDeliveryDate))
+  //   expectedDeliveryDate = epochToYmd(expectedDeliveryDate)
+    if(CurrentDate> expectedDeliveryDate)
+    {
+      const errorMessage = {
+        labelName: "Can not initiate Issue note against an approved Indent after the ‘Expected Delivery Date’ of the indent ",
+        labelKey: "STORE_MATERIAL_INDENT_PO_CREATE_VALIDATION"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else
+    {
+      dispatch(setRoute(`/egov-store-asset/create-purchase-order?indentNumber=${indentNumber}`));
+
+    }
+ 
 };
 //print function UI start SE0001
 /** MenuButton data based on status */

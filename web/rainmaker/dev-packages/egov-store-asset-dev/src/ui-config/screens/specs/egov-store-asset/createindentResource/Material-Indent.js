@@ -12,8 +12,18 @@ import {
  import { convertDateToEpoch, convertDateToEpochIST } from "../../utils";
  import { getSTOREPattern,getSearchResults} from "../../../../../ui-utils/commons";
  import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
  //import { getSearchResults } from "../../../../ui-utils/commons";
-  export const MaterialIndentDetails = getCommonCard({
+//  let tenantId = getQueryArg(window.location.href, "tenantId");
+ let disabled = false
+//  if(tenantId)
+//  disabled = true
+//return
+  export const MaterialIndentDetails =(disabled) => {
+
+  return getCommonCard({
+  
+   // export const MaterialIndentDetails =getCommonCard({
     header: getCommonTitle(
       {
         labelName: "Material  Indent",
@@ -43,6 +53,8 @@ import {
           props: {
             optionValue: "code",
             optionLabel: "name",
+            //disabled: disabled,
+            disabled : getQueryArg(window.location.href, "tenantId") === null?false:true,
           },
         }),
         beforeFieldChange: (action, state, dispatch) => {
@@ -136,7 +148,8 @@ import {
           props: {
             inputProps: {
               max: new Date().toISOString().slice(0, 10),
-            }
+            },
+            disabled: disabled,
           }
         }),
        
@@ -156,6 +169,7 @@ import {
           
           optionValue: "code",
           optionLabel: "name",
+          disabled: disabled,
         },
         }),
         beforeFieldChange: (action, state, dispatch) => {
@@ -176,7 +190,8 @@ import {
           props: {
            
             optionValue: "code",
-            optionLabel: "name"
+            optionLabel: "name",
+            disabled: disabled,
           },
         })
       },
@@ -197,7 +212,8 @@ import {
           props: {
             inputProps: {
               min: new Date().toISOString().slice(0, 10),
-            }
+            },
+            disabled: disabled,
           }
         })
       },
@@ -217,6 +233,7 @@ import {
             className: "applicant-details-error",
             multiline: "multiline",
             rowsMax: 2,
+            disabled: disabled,
           },
           pattern: getSTOREPattern("Comment"),
           jsonPath: "indents[0].narration"
@@ -257,4 +274,9 @@ import {
         })
       },
     })
-  });
+  },
+  // {
+  //   style: { overflow: "visible" }
+  // }
+  );
+};

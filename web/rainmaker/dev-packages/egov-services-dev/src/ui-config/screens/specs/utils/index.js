@@ -816,6 +816,8 @@ let bankName = refundDetailsResp.data[0].gateway;
             // ACTION: "_get",
         },
     };
+
+    console.log(receiptQueryString, "nero rcpt ata");
     try {
         let payloadReceiptDetails = await httpRequest(
             "post",
@@ -909,6 +911,27 @@ let bankName = refundDetailsResp.data[0].gateway;
                         .receiptNumber,
             };
         } else {
+let tax = 0;
+let amount = 0;
+          if(applicationData.businessService === "OSBM"){
+          tax =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+            )[0].amount;
+            amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                  (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+              )[0].amount;
+          } else if(applicationData.businessService === "BWT"){
+            amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                  (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
+              )[0].amount;
+          }else{
+          amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                (el) => !el.taxHeadCode.includes("TAX")
+            )[0].amount;
+            tax: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("TAX")
+            )[0].amount;
+          }
             paymentInfoData = {
                 paymentDate: convertEpochToDate(
                     payloadReceiptDetails.Payments[0].transactionDate,
@@ -918,7 +941,7 @@ let bankName = refundDetailsResp.data[0].gateway;
                     payloadReceiptDetails.Payments[0].transactionNumber,
                 bookingPeriod:
                     payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                        .businessService === "OSBM" ||
+                        .businessService === "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
                             .businessService === "GFCP" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
@@ -933,7 +956,7 @@ let bankName = refundDetailsResp.data[0].gateway;
                         ? "Commercial Ground"
                         : payloadReceiptDetails.Payments[0]
                             .paymentDetails[0].bill.businessService ===
-                            "OSBM"
+                            "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE"
                             ? "Open Space for Building Material"
                             : payloadReceiptDetails.Payments[0]
                                 .paymentDetails[0].bill.businessService ===
@@ -941,12 +964,8 @@ let bankName = refundDetailsResp.data[0].gateway;
                                 ? "Open Space within MCC jurisdiction"
                                 : "Water Tanker"
                     }`,
-                amount: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => !el.taxHeadCode.includes("TAX")
-                )[0].amount,
-                tax: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("TAX")
-                )[0].amount,
+                amount: amount,
+                tax: tax,
                 grandTotal:
                     payloadReceiptDetails.Payments[0].totalAmountPaid,
                 amountInWords: NumInWords(
@@ -954,7 +973,7 @@ let bankName = refundDetailsResp.data[0].gateway;
                 ),
                 paymentItemExtraColumnLabel:
                     payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                        .businessService === "OSBM" ||
+                        .businessService === "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
                             .businessService === "GFCP" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
@@ -968,6 +987,7 @@ let bankName = refundDetailsResp.data[0].gateway;
                         .receiptNumber,
             };
         }
+        console.log(paymentInfoData, "nero Qry str");
         let receiptData = [
             {
                 applicantDetail: {
@@ -996,6 +1016,7 @@ let bankName = refundDetailsResp.data[0].gateway;
                 },
             },
         ];
+
 
         let res = await httpRequest(
             "post",
@@ -1029,6 +1050,7 @@ let bankName = refundDetailsResp.data[0].gateway;
 
 
     } catch (exception) {
+      console.log(exception, "Nero PDF Exception")
         alert("Some Error Occured while downloading Receipt!");
     }
 
@@ -1055,7 +1077,7 @@ export const downloadCertificate = async (
         role: "Additional Commissioner",
     };
 
-    console.log(bookingWfHistory, "Nero bookingWfHistory");
+
     if (bookingWfHistory && bookingWfHistory.length > 0) {
         for (let i = 0; i < bookingWfHistory.length; i++) {
             if (bookingWfHistory[i].assignee != null) {
@@ -1217,7 +1239,6 @@ export const downloadCertificate = async (
         )
 
 
-
         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
 
             receiptVal = res.filestoreIds.map(async (fileStoreId) => {
@@ -1265,7 +1286,6 @@ export const downloadApplication = async (
         { key: "applicationNumber", value: applicationNumber },
     ]);
     let recData = get(response, "bookingsModelList", []);
-
     let documentName = '';
     let document2 = '';
     if (applicationData.businessService != "NLUJM") {
@@ -1389,6 +1409,38 @@ export const downloadApplication = async (
 
         var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
         let appData = "";
+        let baseCharge = null;
+        let taxes = null;
+        let ugst = null;
+        let cgst = null;
+
+        if(applicationData.businessService == "OSBM"){
+          
+          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+            )[0].amount;
+          taxes = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+            )[0].amount;
+            ugst = taxes/2;
+            cgst = taxes/2;
+
+        }else if(applicationData.businessService == "BWT"){
+          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
+            )[0].amount;
+
+        }else {
+
+          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+              (el) => !el.taxHeadCode.includes("TAX")
+          )[0].amount;
+          taxes = paymentData.billDetails[0].billAccountDetails.filter(
+              (el) => el.taxHeadCode.includes("TAX")
+          )[0].amount;
+
+        }
+
         if (applicationData.businessService == "NLUJM") {
             appData = [
                 {
@@ -1479,31 +1531,41 @@ export const downloadApplication = async (
                                 : applicationData.businessService === "OSUJM"
                                     ? bookingDataOSUJM
                                     : bookingDataWt,
+                    // feeDetail: {
+                    //     baseCharge:
+                    //         paymentData === undefined
+                    //             ? null
+                    //             : paymentData.billDetails[0].billAccountDetails.filter(
+                    //                 (el) => !el.taxHeadCode.includes("TAX")
+                    //             )[0].amount,
+                    //     taxes:
+                    //         paymentData === undefined
+                    //             ? null
+                    //             : paymentData.billDetails[0].billAccountDetails.filter(
+                    //                 (el) => el.taxHeadCode.includes("TAX")
+                    //             )[0].amount,
+                    //     ugst:
+                    //         paymentData === undefined
+                    //             ? null
+                    //             : paymentData.billDetails[0].billAccountDetails.filter(
+                    //                 (el) => el.taxHeadCode.includes("TAX")
+                    //             )[0].amount/2,
+                    //     cgst:
+                    //         paymentData === undefined
+                    //             ? null
+                    //             : paymentData.billDetails[0].billAccountDetails.filter(
+                    //                 (el) => el.taxHeadCode.includes("TAX")
+                    //             )[0].amount/2,
+                    //     totalAmount:
+                    //         paymentData === undefined
+                    //             ? null
+                    //             : paymentData.totalAmount,
+                    // },
                     feeDetail: {
-                        baseCharge:
-                            paymentData === undefined
-                                ? null
-                                : paymentData.billDetails[0].billAccountDetails.filter(
-                                    (el) => !el.taxHeadCode.includes("TAX")
-                                )[0].amount,
-                        taxes:
-                            paymentData === undefined
-                                ? null
-                                : paymentData.billDetails[0].billAccountDetails.filter(
-                                    (el) => el.taxHeadCode.includes("TAX")
-                                )[0].amount,
-                        ugst:
-                            paymentData === undefined
-                                ? null
-                                : paymentData.billDetails[0].billAccountDetails.filter(
-                                    (el) => el.taxHeadCode.includes("TAX")
-                                )[0].amount/2,
-                        cgst:
-                            paymentData === undefined
-                                ? null
-                                : paymentData.billDetails[0].billAccountDetails.filter(
-                                    (el) => el.taxHeadCode.includes("TAX")
-                                )[0].amount/2,
+                        baseCharge:baseCharge,
+                        taxes:taxes,
+                        ugst:ugst,
+                        cgst:cgst,
                         totalAmount:
                             paymentData === undefined
                                 ? null
@@ -1541,6 +1603,7 @@ export const downloadApplication = async (
         });
         //   })
     } catch (exception) {
+      console.log(exception, "Something Went Wront")
         alert("Some Error Occured while downloading Application!");
     }
 };

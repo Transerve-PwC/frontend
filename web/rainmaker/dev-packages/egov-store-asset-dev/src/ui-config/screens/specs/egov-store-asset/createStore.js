@@ -564,7 +564,7 @@ export const formwizardFirstStep = {
           },
           isFieldValid: true,
           required: false,
-
+        visible:false,
           props: {
             content: "STORE_DETAILS_ACTIVE",
             jsonPath: "stores[0].active",

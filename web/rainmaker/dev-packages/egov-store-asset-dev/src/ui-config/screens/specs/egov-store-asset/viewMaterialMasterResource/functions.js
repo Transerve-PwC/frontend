@@ -243,6 +243,7 @@ export const createUpdateMaterialMaster = async (state, dispatch, action) => {
     for (let i = 0; i < storeMapping.length; i++) {
       set(materials[0],`storeMapping[${i}].active`, true);
     }
+    set(materials[0],`reorderLevel`, 1);
     try {
       console.log(queryObject)
       console.log("queryObject")

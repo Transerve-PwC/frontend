@@ -181,6 +181,35 @@ export const callBackForNext = async (state, dispatch) => {
     }
     if(isInvalidFromDt)  finalErrString +=   invalidFromDate;
     if(isInvalidToDt)    finalErrString +=   "  "+invalidToDate;
+
+//const ValidServicedDt = state.screenConfiguration.preparedFinalObject.ValidServicedDt
+const ValidServicedDt =get(
+  state.screenConfiguration.preparedFinalObject,
+  `ValidServicedDt`,
+  true
+);
+//const ValidServiceTodDt = state.screenConfiguration.preparedFinalObject.ValidServiceTodDt
+const ValidServiceTodDt =get(
+  state.screenConfiguration.preparedFinalObject,
+  `ValidServiceTodDt`,
+  true
+);
+    if (!ValidServicedDt) {
+      const errorMessage = {
+        labelName: "Date Must lie between Appointment date and Annuation date",
+        labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      return;
+    }
+    if (!ValidServiceTodDt) {
+      const errorMessage = {
+        labelName: "Service To Date greater then Service From Date",
+                    labelKey: "SERVICE_DATE_TO_VALIDATIOM"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      return;
+    }
     if (!isserviceDetailsValid) {
       isFormValid = false;
     }

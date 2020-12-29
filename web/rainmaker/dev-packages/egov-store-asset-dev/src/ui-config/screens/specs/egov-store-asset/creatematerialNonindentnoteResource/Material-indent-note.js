@@ -154,12 +154,12 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
       createdBy: {
         ...getTextField({
           label: {
-            labelName: "Created by",
-            labelKey: "STORE_PURCHASE_ORDER_CREATEBY"
+            labelName: "Issued by",
+            labelKey: "STORE_CREATEBY_MR_ISSUE"
           },
           placeholder: {
             labelName: "Enter Created By",
-            labelKey: "STORE_PURCHASE_ORDER_CREATEBY_PLCEHLDER"
+            labelKey: "STORE_CREATEBY_MR_ISSUE"
           },
           props: {
             disabled: true
@@ -190,7 +190,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
       },
       designation: {
         ...getTextField({
-          label: { labelName: "Designation", labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION" },
+          label: { labelName: "Issued By Employee Designation", labelKey: "STORE_DSGNTN_MR_ISSUE" },
           placeholder: {
             labelName: "Designation",
             labelKey: "STORE_MATERIAL_INDENT_NOTE_DESIGNATION"

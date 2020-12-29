@@ -259,10 +259,10 @@ export const professionalDetails = getCommonCard(
             optionLabel: "status",
             optionValue: "code"
           },
-          localePrefix: {
-            moduleName: "egov-hrms",
-            masterName: "EmployeeType"
-          }
+          // localePrefix: {
+          //   moduleName: "egov-hrms",
+          //   masterName: "EmployeeType"
+          // }
         })
       },
       status: {
@@ -281,10 +281,10 @@ export const professionalDetails = getCommonCard(
             disabled: true,
             value: "EMPLOYED"
           },
-          localePrefix: {
-            moduleName: "egov-hrms",
-            masterName: "EmployeeStatus"
-          }
+          // localePrefix: {
+          //   moduleName: "egov-hrms",
+          //   masterName: "EmployeeStatus"
+          // }
         })
       },
       role: {
@@ -294,6 +294,8 @@ export const professionalDetails = getCommonCard(
         jsonPath: "Employee[0].user.roles",
         required: true,
         props: {
+          optionLabel: "name",
+          optionValue: "code",
           style: {
             width: "100%",
             cursor: "pointer"
@@ -312,10 +314,10 @@ export const professionalDetails = getCommonCard(
           inputLabelProps: {
             shrink: true
           },
-          localePrefix: {
-            moduleName: "ACCESSCONTROL_ROLES",
-            masterName: "ROLES"
-          },
+          // localePrefix: {
+          //   moduleName: "ACCESSCONTROL_ROLES",
+          //   masterName: "ROLES"
+          // },
           isMulti: true,
         },
         gridDefination: {

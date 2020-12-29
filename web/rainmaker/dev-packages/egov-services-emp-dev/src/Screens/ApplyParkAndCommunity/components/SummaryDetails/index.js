@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs, Card, TextField, Icon, Button } from "components";
 import Label from "egov-ui-kit/utils/translationNode";
-import { createPACCApplication, updatePACCApplication,fetchPayment } from "egov-ui-kit/redux/bookings/actions";
+import { createPACCApplication, updatePACCApplication,fetchPayment,fetchApplications } from "egov-ui-kit/redux/bookings/actions";
 import { connect } from "react-redux";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -21,11 +21,12 @@ class SummaryDetails extends Component {
 
     state = {
         createPACCApp: '',
+        CashPaymentApplicationNumber: ''
     }
 
     componentDidMount = async () => {
        
-        let { createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject } = this.props;
+        let { createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications } = this.props;
         let { firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,
             utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,discountType } = this.props;
 console.log("this.propos--insummaryPage--",this.props)
@@ -114,16 +115,6 @@ else if(discountType == "20%"){
             }],
                 Booking.bkDuration = "FULLDAY"
         }
-      
-    //  await createPACCApplication(
-    //         {
-    //             "applicationType": "PACC",
-    //             "applicationStatus": "",
-    //             "applicationId": null,
-    //             "tenantId": userInfo.tenantId,
-    //             "Booking": Booking
-    //         });
-
         let createAppData = {
              
                 "applicationType": "PACC",
@@ -143,144 +134,22 @@ let payloadfund = await httpRequest(
 
  console.log("payloadfund--",payloadfund)
 
+ prepareFinalObject("createAppData",payloadfund)
+
  let appNumber = payloadfund.data.bkApplicationNumber
  console.log("appNumber--",appNumber)
 
+ prepareFinalObject("CurrentApplicationNumber",appNumber)
+
  this.setState({
-    createPACCApp : payloadfund
+    createPACCApp : payloadfund,
+    CashPaymentApplicationNumber : appNumber
  })
 
 
  fetchPayment(
     [{ key: "consumerCode", value: appNumber }, { key: "businessService", value: "PACC" }, { key: "tenantId", value: userInfo.tenantId }
     ])
-
-//  let RequestData = [
-//             { key: "consumerCode", value: appNumber },
-//             { key: "businessService", value: "PACC" },
-//             { key: "tenantId", value: userInfo.tenantId }
-//             ];
-// let payloadbill = await httpRequest(
-//             "billing-service/bill/v2/_fetchbill",
-//             "_search",[],
-//             RequestData
-//             );
-
-//      console.log("payloadbill--",payloadbill)
-
-
-
-
-
-
-
-    //  let data={
-    //     "RefundTransaction" : {
-    //     "additionalDetails": {},
-        
-    //     "gateway": gateway,
-    //     "gatewayRefundStatusCode": txnStatus,
-    //     "gatewayRefundStatusMsg": txnStatusMsg,
-    //     "gatewayTxnId": gatewayTxnId,
-    //     "refundAmount": "250.00",
-    //     "tenantId": userInfo.tenantId,
-    //     "txnAmount": txnAmount,
-    //     "txnId": txnId
-    
-    //   }
-    // }
-    
-    //   let ResOfRefund = await httpRequest(
-    //     "pg-service/transaction/v1/_refund",
-    //     "_search",[],
-    //     data
-    //   );
-
-
-        // let RequestData = [
-        //     { key: "consumerCode", value: "CH-BK-2020-10-30-003136" },
-        //     { key: "tenantId", value: userInfo.tenantId }
-        //     ];
-        //   let payloadfund = await httpRequest(
-        //     "billing-service/bill/v2/_fetchbill",
-        //     "_search",
-        //     RequestData
-        //     );
-
-    //  console.log("payloadfund--",payloadfund)
-
-
-    }
-
-    submit = e => {
-        let { updatePACCApplication, documentMap, createPACCApplicationData, bookingData, venueType,prepareFinalObject } = this.props;
-        let dataOne = this.state.createPACCApp && this.state.createPACCApp.data ? this.state.createPACCApp.data: "NoDataFound"
-        console.log("dataOne--",dataOne)
-        let data  = dataOne;
-        console.log("data--",data)
-        prepareFinalObject("CreatePaccAppData",data);
-        let fid = documentMap ? Object.keys(documentMap) : ""
-        const { firstName, userInfo, email, mobileNo, surcharge, fromDate, toDate, utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, locality, residenials } = this.props;
-     
-        if (data) {
-            let Booking = {
-                bkBookingType: data.bkBookingType,
-                bkBookingVenue: data.bkBookingVenue,
-                bkApplicantName: data.bkApplicantName,
-                bkMobileNumber: data.bkMobileNumber,
-                bkDimension: data.bkDimension,
-                bkLocation: data.bkLocation,
-                bkFromDate: data.bkFromDate,
-                bkToDate: data.bkToDate,
-                bkCleansingCharges: data.bkCleansingCharges,
-                bkRent: data.bkRent,
-                bkSurchargeRent: data.bkSurchargeRent,
-                bkUtgst: data.bkUtgst,
-                bkCgst: data.bkCgst,
-                bkSector: data.bkSector,
-                bkEmail: data.bkEmail,
-                bkHouseNo: data.bkHouseNo,
-                bkBookingPurpose: data.bkBookingPurpose,
-                bkApplicationNumber: data.bkApplicationNumber,
-                bkCustomerGstNo: data.bkCustomerGstNo ? data.bkCustomerGstNo : 'NA',
-                "wfDocuments": [{
-                    "fileStoreId": fid[0]
-                }],
-                "tenantId": userInfo.tenantId,
-                "bkAction": "OFFLINE_APPLY",
-                "businessService": "PACC",
-                "financialYear": "2020-2021"
-            }
-
-
-            if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
-                Booking.timeslots = [{
-                    "slot": bookingData.bkFromTime + ' - ' + bookingData.bkToTime
-                }],
-                    Booking.bkDuration = "HOURLY",
-                    Booking.bkFromDate = bookingData.bkFromDate,
-                    Booking.bkToDate = bookingData.bkToDate,
-                    Booking.bkFromTime = bookingData.bkFromTime,
-                    Booking.bkToTime = bookingData.bkToTime
-            }
-            else if (venueType == "Community Center" && (!bookingData) && (!bookingData.bkFromTime)) {
-                Booking.timeslots = [{
-                    "slot": "9:00 AM - 8:59 AM"
-                }],
-                    Booking.bkDuration = "FULLDAY"
-            }
-
-
-            updatePACCApplication(
-                {
-                    "applicationType": "PACC",
-                    "applicationStatus": "",
-                    "applicationId": data.bkApplicationNumber,
-                    "tenantId": userInfo.tenantId,
-                    "Booking": Booking
-                });
-            this.props.history.push(`/egov-services/create-success-pcc`);
-        }
     }
 
     firstStep = e => {
@@ -337,12 +206,141 @@ let payloadfund = await httpRequest(
             prepareFinalObject('documentsPreview', documentsPreview)
         }
     }
+
+submit = async (InitiateAppNumber) => {
+
+console.log("this.state.CashPaymentApplicationNumber--",this.state.CashPaymentApplicationNumber)    
+
+let NumberApp = this.state.CashPaymentApplicationNumber;
+
+console.log("NumberApp--",NumberApp)
+
+// let AppNo;
+// if(InitiateAppNumber != "NotDetemine"){
+//     AppNo = InitiateAppNumber
+// }
+// console.log("AppNo--",AppNo)
+// let ApplicationNumber = InitiateAppNumber && InitiateAppNumber;
+// console.log("ApplicationNumber--",ApplicationNumber)
+
+// let { createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications } = this.props;
+// let { firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,
+//  utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,discountType } = this.props;
+// console.log("this.propos--insummaryPage--",this.props)
+// console.log("discountType--",discountType)
+// console.log("newConsole--ut",utGST)
+
+// prepareFinalObject("SummaryutGST",this.props.utGST);
+// prepareFinalObject("SummarycGST",this.props.cGST);
+// prepareFinalObject("Summarysurcharge",this.props.surcharge);
+
+
+// prepareFinalObject("cGSTSummary",cGST);
+
+
+// let newDisCount;
+// let finalDiscount;
+// if(discountType == "50%"){
+// newDisCount = 50; 
+// finalDiscount = Number(newDisCount);
+// console.log("newDisCount--",newDisCount)
+// console.log("finalDiscount--",finalDiscount)
+// }
+// else if(discountType == "20%"){
+//     newDisCount = 20; 
+//     finalDiscount = Number(newDisCount);
+//     console.log("newDisCount--",newDisCount)
+//     console.log("finalDiscount--",finalDiscount)
+//     }
+//     else if (discountType == '100%' || discountType == "KirayaBhog" || discountType == "ReligiousFunction"){
+//         newDisCount = 100; 
+//         finalDiscount = Number(newDisCount);
+//         console.log("newDisCount--",newDisCount)
+//         console.log("finalDiscount--",finalDiscount)
+//         }
+//         else{
+//             newDisCount = 0; 
+//             finalDiscount = Number(newDisCount);
+//             console.log("newDisCount--",newDisCount)
+//             console.log("finalDiscount--",finalDiscount)
+//             }
+
+
+//         let fid = documentMap ? Object.keys(documentMap) : ""
+//         let Booking = {
+//             "discount": finalDiscount,
+//             "bkBookingType": venueType,
+//             "bkBookingVenue": bokingType,
+//             "bkApplicantName": firstName,
+//             "bkMobileNumber": mobileNo,
+//             "bkDimension": dimension,
+//             "bkLocation": myLocationtwo,
+//             "bkFromDate": fromDate,
+//             "bkToDate": toDate,
+//             "bkCleansingCharges": cleaningCharges,
+//             "bkRent": rent,
+//             "bkSurchargeRent": surcharge,
+//             "bkUtgst": utGST,
+//             "bkCgst": cGST,
+//             "bkSector": locality,
+//             "bkEmail": email,
+//             "bkHouseNo": houseNo,
+//             "bkBookingPurpose": purpose,
+//             "bkCustomerGstNo": GSTnumber,
+//             "wfDocuments": [{
+//                 "fileStoreId": fid[0]
+//             }],
+//             "tenantId": userInfo.tenantId,
+//             "bkAction": "OFFLINE_INITIATE",
+//             "businessService": "PACC",
+//             "financialYear": "2020-2021"
+//         }
+
+//         if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
+//             Booking.timeslots = [{
+//                 "slot": bookingData.bkFromTime + '-' + bookingData.bkToTime
+//             }],
+//                 Booking.bkDuration = "HOURLY",
+//                 Booking.bkFromDate = bookingData.bkFromDate,
+//                 Booking.bkToDate = bookingData.bkToDate,
+//                 Booking.bkFromTime = bookingData.bkFromTime,
+//                 Booking.bkToTime = bookingData.bkToTime
+//         }
+//         else if (venueType == "Community Center" && (!bookingData) && (!bookingData.bkFromTime)) {
+//             Booking.timeslots = [{
+//                 "slot": "9:00 AM - 8:59 AM"
+//             }],
+//                 Booking.bkDuration = "FULLDAY"
+//         }
+//         let createAppData = {
+             
+//                 "applicationType": "PACC",
+//                 "applicationStatus": "",
+//                 "applicationId": this.state.CashPaymentApplicationNumber,
+//                 "tenantId": userInfo.tenantId,
+//                 "Booking": Booking   
+//             }
+        
+// console.log("createAppData--",createAppData)
+
+// let payloadfund = await httpRequest(
+//             "bookings/park/community/_create",
+//             "_search",[],
+//             createAppData
+//             );
+
+//  console.log("payloadfund--",payloadfund)
+
+this.props.history.push(`/egov-services/PaymentReceiptDteail/${this.state.CashPaymentApplicationNumber}`);
+   
+}
+
     render() {
         const { firstName, fCharges,result, email, mobileNo, locality, surcharge, fromDate, toDate, facilationChargesSuccess,
             onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, bankName, amount, transactionDate, transactionNumber, paymentMode,
             dimension, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, residenials, documentMap,
             BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,totalAmountSuPage,one,two,three,four,five,six,
-            PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE
+            PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE,InitiateAppNumber
             } = this.props;
             console.log(",one,two,three,four,five,six--",one,two,three,four,five,six)
             console.log("propsInRendersummary--",this.props)
@@ -436,8 +434,6 @@ totalAmountSuPage={totalAmountSuPage}
                             style={{ marginRight: 18 }}
                             startIcon={<ArrowBackIosIcon />}
                         />
-
-
                         <Button
                             className="responsive-action-button"
                             primary={true}
@@ -504,42 +500,22 @@ console.log("four--",four)
 console.log("five--",five)
 console.log("six--",six)
 
-    //1
-    // let BK_FEE_HEAD_PACC = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[0].amount: "notFound";
-    // console.log("BK_FEE_HEAD_PACC--",BK_FEE_HEAD_PACC)
-    // //2
-    // let LUXURY_TAX = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[1].amount: "notFound";
-    // console.log("LUXURY_TAX--",LUXURY_TAX)
-    // //3
-    // let REFUNDABLE_SECURITY = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[2].amount: "notFound";
-    // console.log("REFUNDABLE_SECURITY--",REFUNDABLE_SECURITY)
-    // //4
-    // let PACC_TAX = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[3].amount: "notFound";
-    // console.log("PACC_TAX--",PACC_TAX)
-    // //5
-    // let PACPACC_ROUND_OFFC_TAX = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[4].amount: "notFound";
-    // console.log("PACPACC_ROUND_OFFC_TAX--",PACPACC_ROUND_OFFC_TAX)
-    // //6
-    // let FACILITATION_CHARGE = checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails[5].amount: "notFound";
-    // console.log("FACILITATION_CHARGE--",FACILITATION_CHARGE)
-
-  
-    // const loadingOne = !isEmpty(createPACCApplicationData)
-    // ? fetchSuccess
-    //   ? false
-    //   : true
-    // : true;
-
-    // const loading = !isEmpty(createPACCApplicationData)
-    // ? fetchSuccess
-    //   ? false
-    //   : true
-    // : true;
-
     let myLocation = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.availabilityCheckData:"";  
     let myLocationtwo = myLocation?myLocation.bkLocation:"";  
 
+    let NewAppNumber =  state.screenConfiguration.preparedFinalObject.CurrentApplicationNumber ? state.screenConfiguration.preparedFinalObject.CurrentApplicationNumber : "NotDetemine";
+    console.log("NewAppNumber--",NewAppNumber)
 
+    let tryMyNumber;
+
+    if(NewAppNumber != "NotDetemine"){
+        tryMyNumber = NewAppNumber && NewAppNumber;
+    }
+    console.log("tryMyNumber--",tryMyNumber)
+
+    let InitiateAppNumber = NewAppNumber && NewAppNumber ? NewAppNumber : "NotDetemine";
+    
+    console.log("InitiateAppNumber--",InitiateAppNumber)
     let fCharges;
     if (arrayName && arrayName.length > 0) {
       arrayName.forEach((item) => {
@@ -555,7 +531,7 @@ console.log("six--",six)
     return {
         //BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,
         //PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE,
-        createPACCApplicationData,userInfo,
+        createPACCApplicationData,userInfo,InitiateAppNumber,
         documentMap, bkLocation, facilationChargesSuccess,
         fCharges,myLocationtwo,totalAmountSuPage,one,two,three,four,five,six
     }

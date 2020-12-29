@@ -13,8 +13,12 @@ import {
   import{GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
   import set from "lodash/set";
   import { getSTOREPattern} from "../../../../../ui-utils/commons";
+  import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField , prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  
+   let tenantId = getQueryArg(window.location.href, "tenantId");
+   let disabled = false
+  if(tenantId)
+  disabled = true
   const arrayCrawler = (arr, n) => {
     if (n == 1) {
       return arr.map(item => {
@@ -51,6 +55,7 @@ import {
                 props: {
                   optionValue: "code",
                   optionLabel: "name",
+                  disabled: disabled,
                 },
               }),
               beforeFieldChange: (action, state, dispatch) => {
@@ -177,15 +182,16 @@ import {
                 jsonPath: "indents[0].indentDetails[0].projectCode.code",
                 //sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
                 props: {
-                  data: [
-                    {
-                      value: "PR1",
-                      label: "PR1"
-                    },
+                  disabled: disabled,
+                  // data: [
+                  //   {
+                  //     value: "PR1",
+                  //     label: "PR1"
+                  //   },
                     
-                  ],
-                  optionValue: "value",
-                  optionLabel: "label"
+                  // ],
+                  // optionValue: "value",
+                  // optionLabel: "label"
                 },
               })
             },
@@ -320,6 +326,8 @@ import {
         return muliItemContent;
       },
       items: [],
+      hasAddItem:!disabled,
+      isReviewPage:disabled,
       addItemLabel: {
         labelName: "ADD",
         labelKey: "STORE_MATERIAL_COMMON_CARD_ADD"
@@ -345,7 +353,9 @@ import {
     type: "array"
   };
   
-  export const MaterialIndentMapDetails = getCommonCard({
+  //export const MaterialIndentMapDetails =(disabled) => {
+   //return
+    export const MaterialIndentMapDetails =  getCommonCard({
     header: getCommonTitle(
       {
         labelName: "Material Indent Details",
@@ -357,5 +367,6 @@ import {
         }
       }
     ),
-    MaterialIndentDetailsCard
+    MaterialIndentDetailsCard 
   });
+//}

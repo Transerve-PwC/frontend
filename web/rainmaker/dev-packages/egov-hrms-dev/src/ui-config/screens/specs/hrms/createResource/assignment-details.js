@@ -156,10 +156,10 @@ const assignmentDetailsCard = {
                 optionLabel: "name"
                 // hasLocalization: false
               },
-              localePrefix: {
-                moduleName: "common-masters",
-                masterName: "Department"
-              }
+              // localePrefix: {
+              //   moduleName: "common-masters",
+              //   masterName: "Department"
+              // }
             })
           },
           designation: {
@@ -178,10 +178,10 @@ const assignmentDetailsCard = {
                 optionLabel: "name"
                 // hasLocalization: false
               },
-              localePrefix: {
-                moduleName: "common-masters",
-                masterName: "Designation"
-              }
+              // localePrefix: {
+              //   moduleName: "common-masters",
+              //   masterName: "Designation"
+              // }
             })
           },
           reportingTo: {
@@ -267,7 +267,12 @@ const assignmentDetailsCard = {
         Object.keys(muliItemContent).forEach(key => {
           if (isCurrentAssignment && key === "currentAssignment") {
             set(muliItemContent[key], "props.disabled", false);
-          } else {
+          }
+          else if(key === "isPrimaryAssignment")
+          {
+            set(muliItemContent[key], "props.disabled", false);
+          }
+          else {
             set(muliItemContent[key], "props.disabled", true);
           }
         });

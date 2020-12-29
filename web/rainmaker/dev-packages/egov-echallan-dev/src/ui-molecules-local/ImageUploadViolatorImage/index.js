@@ -64,7 +64,7 @@ class ImageUploadViolatorImage extends Component {
 
   onFilePicked = (file, imageUri) => {
     const { images, formKey, fieldKey, module, fileUpload, toggleSnackbarAndSetText } = this.props;
-    const MAX_IMAGE_SIZE = 15000;
+    const MAX_IMAGE_SIZE = 5000;
     const fileSize = getFileSize(file);
     const isImage = isFileImage(file);
     if (!isImage) {

@@ -202,13 +202,20 @@ export const getIndentInwordData = async (
  let response = await getIndentInwordSearchResults(queryObject, dispatch);
 // let response = samplematerialsSearch();
 response = get(response, "transferInwards")
+let totalvalue = 0
+let TotalQty = 0;
 if(response)
 {
 for (let index = 0; index < response[0].receiptDetails.length; index++) {
   const element = response[0].receiptDetails[index];
  let Uomname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",element.uom.code) 
     set(response[0], `receiptDetails[${index}].uom.name`, Uomname);  
+    set(response[0], `receiptDetails[${index}].totalValue`,  Number(element.userReceivedQty) * Number(element.unitRate));
+    TotalQty = TotalQty + Number(element.userReceivedQty)
+    totalvalue  = totalvalue +(Number(element.userReceivedQty) * Number(element.unitRate))
 }
+set(response[0],`totalQty`, TotalQty);
+set(response[0],`totalvalue`, totalvalue );
 dispatch(prepareFinalObject("transferInwards",response ));
 const tenantId = getTenantId();
 let queryObject = [

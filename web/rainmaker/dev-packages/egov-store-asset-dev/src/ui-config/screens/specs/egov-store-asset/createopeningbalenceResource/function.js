@@ -286,10 +286,10 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
   );
   if(id === null)
   {
-    // const CurrentDate_ = new Date();
-    // let receiptDate = convertDateToEpoch(CurrentDate_);
+  const CurrentDate_ = new Date();
+  let receiptDate = convertDateToEpoch(CurrentDate_);
   set(materialReceiptObject[0],"mrnNumber","");
-// set(materialReceiptObject[0],"receiptDate",receivedDate);
+  set(materialReceiptObject[0],"receiptDate",receiptDate);
   set(materialReceiptObject[0],"mrnStatus","CREATED");
   set(materialReceiptObject[0],"receiptDetails[0].material.description","");
  
@@ -318,7 +318,7 @@ export const handleCreateUpdateOpeningBalence = (state, dispatch) => {
        set(materialReceiptObject[0], `receiptDetails[${index}].receiptDetailsAddnInfo[0].expiryDate`, convertDateToEpoch(element.expiryDate, "dayStart"));
        set(materialReceiptObject[0], `receiptDetails[${index}].receivedDate`, convertDateToEpoch(element.receivedDate, "dayStart"));
        set(materialReceiptObject[0], `receiptDetails[${index}].expiryDate`, convertDateToEpoch(element.expiryDate, "dayStart"));
-       //set(materialReceiptObject[0],"receiptDate",convertDateToEpoch(element.receiptDate));
+       set(materialReceiptObject[0],"receiptDate",element.receivedDate);
   }
 
   set(materialReceiptObject[0],"tenantId", tenantId);

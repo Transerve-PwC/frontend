@@ -14,6 +14,7 @@ import {
   updatematerialissues,
   getWFPayload
 } from "../../../../../ui-utils/storecommonsapi";
+import { httpRequest } from "../../../../../ui-utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {
   convertDateToEpoch,
@@ -239,22 +240,25 @@ export const createUpdateIndent = async (state, dispatch, action) => {
 
       //get and set indentDetail id from indent --> indentDetail objet
 
-      let indentDetails = get(
-        state.screenConfiguration.preparedFinalObject,
-        "materialIssues[0].indent.indentDetails",
-        []
-      );
+     
       let materialIssueDetails = get(
         state.screenConfiguration.preparedFinalObject,
         "materialIssues[0].materialIssueDetails",
         []
       );
       for (let index = 0; index < materialIssueDetails.length; index++) {
+        let indentDetails = get(
+          state.screenConfiguration.preparedFinalObject,
+          "materialIssues[0].indent.indentDetails",
+          []
+        );
         const element = materialIssueDetails[index];
+        indentDetails = indentDetails.filter(x=>x.material.code ===element.material.code)
+       // const element = materialIssueDetails[index];
         dispatch(
           prepareFinalObject(
             `materialIssues[0].materialIssueDetails[${index}].indentDetail.id`,
-            indentDetails[index].id,
+            indentDetails[0].id,
           )
         );
         
@@ -341,12 +345,62 @@ let totalvalue = 0
 let TotalQty = 0;
 if(response && response[0])
 {
+
+  //set issue to employee name from store incharge
+if(response[0].fromStore.storeInCharge.code)
+{
+  // const queryParams = [{ key: "roles", value: "EMPLOYEE" },{ key: "tenantId", value:  getTenantId() }];
+  // const payload = await httpRequest(
+  //   "post",
+  //   "/egov-hrms/employees/_search",
+  //   "_search",
+  //   queryParams,
+  // );
+  // if(payload){
+  //   if (payload.Employees) {
+  //     let empDetails =
+  //     payload.Employees.map((item, index) => {
+  //         const deptCode = item.assignments[0] && item.assignments[0].department;
+  //         const designation =   item.assignments[0] && item.assignments[0].designation;
+  //         const empCode = item.code;
+  //         const empName = `${item.user.name}`;
+  //       return {
+  //               code : empCode,
+  //               name : empName,
+  //               dept : deptCode,
+  //               designation:designation,
+  //       };
+  //     });
+    
+  //     if(empDetails){
+  //       dispatch(prepareFinalObject("createScreenMdmsData.employee",empDetails)); 
+  //       empDetails = empDetails.filter(x=>x.code ===response[0].fromStore.storeInCharge.code)
+  //       if(empDetails&& empDetails[0])
+  //       {
+  //       set(response[0], `issuedToEmployee`, empDetails[0].name);
+  //       let issuedToDesignation =GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.Designation",empDetails[0].designation)          
+  //       set(response[0], `issuedToDesignation`, issuedToDesignation); 
+  //       } 
+  //     }
+      
+  //   }
+  // }
+
+ // let emp = get(state, "screenConfiguration.preparedFinalObject.createScreenMdmsData.employee",[])   
+ 
+}
   for (let index = 0; index < response[0].materialIssueDetails.length; index++) {
     const element = response[0].materialIssueDetails[index];
    let Uomname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.common-masters.UOM",element.uom.code)  
    let matname = GetMdmsNameBycode(state, dispatch,"viewScreenMdmsData.store-asset.Material",element.material.code)  
    set(response[0], `materialIssueDetails[${index}].material.name`, matname);
-   set(response[0], `materialIssueDetails[${index}].receiptId`, element.materialIssuedFromReceipts[0].materialReceiptId);
+   const{materialIssuedFromReceipts} = element
+    let materialIssuedFromReceipts_ = materialIssuedFromReceipts.filter(x=>x.status === true)
+    if(materialIssuedFromReceipts_&&materialIssuedFromReceipts_[0])
+    {
+      set(response[0], `materialIssueDetails[${index}].receiptId`, materialIssuedFromReceipts_[0].materialReceiptId);
+      set(response[0], `materialIssueDetails[${index}].receiptDetailId`, materialIssuedFromReceipts_[0].materialReceiptDetail.id);
+    }
    //quantityIssued
    set(response[0], `materialIssueDetails[${index}].indentDetail.userQuantity`, Number(element.quantityIssued));
    set(response[0], `materialIssueDetails[${index}].uom.name`, Uomname);

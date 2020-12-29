@@ -140,10 +140,10 @@ export const searchForm = getCommonCard({
         optionValue: "code"
         // hasLocalization: false
       },
-      localePrefix: {
-        moduleName: "common-masters",
-        masterName: "Department"
-      }
+      // localePrefix: {
+      //   moduleName: "common-masters",
+      //   masterName: "Department"
+      // }
     }),
     designation: getSelectField({
       label: { labelName: "Designation", labelKey: "HR_DESG_LABEL" },
@@ -163,10 +163,10 @@ export const searchForm = getCommonCard({
         optionLabel: "name"
         // hasLocalization: false
       },
-      localePrefix: {
-        moduleName: "common-masters",
-        masterName: "Designation"
-      }
+      // localePrefix: {
+      //   moduleName: "common-masters",
+      //   masterName: "Designation"
+      // }
     })
   }),
 

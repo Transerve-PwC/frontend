@@ -78,7 +78,7 @@ export const searchApiCall = async (state, dispatch) => {
         return {
           [getTextToLocalMapping("Store Name")]: get(item, "name", "-") || "-",
           [getTextToLocalMapping("Department")]: get(item, "department.name", "-") || "-",
-          [getTextToLocalMapping("Central Store")]: get(item, "isCentralStore",false) ? "Yes": "No",
+         // [getTextToLocalMapping("Central Store")]: get(item, "isCentralStore",false) ? "Yes": "No",
           [getTextToLocalMapping("Active")]: get(item, "active",false) ? "Yes": "No",
         };         
       });

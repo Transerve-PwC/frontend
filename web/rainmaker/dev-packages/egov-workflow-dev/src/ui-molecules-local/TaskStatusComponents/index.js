@@ -46,13 +46,25 @@ if (horticultureBusinessServices.includes(currentObj.businessService)){
   
   
   var current_assigner_roles = get(currentObj, "assigner")
-  for (var i = 0; i < current_assigner_roles.roles.length; i++) {
+  /*for (var i = 0; i < current_assigner_roles.roles.length; i++) {
     
     {if (i!=  current_assigner_roles.roles.length-1)
     {role_name += current_assigner_roles.roles[i].name + " | ";}
     else{
       role_name += current_assigner_roles.roles[i].name 
-    }}}
+    }}}*/
+	  for (var i = 0; i < current_assigner_roles.roles.length; i++) {
+      if (current_assigner_roles.roles[i].name != null) {
+      if (i != current_assigner_roles.roles.length - 1)
+      {
+        role_name += current_assigner_roles.roles[i].name + " | ";
+      }
+    else {
+          role_name += current_assigner_roles.roles[i].name
+        }
+    }
+  }
+
     var allDocumentsDownloadButton = []
     var allDocuments = []
     if(get(currentObj, "documents") != null)

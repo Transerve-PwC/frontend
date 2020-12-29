@@ -189,11 +189,22 @@ export const callBackForNext = async (state, dispatch) => {
     }
     if(!expectedDeliveryDateValid)
     {
+      let id = get(
+        state.screenConfiguration.preparedFinalObject,
+        "indents[0].id",
+        null
+      );
+      if (!id) {
       const errorMessage = {
         labelName: "Expected Delivery Date Must be greater then current date ",
         labelKey: "STORE_MATERIAL_INDENT_DELIVERY_DATE_VALIDATION"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
+    else
+    {
+      changeStep(state, dispatch);
+    }
     }
     else if (!indentDateValid)
     {

@@ -352,7 +352,7 @@ class WorkFlowContainer extends React.Component {
         if(data.action==="VERIFY AND FORWARD" 
         ||data.action==="REQUEST CLARIFICATION" 
         || data.action==="VERIFY FOR CLOSURE"  
-        || data.action==="FORWARDED FOR COMPLETION" ){
+        || data.action==="FORWARD FOR COMPLETION" ){
           if(data.roleList.length==0)
           {
             validated= false;  

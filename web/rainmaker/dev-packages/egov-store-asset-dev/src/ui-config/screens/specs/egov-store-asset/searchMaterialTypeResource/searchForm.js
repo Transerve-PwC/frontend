@@ -124,7 +124,7 @@ visible:false,
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 3,
           // align: "center"
         },
         props: {
@@ -136,7 +136,7 @@ visible:false,
             width: "220px",
             height: "48px",
             margin: "8px",
-            float: "right",
+            float: "center",
           },
         },
         children: {
@@ -154,7 +154,7 @@ visible:false,
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 3,
           // align: "center"
         },
         props: {

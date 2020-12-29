@@ -290,7 +290,7 @@ class DocumentList extends Component {
                 <Button href={card.url} color="primary">
                    <LabelContainer
                           labelName="Download"
-                          labelKey="VIEW"
+                          labelKey="Download"
                           color="#FE7A51"/>
                 
               </Button>

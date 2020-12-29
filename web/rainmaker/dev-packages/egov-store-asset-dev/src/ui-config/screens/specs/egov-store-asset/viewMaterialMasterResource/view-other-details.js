@@ -130,12 +130,12 @@ export const getOtherDetailsView = (isReview = true) => {
          
         }
       ),
-      reviewReOrderLavel: getLabelWithValue(
-        { labelName: "Re-Order Lavel", labelKey: "STORE_MATERIAL_RE_ORDER_LAVEL" },
-        {
-          jsonPath: "materials[0].reorderLevel",
-        }
-      ),
+      // reviewReOrderLavel: getLabelWithValue(
+      //   { labelName: "Re-Order Lavel", labelKey: "STORE_MATERIAL_RE_ORDER_LAVEL" },
+      //   {
+      //     jsonPath: "materials[0].reorderLevel",
+      //   }
+      // ),
       reviewReOrderQty: getLabelWithValue(
         { labelName: "Re-Order Qty", labelKey: "STORE_MATERIAL_RE_ORDER_QTY" },
         {

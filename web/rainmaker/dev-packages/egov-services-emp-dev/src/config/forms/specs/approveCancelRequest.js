@@ -15,6 +15,11 @@ const formConfig = {
         jsonPath: "Booking.businessService",
         value:''
       },
+      CancelStatus: {
+        id: "Booking-Status",
+        jsonPath: "Booking.bkStatus",
+        value:''
+      },
       assignee: {
         id: "Booking-type",
         jsonPath: "Booking.assignee",

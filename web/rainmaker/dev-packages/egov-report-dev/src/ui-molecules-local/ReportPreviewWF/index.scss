@@ -1,0 +1,26 @@
+.bodyTable {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  border-right: 1px solid black;
+  border-left: 1px solid black; }
+
+th {
+  width: 150px; }
+
+.headTable {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black; }
+
+.headTable, tr, td, th {
+  padding: 7px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  word-break: break-all; }

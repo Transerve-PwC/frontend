@@ -116,7 +116,15 @@ import {
                 let uomname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.UOM",materials[0].uom.code)
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.name`,uomname)); 
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].qtyIssued`,materials[0].quantityIssued));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,1));
+                let isAdHoc = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialReceipt[0].isAdHoc`,
+                  ''
+                );  if(isAdHoc ==='YES')
+                {
+                  dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,materials[0].unitRate));
+                }
+                
                 // isScrapItem based on purpose selection
                 let receiptPurpose = get(state.screenConfiguration.preparedFinalObject,`materialReceipt[0].receiptPurpose`,'')
                 if(receiptPurpose ==="SCRAP")
@@ -231,10 +239,36 @@ import {
                 props:{
                   disabled:true
                 },
-                required: false,
-                pattern: getPattern("Name") || null,
+                required: true,
+                pattern: getSTOREPattern("Quantity") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].unitRate"
-              })
+              }),
+              beforeFieldChange: (action, state, dispatch) => {
+                let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0];
+                if(action.value)
+                {
+                let receivedQty = get(state.screenConfiguration.preparedFinalObject,`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,0)
+                let totalValue = receivedQty * Number(action.value)
+               dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[[${cardIndex}].totalValue`,totalValue));
+                }
+                 //set total value on Qty Change
+                 let cardJsonPath =
+                 "components.div.children.formwizardSecondStep.children.materialReceiptMiscDetail.children.cardContent.children.materialReceiptCard.props.items";
+                let pagename = `createMaterialReceiptNoteMisc`;
+                let jasonpath =  "materialReceipt[0].receiptDetails";
+                let InputQtyValue = "indentQuantity";
+                let TotalValue_ = "totalValue";
+                let TotalQty ="acceptedQty"
+                let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
+                if(Qty && Qty[0])
+                {
+                
+                 dispatch(prepareFinalObject(`materialReceipt[0].totalvalue`, Qty[0].TotalValue));
+                 dispatch(prepareFinalObject(`materialReceipt[0].totalQty`, Qty[0].TotalQty));
+ 
+                }
+                
+              }
             },
             totalValue: {
               ...getTextField({
@@ -248,7 +282,7 @@ import {
                 },
                 required: false,
                 props:{
-                  disabled:false
+                  disabled:true
                 },
                 pattern: getPattern("Name") || null,
                 jsonPath: "materialReceipt[0].receiptDetails[0].totalValue"

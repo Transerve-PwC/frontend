@@ -65,6 +65,22 @@ let searchScreenObject = get(
 );
 if( Object.keys(searchScreenObject).length == 0 )
 {
+  const textFields = ["storeName","materialName",];
+  for (let i = 0; i < textFields.length; i++) {
+    if (
+      `state.screenConfiguration.screenConfig.InvenrtyRegister.components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}.props.value`
+    ) {
+      dispatch(
+        handleField(
+          "OpenningBalence",
+          `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}`,
+          "props.value",
+          ""
+        )
+      );
+    }
+  }
+  dispatch(prepareFinalObject("searchScreen", {}));
   dispatch(
     toggleSnackbar(
       true,
@@ -239,6 +255,7 @@ const RegisterReviewResult = {
             required: true,
             jsonPath: "searchScreen.storecode",
             sourceJsonPath: "searchMaster.storeNames",
+            errorMessage: "STORE_VALIDATION_STORE_NAME_SELECT",
             props: {
               disabled : false,
               className: "hr-generic-selectfield",
@@ -256,6 +273,7 @@ const RegisterReviewResult = {
           },
           required: true,
           jsonPath: "searchScreen.material",
+          errorMessage: "STORE_VALIDATION_MATERIAL_NAME_SELECT",
           gridDefination: {
             xs: 12,
             sm: 4,

@@ -119,6 +119,7 @@ class CheckAvailability extends Component {
 
   render() {
     const { firstName, email, mobileNo, lastName, stateData,handleChange,sImageUrl,applicationSector, complaintSector , classes} = this.props;
+   console.log("propsInCheckAvail--",this.props)
     let sectorData = [];
     let vanueData=this.props.stateData.screenConfiguration.preparedFinalObject.bkBookingData;
     console.log("vanueData--",vanueData)

@@ -239,6 +239,7 @@ const purchaseOrderDetailsCard = {
                   // let totalAcceptedvalue = unitPrice * Number(action.value)
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].receivedQuantity`, 0));
                   dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].userQuantity`, Number(action.value)));
+                  //dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].poOrderedQuantity`, Number(action.value)));
                   let unitPrice =   get(state.screenConfiguration.preparedFinalObject,`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].unitPrice`,0)
                   let totalAcceptedvalue = unitPrice * Number(action.value)
                  dispatch(prepareFinalObject(`purchaseOrders[0].purchaseOrderDetails[${itemIndex}].totalValue`, totalAcceptedvalue));

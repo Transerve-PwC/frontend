@@ -7,10 +7,16 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 const gotoCreatePage = (state, dispatch) => {
-   const createUrl = `/egov-store-asset/create-material-transfer-outward?step=0`;
-  dispatch(setRoute(createUrl));
+   let createUrl = `/egov-store-asset/create-material-transfer-outward?step=0`;
+  
+  const {materialIssues}  = state.screenConfiguration.preparedFinalObject;             
+    if(materialIssues &&materialIssues[0])
+    {
+      createUrl = `/egov-store-asset/create-material-transfer-outward?id=${materialIssues[0].issueNumber}&tenantId=${getTenantId()}&step=2`;
+    }
+    dispatch(setRoute(createUrl));
 };
 
 export const getMTONHeaderView = (isReview = true) => {

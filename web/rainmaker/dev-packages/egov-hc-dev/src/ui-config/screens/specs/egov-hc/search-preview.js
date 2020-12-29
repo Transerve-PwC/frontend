@@ -126,6 +126,7 @@ const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
 
   if(servicetype != null && servicetype != undefined && servicetype != ""  )
  { 
+	localStorage.setItem("HCBusinessService",servicetype)
    const queryObject = [
     { key: "tenantId", value: tenantId },
     { key: "businessServices", value: servicetype}
@@ -200,8 +201,9 @@ const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
      }
      else{
       const response = await getCurrentAssigneeUserNameAndRole(dispatch, userData);
-      var current_Assignee = response.Employees[0].user.userName
-      setCurrentAssignee(current_Assignee)
+      //var current_Assignee = response.Employees[0].user.userName
+      var current_Assignee = response.Employees[0].user.name
+	  setCurrentAssignee(current_Assignee)
       
      }
 

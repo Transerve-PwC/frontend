@@ -67,13 +67,19 @@ const setSearchResponse = async (
         prepareFinalObject("BookingDocument", get(response, "documentMap", {}))
     );
 console.log(recData[0], "Search Result");
-
+let businesServiceTemp = '';
+if(recData[0].businessService == 'BWT'){
+  businesServiceTemp = "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES";
+}else{
+  businesServiceTemp = recData[0].businessService;
+}
     await generateBill(
         state,
         dispatch,
         applicationNumber,
         tenantId,
-        recData[0].businessService
+        //recData[0].businessService
+        businesServiceTemp
     );
 
     // await handleCheckAvailability(

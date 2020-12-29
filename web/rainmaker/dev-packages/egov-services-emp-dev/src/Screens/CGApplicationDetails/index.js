@@ -21,7 +21,7 @@ import CGPaymentDetails from "../AllApplications/components/CGPaymentDetails"
 import CGBookingDetails from "../AllApplications/components/CGBookingDetails"
 import DocumentPreview from "../AllApplications/components/DocumentPreview"
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import DownloadFileContainer from "../../modules/DownloadFileContainer"
+import DownloadFileContainer from "../../modules/DownloadFileContainer";
 import jp from "jsonpath";
 // import {
 // 	getQueryArg,
@@ -615,12 +615,17 @@ const {documentMap,userInfo}=this.props;
 	callApiForDocumentData = async (e) => {
 		const { documentMap,userInfo } = this.props;
 		var documentsPreview = [];
+		console.log("document--",documentMap)
 		if (documentMap && Object.keys(documentMap).length > 0) {
 			let keys = Object.keys(documentMap);
+			console.log("keys--",keys)
+			console.log("Types--keys--",typeof(keys))
 			let values = Object.values(documentMap);
-			let id = keys[0],
-				fileName = values[0];
-
+			console.log("values--values",values)
+			let id = keys[0]
+			console.log("id--cg",id);
+			let	fileName = values[0];
+            console.log("fileName--",fileName)
 			documentsPreview.push({
 				title: "DOC_DOC_PICTURE",
 				fileStoreId: id,

@@ -125,7 +125,7 @@ const prepareDocumentsView = async (state, dispatch) => {
             fileStoreIds1.length > 0
                 ? await getFileUrlFromAPI(fileStoreIds1)
                 : {};
-        
+
         documentsPreview1 = documentsPreview1.map(function (doc, index) {
 
             doc["link"] =
@@ -191,7 +191,8 @@ const setSearchResponse = async (
     if(bookingStatus === "APPROVED"){
         await generageBillCollection(state, dispatch, applicationNumber, tenantId)
     } else {
-        await generateBill(state, dispatch, applicationNumber, tenantId, recData[0].businessService);
+      //  await generateBill(state, dispatch, applicationNumber, tenantId, recData[0].businessService);
+      await generateBill(state, dispatch, applicationNumber, tenantId, "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE");
     }
 
     localStorageSet("bookingStatus", bookingStatus);

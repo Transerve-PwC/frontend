@@ -80,7 +80,7 @@ export const getTextToLocalMapping = (label) => {
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
-  visible: false,
+  visible: true,
   props: {
     columns: [
       getTextToLocalMapping("Suplier Name"),

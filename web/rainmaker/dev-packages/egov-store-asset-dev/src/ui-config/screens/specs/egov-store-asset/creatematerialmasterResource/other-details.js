@@ -177,7 +177,7 @@ import {
               labelName: "Re-Order Lavel",
               labelKey: "STORE_MATERIAL_RE_ORDER_LAVEL"
             },
-            
+            visible:false,
             pattern: getPattern("Amount") || null,
             jsonPath: "materials[0].reorderLevel"
           })

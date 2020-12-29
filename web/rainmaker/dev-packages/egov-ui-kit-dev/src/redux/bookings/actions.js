@@ -1,11 +1,12 @@
 import * as actionTypes from "./actionTypes";
 // import {CREATEBWTAPPLICATION,APPLICATION,MCCAPPLICATION, COMPLAINT, CATEGORY,PAYMENT,HISTORY,AFTERPAYMENTAPI,DWONLOADPAYMENTRECEIPT,DOWNLOADBWTAPPLICATION,DOWNLOADAPPLICATION,DWONLOADPERMISSIONLETTER,OSBMPerDayRateAmount,PerDayRateAmount,DWONLOADNEWRECEIPTFORCG,PermissionLetterDWNOSMCC,ApplicationDWNOSMCC, DWONLOADPAYMENTRECEIPTFORCG,DWONLOADAPPLICATIONFORCG,CREATEPACCAPPLICATION } from "../../utils/endPoints";
-import {CREATEBWTAPPLICATION,DWONLOADPLFORPCC,DWONLOADRECEIPTFORPCC,APPLICATION,MCCAPPLICATION, COMPLAINT, CATEGORY,PAYMENT,HISTORY,AFTERPAYMENTAPI,DWONLOADPAYMENTRECEIPT,DOWNLOADBWTAPPLICATION,DOWNLOADAPPLICATION,DWONLOADPERMISSIONLETTER,OSBMPerDayRateAmount,PerDayRateAmount,DWONLOADNEWRECEIPTFORCG,PermissionLetterDWNOSMCC,ApplicationDWNOSMCC, DWONLOADPAYMENTRECEIPTFORCG,DWONLOADAPPLICATIONFORCG,DWONLOADAPPFORPCC,CREATEPACCAPPLICATION } from "egov-ui-kit/utils/endPoints";
+import {CREATEBWTAPPLICATION,PGService,DWONLOADPLFORPCC,DWONLOADRECEIPTFORPCC,APPLICATION,MCCAPPLICATION, COMPLAINT, CATEGORY,PAYMENT,HISTORY,AFTERPAYMENTAPI,DWONLOADPAYMENTRECEIPT,DOWNLOADBWTAPPLICATION,DOWNLOADAPPLICATION,DWONLOADPERMISSIONLETTER,OSBMPerDayRateAmount,PerDayRateAmount,DWONLOADNEWRECEIPTFORCG,PermissionLetterDWNOSMCC,ApplicationDWNOSMCC, DWONLOADPAYMENTRECEIPTFORCG,DWONLOADAPPLICATIONFORCG,DWONLOADAPPFORPCC,CREATEPACCAPPLICATION,UPDATEPACCAPPLICATION,ESAMPARK,ESAMPARKPL,WATERTANKERPAYRECEIPT} from "egov-ui-kit/utils/endPoints";
 import { httpRequest } from "egov-ui-kit/utils/api";
-
+import commonConfig from "config/common.js";
 
 
 const applicationSectorFetchSucess = (payload) => {
+	console.log("payload--",payload)
 	return {
 		type: actionTypes.APPLICATION_SECTOR_FETCH_SUCCESS,
 		payload,
@@ -499,19 +500,19 @@ export const createWaterTankerApplication = (requestBody, hasUsers = true, overW
 		}
 	};
 };
-export const createPACCApplication = (requestBody, hasUsers = true, overWrite) => {
-	return async (dispatch, getState) => {
-		try {
-			let tenantId = "";
+// export const createPACCApplication = (requestBody, hasUsers = true, overWrite) => {
+// 	return async (dispatch, getState) => {
+// 		try {
+// 			let tenantId = "";
 
-			const payload = await httpRequest(CREATEPACCAPPLICATION.POST.URL, CREATEPACCAPPLICATION.POST.ACTION, [], requestBody);
-			console.log('payload1p----10', payload)
-			dispatch(createPACCComplete(payload, overWrite));
-		} catch (error) {
-			dispatch(createPACCError(error.message));
-		}
-	};
-};
+// 			const payload = await httpRequest(CREATEPACCAPPLICATION.POST.URL, CREATEPACCAPPLICATION.POST.ACTION, [], requestBody);
+// 			console.log('payload1p----10', payload)
+// 			dispatch(createPACCComplete(payload, overWrite));
+// 		} catch (error) {
+// 			dispatch(createPACCError(error.message));
+// 		}
+// 	};
+// };
 
 
 export const sendMessage = (message) => {
@@ -534,10 +535,10 @@ export const sendMessageMedia = (message) => {
 
 
 export const fetchApplicaionSector = () => {
-	//Fetching Application sector from MDMS
+	//Fetching Complaint Categories from MDMS
 	let requestBody = {
 		MdmsCriteria: {
-			tenantId: "ch",//commonConfig.tenantId,
+			tenantId: commonConfig.tenantId,
 			moduleDetails: [
 				{
 					moduleName: "Booking",
@@ -549,15 +550,22 @@ export const fetchApplicaionSector = () => {
 						{
 							"name": "PropertyType"
 						},
+						{
+							name: "Payment_Mode",
+						},
+						{
+							name: "Booking_Config",
+						},
 					],
 				},
 			],
 		},
 	};
+	console.log("requestBodyForImage--",requestBody)
 	return async (dispatch) => {
 		try {
 			const payload = await httpRequest(CATEGORY.GET.URL, CATEGORY.GET.ACTION, [], requestBody);
-			console.log('payload in fetch sector',payload)
+			console.log('payload in application',payload)
 			dispatch(applicationSectorFetchSucess(payload));
 		} catch (error) {
 			dispatch(applicationSectorFetchError(error.message));
@@ -612,8 +620,99 @@ export const fetchApplicationType = () => {
 	};
 };
 
+//pcc e-sampark
+export const fetchfacilationCharges = () => {
+	//Fetching Application sector from MDMS
+	let requestBody = {
+		MdmsCriteria:{
+			tenantId: commonConfig.tenantId,
+        moduleDetails: [
+            {
+				"moduleName": "BillingService",
+				"masterDetails": [
+                    {
+                        "name": "TaxHeadMaster"
+                    }
+                ]
+            }
+		]
+	}
+    }
+	
+	return async (dispatch) => {
+		try {
+			const payload = await httpRequest(CATEGORY.GET.URL, CATEGORY.GET.ACTION, [], requestBody);
+			console.log('payload--facilationCharges',payload)
+			dispatch(fetchFaciliationChargesSuccess(payload));
+		} catch (error) {
+			dispatch(fetchFaciliationChargesError(error.message));
+		}
+	};
+};
 
-	export const OSBMfetchperDayRate = (requestBody, hasUsers = true, overWrite) => {
+
+
+
+const fetchFaciliationChargesSuccess = (payload) => {
+	return {
+		type: actionTypes.FACILATION_CHARGES_FETCH_SUCCESS,
+		payload,
+	};
+};
+
+const fetchFaciliationChargesError = (error) => {
+	return {
+		type: actionTypes.FACILATION_CHARGES_FETCH_ERROR,
+		error,
+	};
+};
+
+export const fetchfacilationtry = () => {
+	//Fetching Application sector from MDMS
+	let requestBody = {
+		MdmsCriteria:{
+			tenantId: commonConfig.tenantId,
+        moduleDetails: [
+            {
+				"moduleName": "BillingService",
+				"masterDetails": [
+                    {
+                        "name": "TaxHeadMaster"
+                    }
+                ]
+            }
+		]
+	}
+    }
+	
+	return async (dispatch) => {
+		try {
+			const payload = await httpRequest(CATEGORY.GET.URL, CATEGORY.GET.ACTION, [], requestBody);
+			console.log('payload--facilationCharges',payload)
+			dispatch(FaciliationChargesSuccess(payload));
+		} catch (error) {
+			dispatch(FaciliationChargesError(error.message));
+		}
+	};
+};
+
+const FaciliationChargesSuccess = (payload) => {
+	return {
+		type: actionTypes.FACILATION_FETCH_SUCCESS,
+		payload,
+	};
+};
+
+const FaciliationChargesError = (error) => {
+	return {
+		type: actionTypes.FACILATION_FETCH_ERROR,
+		error,
+	};
+};
+
+
+
+export const OSBMfetchperDayRate = (requestBody, hasUsers = true, overWrite) => {
 		return async (dispatch, getState) => {
 		  try {
 			let tenantId = "";
@@ -647,6 +746,32 @@ export const fetchApplicationType = () => {
 		  }
 		};
 	  };  
+	  //WATERTANKERPAYRECEIPT
+	  export const downloadWaterTankerReceipt = (requestBody, hasUsers = true, overWrite) => {
+		return async (dispatch, getState) => {
+		  try {
+			let tenantId = "";
+			const payload = await httpRequest(WATERTANKERPAYRECEIPT.POST.URL, WATERTANKERPAYRECEIPT.POST.ACTION, [], requestBody);
+			dispatch(downloadWaterTankerReceiptComplete(payload, overWrite));
+		  } catch (error) {
+			dispatch(downloadWaterTankerReceiptCompleteError(error.message));
+		  }
+		};
+	  };  
+	  const downloadWaterTankerReceiptComplete = (payload, overWrite) => {
+		return {
+			type: actionTypes.DOWNLOAD_WATERTANER_RECEIPT_COMPLETE,
+			payload,
+			overWrite: overWrite,
+		};
+	};
+	
+	const downloadWaterTankerReceiptCompleteError = (error) => {
+		return {
+			type: actionTypes.DOWNLOAD_WATERTANER_RECEIPT_ERROR,
+			error,
+		};
+	};
 	  export const downloadMccPL = (requestBody, hasUsers = true, overWrite) => {
 		return async (dispatch, getState) => {
 		  try {
@@ -724,3 +849,184 @@ export const fetchApplicationType = () => {
 		  }
 		};
 	  };
+	  export const getAvailabilityDataPCC = async (requestBody) => {
+		try {
+			const response = await httpRequest(
+				"post",
+				"/bookings/park/community/availability/_search",
+				"",
+				[],
+				requestBody
+			);
+			console.log(response, "availability data response");
+			return { status: "success", data: response.data };
+		} catch (exception) {
+			console.log(exception);
+		}
+	};
+	export const getBetweenDays = function (start, end) {
+		let arr = [];
+		// let endDate = new Date(end);
+		for (
+			let dt = new Date(start);
+			dt <= new Date(end);
+			dt.setDate(dt.getDate() + 1)
+		) {
+			arr.push(new Date(dt));
+		}
+		return arr;
+	};	
+
+	export const createPACCApplication = (requestBody, hasUsers = true, overWrite) => {
+		
+		return async (dispatch, getState) => {
+			try {
+				let tenantId = "";
+	
+				const payload = await httpRequest(CREATEPACCAPPLICATION.POST.URL, CREATEPACCAPPLICATION.POST.ACTION, [], requestBody);
+				console.log('payload1p----10', payload)
+				dispatch(createPACCComplete(payload, overWrite));
+			} catch (error) {
+				dispatch(createPACCError(error.message));
+			}
+		};
+	};
+	export const updatePACCApplication = (requestBody, hasUsers = true, overWrite) => {
+		console.log('requestBody in cretae apacc application',requestBody,'UPDATEPACCAPPLICATION',UPDATEPACCAPPLICATION)
+		return async (dispatch, getState) => {
+			try {
+				let tenantId = "";
+	
+				const payload = await httpRequest(UPDATEPACCAPPLICATION.POST.URL, UPDATEPACCAPPLICATION.POST.ACTION, [], requestBody);
+				console.log('payload1p----10', payload)
+				dispatch(updatePACCComplete(payload, overWrite));
+			} catch (error) {
+				dispatch(updatePACCError(error.message));
+			}
+		};
+	};
+	
+
+	const updatePACCComplete= (payload, overWrite) => {
+		return {
+			type: actionTypes.UPDATE_PARKCCAPP_COMPLETE,
+			payload,
+			overWrite: overWrite,
+		};
+	};
+		
+	const updatePACCError = (error) => {
+		return {
+			type: actionTypes.UPDATE_PACCAPP_ERROR,
+			error,
+		};
+	};
+	//ESAMPARK    
+
+	export const downloadEsamparkApp = (requestBody, hasUsers = true, overWrite) => {
+		return async (dispatch, getState) => {
+		  try {
+			let tenantId = "";
+			const payload = await httpRequest(ESAMPARK.POST.URL, ESAMPARK.POST.ACTION, [], requestBody);
+			dispatch(downloadESAMPARKAppComplete(payload, overWrite));
+		  } catch (error) {
+			dispatch(downloadESAMPARKAppError(error.message));
+		  }
+		};
+	  };
+
+	  const downloadESAMPARKAppComplete = (payload, overWrite) => {
+		return {
+			type: actionTypes.DOWNLOAD_ESAMPARK_APP_COMPLETE_PCC,
+			payload,
+			overWrite: overWrite,
+		};
+	};
+	
+	const downloadESAMPARKAppError = (error) => {
+		return {
+			type: actionTypes.DOWNLOAD_ESAMPARK_APP__ERROR_PCC,
+			error,
+		};
+	};
+
+	export const downloadEsamparkPL = (requestBody, hasUsers = true, overWrite) => {
+		return async (dispatch, getState) => {
+		  try {
+			let tenantId = "";
+			const payload = await httpRequest(ESAMPARK.POST.URL, ESAMPARK.POST.ACTION, [], requestBody);
+			dispatch(downloadESAMPARKPLComplete(payload, overWrite));
+		  } catch (error) {
+			dispatch(downloadESAMPARKPLError(error.message));
+		  }
+		};
+	  };
+
+	  const downloadESAMPARKPLComplete = (payload, overWrite) => {
+		return {
+			type: actionTypes.DOWNLOAD_ESAMPARK_PL_COMPLETE_PCC,
+			payload,
+			overWrite: overWrite,
+		};
+	};
+	
+	const downloadESAMPARKPLError = (error) => {
+		return {
+			type: actionTypes.DOWNLOAD_ESAMPARK_PL__ERROR_PCC,
+			error,
+		};
+	};
+//updated
+	// export const downloadEsamparkPL = (requestBody, hasUsers = true, overWrite) => {
+	// 	return async (dispatch, getState) => {
+	// 	  try {
+	// 		let tenantId = "";
+	// 		const payload = await httpRequest(ESAMPARK.POST.URL, ESAMPARK.POST.ACTION, [], requestBody);
+	// 		dispatch(downloadESAMPARKPLComplete(payload, overWrite));
+	// 	  } catch (error) {
+	// 		dispatch(downloadESAMPARKPLError(error.message));
+	// 	  }
+	// 	};
+	//   };
+
+	//   const downloadESAMPARKPLComplete = (payload, overWrite) => {
+	// 	return {
+	// 		type: actionTypes.DOWNLOAD_ESAMPARK_PL_COMPLETE_PCC,
+	// 		payload,
+	// 		overWrite: overWrite,
+	// 	};
+	// };
+	
+	// const downloadESAMPARKPLError = (error) => {
+	// 	return {
+	// 		type: actionTypes.DOWNLOAD_ESAMPARK_PL__ERROR_PCC,
+	// 		error,
+	// 	};
+	// };
+
+	export const fetchResponseForRefdunf = (queryObject, hasUsers = true, overWrite) => {
+		return async (dispatch, getState) => {
+			try {
+				let tenantId = "";
+				const payload = await httpRequest(PGService.POST.URL, PGService.POST.ACTION, queryObject);
+				console.log('payloadforUSEREFUND', payload)
+				dispatch(fetchResponseForRefdunfComplete(payload, overWrite));
+			} catch (error) {
+				dispatch(fetchResponseForRefdunfError(error.message));
+			}
+		};
+	};
+	const fetchResponseForRefdunfComplete = (payload, overWrite) => {
+		console.log('payload', payload, overWrite)
+		return {
+			type: actionTypes.REFUNDINIT_COMPLETE,
+			payload,
+			overWrite: overWrite,
+		};
+	};
+	const fetchResponseForRefdunfError = (error) => {
+		return {
+			type: actionTypes.REFUNDINIT_ERROR,
+			error,
+		};
+	};

@@ -65,6 +65,22 @@ let searchScreenObject = get(
 );
 if( Object.keys(searchScreenObject).length == 0 )
 {
+  const textFields = ["storeName","financialYear",];
+  for (let i = 0; i < textFields.length; i++) {
+    if (
+      `state.screenConfiguration.screenConfig.OpenningBalence.components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}.props.value`
+    ) {
+      dispatch(
+        handleField(
+          "OpenningBalence",
+          `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}`,
+          "props.value",
+          ""
+        )
+      );
+    }
+  }
+  dispatch(prepareFinalObject("searchScreen", {}));
   dispatch(
     toggleSnackbar(
       true,
@@ -243,6 +259,7 @@ const RegisterReviewResult = {
             required: true,
             jsonPath: "searchScreen.storecode",
             sourceJsonPath: "searchMaster.storeNames",
+            errorMessage: "STORE_VALIDATION_STORE_NAME_SELECT",
             props: {
               disabled : false,
               className: "hr-generic-selectfield",
@@ -260,6 +277,7 @@ const RegisterReviewResult = {
           },
           required: true,
           jsonPath: "searchScreen.financialyear",
+          errorMessage:"STORE_VALIDATION_FINANCIAL_YEAR",
           gridDefination: {
             xs: 12,
             sm: 4,

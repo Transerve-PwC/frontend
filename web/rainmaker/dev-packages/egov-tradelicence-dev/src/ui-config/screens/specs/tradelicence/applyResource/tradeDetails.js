@@ -1732,7 +1732,7 @@ export const changeDocuments = (action, state, dispatch, licenseType) => {
         formatProps :{
           accept : item.accept || "image/*, .pdf, .png, .jpeg",
         }, 
-        maxFileSize: 6000,
+        maxFileSize: 5000,
         downloadUrl: item.downloadUrl,
         moduleName: "tl-services",
         statement: {

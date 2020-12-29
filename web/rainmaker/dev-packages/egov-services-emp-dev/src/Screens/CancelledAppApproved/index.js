@@ -190,6 +190,16 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
   
     let totalRes = await this.calculateCancelledBookingRefundAmount(applicationNumber, userInfo.tenantId, dateForCancel);
     console.log("totalRes--",totalRes)
+
+    //RefundAmountRefundAPI
+    /* 
+    "gatewayTxnId": gatewayTxnId,
+      "refundAmount": totalRes,
+      "tenantId": userInfo.tenantId,
+    */
+
+    // let totalRefAmount = await this.RefundAmountRefundAPI(applicationNumber, userInfo.tenantId, dateForCancel);
+    // console.log("totalRefAmount--",totalRefAmount)
   
     let data={
       "RefundTransaction" : {
@@ -218,53 +228,6 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
 
       }
            
-//   let dataOne = {
-//     "mobileNumber":"9876543210"
-//   }
-
-  
-
-// let ResOfNewUSearch = await httpRequest(
-//   "user/_search",
-//   "_search",[],
-//   dataOne
-// );
-
-// console.log("ResOfNewUSearch--",ResOfNewUSearch)
-
-// if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
-//   let data={
-//     "RefundTransaction" : {
-//     "additionalDetails": {},
-    
-//     "gateway": gateway,
-//     "gatewayRefundStatusCode": txnStatus,
-//     "gatewayRefundStatusMsg": txnStatusMsg,
-//     "gatewayTxnId": gatewayTxnId,
-//     "refundAmount": "90",
-//     "tenantId": userInfo.tenantId,
-//     "txnAmount": txnAmount,
-//     "txnId": txnId
-
-//   }
-// }
-
-//   let ResOfRefund = await httpRequest(
-//     "pg-service/transaction/v1/_refund",
-//     "_search",[],
-//     data
-//   );
-
-//   console.log("ResOfRefund--",ResOfRefund)
-
-
-
-// }
-// else{
- 
-
-
-//     }
   }
    
       
@@ -280,107 +243,6 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
         "_search",[],
         requestbody
       );
-
-//     let RequestData = [
-//       { key: "consumerCode", value: match.params.applicationId },
-//       { key: "tenantId", value: userInfo.tenantId }
-//       ];
-//     let payloadfund = await httpRequest(
-//       "pg-service/transaction/v1/_search",
-//       "_search",
-//       RequestData
-//       );
-    
-// console.log("RequestData--",RequestData)
-// console.log("payloadfund--",payloadfund)
-
-// console.log("payloadfund.Transaction--",payloadfund.Transaction)
-    // fetchResponseForRefdunf(
-    //   [{ key: "consumerCodes", value: match.params.applicationNumber }, { key: "tenantId", value: userInfo.tenantId }
-    //   ])
-
-  
-
-    // const transactionResponse = await httpRequest(
-    //   "post",
-    //   "pg-service/transaction/v1/_search",
-    //   "",
-    //   [{ key: "consumerCode", value: applicationNumber },
-    //   { key:"tenantId",value: userInfo.tenantId }]
-    // );
-
-
-    // const transactionResponse = await httpRequest(
-    //   "pg-service/transaction/v1/_search",
-    //   "_search",
-    //   [{ key: "consumerCode", value: applicationNumber },
-    //   { key:"tenantId",value: userInfo.tenantId }]
-    // );
-    // console.log("transactionResponse--",transactionResponse)
-    // console.log("transactionResponse.Transaction--",transactionResponse.Transaction)
-
-  //   let TransactionData = transactionResponse ? transactionResponse.Transaction : console.log("NoDataFound");
-
-  //   let transitionDetails;
-  //   if (TransactionData && TransactionData.length > 0) {
-  //     TransactionData.forEach((item) => {
-  //       Object.keys(item).forEach((value) => {
-  //         if (value.consumerCode == applicationNumber) { 
-  //           transitionDetails  = value
-  //         }
-  //       })
-  //     })
-  //   }
-
-  //  console.log("transitionDetails--",transitionDetails)
-
-  //   let dummyData = [{
-  //     "consumerCodes":applicationNumber, 
-  //     "tenantId":userInfo.tenantId
-  //   }]
-
-  //   let testingData = await httpRequest(
-  //     "pg-service/transaction/v1/_search",
-  //     "_search",[],
-  //     dummyData
-  //   );
-
-  //   console.log("testingData--",testingData)
-
-
-
-  //   let complaintCountRequest = [
-  //     { key: "consumerCodes", value: applicationNumber },
-  //     {
-  //       key: "tenantId",
-  //       value: userInfo.tenantId
-  //     }
-  //   ];
-        
-  //     let ResponseForRefundAPI = await httpRequest(
-  //       "pg-service/transaction/v1/_search",
-  //       "_search",[],
-  //       complaintCountRequest
-  //     );
-
-  //     console.log("ResponseForRefundAPI--",ResponseForRefundAPI)
-
-   
-
-    // fetchResponseForRefdunf([
-    //   { key: "consumerCode", value: match.params.applicationNumber }, 
-    //    { key: "tenantId", value: userInfo.tenantId }])
-
-      //  fetchResponseForRefdunf(
-      //   [{ key: "consumerCodes", value: userInfo.uuid }, { key: "tenantId", value: userInfo.tenantId }
-      //   ])
-
-      //   fetchResponseForRefdunf(
-      //     [{ key: "consumerCodes", value: "CH-BK-2020-10-30-003129" }, { key: "tenantId", value: userInfo.tenantId }
-      //     ])
-   
-
-
 //refund API
         
     this.setState({
@@ -452,12 +314,39 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
   onSubmit = e => {
     const { valueSelected, commentValue } = this.state;
     const { toggleSnackbarAndSetText } = this.props;
-    //here we call api
   };
+
+//refunded Amount
+// RefundAmountRefundAPI = async (applicationNumber, tenantId, bookingDate) => {
+//   const {payloadone, payload, payloadTwo} = this.props;
+//   console.log("propsforcalculateCancelledBookingRefundAmount--",this.props)
+  
+//       if (applicationNumber && tenantId) {
+        
+//           console.log(payload, "Payment Details");
+//           if (payload) {
+  
+//               let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
+//               let bookingAmount = 0;
+//               for (let i = 0; i < billAccountDetails.length; i++) {
+//                   if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+//                       bookingAmount += billAccountDetails[i].amount;
+//                   }
+//               }
+
+//               return bookingAmount;
+
+//           }
+//       }
+  
+  
+//   }
+
+
 
 // suggested by neeraj sir
   calculateCancelledBookingRefundAmount = async (applicationNumber, tenantId, bookingDate) => {
-const {payloadone, payload, payloadTwo} = this.props;
+const {payloadone, payload, payloadTwo, ConRefAmt} = this.props;
 console.log("propsforcalculateCancelledBookingRefundAmount--",this.props)
 
     if (applicationNumber && tenantId) {
@@ -465,6 +354,22 @@ console.log("propsforcalculateCancelledBookingRefundAmount--",this.props)
         console.log(payload, "Payment Details");
         if (payload) {
 
+if(ConRefAmt == true){
+
+  let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
+  let bookingAmount = 0;
+  for (let i = 0; i < billAccountDetails.length; i++) {
+      if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+          bookingAmount += billAccountDetails[i].amount;
+      }
+  }
+
+  return bookingAmount;
+
+}
+
+
+else {
             let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
             let bookingAmount = 0;
             for (let i = 0; i < billAccountDetails.length; i++) {
@@ -519,9 +424,6 @@ payloadRes = await httpRequest(
             //   "_search",[],
             //   complaintCountRequest
             //   );
-
-
-
             console.log(payloadRes, "RefundPercentage");
             refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
 console.log("refundPercentage--2--",refundPercentage)
@@ -550,6 +452,7 @@ console.log("Difference_In_Days--",Difference_In_Days)
 
 
             return refundAmount;
+          }
 
 
         }
@@ -565,15 +468,23 @@ console.log("Difference_In_Days--",Difference_In_Days)
 
     const { handleCommentsChange, handleOptionsChange, onSubmit,handleChangeAssigneeData ,handleOpen,handleClose} = this;
     const { valueSelected, commentValue ,assignee,assignToMe} = this.state;
-    const { trasformData, businessServiceData,applicationNumber } = this.props;
+    const { trasformData, businessServiceData,applicationNumber,Cancelstatus } = this.props;
+    let CheckCancelStatus;
+    if(CancelStatus == "CANCEL"){
+      CheckCancelStatus = Cancelstatus
+    }
+    else{
+      CheckCancelStatus = "null"
+   }
+   console.log("CheckCancelStatus--",CheckCancelStatus)
     const foundFirstLavels = userInfo && userInfo.roles.some(el => el.code ===  'BK_CLERK'||el.code === 'BK_DEO');
     const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_SENIOR_ASSISTANT');
     const foundthirdLavel = userInfo&&userInfo.roles.some(el => el.code === 'BK_AUDIT_DEPARTMENT');
     const foundFourthLavel = userInfo&&userInfo.roles.some(el => el.code === 'BK_CHIEF_ACCOUNT_OFFICER');
     const foundFifthLavel = userInfo&&userInfo.roles.some(el => el.code === 'BK_PAYMENT_PROCESSING_AUTHORITY');
     const foundSixthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_E-SAMPARK-CENTER');
-
-
+    const foundSevenLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_SUPERVISOR');
+    const foundEightLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD');
     return (
       
         <CancelRequestApprovedHOC
@@ -591,6 +502,8 @@ console.log("Difference_In_Days--",Difference_In_Days)
           foundFourthLavel={foundFourthLavel}
           foundFifthLavel={foundFifthLavel}
           foundSixthLavel={foundSixthLavel}
+          foundSevenLavel={foundSevenLavel}
+          foundEightLavel={foundEightLavel}
           assignee={assignee}
           assignToMe={assignToMe}
           applicationNumber={applicationNumber}
@@ -599,6 +512,7 @@ console.log("Difference_In_Days--",Difference_In_Days)
           onSubmit={onSubmit}
           userInfo={userInfo}
           // bookingtype={trasformData.bkBookingType}
+         CancelStatus={CheckCancelStatus?CheckCancelStatus:""}
           bookingservice={businessServiceData?businessServiceData:''}
           setOpen={this.state.setOpen}
         />
@@ -614,15 +528,27 @@ const mapStateToProps = (state, ownProps) => {
   let myMobNum = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.MNumToCreateCitizen:"wrongNumber";  
   console.log("myMobNum--",myMobNum)
   
+  let ConRefAmt = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.ConditionForAmount:"notFound";  
+  console.log("ConRefAmt--",ConRefAmt)
   let payloadone = fetchPaymentAfterPayment;
   console.log("payload--in--mapstatetoprops--",payloadone)
 
   // const serviceRequestId = ownProps.match.params.applicationId;
   let trasformData = applicationData?applicationData.bookingsModelList[0]:'';
+
+  console.log("trasformData--",trasformData)
+  console.log("applicationData--",applicationData)
+
   // console.log("dataforRefund--",dataforRefund)
 
   let businessServiceData = applicationData.businessService;
-  return { trasformData, businessServiceData,dataforRefund,payloadone};
+
+  console.log("businessServiceData--",businessServiceData)
+
+  let Cancelstatus = trasformData.bkStatus;
+  console.log("Cancelstatus--",Cancelstatus)
+
+  return { trasformData, businessServiceData,dataforRefund,payloadone,ConRefAmt,Cancelstatus};
 }
 
 

@@ -9,7 +9,7 @@ import {
   getPattern,
   getCommonSubHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 const serviceDetailsCard = {
@@ -88,22 +88,41 @@ const serviceDetailsCard = {
               if(action.value){
                 let serviceToDtComponentPath = action.componentJsonpath;
                 const appntDate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].dateOfAppointment).getTime();
-                const annuationdate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].superannuationDate).getTime();
+                const annuationdate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].dateOfSuperannuation).getTime();
                 const serviceFromdDt = new Date(action.value).getTime();
-                if( !(annuationdate >= serviceFromdDt && serviceFromdDt >= appntDate)){
+                // if( !(annuationdate >= serviceFromdDt && serviceFromdDt >= appntDate)){
+                //   dispatch(toggleSnackbar(true, {
+                //     labelName: "Date Must lie between Appointment date and Annuation date",
+                //     labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
+                //   }, "error"));
+                // }
+                if( (serviceFromdDt>=annuationdate || serviceFromdDt<appntDate)){
                   dispatch(toggleSnackbar(true, {
                     labelName: "Date Must lie between Appointment date and Annuation date",
                     labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
-                  }, "error"));
-                  // dispatch(
-                  //   handleField(
-                  //     "create",
-                  //     serviceToDtComponentPath,
-                  //     "props.value",
-                  //     null
-                  //   )
-                  // );
+                  }, "warning"));
+                  dispatch(prepareFinalObject("ValidServicedDt",false));
+                  
                 }
+                else{
+                  dispatch(prepareFinalObject("ValidServicedDt",true));
+                }
+               // const serviceTodDt = new Date(action.value).getTime();
+                let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0];
+                //alert(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[cardIndex].serviceFrom);
+                if(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[cardIndex].serviceTo)
+                {
+                const serviceTodDt = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[cardIndex].serviceTo).getTime();
+                if( (serviceTodDt>=annuationdate || serviceTodDt<appntDate)){
+                  dispatch(toggleSnackbar(true, {
+                    labelName: "Date Must lie between Appointment date and Annuation date",
+                    labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
+                  }, "warning"));
+                  
+                  dispatch(prepareFinalObject("ValidServicedDt",false));
+                  
+                }
+              }
             }
             }
           },
@@ -136,21 +155,39 @@ const serviceDetailsCard = {
               if(action.value){
                 let serviceToDtComponentPath = action.componentJsonpath;
                 const appntDate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].dateOfAppointment).getTime();
-                const annuationdate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].superannuationDate).getTime();
+                const annuationdate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].dateOfSuperannuation).getTime();
                 const serviceTodDt = new Date(action.value).getTime();
-                if( !(annuationdate >= serviceTodDt && serviceTodDt >= appntDate)){
+                // if( !(annuationdate >= serviceTodDt && serviceTodDt >= appntDate)){
+                //   dispatch(toggleSnackbar(true, {
+                //     labelName: "Date Must lie between Appointment date and Annuation date",
+                //     labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
+                //   }, "error"));
+                  
+                // }
+                if( (serviceTodDt>=annuationdate || serviceTodDt<appntDate)){
                   dispatch(toggleSnackbar(true, {
                     labelName: "Date Must lie between Appointment date and Annuation date",
                     labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
-                  }, "error"));
-                  // dispatch(
-                  //   handleField(
-                  //     "create",
-                  //     serviceToDtComponentPath,
-                  //     "props.value",
-                  //     null
-                  //   )
-                  // );
+                  }, "warning"));
+                  
+                  dispatch(prepareFinalObject("ValidServicedDt",false));
+                  
+                }
+                else{
+                  dispatch(prepareFinalObject("ValidServicedDt",true));
+                }
+                let cardIndex = action.componentJsonpath.split("items[")[1].split("]")[0];
+                //alert(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[cardIndex].serviceFrom);
+                const serviceFromDt = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[cardIndex].serviceFrom).getTime();
+                if( (serviceTodDt<=serviceFromDt)){
+                  dispatch(toggleSnackbar(true, {
+                    labelName: "Service To Date greater then Service From Date",
+                    labelKey: "SERVICE_DATE_TO_VALIDATIOM"
+                  }, "warning"));
+                  dispatch(prepareFinalObject("ValidServiceTodDt",false));
+                }
+                else{
+                  dispatch(prepareFinalObject("ValidServiceTodDt",true));
                 }
             }
             }

@@ -25,8 +25,11 @@ export const getStatusList = async (state, dispatch, screen, path) => {
                       { key: "businessServices", value: "NewTL" }]
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
+  const excludeStatus=['INITIATED','MODIFIED'];
   if(!!businessServices) {
-    const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
+    let status = businessServices[0].states.filter(item => !!item.state).map(({ state }) => ({ code: state }))
+    //removed initiated and modified status for employee
+    status=status.filter(item => !excludeStatus.includes(item.code))
     dispatch(
       handleField(
         screen,

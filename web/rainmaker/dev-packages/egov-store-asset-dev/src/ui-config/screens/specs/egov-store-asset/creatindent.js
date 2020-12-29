@@ -22,6 +22,10 @@ import {
     prepareDocumentsUploadData,
     
   } from "../../../../ui-utils/storecommonsapi";
+  let tenantId = getQueryArg(window.location.href, "tenantId");
+  let disabled = false
+  if(tenantId)
+  disabled = true
   export const stepsData = [
     { labelName: "Material  Indent", labelKey: "STORE_MATERIAL_INDENT_MATERIAL_INDENT" },
     { labelName: "Material  Indent Details" ,  labelKey: "STORE_MATERIAL_INDENT_MATERIAL_INDENT_DETAILS" },
@@ -49,7 +53,8 @@ export const header = getCommonContainer({
       id: "apply_form1"
     },
     children: {
-      MaterialIndentDetails
+      MaterialIndentDetails:MaterialIndentDetails(disabled)
+     // MaterialIndentDetails(disabled)
     }
   };
   
@@ -60,6 +65,7 @@ export const header = getCommonContainer({
       id: "apply_form2"
     },
     children: {     
+     // MaterialIndentMapDetails:MaterialIndentMapDetails(disabled),
       MaterialIndentMapDetails,
      totalValue
     },

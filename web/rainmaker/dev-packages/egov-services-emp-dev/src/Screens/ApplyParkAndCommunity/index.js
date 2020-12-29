@@ -24,14 +24,6 @@ export class StepForm extends Component {
                 { labelName: "Payments Details", labelKey: "BK_PCC_PAYMENT_DETAILS" },
                 { labelName: "DOCUMENTS", labelKey: "BK_PCC_DOCUMENTS" },
                 { labelName: "SUMMARY", labelKey: "BK_PCC_SUMMARY" },]
-
- childrenArray: [
-            { labelName: "Applicant Details", labelKey: "APPLICANT DETAILS" },
-            { labelName: "Booking Details", labelKey: "BOOKING DETAILS" },
-            { labelName: "Payments Details", labelKey: "PAYMENT DETAILS" },
-            { labelName: "Documents", labelKey: "DOCUMENTS" },
-            { labelName: "Summary", labelKey: "SUMMARY" },]
-
  childrenArray: [
             { labelName: "Applicant Details", labelKey: "BK_MYBK_PCC_EMP_APPLICANT_DETAILS" },
             { labelName: "Booking Details", labelKey: "BK_MYBK_PCC_EMP_BOOKING_DETAILS" },
@@ -290,7 +282,7 @@ let vrent = Number(vanueData.rent);
         let typefc = typeof(facCharges)
         console.log("typefc--",typefc)
         let conFc = Number(facCharges)
-        // finalRent = totalAmount + surcharge + utGST + cGST + conFc;
+        // finalRent = totalAmount + surcharge + utGST + cGST + conFc
         finalRent = RentPlusCcharges + utGST + cGST + conFc;
         console.log("finalAmount--for--paymentPage--",finalRent)
         let finalRent1 = Number(finalRent)

@@ -132,7 +132,8 @@ const callBackForNext = async (state, dispatch) => {
                 "data.bkApplicationNumber",
                 ""
             );
-            let businessService = get(response, "data.businessService", "");
+            //let businessService = get(response, "data.businessService", "");
+            let businessService = "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE";
             const reviewUrl = `/egov-services/applyopenspace?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));
 
@@ -162,7 +163,7 @@ const callBackForNext = async (state, dispatch) => {
                 []
             );
 
-            
+
             const documentsPreview =
                 uploadedDocData &&
                 uploadedDocData.map((item) => {
@@ -178,7 +179,7 @@ const callBackForNext = async (state, dispatch) => {
             uploadedDocData1 &&
             uploadedDocData1.map((item) => {
                     return {
-                        title: "BUILDING_PLAN_APPROVAL",
+                        title: "BK_BUILDING_PLAN_APPROVAL",
                         link: item.fileUrl && item.fileUrl.split(",")[0],
                         linkText: "View",
                         name: item.fileName,

@@ -109,18 +109,18 @@ import {
             {   labelName: "Qty. Received",
             labelKey: "STORE_MATERIAL_RECEIPT_QTY_RECEIVED"},
             {
+              jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty",
+             
+            }
+          ),
+          orderQuantity: getLabelWithValue(
+            {   labelName: "Qty. Accepted",
+            labelKey: "STORE_MATERIAL_RECEIPT_ORDERED_QTY"},
+            {
               jsonPath: "materialReceipt[0].receiptDetails[0].receivedQty",
              
             }
           ),
-          // acceptedQty: getLabelWithValue(
-          //   {   labelName: "Qty. Accepted",
-          //   labelKey: "STORE_MATERIAL_RECEIPT_QTY_ACCEPTED"},
-          //   {
-          //     jsonPath: "materialReceipt[0].receiptDetails[0].acceptedQty",
-             
-          //   }
-          // ),
          
           UnitRate: getLabelWithValue(
             {   labelName: "Unit Rate",
@@ -180,7 +180,7 @@ import {
           ),
           BatchNo: getLabelWithValue(
             {   labelName: "Batch No.",
-            labelKey: "STORE_MATERIAL_RECEIPT_QTY_RECEIVED"},
+            labelKey: "STORE_MATERIAL_RECEIPT_BATCH_NO"},
             {
               jsonPath: "materialReceipt[0].receiptDetails[0].batchNo",
              

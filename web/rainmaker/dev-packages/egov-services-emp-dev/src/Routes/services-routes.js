@@ -106,6 +106,12 @@ const NewLocationApplicationDetails = Loadable({
   loader: () => import("../Screens/NewLocationApplicationDetails"),
   loading: Loading
 });
+//payment-success-page   PaymentSuccessForEmployee
+const PaymentSuccessForEmployee = Loadable({
+  loader: () => import("../Screens/PaymentSuccessForEmployee"),
+  loading: Loading
+});
+
 
 const CheckAvailabilityPcc= Loadable({
   loader: () => import("../Screens/ApplyParkAndCommunity/components/CheckAvailability"),
@@ -113,7 +119,7 @@ const CheckAvailabilityPcc= Loadable({
 })
 
 const PaymentReceiptDteail = Loadable({
-  loader: () => import("../Screens/ApplyParkAndCommunity/components/PaymentReceiptDetail"),
+  loader: () => import("../Screens/ParkAndCommunityCenterAppDetails/components/PayPage"),
   loading: Loading
 })
 
@@ -280,17 +286,15 @@ const routes = [
     }
   },
   {
-    path: "egov-services/PaymentReceiptDteail",
+    path: "egov-services/PaymentReceiptDteail/:applicationId",
     component: PaymentReceiptDteail,
     needsAuthentication: true,
     options: {
       hideFooter: true,
-      title: "ES_OPEN_APPLICAION_HEADER",
+      // title: "ES_OPEN_APPLICAION_HEADER",
       hideTitle: false,
-      // redirectionUrl,
-      // hideFor: "ao",
       customFor: "employee",
-      customTitle: "BK_MYBK_ALL_APPLICAION_HEADER"
+      customTitle: "BK_MYBK_PAYMENT_RCPT_DETAILS"
     }
   },
   {
@@ -323,6 +327,22 @@ const routes = [
     redirectionUrl
   }
 },
+
+// PaymentForEmployee
+{
+  path: "egov-services/success-payment",
+  component: PaymentSuccessForEmployee,
+  needsAuthentication: true,
+  options: {
+    hideBackButton: true,
+    customFor: "employee",
+    hideFooter: true,
+    title: "CS_COMPLAINT_DETAILS_COMPLAINT_RESOLVED",
+    hideTitle: true,
+    redirectionUrl
+  }
+},
+
 
 //newMasterData
 {

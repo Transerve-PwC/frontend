@@ -250,14 +250,14 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
                             fileStoreId: doc.documents[0].fileStoreId,
                         },
                     ];
-                }else if (doc.documentCode === "BK_BUILDING_PLAN_APPROVAL") {
+                } else if (doc.documentCode === "BK_BUILDING_PLAN_APPROVAL") {
                     bookingDocuments = [
                         ...bookingDocuments,
                         {
                             fileStoreId: doc.documents[0].fileStoreId,
                         },
                     ];
-                }else if (doc.documentCode === "BUILDING_PLAN_APPROVAL") {
+                } else if (doc.documentCode === "BUILDING_PLAN_APPROVAL") {
                     bookingDocuments = [
                         ...bookingDocuments,
                         {
@@ -274,7 +274,9 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
                 }
             }
         });
-console.log(bookingDocuments, "Nero Documents");
+        if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE");
+        }
         set(payload, "wfDocuments", bookingDocuments);
         set(payload, "bkBookingType", "OSBM");
         set(payload, "tenantId", tenantId);
@@ -304,6 +306,7 @@ console.log(bookingDocuments, "Nero Documents");
                 return { status: "fail", data: response.data };
             }
         } else if (method === "UPDATE") {
+          delete payload["financeBusinessService"]; 
             response = await httpRequest(
                 "post",
                 "/bookings/api/_update",
@@ -336,7 +339,7 @@ export const createUpdatePCCApplication = async (state, dispatch, action) => {
     let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
 
     //let method = action === "INITIATE" || action === "MODIFY" ? "CREATE" : "UPDATE";
-let method = action === "INITIATE" || action === "RE_INITIATE" ? "CREATE" : "UPDATE";
+    let method = action === "INITIATE" || action === "RE_INITIATE" ? "CREATE" : "UPDATE";
 
     try {
         let payload = get(
@@ -377,7 +380,7 @@ let method = action === "INITIATE" || action === "RE_INITIATE" ? "CREATE" : "UPD
         set(payload, "bkAction", action);
         set(payload, "businessService", "PACC");
         let reInitiate = false;
-        if(action == "RE_INITIATE" && payload.bkApplicationStatus != "RE_INITIATED"){
+        if (action == "RE_INITIATE" && payload.bkApplicationStatus != "RE_INITIATED") {
             reInitiate = true;
         }
         // let reInitiate = false;
@@ -388,7 +391,7 @@ let method = action === "INITIATE" || action === "RE_INITIATE" ? "CREATE" : "UPD
 
         set(payload, "financialYear", `${getCurrentFinancialYear()}`);
 
-        if(action == "CANCEL"){
+        if (action == "CANCEL") {
             // payload.bkFromDate = null;
             // payload.bkToDate = null;
             payload.bkStatus = action;
@@ -764,6 +767,9 @@ export const createUpdateWtbApplication = async (state, dispatch, action) => {
             "Booking",
             []
         );
+        if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES");
+        }
         set(payload, "bkBookingType", "WATER_TANKERS");
         set(payload, "tenantId", tenantId);
         set(payload, "bkAction", action);
@@ -925,7 +931,7 @@ export const getBookingWorkflowHistory = async (applicationNumber, tenantId) => 
 
         if (payload && payload.ProcessInstances.length > 0) {
 
-               return payload.ProcessInstances;
+            return payload.ProcessInstances;
 
         } else {
             toggleSnackbar(

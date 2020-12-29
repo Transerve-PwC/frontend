@@ -330,17 +330,22 @@ export const header = getCommonContainer({
 
        
       }
-     // SEt Default data Start
+     // SEt Default data Start for create only
+     let mrnNumber =  get(state.screenConfiguration.preparedFinalObject, "materialReceipt[0].mrnNumber",'')
+if(!mrnNumber)
+{
+  dispatch(prepareFinalObject("materialReceipt[0].receiptType", "MISCELLANEOUS RECEIPT",));
+  dispatch(prepareFinalObject("materialReceipt[0].supplier.code", "",));
+  dispatch(prepareFinalObject("materialReceipt[0].mrnNumber", "",));
+  dispatch(prepareFinalObject("materialReceipt[0].supplierBillNo", "",));
+  dispatch(prepareFinalObject("materialReceipt[0].challanNo", "",));
+  dispatch(prepareFinalObject("materialReceipt[0].supplierBillDate", 1512365762000,));
+  dispatch(prepareFinalObject("materialReceipt[0].challanDate", 1512365762000,));
+  dispatch(prepareFinalObject("materialReceipt[0].inspectionDate", 45698756,));
+  dispatch(prepareFinalObject("materialReceipt[0].inspectionRemarks", '',));
 
-     dispatch(prepareFinalObject("materialReceipt[0].receiptType", "MISCELLANEOUS RECEIPT",));
-     dispatch(prepareFinalObject("materialReceipt[0].supplier.code", "",));
-     dispatch(prepareFinalObject("materialReceipt[0].mrnNumber", "",));
-     dispatch(prepareFinalObject("materialReceipt[0].supplierBillNo", "",));
-     dispatch(prepareFinalObject("materialReceipt[0].challanNo", "",));
-     dispatch(prepareFinalObject("materialReceipt[0].supplierBillDate", 1512365762000,));
-     dispatch(prepareFinalObject("materialReceipt[0].challanDate", 1512365762000,));
-     dispatch(prepareFinalObject("materialReceipt[0].inspectionDate", 45698756,));
-     dispatch(prepareFinalObject("materialReceipt[0].inspectionRemarks", '',));
+}
+    
 //isAdHoc
 //dispatch(prepareFinalObject("materialReceipt[0].isAdHoc", "NO"));
      // SEt Default data End

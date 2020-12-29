@@ -332,7 +332,7 @@ if(purchaseOrders)
       if (businessId.includes("OPB")) {
         editUrl = `/egov-store-asset/createopeningbalence?applicationNumber=${businessId}&tenantId=${tenant}`;
       } else if (businessId.includes("MMRN")) {
-        editUrl = `/egov-store-asset/createMaterialReceiptNoteMisc?tenantId=${tenant}`;
+        editUrl = `/egov-store-asset/createMaterialReceiptNoteMisc?applicationNumber=${businessId}&tenantId=${tenant}`;
       } else {
         editUrl = `/egov-store-asset/createMaterialReceiptNote?mrnNumber=${businessId}&tenantId=${tenant}`;
       }

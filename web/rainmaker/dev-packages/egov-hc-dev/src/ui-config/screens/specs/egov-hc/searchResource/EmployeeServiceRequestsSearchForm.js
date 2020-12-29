@@ -171,10 +171,10 @@ export const ServiceRequestFilterFormForEmployee = getCommonCard({
         buttons: [
        
           {
-            labelName: "DEAD",
-            labelKey: "HC_COMMON_SUBTYPE_DEAD",
+            labelName: "Dead and Dry Trees",
+            labelKey: "HC_COMMON_SUBTYPE_DEAD_AND_DRY",
             disabled: true,
-            value: "DEAD"
+            value: "Dead and Dry Trees"
           },
           {
             labelName: "DANGEROUS",
@@ -183,10 +183,10 @@ export const ServiceRequestFilterFormForEmployee = getCommonCard({
             value: "DANGEROUS"
           },
           {
-            labelName: "DRY",
-            labelKey: "HC_COMMON_SUBTYPE_DRY",
+            labelName: "Pollarding of Trees",
+            labelKey: "HC_COMMON_SUBTYPE_POLLARDINGOFTREES",
             disabled: true,
-            value: "DRY"
+            value: "Pollarding of Trees"
           }
         ],
         jsonPath:"serviceRequests.serviceRequestSubtype",

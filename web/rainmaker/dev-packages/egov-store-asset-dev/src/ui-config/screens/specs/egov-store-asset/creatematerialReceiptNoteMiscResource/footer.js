@@ -489,6 +489,8 @@ export const changeStep = (
   ];
   dispatchMultipleFieldChangeAction("createMaterialReceiptNoteMisc", actionDefination, dispatch);
   renderSteps(activeStep, dispatch);
+  
+
 };
 
 export const renderSteps = (activeStep, dispatch) => {
@@ -712,6 +714,13 @@ export const footer = getCommonApplyFooter({
            let materialList = response.materialIssues[0].materialIssueDetails;
            for (let index = 0; index < materialList.length; index++) {
              const element = materialList[index];
+             let unitRate =0
+             let {materialIssuedFromReceipts} = element
+             let materialIssuedFromReceipts_ = materialIssuedFromReceipts.filter(x=>x.status === true)
+                      if(materialIssuedFromReceipts_&&materialIssuedFromReceipts_[0])
+                      {
+                        unitRate = materialIssuedFromReceipts_[0].materialReceiptDetail.unitRate
+                      }
              material.push(
                {
                  materialcode:element.material.code,
@@ -723,7 +732,7 @@ export const footer = getCommonApplyFooter({
                  orderNumber:element.orderNumber,
                  issuedToEmployee:response.materialIssues[0].issuedToEmployee,
                  issuedToDesignation:response.materialIssues[0].issuedToDesignation,
-                 //unitRate://to be deside
+                 unitRate:unitRate
                }
                
              )

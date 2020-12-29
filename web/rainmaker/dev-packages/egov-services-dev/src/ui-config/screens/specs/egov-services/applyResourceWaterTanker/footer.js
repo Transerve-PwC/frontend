@@ -138,12 +138,19 @@ const callBackForNext = async (state, dispatch) => {
                     "components.div.children.formwizardThirdStep.children.summaryDetails.children.cardContent.children.div.children.estimateSummary.visible",
                     true
                 );
+                // await generateBill(
+                //     state,
+                //     dispatch,
+                //     applicationNumber,
+                //     tenantId,
+                //     "BWT"
+                // );
                 await generateBill(
                     state,
                     dispatch,
                     applicationNumber,
                     tenantId,
-                    "BWT"
+                    "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES"
                 );
             }
         } else {

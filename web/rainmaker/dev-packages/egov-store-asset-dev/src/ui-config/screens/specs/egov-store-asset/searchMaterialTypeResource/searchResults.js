@@ -42,7 +42,7 @@ export const getTextToLocalMapping = (label) => {
 export const searchResults = {
   uiFramework: "custom-molecules",
   componentPath: "Table",
-  visible: false,
+  visible: true,
   props: {
     columns: [
       getTextToLocalMapping("Material Type Name"),
@@ -67,6 +67,21 @@ export const searchResults = {
         onRowClick(row);
       },
     },
+    customSortColumn: {
+      column: "Application Date",
+      sortingFn: (data, i, sortDateOrder) => {
+        const epochDates = data.reduce((acc, curr) => {
+          acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
+          return acc;
+        }, []);
+        const order = sortDateOrder === "asc" ? true : false;
+        const finalData = sortByEpoch(epochDates, !order).map(item => {
+          item.pop();
+          return item;
+        });
+        return { data: finalData, currentOrder: !order ? "asc" : "desc" };
+      }
+    }
   },
 };
 

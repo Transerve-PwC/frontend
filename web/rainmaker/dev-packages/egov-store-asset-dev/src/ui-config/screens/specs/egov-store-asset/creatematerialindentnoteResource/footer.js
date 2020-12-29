@@ -6,7 +6,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {ValidateCard, ValidateCardUserQty,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
+import {ValidateCard, ValidateCardUserQty,GetTotalQtyValue,GetMdmsNameBycode} from '../../../../../ui-utils/storecommonsapi'
 import {
   getButtonVisibility,
   getCommonApplyFooter,
@@ -17,6 +17,7 @@ import {
   getLocalizationCodeValue
 } from "../../utils";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+  import store from "redux/store";
 // import "./index.css";
 const setDateInYmdFormat = (obj, values) => {
   values.forEach(element => {
@@ -213,12 +214,64 @@ export const callBackForNext = async (state, dispatch) => {
               let totalQty =  get(state.screenConfiguration.preparedFinalObject,`materialIssues[0].totalQty`,0)
               if(totalQty>totalIndentQty)
               {
-                const errorMessage = {
+
+                // material lable validation of total indent qty
+                let indentsmaterial_ = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialIssues[0].indent.indentDetails`,
+                  []
+                ); 
+                let totalIndentQty =0;
+                let issueqty = 0;
+                for (let index = 0; index < indentsmaterial_.length; index++) {
+                  const element = indentsmaterial_[index];
+                  let materialIssueDetails_ = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    'materialIssues[0].materialIssueDetails',
+                    []
+                  ); 
+                    materialIssueDetails_ = materialIssueDetails_.filter(x=>x.material.code === element.material.code)
+                    
+                    if(materialIssueDetails_.length>0)
+                    {
+                      for (let index = 0; index < materialIssueDetails_.length; index++) {
+                        const element = materialIssueDetails_[index];
+                        issueqty = issueqty + element.quantityIssued                        
+                      }
+                      let indentQuantity = Number(element.indentQuantity)///materialIssueDetails_.length
+                      
+                    totalIndentQty =totalIndentQty+indentQuantity
+                    }
+                    if(totalIndentQty<issueqty)
+                    {
+                     
+                      const LocalizationCodeValueTotalQty = getLocalizationCodeValue("STORE_TOTAL_QUANTITY_ISSUED_VALIDATION")
+                      let matname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",element.material.code) 
+                      const errorMessage = {                
+                        labelName: "Total issued quantity can not be greater than Indent quantity",
+                        labelKey:   LocalizationCodeValueTotalQty+' for '+matname
+                      };
+                       // const errorMessage = {
                 
-                  labelName: "Total issued quantity can not be greater than Indent quantity",
-                  labelKey:   "STORE_TOTAL_QUANTITY_ISSUED_VALIDATION"
-                };
-                dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                      //   labelName: "Total issued quantity can not be greater than Indent quantity",
+                      //   labelKey:   "STORE_TOTAL_QUANTITY_ISSUED_VALIDATION"
+                      // };
+                      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                      return;
+
+                    }
+                    else
+                    {
+                      moveToReview(state,dispatch)
+                    }
+                }
+                // const errorMessage = {
+                
+                //         labelName: "Total issued quantity can not be greater than Indent quantity",
+                //         labelKey:   "STORE_TOTAL_QUANTITY_ISSUED_VALIDATION"
+                //       };
+                //       dispatch(toggleSnackbar(true, errorMessage, "warning"));
+                
               }
               else
               moveToReview(state,dispatch)

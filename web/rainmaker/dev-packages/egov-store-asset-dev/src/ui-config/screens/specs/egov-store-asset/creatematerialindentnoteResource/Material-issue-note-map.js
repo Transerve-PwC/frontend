@@ -9,12 +9,13 @@ import {
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import get from "lodash/get";
   import filter from "lodash/filter";
-  import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { prepareFinalObject , toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
   import{getOpeningBalanceSearchResults} from '../../../../../ui-utils/storecommonsapi'
   import{getmaterialissuesSearchResults,GetMdmsNameBycode,GetTotalQtyValue} from '../../../../../ui-utils/storecommonsapi'
   import { getSTOREPattern} from "../../../../../ui-utils/commons";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+  import store from "redux/store";
   let IsEdit = false;
   let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
   if(applicationNumber)
@@ -94,24 +95,25 @@ import {
                 },
                 required: true,  
                 errorMessage: "STORE_VALIDATION_MATERIAL_NAME_SELECT",             
-                jsonPath: "materialIssues[0].materialIssueDetails[0].receiptId",
+                jsonPath: "materialIssues[0].materialIssueDetails[0].receiptDetailId",
                 //sourceJsonPath: "materials",
                 sourceJsonPath: "indentsmaterial",
                 props: {
                   disabled:IsEdit,
-                  optionValue: "receiptId",
+                  optionValue: "receiptDetailId",
                   optionLabel: "materialName",
                   // optionValue: "id",
                   // optionLabel: "id",
                 },
               }),
               beforeFieldChange: (action, state, dispatch) => {
+                store.dispatch(toggleSpinner());
                 let Material = get(
                   state.screenConfiguration.preparedFinalObject,
                   `indentsmaterial`,
                   []
                 );               
-                Material =  Material.filter(x=> x.receiptId === action.value)               
+                Material =  Material.filter(x=> x.receiptDetailId === action.value)               
                 let indentDetails = get(
                   state.screenConfiguration.preparedFinalObject,
                   `materialIssues[0].indent.indentDetails`,
@@ -157,23 +159,27 @@ import {
                   `indentsmaterial`,
                   []
                 ); 
-                indentsmaterial = indentsmaterial.filter(x=>x.receiptId === action.value)
+                indentsmaterial = indentsmaterial.filter(x=>x.receiptDetailId === action.value)
+                if(indentsmaterial && indentsmaterial[0])
+                {
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].receiptDetailId`,indentsmaterial[0].receiptDetailId));
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].receiptId`,indentsmaterial[0].receiptId));
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].mrnNumber`,indentsmaterial[0].mrnNumber));
+                  //dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material`,Material[0]));                               
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.material.code`,indentsmaterial[0].materialCode));                
+                  let matname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",indentsmaterial[0].materialCode) 
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.name`,matname));                
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.uom.code`,indentsmaterial[0].uomCode));                
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.balanceQty`,indentsmaterial[0].balance));
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.unitRate`,indentsmaterial[0].unitRate));
+                }
+                 // pass only material code as per discussion 
+                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.code`,Material[0].materialCode)); 
+                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].uom.code`,indentDetails[0].uom.code));              
+                 let uomname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.UOM",indentDetails[0].uom.code) 
+                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].uom.name`,uomname));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].tenantId`,getTenantId()));
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].receiptDetailId`,indentsmaterial[0].receiptDetailId));
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].receiptId`,indentsmaterial[0].receiptId));
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].mrnNumber`,indentsmaterial[0].mrnNumber));
-                //dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material`,Material[0])); 
-                // pass only material code as per discussion 
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.code`,Material[0].materialCode)); 
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].uom.code`,indentDetails[0].uom.code));              
-                let uomname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.common-masters.UOM",indentDetails[0].uom.code) 
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].uom.name`,uomname));              
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.material.code`,indentsmaterial[0].materialCode));                
-                let matname = GetMdmsNameBycode(state, dispatch,"createScreenMdmsData.store-asset.Material",indentsmaterial[0].materialCode) 
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.name`,matname));                
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.uom.code`,indentsmaterial[0].uomCode));                
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.balanceQty`,indentsmaterial[0].balance));
-                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.unitRate`,indentsmaterial[0].unitRate));
+              
                 //set indent qty indentDetails ,Indent Purpose ,Work details/Remarks
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentQuantity`,indentDetails[0].indentQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.issuedQuantity`,indentDetails[0].indentIssuedQuantity));
@@ -191,11 +197,41 @@ import {
               let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
               if(Qty && Qty[0])
               {
-              dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, indentDetails[0].indentQuantity));
+                let totalIndentQty =0;
+                let duplicateitemcnt = 0
+                let indentsmaterial_ = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  `materialIssues[0].indent.indentDetails`,
+                  []
+                ); 
+               
+                for (let index = 0; index < indentsmaterial_.length; index++) {
+                  const element = indentsmaterial_[index];
+                  let matcodexist = false                  
+                  // check same material is exist in UI
+                   // get material in item added in UI                 
+                  let materialIssueDetails_ = get(
+                  state.screenConfiguration.preparedFinalObject,
+                  'materialIssues[0].materialIssueDetails',
+                  []
+                ); 
+                  materialIssueDetails_ = materialIssueDetails_.filter(x=>x.material.code === element.material.code)
+                  
+                  if(materialIssueDetails_.length>0)
+                  {
+                    duplicateitemcnt= materialIssueDetails_.length
+                    let indentQuantity = Number(element.indentQuantity)///materialIssueDetails_.length
+                    totalIndentQty =totalIndentQty+indentQuantity
+                  }                 
+                  
+                }
+               // totalIndentQty = totalIndentQty/duplicateitemcnt;
+              dispatch(prepareFinalObject(`materialIssues[0].totalIndentQty`, totalIndentQty));
               dispatch(prepareFinalObject(`materialIssues[0].totalvalue`, Qty[0].TotalValue));
               dispatch(prepareFinalObject(`materialIssues[0].totalQty`, Qty[0].TotalQty));
               }                
               }
+              store.dispatch(toggleSpinner());
 
               }
 
@@ -484,6 +520,7 @@ import {
       },
       
       headerName: "Material Indent Note",
+      isReviewPage:IsEdit,
       headerJsonPath:
         "children.cardContent.children.header.children.head.children.Accessories.props.label",
       sourceJsonPath: "materialIssues[0].materialIssueDetails",

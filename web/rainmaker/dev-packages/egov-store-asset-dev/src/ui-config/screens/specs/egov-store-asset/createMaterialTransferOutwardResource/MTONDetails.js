@@ -34,10 +34,10 @@ const MTONDetailsCard = {
               },
               required: true,
               errorMessage:"STORE_VALIDATION_MATERIAL_NAME_SELECT",
-              jsonPath: "materialIssues[0].materialIssueDetails[0].material.code",
+              jsonPath: "materialIssues[0].materialIssueDetails[0].receiptId",
               sourceJsonPath: "indentsOutmaterial",
               props: {
-                optionValue: "materialCode",
+                optionValue: "receiptId",
                 optionLabel: "materialName",
                 // optionValue: "id",
                 // optionLabel: "id",
@@ -54,14 +54,28 @@ const MTONDetailsCard = {
                 `indentDetails`,
                 []
               ); 
-              indentDetails = indentDetails.filter(x=>x.material.code === action.value)
+              
               let indentsOutmaterial = get(state, "screenConfiguration.preparedFinalObject.indentsOutmaterial",[])
-              indentsOutmaterial = indentsOutmaterial.filter(x=>x.materialCode === action.value)
+              indentsOutmaterial = indentsOutmaterial.filter(x=>x.receiptId === action.value)
+              indentDetails = indentDetails.filter(x=>x.material.code === indentsOutmaterial[0].materialCode)
               if(indentDetails && indentDetails[0])
               {
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentQuantity`, indentDetails[0].indentQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentQuantity`, indentDetails[0].indentQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentIssuedQuantity`, indentDetails[0].indentQuantity-indentDetails[0].indentIssuedQuantity));
+                let id = getQueryArg(window.location.href, "id");
+                if(id)
+                {
+                  
+                  let quantityIssued =  get(state, `screenConfiguration.preparedFinalObject.materialIssues[0].materialIssueDetails[${cardIndex}].quantityIssued`,0)
+                  dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].quantityIssuedE`, (indentDetails[0].indentQuantity-indentDetails[0].indentIssuedQuantity)+quantityIssued));
+                  // let indentIssuedQuantity = get(state, `screenConfiguration.preparedFinalObject.materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentIssuedQuantity`,0)
+                  // dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].quantityIssuedE`, indentIssuedQuantity +quantityIssued));               
+
+                }
+               // dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentQuantity`, indentDetails[0].indentQuantity-(indentDetails[0].indentIssuedQuantity+indentDetails[0].poOrderedQuantity)));
+                // dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentQuantity`, indentDetails[0].indentQuantity));
+                // dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.indentIssuedQuantity`, indentDetails[0].indentIssuedQuantity));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].mrnNumber`, indentsOutmaterial[0].mrnNumber));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].tenantId`, getTenantId()));
                 
@@ -79,6 +93,7 @@ const MTONDetailsCard = {
                 let matcode = GetMdmsNameBycode(state, dispatch,`createScreenMdmsData.store-asset.Material`,indentsOutmaterial[0].materialCode)
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].indentDetail.material.name`, matcode));
                 dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.name`, matcode));
+                dispatch(prepareFinalObject(`materialIssues[0].materialIssueDetails[${cardIndex}].material.code`, indentsOutmaterial[0].materialCode));
               }
 
             }
@@ -136,6 +151,30 @@ const MTONDetailsCard = {
                 disabled:true,
               }
             })
+          },
+          quantityIssued: {
+            ...getTextField({
+              label: {
+                labelName: "Qty Issued",
+                labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED_EDIT"
+              },
+              placeholder: {
+                labelName: "Enter Qty Issued",
+                labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED_PLACEHOLDER"
+              },
+              required: true,
+              errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
+               //pattern: getPattern("Amount") || null,
+               pattern: getSTOREPattern("Quantity"),
+              jsonPath: "materialIssues[0].materialIssueDetails[0].quantityIssuedE",
+              props:{
+                inputProps: {
+                  min: 1
+                },
+                disabled:true
+              }
+            }),
+           
           },
           issedQuantity: {
             ...getTextField({

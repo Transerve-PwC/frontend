@@ -50,11 +50,11 @@ const styles = theme => ({
   }
 });
 
-const NewLocationResolvedForm = ({ form, handleChangeAssignee, assignToMe, assignee, foundFifthLavel,foundSixthLavel, foundFourthLavel, foundthirdLavel, foundSecondLavel, foundFirstLavels, handleOpen, handleClose, options, setOpen, userInfo, classes, onSubmit, bookingservice, bookingtype, applicationNumber, createdBy, tenantId, ontextAreaChange, handleOptionChange, optionSelected, commentValue }) => {
+const NewLocationResolvedForm = ({ form, handleChangeAssignee, assignToMe, assignee, foundFifthLavel,foundSixthLavel, foundSecondLavel,foundFourthLavel, foundthirdLavel, foundSevenLavel, foundEightLavel,foundFirstLavels, handleOpen, handleClose, options, setOpen, userInfo, classes, onSubmit, bookingservice, bookingtype, applicationNumber, createdBy, tenantId, ontextAreaChange, handleOptionChange, optionSelected, commentValue,CancelStatus }) => {
   if (form && form.fields) {
     let formValue = { ...form.fields };
 
-    // const foundFirstLavels = userInfo && userInfo.roles.some(el => el.code === 'CLERK'||el.code === 'DEO');
+    // const foundFirstLavels = userInfo && userInfo.roles.some(el => el.code === 'CLERK'||el.code === 'DEO'); 
     if (foundFirstLavels) {
       formValue.action.value = 'APPROVE_CLERK_DEO';
     }
@@ -81,13 +81,21 @@ const NewLocationResolvedForm = ({ form, handleChangeAssignee, assignToMe, assig
     if (foundSixthLavel) {
       formValue.action.value = 'OFFLINE_CANCEL';
     }
+    if (foundSevenLavel) {
+      formValue.action.value = 'APPROVE_SUPERVISOR';
+    }
+    //foundEightLavel
+    if (foundEightLavel) {
+      formValue.action.value = 'APPROVE_OSD';
+    }
     formValue.applicationNumber.value = applicationNumber;
     formValue.tenantId.value = tenantId;
     // formValue.createdBy.value = createdBy;
     formValue.remarks.value = commentValue;
     // formValue.createdOn.value = new Date();
     formValue.assignee.value = assignee;
-    formValue.businessService.value = bookingservice
+    formValue.businessService.value = bookingservice;
+    formValue.CancelStatus.value = CancelStatus;
 
   }
   const fields = form.fields || {};
@@ -97,7 +105,7 @@ const NewLocationResolvedForm = ({ form, handleChangeAssignee, assignToMe, assig
     <div>
       <div className="custom-padding-for-screens">
         <div className="complaint-resolved-main-container">
-          {((foundFirstLavels || foundSecondLavel || foundthirdLavel || foundFourthLavel || foundSixthLavel) &&
+          {((foundFirstLavels || foundSecondLavel || foundthirdLavel || foundFourthLavel || foundSixthLavel || foundSevenLavel || foundEightLavel) &&
             <FormControl style={{ width: '100%' }}>
               <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label">Assignee</InputLabel>
               <Select

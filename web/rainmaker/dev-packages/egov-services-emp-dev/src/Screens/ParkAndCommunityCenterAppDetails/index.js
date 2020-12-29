@@ -131,6 +131,8 @@ class ApplicationDetails extends Component {
 	//actionButtonOnClick = (e, complaintNo, label)
 	actionButtonOnClick = async (e, complaintNo, label) => {
 
+		let AmountCondition = false;
+		const { prepareFinalObject } = this.props;
 		let {
 			match,
 			userInfo,
@@ -140,6 +142,20 @@ class ApplicationDetails extends Component {
 			this.setState({
 				actionTittle: "Approve Application"
 			})
+
+			if(selectedComplaint.bkApplicationStatus == "PENDING_FOR_APPROVAL_OSD"){
+				
+				AmountCondition = true;
+
+				prepareFinalObject(
+					"ConditionForAmount",
+					AmountCondition
+				);
+console.log("AmountCondition--",AmountCondition)
+			}
+			
+
+
 			if(selectedComplaint.bkApplicationStatus == "PENDING_FOR_DISBURSEMENT"){
 				let RequestData = [
 					{ key: "consumerCode", value: match.params.applicationId },
@@ -603,6 +619,13 @@ class ApplicationDetails extends Component {
 
 
 	}
+
+
+
+GOTOPAY = (selectedNumber) => {
+	this.props.history.push(`/egov-services/PaymentReceiptDteail/${selectedNumber}`);
+}
+
 	render() {
 		const dropbordernone = {
 			float: "right",
@@ -613,7 +636,7 @@ class ApplicationDetails extends Component {
 		let { comments, openMap } = this.state;
 		let { complaint, timeLine } = this.props.transformedComplaint;
 		let { documentMap } = this.props;
-		let { historyApiData, paymentDetails, match, userInfo,paymentDetailsForReceipt,PayMentTwo,PayMentOne } = this.props;
+		let { historyApiData, paymentDetails, match, userInfo,paymentDetailsForReceipt,PayMentTwo,PayMentOne,selectedNumber } = this.props;
 		console.log("this.props.match--",match)
 		let {
 			role,
@@ -646,6 +669,11 @@ class ApplicationDetails extends Component {
 		const foundFourthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_CHIEF_ACCOUNT_OFFICER');
 		const foundFifthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_PAYMENT_PROCESSING_AUTHORITY');
 		const foundSixthLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_E-SAMPARK-CENTER');
+		const foundSevenLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_SUPERVISOR');
+		const foundEightLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD');
+		const foundNineLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD');
+
+
 
 		return (
 			<div>
@@ -824,8 +852,13 @@ class ApplicationDetails extends Component {
 															labelKey: "BK_MYBK_REJECT_ACTION_BUTTON"
 														},
 														link: () => this.actionButtonOnClick('state', "dispatch", 'REJECT')
-													}]
+													}
+													
+												]
 												}} />}></Footer>
+						// 						<button
+                        // onClick={(e)=>this.GOTOPAY(selectedNumber)}
+                        // >PAY </button>
 											)
 
 										)
@@ -940,6 +973,13 @@ class ApplicationDetails extends Component {
 
 												link: () => this.actionButtonOnClick('state', "dispatch", 'APPROVED')
 											},
+											{
+												label: {
+													labelName: "PAY",
+													labelKey: "BK_MYBK_PAY_ACTION_BUTTON"
+												},
+												link: () => this.GOTOPAY(selectedNumber)
+											}
 											// {
 											// 	label: {
 											// 		labelName: "Reject",
@@ -953,6 +993,68 @@ class ApplicationDetails extends Component {
 									)
 								)}
 {/*sixStep*/}
+
+{(role === "employee" &&
+
+									(complaint.status == "PENDING_FOR_APPROVAL_SUPERVISOR" && foundSevenLavel &&
+
+										<Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={<ActionButtonDropdown data={{
+											label: { labelName: "TAKE ACTION ", labelKey: "BK_COMMON_TAKE_ACTION" },
+											rightIcon: "arrow_drop_down",
+											props: {
+												variant: "outlined",
+												style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" }
+											},
+											menu: [{
+												label: {
+													labelName: "Approve",
+													labelKey: "BK_MYBK_APPROVE_ACTION_BUTTON"
+												},
+
+												link: () => this.actionButtonOnClick('state', "dispatch", 'APPROVED')
+											},
+											{
+												label: {
+													labelName: "Reject",
+													labelKey: "BK_MYBK_REJECT_ACTION_BUTTON"
+												},
+												link: () => this.actionButtonOnClick('state', "dispatch", 'REJECT')
+											}]
+										}} />}></Footer>
+
+									)
+								)}
+								{(role === "employee" &&
+
+(complaint.status == "PENDING_FOR_APPROVAL_OSD" && foundEightLavel &&
+
+	<Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={<ActionButtonDropdown data={{
+		label: { labelName: "TAKE ACTION ", labelKey: "BK_COMMON_TAKE_ACTION" },
+		rightIcon: "arrow_drop_down",
+		props: {
+			variant: "outlined",
+			style: { marginLeft: 5, marginRight: 15, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "60px", width: "250px" }
+		},
+		menu: [{
+			label: {
+				labelName: "Approve",
+				labelKey: "BK_MYBK_APPROVE_ACTION_BUTTON"
+			},
+
+			link: () => this.actionButtonOnClick('state', "dispatch", 'APPROVED')
+		},
+		{
+			label: {
+				labelName: "Reject",
+				labelKey: "BK_MYBK_REJECT_ACTION_BUTTON"
+			},
+			link: () => this.actionButtonOnClick('state', "dispatch", 'REJECT')
+		}]
+	}} />}></Footer>
+
+)
+)}
+
 
 								{(role === "employee" &&
 
@@ -1040,6 +1142,8 @@ const mapStateToProps = (state, ownProps) => {
 	const { userInfo } = state.auth;
 	const serviceRequestId = ownProps.match.params.applicationId;
 	let selectedComplaint = applicationData ? applicationData.bookingsModelList[0] : ''
+	let selectedNumber = selectedComplaint ? selectedComplaint.bkApplicationNumber : "NotFoundAnyApplicationNumber"
+	console.log("selectedNumber--",selectedNumber)
 	let businessService = applicationData ? applicationData.businessService : "";
 	let bookingDocs;
 	
@@ -1064,24 +1168,27 @@ const mapStateToProps = (state, ownProps) => {
 	console.log("PayMentTwo--",PayMentTwo)
 	let abc = PayMentTwo && PayMentTwo ? PayMentTwo : "abc"
 	console.log("abc--",abc)
-	// if (selectedComplaint && selectedComplaint.bkPaymentStatus == "SUCCESS") {
-
-	// 	paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
-		
-	// }
 	
-	// if (selectedComplaint && selectedComplaint.bkPaymentStatus == "SUCCESS") {
-
-	// 	paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
-		
-	// }
-
-	// else {
-	// 	paymentDetails = paymentData ? paymentData.Bill[0] : '';
-		
-	// }
+if(selectedComplaint && selectedComplaint.bkApplicationStatus == "OFFLINE_APPLIED"){
+console.log("offlineApplied--",selectedComplaint.bkApplicationStatus)
+   if(selectedComplaint.bkPaymentStatus == "SUCCESS"){
+      console.log("one")
+	paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
+console.log("paymentDetails-One--",paymentDetails)
+   }
+else{
+	console.log("two")
+	paymentDetails = paymentData ? paymentData.Bill[0] : '';
+	console.log("paymentDetails-two--",paymentDetails)
+    }
+}
+  else{
 
 	paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
+
+  }
+
+	
 
 	let historyApiData = {}
 	if (historyObject) {
@@ -1159,7 +1266,8 @@ const mapStateToProps = (state, ownProps) => {
 			selectedComplaint,
 			userInfo,
 			PayMentOne,
-			PayMentTwo
+			PayMentTwo,
+			selectedNumber
 		};
 	} else {
 		return {
@@ -1178,7 +1286,8 @@ const mapStateToProps = (state, ownProps) => {
 			selectedComplaint,
 			userInfo,
 			PayMentOne,
-			PayMentTwo
+			PayMentTwo,
+			selectedNumber
 		};
 	}
 };

@@ -178,6 +178,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             },
         }),
         beforeFieldChange: (action, state, dispatch) => {
+         
           let store = get(
             state.screenConfiguration.preparedFinalObject,
             `store.stores`,
@@ -193,7 +194,13 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
             dispatch(prepareFinalObject("materialReceipt[0].receivingStore.department.name", store[0].department.name));
             dispatch(prepareFinalObject("materialReceipt[0].receivingStore.divisionName", store[0].divisionName));
             // get material from material store map calling api store-asset-services/materials/_search?
-
+            let isAdHoc = get(
+              state.screenConfiguration.preparedFinalObject,
+              `materialReceipt[0].isAdHoc`,
+              ''
+            );
+            if(isAdHoc === "NO")
+            {
             const queryObject = [{ key: "tenantId", value: getTenantId()},{ key: "store", value: action.value}];
             getSearchResults(queryObject, dispatch,"materials")
             .then(async response =>{
@@ -216,7 +223,7 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
              }
               
             });   
-            
+          }
              
            // dispatch(prepareFinalObject("MiscMaterilList", material));          
            
@@ -446,7 +453,32 @@ const getmrnNumber = async (  action, state,dispatch,storecode)=>{
           //  dispatch(prepareFinalObject("materialReceipt[0].receivingStore.name",null)); 
           //  dispatch(prepareFinalObject("materialReceipt[0].receivingStore.code",null)); 
           dispatch(prepareFinalObject("materialReceiptRead[0].storeUpdate",false)); 
+          let storeDetailsCardPath =
+          "components.div.children.formwizardSecondStep.children.materialReceiptMiscDetail.children.cardContent.children.materialReceiptCard.props.items";
+        let storeDetailsItems = get(
+          state.screenConfiguration.screenConfig.createMaterialReceiptNoteMisc,
+          storeDetailsCardPath,
+          []
+        );
+        if(action.value)
+        {
+          for (var j = 0; j < storeDetailsItems.length; j++) {
+            dispatch(
+              handleField(
+                "createMaterialReceiptNoteMisc",
+                `${storeDetailsCardPath}[${j}].item${j}.children.cardContent.children.materialReceiptCardContainer.children.unitRate.props`,                
+                { disabled: action.value === "NO"?false:true }
+              )
+            );
+  
+          }
+
+        }
+
           if (action.value === "NO") {
+
+           
+            
             dispatch(
               handleField(
                 "createMaterialReceiptNoteMisc",

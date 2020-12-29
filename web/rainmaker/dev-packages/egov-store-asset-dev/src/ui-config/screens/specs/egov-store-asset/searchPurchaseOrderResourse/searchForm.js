@@ -275,7 +275,7 @@ export const searchForm = getCommonCard({
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 3,
           // align: "center"
         },
         props: {
@@ -287,7 +287,7 @@ export const searchForm = getCommonCard({
             width: "220px",
             height: "48px",
             margin: "8px",
-            float: "right",
+            float: "center",
           },
         },
         children: {
@@ -305,7 +305,7 @@ export const searchForm = getCommonCard({
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 3,
           // align: "center"
         },
         props: {
