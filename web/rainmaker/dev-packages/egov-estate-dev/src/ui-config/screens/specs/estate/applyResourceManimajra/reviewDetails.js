@@ -124,6 +124,77 @@ export const getReviewPropertyDetails = (isEditable = true) => {
   })
 }
 
+export const getPropertyInfoManimajra = (isEditable = true) => ({
+  headerDiv: {
+    ...headerDiv,
+    children: {
+      header: {
+        gridDefination: {
+          xs: 12,
+          sm: 10
+        },
+        ...getCommonSubHeader({
+          labelName: "Property Details",
+          labelKey: "ES_PROPERTY_DETAILS_HEADER"
+        })
+      },
+      editSection: masterEntryEditSection(isEditable, 0, "apply-manimajra")
+    }
+  },
+  viewDetails: getCommonContainer({
+    fileNumber: getLabelWithValue(
+      fileNumberLabel, {
+        jsonPath: "Properties[0].fileNumber"
+      }
+    ),
+    houseNumber: getLabelWithValue(
+      houseNumberLabel, {
+        jsonPath: "Properties[0].propertyDetails.houseNumber"
+      }
+    ),
+    mohalla: getLabelWithValue(
+      mohallaLabel, {
+        jsonPath: "Properties[0].propertyDetails.mohalla"
+      }
+    ),
+    street: getLabelWithValue(
+      streetLabel, {
+        jsonPath: "Properties[0].propertyDetails.street"
+      }
+    ),
+    areaOfProperty: getLabelWithValue(
+      areaOfPropertyLabel, {
+        jsonPath: "Properties[0].propertyDetails.areaSqft"
+      }
+    ),
+    propertyType: getLabelWithValue(
+      propertyTypeLabel, {
+        jsonPath: "Properties[0].propertyDetails.propertyType"
+      }
+    ),
+    category: getLabelWithValue(
+      categoryLabel, {
+        jsonPath: "Properties[0].category"
+      }
+    ),
+    subCategory: getLabelWithValue(
+      subCategoryLabel, {
+        jsonPath: "Properties[0].subCategory"
+      }
+    ),
+    siteNumber: getLabelWithValue(
+      siteNumberLabel, {
+        jsonPath: "Properties[0].siteNumber"
+      }
+    ),
+    sectorNumber: getLabelWithValue(
+      sectorNumberLabel, {
+        jsonPath: "Properties[0].sectorNumber"
+      }
+    )
+  })
+})
+
 export const reviewDetails = getCommonCard({
   header,
   reviewPropertyDetails: getReviewPropertyDetails(),

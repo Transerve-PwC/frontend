@@ -106,6 +106,7 @@ var isfileNumberValid = validateFields(
                 [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
                 [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
                 [getTextToLocalMapping("GST")]:  formatAmount(item.gst.toFixed(2)) || "-",
+                [getTextToLocalMapping("Demand Type")]: !!item.typeOfDemand && item.typeOfDemand|| "-",
                 [getTextToLocalMapping("Rent")]: formatAmount(item.rent.toFixed(2)) || "-",
                 [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
                 [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",

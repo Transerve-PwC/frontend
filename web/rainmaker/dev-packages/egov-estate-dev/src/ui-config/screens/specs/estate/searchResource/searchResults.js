@@ -123,6 +123,7 @@ export const demandResults = {
     columns: [
       getTextToLocalMapping("Date"),
       getTextToLocalMapping("Rent"),
+      getTextToLocalMapping("Demand Type"),
       getTextToLocalMapping("Total Due"),
       getTextToLocalMapping("GST"),
     ],

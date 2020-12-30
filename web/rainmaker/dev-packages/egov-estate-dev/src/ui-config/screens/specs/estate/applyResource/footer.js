@@ -1711,21 +1711,21 @@ export const downloadPrintContainer = (
   }
   
   if(branchType === 'BuildingBranch'){
-      switch(applicationType && applicationState){
-        case 'NOC' && 'ES_PENDING_DS_VERIFICATION':
-        case 'NOC' && 'ES_PENDING_CLARIFICATION':
-        case 'NOC' && 'ES_PENDING_DA_VERIFICATION':
-        case 'NOC' && 'ES_PENDING_JE_VERIFICATION':
-        case 'NOC' && 'ES_PENDING_SDE_VERIFICATION':
-        case 'NOC' && 'ES_PENDING_DRAFSMAN_CALCULATION':
-        case 'NOC' && 'ES_PENDING_SDE_CALCULATION_VERIFICATION':
-        case 'NOC' && 'ES_PENDING_DA_PROPOSAL':
-        case 'NOC' && 'ES_PENDING_SDE_PROPOSAL_VERIFICATION':  
-        case 'NOC' && 'ES_PENDING_AC_APPROVAL':
-        case 'NOC' && 'ES_PENDING_SDE_PROPOSAL_APPROVAL':
-        case 'NOC' && 'ES_PENDING_DA_FEE':
-        case 'NOC' && 'ES_PENDING_PAYMENT': 
-        case 'NOC' && 'ES_PENDING_DA_PREPARE_LETTER': 
+      switch(applicationType + `-${applicationState}`){
+        case 'NOC-ES_PENDING_DS_VERIFICATION':
+        case 'NOC-ES_PENDING_CLARIFICATION':
+        case 'NOC-ES_PENDING_DA_VERIFICATION':
+        case 'NOC-ES_PENDING_JE_VERIFICATION':
+        case 'NOC-ES_PENDING_SDE_VERIFICATION':
+        case 'NOC-ES_PENDING_DRAFSMAN_CALCULATION':
+        case 'NOC-ES_PENDING_SDE_CALCULATION_VERIFICATION':
+        case 'NOC-ES_PENDING_DA_PROPOSAL':
+        case 'NOC-ES_PENDING_SDE_PROPOSAL_VERIFICATION':  
+        case 'NOC-ES_PENDING_AC_APPROVAL':
+        case 'NOC-ES_PENDING_SDE_PROPOSAL_APPROVAL':
+        case 'NOC-ES_PENDING_DA_FEE':
+        case 'NOC-ES_PENDING_PAYMENT': 
+        case 'NOC-ES_PENDING_DA_PREPARE_LETTER': 
         
             downloadMenu = [
               applicationDownloadObject
@@ -1734,9 +1734,20 @@ export const downloadPrintContainer = (
               applicationPrintObject
            ] 
           break;
-
-        case 'NOC' && 'ES_PENDING_SDE_APPROVAL': 
-        case 'NOC' && 'ES_APPROVED' : 
+          case 'IssuanceOfNotice-ES_APPROVED': 
+          case 'IssuanceOfNotice-APPROVED': 
+              downloadMenu = [
+                applicationDownloadObject,
+                BBViolationNoticeDownloadObject
+              ]
+              printMenu = [
+                applicationPrintObject,
+                BBViolationNoticePrintObject
+            ] 
+  
+            break;
+        case 'NOC-ES_PENDING_SDE_APPROVAL': 
+        case 'NOC-ES_APPROVED' : 
             downloadMenu = [
               applicationDownloadObject,
               LetterDownloadObject,
@@ -1751,10 +1762,10 @@ export const downloadPrintContainer = (
               paymentLetterPrintObject
             ] 
           break;
-        case 'IssuanceOfNotice' && 'PENDING_SDE_VERIFICATION':
-        case 'IssuanceOfNotice' && 'ES_PENDING_AC_APPROVAL':
-        case 'IssuanceOfNotice' && 'ES_REJECTED':  
-        case 'IssuanceOfNotice' && 'ES_PENDING_JE_CLARIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_SDE_VERIFICATION':
+        case 'IssuanceOfNotice-S_PENDING_AC_APPROVAL':
+        case 'IssuanceOfNotice-ES_REJECTED':  
+        case 'IssuanceOfNotice-ES_PENDING_JE_CLARIFICATION':
         
             downloadMenu = [
               applicationDownloadObject
@@ -1764,18 +1775,7 @@ export const downloadPrintContainer = (
           ]   
           break;
          
-        case 'IssuanceOfNotice' && 'ES_APPROVED': 
-        case 'IssuanceOfNotice' && 'APPROVED': 
-            downloadMenu = [
-              applicationDownloadObject,
-              BBViolationNoticeDownloadObject
-            ]
-            printMenu = [
-              applicationPrintObject,
-              BBViolationNoticePrintObject
-          ] 
-
-          break;
+       
         default:
             downloadMenu = []
             printMenu = []      

@@ -224,7 +224,7 @@ class ActionDialog extends React.Component {
                     <TextFieldContainer
                     type="date"
                     required={true}
-                    defaultValue={new Date().toISOString().split('T')[0]}
+                    // defaultValue={new Date().toISOString().split('T')[0]}
                     InputLabelProps={{ shrink: true }}
                     inputProps = {{max: new Date().toISOString().split('T')[0]}}
                     label= {fieldConfig.hardCopyReceivedDate.label}

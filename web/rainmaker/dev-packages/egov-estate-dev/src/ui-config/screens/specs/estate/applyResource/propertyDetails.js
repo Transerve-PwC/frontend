@@ -164,6 +164,7 @@ const areaOfPropertyField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERR_AREA_OF_PROPERTY_FIELD",
     pattern: _getPattern("areaOfProperty"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.areaSqft"

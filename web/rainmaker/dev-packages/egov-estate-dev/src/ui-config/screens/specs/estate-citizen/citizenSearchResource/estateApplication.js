@@ -27,6 +27,7 @@ import {
   displayDefaultErr
 } from "../../utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
 
 const searchBy = {
   uiFramework: "custom-containers",
@@ -58,9 +59,11 @@ const searchBy = {
   required: true,
   jsonPath: "citizenSearchScreen.searchBy",
   beforeFieldChange: (action, state, dispatch) => {
+    let branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
     if (action.value) {
       if (action.value == "File Number") {
-        let siteNumberContainerItems = ["category", "subCategory", "siteNumber", "sectorNumber"];
+        let siteNumberContainerItems =  ["category", "subCategory", "siteNumber", "sectorNumber"];
+        // let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["houseNumber","street","mohalla"] : ["category", "subCategory", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
             "property-search",
@@ -84,6 +87,7 @@ const searchBy = {
       }
       else {
         let siteNumberContainerItems = ["category", "siteNumber", "sectorNumber"];
+        // let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["houseNumber","street","mohalla"] : ["category", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
             "property-search",
@@ -113,6 +117,9 @@ export const resetFields = (state, dispatch) => {
   let subCategory = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.subCategory", "");
   let siteNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.siteNumber", "");
   let sectorNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.sectorNumber", "");
+  let houseSiteNumber = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.houseNumber", "");
+  let mohalla = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.mohalla", "");
+  let street = get(state.screenConfiguration.preparedFinalObject, "searchScreenSiteNo.street", "");
 
   if (fileNumber) {
     dispatch(
@@ -163,6 +170,39 @@ export const resetFields = (state, dispatch) => {
       handleField(
         "property-search",
         "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.sectorNumber",
+        "props.value",
+        ""
+      )
+    )
+  }
+
+  if(houseSiteNumber){
+    dispatch(
+      handleField(
+        "property-search",
+        "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.houseNumber",
+        "props.value",
+        ""
+      )
+    )
+  }
+
+  if(mohalla){
+    dispatch(
+      handleField(
+        "property-search",
+        "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.mohalla",
+        "props.value",
+        ""
+      )
+    )
+  }
+
+  if(street){
+    dispatch(
+      handleField(
+        "property-search",
+        "components.div.children.estateApplication.children.cardContent.children.searchBoxContainer.children.siteNumberContainer.children.street",
         "props.value",
         ""
       )
@@ -317,6 +357,66 @@ export const estateApplication = getCommonCard({
             sm: 6
         }
       }),
+      houseNumber: getTextField({
+        label: {
+          labelName: "House Number",
+          labelKey: "ES_HOUSE_NUMBER_LABEL"
+        },
+        placeholder: {
+            labelName: "Enter House Number",
+            labelKey: "ES_HOUSE_NUMBER_PLACEHOLDER"
+        },
+        gridDefination: {
+            xs: 12,
+            sm: 6
+        },
+        errorMessage: "ES_ERR_MAXLENGTH_50",
+        required: true,
+        visible: false,
+        minLength: 1,
+        maxLength: 50,
+        jsonPath: "searchScreenSiteNo.houseNumber"
+      }),
+      street: getTextField({
+        label: {
+          labelName: "Street",
+          labelKey: "ES_STREET_LABEL"
+        },
+        placeholder: {
+            labelName: "Enter Street Name",
+            labelKey: "ES_STREET_NAME_PLACEHOLDER"
+        },
+        gridDefination: {
+            xs: 12,
+            sm: 6
+        },
+        errorMessage: "ES_ERR_MAXLENGTH_50",
+        required: true,
+        visible: false,
+        minLength: 1,
+        maxLength: 50,
+        jsonPath: "searchScreenSiteNo.street"
+      }),
+      mohalla: getTextField({
+        label: {
+          labelName: "Mohalla",
+          labelKey: "ES_MOHALLA_LABEL"
+        },
+        placeholder: {
+            labelName: "Enter Mohalla",
+            labelKey: "ES_MOHALLA_PLACEHOLDER"
+        },
+        gridDefination: {
+            xs: 12,
+            sm: 6
+        },
+        errorMessage: "ES_ERR_MAXLENGTH_50",
+        required: true,
+        visible: false,
+        minLength: 1,
+        maxLength: 50,
+        jsonPath: "searchScreenSiteNo.mohalla"
+      })
     })
   }),
   button: getCommonContainer({

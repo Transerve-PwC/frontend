@@ -173,6 +173,7 @@ export const propertyTypeField = {
     
     switch(action.value){
        case 'PROPERTY_TYPE.JANTA_READY_MARKET':
+       case 'PROPERTY_TYPE.PUNJAB_AGRO_JUICE':
           dispatch(
             handleField(
               action.screenKey,
@@ -207,26 +208,26 @@ export const propertyTypeField = {
             )
           )
          break;
-      case 'PROPERTY_TYPE.PUNJAB_AGRO_JUICE':
-          dispatch(
-            handleField(
-              action.screenKey,
-              "components.div.children.formwizardFirstStep.children",
-              "monthlyDetails.visible",
-               true
-            )
-          )
+      // case 'PROPERTY_TYPE.PUNJAB_AGRO_JUICE':
+      //     dispatch(
+      //       handleField(
+      //         action.screenKey,
+      //         "components.div.children.formwizardFirstStep.children",
+      //         "monthlyDetails.visible",
+      //          true
+      //       )
+      //     )
 
-          dispatch(
-            handleField(
-              action.screenKey,
-              "components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children",
-              "monthlyDetails.visible",
-               true
-            )
-          )
+      //     dispatch(
+      //       handleField(
+      //         action.screenKey,
+      //         "components.div.children.formwizardEighthStep.children.reviewDetails.children.cardContent.children",
+      //         "monthlyDetails.visible",
+      //          true
+      //       )
+      //     )
           
-         break;
+      //    break;
       case 'PROPERTY_TYPE.OTHERS':
         //do nothing
         break;    

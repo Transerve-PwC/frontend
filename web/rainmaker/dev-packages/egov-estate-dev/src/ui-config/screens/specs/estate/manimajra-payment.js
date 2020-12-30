@@ -2,7 +2,7 @@ import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject
 import { getCommonHeader,getBreak, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel, getDateField  } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { httpRequest } from "../../../../ui-utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { propertyInfo } from "./preview-resource/preview-properties";
+import { getPropertyInfoManimajra } from "./applyResourceManimajra/reviewDetails";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalMapping } from "../utils";
 import {demandResults} from './searchResource/searchResults'
@@ -39,10 +39,11 @@ import moment from 'moment'
          )
         
         if(_accountstatement){
+          let ManiMajraAccountStatement = _accountstatement.ManiMajraAccountStatement
 
           // to get demands which are unpaid
-          _accountstatement.ManiMajraAccountStatement = _accountstatement.ManiMajraAccountStatement.filter((demand) => {
-              if(demand.status == 'UNPAID' || demand.type == 'D'){
+          ManiMajraAccountStatement = ManiMajraAccountStatement.filter((demand) => {
+              if(demand.status == 'Unpaid' && demand.type == 'D'){
                 return demand
               }
           })
@@ -50,13 +51,14 @@ import moment from 'moment'
           dispatch(
             prepareFinalObject(
               "ManiMajraAccountStatement",
-              _accountstatement.ManiMajraAccountStatement
+              ManiMajraAccountStatement
             )
           );
           // let sortedData = _accountstatement.ManiMajraAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
-          let data = _accountstatement.ManiMajraAccountStatement.map(item => ({
+          let data = ManiMajraAccountStatement.map(item => ({
             [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
             [getTextToLocalMapping("GST")]:  (item.gst.toFixed(2)) || "-",
+            [getTextToLocalMapping("Demand Type")]:  !!item.typeOfDemand && item.typeOfDemand|| "-",
             [getTextToLocalMapping("Total Due")]: (item.dueAmount.toFixed(2)) || "-",
             [getTextToLocalMapping("Rent")]: item.rent || "-"
           }));
@@ -362,7 +364,7 @@ export const monthField = {
     })
 })
   
-  const propertyDetails = getCommonCard(propertyInfo(false))
+  const propertyDetails = getCommonCard(getPropertyInfoManimajra(false))
 
   const detailsContainer = {
     uiFramework: "custom-atoms",
@@ -372,7 +374,7 @@ export const monthField = {
     },
     children: {
       propertyDetails,
-      demandType,
+      // demandType,
       breakAfterSearch: getBreak(),
       demandResults,
       paymentDetails

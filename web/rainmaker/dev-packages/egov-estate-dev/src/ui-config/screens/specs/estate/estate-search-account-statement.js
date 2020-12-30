@@ -53,8 +53,8 @@ const branchType = getQueryArg(window.location.href, "branchType");
     let payload = await getSearchResults(queryObject);
     if (payload) {
       let properties = payload.Properties;
-      let categorySelected = mdmsCategory.filter(item => item.code === properties[0].category && !!item.SubCategory);
-      let subCatSelected = categorySelected[0].SubCategory.filter(item => item.code === properties[0].subCategory)
+      let categorySelected = mdmsCategory.filter(item => item.code === properties[0].category);
+      let subCatSelected = !!categorySelected[0].SubCategory ? categorySelected[0].SubCategory.filter(item => item.code === properties[0].subCategory) : [{"name": "NA"}]
 
       dispatch(prepareFinalObject("singleSubCategory", subCatSelected[0].name));
       

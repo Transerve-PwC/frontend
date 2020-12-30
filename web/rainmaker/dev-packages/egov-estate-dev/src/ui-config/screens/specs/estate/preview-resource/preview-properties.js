@@ -7,6 +7,7 @@ import {
     getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { convertEpochToDate, } from "../../utils";
+import {getPropertyInfoManimajra} from "../applyResourceManimajra/reviewDetails"
 // import { changeStep } from "./footer";
 
 
@@ -375,7 +376,8 @@ export const extensionFeeInfo = (isEditable) => ({
 })
 
 export const getPropertyDetails = (isEditable = true) => {
-    return getCommonGrayCard(propertyInfo(isEditable))
+  return getCommonGrayCard(getPropertyInfoManimajra(false))
+    // return getCommonGrayCard(propertyInfo(isEditable))
   }
 
 

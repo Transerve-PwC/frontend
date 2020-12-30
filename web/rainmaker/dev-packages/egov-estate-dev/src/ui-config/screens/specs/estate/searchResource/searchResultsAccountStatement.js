@@ -78,6 +78,7 @@ export const mmAccountStatementResult = {
         getTextToLocalMapping("Date"),
         getTextToLocalMapping("Rent"),
         getTextToLocalMapping("Amount"),
+        getTextToLocalMapping("Demand Type"),
         getTextToLocalMapping("Type(Payment)"),
         getTextToLocalMapping("Type(Rent)"),
         getTextToLocalMapping("GST"),

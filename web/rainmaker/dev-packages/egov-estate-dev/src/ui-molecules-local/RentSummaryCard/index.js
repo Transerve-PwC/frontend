@@ -64,7 +64,9 @@ function totalAmount(rentSummary, dataArray , type) {
       case 'Penalty':
         return rent.totalPenaltyDue
       case 'Security-Fee':
-        return rent.totalSecurityDepositDue  
+        return rent.totalSecurityDepositDue 
+      case 'rent':
+        return rent.balanceRent + rent.balanceGST + rent.balanceGSTPenalty + rent.balanceRentPenalty
       default:
         const totalAmount = dataArray.reduce((prev, curr) => prev + rent[curr], 0)
         return totalAmount;
