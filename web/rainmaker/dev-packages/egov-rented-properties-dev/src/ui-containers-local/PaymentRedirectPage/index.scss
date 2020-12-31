@@ -1,0 +1,23 @@
+.card-content-style {
+    padding: 0;
+    width: 100%;
+  }
+  
+  .horizontal-card-main-grid {
+    padding-top: 80px;
+  }
+  
+  .bottom-button {
+    border-radius: 0;
+  }
+  
+  @media only screen and (min-width: 768px) {
+    .module-card-style {
+      min-height: 110px;
+    }
+  
+    .horizontal-card-main-grid {
+      padding-top: 24px !important;
+    }
+  }
+  
