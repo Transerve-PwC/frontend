@@ -62,8 +62,8 @@ const searchBy = {
     let branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
     if (action.value) {
       if (action.value == "File Number") {
-        let siteNumberContainerItems =  ["category", "subCategory", "siteNumber", "sectorNumber"];
-        // let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["houseNumber","street","mohalla"] : ["category", "subCategory", "siteNumber", "sectorNumber"];
+        // let siteNumberContainerItems =  ["category", "subCategory", "siteNumber", "sectorNumber"];
+        let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["sectorNumber","houseNumber","street","mohalla"] : ["category", "subCategory", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
             "property-search",
@@ -86,8 +86,8 @@ const searchBy = {
         
       }
       else {
-        let siteNumberContainerItems = ["category", "siteNumber", "sectorNumber"];
-        // let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["houseNumber","street","mohalla"] : ["category", "siteNumber", "sectorNumber"];
+        // let siteNumberContainerItems = ["category", "siteNumber", "sectorNumber"];
+        let siteNumberContainerItems = branchType === 'MANI_MAJRA' ? ["sectorNumber","houseNumber","street","mohalla"] : ["category", "siteNumber", "sectorNumber"];
         dispatch(
           handleField(
             "property-search",

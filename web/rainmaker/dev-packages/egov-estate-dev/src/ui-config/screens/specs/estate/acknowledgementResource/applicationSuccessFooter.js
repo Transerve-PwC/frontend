@@ -92,15 +92,20 @@ export const applicationSuccessFooter = (
                 array.splice(0, 1);
                 let fileNumber = array.join("-");
                 let queryObject = [
-                  { key: "fileNumber", value: fileNumber }
+                  { key: "fileNumber", value: fileNumber },
+                  { key:"relations",value:"offline"}
                 ];
                 let response =  await getSearchResults(queryObject);
-                let properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
-                balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
-                balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),
-                balanceRentPenalty: Number(item.estateRentSummary.balanceRentPenalty.toFixed(2)),
-                balanceAmount: Number(item.estateRentSummary.balanceAmount.toFixed(2))
-                }}))
+                let properties = response.Properties
+                let branchType = properties[0].propertyDetails.branchType
+                if(branchType!="MANI_MAJRA"){
+                  properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
+                    balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
+                    balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),
+                    balanceRentPenalty: Number(item.estateRentSummary.balanceRentPenalty.toFixed(2)),
+                    balanceAmount: Number(item.estateRentSummary.balanceAmount.toFixed(2))
+                  }}))
+                }
                 dispatch(prepareFinalObject("Properties", properties))
                 let { Properties} = state.screenConfiguration.preparedFinalObject;
                 let id = getQueryArg(window.location.href, "tenantId");
@@ -183,15 +188,19 @@ export const applicationSuccessFooter = (
                 let fileNumber = array.join("-");
                 // let fileNumber = consumerCodes.split('-')[1]
                 let queryObject = [
-                  { key: "fileNumber", value: fileNumber }
+                  { key: "fileNumber", value: fileNumber },{ key:"relations",value:"offline"}
                 ];
                 let response =  await getSearchResults(queryObject);
-                let properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
-                balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
-                balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),
-                balanceRentPenalty: Number(item.estateRentSummary.balanceRentPenalty.toFixed(2)),
-                balanceAmount: Number(item.estateRentSummary.balanceAmount.toFixed(2))
-                }}))
+                let properties = response.Properties
+                let branchType = properties[0].propertyDetails.branchType
+                if(branchType!="MANI_MAJRA"){
+                  properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
+                        balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
+                        balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),
+                        balanceRentPenalty: Number(item.estateRentSummary.balanceRentPenalty.toFixed(2)),
+                        balanceAmount: Number(item.estateRentSummary.balanceAmount.toFixed(2))
+                  }}))
+                }
                 dispatch(prepareFinalObject("Properties", properties))
                 let { Properties} = state.screenConfiguration.preparedFinalObject;
                 let id = getQueryArg(window.location.href, "tenantId");
@@ -318,11 +327,12 @@ export const applicationSuccessFooter = (
                   const consumerCodes = getQueryArg(window.location.href, "applicationNumber");
                   if(consumerCodes.startsWith('SITE') || consumerCodes.startsWith('ES') ){
                     let queryObject = [
-                      { key: "fileNumber", value: fileNumber }
+                      { key: "fileNumber", value: fileNumber },{ key:"relations",value:"offline"}
                     ];
                     let response =  await getSearchResults(queryObject);
                     let properties = response.Properties
-                    if(type!="ESTATE_SERVICE_MANI_MAJRA.PROPERTY_MASTER"){
+                    let branchType = properties[0].propertyDetails.branchType
+                    if(branchType!="MANI_MAJRA"){
                     properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
                         balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
                         balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),
@@ -421,11 +431,15 @@ export const applicationSuccessFooter = (
                 const consumerCodes = getQueryArg(window.location.href, "applicationNumber");
                 if(consumerCodes.startsWith('SITE') || consumerCodes.startsWith('ES')){
                   let queryObject = [
-                    { key: "fileNumber", value: fileNumber }
+                    { key: "fileNumber", value: fileNumber },
+                    {
+                      key:"relations",value:"offline"
+                    }
                   ];
                   let response =  await getSearchResults(queryObject);
                   let properties = response.Properties
-                  if(type!="ESTATE_SERVICE_MANI_MAJRA.PROPERTY_MASTER"){
+                  let branchType = properties[0].propertyDetails.branchType
+                  if(branchType!="MANI_MAJRA"){
                     properties = response.Properties.map(item => ({...item, estateRentSummary: {balanceRent: Number(item.estateRentSummary.balanceRent.toFixed(2)),
                         balanceGST: Number(item.estateRentSummary.balanceGST.toFixed(2)),
                         balanceGSTPenalty: Number(item.estateRentSummary.balanceGSTPenalty.toFixed(2)),

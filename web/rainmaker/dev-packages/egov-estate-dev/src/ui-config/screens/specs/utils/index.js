@@ -881,7 +881,8 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data , gener
               default:
                  queryStr = [{
                    key: "key",
-                   value: "rent-payment-receipt"
+                   value: payload[0].propertyDetails.branchType == "MANI_MAJRA" ? "mm-rent-payment-receip": "rent-payment-receipt"
+                  //  value: "rent-payment-receipt"
                  },
                  {
                    key: "tenantId",
@@ -892,7 +893,8 @@ export const downloadPaymentReceipt = (receiptQueryString, payload, data , gener
            }else{
               queryStr = [{
                 key: "key",
-                value: "rent-payment-receipt"
+                value: payload[0].propertyDetails.branchType == "MANI_MAJRA" ? "mm-rent-payment-receipt": "rent-payment-receipt"
+                // value: "rent-payment-receipt"
                 },
                 {
                 key: "tenantId",

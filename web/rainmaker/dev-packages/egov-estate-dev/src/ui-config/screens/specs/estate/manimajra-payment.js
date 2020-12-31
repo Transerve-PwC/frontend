@@ -244,7 +244,7 @@ export const monthField = {
       labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
     },
     required: true,
-    jsonPath: "payment.transactionId",
+    jsonPath: "payment.transactionNumber",
     visible: process.env.REACT_APP_NAME !== "Citizen"
   }
   
