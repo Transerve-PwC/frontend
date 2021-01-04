@@ -148,8 +148,8 @@ class PaymentRedirect extends Component {
                 <CardContent classes={{ root: "card-content-style" }}>
                   <div style={{float: "left", padding: "0px 10px", display: "inline-block"}}>
                   <LabelContainer
-                  labelKey="ES_PAYMENT_PROGRESS"
-                  labelName="ES_PAYMENT_PROGRESS"
+                  labelKey="RP_PAYMENT_PROGRESS"
+                  labelName="RP_PAYMENT_PROGRESS"
                   style={{
                     fontSize: 14,
                     color: "rgba(0, 0, 0, 0.8700000047683716)"
@@ -164,8 +164,8 @@ class PaymentRedirect extends Component {
                       className="bottom-button"
                       onClick={this.buttonClick}>
                       <LabelContainer
-                        labelName="ES_REFRESH"
-                        labelKey="ES_REFRESH"
+                        labelName="RP_REFRESH"
+                        labelKey="RP_REFRESH"
                       />
                     </Button>
                   </div>)}
