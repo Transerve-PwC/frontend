@@ -66,6 +66,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+
   let activeStep = get(
     state.screenConfiguration.screenConfig["apply-building-branch"],
     "components.div.children.stepper.props.activeStep",
@@ -270,13 +271,16 @@ const callBackForNext = async (state, dispatch) => {
             labelName: "Please fill all mandatory fields, then do next !",
             labelKey: "ES_ERR_FILL_MANDATORY_FIELDS"
           };
+       
           break;
         case OWNER_DOCUMENTS_STEP:
           errorMessage = {
             labelName: "Please upload all the required documents !",
             labelKey: "ES_ERR_UPLOAD_REQUIRED_DOCUMENTS"
           };
+       
           break;
+          
       }
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
@@ -344,6 +348,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+      
       break;
     case OWNER_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -353,6 +358,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+    
       break;
     case OWNER_DOCUMENTS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -362,6 +368,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+
       break;
     default:
       dispatchMultipleFieldChangeAction(
@@ -371,6 +378,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+  
   }
 };
 

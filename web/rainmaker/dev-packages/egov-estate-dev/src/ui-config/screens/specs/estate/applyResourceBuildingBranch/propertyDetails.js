@@ -160,6 +160,12 @@ const fileNumberField = {
   pattern: _getPattern("fileNumber"),
   jsonPath: "Properties[0].fileNumber",
   afterFieldChange: (action, state, dispatch) => {
+    dispatch(handleField(
+      "apply-building-branch",
+      "components.div.children.footer.children.nextButton",
+      "props.disabled",
+      false
+    ))
     if (action.value.length > 50) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {

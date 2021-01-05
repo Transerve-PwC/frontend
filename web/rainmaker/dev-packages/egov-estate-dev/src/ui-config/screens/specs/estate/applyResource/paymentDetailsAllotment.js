@@ -55,6 +55,7 @@ const advancedRentField = {
       xs: 12,
       sm: 6
   },
+  // visible:false,
   required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }

@@ -359,6 +359,18 @@ export const fileNumberField = {
     pattern: _getPattern("fileNumber"),
     jsonPath: "Properties[0].fileNumber",
     afterFieldChange: (action, state, dispatch) => {
+        dispatch(handleField(
+            "apply",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
+          dispatch(handleField(
+            "apply-manimajra",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
         if (action.value.length > 50) {
             displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
         }

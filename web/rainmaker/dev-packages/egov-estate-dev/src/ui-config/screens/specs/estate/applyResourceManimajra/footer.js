@@ -69,6 +69,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+  
   let activeStep = get(
     state.screenConfiguration.screenConfig["apply-manimajra"],
     "components.div.children.manimajraStepper.props.activeStep",
@@ -571,6 +572,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+      
       break;
     case OWNER_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -580,6 +582,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+    
       break;
     case OWNER_DOCUMENT_UPLOAD_STEP:
       dispatchMultipleFieldChangeAction(
@@ -589,6 +592,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+    
       break;
     case PURCHASER_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -598,6 +602,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+     
       break;
     case PURCHASER_DOCUMENTS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -607,6 +612,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+    
       break;
     // case PAYMENT_DETAILS_STEP:
     // dispatchMultipleFieldChangeAction(
@@ -625,6 +631,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+     
       break;
     default:
       dispatchMultipleFieldChangeAction(
@@ -634,6 +641,7 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
+     
   }
 };
 
