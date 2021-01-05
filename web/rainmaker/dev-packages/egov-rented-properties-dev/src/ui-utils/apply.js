@@ -141,6 +141,12 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
         dispatch(toggleSpinner())
         console.log(error);
+        dispatch(handleField(
+          "ownership-apply",
+          "components.div.children.footer.children.nextButton",
+          "props.disabled",
+          false
+        ))
         return false;
     }
   }
@@ -448,6 +454,12 @@ export const setApplicationNumberBox = (state, dispatch, applicationNumber, scre
     } catch (error) {
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
         console.log(error);
+        dispatch(handleField(
+          "mortage-apply",
+          "components.div.children.footer.children.nextButton",
+          "props.disabled",
+          false
+        ))
         return false;
     }
   }
@@ -533,8 +545,15 @@ export const applyDuplicateCopy = async (state, dispatch, activeIndex) => {
         )
         return true;
     } catch (error) {
+      debugger
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
         console.log(error);
+        dispatch(handleField(
+          "duplicate-copy-apply",
+          "components.div.children.footer.children.nextButton",
+          "props.disabled",
+          false
+        ))
         return false;
     }
   }

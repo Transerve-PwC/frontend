@@ -303,6 +303,12 @@ const duplicateCopyTransitField = {
               ""
             )
           )
+          dispatch(handleField(
+            "duplicate-copy-apply",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
       }
 }
 

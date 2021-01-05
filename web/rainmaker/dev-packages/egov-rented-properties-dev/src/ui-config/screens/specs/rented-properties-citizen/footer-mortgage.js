@@ -6,8 +6,15 @@ import { previousButton, submitButton, nextButton, changeStep, moveToSuccess, DE
 import { some } from "lodash";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { PERMISSIONTOMORTGAGE } from "../../../../ui-constants";
-
+import { handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 const callBackForNextMortgage = async(state, dispatch) => {
+  dispatch(handleField(
+    "mortage-apply",
+    "components.div.children.footer.children.nextButton",
+    "props.disabled",
+    true
+  ))
   let activeStep = get(
       state.screenConfiguration.screenConfig["mortage-apply"],
       "components.div.children.stepper.props.activeStep",
@@ -121,6 +128,12 @@ const callBackForNextMortgage = async(state, dispatch) => {
                   break;
           }
           dispatch(toggleSnackbar(true, errorMessage, "warning"));
+          dispatch(handleField(
+            "mortage-apply",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
       }
   }
 }

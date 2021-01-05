@@ -11,10 +11,17 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getOwnershipSearchResults, getDuplicateCopySearchResults } from "../../../../ui-utils/commons"
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
-
+import { handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 
 const callBackForNext = async(state, dispatch) => {
+  dispatch(handleField(
+    "ownership-apply",
+    "components.div.children.footer.children.nextButton",
+    "props.disabled",
+    true
+  ))
     let activeStep = get(
         state.screenConfiguration.screenConfig["ownership-apply"],
         "components.div.children.stepper.props.activeStep",
@@ -150,6 +157,12 @@ const callBackForNext = async(state, dispatch) => {
             labelKey: "RP_ERR_DATE_OF_DEATH_FUTURE_DATE"
         };
           dispatch(toggleSnackbar(true, errorMsg, "warning"));
+          dispatch(handleField(
+            "ownership-apply",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
       } 
         else if (hasFieldToaster) {
             let errorMessage = {
@@ -183,6 +196,12 @@ const callBackForNext = async(state, dispatch) => {
                     break;
             }
             dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            dispatch(handleField(
+              "ownership-apply",
+              "components.div.children.footer.children.nextButton",
+              "props.disabled",
+              false
+            ))
         }
         // if (!isDateValid) {
   
@@ -259,6 +278,12 @@ const callBackForNextTransitImages = async(state, dispatch) => {
 }
 
 const callBackForNextDuplicate = async(state, dispatch) => {
+  dispatch(handleField(
+    "duplicate-copy-apply",
+    "components.div.children.footer.children.nextButton",
+    "props.disabled",
+    true
+  ))
     let activeStep = get(
         state.screenConfiguration.screenConfig["duplicate-copy-apply"],
         "components.div.children.stepper.props.activeStep",
@@ -396,6 +421,12 @@ const callBackForNextDuplicate = async(state, dispatch) => {
                     break;
             }
             dispatch(toggleSnackbar(true, errorMessage, "warning"));
+            dispatch(handleField(
+              "duplicate-copy-apply",
+              "components.div.children.footer.children.nextButton",
+              "props.disabled",
+              false
+            ))
         }
     }
 }

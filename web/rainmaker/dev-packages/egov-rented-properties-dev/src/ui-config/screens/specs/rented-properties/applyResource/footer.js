@@ -10,7 +10,8 @@ import { RP_MASTER_ENTRY, RECOVERY_NOTICE, VIOLATION_NOTICE, OWNERSHIPTRANSFERRP
 import { getUserInfo,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { getSearchResults, setXLSTableData } from "../../../../../ui-utils/commons";
 import { getQueryArg,setDocuments } from "egov-ui-framework/ui-utils/commons";
-
+import { handleScreenConfigurationFieldChange as handleField,
+} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 let tenantId = getTenantId();
 
 const userInfo = JSON.parse(getUserInfo());
@@ -596,6 +597,12 @@ export const changeStep = (
                 ),
                 dispatch
             );
+            dispatch(handleField(
+              screenName,
+              "components.div.children.footer.children.nextButton",
+              "props.disabled",
+              false
+            ))
             break;
         case DOCUMENT_UPLOAD_STEP:
             dispatchMultipleFieldChangeAction(
@@ -605,6 +612,12 @@ export const changeStep = (
                 ),
                 dispatch
             );
+            dispatch(handleField(
+              screenName,
+              "components.div.children.footer.children.nextButton",
+              "props.disabled",
+              false
+            ))
             break;
         default:
             dispatchMultipleFieldChangeAction(
@@ -614,6 +627,12 @@ export const changeStep = (
                 ),
                 dispatch
             );
+            dispatch(handleField(
+              screenName,
+              "components.div.children.footer.children.nextButton",
+              "props.disabled",
+              false
+            ))
     }
   };
   

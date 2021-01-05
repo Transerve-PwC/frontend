@@ -248,6 +248,12 @@ const ownershipTransitNumberField = {
               ""
             )
           )
+          dispatch(handleField(
+            "ownership-apply",
+            "components.div.children.footer.children.nextButton",
+            "props.disabled",
+            false
+          ))
       }
 }
 
@@ -306,6 +312,12 @@ const mortgageTransitNumberField = {
             ""
           )
         )
+        dispatch(handleField(
+          "mortage-apply",
+          "components.div.children.footer.children.nextButton",
+          "props.disabled",
+          false
+        ))
     }
 }
 
