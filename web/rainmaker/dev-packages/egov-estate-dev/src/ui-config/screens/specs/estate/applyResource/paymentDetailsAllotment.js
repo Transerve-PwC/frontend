@@ -38,7 +38,7 @@ if ((window.location.href).includes("allotment")) {
 }
 
 var data = []
-new Array(28).fill(undefined).map((val,idx) => {
+new Array(31).fill(undefined).map((val,idx) => {
   data.push({ code: idx + 1 })
 });
 /***************** Common fields to Ground rent and License fee *********************/

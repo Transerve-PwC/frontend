@@ -6,6 +6,11 @@ import {
     getCommonApplyFooter
   } from "../../utils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+  import {
+    toggleSnackbar
+  } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { getBill, validateFields } from "../../utils";
+  import get from "lodash/get";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
   export const footerReview = (
@@ -56,12 +61,45 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                 },
                 onClickDefination: {
                   action: "condition",
-                  callBack: () => {
-                    dispatch(
-                      setRoute(
-                       `/estate-citizen/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
-                      )
-                    );
+                  callBack: async() => {
+                    const queryObj = [
+                      {
+                        key: "tenantId",
+                        value: tenantId
+                      },
+                      {
+                        key: "consumerCode",
+                        value: applicationNumber
+                      },
+                      {
+                        key: "businessService",
+                        value: businessService
+                      }
+                    ];
+                  
+                  const billPayload = await getBill(queryObj);
+                  // debugger
+                  console.log(billPayload);
+                
+                  const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
+                    if(taxAmount === 0){
+                      dispatch(toggleSnackbar(
+                        true,
+                        {
+                          labelName: "Amount already Paid !",
+                          labelKey: "ES_ERR_FEE_AMOUNT_PAID"
+                        },
+                        "error"
+                      ));
+                    }
+                    else{
+                      dispatch(
+                        setRoute(
+                         `/estate-citizen/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
+                        )
+                      );
+                    }
+                    
                   },
   
                 },
@@ -113,12 +151,44 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                 },
                 onClickDefination: {
                   action: "condition",
-                  callBack: () => {
-                    dispatch(
-                      setRoute(
-                       `/estate/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
-                      )
-                    );
+                  callBack: async() => {
+                    const queryObj = [
+                      {
+                        key: "tenantId",
+                        value: tenantId
+                      },
+                      {
+                        key: "consumerCode",
+                        value: applicationNumber
+                      },
+                      {
+                        key: "businessService",
+                        value: businessService
+                      }
+                    ];
+                  
+                  const billPayload = await getBill(queryObj);
+                  // debugger
+                  console.log(billPayload);
+                
+                  const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
+                    if(taxAmount === 100){
+                      dispatch(toggleSnackbar(
+                        true,
+                        {
+                          labelName: "Amount already Paid !",
+                          labelKey: "ES_ERR_FEE_AMOUNT_PAID"
+                        },
+                        "error"
+                      ));
+                    }
+                    else{
+                      dispatch(
+                        setRoute(
+                         `/estate/pay?consumerCode=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`
+                        )
+                      );
+                    }
                   },
                 },
                 visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false

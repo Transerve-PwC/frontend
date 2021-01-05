@@ -174,33 +174,67 @@ export const getCommonApplyFooter = children => {
 const callBackForOfflinePayment = async (state, dispatch) => {
   let isValid = true;
   isValid = validateFields("components.div.children.formwizardFirstStep.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "pay")
-  if(isValid) {
-    const applicationNumber = getQueryArg(window.location.href, "consumerCode")
-    const tenantId = getTenantId()
-    const type = getQueryArg(window.location.href, "businessService")
-    const paymentDetails = get(state, "screenConfiguration.preparedFinalObject.payment")
-    const estimateDetails = get(state, "screenConfiguration.preparedFinalObject.temp[0].estimateCardData")
-    const tax = estimateDetails.find(item => item.name.labelKey.includes("TAX"));
-    const non_tax = estimateDetails.filter(item => !item.name.labelKey.includes("TAX"))
-    const paymentAmount = non_tax.reduce((prev, curr)=> prev + Number(curr.value) ,0)
-    const gst = !!tax ? tax.value : 0
-    const payload = [{...paymentDetails, paymentAmount, gst: Number(gst), applicationNumber, tenantId}]
-    try {
-      const response = await httpRequest("post",
-      "/est-services/application/_collect_payment",
-      "",
-      [],
-      { Applications : payload })
-      if(!!response) {
-        const path = `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
-        dispatch(
-          setRoute(path)
-        );
+  const consumerCode = getQueryArg(window.location, "consumerCode");
+  const tenantId = getQueryArg(window.location, "tenantId");
+  const businessService = getQueryArg(window.location, "businessService")
+  const queryObj = [
+    
+    {
+      key: "consumerCode",
+      value: consumerCode
+    },
+    {
+      key: "tenantId",
+      value: tenantId
+    },
+    {
+      key: "businessService",
+      value: businessService
+    }
+  ];
+
+const billPayload = await getBill(queryObj);
+const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
+  if(taxAmount === 0){
+    dispatch(toggleSnackbar(
+      true,
+      {
+        labelName: "Amount already Paid !",
+        labelKey: "ES_ERR_FEE_AMOUNT_PAID"
+      },
+      "error"
+    ));
+  }
+  else{
+    if(isValid) {
+      const applicationNumber = getQueryArg(window.location.href, "consumerCode")
+      const tenantId = getTenantId()
+      const type = getQueryArg(window.location.href, "businessService")
+      const paymentDetails = get(state, "screenConfiguration.preparedFinalObject.payment")
+      const estimateDetails = get(state, "screenConfiguration.preparedFinalObject.temp[0].estimateCardData")
+      const tax = estimateDetails.find(item => item.name.labelKey.includes("TAX"));
+      const non_tax = estimateDetails.filter(item => !item.name.labelKey.includes("TAX"))
+      const paymentAmount = non_tax.reduce((prev, curr)=> prev + Number(curr.value) ,0)
+      const gst = !!tax ? tax.value : 0
+      const payload = [{...paymentDetails, paymentAmount, gst: Number(gst), applicationNumber, tenantId}]
+      try {
+        const response = await httpRequest("post",
+        "/est-services/application/_collect_payment",
+        "",
+        [],
+        { Applications : payload })
+        if(!!response) {
+          const path = `/estate/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${type}`
+          dispatch(
+            setRoute(path)
+          );
+        }
+      } catch (error) {
+        console.log("error", error)
       }
-    } catch (error) {
-      console.log("error", error)
     }
   }
+ 
 }
 
 export const footer = getCommonApplyFooter({
