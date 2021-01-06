@@ -23,12 +23,22 @@ class Footer extends React.Component {
     //responseLength: 0
   };
 
-  findAssigner = (item, processInstances,state) => {
-    const findIndex = processInstances.map(processInstance => processInstance.action === item && processInstance.state.applicationStatus === state).lastIndexOf(true)
+  findAssigner = (item, processInstances,state, role) => {
+    const label = !!role ? `${item}_TO_${role}` : item
+    const findIndex = processInstances.map(processInstance => processInstance.action === label && processInstance.state.applicationStatus === state).lastIndexOf(true)
     return processInstances[findIndex]
   }
 
   openActionDialog = async item => {
+    let employeeList = []
+    if(!item.roleProps || (!!item.roleProps && item.roleProps.length === 1)) {
+      const data = !!item.roleProps ? {...item, ...item.roleProps[0]} : item
+      employeeList = await this.renderemployeeList(data)
+    }
+    this.setState({ open: true, data: item, employeeList})
+  }
+
+  renderemployeeList = async item => {
     const { handleFieldChange, setRoute, dataPath, moduleName } = this.props;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
     const {workflow: {ProcessInstances = []}} = preparedFinalObject || {}
@@ -49,14 +59,14 @@ class Footer extends React.Component {
       switch(moduleName) {
         case "MasterRP": {
           if(!!action && data[0].masterDataState !== "PM_PENDINGJAVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].masterDataState) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].masterDataState, item.role) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
         }
         case WORKFLOW_BUSINESS_SERVICE_OT: {
           if(!!action && data[0].applicationState !== "OT_PENDINGCLVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].applicationState) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].applicationState, item.role) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
@@ -64,7 +74,7 @@ class Footer extends React.Component {
         case "PermissionToMortgage":
         case WORKFLOW_BUSINESS_SERVICE_DC: {
           if(!!action && data[0].state !== "DC_PENDINGCLVERIFICATION" && data[0].state !== "MG_PENDINGCLVERIFICATION") {
-            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].state) || {}
+            const {assigner = {}} = this.findAssigner(action, ProcessInstances,data[0].state, item.role) || {}
             assignee = !!assigner.uuid ? [assigner.uuid] : []
           }
           break
@@ -110,8 +120,12 @@ class Footer extends React.Component {
           };
         });
     }
+    return employeeList
+  }
 
-    this.setState({ open: true, data: item, employeeList });
+  onRoleSelect = async item => {
+    const employeeList = await this.renderemployeeList(item)
+    this.setState({ employeeList})
   };
 
   onClose = () => {
@@ -184,6 +198,7 @@ class Footer extends React.Component {
           dialogData={data}
           dropDownData={employeeList}
           handleFieldChange={handleFieldChange}
+          onRoleSelect={this.onRoleSelect}
           onButtonClick={onDialogButtonClick}
           dataPath={dataPath}
           moduleName={moduleName}
