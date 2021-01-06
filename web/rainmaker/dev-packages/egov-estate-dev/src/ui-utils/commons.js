@@ -165,7 +165,7 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 
 
 const isValid = (file, acceptedFiles) => {
-  const mimeType = file["type"];
+  const mimeType = file["type"] || file.name.split(".").pop();
   if(!!mimeType) {
     const mimes = mimeType.split("/");
     let acceptedTypes = acceptedFiles.split(",");

@@ -202,7 +202,7 @@ const getData = async (action, state, dispatch) => {
                 required: true,
                 props: {
                   label: {
-                    labelName: "I hereby declare and affirm that the above-furnished information is true and correct and nothing has been concealed therefrom. I am also aware of the fact that in case this information is found false/inconect, the authorities are at liberty to initiate recovery of amount/interest/penalty/fine as providod in Punjab Municipal Act 1911 or Punjab Municipal Corporation Act 1976.",
+                    labelName: "I hereby declare and affirm that the above-furnished information is true and correct and nothing has been concealed therefrom. I am also aware of the fact that in case this information is found false/incorrect, the authorities are at liberty to initiate recovery of amount/interest/penalty/fine as provided in Punjab Municipal Act 1911 or Punjab Municipal Corporation Act 1976.",
                     labelKey: "ES_DECLARATION_SUMMARY_VALUE"
                   },
                   style: { margin: "10px",
