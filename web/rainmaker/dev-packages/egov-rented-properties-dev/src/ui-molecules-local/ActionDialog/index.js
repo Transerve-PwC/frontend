@@ -626,8 +626,8 @@ if(!document || document.length===0){
       dataPath,
       state
     } = this.props;
-    const showEmployeeList = !!dialogData && !!dialogData.roleProps && !!dialogData.roleProps.length === 1 ? dialogData.roleProps[0].showEmployeeList : this.state.showEmployeeList
-    const isDocRequired = !!dialogData && !!dialogData.roleProps && !!dialogData.roleProps.length === 1 ? dialogData.roleProps[0].isDocRequired : this.state.isDocRequired
+    const showEmployeeList = !!dialogData && !!dialogData.roleProps && dialogData.roleProps.length === 1 ? dialogData.roleProps[0].showEmployeeList : this.state.showEmployeeList
+    const isDocRequired = !!dialogData && !!dialogData.roleProps && dialogData.roleProps.length === 1 ? dialogData.roleProps[0].isDocRequired : this.state.isDocRequired
     const rolesData =  !!dialogData && !!dialogData.roleProps && !!dialogData.roleProps.length ? dialogData.roleProps.map(roledata => ({
       label: roledata.role,
       value: roledata
