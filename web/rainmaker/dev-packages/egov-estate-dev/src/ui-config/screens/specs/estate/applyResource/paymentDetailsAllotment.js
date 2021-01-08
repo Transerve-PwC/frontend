@@ -885,8 +885,13 @@ const getMonthsOfRentRadioButton = {
     xs: 12,
     sm: 6,
   },
+
   jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",
   props: {
+    label: {
+      name: "Select",
+      key: "ES_SELECT"
+    },
     buttons: [{
         labelName: "2 months of rent",
         labelKey: "ES_TWO_MONTHS_RENT_LABEL",

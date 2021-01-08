@@ -2345,7 +2345,7 @@ export const _getPattern = (type) => {
     case "ownerShare":
       return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
     case "courtCase":
-      return /^[a-zA-Z0-9]{1,250}$/i;  
+      return /^([\s\S]){1,250}$/i;
   }
 }
 

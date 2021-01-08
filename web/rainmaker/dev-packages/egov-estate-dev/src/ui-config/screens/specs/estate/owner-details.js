@@ -362,13 +362,12 @@ const updateAllFields = async (action, state, dispatch) => {
 
   let containers={}
   if(properties[0].propertyDetails.owners){
-    // properties[0].propertyDetails.owners.forEach((element,index) => { 
-    await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
+    let applicationBranchType = "EstateBranch";
+    let applicationsPresent = false;
+     await asyncForEach(properties[0].propertyDetails.owners, async (element,index) => {
       if (!!element.ownerDetails.isCurrentOwner) {
         let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == ESTATE_APPROVED_STATE));
         let allotmentDetailsComponent = getAllotmentDetails(false,index);
-        let applicationBranchType = "EstateBranch";
-
         if (applicationState == ESTATE_APPROVED_STATE) {
           switch(branchType) {
             case "BUILDING_BRANCH":
@@ -385,6 +384,13 @@ const updateAllFields = async (action, state, dispatch) => {
           ]
           let payload = await getSearchApplicationsResults(queryObject);
           let modeOfTransferArr = [];
+          const fileNumber = getQueryArg(window.location.href, "fileNumber");
+
+          payload.Applications = payload.Applications.filter(function(item){
+            if(fileNumber === item.property.fileNumber){
+              return item
+            }
+          })
 
           if (payload.Applications && payload.Applications.length) {
             payload.Applications.map(item => {
@@ -396,29 +402,28 @@ const updateAllFields = async (action, state, dispatch) => {
               })
             })
 
+            if(modeOfTransferArr.length >=1){
+              applicationsPresent = true;
+            }
             dispatch(
               prepareFinalObject(`Properties[0].propertyDetails.owners[${index}].ownerDetails.modeOfTransferArr`, modeOfTransferArr)
             )
-  
-            var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty(applicationBranchType);
-          }
+            }
         }
-
-        if (!!modeOfTransferComponent) {
-          containers[index] = getCommonCard({
-            ownerdetailsComponent,
-            allotmentDetailsComponent,
-            modeOfTransferComponent
-          });
-        }
-        else {
           containers[index] = getCommonCard({
             ownerdetailsComponent,
             allotmentDetailsComponent
           });  
-        }
       }
     });
+
+    var modeOfTransferComponent = getModeOfTransferDetailsForApprovedProperty(applicationBranchType);
+    if (applicationsPresent) {
+          containers["modeOfTransfer"] = getCommonCard({
+            modeOfTransferComponent
+          });
+        }
+      
   }
   let entityDetails = companyDetails ? companyDetails : firmDetails ? firmDetails : {};
 
