@@ -376,9 +376,13 @@ export const extensionFeeInfo = (isEditable) => ({
 })
 
 export const getPropertyDetails = (isEditable = true) => {
-  return getCommonGrayCard(getPropertyInfoManimajra(false))
-    // return getCommonGrayCard(propertyInfo(isEditable))
+  // return getCommonGrayCard(getPropertyInfoManimajra(false))
+    return getCommonGrayCard(propertyInfo(isEditable))
   }
+
+  export const getPropertyDetailsManimajra = (isEditable = true) => {
+    return getCommonGrayCard(getPropertyInfoManimajra(false))
+    }
 
 
   export const getReviewAuction = (isEditable = true) => {

@@ -19,7 +19,7 @@ export const getStatusList = async (state, dispatch, queryObject, screen, path, 
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
   if(!!businessServices && !!screen && !!path) {
-    const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state}))
+    const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state,label:state}))
     dispatch(
       handleField(
         screen,

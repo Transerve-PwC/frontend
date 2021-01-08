@@ -179,7 +179,7 @@ class ActionDialog extends React.Component {
                   >
                     <CloseIcon />
                   </Grid>
-                  {showEmployeeList && !!dropDownData.length && (
+                  {showEmployeeList && !!dropDownData.length && (moduleName === "ES-EB-IS-RefundOfEmd" ? buttonLabel !== "MODIFY" : true) && (
                     <Grid
                       item
                       sm="12"
@@ -214,6 +214,7 @@ class ActionDialog extends React.Component {
                       onChange={e =>
                         handleFieldChange(`${dataPath}.comments`, e.target.value)
                       }
+                      required = {true}
                       jsonPath={`${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                       inputProps={{ maxLength: 120 }}

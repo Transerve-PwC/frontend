@@ -469,7 +469,10 @@ export const previousButton = {
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
     }
-    window.scrollTo(0,0)
+    
+    if(activeStep != SUMMARY_STEP){
+      window.scrollTo(0,0)
+    }
   }
 
   export const footer = getCommonApplyFooter({
