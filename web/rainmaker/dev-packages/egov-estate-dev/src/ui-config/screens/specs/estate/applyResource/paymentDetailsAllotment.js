@@ -56,6 +56,7 @@ const advancedRentField = {
       sm: 6
   },
   // visible:false,
+  pattern: _getPattern("float"),
   required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }
@@ -371,6 +372,7 @@ const rentAmountField = {
   maxLength: 100,
   minLength: 1,
   required: true,
+  pattern: _getPattern("float"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 

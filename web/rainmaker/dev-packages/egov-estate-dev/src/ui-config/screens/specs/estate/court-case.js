@@ -1,11 +1,15 @@
 import {
-  getCommonCard
+  getCommonCard,
+  getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getCourtCaseDetails } from "./preview-resource/courtCase-details";
 import {onTabChange, headerrow, tabs, tabsAllotment} from './search-preview';
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import {
   BUILDING_BRANCH_TABS as tabsBB,
   MANIMAJRA_BRANCH_TABS as tabsMM
@@ -28,12 +32,16 @@ children: {
 
 const getData = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
+  const userInfo = JSON.parse(getUserInfo());
+  const {roles = []} = userInfo
+  const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
   if (fileNumber){
       // await searchResults(action, state, dispatch, fileNumber)
       let queryObject = [
         { key: "fileNumber", value: fileNumber },
         {key: "relations", value: "court"}
       ];
+      
       let payload = await getSearchResults(queryObject);
       if(!!payload) {
         let properties = payload.Properties;
@@ -54,6 +62,8 @@ const getData = async (action, state, dispatch, fileNumber) => {
             activeIndex = 6;
             break;
         }
+        let approvedflagdata = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
+        let approvedFlagState = approvedflagdata.state
 
         return {
           div: {
@@ -87,6 +97,22 @@ const getData = async (action, state, dispatch, fileNumber) => {
                   },
                   type: "array",
                 },
+                rightdiv: {
+                  uiFramework: "custom-atoms",
+                  componentPath: "Container",
+                  props: {
+                    style: { justifyContent: "flex-end", marginTop: 10 }
+                  },
+                  gridDefination: {
+                    xs: 12,
+                    sm: 12,
+                    align: "right"
+                  },
+                  children: {
+                    courtCaseButton: buttonComponent("Create CourtCase",`/estate/court-case-apply?fileNumber=${fileNumber}&tenantId=${getTenantId()}`),
+                  },
+                  visible: (approvedFlagState === "ES_APPROVED" && !!findItem) ? true : false
+                },
                 courtCaseContainer
             }
           }
@@ -95,6 +121,36 @@ const getData = async (action, state, dispatch, fileNumber) => {
   }
   
 }
+
+const buttonComponent = (label, route) => ({
+  componentPath: "Button",
+  gridDefination: {
+    xs: 6,
+    sm: 2
+  },
+  props: {
+    variant: "contained",
+    style: {
+      color: "white",
+      backgroundColor: "#fe7a51",
+      borderColor:"#fe7a51",
+      borderRadius: "2px",
+      height: "48px"
+    }
+  },
+  children: {
+    buttonLabel: getLabel({
+      labelName: label,
+      labelKey: label
+    })
+  },
+  onClickDefination: {
+    action: "condition",
+    callBack: (state, dispatch) => {
+      dispatch(setRoute(route));
+    }
+  }
+})
 
 const updateAllFields = (action, state, dispatch) => {
   const properties = get(state, "screenConfiguration.preparedFinalObject.Properties");

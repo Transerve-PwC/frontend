@@ -173,7 +173,8 @@ const getData = async (action, state, dispatch) => {
           dispatch,
           applicationState,
           applicationType,
-          branchType
+          branchType,
+          application
         );        
         reviewDetails = getCommonCard({...reviewDetails})
         return {

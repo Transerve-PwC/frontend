@@ -244,6 +244,43 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
           false
         )
       )
+
+      let bidders = properties[0].propertyDetails.bidders;
+      let refundInitiated = bidders.filter(item => !!item.refundStatus);
+  
+      let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
+
+      const auctionTableColumns = [
+        getTextToLocalMapping("Auction Id"),
+        getTextToLocalMapping("Bidder Name"),
+        getTextToLocalMapping("Deposited EMD Amount"),
+        getTextToLocalMapping("Deposit Date"),
+        getTextToLocalMapping("EMD Validity Date"),
+        {
+          name: getTextToLocalMapping("Initiate Refund"),
+          options: { 
+            display: refundInitiatedColDisplay,
+            viewColumns: refundInitiatedColDisplay
+          }
+        },
+        {
+          name: getTextToLocalMapping("Refund Status"),
+          options: { 
+            display: true,
+            viewColumns: true
+          }
+        }
+      ]
+  
+      dispatch(
+        handleField(
+          "refund",
+          "components.div.children.auctionTableContainer",
+          "props.columns",
+          auctionTableColumns
+        )
+      )
+  
     }
   } catch(err) {
     dispatch(toggleSnackbar(true, { labelName: err.message }, "error"));

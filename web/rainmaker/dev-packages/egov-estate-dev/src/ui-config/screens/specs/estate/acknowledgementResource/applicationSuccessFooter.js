@@ -70,7 +70,7 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          downloadFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+          downloadFormButtonLabel: (purpose === "pay" || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
             labelName: "DOWNLOAD RECEIPT",
             labelKey: "ES_APPLICATION_BUTTON_DOWN_RECEIPT"
           }) : getLabel({
@@ -164,7 +164,7 @@ export const applicationSuccessFooter = (
           }
         },
         children: {
-          printFormButtonLabel: (purpose === "pay" && type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
+          printFormButtonLabel: (purpose === "pay" || type === "ESTATE_SERVICE_ESTATE_BRANCH.PROPERTY_MASTER") ? getLabel({
             labelName: "PRINT RECEIPT",
             labelKey: "ES_APPLICATION_BUTTON_PRINT_RECEIPT"
           }) : getLabel({

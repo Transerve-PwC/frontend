@@ -5,6 +5,7 @@ import { applyforApplication } from "../../../../ui-utils/apply";
 import { prepareFinalObject, toggleSnackbar, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { moveToSuccess } from "../estate/applyResource/footer";
 import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
+import { inputProps, setDocumentData } from "./applyResource/documentsStep";
 
 export const DEFAULT_STEP = -1;
 export const DETAILS_STEP = 0;
@@ -304,6 +305,20 @@ export const previousButton = {
       //   "props.disabled",
       //   false
       // ))
+      const Applications = get(state.screenConfiguration.preparedFinalObject, "Applications");
+      const documentList = get(state.screenConfiguration.preparedFinalObject, "temp[0].documentList")
+      const second_step = get(state.screenConfiguration.preparedFinalObject, "temp[0].second_step")
+      let _documents = documentList.filter((item, index) => {
+        return eval(item.filter)
+      })
+        const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step, documentList: _documents})
+        inputProps.push(...second_step_sections);
+        // dispatch(handleField(
+        //   "_apply",
+        //   "components.div.children.formwizardSecondStep.children.documentDetails.children.cardContent.children.documentList.props",
+        //   "inputProps",
+        //   second_step_sections
+        // ))
       const res =  await applyforApplication(state, dispatch, activeStep)
         if(!res) {
           dispatch(handleField(

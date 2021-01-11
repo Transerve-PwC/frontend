@@ -91,8 +91,8 @@ const callBackForNext = async (state, dispatch) => {
   );
   let isFormValid = true;
   let hasFieldToaster = true;
-  let ownerOnePosAllotDateValid = true;
-  let ownerTwoPosAllotDateValid = true;
+  let ownerPosAllotDateValid = true;
+  // let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
   let isStartAndEndYearValid = true
   let propertyType = get(
@@ -182,23 +182,24 @@ const callBackForNext = async (state, dispatch) => {
     let emdDate = get(state.screenConfiguration.screenConfig[screenKey], "components.div.children.formwizardSecondStep.children.AllotmentAuctionDetails.children.cardContent.children.detailsContainer.children.cardContent.children.auctionCard.children.emdAmountDate.props.value") || get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.emdDate");
 
     
-    let auctionDateEpoch = convertDateToEpoch(auctionDate)
-    let emdDateEpoch = convertDateToEpoch(emdDate)
-  
-    let typeOfAllocationSelected = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.typeOfAllocation");
-    auctionEMDDateValid = auctionDateEpoch - emdDateEpoch > 0 ? true : false
-  
 
-    if(typeOfAllocationSelected !== "ALLOCATION_TYPE.ALLOTMENT"){
-    if (isAuctionValid && auctionEMDDateValid) {
-      const res = await applyEstates(state, dispatch, activeStep);
-      if (!res) {
-        return
+    let typeOfAllocationSelected = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.typeOfAllocation");
+    if (typeOfAllocationSelected !== "ALLOCATION_TYPE.ALLOTMENT"){
+      if (!!auctionDate || !!emdDate) {
+        let auctionDateEpoch = convertDateToEpoch(auctionDate)
+        let emdDateEpoch = convertDateToEpoch(emdDate)
+        
+        auctionEMDDateValid = auctionDateEpoch - emdDateEpoch > 0 ? true : false;
       }
-    } else {
-      isFormValid = false;
+      if (isAuctionValid && auctionEMDDateValid) {
+        const res = await applyEstates(state, dispatch, activeStep);
+        if (!res) {
+          return
+        }
+      } else {
+        isFormValid = false;
+      }
     }
-  }
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
@@ -207,7 +208,33 @@ const callBackForNext = async (state, dispatch) => {
       "Properties[0].propertyDetails.entityType",
       ""
     )
-    let ownerOnePossessionDate = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate");
+    let propertyOwnersItems = get(
+      state.screenConfiguration.screenConfig,
+      `apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
+    );
+
+    if (propertyOwnersItems && propertyOwnersItems.length) {
+      for (var i = 0; i < propertyOwnersItems.length; i++) {
+        if (!!propertyOwnersItems[i].isDeleted) {
+          continue;
+        }
+        let ownerPossessionDate = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`);
+        let ownerDateOfAllotment = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.dateOfAllotment`);
+
+        let ownerPossessionDateEpoch = convertDateToEpoch(ownerPossessionDate)
+        let ownerDateOfAllotmentEpoch = convertDateToEpoch(ownerDateOfAllotment)
+
+        if(ownerPossessionDateEpoch !== undefined && ownerDateOfAllotmentEpoch !== undefined){
+          ownerPosAllotDateValid = ownerPossessionDateEpoch - ownerDateOfAllotmentEpoch >= 0 ? true : false
+          isFormValid = ownerPosAllotDateValid == true ? true : false;
+        }
+
+        if (!ownerPosAllotDateValid) {
+          break;
+        }
+      }
+    }
+    /* let ownerOnePossessionDate = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate");
     let ownerOneDateOfAllotment = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[0].ownerDetails.dateOfAllotment");
     let ownerTwoPossessionDate = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[1].ownerDetails.possesionDate") || 0;
     let ownerTwoDateOfAllotment = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[1].ownerDetails.dateOfAllotment") || 0;
@@ -229,7 +256,7 @@ const callBackForNext = async (state, dispatch) => {
           ownerTwoPosAllotDateValid = false;
           isFormValid = false;
         }
-  }
+  } */
   
     if (!!entityType) {
       if (entityType == "ET.PARTNERSHIP_FIRM") {
@@ -263,7 +290,7 @@ const callBackForNext = async (state, dispatch) => {
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerPosAllotDateValid)) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -281,7 +308,7 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails");
-        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -303,7 +330,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch,
           screenKey
         )
-        if (isFirmDetailsValid && isProprietorshipDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
+        if (isFirmDetailsValid && isProprietorshipDetailsValid && ownerPosAllotDateValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -314,7 +341,7 @@ const callBackForNext = async (state, dispatch) => {
         break;
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails");
-        if (isOwnerOrPartnerDetailsValid && (ownerOnePosAllotDateValid || ownerTwoPosAllotDateValid)) {
+        if (isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -757,7 +784,7 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep !== SUMMARY_STEP) {
     if (isFormValid) {
       changeStep(state, dispatch, screenKey);
-    }else if(ownerOnePosAllotDateValid === false){
+    }else if(ownerPosAllotDateValid === false){
       let errorMessage = {
         labelName: "Date of possession should be on and after date of allotment",
         labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
@@ -765,30 +792,30 @@ const callBackForNext = async (state, dispatch) => {
     
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 
-    else if(!ownerTwoPosAllotDateValid && ownerOnePosAllotDateValid){
+    /* else if(!ownerTwoPosAllotDateValid && ownerOnePosAllotDateValid){
         let errorMessage = {
           labelName: "Date of possession should be on and after date of allotment",
           labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
       };
     
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
-    } 
-    else if(!ownerTwoPosAllotDateValid && !ownerOnePosAllotDateValid){
+    }  */
+    /* else if(!ownerTwoPosAllotDateValid && !ownerOnePosAllotDateValid){
       let errorMessage = {
         labelName: "Date of possession should be on and after date of allotment",
         labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
     };
 
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
-  } 
-  else if(ownerTwoPosAllotDateValid && !ownerOnePosAllotDateValid){
+  }  */
+  /* else if(ownerTwoPosAllotDateValid && !ownerOnePosAllotDateValid){
     let errorMessage = {
       labelName: "Date of possession should be on and after date of allotment",
       labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
   };
 
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
-} 
+}  */
     else if(!auctionEMDDateValid){
     
     let errorMessage = {
@@ -1315,9 +1342,10 @@ export const downloadPrintContainer = (
   dispatch,
   applicationState,
   applicationType,
-  branchType
+  branchType,
+  application
 ) => {
- 
+  let typeOfNotice = application.applicationDetails.typeOfNotice
   /** MenuButton data based on status */
   let downloadMenu = [];
   let printMenu = [];  
@@ -2189,25 +2217,45 @@ export const downloadPrintContainer = (
                 applicationPrintObject
               ]
             }else{
-              downloadMenu = [
-                applicationDownloadObject,
-                NoticeDownloadObject,
-                IssuanceViolationOrderDownloadObject,
-                cancellationOrderDownloadObject,
-                nonPaymentNoticeDownloadObject,
-                nonPaymentOrderDownloadObject,
-                occupationCertificateDownloadObject
-              ]
-            
-              printMenu = [
-                applicationPrintObject,
-                NoticePrintObject,
-                IssuanceViolationOrderPrintObject,
-                cancellationOrderPrintObject,
-                nonPaymentNoticePrintObject,
-                nonPaymentOrderPrintObject,
-                occupationCertificatePrintObject
-              ]
+              if(typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'){
+                downloadMenu = [
+                  applicationDownloadObject,
+                  nonPaymentNoticeDownloadObject,
+                  nonPaymentOrderDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,
+                  nonPaymentNoticePrintObject,
+                  nonPaymentOrderPrintObject
+                ]
+              }
+              else if(typeOfNotice == 'TYPE_OF_NOTICE.VIOLATION'){
+                downloadMenu = [
+                  applicationDownloadObject,
+                  NoticeDownloadObject,
+                  IssuanceViolationOrderDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,
+                  NoticePrintObject,
+                  IssuanceViolationOrderPrintObject
+                ]
+              }else{
+                downloadMenu = [
+                  applicationDownloadObject,
+                  cancellationOrderDownloadObject,
+                  occupationCertificateDownloadObject
+                ]
+              
+                printMenu = [
+                  applicationPrintObject,
+                  cancellationOrderPrintObject,
+                  occupationCertificatePrintObject
+                ]
+              }
+             
             }
             
             break;
@@ -2323,26 +2371,44 @@ export const downloadPrintContainer = (
             break;
 
             case 'IssuanceOfNotice':
-              
-                downloadMenu = [
-                  applicationDownloadObject,
-                  NoticeDownloadObject,
-                  IssuanceViolationOrderDownloadObject,
-                  cancellationOrderDownloadObject,
-                  nonPaymentNoticeDownloadObject,
-                  nonPaymentOrderDownloadObject,
-                  occupationCertificateDownloadObject
-                ]
-              
-                printMenu = [
-                  applicationPrintObject,
-                  NoticePrintObject,
-                  IssuanceViolationOrderPrintObject,
-                  cancellationOrderPrintObject,
-                  nonPaymentNoticePrintObject,
-                  nonPaymentOrderPrintObject,
-                  occupationCertificatePrintObject
-                ]
+                if(typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'){
+                  downloadMenu = [
+                    applicationDownloadObject,
+                    nonPaymentNoticeDownloadObject,
+                    nonPaymentOrderDownloadObject
+                  ]
+                
+                  printMenu = [
+                    applicationPrintObject,
+                    nonPaymentNoticePrintObject,
+                    nonPaymentOrderPrintObject
+                  ]
+                }
+                else if(typeOfNotice == 'TYPE_OF_NOTICE.VIOLATION'){
+                  downloadMenu = [
+                    applicationDownloadObject,
+                    NoticeDownloadObject,
+                    IssuanceViolationOrderDownloadObject
+                  ]
+                
+                  printMenu = [
+                    applicationPrintObject,
+                    NoticePrintObject,
+                    IssuanceViolationOrderPrintObject
+                  ]
+                }else{
+                  downloadMenu = [
+                    applicationDownloadObject,
+                    cancellationOrderDownloadObject,
+                    occupationCertificateDownloadObject
+                  ]
+                
+                  printMenu = [
+                    applicationPrintObject,
+                    cancellationOrderPrintObject,
+                    occupationCertificatePrintObject
+                  ]
+                }
                 break;
           }  
           break;
@@ -2378,25 +2444,44 @@ export const downloadPrintContainer = (
                   
                   break;
               case 'IssuanceOfNotice':
-                  downloadMenu = [
-                    applicationDownloadObject,
-                    NoticeDownloadObject,
-                    IssuanceViolationOrderDownloadObject,
-                    cancellationOrderDownloadObject,
-                    nonPaymentNoticeDownloadObject,
-                    nonPaymentOrderDownloadObject,
-                    occupationCertificateDownloadObject
-                  ]
-                
-                  printMenu = [
-                    applicationPrintObject,
-                    NoticePrintObject,
-                    IssuanceViolationOrderPrintObject,
-                    cancellationOrderPrintObject,
-                    nonPaymentNoticePrintObject,
-                    nonPaymentOrderPrintObject,
-                    occupationCertificatePrintObject
-                  ]
+                  if(typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'){
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      nonPaymentNoticeDownloadObject,
+                      nonPaymentOrderDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      nonPaymentNoticePrintObject,
+                      nonPaymentOrderPrintObject
+                    ]
+                  }
+                  else if(typeOfNotice == 'TYPE_OF_NOTICE.VIOLATION'){
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      NoticeDownloadObject,
+                      IssuanceViolationOrderDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      NoticePrintObject,
+                      IssuanceViolationOrderPrintObject
+                    ]
+                  }else{
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      cancellationOrderDownloadObject,
+                      occupationCertificateDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      cancellationOrderPrintObject,
+                      occupationCertificatePrintObject
+                    ]
+                  }
             }
             break;
       case `${applicationType}` && 'ES_APPROVED':  
@@ -2537,25 +2622,44 @@ export const downloadPrintContainer = (
               break;
 
               case 'IssuanceOfNotice':
-                  downloadMenu = [
-                    applicationDownloadObject,
-                    NoticeDownloadObject,
-                    IssuanceViolationOrderDownloadObject,
-                    cancellationOrderDownloadObject,
-                    nonPaymentNoticeDownloadObject,
-                    nonPaymentOrderDownloadObject,
-                    occupationCertificateDownloadObject
-                  ]
-                
-                  printMenu = [
-                    applicationPrintObject,
-                    NoticePrintObject,
-                    IssuanceViolationOrderPrintObject,
-                    cancellationOrderPrintObject,
-                    nonPaymentNoticePrintObject,
-                    nonPaymentOrderPrintObject,
-                    occupationCertificatePrintObject
-                  ]
+                  if(typeOfNotice === 'TYPE_OF_NOTICE.NONPAYMENTRENT'){
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      nonPaymentNoticeDownloadObject,
+                      nonPaymentOrderDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      nonPaymentNoticePrintObject,
+                      nonPaymentOrderPrintObject
+                    ]
+                  }
+                  else if(typeOfNotice == 'TYPE_OF_NOTICE.VIOLATION'){
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      NoticeDownloadObject,
+                      IssuanceViolationOrderDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      NoticePrintObject,
+                      IssuanceViolationOrderPrintObject
+                    ]
+                  }else{
+                    downloadMenu = [
+                      applicationDownloadObject,
+                      cancellationOrderDownloadObject,
+                      occupationCertificateDownloadObject
+                    ]
+                  
+                    printMenu = [
+                      applicationPrintObject,
+                      cancellationOrderPrintObject,
+                      occupationCertificatePrintObject
+                    ]
+                  }
                   break;
             } 
           break;   

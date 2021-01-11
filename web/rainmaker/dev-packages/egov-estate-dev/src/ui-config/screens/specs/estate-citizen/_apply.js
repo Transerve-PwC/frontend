@@ -105,9 +105,11 @@ const getData = async (action, state, dispatch) => {
     dispatch(prepareFinalObject("property", property));
 
     let {fields: data_config, documentList, uiConfig} = await getApplicationConfig({dispatch, applicationType})
+    dispatch(prepareFinalObject("temp[0].documentList", documentList))
     // const dataConfig = require(`./${applicationType}.json`);
     // let {fields: data_config, documentList, uiConfig} = dataConfig[applicationType][0];
     let {first_step, second_step, dataSources, preview} = uiConfig
+    dispatch(prepareFinalObject("temp[0].second_step", second_step))
     const values = applicationType.split("_")
     dispatch(prepareFinalObject("Applications[0].branchType", values[0] ))
     dispatch(prepareFinalObject("Applications[0].moduleType", values[1] ))

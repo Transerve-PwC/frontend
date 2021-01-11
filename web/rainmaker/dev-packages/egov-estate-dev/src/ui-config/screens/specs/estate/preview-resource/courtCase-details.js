@@ -151,7 +151,7 @@ export const headerDiv = {
           ),
           chiefAdministratorsCourt:getLabelWithValue(
             chiefAdministratorsCourtField, {
-              jsonPath: `Properties[0].propertyDetails.courtCases[${index}].chiefAdministratorsCourt`
+              jsonPath: `Properties[0].propertyDetails.courtCases[${index}].chiefAdministartorsCourt`
             }
           ),
           advisorToAdminCourt: getLabelWithValue(

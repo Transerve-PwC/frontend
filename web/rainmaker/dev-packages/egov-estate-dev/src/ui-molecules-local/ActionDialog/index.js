@@ -43,6 +43,17 @@ const fieldConfig = {
       labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
     }
   },
+  mandatoryComments: {
+    label: {
+      labelName: "Comments",
+      labelKey: "ES_MANDATORY_COMMON_COMMENTS"
+    },
+    placeholder: {
+      labelName: "Enter Comments",
+      labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
+    }
+  },
+  
   hardCopyReceivedDate: {
     label: {
       labelName: "Hard Copy Received Date",
@@ -71,7 +82,8 @@ class ActionDialog extends React.Component {
   state = {
     employeeList: [],
     roles: "",
-    hardCopyReceivedDateError: false
+    hardCopyReceivedDateError: false,
+    commentsErr:false
   };
 
   getButtonLabelName = label => {
@@ -94,18 +106,34 @@ class ActionDialog extends React.Component {
     }
   };
 
-  handleValidation = (buttonLabel, isDocRequired) => {
+  handleValidation = (buttonLabel, isDocRequired, applicationState) => {
       let {dataPath, state} = this.props;
       dataPath = `${dataPath}[0]`;
       const data = get(state.screenConfiguration.preparedFinalObject, dataPath)
       const validationDate = data.hardCopyReceivedDate;
-      if(!!validationDate) {
-        this.props.onButtonClick(buttonLabel, isDocRequired)
-      } else {
-        this.setState({
-          hardCopyReceivedDateError: true
-        })
+      let formIsValid = true;
+      if(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION"){
+        if(!!validationDate) {
+          this.props.onButtonClick(buttonLabel, isDocRequired)
+        } else {
+          formIsValid = false
+          this.setState({
+            hardCopyReceivedDateError: true
+          })
+        }
       }
+      if(buttonLabel == 'APPROVE' || buttonLabel == 'REJECT'){
+        const comments = data.comments;
+        if(!!comments) {
+          this.props.onButtonClick(buttonLabel, isDocRequired)
+        } else {
+          formIsValid = false
+          this.setState({
+            commentsErr: true
+          })
+        }
+      }
+      return formIsValid
   }
 
   render() {  
@@ -210,15 +238,17 @@ class ActionDialog extends React.Component {
                   <Grid item sm="12">
                     <TextFieldContainer
                       InputLabelProps={{ shrink: true }}
-                      label={fieldConfig.comments.label}
+                      // label= {fieldConfig.comments.label }
+                      label= {buttonLabel == 'APPROVE' || buttonLabel == 'REJECT' ? fieldConfig.mandatoryComments.label : fieldConfig.comments.label }
                       onChange={e =>
                         handleFieldChange(`${dataPath}.comments`, e.target.value)
                       }
-                      required = {true}
+                      // required = {true}
                       jsonPath={`${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                       inputProps={{ maxLength: 120 }}
                     />
+                    {!!this.state.commentsErr && (<span style={{color: "red"}}>Please enter Comments</span>)}
                   </Grid>
                   {buttonLabel === "FORWARD" && (applicationState === "ES_PENDING_DS_VERIFICATION" || applicationState == "ES_MM_PENDING_DS_VERIFICATION") && (
                     <Grid item sm="12">
@@ -338,7 +368,8 @@ class ActionDialog extends React.Component {
                         }}
                         className="bottom-button"
                         onClick={() =>
-                          buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" ? this.handleValidation(buttonLabel, isDocRequired) : onButtonClick(buttonLabel, isDocRequired)
+                          this.handleValidation(buttonLabel, isDocRequired, applicationState) ? onButtonClick(buttonLabel, isDocRequired) : false
+                          // buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" ? this.handleValidation(buttonLabel, isDocRequired) : onButtonClick(buttonLabel, isDocRequired,applicationState)
                         }
                       >
                         <LabelContainer

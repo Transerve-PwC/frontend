@@ -276,6 +276,8 @@ class SingleApplication extends React.Component {
       default:
         setRoute(`/estate/preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
     }
+  }else if(moduleName == "REFUNDOFEMD"){
+    setRoute(`/estate/refund?fileNumber=${item.fileNumber}&tenantId=ch.chandigarh`)
   }
   };
 
@@ -443,7 +445,7 @@ class SingleApplication extends React.Component {
                 labelKey={"No results Found!"}
                 style={{ marginBottom: 10 }}
               />
-              <Button
+              { moduleName != "REFUNDOFEMD" && <Button
                 style={{
                   height: 36,
                   lineHeight: "auto",
@@ -455,7 +457,7 @@ class SingleApplication extends React.Component {
                 onClick={this.onButtonCLick}
               >
                 <Label labelKey={`${moduleName}_NEW_APPLICATION`} />
-              </Button>
+              </Button>}
             </div>
           )}
       </div>
