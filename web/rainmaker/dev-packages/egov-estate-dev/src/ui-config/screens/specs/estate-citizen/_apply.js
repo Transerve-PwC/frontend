@@ -105,6 +105,7 @@ const getData = async (action, state, dispatch) => {
     dispatch(prepareFinalObject("property", property));
 
     let {fields: data_config, documentList, uiConfig} = await getApplicationConfig({dispatch, applicationType})
+    documentList = documentList.map(_doc => ({filter: true, ..._doc}))
     dispatch(prepareFinalObject("temp[0].documentList", documentList))
     // const dataConfig = require(`./${applicationType}.json`);
     // let {fields: data_config, documentList, uiConfig} = dataConfig[applicationType][0];
