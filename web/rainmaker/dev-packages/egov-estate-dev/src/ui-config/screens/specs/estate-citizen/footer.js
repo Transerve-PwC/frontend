@@ -254,7 +254,8 @@ export const previousButton = {
   };
 
   const callBackForNext = async(state, dispatch) => {
-    
+    let scrollTop = true;
+
     dispatch(handleField(
       "_apply",
       "components.div.children.footer.children.nextButton",
@@ -420,6 +421,7 @@ export const previousButton = {
               "Please check the declaration!",
           labelKey: "ES_ERR_DECLARATION_NOT_CHECKED"
         };
+        scrollTop = false;
         dispatch(toggleSnackbar(true, errorMessageBox, "warning"));
       }
 
@@ -481,11 +483,12 @@ export const previousButton = {
           "props.disabled",
           false
         ))
+        scrollTop = false;
         dispatch(toggleSnackbar(true, errorMessage, "warning"));
       }
     }
     
-    if(activeStep != SUMMARY_STEP){
+    if(activeStep != SUMMARY_STEP && scrollTop){
       window.scrollTo(0,0)
     }
   }

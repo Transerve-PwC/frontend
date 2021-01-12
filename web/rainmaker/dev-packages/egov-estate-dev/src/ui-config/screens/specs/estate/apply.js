@@ -423,10 +423,11 @@ export const setData = (properties, screenName, dispatch, state) => {
       true
     )
   )
+
   dispatch(
     handleField(
       screenName,
-      `components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.fileNumber`,
+      `components.div.children.${stepFirst}.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children.fileNumber`,
       `props.disabled`,
       true
     )

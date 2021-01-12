@@ -27,7 +27,7 @@ const onFieldChange = (action, state, dispatch) => {
   updateReadOnlyForAllFields(action, state, dispatch);
 }
 
-const evaluate = ({application, property, owners, selectedOwner, selectedPurchaser, purchasers, formula, defaultValue}) => {
+const evaluate = ({application, property, owners, selectedOwner, selectedPurchaser, purchasers, applicationDetails, formula, defaultValue}) => {
   try {
     return eval(formula);
   } catch (e) {
@@ -80,11 +80,12 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
       {value: "visibility", property: "visible", defaultValue: curr.visible}, 
       {value: "disability", property: "props.disabled", defaultValue: curr.props.disabled}, 
       {value: "prefillValue", property: "props.value", defaultValue: ""}, 
-      {value: "dataValue", property: "props.data"}
+      {value: "dataValue", property: "props.data"},
+      {value: "errorMessage", property: "props.errorMessage"}
     ];
 
     const actions = propValues.reduce((prevValue, currValue) => {
-      let evalParams = {application, property, owners, selectedOwner, selectedPurchaser, purchasers, formula: curr[currValue.value]} //evaluate params
+      let evalParams = {application, property, owners, selectedOwner, selectedPurchaser, purchasers, applicationDetails, formula: curr[currValue.value]} //evaluate params
 
       evalParams = currValue.hasOwnProperty("defaultValue") ? {...evalParams, defaultValue: currValue.defaultValue} : evalParams //passing defaultvalue param if needed
 
@@ -116,7 +117,7 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
   adding error message to the changed field
   */ 
 
-  actionDefiniton = !!findField ? [...actionDefiniton, {path: findField.componentJsonpath, property: "props.errorMessage", value: findField.errorMessage}] : actionDefiniton 
+  actionDefiniton = !!findField ? [...actionDefiniton, {path: findField.componentJsonpath, property: "props.errorMessage", value: eval(findField.errorMessage)}] : actionDefiniton 
 
   /* 
   search in pendingFieldChanges if action item already exists (find index)

@@ -40,6 +40,7 @@ class WorkFlowContainer extends React.Component {
       window.location.href, "applicationNumber"
     )
     const tenantId = getQueryArg(window.location.href, "tenantId");
+
     let queryObject = [
       { key: "history", value: true },
       { key: "tenantId", value: tenantId }

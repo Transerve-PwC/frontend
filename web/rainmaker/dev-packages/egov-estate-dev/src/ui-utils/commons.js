@@ -336,7 +336,7 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
         "input",
         {
           type:"checkbox",
-          defaultChecked: !!(item.refundStatus) ? true : false, 
+          defaultChecked: !!item.refundStatus && item.refundStatus != "-" ? true : false, 
           onClick: (e) => { 
             store.dispatch(toggleSpinner());
             if (confirm('Are you sure you want to initiate refund?')) {

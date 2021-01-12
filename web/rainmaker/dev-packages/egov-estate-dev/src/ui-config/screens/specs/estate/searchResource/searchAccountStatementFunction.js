@@ -65,7 +65,7 @@ var isfileNumberValid = validateFields(
             [],
             {Criteria}
           )
-          if(branchType === 'MANI_MAJRA' ? (response.ManiMajraAccountStatement.length === 1  || response.ManiMajraAccountStatement == null) : (response.EstateAccountStatement.length===1 
+          if(branchType === 'MANI_MAJRA' ? (response.ManiMajraAccountStatement && response.ManiMajraAccountStatement.length === 1  || response.ManiMajraAccountStatement == null) : (response.ManiMajraAccountStatement && response.EstateAccountStatement.length===1 
             || response.EstateAccountStatement == null)){
             let errorMessage = {
               labelName:
@@ -90,80 +90,82 @@ var isfileNumberValid = validateFields(
               false
             )
           );
-          }
-          try {
-            dispatch(
-              prepareFinalObject(
-                "EstateAccountStatement",
-                branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement
-              )
-            );
-            let sortedData = branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
-            if(branchType === 'MANI_MAJRA'){
-              data = sortedData.map(item => ({
-                [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
-                [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
-                [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
-                [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
-                [getTextToLocalMapping("GST")]:  formatAmount(item.gst.toFixed(2)) || "-",
-                [getTextToLocalMapping("Demand Type")]: !!item.typeOfDemand && item.typeOfDemand|| "-",
-                [getTextToLocalMapping("Rent")]: formatAmount(item.rent.toFixed(2)) || "-",
-                [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
-                [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
-                
-              }));
+          }else{
+            try {
+              dispatch(
+                prepareFinalObject(
+                  "EstateAccountStatement",
+                  branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement
+                )
+              );
+              let sortedData = branchType === 'MANI_MAJRA' ? response.ManiMajraAccountStatement : response.EstateAccountStatement.sort((a, b) => (a.date > b.date) ? 1 : -1)
+              if(branchType === 'MANI_MAJRA'){
+                data = sortedData.map(item => ({
+                  [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+                  [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
+                  [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
+                  [getTextToLocalMapping("GST")]:  formatAmount(item.gst.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Demand Type")]: !!item.typeOfDemand && item.typeOfDemand|| "-",
+                  [getTextToLocalMapping("Rent")]: formatAmount(item.rent.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
+                  
+                }));
+              }
+              else{
+                data = sortedData.map(item => ({
+                  [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+                  [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
+                  [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
+                  [getTextToLocalMapping("Principal Due")]: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
+                  [getTextToLocalMapping("GST Due")]:  formatAmount(item.remainingGST.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Interest Due")]: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
+                  [getTextToLocalMapping("GST Penalty Due")]: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Account Balance")]: formatAmount(item.remainingBalance.toFixed(2)) || "-",
+                  [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
+                  [getTextToLocalMapping("Consolidated Demand")]: item.isPrevious ? "CF" : "-"
+                  
+                }));
+              }
+  
+              let lastElement = data.pop();
+              lastElement.Date = "Balance as on "+lastElement.Date
+              lastElement["Type(Payment)"] = "-"
+              lastElement["Type(Rent)"]= "-"
+              data.push(lastElement)
+              dispatch(
+                handleField(
+                  "estate-search-account-statement",
+                  "components.div.children.searchResultsAccountStatement",
+                  "visible",
+                  true
+                )
+              );
+              dispatch(
+                handleField(
+                  "estate-search-account-statement",
+                  "components.div.children.downloadButton",
+                  "visible",
+                  true
+                )
+              );
+              dispatch(
+                handleField(
+                  "estate-search-account-statement",
+                  "components.div.children.searchResultsAccountStatement",
+                  "props.data",
+                   data
+                )
+              );
+            } catch (error) {
+              console.log(error)
+              dispatch(toggleSnackbar(true, error.message, "error"));
             }
-            else{
-              data = sortedData.map(item => ({
-                [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
-                [getTextToLocalMapping("Amount")]: formatAmount(item.amount.toFixed(2)) || "-",
-                [getTextToLocalMapping("Type(Payment)")]:  changeTypePayment(item.type) || "-",
-                [getTextToLocalMapping("Type(Rent)")]: changePTypeRent(item.type) || "-",
-                [getTextToLocalMapping("Principal Due")]: formatAmount(item.remainingPrincipal.toFixed(2)) || "-",
-                [getTextToLocalMapping("GST Due")]:  formatAmount(item.remainingGST.toFixed(2)) || "-",
-                [getTextToLocalMapping("Interest Due")]: formatAmount(item.remainingRentPenalty.toFixed(2)) || "-",
-                [getTextToLocalMapping("GST Penalty Due")]: formatAmount(item.remainingGSTPenalty.toFixed(2)) || "-",
-                [getTextToLocalMapping("Total Due")]: formatAmount(item.dueAmount.toFixed(2)) || "-",
-                [getTextToLocalMapping("Account Balance")]: formatAmount(item.remainingBalance.toFixed(2)) || "-",
-                [getTextToLocalMapping("Receipt No.")]: item.receiptNo || "-",
-                [getTextToLocalMapping("Consolidated Demand")]: item.isPrevious ? "CF" : "-"
-                
-              }));
-            }
-
-            let lastElement = data.pop();
-            lastElement.Date = "Balance as on "+lastElement.Date
-            lastElement["Type(Payment)"] = "-"
-            lastElement["Type(Rent)"]= "-"
-            data.push(lastElement)
-            dispatch(
-              handleField(
-                "estate-search-account-statement",
-                "components.div.children.searchResultsAccountStatement",
-                "visible",
-                true
-              )
-            );
-            dispatch(
-              handleField(
-                "estate-search-account-statement",
-                "components.div.children.downloadButton",
-                "visible",
-                true
-              )
-            );
-            dispatch(
-              handleField(
-                "estate-search-account-statement",
-                "components.div.children.searchResultsAccountStatement",
-                "props.data",
-                 data
-              )
-            );
-          } catch (error) {
-            console.log(error)
-            dispatch(toggleSnackbar(true, error.message, "error"));
           }
+         
       }
     }
     if(!isDateValid){

@@ -83,7 +83,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
-
+  let scrollTop = true;
   let activeStep = get(
     state.screenConfiguration.screenConfig[screenKey],
     "components.div.children.stepper.props.activeStep",
@@ -789,7 +789,7 @@ const callBackForNext = async (state, dispatch) => {
         labelName: "Date of possession should be on and after date of allotment",
         labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
     };
-    
+      scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 
     /* else if(!ownerTwoPosAllotDateValid && ownerOnePosAllotDateValid){
@@ -822,14 +822,14 @@ const callBackForNext = async (state, dispatch) => {
       labelName: "EMD date should be before date of auction",
       labelKey: "ES_ERR_EMD_DATE_BEFORE_AUCTION_DATE"
   };
-
+    scrollTop = false
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } else if(!isStartAndEndYearValid) {
       let errorMessage = {
         labelName: "End Month should be greater than Start Month",
         labelKey: "ES_ERR_END_MONTH_START_MONTH"
       }
-    
+      scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
     else if (hasFieldToaster) {
@@ -873,10 +873,13 @@ const callBackForNext = async (state, dispatch) => {
        
           break;
       }
+      scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
-  window.scrollTo(0,0)
+  if(scrollTop){
+    window.scrollTo(0,0)
+  }
 }
 
 const setOwnersOrPartners = (state, dispatch, container) => {

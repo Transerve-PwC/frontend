@@ -69,7 +69,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
-  
+  let scrollTop = true;
   let activeStep = get(
     state.screenConfiguration.screenConfig["apply-manimajra"],
     "components.div.children.manimajraStepper.props.activeStep",
@@ -504,10 +504,13 @@ const callBackForNext = async (state, dispatch) => {
           };
           break;
       }
+      scrollTop = false;
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
   }
-  window.scrollTo(0,0)
+  if(scrollTop){
+    window.scrollTo(0,0)
+  }
 }
 
 export const changeStep = (
