@@ -62,15 +62,6 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
   if (fileNumber) {
     await searchResults(action, state, dispatch, fileNumber);
 
-    let bidders = get(
-      state.screenConfiguration.preparedFinalObject,
-      "Properties[0].propertyDetails.bidders",
-      []
-    )
-    let refundInitiated = bidders.filter(item => !!item.refundStatus);
-
-    let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
-
     dispatch(
       handleField(
         `refund`,
@@ -89,38 +80,51 @@ const beforeInitFn = async (action, state, dispatch, fileNumber) => {
       )
     )
 
-    const auctionTableColumns = [
-      getTextToLocalMapping("Auction Id"),
-      getTextToLocalMapping("Bidder Name"),
-      getTextToLocalMapping("Deposited EMD Amount"),
-      getTextToLocalMapping("Deposit Date"),
-      getTextToLocalMapping("EMD Validity Date"),
-      {
-        name: getTextToLocalMapping("Initiate Refund"),
-        options: { 
-          display: refundInitiatedColDisplay,
-          viewColumns: refundInitiatedColDisplay
-        }
-      },
-      {
-        name: getTextToLocalMapping("Refund Status"),
-        options: { 
-          display: true,
-          viewColumns: true
-        }
-      }
-    ]
-
-    dispatch(
-      handleField(
-        "refund",
-        "components.div.children.auctionTableContainer",
-        "props.columns",
-        auctionTableColumns
-      )
-    )
-
+    setRefundInitiatedColDisplay(state, dispatch);
   }
+}
+
+export const setRefundInitiatedColDisplay = (state, dispatch) => {
+  debugger
+  let bidders = get(
+    state.screenConfiguration.preparedFinalObject,
+    "Properties[0].propertyDetails.bidders",
+    []
+  )
+  // let refundInitiated = bidders.filter(item => !!item.refundStatus);
+
+  // let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
+
+  const auctionTableColumns = [
+    getTextToLocalMapping("Auction Id"),
+    getTextToLocalMapping("Bidder Name"),
+    getTextToLocalMapping("Deposited EMD Amount"),
+    getTextToLocalMapping("Deposit Date"),
+    getTextToLocalMapping("EMD Validity Date"),
+    {
+      name: getTextToLocalMapping("Initiate Refund"),
+      options: { 
+        display: !bidders[0].state,
+        viewColumns: !bidders[0].state
+      }
+    },
+    {
+      name: getTextToLocalMapping("Refund Status"),
+      options: { 
+        display: true,
+        viewColumns: true
+      }
+    }
+  ]
+
+  dispatch(
+    handleField(
+      "refund",
+      "components.div.children.auctionTableContainer",
+      "props.columns",
+      auctionTableColumns
+    )
+  )
 }
 
 let auctionDetailsCont = getReviewAuction(false);
@@ -245,41 +249,7 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
         )
       )
 
-      let bidders = properties[0].propertyDetails.bidders;
-      let refundInitiated = bidders.filter(item => !!item.refundStatus);
-  
-      let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
-
-      const auctionTableColumns = [
-        getTextToLocalMapping("Auction Id"),
-        getTextToLocalMapping("Bidder Name"),
-        getTextToLocalMapping("Deposited EMD Amount"),
-        getTextToLocalMapping("Deposit Date"),
-        getTextToLocalMapping("EMD Validity Date"),
-        {
-          name: getTextToLocalMapping("Initiate Refund"),
-          options: { 
-            display: refundInitiatedColDisplay,
-            viewColumns: refundInitiatedColDisplay
-          }
-        },
-        {
-          name: getTextToLocalMapping("Refund Status"),
-          options: { 
-            display: true,
-            viewColumns: true
-          }
-        }
-      ]
-  
-      dispatch(
-        handleField(
-          "refund",
-          "components.div.children.auctionTableContainer",
-          "props.columns",
-          auctionTableColumns
-        )
-      )
+      setRefundInitiatedColDisplay(state, dispatch);
   
     }
   } catch(err) {
@@ -292,6 +262,7 @@ const refund = {
   name: "refund",
   beforeInitScreen: (action, state, dispatch) => {
     let fileNumber = getQueryArg(window.location.href, "fileNumber");
+    debugger
     beforeInitFn(action, state, dispatch, fileNumber);
     return action;
   },
@@ -323,6 +294,7 @@ const refund = {
           props: {
             dataPath: "Properties",
             moduleName: WF_EB_REFUND_OF_EMD,
+            screenName: "refund",
             updateUrl: "/est-services/property-master/_update",
             style: {
               wordBreak: "break-word"

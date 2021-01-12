@@ -10,11 +10,14 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
 import { WF_ALLOTMENT_OF_SITE } from "../../ui-constants";
-import store from "../../ui-redux/store";
 import {
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import store from "../../ui-redux/store";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
+
 class Footer extends React.Component {
   state = {
     open: false,
@@ -124,7 +127,8 @@ class Footer extends React.Component {
       screenName,
       validateFn,
       toggleSnackbar,
-      setRoute
+      setRoute,
+      handleField
     } = this.props;
     const { open, data, employeeList } = this.state;
     const {preparedFinalObject} = this.props.state.screenConfiguration;
@@ -156,6 +160,9 @@ class Footer extends React.Component {
             case "ES-MM-PropertyMaster":
               redirectLink = `apply-manimajra?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=7`;
               break;
+            // case "ES-EB-IS-RefundOfEmd":
+            //   redirectLink = `refund?fileNumber=${fileNumber}&tenantId=${tenant}&type=MODIFY`;
+            //   break;
             default:
               break;
           }
@@ -189,6 +196,43 @@ class Footer extends React.Component {
                 };
                 toggleSnackbar(true, errorMessage, "warning");
               }
+            }
+            else if (screenName == "refund" && buttonLabel === "MODIFY") {
+              handleField(
+                "refund",
+                `components.div.children.taskStatus`,
+                `visible`,
+                false
+              )
+
+              const auctionTableColumns = [
+                "Auction Id",
+                "Bidder Name",
+                "Deposited EMD Amount",
+                "Deposit Date",
+                "EMD Validity Date",
+                {
+                  name: "Initiate Refund",
+                  options: { 
+                    display: true,
+                    viewColumns: true
+                  }
+                },
+                {
+                  name: "Refund Status",
+                  options: { 
+                    display: true,
+                    viewColumns: true
+                  }
+                }
+              ]
+            
+              handleField(
+                "refund",
+                "components.div.children.auctionTableContainer",
+                "props.columns",
+                auctionTableColumns
+              )
             }
             else {
               this.openActionDialog(item);
@@ -244,7 +288,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setRoute: url => dispatch(setRoute(url)),
     toggleSnackbar: (open, message, variant) =>
-      dispatch(toggleSnackbar(open, message, variant))
+      dispatch(toggleSnackbar(open, message, variant)),
+    handleField: (screenKey, jsonPath, fieldKey, value) =>
+      dispatch(handleField(screenKey, jsonPath, fieldKey, value)),
   };
 };
 
