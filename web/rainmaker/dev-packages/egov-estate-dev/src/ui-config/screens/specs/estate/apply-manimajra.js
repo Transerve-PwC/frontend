@@ -21,7 +21,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import commonConfig from "config/common.js";
 import {
-  footer,
+  footer, getPMDetailsByFileNumber,
 } from './applyResourceManimajra/footer';
 import {
   getQueryArg
@@ -29,9 +29,6 @@ import {
 import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import {
-  getSearchResults,
-} from "../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { setDocumentData, setPrevOwnerDocs } from "./apply";
@@ -74,46 +71,6 @@ const header = getCommonContainer({
     visible: false
   }
 })
-
-export const getPMDetailsByFileNumber = async (
-  action,
-  state,
-  dispatch,
-  fileNumber
-) => {
-  let queryObject = [
-    {
-      key: "tenantId",
-      value: getTenantId()
-    },
-    { 
-      key: "fileNumber", 
-      value: fileNumber 
-    }
-  ];
-
-  const payload = await getSearchResults(queryObject);
-
-  if (payload) {
-    let properties = payload.Properties;
-    let owners = properties[0].propertyDetails.owners;
-
-    owners = owners.map(item => ({...item, share: (item.share).toString(), ownerDetails: {...item.ownerDetails, isPreviousOwnerRequired: (item.ownerDetails.isPreviousOwnerRequired).toString()}}));
-
-    let currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
-    let prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
-    let areaSqft = (properties[0].propertyDetails.areaSqft).toString();
-
-    properties = [{...properties[0], propertyDetails: {...properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, areaSqft: areaSqft}}]
-
-    dispatch(
-      prepareFinalObject(
-        "Properties",
-        properties 
-      )
-    )
-  }
-}
 
 const getData = async (action, state, dispatch) => {
   const fileNumber = getQueryArg(window.location.href, "fileNumber");
