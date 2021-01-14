@@ -1199,8 +1199,32 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = (state, dispatch) => {
-  window.scrollTo(0,0)
-  changeStep(state, dispatch, screenKey, "previous");
+  let activeStep = get(
+    state.screenConfiguration.screenConfig[screenKey],
+    "components.div.children.stepper.props.activeStep",
+    0
+  );
+    if(activeStep === ENTITY_OWNER_DETAILS_STEP) {
+      let owners = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Properties[0].propertyDetails.owners",
+        []
+      )
+      const totalPercentageSum = owners.reduce((prev, curr) => prev + Number(curr.share) ,0)
+      if(totalPercentageSum !== 100) {
+        const errorMessage = {
+          labelName: "Owner(s) Share can't be lessthan or greaterthan 100%",
+          labelKey: "ES_ERR_INVALID_OWNER_SHARE"
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "error"));
+      } else {
+        window.scrollTo(0,0)
+        changeStep(state, dispatch, screenKey, "previous");
+      }
+    } else {
+      window.scrollTo(0,0)
+      changeStep(state, dispatch, screenKey, "previous");
+    }
 };
 
 export const previousButton = {
