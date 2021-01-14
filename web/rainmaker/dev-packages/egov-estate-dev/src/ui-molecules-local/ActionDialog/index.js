@@ -80,8 +80,6 @@ const getEpoch = (dateString, dayStartOrEnd = "dayend") => {
 
 class ActionDialog extends React.Component {
   state = {
-    employeeList: [],
-    roles: "",
     hardCopyReceivedDateError: false,
     commentsErr:false
   };
@@ -136,6 +134,14 @@ class ActionDialog extends React.Component {
       return formIsValid
   }
 
+  onClose = () => {
+    this.setState({
+      hardCopyReceivedDateError: false,
+      commentsErr:false
+    })
+    this.props.onClose()
+  }
+
   render() {  
     let {
       open,
@@ -167,7 +173,7 @@ class ActionDialog extends React.Component {
       <Dialog
         fullScreen={fullscreen}
         open={open}
-        onClose={onClose}
+        onClose={this.onClose}
         maxWidth='sm'
         style={{zIndex:2000}}
       >
@@ -203,7 +209,7 @@ class ActionDialog extends React.Component {
                       right: "16px",
                       top: "16px"
                     }}
-                    onClick={onClose}
+                    onClick={this.onClose}
                   >
                     <CloseIcon />
                   </Grid>
