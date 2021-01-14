@@ -42,18 +42,21 @@ const getData = async (action, state, dispatch, fileNumber) => {
       let propertyPayload = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
       let propertyIdNotice =  propertyPayload.id;
       let applicationsPayload = applicationsTemp.map(item => {
-        let applicationDetails = item.applicationDetails
-        let applicationDocuments = item.applicationDocuments
-        let applicationNumber = item.applicationNumber
-        let applicationType = item.applicationType
-        return {
-          applicationType, applicationNumber, applicationDetails, applicationDocuments
+        if(item.applicationType === "IssuanceOfNotice"){
+          let applicationDetails = item.applicationDetails
+          let applicationDocuments = item.applicationDocuments
+          let applicationNumber = item.applicationNumber
+          let applicationType = item.applicationType
+          return {
+            applicationType, applicationNumber, applicationDetails, applicationDocuments
+          }
         }
+        
       })
-     
+      applicationsPayload = applicationsPayload.filter(x => x !== undefined);
       applicationsTemp = [{...applicationsTemp, applicationsPayload}]
-
-      dispatch(prepareFinalObject("ApplicationsTemp", applicationsTemp));
+      applicationsPayload = [{applicationsPayload}]
+      dispatch(prepareFinalObject("ApplicationsTemp", applicationsPayload));
       let approvedflagdata = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")
       isPropertyMasterOrAllotmentOfSite = approvedflagdata.propertyMasterOrAllotmentOfSite;
       let approvedFlagState = approvedflagdata.state

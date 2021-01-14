@@ -96,6 +96,11 @@ const RentSummaryCard = Loadable({
   loading: () => <Loading />
 })
 
+const SimpleModal = Loadable({
+  loader: () => import("./SimpleModal"),
+  loading: () => <Loading />
+});
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -113,5 +118,6 @@ export {
   ExpansionPanelMolecule,
   NestedList,
   MultipleCards,
-  RentSummaryCard
+  RentSummaryCard,
+  SimpleModal
 };

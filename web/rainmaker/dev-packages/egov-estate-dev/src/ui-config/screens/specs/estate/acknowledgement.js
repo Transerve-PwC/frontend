@@ -137,7 +137,7 @@ const getAcknowledgementCard = (
       labelKey: "ES_PROPERTY_MASTER_ENTRY",
     } : !!type ? 
     {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
-    {labelName: "ES_ESTATE_SERVICES", lableKey: "ES_ESTATE_SERVICES"}
+    {labelName: "ES_ESTATE_SERVICES", labelKey: "ES_ESTATE_SERVICES"}
 
     return {
       header: getCommonHeader(commonHeader),

@@ -208,12 +208,13 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
       const isSizeValid = getFileSize(file) <= maxFileSize;
       if (!valid) {
         stopLoading()
-        alert(errorMessage);
+        // alert(errorMessage);
+        store.dispatch(toggleSnackbar(true, { labelName: errorMessage, labelKey: errorMessage }, "warning"));
         uploadDocument = false;
       }
       if (!isSizeValid) {
         stopLoading()
-        alert(`Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`);
+        // alert(`Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`);
         uploadDocument = false;
       }
       if (uploadDocument) {

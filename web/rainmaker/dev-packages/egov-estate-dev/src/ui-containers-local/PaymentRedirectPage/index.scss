@@ -1,23 +1,37 @@
 .card-content-style {
-    padding: 0;
-    width: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+.horizontal-card-main-grid {
+  padding-top: 80px;
+}
+
+.bottom-button {
+  border-radius: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .module-card-style {
+    min-height: 110px;
   }
-  
+
   .horizontal-card-main-grid {
-    padding-top: 80px;
+    padding-top: 24px !important;
   }
-  
-  .bottom-button {
-    border-radius: 0;
+}
+@media only screen and (max-width: 768px) {
+  .card-content-style {
+    padding-top: 25px;
+    width: 100%;
+    margin-bottom: 20px;
   }
-  
-  @media only screen and (min-width: 768px) {
-    .module-card-style {
-      min-height: 110px;
-    }
-  
-    .horizontal-card-main-grid {
-      padding-top: 24px !important;
-    }
+  .module-card-style {
+    min-height: 110px;
+    padding-top: 16px;
+    margin-top: 65px;
   }
-  
+  .horizontal-card-main-grid {
+    padding-top: 24px !important;
+  }
+}

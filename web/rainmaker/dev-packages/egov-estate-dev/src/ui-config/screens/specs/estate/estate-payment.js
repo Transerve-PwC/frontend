@@ -474,18 +474,18 @@ import { penaltySummary } from "./generatePenaltyStatement";
     let amountValue = paymentAmount
     // let amountValue = get(state.screenConfiguration.screenConfig["estate-payment"],"components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children.Amount.props.value")
     isValid = validateFields("components.div.children.detailsContainer.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children", state, dispatch, "estate-payment")
-    if (!!isValid && !(Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7)) {
+    if (!isValid && !(Number.isInteger(parseInt(amountValue)) && amountValue.length >= 1 && amountValue.length <= 7)) {
   
       let errorMessage = {
         labelName:
-            "Please enter value between 3 and 7 digits",
-        labelKey: "ES_ERR_VALUE_BETWEEN_3_AND_7_DIGITS"
+            "Please enter value between 1 and 7 digits",
+        labelKey: "ES_ERR_VALUE_BETWEEN_1_AND_7_DIGITS"
     };
     
     dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
     
-    if(!!isValid && ((Number.isInteger(parseInt(amountValue)) && amountValue.length >= 3 && amountValue.length <= 7))) {
+    if(isValid && ((Number.isInteger(parseInt(amountValue)) && amountValue.length >= 1 && amountValue.length <= 7))) {
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const offlinePaymentDetails = get(state.screenConfiguration.preparedFinalObject, "payment")
       const {paymentAmount, paymentType, ...rest} = offlinePaymentDetails

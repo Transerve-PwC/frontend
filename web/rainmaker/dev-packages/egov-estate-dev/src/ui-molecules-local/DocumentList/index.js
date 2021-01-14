@@ -10,8 +10,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import { connect } from "react-redux";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { UploadSingleFile } from "../../ui-molecules-local";
-import { handleFileUpload, getExcelData ,getXLSData } from "../../ui-utils/commons"
+import { UploadSingleFile, SimpleModal} from "../../ui-molecules-local";
+import { handleFileUpload, getExcelData ,getXLSData, getFileSize } from "../../ui-utils/commons"
 import { LabelContainer } from "egov-ui-framework/ui-containers";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
@@ -73,7 +73,8 @@ class DocumentList extends Component {
     uploadedDocIndex: 0,
     uploadedIndex: [],
     uploadedDocuments: [],
-    showLoader: false
+    showLoader: false,
+    open: false
   };
 
   componentDidMount() {
@@ -197,8 +198,33 @@ class DocumentList extends Component {
 
   changeFile = (key) => async (e) => {
     this.setState({showLoader: true})
+    const input = e.target;
+    const { maxFileSize } = this.props.inputProps[key]
+    if (input.files && input.files.length > 0) {
+      const files = input.files;
+      Object.keys(files).forEach(async (key, index) => {
+        const file = files[key];
+        const isSizeValid = getFileSize(file) <= maxFileSize;
+        if (!isSizeValid) {
+          // SimpleModal(true);
+          this.setState(state => ({
+            open: true,
+            maxFileSizeMsg: `Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`
+          }));
+        }
+      })
+    }
     await handleFileUpload(e, this.handleDocument, 
       this.props.inputProps[key], this.stopLoading)
+    // this.setState({showLoader: true})
+    // await handleFileUpload(e, this.handleDocument, 
+    //   this.props.inputProps[key], this.stopLoading)
+  }
+
+  closeModal = () => {
+    this.setState(state => ({
+      open: false
+    }));
   }
 
   stopLoading = () => {
@@ -329,7 +355,8 @@ class DocumentList extends Component {
             );
           })}
       </div>
-      {/* {!!showLoader && <LoadingIndicator status={"loading"} />} */}
+      {<SimpleModal open={this.state.open} maxFileSizeMsg={this.state.maxFileSizeMsg} closeModal={this.closeModal}/>}
+      {!!showLoader && <LoadingIndicator status={"loading"} />}
       </div>
     );
   }
