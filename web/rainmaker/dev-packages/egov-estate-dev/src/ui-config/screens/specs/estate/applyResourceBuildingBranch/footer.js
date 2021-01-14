@@ -32,6 +32,7 @@ import {
   getReviewOwner
 } from "./reviewDetails";
 import {
+  getPMDetailsByFileNumber,
  setDocumentData
 } from "../apply-building-branch";
 import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
@@ -422,33 +423,11 @@ export const getActionDefinationForStepper = path => {
   return actionDefination;
 };
 
-export const callBackForPrevious = (state, dispatch) => {
-  let activeStep = get(
-    state.screenConfiguration.screenConfig[screenKey],
-    "components.div.children.stepper.props.activeStep",
-    0
-  );
-    if(activeStep === OWNER_DETAILS_STEP) {
-      let owners = get(
-        state.screenConfiguration.preparedFinalObject,
-        "Properties[0].propertyDetails.owners",
-        []
-      )
-      const totalPercentageSum = owners.reduce((prev, curr) => prev + Number(curr.share) ,0)
-      if(totalPercentageSum !== 100) {
-        const errorMessage = {
-          labelName: "Owner(s) Share can't be lessthan or greaterthan 100%",
-          labelKey: "ES_ERR_INVALID_OWNER_SHARE"
-        };
-        dispatch(toggleSnackbar(true, errorMessage, "error"));
-      } else {
-        window.scrollTo(0,0)
-        changeStep(state, dispatch, "apply-building-branch", "previous");
-      }
-    } else {
-      window.scrollTo(0,0)
-      changeStep(state, dispatch, "apply-building-branch", "previous");
-    }
+export const callBackForPrevious = async (state, dispatch) => {
+    const fileNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].fileNumber")
+    await getPMDetailsByFileNumber("", state, dispatch, fileNumber)
+    window.scrollTo(0,0)
+    changeStep(state, dispatch, "apply-building-branch", "previous");
 };
 
 export const previousButton = {

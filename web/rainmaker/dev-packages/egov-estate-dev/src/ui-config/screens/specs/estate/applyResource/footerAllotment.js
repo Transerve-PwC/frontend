@@ -40,6 +40,7 @@ import {
 } from "./reviewDocuments";
 import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
+import { getPMDetailsByFileNumber } from "../apply";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
@@ -828,7 +829,9 @@ export const getActionDefinationForStepper = path => {
   return actionDefination;
 };
 
-export const callBackForPrevious = (state, dispatch) => {
+export const callBackForPrevious = async (state, dispatch) => {
+  const fileNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].fileNumber")
+  await getPMDetailsByFileNumber("", state, dispatch, fileNumber, screenKey, false)
   window.scrollTo(0,0)
   changeStep(state, dispatch, screenKey, "previous");
 };

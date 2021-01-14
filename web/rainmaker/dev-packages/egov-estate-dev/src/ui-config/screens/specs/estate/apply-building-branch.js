@@ -71,7 +71,7 @@ const header = getCommonContainer({
   }
 })
 
-const getPMDetailsByFileNumber = async(
+export const getPMDetailsByFileNumber = async(
   action,
   state,
   dispatch,

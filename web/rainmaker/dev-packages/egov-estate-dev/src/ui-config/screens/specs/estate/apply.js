@@ -578,7 +578,8 @@ export const getPMDetailsByFileNumber = async (
   state,
   dispatch,
   fileNumber,
-  screenName
+  screenName,
+  isNotPrev = true
 ) => {
   let queryObject = [
     {
@@ -618,7 +619,7 @@ export const getPMDetailsByFileNumber = async (
       )
     )
 
-    setData(properties, screenName, dispatch, state);
+    !!isNotPrev && setData(properties, screenName, dispatch, state);
   }
 }
 
