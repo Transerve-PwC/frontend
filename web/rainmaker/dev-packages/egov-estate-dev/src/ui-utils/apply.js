@@ -144,6 +144,17 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
             removedDocs
           )
         );
+        let property = Applications[0].property
+        const estateRentSummary = property.estateRentSummary
+        const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
+        property = {...property, propertyDetails: {...property.propertyDetails, dueAmount: dueAmount || "0"}}
+        Applications = [
+          {
+            ...Applications[0], property:property
+          }
+        ]
+        dispatch(prepareFinalObject("Applications", Applications));
+
         const applicationNumber = Applications[0].applicationNumber
         await setDocsForEditFlow(state, dispatch, "Applications[0].applicationDocuments", "temp[0].uploadedDocsInRedux");
         setApplicationNumberBox({dispatch, applicationNumber, screenKey: "_apply"})

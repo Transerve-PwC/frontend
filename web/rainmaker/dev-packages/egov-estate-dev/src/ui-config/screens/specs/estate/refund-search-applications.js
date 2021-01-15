@@ -230,10 +230,19 @@ import {
        key :"relations", value: "bidder"}
     ]
     const response = await getSearchResults(queryObject);
+
     if (!!response && !!response.Properties && !!response.Properties.length) {
+      let initiatedRefund = []
       response.Properties = response.Properties.filter(item => {
           if(item.propertyDetails.bidders && item.propertyDetails.bidders.length > 0 ){
+            initiatedRefund = item.propertyDetails.bidders.filter(bidder => {
+              if(bidder.refundStatus == "Initiated"){
+                return bidder
+              }
+            })
+            if(initiatedRefund.length == item.propertyDetails.bidders.length ){
               return item
+            }
           }
       })
       dispatch(prepareFinalObject("actualResults", response.Properties));

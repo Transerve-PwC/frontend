@@ -204,11 +204,19 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
+    let propertyRegisteredTo = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.propertyRegisteredTo",
+      ""
+    )
     let entityType = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.entityType",
       ""
     )
+
+    entityType = propertyRegisteredTo == "ENTITY" ? entityType : "";
+    
     let propertyOwnersItems = get(
       state.screenConfiguration.screenConfig,
       `apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`

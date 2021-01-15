@@ -33,7 +33,7 @@ import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { setDocumentData, setPrevOwnerDocs } from "./apply";
 import { changeStep } from "./applyResourceManimajra/footer"
-
+import {setDocsForEditFlow} from "../../../../ui-utils/apply"
 
 export const getMdmsData = async (dispatch, body) => {
   let mdmsBody = {
@@ -58,8 +58,8 @@ export const getMdmsData = async (dispatch, body) => {
 
 const header = getCommonContainer({
   header: getCommonHeader({
-    labelName: "Add Estate",
-    labelKey: "ES_COMMON_ESTATES_ADD"
+    labelName: "Add Property",
+    labelKey: "ES_COMMON_ADD_PROPERTY"
   }),
   fileNumber: {
     uiFramework: "custom-atoms-local",
@@ -110,6 +110,7 @@ const getData = async (action, state, dispatch) => {
 
   if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
+    setDocsForEditFlow(state, dispatch, "Properties[0].propertyDetails.owners[0].ownerDetails.ownerDocuments", "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux");
   }
   setDocumentData(action, state, dispatch, 0, "formwizardThirdStep");
   setPrevOwnerDocs(action, state, dispatch, 0, "formwizardFifthStep");

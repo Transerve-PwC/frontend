@@ -248,6 +248,7 @@ const sizeOfAreaPurchasedField = {
     xs: 12,
     sm: 6
   },
+  required: true,
   pattern: _getPattern("areaOfProperty"),
   minLength: 2,
   maxLength: 150,

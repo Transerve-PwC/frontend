@@ -33,6 +33,7 @@ import { getReviewPurchaser, getReviewCourtCase } from "../applyResource/reviewP
 import { WF_ALLOTMENT_OF_SITE } from "../../../../../ui-constants";
 import { downloadAcknowledgementForm,downloadLetter,downloadEmailNotice,downloadNotice,downloadAmountLetter,downloadHousingBoardLetter} from "../../utils";
 import { getFileUrl, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
+import { setDocumentData } from "../apply"
 import {
   getSearchResults,
 } from "../../../../../ui-utils/commons";

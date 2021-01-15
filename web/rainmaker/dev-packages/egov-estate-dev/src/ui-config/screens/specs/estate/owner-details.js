@@ -368,6 +368,12 @@ const updateAllFields = async (action, state, dispatch) => {
       if (!!element.ownerDetails.isCurrentOwner) {
         let ownerdetailsComponent = getOwnerDetails(false, index, (!!findItem && applicationState == ESTATE_APPROVED_STATE));
         let allotmentDetailsComponent = getAllotmentDetails(false,index);
+        if(branchType == 'MANI_MAJRA'){
+          delete ownerdetailsComponent.children.cardContent.children.viewFour.children.dob
+          delete ownerdetailsComponent.children.cardContent.children.viewFour.children.cpNumber
+          delete allotmentDetailsComponent.children.cardContent.children.viewFour.children.dateOfAllotment
+          delete allotmentDetailsComponent.children.cardContent.children.viewFour.children.allotmentNumber
+        }
         if (applicationState == ESTATE_APPROVED_STATE) {
           switch(branchType) {
             case "BUILDING_BRANCH":
@@ -388,7 +394,7 @@ const updateAllFields = async (action, state, dispatch) => {
           let modeOfTransferArr = [];
           const fileNumber = getQueryArg(window.location.href, "fileNumber");
 
-          payload.Applications = payload.Applications.filter(function(item){
+          payload.Applications = payload.Applications && payload.Applications.filter(function(item){
             if(fileNumber === item.property.fileNumber){
               return item
             }

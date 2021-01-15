@@ -192,10 +192,17 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
+    let propertyRegisteredTo = get(
+      state.screenConfiguration.preparedFinalObject,
+      "Properties[0].propertyDetails.propertyRegisteredTo",
+      ""
+    )
     let entityType = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.entityType",
     )
+
+    entityType = propertyRegisteredTo == "ENTITY" ? entityType : "";
 
     let isOwnerOrPartnerDetailsValid = true;
 

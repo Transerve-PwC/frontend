@@ -274,7 +274,7 @@ class ActionDialog extends React.Component {
                     </Grid>
                   )}
 
-                  {!!documentProps && (
+                  {!!documentProps && buttonLabel != "SENDBACK" && (
                     <Grid item sm="12">
                     <Typography
                     component="h3"
