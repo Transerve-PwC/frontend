@@ -26,7 +26,6 @@ import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_
   ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
   ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT, ESTATE_SERVICES_MDMS_MODULE} from '../ui-constants'
 import moment from "moment";
-import { callBackForCancel } from "../ui-config/screens/specs/estate/refund"
 
 export const getApplicationStatusList = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
 try {
@@ -340,8 +339,110 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath,d
           type:"checkbox",
           defaultChecked: !!item.refundStatus && item.refundStatus != "-" ? true : false, 
           onClick: (e) => {
-            // store.dispatch(toggleSpinner());
             store.dispatch(
+              prepareFinalObject(
+                "e",
+                e.target.checked
+              )
+            )
+             let onClickDefinationCancel = {
+                action: "condition",
+                callBack: async() => {
+                  store.dispatch(
+                    handleField(
+                      "refund",
+                      `components.adhocDialog`,
+                      "props.open",
+                      false
+                    )
+                  )
+                  return false
+                } 
+             
+             }
+
+             let onClickDefinationSave = {
+              action: "condition",
+              callBack: async() => {
+                store.dispatch(
+                  handleField(
+                    "refund",
+                    `components.adhocDialog`,
+                    "props.open",
+                    false
+                  )
+                 )
+                let { e } = store.getState().screenConfiguration.preparedFinalObject;
+                let isMarked = e;
+                setTimeout((e) => {
+                  // store.dispatch(toggleSpinner());
+                  let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
+                  let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+  
+                  biddersList = biddersList.map((item, index) => {
+                    if (bidderData[1] == item.bidderName) {
+                      item.refundStatus = isMarked ? "Initiated" : "-";
+                    }
+                    return item;
+                  });
+  
+                  populateBiddersTable(biddersList, screenKey, componentJsonPath)
+  
+                  let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
+                  store.dispatch(
+                    handleField(
+                      "refund", 
+                      "components.div.children.submitButton",
+                      "visible",
+                      (biddersList.length === refundedBidders.length)
+                    )
+                  )
+                  store.dispatch(
+                    handleField(
+                      "refund", 
+                      "components.div.children.saveButton",
+                      "visible",
+                      (biddersList.length !== refundedBidders.length)
+                    )
+                  )
+  
+                  if (biddersList.length == refundedBidders.length) {
+                    biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
+                  }
+                  else {
+                    biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
+                  }
+  
+                  let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
+                  store.dispatch(
+                    prepareFinalObject(
+                      "Properties",
+                      properties
+                    )
+                  )
+                }, 1000)
+              }   
+              }
+
+             store.dispatch(
+              handleField(
+                "refund",
+                `components.adhocDialog.children.cancelButton`,
+                "onClickDefination",
+                onClickDefinationCancel
+              )
+             )
+
+             store.dispatch(
+              handleField(
+                "refund",
+                `components.adhocDialog.children.saveButton`,
+                "onClickDefination",
+                onClickDefinationSave
+              )
+             )
+             
+             store.dispatch(
               handleField(
                 "refund",
                 `components.adhocDialog`,
@@ -349,26 +450,7 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath,d
                 true
               )
              )
-             store.dispatch(
-              prepareFinalObject(
-                "biddersList",
-                biddersList
-              )
-            )
-             let { ticked } = store.getState().screenConfiguration.preparedFinalObject;
-             if(ticked){
-               debugger
-              let isMarked = e.target.checked;
-              store.dispatch(
-                prepareFinalObject(
-                  "isMarked",
-                  isMarked
-                )
-              )
-              
-             }else{
-              e.preventDefault();
-             }
+          
             // if (confirm('Are you sure you want to initiate refund?')) {
             //   let isMarked = e.target.checked;
             //   setTimeout((e) => {

@@ -420,12 +420,7 @@ const okButton = {
 }
 
 export const callBackForCancel = async (state,dispatch) => {
-  store.dispatch(
-    prepareFinalObject(
-      "ticked",
-      false
-    )
-  )
+
   store.dispatch(
     handleField(
       "refund",
@@ -437,13 +432,6 @@ export const callBackForCancel = async (state,dispatch) => {
 }
 
 const callBackForSave = async(state,dispatch,e) => {
-
-  store.dispatch(
-    prepareFinalObject(
-      "ticked",
-      true
-    )
-  )
   setTimeout((e) => {
     // store.dispatch(toggleSpinner());
     let { isMarked } = store.getState().screenConfiguration.preparedFinalObject;
@@ -582,15 +570,15 @@ const refund = {
         cancelButton: {
           ...cancelButton,
           onClickDefination: {
-            action: "condition",
-            callBack: callBackForCancel
+            // action: "condition",
+            // callBack: callBackForCancel
           }
         },
         saveButton: {
           ...okButton,
           onClickDefination: {
-            action: "condition",
-            callBack: callBackForSave
+            // action: "condition",
+            // callBack: callBackForSave
           }
         }
       }
