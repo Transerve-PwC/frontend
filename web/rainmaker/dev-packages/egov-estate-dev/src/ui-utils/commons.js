@@ -26,6 +26,7 @@ import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_
   ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
   ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT, ESTATE_SERVICES_MDMS_MODULE} from '../ui-constants'
 import moment from "moment";
+import { callBackForCancel } from "../ui-config/screens/specs/estate/refund"
 
 export const getApplicationStatusList = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
 try {
@@ -307,7 +308,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
         )
       )
 
-      populateBiddersTable(Bidders, screenKey, componentJsonPath, preparedFinalObject)
+    populateBiddersTable(Bidders, screenKey, componentJsonPath, preparedFinalObject)
     }
     store.dispatch(toggleSpinner());
   } catch (error) {
@@ -323,7 +324,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
 }
 
 
-export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) => {
+export const populateBiddersTable = (biddersList, screenKey, componentJsonPath,dispatch) => {
   console.log(biddersList);
 
   if (!!biddersList) {
@@ -338,63 +339,149 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
         {
           type:"checkbox",
           defaultChecked: !!item.refundStatus && item.refundStatus != "-" ? true : false, 
-          onClick: (e) => { 
-            store.dispatch(toggleSpinner());
-            if (confirm('Are you sure you want to initiate refund?')) {
+          onClick: (e) => {
+            // store.dispatch(toggleSpinner());
+            store.dispatch(
+              handleField(
+                "refund",
+                `components.adhocDialog`,
+                "props.open",
+                true
+              )
+             )
+             store.dispatch(
+              prepareFinalObject(
+                "biddersList",
+                biddersList
+              )
+            )
+             let { ticked } = store.getState().screenConfiguration.preparedFinalObject;
+             if(ticked){
+               debugger
               let isMarked = e.target.checked;
-              setTimeout((e) => {
-                store.dispatch(toggleSpinner());
-                let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
-                let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
-
-                biddersList = biddersList.map((item, index) => {
-                  if (bidderData[1] == item.bidderName) {
-                    item.refundStatus = isMarked ? "Initiated" : "-";
-                  }
-                  return item;
-                });
-
-                populateBiddersTable(biddersList, screenKey, componentJsonPath)
-
-                let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
-                store.dispatch(
-                  handleField(
-                    "refund", 
-                    "components.div.children.submitButton",
-                    "visible",
-                    (biddersList.length === refundedBidders.length)
-                  )
+              store.dispatch(
+                prepareFinalObject(
+                  "isMarked",
+                  isMarked
                 )
-                store.dispatch(
-                  handleField(
-                    "refund", 
-                    "components.div.children.saveButton",
-                    "visible",
-                    (biddersList.length !== refundedBidders.length)
-                  )
-                )
-
-                if (biddersList.length == refundedBidders.length) {
-                  biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
-                }
-                else {
-                  biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
-                }
-
-                let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
-                store.dispatch(
-                  prepareFinalObject(
-                    "Properties",
-                    properties
-                  )
-                )
-              }, 1000)
-            } else {
+              )
+              
+             }else{
               e.preventDefault();
-              store.dispatch(toggleSpinner());
-              console.log('Cancelled');
-            }
+             }
+            // if (confirm('Are you sure you want to initiate refund?')) {
+            //   let isMarked = e.target.checked;
+            //   setTimeout((e) => {
+            //     store.dispatch(toggleSpinner());
+            //     let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
+            //     let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+
+            //     biddersList = biddersList.map((item, index) => {
+            //       if (bidderData[1] == item.bidderName) {
+            //         item.refundStatus = isMarked ? "Initiated" : "-";
+            //       }
+            //       return item;
+            //     });
+
+            //     populateBiddersTable(biddersList, screenKey, componentJsonPath)
+
+            //     let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
+            //     store.dispatch(
+            //       handleField(
+            //         "refund", 
+            //         "components.div.children.submitButton",
+            //         "visible",
+            //         (biddersList.length === refundedBidders.length)
+            //       )
+            //     )
+            //     store.dispatch(
+            //       handleField(
+            //         "refund", 
+            //         "components.div.children.saveButton",
+            //         "visible",
+            //         (biddersList.length !== refundedBidders.length)
+            //       )
+            //     )
+
+            //     if (biddersList.length == refundedBidders.length) {
+            //       biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
+            //     }
+            //     else {
+            //       biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
+            //     }
+
+            //     let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
+            //     store.dispatch(
+            //       prepareFinalObject(
+            //         "Properties",
+            //         properties
+            //       )
+            //     )
+            //   }, 1000)
+            // } else {
+            //   e.preventDefault();
+            //   store.dispatch(toggleSpinner());
+            //   console.log('Cancelled');
+            // }
           }
+         
+          // onClick: (e) => { 
+          //   store.dispatch(toggleSpinner());
+          //   if (confirm('Are you sure you want to initiate refund?')) {
+          //     let isMarked = e.target.checked;
+          //     setTimeout((e) => {
+          //       store.dispatch(toggleSpinner());
+          //       let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
+          //       let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+
+          //       biddersList = biddersList.map((item, index) => {
+          //         if (bidderData[1] == item.bidderName) {
+          //           item.refundStatus = isMarked ? "Initiated" : "-";
+          //         }
+          //         return item;
+          //       });
+
+          //       populateBiddersTable(biddersList, screenKey, componentJsonPath)
+
+          //       let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
+          //       store.dispatch(
+          //         handleField(
+          //           "refund", 
+          //           "components.div.children.submitButton",
+          //           "visible",
+          //           (biddersList.length === refundedBidders.length)
+          //         )
+          //       )
+          //       store.dispatch(
+          //         handleField(
+          //           "refund", 
+          //           "components.div.children.saveButton",
+          //           "visible",
+          //           (biddersList.length !== refundedBidders.length)
+          //         )
+          //       )
+
+          //       if (biddersList.length == refundedBidders.length) {
+          //         biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
+          //       }
+          //       else {
+          //         biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
+          //       }
+
+          //       let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
+          //       store.dispatch(
+          //         prepareFinalObject(
+          //           "Properties",
+          //           properties
+          //         )
+          //       )
+          //     }, 1000)
+          //   } else {
+          //     e.preventDefault();
+          //     store.dispatch(toggleSpinner());
+          //     console.log('Cancelled');
+          //   }
+          // }
         }),
         [getTextToLocalMapping("Refund Status")]: item.refundStatus || "-",
     }));

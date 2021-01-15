@@ -3,7 +3,9 @@ import {
   getBreak,
   getCommonContainer,
   getCommonHeader,
-  getLabel
+  getLabel,
+  getCommonTitle,
+  getTextField
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   getQueryArg
@@ -11,7 +13,7 @@ import {
 import {
   prepareFinalObject,
   handleScreenConfigurationFieldChange as handleField,
-  toggleSnackbar
+  toggleSnackbar,toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getSearchResults,
@@ -34,6 +36,7 @@ import { WF_EB_REFUND_OF_EMD } from "../../../../ui-constants";
 import {
   getUserInfo
   } from "egov-ui-kit/utils/localStorageUtils";
+import store from "redux/store";
 
 const userInfo = JSON.parse(getUserInfo());
 const {
@@ -298,6 +301,209 @@ const callBackForSaveOrSubmit = async (state, dispatch) => {
   }
 }
 
+const adhocDialogHeader = getCommonTitle({
+  labelName: "Are you sure you want to initiate refund?",
+  labelKey: "Are you sure you want to initiate refund?"
+}, {
+  style: {
+    marginBottom: 18,
+    marginTop: 18
+  }
+})
+
+export const addressField = {
+  label: {
+    labelName: "Address",
+    labelKey: "ES_ADDRESS_LABEL"
+  },
+  placeholder: {
+    labelName: "Enter Address",
+    labelKey: "ES_ADDRESS_PLACEHOLDER"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+  required: true,
+  props: {
+    multiline: true,
+    rows: 2
+  },
+  // pattern: _getPattern("address"),
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
+  // afterFieldChange: (action, state, dispatch) => {
+  //   if (action.value.length > 150) {
+  //       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
+  //   }
+  //   else {
+  //       displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+  //   }
+  // }
+}
+
+export const mobileNumberField = {
+  label: {
+    labelName: "Mobile No.",
+    labelKey: "ESTATE_MOBILE_NUMBER_LABEL"
+  },
+  placeholder: {
+    labelName: "Enter Mobile No.",
+    labelKey: "ES_MOBILE_NUMBER_PLACEHOLDER"
+  },
+  required: true,
+  // pattern: getPattern("MobileNo"),
+  // props: {
+  //   value: userInfo.userName,
+  //   disabled: true
+  // },
+  jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
+}
+
+// const editOwnerDetails = getCommonContainer({
+//   address: getTextField(addressField),
+//   mobileNumber: getTextField(mobileNumberField)
+// })
+
+const cancelButton = {
+  componentPath: "Button",
+  props: {
+    variant: "contained",
+    color: "primary",
+    style: {
+      minWidth: "180px",
+      height: "48px",
+      margin: "15px 0px 0px 0px",
+      borderRadius: "inherit"
+    }
+  },
+  children: {
+    cancelButtonLabel: getLabel({
+      labelName: "Cancel",
+      labelKey: "ES_COMMON_BUTTON_CANCEL"
+    }),
+    // cancelButtonIcon: {
+    //   uiFramework: "custom-atoms",
+    //   componentPath: "Icon",
+    //   props: {
+    //     iconName: "keyboard_arrow_right"
+    //   }
+    // }
+  },
+  visible: true
+}
+const okButton = {
+  componentPath: "Button",
+  props: {
+    variant: "contained",
+    color: "primary",
+    style: {
+      minWidth: "180px",
+      height: "48px",
+      margin: "15px 0px 0px 15px",
+      borderRadius: "inherit",
+    }
+  },
+  children: {
+    saveButtonLabel: getLabel({
+      labelName: "Save",
+      labelKey: "ES_COMMON_BUTTON_SAVE"
+    }),
+    // saveButtonIcon: {
+    //   uiFramework: "custom-atoms",
+    //   componentPath: "Icon",
+    //   props: {
+    //     iconName: "keyboard_arrow_right"
+    //   }
+    // }
+  },
+  visible: true
+}
+
+export const callBackForCancel = async (state,dispatch) => {
+  store.dispatch(
+    prepareFinalObject(
+      "ticked",
+      false
+    )
+  )
+  store.dispatch(
+    handleField(
+      "refund",
+      `components.adhocDialog`,
+      "props.open",
+      false
+    )
+  )
+}
+
+const callBackForSave = async(state,dispatch,e) => {
+
+  store.dispatch(
+    prepareFinalObject(
+      "ticked",
+      true
+    )
+  )
+  setTimeout((e) => {
+    // store.dispatch(toggleSpinner());
+    let { isMarked } = store.getState().screenConfiguration.preparedFinalObject;
+    let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
+    let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+    let { biddersList } = store.getState().screenConfiguration.preparedFinalObject;
+
+    biddersList = biddersList.map((item, index) => {
+      if (bidderData[1] == item.bidderName) {
+        item.refundStatus = isMarked ? "Initiated" : "-";
+      }
+      return item;
+    });
+    populateBiddersTable(biddersList, "refund", "components.div.children.auctionTableContainer")
+
+    // populateBiddersTable(biddersList, screenKey, componentJsonPath)
+
+    let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
+    store.dispatch(
+      handleField(
+        "refund", 
+        "components.div.children.submitButton",
+        "visible",
+        (biddersList.length === refundedBidders.length)
+      )
+    )
+    store.dispatch(
+      handleField(
+        "refund", 
+        "components.div.children.saveButton",
+        "visible",
+        (biddersList.length !== refundedBidders.length)
+      )
+    )
+
+    if (biddersList.length == refundedBidders.length) {
+      biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
+    }
+    else {
+      biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
+    }
+
+    let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
+    store.dispatch(
+      prepareFinalObject(
+        "Properties",
+        properties
+      )
+    )
+    store.dispatch(
+      handleField(
+        "refund",
+        `components.adhocDialog`,
+        "props.open",
+        false
+      )
+     )
+  }, 1000)
+}
+
 const refund = {
   uiFramework: "material-ui",
   name: "refund",
@@ -356,6 +562,35 @@ const refund = {
           onClickDefination: {
             action: "condition",
             callBack: callBackForSaveOrSubmit
+          }
+        }
+      }
+     
+    },
+    adhocDialog: {
+      uiFramework: "custom-containers-local",
+      moduleName: "egov-estate",
+      componentPath: "DialogContainer",
+      props: {
+        open: false,
+        maxWidth: "sm",
+        screenKey: "refund",
+      },
+      children: {
+        header: adhocDialogHeader,
+        // details: editOwnerDetails,
+        cancelButton: {
+          ...cancelButton,
+          onClickDefination: {
+            action: "condition",
+            callBack: callBackForCancel
+          }
+        },
+        saveButton: {
+          ...okButton,
+          onClickDefination: {
+            action: "condition",
+            callBack: callBackForSave
           }
         }
       }
