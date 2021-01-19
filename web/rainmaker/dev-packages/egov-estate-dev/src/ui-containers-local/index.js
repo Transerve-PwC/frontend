@@ -97,6 +97,11 @@ const RadioGroupContainer = Loadable({
   loading: () => <Loading />
 })
 
+const ConfirmDialog = Loadable({
+  loader: () => import("./ConfirmDialog"),
+  loading: () => <Loading />
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -117,5 +122,6 @@ export {
   MultiSelectContainer,
   RentSummaryCardContainer,
   MultiItem,
-  RadioGroupContainer
+  RadioGroupContainer,
+  ConfirmDialog
 };

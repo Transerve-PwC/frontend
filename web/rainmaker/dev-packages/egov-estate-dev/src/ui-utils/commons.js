@@ -22,33 +22,35 @@ import {
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import {ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE,ES_RENT_DUE_DATE,
-  ES_PENALTY_INTEREST,ES_ST_GST_RATE,ES_ST_GST_DUE,ES_PAID,
-  ES_DATE_OF_RECEIPT,ES_NO_OF_DAYS,ES_INTEREST_ON_DELAYED_PAYMENT, ESTATE_SERVICES_MDMS_MODULE} from '../ui-constants'
+import {
+  ES_MONTH, ES_RENT_DUE, ES_RENT_RECEIVED, ES_RECEIPT_NO, ES_DATE, ES_RENT_DUE_DATE,
+  ES_PENALTY_INTEREST, ES_ST_GST_RATE, ES_ST_GST_DUE, ES_PAID,
+  ES_DATE_OF_RECEIPT, ES_NO_OF_DAYS, ES_INTEREST_ON_DELAYED_PAYMENT, ESTATE_SERVICES_MDMS_MODULE
+} from '../ui-constants'
 import moment from "moment";
 
-export const getApplicationStatusList = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
-try {
-  const branchType = getQueryArg(window.location.href, "branchType");
-  const queryObject = [
-    {key: "tenantId", value: getTenantId()},
-    {key: "businessName", value: branchType}
-  ]
-  const response = await httpRequest(
-    "post",
-    "/est-services/application/states",
-    "",
-    queryObject
-  );
-  const {States} = response
-  const data = States.map(item => ({label: item, code: item}))
-  dispatch(handleField(screenKey, componentJsonPath, "props.data", data))
-} catch (error) {
-  console.log(error)
-}
+export const getApplicationStatusList = async ({ action, state, dispatch, screenKey, componentJsonPath }) => {
+  try {
+    const branchType = getQueryArg(window.location.href, "branchType");
+    const queryObject = [
+      { key: "tenantId", value: getTenantId() },
+      { key: "businessName", value: branchType }
+    ]
+    const response = await httpRequest(
+      "post",
+      "/est-services/application/states",
+      "",
+      queryObject
+    );
+    const { States } = response
+    const data = States.map(item => ({ label: item, code: item }))
+    dispatch(handleField(screenKey, componentJsonPath, "props.data", data))
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-export const getApplicationTypes = async ({action, state, dispatch, screenKey, componentJsonPath}) => {
+export const getApplicationTypes = async ({ action, state, dispatch, screenKey, componentJsonPath }) => {
   try {
     const branchType = getQueryArg(window.location.href, "branchType");
     let filter = "ESTATE_BRANCH";
@@ -93,7 +95,7 @@ export const getPaymentGateways = async () => {
     );
     return payload
   } catch (error) {
-    store.dispatch(toggleSnackbar(true, {labelName: error.message, labelKey: error.message}, "error"))
+    store.dispatch(toggleSnackbar(true, { labelName: error.message, labelKey: error.message }, "error"))
   }
 }
 
@@ -166,28 +168,30 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 
 const isValid = (file, acceptedFiles) => {
   const mimeType = file["type"] || file.name.split(".").pop();
-  if(!!mimeType) {
+  if (!!mimeType) {
     const mimes = mimeType.split("/");
     let acceptedTypes = acceptedFiles.split(",");
     acceptedTypes = acceptedTypes.reduce((prev, curr) => {
       const accepted = curr.split("/");
-      prev = [...prev, {first: accepted[0], second: accepted[1]}]
+      prev = [...prev, { first: accepted[0], second: accepted[1] }]
       return prev
     }, [])
-    if(acceptedFiles.includes(mimeType)) {
-      return {valid: true}
-    } else  {
-     const findItem = acceptedTypes.find(item => item.first === mimes[0])
-     if(!!findItem && findItem.second === "*") {
-      return {valid: true}
-     } else {
-      return {  valid: false, 
-                errorMessage: `Please upload the allowed file types only.`
-              }
-    }
+    if (acceptedFiles.includes(mimeType)) {
+      return { valid: true }
+    } else {
+      const findItem = acceptedTypes.find(item => item.first === mimes[0])
+      if (!!findItem && findItem.second === "*") {
+        return { valid: true }
+      } else {
+        return {
+          valid: false,
+          errorMessage: `Please upload the allowed file types only.`
+        }
+      }
     }
   } else {
-    return {  valid: false, 
+    return {
+      valid: false,
       errorMessage: `Please upload the allowed file types only.`
     }
   }
@@ -204,7 +208,7 @@ export const handleFileUpload = (event, handleDocument, props, stopLoading) => {
     const files = input.files;
     Object.keys(files).forEach(async (key, index) => {
       const file = files[key];
-      const {valid, errorMessage} = isValid(file, formatProps.accept)
+      const { valid, errorMessage } = isValid(file, formatProps.accept)
       const isSizeValid = getFileSize(file) <= maxFileSize;
       if (!valid) {
         stopLoading()
@@ -261,8 +265,8 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
     "Properties[0].id"
   )
   const queryObject = [
-    {key: "tenantId", value: "ch"},
-    {key: "fileStoreId", value: fileStoreId}
+    { key: "tenantId", value: "ch" },
+    { key: "fileStoreId", value: fileStoreId }
   ]
   const reqBody = {
     Property: {
@@ -280,7 +284,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
       queryObject,
       reqBody
     )
-    if(!!response) {
+    if (!!response) {
       store.dispatch(
         handleField(
           screenKey,
@@ -323,7 +327,6 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
   }
 }
 
-
 export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) => {
   console.log(biddersList);
 
@@ -337,67 +340,32 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
       [getTextToLocalMapping("Initiate Refund")]: React.createElement(
         "input",
         {
-          type:"checkbox",
-          defaultChecked: !!item.refundStatus && item.refundStatus != "-" ? true : false, 
-          onClick: (e) => { 
-            store.dispatch(toggleSpinner());
-            if (confirm('Are you sure you want to initiate refund?')) {
-              let isMarked = e.target.checked;
-              setTimeout((e) => {
-                store.dispatch(toggleSpinner());
-                let { Properties } = store.getState().screenConfiguration.preparedFinalObject;
-                let bidderData = store.getState().screenConfiguration.preparedFinalObject.BidderData;
+          type: "checkbox",
+          defaultChecked: false,
+          checked: !!item.refundStatus && item.refundStatus != "-" ? true : false,
+          onClick: (e) => {
+            store.dispatch(
+              handleField(
+                "refund",
+                `components.div.children.confirmDialog`,
+                `props.open`,
+                true
+              )
+            )
+            let isMarked = e.target.checked;
 
-                biddersList = biddersList.map((item, index) => {
-                  if (bidderData[1] == item.bidderName) {
-                    item.refundStatus = isMarked ? "Initiated" : "-";
-                  }
-                  return item;
-                });
-
-                populateBiddersTable(biddersList, screenKey, componentJsonPath)
-
-                let refundedBidders = biddersList.filter(item => item.refundStatus == "Initiated");
-                store.dispatch(
-                  handleField(
-                    "refund", 
-                    "components.div.children.submitButton",
-                    "visible",
-                    (biddersList.length === refundedBidders.length)
-                  )
-                )
-                store.dispatch(
-                  handleField(
-                    "refund", 
-                    "components.div.children.saveButton",
-                    "visible",
-                    (biddersList.length !== refundedBidders.length)
-                  )
-                )
-
-                if (biddersList.length == refundedBidders.length) {
-                  biddersList = biddersList.map(item => ({...item, action: "SUBMIT"}));
-                }
-                else {
-                  biddersList = biddersList.map(item => ({...item, action: "", state: ""}));
-                }
-
-                let properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, bidders: biddersList}}]
-                store.dispatch(
-                  prepareFinalObject(
-                    "Properties",
-                    properties
-                  )
-                )
-              }, 1000)
-            } else {
-              e.preventDefault();
-              store.dispatch(toggleSpinner());
-              console.log('Cancelled');
+            let refundData = {
+              isMarked: isMarked,
+              biddersList: biddersList,
+              screenKey: screenKey,
+              componentJsonPath: componentJsonPath
             }
+            store.dispatch(
+              prepareFinalObject("refundData", refundData)
+            )
           }
         }),
-        [getTextToLocalMapping("Refund Status")]: item.refundStatus || "-",
+      [getTextToLocalMapping("Refund Status")]: item.refundStatus || "-",
     }));
 
     store.dispatch(
@@ -456,45 +424,45 @@ export const setDocuments = async (
   reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
 };
 
-export const setXLSTableData = async({demands, payments ,componentJsonPath, screenKey}) => {
+export const setXLSTableData = async ({ demands, payments, componentJsonPath, screenKey }) => {
   let data = demands.map(item => {
     const findItem = payments.find(payData => moment(new Date(payData.paymentDate)).format("MMM YYYY") === moment(new Date(item.generationDate)).format("MMM YYYY"));
-    return !!findItem ? {...item, ...findItem} : {...item}
+    return !!findItem ? { ...item, ...findItem } : { ...item }
   })
-  if(demands[0].generationDate === 0){
+  if (demands[0].generationDate === 0) {
     data.shift();
   }
-  
-  data  = data.map(item => ({
-    [ES_MONTH]:  !!item.generationDate && moment(new Date(item.generationDate)).format("MMM YYYY") || '',
+
+  data = data.map(item => ({
+    [ES_MONTH]: !!item.generationDate && moment(new Date(item.generationDate)).format("MMM YYYY") || '',
     [ES_RENT_DUE]: !!item.rent && item.rent || ' ',
     [ES_RENT_RECEIVED]: !!item.rentReceived && item.rentReceived || '0',
     [ES_RECEIPT_NO]: !!item.receiptNo && item.receiptNo || ' ',
-    [ES_DATE] :  !!item.paymentDate && moment(new Date(item.paymentDate)).format("DD MMM YYYY") || '',
+    [ES_DATE]: !!item.paymentDate && moment(new Date(item.paymentDate)).format("DD MMM YYYY") || '',
     [ES_RENT_DUE_DATE]: !!item.generationDate && moment(new Date(item.generationDate)).format("DD MMM YYYY") || '',
     // [ES_PENALTY_INTEREST]: !!item.penaltyInterest && item.penaltyInterest|| '',
-    [ES_ST_GST_RATE]:'18%',
+    [ES_ST_GST_RATE]: '18%',
     [ES_ST_GST_DUE]: !!item.gst && item.gst || '',
     // [ES_PAID]: !!item.paid && item.paid || '',
     [ES_DATE_OF_RECEIPT]: !!item.receiptDate && moment(new Date(item.receiptDate)).format("DD MMM YYYY") || '',
     // [ES_NO_OF_DAYS]: !!item.noOfDays && item.noOfDays || '',
     // [ES_INTEREST_ON_DELAYED_PAYMENT]: !!item.gstInterest && item.gstInterest || ''
   }))
-  if(data.length > 1) {
+  if (data.length > 1) {
     store.dispatch(
       handleField(
-          screenKey,
-          componentJsonPath,
-          "props.data",
-          data
+        screenKey,
+        componentJsonPath,
+        "props.data",
+        data
       )
     );
     store.dispatch(
       handleField(
-          screenKey,
-          componentJsonPath,
-          "visible",
-          true
+        screenKey,
+        componentJsonPath,
+        "visible",
+        true
       )
     );
   }
@@ -504,13 +472,13 @@ export const setXLSTableData = async({demands, payments ,componentJsonPath, scre
   store.dispatch(
     prepareFinalObject("Properties[0].propertyDetails.estatePayments", payments)
   )
- 
+
 }
 
 export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStoreId) => {
   const queryObject = [
-    {key: "tenantId", value: getTenantId().split('.')[0]},
-    {key: "fileStoreId", value: fileStoreId}
+    { key: "tenantId", value: getTenantId().split('.')[0] },
+    { key: "fileStoreId", value: fileStoreId }
   ]
   try {
     store.dispatch(toggleSpinner());
@@ -520,11 +488,11 @@ export const getXLSData = async (getUrl, componentJsonPath, screenKey, fileStore
       "",
       queryObject
     )
-   
-    if(!!response) {
-      let {estateDemands, estatePayments} = response.Calculations;
-      if(!!estateDemands.length && !!estatePayments.length){
-          setXLSTableData({demands:estateDemands,payments:estatePayments, componentJsonPath, screenKey})
+
+    if (!!response) {
+      let { estateDemands, estatePayments } = response.Calculations;
+      if (!!estateDemands.length && !!estatePayments.length) {
+        setXLSTableData({ demands: estateDemands, payments: estatePayments, componentJsonPath, screenKey })
       }
     }
     store.dispatch(toggleSpinner());
