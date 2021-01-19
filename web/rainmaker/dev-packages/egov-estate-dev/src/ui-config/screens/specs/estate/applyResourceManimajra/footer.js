@@ -137,21 +137,7 @@ const callBackForNext = async (state, dispatch) => {
       "apply-manimajra"
     )
 
-    const annualDetailsValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.annualDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "apply-manimajra"   
-    )
-
-    const monthlyDetails = validateFields(
-      "components.div.children.formwizardFirstStep.children.monthlyDetails.children.cardContent.children.detailsContainer.children",
-      state,
-      dispatch,
-      "apply-manimajra"
-    )
-
-    if (isPropertyInfoValid && isAdditionalValid && annualDetailsValid && monthlyDetails) {
+    if (isPropertyInfoValid && isAdditionalValid) {
       const res = await applyEstates(state, dispatch, activeStep, "apply-manimajra");
       if (!res) {
         return
