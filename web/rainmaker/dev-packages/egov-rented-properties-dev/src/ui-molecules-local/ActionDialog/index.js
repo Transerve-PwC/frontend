@@ -224,6 +224,12 @@ class ActionDialog extends React.Component {
       },
       uploadfileerror:{
         "uploadfile":""
+      },
+      roles:{
+        "roles":""
+      },
+      roleserror:{
+        "roles":""
       }
     }
   }
@@ -265,10 +271,12 @@ class ActionDialog extends React.Component {
     const data = get(state.screenConfiguration.preparedFinalObject, dataPath) || []
     const applicationState = data.applicationState
     const duplicateCopyApplicationState = data.state
-    
     if(!!dialogData.roleProps && !this.state.selectedData) {
+      let roleserror = {};
+      roleserror["roles"] = "Please select the role";
       this.setState({
-        showRoleError: true
+        showRoleError: true,
+   errors: roleserror
       })
       return
     }
@@ -504,6 +512,8 @@ if(!document || document.length===0){
   let sanctionLetterNumberError = this.state.sanctionLetterNumberError;
   let sanctionDate = this.state.sanctionDate;
   let sanctionDateError = this.state.sanctionDateError;
+  let roles=this.state.roles;
+  let roleserror=this.state.roleserror;
   if (Object.keys(fields).length) {
     fields[field] = e.target.value;        
     this.setState({fields});
@@ -574,6 +584,15 @@ if(!document || document.length===0){
     if (e.target.value) {
       sanctionDateError["sanctionDate"] = "";
       this.setState({errors: sanctionDateError});
+    }
+  }
+  if (Object.keys(roleserror).length) {
+    roles[field] = e.target.value;        
+    this.setState({roles});
+
+    if (e.target.value) {
+      roleserror["roles"] = "";
+      this.setState({errors: roleserror});
     }
   }
 }
@@ -668,6 +687,7 @@ if(open==false){
   errors["mortagage"]="";
 errors["bankname"]="";
 errors["uploadfile"] = "";
+errors["roles"]="";
 }
     const masterState=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).masterDataState
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
@@ -733,8 +753,11 @@ errors["uploadfile"] = "";
                         optionValue="value"
                         optionLabel="label"
                         hasLocalization={false}
-                        onChange={e => this.onRoleToClick(e)}                        
+                        jsonPath={`${dataPath}.roles[0]`}
+                        onChange={e => {this.onRoleToClick(e)
+                          this.handleChange("roles", e);handleFieldChange(`${dataPath}.roles`, e.target.value) } }                        
                       />
+                       <span style={{color: "red"}}>{this.state.errors["roles"]}</span>
                   </Grid>)}
                   {(moduleName==="MasterRP" && ((masterState ==="PM_PENDINGJAVERIFICATION" && buttonLabel==="SENDBACK") || buttonLabel === "REJECT"))?"":
                   showEmployeeList && !!dropDownData.length && (
