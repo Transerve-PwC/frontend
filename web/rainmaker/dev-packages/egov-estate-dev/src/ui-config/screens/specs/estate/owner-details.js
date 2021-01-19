@@ -388,7 +388,8 @@ const updateAllFields = async (action, state, dispatch) => {
             { key: "ownerId", value: ownerId },
             { key: "branchType", value: applicationBranchType },
             { key: "state", value: ESTATE_APPROVED_STATE },
-            { key: "moduleType", value: "OwnershipTransfer"}
+            { key: "moduleType", value: "OwnershipTransfer"},
+            {key: "relations", value: "owner"}
           ]
           let payload = await getSearchApplicationsResults(queryObject);
           let modeOfTransferArr = [];

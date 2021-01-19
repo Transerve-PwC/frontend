@@ -111,8 +111,8 @@ export const propertyTypeField = {
   beforeFieldChange: (action, state, dispatch) => {
 
     const monthlyData = [
-       {label:"JAN",code:"01"},{label:"FEB",code:"02"},{label:"MAR",code:"03"},{label:"APR",code:"04"},{label:"MAY",code:"05"},{label:"JUN",code:"06"},{label:"JUL",code:"07"},
-      {label:"AUG",code:"08"},{label:"SEP",code:"09"},{label:"OCT",code:"10"},{label:"NOV",code:"11"},{label:"DEC",code:"12"}
+       {label:"JAN",code:1},{label:"FEB",code:2},{label:"MAR",code:3},{label:"APR",code:4},{label:"MAY",code:5},{label:"JUN",code:6},{label:"JUL",code:7},
+      {label:"AUG",code:8},{label:"SEP",code:9},{label:"OCT",code:10},{label:"NOV",code:11},{label:"DEC",code:12}
     ]
     
     var yearlyData = []

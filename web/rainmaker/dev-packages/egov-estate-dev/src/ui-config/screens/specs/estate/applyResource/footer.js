@@ -11,7 +11,8 @@ import {
 import {
   toggleSnackbar,
   prepareFinalObject,
-  handleScreenConfigurationFieldChange as handleField
+  handleScreenConfigurationFieldChange as handleField,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import {
@@ -84,6 +85,7 @@ export const moveToSuccess = (data, dispatch, type) => {
 };
 
 const callBackForNext = async (state, dispatch) => {
+  dispatch(toggleSpinner());
   let scrollTop = true;
   let activeStep = get(
     state.screenConfiguration.screenConfig[screenKey],
@@ -230,6 +232,8 @@ const callBackForNext = async (state, dispatch) => {
         let ownerPossessionDate = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`);
         let ownerDateOfAllotment = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.dateOfAllotment`);
 
+        if(!!ownerPossessionDate)
+        {
         let ownerPossessionDateEpoch = convertDateToEpoch(ownerPossessionDate)
         let ownerDateOfAllotmentEpoch = convertDateToEpoch(ownerDateOfAllotment)
 
@@ -241,6 +245,7 @@ const callBackForNext = async (state, dispatch) => {
         if (!ownerPosAllotDateValid) {
           break;
         }
+      }
       }
     }
     /* let ownerOnePossessionDate = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate");
@@ -869,6 +874,7 @@ const callBackForNext = async (state, dispatch) => {
   if(scrollTop){
     window.scrollTo(0,0)
   }
+  dispatch(toggleSpinner());
 }
 
 const setOwnersOrPartners = (state, dispatch, container, entityType) => {
@@ -1017,7 +1023,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-  
       break;
     case AUCTION_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1027,7 +1032,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-   
       break;
     case ENTITY_OWNER_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1037,7 +1041,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-
       break;
     case ENTITY_OWNER_DOCUMENT_UPLOAD_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1047,7 +1050,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-      
       break;
     case PURCHASER_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1057,7 +1059,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-     
       break;
     case PURCHASER_DOCUMENTS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1067,7 +1068,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-     
       break;
       
     case COURT_CASE_DETAILS_STEP:
@@ -1078,7 +1078,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-      
       break;
     case RENT_INFO_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1116,7 +1115,6 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         "visible",
         false
       ))
-      
       break;
     case PAYMENT_DETAILS_STEP:
       dispatchMultipleFieldChangeAction(
@@ -1126,9 +1124,8 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-
       break;
-    default:
+    case SUMMARY_STEP:
       dispatchMultipleFieldChangeAction(
         screenName,
         getActionDefinationForStepper(
@@ -1136,7 +1133,9 @@ export const renderSteps = (activeStep, dispatch, screenName) => {
         ),
         dispatch
       );
-     
+      break;
+    default:
+      break;
   }
 };
 
@@ -1208,10 +1207,12 @@ export const getActionDefinationForStepper = path => {
 };
 
 export const callBackForPrevious = async (state, dispatch) => {
-    const fileNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].fileNumber")
-    await getPMDetailsByFileNumber("", state, dispatch, fileNumber, screenKey, false)
-    window.scrollTo(0,0)
-    changeStep(state, dispatch, screenKey, "previous");
+  dispatch(toggleSpinner());
+  const fileNumber = get(state.screenConfiguration.preparedFinalObject, "Properties[0].fileNumber")
+  await getPMDetailsByFileNumber("", state, dispatch, fileNumber, screenKey, false)
+  window.scrollTo(0,0)
+  changeStep(state, dispatch, screenKey, "previous");
+  dispatch(toggleSpinner())
 };
 
 export const previousButton = {
@@ -1556,7 +1557,7 @@ export const downloadPrintContainer = (
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
       set(Applications[0],"additionalDetails.documents",documents)
-      downloadNotice(Applications,"BB-" + applicationType,'print');
+      downloadNotice(Applications,"BB-" + applicationType,'','print');
     },
     leftIcon: "assignment"
   }
