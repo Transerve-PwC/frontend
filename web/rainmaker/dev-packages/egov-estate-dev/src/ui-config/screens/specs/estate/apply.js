@@ -447,7 +447,7 @@ export const setData = (properties, screenName, dispatch, state) => {
     toggleEntityOwnersDivsBasedOnEntityType(entityType, dispatch);
   }
   else {
-    toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(propertyRegisteredTo, dispatch)
+    toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(propertyRegisteredTo, dispatch, state)
   }
   /**********************************************************************************************/
 

@@ -406,7 +406,10 @@ export const getPropertyDetails = (isEditable = true) => {
       viewFour: getCommonContainer({
         auctionId: getLabelWithValue(
           auctionIdLabel, {
-            jsonPath: `Properties[0].propertyDetails.bidders[0].auctionId`
+            jsonPath: `Properties[0].propertyDetails.bidders[0].auctionId`,
+            callBack: (value) => {
+              return Math.floor(value)
+            }
           }
         ),
         modeOfAuction: getLabelWithValue(

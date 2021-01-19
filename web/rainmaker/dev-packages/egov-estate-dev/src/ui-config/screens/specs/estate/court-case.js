@@ -109,7 +109,7 @@ const getData = async (action, state, dispatch, fileNumber) => {
                     align: "right"
                   },
                   children: {
-                    courtCaseButton: buttonComponent("Create CourtCase",`/estate/court-case-apply?fileNumber=${fileNumber}&tenantId=${getTenantId()}`),
+                    courtCaseButton: buttonComponent("Create Court Case",`/estate/court-case-apply?fileNumber=${fileNumber}&tenantId=${getTenantId()}`),
                   },
                   visible: (approvedFlagState === "ES_APPROVED" && !!findItem) ? true : false
                 },

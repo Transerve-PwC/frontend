@@ -480,9 +480,9 @@ const getPropertyRegisteredToRadioButton = {
     required: true,
     type: "array",
     beforeFieldChange: (action, state, dispatch) => {
-        if (!!action.value) {
-            toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(action.value, dispatch);
-        }
+      if (!!action.value) {
+          toggleEntityOwnersDivsBasedOnPropertyRegisteredTo(action.value, dispatch, state);
+      }
     }
 };
 
@@ -580,7 +580,7 @@ export const additionalDetails = getCommonCard({
     })
 })
 
-export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatch) =>  {
+export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatch, state) =>  {
     let screenName = "apply";
     let stepNameFirst = "formwizardFirstStep";
     let stepNameThird = "formwizardThirdStep";
@@ -594,6 +594,12 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
         stepNameReview = "formwizardSeventhStepAllotment";
         reviewContainer = "reviewAllotmentDetails"
     }
+
+    let owners = get(
+      state.screenConfiguration.screenConfig,
+      `${screenName}.components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`,
+      []
+    );
 
     dispatch(
         handleField(
@@ -636,6 +642,17 @@ export const toggleEntityOwnersDivsBasedOnPropertyRegisteredTo = (value, dispatc
             !!(value == "ENTITY")
         )
     )
+
+    for (var i = 0; i < owners.length; i++) {
+      dispatch(
+          handleField(
+              screenName,
+              `components.div.children.${stepNameThird}.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.ownerCard.children.isDirector`,
+              "visible",
+              !!(value == "ENTITY")
+          )
+      )
+    }
     dispatch(
         handleField(
             screenName,

@@ -63,6 +63,7 @@ class Footer extends React.Component {
       }
     }
 
+    handleFieldChange(`${dataPath}[0].comments`, "");
     handleFieldChange(`${dataPath}[0].comment`, "");
     handleFieldChange(`${dataPath}[0].assignee`, assignee);
 

@@ -37,6 +37,7 @@ import { setDocumentData } from "../apply"
 import {
   getSearchResults,
 } from "../../../../../ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;

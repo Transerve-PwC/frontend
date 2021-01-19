@@ -26,7 +26,7 @@ import {
   import {addHocDemandUpdate} from '../../../../ui-utils/apply'
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import get from "lodash/get";
-  import { validateFields,getTodaysDateInYMD } from "../utils";
+  import { validateFields,getTodaysDateInYMD, _getPattern } from "../utils";
   
   const header = getCommonHeader({
     labelName: "Adhoc Demand",
@@ -69,6 +69,8 @@ import {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERROR_ONLY_NUMBERIC_VALUE",
+    pattern: _getPattern('float'),
     required: true,
     jsonPath: "adhocDetails.rent"
   }
@@ -103,6 +105,8 @@ import {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERROR_ONLY_NUMBERIC_VALUE",
+    pattern: _getPattern('float'),
     required: true,
     jsonPath: "adhocDetails.penaltyInterest"
   }

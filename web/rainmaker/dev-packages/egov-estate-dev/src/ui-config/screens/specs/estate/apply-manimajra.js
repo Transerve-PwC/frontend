@@ -109,7 +109,7 @@ const getData = async (action, state, dispatch) => {
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
   if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply")
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "apply-manimajra")
     setDocsForEditFlow(state, dispatch, "Properties[0].propertyDetails.owners[0].ownerDetails.ownerDocuments", "PropertiesTemp[0].propertyDetails.owners[0].ownerDetails.uploadedDocsInRedux");
   }
   setDocumentData(action, state, dispatch, 0, "formwizardThirdStep");

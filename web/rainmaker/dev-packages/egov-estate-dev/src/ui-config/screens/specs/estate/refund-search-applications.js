@@ -289,7 +289,10 @@ import {
                 },
                 {
                   label: "ES_AUCTION_ID",
-                  jsonPath: "propertyDetails.bidders[0].auctionId"
+                  jsonPath: "propertyDetails.bidders[0].auctionId",
+                  callBack: (value) => {
+                    return Math.floor(value)
+                  }
                 },
                 {
                   label: "ES_PROPERTY_STATUS",

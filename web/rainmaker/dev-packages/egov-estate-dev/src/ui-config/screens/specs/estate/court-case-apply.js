@@ -20,6 +20,8 @@ import {
   } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import {_getPattern
+} from "../utils";
 
 const header = getCommonHeader({
     labelName: "Create Court Case",
@@ -65,6 +67,7 @@ const advisorToAdminCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
       jsonPath: "tempCourtCase[0].advisorToAdminCourt"
   }
 
@@ -83,6 +86,8 @@ const advisorToAdminCourtField = {
     },
     // minLength: 1,
     // maxLength: 5,
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 
 }
@@ -100,6 +105,7 @@ const chiefAdministartorsCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].chiefAdministartorsCourt"
   }
   export const chiefAdministartorsCourtFieldConfig = {
@@ -115,6 +121,8 @@ const chiefAdministartorsCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 
@@ -134,6 +142,7 @@ const commissionersCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].commissionersCourt"
   }
   export const commissionersCourtFieldConfig = {
@@ -149,6 +158,8 @@ const commissionersCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 
@@ -168,6 +179,7 @@ const estateOfficerCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].estateOfficerCourt"
   }
   export const estateOfficerCourtFieldConfig = {
@@ -183,6 +195,8 @@ const estateOfficerCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 
@@ -202,6 +216,7 @@ const honorableDistrictCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].honorableDistrictCourt"
   }
   export const honorableDistrictCourtFieldConfig = {
@@ -217,6 +232,8 @@ const honorableDistrictCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 
@@ -235,6 +252,7 @@ const honorableHighCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].honorableHighCourt"
   }
   export const honorableHighCourtFieldConfig = {
@@ -250,6 +268,8 @@ const honorableHighCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 
@@ -269,6 +289,7 @@ const honorableSupremeCourtField = {
         // disabled: true
       },
       errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     jsonPath: "tempCourtCase[0].honorableSupremeCourt"
   }
   export const honorableSupremeCourtFieldConfig = {
@@ -284,6 +305,8 @@ const honorableSupremeCourtField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+      pattern: _getPattern("courtCase"),
     required: false,
 }
 

@@ -252,6 +252,12 @@ export const getWFConfig = (module, businessService, taskId) => {
           DEFAULT: 'estate/search-preview-manimajra'
         }
       }
+      else if(businessService === "ES-EB-IS-RefundOfEmd"){
+        return {
+          INITIATED: 'estate/refund',
+          DEFAULT:'estate/refund'
+        }
+      }
       else {
         return {
           INITIATED: "/estate/preview",
