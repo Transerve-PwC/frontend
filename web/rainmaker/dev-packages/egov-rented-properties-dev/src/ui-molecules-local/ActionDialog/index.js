@@ -748,6 +748,7 @@ errors["roles"]="";
                         style={{ marginRight: "15px", width: "90%" }}
                         label={fieldConfig.to.label}
                         placeholder={fieldConfig.to.placeholder}
+                        required={true}
                         data={rolesData}
                         value={this.state.selectedData}
                         optionValue="value"
