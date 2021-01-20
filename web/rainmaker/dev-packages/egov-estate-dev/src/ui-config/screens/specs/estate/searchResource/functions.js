@@ -9,7 +9,7 @@ import {
 import { toggleSnackbar,toggleSpinner ,prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
-import { setBusinessServiceDataToLocalStorage, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
+import { setBusinessServiceDataToLocalStorage, getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import commonConfig from "config/common.js";
 import { httpRequest } from "../../../../../ui-utils"
 import { APPLICATION_TYPE, LAST_MODIFIED_ON,DATE , STATUS , AMOUNT ,OFFLINE_PAYMENT_DATE,TRANSACTION_ID, TYPE ,PENALTY_STATUS } from "./searchResults";
@@ -19,7 +19,7 @@ export const getStatusList = async (state, dispatch, queryObject, screen, path, 
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
   const businessServices = JSON.parse(localStorageGet("businessServiceData"));
   if(!!businessServices && !!screen && !!path) {
-    const status = businessServices[0].states.filter(item => !!item.state).map(({state}) => ({code: state,label:state}))
+    const status = businessServices[0].states.filter(item => !!item.applicationStatus).map(({applicationStatus}) => ({code: applicationStatus,label:applicationStatus}))
     dispatch(
       handleField(
         screen,
@@ -31,7 +31,10 @@ export const getStatusList = async (state, dispatch, queryObject, screen, path, 
   }
 }
 
-export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true, branchType = "ESTATE_BRANCH", screenKey = "search") => {
+export const searchApiCall = async (state, dispatch, onInit, offset, limit , hideTable = true, branchType, screenKey = "search") => {
+  var branchType = getQueryArg(window.location.href, "branchType");
+  branchType = !!branchType ? branchType : "ESTATE_BRANCH";
+  
   !!hideTable && showHideTable(false, dispatch, "search");
   let queryObject = [
     // {

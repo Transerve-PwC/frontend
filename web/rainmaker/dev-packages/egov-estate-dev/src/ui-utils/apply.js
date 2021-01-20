@@ -6,7 +6,8 @@ import {
 } from "../ui-config/screens/specs/utils";
 import {
   prepareFinalObject,
-  toggleSnackbar
+  toggleSnackbar,
+  toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -95,6 +96,11 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     const keys = Object.keys(queryObject[0].applicationDetails);
     const values = Object.values(queryObject[0].applicationDetails);
 
+    // to fix backend issue which occurs when transferee.id is set to ""
+    if (!!queryObject[0].applicationDetails.transferee && queryObject[0].applicationDetails.transferee.id == "") {
+      set(queryObject[0], "applicationDetails.transferee.id", null);
+    }
+
     keys.forEach((key, index) => {
      if(Array.isArray(values[index])) {
        let arr = values[index]
@@ -167,6 +173,7 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
 }
 
 export const applyEstates = async (state, dispatch, activeIndex, screenName = "apply") => {
+  dispatch(toggleSpinner());
   try {
     let queryObject = JSON.parse(
       JSON.stringify(
@@ -510,12 +517,14 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     //     removedDocs
     //   )
     // );
+    dispatch(toggleSpinner())
     return true;
   } catch (error) {
     dispatch(toggleSnackbar(true, {
       labelName: error.message
     }, "error"));
     console.log(error);
+    dispatch(toggleSpinner())
     return false;
   }
 }
