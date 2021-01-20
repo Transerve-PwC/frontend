@@ -88,6 +88,8 @@ import {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERROR_ONLY_NUMBERIC_VALUE",
+    pattern: _getPattern('float'),
     required: true,
     jsonPath: "adhocDetails.gst"
   }
@@ -124,6 +126,8 @@ import {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERROR_ONLY_NUMBERIC_VALUE",
+    pattern: _getPattern('float'),
     required: true,
     jsonPath: "adhocDetails.gstInterest"
   }
