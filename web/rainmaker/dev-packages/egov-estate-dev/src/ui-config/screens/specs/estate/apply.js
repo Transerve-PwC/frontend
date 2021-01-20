@@ -727,6 +727,7 @@ const getData = async (action, state, dispatch) => {
   }
 }
 
+// Screen config object for estate branch apply form
 const applyEstate = {
   uiFramework: "material-ui",
   name: "apply",

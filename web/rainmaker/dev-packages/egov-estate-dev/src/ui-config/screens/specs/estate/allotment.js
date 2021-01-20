@@ -65,6 +65,7 @@ export const getMdmsData = async (dispatch, body) => {
   }
 };
 
+// set documents for owners
 export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   const documentTypePayload = [{
     moduleName: ESTATE_SERVICES_MDMS_MODULE,
@@ -137,6 +138,7 @@ export const setDocumentData = async (action, state, dispatch, owner = 0) => {
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplications", documents))
 }
 
+// set bidder document
 const setBiddersDoc = async (action, state, dispatch) => {
   const documentTypePayload = [{
     moduleName: ESTATE_SERVICES_MDMS_MODULE,
@@ -240,6 +242,7 @@ const getData = async (action, state, dispatch) => {
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
+  //if property is in drafted state
   if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
   }
@@ -290,6 +293,7 @@ const getData = async (action, state, dispatch) => {
   setBiddersDoc(action, state, dispatch);
 }
 
+// Allotment screen config object
 const applyAllotment = {
   uiFramework: "material-ui",
   name: "allotment",

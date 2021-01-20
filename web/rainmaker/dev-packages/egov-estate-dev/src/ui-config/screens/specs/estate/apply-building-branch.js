@@ -224,6 +224,7 @@ export const setDocumentData = async (action, state, dispatch, ownerIndex = 0) =
   dispatch(prepareFinalObject("applyScreenMdmsData.estateApplicationsBuildingBranchDocs", buildingBranchOwnerDocs))
 }
 
+// Screen config object for building branch apply form
 const createProperty = {
   uiFramework: "material-ui",
   name: "apply-building-branch",

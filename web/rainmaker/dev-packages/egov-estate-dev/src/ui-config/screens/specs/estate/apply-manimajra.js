@@ -131,6 +131,7 @@ const getData = async (action, state, dispatch) => {
   }
 }
 
+// Screen config object for manimajra apply form
 const applyManimajra = {
   uiFramework: "material-ui",
   name: "apply-manimajra",

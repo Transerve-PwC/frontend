@@ -135,19 +135,6 @@ const detailsContainer = {
   }
 }
 
-const EstateDuesSummary = {
-  uiFramework: "material-ui",
-  name: "rent-information",
-  beforeInitScreen: (action, state, dispatch) => {
-    const fileNumber = getQueryArg(window.location.href, "fileNumber");
-    beforeInitFn(action, state, dispatch, fileNumber);
-    return action;
-  },
-  components: {
-    
-  }
-};
-
 const updateAllFields = (action, state, dispatch) => {
   const properties = get(state, "screenConfiguration.preparedFinalObject.Properties");
 }

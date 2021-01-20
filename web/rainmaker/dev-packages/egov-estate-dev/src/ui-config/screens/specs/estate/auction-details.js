@@ -37,44 +37,9 @@ import get from "lodash/get";
 
 let isPropertyMasterOrAllotmentOfSite;
 
-const searchResults = async (action, state, dispatch, fileNumber) => {
-  let queryObject = [
-    { key: "fileNumber", value: fileNumber },
-    {key: "relations", value: "bidder"}
-  ];
-  let payload = await getSearchResults(queryObject);
-  if (payload) {
-    let properties = payload.Properties;
-    isPropertyMasterOrAllotmentOfSite = properties[0].propertyMasterOrAllotmentOfSite;
-    dispatch(prepareFinalObject("Properties", properties));
-    if (properties[0].propertyDetails.bidders) {
-      dispatch(
-        handleField(
-          "auction-details",
-          "components.div.children.auctionTableContainer",
-          "visible",
-          true
-        )
-      );
-      let { bidders } = properties[0].propertyDetails;
-      populateBiddersTable(bidders, "auction-details", "components.div.children.auctionTableContainer")
-    }
-
-    dispatch(
-      handleField(
-        action.screenKey,
-        "components.div.children.tabSection",
-        "props.tabs",
-        (isPropertyMasterOrAllotmentOfSite == "PROPERTY_MASTER") ? tabs : tabsAllotment
-      )
-    )
-  }
-}
-
 const getData = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if(fileNumber){
-      // await searchResults(action, state, dispatch, fileNumber);
     let queryObject = [
       { key: "fileNumber", value: fileNumber },
       {key: "relations", value: "bidder"}

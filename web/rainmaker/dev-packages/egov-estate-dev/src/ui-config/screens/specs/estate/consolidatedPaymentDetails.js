@@ -4,10 +4,8 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
 import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults ,setXLSTableData } from "../../../../ui-utils/commons";
-import {getReviewPayment} from './preview-resource/payment-details'
+import { getSearchResults } from "../../../../ui-utils/commons";
 import {onTabChange, headerrow, tabs} from './search-preview'
-// import {paymentDetailsTable} from './applyResource/applyConfig'
 import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewConsolidatedPaymentDetails} from "./applyResource/reviewProperty";
 import get from "lodash/get";
@@ -20,7 +18,6 @@ let activeIndex = 6;
 const getData = async (action, state, dispatch, fileNumber) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
   if (fileNumber){
-    // await searchResults(action, state, dispatch, fileNumber)
     let queryObject = [
       { key: "fileNumber", value: fileNumber },
       {key: "relations", value: "accstmtdoc"}

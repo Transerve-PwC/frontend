@@ -135,9 +135,6 @@ const updateAllFields = async (action, state, dispatch) => {
   let payload = {};
   payload.Properties = properties;
 
-  
-
-
   let containers = {}
   properties[0].propertyDetails.purchaser.forEach((element, index) => {
     setDocuments(
