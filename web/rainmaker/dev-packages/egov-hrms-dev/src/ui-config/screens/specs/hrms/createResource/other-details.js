@@ -197,134 +197,134 @@ export const otherDetails = getCommonCard({
     },
     type: "array"
   },
-  departmentDetails: {
-    uiFramework: "custom-containers",
-    componentPath: "MultiItem",
-    props: {
-      scheama: getCommonGrayCard({
-        header: getCommonSubHeader(
-          {
-            labelName: "Department Test Details",
-            labelKey: "HR_DEPT_TEST_HEADER"
-          },
-          {
-            style: {
-              marginBottom: 18
-            }
-          }
-        ),
-        testsDetailsCardContainer: getCommonContainer(
-          {
-            testName: {
-              ...getSelectField({
-                label: {
-                  labelName: "Test Name",
-                  labelKey: "HR_TEST_NAME_LABEL"
-                },
-                placeholder: {
-                  labelName: "Select Test Name",
-                  labelKey: "HR_TEST_NAME_PLACEHOLDER"
-                },
-                jsonPath: "Employee[0].tests[0].test",
-                gridDefination: {
-                  xs: 12,
-                  sm: 4
-                },
-                sourceJsonPath: "createScreenMdmsData.egov-hrms.EmploymentTest",
-                props: {
-                  className: "hr-generic-selectfield"
-                  // data: [
-                  //   {
-                  //     value: "Arts",
-                  //     label: "Arts"
-                  //   },
-                  //   {
-                  //     value: "Science",
-                  //     label: "Science"
-                  //   }
-                  // ],
-                  // optionValue: "code",
-                  // optionLabel: "label"
-                },
-                localePrefix: {
-                  moduleName: "egov-hrms",
-                  masterName: "EmploymentTest"
-                }
-              })
-            },
-            year: {
-              ...getSelectField({
-                label: {
-                  labelName: "Year",
-                  labelKey: "HR_YEAR_LABEL"
-                },
-                placeholder: {
-                  labelName: "Select Year",
-                  labelKey: "HR_YEAR_PLACEHOLDER"
-                },
-                jsonPath: "Employee[0].tests[0].yearOfPassing",
-                sourceJsonPath: "yearsList",
-                gridDefination: {
-                  xs: 12,
-                  sm: 4
-                },
-                props: {
-                  className: "hr-generic-selectfield",
-                  // data: [
-                  //   {
-                  //     value: "Male",
-                  //     label: "Male"
-                  //   },
-                  //   {
-                  //     value: "Female",
-                  //     label: "Female"
-                  //   }
-                  // ],
-                  optionValue: "value",
-                  optionLabel: "label"
-                }
-              })
-            },
-            remarks: {
-              ...getTextField({
-                label: {
-                  labelName: "Remarks",
-                  labelKey: "HR_REMARKS_LABEL"
-                },
-                placeholder: {
-                  labelName: "Enter Remarks",
-                  labelKey: "HR_REMARKS_PLACEHOLDER"
-                },
-                pattern: getPattern("TradeName") || null,
-                gridDefination: {
-                  xs: 12,
-                  sm: 4
-                },
-                jsonPath: "Employee[0].tests[0].remarks"
-              })
-            }
-            // uploadFile: getUploadFilesMultiple(
-            //   "Employee[0].deptTestDetails[0].documents"
-            // )
-          },
-          {
-            style: {
-              overflow: "visible"
-            }
-          }
-        )
-      }),
-      items: [],
-      addItemLabel: { labelName: "ADD TEST", labelKey: "HR_ADD_TEST" },
-      headerName: "Department Test Details",
-      headerJsonPath:
-        "children.cardContent.children.header.children.head.children.Accessories.props.label",
-      sourceJsonPath: "Employee[0].tests",
-      prefixSourceJsonPath:
-        "children.cardContent.children.testsDetailsCardContainer.children"
-    },
-    type: "array"
-  }
+  // departmentDetails: {
+  //   uiFramework: "custom-containers",
+  //   componentPath: "MultiItem",
+  //   props: {
+  //     scheama: getCommonGrayCard({
+  //       header: getCommonSubHeader(
+  //         {
+  //           labelName: "Department Test Details",
+  //           labelKey: "HR_DEPT_TEST_HEADER"
+  //         },
+  //         {
+  //           style: {
+  //             marginBottom: 18
+  //           }
+  //         }
+  //       ),
+  //       testsDetailsCardContainer: getCommonContainer(
+  //         {
+  //           testName: {
+  //             ...getSelectField({
+  //               label: {
+  //                 labelName: "Test Name",
+  //                 labelKey: "HR_TEST_NAME_LABEL"
+  //               },
+  //               placeholder: {
+  //                 labelName: "Select Test Name",
+  //                 labelKey: "HR_TEST_NAME_PLACEHOLDER"
+  //               },
+  //               jsonPath: "Employee[0].tests[0].test",
+  //               gridDefination: {
+  //                 xs: 12,
+  //                 sm: 4
+  //               },
+  //               sourceJsonPath: "createScreenMdmsData.egov-hrms.EmploymentTest",
+  //               props: {
+  //                 className: "hr-generic-selectfield"
+  //                 // data: [
+  //                 //   {
+  //                 //     value: "Arts",
+  //                 //     label: "Arts"
+  //                 //   },
+  //                 //   {
+  //                 //     value: "Science",
+  //                 //     label: "Science"
+  //                 //   }
+  //                 // ],
+  //                 // optionValue: "code",
+  //                 // optionLabel: "label"
+  //               },
+  //               localePrefix: {
+  //                 moduleName: "egov-hrms",
+  //                 masterName: "EmploymentTest"
+  //               }
+  //             })
+  //           },
+  //           year: {
+  //             ...getSelectField({
+  //               label: {
+  //                 labelName: "Year",
+  //                 labelKey: "HR_YEAR_LABEL"
+  //               },
+  //               placeholder: {
+  //                 labelName: "Select Year",
+  //                 labelKey: "HR_YEAR_PLACEHOLDER"
+  //               },
+  //               jsonPath: "Employee[0].tests[0].yearOfPassing",
+  //               sourceJsonPath: "yearsList",
+  //               gridDefination: {
+  //                 xs: 12,
+  //                 sm: 4
+  //               },
+  //               props: {
+  //                 className: "hr-generic-selectfield",
+  //                 // data: [
+  //                 //   {
+  //                 //     value: "Male",
+  //                 //     label: "Male"
+  //                 //   },
+  //                 //   {
+  //                 //     value: "Female",
+  //                 //     label: "Female"
+  //                 //   }
+  //                 // ],
+  //                 optionValue: "value",
+  //                 optionLabel: "label"
+  //               }
+  //             })
+  //           },
+  //           remarks: {
+  //             ...getTextField({
+  //               label: {
+  //                 labelName: "Remarks",
+  //                 labelKey: "HR_REMARKS_LABEL"
+  //               },
+  //               placeholder: {
+  //                 labelName: "Enter Remarks",
+  //                 labelKey: "HR_REMARKS_PLACEHOLDER"
+  //               },
+  //               pattern: getPattern("TradeName") || null,
+  //               gridDefination: {
+  //                 xs: 12,
+  //                 sm: 4
+  //               },
+  //               jsonPath: "Employee[0].tests[0].remarks"
+  //             })
+  //           }
+  //           // uploadFile: getUploadFilesMultiple(
+  //           //   "Employee[0].deptTestDetails[0].documents"
+  //           // )
+  //         },
+  //         {
+  //           style: {
+  //             overflow: "visible"
+  //           }
+  //         }
+  //       )
+  //     }),
+  //     items: [],
+  //     addItemLabel: { labelName: "ADD TEST", labelKey: "HR_ADD_TEST" },
+  //     headerName: "Department Test Details",
+  //     headerJsonPath:
+  //       "children.cardContent.children.header.children.head.children.Accessories.props.label",
+  //     sourceJsonPath: "Employee[0].tests",
+  //     prefixSourceJsonPath:
+  //       "children.cardContent.children.testsDetailsCardContainer.children"
+  //   },
+  //   type: "array"
+  // }
 });
 
 // export const otherDetails = getCommonCard({

@@ -137,18 +137,33 @@ export const ViolationDocumentDetailsUpload = getCommonCard({
     }
   ),
   break: getBreak(),
-  imageUpload: {
+  // imageUpload: {
+  //   uiFramework: "custom-molecules-local",
+  //   moduleName: "egov-echallan",
+  //   componentPath: "ImageUploadViolationMolecule",
+  //   props: {
+  //     formKey: `apply_Violations_Image`,
+  //     fieldKey: 'echallanViolationImage',
+  //     module: "egov-echallan"
+  //   },
+  //   visible: true,
+
+  // },
+  imageUpload : {
     uiFramework: "custom-molecules-local",
-    moduleName: "egov-echallan",
-    componentPath: "ImageUploadViolationMolecule",
+    moduleName: "egov-rented-properties",
+    componentPath: "ImageUploadMolecule",
+    // componentPath: "ImageUploadMolecule",
     props: {
-      formKey: `apply_Violations_Image`,
-      fieldKey: 'echallanViolationImage',
-      module: "egov-echallan"
+    formKey: `newapplication`,
+    // imageLength: 6,
+    hide: false,
+    MAX_IMAGE_SIZE: 5000,
+    labelKey: "COMMON_ERR_FILE_TOTAL"
     },
     visible: true,
-
-  },
+     required: true
+    },
   break: getBreak(),
 
 });

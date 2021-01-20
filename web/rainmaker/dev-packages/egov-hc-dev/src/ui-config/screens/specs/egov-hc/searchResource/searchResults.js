@@ -30,6 +30,7 @@ export const searchResultsServiceRequest ={
       getTextToLocalMapping("Name Of Owner"),
       getTextToLocalMapping("Type Of Service Request"),
       getTextToLocalMapping("Service Request Status"),    
+      getTextToLocalMapping("Service Request Locality"),    
     ],
     
 

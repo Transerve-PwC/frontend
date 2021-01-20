@@ -313,12 +313,6 @@ console.log("this.state--PaidBy",PaidBy)
               paymentDetails={paymentDetails && paymentDetails}
                />           
                             
-               < PaymentReceiptDetail 
-                PaymentReceiptNumber={PaymentReceiptNumber}
-                handleChange={this.handleChange}
-                transactionDateChange={this.transactionDateChange}
-                transactionDate={transactionDate}
-               />
                <PaymentOptionDetails 
                PaymentReceiptNumber={PaymentReceiptNumber}
                PayerName={PayerName}
@@ -342,6 +336,13 @@ console.log("this.state--PaidBy",PaidBy)
                PaidBy={PaidBy}
                ApplicantMobNum={ApplicantMobNum && ApplicantMobNum ? ApplicantMobNum : "notFound"}
                ApplicantName={ApplicantName && ApplicantName ? ApplicantName : "Notfound"}
+               />
+
+< PaymentReceiptDetail 
+                PaymentReceiptNumber={PaymentReceiptNumber}
+                handleChange={this.handleChange}
+                transactionDateChange={this.transactionDateChange}
+                transactionDate={transactionDate}
                />
 
  {this.state.SubmitDetails == true ? 
@@ -411,9 +412,6 @@ const mapStateToProps = state => {
     let ApplicantMobNum = selectedComplaint ? selectedComplaint.bkMobileNumber : 'notFound'
     console.log("ApplicantMobNum--",ApplicantMobNum)
   
-    let checkBillLength =  paymentDataOne != "wrong" ? paymentDataOne.Bill.length > 0 : "";
-    let totalAmountSuPage = checkBillLength ? paymentDataOne.Bill[0].totalAmount: "notfound";
-    console.log("totalAmountSuPage-",totalAmountSuPage)
     let paymentDetails;
 
     // paymentDetails = paymentData ? paymentData.Bill[0] : '';
@@ -429,7 +427,7 @@ const mapStateToProps = state => {
 
     
     
-    if(selectedComplaint && selectedComplaint.bkApplicationStatus == "OFFLINE_APPLIED"){
+    if(selectedComplaint && selectedComplaint.bkApplicationStatus == "OFFLINE_INITIATE" || selectedComplaint.bkApplicationStatus == "OFFLINE_INITIATED"){
         console.log("offlineApplied--",selectedComplaint.bkApplicationStatus)
            if(selectedComplaint.bkPaymentStatus == "SUCCESS"){
               console.log("one")
@@ -452,45 +450,7 @@ const mapStateToProps = state => {
     let TotalAmount  = paymentDetails ? paymentDetails.totalAmount : "NotFoundAnyAmount";
     console.log("TotalAmount--",TotalAmount)
     let billId = paymentDetails ? paymentData.Bill[0].billDetails[0].billId : "NotFoundAnyBillId";
-    console.log("billId--",billId)
-    let billAccountDetailsArray =  checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails : "NOt found Any Array"
-    console.log("billAccountDetailsArray--",billAccountDetailsArray)
-    let one = 0;
-    let two = 0;
-    let three = 0;
-    let four = 0;
-    let five = 0;
-    let six = 0;
-for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
-
-    if(billAccountDetailsArray[i].taxHeadCode == "PACC"){
-        one = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "LUXURY_TAX"){
-        two = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "REFUNDABLE_SECURITY"){
-        three = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "PACC_TAX"){
-        four = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "PACC_ROUND_OFF"){
-        five = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
-        six = billAccountDetailsArray[i].amount
-    }
-}
-
-console.log("one--",one)
-console.log("two--",two)
-console.log("three--",three)
-console.log("four--",four)
-console.log("five--",five)
-console.log("six--",six)
-
-    
+    console.log("billId--",billId)    
 
     let myLocation = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.availabilityCheckData:"";  
     let myLocationtwo = myLocation?myLocation.bkLocation:"";  
@@ -556,9 +516,9 @@ let IFSC = state.screenConfiguration.preparedFinalObject.IFSC ?  state.screenCon
     console.log("NewTrxNo--",NewTrxNo)
 
     return {
-        createPACCApplicationData,userInfo,paymentDataOne,ppaidBy,pChequeNo,ChnChqDate,newDDno,NewTrxNo,NewddDate,
+        createPACCApplicationData,userInfo,ppaidBy,pChequeNo,ChnChqDate,newDDno,NewTrxNo,NewddDate,
         documentMap,facilationChargesSuccess,billId,ApplicantName,ApplicantMobNum,pddIFSC,pIFSC,
-        fCharges,myLocationtwo,totalAmountSuPage,one,two,three,four,five,six,paymentDetails,TotalAmount,paymentMode
+        fCharges,myLocationtwo,paymentDetails,TotalAmount,paymentMode
     }
 
 }

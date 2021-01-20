@@ -43,7 +43,7 @@ class ImageUpload extends Component {
   fillPlaceholder = (images, onFilePicked, inputProps) => {
     const {imageLength = 3} = this.props
     const placeholders = [];
-    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF")
+    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF" ||  getapplicationType() === "egov-echallan" )
     {
       for (let i = 0; i < 5 - images.length; i++) {
         placeholders.push(<Placeholder key={i} inputProps={inputProps} onFilePicked={onFilePicked} hide={i === 1 ? false : false} />);
@@ -69,9 +69,15 @@ class ImageUpload extends Component {
     if (!isImage) {
       toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "RP_ERR_NOT_VALID_IMAGE" }, "error");
     } else if (fileSize > MAX_IMAGE_SIZE) {
-      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: labelKey },"error");
+      let code = labelKey
+      if(getapplicationType() === "egov-echallan" )
+      {
+        code ="COMMON_ERR_FILE_MORE_THAN_FIVEMB"
+      }
+      toggleSnackbarAndSetText(true, { labelName: "The file is more than 5mb", labelKey: code },"error");
+      
     } else {
-      if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF"){
+      if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF" ||  getapplicationType() === "egov-echallan" ){
         if (images.length < 5) {
           fileUpload(formKey, fieldKey, { module, file, imageUri });
         }
@@ -87,7 +93,7 @@ class ImageUpload extends Component {
     const { onFilePicked, removeImage } = this;
     const { images, loading , labelKey = "RP_ERR_FILE_MORE_THAN_FIVEMB"} = this.props;
     let {imageLength =  3} = this.props ;
-    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF"){
+    if(getapplicationType() === "HORTICULTURE" || getapplicationType() === "HORTICULTUREWF" ||  getapplicationType() === "egov-echallan"){
       imageLength = 5 ;
     }
     const inputProps = { accept: "image/*", maxFiles: imageLength, multiple: true };

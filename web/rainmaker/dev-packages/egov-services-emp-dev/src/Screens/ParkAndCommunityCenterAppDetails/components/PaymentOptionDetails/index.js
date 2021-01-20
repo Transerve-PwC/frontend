@@ -15,6 +15,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "material-ui/svg-icons/action/search";
 import { withStyles } from "@material-ui/core/styles";
 import { Paper } from '@material-ui/core';
+import "./index.css";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 
 const styles=theme=>({
@@ -41,22 +42,16 @@ class CGBookingDetails extends Component {
     SecondOption: false,
     thirdOption: false,
     fourthOption: false,
-    PaymentMode : ''
+    PaymentMode : '',
+    OfflineBankName : '',
+    OfflineBranchName : ''
    };
-
-  
-  goToFccOne = e => {
-alert("goToFccOne")
-  }
 
   ToFccOne = (ifscCode) => {
 
     const { prepareFinalObject, toggleSnackbarAndSetText } = this.props;
- 
-    alert("ToFccOne")
    console.log("ToFccOne--",ifscCode)
     if (ifscCode) {
-      dispatch(toggleSpinner());
       fetch(`https://ifsc.razorpay.com/${ifscCode}`)
         .then(response => {
           return response.json();
@@ -66,14 +61,18 @@ alert("goToFccOne")
             toggleSnackbarAndSetText(
               true,
               {
-                labelName: "Entered value is less than 6 characters in length.",
-                labelKey: `BK_ERR_VALUE_LESS_THAN_SIX_CHARACTERS`
+                labelName: "ERR_BANK_DETAILS_NOT_FOUND_FOR_IFSC",
+                labelKey: `ERR_BANK_DETAILS_NOT_FOUND_FOR_IFSC`
               },
-              "error"
+              "error"  
             );
           } else {
             const bankName = get(payload, "BANK");
-            const bankBranch = get(payload, "BRANCH");     
+            const bankBranch = get(payload, "BRANCH");   
+            this.setState({
+              OfflineBankName: bankName,
+              OfflineBranchName: bankBranch
+            })  
               prepareFinalObject("OfflineBank.name", bankName)
               prepareFinalObject(
                 "OfflineBranch.name",
@@ -83,7 +82,6 @@ alert("goToFccOne")
         })
         .catch(error => {
           console.log(error);
-          dispatch(toggleSpinner());
         });
     }
   };
@@ -165,7 +163,10 @@ Fourth = e => {
     const {PayerName, mobileNo,handleChange,PaidBy,PaymentReceiptNumber, ApplicantMobNum, ApplicantName,ChequeNo,ChequeDate,IFSC,BankName,last4Digits,TrxNo,repeatTrxNo,
       BankBranch,DDno,ddDate,ddIFSC,ddBank,ddBranch,prepareFinalObject,changeChequeDate,changeDdDate} = this.props;
 console.log("propsInpaymentOption--",this.props)
-    const hintTextStyle = {
+console.log("stateOfPaymentOption--",this.state.OfflineBranchName ? this.state.OfflineBranchName : "fgh")
+console.log("stateOfPay--",this.state.OfflineBankName ? this.state.OfflineBankName : " sdfg")
+   
+const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -187,10 +188,11 @@ return (
     <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
              <button
               style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", float: 'left',background: "white" }}
+              // className="ViewPaymentModeButton"
               onClick={(e)=>this.GOTOCASH(e)}
               >
-              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "59px" }}>
-                  Cash
+              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "28px" }}>
+                  CASH
              
          </h5>
       </button>
@@ -198,38 +200,42 @@ return (
       <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
       <button
               style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", float: 'left',background: "white" }}
+              // className="ViewPaymentModeButton"
               onClick={(e)=>this.Second(e)}
               >
-              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "59px" }}>
-              chequeDetails 
+              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "-107px" }}>
+              CHEQUE 
          </h5>
       </button>
       </div>
       <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
       <button
               style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", float: 'left',background: "white" }}
+              // className="ViewPaymentModeButton"
               onClick={(e)=>this.Third(e)}
               >
-              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "59px" }}>
-              demandDraftDetails
+              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "-239px" }}>
+              DD
          </h5>
       </button>
       </div>
       <div className="col-sm-3 col-xs-12" style={{ paddingLeft: 8 }}>
       <button
               style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "500", float: 'left',background: "white" }}
+              // className="ViewPaymentModeButton"
               onClick={(e)=>this.Fourth(e)}
               >
-              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "59px" }}>
-              cardDetails
+              <h5 style={{ fontSize: "14px", marginTop: "-7px", marginBottom: "15px", marginLeft: "-367px" }}>
+              Credit/DebitCard
          </h5>
       </button>
       </div>
     </div>
+    <hr class="MuiDividerLine" style={{ marginbottom: "16px" }}></hr>
     {this.state.firstOption == true ?  
     <div>
     <div className="col-xs-12" style={{ paddingLeft: 8 }}>
-    <div className="col-sm-5 col-xs-12">
+    <div className="col-sm-6 col-xs-12">
     <FormControl style={{ width: '100%' }}>
       <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label
         required={true}
@@ -253,8 +259,6 @@ return (
       </Select>
     </FormControl>
 </div>
-</div>
-<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="PayerName"
@@ -284,6 +288,8 @@ return (
             hintStyle={{ width: "100%" }}
           />
 </div>
+</div>
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="Number"
@@ -321,7 +327,8 @@ return (
 </div>
 {this.state.SecondOption == true ? 
 <div>
-<div className="col-sm-5 col-xs-12">
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
+<div className="col-sm-6 col-xs-12">
     <FormControl style={{ width: '100%' }}>
       <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label
         required={true}
@@ -345,7 +352,6 @@ return (
       </Select>
     </FormControl>
 </div>
-<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="PayerName"
@@ -375,6 +381,8 @@ return (
             hintStyle={{ width: "100%" }}
           />
 </div>
+</div>
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="Number"
@@ -435,37 +443,6 @@ return (
             hintStyle={{ width: "100%" }}
           />
         </div>
-
-        {/* <div className="col-sm-6 col-xs-12">
-          <TextField
-            id="ChequeDate"
-            name="ChequeDate"
-            type="string"
-            value={ChequeDate}
-            required = {true}
-            hintText={
-              <Label
-                label="Cheque Date"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="dd/mm/yy"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('ChequeDate')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          />
-        </div>
-       */}
         <div className="col-sm-6 col-xs-12" style={{ minHeight: '72px', paddingTop: "10px" }}>
                   <TextField
                   id="ChequeDate"
@@ -508,7 +485,7 @@ return (
       
         <div className="col-sm-6 col-xs-12">
         <TextFieldIcon
-                  style={{ width: "330px" }}
+              style={{ width: "474px" }}
                hintText={
               <Label
                 label="IFSC"
@@ -531,6 +508,8 @@ return (
                 value={IFSC}
 				        required = {true}
                 iconPosition="after"
+                className = "setWidth"
+                textFieldStyle = {{width: "474px"}}
                 onChange={handleChange('IFSC')}
                 underlineStyle={{
                   bottom: 7,
@@ -546,72 +525,20 @@ return (
                 Icon={SearchIcon} 
                 onIconClick= {(e)=>{this.ToFccOne(IFSC)}}  
                 id="search-mdms"
-                iconStyle={{
-                  height: "20px",
-                  width: "35px",
-                  fill: "#767676",
-                }}
+                // iconStyle={{
+                //   height: "20px",
+                //   // width: "35px",
+                //   width: "474px",
+                //   fill: "#767676",
+                // }}
               />
         </div>
-        {/*
-        try start
-        */}
-
-      {/* <TextFieldIcon
-                  style={{ width: "330px" }}
-               hintText={
-              <Label
-                label="IFSC"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-
-           floatingLabelText={
-              <Label
-                key={0}
-                label="IFSC"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-                
-                id="IFSC"
-                name="IFSC"
-                value={IFSC}
-				        required = {true}
-                iconPosition="after"
-                onChange={handleChange('IFSC')}
-                underlineStyle={{
-                  bottom: 7,
-                  borderBottom: "1px solid #e0e0e0"
-                }}
-                underlineFocusStyle={{
-                  bottom: 7,
-                  borderBottom: "1px solid #e0e0e0"
-                }}                     
-                hintStyle={{ width: "100%" }}
-                underlineShow={true}
-                fullWidth={false}
-                Icon={SearchIcon}
-                onIconClick= {()=>{alert('clicked')}}
-                id="search-mdms"
-                iconStyle={{
-                  height: "20px",
-                  width: "35px",
-                  fill: "#767676",
-                }}
-              /> */}
-          {/*
-        try end
-        */}
         <div className="col-sm-6 col-xs-12">
           <TextField
             id="BankName"
             name="BankName"
-            type="string"
-            value={BankName}
+            type="text"
+            value={this.state.OfflineBankName ? this.state.OfflineBankName : " "}
             required = {true}
             hintText={
               <Label
@@ -640,8 +567,8 @@ return (
           <TextField
             id="BankBranch"
             name="BankBranch"
-            type="string"
-            value={BankBranch}
+            type="text"
+            value={this.state.OfflineBranchName ? this.state.OfflineBranchName : " "}
             required = {true}
             hintText={
               <Label
@@ -671,7 +598,8 @@ return (
 : " "}
 {this.state.thirdOption == true ? 
 <div>
-<div className="col-sm-5 col-xs-12">
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
+<div className="col-sm-6 col-xs-12">
     <FormControl style={{ width: '100%' }}>
       <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label
         required={true}
@@ -695,7 +623,6 @@ return (
       </Select>
     </FormControl>
 </div>
-<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="PayerName"
@@ -725,6 +652,8 @@ return (
             hintStyle={{ width: "100%" }}
           />
 </div>
+</div>
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="Number"
@@ -786,36 +715,6 @@ return (
           />
         </div>
 
-        {/* <div className="col-sm-6 col-xs-12">
-          <TextField
-            id="ddDate"
-            name="ddDate"
-            type="string"
-            value={ddDate}
-            required = {true}
-            hintText={
-              <Label
-                label="DD Date"
-                color="rgba(0, 0, 0, 0.3799999952316284)"
-                fontSize={16}
-                labelStyle={hintTextStyle}
-              />
-            }
-            floatingLabelText={
-              <Label
-                key={0}
-                label="dd/mm/yy"
-                color="rgba(0,0,0,0.60)"
-                fontSize="12px"
-              />
-            }
-            onChange={handleChange('ddDate')}
-            underlineStyle={{ bottom: 7 }}
-            underlineFocusStyle={{ bottom: 7 }}
-            hintStyle={{ width: "100%" }}
-          />
-        </div> */}
-
         <div className="col-sm-6 col-xs-12" style={{ minHeight: '72px', paddingTop: "10px" }}>
                   <TextField
                     id="ddDate"
@@ -856,7 +755,51 @@ return (
                   />
                 </div>
 
-        <div className="col-sm-6 col-xs-12">
+       <div className="col-sm-6 col-xs-12">
+        <TextFieldIcon
+              style={{ width: "474px" }}
+               hintText={
+              <Label
+                label="IFSC"
+                color="rgba(0, 0, 0, 0.3799999952316284)"
+                fontSize={16}
+                labelStyle={hintTextStyle}
+              />
+            }
+
+           floatingLabelText={
+              <Label
+                key={0}
+                label="IFSC"
+                color="rgba(0,0,0,0.60)"
+                fontSize="12px"
+              />
+            }   
+                id="ddIFSC"
+                name="ddIFSC"
+                value={ddIFSC}
+				        required = {true}
+                iconPosition="after"
+                className = "setWidth"
+                textFieldStyle = {{width: "474px"}}
+                onChange={handleChange('ddIFSC')}
+                underlineStyle={{
+                  bottom: 7,
+                  borderBottom: "1px solid #e0e0e0"
+                }}
+                underlineFocusStyle={{
+                  bottom: 7,
+                  borderBottom: "1px solid #e0e0e0"
+                }}                     
+                hintStyle={{ width: "100%" }}
+                underlineShow={true}
+                fullWidth={false}
+                Icon={SearchIcon} 
+                onIconClick= {(e)=>{this.ToFccOne(ddIFSC)}}  
+                id="search-mdms"
+              />
+        </div>
+        {/* <div className="col-sm-6 col-xs-12">
           <TextField
             id="ddIFSC"
             name="ddIFSC"
@@ -884,13 +827,13 @@ return (
             underlineFocusStyle={{ bottom: 7 }}
             hintStyle={{ width: "100%" }}
           />
-        </div>
+        </div> */}
         <div className="col-sm-6 col-xs-12">
           <TextField
             id="ddBank"
             name="ddBank"
             type="string"
-            value={ddBank}
+            value={this.state.OfflineBankName ? this.state.OfflineBankName : " "}
             required = {true}
             hintText={
               <Label
@@ -921,7 +864,7 @@ return (
             id="ddBranch"
             name="ddBranch"
             type="string"
-            value={ddBranch}
+            value={this.state.OfflineBranchName ? this.state.OfflineBranchName : " "}
             required = {true}
             hintText={
               <Label
@@ -953,7 +896,8 @@ return (
 
 {this.state.fourthOption == true ? 
 <div>
-<div className="col-sm-5 col-xs-12">
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
+<div className="col-sm-6 col-xs-12">
     <FormControl style={{ width: '100%' }}>
       <InputLabel shrink style={{ width: '100%' }} id="demo-controlled-open-select-label"><Label
         required={true}
@@ -977,7 +921,6 @@ return (
       </Select>
     </FormControl>
 </div>
-<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="PayerName"
@@ -1007,6 +950,8 @@ return (
             hintStyle={{ width: "100%" }}
           />
 </div>
+</div>
+<div className="col-xs-12" style={{ paddingLeft: 8 }}>
 <div className="col-sm-6 col-xs-12">
 <TextField
             id="Number"
@@ -1141,6 +1086,23 @@ return (
   );
 }
 }
+
+// const mapStateToProps = state => {
+
+//   const { bookings, common, auth, form } = state;
+
+//   let PaymentBankName = state.screenConfiguration.preparedFinalObject.OfflineBank.name ? state.screenConfiguration.preparedFinalObject.OfflineBank.name:"";  
+//   console.log("PaymentBankName--",PaymentBankName)
+
+//   let PaymentBranchName = state.screenConfiguration.preparedFinalObject.OfflineBranch.name ? state.screenConfiguration.preparedFinalObject.OfflineBranch.name:"";  
+// console.log("PaymentBranchName--",PaymentBranchName)
+
+// return{
+//   PaymentBranchName,PaymentBankName
+// }
+  
+// }
+
 
 const mapDispatchToProps = dispatch => {
   return {

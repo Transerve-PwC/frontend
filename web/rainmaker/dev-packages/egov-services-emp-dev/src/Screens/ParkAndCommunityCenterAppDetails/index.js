@@ -59,7 +59,8 @@ class ApplicationDetails extends Component {
 			togglepopup: false,
 			actionOnApplication: '',
 			actionTittle: '',
-			actionOpen: false
+			actionOpen: false,
+			Amount: "1"
 		};
 	};
 
@@ -91,6 +92,8 @@ class ApplicationDetails extends Component {
 			prepareFinalObject
 		} = this.props;
 
+const {Amount} = this.state
+
 		prepareFormData("complaints", transformedComplaint);
 		const { complaint } = transformedComplaint;
 		fetchApplications(
@@ -114,9 +117,6 @@ class ApplicationDetails extends Component {
 		// fetchResponseForRefdunf(
 		// 		[{ key: "consumerCodes", value: match.params.applicationId }, { key: "tenantId", value: userInfo.tenantId }
 		// 		])
-		
-
-
 
 		let { details } = this.state;
 	}
@@ -153,8 +153,6 @@ class ApplicationDetails extends Component {
 				);
 console.log("AmountCondition--",AmountCondition)
 			}
-			
-
 
 			if(selectedComplaint.bkApplicationStatus == "PENDING_FOR_DISBURSEMENT"){
 				let RequestData = [
@@ -967,7 +965,7 @@ GOTOPAY = (selectedNumber) => {
 											},
 											menu: [{
 												label: {
-													labelName: "Approve",
+													labelName: "CanecelApprove",
 													labelKey: "BK_MYBK_APPROVE_ACTION_BUTTON"
 												},
 
@@ -975,18 +973,18 @@ GOTOPAY = (selectedNumber) => {
 											},
 											{
 												label: {
-													labelName: "PAY",
+													labelName: "ApplyRefund",
 													labelKey: "BK_MYBK_PAY_ACTION_BUTTON"
 												},
 												link: () => this.GOTOPAY(selectedNumber)
+											},
+											{
+												label: {
+													labelName: "Reject",
+													labelKey: "BK_MYBK_REJECT_ACTION_BUTTON"
+												},
+												link: () => this.actionButtonOnClick('state', "dispatch", 'REJECT')
 											}
-											// {
-											// 	label: {
-											// 		labelName: "Reject",
-											// 		labelKey: "BK_MYBK_REJECT_ACTION_BUTTON"
-											// 	},
-											// 	link: () => this.actionButtonOnClick('state', "dispatch", 'REJECT')
-											// }
 										]
 										}} />}></Footer>
 
@@ -1312,6 +1310,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(prepareFinalObject(jsonPath, value)),
 			downloadEsamparkApp: criteria => dispatch(downloadEsamparkApp(criteria)),  
 			downloadEsamparkPL: criteria => dispatch(downloadEsamparkPL(criteria)),
+		
+
 	};
 };
 

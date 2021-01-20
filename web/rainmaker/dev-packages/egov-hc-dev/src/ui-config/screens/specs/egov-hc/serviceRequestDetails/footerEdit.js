@@ -394,8 +394,9 @@ export const getRedirectionURL = () => {
       //       "warning"
       //     )
       //   );
-      // }else 
-      if(!locality)
+      // } else
+      
+        if (!locality)
       {         
         dispatch(
           toggleSnackbar(
@@ -404,8 +405,8 @@ export const getRedirectionURL = () => {
             "warning"
           )
         );
-      }
-      else{validationPause = false;}
+        }
+        else { validationPause = false; }
   
     }
   

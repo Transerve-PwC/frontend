@@ -96,6 +96,7 @@ else if(discountType == "20%"){
             "tenantId": userInfo.tenantId,
             "bkAction": "OFFLINE_INITIATE",
             "businessService": "PACC",
+            "financeBusinessService": "PACC",
             "financialYear": "2020-2021"
         }
 

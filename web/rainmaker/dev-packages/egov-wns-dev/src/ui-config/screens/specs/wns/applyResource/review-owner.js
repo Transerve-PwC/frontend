@@ -98,6 +98,46 @@ export const reviewPipeSize = getLabelWithValue(
     callBack: handleNA
   }
 );
+export const reviewccCode = getLabelWithValue(
+  {
+    labelName: "CC Code",
+    labelKey: "WS_SERV_DETAIL_CC_CODE"
+  },
+  {
+    jsonPath: "WaterConnection[0].ccCode",
+    callBack: handleNA
+  }
+);
+export const reviewdivision = getLabelWithValue(
+  {
+    labelName: "Division",
+    labelKey: "WS_SERV_DETAIL_DIVISION"
+  },
+  {
+    jsonPath: "WaterConnection[0].div",
+    callBack: handleNA
+  }
+);
+export const reviewsubdiv = getLabelWithValue(
+  {
+    labelName: "Sub Division",
+    labelKey: "WS_SERV_DETAIL_SUB_DIVISION"
+  },
+  {
+    jsonPath: "WaterConnection[0].subdiv",
+    callBack: handleNA
+  }
+);
+export const reviewledgerNo = getLabelWithValue(
+  {
+    labelName: "Ledger No",
+    labelKey: "WS_SERV_DETAIL_LEDGER_NO"
+  },
+  {
+    jsonPath: "WaterConnection[0].ledgerNo",
+    callBack: handleNA
+  }
+);
 
 export const reviewWaterClosets = getLabelWithValue(
   {
@@ -317,7 +357,7 @@ const activationDetails = getCommonContainer({
 
 export const renderService = () => {
   if (service === "WATER") {
-    return getCommonContainer({ reviewConnectionType, reviewNumberOfTaps, reviewWaterSource, reviewWaterSubSource, reviewPipeSize });
+    return getCommonContainer({ reviewConnectionType, reviewNumberOfTaps, reviewWaterSource, reviewWaterSubSource, reviewPipeSize ,reviewccCode, reviewdivision, reviewsubdiv,reviewledgerNo});
   } else if (service === "SEWERAGE") {
     return getCommonContainer({ reviewConnectionType, reviewWaterClosets,reviewNoOfToilets })
   }

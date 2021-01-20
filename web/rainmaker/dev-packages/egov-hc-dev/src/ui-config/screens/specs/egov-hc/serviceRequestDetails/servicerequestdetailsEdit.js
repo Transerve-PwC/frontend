@@ -190,7 +190,7 @@ export const servicerequestdetailsEdit = getCommonCard({
       },
       buttons: [
        
-         {
+        {
           labelName: "Dead and Dry Trees",
           labelKey: "HC_COMMON_SUBTYPE_DEAD_AND_DRY",
           disabled: true,
@@ -208,7 +208,7 @@ export const servicerequestdetailsEdit = getCommonCard({
           disabled: true,
           value: "Pollarding of Trees"
         }
-     ],
+      ],
       jsonPath:"SERVICEREQUEST.subType",
       required: false
     },

@@ -3,6 +3,8 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import { connect } from "react-redux";
 import get from "lodash/get";
 import set from "lodash/set";
+import { Line } from "react-chartjs-2";
+import { Doughnut } from 'react-chartjs-2';
 import "./index.css"
 
 class ReportPreviewWF extends React.Component {
@@ -122,12 +124,13 @@ class ReportPreviewWF extends React.Component {
                 {
                     applicationState.actions === null ?
                     <tr>
+                        {/* class={index === this.state.DATAJSON.length ? "apply" : ""} */}
                     {/* <dd>{ index }</dd>  */}
-                    <td> { applicationState.state } </td>
-                    <td> { applicationState.applicationStatus } </td>
-                    <td> --- </td>
-                    <td> --- </td>
-                    <td> --- </td>
+                    <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> { applicationState.state } </td>
+                    <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> { applicationState.applicationStatus } </td>
+                    <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
+                    <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
+                    <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
                     </tr>
                     :
                     null  
@@ -143,13 +146,13 @@ class ReportPreviewWF extends React.Component {
                         <td  rowspan={applicationState.actions.length }> { applicationState.applicationStatus } </td>
                         <td> { action.action } </td>
                         <td> { action.roles[0] } </td>
-                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : "Deshpande"   } </td>
+                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : ""   } </td>
                         </tr> :
                         <tr>
                         {/* <dd>{ index }</dd>  */}
                         <td> { action.action } </td>
                         <td> { action.roles[0] } </td>
-                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : "Deshpande"   } </td>
+                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : ""   } </td>
                         </tr> 
                         :
                         <tr>
@@ -158,7 +161,7 @@ class ReportPreviewWF extends React.Component {
                         <td> { applicationState.applicationStatus } </td>
                         <td> { action.action } </td>
                         <td> { action.roles[0] } </td>
-                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : "Deshpande"   } </td>
+                        <td> { action.nextState ? this.state.STATEJSON[action.nextState] : ""   } </td>
                         </tr>
                         ))
                     }

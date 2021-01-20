@@ -712,6 +712,7 @@ export const getData = async (state, dispatch, status) =>  {
 
 	try {
     
+    debugger
     const serviceName =  get(state.screenConfiguration.preparedFinalObject, "dropDownData2", {});
 	  let payload = "PAYLOAD_DEMO"
 	  console.log("payload",payload)
@@ -768,9 +769,11 @@ export const getData = async (state, dispatch, status) =>  {
     }
 
     debugger
+    
     const filterData = allData.modulewiseWF.filter(function (el) {
       return el.moduleName == serviceName.value ;
     });
+
     if(filterData.length > 0){
       dispatch(
         handleField("module_preview",

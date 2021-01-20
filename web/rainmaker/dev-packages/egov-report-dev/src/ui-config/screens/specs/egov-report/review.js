@@ -47,8 +47,8 @@ export const footer = getCommonApplyFooter({
       },
       children: {
         nextButtonLabel: getLabel({
-          labelName: "BUTTON",
-          labelKey: "HOME"
+          labelName: "Home",
+          labelKey: "WF_REPORT_HOME_BTN_LABEL"
         }),
   
         
@@ -63,8 +63,8 @@ export const footer = getCommonApplyFooter({
 
 const titlebar = getCommonContainer({
   header: getCommonHeader({
-    labelName: "",
-    labelKey: "Module"
+    labelName: "Work Flow Module",
+    labelKey: "WF_MODULE_NAME_TITLE"
   })        
 });
 
@@ -129,10 +129,10 @@ const screenConfig = {
           },
          
           className: "citizen-city-picker",
-          label: { labelName: "", labelKey: "Module Name" },
+          label: { labelName: "Module Name", labelKey: "WF_REPORT_DROPDOWN_LABEL" },
           placeholder: {
-            labelName: "",
-            labelKey: "Report Module Name"
+            labelName: "Select Module Name",
+            labelKey: "WF_REPORT_DROPDOWN_PLACEHOLDER"
           },
           sourceJsonPath: "dropDownData",
           jsonPath: "dropDownData2",
@@ -182,8 +182,8 @@ const screenConfig = {
             },
             children: {
               nextButtonLabel: getLabel({
-                labelName: "BUTTON",
-                labelKey: "SEARCH"
+                labelName: "Search",
+                labelKey: "WF_REPORT_SEARCH_BTN_LABEL"
               }),
         
               

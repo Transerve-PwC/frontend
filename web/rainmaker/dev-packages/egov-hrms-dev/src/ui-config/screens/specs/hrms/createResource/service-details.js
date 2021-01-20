@@ -11,7 +11,11 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
+import get from "lodash/get";
+import set from "lodash/set";
+import {
+  convertDateToEpoch,  
+} from "../../utils";
 const serviceDetailsCard = {
   uiFramework: "custom-containers",
   componentPath: "MultiItem",
@@ -164,7 +168,7 @@ const serviceDetailsCard = {
                 //   }, "error"));
                   
                 // }
-                if( (serviceTodDt>=annuationdate || serviceTodDt<appntDate)){
+                if( (serviceTodDt>annuationdate || serviceTodDt<appntDate)){
                   dispatch(toggleSnackbar(true, {
                     labelName: "Date Must lie between Appointment date and Annuation date",
                     labelKey: "SERVICE_DATE_TO_LIE_BETWEEN_ANNUATION_DATE_APPOINTMNET_DATE"
@@ -303,6 +307,36 @@ const serviceDetailsCard = {
         }
       )
     }),
+    onMultiItemAdd: (state, muliItemContent) => {
+      let preparedFinalObject = get(
+        state,
+        "screenConfiguration.preparedFinalObject",
+        {}
+      );
+      let cardIndex = get(muliItemContent, "assignFromDate.index");
+      let cardId = get(
+        preparedFinalObject,
+        `Employee[0].assignments[${cardIndex}].id`
+      );
+        Object.keys(muliItemContent).forEach(key => {         
+          if (key === "serviceFromDate") {
+          let employeeObject = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Employee",
+            []
+          );
+        let serviceFromDate = convertDateToEpoch(get(employeeObject[0], "dateOfAppointment"))// convertDateToEpoch(action.value, "dayStart")
+       
+               
+        set(muliItemContent[key], "props.value", new Date(serviceFromDate).toISOString().slice(0, 10));
+        
+        }
+        
+       
+        });
+      
+      return muliItemContent;
+    },
     items: [],
     addItemLabel: {
       labelName: "ADD SERVICE ENTRY",

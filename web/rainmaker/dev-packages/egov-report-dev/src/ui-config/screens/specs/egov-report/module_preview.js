@@ -38,8 +38,8 @@ export const footer = getCommonApplyFooter({
       },
       children: {
         nextButtonLabel: getLabel({
-          labelName: "BUTTON",
-          labelKey: "HOME"
+          labelName: "Home",
+          labelKey: "WF_REPORT_HOME_BTN_LABEL"
         }),
   
         

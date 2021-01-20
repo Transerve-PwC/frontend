@@ -223,7 +223,7 @@ export const searchForm = getCommonCard({
         children: {
           buttonLabel: getLabel({
             labelName: "Search",
-            labelKey: "TL_HOME_SEARCH_RESULTS_BUTTON_SEARCH"
+            labelKey: "HRMS_SEARCH_SEARCH_BUTTON"
           })
         },
         onClickDefination: {

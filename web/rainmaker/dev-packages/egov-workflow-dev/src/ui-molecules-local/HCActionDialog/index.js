@@ -84,20 +84,17 @@ class HCActionDialog extends React.Component {
   };
   componentDidUpdate() {
     let { currentState } = this.props
-
+    
 
     if (parseInt(currentState) && this.state.allEmployeeList.length > 0) {
       this.setState({ allEmployeeList: [] })
     }
   }
   componentDidMount() {
-
-    //var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData"))
-        var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData")).filter(businessSerivceData => 
+    var businessServiceData = JSON.parse(localStorage.getItem("businessServiceData")).filter(businessSerivceData => 
       businessSerivceData.businessService == localStorage.getItem("HCBusinessService")
     );
-
-	this.getProcessInstanceDataForServiceRequest()
+    this.getProcessInstanceDataForServiceRequest(businessServiceData)
 
     // var finalRequestClarificationRoles = this.getCommonValuesFromHCRoles(requestClarificationRoleArrayFromProcessInstance, HCRoles)
 
@@ -140,7 +137,7 @@ class HCActionDialog extends React.Component {
     }
   };
 
-  getProcessInstanceDataForServiceRequest = async () => {
+  getProcessInstanceDataForServiceRequest = async (businessServiceData) => {
 
     var tenantIdCommonConfig
 
@@ -170,6 +167,7 @@ class HCActionDialog extends React.Component {
       "",
       queryObj
     );
+    var HCRoles = [JSON.parse(getHCRoles())]
     //sorting process instance data by time
     var SortedProcessInstanceBylastModifiedTimeOfEachObject = []
     var RoleListProcessInstance = []
@@ -188,10 +186,25 @@ class HCActionDialog extends React.Component {
         }
         return 0;
       })
-
-    RoleListProcessInstance = SortedProcessInstanceBylastModifiedTimeOfEachObject.map(item => item.assigner.roles)
-    var RoleListSingleArray = []
-    RoleListProcessInstance.forEach(RoleObject => {
+    
+    var reversedPISortedArray = SortedProcessInstanceBylastModifiedTimeOfEachObject.reverse()
+    
+    var InspectionstateList = ["INSPECTION", "EDIITED AT INSPECTION"]
+    var verifyForwardToSDOstateList = ["VERIFIED AND FORWARDED TO SDO","EDITED AT VERIFIED AND FORWARDED TO SDO", "REQUEST CLARIFICATION FROM SDO"]
+    if (InspectionstateList.includes(reversedPISortedArray[0].state.state))
+    {
+    this.setAllRoleListAsPerAction(businessServiceData, ['REQUEST CLARIFICATION FROM SDO'], 'FORWARD FOR INSPECTION', HCRoles)
+      return
+    }
+    else if (verifyForwardToSDOstateList.includes(reversedPISortedArray[0].state.state))
+    {
+    this.setAllRoleListAsPerAction(businessServiceData, ['REQUEST CLARIFICATION FROM EE'], 'VERIFY AND FORWARD TO SDO', HCRoles)
+      return
+      }
+    else {
+      RoleListProcessInstance = SortedProcessInstanceBylastModifiedTimeOfEachObject.map(item => item.assigner.roles)
+      var RoleListSingleArray = []
+      RoleListProcessInstance.forEach(RoleObject => {
       if (RoleObject.length > 1) {
         RoleObject.forEach(insideRoleObject => {
           RoleListSingleArray.push(insideRoleObject.code)
@@ -201,9 +214,6 @@ class HCActionDialog extends React.Component {
         RoleListSingleArray.push(RoleObject[0].code)
       }
     });
-    // console.log("###@$$#@#$@#$@#$23", RoleListSingleArray)
-    // var finalRoleListSingleArray = RoleListSingleArray.map(role => role.code);
-    var HCRoles = [JSON.parse(getHCRoles())]
     var finalRequestClarificationRoles = this.getCommonValuesFromHCRoles(RoleListSingleArray, HCRoles)
     var reversedfinalRequestClarificationRoles = finalRequestClarificationRoles.reverse()
     var finalMappedValues = reversedfinalRequestClarificationRoles.map((item, index) => {
@@ -213,9 +223,9 @@ class HCActionDialog extends React.Component {
         label: item.name
       };
     });
+    }
     this.setState({ allRoleListrequestClarification: finalMappedValues })
     // return finalRoleListSingleArray
-
   }
 
   getCommonValuesFromHCRoles = (roleArray, HCRoles) => {
@@ -234,7 +244,7 @@ class HCActionDialog extends React.Component {
     return commonRoles
   }
   parseJSONBasedOnActionToReturnRoleList = (businessServiceData, applicationStatusArray, actionToBeChecked) => {
-
+    
     var inspectionStates = businessServiceData[0].states.filter(function (state) {
       if (applicationStatusArray.includes(state.applicationStatus))
         return state
@@ -259,6 +269,7 @@ class HCActionDialog extends React.Component {
 
   }
   setAllRoleListAsPerAction = (businessServiceData, applicationStatusList, action, HCRoles) => {
+    
     var roleArray = this.parseJSONBasedOnActionToReturnRoleList(businessServiceData, applicationStatusList, action)
     var commonRoleList = this.getCommonValuesFromHCRoles(roleArray, HCRoles);
     if (action === "COMPLETE") {
@@ -277,21 +288,22 @@ class HCActionDialog extends React.Component {
     //removed common roles for verify for closure and complete
     if (action === "VERIFY FOR CLOSURE") {
       var finalRoleListVerifyForClosure = []
-
+        //1 JE
       //getting role list for complete
       var HCRoles = [JSON.parse(getHCRoles())]
       var roleArrayForComplete = this.parseJSONBasedOnActionToReturnRoleList(businessServiceData, ['FORWARDED FOR COMPLETION'], 'COMPLETE')
       var roleListForComplete = this.getCommonValuesFromHCRoles(roleArrayForComplete, HCRoles);
       //role list for complete obtained above
 
-
-      //excluding role list  of complete       
+      
+      //excluding role list  of roles who has right to complete
       if (roleListForComplete != undefined && roleListForComplete != 0) {
         var RoleListForVerifyForClosure = commonRoleList.filter(function (RoleFromCommonRoleList) {
           return !roleListForComplete.find(function (RoleFromCompleteState) {
             return RoleFromCommonRoleList.code === RoleFromCompleteState.code
           })
         })
+        //14
 
 
         //setting the final rolelist here with value label 
@@ -314,8 +326,32 @@ class HCActionDialog extends React.Component {
 
       }
       this.setState({ allRoleListForVerifyForClosure: finalRoleListVerifyForClosure });
-
     }
+    if (action === "FORWARD FOR INSPECTION" && applicationStatusList[0]==='REQUEST CLARIFICATION FROM SDO') {
+      var finalROleListRequestClarificationFromSDO = []
+
+      commonRoleList.map((item) => {
+        finalROleListRequestClarificationFromSDO.push({
+          value: item.code,
+          label: item.name
+        })
+
+      });
+      this.setState({ allRoleListrequestClarification: finalROleListRequestClarificationFromSDO });
+    }
+    if (action === "VERIFY AND FORWARD TO SDO" && applicationStatusList[0]==='REQUEST CLARIFICATION FROM EE') {
+      var finalROleListRequestClarificationFromEE = []
+
+      commonRoleList.map((item) => {
+        finalROleListRequestClarificationFromEE.push({
+          value: item.code,
+          label: item.name
+        })
+
+      });
+      this.setState({ allRoleListrequestClarification: finalROleListRequestClarificationFromEE });
+    }
+    // VERIFY AND FORWARD TO SDO
     var roleListForAction = commonRoleList.map(role => role.code);
     this.setEmployeeListInStateAsPerAction(roleListForAction, action)
   }
@@ -337,9 +373,6 @@ class HCActionDialog extends React.Component {
       "",
       queryObj
     );
-    // debugger;
-
-
     var dropdownEmployeeList = []
     dropdownEmployeeList =
       payload &&
@@ -381,7 +414,7 @@ class HCActionDialog extends React.Component {
       "",
       queryObj
     );
-    // debugger;
+    // ;
 
 
     var dropdownEmployeeList = []
@@ -704,10 +737,10 @@ class HCActionDialog extends React.Component {
                           />
                         
                         
-                        <LabelContainer
+                        {/* <LabelContainer
                           labelName="Assignee Name"
                           labelKey="WF_ASSIGNEE_NAME_LABEL"
-                        />
+                        /> */}
                         <AutoSuggestDropdown
                           style={{ marginRight: "15px", width: "100%" }}
                           label={"WF_ASSIGNEE_NAME_PLACEHOLDER"}

@@ -85,14 +85,14 @@ class WorkFlowChart extends React.Component {
 
         <table>
         <tr>
-          <td> Workflow </td>
-          <td> Description </td>
+          <td style={{border: "none", padding: "10px"}}> Workflow </td>
+          <td style={{border: "none", padding: "10px"}}> Description </td>
         </tr>
         {
              (this.state.DATA || []).map((wf, index) => (
                 <tr>
-                <td> <a href={"preview?wfName="+wf.wfCode}> { wf.wfName } </a> </td>
-                <td> { wf.wfDesc } </td>
+                <td style={{border: "none", padding: "10px"}}> <a href={"preview?wfName="+wf.wfCode}> { wf.wfName } </a> </td>
+                <td style={{border: "none", padding: "10px"}}> { wf.wfDesc } </td>
                 </tr>
              ))
         }

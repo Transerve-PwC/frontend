@@ -1,5 +1,6 @@
 // user routes
 import Register from "modules/citizen/User/Register";
+import Privacy from "modules/citizen/User/Privacy";
 import Login from "modules/citizen/User/Login";
 import OTP from "modules/citizen/User/OTP";
 import LanguageSelection from "modules/citizen/User/LanguageSelection";
@@ -42,6 +43,12 @@ const routes = [
   {
     path: "user/register",
     component: Register,
+    needsAuthentication: false,
+    redirectionUrl: "/",
+  },
+  {
+    path: "user/privacy",
+    component: Privacy,
     needsAuthentication: false,
     redirectionUrl: "/",
   },

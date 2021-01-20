@@ -35,65 +35,146 @@ import {
 
   export const getData = async (action, state, dispatch) => {
    
-    //await getMdmsData(state, dispatch);
+    await getMdmsData(state, dispatch);
     
     
   };
   const getMdmsData = async (state, dispatch) => {
     const tenantId =  getstoreTenantId();
     let mdmsBody = {
-      userInfo: {
-        id: 323,
+      eOfficeRequest: {
+        orgid: 37,
+        postdetailid:212,
        
       }
     };
     try {
       const response = await httpRequest(
         "post",
-        "/integration-services/pt-mapping/v1/_get",
+        "/integration-services/eoffice/v1/_get",
         "_get",
         [],
         mdmsBody
       );
       if(response)
       {
-        dispatch(prepareFinalObject("searchScreenMdmsData",response.ResponseBody))
+        let  APIData = response;
+        let totalVIPReceiptsPending =0;
+        let totalFilesPendingCnt =0;
+        let totalFilesClosed =0;
+        let totalReceiptsPending =0;
+        let totalReceiptsClosed =0;
+  
+        if(APIData.ResponseBody)
+        {
+  
+          if(APIData.ResponseBody.VipReceipts)//totalVIPReceiptsPending
+          {
+            if(APIData.ResponseBody.VipReceipts.Row !== undefined)
+            {
+              let data = APIData.ResponseBody.VipReceipts.Row.Column
+              for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                if(element.name ==="Total")
+                {
+                  totalVIPReceiptsPending = element.content
+                }                
+              }             
+            }
+  
+          }
+           if(APIData.ResponseBody.ReceiptPending)//totalReceiptsPending
+          {
+            if(APIData.ResponseBody.ReceiptPending.Row !== undefined)
+            {
+              let ReceiptPending = APIData.ResponseBody.ReceiptPending.Row.Column
+              for (let index = 0; index < ReceiptPending.length; index++) {
+                const element = ReceiptPending[index];
+                if(element.name ==="Total")
+                {
+                  totalReceiptsPending = element.content
+                }                
+              }
+            }
+  
+          }
+           if(APIData.ResponseBody.FilePending)//totalFilesPendingCnt
+          {
+            if(APIData.ResponseBody.FilePending.Row !== undefined)
+            {
+              let FilePending = APIData.ResponseBody.FilePending.Row.Column
+              for (let index = 0; index < FilePending.length; index++) {
+                const element = FilePending[index];
+                if(element.name ==="Total")
+                {
+                  totalReceiptsPending = element.content
+                }                
+              }
+            }
+  
+          }
+           if(APIData.ResponseBody.FileClosed)//totalFilesClosed
+          {
+            if(APIData.ResponseBody.FileClosed.Row !== undefined)
+            {
+              let FileClosed = APIData.ResponseBody.FileClosed.Row.Column
+              for (let index = 0; index < FileClosed.length; index++) {
+                const element = FileClosed[index];
+                if(element.name ==="Total")
+                {
+                  totalReceiptsPending = element.content
+                }                
+              }
+            }
+  
+          }
+           if(APIData.ResponseBody.ReceiptClosed)//totalReceiptsClosed
+          {
+            if(APIData.ResponseBody.ReceiptClosed.Row !== undefined)
+            {
+              let ReceiptClosed = APIData.ResponseBody.ReceiptClosed.Row.Column
+              for (let index = 0; index < ReceiptClosed.length; index++) {
+                const element = ReceiptClosed[index];
+                if(element.name ==="Total")
+                {
+                  totalReceiptsClosed = element.content
+                }                
+              }
+            }
+  
+          }
+        }
+  
+         APIData ={
+          eofficestat:{
+            totalFilesClosed:totalFilesClosed,
+            totalFilesPendingCnt:totalFilesPendingCnt,
+            totalReceiptsClosed:totalReceiptsClosed,
+            totalReceiptsPending:totalReceiptsPending,
+            totalVIPReceiptsPending:totalVIPReceiptsPending,
+  
+          }
+        }
+        dispatch(prepareFinalObject("APIData",APIData));
+        // dispatch(prepareFinalObject("searchScreenMdmsData",response.ResponseBody))
+
+
       }
      //dispatch(prepareFinalObject("searchScreenMdmsData", get(response, "ResponseBody.result")));
       const {result} = state.screenConfiguration.preparedFinalObject.searchScreenMdmsData;
-      result.push(
-        {
-          propertyTaxId:"others",
-          isActive:true,
-          userId:0
-        }
-      )
-      dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
-      // if(result)
-      // {
-      //   result.push(
-      //     {
-      //       propertyTaxId:"others",
-      //       isActive:true,
-      //       userId:0
-      //     }
-      //   )
-      //   dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
-      // }
-      // else{
-      //   result.push(
-      //     {
-      //       propertyTaxId:"others",
-      //       isActive:true,
-      //       userId:0
-      //     }
-      //   )
-      //   dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
-
-      // }
+      // result.push(
+      //   {
+      //     propertyTaxId:"others",
+      //     isActive:true,
+      //     userId:0
+      //   }
+      // )
+      // dispatch(prepareFinalObject("searchScreenMdmsData.result",result))
+      
   
       return true;
     } catch (e) {
+    //  alert('1')
       console.log(e);
     }
   };
@@ -113,13 +194,13 @@ import {
         window.location.href,
         "propertyId"
       );
+ 
+     // let  APIData =sampleeofficestat();
+     
+  
       getData(action, state, dispatch).then(responseAction => {    
       
-      }); 
-      let  APIData =sampleeofficestat();
-      dispatch(prepareFinalObject("APIData",APIData));
-  
-     
+      });
           return action;
     },
     components: {

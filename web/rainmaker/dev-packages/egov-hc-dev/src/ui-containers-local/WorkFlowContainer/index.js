@@ -259,10 +259,13 @@ class WorkFlowContainer extends React.Component {
         else if (moduleName === "FIRENOC") path = "FireNOCs[0].fireNOCNumber";
         else path = "Licenses[0].licenseNumber";
         const licenseNumber = get(payload, path, "");
-        window.location.href = `acknowledgement?${this.getPurposeString(
-          label
-        )}&applicationNumber=${applicationNumber}&tenantId=${tenant}&secondNumber=${licenseNumber}`;
-
+        if (data[0].action === "INSPECT" || data[0].action === "APPROVE") {
+          window.location.reload();
+         } else {
+          window.location.href = `acknowledgement?${this.getPurposeString(
+            label
+          )}&applicationNumber=${applicationNumber}&tenantId=${tenant}&secondNumber=${licenseNumber}`;
+        }
         if (moduleName === "NewWS1" || moduleName === "NewSW1") {
           window.location.href = `acknowledgement?${this.getPurposeString(label)}&applicationNumber=${applicationNumber}&tenantId=${tenant}`;
         }
@@ -317,18 +320,9 @@ class WorkFlowContainer extends React.Component {
 
     if (dataPath === "services")
     {
-      // debugger;
-      
-      if(data.assignee.length> 0)
-      {
-        data.isRoleSpecific=false;
-      }
-      else{
-        data.isRoleSpecific=true
-      }
 
       var validated= true;
-
+      // data.isRoleSpecific=false;
       if(data.comment.length=== 0)
       {
         validated= false;
@@ -348,33 +342,57 @@ class WorkFlowContainer extends React.Component {
           "error"
         );
       }
- 
-        if(data.action==="VERIFY AND FORWARD" 
-        ||data.action==="REQUEST CLARIFICATION" 
-        || data.action==="VERIFY FOR CLOSURE"  
-        || data.action==="FORWARD FOR COMPLETION" ){
-          if(data.roleList.length==0)
-          {
-            validated= false;  
-            
-            toggleSnackbar(
-              true,
-              { labelName: "Please select role !", labelKey: "ERR_SELECT_ROLE" },
-              "error"
-            );
-  
-          }}
 
-          if(data.action==="INSPECT" ||data.action==="COMPLETE"){
-            const documents = get(data, "wfDocuments");
-            if (documents.length == 0) {
-              validated= false;
-              toggleSnackbar(
-                true,
-                { labelName: "Please upload file !", labelKey: "ERR_UPLOAD_FILE" },
-                "error"
-              );
-            }}
+      if(data.action==="VERIFY AND FORWARD" 
+      ||data.action==="REQUEST CLARIFICATION" 
+      || data.action==="VERIFY FOR CLOSURE"  
+      || data.action==="FORWARD FOR COMPLETION" ){
+        if(data.assignee.length==0)
+        {
+          validated= false;  
+          
+          toggleSnackbar(
+            true,
+            { labelName: "Please select Assignee !", labelKey: "ERR_SELECT_ASSIGNEE" },
+            "error"
+          );
+
+        }
+      }
+
+      if (data.action === "VERIFY AND FORWARD" 
+      ||data.action==="REQUEST CLARIFICATION" 
+      || data.action==="VERIFY FOR CLOSURE"  
+      || data.action==="FORWARD FOR COMPLETION" ){
+        if(data.roleList.length==0)
+        {
+          validated= false;  
+          
+          toggleSnackbar(
+            true,
+            { labelName: "Please select role !", labelKey: "ERR_SELECT_ROLE" },
+            "error"
+          );
+
+        }
+      } 
+        if(data.assignee.length> 0)
+        {
+          data.isRoleSpecific=false;
+        }
+        else{
+          data.isRoleSpecific=true
+        }
+          // if(data.action==="INSPECT" ||data.action==="COMPLETE"){
+          //   const documents = get(data, "wfDocuments");
+          //   if (documents.length == 0) {
+          //     validated= false;
+          //     toggleSnackbar(
+          //       true,
+          //       { labelName: "Please upload file !", labelKey: "ERR_UPLOAD_FILE" },
+          //       "error"
+          //     );
+          //   }}
 
           if (isDocRequired) {       
             const documents = get(data, "wfDocuments");

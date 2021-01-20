@@ -13,8 +13,8 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
 let role_name = JSON.parse(getUserInfo()).roles[0].code
 const header = getCommonHeader(
   {
-    labelName: "Horticulture",
-    labelKey: "Report Module"
+    labelName: "Report Module",
+    labelKey: "WF_REPORT_MODULE_HEADER"
   },
   {
     classes: {
@@ -28,8 +28,8 @@ let cardItems = [];
   const cardlist = [
     {
       label: {
-        labelName: "WrokFlow",
-        labelKey: "WorkFlow_Preview"
+        labelName: "WrokFlow Previewm",
+        labelKey: "WORKFLOW_PREVIEW_TITLE"
       },
       
       icon: <i

@@ -129,7 +129,28 @@ export const getPropertyObj = async (waterConnection) => {
     return waterConnection;
 }
 
-
+export const getResults = async (queryObject,dispatch,screenName) => {
+    let url =""
+    switch(screenName){
+      case "download": url =  "/ws-services/wc/_search";
+      break;
+      
+    }
+    try {
+      const response = await httpRequest("post", url, "", queryObject, {} );
+      return response;
+  
+    } catch (error) {
+      store.dispatch(
+        toggleSnackbar(
+          true,
+          { labelName: error.message, labelCode: error.message },
+          "error"
+        )
+      );
+    }
+  
+  };
 export const getSearchResults = async queryObject => {
     try {
         const response = await httpRequest(
@@ -678,12 +699,25 @@ const validatePropertyOwners = (applyScreenObject) => {
     }
 }
 
-export const prepareDocumentsUploadData = (state, dispatch) => {
-    let documents = get(
-        state,
-        "screenConfiguration.preparedFinalObject.applyScreenMdmsData.ws-services-masters.Documents",
-        []
-    );
+export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
+    let documents = '';
+
+    if (type == "wsupload") {
+        documents = get(
+          state,
+          "screenConfiguration.preparedFinalObject.DocumentType_wsbillupload",
+          []
+        );
+      }
+      else{
+        documents = get(
+            state,
+            "screenConfiguration.preparedFinalObject.applyScreenMdmsData.ws-services-masters.Documents",
+            []
+        );
+
+      }
+ 
     documents = documents.filter(item => {
         return item.active;
     });
@@ -2152,3 +2186,24 @@ export const showHideFieldsFirstStep = (dispatch, propertyId, value) => {
         )
     );
 }
+export const savebillGeneration = async (queryObject, payload, dispatch) => {
+    try {
+      const response = await httpRequest(
+        "post",
+        "/ws-service/billGeneration/_saveBilling",
+        "",
+        queryObject,
+        { billGeneration: payload}
+      );
+      return response;
+    } catch (error) {
+      dispatch(
+        toggleSnackbar(
+          true,
+          { labelName: error.message, labelKey: error.message },
+          "error"
+        )
+      );
+      throw error;
+    }
+  };

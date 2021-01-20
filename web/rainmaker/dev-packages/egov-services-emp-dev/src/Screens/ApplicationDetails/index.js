@@ -330,9 +330,14 @@ class ApplicationDetails extends Component {
 	}
 
 	downloadApplicationFunction = async (e) => {
-		
+		const { ab,xyz } = this.props;
 		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication,paymentDetails,userInfo,documentMap } = this.props;
 		let fdocname = Object.entries(documentMap)[0][1]
+		let value1 = xyz[1];
+		console.log("value1--",value1)
+		let value2 = ab[1];
+		console.log("value2--",value2)
+
 		const { complaint } = transformedComplaint;
 		let bookingDataOsbm = {
             applicationNumber: complaint.applicationNo,
@@ -384,7 +389,8 @@ class ApplicationDetails extends Component {
 					generatedBy: userInfo.name,
 				},
 				documentDetail:{
-					documentName: fdocname
+					documentName: value1,
+					document2: value2
 				}
 
             },

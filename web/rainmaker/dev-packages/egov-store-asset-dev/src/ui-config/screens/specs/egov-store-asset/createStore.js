@@ -57,7 +57,11 @@ const callBackForUpdate = async (state, dispatch) => {
     stores[0].tenantId = tenantId;
    
     stores[0].officeLocation.tenantId = tenantId;
+    //set storecode
 
+    stores[0].storeInCharge.code =stores[0].storeInCharge.code.value;
+    stores[0].storeInCharge.name =stores[0].storeInCharge.code.label;
+    stores[0].storeInCharge.tenantId =tenantId;
     const queryObject = [
       {
         key: "tenantId",
@@ -115,7 +119,9 @@ const callBackForSubmit = async (state, dispatch) => {
     const tenantId = getTenantId();
     stores[0].tenantId = tenantId;
     stores[0].active = true;
-
+    stores[0].storeInCharge.code =stores[0].storeInCharge.code.value;
+    stores[0].storeInCharge.name =stores[0].storeInCharge.code.label;
+    stores[0].storeInCharge.tenantId =tenantId;
 
     const queryObject = [
       {
@@ -465,25 +471,64 @@ export const formwizardFirstStep = {
          
           jsonPath: "stores[0].deliveryAddress",
         }),
-        storeInCharge: getSelectField({
-          label: {
-            labelName: "Store In-charge Employee Name",
-            labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE",
-          },
-          props: {
-            className: "applicant-details-error",
-            optionLabel: "name",
-            optionValue: "code",
-          },
-          placeholder: {
-            labelName: "Select In-charge Employee Name",
-            labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE_PLACEHOLDER",
-          },
-          sourceJsonPath: "createScreenMdmsData1.employee",
+        // storeInCharge: getSelectField({
+        //   label: {
+        //     labelName: "Store In-charge Employee Name",
+        //     labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE",
+        //   },
+        //   props: {
+        //     className: "applicant-details-error",
+        //     optionLabel: "name",
+        //     optionValue: "code",
+        //   },
+        //   placeholder: {
+        //     labelName: "Select In-charge Employee Name",
+        //     labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE_PLACEHOLDER",
+        //   },
+        //   sourceJsonPath: "createScreenMdmsData1.employee",
+        //   jsonPath: "stores[0].storeInCharge.code",
+        //   required: true,
+        //     errorMessage:"STORE_VALIDATION_STORE_INCHARGE_SELECT",
+        // }),
+
+        storeInCharge: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-store-asset",
+          componentPath: "AutosuggestContainer",
           jsonPath: "stores[0].storeInCharge.code",
           required: true,
-            errorMessage:"STORE_VALIDATION_STORE_INCHARGE_SELECT",
-        }),
+          props: {
+            optionLabel: "name",
+            optionValue: "code",
+            style: {
+              width: "100%",
+              cursor: "pointer"
+            },
+            label: { labelName: "Role", labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE" },
+            placeholder: {
+              labelName: "Select Role",
+              labelKey: "STORE_DETAILS_IN_CHARGE_EMPLOYEE_PLACEHOLDER"
+            },
+            jsonPath: "stores[0].storeInCharge.code",
+            sourceJsonPath: "createScreenMdmsData1.employee",
+            labelsFromLocalisation: true,
+            suggestions: [],
+            fullwidth: true,
+            required: true,
+            inputLabelProps: {
+              shrink: true
+            },
+            // localePrefix: {
+            //   moduleName: "ACCESSCONTROL_ROLES",
+            //   masterName: "ROLES"
+            // },
+            isMulti: false,
+          },
+          gridDefination: {
+            xs: 12,
+            sm: 6
+          }
+        },
         contactNo1: getTextField({
           label: {
             labelName: "Contact No.1",

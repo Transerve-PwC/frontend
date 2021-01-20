@@ -306,7 +306,7 @@ export const createUpdateOsbApplication = async (state, dispatch, action) => {
                 return { status: "fail", data: response.data };
             }
         } else if (method === "UPDATE") {
-          delete payload["financeBusinessService"]; 
+          delete payload["financeBusinessService"];
             response = await httpRequest(
                 "post",
                 "/bookings/api/_update",
@@ -375,6 +375,9 @@ export const createUpdatePCCApplication = async (state, dispatch, action) => {
             }
         });
 
+       // if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "PACC");
+       // }
         set(payload, "wfDocuments", bookingDocuments);
         set(payload, "tenantId", tenantId);
         set(payload, "bkAction", action);
@@ -508,6 +511,9 @@ export const createUpdateOSWMCCApplication = async (
             }
         });
 
+        if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "OSUJM");
+        }
         set(payload, "wfDocuments", bookingDocuments);
         set(payload, "bkBookingType", "OSUJM");
         set(payload, "tenantId", tenantId);
@@ -698,6 +704,9 @@ export const createUpdateCgbApplication = async (state, dispatch, action) => {
             }
         });
 
+        if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "GFCP");
+        }
         set(payload, "wfDocuments", bookingDocuments);
         set(payload, "bkBookingType", "GROUND_FOR_COMMERCIAL_PURPOSE");
         set(payload, "tenantId", tenantId);

@@ -349,27 +349,32 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
 const {payloadone, payload, payloadTwo, ConRefAmt} = this.props;
 console.log("propsforcalculateCancelledBookingRefundAmount--",this.props)
 
+var CheckDate = new Date(bookingDate);
+console.log("CheckDate--",CheckDate) 
+var todayDate = new Date();
+console.log("todayDate--",todayDate)
+
+
     if (applicationNumber && tenantId) {
       
-        console.log(payload, "Payment Details");
+        console.log("Payment Details",payload ? payload : "NOTFOUND");
         if (payload) {
 
-if(ConRefAmt == true){
-
-  let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
-  let bookingAmount = 0;
-  for (let i = 0; i < billAccountDetails.length; i++) {
-      if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
-          bookingAmount += billAccountDetails[i].amount;
-      }
-  }
-
-  return bookingAmount;
-
-}
-
-
-else {
+          if(todayDate > CheckDate){
+            alert("refundCondition")
+            let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
+            let bookingAmount = 0;
+            for (let i = 0; i < billAccountDetails.length; i++) {
+                if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                    bookingAmount += billAccountDetails[i].amount;
+                }
+            }
+          
+            return bookingAmount;
+          
+          }
+          if(todayDate < CheckDate) {
+            alert("cancelCondition")
             let billAccountDetails = payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
             let bookingAmount = 0;
             for (let i = 0; i < billAccountDetails.length; i++) {
@@ -470,7 +475,7 @@ console.log("Difference_In_Days--",Difference_In_Days)
     const { valueSelected, commentValue ,assignee,assignToMe} = this.state;
     const { trasformData, businessServiceData,applicationNumber,Cancelstatus } = this.props;
     let CheckCancelStatus;
-    if(CancelStatus == "CANCEL"){
+    if(Cancelstatus == "CANCEL"){
       CheckCancelStatus = Cancelstatus
     }
     else{

@@ -32,7 +32,7 @@ function SLADays(props) {
   {
     return <div style={stylesHidden}>Resolution Time(Days) : {getSLADays()}</div>;}
   else{
-    return <div style={styles}>Resolution Time(Days) : {getSLADays()}</div>;
+    return <div style={styles}>Resolution Time(Working Days) : {getSLADays()}</div>;
   }
 }
 // function SLADays(props) {

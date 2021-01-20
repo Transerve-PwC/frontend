@@ -146,6 +146,42 @@ export const additionDetails = getCommonCard({
         pattern: /^[0-9]*$/i,
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
       }),
+      division: getSelectField({
+        label: { labelKey: "WS_SERV_DETAIL_DIVISION" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_DIVISION_PLACEHOLDER" },
+        gridDefination: { xs: 12, sm: 6 },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.Division",
+        jsonPath: "applyScreen.div",
+       // pattern: /^[0-9]*$/i,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      }),
+      subdiv: getSelectField({
+        label: { labelKey: "WS_SERV_DETAIL_SUB_DIVISION" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_SUB_DIVISION_PLACEHOLDER" },
+        gridDefination: { xs: 12, sm: 6 },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.subDivision",
+        jsonPath: "applyScreen.subdiv",
+       // pattern: /^[0-9]*$/i,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      }),
+      ledgerNo: getSelectField({
+        label: { labelKey: "WS_SERV_DETAIL_LEDGER_NO" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_LEDGER_NO_PLACEHOLDER" },
+        gridDefination: { xs: 12, sm: 6 },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.Ledger",
+        jsonPath: "applyScreen.ledgerNo",
+       // pattern: /^[0-9]*$/i,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      }),
+      ccCode: getTextField({
+        label: { labelKey: "WS_SERV_DETAIL_CC_CODE" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_CC_CODE_PLACEHOLDER" },
+        gridDefination: { xs: 12, sm: 6 },
+        
+        jsonPath: "applyScreen.ccCode",
+        pattern: /^[0-9]*$/i,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      }),
 
       noOfWaterClosets: getTextField({
         label: { labelKey: "WS_ADDN_DETAILS_NO_OF_WATER_CLOSETS" },

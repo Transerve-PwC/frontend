@@ -126,12 +126,12 @@ const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
 
   if(servicetype != null && servicetype != undefined && servicetype != ""  )
  { 
-	localStorage.setItem("HCBusinessService",servicetype)
-   const queryObject = [
+  localStorage.setItem("HCBusinessService",servicetype)
+
+    const queryObject = [
     { key: "tenantId", value: tenantId },
     { key: "businessServices", value: servicetype}
   ];
-
   await setBusinessServiceDataToLocalStorage(queryObject, dispatch);
 }
 
@@ -187,24 +187,25 @@ const setSearchResponse = async (state, dispatch, action, serviceRequestId) => {
     console.log("Error in setting ServiceRequestStatus ")
   }
   try{  
-    var businessServiceSla = response.ResponseInfo.resMsgId
+    // var businessServiceSla = response.ResponseInfo.resMsgId
+    // setSLADays(businessServiceSla)
+    var businessServiceSla = Number(response.ResponseBody[0].sla)-Number(response.ResponseBody[0].sla_days_elapsed);
     setSLADays(businessServiceSla)
   }
   catch(e){
     console.log("Error in setting businessServiceSla ")
-  }
-  var CurrentAssignee = response.ResponseBody[0].current_assignee
+    }
+    var CurrentAssignee = response.ResponseBody[0].current_assignee
      var userData = parseInt(CurrentAssignee);
      if(isNaN(userData))
      {
       setCurrentAssignee(CurrentAssignee)
      }
-     else{
+     else {
       const response = await getCurrentAssigneeUserNameAndRole(dispatch, userData);
-      //var current_Assignee = response.Employees[0].user.userName
+      // var current_Assignee = response.Employees[0].user.userName
       var current_Assignee = response.Employees[0].user.name
-	  setCurrentAssignee(current_Assignee)
-      
+       setCurrentAssignee(current_Assignee)
      }
 
 

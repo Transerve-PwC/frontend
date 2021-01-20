@@ -370,6 +370,13 @@ export const getTextToLocalMapping = label => {
             "HC_SEARCH_RESULTS_FOR_SERVICE_REQUESTS",
             localisationLabels
           );
+        case "Service Request Locality":
+          return getLocaleLabels(
+            "Service Request Locality",
+            "HC_COMMON_TABLE_COL_SERVICE_LOCALITY_LABEL",
+            localisationLabels
+          );
+
   }
 };
 

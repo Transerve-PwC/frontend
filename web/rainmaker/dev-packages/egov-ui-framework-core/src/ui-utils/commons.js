@@ -410,7 +410,7 @@ export const handleFileUpload = (event, handleDocument, props) => {
     endPoint: "filestore/v1/files"
   };
   let uploadDocument = true;
-  const { inputProps, maxFileSize, moduleName, documents, maxFiles } = props;
+  const { inputProps, maxFileSize, moduleName, documents, maxFiles,pageName } = props;
   const input = event.target;
   if (input.files && input.files.length > 0) {
     const files = input.files;
@@ -427,8 +427,29 @@ export const handleFileUpload = (event, handleDocument, props) => {
       if (moduleName === 'egov-echallan' && maxFiles > 1) {
         existingfileSize += parseFloat(file.size)
         isSizeValid = getFileSize(existingfileSize) <= maxFileSize;
-      } else {
+      } 
+      
+      
+      else {
         isSizeValid = getFileSize(file.size) <= maxFileSize;
+      }
+      if(pageName !== undefined)
+      {
+        if(pageName ==='egov-wns-upload')
+        {
+        const file_ = files[key];
+        //fileValid = isFileValid(file_, acceptedFiles(inputProps.accept));
+        if(file_.name.indexOf("xlsx")>1 || file_.name.indexOf("xls")>1)
+        {
+          fileValid = true
+        }
+        existingfileSize += parseFloat(file.size)
+        if(existingfileSize<=maxFileSize)
+        {
+          isSizeValid = true
+        }
+      }
+        
       }
       if (localStorageGet("modulecode") === "PR" || localStorageGet("modulecode") === "SCP") {
         if (localStorage.getItem("libdocindex") != null && localStorage.getItem("libdocindex") != 'undefined') {
@@ -498,7 +519,7 @@ export const handleFileUpload = (event, handleDocument, props) => {
         } else {
           const fileStoreId = await uploadFile(
             S3_BUCKET.endPoint,
-            moduleName,
+            moduleName === undefined?"egov-wns":moduleName,
             file,
             commonConfig.tenantId
           );

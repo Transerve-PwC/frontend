@@ -8,12 +8,189 @@ export const sampleeofficestat = () => {
       msgId: "20170310130900|en_IN",
       status: "successful"
     },
-   eofficestat:{
+    ResponseBody:{
     totalFilesPendingCnt:3,
     totalFilesClosed  :23,
     totalReceiptsPending  :4,
     totalReceiptsClosed: 5,  
-    totalVIPReceiptsPending :7
+    totalVIPReceiptsPending :7,
+    VipReceipts:{
+      Row:{
+        Column:[
+          {
+            name:"DepartmentId",
+            content:34
+          },
+          {
+            name:"DepartmentName",
+            content:"Food and Supplies"
+          },
+          {
+            name:"OrgId",
+            content:34
+          },
+          {
+            name:"OrgName",
+            content:"EStablishment-FSCA"
+          },
+          {
+            name:"EmployeeName",
+            content:"RENU SHARMA"
+          },
+          {
+            name:"MarkingAbbr",
+            content:"SA(RS)-ESTT-FSCA"
+          },
+          {
+            name:"PostDetailId",
+            content:212
+          },
+          {
+            name:"NumberOfElectronicVipreceipt",
+            content:0
+          },
+          {
+            name:"NumberOfPhysicalVipreceipt",
+            content:34
+          },
+          {
+            name:"Total",
+            content:1
+          }
+
+        ]
+      }
+    },
+    FileHierarchy:{
+      Row:{
+        Column:[
+          {
+            name:"Id",
+            content:37
+          },
+          {
+            name:"Sectionname",
+            content:"EStablishment-FSCA"
+          },
+          {
+            name:"NumberOfElectronicFilesPending",
+            content:0
+          },
+          {
+            name:"NumberOfPhysicalFilesPending",
+            content:0
+          },
+          {
+            name:"Total",
+            content:34
+          },
+          
+
+        ]
+      }
+    },
+    ReceiptPending:{
+      Row:{
+        Column:[
+          {
+            name:"Departmentid",
+            content:34
+          },
+          {
+            name:"DepartmentName",
+            content:"Food and Supplies"
+          },
+          {
+            name:"OrgId",
+            content:37
+          },
+          {
+            name:"OrgName",
+            content:"EStablishment-FSCA"
+          },
+          {
+            name:"EmployeeName",
+            content:"RENU SHARMA"
+          },
+          {
+            name:"MarkingAbbr",
+            content:"SA(RS)-ESTT-FSCA"
+          },
+          {
+            name:"PostDetailId",
+            content:212
+          },
+          {
+            name:"ElectronicReceipt",
+            content:1672
+          },
+          {
+            name:"PhysicalReceipt",
+            content:5
+          },
+          {
+            name:"Total",
+            content:1677
+          }
+
+        ]
+      }
+    },
+    
+    FilePending:{
+
+    },
+    FileClosed:{
+
+    },
+    
+    ReceiptClosed:{
+      Row:{
+        Column:[
+          {
+            name:"Departmentid",
+            content:34
+          },
+          {
+            name:"DepartmentName",
+            content:"Food and Supplies"
+          },
+          {
+            name:"OrgId",
+            content:37
+          },
+          {
+            name:"OrgName",
+            content:"EStablishment-FSCA"
+          },
+          {
+            name:"EmployeeName",
+            content:"RENU SHARMA"
+          },
+          {
+            name:"MarkingAbbr",
+            content:"SA(RS)-ESTT-FSCA"
+          },
+          {
+            name:"PostDetailId",
+            content:212
+          },
+          {
+            name:"ElectronicReceipt",
+            content:133
+          },
+          {
+            name:"PhysicalReceipt",
+            content:0
+          },
+          {
+            name:"Total",
+            content:133
+          }
+
+        ]
+      }
+    },
 
    }
   };

@@ -928,7 +928,7 @@ let amount = 0;
           amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
                 (el) => !el.taxHeadCode.includes("TAX")
             )[0].amount;
-            tax: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+            tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
                 (el) => el.taxHeadCode.includes("TAX")
             )[0].amount;
           }
@@ -1415,7 +1415,7 @@ export const downloadApplication = async (
         let cgst = null;
 
         if(applicationData.businessService == "OSBM"){
-          
+
           baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
             )[0].amount;

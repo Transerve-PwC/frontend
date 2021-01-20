@@ -96,11 +96,32 @@ body[class^="complaint-details"] .map-container {
 }
 
 .MuiDividerLine {
-  height: 2px;
+  height: 1px;
   border: none;
   margin-top: 8px;
+  -ms-flex-negative: 0;
   flex-shrink: 0;
   background-color: rgba(0, 0, 0, 0.12);
-  width: 671px;
-  margin-right: 373px;
+  width: 1011px;
+  margin-right: 0px;
 }
+.setWidth {
+  width:474px;
+}
+
+.ViewPaymentModeButton {
+  color: #b2c2bf;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  float: 'left';
+  background-color: "white"
+
+}
+.ViewPaymentModeButton:hover {
+  background-color: white;
+  color: "#FE7A51";
+  border:none;
+}
+label > .label-container {
+  display: inline-block !important; }

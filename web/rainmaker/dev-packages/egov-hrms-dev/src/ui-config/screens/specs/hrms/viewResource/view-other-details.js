@@ -174,7 +174,7 @@ export const getOtherDetailsView = (isReview = true) => {
     },
     viewOne: educationDetailsHeader,
     viewTwo: educationCard,
-    viewThree: deptDetailsHeader,
-    viewFour: deptCard
+    //viewThree: deptDetailsHeader,
+  //  viewFour: deptCard
   });
 };

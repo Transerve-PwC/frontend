@@ -1,7 +1,9 @@
 import get from "lodash/get";
 import {
+  convertDateToEpoch,
   dispatchMultipleFieldChangeAction,
-  getLabel
+  getLabel,
+  getTodaysDateInYMD,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -9,7 +11,8 @@ import {
   getButtonVisibility,
   getCommonApplyFooter,
   ifUserRoleExists,
-  validateFields
+  validateFields,
+  
 } from "../../utils";
 import "./index.css";
 
@@ -45,6 +48,32 @@ export const callBackForNext = async (state, dispatch) => {
     if (!(isEmployeeDetailsValid && isProfessionalDetailsValid)) {
       isFormValid = false;
     }
+    ///
+     if ((isEmployeeDetailsValid && isProfessionalDetailsValid)) {
+
+      const errorMessage = {
+        labelName: "Date of birth can not be greater then or equal to current date",
+        labelKey: "ERR_SELECT_VALID_DATE_OF_BIRTH"
+      };
+
+      
+
+      let dob = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Employee[0].user.dob",
+        null
+      );
+      const  Curdate_ = getTodaysDateInYMD();
+      const  dob_ = convertDateToEpoch(dob,"dayStart")  
+      const Curdate_epoch = convertDateToEpoch(Curdate_,'dayStart')
+
+      if(dob_ >= Curdate_epoch )
+      {
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+        return;
+      }
+    }
+
   }
   if (activeStep === 1) {
     let jurisdictionDetailsPath =
@@ -105,12 +134,31 @@ export const callBackForNext = async (state, dispatch) => {
       }
     );
     if (!atLeastOneCurrentAssignmentSelected) {
+      let assignToDate = false
+      let employeeObject = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Employee",
+        []
+      );
+      let toDate = assignmentsData.some(
+        assignment => {
+          return assignment.toDate;
+        }
+      );
+      if(toDate)
+      {
+        assignToDate = true
+      }
+    
+      if(!assignToDate)
+      {
       const errorMessage = {
         labelName: "Please select at least one current assignment",
         labelKey: "ERR_SELECT_CURRENT_ASSIGNMENT"
       };
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
       return;
+    }
     }
 
     let atLeastOnePrimaryAssignmentSelected = assignmentsData.some(
@@ -166,17 +214,22 @@ export const callBackForNext = async (state, dispatch) => {
 
           const serviceFromdDt = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[j].serviceFrom).getTime();
           const serviceToDt = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[j].serviceTo).getTime();
+          const isCurrentPosition = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[j].isCurrentPosition);
        
           if( !(annuationdate >= serviceFromdDt && serviceFromdDt >= appntDate)){
             isInvalidFromDt = true;
             invalidFromDate += `${j}`;
             if(j < serviceDetailsItems.length-1 ) invalidFromDate += ",";
           }
+        if(!isCurrentPosition)
+        {
           if( !(annuationdate >= serviceToDt && serviceToDt >= appntDate)){
             isInvalidToDt = true;
             invalidToDate += `${j}`;
             if(j < serviceDetailsItems.length-1 ) invalidToDate += ",";
           }
+        }
+         
           
     }
     if(isInvalidFromDt)  finalErrString +=   invalidFromDate;

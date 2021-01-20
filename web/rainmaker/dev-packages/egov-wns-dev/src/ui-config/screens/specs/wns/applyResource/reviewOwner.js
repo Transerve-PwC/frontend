@@ -96,6 +96,46 @@ export const reviewPipeSize = getLabelWithValue(
     callBack: handleNA
   }
 );
+export const reviewccCode = getLabelWithValue(
+  {
+    labelName: "CC Code",
+    labelKey: "WS_SERV_DETAIL_CC_CODE"
+  },
+  {
+    jsonPath: "applyScreen.ccCode",
+    callBack: handleNA
+  }
+);
+export const reviewdivision = getLabelWithValue(
+  {
+    labelName: "Division",
+    labelKey: "WS_SERV_DETAIL_DIVISION"
+  },
+  {
+    jsonPath: "applyScreen.div",
+    callBack: handleNA
+  }
+);
+export const reviewsubdiv = getLabelWithValue(
+  {
+    labelName: "Sub Division",
+    labelKey: "WS_SERV_DETAIL_SUB_DIVISION"
+  },
+  {
+    jsonPath: "applyScreen.subdiv",
+    callBack: handleNA
+  }
+);
+export const reviewledgerNo = getLabelWithValue(
+  {
+    labelName: "Ledge No",
+    labelKey: "WS_SERV_DETAIL_LEDGER_NO"
+  },
+  {
+    jsonPath: "applyScreen.ledgerNo",
+    callBack: handleNA
+  }
+);
 
 export const reviewWaterClosets = getLabelWithValue(
   {
@@ -304,6 +344,10 @@ const connectionDetails = getCommonContainer({
   reviewWaterSubSource,
   reviewPipeSize,
   // reviewBillingType,
+  reviewdivision,
+  reviewsubdiv,
+  reviewledgerNo,
+  reviewccCode,
   reviewWaterClosets,
   reviewNumberOfToilets
 });

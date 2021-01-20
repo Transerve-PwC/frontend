@@ -80,7 +80,11 @@ import "./index.css";
       var roleList = []
       roleList = payload &&
       payload.MdmsRes["eg-horticulture"].roles
-      setHCRoles(JSON.stringify(roleList))}
+      setHCRoles(JSON.stringify(roleList))
+      const assignedToList = [{ code: "ASSIGNEDTOME", name: "Assigned To Me" },...roleList]
+      dispatch(prepareFinalObject("applyScreenMdmsData.eg-horticulture.assignedToList", assignedToList));
+    }
+      
       catch(e){
         console.log(e);
       }

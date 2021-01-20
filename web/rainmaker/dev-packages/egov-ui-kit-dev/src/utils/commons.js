@@ -194,22 +194,18 @@ export const mapCompIDToName = (IDObj, compID) => {
   return IDObj[compID] ? IDObj[compID].serviceCode : compID;
 };
 
-export const getDateFromEpoch = (epoch) => {
+export const getDateFromEpoch = () => {
   const dateObj = new Date(epoch);
-  const year = dateObj
-    .getFullYear()
-    .toString()
-    .slice(2, 4);
+  const year = dateObj.getFullYear().toString().slice(2, 4);
   const month = getMonthName(dateObj.getMonth() + 1);
   const day = dateObj.getDate();
   return day + "-" + month + "-" + year;
 };
 
-export const epochToDate = et => {
+export const epochToDate = (et) => {
   if (!et) return null;
   var date = new Date(Math.round(Number(et)));
-  var formattedDate =
-    date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+  var formattedDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
   return formattedDate;
 };
 
@@ -282,8 +278,8 @@ export const fetchImages = (actionArray) => {
 // };
 
 export const getCityNameByCode = (code, localizationLabels) => {
-  const tenantId=code&&code.replace('.','_').toUpperCase();
-  return code&&getTranslatedLabel(`TENANT_TENANTS_${tenantId}`, localizationLabels);
+  const tenantId = code && code.replace(".", "_").toUpperCase();
+  return code && getTranslatedLabel(`TENANT_TENANTS_${tenantId}`, localizationLabels);
 };
 
 export const isImage = (url) => {
@@ -322,7 +318,7 @@ export const getTransformedStatus = (status) => {
     case "assigned":
       transformedStatus = "ASSIGNED";
       break;
-      case "escalatedlevel1pending":
+    case "escalatedlevel1pending":
       transformedStatus = "ESCALATED";
       break;
     case "escalatedlevel2pending":
@@ -343,7 +339,7 @@ export const getFileSize = (file) => {
 export const isFileImage = (file) => {
   const mimeType = file["type"];
   const acceptedImageTypes = ["jpg", "jpeg", "png"];
-  const imgExtension = acceptedImageTypes.indexOf(mimeType.split("/")[1]) !== -1
+  const imgExtension = acceptedImageTypes.indexOf(mimeType.split("/")[1]) !== -1;
   return (mimeType && mimeType.split("/")[0] == "image" && imgExtension) || false;
 };
 
@@ -357,17 +353,17 @@ export const getPropertyFromObj = (obj, id, property, defaultValue) => {
 
 export const returnSLAStatus = (slaHours, submittedTime) => {
   let slaStatement = "";
-  let daysCount ="";
-  if(slaHours === 0)
+  let daysCount = "";
+  if (slaHours === 0)
     return {
       slaStatement,
       daysCount,
-    }
+    };
 
   const millsToAdd = slaHours * 60 * 60 * 1000;
   const toBeFinishedBy = millsToAdd + submittedTime;
-  
-   daysCount = dateDiffInDays(new Date(Date.now()), new Date(toBeFinishedBy));
+
+  daysCount = dateDiffInDays(new Date(Date.now()), new Date(toBeFinishedBy));
   if (daysCount < 0) {
     slaStatement = Math.abs(daysCount) === 1 ? "CS_OVERDUE_BY_DAY" : "CS_OVERDUE_BY_DAYS";
     //slaStatement = Math.abs(daysCount) === 1 ? `Overdue by ${Math.abs(daysCount)} day` : `Overdue by ${Math.abs(daysCount)} days`;
@@ -423,7 +419,11 @@ export const flatten = (arr) => {
 };
 
 export const getTenantForLatLng = async (lat, lng) => {
-  let queryObjList = [{ key: "lat", value: lat }, { key: "lng", value: lng }, { key: "tenantId", value: commonConfig.tenantId }];
+  let queryObjList = [
+    { key: "lat", value: lat },
+    { key: "lng", value: lng },
+    { key: "tenantId", value: commonConfig.tenantId },
+  ];
   let response;
   if (lat && lng) {
     try {
@@ -506,10 +506,8 @@ export const transformComplaintForComponent = (complaints, role, employeeById, c
             ? displayStatus(`${complaintDetail.rating}/5`)
             : displayStatus(complaintDetail.actions[0].status)
           : displayStatus(
-              returnSLAStatus(
-                getPropertyFromObj(categoriesById, complaintDetail.serviceCode, "slaHours", 0),
-                getLatestCreationTime(complaintDetail)
-              ).slaStatement
+              returnSLAStatus(getPropertyFromObj(categoriesById, complaintDetail.serviceCode, "slaHours", 0), getLatestCreationTime(complaintDetail))
+                .slaStatement
             ),
       SLA: returnSLAStatus(getPropertyFromObj(categoriesById, complaintDetail.serviceCode, "slaHours", 0), getLatestCreationTime(complaintDetail))
         .daysCount,
@@ -603,7 +601,7 @@ export const fetchDropdownData = async (dispatch, dataFetchConfig, formKey, fiel
         )
       );
     } else {
-      dispatch(toggleSnackbarAndSetText(true, { labelName: message, labelKey: message },   "error"));
+      dispatch(toggleSnackbarAndSetText(true, { labelName: message, labelKey: message }, "error"));
     }
     return;
   }
@@ -638,12 +636,10 @@ const getTimeFormat = (epochTime) => {
   return Format.toString() + ":" + epochTime.toString().split(":")[1] + " " + Period;
 };
 const getDateFormat = (epochTime) => {
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-  "July", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
   epochTime = new Date(epochTime);
-  const day = epochTime.getDate() ;
-  const Month = epochTime.getMonth() ;
+  const day = epochTime.getDate();
+  const Month = epochTime.getMonth();
   return day.toString() + " " + monthNames[Month];
 };
 
@@ -652,7 +648,14 @@ const getEventSLA = (item) => {
   let sla;
 
   if (item.eventType === "EVENTSONGROUND") {
-    const disp =getDateFormat(item.eventDetails.fromDate) +" "+ getTimeFormat(item.eventDetails.fromDate) +  "-"+getDateFormat(item.eventDetails.toDate) +" "+ getTimeFormat(item.eventDetails.toDate);
+    const disp =
+      getDateFormat(item.eventDetails.fromDate) +
+      " " +
+      getTimeFormat(item.eventDetails.fromDate) +
+      "-" +
+      getDateFormat(item.eventDetails.toDate) +
+      " " +
+      getTimeFormat(item.eventDetails.toDate);
     sla = (
       // <div style={{ display: "flex" }}>
       //   <Icon name="access-time" action="device" viewBox="0 0 24 24" style={{ height: "20px", width: "35px" }} />
@@ -677,31 +680,17 @@ const getEventSLA = (item) => {
 };
 
 const getEventDate = (eventDate) => {
-  const month = new Date(eventDate)
-    .toString()
-    .split(" ")[1]
-    .toUpperCase();
+  const month = new Date(eventDate).toString().split(" ")[1].toUpperCase();
   const day = new Date(eventDate).getDate();
   return month + ":" + day;
 };
-
-
-
 
 const setDocuments = (fileUrl) => {
   return {
     title: "",
     link: (fileUrl && fileUrl.split(",")[0]) || "",
     linkText: "View",
-    name:
-      decodeURIComponent(
-        fileUrl
-          .split(",")[0]
-          .split("?")[0]
-          .split("/")
-          .pop()
-          .slice(13)
-      ) || `Document`,
+    name: decodeURIComponent(fileUrl.split(",")[0].split("?")[0].split("/").pop().slice(13)) || `Document`,
   };
 };
 
@@ -741,7 +730,7 @@ export const getTransformedNotifications = async (notifications) => {
       locationObj: item.eventDetails && { lat: item.eventDetails.latitude || 12.9199988, lng: item.eventDetails.longitude || 77.67078 },
       entryFees: item.eventDetails && item.eventDetails.fees,
       referenceId: item.referenceId,
-          });
+    });
   }
   const fileUrls = await getFileUrlFromAPI(fieStoreIdString.join(","));
   const finalArray =
@@ -763,7 +752,7 @@ export const getTransformedNotifications = async (notifications) => {
 
 export const onNotificationClick = async (history) => {
   try {
-    const permanentCity = JSON.parse(getUserInfo()).permanentCity
+    const permanentCity = JSON.parse(getUserInfo()).permanentCity;
     let queryObject = [
       {
         key: "tenantId",
@@ -787,78 +776,119 @@ export const onNotificationClick = async (history) => {
     await httpRequest("/egov-user-event/v1/events/lat/_update", "_update", queryObject, requestBody);
     history.push("/notifications");
   } catch (e) {
-    toggleSnackbarAndSetText(true, { labelName: "Count update error", labelKey: "Count update error" },   "error");
+    toggleSnackbarAndSetText(true, { labelName: "Count update error", labelKey: "Count update error" }, "error");
   }
 };
 
 export const getTotalAmountDue = (payload) => {
   return payload && payload.Bill && payload.Bill.length > 0 && payload.Bill[0].totalAmount ? payload.Bill[0].totalAmount : 0;
-}
+};
 
 export const navigateToApplication = (businessService, propsHistory, applicationNo, tenantId, propertyId) => {
-  if (businessService == 'PT.MUTATION') {
+  if (businessService == "PT.MUTATION") {
     propsHistory.push(`/pt-mutation/search-preview?applicationNumber=${applicationNo}&propertyId=${propertyId}&tenantId=${tenantId}`);
-  } else if (businessService == 'PT.CREATE') {
-    propsHistory.push(`/property-tax/application-preview?propertyId=${propertyId}&applicationNumber=${applicationNo}&tenantId=${tenantId}&type=property`);
+  } else if (businessService == "PT.CREATE") {
+    propsHistory.push(
+      `/property-tax/application-preview?propertyId=${propertyId}&applicationNumber=${applicationNo}&tenantId=${tenantId}&type=property`
+    );
   } else {
-    console.log('Navigation Error');
+    console.log("Navigation Error");
   }
-}
+};
 
 export const getApplicationType = async (applicationNumber, tenantId) => {
   const queryObject = [
     { key: "businessIds", value: applicationNumber },
     { key: "history", value: true },
-    { key: "tenantId", value: tenantId }
+    { key: "tenantId", value: tenantId },
   ];
   try {
-    const payload = await httpRequest(
-      "egov-workflow-v2/egov-wf/process/_search",
-      "_search",
-      queryObject
-    );
+    const payload = await httpRequest("egov-workflow-v2/egov-wf/process/_search", "_search", queryObject);
     if (payload && payload.ProcessInstances.length > 0) {
       return payload.ProcessInstances[0].businessService;
     }
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 export const getModuleName = () => {
   const pathName = window.location.pathname;
-  if (pathName.indexOf("inbox") > -1) { return "rainmaker-common"; }
-  else if (pathName.indexOf("property-tax") > -1 || pathName.indexOf("pt-mutation") > -1) { return "rainmaker-pt,rainmaker-pgr"; }
-  else if (pathName.indexOf("pt-common-screens") > -1 || pathName.indexOf("public-search") > -1) { return "rainmaker-pt"; }
-  else if (pathName.indexOf("complaint") > -1 || pathName.indexOf("request-reassign") > -1 || pathName.indexOf("reassign-success") > -1) { return "rainmaker-pgr"; }
-  else if (pathName.indexOf("wns") > -1) { return "rainmaker-ws"; }
-  else if (pathName.indexOf("egov-echallan") > -1) { return "rainmaker-ec"; }
-  else if (pathName.indexOf("report/rainmaker-tl") > -1) { return "rainmaker-pgr,rainmaker-tl"; }
-  else if (pathName.indexOf("tradelicense") > -1 || pathName.indexOf("tradelicence") > -1 || pathName.indexOf("tradelicense-citizen") > -1 || pathName.indexOf("rainmaker-tl") > -1 || pathName.indexOf("fine-master") > -1 ) { return "rainmaker-tl"; }
-  else if (pathName.indexOf("report/rainmaker-rp") > -1) { return "rainmaker-pgr,rainmaker-rp"; }
-  else if (pathName.indexOf("rented-properties") > -1) { return "rainmaker-rp"}
-  else if (pathName.indexOf("estate") > -1) { return "rainmaker-es"}
-  else if (pathName.indexOf("hrms") > -1) { return "rainmaker-hr"; }
-  else if (pathName.indexOf("fire-noc") > -1) { return "rainmaker-noc,rainmaker-pgr"; }
-  else if (pathName.indexOf("dss/home") > -1) { return "rainmaker-dss"; }
-  else if (pathName.indexOf("language-selection") > -1) { return "rainmaker-common"; }
-  else if (pathName.indexOf("login") > -1) { return "rainmaker-common"; }
-  else if (pathName.indexOf("pay") > -1) { return "rainmaker-noc"; }
-  else if (pathName.indexOf("abg") > -1) { return "rainmaker-abg"; }
-  else if (pathName.indexOf("pgr-home") > -1 || pathName.indexOf("rainmaker-pgr") > -1 ||pathName.indexOf("master/auto-routing") > -1) { return "rainmaker-pgr"; }
-  else if (pathName.indexOf("bpastakeholder") > -1 || pathName.indexOf("edcrscrutiny") > -1 ||
-    pathName.indexOf("egov-bpa") > -1 || pathName.indexOf("oc-bpa") > -1) { return "rainmaker-bpa,rainmaker-bpareg"; }
-    else if (pathName.indexOf("egov-opms") > -1) { return "rainmaker-pm"; }
-    else if (pathName.indexOf("egov-hc") > -1) { return "rainmaker-hc"; }
-    else if (pathName.indexOf("pms") > -1) { return "rainmaker-pension"; }
-    else if (pathName.indexOf("egov-store-asset") > -1) { return "rainmaker-store-asset"; }
-    else if (pathName.indexOf("egov-nulm") > -1) { return "rainmaker-nulm"; }
-    else if (pathName.indexOf("egov-pr") > -1) { return "rainmaker-pr"; }
-    else if (pathName.indexOf("uc") > -1) { return "rainmaker-uc"; }
-    else if (pathName.indexOf("egov-services") > -1) { return "rainmaker-services"; }
-    else if (pathName.indexOf("egov-rti") > -1) { return "rainmaker-rti"; }
-    else if (pathName.indexOf("egov-integration") > -1) { return "rainmaker-integration"; }
-  else {
+
+  if (pathName.indexOf("inbox") > -1) {
+    return "rainmaker-common";
+  } else if (pathName.indexOf("egov-services") > -1) {
+    return "rainmaker-services";
+  } else if (pathName.indexOf("rainmaker-services") > -1) {
+    return "rainmaker-services";
+  } else if (pathName.indexOf("property-tax") > -1 || pathName.indexOf("pt-mutation") > -1) {
+    return "rainmaker-pt,rainmaker-pgr";
+  } else if (pathName.indexOf("pt-common-screens") > -1 || pathName.indexOf("public-search") > -1) {
+    return "rainmaker-pt";
+  } else if (pathName.indexOf("complaint") > -1 || pathName.indexOf("request-reassign") > -1 || pathName.indexOf("reassign-success") > -1) {
+    return "rainmaker-pgr";
+  } else if (pathName.indexOf("wns") > -1) {
+    return "rainmaker-ws";
+  } else if (pathName.indexOf("egov-echallan") > -1) {
+    return "rainmaker-ec";
+  } else if (pathName.indexOf("report/rainmaker-tl") > -1) {
+    return "rainmaker-pgr,rainmaker-tl";
+  } else if (
+    pathName.indexOf("tradelicense") > -1 ||
+    pathName.indexOf("tradelicence") > -1 ||
+    pathName.indexOf("tradelicense-citizen") > -1 ||
+    pathName.indexOf("rainmaker-tl") > -1 ||
+    pathName.indexOf("fine-master") > -1
+  ) {
+    return "rainmaker-tl";
+  } else if (pathName.indexOf("report/rainmaker-rp") > -1) {
+    return "rainmaker-pgr,rainmaker-rp";
+  } else if (pathName.indexOf("rented-properties") > -1) {
+    return "rainmaker-rp";
+  } else if (pathName.indexOf("estate") > -1) {
+    return "rainmaker-es";
+  } else if (pathName.indexOf("hrms") > -1) {
+    return "rainmaker-hr";
+  } else if (pathName.indexOf("fire-noc") > -1) {
+    return "rainmaker-noc,rainmaker-pgr";
+  } else if (pathName.indexOf("dss/home") > -1) {
+    return "rainmaker-dss";
+  } else if (pathName.indexOf("language-selection") > -1) {
+    return "rainmaker-common";
+  } else if (pathName.indexOf("login") > -1) {
+    return "rainmaker-common";
+  } else if (pathName.indexOf("pay") > -1) {
+    return "rainmaker-noc";
+  } else if (pathName.indexOf("abg") > -1) {
+    return "rainmaker-abg";
+  } else if (pathName.indexOf("pgr-home") > -1 || pathName.indexOf("rainmaker-pgr") > -1 || pathName.indexOf("master/auto-routing") > -1) {
+    return "rainmaker-pgr";
+  } else if (
+    pathName.indexOf("bpastakeholder") > -1 ||
+    pathName.indexOf("edcrscrutiny") > -1 ||
+    pathName.indexOf("egov-bpa") > -1 ||
+    pathName.indexOf("oc-bpa") > -1
+  ) {
+    return "rainmaker-bpa,rainmaker-bpareg";
+  } else if (pathName.indexOf("egov-opms") > -1) {
+    return "rainmaker-pm";
+  } else if (pathName.indexOf("egov-hc") > -1) {
+    return "rainmaker-hc";
+  } else if (pathName.indexOf("pms") > -1) {
+    return "rainmaker-pension";
+  } else if (pathName.indexOf("egov-store-asset") > -1) {
+    return "rainmaker-store-asset";
+  } else if (pathName.indexOf("egov-nulm") > -1) {
+    return "rainmaker-nulm";
+  } else if (pathName.indexOf("egov-pr") > -1) {
+    return "rainmaker-pr";
+  } else if (pathName.indexOf("uc") > -1) {
+    return "rainmaker-uc";
+  } else if (pathName.indexOf("egov-rti") > -1) {
+    return "rainmaker-rti";
+  } else if (pathName.indexOf("egov-integration") > -1) {
+    return "rainmaker-integration";
+  } else {
     return "rainmaker-common";
   }
-}
+};

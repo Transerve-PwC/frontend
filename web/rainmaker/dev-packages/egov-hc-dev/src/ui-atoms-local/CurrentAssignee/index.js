@@ -53,7 +53,8 @@ const styles = {
 function CurrentAssignee(props) {
   if(getServiceRequestStatus() == "COMPLETED" || getServiceRequestStatus() == "REJECTED" )
   {return <div style={stylesHidden}>Assigned To : N/A</div>;}
-  else{var HCRoles = []
+  else {
+    var HCRoles = []
     var roleArray=[]
     var finalCurrentAssigneeString = ""
     var commonRolesFromFilter = []

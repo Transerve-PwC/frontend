@@ -38,8 +38,8 @@ export const footer = getCommonApplyFooter({
       },
       children: {
         nextButtonLabel: getLabel({
-          labelName: "BUTTON",
-          labelKey: "HOME"
+          labelName: "Home",
+          labelKey: "WF_REPORT_HOME_BTN_LABEL"
         }),
   
         
@@ -54,8 +54,8 @@ export const footer = getCommonApplyFooter({
 
 const titlebar = getCommonContainer({
   header: getCommonHeader({
-    labelName: "",
-    labelKey: "WorkFlow Preview"
+    labelName: "WorkFlow Preview",
+    labelKey: "WF_REPORT_PREVIEW_HEADER"
   })        
 });
 

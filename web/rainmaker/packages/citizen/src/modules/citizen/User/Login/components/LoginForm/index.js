@@ -65,25 +65,32 @@ const LoginForm = ({ handleFieldChange, form, logoUrl,qrCodeURL,enableWhatsApp,l
               </div>
             </Link>
             </div>
+            <div>
+            
             <div style={{ marginBottom: "10px", position: "relative", zIndex: 10 }} className="text-right">
-              <div style={{ display: "inline-block" }}>
-              <Label containerStyle={{ cursor: "pointer" }} id="otp-resend" className="otp-resend" label={languageSelected ?`LANGUAGE_${languageSelected.toUpperCase()}`:'en_IN'} />
-              </div>
-              <div style={{ display: "inline-block" , float:"right", height:40 }}>
-            {hasLocalisation && (
-        <DropDown
-            onChange={onLanguageChange}
-            listStyle={style.listStyle}
-            style={style.baseStyle}
-            labelStyle={style.label}
-            iconStyle={style.iconStyle}
-            dropDownData={languages}
-            value={languageSelected}
-            underlineStyle={{ borderBottom: "none" }}
-          />
-            )}  
-             </div>
+           
+           <div style={{ display: "inline-block" }}>
+          
+           <Label containerStyle={{ cursor: "pointer" }} id="otp-resend" className="otp-resend" label={languageSelected ?`LANGUAGE_${languageSelected.toUpperCase()}`:'en_IN'} />
+           </div>
+           <div style={{ display: "inline-block" , float:"right", height:40 }}>
+         {hasLocalisation && (
+     <DropDown
+         onChange={onLanguageChange}
+         listStyle={style.listStyle}
+         style={style.baseStyle}
+         labelStyle={style.label}
+         iconStyle={style.iconStyle}
+         dropDownData={languages}
+         value={languageSelected}
+         underlineStyle={{ borderBottom: "none" }}
+       />
+         )}  
           </div>
+       </div>
+            </div>
+           
+            
           <Button
             {...submit}
             fullWidth={true}
@@ -92,6 +99,14 @@ const LoginForm = ({ handleFieldChange, form, logoUrl,qrCodeURL,enableWhatsApp,l
               startSMSRecevier();
             }}
           />
+          <div style={{ marginBottom: "0px", position: "relative", zIndex: 10,marginRight:10}} className="text-right">           
+          <Link to="/user/privacy"> 
+           {/*  */}
+              <div style={{ display: "inline-block" }}  >
+                <Label containerStyle={{ cursor: "pointer" }} id="privacy"  className="privacy" label="Privacy Policy" />
+              </div>
+            </Link>
+            </div>
           {enableWhatsApp&&
            <Hidden mdUp>
           <div>
