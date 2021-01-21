@@ -163,7 +163,7 @@ import {
   
   export const tabs = [
     {
-      tabButton: { labelName: "Add Extension Fee", labelKey: "ES_EXTENSION_FEE_HEADER" }
+      tabButton: { labelName: "Add Extension Fee", labelKey: "ES_ADD_EXTENSION_FEE_HEADER" }
     },
     {
       tabButton: { labelName: "Extension Fee Statement", labelKey: "ES_EXTENSION_FEE_STATEMENT" }

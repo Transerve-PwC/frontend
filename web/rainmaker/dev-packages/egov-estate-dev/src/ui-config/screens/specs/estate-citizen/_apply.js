@@ -13,6 +13,7 @@ import { registerDatasource } from "./dataSources";
 import { getCommonApplyHeader } from "../utils";
 import commonConfig from "config/common.js";
 import { getMdmsData } from "../estate/apply";
+import { set } from "lodash";
 
 export const getApplicationConfig = async({dispatch, applicationType}) => {
   const payload = [
@@ -131,6 +132,16 @@ const getData = async (action, state, dispatch) => {
     const second_step_sections = await setDocumentData(state, dispatch, { format_config: second_step, documentList})
     let third_step = await setThirdStep({state, dispatch, applicationType, preview})
     third_step = getCommonCard({...third_step})
+    set(
+      third_step, 
+      "children.cardContent.children.ES_SITE_REPORT_DETAILS_HEADER.visible",
+      process.env.REACT_APP_NAME !== "Citizen"
+    )
+    set(
+      third_step, 
+      "children.cardContent.children.ES_SAMPLE_SITE_MAP_HEADER.visible",
+      process.env.REACT_APP_NAME !== "Citizen"
+    )
     inputProps.push(...second_step_sections);
     return {
       div: {

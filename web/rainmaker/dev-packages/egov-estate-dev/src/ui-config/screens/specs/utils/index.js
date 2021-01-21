@@ -568,7 +568,7 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
       }
     ]
       break;
-      case 'PatnershipDeed':
+      case 'PartnershipDeed':
       queryStr = [{
             key: "key",
             value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
@@ -1174,10 +1174,10 @@ let queryStr = []
       ]
       break;
 
-      case 'PatnershipDeed':  
+      case 'PartnershipDeed':  
           queryStr = [{
             key: "key",
-            value: `private-limited-company`
+            value: `private-limited-company-letter`
           }
           
         ]

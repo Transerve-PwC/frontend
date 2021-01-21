@@ -488,14 +488,14 @@ const isCommercialActivityRadioButton = {
   // required: true,
   type: "array",
   afterFieldChange: (action, state, dispatch) => {
-    // dispatch(
-    //   handleField(
-    //     action.screenKey,
-    //     "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children.sizeOfAreaPurchased",
-    //     "props.disabled",
-    //     (action.value != "false")
-    //   )
-    // )
+    dispatch(
+      handleField(
+        action.screenKey,
+        "components.div.children.detailsContainer.children.buldingDetails.children.cardContent.children.detailsContainer.children.commercialActivityArea",
+        "props.disabled",
+        (action.value == "false")
+      )
+    )
   }
 };
 
@@ -512,7 +512,9 @@ const commercialActivityAreaField = {
     xs: 12,
     sm: 6
   },
-  visible: false,
+  props: {
+    disabled: true
+  },
   // required: true,
   // minLength: 5,
   // maxLength: 250,

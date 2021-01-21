@@ -1414,7 +1414,7 @@ export const downloadPrintContainer = (
   };
 
   let LetterDownloadObject = {
-    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON":  applicationType === "PatnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON":  applicationType === "PartnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -1433,7 +1433,7 @@ export const downloadPrintContainer = (
   }
 
   let LetterPrintObject = {
-    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON": "ES_LETTER" },
+    label: { labelName: "Letter", labelKey: (applicationType === 'NDC' && branchType === 'EstateBranch') ? "ES_NDC_GENERAL_REASON":  applicationType === "PartnershipDeed" ? "ES_LETTER_PRIVATE_LIMITED" : "ES_LETTER" },
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
@@ -2085,7 +2085,7 @@ export const downloadPrintContainer = (
      case `${applicationType}-ES_PENDING_SO_APPROVAL`:
        switch(applicationType) {
          case 'SaleDeed':
-         case 'PatnershipDeed':
+         case 'PartnershipDeed':
          case 'FamilySettlement':
          case 'LeaseDeed':
          case 'NOC':
@@ -2282,7 +2282,7 @@ export const downloadPrintContainer = (
            case 'ChangeInTrade':
            case 'NOC':
            case 'NDC':
-           case 'PatnershipDeed':
+           case 'PartnershipDeed':
            case 'DuplicateCopy':
            case 'Mortgage':
            case 'FamilySettlement':
@@ -2587,7 +2587,7 @@ export const downloadPrintContainer = (
                    applicationPrintObject,LetterPrintObject,NDCWHOPrintObject
                  ]
              break;
-             case 'PatnershipDeed':
+             case 'PartnershipDeed':
                  downloadMenu = [
                    applicationDownloadObject,LetterDownloadObject
                  ]
