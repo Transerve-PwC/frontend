@@ -194,6 +194,7 @@ class WorkFlowContainer extends React.Component {
         })
       }
     }
+    debugger
     try {
       const payload = await httpRequest("post", updateUrl, "", [], {
         [dataPath]: data
@@ -233,11 +234,11 @@ class WorkFlowContainer extends React.Component {
     }
 
   createWorkFLow = async (label, isDocRequired) => {
+    
     const { toggleSnackbar, dataPath, preparedFinalObject, documentsJsonPath } = this.props;
     let data = {};
 
     if (dataPath == "BPA" || dataPath == "Assessment" || dataPath == "Property") {
-
       data = get(preparedFinalObject, dataPath, {})
     } else {
       data = get(preparedFinalObject, dataPath, [])
@@ -478,6 +479,8 @@ class WorkFlowContainer extends React.Component {
       }else{
          showFooter=process.env.REACT_APP_NAME === "Citizen" ? false : true;
       }
+      console.log(ProcessInstances)
+      
     return (
       <div>
         {ProcessInstances && ProcessInstances.length > 0 && (
