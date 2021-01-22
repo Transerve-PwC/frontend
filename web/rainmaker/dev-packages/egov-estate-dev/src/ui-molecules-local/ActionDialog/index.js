@@ -113,6 +113,7 @@ class ActionDialog extends React.Component {
       if(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION"){
         if(!!validationDate) {
           this.props.onButtonClick(buttonLabel, isDocRequired)
+          formIsValid = false
         } else {
           formIsValid = false
           this.setState({
@@ -124,6 +125,7 @@ class ActionDialog extends React.Component {
         const comments = data.comments;
         if(!!comments) {
           this.props.onButtonClick(buttonLabel, isDocRequired)
+          formIsValid = false
         } else {
           formIsValid = false
           this.setState({
