@@ -34,14 +34,22 @@ const cardItems = [{
     icon: < EstateIcon / > ,
     route: "my-applications?branchType=ManiMajra"
   },
-{
-  label: {
-    labelKey: "ES_PAY_DUE",
-    labelName: "Pay Due"
+  {
+    label: {
+      labelKey: "ES_PAY_DUE",
+      labelName: "Pay Due"
+    },
+    icon: < EstateIcon / > ,
+    route: "property-search?type=payment&branchType=MANI_MAJRA"
   },
-  icon: < EstateIcon / > ,
-  route: "property-search?type=payment&branchType=MANI_MAJRA"
-},
+  {
+    label: {
+      labelKey: "ES_ALLOTMENT_OF_NEW_HOUSE",
+      labelName: "Allotment of new house number"
+    },
+    icon: < EstateIcon / > ,
+    route: "property-search?branchType=MANI_MAJRA&type=ManiMajra_OtherCitizenService_AllotmentOfNewHouse"
+  }
 ]
 
 

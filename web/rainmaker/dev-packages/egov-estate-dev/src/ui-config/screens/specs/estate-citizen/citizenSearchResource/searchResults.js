@@ -96,7 +96,7 @@ const onRowClick = rowData => {
     if(rowData[5] > 0 && process.env.REACT_APP_NAME === "Citizen") {
       rowData[6](toggleSnackbar(true, {labelName: "ES_ERR_DUE_AMOUNT", labelKey: "ES_ERR_DUE_AMOUNT"}, "warning"))
     } else {
-      if (process.env.REACT_APP_NAME === "Citizen") {
+      if (process.env.REACT_APP_NAME === "Citizen" && type != "ManiMajra_OtherCitizenService_AllotmentOfNewHouse") {
         window.location.href = `application-types?propertyId=${rowData[4]}&fileNumber=${rowData[1]}&branchType=${branchType}`;
       }
       else {
