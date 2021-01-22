@@ -1362,7 +1362,6 @@ export const downloadPrintContainer = (
   let downloadMenu = [];
   let printMenu = [];  
  
-
   let receiptDownloadObject = {
     label: { labelName: "Payment Receipt", labelKey: "ES_PAYMENT_RECEIPT" },
     link: () => {
@@ -1796,7 +1795,7 @@ export const downloadPrintContainer = (
     },
     leftIcon: "assignment"
   }
-  
+
   if(branchType === 'BuildingBranch'){
       switch(applicationType + `-${applicationState}`){
         case 'NOC-ES_PENDING_DS_VERIFICATION':
@@ -1813,6 +1812,7 @@ export const downloadPrintContainer = (
         case 'NOC-ES_PENDING_DA_FEE':
         case 'NOC-ES_PENDING_PAYMENT': 
         case 'NOC-ES_PENDING_DA_PREPARE_LETTER': 
+        case 'NOC-ES_REJECTED':
         
             downloadMenu = [
               applicationDownloadObject
@@ -1849,11 +1849,22 @@ export const downloadPrintContainer = (
               paymentLetterPrintObject
             ] 
           break;
-        case 'IssuanceOfNotice-ES_PENDING_SDE_VERIFICATION':
-        case 'IssuanceOfNotice-S_PENDING_AC_APPROVAL':
         case 'IssuanceOfNotice-ES_REJECTED':  
         case 'IssuanceOfNotice-ES_PENDING_JE_CLARIFICATION':
-        
+        case 'IssuanceOfNotice-ES_PENDING_DS_VERIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_CLARIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_DA_VERIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_JE_VERIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_SDE_VERIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_DRAFSMAN_CALCULATION':
+        case 'IssuanceOfNotice-ES_PENDING_SDE_CALCULATION_VERIFICATION':
+        case 'IssuanceOfNotice-ES_PENDING_DA_PROPOSAL':
+        case 'IssuanceOfNotice-ES_PENDING_SDE_PROPOSAL_VERIFICATION':  
+        case 'IssuanceOfNotice-ES_PENDING_AC_APPROVAL':
+        case 'IssuanceOfNotice-ES_PENDING_SDE_PROPOSAL_APPROVAL':
+        case 'IssuanceOfNotice-ES_PENDING_DA_FEE':
+        case 'IssuanceOfNotice-ES_PENDING_PAYMENT': 
+        case 'IssuanceOfNotice-ES_PENDING_DA_PREPARE_LETTER': 
             downloadMenu = [
               applicationDownloadObject
             ]
@@ -1886,6 +1897,7 @@ export const downloadPrintContainer = (
        case `${applicationType}-ES_MM_PENDING_SRA_PN_VERIFICATION`:
        case `${applicationType}-ES_MM_PENDING_SO_PN_VERIFICATION`:
        case `${applicationType}-ES_MM_PENDING_SO_NOTICE`:
+       case `${applicationType}-ES_REJECTED`:  
        case `${applicationType}-ES_MM_PENIDNG_CITIZEN_NOTICE`:
        case `${applicationType}-ES_MM_PENDING_DS_NOTICE_VERIFICATION`:
        case `${applicationType}-ES_MM_PENDING_DA_NOTICE_VERIFICATION`:
@@ -2090,6 +2102,7 @@ export const downloadPrintContainer = (
          case 'LeaseDeed':
          case 'NOC':
          case 'Mortgage':
+         case 'MortgageIntimation':  
          case 'ScfToSco':
          if(process.env.REACT_APP_NAME === "Citizen"){
            downloadMenu = [
@@ -2285,6 +2298,7 @@ export const downloadPrintContainer = (
            case 'PartnershipDeed':
            case 'DuplicateCopy':
            case 'Mortgage':
+           case 'MortgageIntimation':  
            case 'FamilySettlement':
            case 'LeaseDeed':
                downloadMenu = [
@@ -2606,6 +2620,7 @@ export const downloadPrintContainer = (
                  ]
              break;
              case 'Mortgage':
+             case 'MortgageIntimation': 
                  downloadMenu = [
                    applicationDownloadObject,LetterDownloadObject
                  ]

@@ -232,6 +232,14 @@ const getWhetherWholeHouseHasBeenPurchasedRadioButton = {
         (action.value != "false")
       )
     )
+    dispatch(
+      handleField(
+        "noc-verification",
+        "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children.sizeOfAreaPurchased",
+        "props.required",
+        (action.value != "true")
+      )
+    )
   }
 };
 
@@ -248,7 +256,6 @@ const sizeOfAreaPurchasedField = {
     xs: 12,
     sm: 6
   },
-  required: true,
   pattern: _getPattern("areaOfProperty"),
   minLength: 2,
   maxLength: 150,

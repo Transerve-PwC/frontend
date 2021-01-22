@@ -20,6 +20,9 @@ import {
 from "./footerAllotment"
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { changeStep as changeStepManimajra} from "../applyResourceManimajra/footer";
+import React from "react";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
@@ -1329,11 +1332,23 @@ export const getReviewInterest = (isEditable = true, step = 5, screenKey = "allo
     })
   })
 }
+let editButtonStyle = {
+  "backgroundColor": "#FE7A51",
+  "color": "#fff",
+  "padding": "6px 16px",
+  "width": "83px",
+  "border": "0px",
+  "display": "none"
+}
 
 export const rentDetailsTable =  {
   uiFramework: "custom-molecules",
   componentPath: "Table",
   props: {
+    title: React.createElement('button', {style: editButtonStyle, onClick: () => {
+      const fileNumber = getQueryArg(window.location.href, "fileNumber");
+      window.location.href = `edit-rent-info?fileNumber=${fileNumber}&tenantId=${getTenantId()}`;
+    } }, "EDIT"),
     columns: [
       getTextToLocalMapping("Rent amount"),
       getTextToLocalMapping("Start month"),

@@ -585,6 +585,7 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
         ]
       break;
       case 'Mortgage':
+      case 'MortgageIntimation':  
           queryStr = [{
             key: "key",
             value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
@@ -1184,6 +1185,7 @@ let queryStr = []
     break;
     
       case 'Mortgage':
+      case 'MortgageIntimation':  
         let mortgageType = Applications[0].applicationDetails.mortgageType;
         if(mortgageType == 'PERMISSION_TO_MORTAGAGE.LEASEHOLD'){
           queryStr = [{

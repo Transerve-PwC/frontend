@@ -9,6 +9,8 @@ import { getBreak } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getReviewLicenseFee, getReviewInterest, getReviewSecurity, getReviewGroundRent, rentDetailsTable, getReviewPremiumAmount, installmentTable, getReviewAdvanceRent } from "./applyResource/reviewProperty";
 import { getTextToLocalMapping } from "../utils";
 import get from "lodash/get";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { ESTATE_APPROVED_STATE } from "../../../../ui-constants";
 
 let isPropertyMasterOrAllotmentOfSite;
 
@@ -110,6 +112,10 @@ const getFormattedTill = (startMonth, endMonth) => {
 }
 
 const updateAllFields = (action, state, dispatch) => {
+  const userInfo = JSON.parse(getUserInfo());
+  const {roles = []} = userInfo
+  const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
+
   const properties = get(state, "screenConfiguration.preparedFinalObject.Properties")
   let demandGenerationType = properties[0].propertyDetails.paymentConfig.isGroundRent;
   let installments = properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems ? properties[0].propertyDetails.paymentConfig.premiumAmountConfigItems : []
@@ -196,6 +202,17 @@ const updateAllFields = (action, state, dispatch) => {
       !demandGenerationType
     )
   )
+
+  if (!!findItem && properties[0].state == ESTATE_APPROVED_STATE) {
+    dispatch(
+      handleField(
+        action.screenKey,
+        `components.div.children.reviewRentInfo.children.cardContent.children.rentTable.props.title`,
+        `props.style.display`,
+        `block`
+      )
+    )
+  }
 }
 
 
