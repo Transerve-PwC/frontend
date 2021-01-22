@@ -374,7 +374,7 @@ class ActionDialog extends React.Component {
                         }}
                         className="bottom-button"
                         onClick={() =>
-                          this.handleValidation(buttonLabel, isDocRequired, applicationState) ? onButtonClick(buttonLabel, isDocRequired) : false
+                          this.handleValidation(buttonLabel, isDocRequired, applicationState)
                           // buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION" ? this.handleValidation(buttonLabel, isDocRequired) : onButtonClick(buttonLabel, isDocRequired,applicationState)
                         }
                       >
