@@ -2343,7 +2343,7 @@ export const _getPattern = (type) => {
     case "rateSqFeet":
       return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
     case "address":
-      return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,150}$/i
+      return /^([\s\S]){1,150}$/i
     case "ownerShare":
       return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
     case "courtCase":

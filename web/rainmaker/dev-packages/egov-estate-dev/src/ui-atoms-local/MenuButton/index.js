@@ -78,21 +78,21 @@ class MenuListComposition extends React.Component {
                 id="menu-list-grow"
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === "bottom" ? "center top" : "center bottom", wordBreak: "break-word", left: -15
                 }}
               >
-                <Paper>
+                <Paper style={{position: 'relative'}}>
                   <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
+                    <MenuList  style={{wordBreak: "break-word"}}>
                       {data.menu.map((item, key) => {
                         const { labelName, labelKey } = item.label;
                         return (
-                          <MenuItem key={key} onClick={item.link}>
+                          <MenuItem key={key} onClick={item.link} style={{wordBreak: "break-word"}}>
                             <Icon
                               className={classes.leftIcon}
                               iconName={item.leftIcon}
                             />
-                            <LabelContainer
+                            <LabelContainer style={{wordBreak: "break-word"}}
                               labelName={labelName}
                               labelKey={labelKey}
                             />

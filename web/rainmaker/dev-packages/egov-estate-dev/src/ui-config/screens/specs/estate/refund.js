@@ -43,11 +43,20 @@ const {
 const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 import store from "../../../../ui-redux/store";
 
-const searchResults = async (action, state, dispatch, fileNumber) => {
-  let queryObject = [
-    { key: "fileNumber", value: fileNumber },
-    {key: "relations", value: "bidder"}
-  ];
+const searchResults = async (action, state, dispatch, fileNumber, auctionId) => {
+  let queryObject = []
+  if(auctionId){
+    queryObject = [
+      { key: "auctionId", value: auctionId },
+      {key: "relations", value: "bidder"}
+    ];
+  }
+  else if(fileNumber){
+    queryObject = [
+      { key: "fileNumber", value: fileNumber },
+      {key: "relations", value: "bidder"}
+    ];
+  }
   let payload = await getSearchResults(queryObject);
   if (payload) {
     let properties = payload.Properties;
@@ -59,10 +68,10 @@ const searchResults = async (action, state, dispatch, fileNumber) => {
   }
 }
 
-const beforeInitFn = async (action, state, dispatch, fileNumber) => {
+const beforeInitFn = async (action, state, dispatch, fileNumber, auctionId) => {
   dispatch(prepareFinalObject("workflow.ProcessInstances", []))
-  if (fileNumber) {
-    await searchResults(action, state, dispatch, fileNumber);
+  if (fileNumber || auctionId) {
+    await searchResults(action, state, dispatch, fileNumber, auctionId);
 
     let bidders = get(
       state.screenConfiguration.preparedFinalObject,
@@ -310,6 +319,7 @@ const refund = {
   beforeInitScreen: (action, state, dispatch) => {
     dispatch(toggleSpinner());
     let fileNumber = getQueryArg(window.location.href, "fileNumber");
+    let auctionId = getQueryArg(window.location.href, "auctionId");
     dispatch(
       handleField(
         `refund`,
@@ -318,7 +328,8 @@ const refund = {
         fileNumber
       )
     )
-    beforeInitFn(action, state, dispatch, fileNumber);
+    beforeInitFn(action, state, dispatch, fileNumber, auctionId);
+    
     return action;
   },
   components: {

@@ -22,3 +22,26 @@ textarea#custom-containers-address, textarea#custom-containers-ES_ADDRESS_LABEL,
     width: 100% !important;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .tl-download-button {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 178px;
+  }
+  .tl-print-button {
+    margin-left: 5px;
+    width: 140px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .tl-download-button {
+    //margin-left: 10px;
+    width: 180px;
+  }
+  .tl-print-button {
+   // margin-left: 10px;
+    width: 150px;
+  }
+}

@@ -247,13 +247,27 @@ const getField = async (item, fieldData = {}, state) => {
       }
       case "RADIO_BUTTON": {
           const findItem = validations.find(validation => validation.type === "enum")
-          const buttons = !!findItem && !!findItem.params && !!findItem.params.values ? findItem.params.values.map(value => 
-            ({
-                labelName: `ES_${value}`,
-                labelKey: `ES_${value}`,
-                value
-            })
-            ) : []
+          const isLocalizationFlag = findItem.isLocalization;
+          let buttons;
+          
+          if(isLocalizationFlag === false){
+            buttons = !!findItem && !!findItem.params && !!findItem.params.values ? findItem.params.values.map(value => 
+              ({
+                  labelName: `${value}`,
+                  labelKey: `${value}`,
+                  value
+              })
+              ) : []
+          }
+          else{
+            buttons = !!findItem && !!findItem.params && !!findItem.params.values ? findItem.params.values.map(value => 
+              ({
+                  labelName: `ES_${value}`,
+                  labelKey: `ES_${value}`,
+                  value
+              })
+              ) : []
+          }  
           return {
               ...getRelationshipRadioButton,
               jsonPath: rest.jsonPath,
