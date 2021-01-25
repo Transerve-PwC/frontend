@@ -9,7 +9,7 @@ import {
   changeStep as changeStepAllotment
 } from "./footerAllotment"
 
-export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 3) => {
+export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath = "PropertiesTemp[0].reviewDocData", step = 3, ownerName) => {
   return getCommonGrayCard({
     headerDiv: {
       uiFramework: "custom-atoms",
@@ -21,8 +21,8 @@ export const getReviewDocuments = (isEditable = true, screenkey, sourceJsonPath 
             sm: 10
           },
           ...getCommonSubHeader({
-            labelName: "Documents",
-            labelKey: "ES_COMMON_DOCS"
+            labelName: `Documents - ${ownerName}`,
+            // labelKey: "ES_COMMON_DOCS"
           })
         },
         editSection: {

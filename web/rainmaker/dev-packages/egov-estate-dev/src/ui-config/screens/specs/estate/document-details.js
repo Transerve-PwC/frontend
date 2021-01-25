@@ -133,7 +133,8 @@ const updateAllFields = async (action, state, dispatch) => {
     `PropertiesTemp[${index}].reviewDocData`,
     dispatch,'ES'
     );
-    let documentListContainer = getReviewDocuments(false,'document-details',`PropertiesTemp[${index}].reviewDocData`);
+    let singleOwnerName = get(state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${index}].ownerDetails.ownerName`)
+    let documentListContainer = getReviewDocuments(false,'document-details',`PropertiesTemp[${index}].reviewDocData`,3,singleOwnerName);
     containers[index] = getCommonCard({
       documentListContainer
     }); 

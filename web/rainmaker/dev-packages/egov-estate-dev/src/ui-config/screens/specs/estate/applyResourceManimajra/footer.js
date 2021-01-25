@@ -3,6 +3,9 @@ import {
   validateFields
 } from "../../utils";
 import {
+  httpRequest
+} from "../../../../../ui-utils/api";
+import {
   getLabel,
   dispatchMultipleFieldChangeAction,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
@@ -190,6 +193,7 @@ const callBackForNext = async (state, dispatch) => {
         var ownerName = propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : "";
 
         if (i > 0) {
+          
           var documentDetailsString = JSON.stringify(get(
             state.screenConfiguration.screenConfig,
             `apply-manimajra.components.div.children.formwizardThirdStep.children.ownerDocumentDetails_0`, {}
@@ -308,10 +312,11 @@ const callBackForNext = async (state, dispatch) => {
           reviewDocuments
         )
 
-        const res = await applyEstates(state, dispatch, activeStep, "apply-manimajra");
-        if(!res) {
-          return
-        }
+       
+        // const res = await applyEstates(state, dispatch, activeStep, "apply-manimajra");
+        // if(!res) {
+        //   return
+        // }
       }
     }
   }
