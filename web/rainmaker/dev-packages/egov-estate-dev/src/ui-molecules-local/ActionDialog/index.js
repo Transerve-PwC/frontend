@@ -119,8 +119,7 @@ class ActionDialog extends React.Component {
             hardCopyReceivedDateError: true
           })
         }
-      }
-      if(buttonLabel == 'APPROVE' || buttonLabel == 'REJECT'){
+      }else if(buttonLabel == 'APPROVE' || buttonLabel == 'REJECT'){
         const comments = data.comments;
         if(!!comments) {
           this.props.onButtonClick(buttonLabel, isDocRequired)
@@ -130,8 +129,9 @@ class ActionDialog extends React.Component {
             commentsErr: true
           })
         }
+      } else {
+        this.props.onButtonClick(buttonLabel, isDocRequired)
       }
-      return formIsValid
   }
 
   onClose = () => {
