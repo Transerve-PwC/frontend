@@ -165,7 +165,7 @@ const areaOfPropertyField = {
         sm: 6
     },
     errorMessage:"ES_ERR_AREA_OF_PROPERTY_FIELD",
-    pattern: _getPattern("areaOfProperty"),
+    pattern: _getPattern("numeric-with-no-firstdigit-zero"),
     required: true,
     jsonPath: "Properties[0].propertyDetails.areaSqft"
 }
@@ -312,7 +312,7 @@ const siteNumberField = {
         sm: 6
     },
     required: true,
-    pattern: _getPattern("fileNumber"),
+    pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
     jsonPath: "Properties[0].siteNumber",
     afterFieldChange: (action, state, dispatch) => {
         if (action.value.length > 50) {

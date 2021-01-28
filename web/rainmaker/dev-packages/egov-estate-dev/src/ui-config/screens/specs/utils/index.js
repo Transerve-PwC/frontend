@@ -2348,6 +2348,10 @@ export const _getPattern = (type) => {
       return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
     case "courtCase":
       return /^([\s\S]){1,250}$/i;
+      case "numeric-with-no-firstdigit-zero":
+      return /^[1-9][0-9]{2,24}$/i;
+      case "file-number-only-with-no-firstdigit-zero":
+      return /^[1-9][0-9]{0,49}$/i;
   }
 }
 
