@@ -3,6 +3,11 @@ import {
   getCommonHeader
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import FormIcon from "../../../../ui-atoms-local/Icons/FormIcon";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+const userInfo = JSON.parse(getUserInfo());
+const {roles = []} = userInfo
+const refundEmdAccess = roles.find(item => item.code === "ES_EB_CHEIF_ACCOUNTS_OFFICER" || item.code === "ES_EB_LOCAL_AUDIT_OFFICER" || item.code === "ES_ADDITIONAL_COMMISSIONER" || item.code === "ES_EB_SECTION_OFFICER");
 
 let citizenCardItems = []
 
@@ -15,7 +20,7 @@ const header = getCommonHeader({
   }
 });
 
-const cardItems = [
+const cardItems =  !!refundEmdAccess ? [
   {
     label: {
       labelKey: "ES_ISSUANCE_OF_REFUND",
@@ -32,7 +37,7 @@ const cardItems = [
     icon: < FormIcon / > ,
     route: `/estate/refund-search-applications?branchType=ESTATE_BRANCH`
   }
-]
+] : []
 
 const refundEmd = {
   uiFramework: "material-ui",

@@ -17,6 +17,8 @@ const _getPattern = (type) => {
         return /^[0-9]{0,9}$/i;
     case "numeric-only":
         return /^[0-9]*$/i;
+    case "address":
+        return /^([\s\S]){1,150}$/i;
   }
 }
 
@@ -253,8 +255,8 @@ const getField = async (item, fieldData = {}, state) => {
           if(isLocalizationFlag === false){
             buttons = !!findItem && !!findItem.params && !!findItem.params.values ? findItem.params.values.map(value => 
               ({
-                  labelName: `${value}`,
-                  labelKey: `${value}`,
+                  labelName: `ES_${value}_YES_NO`,
+                  labelKey: `ES_${value}_YES_NO`,
                   value
               })
               ) : []

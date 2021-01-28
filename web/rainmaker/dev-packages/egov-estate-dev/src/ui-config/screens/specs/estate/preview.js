@@ -122,7 +122,8 @@ const getData = async (action, state, dispatch) => {
        let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
        const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
 
-       if(!!estimateResponse && estimateResponse.Payments.length) {
+    
+       if((!!estimateResponse && ((estimateResponse.Payments && !!estimateResponse.Payments.length) || (!!estimateResponse.billDetails && !!estimateResponse.billDetails.length)))) {
          const estimate = !!estimateResponse ? getCommonGrayCard({
            estimateSection: getFeesEstimateCard({
              sourceJsonPath: "temp[0].estimateCardData"
