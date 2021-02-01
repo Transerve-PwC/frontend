@@ -68,7 +68,7 @@ const clearSearch = (state, dispatch) => {
     actualResults,
     searchScreen = {}
   } = preparedFinalObject
-  if (!!searchScreen.applicationNumber || !!searchScreen.status) {
+  if (!!searchScreen.applicationNumber || !!searchScreen.status || !!searchScreen.applicationType) {
     dispatch(
       handleField(
         "my-applications",

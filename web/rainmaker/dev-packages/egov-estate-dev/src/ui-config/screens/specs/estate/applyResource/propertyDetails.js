@@ -391,11 +391,11 @@ const lastNocDateField = {
     },
     pattern: getPattern("Date"),
     jsonPath: "Properties[0].propertyDetails.lastNocDate",
-    // props: {
-    //     inputProps: {
-    //         max: getTodaysDateInYMD()
-    //     }
-    // }
+    props: {
+        inputProps: {
+            max: getTodaysDateInYMD()
+        }
+    }
 }
 
 export const propertyTypeField = {

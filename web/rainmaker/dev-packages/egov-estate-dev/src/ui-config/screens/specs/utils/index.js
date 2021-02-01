@@ -1886,7 +1886,7 @@ export const epochToYmdDate = et => {
 export const getTodaysDateInYMD = () => {
   let date = new Date();
   //date = date.valueOf();
-  let month = date.getMonth() + 1;
+  let month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   date = `${date.getFullYear()}-${month}-${day}`;
   // date = epochToYmdDate(date);
@@ -2352,6 +2352,8 @@ export const _getPattern = (type) => {
       return /^[1-9][0-9]{2,24}$/i;
       case "file-number-only-with-no-firstdigit-zero":
       return /^[1-9][0-9]{0,49}$/i;
+      case "NocReason":
+        return /^([\s\S]){3,150}$/i;
   }
 }
 

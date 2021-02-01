@@ -230,7 +230,7 @@ const branchType = getQueryArg(window.location.href, "branchType");
     const preparedFinalObject = get(state, "screenConfiguration.preparedFinalObject");
     const {searchScreen = {}} = preparedFinalObject
     const branchType = getQueryArg(window.location.href, "branchType")
-    if(!!searchScreen.fileNumber || !!searchScreen.state || !!searchScreen.applicationNumber) {
+    if(!!searchScreen.fileNumber || !!searchScreen.state || !!searchScreen.applicationNumber||!!searchScreen.applicationType) {
     dispatch(
       handleField(
         "search-application",
@@ -251,6 +251,14 @@ const branchType = getQueryArg(window.location.href, "branchType");
       handleField(
         "search-application",
         "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationNumber",
+        "props.value",
+        ""
+      )
+    )
+    dispatch(
+      handleField(
+        "search-application",
+        "components.div.children.estateApplicationSearch.children.cardContent.children.applicationNumberContainer.children.applicationType",
         "props.value",
         ""
       )

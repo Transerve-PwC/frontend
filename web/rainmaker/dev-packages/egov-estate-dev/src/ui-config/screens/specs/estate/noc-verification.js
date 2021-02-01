@@ -922,10 +922,31 @@ const reasonForNotIssuingNocField = {
     xs: 12,
     sm: 6
   },
+  pattern: _getPattern("NocReason"),
   // required: true,
-  minLength: 5,
-  maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.issueOfNocDetails"
+  // minLength: 5,
+  // maxLength: 150,
+  jsonPath: "Applications[0].applicationDetails.issueOfNocDetails",
+  afterFieldChange: (action, state, dispatch) => {
+if(action.value.length ===0){
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children.reasonForNotIssuingNoc",
+      "props.error",
+      false
+    )
+  )
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.detailsContainer.children.nocVerificationDetails.children.cardContent.children.detailsContainer.children.reasonForNotIssuingNoc",
+      "props.helperText",
+      ""
+    )
+  )
+}
+  }
 }
 
 const getArchitectsReportRadioButton = {
