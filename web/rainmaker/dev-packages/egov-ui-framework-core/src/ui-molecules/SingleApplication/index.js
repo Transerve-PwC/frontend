@@ -273,6 +273,9 @@ class SingleApplication extends React.Component {
       case "ES_PENDING_CLARIFICATION":
       setRoute(`/estate-citizen/_apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
       break;
+      case "ES_DRAFTED":
+        setRoute(`/estate-citizen/_apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
+        break;
       default:
         setRoute(`/estate/preview?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
     }
