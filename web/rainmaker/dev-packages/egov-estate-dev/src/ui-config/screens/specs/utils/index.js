@@ -2351,7 +2351,7 @@ export const _getPattern = (type) => {
       case "numeric-with-no-firstdigit-zero":
       return /^[1-9][0-9]{2,24}$/i;
       case "file-number-only-with-no-firstdigit-zero":
-      return /^[1-9][0-9]{0,49}$/i;
+      return /^[1-9a-zA-Z][0-9a-zA-Z]{2,49}$/i;
       case "NocReason":
         return /^([\s\S]){3,150}$/i;
   }

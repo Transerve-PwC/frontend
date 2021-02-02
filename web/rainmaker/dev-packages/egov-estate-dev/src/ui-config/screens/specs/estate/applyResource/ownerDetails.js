@@ -251,11 +251,11 @@ const possessionDateField = {
   pattern: getPattern("Date"),
   required: false,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate",
-  // props: {
-  //   inputProps: {
-  //     max: getTodaysDateInYMD()
-  //   }
-  // }
+  props: {
+    inputProps: {
+      max: getTodaysDateInYMD()
+    }
+  }
 }
 
 const dateOfAllotmentField = {
@@ -270,11 +270,11 @@ const dateOfAllotmentField = {
   pattern: getPattern("Date"),
   required: true,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dateOfAllotment",
-  // props: {
-  //   inputProps: {
-  //     max: getTodaysDateInYMD()
-  //   }
-  // }
+  props: {
+    inputProps: {
+      max: getTodaysDateInYMD()
+    }
+  }
 }
 
 const allotmentNumberField = {
