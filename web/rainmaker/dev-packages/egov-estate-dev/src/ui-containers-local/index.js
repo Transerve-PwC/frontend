@@ -51,7 +51,10 @@ const ResubmitActionContainer = Loadable({
   loader: () => import("./ResubmitActionContainer"),
   loading: () => <Loading />
 });
-
+const Table = Loadable({
+  loader: () => import("./Table"),
+  loading: () => <Loading />
+});
 const WorkFlowContainer = Loadable({
   loader: () => import("./WorkFlowContainer"),
   loading: () => <Loading />
@@ -114,6 +117,7 @@ export {
   ViewBreakupContainer,
   DialogContainer,
   ResubmitActionContainer,
+  Table,
   WorkFlowContainer,
   ExpansionPanelContainer,
   MultipleDocumentsContainer,

@@ -155,7 +155,7 @@ class Footer extends React.Component {
               redirectLink = `apply-building-branch?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=3`;
               break;
             case "ES-MM-PropertyMaster":
-              redirectLink = `apply-manimajra?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=7`;
+              redirectLink = `apply-manimajra?fileNumber=${fileNumber}&tenantId=${tenant}&stepNumber=6`;
               break;
             default:
               break;

@@ -408,8 +408,9 @@ const tableSection = (section, state) => {
     }
     }, 
     table: {
-    uiFramework: "custom-molecules",
+    uiFramework: "custom-containers-local",
     componentPath: "Table",
+    moduleName: "egov-estate",
     visible: true,
     props: {
       columns: fields.map(item => getLocaleLabels(item.label, item.label)),
@@ -429,6 +430,7 @@ const tableSection = (section, state) => {
         customSortColumn: {
         },
         title: getLocaleLabels(header, header),
+        hideHorizontalScroll: true,
         data
     }
   }
