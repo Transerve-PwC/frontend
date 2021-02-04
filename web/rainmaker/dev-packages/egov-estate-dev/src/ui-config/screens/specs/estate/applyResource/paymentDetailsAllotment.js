@@ -376,6 +376,7 @@ const rentAmountField = {
   maxLength: 100,
   minLength: 1,
   required: true,
+  errorMessage:"ES_ERR_MONTHLY_RENT",
   pattern: _getPattern("float"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
@@ -1012,6 +1013,7 @@ const percentageOfInterestField = {
       sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_YEARLY_INTEREST_FEILD",
   pattern: _getPattern("float"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.rateOfInterest"
 }

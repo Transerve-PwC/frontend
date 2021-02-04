@@ -63,7 +63,7 @@ const ownerNameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_OWNER_NAME",screenName);
     }
   }
 }
@@ -89,7 +89,7 @@ const fatherHusbandNameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_FATHER_HUSBAD_NAME", screenName);
     }
   }
 }
@@ -172,7 +172,7 @@ export const addressField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_ADDRESS_FEILD", screenName);
     }
   }
 }
@@ -192,6 +192,7 @@ export const mobileNumberField = {
   //   value: userInfo.userName,
   //   disabled: true
   // },
+  errorMessage:"ER_ERR_MOBILE_NUMBER",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
 }
 
@@ -234,7 +235,7 @@ const cpNumberField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_CPNUMBER", screenName);
     }
   }
 }
@@ -297,7 +298,7 @@ const allotmentNumberField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_ALLOTMENT_NUMBER",screenName);
     }
   }
 }

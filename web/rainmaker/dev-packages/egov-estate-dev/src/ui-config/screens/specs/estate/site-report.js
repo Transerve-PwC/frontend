@@ -661,6 +661,11 @@ const dateOfInspectionField = {
     xs: 12,
     sm: 6
   },
+  props: {
+    inputProps: {
+      max: getTodaysDateInYMD()
+    }
+  },
   required: true,
   minLength: 2,
   maxLength: 50,

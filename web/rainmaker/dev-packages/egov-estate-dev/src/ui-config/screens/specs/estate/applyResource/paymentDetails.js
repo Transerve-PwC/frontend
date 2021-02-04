@@ -78,6 +78,7 @@ const rentField = {
     sm: 6
   },
   pattern: _getPattern("areaOfProperty"),
+  errorMessage:"ES_ERR_RENT_FEILD",
   required: true,
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].rent`
 }
@@ -96,6 +97,7 @@ const gstField = {
     sm: 6
   },
   pattern: _getPattern("areaOfProperty"),
+  errorMessage:"ES_ERR_GST_FEILD",
   required: true,
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].gst`
 }
@@ -114,6 +116,7 @@ const interestOnRentField = {
     sm: 6
   },
   pattern: _getPattern("areaOfProperty"),
+  errorMessage:"ES_ERR_INTEREST_ON_RENT_FEILD",
   required: true,
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].penaltyInterest`
 }
@@ -132,6 +135,7 @@ const interestOnGstField = {
     sm: 6
   },
   pattern: _getPattern("areaOfProperty"),
+  errorMessage:"ES_ERR_INTEREST_ONGST_FEILD",
   required: true,
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].gstInterest`
 }

@@ -128,7 +128,7 @@ const schemeName = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_SCHEMA_NAME", screenName);
     }
 }
 }
@@ -170,7 +170,7 @@ const modeOfAuction = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MODE_OF_ACTION", screenName);
     }
   }
 }

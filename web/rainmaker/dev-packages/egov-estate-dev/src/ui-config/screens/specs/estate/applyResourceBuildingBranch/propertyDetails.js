@@ -114,14 +114,18 @@ export const siteNumberField = {
     sm: 6
   },
   required: true,
-  pattern: _getPattern("fileNumber"),
+  pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
   jsonPath: "Properties[0].siteNumber",
+  errorMessage:"ES_ERR_SITE_BOOTH_NUMBER",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
-    } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
-    }
+    }    else if(action.value.length < 2){
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MINLENGTH_2", action.screenKey);
+  }
+  else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_SITE_BOOTH_NUMBER",action.screenKey);
+  }
   }
 }
 
@@ -169,7 +173,7 @@ const fileNumberField = {
     if (action.value.length > 50) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILENUMBER_FEILD",action.screenKey);
     }
   }
 }
@@ -194,7 +198,7 @@ const houseNumberField = {
     if (action.value.length > 50) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HOUSE_NUMBER",action.screenKey);
     }
   }
 }
@@ -220,7 +224,7 @@ export const mohallaField = {
           displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
       }
       else {
-          displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MOHALLA_FEILD", action.screenKey);
       }
   }
 }
@@ -246,7 +250,7 @@ const villageField = {
           displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
       }
       else {
-          displayDefaultErr(action.componentJsonpath, dispatch, action.screenKey);
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_VILLAGE_FEILD",action.screenKey);
       }
   }
 }
@@ -266,6 +270,7 @@ const sizeOfAreaPurchasedField = {
   },
   pattern: _getPattern("areaOfProperty"),
   required: true,
+  errorMessage:"ES_ERR_SIZE_OF_AREA_PROPERTY",
   jsonPath: "Properties[0].propertyDetails.areaSqft"
 }
 

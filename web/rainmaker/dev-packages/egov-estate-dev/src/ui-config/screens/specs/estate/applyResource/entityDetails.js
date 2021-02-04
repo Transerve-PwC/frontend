@@ -45,7 +45,7 @@ const companyNameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_COMPANY_NAME", screenName);
     }
   }
 }
@@ -71,7 +71,7 @@ const companyRegNoField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMPANY_REG_NUMBER", screenName);
     }
   }
 }
@@ -116,7 +116,7 @@ const companyAddressField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_ADDRESS_FEILD",screenName);
     }
   }
 }
@@ -163,7 +163,7 @@ const firmNameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FIRM_NAME",screenName);
     }
   }
 }
@@ -261,7 +261,7 @@ const firmRegNoField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FIRM_REG_NUMBER",screenName);
     }
   }
 }
@@ -305,7 +305,7 @@ const firmAddressField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_ADDRESS_FEILD",screenName);
     }
   }
 }
@@ -352,7 +352,7 @@ const nameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_PARTNER_NAME" ,screenName);
     }
   }
 }
@@ -378,7 +378,7 @@ const husbandFatherNameField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_PARTNER_FATHER_HUSBAND_NAME", screenName);
     }
   }
 }
@@ -404,7 +404,7 @@ const addressField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_ADDRESS_FEILD" ,screenName);
     }
   }
 }
@@ -424,6 +424,7 @@ const mobileNumberField = {
   },
   required: true,
   pattern: getPattern("MobileNo"),
+  errorMessage:"ER_ERR_MOBILE_NUMBER",
   maxLength: 10,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
 }
@@ -443,6 +444,7 @@ const shareField = {
   },
   required: true,
   patters: _getPattern("share"),
+  errorMessage:"ER_ERR_SHARE_NUMBER",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.share"
 }
 
@@ -466,7 +468,7 @@ const cpNumberField = {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
     }
     else {
-        displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_PARTNER_CPNUMBER", screenName);
     }
   }
 }

@@ -415,6 +415,24 @@ class WorkFlowContainer extends React.Component {
     filteredActions = get(data[data.length - 1], "nextActions", []).filter(
       item => item.action != "ADHOC"
     );
+    const { preparedFinalObject } = this.props;
+    let propertyType = get(preparedFinalObject,"Applications[0].property.category");
+    if(propertyType === "CAT.RESIDENTIAL"){
+      filteredActions = get(data[data.length - 1], "nextActions", []).filter(
+        item => item.action != "FORWARD_COMMERCIAL"
+      );
+      filteredActions = get(data[data.length - 1], "nextActions", []).filter(
+        item => item.action != "SENDBACK_COMMERCIAL"
+      );
+    }
+    else if(propertyType === "CAT.COMMERCIAL"){
+      filteredActions = get(data[data.length - 1], "nextActions", []).filter(
+        item => item.action != "FORWARD_RESIDENTIAL"
+      );
+      filteredActions = get(data[data.length - 1], "nextActions", []).filter(
+        item => item.action != "SENDBACK_RESIDENTIAL"
+      );
+    }
     let applicationStatus = get(
       data[data.length - 1],
       "state.applicationStatus"

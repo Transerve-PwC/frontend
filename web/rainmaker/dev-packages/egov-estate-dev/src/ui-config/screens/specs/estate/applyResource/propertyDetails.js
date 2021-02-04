@@ -461,7 +461,7 @@ const serviceCategoryField = {
             displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
         }
         else {
-            displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_SERVICE_CATEGORY",screenName);
         }
     }
 }
