@@ -94,6 +94,8 @@ const callBackForNext = async (state, dispatch) => {
   let isFormValid = true;
   let hasFieldToaster = true;
   let ownerPosAllotDateValid = true;
+  let isDOBValid = true;
+  let isBiddersListValid = true;
   // let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
   let isStartAndEndYearValid = true
@@ -193,7 +195,11 @@ const callBackForNext = async (state, dispatch) => {
         
         auctionEMDDateValid = auctionDateEpoch - emdDateEpoch > 0 ? true : false;
       }
-      if (isAuctionValid && auctionEMDDateValid) {
+      let biddersListArr = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.bidders");
+      if(biddersListArr === null || biddersListArr.length === 0){
+          isBiddersListValid = false;
+      }
+      if (isAuctionValid && auctionEMDDateValid && isBiddersListValid) {
         const res = await applyEstates(state, dispatch, activeStep);
         if (!res) {
           return
@@ -202,6 +208,7 @@ const callBackForNext = async (state, dispatch) => {
         isFormValid = false;
       }
     }
+    
   }
 
   if (activeStep === ENTITY_OWNER_DETAILS_STEP) {
@@ -228,6 +235,7 @@ const callBackForNext = async (state, dispatch) => {
         if (!!propertyOwnersItems[i].isDeleted) {
           continue;
         }
+        let ownerDOBEntered = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.dob`);
         let ownerPossessionDate = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`);
         let ownerDateOfAllotment = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].ownerDetails.dateOfAllotment`);
 
@@ -245,6 +253,27 @@ const callBackForNext = async (state, dispatch) => {
           break;
         }
       }
+
+      if(!!ownerDOBEntered)
+      {
+      let ownerDOBEnteredEpoch = convertDateToEpoch(ownerDOBEntered)
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+
+      today = yyyy + '-' + mm + '-' + dd;
+      let currentDateEpoch = convertDateToEpoch(today);
+      if(ownerDOBEnteredEpoch !== undefined){
+        isDOBValid = ownerDOBEnteredEpoch - currentDateEpoch >= 0 ? false : true
+        isFormValid = isDOBValid == true ? true : false;
+      }
+
+      if (!isDOBValid) {
+        break;
+      }
+    }
+
       }
     }
     /* let ownerOnePossessionDate = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners[0].ownerDetails.possesionDate");
@@ -284,7 +313,7 @@ const callBackForNext = async (state, dispatch) => {
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails", entityType);
-        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerPosAllotDateValid)) {
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerPosAllotDateValid) && (isDOBValid)) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -302,7 +331,7 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails", entityType);
-        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid) {
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -324,7 +353,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch,
           screenKey
         )
-        if (isFirmDetailsValid && isProprietorshipDetailsValid && ownerPosAllotDateValid) {
+        if (isFirmDetailsValid && isProprietorshipDetailsValid && ownerPosAllotDateValid && isDOBValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -335,7 +364,7 @@ const callBackForNext = async (state, dispatch) => {
         break;
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails", entityType);
-        if (isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid) {
+        if (isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -782,6 +811,22 @@ const callBackForNext = async (state, dispatch) => {
         labelName: "Date of possession should be on and after date of allotment",
         labelKey: "ES_ERR_DATE_OF_POSSESSION_BEFORE_DATE_OF_ALLOTMENT"
     };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
+    else if(isDOBValid === false){
+      let errorMessage = {
+        labelName: "Date of birth cannot be current or future date",
+        labelKey: "ES_ERR_DATE_OF_BIRTH_CANNOT_BE_CURRENT_OR_FUTURE"
+    };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
+    else if(isBiddersListValid === false){
+      let errorMessage = {
+        labelName: "Please fill all mandatory fields and upload the documents !",
+        labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+      };
       scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 

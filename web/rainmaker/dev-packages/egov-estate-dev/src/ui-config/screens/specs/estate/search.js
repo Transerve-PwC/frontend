@@ -7,6 +7,7 @@ import {
 import {
   setRoute
 } from "egov-ui-framework/ui-redux/app/actions";
+import commonConfig from "config/common.js";
 import {
   getQueryArg,
   setBusinessServiceDataToLocalStorage
@@ -27,6 +28,7 @@ import get from "lodash/get";
 import { estateApplication } from './searchResource/estateApplication';
 import {getStatusList, searchApiCall} from './searchResource/functions';
 import {searchResults} from './searchResource/searchResults';
+import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 
 import {
   getUserInfo
@@ -54,6 +56,52 @@ switch(branchType) {
     break;
 }
 
+export const getMdmsData = async (dispatch, body) => {
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: body
+    }
+  };
+  try {
+    let payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+    return payload;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const searchFieldsData = async(action, state, dispatch) => {
+  const mdmsPayload = [{
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
+    masterDetails: [{
+      name: "categories"
+    },
+    {
+      name: "propertyType"
+    },
+    {
+      name: "modeOfTransfer"
+    },
+    {
+      name: "allocationType"
+    },
+    {
+      name: "sector"
+    }
+    ]
+  }]
+
+
+  const response = await getMdmsData(dispatch, mdmsPayload);
+  dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
+}
 const header = getCommonHeader({
   labelName: "Search Property Master",
   labelKey: "ES_SEARCH_PROPERTY_MASTER_HEADER"
@@ -63,6 +111,7 @@ const estateSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
   beforeInitScreen: (action, state, dispatch) => {
+    searchFieldsData(action, state, dispatch);
     branchType = getQueryArg(window.location.href, "branchType");
     let wkfConstant;
     switch(branchType) {

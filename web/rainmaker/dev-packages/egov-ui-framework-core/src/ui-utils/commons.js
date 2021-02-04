@@ -265,42 +265,44 @@ export const setDocuments = async (
   dispatch,
   businessService
 ) => {
-  const uploadedDocData = get(payload, sourceJsonPath);
-
-  const fileStoreIds =
-    uploadedDocData &&
-    uploadedDocData
-      .map(item => {
-        return item.fileStoreId;
-      })
-      .join(",");
-  const fileUrlPayload =
-    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
-  const reviewDocData =
-    uploadedDocData &&
-    uploadedDocData.map((item, index) => {
-      return {
-        title: !!businessService ? `${businessService}_${item.documentType}` : item.documentType || "",
-        link:
-          (fileUrlPayload &&
-            fileUrlPayload[item.fileStoreId] &&
-            getFileUrl(fileUrlPayload[item.fileStoreId])) ||
-          "",
-        linkText: "Download",
-        name:
-          (fileUrlPayload &&
-            fileUrlPayload[item.fileStoreId] &&
-            decodeURIComponent(
-              getFileUrl(fileUrlPayload[item.fileStoreId])
-                .split("?")[0]
-                .split("/")
-                .pop()
-                .slice(13)
-            )) ||
-          `Document - ${index + 1}`
-      };
-    });
-  reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
+    const uploadedDocData = get(payload, sourceJsonPath);
+    if(!!uploadedDocData && uploadedDocData.length && uploadedDocData[0] != null){
+    const fileStoreIds =
+      uploadedDocData &&
+      uploadedDocData
+        .map(item => {
+          return item.fileStoreId;
+        })
+        .join(",");
+    const fileUrlPayload =
+      fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
+    const reviewDocData =
+      uploadedDocData &&
+      uploadedDocData.map((item, index) => {
+        return {
+          title: !!businessService ? `${businessService}_${item.documentType}` : item.documentType || "",
+          link:
+            (fileUrlPayload &&
+              fileUrlPayload[item.fileStoreId] &&
+              getFileUrl(fileUrlPayload[item.fileStoreId])) ||
+            "",
+          linkText: "Download",
+          name:
+            (fileUrlPayload &&
+              fileUrlPayload[item.fileStoreId] &&
+              decodeURIComponent(
+                getFileUrl(fileUrlPayload[item.fileStoreId])
+                  .split("?")[0]
+                  .split("/")
+                  .pop()
+                  .slice(13)
+              )) ||
+            `Document - ${index + 1}`
+        };
+      });
+    reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
+  }
+  
 };
 
 

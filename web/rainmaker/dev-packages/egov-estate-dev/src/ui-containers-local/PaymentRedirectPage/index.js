@@ -49,6 +49,8 @@ class PaymentRedirect extends Component {
     this._clearInterval()
     let { search } = this.props.location;
     const txnQuery=search.split('&')[0].replace('eg_pg_txnid','transactionId');
+    const service=search.split('=')[6]
+    const buisenessservice=service.split("&")[0] 
     // const businessService = (search.split("=")[13]).split("&")[0]
     try {
       let pgUpdateResponse = await httpRequest(
@@ -77,7 +79,7 @@ class PaymentRedirect extends Component {
       if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
         path = `${
           process.env.NODE_ENV === "production" ? "/citizen" : ""
-        }/estate/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`;
+        }/estate/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&businessService=${buisenessservice}`;
       } else {
         let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
         path = `${

@@ -322,7 +322,66 @@ const groundRentGenerationTypeField = {
         !!(action.value == "Monthly")
       )
     )
+  },
+  afterFieldChange: (action, state, dispatch) => {
+    if(action.value == 'Monthly'){
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_MONTH_PLACEHOLDER"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_MONTH_PLACEHOLDER"
+      )) 
+
+    }else{
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_YEAR_LABEL"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_YEAR_LABEL"
+      )) 
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_YEAR_PLACEHOLDER"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_YEAR_PLACEHOLDER"
+      )) 
+    }
   }
+
 }
 
 const billingStartDateField = {
@@ -614,6 +673,7 @@ const licenseFeeGenerationTypeField = {
       )
     )
   }
+
 }
 
 const dateToGenerateDemandLicenseFeeField = {

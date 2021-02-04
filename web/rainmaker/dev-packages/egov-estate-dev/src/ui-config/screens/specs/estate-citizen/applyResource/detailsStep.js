@@ -1,4 +1,4 @@
-import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField, getCommonGrayCard } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonCard, getCommonHeader, getCommonContainer, getPattern, getTextField, getSelectField, getDateField, getCommonGrayCard,getTimeField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getLocaleLabels, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import {viewFour} from './review'
 import {getOptions} from '../dataSources'
@@ -201,6 +201,12 @@ const getField = async (item, fieldData = {}, state) => {
     switch(type) {
       case "TEXT_FIELD": {
         return getTextField({
+          ...fieldProps,
+          ...rest
+      })
+      }
+      case "TIME_FIELD": {
+        return getTimeField({
           ...fieldProps,
           ...rest
       })
