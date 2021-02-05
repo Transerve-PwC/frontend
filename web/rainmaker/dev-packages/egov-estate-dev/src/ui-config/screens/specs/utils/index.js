@@ -2354,6 +2354,8 @@ export const _getPattern = (type) => {
       return /^[1-9a-zA-Z][0-9a-zA-Z]{1,49}$/i;
       case "NocReason":
         return /^([\s\S]){3,150}$/i;
+        case "variationdetail":
+            return /^([\s\S]){0,150}$/i
   }
 }
 

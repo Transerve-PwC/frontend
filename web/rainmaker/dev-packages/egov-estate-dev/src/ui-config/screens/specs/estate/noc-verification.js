@@ -34,7 +34,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   _getPattern,
-  validateFields
+  validateFields,
+  displayCustomErr
 } from "../utils"
 import {
  getStatusList
@@ -262,7 +263,18 @@ const sizeOfAreaPurchasedField = {
   props: {
     disabled: true
   },
-  jsonPath: "Applications[0].applicationDetails.areaPurchased"
+  jsonPath: "Applications[0].applicationDetails.areaPurchased",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_SIZE_OF_PROPERTY_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_SIZE_OF_PROPERTY_NUMBER",action.screenKey);
+    }
+}
 }
 
 const khasraNoField = {
@@ -281,7 +293,18 @@ const khasraNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.khasraNo"
+  jsonPath: "Applications[0].applicationDetails.khasraNo",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_KHARSA_NO_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_KHARSA_NO_NUMBER",action.screenKey);
+    }
+}
 }
 
 const hadbastNoField = {
@@ -300,7 +323,18 @@ const hadbastNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.hadbastNo"
+  jsonPath: "Applications[0].applicationDetails.hadbastNo",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HADBAST_NO_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HADBAST_NO_NUMBER",action.screenKey);
+    }
+}
 }
 
 const mutationNoField = {
@@ -319,7 +353,18 @@ const mutationNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.mutationNo"
+  jsonPath: "Applications[0].applicationDetails.mutationNo",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MUTATION_NO_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MUTATION_NO_NUMBER",action.screenKey);
+    }
+}
 }
 
 const khewatNoField = {
@@ -338,7 +383,18 @@ const khewatNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.khewatNo"
+  jsonPath: "Applications[0].applicationDetails.khewatNo",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_KHEWAT_NO_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_KHEWAT_NO_NUMBER",action.screenKey);
+    }
+}
 }
 
 const housesOfEastField = {
@@ -357,7 +413,18 @@ const housesOfEastField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.boundedOnEast"
+  jsonPath: "Applications[0].applicationDetails.boundedOnEast",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HOUSE_OF_EAST_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_OF_EAST_NUMBER",action.screenKey);
+    }
+}
 }
 
 const housesOfWestField = {
@@ -376,7 +443,18 @@ const housesOfWestField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.boundedOnWest"
+  jsonPath: "Applications[0].applicationDetails.boundedOnWest",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HOUSE_OF_EAST_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_OF_EAST_NUMBER",action.screenKey);
+    }
+}
 }
 
 const housesOfNorthField = {
@@ -395,7 +473,18 @@ const housesOfNorthField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.boundedOnNorth"
+  jsonPath: "Applications[0].applicationDetails.boundedOnNorth",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HOUSE_OF_EAST_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_OF_EAST_NUMBER",action.screenKey);
+    }
+}
 }
 
 const housesOfSouthField = {
@@ -414,7 +503,18 @@ const housesOfSouthField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.boundedOnSouth"
+  jsonPath: "Applications[0].applicationDetails.boundedOnSouth",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HOUSE_OF_EAST_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_OF_EAST_NUMBER",action.screenKey);
+    }
+}
 }
 
 const widthOfFrontElevationOfHouseField = {
@@ -433,7 +533,18 @@ const widthOfFrontElevationOfHouseField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.frontElevationWidth"
+  jsonPath: "Applications[0].applicationDetails.frontElevationWidth",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_WIDTH_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_WIDTH_NUMBER",action.screenKey);
+    }
+}
 }
 
 const totalWidthOfPublicStreetField = {
@@ -452,7 +563,18 @@ const totalWidthOfPublicStreetField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.streetWidth"
+  jsonPath: "Applications[0].applicationDetails.streetWidth",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_WIDTH_OF_PUBLIC_STREET_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_WIDTH_OF_PUBLIC_STREET_NUMBER",action.screenKey);
+    }
+}
 }
 
 const getWhetherThereIsStreetOnOtherSideOfHouseRadioButton = {
@@ -558,10 +680,22 @@ const variationDetailField = {
     xs: 12,
     sm: 6
   },
+  pattern:_getPattern("variationdetail"),
   minLength: 0,
   maxLength: 150,
   required: false,
-  jsonPath: "Applications[0].applicationDetails.varations"
+  jsonPath: "Applications[0].applicationDetails.varations",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    // else if(action.value.length < 2){
+    //     displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_VALIDATION_DETAIL_MINLENGTH_2", action.screenKey);
+    // }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_VALIDATION_DETAIL_NUMBER",action.screenKey);
+    }
+}
 }
 
 const getWhetherHouseWithinLalLakirRadioButton = {
@@ -673,7 +807,18 @@ const heightOfBuildingField = {
   required: true,
   minLength: 2,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.heightExcludingMumty"
+  jsonPath: "Applications[0].applicationDetails.heightExcludingMumty",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HIEGHT_OF_BUILDING_MINLENGTH_2", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HIEGHT_OF_BUILDING_NUMBER",action.screenKey);
+    }
+}
 }
 
 const heightOfMumtyField = {
@@ -692,7 +837,15 @@ const heightOfMumtyField = {
   required: true,
   minLength: 1,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.heightofMumty"
+  jsonPath: "Applications[0].applicationDetails.heightofMumty",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HIEGHT_OF_BUILDING_NUMBER",action.screenKey);
+    }
+}
 }
 
 const getCattleKeptInPremisesRadioButton = {
@@ -784,7 +937,16 @@ const cantileverDetailsField = {
   visible: false,
   minLength: 0,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.cantileverOrprojectionDetails"
+  pattern:_getPattern("variationdetail"),
+  jsonPath: "Applications[0].applicationDetails.cantileverOrprojectionDetails",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_CANTLIVER_DETAILS",action.screenKey);
+    }
+}
 }
 
 const getAnyCommercialActivityGoingOnRadioButton = {
@@ -865,7 +1027,18 @@ const otherViolationDetailsField = {
   required: true,
   minLength: 5,
   maxLength: 150,
-  jsonPath: "Applications[0].applicationDetails.otherViolations"
+  jsonPath: "Applications[0].applicationDetails.otherViolations",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length < 5){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_OTHER_VIOLATION_DETAIL_5", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_OTHER_VIOLATION_DETAIL",action.screenKey);
+    }
+}
 }
 
 const getRecommendedForIssueOfNocOnRadioButton = {
@@ -927,6 +1100,7 @@ const reasonForNotIssuingNocField = {
   // minLength: 5,
   // maxLength: 150,
   jsonPath: "Applications[0].applicationDetails.issueOfNocDetails",
+  errorMessage:"ES_ERR_REASON_FOR_NOC",
   afterFieldChange: (action, state, dispatch) => {
 if(action.value.length ===0){
   dispatch(
@@ -1049,7 +1223,15 @@ export const commentField = {
     rows: 2
   },
   pattern: _getPattern("alphabet"),
-  jsonPath: "Applications[0].comments"
+  jsonPath: "Applications[0].comments",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMMENTS",action.screenKey);
+    }
+}
 }
 
 export const nocVerificationDetails = getCommonCard({
