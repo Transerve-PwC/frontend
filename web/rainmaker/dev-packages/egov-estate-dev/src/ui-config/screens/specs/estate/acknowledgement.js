@@ -161,6 +161,15 @@ const getAcknowledgementCard = (
       )
     };
   } else if(status === "failure" && purpose === "pay") {
+    const tailText = !!fileNumber ?
+    {
+      labelName: "File Number",
+      labelKey: "ES_FILE_NUMBER_LABEL"
+    } : 
+    {
+      labelName: "Application Number",
+      labelKey: "ES_APPLICATION_NUMBER_LABEL"
+    }
     const commonHeader = !!type ? 
     {labelName: `ES_${type.toUpperCase()}`, labelKey: `ES_${type.toUpperCase()}`} : 
     {}
@@ -182,11 +191,12 @@ const getAcknowledgementCard = (
             //     "A notification regarding Application Submission has been sent to trade owner at registered Mobile No.",
             //   labelKey: "ES_APPLICATION_SUCCESS_MESSAGE_SUB"
             // },
-            tailText: {
-              labelName: "Application Number",
-              labelKey: "ES_APPLICATION_NUMBER_LABEL"
-            },
-            number: applicationNumber
+            // tailText: {
+            //   labelName: "Application Number",
+            //   labelKey: "ES_APPLICATION_NUMBER_LABEL"
+            // },
+            tailText:tailText,
+            number:  fileNumber || applicationNumber
           })
         }
       },

@@ -1,40 +1,39 @@
 div[class^="MUIDataTable-responsiveScroll"] thead {
-    background: #f2f2f2;
-  }
-  span[class*="MUIDataTableToolbar-titleText"] {
-    font-size: 24px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.87);
-  }
-  
-  div[class^="MUIDataTableHeadCell-data"] {
-    color: rgba(0, 0, 0, 0.8700000048);
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 17px;
-    text-align: left;
-  }
-  
+  background: #f2f2f2;
+}
+// span[class*="MUIDataTableToolbar-titleText"] {
+//   font-size: 24px;
+//   font-weight: 400;
+//   color: rgba(0, 0, 0, 0.87);
+// }
+
+div[class^="MUIDataTableHeadCell-data"] {
+  color: rgba(0, 0, 0, 0.8700000048);
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+table tbody tr td {
+  padding: 4px 8px 4px 24px !important;
+}
+
+@media only screen and (max-width: 960px) {
   table tbody tr td {
-    padding: 4px 8px 4px 24px !important;
+    width: 50% !important;
+    padding: 4px 8px 4px 10px !important;
+    font-size: 14px !important;
+    height: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    border: unset !important;
+    vertical-align: top !important;
   }
-  
-  @media only screen and (max-width: 960px) {
-    table tbody tr td {
-      width: 50% !important;
-      padding: 4px 8px 4px 10px !important;
-      font-size: 14px !important;
-      height: auto !important;
-      white-space: pre-wrap !important;
-      word-break: break-all !important;
-      border: unset !important;
-      vertical-align: top !important;
-    }
-  }
-  /* @media only screen and (max-width: 900px) {
+}
+/* @media only screen and (max-width: 900px) {
       span[class*="MUIDataTableBody-emptyTitle"] {
       margin-left: -100% !important;
       margin-top: 8% !important;
     }} */
-  

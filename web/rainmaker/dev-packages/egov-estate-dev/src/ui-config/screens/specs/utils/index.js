@@ -2350,6 +2350,8 @@ export const _getPattern = (type) => {
       return /^([\s\S]){1,250}$/i;
       case "numeric-with-no-firstdigit-zero":
       return /^[1-9][0-9]{2,24}$/i;
+      case "numeric-firstdigit-nonzero":
+          return /^[1-9][0-9]{2,150}$/i;
       case "file-number-only-with-no-firstdigit-zero":
       return /^[1-9a-zA-Z][0-9a-zA-Z]{1,49}$/i;
       case "NocReason":

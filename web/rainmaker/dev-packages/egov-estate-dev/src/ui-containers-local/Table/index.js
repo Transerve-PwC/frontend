@@ -80,10 +80,7 @@ class Table extends React.Component {
             backgroundColor: "#FFF",
             // overflowX: "scroll"
           },
-          titleText: {
-            fontSize: "24px",
-            fontWeight: "400"
-          }
+          
         },
         MUIDataTableHeadCell:{
           fixedHeader:{
@@ -96,6 +93,13 @@ class Table extends React.Component {
               color: "#2196F3",
               cursor: "pointer"
             }
+          }
+        },
+        MUIDataTableToolbar: {
+          titleText: {
+            fontSize: "24px",
+            fontWeight: "400",
+            color: "rgba(0, 0, 0, 0.87)"
           }
         },
         MuiTypography: {

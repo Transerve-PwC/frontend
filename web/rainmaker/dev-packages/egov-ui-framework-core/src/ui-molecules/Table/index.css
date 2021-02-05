@@ -1,11 +1,11 @@
 div[class^="MUIDataTable-responsiveScroll"] thead {
   background: #f2f2f2;
 }
-span[class*="MUIDataTableToolbar-titleText"] {
+/* span[class*="MUIDataTableToolbar-titleText"] {
   font-size: 24px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.87);
-}
+} */
 
 div[class^="MUIDataTableHeadCell-data"] {
   color: rgba(0, 0, 0, 0.8700000048);

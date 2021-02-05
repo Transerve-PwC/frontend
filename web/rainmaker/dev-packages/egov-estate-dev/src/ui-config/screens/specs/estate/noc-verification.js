@@ -293,6 +293,7 @@ const khasraNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.khasraNo",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -323,6 +324,7 @@ const hadbastNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.hadbastNo",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -353,6 +355,7 @@ const mutationNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.mutationNo",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -383,6 +386,7 @@ const khewatNoField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.khewatNo",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -413,6 +417,7 @@ const housesOfEastField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.boundedOnEast",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -443,6 +448,7 @@ const housesOfWestField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.boundedOnWest",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -473,6 +479,7 @@ const housesOfNorthField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.boundedOnNorth",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -503,6 +510,7 @@ const housesOfSouthField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.boundedOnSouth",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -533,6 +541,7 @@ const widthOfFrontElevationOfHouseField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.frontElevationWidth",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -563,6 +572,7 @@ const totalWidthOfPublicStreetField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.streetWidth",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -807,6 +817,7 @@ const heightOfBuildingField = {
   required: true,
   minLength: 2,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.heightExcludingMumty",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -837,6 +848,7 @@ const heightOfMumtyField = {
   required: true,
   minLength: 1,
   maxLength: 150,
+  pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.heightofMumty",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {

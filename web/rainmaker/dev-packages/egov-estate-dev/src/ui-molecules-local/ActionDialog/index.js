@@ -14,6 +14,7 @@ import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/
 import "./index.css";
 import { get } from "lodash";
 import {DocumentListContainer} from "../../ui-containers-local";
+import store from "egov-workflow/ui-redux/store";
 
 const styles = theme => ({
   root: {
@@ -130,7 +131,14 @@ class ActionDialog extends React.Component {
           })
         }
       } else {
-        this.props.onButtonClick(buttonLabel, isDocRequired)
+    
+        if(applicationState === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS"){
+          
+          this.props.onButtonClick(buttonLabel, isDocRequired = true);
+        }
+        else{
+          this.props.onButtonClick(buttonLabel, isDocRequired)
+        }
       }
   }
 
@@ -250,7 +258,7 @@ class ActionDialog extends React.Component {
                         handleFieldChange(`${dataPath}.comments`, e.target.value)
                       }
                       // required = {true}
-                      jsonPath={`${dataPath}.comments`}
+                      jsonPath={this.open != true ? "" : `${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                       inputProps={{ maxLength: 120 }}
                     />

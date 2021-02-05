@@ -43,6 +43,21 @@ const {
 const findItem = roles.find(item => item.code === "ES_EB_SECTION_OFFICER");
 import store from "../../../../ui-redux/store";
 
+const headerRow = getCommonContainer({
+  header: getCommonHeader({
+    labelName: "Refund",
+    labelKey: "ES_COMMON_REFUND"
+  }),
+  fileNumber: {
+    uiFramework: "custom-atoms-local",
+    moduleName: "egov-estate",
+    componentPath: "FileNumberContainer",
+    props: {
+      number: ""
+    },
+  }
+});
+
 const searchResults = async (action, state, dispatch, fileNumber, auctionId) => {
   let queryObject = []
   if(auctionId){
@@ -60,7 +75,16 @@ const searchResults = async (action, state, dispatch, fileNumber, auctionId) => 
   let payload = await getSearchResults(queryObject);
   if (payload) {
     let properties = payload.Properties;
+    let filenumber = payload.Properties[0].fileNumber;
     dispatch(prepareFinalObject("Properties", properties));
+    dispatch(
+      handleField(
+        `refund`,
+        `components.div.children.headerDiv.children.header1.children.fileNumber`,
+        `props.number`,
+        filenumber
+      )
+    )
     if (properties[0].propertyDetails.bidders) {
       let { bidders } = properties[0].propertyDetails;
       populateBiddersTable(bidders, "refund", "components.div.children.auctionTableContainer")
@@ -95,14 +119,17 @@ const beforeInitFn = async (action, state, dispatch, fileNumber, auctionId) => {
 
     let refundInitiatedColDisplay = !!findItem && (bidders.length != refundInitiated.length) ? true : false;
 
-    dispatch(
-      handleField(
-        `refund`,
-        `components.div.children.headerDiv.children.header1.children.fileNumber`,
-        `props.number`,
-        fileNumber
+    if(!!fileNumber){
+      dispatch(
+        handleField(
+          `refund`,
+          `components.div.children.headerDiv.children.header1.children.fileNumber`,
+          `props.number`,
+          fileNumber
+        )
       )
-    )
+    }
+    
 
     dispatch(
       handleField(
@@ -155,21 +182,6 @@ const auctionDetailsContainer = getCommonCard({
 })
 
 const auctionTableContainer = auctionTable;
-
-const headerRow = getCommonContainer({
-  header: getCommonHeader({
-    labelName: "Refund",
-    labelKey: "ES_COMMON_REFUND"
-  }),
-  fileNumber: {
-    uiFramework: "custom-atoms-local",
-    moduleName: "egov-estate",
-    componentPath: "FileNumberContainer",
-    props: {
-      number: ""
-    },
-  }
-});
 
 const submitButton = {
   componentPath: "Button",

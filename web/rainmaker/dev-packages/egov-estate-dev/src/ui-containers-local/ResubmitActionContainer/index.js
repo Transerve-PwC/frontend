@@ -76,7 +76,7 @@ class ResubmitActionContainer extends React.Component {
 
     if (isDocRequired) {
         const documents = !!documentsJsonPath ? get(preparedFinalObject, documentsJsonPath) : get(data, "wfDocuments");
-        if (documents && documents.length > 0) {
+        if (documents && documents.length > 0 && documents[0] != null) {
           this.wfUpdate(label);
         } else {
           toggleSnackbar(
@@ -93,6 +93,7 @@ class ResubmitActionContainer extends React.Component {
   openActionDialog = item => {
     const { prepareFinalObject, dataPath } = this.props;
     prepareFinalObject(`${dataPath}[0].comment`, "");
+    prepareFinalObject(`${dataPath}[0].comments`, "");
     prepareFinalObject(`${dataPath}[0].assignee`, []);
     this.setState({ open: true, data: item });
   };
