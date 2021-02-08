@@ -319,6 +319,39 @@ export const monthField = {
         amount
       )
     );
+
+    let data = demands.map(item => ({
+      [getTextToLocalMapping("Date")]: moment(new Date(item.date)).format("DD-MMM-YYYY") || "-",
+      [getTextToLocalMapping("GST")]:  (item.gst.toFixed(2)) || "-",
+      [getTextToLocalMapping("Demand Type")]:  !!item.typeOfDemand && item.typeOfDemand|| "-",
+      [getTextToLocalMapping("Total Due")]: (item.dueAmount.toFixed(2)) || "-",
+      [getTextToLocalMapping("Rent")]: item.rent || "-"
+    }));
+
+    data.push({
+        "Date": `Balance as on ${moment(toDate).format("DD-MMM-YYYY")}`,
+        "Demand Type": "-",
+        "GST": "-",
+        "Rent": amount,
+        "Total Due": "-"
+    })
+
+    dispatch(
+      handleField(
+        "manimajra-payment",
+        "components.div.children.detailsContainer.children.demandResults",
+        "props.data",
+        data
+      )
+    );
+    dispatch(
+      handleField(
+        "manimajra-payment",
+        "components.div.children.detailsContainer.children.paymentDetails.children.cardContent.children.detailsContainer.children.Amount",
+        "props.value",
+        amount
+      )
+    );
    
     }
   }
@@ -345,15 +378,21 @@ export const monthField = {
   }
   
   export const paymentDetails = getCommonCard({
+    // header: paymentDetailsHeader,
+    detailsContainer: getCommonContainer({
+      Amount: getTextField(paymentAmount),
+      bankName: getTextField(bankName),
+      dateOfPayment: getDateField(paymentDate),
+      transactionId: getTextField(transactionId),
+      comments : getTextField(commentsField)
+    })
+  })
+
+  export const DateSection = getCommonCard({
       header: paymentDetailsHeader,
       detailsContainer: getCommonContainer({
         from: getDateField(fromDate),
         to: getDateField(toDate),
-        Amount: getTextField(paymentAmount),
-        bankName: getTextField(bankName),
-        dateOfPayment: getDateField(paymentDate),
-        transactionId: getTextField(transactionId),
-        comments : getTextField(commentsField)
       })
   })
 
@@ -374,7 +413,7 @@ export const monthField = {
     },
     children: {
       propertyDetails,
-      // demandType,
+      DateSection,
       breakAfterSearch: getBreak(),
       demandResults,
       paymentDetails
