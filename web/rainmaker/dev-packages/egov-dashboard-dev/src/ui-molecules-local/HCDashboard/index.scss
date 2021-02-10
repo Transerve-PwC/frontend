@@ -1,0 +1,39 @@
+.ReactTable .-pagination .-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    display: revert;
+    width: 20%;
+    height: 100%;
+    border: 0;
+    border-radius: 3px;
+    padding: 6px;
+    font-size: 1em;
+    color: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.1);
+    transition: all .1s ease;
+    cursor: pointer;
+    outline-width: 0;
+}
+
+.rt-resizable-header-content {
+    font-weight: bold;
+  }
+
+  .ReactTable .-pagination .-previous button.-btn {
+    margin-left: 163%;
+}
+
+.ReactTable .-pagination .-next button.-btn {
+    margin-left: -200%;
+}
+
+select{
+    margin-left: 63%;
+}
+
+.ReactTable .-pagination .-pageInfo {
+    display: inline-block;
+    margin: 3px 107px;
+    white-space: nowrap;
+    margin-left: 1%;
+}

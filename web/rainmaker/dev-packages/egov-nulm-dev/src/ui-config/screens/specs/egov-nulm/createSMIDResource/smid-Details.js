@@ -10,7 +10,7 @@ import {
 import set from "lodash/set";
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getTodaysDateInYMD } from "../../utils";
-
+import { getNULMPattern } from "../../../../../ui-utils/commons";
 export const SMIDDetails = getCommonCard({
   header: getCommonTitle(
     {
@@ -301,8 +301,13 @@ export const SMIDDetails = getCommonCard({
           labelName: "Enter Addrss",
           labelKey: "NULM_SMID_ADDRESS_PLACEHOLDER"
         },
+        props: {
+          className: "applicant-details-error",
+          multiline: "multiline",
+          rowsMax: 2,
+        },
         required: true,
-        pattern: getPattern("Address") || null,
+        pattern: getNULMPattern("Comment") || null,
         jsonPath: "NULMSMIDRequest.address"
       })
     },

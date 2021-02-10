@@ -80,10 +80,16 @@ import {
                   const element = Material[index];
                   for (let index = 0; index < response.materials.length; index++) {
                     const element_ = response.materials[index];
+// filter material which is active in material map.
+                    var element_filter = element_.storeMapping.filter(function (x) {
+                      return x.store.code === store[0].code && x.active === true;
+                    });
+                    if (element_filter.length > 0) {
                     if(element.code ===element_.code)
                     {
                       materials.push(element)
                     }
+                  }
                     
                   }
                   

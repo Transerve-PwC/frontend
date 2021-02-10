@@ -10,7 +10,7 @@ import { prepareFormData } from "egov-ui-kit/redux/common/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import OSMCCBookingDetails from "../AllApplications/components/OSMCCBookingDetails"
 import AppDetails from "../AllApplications/components/ApplicantDetails"
-import BookingDetails from "../AllApplications/components/BookingDetails"
+import OSBMBookingDetails from "../AllApplications/components/OSBMBookingDetails"
 import DocumentPreview from "../AllApplications/components/DocumentPreview"
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import PaymentDetails from "../AllApplications/components/PaymentDetails"
@@ -18,6 +18,7 @@ import ApproveBooking from "../ApplicationResolved";
 import RejectBooking from "../RejectComplaint";
 import axios from "axios";
 import jp, { value } from "jsonpath";
+import { httpRequest } from "egov-ui-kit/utils/api";
 // import {
 // 	getFileUrlFromAPI,
 // } from "egov-ui-framework/ui-utils/commons";
@@ -94,7 +95,8 @@ class ApplicationDetails extends Component {
 			togglepopup: false,
 			actionOnApplication: '',
 			actionTittle: '',
-			actionOpen: false
+			actionOpen: false,
+			BankName: ''
 		};
 	};
 
@@ -148,6 +150,32 @@ class ApplicationDetails extends Component {
 		fetchDataAfterPayment(
 			[{ key: "consumerCodes", value: match.params.applicationId }, { key: "tenantId", value: userInfo.tenantId }
 			])
+
+			let  RequestGateWay = [
+				{ key: "consumerCode", value: match.params.applicationId },
+				{ key: "tenantId", value: userInfo.tenantId }
+				];
+			  let payloadGateWay = await httpRequest(
+				"pg-service/transaction/v1/_search",
+				"_search",
+				RequestGateWay
+				);
+			 console.log("payloadGateWay--",payloadGateWay)   //Transaction[0].gateway
+			 
+			 if(payloadGateWay.Transaction.length > 0){
+	console.log("consoleDataForGateWay--",payloadGateWay.Transaction.length > 0 ? payloadGateWay.Transaction : "abababa") 
+		
+	let gateWay = payloadGateWay.Transaction[0].gateway; 
+	
+	console.log("gateWay--",gateWay ? gateWay : "NotFound")
+	
+	prepareFinalObject('GateWayName', gateWay)
+	
+	this.setState({
+	   BankName: gateWay
+	})
+	
+	}
 
 	
 		//  downloadPaymentReceipt({ BookingInfo: BookingInfo })
@@ -274,9 +302,14 @@ class ApplicationDetails extends Component {
 	};
 
 	downloadPaymentReceiptFunction = async (e) => {
-		const { transformedComplaint, paymentDetailsForReceipt, downloadPaymentReceipt, userInfo } = this.props;
+		const { transformedComplaint, paymentDetailsForReceipt, downloadPaymentReceipt, userInfo,pdfBankName } = this.props;
 		const { complaint } = transformedComplaint;
+		console.log("stateBankName--",this.state.BankName ? this.state.BankName : "NA")
 		
+		var date2 = new Date();
+
+		var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+	
 
 		let BookingInfo = [{
 			"applicantDetail": {
@@ -311,6 +344,7 @@ class ApplicationDetails extends Component {
 				paymentItemExtraColumnLabel: "Booking Period",
 				paymentMode:
 					paymentDetailsForReceipt.Payments[0].paymentMode,
+					bankName: pdfBankName !== "NA" ? pdfBankName : this.state.BankName,
 				receiptNo:
 					paymentDetailsForReceipt.Payments[0].paymentDetails[0]
 						.receiptNumber,
@@ -321,14 +355,16 @@ class ApplicationDetails extends Component {
 				payerMobile:
 					paymentDetailsForReceipt.Payments[0].mobileNumber,
 			},
-			generatedBy: {
-				generatedBy: userInfo.name,
-			},
+			"generatedBy": {
+				"generatedBy": userInfo.name,
+				"generatedDateTime":generatedDateTime
+			  }
 		}
 		]
 		downloadPaymentReceipt({ BookingInfo: BookingInfo })
 	}
 
+	
 	downloadApplicationFunction = async (e) => {
 		const { ab,xyz } = this.props;
 		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication,paymentDetails,userInfo,documentMap } = this.props;
@@ -337,6 +373,11 @@ class ApplicationDetails extends Component {
 		console.log("value1--",value1)
 		let value2 = ab[1];
 		console.log("value2--",value2)
+
+		var date2 = new Date();
+
+	var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+
 
 		const { complaint } = transformedComplaint;
 		let bookingDataOsbm = {
@@ -385,9 +426,10 @@ class ApplicationDetails extends Component {
                             ? null
                             : paymentDetails.totalAmount,
 				},
-				generatedBy: {
-					generatedBy: userInfo.name,
-				},
+				"generatedBy": {
+					"generatedBy": userInfo.name,
+					"generatedDateTime":generatedDateTime
+				  },
 				documentDetail:{
 					documentName: value1,
 					document2: value2
@@ -405,6 +447,7 @@ class ApplicationDetails extends Component {
 	downloadApplicationButton = async (mode) => {
 		
 		await this.downloadApplicationFunction();
+		setTimeout(async()=>{
 		const { DownloadApplicationDetails,userInfo } = this.props;
 		var documentsPreview = [];
 		let documentsPreviewData;
@@ -478,89 +521,106 @@ class ApplicationDetails extends Component {
 				
 				prepareFinalObject('documentsPreview', documentsPreview)
 			}
-
+		},1500)
 	}
 	
 
-
+	
 downloadPermissionLetterButton = async (mode) => {
 	await this.downloadPermissionLetterFunction();
-	let documentsPreviewData;
-	const { DownloadPermissionLetterDetails,userInfo } = this.props;
-	var documentsPreview = [];
-	if (DownloadPermissionLetterDetails && DownloadPermissionLetterDetails.filestoreIds.length > 0) {
-		 documentsPreviewData=DownloadPermissionLetterDetails.filestoreIds[0];
-		documentsPreview.push({
-			title: "DOC_DOC_PICTURE",
-			fileStoreId: documentsPreviewData,
-			linkText: "View",
-		});
-		let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
-		let fileUrls =
-			fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+	setTimeout(async()=>{
 	
-
-		documentsPreview = documentsPreview.map(function (doc, index) {
-			doc["link"] =
-				(fileUrls &&
-					fileUrls[doc.fileStoreId] &&
-					fileUrls[doc.fileStoreId].split(",")[0]) ||
-				"";
-			
-			doc["name"] =
-				(fileUrls[doc.fileStoreId] &&
-					decodeURIComponent(
-						fileUrls[doc.fileStoreId]
-							.split(",")[0]
-							.split("?")[0]
-							.split("/")
-							.pop()
-							.slice(13)
-					)) ||
-				`Document - ${index + 1}`;
-			return doc;
-		});
-		
-		if(mode==='print'){
-
-			var response = await axios.get(documentsPreview[0].link, {
-				//responseType: "blob",
-				responseType: "arraybuffer",
-				
-				
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/pdf",
-				},
+		let documentsPreviewData;
+		const { DownloadPermissionLetterDetails,userInfo } = this.props;
+		var documentsPreview = [];
+		if (DownloadPermissionLetterDetails && DownloadPermissionLetterDetails.filestoreIds.length > 0) {
+			 documentsPreviewData=DownloadPermissionLetterDetails.filestoreIds[0];
+			documentsPreview.push({
+				title: "DOC_DOC_PICTURE",
+				fileStoreId: documentsPreviewData,
+				linkText: "View",
 			});
-			console.log("responseData---", response);
-			const file = new Blob([response.data], { type: "application/pdf" });
-			const fileURL = URL.createObjectURL(file);
-			var myWindow = window.open(fileURL);
-			if (myWindow != undefined) {
-				myWindow.addEventListener("load", (event) => {
-					myWindow.focus();
-					myWindow.print();
-				});
-			}
-
-		}
-		else{
-
-			setTimeout(() => {
-			
-				window.open(documentsPreview[0].link);
-			}, 100);
-		}
+			let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+			let fileUrls =
+				fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
 		
-		prepareFinalObject('documentsPreview', documentsPreview)
+	
+			documentsPreview = documentsPreview.map(function (doc, index) {
+				doc["link"] =
+					(fileUrls &&
+						fileUrls[doc.fileStoreId] &&
+						fileUrls[doc.fileStoreId].split(",")[0]) ||
+					"";
+				
+				doc["name"] =
+					(fileUrls[doc.fileStoreId] &&
+						decodeURIComponent(
+							fileUrls[doc.fileStoreId]
+								.split(",")[0]
+								.split("?")[0]
+								.split("/")
+								.pop()
+								.slice(13)
+						)) ||
+					`Document - ${index + 1}`;
+				return doc;
+			});
+			
+			if(mode==='print'){
+	
+				var response = await axios.get(documentsPreview[0].link, {
+					//responseType: "blob",
+					responseType: "arraybuffer",
+					
+					
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/pdf",
+					},
+				});
+				console.log("responseData---", response);
+				const file = new Blob([response.data], { type: "application/pdf" });
+				const fileURL = URL.createObjectURL(file);
+				var myWindow = window.open(fileURL);
+				if (myWindow != undefined) {
+					myWindow.addEventListener("load", (event) => {
+						myWindow.focus();
+						myWindow.print();
+					});
+				}
+	
+			}
+			else{
+	
+				setTimeout(() => {
+				
+					window.open(documentsPreview[0].link);
+				}, 100);
+			}
+			
+			prepareFinalObject('documentsPreview', documentsPreview)
+			
 	}
+	},1500)
+	
 
 }
 
 downloadPermissionLetterFunction = async (e) => {
 	const { transformedComplaint,paymentDetails,downloadPermissionLetter ,userInfo} = this.props;
 	const {complaint} = transformedComplaint;
+
+	let approverName;
+	//userInfo.roles
+		if(complaint.bookingType === "OSBM"){
+			for(let i = 0; i < userInfo.roles.length ; i++ ){
+				if(userInfo.roles[i].code == "BK_OSBM_APPROVER"){
+					approverName = userInfo.roles[i].name
+				}
+			}
+	
+		}
+
 	let receiptData = [
 		{
 			applicantDetail: {
@@ -603,8 +663,8 @@ downloadPermissionLetterFunction = async (e) => {
 
 
 			approvedBy:{
-				approvedBy: "Renil Commissioner",
-				role: "Additional Commissioner"
+				approvedBy: userInfo.name,
+				role: approverName,
 			},
 			tenantInfo:{
 				municipalityName: "Municipal Corporation Chandigarh",
@@ -620,9 +680,10 @@ downloadPermissionLetterFunction = async (e) => {
 
 	downloadPermissionLetter({BookingInfo:receiptData})
 }
-
+	
 	downloadPaymentReceiptButton = async (mode) => {
 		this.downloadPaymentReceiptFunction();
+		setTimeout(async()=>{
 		let documentsPreviewData;
 		const { DownloadPaymentReceiptDetails,userInfo } = this.props;
 		var documentsPreview = [];
@@ -693,7 +754,9 @@ downloadPermissionLetterFunction = async (e) => {
 			
 			prepareFinalObject('documentsPreview', documentsPreview)
 		}
+	},1500)
 	}
+
 
 	callApiForDocumentData = async (e) => {
 		const { xyz,userInfo } = this.props;
@@ -969,7 +1032,7 @@ downloadPermissionLetterFunction = async (e) => {
 
 								/>
 
-								<BookingDetails
+								<OSBMBookingDetails
 									{...complaint}
 									historyApiData={historyApiData && historyApiData}
 								/>
@@ -1101,6 +1164,9 @@ const mapStateToProps = (state, ownProps) => {
 	let businessService = applicationData ? applicationData.businessService : "";
 	let bookingDocs;
 
+	let pdfBankName = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.GateWayName:"NA";  
+	console.log("pdfBankName--",pdfBankName)
+
 	let documentMap = applicationData && applicationData.documentMap ? applicationData.documentMap : '';
 	console.log("documentMap-in-osbm--",documentMap)
 	let abc = Object.entries(documentMap)
@@ -1199,11 +1265,13 @@ const mapStateToProps = (state, ownProps) => {
 			isAssignedToEmployee,
 			complaintTypeLocalised,
 			userInfo,
-			xyz,ab
+			xyz,ab,
+			pdfBankName
 		};
 	} else {
 		return {
 			paymentDetails,
+			pdfBankName,
 			historyApiData,
 			DownloadPaymentReceiptDetails,
 			paymentDetailsForReceipt,DownloadApplicationDetails,DownloadPermissionLetterDetails,

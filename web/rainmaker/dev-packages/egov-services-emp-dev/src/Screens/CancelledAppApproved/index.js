@@ -46,24 +46,24 @@ class CancelRequestApproved extends Component {
       //condition for employee cancelation
 if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
 
-  let dataOne = {
-    "mobileNumber":"9876543210"
-  }
+  // let dataOne = {
+  //   "mobileNumber":"9876543210"
+  // }
 
-        let ResOfUSearch = await httpRequest(
-          "user/_search",
-          "_search",[],
-          dataOne
-        );
+  //       let ResOfUSearch = await httpRequest(
+  //         "user/_search",
+  //         "_search",[],
+  //         dataOne
+  //       )
       
-        console.log("ResOfUSearch--",ResOfUSearch)
+  //       console.log("ResOfUSearch--",ResOfUSearch)
       
-       let newUserName =  ResOfUSearch.user.length >0 ? ResOfUSearch.user[0].userName : "NumberNotFound"
-       console.log("newUserName--",newUserName)
-       let newToken = await loginRequest(newUserName,"123456","","password","ch","CITIZEN");
-       console.log("newToken-1",newToken)
-       console.log("newToken--",newToken.access_token)
-       let authToken = newToken.access_token;
+  //      let newUserName =  ResOfUSearch.user.length >0 ? ResOfUSearch.user[0].userName : "NumberNotFound"
+  //      console.log("newUserName--",newUserName)
+  //      let newToken = await loginRequest(newUserName,"123456","","password","ch","CITIZEN");
+  //      console.log("newToken-1",newToken)
+  //      console.log("newToken--",newToken.access_token)
+  //      let authToken = newToken.access_token;
 // let log = console.log;
 // log("hgjb")
       // loginRequest(newUserName,"123456","","password","ch","CITIZEN").then(res=>{
@@ -79,23 +79,23 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
         { key: "tenantId", value: userInfo.tenantId }
         ];
 
-    let customRequestInfo = {
-    apiId: "Rainmaker",
-    ver: ".01",
-    ts: "",
-    action: "_search",
-    did: "1",
-    key: "",
-    msgId: `20170310130900|${getLocale()}`,
-    // requesterId: "",
-    authToken: authToken,
-      }
-      console.log("customRequestInfo--",customRequestInfo)
+    // let customRequestInfo = {
+    // apiId: "Rainmaker",
+    // ver: ".01",
+    // ts: "",
+    // action: "_search",
+    // did: "1",
+    // key: "",
+    // msgId: `20170310130900|${getLocale()}`,
+    // // requesterId: "",
+    // authToken: authToken,
+    //   }
+    //   console.log("customRequestInfo--",customRequestInfo)
       let payloadfund = await httpRequest(
         "pg-service/transaction/v1/_search",
         "_search",
         RequestData,
-        customRequestInfo
+        // customRequestInfo
         );
       
         console.log("RequestData--",RequestData)
@@ -190,6 +190,8 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
   
     let totalRes = await this.calculateCancelledBookingRefundAmount(applicationNumber, userInfo.tenantId, dateForCancel);
     console.log("totalRes--",totalRes)
+
+    
 
     //RefundAmountRefundAPI
     /* 
@@ -414,21 +416,6 @@ console.log("todayDate--",todayDate)
                 "_search",[],
                 mdmsBody
             );
-
-
-/*
-payloadRes = await httpRequest(
-                "/egov-mdms-service/v1/_search",
-                "_search",
-                mdmsBody
-            );
-*/
-
-            // let dataforSectorAndCategory = await httpRequest( 	
-            //   "bookings/api/employee/_search",
-            //   "_search",[],
-            //   complaintCountRequest
-            //   );
             console.log(payloadRes, "RefundPercentage");
             refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
 console.log("refundPercentage--2--",refundPercentage)
@@ -530,8 +517,8 @@ const mapStateToProps = (state, ownProps) => {
   const { bookings = {} } = state || {};
   const { applicationData,dataforRefund } = bookings;
   const { fetchPaymentAfterPayment } = bookings;
-  let myMobNum = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.MNumToCreateCitizen:"wrongNumber";  
-  console.log("myMobNum--",myMobNum)
+  // let myMobNum = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.MNumToCreateCitizen:"wrongNumber";  
+  // console.log("myMobNum--",myMobNum)
   
   let ConRefAmt = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.ConditionForAmount:"notFound";  
   console.log("ConRefAmt--",ConRefAmt)

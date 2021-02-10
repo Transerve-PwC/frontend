@@ -426,11 +426,11 @@ class WorkFlowContainer extends React.Component {
       );
     }
     else if(propertyType === "CAT.COMMERCIAL"){
+      filteredActions = get(data[data.length - 1], "nextActions", []).filter(function(v) {
+        return v.action !== "FORWARD_RESIDENTIAL";
+      });
       filteredActions = get(data[data.length - 1], "nextActions", []).filter(
-        item => item.action != "FORWARD_RESIDENTIAL"
-      );
-      filteredActions = get(data[data.length - 1], "nextActions", []).filter(
-        item => item.action != "SENDBACK_RESIDENTIAL"
+        item => item.action !== "SENDBACK_RESIDENTIAL"
       );
     }
     let applicationStatus = get(
@@ -491,9 +491,17 @@ class WorkFlowContainer extends React.Component {
       ProcessInstances.length > 0 &&
       this.prepareWorkflowContract(ProcessInstances, moduleName);
      let showFooter;
+     const { preparedFinalObject } = this.props;
+     const userRoles = JSON.parse(getUserInfo()).roles;
+     const userRole = userRoles[0].code;
+     const processEnv = process.env.REACT_APP_NAME;
+    let propertyState = get(preparedFinalObject,"Applications[0].state");
       if(moduleName==='NewWS1'||moduleName==='NewSW1'){
          showFooter=true;
-      }else{
+      }else if(process.env.REACT_APP_NAME === "Employee" && propertyState === "ES_MM_PENDING_BI_VERIFICATION"){
+          showFooter = userRole === "ES_MM_BUILDING_INSPECTOR" ? true : false;
+      }
+      else{
          showFooter=process.env.REACT_APP_NAME === "Citizen" ? false : true;
       }
     return (

@@ -7,7 +7,7 @@ import {
     prepareDocumentsUploadData,
     savebillGeneration
 } from "../../../../../ui-utils/commons";
-import { convertDateToEpoch } from "egov-ui-framework/ui-config/screens/specs/utils";
+
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -16,6 +16,7 @@ import {
   getCommonApplyFooter,
   ifUserRoleExists,
   validateFields,
+  convertDateToEpoch,
   epochToYmd,
   getLocalizationCodeValue
 } from "../../utils";
@@ -32,10 +33,16 @@ export const getFileUrl = (linkText="") => {
   return fileURL;
 }
 
-export const saveBilling = async (state, dispatch) => {
+ const saveBilling = async (state, dispatch) => {
 let fileUpload = false;
 let fileUrl=''
 // check validation for file uplaod
+const isdateValid = validateFields(
+  "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+  state,
+  dispatch,
+  "upload"
+);
 if (get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux") !== undefined) {
   fileUrl =
   get(state, "screenConfiguration.preparedFinalObject.documentsUploadRedux[0].documents[0].fileUrl",'') 
@@ -50,31 +57,73 @@ fileUpload = true
 
   if(fileUpload)
   {
-    try {
-    
-      const tenantId =  getTenantId();
-      let queryObject = [
-        {
-          key: "tenantId",
-          value: tenantId
+    if(isdateValid)
+    {
+      let fromDate = get(state, "screenConfiguration.preparedFinalObject.searchScreen.fromDate");
+      let toDate = get(state, "screenConfiguration.preparedFinalObject.searchScreen.toDate");
+      fromDate = convertDateToEpoch(fromDate,"dayStart");
+      toDate = convertDateToEpoch(toDate,"dayStart");
+      if(fromDate < toDate)
+      {
+      try {
+      
+        const tenantId =  getTenantId();
+        let queryObject = [
+          {
+            key: "tenantId",
+            value: tenantId
+          }
+        ];
+        let billGeneration={
+          Document:{
+            fileStoreUrl:fileUrl
+          },
+          fromDate:fromDate,
+          toDate:toDate,
         }
-      ];
-      let billGeneration={
-        Document:{
-          fileStoreUrl:fileUrl
+        try{
+          let abc = await savebillGeneration(state, dispatch,billGeneration);
+          window.localStorage.setItem("ActivityStatusFlag","true");
+        }catch (err){
+          console.log("errrr")
         }
+        // let response = await savebillGeneration(
+        //   queryObject,        
+        //   billGeneration,
+        //   dispatch,      
+        // );
+        // if(response){
+        
+        // }
+      } catch (error) {
+        //furnishindentData(state, dispatch);
       }
-      let response = await savebillGeneration(
-        queryObject,        
-        billGeneration,
-        dispatch,      
-      );
-      if(response){
-       
-      }
-    } catch (error) {
-      //furnishindentData(state, dispatch);
-    }
+  }
+  else{
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "WS_FILL_FROM_DATE_TO_DATE_VALIDATION",
+        labelName: "From date should not be less than from date"
+      },
+        "warning"
+      )
+    )
+
+  }
+  }
+  else
+  {
+    dispatch(
+      toggleSnackbar(
+        true, {
+        labelKey: "WS_FILL_REQUIRED_FIELDS",
+        labelName: "Please fill Required details"
+      },
+        "warning"
+      )
+    )
+  }
 
   }
   else{

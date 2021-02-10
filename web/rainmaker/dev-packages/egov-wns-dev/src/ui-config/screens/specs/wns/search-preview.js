@@ -655,6 +655,9 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
 
 const parserFunction = (obj) => {
   let parsedObject = {
+    //set usageCategory and  subusageCategory
+    subusageCategory:usageCategory,
+    usageCategory:usageCategory.split('.')[0],
     roadCuttingArea: parseInt(obj.roadCuttingArea),
     meterInstallationDate: convertDateToEpoch(obj.meterInstallationDate),
     connectionExecutionDate: convertDateToEpoch(obj.connectionExecutionDate),

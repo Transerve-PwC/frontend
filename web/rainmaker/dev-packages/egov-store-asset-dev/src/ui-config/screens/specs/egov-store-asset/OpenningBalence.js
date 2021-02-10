@@ -31,6 +31,9 @@ import {
   InventoryData
   } from "../../../../ui-utils/sampleResponses";
   import { httpRequest } from "../../../../ui-utils";
+  import {    
+    validateFields,    
+  } from "../utils";
   import { getSearchResults } from "../../../../ui-utils/commons"; 
   const resetFields = (state, dispatch) => {
     const textFields = ["storeName","financialYear",];
@@ -62,6 +65,12 @@ let searchScreenObject = get(
   state.screenConfiguration.preparedFinalObject,
   "searchScreen",
   {}
+);
+const isProfessionalDetailsValid = validateFields(
+  "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+  state,
+  dispatch,
+  "OpenningBalence"
 );
 if( Object.keys(searchScreenObject).length == 0 )
 {
@@ -95,46 +104,63 @@ if( Object.keys(searchScreenObject).length == 0 )
 else
 {
 
-for (var key in searchScreenObject) {  
+  if(!isProfessionalDetailsValid)
+  {
+    dispatch(
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please fill at least one field to start search",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        },
+        "warning"
+      )
+    );
+  }
+  else{
+    for (var key in searchScreenObject) {  
   
-  queryObject.push({ key: key, value: (searchScreenObject[key]) });
-}
+      queryObject.push({ key: key, value: (searchScreenObject[key]) });
+    }
+    queryObject.push({
+      key: "isprint",
+      value: false
+    });
+    
+    try {
+      let payload =[];
+    
+     let Responce = await httpRequest(
+        "post",
+        "store-asset-services/openingbalance/_report",
+        "_report",    
+        queryObject
+      );
+    
+    payload = InventoryData()
+    dispatch(prepareFinalObject("InventoryData", payload));
+    if(get(Responce,"printData",[]))
+    dispatch(prepareFinalObject("InventoryAPIData", get(Responce,"printData",[])));
+    else
+    {
+     let  InventoryAPIData =[] 
+     dispatch(prepareFinalObject("InventoryAPIData",InventoryAPIData));
+    }
+      console.log(payload)
+    
+    
+      
+    
+    
+    return payload
+    
+    } catch (e) {
+      console.log(e);
+    }
 
-queryObject.push({
-  key: "isprint",
-  value: false
-});
-
-try {
-  let payload =[];
-
- let Responce = await httpRequest(
-    "post",
-    "store-asset-services/openingbalance/_report",
-    "_report",    
-    queryObject
-  );
-
-payload = InventoryData()
-dispatch(prepareFinalObject("InventoryData", payload));
-if(get(Responce,"printData",[]))
-dispatch(prepareFinalObject("InventoryAPIData", get(Responce,"printData",[])));
-else
-{
- let  InventoryAPIData =[] 
- dispatch(prepareFinalObject("InventoryAPIData",InventoryAPIData));
-}
-  console.log(payload)
+  }
 
 
-  
-
-
-return payload
-
-} catch (e) {
-  console.log(e);
-}
 }
 
 

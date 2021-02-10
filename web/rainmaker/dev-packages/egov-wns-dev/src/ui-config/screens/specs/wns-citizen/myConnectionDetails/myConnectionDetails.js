@@ -11,6 +11,11 @@ export const fetchData = async (action, state, dispatch) => {
         {
             key: "mobileNumber",
             value: JSON.parse(getUserInfo()).mobileNumber
+        },
+        // add new property(login user UUID) in api call /ws-services/wc/_search
+        {
+            key: "connectionUserId",
+            value: JSON.parse(getUserInfo()).uuid
         }        
     ]
 

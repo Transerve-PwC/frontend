@@ -75,6 +75,7 @@ const callBackForNext = async (state, dispatch) => {
   let isFormValid = true;
   let hasFieldToaster = true;
   let rentYearMismatch = false;
+  let isBiddersListValid = true;
   let licenseFeeYearMismatch = false;
   let isStartAndEndYearValid = true;
   let propertyType = get(
@@ -180,8 +181,14 @@ const callBackForNext = async (state, dispatch) => {
       dispatch,
       screenKey
     )
-    
-    if (isAuctionValid) {
+    let typeOfAllocationSelected = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.typeOfAllocation");
+    if(typeOfAllocationSelected === "ALLOCATION_TYPE.AUCTION"){
+      let biddersListArr = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.bidders");
+      if(biddersListArr === null || biddersListArr.length === 0){
+          isBiddersListValid = false;
+      }
+    }
+    if (isAuctionValid && isBiddersListValid) {
       const res = await applyEstates(state, dispatch, activeStep, screenKey);
       if (!res) {
         return
@@ -537,6 +544,13 @@ const callBackForNext = async (state, dispatch) => {
       }
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }
+    else if(isBiddersListValid === false){
+      let errorMessage = {
+        labelName: "Please fill all mandatory fields and upload the documents !",
+        labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
     else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",

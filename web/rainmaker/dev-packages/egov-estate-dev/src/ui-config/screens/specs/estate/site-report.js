@@ -34,7 +34,8 @@ import {
 } from "egov-ui-framework/ui-utils/commons";
 import {
   _getPattern,
-  validateFields
+  validateFields,
+  displayCustomErr
 } from "../utils"
 import {
  getStatusList
@@ -226,7 +227,9 @@ const particularsOfHouseField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.particularsOfHouse"
+  jsonPath: "Applications[0].applicationDetails.siteReport.particularsOfHouse",
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase"),
 }
 
 const houseAreaField = {
@@ -245,7 +248,9 @@ const houseAreaField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.houseArea"
+  jsonPath: "Applications[0].applicationDetails.siteReport.houseArea",
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase"),
 }
 
 const ownershipField = {
@@ -264,7 +269,16 @@ const ownershipField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.ownership"
+  jsonPath: "Applications[0].applicationDetails.siteReport.ownership",
+  errorMessage:"ES_ERR_OWNERSHIP_FIELD",
+  pattern: _getPattern("alphabet"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_OWNERSHIP_FIELD", action.screenKey);
+    }
+  }
 }
 
 const possessionField = {
@@ -283,7 +297,16 @@ const possessionField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.possession"
+  jsonPath: "Applications[0].applicationDetails.siteReport.possession",
+  errorMessage:"ES_ERR_POSSESION_FIELD",
+  pattern: _getPattern("alphabet"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_POSSESION_FIELD", action.screenKey);
+    }
+  }
 }
 
 const modeOfOwnershipField = {
@@ -302,7 +325,16 @@ const modeOfOwnershipField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.modeOfOwnership"
+  jsonPath: "Applications[0].applicationDetails.siteReport.modeOfOwnership",
+  errorMessage:"ES_ERR_MODE_OF_OWNERSHIP_FIELD",
+  pattern: _getPattern("alphabet"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MODE_OF_OWNERSHIP_FIELD", action.screenKey);
+    }
+  }
 }
 
 const heightField = {
@@ -321,7 +353,15 @@ const heightField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.height"
+  jsonPath: "Applications[0].applicationDetails.siteReport.height",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HIEGHT_FIELD", action.screenKey);
+    }
+  }
 }
 
 const cantileverField = {
@@ -359,7 +399,15 @@ const noOfFloorsField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.noOfFloors"
+  jsonPath: "Applications[0].applicationDetails.siteReport.noOfFloors",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_NO_OF_FLOORS_FIELD", action.screenKey);
+    }
+  }
 }
 
 const encroachmentField = {
@@ -378,7 +426,15 @@ const encroachmentField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.encroachment"
+  jsonPath: "Applications[0].applicationDetails.siteReport.encroachment",
+  pattern: _getPattern("alphabet"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_ENROCHMENT_FIELD", action.screenKey);
+    }
+  }
 }
 
 const violationField = {
@@ -397,7 +453,9 @@ const violationField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.violation"
+  jsonPath: "Applications[0].applicationDetails.siteReport.violation",
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase"),
 }
 
 const dimensionOfBuildingField = {
@@ -416,7 +474,15 @@ const dimensionOfBuildingField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.dimensionOfBuilding"
+  jsonPath: "Applications[0].applicationDetails.siteReport.dimensionOfBuilding",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_DIMENSIONS_FIELD", action.screenKey);
+    }
+  }
 }
 
 const areaField = {
@@ -435,7 +501,15 @@ const areaField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.area"
+  jsonPath: "Applications[0].applicationDetails.siteReport.area",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_AREA", action.screenKey);
+    }
+  }
 }
 
 const excessAreaField = {
@@ -454,7 +528,15 @@ const excessAreaField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.excessArea"
+  jsonPath: "Applications[0].applicationDetails.siteReport.excessArea",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_AREA", action.screenKey);
+    }
+  }
 }
 
 const isCommercialActivityRadioButton = {
@@ -518,7 +600,15 @@ const commercialActivityAreaField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.commercialActivityArea"
+  jsonPath: "Applications[0].applicationDetails.siteReport.commercialActivityArea",
+  pattern:_getPattern("height"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_AREA", action.screenKey);
+    }
+  }
 }
 
 const dairyOrKeepingCattleRadioButton = {
@@ -569,7 +659,18 @@ const developmentChargesField = {
   required: true,
   minLength: 2,
   maxLength: 50,
-  jsonPath: "Applications[0].applicationDetails.siteReport.developmentCharges"
+  jsonPath: "Applications[0].applicationDetails.siteReport.developmentCharges",
+  pattern:_getPattern("numeric"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_CHARGES", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_CHARGES", action.screenKey);
+    }
+  }
 }
 
 const compositionFeesField = {
@@ -588,7 +689,18 @@ const compositionFeesField = {
   required: true,
   minLength: 2,
   maxLength: 50,
-  jsonPath: "Applications[0].applicationDetails.siteReport.compositionFees"
+  jsonPath: "Applications[0].applicationDetails.siteReport.compositionFees",
+  pattern:_getPattern("numeric"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_COMPOSITION_FEES", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMPOSITION_FEES", action.screenKey);
+    }
+  }
 }
 
 const compositionFeesUnauthorizedField = {
@@ -607,7 +719,18 @@ const compositionFeesUnauthorizedField = {
   required: true,
   minLength: 2,
   maxLength: 50,
-  jsonPath: "Applications[0].applicationDetails.siteReport.compositionFeeUnauthorized"
+  pattern:_getPattern("numeric"),
+  jsonPath: "Applications[0].applicationDetails.siteReport.compositionFeeUnauthorized",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_COMPOSITION_FEES", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMPOSITION_FEES", action.screenKey);
+    }
+  }
 }
 
 const conversionChargesField = {
@@ -626,7 +749,18 @@ const conversionChargesField = {
   required: true,
   minLength: 2,
   maxLength: 50,
-  jsonPath: "Applications[0].applicationDetails.siteReport.conversionCharges"
+  pattern:_getPattern("numeric"),
+  jsonPath: "Applications[0].applicationDetails.siteReport.conversionCharges",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_CONVERSION_FEES", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_CONVERSION_FEES", action.screenKey);
+    }
+  }
 }
 
 const totalChargesField = {
@@ -645,7 +779,18 @@ const totalChargesField = {
   required: true,
   minLength: 2,
   maxLength: 50,
-  jsonPath: "Applications[0].applicationDetails.siteReport.totalChanges"
+  pattern:_getPattern("numeric"),
+  jsonPath: "Applications[0].applicationDetails.siteReport.totalChanges",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_COMPOSITION_FEES", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMPOSITION_FEES", action.screenKey);
+    }
+  }
 }
 
 const dateOfInspectionField = {

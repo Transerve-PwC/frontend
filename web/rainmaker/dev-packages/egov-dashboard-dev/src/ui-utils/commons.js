@@ -988,3 +988,402 @@ export const getDashboardResult = async ( dispatch, data ) => {
     );
   }
 };
+
+// All Complaint Types DAshboard Result
+export const getAllDashboardResult = async ( dispatch, data ) => {
+  debugger
+
+  const moduleName = "rainmaker-pgr" 
+  const reportName = ["ComplaintTypesReport", "SourceWiseReport", "DepartmentReport"]
+  var payloadData = data
+  payloadData["reportName"] = reportName[0];
+  payloadData["moduleName"] = moduleName;
+  
+  try {
+    store.dispatch(toggleSpinner());
+    const ComplaintTypeResponse = await httpRequest(
+      "post",
+      // "/hc-services/serviceRequest/_get_DEMO_DASHBOARD", 
+      "/report/rainmaker-pgr/ComplaintTypesReport/_get?tenantId=ch.chandigarh&pageSize=false&offset=0",
+      "",
+      [],
+      payloadData
+    );
+    payloadData["reportName"] = reportName[1];
+    const SourceWiseResponse = await httpRequest(
+      "post",
+      // "/hc-services/serviceRequest/_get_DEMO_DASHBOARD", 
+      "/report/rainmaker-pgr/SourceWiseReport/_get?tenantId=ch.chandigarh&pageSize=false&offset=0",
+      "",
+      [],
+      payloadData
+    );
+    payloadData["reportName"] = reportName[2];
+    const DepartmentResponse = await httpRequest(
+      "post",
+      // "/hc-services/serviceRequest/_get_DEMO_DASHBOARD", 
+      "/report/rainmaker-pgr/DepartmentReport/_get?tenantId=ch.chandigarh&pageSize=false&offset=0",
+      "",
+      [],
+      payloadData
+    );
+
+    debugger
+    var response = []
+    response.push(ComplaintTypeResponse.reportResponses[0]);
+    response.push(SourceWiseResponse.reportResponses[0]);
+    response.push(DepartmentResponse.reportResponses[0]);
+
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    dispatch(
+      handleField("dashboardType",
+      // "components.div.children.dashboardTypeSearchResults.children.cardContent.children.customGraph",
+      "components.div.children.dashboardTypeSearchResults",
+      "props.data",
+      response
+      )
+      );
+    
+    dispatch(
+      handleField("dashboardType",
+      // "components.div.children.dashboardTypeSearchResults.children.cardContent.children.customGraph",
+      "components.div.children.dashboardSearchResultHorizontalBar",
+      "props.data",
+      response
+      )
+      );
+
+    dispatch(
+      handleField("dashboardSource",
+      "components.div.children.dashboardSourceSearchResults.children.cardContent.children.dashboardResult.children.customGraph",
+      "props.data",
+      response
+        )
+        );
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Description Report
+export const getDescriptionReport = async ( dispatch, data ) => {
+  debugger
+
+  const moduleName = "rainmaker-pgr" 
+  const reportName = "DescriptionReport"
+  var payloadData = data
+  payloadData["reportName"] = reportName;
+  payloadData["moduleName"] = moduleName;
+  
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      // "/hc-services/serviceRequest/_get_DEMO_DASHBOARD", 
+      "/report/rainmaker-pgr/DescriptionReport/_get?tenantId=ch.chandigarh&pageSize=false&offset=0",
+      "",
+      [],
+      payloadData
+    );
+
+    debugger
+    var response = DescriptionReport
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField("PGRDashboard",
+      "components.div.children.PGRDashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+
+// Get Description Report New Function
+export const getDescriptionReportDashboard = async ( dispatch, data ) => {
+  
+  //debugger;
+  const moduleName = "rainmaker-pgr" 
+  const reportName = "DescriptionReport"
+  var payloadData = data
+  payloadData["reportName"] = reportName;
+  payloadData["moduleName"] = moduleName;
+  
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      // "/hc-services/serviceRequest/_get_DEMO_DASHBOARD", 
+      "/report/rainmaker-pgr/DescriptionReport/_get?tenantId=ch.chandigarh&pageSize=false&offset=0",
+      "",
+      [],
+      payloadData
+    );
+
+    debugger
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField("PGRDashboard",
+      "components.div.children.PGRDashboardResults",
+      // "components.div.children.PGRDashboardResults.children.dashboardResult",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Horticulture 
+export const getHCDashboardData = async ( dispatch, data ) => {
+  
+  //debugger;
+  const moduleName = "rainmaker-pgr" 
+  const reportName = "DescriptionReport"
+  var payloadData = data
+  payloadData["reportName"] = reportName;
+  payloadData["moduleName"] = moduleName;
+
+  var HCPayload = {
+    "fromDate": payloadData.searchParams[0].input,
+    "toDate": payloadData.searchParams[1].input,
+    "sortBy": payloadData.reportSortBy.value,
+    "dataPayload": {}
+  }
+  
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      // "egov-workflow-v2/egov-wf/businessservice/_desc?tenantId=ch.chandigarh", 
+      "/hc-services/serviceRequest/_get",
+      "",
+      [],
+      HCPayload
+    );
+
+    // Working from here is pending
+    //debugger;
+    var response = [ DescriptionReport, HCPayload.sortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField("HCDashboard",
+      "components.div.children.HCDashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// API call for Dropdown Data
+export const getWorkflowDropdownData = async (state, dispatch, status) => {
+  let response = '';
+	let method = "CREATE";
+
+	try {
+	  let payload = "PAYLOAD_DEMO"
+	  console.log("payload",payload)
+	  let response = '';
+	  // setapplicationMode(status);
+	  let arraypayload={"searchParams": [
+      {
+        "name": "fromDate",
+        "input": 1610649000000
+      },
+      {
+        "name": "toDate",
+        "input": 1610735399000
+      }
+    ]}
+	  if (method === "CREATE") {
+    dispatch(toggleSpinner());
+  
+    // response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices=ROADCUTNOC&tenantId=ch.chandigarh", "", [], {services: arraypayload });
+    response = await httpRequest("post", "/egov-workflow-v2/egov-wf/businessservice/_desc?tenantId=ch.chandigarh", "", [], {services: arraypayload });
+ 
+    //debugger;
+    const HARDDATA = response
+
+		if (response) {
+      dispatch(prepareFinalObject("DROPDOWNAPIDATA", HARDDATA));
+      var dropdownOne = []
+      var dropdownItem = {}
+      var listData = HARDDATA.businessServiceDescription
+      for(var i=0; i<listData.length; i++){
+        var dropdownOneData = {"name":listData[i].business, "code": listData[i].business}
+        dropdownOne.push(dropdownOneData)
+        // dropdownOne.push(HARDDATA[i].business)
+        dropdownItem[listData[i].business] = listData[i];
+        // dropdownTwoDesc.push(dropdownItem)
+      }
+		  // setapplicationNumber(response.services[0].service_request_id);
+      // setApplicationNumberBox(state, dispatch);
+      var data =  [
+      {
+          "name" : "ROADCUTNOC",
+          "code" : "ROADCUTNOC"
+      },
+      {
+          "name" : "PETNOC",
+          "code" : "PETNOC"
+      }
+      ]
+      dispatch(prepareFinalObject("dropDownData", data));
+      // dispatch(prepareFinalObject("DropdownOne", dropdownOne));
+      // dispatch(prepareFinalObject("DropdownItem", dropdownItem));
+      dispatch(prepareFinalObject("DropdownOne", dropdownOne));
+      // First Element in Dropdown One
+      var element = {"label": dropdownOne[0].name, "value": dropdownOne[0].code}
+      dispatch(prepareFinalObject("selectedDropDownOneData", element))
+      dispatch(prepareFinalObject("DropdownItem", dropdownItem));
+
+      // First Element in Dropdown Two----------------------------------------
+      var dropdownTwo = dropdownItem[element.value].businessService;
+      var dropdownTwoService= []
+      var dropdownTwoDesc= []
+      var desc = {}
+      for(var i=0; i<dropdownTwo.length; i++){
+      var dropdownOneData = {"name":dropdownTwo[i].businessService, "code": dropdownTwo[i].businessService}
+      // dropdownTwoService.push(dropdownTwo[i].businessService)
+      dropdownTwoService.push(dropdownOneData);
+      desc[dropdownTwo[i].businessService] = dropdownTwo[i].businessServiceDescription
+      // dropdownTwoDesc.push(dropdownTwo[i].businessServiceDescription)
+      dropdownTwoDesc.push(desc);
+      }
+
+      // dispatch(
+      //   handleField(
+      //     "review",
+      //     "components.div.children.body.children.cardContent.children.buisnessService2",
+      //     "visible",
+      //     true
+      //   )
+      // );
+
+      // First Element in Dropdown One
+      var element = {"label": dropdownTwoService[0].name, "value": dropdownTwoService[0].code};
+      dispatch(prepareFinalObject("selectedDropDownTwoData", element));
+
+      dispatch(prepareFinalObject("DropdownTwo", dropdownTwoService));
+      dispatch(prepareFinalObject("DropdownDescription", desc));
+
+      let response = await workflowPreview(state, dispatch, status);
+      // dispatch(prepareFinalObject("DropdownTwo", data));
+		  dispatch(toggleSpinner());
+		  return { status: "success", message: response };
+		} else {
+		  dispatch(toggleSpinner());
+		  return { status: "fail", message: response };
+		}
+	  } 
+
+	} catch (error) {
+	  dispatch(toggleSpinner());
+	  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+	  return { status: "failure", message: error };
+	}
+};
+
+// API call for Search workflowPreview Data
+export const workflowPreview = async (state, dispatch, status) => {
+
+  //debugger;
+  let response = '';
+	let method = "CREATE";
+
+	try {
+	  let payload = "PAYLOAD_DEMO"
+	  console.log("payload",payload)
+	  let response = '';
+    // setapplicationMode(status);
+    var getModuleNAme =  get(state, "screenConfiguration.preparedFinalObject.selectedDropDownTwoData");
+    var workflowDescription =  get(state, "screenConfiguration.preparedFinalObject.DropdownDescription");
+	  let arraypayload={}
+	  if (method === "CREATE") {
+    dispatch(toggleSpinner());
+  
+    response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices="+getModuleNAme.value+"&tenantId=ch.chandigarh", "", [], {services: arraypayload });
+    // response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_desc?tenantId=ch.chandigarh", "", [], {services: arraypayload });
+    
+    //debugger;
+    
+    workflowDescription = workflowDescription[getModuleNAme.label]
+
+		if (response) {
+    
+      dispatch(
+        handleField("review",
+        "components.div.children.WorkflowReport.children.cardContent.children.reportCardGraph",
+        "props.data",
+        [response, workflowDescription]
+        )
+      );
+
+      dispatch(toggleSpinner());
+		  return { status: "success", message: response };
+		} else {
+		  dispatch(toggleSpinner());
+		  return { status: "fail", message: response };
+		}
+	  } 
+
+	} catch (error) {
+	  dispatch(toggleSpinner());
+	  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+	  return { status: "failure", message: error };
+	}
+}

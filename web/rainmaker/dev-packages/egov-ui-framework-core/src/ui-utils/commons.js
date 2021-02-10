@@ -435,13 +435,18 @@ export const handleFileUpload = (event, handleDocument, props) => {
       else {
         isSizeValid = getFileSize(file.size) <= maxFileSize;
       }
+      if (moduleName === 'egov-opms') {
+       fileValid = isFileValid(file, inputProps.accept);
+      }
+	  
       if(pageName !== undefined)
       {
         if(pageName ==='egov-wns-upload')
         {
         const file_ = files[key];
         //fileValid = isFileValid(file_, acceptedFiles(inputProps.accept));
-        if(file_.name.indexOf("xlsx")>1 || file_.name.indexOf("xls")>1)
+       // if(file_.name.indexOf("xlsx")>1 || file_.name.indexOf("xls")>1)
+        if(file_.name.indexOf("csv")>1)
         {
           fileValid = true
         }
@@ -854,7 +859,8 @@ const footerCallBackForRequiredDataModal = (moduleName) => {
         dispatch(prepareFinalObject("SewerageConnection", []));
         dispatch(prepareFinalObject("applyScreen", {}));
         dispatch(prepareFinalObject("searchScreen", {}));
-       const url = `/pt-common-screens/propertySearch?redirectUrl=/wns/apply`;
+      // const url = `/pt-common-screens/propertySearch?redirectUrl=/wns/apply`;
+       const url = `/wns/apply`;
         const applyUrl = process.env.REACT_APP_NAME === "Citizen" ? url : url
         dispatch(setRoute(applyUrl));
       };

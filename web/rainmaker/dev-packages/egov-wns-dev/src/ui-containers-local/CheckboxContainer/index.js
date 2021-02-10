@@ -51,39 +51,47 @@ class CheckboxLabels extends React.Component {
   }
 
   handleWater = name => event => {
-    const { jsonPathWater, approveCheck, onFieldChange,jsonPathTubewell } = this.props;
-    this.setState({ [name]: event.target.checked, interChange: true ,checkedTubewell : false}, () => {
+    const { jsonPathWater, approveCheck, onFieldChange,jsonPathTubewell,jsonPathSewerage } = this.props;
+    this.setState({ [name]: event.target.checked, interChange: true ,checkedTubewell : false,checkedSewerage : false}, () => {
       if (this.state.checkedWater) {
         toggleWater(onFieldChange, true);
-        if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, true); }
+        if (this.state.checkedSewerage) { 
+          toggleSewerage(onFieldChange, false); 
+        }
         else { toggleSewerage(onFieldChange, false); }
       } else { toggleWater(onFieldChange, false); }
       approveCheck(jsonPathWater, this.state.checkedWater);
       approveCheck(jsonPathTubewell, false);
+      approveCheck(jsonPathSewerage, false);
+      //approveCheck(jsonPathSewerage, false);
     });
   };
 
   handleSewerage = name => event => {
-    const { jsonPathSewerage, approveCheck, onFieldChange } = this.props;
-    this.setState({ [name]: event.target.checked, interChange: true }, () => {
+    const { jsonPathSewerage, approveCheck, onFieldChange,jsonPathTubewell,jsonPathWater } = this.props;
+    this.setState({ [name]: event.target.checked, interChange: true,checkedWater : false,checkedTubewell:false }, () => {
       if (this.state.checkedSewerage) {
         toggleSewerage(onFieldChange, true);
-        if (this.state.checkedWater) { toggleWater(onFieldChange, true); }
+        if (this.state.checkedWater) { toggleWater(onFieldChange, false); }
         else { toggleWater(onFieldChange, false); }
       } else { toggleSewerage(onFieldChange, false); }
       approveCheck(jsonPathSewerage, this.state.checkedSewerage);
+      //approveCheck(jsonPathSewerage, false);
+      approveCheck(jsonPathTubewell, false);
+      approveCheck(jsonPathWater, false);
     });
   }
   handleTubewell = name => event => {
-    const { jsonPathTubewell, approveCheck, onFieldChange,jsonPathWater } = this.props;
-    this.setState({ [name]: event.target.checked, interChange: true,checkedWater : false }, () => {
+    const { jsonPathTubewell, approveCheck, onFieldChange,jsonPathWater,jsonPathSewerage } = this.props;
+    this.setState({ [name]: event.target.checked, interChange: true,checkedWater : false,checkedSewerage : false }, () => {
       if (this.state.checkedTubewell) {
         toggleWater(onFieldChange, false);
-        if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, true); }
+        if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, false); }
         else { toggleSewerage(onFieldChange, false); }
       } 
       approveCheck(jsonPathTubewell, this.state.checkedTubewell);
       approveCheck(jsonPathWater, false);
+      approveCheck(jsonPathSewerage, false);
     });
   }
 

@@ -73,7 +73,7 @@ const formConfig = {
       id: "reopencomplaint-submit-action",
     },
     action: "_update",
-    redirectionRoute: "/egov-services/assign-to-success",
+    redirectionRoute: "/egov-services/DriverAssigned",
     saveUrl: "/bookings/api/_update",
   };
   

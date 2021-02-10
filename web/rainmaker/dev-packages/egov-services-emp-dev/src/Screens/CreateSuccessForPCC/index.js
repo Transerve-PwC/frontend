@@ -62,7 +62,7 @@ class CreateWBTApplicationSuccess extends Component {
               "baseCharge": applicationDetails.bkRent,
               "cleaningCharge": applicationDetails.bkCleansingCharges,
               "surcharges": applicationDetails.bkSurchargeRent,
-              "facilitationCharge": "100",
+              "facilitationCharge": applicationDetails.bkFacilitationCharges ? applicationDetails.bkFacilitationCharges : "100",
               "utgst": applicationDetails.bkUtgst,
               "cgst": applicationDetails.bkCgst,
               "gst": applicationDetails.bkCgst,

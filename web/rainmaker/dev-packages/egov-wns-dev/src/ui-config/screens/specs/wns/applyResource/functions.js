@@ -82,7 +82,7 @@ export const propertySearchApiCall = async (state, dispatch) => {
               }
             }    
           }
-          dispatch(prepareFinalObject("applyScreen.property", propertyData));
+         // dispatch(prepareFinalObject("applyScreen.property", propertyData));
           const {preparedFinalObject} = state.screenConfiguration;
           const {WaterConnection} = preparedFinalObject;
 

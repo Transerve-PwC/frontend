@@ -40,7 +40,7 @@ const houseNumberField = {
     if (action.value.length > 50) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
     } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_NUMBER", screenName);
     }
   }
 }
@@ -61,12 +61,16 @@ const streetField = {
   required: true,
   minLength: 2,
   maxLength: 100,
+  pattern:_getPattern("street"),
   jsonPath: "Properties[0].propertyDetails.street",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
-    } else {
-      displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+    } else if(action.value.length < 3){
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_STREET_MINLENGHT_2", screenName);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_STREET_NUMBER", screenName);
     }
   }
 }
@@ -84,9 +88,20 @@ const areaofPropertyField = {
       xs: 12,
       sm: 6
   },
-  pattern: _getPattern("areaOfProperty"),
+  pattern: _getPattern("numeric-with-no-firstdigit-zero"),
   required: true,
-  jsonPath: "Properties[0].propertyDetails.areaSqft"
+  jsonPath: "Properties[0].propertyDetails.areaSqft",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 25) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AREA_OF_PROPERTY_MAX_25", screenName);
+    }
+    else if(action.value.length < 3){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AREA_OF_PROPERTY_MIN_3", screenName);
+    }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_AREA_OF_PROPERTY_FIELD",screenName);
+    }
+}
 }
 
 export const propertyTypeField = {

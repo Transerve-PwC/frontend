@@ -28,6 +28,15 @@ const styles= theme=>({
 
 class ApplicatInfo extends Component {
 
+  state = {
+    NewbkBookingType: "Normal Booking"
+  }
+
+  componentDidMount = async () => {
+
+
+  }
+
   continue = e => {
     let re = /\S+@\S+\.\S+/;
     let mb=/^\d{10}$/;
@@ -70,11 +79,15 @@ class ApplicatInfo extends Component {
 
   }
 
+  newBookingType = async (event) => {
+    let { prepareFinalObject } = this.props;
+    this.setState(
+      { NewbkBookingType: event.target.value }); 
+      prepareFinalObject("NewbkBookingTypeApplicant", event.target.value)
+  };
+
   render() {
-    const { firstName, email, mobileNo, lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes,prepareFinalObject } = this.props;
-
-    prepareFinalObject("MNumToCreateCitizen", mobileNo);
-
+    const { firstName, email, mobileNo, lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes,prepareFinalObject} = this.props;
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -208,7 +221,6 @@ class ApplicatInfo extends Component {
               hintStyle={{ width: "100%" }}
             />
           </div>
-  {/*"col-sm-6 col-xs-6"*/}
           <div className="col-sm-12" style={{marginTop: '19px'}}>
             <FormControl component="fieldset">
               <FormLabel component="legend"><Label label="BK_MYBK_CATEGORY_TYPE" /></FormLabel>
@@ -220,8 +232,18 @@ class ApplicatInfo extends Component {
                 <FormControlLabel className={classes.cool} value="KirayaBhog" control={<Radio color="primary" />} label="Kiraya/Bhog" />
                 <FormControlLabel className={classes.cool} value="ReligiousFunction" control={<Radio color="primary" />} label="Religious Function" />
             </RadioGroup>
-            </FormControl>
-            
+            </FormControl>         
+          </div>
+          
+          {/*newRequirement*/} 
+          <div className="col-sm-12" style={{marginTop: '-3%'}}> 
+            <FormControl component="fieldset">
+              <FormLabel component="legend"><Label label="BK_MYBK_TYPES_OF_BOOKING" /></FormLabel>
+              <RadioGroup row aria-label="position" name="gender1"  value={this.state.NewbkBookingType} onChange={this.newBookingType}>
+                <FormControlLabel className={classes.cool} value="Normal Booking" control={<Radio color="primary" />} label="Normal Booking" />
+                <FormControlLabel className={classes.cool} value="Commercial Booking"  control={<Radio color="primary" />} label="Commercial Booking" />
+            </RadioGroup>
+            </FormControl>         
           </div>
   
         <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
@@ -248,7 +270,7 @@ class ApplicatInfo extends Component {
 const mapStateToProps = state => {
   const { complaints, common, auth, form } = state;
   return {
-    
+    state
   }
 }
 const mapDispatchToProps = dispatch => {

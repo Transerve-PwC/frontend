@@ -194,7 +194,7 @@ export const mapCompIDToName = (IDObj, compID) => {
   return IDObj[compID] ? IDObj[compID].serviceCode : compID;
 };
 
-export const getDateFromEpoch = () => {
+export const getDateFromEpoch = (epoch) => {
   const dateObj = new Date(epoch);
   const year = dateObj.getFullYear().toString().slice(2, 4);
   const month = getMonthName(dateObj.getMonth() + 1);
@@ -824,7 +824,7 @@ export const getModuleName = () => {
   } else if (pathName.indexOf("property-tax") > -1 || pathName.indexOf("pt-mutation") > -1) {
     return "rainmaker-pt,rainmaker-pgr";
   } else if (pathName.indexOf("pt-common-screens") > -1 || pathName.indexOf("public-search") > -1) {
-    return "rainmaker-pt";
+    return "rainmaker-pt,rainmaker-pgr";
   } else if (pathName.indexOf("complaint") > -1 || pathName.indexOf("request-reassign") > -1 || pathName.indexOf("reassign-success") > -1) {
     return "rainmaker-pgr";
   } else if (pathName.indexOf("wns") > -1) {
@@ -858,7 +858,7 @@ export const getModuleName = () => {
   } else if (pathName.indexOf("login") > -1) {
     return "rainmaker-common";
   } else if (pathName.indexOf("pay") > -1) {
-    return "rainmaker-noc";
+    return "rainmaker-noc,rainmaker-services";
   } else if (pathName.indexOf("abg") > -1) {
     return "rainmaker-abg";
   } else if (pathName.indexOf("pgr-home") > -1 || pathName.indexOf("rainmaker-pgr") > -1 || pathName.indexOf("master/auto-routing") > -1) {

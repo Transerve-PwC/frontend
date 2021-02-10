@@ -27,7 +27,9 @@ if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
     paymentStep = "formwizardSixthStepAllotment";
 }
-
+else if((window.location.href).includes("apply-manimajra")){
+    screenName = "apply-manimajra";
+}
 export const getActionDefinationForAuctionDetailsFields = (disabled = true, step) => {
     const actionDefination = [
     {
@@ -390,7 +392,7 @@ export const fileNumberField = {
             displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", screenName);
         }
         else {
-            displayDefaultErr(action.componentJsonpath, dispatch, screenName);
+            displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_FILE_NUMBER", screenName);
         }
     }
 }

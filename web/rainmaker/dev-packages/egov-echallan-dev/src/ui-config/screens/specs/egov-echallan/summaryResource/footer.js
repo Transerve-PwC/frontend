@@ -299,23 +299,26 @@ const callBackForwardUpload = async (state, dispatch) => {
 
 const receivePayment = async (state, dispatch) => {
   let violationDate = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].violationDate', '');
-  let encroachmentType = new Date(get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType', ''));
+  //let encroachmentType = new Date(get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType', ''));
+  let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType', '');
 
   if (getDiffernceBetweenTodayDate(violationDate) <= 30) {
     callReceivePayment(state, dispatch);
   } else {
-    if (encroachmentType === 'Seizure of Vehicles' && getDiffernceBetweenTodayDate(violationDate) <= 365) {
+    if (encroachmentType === 'Seizure of Vehicles') {
       callReceivePayment(state, dispatch);
-    } else if (encroachmentType === 'Seizure of Vehicles' && getDiffernceBetweenTodayDate(violationDate) > 365) {
-      dispatch(toggleSnackbar(
-        true,
-        {
-          labelName: "Payment cannot be made after 365 days of voilation date",
-          labelKey: ""
-        },
-        "warning"
-      ));
-    } else {
+    }
+    // else if (encroachmentType === 'Seizure of Vehicles' && getDiffernceBetweenTodayDate(violationDate) > 365) {
+    //   dispatch(toggleSnackbar(
+    //     true,
+    //     {
+    //       labelName: "Payment cannot be made after 365 days of voilation date",
+    //       labelKey: ""
+    //     },
+    //     "warning"
+    //   ));
+    // }
+	else {
 
       dispatch(toggleSnackbar(
         true,

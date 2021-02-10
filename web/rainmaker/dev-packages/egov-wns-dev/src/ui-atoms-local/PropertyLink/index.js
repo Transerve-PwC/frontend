@@ -31,7 +31,7 @@ handleClick = (url) => {
   
   const tenantId = process.env.REACT_APP_NAME === "Citizen" ? this.citizenTenantId(): getTenantId();
   this.props.fetchLocalizationLabel(getLocale(), tenantId, tenantId);
-  url = `/pt-common-screens/propertySearch?redirectUrl=${url}`;
+  //url = `/pt-common-screens/propertySearch?redirectUrl=${url}`;
     onsetRoute(url);
 }
 render() {

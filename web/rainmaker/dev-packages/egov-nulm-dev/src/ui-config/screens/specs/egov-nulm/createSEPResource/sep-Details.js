@@ -195,7 +195,12 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_ADDRESS_PLACEHOLDER"
         },
         required: true,
-        pattern: getPattern("Address") || null,
+        props: {
+          className: "applicant-details-error",
+          multiline: "multiline",
+          rowsMax: 2,
+        },
+        pattern: getNULMPattern("Comment") || null,
         jsonPath: "NULMSEPRequest.address"
       })
     },
@@ -526,6 +531,11 @@ export const SepDetails = getCommonCard({
           labelKey: "NULM_SEP_PREVIOUS_EXPERIENCE_IN_THE_LINE_IF_ANY_PLACEHOLDER"
         },
         required: true,
+        props: {
+          className: "applicant-details-error",
+          multiline: "multiline",
+          rowsMax: 2,
+        },
         pattern: getPattern("Address") || null,
         jsonPath: "NULMSEPRequest.previousExperience"
       })

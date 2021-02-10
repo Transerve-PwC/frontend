@@ -116,7 +116,7 @@ class CGBookingDetails extends Component {
     })
   }
   Second = e => {
-    alert("hello Second"),
+    // alert("hello Second"),
     this.setState({
       thirdOption: false,
       fourthOption: false,
@@ -126,7 +126,7 @@ class CGBookingDetails extends Component {
   }
 //Third
 Third = e => {
-  alert("hello Third"),
+  // alert("hello Third"),
   this.setState({
     thirdOption: true,
     fourthOption: false,
@@ -136,7 +136,7 @@ Third = e => {
 }
 //Fourth
 Fourth = e => {
-  alert("hello Fourth"),
+  // alert("hello Fourth"),
   this.setState({
     fourthOption: true,
     thirdOption: false,

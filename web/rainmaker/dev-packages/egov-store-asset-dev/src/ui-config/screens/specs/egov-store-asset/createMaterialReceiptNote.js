@@ -346,28 +346,29 @@ export const header = getCommonContainer({
       const mrnNumber = getQueryArg(window.location.href, "mrnNumber");
       if(!step && !mrnNumber){
        dispatch(prepareFinalObject("materialReceipt[0]",null));
+       dispatch(
+        prepareFinalObject(
+          "materialReceipt[0].receiptType",
+          "PURCHASE RECEIPT",
+        )
+      );
+     
+      dispatch(
+        prepareFinalObject(
+          "materialReceipt[0].receivedBy",
+          "sanjeev",
+        )
+      );
+      dispatch(
+        prepareFinalObject(
+          "materialReceipt[0].inspectedBy",
+          "Ramesh",
+        )
+      );
      }
      // SEt Default data
 
-     dispatch(
-      prepareFinalObject(
-        "materialReceipt[0].receiptType",
-        "PURCHASE RECEIPT",
-      )
-    );
-   
-    dispatch(
-      prepareFinalObject(
-        "materialReceipt[0].receivedBy",
-        "sanjeev",
-      )
-    );
-    dispatch(
-      prepareFinalObject(
-        "materialReceipt[0].inspectedBy",
-        "Ramesh",
-      )
-    );
+     
 
       return action;
     },

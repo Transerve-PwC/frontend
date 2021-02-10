@@ -10,9 +10,52 @@ import { getTextToLocalMapping } from "./searchResults";
 import { validateFields,convertDateToEpoch } from "../../utils";
 import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import set from "lodash/set";
+export const addConnectionMappingApiCall = async (state, dispatch) => {  
+ 
+  let id = getQueryArg(window.location.href, "id");
+  let WFBody = {
+    WaterConnection: [
+      {
+        id: id,
+        tenantId: tenantId,
+          
+      }       
+  ]
+  };
+
+  try {
+    let payload = null;     
+    payload = await httpRequest(
+      "post",
+      "/ws-services/wc/_addConnectionMapping",
+      "",
+      [],
+      WFBody
+    );
+
+    
+    dispatch(toggleSnackbar(
+      true,
+      { labelName: "succcess ", labelKey: "WS_SUCCESS" },
+      "success"
+    ))
+
+  } catch (error) {      
+    
+      dispatch(toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      ));
+     // moveToSuccess("INITIATED",dispatch)
+  }
+
+  }
 export const searchApiCall = async (state, dispatch) => {
   let { localisationLabels } = state.app || {};
   showHideTable(false, dispatch);
+  // logic change for particular page only for sending  tenantId to api.
+  //const tenantId =  process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
   const tenantId =  process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
 
   let queryObject = [];
@@ -72,9 +115,11 @@ export const searchApiCall = async (state, dispatch) => {
    try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
    const waterConnections = searchWaterConnectionResults ? searchWaterConnectionResults.WaterConnection.map(e => { e.service = 'WATER'; return e }) : []
    const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = 'SEWERAGE'; return e }) : [];
+   
    let combinedSearchResults = searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
-  
+   dispatch(prepareFinalObject("combinedSearchResults", combinedSearchResults));
    for (let i = 0; i < combinedSearchResults.length; i++) {
+     
     let element = combinedSearchResults[i];
     finalArray.push({
       due: 'NA',
@@ -85,7 +130,8 @@ export const searchApiCall = async (state, dispatch) => {
       status: element.status,
       address: handleAddress(element),
       connectionType: element.connectionType,
-      tenantId: element.tenantId
+      tenantId: element.tenantId,
+      id:element.id,
     })
     // if (element.connectionNo !== "NA" && element.connectionNo !== null) {
     //   let queryObjectForWaterFetchBill;
@@ -190,7 +236,8 @@ const showConnectionResults = (connections, dispatch) => {
      [getTextToLocalMapping("Address")]: item.address,
     // [getTextToLocalMapping("Due Date")]: (item.dueDate !== undefined && item.dueDate !== "NA") ? convertEpochToDate(item.dueDate) : item.dueDate,
     [getTextToLocalMapping("tenantId")]: item.tenantId,
-    [getTextToLocalMapping("connectionType")]: item.connectionType
+    [getTextToLocalMapping("connectionType")]: item.connectionType,
+    [getTextToLocalMapping("id")]: item.id
   }));
   dispatch(handleField("link-connection", "components.div.children.searchResults", "props.data", data));
   dispatch(handleField("link-connection", "components.div.children.searchResults", "props.rows",

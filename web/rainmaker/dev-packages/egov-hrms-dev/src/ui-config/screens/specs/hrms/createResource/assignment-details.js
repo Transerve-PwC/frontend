@@ -59,11 +59,11 @@ const assignmentDetailsCard = {
               //required: true,
               pattern: getPattern("Date"),
               jsonPath: "Employee[0].assignments[0].toDate",
-              // props: {
-              //   inputProps: {
-              //     max: new Date().toISOString().slice(0, 10),
-              //   }
-              // },
+              props: {
+                inputProps: {
+                  max: new Date().toISOString().slice(0, 10),
+                }
+              },
             })
           },
           // dummyDiv: {
@@ -115,41 +115,41 @@ const assignmentDetailsCard = {
                 `${action.componentJsonpath}.props.disabled`
               );
               if (!isDisabled) {
-                if (action.value) {
-                  dispatch(
-                    handleField(
-                      "create",
-                      assignToComponentPath,
-                      "props.value",
-                      null
-                    )
-                  );
-                  dispatch(
-                    handleField(
-                      "create",
-                      assignToComponentPath,
-                      "props.disabled",
-                      true
-                    )
-                  );
-                } else {
-                  dispatch(
-                    handleField(
-                      "create",
-                      assignToComponentPath,
-                      "props.disabled",
-                      false
-                    )
-                  );
-                  dispatch(
-                    handleField(
-                      "create",
-                      assignToComponentPath,
-                      "isFieldValid",
-                      true
-                    )
-                  );
-                }
+                // if (action.value) {
+                //   dispatch(
+                //     handleField(
+                //       "create",
+                //       assignToComponentPath,
+                //       "props.value",
+                //       null
+                //     )
+                //   );
+                //   dispatch(
+                //     handleField(
+                //       "create",
+                //       assignToComponentPath,
+                //       "props.disabled",
+                //       true
+                //     )
+                //   );
+                // } else {
+                //   dispatch(
+                //     handleField(
+                //       "create",
+                //       assignToComponentPath,
+                //       "props.disabled",
+                //       false
+                //     )
+                //   );
+                //   dispatch(
+                //     handleField(
+                //       "create",
+                //       assignToComponentPath,
+                //       "isFieldValid",
+                //       true
+                //     )
+                //   );
+                // }
               }
             }
           },
@@ -285,6 +285,14 @@ const assignmentDetailsCard = {
             set(muliItemContent[key], "props.disabled", false);
           }
           else if(key === "isPrimaryAssignment")
+          {
+            set(muliItemContent[key], "props.disabled", false);
+          }
+          else if(key === "currentAssignment")
+          {
+            set(muliItemContent[key], "props.disabled", false);
+          }
+          else if(key === "assignToDate")
           {
             set(muliItemContent[key], "props.disabled", false);
           }

@@ -129,13 +129,13 @@ export const propertyOwnerDetails = () => {
                     ),
                     mobileNumber,
                     name,
-                    gender,
-                    dateOfBirth,
+                    //gender,
+                   // dateOfBirth,
                     email,
                     fatherName,
-                    relationship,
+                   // relationship,
                     correspondenceAddress,
-                    specialApplicantCategory
+                   // specialApplicantCategory
                 }),
                 items: [],
                 hasAddItem: false,

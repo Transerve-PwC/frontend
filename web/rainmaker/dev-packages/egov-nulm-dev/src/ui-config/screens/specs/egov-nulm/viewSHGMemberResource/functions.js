@@ -217,7 +217,7 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
    NulmShgMemberRequest.applicationStatus = status;
 
    let dob = get(NulmShgMemberRequest, "dob");
-   const formattedDOB = dob.split("-").reverse().join("-");
+  // const formattedDOB = dob.split("-").reverse().join("-");
 
   // set(
   //   NulmShgMemberRequest,

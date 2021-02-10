@@ -62,8 +62,10 @@ const NOCSearchAndResult = {
       let arr = status.slice(1)
       arr = arr.filter(item => item.code != "WITHDRAWREJECTED")
       arr = arr.filter(item => item.code != "WITHDRAWAPPROVAL")
-      arr.push({ code: "APPROVEFORWITHDRAW", name: getTextAdvertisement("APPROVEFORWITHDRAW", "0") })
-      arr.push({ code: "REJECTEFORWITHDRAW", name: getTextAdvertisement("REJECTEFORWITHDRAW", "0") })
+      arr = arr.filter(item => item.code != "WITHDRAW")
+      // WITHDRAW
+      // arr.push({ code: "APPROVEFORWITHDRAW", name: getTextAdvertisement("APPROVEFORWITHDRAW", "0") })
+      // arr.push({ code: "REJECTEFORWITHDRAW", name: getTextAdvertisement("REJECTEFORWITHDRAW", "0") })
 
       dispatch(
         prepareFinalObject(

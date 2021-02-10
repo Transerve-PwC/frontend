@@ -1,6 +1,6 @@
 
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar,toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getFileUrlFromAPI, getMultiUnits, getQueryArg, getTransformedLocale, setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
+import { getMultiUnits, getQueryArg, getTransformedLocale, setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 import { getapplicationNumber, getapplicationType, getOPMSTenantId, getUserInfo, setapplicationNumber, lSRemoveItemlocal, lSRemoveItem, localStorageGet, setapplicationMode, localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 import jp from "jsonpath";
 import get from "lodash/get";
@@ -39,7 +39,26 @@ export const handleCardDelete = (prepareFinalObject , arrayPath , isActive = fal
   set(prepareFinalObject,arrayPath, finalArray);
   return prepareFinalObject;
   }
-
+// HRMS Search API
+export const getHRMSEmpSearchResults = async (queryObject, dispatch) => {
+  try {
+    const response = await httpRequest(
+      "post",
+      "/egov-hrms/employees/_search",
+      "",
+      queryObject
+    );
+    return response;
+  } catch (error) {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+  }
+};
 
 export const getSearchResults = async (queryObject=[],requestBody={},dispatch,screenName) => {
   let url =""
@@ -51,6 +70,12 @@ export const getSearchResults = async (queryObject=[],requestBody={},dispatch,sc
     case "verifyOTP": url =  "/integration-services/pt/v1/_verifyOTP";
     break;
     case "getpayslip": url =  "/integration-services/hrms/v1/_getpayslip";
+    break;
+    case "Empdata": url =  "/integration-services/hrms/v1/_getEmpDetails";
+    break;
+    case "Empleavedata": url =  "/integration-services/hrms/v1/_getEmpLeaveDetails";
+    break;
+    case "EmpJoiningdata": url =  "/integration-services/hrms/v1/_getEmpJoiningDetails";
     break;
     
   }
@@ -67,6 +92,85 @@ export const getSearchResults = async (queryObject=[],requestBody={},dispatch,sc
         "error"
       )
     );
+  }
+
+};
+//for file store id
+export const getFileUrlFromAPI = async (fileStoreId,tenantId) => {
+  const queryObject = [
+  	{ key: "tenantId", value: tenantId },
+   // { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
+    { key: "fileStoreIds", value: fileStoreId }
+  ];
+  try {
+    const fileUrl = await httpRequest(
+      "get",
+      "/filestore/v1/files/url",
+      "",
+      queryObject
+    );
+    return fileUrl;
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const downloadReceiptFromFilestoreID=(fileStoreId,mode,tenantId)=>{
+  getFileUrlFromAPI(fileStoreId,tenantId).then(async(fileRes) => {
+    if (mode === 'download') {
+      var win = window.open(fileRes[fileStoreId], '_blank');
+      if(win){
+        win.focus();
+      }
+    }
+    else {
+     // printJS(fileRes[fileStoreId])
+      var response =await axios.get(fileRes[fileStoreId], {
+        //responseType: "blob",
+        responseType: "arraybuffer",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf"
+        }
+      });
+      console.log("responseData---",response);
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      var myWindow = window.open(fileURL);
+      if (myWindow != undefined) {
+        myWindow.addEventListener("load", event => {
+          myWindow.focus();
+          myWindow.print();
+        });
+      }
+    
+    }
+  });
+  
+}
+export const getprintpdf = async (queryObject , api) => {
+
+  try {
+    store.dispatch(toggleSpinner());
+    //let PayslipRequest = get(queryObject,'PayslipRequest')
+    const response = await httpRequest(
+      "post",
+      api,     
+      "",
+      [],
+      queryObject
+    );
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+    store.dispatch(toggleSpinner());
+   // throw error;
   }
 
 };

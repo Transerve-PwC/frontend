@@ -224,34 +224,34 @@ const getPropertyDetails = {
               callBack: handleNA,
             },
           ),
-          reviewPropertyType: getLabelWithValueForModifiedLabel(
-            {
-              labelName: "Property Type",
-              labelKey: "WS_PROPERTY_TYPE_LABEL"
-            },
-            {
-              jsonPath: "applyScreen.property.propertyType",
-              callBack: handleNA,
-              localePrefix: {
-                moduleName: "WS",
-                masterName: "PROPTYPE"
-              }
-            },
-            {
-              labelKey: "WS_OLD_LABEL_NAME"
-            },
-            {
-              jsonPath: "applyScreenOld.property.propertyType",
-              callBack: handleNA,
-            }
-          ),
+          // reviewPropertyType: getLabelWithValueForModifiedLabel(
+          //   {
+          //     labelName: "Property Type",
+          //     labelKey: "WS_PROPERTY_TYPE_LABEL"
+          //   },
+          //   {
+          //     jsonPath: "applyScreen.property.propertyType",
+          //     callBack: handleNA,
+          //     localePrefix: {
+          //       moduleName: "WS",
+          //       masterName: "PROPTYPE"
+          //     }
+          //   },
+          //   {
+          //     labelKey: "WS_OLD_LABEL_NAME"
+          //   },
+          //   {
+          //     jsonPath: "applyScreenOld.property.propertyType",
+          //     callBack: handleNA,
+          //   }
+          // ),
           reviewPropertyUsageType: getLabelWithValueForModifiedLabel(
             {
               labelName: "Property Usage Type",
               labelKey: "WS_PROPERTY_USAGE_TYPE_LABEL"
             },
             {
-              jsonPath: "applyScreenOld.property.usageCategory",
+              jsonPath: "applyScreen.property.usageCategory",
               callBack: handleNA,
               localePrefix: {
                 moduleName: "WS",
@@ -278,7 +278,7 @@ const getPropertyDetails = {
               labelKey: "WS_PROPERTY_SUB_USAGE_TYPE_LABEL"
             },
             {
-              jsonPath: "applyScreen.property.units[0].usageCategory",
+              jsonPath: "applyScreen.property.subusageCategory",
               callBack: handlePropertySubUsageType,
               localePrefix: {
                 moduleName: "WS",
@@ -289,7 +289,7 @@ const getPropertyDetails = {
               labelKey: "WS_OLD_LABEL_NAME"
             },
             {
-              jsonPath: "applyScreenOld.property.units[0].usageCategory",
+              jsonPath: "applyScreen.property.subusageCategory",
               callBack: handlePropertySubUsageType,
               localePrefix: {
                 moduleName: "WS",
@@ -309,17 +309,17 @@ const getPropertyDetails = {
             },
             { jsonPath: "applyScreenOld.property.landArea", callBack: handleNA },
           ),
-          // reviewNumberOfFloors: getLabelWithValueForModifiedLabel(
-          //   {
-          //     labelName: "Number Of Floors",
-          //     labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
-          //   },
-          //   { jsonPath: "applyScreen.property.noOfFloors", callBack: handleNA },
-          //   {
-          //     labelKey: "WS_OLD_LABEL_NAME"
-          //   },
-          //   { jsonPath: "applyScreenOld.property.noOfFloors", callBack: handleNA },
-          // ),
+          reviewNumberOfFloors: getLabelWithValueForModifiedLabel(
+            {
+              labelName: "Number Of Floors",
+              labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
+            },
+            { jsonPath: "applyScreen.property.noOfFloors", callBack: handleNA },
+            {
+              labelKey: "WS_OLD_LABEL_NAME"
+            },
+            { jsonPath: "applyScreenOld.property.noOfFloors", callBack: handleNA },
+          ),
           // rainwaterHarvestingFacility: getLabelWithValueForModifiedLabel(
           //   {
           //     labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
@@ -506,13 +506,13 @@ const propertyOwnerDetails = () => {
         viewFive: getCommonContainer({
           mobileNumber,
           name,
-          gender,
-          dateOfBirth,
+         // gender,
+         // dateOfBirth,
           email,
           fatherName,
-          relationship,
+         // relationship,
           correspondenceAddress,
-          specialApplicantCategory
+         // specialApplicantCategory
         }),
       }),
       items: [],

@@ -1,16 +1,25 @@
 div#material-ui-form {
-    overflow: visible !important;
-}
+  overflow: visible !important; }
+
 div#material-ui-ServiceRequestFilterFormForEmployee {
-    overflow: visible !important;
-}
+  overflow: visible !important; }
+
+@media only screen and (min-width: 768px) {
+  .common-header-cont {
+    display: inherit;
+    padding: 0px 0px 0px 8px; } }
 
 @media only screen and (max-width: 768px) {
-    .ack-body, .ack-tail {
-        display: contents;
-        text-align: center !important;
-    }}
+  .ack-body, .ack-tail {
+    display: contents;
+    text-align: center !important; } }
 
 div#material-ui-body {
-overflow: visible;
+  overflow: visible; }
+
+form#dashboardReportFilter {
+  margin: 10px 16px 88px 16px; }
+
+div#material-ui-cardContent {
+  width: 150%;
 }

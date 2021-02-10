@@ -6,9 +6,11 @@ import {
   toggleSpinner,
   prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults } from "../../../../../ui-utils/commons";
+import { getSearchResults ,getprintpdf,downloadReceiptFromFilestoreID} from "../../../../../ui-utils/commons";
+//import { getprintpdf } from "../../../../ui-utils/storecommonsapi";
 import { getTextToLocalMapping } from "./searchResults";
 import { validateFields,convertDateToEpoch } from "../../utils";
+import { httpRequest } from "../../../../../ui-utils";
 import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import set from "lodash/set";
 import {  
@@ -193,6 +195,14 @@ if(Allowances.length>Deductions.length)
   }
  // dispatch(prepareFinalObject("PaySlip",PaySlip));
   dispatch(prepareFinalObject("APIData.PaySlip",PaySlip));
+  dispatch(
+    handleField(
+      "payslipsearch",
+      "components.div.children.footer.children.SubmitButton",
+      "visible",
+      true
+    )
+  );
 
  }
  else
@@ -231,3 +241,99 @@ const showHideTable = (booleanHideOrShow, dispatch) => {
     )
   );
 };
+export const payslipDownloadApiCall = async (state, dispatch) => {  
+  downloadAcknowledgementForm(state);
+ // let id = getQueryArg(window.location.href, "id");
+ 
+
+  // try {
+  //   let payload = null;     
+  //   payload = await httpRequest(
+  //     "post",
+  //     "/integration-services/pt/v1/_print",
+  //     "",
+  //     [],
+  //     WFBody
+  //   );
+
+    
+  //   dispatch(toggleSnackbar(
+  //     true,
+  //     { labelName: "succcess ", labelKey: "WS_SUCCESS" },
+  //     "success"
+  //   ))
+
+  // } catch (error) {      
+    
+  //     dispatch(toggleSnackbar(
+  //       true,
+  //       { labelName: error.message, labelKey: error.message },
+  //       "error"
+  //     ));
+  //    // moveToSuccess("INITIATED",dispatch)
+  // }
+
+  }
+
+  export const downloadAcknowledgementForm = async (state ,mode="download") => {
+    let tenantId =  getTenantId();
+    let APIUrl =`/pdf-service/v1/_create?key=payslip&tenantId=${tenantId}`
+    //let ApplicationNo ='';
+    const PayslipRequest = get(state.screenConfiguration.preparedFinalObject.APIData, "PaySlip",[]);
+    let WFBody = {
+      PayslipRequest :[PayslipRequest]
+      
+      
+    //   PayslipRequest:[{
+    //     empCode:PaySlip.EmployeeCode,
+    //     name:PaySlip.Name,
+    //     fatherName:PaySlip.FatherName,
+    //     designation:PaySlip.Designation,
+    //     department:PaySlip.DDOName,
+    //     basicPay:PaySlip.Allowances[0].Allowances_Text,
+    //     dearnessAllowance:PaySlip.Allowances[0].Allowances_Text,
+    //     gisUT:PaySlip.asd,
+    //     incomeTax:PaySlip.asd,
+    //     cityCompensatoryAllowance:PaySlip.Allowances[0].Allowances_Text,
+    //     licencesFee:PaySlip.asd,
+    //     medicalAllowance:PaySlip.Allowances[5].Allowances_Amount,
+    //     specialAllowance:PaySlip.Allowances[5].Allowances_Amount,
+    //     IRUTPBHP:PaySlip.Allowances[5].Allowances_Amount,
+    //     totalAllowances:PaySlip.Allowances[6].Allowances_Amount,
+    //     totalDeductions:PaySlip.Allowances[6].Deductions_Amount,
+    //     netPay:PaySlip.Allowances[7].Deductions_Amount,
+
+    //   }
+    // ]
+         
+    };
+  // switch(pagename)
+  // {
+  //   case "Indent":
+  //     ApplicationNo = getQueryArg(window.location.href, "applicationNumber");
+  //     queryObject.push({
+  //       key: "indentNumber",
+  //       value:ApplicationNo
+  //     });
+  //     queryObject.push({
+  //       key: "indentType",
+  //       value:"Indent"
+  //     });
+  //     APIUrl = `store-asset-services/indents/_print`
+  //     break;     
+  
+  // }
+      
+      try {    
+        const response = await getprintpdf(WFBody,APIUrl);
+        if(response)
+        {
+          let filestoreId = response.filestoreIds[0]
+          downloadReceiptFromFilestoreID(filestoreId,mode,tenantId)
+        }
+       
+      } catch (exception) {
+        alert('Some Error Occured while downloading Acknowledgement form!');
+      }
+    
+    }

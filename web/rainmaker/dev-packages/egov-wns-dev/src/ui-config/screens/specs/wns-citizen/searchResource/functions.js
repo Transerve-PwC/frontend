@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults, fetchBill, getSearchResultsForSewerage } from "../../../../../ui-utils/commons";
+import { getSearchResults, fetchBill, getSearchResultsForSewerage,getBillingEstimation } from "../../../../../ui-utils/commons";
 import { convertEpochToDate } from "../../utils/index";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
@@ -74,23 +74,33 @@ export const searchApiCall = async (state, dispatch) => {
 
       } catch (err) { console.log(err) }
       let getSearchResult = getSearchResults(queryObject)
-      let getSearchResultForSewerage = getSearchResultsForSewerage(queryObject, dispatch)
+     // let getSearchResultForSewerage = getSearchResultsForSewerage(queryObject, dispatch)
       let finalArray = [];
       let searchWaterConnectionResults, searcSewerageConnectionResults;
       try { searchWaterConnectionResults = await getSearchResult } catch (error) { finalArray = []; console.log(error) }
-      try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
+    // try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
       const waterConnections = searchWaterConnectionResults ? searchWaterConnectionResults.WaterConnection.map(e => { e.service = 'WATER'; return e }) : []
-      const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = 'SEWERAGE'; return e }) : [];
-      let combinedSearchResults = searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
+    // const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = 'SEWERAGE'; return e }) : [];
+      let combinedSearchResults = waterConnections;// searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
       for (let i = 0; i < combinedSearchResults.length; i++) {
         let element = combinedSearchResults[i];
         if (element.property && element.property !== "NA" && element.connectionNo !== null && element.connectionNo !== 'NA') {
-          let queryObjectForWaterFetchBill;
-          if (element.service === "WATER") {
-            queryObjectForWaterFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: element.connectionNo }, { key: "businessService", value: "WS" }];
-          } else {
-            queryObjectForWaterFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: element.connectionNo }, { key: "businessService", value: "SW" }];
+          let requestBody=
+          {billGeneration:
+          {            
+            consumerCode:element.connectionNo,
+            tenantId:tenantId,
+            paymentMode:'cash',
+            isGenerateDemand:false,            
           }
+        }
+
+
+          // if (element.service === "WATER") {
+          //   queryObjectForWaterFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: element.connectionNo }, { key: "paymentMode", value: "cash" }, { key: "isGenerateDemand", value: false }];
+          // } else {
+          //   queryObjectForWaterFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: element.connectionNo }, { key: "businessService", value: "SW" }];
+          // }
 
           if (element.service === "WATER" && payloadbillingPeriod.MdmsRes['ws-services-masters'] && payloadbillingPeriod.MdmsRes['ws-services-masters'].billingPeriod !== undefined && payloadbillingPeriod.MdmsRes['ws-services-masters'].billingPeriod !== null) {
             payloadbillingPeriod.MdmsRes['ws-services-masters'].billingPeriod.forEach(obj => {
@@ -109,25 +119,26 @@ export const searchApiCall = async (state, dispatch) => {
             });
           }
 
-          let billResults = await fetchBill(queryObjectForWaterFetchBill, dispatch)
-          billResults ? billResults.Bill.map(bill => {
-            let updatedDueDate = 0;
-            if (element.service === "WATER") {
-              updatedDueDate = (element.connectionType === 'Metered' ?
-                (bill.billDetails[0].toPeriod + waterMeteredDemandExipryDate) :
-                (bill.billDetails[0].toPeriod + waterNonMeteredDemandExipryDate));
-            } else if (element.service === "SEWERAGE") {
-              updatedDueDate = bill.billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
-            }
+          let billResults = await getBillingEstimation(requestBody, dispatch)
+          billResults ? billResults.billGeneration.map(bill => {
+            let updatedDueDate = bill.dueDateCash;
+            // if (element.service === "WATER") {
+            //   updatedDueDate = (element.connectionType === 'Metered' ?
+            //     (bill.billDetails[0].toPeriod + waterMeteredDemandExipryDate) :
+            //     (bill.billDetails[0].toPeriod + waterNonMeteredDemandExipryDate));
+            // } else if (element.service === "SEWERAGE") {
+            //   updatedDueDate = bill.billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
+            // }
             let obj = {
               due: bill.totalAmount,
               dueDate: updatedDueDate,
-              service: element.service,
+              service: "WATER",
               connectionNo: element.connectionNo,
               name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',
               status: element.status,
               address: (element.property && element.property !== "NA" && element.property.address) ? element.property.address.street : '',
               tenantId: element.tenantId,
+              apnstatus: bill.status,
               connectionType: element.connectionType
             }
             finalArray.push(obj)
@@ -169,6 +180,7 @@ const showResults = (connections, dispatch, tenantId) => {
     [getTextToLocalMapping("Address")]: item.address,
     [getTextToLocalMapping("Due Date")]: (item.dueDate !== undefined && item.dueDate !== "NA") ? convertEpochToDate(item.dueDate) : item.dueDate,
     [getTextToLocalMapping("tenantId")]: item.tenantId,
+    [getTextToLocalMapping("Application Status")]: item.apnstatus,
     [getTextToLocalMapping("connectionType")]: item.connectionType
   }))
 

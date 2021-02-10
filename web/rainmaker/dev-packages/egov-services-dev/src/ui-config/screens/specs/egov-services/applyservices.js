@@ -32,7 +32,7 @@ if (role_name === "CITIZEN") {
             //   jsonPath: "components.adhocDialog"
             // }
         },
-        {
+        /*{
             label: {
                 labelKey: "BK_HOME_COMMUNITY_CENTRE_BOOKING",
                 labelName: "Book Parks & Community Center/Banquet Halls",
@@ -92,7 +92,7 @@ if (role_name === "CITIZEN") {
             //   screenKey: "home",
             //   jsonPath: "components.adhocDialog"
             // }
-        },
+        },*/
         {
             label: {
                 labelKey: "BK_HOME_WATER_TANKER_BOOKING",

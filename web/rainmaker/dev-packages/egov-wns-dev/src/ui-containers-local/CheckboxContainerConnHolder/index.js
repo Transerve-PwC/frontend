@@ -75,8 +75,27 @@ class CheckboxLabels extends React.Component {
     const isChecked = event.target.checked;
     if (isChecked) {
       toggleConnHolderDetails(onFieldChange, false);
+      //set Owner Information
+      if(preparedFinalObject.applyScreen.property.owners && preparedFinalObject.applyScreen.property.owners[0])
+      {
+      const mobileNumber =  get(preparedFinalObject.applyScreen.property.owners[0], "mobileNumber");
+      const name =  get(preparedFinalObject.applyScreen.property.owners[0], "name");
+      const emailId =  get(preparedFinalObject.applyScreen.property.owners[0], "emailId");
+      const correspondenceAddress =  get(preparedFinalObject.applyScreen.property.owners[0], "correspondenceAddress");
+      approveCheck('connectionHolders[0].mobileNumber', mobileNumber)
+      approveCheck('connectionHolders[0].name', name)
+      approveCheck('connectionHolders[0].emailId', emailId)
+      approveCheck('connectionHolders[0].correspondenceAddress', correspondenceAddress)
+     // approveCheck('connectionHolders[0].mobileNumber', mobileNumber)
+      }
+
+
     } else {
       toggleConnHolderDetails(onFieldChange, true);
+      approveCheck('connectionHolders[0].mobileNumber', null)
+      approveCheck('connectionHolders[0].name', null)
+      approveCheck('connectionHolders[0].emailId', null)
+      approveCheck('connectionHolders[0].correspondenceAddress', null)
     }
 
     this.setState({ [name]: isChecked }, () =>

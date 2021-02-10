@@ -3,8 +3,12 @@ import {
   getCommonHeader,
   getCommonCard,
   getCommonContainer,
+  getPattern,
   getCommonTitle,
   getCommonParagraph,
+  getCommonGrayCard,
+  getTextField,
+  getSelectField,
   getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from "lodash/get";
@@ -16,9 +20,12 @@ import { footer } from "./applyResource/footer";
 import { getPropertyIDDetails, propertyID, propertyHeader } from "./applyResource/propertyDetails";
 import { getPropertyDetails } from "./applyResource/property-locationDetails";
 import { getHolderDetails, sameAsOwner, holderHeader } from "./applyResource/connectionHolder";
-import { ownerDetailsHeader, getOwnerDetails, ownershipType } from "./applyResource/ownerDetails";
+import { ownerDetailsHeader, getOwnerDetails, ownershipType
+,getMultipleOwnerDetails
+} from "./applyResource/ownerDetails";
 import { additionDetails } from "./applyResource/additionalDetails";
 import { OwnerInfoCard } from "./applyResource/connectionDetails";
+import { MultiownerDetailsDetails } from "./applyResource/MultipleownerDetailsDetails"; 
 import {getCommentDetails,commentHeader} from './applyResource/comment';
 import {PropertyUsageHeader,getPropertyUsageDetails} from './applyResource/propertyUsageDetails'
 import {getConnectionConversionDetails , ConnectionConversionHeader} from './applyResource/connectionConversionDetails'
@@ -45,6 +52,47 @@ export const stepperData = () => {
   } else {
     return [{ labelKey: "WS_COMMON_CONNECTION_DETAILS" }, { labelKey: "WS_COMMON_DOCS" }, { labelKey: "WS_COMMON_ADDN_DETAILS" }, { labelKey: "WS_COMMON_SUMMARY" }];
   }
+}
+
+
+const displaysubUsageType = (usageType, dispatch, state) => {
+
+  let UsageCategory = get(
+          state.screenConfiguration.preparedFinalObject,
+          "applyScreenMdmsData.PropertyTax.subUsageType"
+        );
+      let  subUsageType=[];
+      UsageCategory.forEach(item=>{
+        if(item.code.split(`${usageType}.`).length==2){
+          subUsageType.push({
+              active:item.active,
+              name:item.name,
+              code:item.code,
+              fromFY:item.fromFY
+            })
+          }
+      });
+          dispatch(prepareFinalObject("applyScreenMdmsData.subUsageType",subUsageType));
+}
+const displayUsagecategory = (usageType, dispatch, state) => {
+
+  let subTypeValues = get(
+          state.screenConfiguration.preparedFinalObject,
+          "applyScreenMdmsData.ws-services-masters.wsCategory"
+        );
+
+      let subUsage=[];
+      if(subTypeValues!== undefined)
+      {
+      subUsage = subTypeValues.filter(cur => {
+                  return (cur.applicationType === usageType ) 
+                });
+          if(subUsage&&subUsage[0])
+          {
+            dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage[0].category));
+          }
+        }
+          
 }
 export const stepper = getStepperObject({ props: { activeStep: 0 } }, stepperData());
 
@@ -130,19 +178,21 @@ export const documentDetails = getCommonCard({
   }
 });
 
-export const getMdmsData = async dispatch => {
+export const getMdmsData = async (state,dispatch) => {
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: commonConfig.tenantId,
       moduleDetails: [
-        { moduleName: "common-masters", masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }] },
+       // { moduleName: "common-masters", masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }] },
         { moduleName: "tenant", masterDetails: [{ name: "tenants" }] },
         { moduleName: "sw-services-calculation", masterDetails: [{ name: "Documents" }, { name: "RoadType" }] },
         { moduleName: "ws-services-calculation", masterDetails: [{ name: "PipeSize" }] },
         {
           moduleName: "PropertyTax",
           masterDetails: [
-          {name: "UsageCategory"}
+          {name: "UsageCategory"},
+          {name:"Floor"},
+          {name:"OwnerShipCategory"},
           ]
         },
         {
@@ -155,6 +205,12 @@ export const getMdmsData = async dispatch => {
             {name : "Ledger"},
             {name : "subDivision"},
             {name : "Division"},
+            {name:"MeterUnit"},
+            {name:"MFRCode"},
+            {name:"sectorList"},
+            {name:"tariffType"},
+            {name:"wsCategory"},
+            {name:"wsDocument"}
           ]
         }
       ]
@@ -163,7 +219,7 @@ export const getMdmsData = async dispatch => {
   try {
     let payload = null;
     payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
-    let UsageType=[] , subUsageType=[];
+    let UsageType=[] , subUsageType=[]; let OwnerShipCategory=[];
     if (payload.MdmsRes['ws-services-calculation'].PipeSize !== undefined && payload.MdmsRes['ws-services-calculation'].PipeSize.length > 0) {
       let pipeSize = [];
       payload.MdmsRes['ws-services-calculation'].PipeSize.forEach(obj => pipeSize.push({ code: obj.size, name: obj.id, isActive: obj.isActive, charges : obj.charges }));
@@ -230,7 +286,39 @@ export const getMdmsData = async dispatch => {
       });
       payload.MdmsRes.PropertyTax.subUsageType=subUsageType;
     }
+
+    if(payload.MdmsRes['PropertyTax'].OwnerShipCategory !== undefined)
+    {
+      payload.MdmsRes.PropertyTax.OwnerShipCategory.forEach(item=>{
+        if(item.code.split("INDIVIDUAL.").length==2){
+          OwnerShipCategory.push({
+              active:item.active,
+              name:item.name,
+              code:item.code,
+             // fromFY:item.fromFY
+            })
+          }
+      });
+      payload.MdmsRes.PropertyTax.OwnerShipCategory=OwnerShipCategory;
+
+    }
+    let cities = state.common.cities || [];
+    let City = []
+    for (let index = 0; index < cities.length; index++) {
+      const element = cities[index];
+      
+      City.push(
+        {
+          name:element.city.name,
+          code:element.code
+        }
+      )
+    }
+   // dispatch(prepareFinalObject("applyScreenMdmsData.City", City));
+    payload.MdmsRes.City = City
+    dispatch(prepareFinalObject("applyScreen.property.address.city", City[0].name));
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+    //
   } catch (e) { console.log(e); }
 };
 
@@ -238,7 +326,7 @@ export const getData = async (action, state, dispatch) => {
   const applicationNo = getQueryArg(window.location.href, "applicationNumber");
   let tenantId = getQueryArg(window.location.href, "tenantId");
   const propertyID = getQueryArg(window.location.href, "propertyId");
-  await getMdmsData(dispatch);
+  await getMdmsData(state, dispatch);
   setModule("rainmaker-ws,rainmaker-pt");
  // setModule("rainmaker-pt");
     const userInfo = JSON.parse(getUserInfo());
@@ -277,11 +365,19 @@ export const getData = async (action, state, dispatch) => {
               );
     
             let subUsage=[];
-            subUsage = subTypeValues.filter(cur => {
+            if(subTypeValues !== undefined)
+            {
+              subUsage = subTypeValues.filter(cur => {
                         return (cur.code.startsWith(usageCategory))
                       });
                 dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage));
 
+            }            
+    // binddependent dropdown object Property Sub Usage Type , Uses Caregory
+    const usageCategory_ = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].property.usageCategory");
+    const waterApplicationType = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].waterApplicationType");
+    displaysubUsageType(usageCategory_, dispatch, state);
+    displayUsagecategory(waterApplicationType, dispatch, state);
                 // check for security deposite
                 if(applicationStatus === "PENDING_FOR_METER_INSTALLATION" ){
                     if(proposedPipeSize == 15){
@@ -459,6 +555,7 @@ export const getData = async (action, state, dispatch) => {
     let propertyObj = payload.Properties[0];
     dispatch(prepareFinalObject("applyScreen.property", findAndReplace(propertyObj, null, "NA")));
     dispatch(prepareFinalObject("searchScreen.propertyIds", propertyID));
+
      //set applyScreen.waterProperty.usageCategory
      if(propertyObj)
      {
@@ -475,6 +572,28 @@ export const getData = async (action, state, dispatch) => {
      }
      
   }
+  //set document
+  // dispatch(prepareFinalObject("applyScreen.property.subusageCategory", "RESIDENTIAL.PLOTTED"));
+  // dispatch(prepareFinalObject("applyScreen.waterProperty.usageSubCategory", "PRIVATEHOUSESWITHINSECTORS"));
+  // dispatch(prepareFinalObject("applyScreen.waterApplicationType", "REGULAR"));
+  // prepareDocumentsUploadData(state, dispatch);
+
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.ownerDetail",
+      "visible",
+      true
+    )
+  )
+  dispatch(
+    handleField(
+      "apply",
+      "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.MultiownerDetail",
+      "visible",
+      false
+    )
+  )
 };
 
 const getApplyScreenChildren = () => {
@@ -490,12 +609,12 @@ const getApplyScreenChildren = () => {
     case "CONNECTION_CONVERSION":
     return {connConversionDetails};
     case "APPLY_FOR_REGULAR_INFO":
-      return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
-    default :    return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
+      return { IDDetails, Details,OwnerInfoCard, propertyUsageDetails, ownerDetails,connectionHolderDetails,  };
+    default :    return { IDDetails, Details, OwnerInfoCard,propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
   }
  }
  else {
-   return { IDDetails, Details, ownerDetails,propertyUsageDetails, connectionHolderDetails, OwnerInfoCard };
+   return { IDDetails, Details, OwnerInfoCard, propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
  }
 
 }
@@ -503,12 +622,186 @@ const getApplyScreenChildren = () => {
 const propertyDetail = getPropertyDetails();
 const propertyIDDetails = getPropertyIDDetails();
 const ownerDetail = getOwnerDetails();
+const MultiownerDetail = getMultipleOwnerDetails();
+//const ownerMulDetail = getMultipleOwnerDetails();
+// const MaterialIndentDetailsCard = {
+//   uiFramework: "custom-containers-local",
+//   moduleName: "egov-store-asset",
+//   componentPath: "MultiItem",
+//   props: {
+//     scheama: getCommonGrayCard({
+//       storeDetailsCardContainer: getCommonContainer(
+//         {
+
+//           MaterialDescription: {
+//             ...getTextField({
+//               label: {
+//                 labelName: "Material Description",
+//                 labelKey: "STORE_MATERIAL_DESCRIPTION"
+//               },
+//               placeholder: {
+//                 labelName: "Material Description",
+//                 labelKey: "STORE_MATERIAL_DESCRIPTION"
+//               },
+//               props:{
+//                 disabled:true
+//               },
+//               required: false,
+//               pattern: getPattern("Name") || null,
+//               jsonPath: "indents[0].indentDetails[0].material.description"
+//             })
+//           },
+//           UOMName: {
+//             ...getSelectField({
+//               label: {
+//                 labelName: "UOM Name",
+//                 labelKey: "STORE_MATERIAL_INDENT_NOTE_UOM_NAME"
+//               },
+//               placeholder: {
+//                 labelName: "Indent Purpose",
+//                 labelKey: "STORE_MATERIAL_INDENT_UOM_NAME_SELECT"
+//               },
+             
+//               required: false,
+//               pattern: getPattern("Name") || null,
+//               jsonPath: "indents[0].indentDetails[0].uom.code",
+//               sourceJsonPath: "createScreenMdmsData.common-masters.UOM",
+//               props: {
+//                 disabled:true,
+//                 optionLabel: "name",
+//                 optionValue: "code"
+//               },
+//             })
+//           },
+         
+//         },
+//         {
+//           style: {
+//             overflow: "visible"
+//           }
+//         }
+//       )
+//     }),
+//     onMultiItemDelete:(state, dispatch)=>{       
+
+//     },
+//     onMultiItemAdd: (state, muliItemContent) => {
+     
+//       return muliItemContent;
+//     },
+//     items: [],
+//     hasAddItem:!false,
+//     isReviewPage:true,
+//     addItemLabel: {
+//       labelName: "ADD",
+//       labelKey: "STORE_MATERIAL_COMMON_CARD_ADD"
+//     },
+//     headerName: "Store",
+//     totalIndentQty:false,
+//     headerJsonPath:
+//       "children.cardContent.children.header.children.head.children.Accessories.props.label",
+//     sourceJsonPath: "indents[0].indentDetails",
+//      //Update Total value when delete any card configuration settings     
+//     cardtotalpropes:{
+//       totalIndentQty:false,
+//       pagename:`creatindent`,
+//       cardJsonPath:"components.div.children.formwizardSecondStep.children.MaterialIndentMapDetails.children.cardContent.children.MaterialIndentDetailsCard.props.items",
+//       jasonpath:"indents[0].indentDetails",
+//       InputQtyValue:"indentQuantity",
+//       TotalValue:"totalValue",
+//       TotalQty:"userQuantity"
+//     },
+//     prefixSourceJsonPath:
+//       "children.cardContent.children.storeDetailsCardContainer.children"
+//   },
+//   type: "array"
+// };
 const holderDetails = getHolderDetails();
 const commentDetails = getCommentDetails();
  const connectionConversionDetails =getConnectionConversionDetails();
  const propertyUsage = getPropertyUsageDetails();
-export const ownerDetails = getCommonCard({ ownerDetailsHeader, ownershipType, ownerDetail });
-export const IDDetails = getCommonCard({ propertyHeader, propertyID, propertyIDDetails });
+export const ownerDetails = getCommonCard({ ownerDetailsHeader, 
+  ownershipTypeInput: {
+    ...getSelectField({
+      label: { labelName: "Ownership Type", labelKey: "WS_OWN_DETAIL_OWNERSHIP_TYPE_LABEL" },
+      placeholder: {
+        labelName: "Select Purpose of Issue",
+        labelKey: "WS_OWN_DETAIL_OWNERSHIP_TYPE_LABEL"
+      },
+      required: true,
+     // errorMessage:"STORE_VALIDATION_PURPOSE_OF_ISSUE_SELECT",
+      jsonPath: "applyScreen.property.ownershipCategory",
+      sourceJsonPath: "applyScreenMdmsData.PropertyTax.OwnerShipCategory",
+    props: {
+      // data: [
+      //   {
+      //     code: "A",
+      //     name: "Single"
+      //   },
+      //   {
+      //     code: "B",
+      //     name: "Multiple"
+      //   },
+       
+      // ],
+      optionValue: "code",
+      optionLabel: "name",
+    },
+    }),
+    beforeFieldChange: (action, state, dispatch) => {
+      //ReturntoSupplier In case user has selected ‘return to supplier’
+      if(action.value === "INDIVIDUAL.MULTIPLEOWNERS")
+      {
+        dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.ownerDetail",
+            "visible",
+            false
+          ))
+          dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.MultiownerDetail",
+            "visible",
+            true
+          ))
+        
+        }
+      else
+      {
+        dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.ownerDetail",
+            "visible",
+            true
+          ))
+          dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.ownerDetails.children.cardContent.children.MultiownerDetail",
+            "visible",
+            false
+          ))
+          if(state.screenConfiguration.preparedFinalObject.applyScreen.property)
+          {
+          if(state.screenConfiguration.preparedFinalObject.applyScreen.property.owners)
+          {
+            let owners = state.screenConfiguration.preparedFinalObject.applyScreen.property.owners
+            if(owners.length>0)
+            {
+              owners = owners.filter(x=>x.isDeleted !== false)
+              dispatch(prepareFinalObject("applyScreen.property.owners",owners));
+            }
+          }
+          }
+          
+
+        
+        }
+    }
+    
+  },
+  
+  ownerDetail ,MultiownerDetail});
+export const IDDetails = getCommonCard({ propertyHeader, propertyID, propertyIDDetails });//propertyID
 export const Details = getCommonCard({ propertyDetail });
 export const connectionHolderDetails = getCommonCard({ holderHeader, sameAsOwner, holderDetails })
 export const propertyUsageDetails = getCommonCard({PropertyUsageHeader,propertyUsage});
@@ -580,6 +873,8 @@ const screenConfig = {
         toggleSewerageFeilds(action, false);
       }
     } else if (applicationNumber && getQueryArg(window.location.href, "action") === "edit") {
+     
+
       togglePropertyFeilds(action, true);
       if (applicationNumber.includes("SW")) {
         dispatch(prepareFinalObject("applyScreen.water", false));
@@ -604,23 +899,54 @@ const screenConfig = {
        }
        
        window.localStorage.removeItem("isTubeWell");
+    
       }
     } else {
-      togglePropertyFeilds(action, false)
+      // togglePropertyFeilds(action, false)
+      // if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.water") && get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
+      //   toggleWaterFeilds(action, true);
+      //   toggleSewerageFeilds(action, true);
+      // } else if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
+      //   toggleWaterFeilds(action, false);
+      //   toggleSewerageFeilds(action, true);
+      // } else {
+      //   toggleWaterFeilds(action, true);
+      //   toggleSewerageFeilds(action, false);
+      // }
+      togglePropertyFeilds(action, true)
       if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.water") && get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
         toggleWaterFeilds(action, true);
         toggleSewerageFeilds(action, true);
       } else if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
-        toggleWaterFeilds(action, false);
+        toggleWaterFeilds(action, true);
         toggleSewerageFeilds(action, true);
       } else {
         toggleWaterFeilds(action, true);
-        toggleSewerageFeilds(action, false);
+        toggleSewerageFeilds(action, true);
       }
+      // action(
+      //   "apply",
+      //   "components.div.children.formwizardFirstStep.children.OwnerInfoCard.children.cardContent.children.tradeUnitCardContainer.children.numberOfWaterClosets",
+      //   "visible",
+      //   false
+      // );
+
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.OwnerInfoCard.children.cardContent.children.tradeUnitCardContainer.children.numberOfWaterClosets.visible",
+        value
+      );
+      set(
+        action.screenConfig,
+        "components.div.children.formwizardFirstStep.children.OwnerInfoCard.children.cardContent.children.tradeUnitCardContainer.children.numberOfToilets.visible",
+        value
+      );
     }
 
     // const tenantId = getTenantId();
     // dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
+
+   
     
     return action;
   },

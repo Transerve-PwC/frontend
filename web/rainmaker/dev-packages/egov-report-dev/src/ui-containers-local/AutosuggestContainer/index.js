@@ -22,7 +22,6 @@ class AutoSuggestor extends Component {
   
 
   render() {
-    debugger
     
     const {
       value,

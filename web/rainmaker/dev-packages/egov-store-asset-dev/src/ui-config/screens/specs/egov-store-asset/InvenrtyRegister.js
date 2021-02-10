@@ -12,6 +12,9 @@ import {
   getTextField,
   getBreak
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {    
+  validateFields,  
+} from "../utils";
 //import { DOEApplyApplication} from "./applydoeResources/DOEApplyApplication";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getSearchPensioner,getPMSPattern } from "../../../../ui-utils/commons";
@@ -63,6 +66,12 @@ let searchScreenObject = get(
   "searchScreen",
   {}
 );
+const isProfessionalDetailsValid = validateFields(
+  "components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children",
+  state,
+  dispatch,
+  "InvenrtyRegister"
+);
 if( Object.keys(searchScreenObject).length == 0 )
 {
   const textFields = ["storeName","materialName",];
@@ -72,7 +81,7 @@ if( Object.keys(searchScreenObject).length == 0 )
     ) {
       dispatch(
         handleField(
-          "OpenningBalence",
+          "InvenrtyRegister",
           `components.div.children.SearchCard.children.cardContent.children.appPRSearchContainer.children.${textFields[i]}`,
           "props.value",
           ""
@@ -80,6 +89,7 @@ if( Object.keys(searchScreenObject).length == 0 )
       );
     }
   }
+  
   dispatch(prepareFinalObject("searchScreen", {}));
   dispatch(
     toggleSnackbar(
@@ -94,47 +104,64 @@ if( Object.keys(searchScreenObject).length == 0 )
 }
 else
 {
-
-for (var key in searchScreenObject) {  
+  if(!isProfessionalDetailsValid)
+  {
+    dispatch(
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please fill at least one field to start search",
+          labelKey: "ERR_FILL_ALL_FIELDS"
+        },
+        "warning"
+      )
+    );
+  }
+  else{
+    for (var key in searchScreenObject) {  
   
-  queryObject.push({ key: key, value: (searchScreenObject[key]) });
-}
+      queryObject.push({ key: key, value: (searchScreenObject[key]) });
+    }
+    
+    queryObject.push({
+      key: "isprint",
+      value: false
+    });
+    
+    try {
+      let payload =[];
+    
+     let Responce = await httpRequest(
+        "post",
+        "/store-asset-services/receiptnotes/_inventoryreport",
+        "_inventoryreport",    
+        queryObject
+      );
+    
+    payload = InventoryData()
+    dispatch(prepareFinalObject("InventoryData", payload));
+    if(get(Responce,"printData",[]))
+    dispatch(prepareFinalObject("InventoryAPIData", get(Responce,"printData",[])));
+    else
+    {
+     let  InventoryAPIData =[] 
+     dispatch(prepareFinalObject("InventoryAPIData",InventoryAPIData));
+    }
+      console.log(payload)
+    
+    
+      
+    
+    
+    return payload
+    
+    } catch (e) {
+      console.log(e);
+    }
 
-queryObject.push({
-  key: "isprint",
-  value: false
-});
-
-try {
-  let payload =[];
-
- let Responce = await httpRequest(
-    "post",
-    "/store-asset-services/receiptnotes/_inventoryreport",
-    "_inventoryreport",    
-    queryObject
-  );
-
-payload = InventoryData()
-dispatch(prepareFinalObject("InventoryData", payload));
-if(get(Responce,"printData",[]))
-dispatch(prepareFinalObject("InventoryAPIData", get(Responce,"printData",[])));
-else
-{
- let  InventoryAPIData =[] 
- dispatch(prepareFinalObject("InventoryAPIData",InventoryAPIData));
-}
-  console.log(payload)
+  }
 
 
-  
-
-
-return payload
-
-} catch (e) {
-  console.log(e);
-}
 }
 
 

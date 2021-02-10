@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PersonalInfo from './components/ApplicatDetails';
-import BookingDetails from './components/BookingDetails';
+import PersonalInfo from './components/ApplicatDetails';  
+import BookingDetails from './components/BookingDetails'; 
+import BankDetails from './components/BankDetails';
 import SummaryInfo from './components/SummaryDetails';
 import DocumentDetails from './components/DocumentsDetails';
 import ParkPaymentDetails from './components/PaccPaymentDetails'
@@ -15,38 +16,28 @@ import commonConfig from "config/common.js";
 
 
 export class StepForm extends Component {
-
-
-/* 
- childrenArray: [
-                { labelName: "APPLICANT DETAILS", labelKey: "BK_PCC_APPLICANT_DETAILS" },
-                { labelName: "BOOKING DETAILS", labelKey: "BK_PCC_BOOKING_DETAILS" },
-                { labelName: "Payments Details", labelKey: "BK_PCC_PAYMENT_DETAILS" },
-                { labelName: "DOCUMENTS", labelKey: "BK_PCC_DOCUMENTS" },
-                { labelName: "SUMMARY", labelKey: "BK_PCC_SUMMARY" },]
- childrenArray: [
-            { labelName: "Applicant Details", labelKey: "BK_MYBK_PCC_EMP_APPLICANT_DETAILS" },
-            { labelName: "Booking Details", labelKey: "BK_MYBK_PCC_EMP_BOOKING_DETAILS" },
-            { labelName: "Payments Details", labelKey: "BK_PCC_PAYMENT_DETAILS" },
-            { labelName: "Documents", labelKey: "BK_MYBK_PCC_EMP_DOCUMENTS" },
-            { labelName: "Summary", labelKey: "BK_MYBK_PCC_EMP_SUMMARY" },]
-
-*/
+// this.props.appData &&  this.props.appData.bkApplicantName ||  "" 
 
     state = {
         step: 0,
-        firstName: '',
+        firstName: this.props.appData.bkApplicantName ? this.props.appData.bkApplicantName : '',
+        BankAccountName: '',
+        NomineeName:'',
+        BankAccountNumber:'',
+        IFSCCode:'',
+        AccountHolderName:'',
+        accountType: 'Saving',
         lastName: '',
-        email: '',
-        mobileNo: '',
+        email: this.props.appData.bkEmail ? this.props.appData.bkEmail : '',
+        mobileNo: this.props.appData.bkMobileNumber ? this.props.appData.bkMobileNumber : '',
         jobTitle: '',
         jobCompany: '',
         jobLocation: '',
-        houseNo: '',
-        purpose: '',
+        houseNo: this.props.appData.bkHouseNo ? this.props.appData.bkHouseNo : '',
+        purpose: this.props.appData.bkBookingPurpose ? this.props.appData.bkBookingPurpose : '',
         locality: '',
         residenials: '',
-        approverName: '',
+        approverName: '',//bkBookingPurpose
         comment: '',
         dimension: '',
         location: '',
@@ -55,12 +46,13 @@ export class StepForm extends Component {
         facilitationCharges: '',
         NewfCharges: '',
         surcharge: '', utGST: '', cGST: '',
-        GSTnumber: '', type: '',
+        GSTnumber: this.props.appData &&  this.props.appData.bkCustomerGstNo ||  "", type: '',
         fromDate: '', finalRent: '',
         toDate: '', transactionNumber: '', bankName: '', paymentMode: '', amount: '', transactionDate: '', discountType: 'General',          
         childrenArray: [
             { labelName: "Applicant Details", labelKey: "APPLICANT DETAILS" },
             { labelName: "Booking Details", labelKey: "BOOKING DETAILS" },
+            { labelName: "Bank Details", labelKey: "BANK DETAILS" },
             { labelName: "Payments Details", labelKey: "PAYMENT DETAILS" },
             { labelName: "Documents", labelKey: "DOCUMENTS" },
             { labelName: "Summary", labelKey: "SUMMARY" },]
@@ -152,6 +144,11 @@ export class StepForm extends Component {
         this.setState({ discountType: event.target.value });
         console.log("this.state-of-discountType--",this.state.discountType)
     };
+    AccountType = (event) => {
+        console.log("event--",event)
+        this.setState({ accountType: event.target.value });
+        console.log("this.state-of-accountType--",this.state.discountType)
+    };
 
     onToDateChange = e => {
         const toDate = e.target.value;
@@ -167,6 +164,9 @@ export class StepForm extends Component {
         })
 
     }
+
+
+
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value });
@@ -186,9 +186,10 @@ export class StepForm extends Component {
     showStep = () => {
     console.log("fchargesInshowStep--",this.state.NewfCharges)
         let { step, firstName, transactionDate, transactionNumber, bankName, paymentMode,
+            BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,
             lastName, utGST, cGST, GSTnumber, type, jobTitle, facilitationCharges, surcharge,
             jobCompany, approverName, comment, jobLocation, mobileNo, email,fCharges,
-            dimension, cleaningCharges, houseNo, rent, purpose, locality, residenials, discountType,NewfCharges } = this.state;
+            dimension, cleaningCharges, houseNo, rent, purpose, locality, residenials, discountType,NewfCharges,accountType } = this.state;
             let fc = fCharges?fCharges.facilitationCharge:'100';
 
             let facCharges = NewfCharges ? NewfCharges : fc ;
@@ -205,13 +206,13 @@ export class StepForm extends Component {
             bookingData ? bookingData.bkFromDate: "",
             bookingData ? bookingData.bkToDate: ""
         );
-        console.log("totalDays--",daysCount)
+        console.log("totalDays--",daysCount ? daysCount :"")
         let venueType = vanueData ? vanueData.venueType: "";
         console.log("venueType--",venueType)
         let bokingType = bookingData ? bookingData.bkBookingVenue : ""
         console.log("bokingType--",bokingType)
-        console.log("vanueData.rent--",vanueData.rent)
-        console.log("vanueData.cleaningCharges--",vanueData.cleaningCharges)
+        console.log("vanueData.rent--",vanueData ? vanueData.rent :"")
+        console.log("vanueData.cleaningCharges--",vanueData && vanueData.cleaningCharges || "")
 
 
     //     let tAmount = vanueData ? Number(vanueData.rent) + Number(vanueData.cleaningCharges) : ""
@@ -293,7 +294,7 @@ let vrent = Number(vanueData.rent);
             return (<PersonalInfo
                 nextStep={this.nextStep}
                 handleChange={this.handleChange}
-                firstName={firstName}
+                firstName={firstName}    
                 lastName={lastName}
                 email={email}
                 mobileNo={mobileNo}
@@ -301,8 +302,6 @@ let vrent = Number(vanueData.rent);
                 handleChangeDiscount={this.handleChangeDiscount}
                 discountType={discountType}
             />);
-
-
         if (step === 1)
             return (<BookingDetails
                 houseNo={houseNo}
@@ -335,6 +334,21 @@ let vrent = Number(vanueData.rent);
                 type={type}
             />);
         if (step === 2)
+            return (<BankDetails
+                nextStep={this.nextStep}
+                handleChange={this.handleChange}
+                BankAccountName={BankAccountName}    
+                NomineeName={NomineeName}
+                BankAccountNumber={BankAccountNumber}
+                IFSCCode={IFSCCode}
+                AccountHolderName={AccountHolderName}
+                accountType={accountType}
+                AccountType={this.AccountType}
+                nextStep={this.nextStep}
+                prevStep={this.prevStep}
+            />);
+
+        if (step === 3)
             return (<ParkPaymentDetails
                 nextStep={this.nextStep}
                 prevStep={this.prevStep}
@@ -351,7 +365,7 @@ let vrent = Number(vanueData.rent);
                 facilitationCharges={facilitationCharges}
             />);
 
-        if (step === 3)
+        if (step === 4)
             return (<DocumentDetails
                 nextStep={this.nextStep}
                 rent={vrent}
@@ -362,20 +376,26 @@ let vrent = Number(vanueData.rent);
                 email={email}
                 mobileNo={mobileNo}
             />);
-        if (step === 4)
+        if (step === 5)
             return (<SummaryInfo
                 bookingData={bookingData}
                 venueType={venueType}
                 bokingType={bokingType}
                 discountType={discountType}
+                accountType={accountType}
                 approverName={approverName}
                 amount={amount}
                 bankName={bankName}
                 transactionDate={transactionDate}
                 transactionNumber={transactionNumber}
                 paymentMode={paymentMode}
-                comment={comment}
-                firstName={firstName}
+                comment={comment} 
+                BankAccountName={BankAccountName}  //start for bank details
+                NomineeName={NomineeName} 
+                BankAccountNumber={BankAccountNumber}
+                IFSCCode={IFSCCode}
+                AccountHolderName={AccountHolderName}
+                firstName={firstName} //start of application details
                 purpose={purpose}
                 utGST={utGST}
                 cGST={cGST}
@@ -437,6 +457,9 @@ const mapStateToProps = state => {
   let bookingOne = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.bkBookingData:"two"
   let stateData = state;
 
+  let appData = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0] : ""
+  console.log("appData--",appData)
+
   let fCharges;
   if (arrayName && arrayName.length > 0) {
     arrayName.forEach((item) => {
@@ -452,7 +475,8 @@ const mapStateToProps = state => {
         stateData,
         fromDateone,
         bookingOne,
-        fCharges
+        fCharges,
+        appData
     }
 }
 

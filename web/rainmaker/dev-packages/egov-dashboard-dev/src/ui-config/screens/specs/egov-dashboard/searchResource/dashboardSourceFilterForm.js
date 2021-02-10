@@ -1,6 +1,6 @@
 import { getCommonCard, getCommonContainer, getDateField, getLabel, getPattern, getSelectField, getTextField } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { searchAPICall } from "./functions";
-import { resetConstraintsFields, resetFields } from "./dashboardSourceFunction";
+import { resetConstraintsFields, resetFields } from "./functions";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import  {TypeOfServiceRequest} from "../../../../../ui-utils/commons"
 import get from "lodash/get";

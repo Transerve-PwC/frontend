@@ -175,7 +175,7 @@ export default class ShowField extends Component {
       //       />
       //     </Col>
       //   );
-
+      
       case "singlevaluelist":
         const dataSourceConfig = { text: "label", value: "value" };
         return (
@@ -272,7 +272,37 @@ export default class ShowField extends Component {
             </SelectField>
           </Grid>
         );
-
+        case "bookingDropDown":
+          return (
+            <Grid item xs={12} sm={4} md={4} lg={4}>
+              <SelectField
+                // className="custom-form-control-for-select"
+                hintText="Select"
+                underlineDisabledStyle={{ background: "blue" }}
+                disabled={obj.disabled ? true : false}
+                id={obj.label.split(".").join("-")}
+                fullWidth={true}
+                dropDownMenuProps={{ targetOrigin: { horizontal: "left", vertical: "bottom" } }}
+                floatingLabelFixed={true}
+                floatingLabelText={
+                  <span>
+                    {description} <span style={{ color: "#FF0000" }}>{obj.isMandatory ? " *" : ""}</span>
+                  </span>   
+                }
+                value={typeof obj.value == "undefined" ? "" : obj.value}
+                onChange={(event, key, value) => {
+                  let e = { target: { value } };
+                  this.props.handler(e, obj.name, obj.isMandatory ? true : false, "");
+                }}
+                maxHeight={200}
+              >
+                {dropDownData.map((dd, index) => (
+                  <MenuItem value={translate(dd.value)} key={index} primaryText={translate(dd.label)} />
+                ))}
+              </SelectField>
+            </Grid>
+          );
+  
       case "multivaluelist":
         return (
           <Grid item xs={12} sm={4} md={4} lg={4}>

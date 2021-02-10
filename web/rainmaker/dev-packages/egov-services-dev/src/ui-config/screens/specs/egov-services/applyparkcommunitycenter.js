@@ -5,6 +5,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { footer } from "./applyResourceParkCommunityCenter/footer";
 import {
+    bankAccountDetails, 
     personalDetails,
     bookingDetails,
 } from "./applyResourceParkCommunityCenter/nocDetails";
@@ -41,6 +42,7 @@ import {
 export const stepsData = [
     { labelName: "Applicant Details", labelKey: "BK_PCC_APPLICANT_DETAILS" },
     { labelName: "Booking Details", labelKey: "BK_PCC_BOOKING_DETAILS" },
+    { labelName: "Bank Account Details", labelKey: "BK_PCC_BANK_ACCOUNT_DETAILS" },
     { labelName: "Documents", labelKey: "BK_PCC_DOCUMENTS" },
     { labelName: "Summary", labelKey: "BK_PCC_SUMMARY" },
 ];
@@ -114,7 +116,7 @@ export const formwizardThirdStep = {
         id: "apply_form3",
     },
     children: {
-        documentDetails,
+        bankAccountDetails ,
     },
     visible: false,
 };
@@ -124,6 +126,18 @@ export const formwizardFourthStep = {
     componentPath: "Form",
     props: {
         id: "apply_form4",
+    },
+    children: {
+        documentDetails,
+    },
+    visible: false,
+};
+
+export const formwizardFifthStep = {
+    uiFramework: "custom-atoms",
+    componentPath: "Form",
+    props: {
+        id: "apply_form5",
     },
     children: {
         summaryDetails,
@@ -474,6 +488,12 @@ const screenConfig = {
             dispatch(
                 prepareFinalObject("Booking.bkLocation", masterDataItem[0].name)
             );
+
+            dispatch(
+                prepareFinalObject("Booking.bkAccountType", "Saving")
+            );
+
+            
             dispatch(
                 prepareFinalObject(
                     "Booking.bkFromDate",
@@ -584,8 +604,9 @@ const screenConfig = {
                 "formwizardSecondStep",
                 "formwizardThirdStep",
                 "formwizardFourthStep",
+                "formwizardFifthStep",
             ];
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 5; i++) {
                 set(
                     action.screenConfig,
                     `components.div.children.${formWizardNames[i]}.visible`,
@@ -627,6 +648,7 @@ const screenConfig = {
                 formwizardSecondStep,
                 formwizardThirdStep,
                 formwizardFourthStep,
+                formwizardFifthStep,
                 footer,
             },
         },

@@ -47,13 +47,19 @@ class PaymentRedirect extends Component {
         }
 
       } else {
+        let currentState = "INITIATED";
+        if (getapplicationType() == "ROADCUTNOC") {
+          currentState = "VERIFY AFTER APPROVAL L3";
+        } else if (getapplicationType() == "ADVERTISEMENTNOC") { 
+          currentState = "APPROVED";
+        }
         let data =
         {
           "applicationType": getapplicationType(),
           "tenantId": getOPMSTenantId(),
           "applicationStatus": "PAID",
           "applicationId": consumerCode,
-          "currentState": getapplicationType() == "ROADCUTNOC" ? "APPROVED" : "INITIATED",
+          "currentState":  currentState,
           "dataPayload": {
             "amount": localStorageGet(`amount`),
             "gstAmount": localStorageGet(`gstAmount`)

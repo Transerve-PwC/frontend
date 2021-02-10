@@ -141,10 +141,11 @@ const routeToPaymentPage = (exempted, dispatch) => {
 
   const appendUrl =
     process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
-  const reviewUrl = parseInt(exempted) === 1 ? `/egov-opms/advertisementnoc-my-applications`
-    :
-    localStorageGet('app_noc_status') === 'REASSIGN' ? `/egov-opms/advertisementnoc-my-applications`
-      : `${appendUrl}/egov-opms/pay?applicationNumber=${applicationid}&tenantId=${tenantId}`;
+  // const reviewUrl = parseInt(exempted) === 1 ? `/egov-opms/advertisementnoc-my-applications`
+  //   :
+  //   localStorageGet('app_noc_status') === 'REASSIGN' ? `/egov-opms/advertisementnoc-my-applications`
+  //     : `${appendUrl}/egov-opms/pay?applicationNumber=${applicationid}&tenantId=${tenantId}`;
+  const reviewUrl = `/egov-opms/advertisementnoc-my-applications`;
   dispatch(toggleSpinner());
 
   dispatch(setRoute(reviewUrl));

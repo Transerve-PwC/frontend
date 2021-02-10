@@ -145,7 +145,7 @@ export const bookingDetails = getCommonCard({
                     labelName: "Enter Complete Address",
                     labelKey: "BK_OSB_COMPLETE_ADDRESS_PLACEHOLDER",
                 },
-                pattern: getPattern("Address"),
+                
                 errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
                 required: true,
                 jsonPath: "Booking.bkCompleteAddress",

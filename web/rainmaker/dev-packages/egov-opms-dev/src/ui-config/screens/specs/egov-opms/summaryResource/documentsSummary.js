@@ -23,7 +23,7 @@ export const documentsSummary = getCommonGrayCard({
         },
         ...getCommonSubHeader({
           labelName: "Documents",
-          labelKey: "NOC_SUMMARY_DOCUMENTS_HEADER﻿"
+          labelKey: "NOC_SUMMARY_DOCUMENTS_HEADER"
         }),
       },
       editSection: {

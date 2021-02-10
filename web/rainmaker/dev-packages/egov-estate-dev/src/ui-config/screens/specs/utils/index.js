@@ -146,10 +146,16 @@ export const getFeesEstimateCard = props => {
   };
 };
 
-export const getButtonVisibility = (status, button) => {
+export const getButtonVisibility = (status, button, userRole) => {
   if ((status === "ES_PENDING_PAYMENT" || status === "ES_MM_PENDING_PAYMENT") && button === "PENDINGPAYMENT") return true;
   if (status === "ES_PENDING_JE_VERIFICATION" && button === "NOCVERIFICATION") return true;
-  if (status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT") return true;
+  
+  if(!!userRole){
+    if (status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT" && userRole !== "ES_MM_BUILDING_INSPECTOR") return false;
+  }
+  else if(status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT"){
+    return true;
+  }
   if ((status === "ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION" || status === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS" || status === "ES_MM_PENIDNG_CITIZEN_NOTICE") && button === "UPLOAD_DOCUMENT") return true
   return false;
 };
@@ -2357,7 +2363,13 @@ export const _getPattern = (type) => {
       case "NocReason":
         return /^([\s\S]){3,150}$/i;
         case "variationdetail":
-            return /^([\s\S]){0,150}$/i
+            return /^([\s\S]){0,150}$/i;
+            case "street":
+              return /^[a-zA-Z0-9]{2,100}$/i;
+              case "height":
+      return /^[1-9][0-9]{0,6}$/i;
+      case "numeric":
+        return /^[1-9][0-9]{2,49}$/i;
   }
 }
 

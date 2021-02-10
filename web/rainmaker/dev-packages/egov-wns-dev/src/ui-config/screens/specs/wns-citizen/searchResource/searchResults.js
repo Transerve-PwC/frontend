@@ -130,7 +130,8 @@ export const searchResults = {
         options: {
           filter: false,
           customBodyRender: (value, data) => {
-            if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
+            //if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
+              if (data.rowData[9] ==='INITIATED') {
               return (
                 // <Link
                 //   to={`/wns/viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}`}
@@ -163,6 +164,13 @@ export const searchResults = {
       {
         name: getTextToLocalMapping("tenantId"),
         labelKey: "WS_COMMON_TABLE_COL_TENANTID_LABEL",
+        options: {
+          display: false
+        }
+      },
+      {
+        name: getTextToLocalMapping("Application Status"),
+        labelKey: "WS_COMMON_TABLE_COL_APPLICATION_STATUS_LABEL",
         options: {
           display: false
         }

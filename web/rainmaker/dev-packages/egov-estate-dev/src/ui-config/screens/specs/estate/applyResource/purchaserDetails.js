@@ -24,7 +24,9 @@ let screenName = "apply";
 if ((window.location.href).includes("allotment")) {
     screenName = "allotment";
 }
-
+else if((window.location.href).includes("apply-manimajra")){
+  screenName = "apply-manimajra";
+}
 export const purchaserHeader = getCommonTitle({
   labelName: "Previous Owner Details",
   labelKey: "ES_PREVIOUS_OWNER_DETAILS_HEADER"
@@ -327,7 +329,8 @@ const shareField = {
   errorMessage:"ES_ERR_SHARE_FIELD",
   // required: true,
   pattern: _getPattern("ownerShare"),
-  jsonPath: "Properties[0].propertyDetails.purchaser[0].share"
+  jsonPath: "Properties[0].propertyDetails.purchaser[0].share",
+  visible:!!(window.location.href).includes("apply-manimajra")
 }
 
 const modeOfTransferField = {

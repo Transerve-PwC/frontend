@@ -179,9 +179,6 @@ class BookingDetails extends Component {
                       <LabelContainer labelName="Date" labelKey="BK_DATE_LABEL" />
                     </Typography>
                     <Typography variant="body2">
-                      {/* <LabelContainer  complaint && complaint.applicantName ? complaint.applicantName : 'NA',
-            labelName={this.convertEpochToDate(lastModifiedTime,"dayend")}
-          /> */}
                       <LabelContainer
 
                         labelName={ProcessInstances && ProcessInstances.length > 0 && ProcessInstances[0].auditDetails ?
@@ -216,11 +213,6 @@ class BookingDetails extends Component {
                         body2: "body2-word-wrap"
                       }}
                     >
-                      {/*<LabelContainer
-            labelName={ProcessInstances && ProcessInstances.length>0 && 
-              ProcessInstances[0].state? ProcessInstances[0].state.state: ''
-            }
-          />*/}
                       <LabelContainer
                         labelName={ProcessInstances && ProcessInstances.length > 0 &&
                           ProcessInstances[0].state ? this.getCurrentStatus(ProcessInstances[0].state.state) : ''
@@ -234,18 +226,6 @@ class BookingDetails extends Component {
                             : ""
                         }
                       />
-
-                      {/* <LabelContainer
-            labelName={getCurrentStatus(ProcessInstances[0].state.state)}
-            labelKey={
-              ProcessInstances[0].businessService
-                ? `WF_${ProcessInstances[0].businessService.toUpperCase()}_${
-                  ProcessInstances[0],
-                  state.state
-                  }`
-                : ""
-            }
-          /> */}
                     </Typography>
                   </div>
                   <div className="col-md-2">
@@ -261,9 +241,10 @@ class BookingDetails extends Component {
                         body2: "body2-word-wrap"
                       }}
                     >
+                      
                       <LabelContainer
-                        labelName={ProcessInstances && ProcessInstances.length > 0 && ProcessInstances[0].assignee ?
-                          ProcessInstances[0].assignee.name
+                        labelName={ProcessInstances && ProcessInstances.length > 0 && ProcessInstances[0].assigner ?
+                          ProcessInstances[0].assigner.name
                           : "NA"
                         }
                       />

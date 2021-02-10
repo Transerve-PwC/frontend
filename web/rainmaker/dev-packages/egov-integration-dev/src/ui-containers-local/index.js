@@ -89,6 +89,11 @@ const EofficestatContainer = Loadable({
   loader: () => import("./EofficestatContainer"),
   loading: () => <Loading />
 })
+//EawasContainer
+const EawasContainer = Loadable({
+  loader: () => import("./EawasContainer"),
+  loading: () => <Loading />
+})
 //Payslip
 const PayslipContainer = Loadable({
   loader: () => import("./PayslipContainer"),
@@ -115,5 +120,6 @@ export {
   WorkFlowContainer,
   InventoryContainer,
   EofficestatContainer,
+  EawasContainer,
   PayslipContainer
 };

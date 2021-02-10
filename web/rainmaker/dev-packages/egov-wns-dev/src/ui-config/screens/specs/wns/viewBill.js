@@ -1,6 +1,6 @@
 import { getCommonHeader, getCommonCard, getCommonGrayCard, getCommonContainer, getCommonSubHeader, convertEpochToDate, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 // import get from "lodash/get";
-import { getSearchResults, getSearchResultsForSewerage, fetchBill, getDescriptionFromMDMS, getConsumptionDetails, billingPeriodMDMS } from "../../../../ui-utils/commons";
+import { getSearchResults, getBillingEstimation, getSearchResultsForSewerage, fetchBill, getDescriptionFromMDMS, getConsumptionDetails, billingPeriodMDMS } from "../../../../ui-utils/commons";
 import set from "lodash/set";
 import get from "lodash/get";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -94,7 +94,19 @@ const searchResults = async (action, state, dispatch, consumerCode) => {
   let viewBillTooltip = [], data;
   if (service === "WATER") {
     let meterReadingsData = await getConsumptionDetails(queryObjectForConsumptionDetails, dispatch);
+    let requestBody=
+    {billGeneration:
+    {            
+      consumerCode:consumerCode,
+      tenantId:tenantId,
+      paymentMode:'cash',
+      isGenerateDemand:true,            
+    }
+  }
+    let billResults = await getBillingEstimation(requestBody, dispatch)
+
     let payload = await getSearchResults(queryObjForSearch);
+   
     let queryObjectForFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: consumerCode }, { key: "businessService", value: "WS" }];
     data = await fetchBill(queryObjectForFetchBill, dispatch);
     if (payload !== null && payload !== undefined && data !== null && data !== undefined) {

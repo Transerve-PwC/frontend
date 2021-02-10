@@ -9,9 +9,9 @@ class PayDetails extends Component {
   
   
 
-render() {
-const {amount, cGST, utGST, location,facilationChargesSuccess,result, firstStep,fc,
-  BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,totalAmountSuPage,one,two,three,four,five,six,
+render() {//currentAppStatus
+const {amount, cGST, utGST, location,facilationChargesSuccess,result, firstStep,fc,seven,
+  BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,totalAmountSuPage,one,two,three,four,five,six,currentAppStatus,
   PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE} = this.props
 
 // let num = 100.000;
@@ -91,7 +91,15 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
                        
               </h5>
                     </button>
-                 
+                {currentAppStatus == "OFFLINE_RE_INITIATED" ?  <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_DATE/VENUE_CHANGE" />
+                </div>
+                <div className="col-sm-4 col-xs-12"> 
+                <h5 style={{ textAlign: "right" }}>{seven ? seven : 'NA'}</h5>
+                </div>
+              </div> : ""}
+               
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">

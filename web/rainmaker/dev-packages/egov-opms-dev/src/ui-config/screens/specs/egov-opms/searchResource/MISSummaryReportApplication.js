@@ -13,7 +13,7 @@ import {
   import { searchApiCall1,searchApiCall2,searchApiCall3,searchApiCall4} from "./functions";
   import {
     getCommonHeader,
-  
+    getTodaysDateInYMD,
     getCommonSubHeader,
     
   } from "egov-ui-framework/ui-config/screens/specs/utils";
@@ -27,7 +27,7 @@ import {
   import get from "lodash/get";
   import { convertEpochToDate, convertDateToEpoch } from "../../utils/index";
   
-  //import { getTodaysDateInYMD,getFinancialYearDates} from "../../utils";
+  // import { getTodaysDateInYMD,getFinancialYearDates} from "../../utils";
   
   
 import './index.css'
@@ -283,12 +283,10 @@ disabled:true
           
             jsonPath:"MISSummaryReport[0].FromDate",
             sourceJsonPath:"MISSummaryReport[0].FromDate",
-            
+            maxValue: new Date(),      
             props: {
-              //  jsonPath: "Employee[0].serviceHistory[0].serviceFrom"
                 inputProps: {
-               //   min: getTodaysDateInYMD(),
-               //   max: getFinancialYearDates("yyyy-mm-dd").endDate
+                 max: getTodaysDateInYMD()
                 }
               },
     required:true
@@ -308,8 +306,13 @@ disabled:true
          pattern: getPattern("Date"),
         jsonPath:"MISSummaryReport[0].ToDate",
        sourceJsonPath:"MISSummaryReport[0].ToDate",
-     // minValue: new Date(),
-        required:true
+        maxValue: new Date(),
+        props: {
+            inputProps: {
+            max: getTodaysDateInYMD()
+            }
+          },
+          required: true
     
           
        
@@ -377,8 +380,12 @@ disabled:true
              required:true,
             jsonPath:"RevenueByApplicationTypeReport[0].FromDate" ,       
             sourceJsonPath:"RevenueByApplicationTypeReport[0].FromDate",
-            
-                                  
+            maxValue: new Date(),      
+            props: {
+                inputProps: {
+                 max: getTodaysDateInYMD()
+                }
+              }
       }),
 
       ToDate: getDateField({
@@ -396,9 +403,12 @@ disabled:true
          
         jsonPath:"RevenueByApplicationTypeReport[0].ToDate",
         sourceJsonPath:"RevenueByApplicationTypeReport[0].ToDate",
-        
-          
-       
+        maxValue: new Date(),      
+        props: {
+            inputProps: {
+             max: getTodaysDateInYMD()
+            }
+          } 
       }),
                            
   }),
@@ -483,7 +493,13 @@ disabled:true
               
              jsonPath:"reportSectorWise[0].FromDate" ,       
              sourceJsonPath:"reportSectorWise[0].FromDate",
-             
+             maxValue: new Date(),      
+             props: {
+                 inputProps: {
+                  max: getTodaysDateInYMD()
+                 }
+               }
+ 
                                    
        }),
  
@@ -502,7 +518,13 @@ disabled:true
           
          jsonPath:"reportSectorWise[0].ToDate",
          sourceJsonPath:"reportSectorWise[0].ToDate",
-         
+         maxValue: new Date(),      
+         props: {
+             inputProps: {
+              max: getTodaysDateInYMD()
+             }
+           }
+
            
         
        }),

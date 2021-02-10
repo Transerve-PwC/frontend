@@ -79,6 +79,61 @@ const screenConfig = {
             },
           },
           documentDetails,
+          SearchCard: getCommonCard({
+            appPRSearchContainer: getCommonContainer({
+              uploadFromDate: {
+                ...getDateField({
+                  label: {
+                    labelName: "From Date",
+                    labelKey: "WS_COMMON_FROM_DATE_LABEL"
+                  },
+                  placeholder: {
+                    labelName: "From Date",
+                    labelKey: "WS_COMMON_FROM_DATE_LABEL"
+                  },
+                  required: true,
+                  pattern: getPattern("Date") || null,
+                  jsonPath: "searchScreen.fromDate",
+                  gridDefination: {
+                    xs: 12,
+                    sm: 3,
+                  },
+                  props: {
+                    inputProps: {
+                      max: new Date().toISOString().slice(0, 10),
+                    }
+                  }
+                })
+              },
+              uploadToDate: {
+                ...getDateField({
+                  label: {
+                    labelName: "To Date",
+                    labelKey: "WS_COMMON_TO_DATE_LABEL"
+                  },
+                  placeholder: {
+                    labelName: "To Date",
+                    labelKey: "WS_COMMON_TO_DATE_LABEL"
+                  },
+                  required: true,
+                 // errorMessage: "ERR_FILL_FROM_DATE",
+                  pattern: getPattern("Date") || null,
+                  jsonPath: "searchScreen.toDate",
+                  gridDefination: {
+                    xs: 12,
+                    sm: 3,
+                  },
+                  props: {
+                    inputProps: {
+                      max: new Date().toISOString().slice(0, 10),
+                    }
+                  }
+                })
+              },
+
+            }),
+          }),
+
           footer,
         },
       },

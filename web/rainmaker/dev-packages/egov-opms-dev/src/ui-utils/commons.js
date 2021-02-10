@@ -757,10 +757,12 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
             ];
             set(payload, "uploadVaccinationCertificate", otherDocuments_Vaccine);
             set(payload, "uploadPetPicture", otherDocuments_pet);
+         
 
           }
         }
       });
+      set(payload, "idName", getIdName(state,"PETNOC",get(payload, null)));
       response = await httpRequest("post", "/pm-services/noc/_update", "", [], { dataPayload: payload });
       setapplicationNumber(response.applicationId);
       dispatch(prepareFinalObject("PETNOC", response));
@@ -1258,6 +1260,7 @@ export const createUpdateSellMeatNocApplication = async (state, dispatch, status
         return { status: "fail", message: response };
       }
     } else if (method === "UPDATE") {
+      set(payload, "idName", getIdName(state, "SELLMEATNOC", get(payload, null)));
       response = await httpRequest("post", "/pm-services/noc/_update", "", [], { dataPayload: payload });
       setapplicationNumber(response.applicationId);
       dispatch(prepareFinalObject("SELLMEATNOC", response));
@@ -1349,6 +1352,7 @@ export const createUpdateRoadCutNocApplication = async (state, dispatch, status)
         return { status: "fail", message: response };
       }
     } else if (method === "UPDATE") {
+      set(payload, "idName", getIdName(state,"ROADCUTNOC",get(payload, "division")));
       response = await httpRequest("post", "/pm-services/noc/_update", "", [], { dataPayload: payload });
       setapplicationNumber(response.applicationId);
       dispatch(prepareFinalObject("ROADCUTNOC", response));
@@ -1423,7 +1427,7 @@ export const createUpdateADVNocApplication = async (state, dispatch, status) => 
     } else if (method === "UPDATE") {
       dispatch(prepareFinalObject("ADVTCALCULATENOC", payload));
 
-
+      set(payload, "idName", getIdName(state,"ADVERTISEMENTNOC",get(payload, null)));
       response = await httpRequest("post", "/pm-services/noc/_update", "", [], { dataPayload: payload });
       if (status !== 'REASSIGN') {
         responsecreateDemand = await createDemandForAdvNOC(state, dispatch);
@@ -1996,6 +2000,77 @@ const getCurrentWFState = async () => {
       {
         labelName: "Workflow returned empty object !",
         labelKey: "WRR_WORKFLOW_ERROR"
+      },
+      "error"
+    );
+  }
+
+}
+
+export const getEmployeeList = async (state,dispatch,actionToCheck) => {
+  try {
+    
+    let wfstatuslist = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
+    let wfstatus = "";
+    wfstatus = wfstatuslist.find(item => {
+      return item.buttonName == actionToCheck ;
+    });
+    
+
+    let nextActions = get(state, 'screenConfiguration.preparedFinalObject.OPMS.WF.ProcessInstanceData.ProcessInstances[0].nextActions', []);
+    let actiontoGet = nextActions.find(action => action.action == wfstatus.status);
+    const businessServiceData = JSON.parse(
+      localStorageGet("businessServiceData")
+    );
+    
+    let stateData = businessServiceData[0].states.find(state => state.uuid == actiontoGet.nextState)
+    
+    let roles = []
+    stateData.actions.map(item => {
+      item.roles.map(role => { 
+        if (!roles.includes(role)) { 
+          roles.push(role)
+        }
+      })
+    })
+
+    const tenantId = getQueryArg(window.location.href, "tenantId");
+    const queryObject = [
+      { key: "roles", value: roles.join() },
+      { key: "tenantId", value: tenantId }
+    ];
+
+    const payload = await httpRequest(
+      "post",
+      "/egov-hrms/employees/_search",
+      "",
+      queryObject
+    );
+    let employeeList =
+    payload &&
+    payload.Employees.map((item, index) => {
+      const name = get(item, "user.name");
+      return {
+        code: item.uuid,
+        name: name
+      };
+    });
+    
+    set(state, 'screenConfiguration.preparedFinalObject.OPMS.assigneeList', employeeList);
+    dispatch(
+      handleField(
+        "roadcutnoc-search-preview",
+        "components.adhocDialogForward.children.popup.children.adhocRebateCardSeRoadCutForward.children.ContainerSeRoadCutForward.children.assigneeList",
+        "props.data",
+        employeeList
+      )
+    );
+  } catch (e) {
+    toggleSnackbar(
+      true,
+      {
+        labelName: "Employee Service Error !",
+        labelKey: "EMP_SERVICE_ERROR"
       },
       "error"
     );

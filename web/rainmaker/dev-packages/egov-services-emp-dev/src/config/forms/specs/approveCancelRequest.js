@@ -33,7 +33,7 @@ const formConfig = {
      
         // createdBy: {
         //   id: "createdby",
-        //   jsonPath: "Booking.Remarks[0].bkCreatedBy",
+        //   jsonPath: "Booking.Remarks[0].bkCreatedBy"
         //   value:''
         // },
         // createdOn: {
@@ -68,7 +68,7 @@ const formConfig = {
       id: "reopencomplaint-submit-action",
     },
     action: "_update",
-    redirectionRoute: "/egov-services/resolve-success",
+    redirectionRoute: "/egov-services/DataSubmitted",
     saveUrl: "/bookings/park/community/_update",
   };
   

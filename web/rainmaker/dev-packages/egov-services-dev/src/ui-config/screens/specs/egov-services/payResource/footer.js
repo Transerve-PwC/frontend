@@ -28,111 +28,6 @@ import {
   checkAvaialbilityAtSubmit,
 } from "../../utils";
 
-// export const handleCheckAvailability = async (Booking, dispatch) => {
-//     // dispatch(
-//     //   prepareFinalObject("AllowRedirection", false)
-//     // );
-
-//     if (getapplicationType() === "GFCP") {
-//         let venue = Booking.bkBookingVenue;
-//         let from = Booking.bkFromDate;
-//         let to = Booking.bkToDate;
-//         // let venue = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkBookingVenue",
-//         //     []
-//         // );
-//         // let from = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkFromDate",
-//         //     []
-//         // );
-//         // let to = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkToDate",
-//         //     []
-//         // );
-//         let bookedDates = await checkAvaialbilityAtSubmitCgb(venue, from, to);
-
-//         bookedDates.data.map((val) => {
-//             if (val === from || val === to) {
-//                 dispatch(
-//                     toggleSnackbar(
-//                         true,
-//                         {
-//                             labelName: "Dates are Already Booked. Try Again!",
-//                             labelKey: "",
-//                         },
-//                         "warning"
-//                     )
-//                 );
-//                 dispatch(setRoute(`/egov-services/checkavailability`));
-//             }
-//         });
-//     } else if (getapplicationType() === "OSUJM") {
-//         let venue = Booking.bkBookingVenue;
-//         let from = Booking.bkFromDate;
-//         let to = Booking.bkToDate;
-//         let sector = Booking.bkSector;
-
-//         // let sector = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkSector",
-//         //     []
-//         // );
-//         // let venue = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkBookingVenue",
-//         //     []
-//         // );
-//         // let from = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkFromDate",
-//         //     []
-//         // );
-//         // let to = get(
-//         //     state.screenConfiguration.preparedFinalObject,
-//         //     "Booking.bkToDate",
-//         //     []
-//         // );
-//         let bookedDates = await checkAvaialbilityAtSubmitOsujm(
-//             sector,
-//             venue,
-//             from,
-//             to
-//         );
-//         bookedDates.data.map((val) => {
-//             if (val === from || val === to) {
-//                 dispatch(
-//                     toggleSnackbar(
-//                         true,
-//                         {
-//                             labelName: "Dates are Already Booked. Try Again!",
-//                             labelKey: "",
-//                         },
-//                         "warning"
-//                     )
-//                 );
-//                 dispatch(setRoute(`/egov-services/checkavailability_oswmcc`));
-//             }
-//         });
-//     }
-
-//     // if (allowRedirection === true) {
-//     //   dispatch(
-//     //     toggleSnackbar(
-//     //         true,
-//     //         { labelName: "Dates are Already Booked. Try Again!", labelKey: "" },
-//     //         "warning"
-//     //     )
-//     // );
-//     //   if (getapplicationType() === "GFCP") {
-//     //     dispatch(setRoute(`/egov-services/checkavailability`));
-//     //   } else if (getapplicationType() === "OSUJM") {
-//     //     dispatch(setRoute(`/egov-services/checkavailability_oswmcc`));
-//     //   }
-//     // }
-// };
 
 export const selectPG = async (state, dispatch) => {
   showHideAdhocPopup(state, dispatch, "pay");
@@ -199,10 +94,10 @@ export const callPGService = async (state, dispatch, item) => {
             tenantId,
             billId: billId, // get(billPayload, "Bill[0].id"),
             txnAmount: taxAmount, //get(billPayload, "Bill[0].totalAmount"),
-            module: "Booking",
+            module:businessService, 
             taxAndPayments,
             consumerCode: consumerCode, // get(billPayload, "Bill[0].consumerCode"),
-            productInfo: getapplicationType(), // "Property Tax Payment",
+            productInfo: businessService, // "Property Tax Payment",
             gateway: item,
             user: get(state, "auth.userInfo"),
             callbackUrl,
@@ -248,17 +143,7 @@ export const callPGService = async (state, dispatch, item) => {
         "warning"
       )
     );
-    // dispatch(
-    //     setRoute(
-    //         `/egov-services/${
-    //             businessService === "OSUJM"
-    //                 ? "checkavailability_oswmcc"
-    //                 : businessService === "GFCP"
-    //                 ? "checkavailability"
-    //                 : "/applyservices"
-    //         }`
-    //     )
-    // );
+ 
   }
 };
 
@@ -318,32 +203,4 @@ export const footer = getCommonApplyFooter({
       },
     },
   },
-  // makePayment: {
-  //   componentPath: "Button",
-  //   props: {
-  //     variant: "contained",
-  //     color: "primary",
-  //     style: {
-  //       //  minWidth: "200px",
-  //       height: "48px",
-  //       marginRight: "45px"
-  //     }
-  //   },
-  //   children: {
-  //     submitButtonLabel: getLabel({
-  //       labelName: "MAKE PAYMENT",
-  //       labelKey: "BK_COMMON_BUTTON_MAKE_PAYMENT"
-  //     })
-  //   },
-  //   onClickDefination: {
-  //     action: "condition",
-  //     callBack: selectPG
-  //   },
-  //   roleDefination: {
-  //     rolePath: "user-info.roles",
-  //     roles: ["CITIZEN"],
-  //     action: "PAY"
-  //   },
-  //   visible: process.env.REACT_APP_NAME === "Citizen" ? true : false
-  // },
 });

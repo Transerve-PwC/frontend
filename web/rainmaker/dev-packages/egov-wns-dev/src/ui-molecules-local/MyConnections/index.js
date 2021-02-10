@@ -32,11 +32,15 @@ class MyConnections extends React.Component {
         case "NEW_TUBEWELL_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
       }
 }
-    window.location.href = `/citizen/wns/connection-details?connectionNumber=${data.connectionNo}&tenantId=${data.property.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
+
+let tenantId = data.tenantId;
+if(data.property)
+tenantId = data.property.tenantId;
+    window.location.href = `/citizen/wns/connection-details?connectionNumber=${data.connectionNo}&tenantId=${tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
   }
 
   getViewBillDetails = data => {
-    window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.connectionNo}&tenantId=${data.property.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
+    window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.connectionNo}&tenantId=${data.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
   }
 
   render() {

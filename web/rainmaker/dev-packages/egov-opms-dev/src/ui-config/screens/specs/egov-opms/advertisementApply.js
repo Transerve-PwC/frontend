@@ -220,7 +220,7 @@ export const prepareEditFlow = async (state, dispatch, applicationNumber, tenant
       get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egpm.typeOfAdvertisement", []).filter(
         item => item.name === Refurbishresponse.typeOfAdvertisement
       );
-
+    let typeOfApplicant = get(state, "screenConfiguration.preparedFinalObject.ADVERTISEMENTNOC.typeOfApplicant");
     dispatch(
       prepareFinalObject(
         "applyScreenMdmsData.egpm.subTypeOfAdvertisement-new", typecateID[0].subTypeOfAdvertisement
@@ -284,7 +284,12 @@ export const prepareEditFlow = async (state, dispatch, applicationNumber, tenant
         "components.div.children.formwizardSecondStep.children.immunizationDetails.children.cardContent.children.immunizationDetailsConatiner.children.buildingDataCard.children.singleBuildingContainer.children.singleBuilding.children.cardContent.children.singleBuildingCard.children.exemptedCategory.children.exemptionradio",
         "props.buttons[1].disabled", applicationStatus === "REASSIGN" ? true : false));
 
-
+        dispatch(
+          handleField(
+            "advertisementApply",
+            "components.div.children.formwizardFirstStep.children.AdvtDetails.children.cardContent.children.AdvtApplicatantContainer.children.typeOfApplicant",
+            "props.value", typeOfApplicant));
+    
     let uploadVaccinationCertificate = advtnocdetail.hasOwnProperty('uploadDocuments') ?
       advtnocdetail.uploadDocuments[0]['fileStoreId'] : '';
 

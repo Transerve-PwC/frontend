@@ -88,7 +88,8 @@ const serviceDetailsCard = {
                 // }
               }
             }),
-            afterFieldChange: (action, state, dispatch) => {  
+            afterFieldChange: (action, state, dispatch) => { 
+              
               if(action.value){
                 let serviceToDtComponentPath = action.componentJsonpath;
                 const appntDate = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].dateOfAppointment).getTime();
@@ -313,7 +314,7 @@ const serviceDetailsCard = {
         "screenConfiguration.preparedFinalObject",
         {}
       );
-      let cardIndex = get(muliItemContent, "assignFromDate.index");
+      let cardIndex = get(muliItemContent, "serviceFromDate.index");
       let cardId = get(
         preparedFinalObject,
         `Employee[0].assignments[${cardIndex}].id`
@@ -330,6 +331,20 @@ const serviceDetailsCard = {
                
         set(muliItemContent[key], "props.value", new Date(serviceFromDate).toISOString().slice(0, 10));
         
+        }
+
+        if(key === "currentlyWorkingHere")
+        {
+          let isCurrentPosition = get(
+            state.screenConfiguration.preparedFinalObject,
+            `Employee[0].serviceHistory[${cardIndex}].isCurrentPosition`,
+            []
+          );
+          if(isCurrentPosition)
+          set(muliItemContent["serviceToDate"], "props.disabled", true);
+          else
+          set(muliItemContent["serviceToDate"], "props.disabled", false);
+
         }
         
        

@@ -279,7 +279,7 @@ export const nocDetails = getCommonCard({
         sourceJsonPath: "applyScreenMdmsData.egpm.length",
         jsonPath: "ROADCUTNOC.length",
         required: true,
-		    pattern: getOPMSPattern("Amount"),
+		    pattern: getOPMSPattern("Length"),
         props: {
           className: "applicant-details-error",
           required: true

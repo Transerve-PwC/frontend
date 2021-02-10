@@ -93,6 +93,7 @@ export const citizenApplication = getCommonCard({
                 sm: 4
             },
             required: false,
+            visible:false,
             pattern: /^[a-zA-Z0-9-]*$/i,
             errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
             jsonPath: "searchScreen.propertyId"
@@ -113,6 +114,7 @@ export const citizenApplication = getCommonCard({
                 position: "start"
             },
             required: false,
+            visible:false,
             pattern: getPattern("MobileNo"),
             jsonPath: "searchScreen.mobileNumber",
             errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
@@ -145,6 +147,7 @@ export const citizenApplication = getCommonCard({
                 sm: 4
             },
             required: false,
+            visible:false,
             pattern: /^[a-zA-Z0-9-]*$/i,
             errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
             jsonPath: "searchScreen.oldConnectionNumber"

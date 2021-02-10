@@ -304,7 +304,7 @@ const callBackForNext = async (state, dispatch) => {
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName : "" : ""}`
+          `Documents - ${propertyOwners ? propertyOwners[i] ? propertyOwners[i].ownerDetails.ownerName  ? propertyOwners[i].ownerDetails.ownerName : "NA" : "NA" : "NA"}`
         )
         set(
           state.screenConfiguration.screenConfig,
@@ -465,12 +465,11 @@ const callBackForNext = async (state, dispatch) => {
         dispatch(
           prepareFinalObject(`PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, reviewDocData)
         );
-
         const reviewDocuments = getReviewDocuments(true, "apply-manimajra", `PropertiesTemp[0].propertyDetails.purchaser[${i}].ownerDetails.reviewDocDataPrevOwner`, 4);
         set(
           reviewDocuments,
           "children.cardContent.children.headerDiv.children.header.children.key.props.labelKey",
-          `Documents - ${propertyPrevOwners ? propertyPrevOwners[i] ? propertyPrevOwners[i].ownerDetails.ownerName : "" : ""}`
+          `Documents - ${propertyPrevOwners ? propertyPrevOwners[i] ? propertyPrevOwners[i].ownerDetails.ownerName? propertyPrevOwners[i].ownerDetails.ownerName: "NA" : "NA" : "NA"}`
         )
         set(
           state.screenConfiguration.screenConfig,

@@ -60,18 +60,8 @@ const ImageUploadMolecule = Loadable({
   loading: () => <Loading />
 });
 
-const ReportMolecule = Loadable({
-  loader: () => import("./ReportMolecule"),
-  loading: () => <Loading />
-});
-
 const ReportPreviewWF = Loadable({
   loader: () => import("./ReportPreviewWF"),
-  loading: () => <Loading />
-});
-
-const WorkFlowChart = Loadable({
-  loader: () => import("./WorkFlowChart"),
   loading: () => <Loading />
 });
 
@@ -88,7 +78,5 @@ export {
   HowItWorks,
   ImageUploadMolecule,
   MapLocatorEdit,
-  ReportMolecule,
   ReportPreviewWF,
-  WorkFlowChart
 };

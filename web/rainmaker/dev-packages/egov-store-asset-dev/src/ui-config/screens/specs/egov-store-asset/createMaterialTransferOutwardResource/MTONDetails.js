@@ -162,7 +162,7 @@ const MTONDetailsCard = {
                 labelName: "Enter Qty Issued",
                 labelKey: "STORE_MATERIAL_INDENT_NOTE_QTY_ISSUED_PLACEHOLDER"
               },
-              required: true,
+              required: false,
               errorMessage:"STORE_VALIDATION_QUANTITY_ISSUED",
                //pattern: getPattern("Amount") || null,
                pattern: getSTOREPattern("Quantity"),

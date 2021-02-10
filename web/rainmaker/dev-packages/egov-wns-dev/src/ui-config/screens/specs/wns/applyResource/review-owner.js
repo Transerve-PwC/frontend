@@ -108,6 +108,16 @@ export const reviewccCode = getLabelWithValue(
     callBack: handleNA
   }
 );
+export const reviewledgerGroup = getLabelWithValue(
+  {
+    labelName: "ledgerGroup",
+    labelKey: "WS_SERV_DETAIL_LEDGER_GROUP"
+  },
+  {
+    jsonPath: "WaterConnection[0].ledgerGroup",
+    callBack: handleNA
+  }
+);
 export const reviewdivision = getLabelWithValue(
   {
     labelName: "Division",
@@ -264,7 +274,56 @@ export const reviewInitialMeterReading = getLabelWithValue(
   { jsonPath: "WaterConnection[0].additionalDetails.initialMeterReading",
     callBack: handleNA }
 );
+// new field
 
+export const reviewMeterCount = getLabelWithValue(
+  {
+    labelName: "Meter Count",
+    labelKey: "WS_ADDN_DETAILS_INITIAL_METER_COUNT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterCount",
+    callBack: handleNA }
+);
+export const reviewmfrCode = getLabelWithValue(
+  {
+    labelName: "mfr Code",
+    labelKey: "WS_SERV_DETAIL_MFRCODE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.mfrCode",
+    callBack: handleNA }
+);
+export const reviewmeterDigits = getLabelWithValue(
+  {
+    labelName: "Meter Digits",
+    labelKey: "WS_SERV_DETAIL_METER_DIGIT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterDigits",
+    callBack: handleNA }
+);
+export const reviewmeterUnit = getLabelWithValue(
+  {
+    labelName: "Meter Unit",
+    labelKey: "WS_SERV_DETAIL_METER_UNIT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterUnit",
+    callBack: handleNA }
+);
+export const reviewsanctionedCapacity = getLabelWithValue(
+  {
+    labelName: "Sanctioned Capacity",
+    labelKey: "WS_SERV_DETAIL_SANCTION_CAPACITY"
+  },
+  { jsonPath: "applyScreen.additionalDetails.sanctionedCapacity",
+    callBack: handleNA }
+);
+export const reviewmeterRentCode = getLabelWithValue(
+  {
+    labelName: "Meter Rent Code",
+    labelKey: "WS_SERV_DETAIL_METER_RENT_CODE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterRentCode",
+    callBack: handleNA }
+);
 export const getReviewOwner = (isEditable = true) => {
   return getCommonGrayCard({
     headerDiv: {
@@ -352,12 +411,18 @@ const activationDetails = getCommonContainer({
   reviewConnectionExecutionDate,
   reviewMeterId,
   reviewMeterInstallationDate,
-  reviewInitialMeterReading
+  reviewInitialMeterReading,
+  reviewmfrCode,
+  reviewmeterDigits,
+  reviewmeterUnit,
+  reviewsanctionedCapacity,
+  reviewmeterRentCode,
+  reviewMeterCount
 });
 
 export const renderService = () => {
   if (service === "WATER") {
-    return getCommonContainer({ reviewConnectionType, reviewNumberOfTaps, reviewWaterSource, reviewWaterSubSource, reviewPipeSize ,reviewccCode, reviewdivision, reviewsubdiv,reviewledgerNo});
+    return getCommonContainer({ reviewConnectionType, reviewNumberOfTaps, reviewWaterSource, reviewWaterSubSource, reviewPipeSize ,reviewccCode, reviewdivision, reviewsubdiv,reviewledgerNo, reviewledgerGroup});
   } else if (service === "SEWERAGE") {
     return getCommonContainer({ reviewConnectionType, reviewWaterClosets,reviewNoOfToilets })
   }

@@ -301,7 +301,7 @@ export const getExcelData = async (excelUrl, fileStoreId, screenKey, componentJs
       Bidders = Bidders.map(item => {
         item.state = "";
         item.action = "";
-        item.auctionId = Math.floor(item.auctionId);
+        // item.auctionId = Math.floor(item.auctionId);
         return item;
       })
 
@@ -332,7 +332,7 @@ export const populateBiddersTable = (biddersList, screenKey, componentJsonPath) 
 
   if (!!biddersList) {
     let data = biddersList.map(item => ({
-      [getTextToLocalMapping("Auction Id")]: Math.floor(item.auctionId) || "-",
+      [getTextToLocalMapping("Auction Id")]: item.auctionId || "-",
       [getTextToLocalMapping("Bidder Name")]: item.bidderName || "-",
       [getTextToLocalMapping("Deposited EMD Amount")]: item.depositedEMDAmount || "-",
       [getTextToLocalMapping("Deposit Date")]: convertEpochToDate(item.depositDate) || "-",

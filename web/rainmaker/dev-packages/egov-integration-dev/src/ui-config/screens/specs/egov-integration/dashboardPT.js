@@ -439,7 +439,7 @@ let validcode = false;
                 `dashboardPT`,
                 "components.div.children.SearchCard.children.cardContent.children.button.children.buttonContainer.children.validateOTPButton",
                 "props.style",
-                { display: "inline-block",marginTop:"8px" }
+                { display: "inline-block",marginTop:"8px",color:"#ffffff" ,backgroundColor:"#0009"}
               )
             );
             dispatch(

@@ -21,6 +21,7 @@ import {
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+  import { getNULMPattern } from "../../../../ui-utils/commons";
   import { getSearchResults } from "../../../../ui-utils/commons";
   import get from "lodash/get";
   import set from "lodash/set";
@@ -466,8 +467,13 @@ import {
                     labelName: "Enter Addrss",
                     labelKey: "NULM_SEP_ADDRESS_PLACEHOLDER"
                   },
+                  props: {
+                    className: "applicant-details-error",
+                    multiline: "multiline",
+                    rowsMax: 2,
+                  },
                   required: true,
-                  pattern: getPattern("Address") || null,
+                  pattern: getNULMPattern("Comment") || null,
                   jsonPath: "NulmSuhCitizenNGORequest.address"
                 })
               },

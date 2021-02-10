@@ -514,12 +514,7 @@ export const footer = getCommonApplyFooter({
     },
     onClickDefination: {
       action: "page_change",
-      path: `/egov-common/pay?consumerCode=${applicationNumber}&tenantId=${tenant}&businessService=OPMSNOC`
-    },
-
-    roleDefination: {
-      rolePath: "user-info.roles",
-      action: "PAY"
+      path: `/egov-opms/pay?applicationNumber=${applicationNumber}&tenantId=${tenant}`
     },
     visible: false
   },

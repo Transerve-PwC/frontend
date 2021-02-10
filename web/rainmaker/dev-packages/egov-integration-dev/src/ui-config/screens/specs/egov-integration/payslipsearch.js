@@ -8,6 +8,7 @@ import {
   import set from "lodash/set";
   import { httpRequest } from "../../../../ui-utils";
   import { searchForm } from "./searchPayslipResource/searchForm";
+  import { footer} from "./searchPayslipResource/footer";
   //import { searchResults } from "./searchPayslipResource/searchResults";
   import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
@@ -263,6 +264,7 @@ if(Allowances.length>Deductions.length)
   
               }
           },
+          footer:footer()
         },
       },
     },

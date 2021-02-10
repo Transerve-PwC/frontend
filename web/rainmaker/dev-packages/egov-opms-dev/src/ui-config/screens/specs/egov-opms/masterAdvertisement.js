@@ -11,6 +11,12 @@ import "./masteradv.css"
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
+import {
+  getOPMSTenantId,
+  setOPMSTenantId,
+  localStorageGet,
+  getTenantId
+} from "egov-ui-kit/utils/localStorageUtils";
 
 
 export const datagridsummary = {

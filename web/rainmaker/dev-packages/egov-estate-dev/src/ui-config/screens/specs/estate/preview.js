@@ -49,6 +49,8 @@ const getWfDocuments = (status) => {
 }
 
 const getData = async (action, state, dispatch) => {
+    const userRoles = JSON.parse(getUserInfo()).roles;
+    const userRole = userRoles[0].code;
     let siteReportUser = roles.find(item => item.code === "ES_MM_DEALING_ASSISTANT" || item.code === "ES_MM_TAX_CONTROLLER_MANIMAJRA" || item.code === "ES_MM_SR_ASSISTANT" || item.code === "ES_MM_SECTION_OFFICER" | item.code === "ES_ADDITIONAL_COMMISSIONER");
 
     await dispatch(prepareFinalObject("workflow.ProcessInstances", []))
@@ -140,7 +142,8 @@ const getData = async (action, state, dispatch) => {
             applicationNumber,
             tenantId,
             businessService,
-            branchType
+            branchType,
+            userRole
           )
         }
 

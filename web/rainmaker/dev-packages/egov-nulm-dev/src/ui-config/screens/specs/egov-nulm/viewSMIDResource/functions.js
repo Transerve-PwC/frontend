@@ -162,7 +162,7 @@ export const createUpdatePO = async (state, dispatch, action ,status) => {
    NULMSMIDRequest.applicationStatus = status;
 
    let dob = get(NULMSMIDRequest, "dob");
-   const formattedDOB = dob.split("-").reverse().join("-");
+  // const formattedDOB = dob.split("-").reverse().join("-");
 
   // set(
   //   NULMSMIDRequest,

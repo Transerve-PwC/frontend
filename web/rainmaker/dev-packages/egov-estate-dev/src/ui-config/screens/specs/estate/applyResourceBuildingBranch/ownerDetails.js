@@ -22,7 +22,9 @@ import {
 } from "../../utils"
 
 let screenName = "apply-building-branch";
-
+if((window.location.href).includes("apply-manimajra")){
+  screenName = "apply-manimajra";
+}
 const ownerNameField = {
   label: {
     labelName: "Owner Name",

@@ -10,7 +10,7 @@ import {
   import get from "lodash/get"; 
   import set from "lodash/set"; 
   import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-  
+  import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   const arrayCrawler = (arr, n) => {
     if (n == 1) {
       return arr.map(item => {
@@ -147,6 +147,20 @@ import {
               );
               let cardIndex = get(muliItemContent, "store.index");
             if(preparedFinalObject){
+              // set if Active for add only
+              const code = getQueryArg(window.location.href, "code");
+              if(code)
+              {
+                //const =preparedFinalObject;
+                const stores = get(
+                  preparedFinalObject,
+                  "materials[0].storeMapping"
+                );
+
+                set(preparedFinalObject.materials[0],`storeMapping[${cardIndex}].active` , stores[cardIndex].active);
+
+              }
+              else
               set(preparedFinalObject.materials[0],`storeMapping[${cardIndex}].active` , true);
             } 
               //console.log("click on add");

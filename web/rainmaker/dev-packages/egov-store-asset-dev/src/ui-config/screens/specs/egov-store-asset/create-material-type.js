@@ -666,9 +666,13 @@ const screenConfig = {
       });
     }
     else {
+      // const code = getQueryArg(window.location.href, "code");
+      // if(!code)
+      // {
       dispatch(prepareFinalObject("materialTypes[0]", null));
       dispatch(prepareFinalObject("materialTypes[0].active", true));
       dispatch(prepareFinalObject("materialTypes[0].storeMapping[0].active", true));
+      //}
     }
 
     return action;

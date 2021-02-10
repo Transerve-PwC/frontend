@@ -13,8 +13,11 @@ import {
   import { setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
   import {
     getOPMSTenantId,
-    localStorageGet
+    setOPMSTenantId,
+    localStorageGet,
+    getTenantId
   } from "egov-ui-kit/utils/localStorageUtils";
+  
   import find from "lodash/find";
   import set from "lodash/set";
   import get from "lodash/get";
@@ -39,7 +42,7 @@ import {
     uiFramework: "material-ui",
     name: "reportbymonth",
     beforeInitScreen: (action, state, dispatch) => {
-        
+      setOPMSTenantId(getTenantId());
         const pricebookid = getQueryArg(
             window.location.href,
             "pricebookid"

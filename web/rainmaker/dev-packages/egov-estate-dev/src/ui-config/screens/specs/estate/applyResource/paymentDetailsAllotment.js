@@ -350,6 +350,32 @@ const groundRentGenerationTypeField = {
         "props.placeholder.labelKey",
         "ES_START_MONTH_PLACEHOLDER"
       )) 
+      // for PM rent details step
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_MONTH_PLACEHOLDER"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_MONTH_PLACEHOLDER"
+      )) 
 
     }else{
       dispatch(handleField(
@@ -376,6 +402,36 @@ const groundRentGenerationTypeField = {
       dispatch(handleField(
         action.screenKey,
         "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_YEAR_PLACEHOLDER"
+      )) 
+
+      // For PM rent details step
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_YEAR_LABEL"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_YEAR_LABEL"
+      )) 
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_YEAR_PLACEHOLDER"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
         "props.placeholder.labelKey",
         "ES_START_YEAR_PLACEHOLDER"
       )) 
@@ -516,19 +572,33 @@ const commonRentInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig",
         callBack: (value) =>  {
-          if (value) {
-            const years = (Number(value) / 12 | 0)
-            const months = Number(value) % 12
-            if(years > 0 && months > 0) {
-              return years + " Year(s) " + months +" Month(s)"
-            } else if(years < 1) {
-              return months + " Month(s)"
-            } else if(months < 1) {
-              return years + " Year(s)"
+          // console.log(this.state);
+          // let groundRentGenerationType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType")
+          // if(!!groundRentGenerationType && value && groundRentGenerationType === "Annually"){
+          //   return years + " Year(s)"
+          // }
+          if(value.isGroundRent){
+            if(value.groundRentGenerationType === "Annually"){
+              let tillDateData = value.paymentConfigItems[0].tillDate;
+              return tillDateData + " Year(s)"
             }
+            else if (value.groundRentGenerationType === "Monthly") {
+              let tillDateData = value.paymentConfigItems[0].tillDate;
+              const years = (Number(tillDateData) / 12 | 0)
+              const months = Number(tillDateData) % 12
+              if(years > 0 && months > 0) {
+                return years + " Year(s) " + months +" Month(s)"
+              } else if(years < 1) {
+                return months + " Month(s)"
+              } else if(months < 1) {
+                return years + " Year(s)"
+              }
+            }
+            
           }
+          
           return "-"
         }
       }

@@ -10,7 +10,8 @@ import "./index.css";
 import Footer from "../../../../modules/footer"
 import PaymentReceiptDetail from "../PaymentReceiptDetail"
 import PaymentOptionDetails from "../PaymentOptionDetails"
-import PaymentDetails from "../PaymentDetails"
+import PaymentDetails from "../PaymentDetails"  
+import DateVenueChangePayDetail from "../DateVenueChangePayDetail"
 import SubmitPaymentDetails from "../SubmitPaymentDetails"
 import { getFileUrlFromAPI } from '../../../../modules/commonFunction'
 import jp from "jsonpath";
@@ -109,7 +110,7 @@ class SummaryDetails extends Component {
 
     submit = async (e) => {
     
-    alert("hello generate receipt")
+    // alert("hello generate receipt")
     const { TotalAmount,billId, userInfo,ApplicantName,ApplicantMobNum,prepareFinalObject,paymentMode,ppaidBy,pChequeNo,
     ChnChqDate,newDDno,NewTrxNo,NewddDate,pddIFSC,pIFSC} = this.props
     console.log("this.props---",this.props)
@@ -221,6 +222,8 @@ let EmpPayment = await httpRequest(
 
 console.log("EmpPayment--",EmpPayment)
 
+prepareFinalObject("ResponseOfCashPayment",EmpPayment)
+
 let ReceiptNum = EmpPayment && EmpPayment ? EmpPayment.Payments[0].paymentDetails[0].receiptNumber : "notFound"
 console.log("ReceiptNum--",ReceiptNum)
 
@@ -308,10 +311,19 @@ console.log("this.state--PaidBy",PaidBy)
                 <div className="form-without-button-cont-generic">
                     <div classsName="container">
                         <div className="col-xs-12">
+{this.props.ApplicantAppStatus != "OFFLINE_RE_INITIATED" ? 
+ <PaymentDetails
+ paymentDetails={paymentDetails && paymentDetails}
+  />     
+: ""}
+                       
 
-                        <PaymentDetails
-              paymentDetails={paymentDetails && paymentDetails}
-               />           
+{this.props.ApplicantAppStatus == "OFFLINE_RE_INITIATED" ? 
+<DateVenueChangePayDetail 
+paymentDetails={paymentDetails && paymentDetails}
+Status={this.props.ApplicantAppStatus && this.props.ApplicantAppStatus}
+/>
+:""}
                             
                <PaymentOptionDetails 
                PaymentReceiptNumber={PaymentReceiptNumber}
@@ -409,18 +421,20 @@ const mapStateToProps = state => {
     
     let ApplicantName = selectedComplaint ? selectedComplaint.bkApplicantName : 'notFound'
     console.log("ApplicantName--",ApplicantName)
+
     let ApplicantMobNum = selectedComplaint ? selectedComplaint.bkMobileNumber : 'notFound'
     console.log("ApplicantMobNum--",ApplicantMobNum)
-  
+
+    let ApplicantAppStatus = selectedComplaint ? selectedComplaint.bkApplicationStatus : 'notFound'
+    console.log("ApplicantAppStatus--",ApplicantAppStatus)
+
     let paymentDetails;
 
     // paymentDetails = paymentData ? paymentData.Bill[0] : '';
 
-
     const { paymentData } = bookings;
 
 	console.log("paymentData--",paymentData ? paymentData : "NopaymentData")
-
 
 	const { fetchPaymentAfterPayment } = bookings;
 	console.log("fetchPaymentAfterPayment--",fetchPaymentAfterPayment ? fetchPaymentAfterPayment : "NofetchPaymentAfterPaymentData")
@@ -430,7 +444,7 @@ const mapStateToProps = state => {
     if(selectedComplaint && selectedComplaint.bkApplicationStatus == "OFFLINE_INITIATE" || selectedComplaint.bkApplicationStatus == "OFFLINE_INITIATED"){
         console.log("offlineApplied--",selectedComplaint.bkApplicationStatus)
            if(selectedComplaint.bkPaymentStatus == "SUCCESS"){
-              console.log("one")
+            console.log("one")
             paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
         console.log("paymentDetails-One--",paymentDetails)
            }
@@ -440,8 +454,14 @@ const mapStateToProps = state => {
             console.log("paymentDetails-two--",paymentDetails)
             }
         }
+        else if(selectedComplaint && selectedComplaint.bkApplicationStatus == "OFFLINE_RE_INITIATED" || selectedComplaint.bkApplicationStatus == "OFFLINE_RE_INITIATE"){
+                  console.log("OFFLINE_RE_INITIATE--",selectedComplaint.bkApplicationStatus)
+                  console.log("one+++++")
+                  paymentDetails = paymentData ? paymentData.Bill[0] : '';
+                  console.log("paymentDetails-two--reinitiate",paymentDetails)
+            }
           else{
-        
+            console.log("else-last-condition--")
             paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
         
           }
@@ -516,7 +536,7 @@ let IFSC = state.screenConfiguration.preparedFinalObject.IFSC ?  state.screenCon
     console.log("NewTrxNo--",NewTrxNo)
 
     return {
-        createPACCApplicationData,userInfo,ppaidBy,pChequeNo,ChnChqDate,newDDno,NewTrxNo,NewddDate,
+        createPACCApplicationData,userInfo,ppaidBy,pChequeNo,ChnChqDate,newDDno,NewTrxNo,NewddDate,ApplicantAppStatus,
         documentMap,facilationChargesSuccess,billId,ApplicantName,ApplicantMobNum,pddIFSC,pIFSC,
         fCharges,myLocationtwo,paymentDetails,TotalAmount,paymentMode
     }

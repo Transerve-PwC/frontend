@@ -56,20 +56,29 @@ class InventoryContainer extends Component {
                 style={{
                   width: "100%",
                 }}>
-
 <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
-                }}><Label labelClassName="" style={{
-                  fontWeight: "bold",
+                  width:"40%"
+                }}><Label labelClassName="" 
+                labelStyle={{ fontWeight: "bold", }}
+                label="INTIGRATION_DF_PROPERTY_TYPE" /></td>
+                <td  style={{
                   
-                }} label="INTIGRATION_TH_PT_HOUSE" /></td>
+                  width:"70%"
+                }} colSpan="3"><Label labelClassName="" label={APIData[0].PropertyDetail[0].PROPERTYTYPE}/></td>
+                </tr>
+<tr><td  style={{
+                  textAlign: "left",
+                  width:"40%"
+                }}><b><Label labelClassName="" 
+                labelStyle={{ fontWeight: "bold", }}
+                label="INTIGRATION_TH_PT_HOUSE" /></b></td>
                 {/* <td><Label labelClassName="" label={APIData[0].PropertyDetail[0].HOUSENO}/></td> */}
-                <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].HouseNo}/></td>
+                <td colSpan="3"><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].HouseNo}/></td>
                
                 {/* <td  style={{
                   textAlign: "right",
-                  width:"15%"
+                  width:"40%"
                 }}><Label labelClassName="" style={{
                   fontWeight: "bold",
                   
@@ -78,34 +87,32 @@ class InventoryContainer extends Component {
                 </tr> 
                 <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
-                }}><Label labelClassName="" style={{
-                  fontWeight: "bold",
-                  
-                }} label="INTIGRATION_DF_SECTOR_NAME" /></td>
-                <td><Label labelClassName="" label={APIData[0].PropertyDetail[0].SECTORNAME}/></td>
-                <td  style={{
+                  width:"40%"
+                }}><Label labelClassName="" 
+                labelStyle={{ fontWeight: "bold", }}
+                label="INTIGRATION_DF_SECTOR_NAME" /></td>
+                <td colSpan="3"><Label labelClassName="" label={APIData[0].PropertyDetail[0].SECTORNAME}/></td>
+                {/* <td  style={{
                   textAlign: "right",
-                  width:"15%"
+                  width:"40%"
                 }}><Label labelClassName="" style={{
                   fontWeight: "bold",
                   
                 }} label="INTIGRATION_DF_PROPERTY_TYPE" /></td>
                 <td style={{
                   textAlign: "right",                 
-                }}><Label labelClassName="" label={APIData[0].PropertyDetail[0].PROPERTYTYPE}/></td>
+                }}><Label labelClassName="" label={APIData[0].PropertyDetail[0].PROPERTYTYPE}/></td> */}
                 </tr> 
                <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
-                }}><Label labelClassName="" style={{
-                  fontWeight: "bold",
-                  
-                }} label="PT_CODE" /></td>
-                <td><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].PropertyId}/></td>
+                  width:"40%"
+                }}><Label labelClassName="" 
+                labelStyle={{ fontWeight: "bold", }}
+                label="PT_CODE" /></td>
+                <td colSpan="3"><Label labelClassName="" label={APIData[0].PropertyTaxCalculation[0].PropertyId}/></td>
                 {/* <td  style={{
                   textAlign: "right",
-                  width:"15%"
+                  width:"40%"
                 }}><Label labelClassName="" style={{
                   fontWeight: "bold",
                   textAlign: "center", 
@@ -115,11 +122,10 @@ class InventoryContainer extends Component {
                 </tr>  
                 <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
-                }}><Label labelClassName="" style={{
-                  fontWeight: "bold",
-                  
-                }} label="INTIGRATION_PAYABLE_AMOUNT" /></td>
+                  width:"40%"
+                }}><Label labelClassName="" 
+                labelStyle={{ fontWeight: "bold", }}
+                label="INTIGRATION_PAYABLE_AMOUNT" /></td>
                 <td><Label labelClassName="" label={APIData[0].PayableAmount}/></td>
                 <td style={{
                   width: "35%",
@@ -164,7 +170,7 @@ class InventoryContainer extends Component {
                    {/* <thead>
                    <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
+                  width:"40%"
                 }}colSpan="2"><Label labelClassName="" style={{
                   fontWeight: "bold",
                   
@@ -311,7 +317,7 @@ class InventoryContainer extends Component {
                    {/* <thead>
                    <tr><td  style={{
                   textAlign: "left",
-                  width:"15%"
+                  width:"40%"
                 }}colSpan="2"><Label labelClassName="" style={{
                   fontWeight: "bold",
                   

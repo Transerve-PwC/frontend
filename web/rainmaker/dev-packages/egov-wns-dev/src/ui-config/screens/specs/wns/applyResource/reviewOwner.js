@@ -106,6 +106,16 @@ export const reviewccCode = getLabelWithValue(
     callBack: handleNA
   }
 );
+export const reviewledgerGroup = getLabelWithValue(
+  {
+    labelName: "ledgerGroup",
+    labelKey: "WS_SERV_DETAIL_LEDGER_GROUP"
+  },
+  {
+    jsonPath: "applyScreen.ledgerGroup",
+    callBack: handleNA
+  }
+);
 export const reviewdivision = getLabelWithValue(
   {
     labelName: "Division",
@@ -269,6 +279,54 @@ export const reviewInitialMeterReading = getLabelWithValue(
   { jsonPath: "applyScreen.additionalDetails.initialMeterReading",
     callBack: handleNA }
 );
+export const reviewMeterCount = getLabelWithValue(
+  {
+    labelName: "Meter Count",
+    labelKey: "WS_ADDN_DETAILS_INITIAL_METER_COUNT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterCount",
+    callBack: handleNA }
+);
+export const reviewmfrCode = getLabelWithValue(
+  {
+    labelName: "mfr Code",
+    labelKey: "WS_SERV_DETAIL_MFRCODE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.mfrCode",
+    callBack: handleNA }
+);
+export const reviewmeterDigits = getLabelWithValue(
+  {
+    labelName: "Meter Digits",
+    labelKey: "WS_SERV_DETAIL_METER_DIGIT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterDigits",
+    callBack: handleNA }
+);
+export const reviewmeterUnit = getLabelWithValue(
+  {
+    labelName: "Meter Unit",
+    labelKey: "WS_SERV_DETAIL_METER_UNIT"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterUnit",
+    callBack: handleNA }
+);
+export const reviewsanctionedCapacity = getLabelWithValue(
+  {
+    labelName: "Sanctioned Capacity",
+    labelKey: "WS_SERV_DETAIL_SANCTION_CAPACITY"
+  },
+  { jsonPath: "applyScreen.additionalDetails.sanctionedCapacity",
+    callBack: handleNA }
+);
+export const reviewmeterRentCode = getLabelWithValue(
+  {
+    labelName: "Meter Rent Code",
+    labelKey: "WS_SERV_DETAIL_METER_RENT_CODE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterRentCode",
+    callBack: handleNA }
+);
 
 export const reviewOwner = (isEditable = true) => {
   return getCommonGrayCard({
@@ -349,7 +407,8 @@ const connectionDetails = getCommonContainer({
   reviewledgerNo,
   reviewccCode,
   reviewWaterClosets,
-  reviewNumberOfToilets
+  reviewNumberOfToilets,
+  reviewledgerGroup
 });
 
 const connectionChargeDetails = getCommonContainer({
@@ -371,5 +430,11 @@ const activationDetails = getCommonContainer({
   reviewConnectionExecutionDate,
   reviewMeterId,
   reviewMeterInstallationDate,
-  reviewInitialMeterReading
+  reviewInitialMeterReading,
+  reviewmfrCode,
+  reviewmeterDigits,
+  reviewmeterUnit,
+  reviewsanctionedCapacity,
+  reviewmeterRentCode,
+  reviewMeterCount,
 });

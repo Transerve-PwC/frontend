@@ -137,15 +137,50 @@ export const additionDetails = getCommonCard({
         jsonPath: "applyScreen.waterSubSource"
       }),
 
-      pipeSize: getSelectField({
-        label: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE" },
-        placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
-        gridDefination: { xs: 12, sm: 6 },
-        sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
-        jsonPath: "applyScreen.pipeSize",
-        pattern: /^[0-9]*$/i,
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
-      }),
+      // pipeSize: getSelectField({
+      //   label: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE" },
+      //   placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
+      //   gridDefination: { xs: 12, sm: 6 },
+      //   sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
+      //   jsonPath: "applyScreen.pipeSize",
+      //   pattern: /^[0-9]*$/i,
+      //   errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      // }),
+      pipeSize: {
+        ...getSelectField({
+          label: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE" },
+          sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
+          placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
+          required: true,
+          gridDefination: { xs: 12, sm: 6 },
+          jsonPath: "applyScreen.pipeSize"
+        }),
+        beforeFieldChange: async (action, state, dispatch) => {
+  
+          if(action.value)
+          {
+            const {applyScreenMdmsData} = state.screenConfiguration.preparedFinalObject;
+            const pipeSize = applyScreenMdmsData['ws-services-calculation'].PipeSize.filter(pipeSize => pipeSize.size == action.value);
+  
+             if(pipeSize&&pipeSize[0])
+             {            
+              dispatch(
+                prepareFinalObject(
+                  "applyScreen.additionalDetails.sanctionedCapacity",
+                  pipeSize[0].SanctionCapacity
+                )
+              )
+              dispatch(
+                prepareFinalObject(
+                  "applyScreen.additionalDetails.meterRentCode",
+                  pipeSize[0].MeterRentCode
+                )
+              )
+             }
+          }
+         
+        }
+      },
       division: getSelectField({
         label: { labelKey: "WS_SERV_DETAIL_DIVISION" },
         placeholder: { labelKey: "WS_SERV_DETAIL_DIVISION_PLACEHOLDER" },
@@ -161,18 +196,45 @@ export const additionDetails = getCommonCard({
         gridDefination: { xs: 12, sm: 6 },
         sourceJsonPath: "applyScreenMdmsData.ws-services-masters.subDivision",
         jsonPath: "applyScreen.subdiv",
+        props: {         
+          disabled: true
+        },
        // pattern: /^[0-9]*$/i,
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
       }),
-      ledgerNo: getSelectField({
-        label: { labelKey: "WS_SERV_DETAIL_LEDGER_NO" },
-        placeholder: { labelKey: "WS_SERV_DETAIL_LEDGER_NO_PLACEHOLDER" },
-        gridDefination: { xs: 12, sm: 6 },
-        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.Ledger",
-        jsonPath: "applyScreen.ledgerNo",
-       // pattern: /^[0-9]*$/i,
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
-      }),
+
+      ledgerNo: {
+        ...getSelectField({
+          label: { labelKey: "WS_SERV_DETAIL_LEDGER_NO" },
+          placeholder: { labelKey: "WS_SERV_DETAIL_LEDGER_NO_PLACEHOLDER" },
+          required: false,
+          //sourceJsonPath: "applyScreenMdmsData.ws-services-masters.Ledger",
+          sourceJsonPath: "ledgerlist",
+          gridDefination: { xs: 12, sm: 6 },
+          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          jsonPath: "applyScreen.ledgerNo"
+        }),
+        beforeFieldChange: async (action, state, dispatch) => {
+
+          if(action.value)
+          {
+            let sectotecode = get(
+              state.screenConfiguration.preparedFinalObject,
+              "applyScreen.property.address.locality.code"
+            )
+             
+            let ledgerGroup = `${sectotecode}${action.value}`
+            dispatch(
+              prepareFinalObject(
+                "applyScreen.ledgerGroup",
+                ledgerGroup
+              )
+            )
+          }
+         
+        }
+      },
+ 
       ccCode: getTextField({
         label: { labelKey: "WS_SERV_DETAIL_CC_CODE" },
         placeholder: { labelKey: "WS_SERV_DETAIL_CC_CODE_PLACEHOLDER" },
@@ -180,6 +242,18 @@ export const additionDetails = getCommonCard({
         
         jsonPath: "applyScreen.ccCode",
         pattern: /^[0-9]*$/i,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      }),
+      ledgerGroup:
+       getTextField({
+        label: { labelKey: "WS_SERV_DETAIL_LEDGER_GROUP" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_LEDGER_GROUP_PLACEHOLDER" },
+        gridDefination: { xs: 12, sm: 6 },        
+        jsonPath: "applyScreen.ledgerGroup",
+        pattern: /^[0-9]*$/i,
+        props: {         
+          disabled: true
+        },
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
       }),
 
@@ -384,7 +458,123 @@ export const additionDetails = getCommonCard({
         pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
         jsonPath: "applyScreen.additionalDetails.initialMeterReading"
-      })
+      }),
+      meterCount: getTextField({
+        label: {
+          labelKey: "WS_ADDN_DETAILS_INITIAL_METER_COUNT"
+        },
+        placeholder: {
+          labelKey: "WS_ADDN_DETAILS_INITIAL_METER_COUNT_PLACEHOLDER"
+        },
+        gridDefination: {
+          xs: 12,
+          sm: 6
+        },
+        required: false,
+        pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+        jsonPath: "applyScreen.additionalDetails.meterCount"
+      }),
+
+      mfrCode: {
+        ...getSelectField({
+          label: { labelKey: "WS_SERV_DETAIL_MFRCODE" },
+          placeholder: { labelKey: "WS_SERV_DETAIL_MFRCODE_PLACEHOLDER" },
+          required: false,
+          sourceJsonPath: "applyScreenMdmsData.ws-services-masters.MFRCode",
+          gridDefination: { xs: 12, sm: 6 },
+          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+          jsonPath: "applyScreen.additionalDetails.mfrCode",
+          props: {
+            optionValue: "Code",
+            optionLabel: "MakeOfMeter",
+            
+          },
+        }),
+        beforeFieldChange: async (action, state, dispatch) => {
+
+          if(action.value)
+          {
+            let MFRCode = get(
+              state.screenConfiguration.preparedFinalObject,
+              "applyScreenMdmsData.ws-services-masters.MFRCode"
+            )
+            MFRCode = MFRCode.filter(x=>x.Code === action.value)
+             if(MFRCode&&MFRCode[0])
+            {
+              dispatch(
+                prepareFinalObject(
+                  "applyScreen.additionalDetails.meterDigits",
+                  MFRCode[0].Digit
+                )
+              )
+            }
+           
+          }
+         
+        }
+      },
+      meterDigits:
+      getTextField({
+       label: { labelKey: "WS_SERV_DETAIL_METER_DIGIT" },
+       placeholder: { labelKey: "WS_SERV_DETAIL_METER_DIGIT_PLACEHOLDER" },
+       gridDefination: { xs: 12, sm: 6 },        
+       jsonPath: "applyScreen.additionalDetails.meterDigits",
+       pattern: /^[0-9]*$/i,
+       props: {         
+         disabled: true
+       },
+       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+     }),
+     meterUnit: {
+      ...getSelectField({
+        label: { labelKey: "WS_SERV_DETAIL_METER_UNIT" },
+        placeholder: { labelKey: "WS_SERV_DETAIL_METER_UNIT_PLACEHOLDER" },
+        required: false,
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.MeterUnit",
+        gridDefination: { xs: 12, sm: 6 },
+        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+        jsonPath: "applyScreen.additionalDetails.meterUnit",
+        props: {
+          optionValue: "Name",
+          optionLabel: "Name",
+          
+        },
+      }),
+      beforeFieldChange: async (action, state, dispatch) => {
+
+        if(action.value)
+        {
+          
+         
+        }
+       
+      }
+    },
+    sanctionedCapacity:
+    getTextField({
+     label: { labelKey: "WS_SERV_DETAIL_SANCTION_CAPACITY" },
+     placeholder: { labelKey: "WS_SERV_DETAIL_SANCTION_CAPACITY_PLACEHOLDER" },
+     gridDefination: { xs: 12, sm: 6 },        
+     jsonPath: "applyScreen.additionalDetails.sanctionedCapacity",
+     pattern: /^[0-9]*$/i,
+     props: {         
+       disabled: true
+     },
+     errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+   }),
+   meterRentCode:
+   getTextField({
+    label: { labelKey: "WS_SERV_DETAIL_METER_RENT_CODE" },
+    placeholder: { labelKey: "WS_SERV_DETAIL_METER_RENT_CODE_PLACEHOLDER" },
+    gridDefination: { xs: 12, sm: 6 },        
+    jsonPath: "applyScreen.additionalDetails.meterRentCode",
+    pattern: /^[0-9]*$/i,
+    props: {         
+      disabled: true
+    },
+    errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+  }),
     })
   })
 });

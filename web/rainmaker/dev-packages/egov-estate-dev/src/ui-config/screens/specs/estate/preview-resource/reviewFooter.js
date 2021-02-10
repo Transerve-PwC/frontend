@@ -12,6 +12,10 @@ import {
   import { getBill, validateFields } from "../../utils";
   import get from "lodash/get";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  localStorageGet,
+  getUserInfo
+} from "egov-ui-kit/utils/localStorageUtils";
 
   export const footerReview = (
     action,
@@ -21,10 +25,11 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
     applicationNumber,
     tenantId,
     businessService,
-    branchType
+    branchType,
+    userRole
   ) => {
     /** MenuButton data based on status */
-
+    
     return getCommonApplyFooter({
       container: {
         uiFramework: "custom-atoms",
@@ -103,7 +108,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                   },
   
                 },
-                visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
+                visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "PENDINGPAYMENT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
               },
               uploadDocument: {
                 componentPath: "Button",
@@ -191,7 +196,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                     }
                   },
                 },
-                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
               },
               nocVerification: {
                 componentPath: "Button",
@@ -258,7 +263,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
                     );
                   },
                 },
-                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "SITEREPORT") ? true : false
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "SITEREPORT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
               }
             },
             gridDefination: {

@@ -8,7 +8,7 @@ import {
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTodaysDateInYMD } from "../../utils";
-
+import { getNULMPattern } from "../../../../../ui-utils/commons";
 export const SMIDDetails = getCommonCard({
   header: getCommonTitle(
     {
@@ -319,8 +319,13 @@ export const SMIDDetails = getCommonCard({
           labelName: "Enter Addrss",
           labelKey: "NULM_SMID_ADDRESS_PLACEHOLDER"
         },
+        props: {
+          className: "applicant-details-error",
+          multiline: "multiline",
+          rowsMax: 2,
+        },
         required: true,
-        pattern: getPattern("Address") || null,
+        pattern: getNULMPattern("Comment") || null,
         jsonPath: "NulmShgMemberRequest.address"
       })
     },

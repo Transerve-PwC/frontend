@@ -35,7 +35,7 @@ import {
 
 import {
   preparepopupDocumentsRoadCutUploadData, prepareDocumentsUploadData,
-  getSearchResultsView, getSearchResultsForNocCretificate, getSearchResultsForNocCretificateDownload, setCurrentApplicationProcessInstance
+  getSearchResultsView, getSearchResultsForNocCretificate, getSearchResultsForNocCretificateDownload, setCurrentApplicationProcessInstance, getEmployeeList
 } from "../../../../ui-utils/commons";
 import { taskStatusSummary } from './summaryResource/taskStatusSummary';
 import { checkVisibility } from '../../../../ui-utils/commons'
@@ -69,6 +69,9 @@ const getMdmsData = async (action, state, dispatch) => {
             },
             {
               name: "roadCutType"
+            },
+            {
+              name: "applicationType"
             }
           ]
         },
@@ -235,12 +238,18 @@ const setDownloadMenu = (state, dispatch) => {
   );
 };
 
-const HideshowEdit = (state, action, nocStatus, amount, applicationNumber) => {
+const HideshowEdit = (state, action, nocStatus, amount, applicationNumber,dispatch) => {
   // Hide edit buttons
   let showEdit = false;
   if (nocStatus === "REASSIGN" || nocStatus === "DRAFT") {
     showEdit = true;
   }
+  const ROADCUTNOC = get(
+    state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
+  const typeOfApplicant = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('typeOfApplicant') ?
+    JSON.parse(ROADCUTNOC.applicationdetail).typeOfApplicant : undefined;
+  
+
   set(
     action,
     "screenConfig.components.div.children.body.children.cardContent.children.nocSummary.children.cardContent.children.header.children.editSection.visible",
@@ -264,22 +273,21 @@ const HideshowEdit = (state, action, nocStatus, amount, applicationNumber) => {
   );
 
   set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
-  checkVisibility(state, "REJECT,REJECTED", "reject", action, "screenConfig.components.div.children.footerEmp.children.reject.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWAPPROVEEE" || nocStatus == "REASSIGNAPPROVEEE")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWAPPROVESE") || nocStatus == "REASSIGNAPPROVESE") || checkForRole(roles, 'CE'))
+  checkVisibility(state, "REJECTED", "reject", action, "screenConfig.components.div.children.footerEmp.children.reject.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWOFEE L3" || nocStatus == "REASSIGNTOEE L3")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWOFSE L2") || nocStatus == "REASSIGNTOSE L2") || checkForRole(roles, 'CE'))
 
-  checkVisibility(state, "APPROVED,COMPLETED", "approve", action, "screenConfig.components.div.children.footerEmp.children.approve.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWAPPROVEEE" || nocStatus == "REASSIGNAPPROVEEE")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWAPPROVESE" || nocStatus == "REASSIGNAPPROVESE")) || checkForRole(roles, 'CE') || (nocStatus === "VERIFYANDFORWARD" && checkForRole(roles, 'EE')))
+  checkVisibility(state, "APPROVED BY EE,APPROVED BY SE,APPROVED BY CE,COMPLETE", "approve", action, "screenConfig.components.div.children.footerEmp.children.approve.visible", (amount < 50000 && checkForRole(roles, 'EE') && (nocStatus == "REVIEWOFEE L3" || nocStatus == "REASSIGNTOEE L3")) || (amount < 200000 && checkForRole(roles, 'SE') && (nocStatus == "REVIEWOFSE L2" || nocStatus == "REASSIGNTOSE L2")) || checkForRole(roles, 'CE') || (nocStatus === "VERIFY FOR COMPLETION" && checkForRole(roles, 'EE')))
 
-  checkVisibility(state, "REASSIGN,REASSIGNAPPROVESE,REASSIGNAPPROVEEE,REASSIGNTOJE,REASSIGNTOSDO", "reassign", action, "screenConfig.components.div.children.footerEmp.children.reassign.visible", null)
+  checkVisibility(state, "REASSIGN,REASSIGNTOJE,REASSIGNTOSDE L2,REASSIGNTODMEE,REASSIGNTOHDMEE,REASSIGNTOEE L3,REASSIGNTOCHDSE,REASSIGNTODMSE,REASSIGNTOSE L2,REASSIGNTOWD,REASSIGNTOCHDCE,REASSIGNTODMCE,REASSIGNTOSDEHQ", "reassign", action, "screenConfig.components.div.children.footerEmp.children.reassign.visible", null)
 
   checkVisibility(state, "REASSIGNDOEE,REASSIGNDOSE,REASSIGNDOCE", "reassignToDO", action, "screenConfig.components.div.children.footerEmp.children.reassignToDO.visible", null)
 
-  checkVisibility(state, "INITIATED,VERIFYDOEE,VERIFYDOSE,VERIFYDOCE,REVIEWSDO,REVIEWOFSE,REVIEWOFCE,REVIEWOFEE,REVIEWAPPROVEEE,REVIEWAPPROVESE,REVIEWOFWD,PENDINGAPPROVAL,VERIFYANDFORWARD", "nextButton", action, "screenConfig.components.div.children.footerEmp.children.nextButton.visible", null)
+  checkVisibility(state, "INITIATED,REVIEWSDE L1,REVIEWOFJE,REVIEWSDE L2,REVIEWOFEE L2,VERIFYHDMEE L1,VERIFYHDMEE L2,VERIFYDMEE,REVIEWOFEE L3,REVIEWOFSE L1,VERIFYCHDSE L1,VERIFYCHDSE L2,VERIFYDMSE,REVIEWOFSE L2,REVIEWOFCE L1,VERIFYDMCE,VERIFYCHDCE L1,VERIFYCHDCE L2,REVIEWOFSDEHQ,REVIEWOFWD,PENDINGAPPROVAL,VERIFY AFTER APPROVAL L1,VERIFY AFTER APPROVAL L2,VERIFY AFTER APPROVAL L3,VERIFY FOR COMPLETION","nextButton", action, "screenConfig.components.div.children.footerEmp.children.nextButton.visible", null)
 
   set(
     action,
     "screenConfig.components.div.children.footerEmp.children.MakePayment.visible",
-    (checkForRole(roles, 'CITIZEN') && nocStatus === "APPROVED") ? true : false
+    (checkForRole(roles, 'CITIZEN') && nocStatus === "VERIFY AFTER APPROVAL L3") ? true : false
   );
-
   set(
     action,
     "screenConfig.components.div.children.footerEmp.children.previousButton.visible",
@@ -303,12 +311,44 @@ const HideshowEdit = (state, action, nocStatus, amount, applicationNumber) => {
     action,
     "screenConfig.components.div.children.takeactionfooter.children.actionbutton.visible",
     checkForRole(roles, 'CITIZEN') ?
-      nocStatus === "DRAFT" || nocStatus === "REASSIGN" || nocStatus === "APPROVED" ?
+      nocStatus === "DRAFT" || nocStatus === "REASSIGN" || nocStatus === "VERIFY AFTER APPROVAL L3" ?
         true
         : false
       : true
   );
-  //screenConfiguration.screenConfig["roadcutnoc-search-preview"].
+  set(
+    action,
+    "components.adhocDialogForward.children.popup.children.adhocRebateCardSeRoadCutForward.children.ContainerSeRoadCutForward.children.assigneeList.visible",
+    checkForRole(roles, 'SDE') ? (nocStatus == "APPROVED BY EE"|| nocStatus == "VERIFY AFTER APPROVAL L2") ? false : true : true);
+
+    dispatch(
+      handleField(
+        "roadcutnoc-search-preview",
+        "components.adhocDialogForward.children.popup.children.adhocRebateCardSeRoadCutForward.children.ContainerSeRoadCutForward.children.assigneeList",
+        "visible", checkForRole(roles, 'SDE') ? (nocStatus == "APPROVED BY EE"|| nocStatus == "VERIFY AFTER APPROVAL L2") ? false : true : true));
+
+
+  set(
+    action,
+    "components.adhocDialog2.children.popup.children.adhocRebateCardRoadCutReassign.children.ContainerRoadCutReassign.children.assigneeList.visible",
+    checkForRole(roles, 'EE') || checkForRole(roles, 'JE') ? (nocStatus == "INITIATED" || nocStatus == "RESENT" || nocStatus == "REVIEWOFJE" || nocStatus == "REASSIGNTOJE") ? false : true : true);
+
+    dispatch(
+      handleField(
+        "roadcutnoc-search-preview",
+        "components.adhocDialog2.children.popup.children.adhocRebateCardRoadCutReassign.children.ContainerRoadCutReassign.children.assigneeList",
+        "visible", checkForRole(roles, 'EE') || checkForRole(roles, 'JE') ? (nocStatus == "INITIATED" || nocStatus == "RESENT" || nocStatus == "REVIEWOFJE" || nocStatus == "REASSIGNTOJE") ? false : true : true));
+
+  // if (checkForRole(roles, 'JE') && (nocStatus == "REVIEWOFJE" || nocStatus == "REASSIGNTOJE")) {
+  //   if (typeOfApplicant != "TELECOM" && typeOfApplicant != "NATURAL_GAS_PIPELINE_PNG") {
+  //     set(
+  //       action,
+  //       "screenConfig.components.div.children.footerEmp.children.reassign.visible",
+  //       false
+  //     );
+  //   }
+  // }
+
 }
 
 const setSearchResponse = async (state, action, dispatch, applicationNumber, tenantId) => {
@@ -332,8 +372,9 @@ const setSearchResponse = async (state, action, dispatch, applicationNumber, ten
     let gstamount = get(state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0].gstamount", {});
 
     await setCurrentApplicationProcessInstance(state);
-    HideshowEdit(state, action, nocStatus, amount, applicationNumber);
-    if (nocStatus === 'PAID' && checkForRole(roles, 'CITIZEN')) {
+    HideshowEdit(state, action, nocStatus, amount, applicationNumber,dispatch);
+    // await getEmployeeList(state);
+    if ((nocStatus === 'PAID'|| nocStatus === 'COMPLETE' || nocStatus === 'VERIFY FOR COMPLETION') && checkForRole(roles, 'CITIZEN')) {
       searchBill(dispatch, applicationNumber, tenantId);
     } else {
       if (amount > 0) {
@@ -522,6 +563,7 @@ const screenConfig = {
       set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.RoadCutForwardGstAmount", "");
       set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.RoadCutForwardPerformanceBankGuaranteeCharges", "");
       set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.remarks", "");
+      set(state.screenConfiguration.preparedFinalObject, "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee", "");
     }
 
     dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));

@@ -1,5 +1,6 @@
 import { getCommonCard, getPattern, getCommonSubHeader, getTextField, getSelectField, getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
-
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import get from 'lodash/get';
 // export const getGenderRadioButton = {
 //   uiFramework: "custom-containers",
 //   componentPath: "RadioGroupContainer",
@@ -16,6 +17,26 @@ import { getCommonCard, getPattern, getCommonSubHeader, getTextField, getSelectF
 //   },
 //   type: "array"
 // };
+const displaysubUsageType = (usageType, dispatch, state) => {
+
+  let subTypeValues = get(
+          state.screenConfiguration.preparedFinalObject,
+          "applyScreenMdmsData.ws-services-masters.wsCategory"
+        );
+
+      let subUsage=[];
+      if(subTypeValues!== undefined)
+      {
+      subUsage = subTypeValues.filter(cur => {
+                  return (cur.applicationType === usageType ) 
+                });
+          if(subUsage&&subUsage[0])
+          {
+            dispatch(prepareFinalObject("propsubusagetypeForSelectedusageCategory",subUsage[0].category));
+          }
+        }
+          
+}
 
 export const getCheckboxContainer = {
   uiFramework: "custom-containers-local",
@@ -52,20 +73,60 @@ export const OwnerInfoCard = getCommonCard({
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
     }),
 
-    pipeSize: getSelectField({
-      label: { labelKey: "WS_CONN_DETAIL_PIPE_SIZE" },
-      sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
-      placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
-      required: true,
-      gridDefination: { xs: 12, sm: 6 },
-      jsonPath: "applyScreen.proposedPipeSize"
-    }),
+    // pipeSize: getSelectField({
+    //   label: { labelKey: "WS_CONN_DETAIL_PIPE_SIZE" },
+    //   sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
+    //   placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
+    //   required: true,
+    //   gridDefination: { xs: 12, sm: 6 },
+    //   jsonPath: "applyScreen.proposedPipeSize"
+    // }),
+
+
+    pipeSize: {
+      ...getSelectField({
+        label: { labelKey: "WS_CONN_DETAIL_PIPE_SIZE" },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
+        placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
+        required: true,
+        gridDefination: { xs: 12, sm: 6 },
+        jsonPath: "applyScreen.proposedPipeSize"
+      }),
+      beforeFieldChange: async (action, state, dispatch) => {
+
+        // if(action.value)
+        // {
+        //   let pipeSize = get(
+        //     state.screenConfiguration.preparedFinalObject,
+        //     "applyScreenMdmsData.ws-services-calculation.pipeSize"
+        //   )
+        //   pipeSize = pipeSize.filter(x=>x.size === action.value)
+
+        //    if(pipeSize&&pipeSize[0])
+        //    {            
+        //     dispatch(
+        //       prepareFinalObject(
+        //         "applyScreen.sanctionedCapacity",
+        //         pipeSize[0].sanctionedCapacity
+        //       )
+        //     )
+        //     dispatch(
+        //       prepareFinalObject(
+        //         "applyScreen.meterRentCode",
+        //         pipeSize[0].MeterRentCode
+        //       )
+        //     )
+        //    }
+        // }
+       
+      }
+    },
     waterApplicationType : getSelectField({
       label: { labelKey: "WATER_APPLICATION_TYPE" },
       sourceJsonPath: "applyScreenMdmsData.ws-services-masters.WaterApplicationType",
       placeholder: { labelKey: "WATER_APPLICATION_TYPE_PLACEHOLDER" },
       required: true,
-      gridDefination: { xs: 12, sm: 12 },
+      gridDefination: { xs: 12, sm: 6 },
       jsonPath: "applyScreen.waterApplicationType",
       props: {
         optionValue: "code",
@@ -84,6 +145,9 @@ export const OwnerInfoCard = getCommonCard({
       //   }
       // ]
     },
+    beforeFieldChange: async (action, state, dispatch) => {
+       displaysubUsageType(action.value, dispatch, state);
+   }
     }),
 
     numberOfWaterClosets: getTextField({
@@ -91,6 +155,7 @@ export const OwnerInfoCard = getCommonCard({
       placeholder: { labelKey: "WS_CONN_DETAIL_NO_OF_WATER_CLOSETS_PLACEHOLDER" },
       gridDefination: { xs: 12, sm: 6 },
       required: true,
+      visible:false,
       sourceJsonPath: "applyScreen.proposedWaterClosets",
       jsonPath: "applyScreen.proposedWaterClosets",
       pattern: /^[0-9]*$/i,
@@ -101,6 +166,7 @@ export const OwnerInfoCard = getCommonCard({
       label: { labelKey: "WS_ADDN_DETAILS_NO_OF_TOILETS" },
       placeholder: { labelKey: "WS_ADDN_DETAILS_NO_OF_TOILETS_PLACEHOLDER" },
       required: true,
+      visible:false,
       gridDefination: { xs: 12, sm: 6 },
       sourceJsonPath: "applyScreen.proposedToilets",
       jsonPath: "applyScreen.proposedToilets",

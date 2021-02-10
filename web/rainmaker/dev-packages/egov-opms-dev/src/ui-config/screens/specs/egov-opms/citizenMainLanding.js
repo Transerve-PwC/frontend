@@ -29,8 +29,8 @@ if (checkForRole(roles, 'CITIZEN')) {
   const cardlist = [
     {
       label: {
-        labelKey: "Apply a Permission to Keep Pet Dog",
-        labelName: "Apply a Permission to Keep Pet Dog"
+        labelKey: "NOC to keep pet",
+        labelName: "NOC to keep pet"
       },
       icon: <i
         viewBox="0 -8 35 42"

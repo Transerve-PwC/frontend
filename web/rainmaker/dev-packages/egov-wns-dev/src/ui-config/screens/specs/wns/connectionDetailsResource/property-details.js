@@ -31,19 +31,19 @@ const propertyLocationDetailsHeader = getHeader({
 });
 
 const propertyDetails = getCommonContainer({
-  propertyType: getLabelWithValue(
-    {
-      labelKey: "WS_PROPERTY_TYPE_LABEL"
-    },
-    {
-      jsonPath:
-      "WaterConnection[0].property.propertyType",
-      localePrefix: {
-        moduleName: "WS",
-        masterName: "PROPTYPE"
-      }
-    }
-  ),
+  // propertyType: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_PROPERTY_TYPE_LABEL"
+  //   },
+  //   {
+  //     jsonPath:
+  //     "WaterConnection[0].property.propertyType",
+  //     localePrefix: {
+  //       moduleName: "WS",
+  //       masterName: "PROPTYPE"
+  //     }
+  //   }
+  // ),
   propertyUsageType: getLabelWithValue(
     {
       labelKey: "WS_PROPERTY_USAGE_TYPE_LABEL"
@@ -62,7 +62,15 @@ const propertyDetails = getCommonContainer({
     {
       jsonPath: "WaterConnection[0].property.landArea"
     }
-  )
+  ),
+  reviewNumberOfFloors: getLabelWithValue(
+    {
+      labelName: "Number Of Floors",
+      labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
+    },
+    { jsonPath: "WaterConnection[0].property.noOfFloors",
+    callBack: handleNA }
+  ),
 })
 
 // const locationOnMap = WaterConnection[0].property.address.locality.code + WaterConnection[0].property.address.locality.code

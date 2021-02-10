@@ -145,10 +145,10 @@ export const callBackForNext = async (state, dispatch) => {
           return assignment.toDate;
         }
       );
-      if(toDate)
-      {
-        assignToDate = true
-      }
+      // if(toDate)
+      // {
+      //   assignToDate = true
+      // }
     
       if(!assignToDate)
       {
@@ -216,7 +216,7 @@ export const callBackForNext = async (state, dispatch) => {
           const serviceToDt = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[j].serviceTo).getTime();
           const isCurrentPosition = new Date(state.screenConfiguration.preparedFinalObject.Employee[0].serviceHistory[j].isCurrentPosition);
        
-          if( !(annuationdate >= serviceFromdDt && serviceFromdDt >= appntDate)){
+          if( !(annuationdate >= serviceFromdDt && serviceFromdDt > appntDate)){
             isInvalidFromDt = true;
             invalidFromDate += `${j}`;
             if(j < serviceDetailsItems.length-1 ) invalidFromDate += ",";
@@ -232,7 +232,13 @@ export const callBackForNext = async (state, dispatch) => {
          
           
     }
-    if(isInvalidFromDt)  finalErrString +=   invalidFromDate;
+    if(isInvalidFromDt)
+    {
+      //finalErrString +=   invalidFromDate;
+      finalErrString ="";
+
+    }
+    
     if(isInvalidToDt)    finalErrString +=   "  "+invalidToDate;
 
 //const ValidServicedDt = state.screenConfiguration.preparedFinalObject.ValidServicedDt

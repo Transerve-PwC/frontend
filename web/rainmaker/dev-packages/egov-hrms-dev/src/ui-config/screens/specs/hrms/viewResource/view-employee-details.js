@@ -92,7 +92,7 @@ export const getEmployeeDetailsView = (isReview = true) => {
           labelName: "Appellation",
           labelKey: "HR_APPELLATION_LABEL"
         },
-        { jsonPath: "Employee[0].user.appellation" }
+        { jsonPath: "Employee[0].user.salutation" }
       ),
       reviewName: getLabelWithValue(
         {

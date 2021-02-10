@@ -6,54 +6,18 @@ import "./index.css";
 
 class SuccessMessage extends Component {
   render() {
-    //applicationData ? applicationData.bookingsModelList[0].bkApplicationNumber : '';
-    const { successmessage, employeeName, secondaryLabel,headermessage, applicationNumber, tertiaryLabel, icon, backgroundColor } = this.props;
-    const label1 = `Application No.${applicationNumber}`
-    // const displayNumber = headermessage ? applicationNumber : newLocationNumber;
-    // console.log("displayNumber--",displayNumber)
-    // const label1 = `Application No.${displayNumber}`
+        const { successmessage, employeeName, secondaryLabel,headermessage, applicationNumber, tertiaryLabel, icon, backgroundColor } = this.props;
+        const label1 = `Application No.${applicationNumber}`
+    
     return (
-//applicationData ? applicationData.bookingsModelList[0].bkApplicationNumber : '';
-      // <div className="wt-app-details">
-      //   <div className="container-fluid">
-      //     <div className="row spl-application-header" style={{marginTop: '40px',marginBottom: '30px', marginLeft: '-6px'}}>
-      //       <div className="col-sm-3 spl-app-header-text">  <Label label={headermessage} /></div>
-      //       {/* <div class="col-sm-4" > <Label label= {applicationNumber} style={{fontWeight: 'bold' ,
-      //       fontsize: "24px", fontweight: "500" }}/></div>
-      //       <div class="col-sm-5">  </div> */}
-      //       <div class="col-sm-5">  </div>
-      //       <div class="col-sm-4" > <Label  label= {label1} fontWeight='bold' fontweight="500" fontsize="24px"/></div>          
-      //     </div>
 
-      //   </div>
       <div className="wt-app-details">
       <div className="container-fluid">
         <div className="row spl-application-header" style={{ marginTop: '40px', marginBottom: '30px', marginLeft: '-6px' }}>
           <div className="col-sm-6 spl-app-header-text">  <Label label={headermessage} /></div>
-          {/* <div className="col-sm-5 spl-app-header-number" > <Label label={label1 } /></div> */}
-          {/* <div class="col-sm-5">  </div> */}
         </div>
 
       </div>
-        {/* <Card
-
-          className="complaint-card" style={{margin: '0px 21px',padding: '30px 8px'}}
-          textChildren={
-            <div className="complaint-card-wrapper" style={{    paddingLeft: '20px',
-              paddingBottom: '15px'}}>
-          <div class="row">
-            <div class="col-sm-1"> <FloatingActionButton className="floating-button" style={{ boxShadow: 0, marginTop: 15 }} backgroundColor={backgroundColor}>
-                {icon}
-              </FloatingActionButton></div>
-            <div class="col-sm-8" >   
-            <Label className="thankyou-text" style={{ fontSize: 30, fontWeight: 'bold' }} label={successmessage} color="#767676" />
-            <Label className="thankyou-text-message" label={secondaryLabel} color="#767676" /></div>
-            <div class="col-sm-3">  <Label label={"BK_MYBK_WATER_TANKER_REQUESTNO"} /><Label  label= {applicationNumber} fontWeight='bold' fontweight="500" fontsize="24px"/> </div>
-          </div>        
-            </div>
-          }
-        /> */}
-
 <Card
           className="complaint-card" style={{ margin: '0px 21px', padding: '30px 8px' }}
           textChildren={

@@ -217,11 +217,9 @@ export const header = getCommonContainer({
 
       if(!step && !code){
         dispatch(prepareFinalObject("materials[0]",null));
+        dispatch(prepareFinalObject("materials[0].storeMapping[0].active",true));
       }
-      // if(code===null)
-      // 
-    // set active true when crete
-    dispatch(prepareFinalObject("materials[0].storeMapping[0].active",true));
+ 
       return action;
     },
   

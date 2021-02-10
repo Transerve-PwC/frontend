@@ -74,6 +74,10 @@ const CheckboxContainerConnHolder = Loadable({
     loader: () => import("./WorkFlowContainer"),
     loading: () => <Loading />
   });
+  const MultiItem = Loadable({
+    loader: () => import("./MultiItem"),
+    loading: () => <Loading />
+  });
 export {
   CustomTabContainer,
   LabelContainer,
@@ -90,5 +94,6 @@ export {
   EstimateOverviewCardContainer,
   ModificationDocumentListContainer,
   CheckboxContainerConnHolder,
-  WorkFlowContainer
+  WorkFlowContainer,
+  MultiItem
 };

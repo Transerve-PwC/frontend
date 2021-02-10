@@ -96,11 +96,15 @@ class Applications extends React.Component {
                           />
                         </Grid>
                         <Grid item md={8} xs={6}>
+                          {item.property && item.property.owner&&
                           <LabelContainer
-                            labelName={item.property.owners.map(owner =>owner.name).join(",")}
-                            fontSize={14}
-                            style={{ fontSize: 14, color: "rgba(0, 0, 0, 0.87" }}
-                          />
+                          labelName={item.property.owners.map(owner =>owner.name).join(",")}
+                          fontSize={14}
+                          style={{ fontSize: 14, color: "rgba(0, 0, 0, 0.87" }}
+                        />
+
+                          }
+                          
                         </Grid>
                       </Grid>
                       <Grid container style={{ marginBottom: 12 }}>

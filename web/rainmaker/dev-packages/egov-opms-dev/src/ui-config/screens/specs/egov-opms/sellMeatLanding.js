@@ -30,8 +30,8 @@ if (checkForRole(roles, 'CITIZEN')) {
   const cardlist = [
     {
       label: {
-        labelKey: "Apply a Permission to Sell Meat",
-        labelName: "Apply a Permission to Sell Meat"
+        labelKey: "Apply for NOC to sell meat",
+        labelName: "Apply for NOC to sell meat"
       },
       icon: <i
         viewBox="0 -8 35 42"

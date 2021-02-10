@@ -90,6 +90,9 @@ const getMdmsData = async (action, state, dispatch) => {
             },
             {
               name: "AdvertisementEmployeeList"
+            },
+            {
+              name: "applicationType"
             }
           ]
         },
@@ -284,7 +287,12 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
     action,
     "screenConfig.components.adhocDialogForward.children.popup.children.adhocPopupAdvertisementForwardRemarkCard.children.advertisementForwardRemarkContainer.children.employeeList.required",
     checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
-  //advertisementOSDWithdraApprovalAmountField
+  set(
+    action,
+    "screenConfig.components.adhocDialogForward.children.popup.children.adhocPopupAdvertisementForwardRemarkCard.children.advertisementForwardRemarkContainer.children.employeeList.props.required",
+    checkForRole(roles, 'OSD') ? nocStatus == "REVIEWOFOSD" || nocStatus == "REASSIGNTOOSD" ? true : false : false);
+
+    //advertisementOSDWithdraApprovalAmountField
   set(
     action,
     "screenConfig.components.adhocDialog.children.popup.children.adhocPopupAdvertisementOSDWithdraApprovalAmountCard.children.advertisementOSDWithdraApprovalAmountContainer.children.employeeList.required",
@@ -355,11 +363,24 @@ const HideshowEdit = (state, action, nocStatus, exemptedcategory, dispatch) => {
     action,
     "screenConfig.components.div.children.footer.children.submitButton.visible",
     checkForRole(roles, 'CITIZEN') ?
-      nocStatus === "DRAFT" || nocStatus === "INITIATED" || nocStatus === "REASSIGN"
+      // nocStatus === "DRAFT" || nocStatus === "INITIATED" || nocStatus === "REASSIGN"
+      nocStatus === "DRAFT"  || nocStatus === "REASSIGN"
         ? true
         : false
       : false
   );
+  set(
+    action,
+    "screenConfig.components.div.children.footer.children.makePayment.visible",
+    checkForRole(roles, 'CITIZEN') ?
+      exemptedcategory == 0 ? 
+        nocStatus === "APPROVED"
+        ? true
+      : false
+      : false
+    :false
+  );
+
 }
 
 const setSearchResponse = async (state, action, dispatch, applicationNumber, tenantId) => {
@@ -436,7 +457,7 @@ const setSearchResponse = async (state, action, dispatch, applicationNumber, ten
 
     prepareDocumentsView(state, dispatch);
     if (checkForRole(roles, 'CITIZEN'))
-      setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId);
+      setSearchResponseForNocCretificate(state, dispatch, applicationNumber, tenantId,exemptedcategory);
 
 
     getMdmsData(action, state, dispatch).then(response => {
@@ -499,7 +520,8 @@ const setSearchResponseForNocCretificate = async (
   state,
   dispatch,
   applicationNumber,
-  tenantId
+  tenantId,
+  exemptedcategory
 ) => {
   let downloadMenu = [];
   let certificateDownloadObjectADVERTISEMENT_RECEIPT = {};
@@ -527,8 +549,8 @@ const setSearchResponseForNocCretificate = async (
   if (resPaid.length != 0)
     nocRemark = "PAID";
 
-
-  if (nocStatus == "APPROVED" && resWITHDRAWAPPROVAL.length == 0) {
+    // if (nocStatus == "APPROVED" && resWITHDRAWAPPROVAL.length == 0) {
+  if ((nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) || (nocStatus == "APPROVED" && exemptedcategory == 1 && resWITHDRAWAPPROVAL.length == 0)) {
     let getCertificateDataForADVERTISEMENT = { "applicationType": "ADVERTISEMENTNOC", "tenantId": tenantId, "applicationId": applicationNumber, "dataPayload": { "requestDocumentType": "certificateData" } };
 
     //ADVERTISEMENTNOC
@@ -609,20 +631,23 @@ const setSearchResponseForNocCretificate = async (
 
   }
 
-  if (nocStatus == "APPROVED" && nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) {
+  // if (nocStatus == "APPROVED" && nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) {
+  if (nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) {
     downloadMenu = [
       certificateDownloadObjectADVERTISEMENT,
       certificateDownloadObjectADVERTISEMENT_RECEIPT
     ];
-  } else if (nocStatus == "APPROVED" && resWITHDRAWAPPROVAL.length == 0) {
+  }
+  else if (nocStatus == "APPROVED" && exemptedcategory == 1 && resWITHDRAWAPPROVAL.length == 0) {
     downloadMenu = [
       certificateDownloadObjectADVERTISEMENT
     ];
-  } else if (nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) {
-    downloadMenu = [
-      certificateDownloadObjectADVERTISEMENT_RECEIPT
-    ];
-  }
+  } 
+  // else if (nocRemark == "PAID" && resWITHDRAWAPPROVAL.length == 0) {
+  //   downloadMenu = [
+  //     certificateDownloadObjectADVERTISEMENT_RECEIPT
+  //   ];
+  // }
 
   dispatch(
     handleField(

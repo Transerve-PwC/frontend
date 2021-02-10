@@ -104,6 +104,8 @@ const getFileUrl = async (dispatch,tenantId,fileStoreId)=>{
   getFileUrlFromAPI(fileStoreId,tenantId).then(async(fileRes) => {
     console.log(fileRes)
     console.log("fileRes")
+    if(fileRes.fileStoreIds[0] !== undefined)
+    {
     FileURL = fileRes.fileStoreIds[0].url
     FileURL = getCommonFileUrl(FileURL)
     let  documentsPreview= [
@@ -116,6 +118,7 @@ const getFileUrl = async (dispatch,tenantId,fileStoreId)=>{
     dispatch(
       prepareFinalObject("documentsPreview", documentsPreview)
     );
+  }
   });  
  
 }

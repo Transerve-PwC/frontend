@@ -80,7 +80,8 @@ class BookingDetails extends Component {
 
 
   render() {
-    const { status, historyApiData, applicantName, applicationNo, submittedDate, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
+    const { status, historyApiData, applicantName, applicationNo, submittedDate, dateCreated, address, sector, houseNo, bookingType, mapAction, images, action, role,bookingForDate, bookingForTime} = this.props;
+    console.log("propsInBookingDetailsWaterTanker--",this.props)
     var ProcessInstances = [];
 
     if (historyApiData != undefined && historyApiData.ProcessInstances && historyApiData.ProcessInstances.length > 0) {
@@ -152,7 +153,7 @@ class BookingDetails extends Component {
                       label={'BK_'+status}
                     />
                   </div>
-                  <div className="col-md-4">
+                  {/* <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_DETAILS_SUBMISSION_DATE" />
                     <b><Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
@@ -161,7 +162,7 @@ class BookingDetails extends Component {
                       labelStyle={{ color: "inherit" }}
                       label={dateCreated}
                     /></b>
-                  </div>
+                  </div> */}
                   <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_BOOKING_TYPE" />
                     <Label
@@ -170,6 +171,26 @@ class BookingDetails extends Component {
                       id="complaint-details-submission-date"
                       labelStyle={{ color: "inherit" }}
                       label={'BK_'+bookingType}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_BOOK_APPLICATION_DATE" />
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bookingForDate}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_BOOKING_TIME_DATE" />
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bookingForTime}
                     />
                   </div>
 

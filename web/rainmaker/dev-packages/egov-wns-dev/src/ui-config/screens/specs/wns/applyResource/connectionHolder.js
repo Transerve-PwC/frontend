@@ -11,24 +11,6 @@ import {
 
 
   const connHolderDetail = getCommonContainer({
-    mobileNumber: getTextField({
-      label: {
-        labelName: "Mobile Number",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_LABEL"
-      },
-      placeholder: {
-        labelName: "Enter Mobile No.",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_PLACEHOLDER"
-      },
-      required: true,
-      pattern: getPattern("MobileNo"),
-      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-      jsonPath: "connectionHolders[0].mobileNumber",
-      gridDefination: {
-        xs: 12,
-        sm: 6
-      },
-    }),
     applicantName: getTextField({
       label: {
         labelName: "Name",
@@ -47,81 +29,121 @@ import {
         sm: 6
       }
     }),
-    genderRadioGroup: {
-      uiFramework: "custom-containers",
-      componentPath: "RadioGroupContainer",
-      gridDefination: {
-        xs: 12,
-        sm: 6
-      },
-      jsonPath: "connectionHolders[0].gender",
-      props: {
-        label: { name: "Gender", key: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL" },
-        className: "applicant-details-error",
-        buttons: [
-          {
-            labelName: "Male",
-            labelKey: "WS_CONN_HOLDER_COMMON_GENDER_MALE",
-            value: "MALE"
-          },
-          {
-            labelName: "FEMALE",
-            labelKey: "WS_CONN_HOLDER_COMMON_GENDER_FEMALE",
-            value: "FEMALE"
-          },
-          {
-            labelName: "Transgender",
-            labelKey: "WS_CONN_HOLDER_COMMON_GENDER_TRANSGENDER",
-            value: "TRANSGENDER"
-          }
-        ],
-        jsonPath: "connectionHolders[0].gender",
-        required: true,
-        errorMessage: "Required",
-      },
-      required: true,
-      type: "array"
-    },
-    guardianName: getTextField({
+    mobileNumber: getTextField({
       label: {
-        labelName: "Father/Husband's Name",
-        labelKey: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME"
+        labelName: "Mobile Number",
+        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_LABEL"
       },
       placeholder: {
-        labelName: "Enter Father/Husband's Name",
-        labelKey: "WS_CONN_HOLDER_COMMON_ENTER_FATHER_OR_HUSBAND_NAME_PLACEHOLDER"
+        labelName: "Enter Mobile No.",
+        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_PLACEHOLDER"
       },
       required: true,
-      pattern: getPattern("Name"),
-      errorMessage: "Invalid Name",
-      jsonPath: "connectionHolders[0].fatherOrHusbandName",
+      pattern: getPattern("MobileNo"),
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "connectionHolders[0].mobileNumber",
       gridDefination: {
         xs: 12,
         sm: 6
       },
     }),
-    relationshipWithGuardian: getSelectField({
+    email: getTextField({
       label: {
-        labelName: "Relationship with Guardian",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL"
+        labelName: "email",
+        labelKey: "WS_OWNER_DETAILS_EMAIL_LABEL"
       },
       placeholder: {
-        labelName: "Select Relationship with Guardian",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_PLACEHOLDER"
+        labelName: "Enter email",
+        labelKey: "WS_OWNER_DETAILS_EMAIL_LABEL_PLACEHOLDER"
       },
+      pattern: getPattern("Email"),
       required: true,
-      jsonPath: "connectionHolders[0].relationship",
-      data: [{ code: "FATHER" }, { code: "HUSBAND" }],
-      localePrefix: {
-        moduleName: "common-masters",
-        masterName: "OwnerType"
-      },
-      //sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+     // errorMessage: "Invalid Address",
+      jsonPath: "connectionHolders[0].emailId",
       gridDefination: {
         xs: 12,
         sm: 6
+      },
+      props: {
+        className: "applicant-details-error"
       }
     }),
+
+    // genderRadioGroup: {
+    //   uiFramework: "custom-containers",
+    //   componentPath: "RadioGroupContainer",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 6
+    //   },
+    //   jsonPath: "connectionHolders[0].gender",
+    //   props: {
+    //     label: { name: "Gender", key: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL" },
+    //     className: "applicant-details-error",
+    //     buttons: [
+    //       {
+    //         labelName: "Male",
+    //         labelKey: "WS_CONN_HOLDER_COMMON_GENDER_MALE",
+    //         value: "MALE"
+    //       },
+    //       {
+    //         labelName: "FEMALE",
+    //         labelKey: "WS_CONN_HOLDER_COMMON_GENDER_FEMALE",
+    //         value: "FEMALE"
+    //       },
+    //       {
+    //         labelName: "Transgender",
+    //         labelKey: "WS_CONN_HOLDER_COMMON_GENDER_TRANSGENDER",
+    //         value: "TRANSGENDER"
+    //       }
+    //     ],
+    //     jsonPath: "connectionHolders[0].gender",
+    //     required: true,
+    //     errorMessage: "Required",
+    //   },
+    //   required: true,
+    //   type: "array"
+    // },
+    // guardianName: getTextField({
+    //   label: {
+    //     labelName: "Father/Husband's Name",
+    //     labelKey: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME"
+    //   },
+    //   placeholder: {
+    //     labelName: "Enter Father/Husband's Name",
+    //     labelKey: "WS_CONN_HOLDER_COMMON_ENTER_FATHER_OR_HUSBAND_NAME_PLACEHOLDER"
+    //   },
+    //   required: true,
+    //   pattern: getPattern("Name"),
+    //   errorMessage: "Invalid Name",
+    //   jsonPath: "connectionHolders[0].fatherOrHusbandName",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 6
+    //   },
+    // }),
+    // relationshipWithGuardian: getSelectField({
+    //   label: {
+    //     labelName: "Relationship with Guardian",
+    //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL"
+    //   },
+    //   placeholder: {
+    //     labelName: "Select Relationship with Guardian",
+    //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_PLACEHOLDER"
+    //   },
+    //   required: true,
+    //   jsonPath: "connectionHolders[0].relationship",
+    //   data: [{ code: "FATHER" }, { code: "HUSBAND" }],
+    //   localePrefix: {
+    //     moduleName: "common-masters",
+    //     masterName: "OwnerType"
+    //   },
+    //   //sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 6
+    //   }
+    // }),
     correspondenceAddress: getTextField({
       label: {
         labelName: "Correspondence Address",
@@ -143,28 +165,28 @@ import {
         className: "applicant-details-error"
       }
     }),
-    specialApplicantCategory: getSelectField({
-      label: {
-        labelName: "Special Applicant Category",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
-      },
-      placeholder: {
-        labelName: "Select Special Applicant Category",
-        labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_PLACEHOLDER"
-      },
-      jsonPath: "connectionHolders[0].ownerType",
-      required: true,
-      visible:false,
-      localePrefix: {
-        moduleName: "common-masters",
-        masterName: "OwnerType"
-      },
-      sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
-      gridDefination: {
-        xs: 12,
-        sm: 6
-      }
-    }),
+    // specialApplicantCategory: getSelectField({
+    //   label: {
+    //     labelName: "Special Applicant Category",
+    //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
+    //   },
+    //   placeholder: {
+    //     labelName: "Select Special Applicant Category",
+    //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_PLACEHOLDER"
+    //   },
+    //   jsonPath: "connectionHolders[0].ownerType",
+    //   required: true,
+    //   visible:false,
+    //   localePrefix: {
+    //     moduleName: "common-masters",
+    //     masterName: "OwnerType"
+    //   },
+    //   sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 6
+    //   }
+    // }),
   });
 
   export const sameAsOwner=getCommonContainer({
@@ -180,7 +202,7 @@ import {
         },
         jsonPath: "connectionHolders[0].sameAsPropertyAddress",
         required: false,
-        isChecked: true
+        isChecked: false
       },
       type: "array",
       jsonPath: "connectionHolders[0].sameAsPropertyAddress"

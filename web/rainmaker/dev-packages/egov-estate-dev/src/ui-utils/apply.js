@@ -321,6 +321,14 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
             true
           )
         )
+        dispatch(
+          handleField(
+            screenName,
+            `components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.fileNumber`,
+            `props.disabled`,
+             true
+          )
+        )
         /*****************************************************************************************/
       }
     } else {

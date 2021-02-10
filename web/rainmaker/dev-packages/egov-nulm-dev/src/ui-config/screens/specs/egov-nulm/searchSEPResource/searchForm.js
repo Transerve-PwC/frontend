@@ -128,13 +128,77 @@ export const searchForm = getCommonCard({
   
   }),
 
+  // button: getCommonContainer({
+  //   buttonContainer: getCommonContainer({
+  //     resetButton: {
+  //       componentPath: "Button",
+  //       gridDefination: {
+  //         xs: 12,
+  //         sm: 6,
+  //         // align: "center"
+  //       },
+  //       props: {
+  //         variant: "outlined",
+  //         style: {
+  //           color: "#FE7A51",
+  //           borderColor: "#FE7A51",
+  //           //   borderRadius: "2px",
+  //           width: "220px",
+  //           height: "48px",
+  //           margin: "8px",
+  //           float: "right",
+  //         },
+  //       },
+  //       children: {
+  //         buttonLabel: getLabel({
+  //           labelName: "Reset",
+  //           labelKey: "STORE_COMMON_RESET_BUTTON",
+  //         }),
+  //       },
+  //       onClickDefination: {
+  //         action: "condition",
+  //         callBack: resetFields,
+  //       },
+  //     },
+  //     searchButton: {
+  //       componentPath: "Button",
+  //       gridDefination: {
+  //         xs: 12,
+  //         sm: 6,
+  //         // align: "center"
+  //       },
+  //       props: {
+  //         variant: "contained",
+  //         style: {
+  //           color: "white",
+  //           margin: "8px",
+  //           backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
+  //           borderRadius: "2px",
+  //           width: "220px",
+  //           height: "48px",
+  //         },
+  //       },
+  //       children: {
+  //         buttonLabel: getLabel({
+  //           labelName: "Search",
+  //           labelKey: "STORE_COMMON_SEARCH_BUTTON",
+  //         }),
+  //       },
+  //       onClickDefination: {
+  //         action: "condition",
+  //         callBack: searchApiCall,
+  //       },
+  //     },
+  //   }),
+  // }),
+
   button: getCommonContainer({
     buttonContainer: getCommonContainer({
       resetButton: {
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 4,
           // align: "center"
         },
         props: {
@@ -146,7 +210,7 @@ export const searchForm = getCommonCard({
             width: "220px",
             height: "48px",
             margin: "8px",
-            float: "right",
+            float: "center",
           },
         },
         children: {
@@ -164,7 +228,7 @@ export const searchForm = getCommonCard({
         componentPath: "Button",
         gridDefination: {
           xs: 12,
-          sm: 6,
+          sm: 4,
           // align: "center"
         },
         props: {
@@ -176,6 +240,8 @@ export const searchForm = getCommonCard({
             borderRadius: "2px",
             width: "220px",
             height: "48px",
+            float: "center",
+            textalign:"center",
           },
         },
         children: {

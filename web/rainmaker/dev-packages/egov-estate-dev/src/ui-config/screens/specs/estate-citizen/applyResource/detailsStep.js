@@ -25,6 +25,8 @@ const _getPattern = (type) => {
           return /^[a-zA-Z0-9]{1,100}$/i;
           case "violationdetails":
               return /^([\s\S]){5,150}$/i;
+              case "area":
+                  return /^[1-9][0-9]{2,5}$/i;
   }
 }
 

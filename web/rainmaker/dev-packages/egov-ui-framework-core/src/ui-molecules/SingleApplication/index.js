@@ -271,6 +271,7 @@ class SingleApplication extends React.Component {
     switch(item.state) {
       case "":
       case "ES_PENDING_CLARIFICATION":
+        case "ES_MM_PENDING_CLARIFICATION":
       setRoute(`/estate-citizen/_apply?applicationNumber=${item.applicationNumber}&tenantId=${item.tenantId}`)
       break;
       case "ES_DRAFTED":

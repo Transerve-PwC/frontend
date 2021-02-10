@@ -39,7 +39,7 @@ export const documentDetails = getCommonCard({
       maxFiles:1,
       // description: "Only .jpg and .pdf files. 6MB max file size.",
       inputProps: {
-        accept: ".xlsx, .xls"
+        accept: ".csv"
       },
      
      

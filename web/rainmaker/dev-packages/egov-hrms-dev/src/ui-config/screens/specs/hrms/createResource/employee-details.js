@@ -7,10 +7,11 @@ import {
   getCommonContainer,
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getTodaysDateInYMD,convertDateToEpoch,convertDateToEpochDays } from "../../utils";
+import { getTodaysDateInYMD,convertDateToEpoch,convertDateToEpochDays, epochToYmdDate } from "../../utils";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField , prepareFinalObject} from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+
 export const employeeDetails = getCommonCard({
   header: getCommonTitle(
     {
@@ -36,7 +37,7 @@ export const employeeDetails = getCommonCard({
         },
         required: true,
         pattern: /^[a-zA-Z]{0,5}$/i,
-        jsonPath: "Employee[0].user.appellation"
+        jsonPath: "Employee[0].user.salutation"
       }),  
     },
     employeeName: {
@@ -169,6 +170,9 @@ export const employeeDetails = getCommonCard({
             dateOfAppointment_
           )          
         );
+
+        dispatch(prepareFinalObject("Employee[0].serviceHistory[0].serviceFrom", epochToYmdDate(dateOfAppointment_)));
+        dispatch(prepareFinalObject("Employee[0].dateOfAppointment", epochToYmdDate(dateOfAppointment_)));
         //set defaule date for assignment start data and service start date to ease date selection
         // dispatch(
         //   handleField(`create`,        

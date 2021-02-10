@@ -17,6 +17,7 @@ import {
     prepareFinalObject,
     toggleSnackbar,
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+  import { getNULMPattern } from "../../../../ui-utils/commons";
   import { getCommonApplyFooter, validateFields } from "../utils";
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -305,8 +306,13 @@ import {
                     labelName: "Enter Organization address",
                     labelKey: "NULM_NGO_REG_ORGANIZATION_ADDRESS_PLACEHOLDER"
                   },
+                  props: {
+                    className: "applicant-details-error",
+                    multiline: "multiline",
+                    rowsMax: 2,
+                  },
                   required: true,
-                  pattern: getPattern("Address") || null,
+                  pattern: getNULMPattern("Comment") || null,
                   jsonPath: "OrganizationRequest.address"
                 })
               },

@@ -988,6 +988,10 @@ let amount = 0;
             };
         }
         console.log(paymentInfoData, "nero Qry str");
+        var date2 = new Date();
+
+        var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+       
         let receiptData = [
             {
                 applicantDetail: {
@@ -1013,6 +1017,7 @@ let amount = 0;
                 },
                 generatedBy: {
                     generatedBy: JSON.parse(getUserInfo()).name,
+                    generatedDateTime: generatedDateTime
                 },
             },
         ];
@@ -1367,8 +1372,8 @@ export const downloadApplication = async (
             applicationDate: applicationData.bkDateCreated,
             propertyType: applicationData.bkType,
             date: convertDateInDMY(applicationData.bkDate),
-            time: applicationData.bkTime,
-            applicationStatus: applicationData.bkApplicationStatus,
+            time: applicationData.bkTime,  
+            applicationStatus: applicationData.bkApplicationStatus==="PENDINGASSIGNMENTDRIVER"? "Request Verification Pending" :applicationData.bkApplicationStatus,
             applicationType: applicationData.bkStatus,
         };
         let bookingDataGFCP = {

@@ -370,7 +370,7 @@ export const prepareDocumentsUploadData = (state, dispatch, type) => {
   dispatch(prepareFinalObject("documentsContract", documentsContract));
 };
 export const furnishServiceRequestDetailResponse = (state, response, dispatch) => {
-  debugger
+  // debugger
   let refurnishresponse = {};
   var serviceRequestType = []
   var sectorData = []
@@ -427,7 +427,7 @@ export const furnishServiceRequestDetailResponse = (state, response, dispatch) =
   return refurnishresponse;
 };
 export const furnishServiceRequestDetailResponseForEdit = (response, state,dispatch)=> {
-  debugger
+  // debugger
   let refurnishresponse = {};
   var serviceRequestType = []
   var sectorData = []
@@ -606,10 +606,8 @@ try {
 }
 };
 
-
-// Demo API call
-
-export const demoAPICall = async (state, dispatch, status) => {
+// API call for Dropdown Data
+export const getWorkflowDropdownData = async (state, dispatch, status) => {
   let response = '';
 	let method = "CREATE";
 
@@ -618,16 +616,90 @@ export const demoAPICall = async (state, dispatch, status) => {
 	  console.log("payload",payload)
 	  let response = '';
 	  // setapplicationMode(status);
-	  let arraypayload=[]
-	  arraypayload.push(payload);
+	  let arraypayload={"searchParams": [
+      {
+        "name": "fromDate",
+        "input": 1610649000000
+      },
+      {
+        "name": "toDate",
+        "input": 1610735399000
+      }
+    ]}
 	  if (method === "CREATE") {
-		dispatch(toggleSpinner());
-		response = await httpRequest("post", "DEMO/hc-services/serviceRequest/_create", "", [], {services: arraypayload });
-		
-		if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
-		  dispatch(prepareFinalObject("SERVICES", response));
-		  setapplicationNumber(response.services[0].service_request_id);
-		  setApplicationNumberBox(state, dispatch);
+    dispatch(toggleSpinner());
+  
+    // response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices=ROADCUTNOC&tenantId=ch.chandigarh", "", [], {services: arraypayload });
+    response = await httpRequest("post", "/egov-workflow-v2/egov-wf/businessservice/_desc?tenantId=ch.chandigarh", "", [], {services: arraypayload });
+ 
+    // debugger;
+    const HARDDATA = response
+
+		if (response) {
+      dispatch(prepareFinalObject("DROPDOWNAPIDATA", HARDDATA));
+      var dropdownOne = []
+      var dropdownItem = {}
+      var listData = HARDDATA.businessServiceDescription
+      for(var i=0; i<listData.length; i++){
+        var dropdownOneData = {"name":listData[i].business, "code": listData[i].business}
+        dropdownOne.push(dropdownOneData)
+        // dropdownOne.push(HARDDATA[i].business)
+        dropdownItem[listData[i].business] = listData[i];
+        // dropdownTwoDesc.push(dropdownItem)
+      }
+		  // setapplicationNumber(response.services[0].service_request_id);
+      // setApplicationNumberBox(state, dispatch);
+      var data =  [
+      {
+          "name" : "ROADCUTNOC",
+          "code" : "ROADCUTNOC"
+      },
+      {
+          "name" : "PETNOC",
+          "code" : "PETNOC"
+      }
+      ]
+      dispatch(prepareFinalObject("dropDownData", data));
+      // dispatch(prepareFinalObject("DropdownOne", dropdownOne));
+      // dispatch(prepareFinalObject("DropdownItem", dropdownItem));
+      dispatch(prepareFinalObject("DropdownOne", dropdownOne));
+      // First Element in Dropdown One
+      var element = {"label": dropdownOne[0].name, "value": dropdownOne[0].code}
+      dispatch(prepareFinalObject("selectedDropDownOneData", element))
+      dispatch(prepareFinalObject("DropdownItem", dropdownItem));
+
+      // First Element in Dropdown Two----------------------------------------
+      var dropdownTwo = dropdownItem[element.value].businessService;
+      var dropdownTwoService= []
+      var dropdownTwoDesc= []
+      var desc = {}
+      for(var i=0; i<dropdownTwo.length; i++){
+      var dropdownOneData = {"name":dropdownTwo[i].businessService, "code": dropdownTwo[i].businessService}
+      // dropdownTwoService.push(dropdownTwo[i].businessService)
+      dropdownTwoService.push(dropdownOneData);
+      desc[dropdownTwo[i].businessService] = dropdownTwo[i].businessServiceDescription
+      // dropdownTwoDesc.push(dropdownTwo[i].businessServiceDescription)
+      dropdownTwoDesc.push(desc);
+      }
+
+      // dispatch(
+      //   handleField(
+      //     "review",
+      //     "components.div.children.body.children.cardContent.children.buisnessService2",
+      //     "visible",
+      //     true
+      //   )
+      // );
+
+      // First Element in Dropdown One
+      var element = {"label": dropdownTwoService[0].name, "value": dropdownTwoService[0].code};
+      dispatch(prepareFinalObject("selectedDropDownTwoData", element));
+
+      dispatch(prepareFinalObject("DropdownTwo", dropdownTwoService));
+      dispatch(prepareFinalObject("DropdownDescription", desc));
+
+      let response = await workflowPreview(state, dispatch, status);
+      // dispatch(prepareFinalObject("DropdownTwo", data));
 		  dispatch(toggleSpinner());
 		  return { status: "success", message: response };
 		} else {
@@ -643,55 +715,42 @@ export const demoAPICall = async (state, dispatch, status) => {
 	}
 };
 
-export const previewWF = async (state, dispatch, status) => {
+// API call for Search workflowPreview Data
+export const workflowPreview = async (state, dispatch, status) => {
+
+  // debugger;
   let response = '';
 	let method = "CREATE";
 
 	try {
-    debugger
-    const serviceName =  get(state.screenConfiguration.preparedFinalObject, "dropDownData2", {});
 	  let payload = "PAYLOAD_DEMO"
 	  console.log("payload",payload)
 	  let response = '';
-	  // setapplicationMode(status);
-	  let arraypayload=[]
-	  arraypayload.push(payload);
+    // setapplicationMode(status);
+    var getModuleNAme =  get(state, "screenConfiguration.preparedFinalObject.selectedDropDownTwoData");
+    var workflowDescription =  get(state, "screenConfiguration.preparedFinalObject.DropdownDescription");
+	  let arraypayload={}
 	  if (method === "CREATE") {
-		dispatch(toggleSpinner());
-		response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices="+ serviceName.value +"&tenantId=ch", "", [], {services: arraypayload });
+    dispatch(toggleSpinner());
+  
+    response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices="+getModuleNAme.value+"&tenantId=ch.chandigarh", "", [], {services: arraypayload });
+    // response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_desc?tenantId=ch.chandigarh", "", [], {services: arraypayload });
     
-    dispatch(prepareFinalObject("WF_PREVIEW", response));
+    // debugger;
+    
+    workflowDescription = workflowDescription[getModuleNAme.label]
 
-    var data = get(
-      state,
-      "screenConfiguration.preparedFinalObject.WF_PREVIEW",
-      {});
-
-    // dispatch(
-    //     handleField("review_petnoc",
-    //     "components.div.children.body.children.cardContent.children.reportCardGraph",
-    //     "props.data.demo",
-    //     data
-    //     )
-    //     );
-
-    dispatch(
-      handleField("preview",
-      "components.div.children.body.children.cardContent.children.reportCardGraph",
-      "props.data.demo",
-      data
-      )
+		if (response) {
+    
+      dispatch(
+        handleField("review",
+        "components.div.children.WorkflowReport.children.cardContent.children.reportCardGraph",
+        "props.data",
+        [response, workflowDescription]
+        )
       );
-       
-    dispatch(toggleSpinner());
-    return { status: "success", message: response };
-  
-    
-		if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
-		  dispatch(prepareFinalObject("SERVICES", response));
-		  setapplicationNumber(response.services[0].service_request_id);
-		  setApplicationNumberBox(state, dispatch);
-		  dispatch(toggleSpinner());
+
+      dispatch(toggleSpinner());
 		  return { status: "success", message: response };
 		} else {
 		  dispatch(toggleSpinner());
@@ -704,117 +763,4 @@ export const previewWF = async (state, dispatch, status) => {
 	  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
 	  return { status: "failure", message: error };
 	}
-};
-
-export const getData = async (state, dispatch, status) =>  {
-  let response = '';
-	let method = "CREATE";
-
-	try {
-    
-    debugger
-    const serviceName =  get(state.screenConfiguration.preparedFinalObject, "dropDownData2", {});
-	  let payload = "PAYLOAD_DEMO"
-	  console.log("payload",payload)
-	  let response = '';
-	  // setapplicationMode(status);
-	  let arraypayload=[]
-	  arraypayload.push(payload);
-	  if (method === "CREATE") {
-		dispatch(toggleSpinner());
-		response = await httpRequest("post", "egov-workflow-v2/egov-wf/businessservice/_search?businessServices="+ serviceName.value +"&tenantId=ch", "", [], {services: arraypayload });
-    
-    // dispatch(prepareFinalObject("WF_PREVIEW", response));
-    debugger
-
-    const allData = {
-      "modulewiseWF" : [
-        {
-        "moduleName" : "OPMS",
-        "wfName" : "PETNOC",
-        "wfCode" : "PETNOC",
-        "wfDesc" : "PETNOC Descripton"
-        },
-        {
-        "moduleName" : "OPMS",
-        "wfName" : "SELLMEATNOC",
-        "wfCode" : "SELLMEATNOC",
-        "wfDesc" : "SELLMEATNOC Descripton"
-        },
-        {
-        "moduleName" : "OPMS",
-        "wfName" : "ADVERTISEMENTNOC",
-        "wfCode" : "ADVERTISEMENTNOC",
-        "wfDesc" : "ADVERTISEMENTNOC Descripton"
-        },
-        {
-        "moduleName" : "OPMS",
-        "wfName" : "ROADCUTNOC",
-        "wfCode" : "ROADCUTNOC",
-        "wfDesc" : "ROADCUTNOC Descripton"
-        },
-        {
-        "moduleName" : "RentedProperties",
-        "wfName" : "OwnershipTransferRP",
-        "wfCode" : "OwnershipTransferRP",
-        "wfDesc" : "OwnershipTransfer Descripton"
-        },
-        {
-        "moduleName" : "RentedProperties",
-        "wfName" : "OwnershipTransferRP",
-        "wfCode" : "OwnershipTransferRP",
-        "wfDesc" : "OwnershipTransferRP Descripton"
-        }
-        ]
-    }
-
-    debugger
-    
-    const filterData = allData.modulewiseWF.filter(function (el) {
-      return el.moduleName == serviceName.value ;
-    });
-
-    if(filterData.length > 0){
-      dispatch(
-        handleField("module_preview",
-        "components.div.children.body.children.cardContent.children.moduleWiseWorkflow",
-        "props.data",
-        filterData
-        )
-        );
-        
-      dispatch(prepareFinalObject("WF_CHARTDATA", filterData));
-    }else{
-      const data =  get(state.screenConfiguration.preparedFinalObject, "WF_CHARTDATA", []);
-
-      dispatch(
-        handleField("module_preview",
-        "components.div.children.body.children.cardContent.children.moduleWiseWorkflow",
-        "props.data",
-        data
-        )
-        );
-    }   
-    dispatch(toggleSpinner());
-    return { status: "success", message: response };
-  
-    
-		if (response.services[0].serviceRequestId !== 'null' || response.services[0].serviceRequestId !== '') {
-		  dispatch(prepareFinalObject("SERVICES", response));
-		  setapplicationNumber(response.services[0].service_request_id);
-		  setApplicationNumberBox(state, dispatch);
-		  dispatch(toggleSpinner());
-		  return { status: "success", message: response };
-		} else {
-		  dispatch(toggleSpinner());
-		  return { status: "fail", message: response };
-		}
-	  } 
-
-	} catch (error) {
-	  dispatch(toggleSpinner());
-	  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
-	  return { status: "failure", message: error };
-	}
-};
-
+}

@@ -112,10 +112,10 @@ const callBackForNext = async (state, dispatch) => {
 
     isFormValid = validatestepformflag[0];
     hasFieldToaster = validatestepformflag[1];
-    if (activeStep === 2 && isFormValid != false) {
+    if (activeStep === 3 && isFormValid != false) {
         isFormValid = moveToReview(state, dispatch);
     }
-    if (activeStep === 2 && isFormValid != false) {
+    if (activeStep === 3 && isFormValid != false) {
         // prepareDocumentsUploadData(state, dispatch);
         let tenantId = getTenantId().split(".")[0];
         let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.Booking.bkPaymentStatus", "");
@@ -238,7 +238,7 @@ const callBackForNext = async (state, dispatch) => {
             }
        // }
     }
-    if (activeStep === 3) {
+    if (activeStep === 4) {
         // prepareDocumentsUploadData(state, dispatch);
         // let response = await createUpdatePCCApplication(
         //     state,
@@ -268,7 +268,7 @@ const callBackForNext = async (state, dispatch) => {
         //     dispatch(toggleSnackbar(true, errorMessage, "error"));
         // }
     }
-    if (activeStep !== 3) {
+    if (activeStep !== 4) {
         if (isFormValid) {
             changeStep(state, dispatch);
         } else if (hasFieldToaster) {
@@ -315,8 +315,8 @@ export const changeStep = (
     }
 
     const isPreviousButtonVisible = activeStep > 0 ? true : false;
-    const isNextButtonVisible = activeStep < 3 ? true : false;
-    const isPayButtonVisible = activeStep === 3 ? true : false;
+    const isNextButtonVisible = activeStep < 4 ? true : false;
+    const isPayButtonVisible = activeStep === 4 ? true : false;
     const actionDefination = [
         {
             path: "components.div.children.stepper.props",
@@ -376,11 +376,20 @@ export const renderSteps = (activeStep, dispatch) => {
                 dispatch
             );
             break;
+        case 3:
+                dispatchMultipleFieldChangeAction(
+                    "applyparkcommunitycenter",
+                    getActionDefinationForStepper(
+                        "components.div.children.formwizardFourthStep"
+                    ),
+                    dispatch
+                );
+                break;   
         default:
             dispatchMultipleFieldChangeAction(
                 "applyparkcommunitycenter",
                 getActionDefinationForStepper(
-                    "components.div.children.formwizardFourthStep"
+                    "components.div.children.formwizardFifthStep"
                 ),
                 dispatch
             );
@@ -406,6 +415,11 @@ export const getActionDefinationForStepper = (path) => {
         },
         {
             path: "components.div.children.formwizardFourthStep",
+            property: "visible",
+            value: false,
+        },
+        {
+            path: "components.div.children.formwizardFifthStep",
             property: "visible",
             value: false,
         },

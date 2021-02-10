@@ -34,7 +34,7 @@ export const searchApiCall = async (state, dispatch) => {
         true,
         {
           labelName: "Please fill valid fields to start search",
-          labelKey: "ERR_FILL_VALID_FIELDS",
+          labelKey: "ERR_FILL_ALL_FIELDS",
         },
         "warning"
       )

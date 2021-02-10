@@ -46,7 +46,7 @@ export const documentDetails = getCommonCard({
             labelName: "UPLOAD FILE",
             labelKey: "PM_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
           },
-          maxFileSize: 5000,
+          maxFileSize: 2000,
           moduleName: "egov-opms",
           hasLocalization: false
         }

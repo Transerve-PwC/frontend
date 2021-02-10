@@ -966,7 +966,8 @@ const updateAdhocSellMeatReassign = (state, dispatch) => {
 //RoadCut
 const updateAdhocRoadCutForward = (state, dispatch) => {
   let isFormValid = false;
-  if (localStorageGet("applicationStatus") == "INITIATED" || localStorageGet("applicationStatus") == "REASSIGNTOJE" || localStorageGet("applicationStatus") == "RESENT") {
+  
+  if (localStorageGet("applicationStatus") == "REVIEWOFJE" || localStorageGet("applicationStatus") == "REASSIGNTOJE") {
     isFormValid = validateFields(
       "components.adhocDialog.children.popup.children.adhocRebateCardRoadCutForward.children.ForwardContainerRoadCutForward.children",
       state,
@@ -994,6 +995,11 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
       state.screenConfiguration.preparedFinalObject,
       "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.FieldRoadCutForwardRemarks"
     );
+    const assignee = get(
+      state.screenConfiguration.preparedFinalObject,
+      "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee.value"
+    )
+
     const RoadCutForwardAmount = get(
       state.screenConfiguration.preparedFinalObject,
       "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.RoadCutForwardAmount"
@@ -1012,8 +1018,8 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
     );
 
     let data = {}
-    if (RoadCutForwardAmount > 0) {
-      if (nocStatus == "INITIATED" || nocStatus == "REASSIGNTOJE" || nocStatus == "RESENT") {
+    if (nocStatus == "REVIEWOFJE" || nocStatus == "REASSIGNTOJE") {
+      if (RoadCutForwardAmount > 0) {
         if (file) {
           data = {
             "uploadDocuments": [{
@@ -1026,7 +1032,9 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
             "gstAmount": RoadCutForwardGstAmount,
             "amount": RoadCutForwardAmount,
             "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges,
-            "isAnyChangeInRoadCutEstimation":RoadCutForwardIsAnyChangeInRoadCutEstimation
+            "isAnyChangeInRoadCutEstimation": RoadCutForwardIsAnyChangeInRoadCutEstimation,
+            "assignee": assignee ? assignee : ""
+
           }
         } else {
           data = {
@@ -1037,9 +1045,19 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
             "gstAmount": RoadCutForwardGstAmount,
             "amount": RoadCutForwardAmount,
             "performanceBankGuaranteeCharges": RoadCutForwardPerformanceBankGuaranteeCharges,
-            "isAnyChangeInRoadCutEstimation":RoadCutForwardIsAnyChangeInRoadCutEstimation
+            "isAnyChangeInRoadCutEstimation": RoadCutForwardIsAnyChangeInRoadCutEstimation,
+            "assignee": assignee ? assignee : ""
           }
         }
+      } else {
+        dispatch(toggleSpinner());
+  
+        let errorMessage = {
+          labelName:
+            "Amount Should be Greater Than 0 ",
+        };
+        dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
       }
       else {
         if (file) {
@@ -1054,7 +1072,7 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
               state.screenConfiguration.preparedFinalObject,
               "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.remarks"
             ),
-          }
+            "assignee": assignee ? assignee : ""          }
         } else {
           data = {
             "uploadDocuments": [{
@@ -1064,6 +1082,7 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
               state.screenConfiguration.preparedFinalObject,
               "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.remarks"
             ),
+            "assignee": assignee ? assignee : ""
           }
         }
       }
@@ -1072,11 +1091,11 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
       let wfstatus = wfstatuslist.find(item => {
         return item.buttonName == "nextButton";
       });
-       if (localStorageGet("applicationStatus") == "VERIFYANDFORWARD") {
-          wfstatus=wfstatuslist.find(item => {
-          return item.buttonName == "approve";
-        });
-      }
+      //  if (localStorageGet("applicationStatus") == "VERIFY FOR COMPLETION") {
+      //     wfstatus=wfstatuslist.find(item => {
+      //     return item.buttonName == "approve";
+      //   });
+      // }
       UpdateStatus(state, dispatch, '/egov-opms/roadcut-search', [],
         {
           "applicationType": "ROADCUTNOC",
@@ -1087,15 +1106,7 @@ const updateAdhocRoadCutForward = (state, dispatch) => {
         }
       );
 
-    } else {
-      dispatch(toggleSpinner());
-
-      let errorMessage = {
-        labelName:
-          "Amount Should be Greater Than 0 ",
-      };
-      dispatch(toggleSnackbar(true, errorMessage, "warning"));
-    }
+    
   }
   else {
     let errorMessage = {
@@ -1119,13 +1130,19 @@ const updateAdhocRoadCutApprove = (state, dispatch) => {
     const remarks = get(
       state.screenConfiguration.preparedFinalObject,
       "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.remarks");
+      let wfstatuslist = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
+      //    //alert(JSON.stringify(wfstatus))
+      let wfstatus = wfstatuslist.find(item => {
+        return item.buttonName == "approve";
+      });
+
     UpdateStatus(state, dispatch, '/egov-opms/roadcut-search', [],
 
       {
 
         "applicationType": "ROADCUTNOC",
         "tenantId": getOPMSTenantId(),
-        "applicationStatus": 'APPROVED',
+        "applicationStatus": wfstatus.status,
         "applicationId": localStorage.getItem('ApplicationNumber'),
         "dataPayload": {
           "remarks": remarks,
@@ -1143,14 +1160,13 @@ const updateAdhocRoadCutApprove = (state, dispatch) => {
   }
 };
 const updateAdhocRoadCutReject = (state, dispatch) => {
+  
   let isFormValid = validateFields(
-    "components.adhocDialog3.children.popup.children.adhocRebateCardCeRoadCutReject.children",
+    "components.adhocDialog3.children.popup.children.adhocRebateCardCeRoadCutReject.children.ContainerCeRoadCutReject.children",
     state,
     dispatch,
     "roadcutnoc-search-preview"
   );
-
-
 
   let file = get(
     state.screenConfiguration.preparedFinalObject,
@@ -1221,6 +1237,10 @@ const updateAdhocRoadCutReassign = (state, dispatch) => {
       state.screenConfiguration.preparedFinalObject,
       "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.remarks"
     );
+    const assignee = get(
+      state.screenConfiguration.preparedFinalObject,
+      "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee.value"
+    )
 
     let data = {}
     if (file) {
@@ -1231,7 +1251,8 @@ const updateAdhocRoadCutReassign = (state, dispatch) => {
             "documentsUploadRedux[0].documents[0].fileStoreId"
           )
         }],
-        "remarks": remarks
+        "remarks": remarks,
+        "assignee": assignee ? assignee : ""
       }
     }
     else {
@@ -1239,7 +1260,8 @@ const updateAdhocRoadCutReassign = (state, dispatch) => {
         "uploadDocuments": [{
           "fileStoreId": ""
         }],
-        "remarks": remarks
+        "remarks": remarks,
+        "assignee": assignee ? assignee : ""
       }
     }
     let wfstatuslist = get(state, "screenConfiguration.preparedFinalObject.WFStatus", [])
@@ -4528,6 +4550,45 @@ export const adhocPopupForJeRoadCutForward = getCommonContainer({
     {
       documentDetails,
       ForwardContainerRoadCutForward: getCommonContainer({
+      assigneeList: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-opms",
+          componentPath: "AutosuggestContainer",
+          jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+          gridDefination: {
+            xs: 12,
+            sm: 6,
+            md: 12
+          },
+          props: {
+            style: {
+              width: "100%",
+              cursor: "pointer"
+            },
+    
+            // className: "citizen-city-picker",
+            label: { labelName: "Assignee", labelKey: "PM_ASSIGNEE" },
+          required: false,
+    
+            placeholder: {
+              labelName: "Assignee",
+              labelKey: "PM_ASSIGNEE"
+            },
+            sourceJsonPath: "OPMS.assigneeList",
+            jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+            labelsFromLocalisation: false,
+            suggestions: [],
+            fullwidth: true,
+            required: false,
+            // visible: false,
+            inputLabelProps: {
+              shrink: true
+            },
+            isMulti: false,
+            labelName: "name",
+            valueName: "code"
+          },
+        },
           isAnyChangeInRoadCutEstimation: {
             uiFramework: "custom-containers",
             gridDefination: {
@@ -4540,11 +4601,11 @@ export const adhocPopupForJeRoadCutForward = getCommonContainer({
           beforeFieldChange: (action, state, dispatch) => {
             
             if (action.value === "Yes") {
-              let ROADCUTNOC = get(
-                state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
-              let typeOfApplicant = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('typeOfApplicant') ?
-                JSON.parse(ROADCUTNOC.applicationdetail).typeOfApplicant : undefined;
-              if (typeOfApplicant && (typeOfApplicant === "TELECOM" || typeOfApplicant === "NATURAL_GAS_PIPELINE_PNG")) {
+              // let ROADCUTNOC = get(
+              //   state, "screenConfiguration.preparedFinalObject.nocApplicationDetail[0]", {});
+              // let typeOfApplicant = JSON.parse(ROADCUTNOC.applicationdetail).hasOwnProperty('typeOfApplicant') ?
+              //   JSON.parse(ROADCUTNOC.applicationdetail).typeOfApplicant : undefined;
+              // if (typeOfApplicant && (typeOfApplicant === "TELECOM" || typeOfApplicant === "NATURAL_GAS_PIPELINE_PNG")) {
                 showHideAdhocPopup(state, dispatch, "roadcutnoc-search-preview")
                 dispatch(
                   toggleSnackbar(
@@ -4553,7 +4614,7 @@ export const adhocPopupForJeRoadCutForward = getCommonContainer({
                     "warning"
                   )
                 );
-              }
+              // }
             }
           },
             props: {
@@ -4858,9 +4919,45 @@ export const adhocPopupForJeRoadCutReassign = getCommonContainer({
     {
       documentDetails,
       ContainerRoadCutReassign: getCommonContainer({
-
-
-
+        assigneeList: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-opms",
+          componentPath: "AutosuggestContainer",
+          jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+          gridDefination: {
+            xs: 12,
+            sm: 6,
+            md: 12
+          },
+          visible: true,
+          props: {
+            style: {
+              width: "100%",
+              cursor: "pointer"
+            },
+    
+            // className: "citizen-city-picker",
+            label: { labelName: "Assignee", labelKey: "PM_ASSIGNEE" },
+    
+            placeholder: {
+              labelName: "Assignee",
+              labelKey: "PM_ASSIGNEE"
+            },
+            sourceJsonPath: "OPMS.assigneeList",
+            jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+            labelsFromLocalisation: false,
+            suggestions: [],
+            fullwidth: true,
+            required: false,
+            
+            inputLabelProps: {
+              shrink: true
+            },
+            isMulti: false,
+            labelName: "name",
+            valueName: "code"
+          },
+        },
         FieldRoadCutReassignRemarks: getTextField({
           label: {
             labelName: "Enter Remarks",
@@ -5162,7 +5259,6 @@ export const adhocPopupForCeRoadCutApprove = getCommonContainer({
 
 
 
-
 export const adhocPopupForCeRoadCutReject = getCommonContainer({
   header: {
     uiFramework: "custom-atoms",
@@ -5251,12 +5347,10 @@ export const adhocPopupForCeRoadCutReject = getCommonContainer({
       }
     }
   },
-
   adhocRebateCardCeRoadCutReject: getCommonContainer(
     {
       documentDetails,
       ContainerCeRoadCutReject: getCommonContainer({
-
         FieldCeRoadCutRejectRemarks: getTextField({
           label: {
             labelName: "Enter Remarks",
@@ -5276,7 +5370,6 @@ export const adhocPopupForCeRoadCutReject = getCommonContainer({
             }
           },
           props: {
-
             className: "textfield-enterable-selection",
             multiline: true,
             rows: "4"
@@ -5360,6 +5453,7 @@ export const adhocPopupForCeRoadCutReject = getCommonContainer({
     }
   }
 });
+
 
 
 export const adhocPopupForSeRoadCutForward = getCommonContainer({
@@ -5455,7 +5549,45 @@ export const adhocPopupForSeRoadCutForward = getCommonContainer({
     {
       documentDetails,
       ContainerSeRoadCutForward: getCommonContainer({
-
+        assigneeList: {
+          uiFramework: "custom-containers-local",
+          moduleName: "egov-opms",
+          componentPath: "AutosuggestContainer",
+          jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+          gridDefination: {
+            xs: 12,
+            sm: 6,
+            md: 12
+          },
+          visible: true,
+          props: {
+            style: {
+              width: "100%",
+              cursor: "pointer"
+            },
+    
+            // className: "citizen-city-picker",
+            label: { labelName: "Assignee", labelKey: "PM_ASSIGNEE" },
+    
+            placeholder: {
+              labelName: "Assignee",
+              labelKey: "PM_ASSIGNEE"
+            },
+            sourceJsonPath: "OPMS.assigneeList",
+            jsonPath: "OPMS[0].RoadCutUpdateStautsDetails.additionalDetail.assignee",
+            labelsFromLocalisation: false,
+            suggestions: [],
+            fullwidth: true,
+            required: false,
+            
+            inputLabelProps: {
+              shrink: true
+            },
+            isMulti: false,
+            labelName: "name",
+            valueName: "code"
+          },
+        },
         FieldSeRoadCutForwardRemarks: getTextField({
           label: {
             labelName: "Enter Remarks",
@@ -5484,7 +5616,7 @@ export const adhocPopupForSeRoadCutForward = getCommonContainer({
           required: true,
           pattern: getOPMSPattern("Remarks"),
 
-        }),
+        })
 
       })
     },

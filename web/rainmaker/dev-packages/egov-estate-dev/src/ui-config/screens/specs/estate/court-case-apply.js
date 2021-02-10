@@ -442,23 +442,15 @@ export const courtCasefooterButton = {
         state.screenConfiguration.preparedFinalObject,
         "Properties[0].propertyDetails.courtCases"
       )
-    //   let courtCaseItems = get(
-    //     state,
-    //     "screenConfiguration.screenConfig.apply.components.div.children.formwizardSeventhStep.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
-    //   );
-  
-    //   if (courtCaseItems && courtCaseItems.length > 0) {
-    //     for (var i = 0; i < courtCaseItems.length; i++) {
-    //       if (courtCaseItems[i].isDeleted) {
-    //         continue;
-    //       }
-        //   var isCourtCaseDetailsValid = validateFields(
-        //     `components.div.children.formwizardFirstStep.children.courtCaseDetails.children.cardContent.children.detailsContainer.children`,
-        //     state,
-        //     dispatch
-        //   )
-    //     }
-    //   }
+      if(get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].advisorToAdminCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].chiefAdministartorsCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].commissionersCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.Properties[0].propertyDetails.courtCases[0].estateOfficerCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].honorableDistrictCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].honorableHighCourt').length > 250 ||
+      get(state,'screenConfiguration.preparedFinalObject.tempCourtCase[0].honorableSupremeCourt').length > 250){
+        isFormValid = false;
+      }
   
       if (isFormValid) {
         const res = await applyCourtCaseDetails(state, dispatch);
@@ -488,6 +480,14 @@ export const courtCasefooterButton = {
         
         // setTimeout(dispatch(toggleSnackbar(false, successMessage, "success")), 1500);
           
+    }
+    else if(!isFormValid){
+      let errorMessage = {
+        labelName:
+            "Shouldn't exceed 250 characters",
+        labelKey: "ERR_COURT_DETAILS_250_CHARACTERS"
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "warning"))
     }
     
     }
