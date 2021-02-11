@@ -3,9 +3,9 @@ import {
   getTenantId,
   getUserInfo
 } from "egov-ui-kit/utils/localStorageUtils";
-import { createEstimateData, getCommonApplyHeader, getFeesEstimateCard } from "../utils";
+import { createEstimateData, getCommonApplyHeader, getFeesEstimateCard,convertEpochToDate } from "../utils";
 import { footerReview } from "./preview-resource/reviewFooter";
-const { getCommonContainer, getCommonHeader, getCommonCard, getCommonGrayCard } = require("egov-ui-framework/ui-config/screens/specs/utils");
+const { getCommonContainer, getCommonHeader, getCommonCard, getCommonGrayCard,getLabelWithValue,getCommonSubHeader } = require("egov-ui-framework/ui-config/screens/specs/utils");
 const { prepareFinalObject, toggleSpinner } = require("egov-ui-framework/ui-redux/screen-configuration/actions");
 const { getQueryArg, setDocuments } = require("egov-ui-framework/ui-utils/commons");
 const { getSearchApplicationsResults } = require("../../../../ui-utils/commons");
@@ -13,7 +13,13 @@ const { setThirdStep } = require("../estate-citizen/applyResource/review");
 import {downloadPrintContainer} from './applyResource/footer';
 import { getApplicationConfig } from "../estate-citizen/_apply";
 import { set } from "lodash";
-
+export const headerDiv = {
+  uiFramework: "custom-atoms",
+  componentPath: "Container",
+  props: {
+      style: { marginBottom: "10px" }
+  }
+}
 const userInfo = JSON.parse(getUserInfo());
 const {
   roles = []
@@ -70,7 +76,7 @@ const getData = async (action, state, dispatch) => {
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments, workFlowBusinessService, state: applicationState, billingBusinessService: businessService, property} = Applications[0];
+       let {applicationDocuments, workFlowBusinessService, state: applicationState, billingBusinessService: businessService, property,hardcopyReceivedDate} = Applications[0];
        const estateRentSummary = property.estateRentSummary
        const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
        property = {...property, propertyDetails: {...property.propertyDetails, dueAmount: dueAmount || "0"}}
@@ -123,7 +129,35 @@ const getData = async (action, state, dispatch) => {
        let {preview} = uiConfig
        let reviewDetails = await setThirdStep({state, dispatch, preview, applicationType: type, data: Applications[0], isEdit: false, showHeader: false});
        const estimateResponse = await createEstimateData(Applications[0], dispatch, window.location.href)
-
+if(!!hardcopyReceivedDate){
+   const hardcopydate=getCommonGrayCard({
+    headerDiv: {
+      ...headerDiv,
+      children: {
+        header: {
+          gridDefination: {
+            xs: 12,
+            sm: 10
+          },
+          ...getCommonSubHeader({
+            labelName: "Hard Copy Date",
+            labelKey: "ES_HARD_COPY_DATE"
+          })
+        },
+      }
+    },
+    viewCompanyDetails: getCommonContainer({
+      companyName: getLabelWithValue(
+        {labelName: "Hard Copy Date",
+        labelKey: "ES_HARD_COPY_DATE"},
+         {
+          jsonPath: `Applications[0].hardcopyReceivedDate`, callBack: convertEpochToDate
+          }
+      )
+    })
+  })
+  reviewDetails = {hardcopydate, ...reviewDetails}
+}
     
        if((!!estimateResponse && ((estimateResponse.Payments && !!estimateResponse.Payments.length) || (!!estimateResponse.billDetails && !!estimateResponse.billDetails.length)))) {
          const estimate = !!estimateResponse ? getCommonGrayCard({
