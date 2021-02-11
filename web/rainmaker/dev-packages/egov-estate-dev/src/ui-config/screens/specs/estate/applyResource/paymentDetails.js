@@ -146,6 +146,7 @@ const consolidatedTillField = {
     labelKey: "ES_CONSOLIDATED_TILL_LABEL"
   },
   pattern: _getPattern("Date"),
+  errorMessage:"ES_ERR_CONSOLIDATED_TILL",
   required: true,
   jsonPath: `Properties[0].propertyDetails.estateDemands[0].generationDate`,
   props: {

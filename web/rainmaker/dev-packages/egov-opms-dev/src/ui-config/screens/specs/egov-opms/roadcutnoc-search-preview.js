@@ -42,6 +42,14 @@ import { checkVisibility } from '../../../../ui-utils/commons'
 
 let roles = JSON.parse(getUserInfo()).roles
 
+const roadCutRate = getCommonContainer({
+  downloadcard: {
+    uiFramework: "custom-molecules-local",
+    moduleName: "egov-opms",
+    componentPath: "SampleDownloadRoadCut",
+    visible: true
+  }
+});
 
 const getMdmsData = async (action, state, dispatch) => {
 
@@ -621,10 +629,12 @@ const screenConfig = {
           roadcutapplicantSummary: roadcutapplicantSummary,
           documentsSummary: documentsSummary,
           taskStatusSummary: taskStatusSummary,
+          roadCutRate
           //   footerCitizen
         }) : getCommonCard({
           roadcutapplicantSummary: roadcutapplicantSummary,
           documentsSummary: documentsSummary,
+          roadCutRate
 
         }),
         footerEmp,

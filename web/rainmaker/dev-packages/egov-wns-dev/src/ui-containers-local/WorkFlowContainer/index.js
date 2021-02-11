@@ -53,9 +53,9 @@ class WorkFlowContainer extends React.Component {
     
     let baseUrl = "";
     let bservice = "";
-    if (moduleName === "NewWS1" || moduleName === "NewSW1" ||moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+    if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" ||moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
       baseUrl = "wns"
-      if (moduleName === "NewWS1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+      if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
         bservice = "WS.ONE_TIME_FEE"
       } else {
         bservice = "SW.ONE_TIME_FEE"
@@ -196,7 +196,7 @@ class WorkFlowContainer extends React.Component {
       const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
       const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;
       if(roleIndex && !isButtonPresent && serviceType !== "SEWERAGE"){
-        const buttonArray = getWNSButtonForCitizen(WaterConnection, applicationStatus, businessId,"NewWS1");
+        const buttonArray = getWNSButtonForCitizen(WaterConnection, applicationStatus, businessId,"REGULARWSCONNECTION");
        actions = actions.concat(buttonArray);
       }
         
@@ -213,7 +213,7 @@ class WorkFlowContainer extends React.Component {
     } = this.props;
     const workflowContract =  this.prepareWorkflowContract( moduleName);
      let showFooter;
-      if(moduleName==='NewWS1'||moduleName==='NewSW1'|| moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL"){
+      if(moduleName==='NewWS1'|| moduleName==='REGULARWSCONNECTION'|| moduleName==='NewSW1'|| moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL"){
          showFooter=true;
       }    else{
          showFooter=process.env.REACT_APP_NAME === "Citizen" ? false : true;

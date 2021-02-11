@@ -25,8 +25,7 @@ import {
     applicationNumber,
     tenantId,
     businessService,
-    branchType,
-    userRole
+    branchType
   ) => {
     /** MenuButton data based on status */
     
@@ -108,7 +107,7 @@ import {
                   },
   
                 },
-                visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "PENDINGPAYMENT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
+                visible: process.env.REACT_APP_NAME === "Citizen"  && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
               },
               uploadDocument: {
                 componentPath: "Button",
@@ -196,7 +195,7 @@ import {
                     }
                   },
                 },
-                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "PENDINGPAYMENT") ? true : false
               },
               nocVerification: {
                 componentPath: "Button",
@@ -263,7 +262,7 @@ import {
                     );
                   },
                 },
-                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "SITEREPORT", JSON.parse(getUserInfo()).roles[0].code) ? true : false
+                visible: process.env.REACT_APP_NAME === "Employee" && getButtonVisibility(status, "SITEREPORT", JSON.parse(getUserInfo()).roles[0].code === "ES_MM_BUILDING_INSPECTOR" ? true : false) ? true : false
               }
             },
             gridDefination: {

@@ -48,6 +48,7 @@ const gotoCreateFlow = async (state, dispatch) => {
     }
     try {
       let response = await updateEmployees(
+        state,
         queryObject,
         requestBody,
         dispatch

@@ -38,6 +38,7 @@ const companyNameField = {
     sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_COMPANY_NAME",
   pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.companyName",
   afterFieldChange: (action, state, dispatch) => {
@@ -64,6 +65,7 @@ const companyRegNoField = {
     sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_COMPANY_REG_NUMBER",
   jsonPath: "Properties[0].propertyDetails.companyRegistrationNumber",
   pattern: _getPattern("alphaNumeric"),
   afterFieldChange: (action, state, dispatch) => {
@@ -82,6 +84,7 @@ const companyRegDateField = {
     labelKey: "ES_REGISTRATION_DATE_LABEL"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_REG_DATE",
   jsonPath: "Properties[0].propertyDetails.companyRegistrationDate",
   required: true
   // props: {
@@ -109,6 +112,7 @@ const companyAddressField = {
     multiline: true,
     rows: "2"
   },
+  errorMessage:"ES_ERR_ADDRESS_FEILD",
   required: true,
   pattern: _getPattern("address"),
   afterFieldChange: (action, state, dispatch) => {
@@ -157,6 +161,7 @@ const firmNameField = {
   },
   jsonPath: "Properties[0].propertyDetails.companyName",
   required: true,
+  errorMessage:"ES_ERR_FIRM_NAME",
   pattern: _getPattern("alphabet"),
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -299,6 +304,7 @@ const firmAddressField = {
     rows: "2"
   },
   required: true,
+  errorMessage:"ES_ERR_ADDRESS_FEILD",
   pattern: _getPattern("address"),
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -346,6 +352,7 @@ const nameField = {
   },
   required: true,
   pattern: _getPattern("alphabet"),
+  errorMessage:"ES_ERR_PARTNER_NAME",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -372,6 +379,7 @@ const husbandFatherNameField = {
   },
   required: true,
   pattern: _getPattern("alphabet"),
+  errorMessage:"ES_ERR_PARTNER_FATHER_HUSBAND_NAME",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -398,6 +406,7 @@ const addressField = {
   },
   required: true,
   pattern: _getPattern("address"),
+  errorMessage:"ES_ERR_ADDRESS_FEILD",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {

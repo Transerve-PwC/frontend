@@ -97,7 +97,7 @@ export const footer = getCommonApplyFooter({
     children: {
       nextButtonLabel: getLabel({
         labelName: "Home",
-        labelKey: "WF_REPORT_HOME_BTN_LABEL"
+        labelKey: "DASHBOARD_WF_HOME_BTN_LABEL"
       }),
 
       
@@ -113,7 +113,7 @@ export const footer = getCommonApplyFooter({
 const titlebar = getCommonContainer({
   header: getCommonHeader({
     labelName: "Workflow Preview",
-    labelKey: "WF_MODULE_NAME_TITLE"
+    labelKey: "DASHBOARD_WF_NAME_TITLE"
   })        
 });
 
@@ -166,7 +166,7 @@ const screenConfig = {
               cursor: "pointer"
               },
             className: "citizen-city-picker",
-            label: { labelName: "Module Name", labelKey: "WF_MODULE_DROPDOWN_LABEL" },
+            label: { labelName: "Module Name", labelKey: "DASHBOARD_WF_MODULE_DROPDOWN_LABEL" },
             placeholder: {
             labelName: "Select Module Name",
             labelKey: "WF_REPORT_DROPDOWN_PLACEHOLDER"
@@ -215,7 +215,7 @@ const screenConfig = {
               cursor: "pointer"
               },
             className: "citizen-city-picker",
-            label: { labelName: "Report Name", labelKey: "WF_REPORT_DROPDOWN_LABEL" },
+            label: { labelName: "Report Name", labelKey: "DASHBOARD_WF_REPORT_DROPDOWN_LABEL" },
             placeholder: {
             labelName: "Select Module Name",
             labelKey: "WF_REPORT_DROPDOWN_PLACEHOLDER"
@@ -250,7 +250,7 @@ const screenConfig = {
             children: {
               nextButtonLabel: getLabel({
                 labelName: "Search",
-                labelKey: "WF_REPORT_SEARCH_BTN_LABEL"
+                labelKey: "DASHBOARD_WF_SEARCH_BTN_LABEL"
               }),
 
               

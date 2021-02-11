@@ -1229,6 +1229,151 @@ export const getHCDashboardData = async ( dispatch, data ) => {
   }
 };
 
+// Get Dashboard Data for EChallan 
+export const getEChallanDashboardData = async ( dispatch, data ) => {
+  
+  debugger;
+  
+  var payloadData = {
+    "applicationType": "egov-echallan",
+  "applicationStatus": null,
+  "applicationId": null,
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "fromDate": data.fromDate,
+    "toDate": data.toDate,
+    "encroachmentType": "",
+    "sector": "",
+    "siName": "",
+    "status": ""
+  },
+  "reportSortBy": data.reportSortBy
+  }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/ec-services/violation/_search",
+      "",
+      [],
+      payloadData
+    );
+
+    // Working from here is pending
+    //debugger;
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField("EChallanDashboard",
+      "components.div.children.EchallanDashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for SportAndCulture
+export const getSportAndCultureDashboardData = async ( dispatch, data ) => {
+  
+  debugger;
+  
+  var payloadData = {
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "moduleCode": "SCP",
+    "eventDetailUuid": "",
+    "eventTitle": "",
+    "eventStatus": "",
+    "status": "",
+    "startDate": data.fromDate,
+    "endDate": data.toDate,
+    "eventId": "",
+    "defaultGrid": false
+  },
+  "reportSortBy": data.reportSortBy
+  }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/prscp-services/v1/event/_get",
+      "",
+      [],
+      payloadData
+    );
+
+    //debugger;
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "SportCultureDashboard",
+      "components.div.children.SportCultureDashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Legal Dashboard Data
+export const getLegalDashboardData = async ( dispatch, data ) => {
+  try {
+
+    // let filestoreIds = get(queryObject[2], "value");
+
+    const response = await httpRequest(
+      "get",
+      "/services/lcms/reports/genericSubResult?aggregatedBy=Case+Status&caseCategory=&standingCounsel=&courtType=&courtName=&judgmentType=&petitionType=&caseStatus=&officerIncharge=&reportStatus=&caseFromDate=&caseToDate=",
+      "", []);
+    return response;
+
+  } catch (error) {
+    //alert("rrrrr")
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+  alert(JSON.stringify(response));
+};
+
 // API call for Dropdown Data
 export const getWorkflowDropdownData = async (state, dispatch, status) => {
   let response = '';

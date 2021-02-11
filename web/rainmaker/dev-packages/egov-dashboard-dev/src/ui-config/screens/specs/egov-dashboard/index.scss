@@ -20,6 +20,6 @@ div#material-ui-body {
 form#dashboardReportFilter {
   margin: 10px 16px 88px 16px; }
 
-div#material-ui-cardContent {
-  width: 150%;
-}
+  div#material-ui-cardContent {
+    width: 100%;
+    display: flex; }

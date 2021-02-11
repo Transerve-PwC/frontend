@@ -314,6 +314,7 @@ export const annualTextField = {
       xs: 12,
       sm: 6
   },
+  errorMessage:"ES_ERR_YEARLY_LICENCE_FEE",
   afterFieldChange: (action, state, dispatch) => {
 let mmyear=get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.mmDemandStartYear")
 
@@ -324,6 +325,30 @@ dispatch(
     "components.div.children.formwizardFirstStep.children.monthlyDetails.children.cardContent.children.detailsContainer.children.yearly",
     "props.disabled",
     true
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.monthlyDetails.children.cardContent.children.detailsContainer.children.yearly",
+    "props.errorMessage",
+    ""
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.monthlyDetails.children.cardContent.children.detailsContainer.children.yearly",
+    "props.error",
+    false
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.monthlyDetails.children.cardContent.children.detailsContainer.children.yearly",
+    "props.helperText",
+    ""
   )
 )
   }
@@ -344,6 +369,7 @@ export const yearTextField = {
       xs: 12,
       sm: 6
   },
+  errorMessage:"ES_ERR_YEARLY_LICENCE_FEE",
   afterFieldChange: (action, state, dispatch) => {
 let mmanualyear=get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.mmDemandStartYear")
 
@@ -354,6 +380,30 @@ dispatch(
     "components.div.children.formwizardFirstStep.children.annualDetails.children.cardContent.children.detailsContainer.children.annual",
     "props.disabled",
     true
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.annualDetails.children.cardContent.children.detailsContainer.children.annual",
+    "props.errorMessage",
+    ""
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.annualDetails.children.cardContent.children.detailsContainer.children.annual",
+    "props.error",
+    false
+  )
+)
+dispatch(
+  handleField(
+    action.screenKey,
+    "components.div.children.formwizardFirstStep.children.annualDetails.children.cardContent.children.detailsContainer.children.annual",
+    "props.helperText",
+    ""
   )
 )
   }
@@ -375,8 +425,8 @@ export const monthTextField = {
   gridDefination: {
       xs: 12,
       sm: 6
-  }
- 
+  },
+ errorMessage:"ES_ERR_MONTHLY_CHARGES"
 }
 
 export const annualDetailsHeader = getCommonTitle({

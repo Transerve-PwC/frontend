@@ -19,7 +19,8 @@ import {
 import get from "lodash/get";
 import {
   displayCustomErr,
-  displayDefaultErr
+  displayDefaultErr,
+  _getPattern
 } from "../../utils";
 
 const searchBy = {
@@ -129,16 +130,17 @@ export const estateApplication = getCommonCard({
         // pattern: /^[a-zA-Z0-9-]*$/i,
         minLength: 1,
         maxLength: 50,
-        errorMessage: "ES_ERR_INVALID_FILE_NO",
         jsonPath: "searchScreenFileNo.fileNumber",
+        pattern: _getPattern("fileNumber"),
+        errorMessage:"ES_ERR_FILE_NUMBER",
         afterFieldChange: (action, state, dispatch) => {
-          if (action.value.length > 50) {
-              displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", "estate-branch-property-search");
-          }
-          else {
-              displayDefaultErr(action.componentJsonpath, dispatch, "estate-branch-property-search");
-          }
-      }
+            if (action.value.length > 50) {
+                displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+            }
+            else {
+              displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER", action.screenKey);
+            }
+        }
       })
     }),
     siteNumberContainer: getCommonContainer({
@@ -154,6 +156,7 @@ export const estateApplication = getCommonCard({
         visible: false,
         required: true,
         jsonPath: "searchScreenSiteNo.category",
+        errorMessage:"ES_ERR_CATEGORY",
         sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
         gridDefination: {
             xs: 12,
@@ -212,7 +215,8 @@ export const estateApplication = getCommonCard({
         gridDefination: {
             xs: 12,
             sm: 6
-        }
+        },
+        errorMessage:"ES_ERR_SUB_CATEGORY"
       }),
       siteNumber: getTextField({
         label: {
@@ -232,7 +236,19 @@ export const estateApplication = getCommonCard({
         visible: false,
         minLength: 1,
         maxLength: 50,
-        jsonPath: "searchScreenSiteNo.siteNumber"
+        jsonPath: "searchScreenSiteNo.siteNumber",
+        pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
+        errorMessage:"ES_ERR_SITE_BOOTH_NUMBER",
+        afterFieldChange: (action, state, dispatch) => {
+          if (action.value.length > 50) {
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+          }    else if(action.value.length < 2){
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MINLENGTH_2", action.screenKey);
+        }
+        else {
+            displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_SITE_BOOTH_NUMBER",action.screenKey);
+        }
+        }
       }),
       sectorNumber: getSelectField({
         label: {

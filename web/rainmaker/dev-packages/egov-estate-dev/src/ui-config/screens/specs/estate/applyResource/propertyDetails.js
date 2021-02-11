@@ -76,6 +76,7 @@ const typeOfAllocationField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERR_TYPE_OF_ALLOCATION",
     beforeFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
         let step = "formwizardSecondStep";
@@ -218,6 +219,7 @@ const categoryField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERR_CATEGORY",
     afterFieldChange: (action, state, dispatch) => {
         let screenName = "apply";
         let step = "formwizardFirstStep";
@@ -308,7 +310,8 @@ const subCategoryField = {
     gridDefination: {
         xs: 12,
         sm: 6
-    }
+    },
+    errorMessage:"ES_ERR_SUB_CATEGORY"
 }
 
 const siteNumberField = {
@@ -356,7 +359,8 @@ const sectorNumberField = {
     gridDefination: {
         xs: 12,
         sm: 6
-    }
+    },
+    errorMessage:"ES_ERR_SECTOR_NUMBER"
 }
 
 export const fileNumberField = {
@@ -373,6 +377,7 @@ export const fileNumberField = {
         sm: 6
     },
     required: true,
+    errorMessage:"ES_ERR_FILE_NUMBER",
     pattern: _getPattern("fileNumber"),
     jsonPath: "Properties[0].fileNumber",
     afterFieldChange: (action, state, dispatch) => {
@@ -431,6 +436,7 @@ export const propertyTypeField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"ES_ERR_PROPERTY_TYPE",
     beforeFieldChange: (action, state, dispatch) => {
         // dispatch(
         //     handleField(
@@ -520,6 +526,7 @@ const entityTypeField = {
         xs: 12,
         sm: 6
     },
+    errorMessage:"Select valid Entity type",
     props: {
         data: [
             { code: "ET.PUBLIC_LIMITED_COMPANY", name: "Public ltd company" },

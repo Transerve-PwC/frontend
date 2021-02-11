@@ -73,6 +73,15 @@ export const stepper = getStepperObject(
 
 let roles = JSON.parse(getUserInfo()).roles
 
+const roadCutRate = getCommonContainer({
+  downloadcard: {
+    uiFramework: "custom-molecules-local",
+    moduleName: "egov-opms",
+    componentPath: "SampleDownloadRoadCut",
+    visible: true
+  }
+});
+
 
 const titlebar = getCommonContainer({
   header: getCommonHeader({
@@ -351,12 +360,13 @@ const screenConfig = {
           applicantSummary: applicantSummary,
           nocSummary: nocSummary,
           documentsSummary: documentsSummary,
-
+          roadCutRate
         }) :
           getCommonCard({
             applicantSummary: applicantSummary,
             nocSummary: nocSummary,
-            documentsSummary: documentsSummary
+            documentsSummary: documentsSummary,
+            roadCutRate
           }),
         break: getBreak(),
         titlebarfooter,

@@ -5,7 +5,7 @@ form#datagridsummary .MuiPaper-elevation4-466 {
 /************************ OPMS CSS END *************************/
 @media only screen and (max-width: 551px) {
   .apply-wizard-footer {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: white;
     -webkit-box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
     box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
     /* padding: 8px; */
@@ -66,11 +66,8 @@ div#custom-containers-local-moduleDashboardDropdown {
   position: absolute;
   width: 30%; }
 
-div#material-ui-FilterConstraintsContainer {
-  width: 150%; }
-
 .css-16pqwjk-indicatorContainer {
-  color: rgba(26, 26, 26, 1);
+  color: #1a1a1a;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

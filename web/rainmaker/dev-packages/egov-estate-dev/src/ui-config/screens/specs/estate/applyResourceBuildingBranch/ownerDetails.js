@@ -40,6 +40,7 @@ const ownerNameField = {
   },
   required: true,
   pattern: _getPattern("alphabet"),
+  errorMessage:"ES_ERR_OWNER_NAME",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -66,6 +67,7 @@ const fatherHusbandNameField = {
   },
   required: true,
   pattern: _getPattern("alphabet"),
+  errorMessage:"ES_ERR_FATHER_HUSBAD_NAME",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -126,6 +128,7 @@ export const addressField = {
     multiline: true,
     rows: 2
   },
+  errorMessage:"ES_ERR_ADDRESS_FEILD",
   pattern: _getPattern("address"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {

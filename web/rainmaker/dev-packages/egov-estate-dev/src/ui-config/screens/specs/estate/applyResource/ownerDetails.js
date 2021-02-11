@@ -57,6 +57,7 @@ const ownerNameField = {
   },
   required: true,
   pattern: _getPattern("alphabet"),
+  errorMessage:"ES_ERR_OWNER_NAME",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.ownerName",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -82,6 +83,7 @@ const fatherHusbandNameField = {
     sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_FATHER_HUSBAD_NAME",
   pattern: _getPattern("alphabet"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.guardianName",
   afterFieldChange: (action, state, dispatch) => {
@@ -135,6 +137,7 @@ const dateOfBirthField = {
       labelKey: "ES_DOB_PLACEHOLDER"
   },
   required: true,
+  errorMessage:"ES_ERR_DATE_OF_BIRTH",
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dob",
   props: {
@@ -166,6 +169,7 @@ export const addressField = {
     rows: 2
   },
   pattern: _getPattern("address"),
+  errorMessage:"ES_ERR_ADDRESS_FEILD",
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.address",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
@@ -229,6 +233,7 @@ const cpNumberField = {
     sm: 6
   },
   pattern: _getPattern("alphaNumeric"),
+  errorMessage:"ES_ERR_CPNUMBER",
   jsonPath: "Properties[0].propertyDetails.owners[0].cpNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
@@ -269,6 +274,7 @@ const dateOfAllotmentField = {
     labelKey: "ES_DATE_OF_ALLOTMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_DATE_OF_ALLOTMENT",
   required: true,
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dateOfAllotment",
   props: {

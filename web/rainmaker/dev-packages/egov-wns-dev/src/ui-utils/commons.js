@@ -742,7 +742,7 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
         // fiter baed on occupancycode (Property Sub Usage Type),category(Uses Caregory) and applicationType(Application Type) 
         let occupancycode = get(
             state,
-            "screenConfiguration.preparedFinalObject.applyScreen.property.subusageCategory",
+            "screenConfiguration.preparedFinalObject.applyScreen.property.usageCategory",
             ''
         );
         let category = get(
@@ -757,9 +757,19 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
         );
 if(occupancycode && applicationType && category)
 {
-    wsDocument = wsDocument.filter(x=>x.occupancycode === occupancycode 
-        && x.applicationType === applicationType
-        && x.category === category )
+    if(applicationType ==='TEMPORARY')
+    {
+        wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+            && x.category === category
+            &&x.occupancycode === occupancycode)
+
+    }
+    else{
+        wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+            && x.category === category)
+
+    }
+    
 
         if(wsDocument && wsDocument[0])
             documents = wsDocument[0].document;
@@ -776,10 +786,10 @@ if(occupancycode && applicationType && category)
     let tempDoc = {};
     documents.forEach(doc => {
         let card = {};
-        card["code"] = doc.documentType;
-        card["title"] = doc.documentType;
+        card["code"] = doc.code;
+        card["title"] = doc.code;
         card["cards"] = [];
-        tempDoc[doc.documentType] = card;
+        tempDoc[doc.code] = card;
     });
 
     documents.forEach(doc => {
@@ -787,7 +797,7 @@ if(occupancycode && applicationType && category)
         let card = {};
         card["name"] = doc.code;
         card["code"] = doc.code;
-        card["required"] = doc.required ? true : false;
+        card["required"] = doc.isMandatory ? true : false;
         if (doc.hasDropdown && doc.dropdownData) {
             let dropdown = {};
             dropdown.label = "WS_SELECT_DOC_DD_LABEL";
@@ -800,7 +810,7 @@ if(occupancycode && applicationType && category)
             });
             card["dropdown"] = dropdown;
         }
-        tempDoc[doc.documentType].cards.push(card);
+        tempDoc[doc.code].cards.push(card);
     });
 
     Object.keys(tempDoc).forEach(key => {

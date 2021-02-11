@@ -63,7 +63,7 @@ const displaysubUsageType = (usageType, dispatch, state) => {
         );
       let  subUsageType=[];
       UsageCategory.forEach(item=>{
-        if(item.code.split(`${usageType}.`).length==2){
+        if(item.code.split(`${usageType.split('.')[0]}.`).length==2){
           subUsageType.push({
               active:item.active,
               name:item.name,
@@ -354,6 +354,10 @@ export const getData = async (action, state, dispatch) => {
           dispatch(prepareFinalObject("applyScreen.tubewell", true));
           toggleWaterFeilds(action, false);
         }
+        payloadWater.WaterConnection[0].property.subusageCategory = payloadWater.WaterConnection[0].property.usageCategory;
+        payloadWater.WaterConnection[0].property.usageCategory = payloadWater.WaterConnection[0].property.usageCategory.split('.')[0];
+        
+        payloadWater.WaterConnection[0].property.noOfFloors = String(payloadWater.WaterConnection[0].property.noOfFloors);
         dispatch(prepareFinalObject("WaterConnection", payloadWater.WaterConnection));
        
         if(payloadWater && payloadWater.WaterConnection.length > 0){
@@ -431,6 +435,9 @@ export const getData = async (action, state, dispatch) => {
       const waterConnections = payloadWater ? payloadWater.WaterConnection : []
       const sewerageConnections = payloadSewerage ? payloadSewerage.SewerageConnections : [];
       let combinedArray = waterConnections.concat(sewerageConnections);
+      combinedArray[0].property.subusageCategory = combinedArray[0].property.usageCategory;
+      combinedArray[0].property.usageCategory = combinedArray[0].property.usageCategory.split('.')[0];
+      combinedArray[0].property.noOfFloors = String(combinedArray[0].property.noOfFloors);
       dispatch(prepareFinalObject("applyScreen", findAndReplace(combinedArray[0], "null", "NA")));
       // For oldvalue display
       let oldcombinedArray = cloneDeep(combinedArray[0]);
@@ -934,12 +941,12 @@ const screenConfig = {
       set(
         action.screenConfig,
         "components.div.children.formwizardFirstStep.children.OwnerInfoCard.children.cardContent.children.tradeUnitCardContainer.children.numberOfWaterClosets.visible",
-        value
+        false
       );
       set(
         action.screenConfig,
         "components.div.children.formwizardFirstStep.children.OwnerInfoCard.children.cardContent.children.tradeUnitCardContainer.children.numberOfToilets.visible",
-        value
+        false
       );
     }
 

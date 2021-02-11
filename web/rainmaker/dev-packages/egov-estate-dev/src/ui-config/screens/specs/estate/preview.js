@@ -142,8 +142,7 @@ const getData = async (action, state, dispatch) => {
             applicationNumber,
             tenantId,
             businessService,
-            branchType,
-            userRole
+            branchType
           )
         }
 

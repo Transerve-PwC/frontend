@@ -10,7 +10,7 @@ import {
   import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { get } from "lodash";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import{ _getPattern,displayCustomErr} from "../../utils";
 const branchType = getQueryArg(window.location.href, "branchType");
 
   const sectorNumberField = {
@@ -45,7 +45,9 @@ const branchType = getQueryArg(window.location.href, "branchType");
         sm: 6
     },
     required: false,
-    jsonPath: "searchScreen.applicationNumber"
+    jsonPath: "searchScreen.applicationNumber",
+    pattern: /^[a-zA-Z0-9-]*$/i,
+    errorMessage: "ES_ERR_INVALID_APPLICATION_NO",
   }
 
   const FileNameField = {
@@ -62,7 +64,16 @@ const branchType = getQueryArg(window.location.href, "branchType");
         sm: 6
     },
     required: false,
-    jsonPath: "searchScreen.fileNumber"
+    jsonPath: "searchScreen.fileNumber",
+    pattern: _getPattern("fileNumber"),
+    afterFieldChange: (action, state, dispatch) => {
+        if (action.value.length > 50) {
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+        }
+        else {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER", action.screenKey);
+        }
+    }
   }
 
   const FileNumberField = {
@@ -79,7 +90,16 @@ const branchType = getQueryArg(window.location.href, "branchType");
         sm: 6
     },
     required: false,
-    jsonPath: "searchScreen.fileNumber"
+    jsonPath: "searchScreen.fileNumber",
+    pattern: _getPattern("fileNumber"),
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 50) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+      }
+      else {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER", action.screenKey);
+      }
+  }
   }
 
   const statusField = {

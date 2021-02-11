@@ -98,7 +98,7 @@ export const httpRequest = async (
     }
     const responseStatus = parseInt(response.status, 10);
     store.dispatch(toggleSpinner());
-    if (responseStatus === 200 || responseStatus === 201) {
+    if (responseStatus === 200 || responseStatus === 201 || responseStatus === 202) {
       return response.data;
     }
   } catch (error) {

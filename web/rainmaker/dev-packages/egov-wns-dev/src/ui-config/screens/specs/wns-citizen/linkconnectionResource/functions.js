@@ -56,7 +56,7 @@ export const searchApiCall = async (state, dispatch) => {
   showHideTable(false, dispatch);
   // logic change for particular page only for sending  tenantId to api.
   //const tenantId =  process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
-  const tenantId =  process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
+  const tenantId = getTenantId();// process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
 
   let queryObject = [];
   let searchScreenObject = get(
@@ -90,11 +90,17 @@ export const searchApiCall = async (state, dispatch) => {
   // }
   else {
     let tenantId = process.env.REACT_APP_NAME === "Employee" ?  getTenantId() : JSON.parse(getUserInfo()).permanentCity;
+    // let queryObject = [
+    //   {
+    //     key: "tenantId",
+    //     value: tenantId
+    //   }      
+    // ];
     let queryObject = [
-      {
-        key: "tenantId",
-        value: tenantId
-      }      
+      // {
+      //   key: "tenantId",
+      //   value: tenantId
+      // }      
     ];
     for (var key in searchScreenObject) {      
       if (

@@ -24,7 +24,8 @@ import {
 } from "../../../../../ui-constants";
 import {
   displayCustomErr,
-  displayDefaultErr
+  displayDefaultErr,
+  _getPattern
 } from "../../utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
@@ -236,14 +237,16 @@ export const estateApplication = getCommonCard({
         minLength: 1,
         maxLength: 50,
         jsonPath: "searchScreenFileNo.fileNumber",
+        pattern: _getPattern("fileNumber"),
+        errorMessage:"ES_ERR_FILE_NUMBER",
         afterFieldChange: (action, state, dispatch) => {
-          if (action.value.length > 50) {
-              displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", "property-search");
-          }
-          else {
-              displayDefaultErr(action.componentJsonpath, dispatch, "property-search");
-          }
-        } 
+            if (action.value.length > 50) {
+                displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+            }
+            else {
+              displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER", action.screenKey);
+            }
+        }
       })
     }),
     siteNumberContainer: getCommonContainer({
@@ -259,6 +262,7 @@ export const estateApplication = getCommonCard({
         visible: false,
         required: true,
         jsonPath: "searchScreenSiteNo.category",
+        errorMessage:"ES_ERR_CATEGORY",
         sourceJsonPath: "searchScreenMdmsData.EstateServices.categories",
         gridDefination: {
             xs: 12,
@@ -317,7 +321,8 @@ export const estateApplication = getCommonCard({
         gridDefination: {
             xs: 12,
             sm: 6
-        }
+        },
+        errorMessage:"ES_ERR_SUB_CATEGORY"
       }),
       siteNumber: getTextField({
         label: {
@@ -332,12 +337,24 @@ export const estateApplication = getCommonCard({
             xs: 12,
             sm: 6
         },
-        errorMessage: "ES_ERR_MAXLENGTH_50",
+        //errorMessage: "ES_ERR_MAXLENGTH_50",
         required: true,
         visible: false,
         minLength: 1,
         maxLength: 50,
-        jsonPath: "searchScreenSiteNo.siteNumber"
+        jsonPath: "searchScreenSiteNo.siteNumber",
+        pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
+        errorMessage:"ES_ERR_SITE_BOOTH_NUMBER",
+        afterFieldChange: (action, state, dispatch) => {
+          if (action.value.length > 50) {
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+          }    else if(action.value.length < 2){
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MINLENGTH_2", action.screenKey);
+        }
+        else {
+            displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_SITE_BOOTH_NUMBER",action.screenKey);
+        }
+        }
       }),
       sectorNumber: getSelectField({
         label: {
@@ -375,7 +392,16 @@ export const estateApplication = getCommonCard({
         visible: false,
         minLength: 1,
         maxLength: 50,
-        jsonPath: "searchScreenSiteNo.houseNumber"
+        jsonPath: "searchScreenSiteNo.houseNumber",
+        pattern: _getPattern("fileNumber"),
+        errorMessage:"ES_ERR_HOUSE_NUMBER",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HOUSE_NUMBER", action.screenKey);
+    }
+  }
       }),
       street: getTextField({
         label: {
@@ -395,7 +421,19 @@ export const estateApplication = getCommonCard({
         visible: false,
         minLength: 1,
         maxLength: 50,
-        jsonPath: "searchScreenSiteNo.street"
+        jsonPath: "searchScreenSiteNo.street",
+        pattern:_getPattern("street"),
+        errorMessage:"ES_ERR_STREET_NUMBER",
+        afterFieldChange: (action, state, dispatch) => {
+          if (action.value.length > 50) {
+            displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+          }else if(action.value.length < 2){
+            displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_STREET_MINLENGHT_2", action.screenKey);
+          }
+          else{
+            displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_STREET_NUMBER", action.screenKey);
+          }
+        }
       }),
       mohalla: getTextField({
         label: {
@@ -415,7 +453,17 @@ export const estateApplication = getCommonCard({
         visible: false,
         minLength: 1,
         maxLength: 50,
-        jsonPath: "searchScreenSiteNo.mohalla"
+        errorMessage:"ES_ERR_MOHALLA_FEILD",
+        jsonPath: "searchScreenSiteNo.mohalla",
+        pattern: _getPattern("alphabet"),
+        afterFieldChange: (action, state, dispatch) => {
+            if (action.value.length > 50) {
+                displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+            }
+            else {
+              displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MOHALLA_FEILD", action.screenKey);
+            }
+        }
       })
     })
   }),

@@ -97,13 +97,14 @@ var data = [
 
 const displayCards = async (action, state, dispatch) => {
 
+  debugger;
   let roles = JSON.parse(getUserInfo()).roles;
   //debugger;
 
   cardList = [{
     label: {
       labelName: "WrokFlow Previewm",
-      labelKey: "WORKFLOW_PREVIEW_TITLE"
+      labelKey: "DASHBOARD_WF_NAME_TITLE"
     },
     
     icon: <i
@@ -229,7 +230,7 @@ const DashboardHome = {
     getDropDownData(action, state, dispatch);
 
 
-    
+    debugger;
     getMdmsData(action, state, dispatch).then(response => {
       displayCards(action, state, dispatch);
       // setcardList(state, dispatch);

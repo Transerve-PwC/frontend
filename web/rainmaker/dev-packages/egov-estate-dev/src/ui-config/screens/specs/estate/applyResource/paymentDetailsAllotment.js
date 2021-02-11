@@ -61,6 +61,7 @@ const advancedRentField = {
   },
   // visible:false,
   pattern: _getPattern("float"),
+  errorMessage:"ES_ERR_ADVANCED_RENT",
   required: true,
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRent"
 }
@@ -75,6 +76,7 @@ const dateOfPaymentOfAdvanceRentField = {
       labelKey: "ES_DATE_OF_PAYMENT_OF_ADVANCE_RENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_PAYMENT_DATE",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentAdvanceRentDate",
   required: true
 }
@@ -302,6 +304,7 @@ const groundRentGenerationTypeField = {
       sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_GROUND_RENT",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
@@ -450,6 +453,7 @@ const billingStartDateField = {
       labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_START_DATE",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentBillStartDate",
   required: true
 }
@@ -469,6 +473,7 @@ const dateToGenerateDemandRentField = {
     sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_GENERATION_DATE",
   props: {
       data: data
   },
@@ -722,6 +727,7 @@ const licenseFeeGenerationTypeField = {
   maxLength: 100,
   minLength: 1,
   required: true,
+  errorMessage:"ES_ERR_LICENCE_FEE_TYPE",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType",
   props: {
     data: [
@@ -761,6 +767,7 @@ const dateToGenerateDemandLicenseFeeField = {
     sm: 6
   },
   required: true,
+  errorMessage:"ES_ERR_DATE_LICENSE_FEE",
   props: {
       data: data
   },
@@ -777,6 +784,7 @@ const billingStartDateLicenseFeeField = {
       labelKey: "ES_BILLING_START_DATE_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_START_DATE",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.groundRentBillStartDate",
   gridDefination: {
     xs: 12,
@@ -1019,6 +1027,7 @@ const dateOfPaymentField = {
       labelKey: "ES_DATE_OF_PAYMENT_PLACEHOLDER"
   },
   pattern: getPattern("Date"),
+  errorMessage:"ES_ERR_DATE_OF_PAYMENT",
   jsonPath: "Properties[0].propertyDetails.paymentConfig.dueDateOfPayment",
   required: true
 }

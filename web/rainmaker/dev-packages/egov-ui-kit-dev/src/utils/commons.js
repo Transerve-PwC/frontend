@@ -888,6 +888,8 @@ export const getModuleName = () => {
     return "rainmaker-rti";
   } else if (pathName.indexOf("egov-integration") > -1) {
     return "rainmaker-integration";
+  } else if(pathName.indexOf("egov-dashboard") > -1){
+    return "rainmaker-dashboard";
   } else {
     return "rainmaker-common";
   }

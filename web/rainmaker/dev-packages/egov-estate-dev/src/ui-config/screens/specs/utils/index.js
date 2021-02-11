@@ -146,16 +146,10 @@ export const getFeesEstimateCard = props => {
   };
 };
 
-export const getButtonVisibility = (status, button, userRole) => {
+export const getButtonVisibility = (status, button, userRole = true) => {
   if ((status === "ES_PENDING_PAYMENT" || status === "ES_MM_PENDING_PAYMENT") && button === "PENDINGPAYMENT") return true;
   if (status === "ES_PENDING_JE_VERIFICATION" && button === "NOCVERIFICATION") return true;
-  
-  if(!!userRole){
-    if (status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT" && userRole !== "ES_MM_BUILDING_INSPECTOR") return false;
-  }
-  else if(status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT"){
-    return true;
-  }
+  if (status === "ES_MM_PENDING_BI_VERIFICATION" && button === "SITEREPORT" && userRole) return true;
   if ((status === "ES_PENDING_CITIZEN_TEMPLATE_SUBMISSION" || status === "ES_PENDING_CITIZEN_NOTICE_DOCUMENTS" || status === "ES_MM_PENIDNG_CITIZEN_NOTICE") && button === "UPLOAD_DOCUMENT") return true
   return false;
 };

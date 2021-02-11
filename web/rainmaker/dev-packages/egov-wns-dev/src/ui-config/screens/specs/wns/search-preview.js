@@ -38,7 +38,7 @@ import { getWorkFlowData } from "../../../../ui-utils/commons";
 const tenantId = getQueryArg(window.location.href, "tenantId");
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 let service = getQueryArg(window.location.href, "service");
-const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NEWWS1" ? "NewWS1":  window.localStorage.getItem("wns_workflow") : "NewSW1";
+const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NewSW1" ? "NewSW1":  window.localStorage.getItem("wns_workflow"):"NewSW1";
 const serviceUrl = serviceModuleName === "NewSW1" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
 
 const getLabelForWnsHeader = () => {
@@ -199,7 +199,7 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
     // );
     // for showing addPenaltyRebateButton
  //   if(process.env.REACT_APP_NAME !== "Citizen" && (processInstanceAppStatus !== 'PENDING_FOR_PAYMENT' && processInstanceAppStatus !=="PENDING_FOR_CONNECTION_ACTIVATION" && processInstanceAppStatus !== 'CONNECTION_ACTIVATED')){
-  if(process.env.REACT_APP_NAME !== "Citizen" && ((serviceModuleName==="WS_DISCONNECTION" && processInstanceAppStatus === 'PENDING_METER_READING_CAPTURE')|| (serviceModuleName==="NewWS1" && processInstanceAppStatus === 'PENDING_FOR_TEMPORARY_TO_REGULAR_CONNECTION_APPROVAL'))){
+  if(process.env.REACT_APP_NAME !== "Citizen" && ((serviceModuleName==="WS_DISCONNECTION" && processInstanceAppStatus === 'PENDING_METER_READING_CAPTURE')|| (serviceModuleName==="REGULARWSCONNECTION" && processInstanceAppStatus === 'PENDING_FOR_TEMPORARY_TO_REGULAR_CONNECTION_APPROVAL'))){
       
       dispatch(
           handleField(
@@ -246,7 +246,7 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
           data,
           "WaterConnection[0].documents",
           "LicensesTemp[0].verifyDocData",
-          dispatch, 'NewWS1'
+          dispatch, 'REGULARWSCONNECTION'
         );
       } else {
         dispatch(
@@ -551,6 +551,9 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
     payload = [];
     payload = await getSearchResults(queryObjForSearch);
     payload.WaterConnection[0].service = service;
+    payload.WaterConnection[0].property.subusageCategory = payload.WaterConnection[0].property.usageCategory;
+    payload.WaterConnection[0].property.usageCategory = payload.WaterConnection[0].property.usageCategory.split('.')[0];
+    //payload.WaterConnection[0].service = service;
 
     const convPayload = findAndReplace(payload, "NA", null)
     let queryObjectForEst = [{
@@ -655,9 +658,6 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
 
 const parserFunction = (obj) => {
   let parsedObject = {
-    //set usageCategory and  subusageCategory
-    subusageCategory:usageCategory,
-    usageCategory:usageCategory.split('.')[0],
     roadCuttingArea: parseInt(obj.roadCuttingArea),
     meterInstallationDate: convertDateToEpoch(obj.meterInstallationDate),
     connectionExecutionDate: convertDateToEpoch(obj.connectionExecutionDate),

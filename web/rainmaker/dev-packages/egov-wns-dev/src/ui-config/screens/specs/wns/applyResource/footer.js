@@ -147,9 +147,38 @@ const callBackForNext = async (state, dispatch) => {
     //   isFormValid = await appl;
     // }
 
+//set for back and previous action
+let water = get(state.screenConfiguration.preparedFinalObject, "applyScreen.water", false);
+let sewerage = get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage", false);
+let tubewell = get(state.screenConfiguration.preparedFinalObject, "applyScreen.tubewell", false);
+let connectionCreated = false
+if(water || sewerage || tubewell)
+{
+  if(water)
+  {
+    let WaterConnection = get(state.screenConfiguration.preparedFinalObject, "WaterConnection", []);
+    if(WaterConnection.length>0)
+    {
+      connectionCreated = true
+    }
 
+  }
+  else if(sewerage)
+  {
+    let SewerageConnection = get(state.screenConfiguration.preparedFinalObject, "SewerageConnection", []);
+    if(SewerageConnection.length>0)
+    {
+      connectionCreated = true
+    }
+  }
+  // else if(tubewell)
+  // {
+    
+  // }
 
-    if (getQueryArg(window.location.href, "action") === "edit") {
+}
+
+    if (getQueryArg(window.location.href, "action") === "edit" || connectionCreated) {
       let application = findAndReplace(get(state.screenConfiguration.preparedFinalObject, "applyScreen", {}), "NA", null);
       const uploadedDocData = application.documents;
       const reviewDocData = uploadedDocData && uploadedDocData.map(item => {
@@ -387,6 +416,9 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
         arrayHolderData.push(holderData);
         applyScreenObject.connectionHolders = arrayHolderData;
       }
+      // call if conection is not created
+      if(true)
+      {
       if(isFormValid)
       {
         let propertyPayload = get(
@@ -399,7 +431,7 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
         );
         set(propertyPayload, "channel", "SYSTEM");
         set(propertyPayload, "source", "MUNICIPAL_RECORDS");
-        set(propertyPayload, "noOfFloors", 1);
+       // set(propertyPayload, "noOfFloors", 1);
         set(propertyPayload, "propertyType", "VACANT");
         propertyPayload.landArea = parseInt(propertyPayload.landArea);
         propertyPayload.totalConstructedArea = parseInt(propertyPayload.landArea);
@@ -453,7 +485,7 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
           dispatch(prepareFinalObject("searchScreen.propertyIds", searchPropertyId));
          // propertySearchApiCall(state,dispatch);
          let tenantId = getTenantIdCommon();
-         let queryObject = [{ key: "tenantId", value: tenantId }];
+         let queryObject = [];//[{ key: "tenantId", value: tenantId }];
          let searchScreenObject = get(state.screenConfiguration.preparedFinalObject, "searchScreen", {});
          for (var key in searchScreenObject) {
           if (searchScreenObject.hasOwnProperty(key) && searchScreenObject[key].trim() !== "") {
@@ -670,6 +702,7 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
         );
         }
       }
+    }
     }
     prepareDocumentsUploadData(state, dispatch);
   }

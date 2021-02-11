@@ -7,6 +7,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 import { changeStep } from "../viewBillResource/footer";
+import { convertEpochToDateAndHandleNA, handlePropertySubUsageType, handleNA } from '../../utils';
 
 const getHeader = label => {
   return {

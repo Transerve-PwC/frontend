@@ -105,8 +105,8 @@ export const reviewConnectionDetails = (isEditable = true) => {
     },
     viewOne: getPropertyDetails,
     viewTwo: propertyLocationDetails ,
-    viewThree: propertyOwnerDetails(),
-    viewFour: getConnectionDetails(),
+    //viewThree: propertyOwnerDetails(),
+    //viewFour: getConnectionDetails(),
     viewFive:connHolderDetailsSummary(),
     viewSix:connHolderDetailsSameAsOwnerSummary()
   });
@@ -506,13 +506,13 @@ const propertyOwnerDetails = () => {
         viewFive: getCommonContainer({
           mobileNumber,
           name,
-         // gender,
-         // dateOfBirth,
+          gender,
+         dateOfBirth,
           email,
           fatherName,
-         // relationship,
+         relationship,
           correspondenceAddress,
-         // specialApplicantCategory
+         specialApplicantCategory
         }),
       }),
       items: [],

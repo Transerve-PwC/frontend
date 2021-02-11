@@ -96,6 +96,18 @@ const ReportPreview = Loadable({
   loading: () => <Loading />
 });
 
+const DashboardEchallan = Loadable({
+  loader: () => import("./DashboardEchallan"),
+  loading: () => <Loading />
+});
+
+
+const DashboardSportCulture = Loadable({
+  loader: () => import("./DashboardSportCulture"),
+  loading: () => <Loading />
+});
+
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -115,5 +127,7 @@ export {
   DashboardPIEGraph,
   DescriptionDashboard,
   HCDashboard,
-  ReportPreview
+  ReportPreview,
+  DashboardEchallan,
+  DashboardSportCulture
 };

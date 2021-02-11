@@ -32,7 +32,7 @@ import {
   import { applicationTypeField } from "../estate/searchResource/estateApplication";
   import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
   import { getSearchResults} from "../../../../ui-utils/commons";
-
+  import{ _getPattern,displayCustomErr} from "../utils";
   const header = getCommonHeader({
     labelName: "Refund",
     labelKey: "ES_REFUND_HEADER"
@@ -111,9 +111,16 @@ import {
           sm: 4
         },
         required: false,
-        pattern: /^[a-zA-Z0-9-]*$/i,
-        errorMessage: "ES_ERR_INVALID_APPLICATION_NO",
-        jsonPath: "searchScreen.fileNumber"
+        jsonPath: "searchScreen.fileNumber",
+        pattern: _getPattern("fileNumber"),
+        afterFieldChange: (action, state, dispatch) => {
+            if (action.value.length > 50) {
+                displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+            }
+            else {
+              displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_FILE_NUMBER", action.screenKey);
+            }
+        }
       }),
       status: getSelectField({
         label: {
@@ -262,7 +269,7 @@ import {
       },
       {
         key: "businessServices",
-        value: "ES-EB-AllotmentOfSite"
+        value: "ES-EB-IS-RefundOfEmd"
       }
     ]
       clearSearch(state, dispatch);

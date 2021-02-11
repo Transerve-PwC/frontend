@@ -171,7 +171,19 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     return false;
   }
 }
+export let removeByAttr = (arr, attr, value) => {
+  var i = arr.length;
+  while(i--){
+     if( arr[i] 
+         && arr[i].hasOwnProperty(attr) 
+         && (arguments.length > 2 && arr[i][attr] === value ) ){ 
 
+         arr.splice(i,1);
+
+     }
+  }
+  return arr;
+}
 export const applyEstates = async (state, dispatch, activeIndex, screenName = "apply") => {
   dispatch(toggleSpinner());
   try {
@@ -358,6 +370,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       }
 
       if (screenName != "apply-building-branch") {
+        owners = removeByAttr(owners,'isDeleted',true);
         owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
         prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
         owners = [...owners, ...prevOwners];

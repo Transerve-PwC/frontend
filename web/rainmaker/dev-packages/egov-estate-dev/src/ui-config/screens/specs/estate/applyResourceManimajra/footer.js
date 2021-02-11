@@ -240,15 +240,23 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === OWNER_DOCUMENT_UPLOAD_STEP) {
-    const propertyOwners = get(
+    let propertyOwners = get(
       state.screenConfiguration.preparedFinalObject,
       "Properties[0].propertyDetails.owners"
     );
-
-    const propertyOwnersTemp = get(
+    let propertyOwnersTemp = get(
       state.screenConfiguration.preparedFinalObject,
       "PropertiesTemp[0].propertyDetails.owners"
     );
+    for (var i = 0; i < propertyOwners.length; i++) {
+    if(propertyOwners[i].id === undefined || !propertyOwners[i].id || propertyOwners[i].id === null){
+      propertyOwners.splice(i,1);
+      // If property Owners has owner removed, it wont have ID, hence for propertyOwnersTemp also the owner array should be sliced.
+      propertyOwnersTemp.splice(i,1);
+    }
+    }
+
+    
 
     for (var i = 0; i < propertyOwnersTemp.length; i++) {
       let uploadedDocData = get(

@@ -16,7 +16,7 @@ import {
 import { searchApiCall } from "./functions";
 
 const resetFields = (state, dispatch) => {
-  const textFields = ["month","year","empCode"];
+  const textFields = ["month","year"];
   for (let i = 0; i < textFields.length; i++) {
     if (
       `state.screenConfiguration.screenConfig.payslipsearch.searchForm.children.cardContent.children.searchFormContainer.children.${textFields[i]}.props.value`
@@ -39,10 +39,10 @@ export const searchForm = getCommonCard({
     labelName: "Search Criteria",
     labelKey: "STORE_SEARCH_RESULTS_HEADING",
   }),
-  subParagraph: getCommonParagraph({
-    labelName: "Provide at least one parameter to search for an application",
-    labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
-  }),
+  // subParagraph: getCommonParagraph({
+  //   labelName: "Provide at least one parameter to search for an application",
+  //   labelKey: "STORE_HOME_SEARCH_RESULTS_DESC",
+  // }),
   searchFormContainer: getCommonContainer({
     empCode: {
       ...getTextField({

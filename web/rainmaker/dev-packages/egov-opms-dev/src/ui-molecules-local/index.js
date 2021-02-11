@@ -59,6 +59,11 @@ const SampleDownloadForSellMeat = Loadable({
   loader: () => import("./SampleDownloadForSellMeat"),
   loading: () => <Loading />
 });
+const SampleDownloadRoadCut = Loadable({
+  loader: () => import("./SampleDownloadRoadCut"),
+  loading: () => <Loading />
+});
+
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -71,5 +76,6 @@ export {
   DividerWithLabel,
   HowItWorks,
   SampleDownload,
-  SampleDownloadForSellMeat
+  SampleDownloadForSellMeat,
+  SampleDownloadRoadCut
   };
