@@ -59,7 +59,7 @@ const getData = async (action, state, dispatch, fileNumber) => {
             break;
           case "MANI_MAJRA":
             branchTabs = tabsMM;
-            activeIndex = 6;
+            activeIndex = 5;
             break;
         }
         let approvedflagdata = get(state.screenConfiguration.preparedFinalObject, "Properties[0]")

@@ -270,15 +270,8 @@ const ownershipField = {
   // minLength: 5,
   // maxLength: 250,
   jsonPath: "Applications[0].applicationDetails.siteReport.ownership",
-  errorMessage:"ES_ERR_OWNERSHIP_FIELD",
-  pattern: _getPattern("alphabet"),
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
-    } else {
-      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_OWNERSHIP_FIELD", action.screenKey);
-    }
-  }
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase")
 }
 
 const possessionField = {
@@ -298,15 +291,8 @@ const possessionField = {
   // minLength: 5,
   // maxLength: 250,
   jsonPath: "Applications[0].applicationDetails.siteReport.possession",
-  errorMessage:"ES_ERR_POSSESION_FIELD",
-  pattern: _getPattern("alphabet"),
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
-    } else {
-      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_POSSESION_FIELD", action.screenKey);
-    }
-  }
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase")
 }
 
 const modeOfOwnershipField = {
@@ -326,15 +312,8 @@ const modeOfOwnershipField = {
   // minLength: 5,
   // maxLength: 250,
   jsonPath: "Applications[0].applicationDetails.siteReport.modeOfOwnership",
-  errorMessage:"ES_ERR_MODE_OF_OWNERSHIP_FIELD",
-  pattern: _getPattern("alphabet"),
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value.length > 50) {
-      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
-    } else {
-      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MODE_OF_OWNERSHIP_FIELD", action.screenKey);
-    }
-  }
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase")
 }
 
 const heightField = {
@@ -380,7 +359,9 @@ const cantileverField = {
   // required: true,
   // minLength: 5,
   // maxLength: 250,
-  jsonPath: "Applications[0].applicationDetails.siteReport.cantilever"
+  jsonPath: "Applications[0].applicationDetails.siteReport.cantilever",
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase"),
 }
 
 const noOfFloorsField = {
@@ -429,7 +410,7 @@ const encroachmentField = {
   jsonPath: "Applications[0].applicationDetails.siteReport.encroachment",
   pattern: _getPattern("alphabet"),
   afterFieldChange: (action, state, dispatch) => {
-    if (action.value.length > 50) {
+    if (action.value.length > 150) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
     } else {
       displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_ENROCHMENT_FIELD", action.screenKey);

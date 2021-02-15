@@ -406,6 +406,11 @@ const callBackForNext = async (state, dispatch) => {
   }
 
   if (activeStep === PAYMENT_DETAILS_STEP) {
+   let premiumAmount= get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.paymentConfig.totalAmount")
+   set(state,
+    'screenConfiguration.preparedFinalObject.Properties[0].propertyDetails.paymentConfig.totalAmount',
+    premiumAmount.toString()
+  )
     if (propertyType == "PROPERTY_TYPE.LEASEHOLD") {
       const isPremiumAmountValid = validateFields(
         "components.div.children.formwizardSixthStepAllotment.children.premiumAmountDetails.children.cardContent.children.detailsContainer.children",

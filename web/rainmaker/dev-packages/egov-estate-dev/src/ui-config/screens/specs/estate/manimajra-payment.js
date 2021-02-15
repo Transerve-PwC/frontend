@@ -266,6 +266,7 @@ export const monthField = {
         max: getTodaysDateInYMD()
     }
     },
+    errorMessage:"ES_ERR_DATE_OF_PAYMENT",
     afterFieldChange: (action, state, dispatch) => {
       dispatch(prepareFinalObject(
         "payment.dateOfPayment", convertDateToEpoch(action.value)

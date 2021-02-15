@@ -15,7 +15,8 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTodaysDateInYMD,
-  _getPattern
+  _getPattern,
+  displayCustomErr
 } from "../../utils";
 import get from "lodash/get";
 import { set } from "lodash";
@@ -95,10 +96,22 @@ const premiumAmountField = {
       xs: 12,
       sm: 6
   },
-  maxLength: 100,
-  minLength: 1,
+  maxLength: 50,
+  minLength: 2,
   required: true,
-  jsonPath: "Properties[0].propertyDetails.paymentConfig.totalAmount"
+  pattern:_getPattern("numeric"),
+  errorMessage:"ES_ERR_PREMIUM_AMOUNT",
+  jsonPath: "Properties[0].propertyDetails.paymentConfig.totalAmount",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    } else if(action.value.length < 2) {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_MIN_PREMIUM_AMOUNT", action.screenKey);
+    }
+    else{
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_PREMIUM_AMOUNT", action.screenKey);
+    }
+  }
 }
 
 const installmentField = {

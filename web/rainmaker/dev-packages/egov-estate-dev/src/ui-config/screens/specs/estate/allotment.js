@@ -240,9 +240,6 @@ const getData = async (action, state, dispatch) => {
   const response = await getMdmsData(dispatch, mdmsPayload);
   dispatch(prepareFinalObject("applyScreenMdmsData", response.MdmsRes));
 
-  if (!!fileNumber) {
-    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
-  }
   
   setDocumentData(action, state, dispatch);
 
@@ -288,6 +285,9 @@ const getData = async (action, state, dispatch) => {
   )
 
   setBiddersDoc(action, state, dispatch);
+  if (!!fileNumber) {
+    await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, "allotment")
+  }
 }
 
 const applyAllotment = {

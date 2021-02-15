@@ -643,7 +643,19 @@ const widthOfStreetWithLengthOfHouseField = {
   },
   // required: true,
   visible: false,
-  jsonPath: "Applications[0].applicationDetails.sameWidthOfSideStreet"
+  jsonPath: "Applications[0].applicationDetails.sameWidthOfSideStreet",
+  pattern:_getPattern("width"),
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 50) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_50", action.screenKey);
+    }
+    // else if(action.value.length < 2){
+    //     displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_WIDTH_MINLENGTH_2", action.screenKey);
+    // }
+    else {
+        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_WIDTH_NUMBER",action.screenKey);
+    }
+}
 }
 
 const getWhetherAreaOfHouseAtSiteIsSameRadioButton = {
@@ -846,7 +858,7 @@ const heightOfMumtyField = {
     sm: 6
   },
   required: true,
-  minLength: 1,
+  minLength: 2,
   maxLength: 150,
   pattern:_getPattern("numeric-firstdigit-nonzero"),
   jsonPath: "Applications[0].applicationDetails.heightofMumty",
@@ -854,6 +866,9 @@ const heightOfMumtyField = {
     if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
     }
+    else if(action.value.length < 2){
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_HIEGHT_OF_MUNTY_MINLENGTH_2", action.screenKey);
+  }
     else {
         displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_HIEGHT_OF_BUILDING_NUMBER",action.screenKey);
     }
@@ -1234,16 +1249,9 @@ export const commentField = {
     multiline: true,
     rows: 2
   },
-  pattern: _getPattern("alphabet"),
   jsonPath: "Applications[0].comments",
-  afterFieldChange: (action, state, dispatch) => {
-    if (action.value.length > 150) {
-        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
-    }
-    else {
-        displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_COMMENTS",action.screenKey);
-    }
-}
+  errorMessage:"ERR_COURT_DETAILS_250_CHARACTERS",
+  pattern: _getPattern("courtCase")
 }
 
 export const nocVerificationDetails = getCommonCard({

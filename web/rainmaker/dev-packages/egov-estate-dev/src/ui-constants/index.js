@@ -55,9 +55,9 @@ export const MANIMAJRA_BRANCH_TABS = [
   {
     tabButton: { labelName: "Previous Owner Documents", labelKey: "ES_PREVIOUS_OWNER_DOCUMENTS" }
   },
-  {
-    tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" }
-  },
+  // {
+  //   tabButton: { labelName: "Payment Details", labelKey: "ES_PAYMENT_DETAILS" }
+  // },
   {
     tabButton: { labelName: "Court Case", labelKey: "ES_COURT_CASE" }
   }
