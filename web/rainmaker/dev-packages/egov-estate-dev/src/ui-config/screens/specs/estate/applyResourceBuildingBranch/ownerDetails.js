@@ -15,6 +15,7 @@ import {
   getTodaysDateInYMD
 } from "../../utils";
 import get from "lodash/get";
+import set from "lodash"
 import {
   _getPattern,
   displayCustomErr,
@@ -287,7 +288,16 @@ export const ownerDetails = getCommonCard({
             headerName: "Owner Information",
             headerJsonPath: "children.cardContent.children.header.children.Owner Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.owners",
-            prefixSourceJsonPath: "children.cardContent.children.ownerCard.children"
+            prefixSourceJsonPath: "children.cardContent.children.ownerCard.children",
+            onMultiItemDelete: (state, deletedIndex, changeField,updatePreparedFormObject) => {
+         let ownersdocument=    get(state.screenConfiguration.preparedFinalObject,"PropertiesTemp[0].propertyDetails.owners")
+         let  owners= get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners")
+         console.log(ownersdocument)
+         let newownersdocument=ownersdocument.filter((item,index)=>index === deletedIndex && !item.isDeleted)
+         let newowners=owners.filter((item,index)=>index === deletedIndex && !item.isDeleted)
+         console.log(newownersdocument)
+         console.log(newowners)
+            }
           },
           type: "array"
         }
