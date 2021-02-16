@@ -260,16 +260,16 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       []
     )
     
-    // if (owners.length) {
-    //   owners.map((item, index) => {
-    //     if (typeof item.isDeleted === "undefined") {
-    //       set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
-    //       set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
-    //       set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dob));
-    //       ;
-    //     }
-    //   })
-    // }
+    if (owners.length) {
+      owners.map((item, index) => {
+        //if (typeof item.isDeleted === "undefined") {
+          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
+          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
+          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dob));
+          ;
+      //  }
+      })
+    }
 
     var courtCaseDetails = get(
       queryObject[0],

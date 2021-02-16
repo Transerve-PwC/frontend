@@ -293,8 +293,16 @@ export const ownerDetails = getCommonCard({
          let ownersdocument=    get(state.screenConfiguration.preparedFinalObject,"PropertiesTemp[0].propertyDetails.owners")
          let  owners= get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.owners")
          console.log(ownersdocument)
-         let newownersdocument=ownersdocument.filter((item,index)=>index === deletedIndex && !item.isDeleted)
-         let newowners=owners.filter((item,index)=>index === deletedIndex && !item.isDeleted)
+         let newownersdocument=ownersdocument.filter((item,index)=>index !== deletedIndex)
+         let newowners=owners.filter((item,index)=>index !== deletedIndex )
+         updatePreparedFormObject("PropertiesTemp[0].propertyDetails.owners",newownersdocument)
+         //updatePreparedFormObject("Properties[0].propertyDetails.owners",newowners)
+         changeField(
+           screenName,
+           "components.div.children.formwizardThirdStep.children",
+           `ownerDocumentDetails_${deletedIndex}`,
+           ""
+         )
          console.log(newownersdocument)
          console.log(newowners)
             }
