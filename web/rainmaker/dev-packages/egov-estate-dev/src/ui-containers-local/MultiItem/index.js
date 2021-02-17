@@ -173,7 +173,7 @@ class MultiItem extends React.Component {
       `${screenKey}.${componentJsonpath}.props.items`
     );
     if (onMultiItemDelete) {
-         onMultiItemDelete(this.props.state, index, this.props.handleField);
+         onMultiItemDelete(this.props.state, index, this.props.handleField, updatePreparedFormObject);
     }
     updatePreparedFormObject(`${sourceJsonPath}[${index}].isDeleted`, true);
     items[index].isDeleted = true;

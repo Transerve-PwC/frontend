@@ -293,6 +293,8 @@ export const monthField = {
     },
     afterFieldChange: (action, state, dispatch) => {
     let {toDate} = state.screenConfiguration.preparedFinalObject.offlinePaymentDetails
+    let todaysdate=getTodaysDateInYMD()
+    todaysdate=convertDateToEpoch(todaysdate)
     toDate = convertDateToEpoch(toDate)
     var fromDate = ""
     const {ManiMajraAccountStatement} = state.screenConfiguration.preparedFinalObject
@@ -328,7 +330,17 @@ export const monthField = {
       [getTextToLocalMapping("Total Due")]: (item.dueAmount.toFixed(2)) || "-",
       [getTextToLocalMapping("Rent")]: item.rent || "-"
     }));
-
+ let lastrow=  data.pop()
+if(todaysdate===toDate){
+  data.push({
+    "Date": `Balance as on ${moment(toDate).format("DD-MMM-YYYY")}`,
+    "Demand Type": "-",
+    "GST": "-",
+    "Rent": lastrow["Total Due"],
+    "Total Due": "-"
+})
+}
+else{
     data.push({
         "Date": `Balance as on ${moment(toDate).format("DD-MMM-YYYY")}`,
         "Demand Type": "-",
@@ -336,7 +348,7 @@ export const monthField = {
         "Rent": amount,
         "Total Due": "-"
     })
-
+  }
     dispatch(
       handleField(
         "manimajra-payment",
@@ -345,6 +357,17 @@ export const monthField = {
         data
       )
     );
+    if(todaysdate===toDate){
+      dispatch(
+        handleField(
+          "manimajra-payment",
+          "components.div.children.detailsContainer.children.paymentDetails.children.cardContent.children.detailsContainer.children.Amount",
+          "props.value",
+          lastrow["Total Due"]
+        )
+      );
+    }
+    else{
     dispatch(
       handleField(
         "manimajra-payment",
@@ -353,7 +376,7 @@ export const monthField = {
         amount
       )
     );
-   
+      }
     }
   }
 

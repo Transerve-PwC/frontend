@@ -261,14 +261,22 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     )
     
     if (owners.length) {
-      owners.map((item, index) => {
-        if (typeof item.isDeleted === "undefined") {
-          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
-          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
-          set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dob));
-          ;
-        }
+      owners = owners.map((item) => {
+        return {...item, ownerDetails : {...item.ownerDetails, 
+          possesionDate: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.possesionDate) : item.ownerDetails.possesionDate,
+          dateOfAllotment: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dateOfAllotment) : item.ownerDetails.dateOfAllotment,
+          dob: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dob) : item.ownerDetails.dob
+        }}
       })
+      
+      // owners.map((item, index) => {
+      //   if (typeof item.isDeleted === "undefined") {
+      //     set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.possesionDate`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.possesionDate));
+      //     set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dateOfAllotment`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dateOfAllotment));
+      //     set(queryObject[0], `propertyDetails.owners[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.owners[index].ownerDetails.dob));
+      //     ;
+      //   }
+      // })
     }
 
     var courtCaseDetails = get(
@@ -370,9 +378,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       }
 
       if (screenName != "apply-building-branch") {
-        owners = removeByAttr(owners,'isDeleted',true);
-        owners = owners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
-        prevOwners = prevOwners.map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
+        // owners = removeByAttr(owners,'isDeleted',true);
+        owners = owners.filter(item => typeof item.isDeleted === "undefined").map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+        prevOwners = prevOwners.filter(item => typeof item.isDeleted === "undefined").map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
         owners = [...owners, ...prevOwners];
       
         set(
@@ -451,25 +459,35 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     )
 
     if (owners) {
-      owners.map((item, index) => {
-        item.share = (item.share).toString();
-        let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments || [];
-        let isPreviousOwnerRequired = Properties[0].propertyDetails.owners[index].ownerDetails.isPreviousOwnerRequired;
-        if (typeof isPreviousOwnerRequired != "undefined" && isPreviousOwnerRequired != null) {
-          isPreviousOwnerRequired = isPreviousOwnerRequired.toString();
-          Properties[0].propertyDetails.owners[index].ownerDetails.isPreviousOwnerRequired = isPreviousOwnerRequired;
-        }
-        const removedDocs = ownerDocuments.filter(item => !item.isActive)
+      // owners.map((item, index) => {
+      //   item.share = (item.share).toString();
+      //   let ownerDocuments = Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments || [];
+      //   let isPreviousOwnerRequired = Properties[0].propertyDetails.owners[index].ownerDetails.isPreviousOwnerRequired;
+      //   if (typeof isPreviousOwnerRequired != "undefined" && isPreviousOwnerRequired != null) {
+      //     isPreviousOwnerRequired = isPreviousOwnerRequired.toString();
+      //     Properties[0].propertyDetails.owners[index].ownerDetails.isPreviousOwnerRequired = isPreviousOwnerRequired;
+      //   }
+      //   const removedDocs = ownerDocuments.filter(item => !item.isActive)
+      //   ownerDocuments = ownerDocuments.filter(item => item.isActive)
+      //   Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
+      //   Properties[0].propertyDetails.owners[index].ownerDetails.removedDocs = removedDocs;
+      // })
+
+      owners = owners.map(item => {
+        let ownerDocuments = item.ownerDetails.ownerDocuments;
+        let isPreviousOwnerRequired = item.ownerDetails.isPreviousOwnerRequired;
+        const removedDocs = ownerDocuments.filter(item => !item.isActive);
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
-        Properties[0].propertyDetails.owners[index].ownerDetails.ownerDocuments = ownerDocuments;
-        Properties[0].propertyDetails.owners[index].ownerDetails.removedDocs = removedDocs;
+        return {...item, share: (item.share).toString(), ownerDetails: {...item.ownerDetails, isPreviousOwnerRequired: typeof isPreviousOwnerRequired != "undefined" && isPreviousOwnerRequired != null ? isPreviousOwnerRequired.toString() : isPreviousOwnerRequired, ownerDocuments, removedDocs}}
       })
-      
+
       if (screenName != "apply-building-branch") {
         currOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == true);
         prevOwners = owners.filter(item => item.ownerDetails.isCurrentOwner == false);
 
         Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners: currOwners, purchaser: prevOwners, ratePerSqft: ratePerSqft, areaSqft: areaSqft, paymentConfig: Properties[0].propertyDetails.paymentConfig ? {...Properties[0].propertyDetails.paymentConfig, isGroundRent: isGroundRent, isIntrestApplicable: isIntrestApplicable, noOfMonths: noOfMonths, premiumAmountConfigItems: premiumAmountConfigItems} : null }}]
+      } else {
+        Properties = [{...Properties[0], propertyDetails: {...Properties[0].propertyDetails, owners}}]
       }
     }
     // let ownerDocuments = Properties[0].propertyDetails.ownerDocuments || [];

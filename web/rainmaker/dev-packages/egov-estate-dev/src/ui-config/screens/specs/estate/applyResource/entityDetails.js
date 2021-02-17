@@ -571,7 +571,8 @@ const commonPartnerInformation = () => {
             headerName: "Partner Information",
             headerJsonPath: "children.cardContent.children.header.children.Partner Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.owners",
-            prefixSourceJsonPath: "children.cardContent.children.ownerCard.children"
+            prefixSourceJsonPath: "children.cardContent.children.ownerCard.children",
+            disableDeleteIfKeyExists: "id"
           },
           type: "array"
         }

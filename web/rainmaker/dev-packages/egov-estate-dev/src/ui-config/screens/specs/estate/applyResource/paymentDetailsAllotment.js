@@ -680,12 +680,12 @@ export const rentDetails = getCommonGrayCard({
                 "Properties[0].propertyDetails.paymentConfig.paymentConfigItems",
                 []
               );
-              let changeFieldPath = `components.div.children.${paymentStep}.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`;
-              if (screenName == "edit-rent-info") {
-                changeFieldPath = `components.div.children.reviewRentInfo.children.cardContent.children.rentTable.children.cardContent.children.detailsContainer.childre.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`
-              }
                 const previewYearObj = rent.filter((item, index) => index < deletedIndex && !item.isDeleted).pop()
                 const nextYearObj = rent.findIndex((item, index) => index > deletedIndex && !item.isDeleted)
+                let changeFieldPath = `components.div.children.${paymentStep}.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`;
+                if (screenName == "edit-rent-info") {
+                  changeFieldPath = `components.div.children.reviewRentInfo.children.cardContent.children.rentTable.children.cardContent.children.detailsContainer.childre.multipleRentContainer.children.multipleRentInfo.props.items[${nextYearObj}].item${nextYearObj}.children.cardContent.children.rentCard.children.startYear`
+                }
                 nextYearObj !== -1 && changeField(
                   screenName,
                   changeFieldPath,

@@ -70,7 +70,7 @@ const getData = async (action, state, dispatch) => {
     const response = await getSearchApplicationsResults(queryObject)
     try {
        let {Applications = []} = response;
-       let {applicationDocuments, workFlowBusinessService, state: applicationState, billingBusinessService: businessService, property} = Applications[0];
+       let {applicationDocuments, workFlowBusinessService, state: applicationState, billingBusinessService: businessService, property,hardcopyReceivedDate} = Applications[0];
        const estateRentSummary = property.estateRentSummary
        const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
        property = {...property, propertyDetails: {...property.propertyDetails, dueAmount: dueAmount || "0"}}
@@ -204,7 +204,11 @@ const getData = async (action, state, dispatch) => {
           "children.cardContent.children.ES_SAMPLE_SITE_MAP_HEADER.visible",
           (!!siteReportUser && branchType == "ManiMajra" && process.env.REACT_APP_NAME !== "Citizen")
         )
-      
+        set(
+          reviewDetails, 
+          "children.cardContent.children.ES_HARD_COPY_DATE.visible",
+          (!!hardcopyReceivedDate)
+        )
         return {
                 div: {
                     uiFramework: "custom-atoms",

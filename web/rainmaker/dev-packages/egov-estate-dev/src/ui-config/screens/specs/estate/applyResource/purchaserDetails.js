@@ -412,7 +412,8 @@ export const purchaserDetails = getCommonCard({
             headerJsonPath:
               "children.cardContent.children.header.children.Purchaser Information.props.label",
             sourceJsonPath: "Properties[0].propertyDetails.purchaser",
-            prefixSourceJsonPath: "children.cardContent.children.purchaserCard.children"
+            prefixSourceJsonPath: "children.cardContent.children.purchaserCard.children",
+            disableDeleteIfKeyExists: "id"
           },
           type: "array"
         }
