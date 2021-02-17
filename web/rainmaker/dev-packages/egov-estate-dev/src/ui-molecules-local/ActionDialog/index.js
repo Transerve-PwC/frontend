@@ -318,7 +318,7 @@ class ActionDialog extends React.Component {
                     </div>
                   </Typography>
                   <DocumentListContainer {...documentProps}/>
-                  {(this.state.documentsErr || !documents || !documents.length) && (<span style={{color: "red"}}>Please upload documents</span>)}
+                  {(this.state.documentsErr && (!documents || !documents.length)) && (<span style={{color: "red"}}>Please upload documents</span>)}
                   </Grid>
                   )}
                   {/* {(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_SO_TEMPLATE_CREATION") && (<Grid item sm="12">
