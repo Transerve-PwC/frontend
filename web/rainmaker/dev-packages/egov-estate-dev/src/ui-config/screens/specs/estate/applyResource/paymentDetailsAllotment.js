@@ -366,6 +366,46 @@ const groundRentGenerationTypeField = {
         "props.placeholder.labelKey",
         "ES_START_MONTH_PLACEHOLDER"
       )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.label.labelKey",
+        "ES_MONTHLY_RENT_LABEL"
+      ))
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.placeholder.labelKey",
+        "ES_MONTHLY_RENT_PLACEHOLDER"
+      ))
+      // Allotment summary page
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+        "props.labelKey",
+        "ES_START_MONTH_LABEL"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+        "props.labelKey",
+        "ES_END_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+        "props.labelName",
+        "Start Month"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+        "props.labelName",
+        "End Month"
+      )) 
+      
       // for PM rent details step
       dispatch(handleField(
         action.screenKey,
@@ -393,7 +433,34 @@ const groundRentGenerationTypeField = {
         "ES_START_MONTH_PLACEHOLDER"
       )) 
 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.label.labelKey",
+        "ES_MONTHLY_RENT_LABEL"
+      ))
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.placeholder.labelKey",
+        "ES_MONTHLY_RENT_PLACEHOLDER"
+      ))
+
     }else{
+      //ES_MONTHLY_RENT_LABEL
+      //ES_MONTHLY_RENT_PLACEHOLDER
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.label.labelKey",
+        "ES_YEARLY_RENT_LABEL"
+      ))
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.placeholder.labelKey",
+        "ES_YEARLY_RENT_PLACEHOLDER"
+      ))
       dispatch(handleField(
         action.screenKey,
         "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
@@ -421,8 +488,35 @@ const groundRentGenerationTypeField = {
         "props.placeholder.labelKey",
         "ES_START_YEAR_PLACEHOLDER"
       )) 
+      // Allotment summary page
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+        "props.labelKey",
+        "ES_START_YEAR_LABEL"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+        "props.labelKey",
+        "ES_END_YEAR_LABEL"
+      )) 
 
       // For PM rent details step
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.label.labelKey",
+        "ES_YEARLY_RENT_LABEL"
+      ))
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+        "props.placeholder.labelKey",
+        "ES_YEARLY_RENT_PLACEHOLDER"
+      ))
 
       dispatch(handleField(
         action.screenKey,
@@ -599,11 +693,11 @@ const commonRentInformation = () => {
           // }
           if(value.isGroundRent){
             if(value.groundRentGenerationType === "Annually"){
-              let tillDateData = value.paymentConfigItems[0].tillDate;
+              let tillDateData = value.paymentConfigItems[0].tillDate || '0';
               return tillDateData + " Year(s)"
             }
             else if (value.groundRentGenerationType === "Monthly") {
-              let tillDateData = value.paymentConfigItems[0].tillDate;
+              let tillDateData = value.paymentConfigItems[0].tillDate || '0';
               const years = (Number(tillDateData) / 12 | 0)
               const months = Number(tillDateData) % 12
               if(years > 0 && months > 0) {

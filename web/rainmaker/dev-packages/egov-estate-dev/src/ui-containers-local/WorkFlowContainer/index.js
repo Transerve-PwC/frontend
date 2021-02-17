@@ -519,6 +519,7 @@ class WorkFlowContainer extends React.Component {
             dataPath={dataPath}
             moduleName={moduleName}
             documentProps={documentProps}
+            documentsJsonPath={this.props.documentsJsonPath}
             screenName={screenName}
             validateFn={validateFn}
           />}

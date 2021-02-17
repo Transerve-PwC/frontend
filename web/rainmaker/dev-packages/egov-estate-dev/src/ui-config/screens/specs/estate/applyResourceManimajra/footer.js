@@ -8,6 +8,7 @@ import {
 import {
   getLabel,
   dispatchMultipleFieldChangeAction,
+  convertDateToEpoch
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   toggleSnackbar,
@@ -124,6 +125,7 @@ const callBackForNext = async (state, dispatch) => {
     0
   );
   let isFormValid = true;
+  let ispurchaserDOBValid = true;
   let hasFieldToaster = true;
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
@@ -345,6 +347,26 @@ const callBackForNext = async (state, dispatch) => {
         if (!!propertyPurchaserItems[i].isDeleted) {
           continue;
         }
+        let purchaserDOBEntered = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.purchaser[${i}].ownerDetails.dob`);
+        if(!!purchaserDOBEntered)
+      {
+      let purchaserDOBEnteredEpoch = convertDateToEpoch(purchaserDOBEntered)
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+
+      today = yyyy + '-' + mm + '-' + dd;
+      let currentDateEpoch = convertDateToEpoch(today);
+      if(purchaserDOBEnteredEpoch !== undefined){
+        ispurchaserDOBValid = purchaserDOBEnteredEpoch - currentDateEpoch >= 0 ? false : true
+        isFormValid = ispurchaserDOBValid == true ? true : false;
+      }
+
+      if (!ispurchaserDOBValid) {
+        break;
+      }
+    }
         var isPurchaserDetailsValid = validateFields(
           `components.div.children.formwizardFourthStep.children.purchaserDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.purchaserCard.children`,
           state,
@@ -404,7 +426,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if (isPurchaserDetailsValid) {
+    if (isPurchaserDetailsValid && ispurchaserDOBValid) {
       const res = await applyEstates(state, dispatch, activeStep, "apply-manimajra");
       if (!res) {
         return
@@ -551,7 +573,16 @@ const callBackForNext = async (state, dispatch) => {
   if (activeStep !== SUMMARY_STEP) {
     if (isFormValid) {
       changeStep(state, dispatch, "apply-manimajra");
-    } else if (hasFieldToaster) {
+    }
+    else if(ispurchaserDOBValid === false){
+      let errorMessage = {
+        labelName: "Date of birth cannot be current or future date",
+        labelKey: "ES_ERR_DATE_OF_BIRTH_CANNOT_BE_CURRENT_OR_FUTURE"
+    };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }  
+    else if (hasFieldToaster) {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",
         labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"

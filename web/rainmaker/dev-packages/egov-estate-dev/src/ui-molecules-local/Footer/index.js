@@ -122,6 +122,7 @@ class Footer extends React.Component {
       onDialogButtonClick,
       dataPath,
       documentProps,
+      documentsJsonPath,
       screenName,
       validateFn,
       toggleSnackbar,
@@ -133,7 +134,7 @@ class Footer extends React.Component {
       preparedFinalObject,
       dataPath
     );
-    const dialogData = {...data, documentProps}
+    const dialogData = {...data, documentProps, documentsJsonPath}
     const fileNumber = getQueryArg(window.location.href, "fileNumber")
     const tenant = getQueryArg(window.location.href, "tenantId");
     const downloadMenu =

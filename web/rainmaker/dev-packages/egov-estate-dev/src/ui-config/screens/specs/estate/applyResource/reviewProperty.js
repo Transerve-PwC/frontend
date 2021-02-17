@@ -1467,7 +1467,7 @@ export const getReviewAuction = (isEditable = true, screenName) => {
   })
 }
 
-export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screenName, screenpath, type, count) => {
+export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screenName, screenpath, type, count, monthlyYearlyLabel) => {
   var detailsObj = {};
   
   switch(type) {
@@ -1535,6 +1535,74 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
           {
             labelName: "License Fee",
             labelKey: "ES_LICENSE_FEE_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
+          }
+        );
+      
+        detailsObj[`startYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "Start Year",
+            labelKey: "ES_START_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+          }
+        )
+
+        detailsObj[`endYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "End Year",
+            labelKey: "ES_END_YEAR_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+          }
+        )
+      }
+      break;
+  }
+  switch(monthlyYearlyLabel){
+      case "Monthly": 
+      for (var i=0; i<count; i++) {
+        detailsObj[`rentAmount_${i}`] = getLabelWithValue(
+          {
+            labelName: "Rent Amount",
+            labelKey: "ES_RENT_AMOUNT_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
+          }
+        );
+      
+        detailsObj[`startYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "Start Month",
+            labelKey: "ES_START_MONTH_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+          }
+        )
+
+        detailsObj[`endYear_${i}`] = getLabelWithValue(
+          {
+            labelName: "End Month",
+            labelKey: "ES_END_MONTH_LABEL"
+          }, 
+          {
+            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+          }
+        )
+      }
+      break;
+    case "Annually":
+      for (var i=0; i<count; i++) {
+        detailsObj[`rentAmount_${i}`] = getLabelWithValue(
+          {
+            labelName: "Rent Amount",
+            labelKey: "ES_RENT_AMOUNT_LABEL"
           }, 
           {
             jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`

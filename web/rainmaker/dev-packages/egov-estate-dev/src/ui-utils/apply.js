@@ -209,7 +209,7 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
       set(queryObject[0], "propertyDetails.paymentConfig.dueDateOfPayment", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.dueDateOfPayment));
       set(queryObject[0], "propertyDetails.paymentConfig.groundRentAdvanceRentDate", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.groundRentAdvanceRentDate));
       set(queryObject[0], "propertyDetails.paymentConfig.groundRentBillStartDate", convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.groundRentBillStartDate));
-
+      set(queryObject[0], "propertyDetails.paymentConfig.totalAmount", queryObject[0].propertyDetails.paymentConfig.totalAmount);
       if (queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems && queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems.length) {
         for (var i=0; i<queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems.length; i++) {
           set(queryObject[0], `propertyDetails.paymentConfig.premiumAmountConfigItems[${i}].premiumAmountDate`, convertDateToEpoch(queryObject[0].propertyDetails.paymentConfig.premiumAmountConfigItems[i].premiumAmountDate));
@@ -421,6 +421,12 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
       if(paymentConfigItems.length === 1 && (!paymentConfigItems[0].groundRentEndMonth || !paymentConfigItems[0].groundRentAmount)) {
         set(queryObject[0], "propertyDetails.paymentConfig", null);
+      }
+      if(!!paymentConfigItems && paymentConfigItems.length > 0 && !!paymentConfigItems[0].groundRentEndMonth){
+        for (let i = 0; i < paymentConfigItems.length; i++) {
+          set(queryObject[0], `propertyDetails.paymentConfig.paymentConfigItems[${i}]`, paymentConfigItems[i]);
+          
+        }
       }
       response = await httpRequest(
         "post",

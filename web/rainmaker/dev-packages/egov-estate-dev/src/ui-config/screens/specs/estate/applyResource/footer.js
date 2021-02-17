@@ -95,6 +95,7 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
   let ownerPosAllotDateValid = true;
   let isDOBValid = true;
+  let ispurchaserDOBValid = true;
   let isBiddersListValid = true;
   // let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
@@ -473,6 +474,26 @@ const callBackForNext = async (state, dispatch) => {
         if (!!propertyPurchaserItems[i].isDeleted) {
           continue;
         }
+        let purchaserDOBEntered = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.purchaser[${i}].ownerDetails.dob`);
+        if(!!purchaserDOBEntered)
+        {
+        let purchaserDOBEnteredEpoch = convertDateToEpoch(purchaserDOBEntered)
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+  
+        today = yyyy + '-' + mm + '-' + dd;
+        let currentDateEpoch = convertDateToEpoch(today);
+        if(purchaserDOBEnteredEpoch !== undefined){
+          ispurchaserDOBValid = purchaserDOBEnteredEpoch - currentDateEpoch >= 0 ? false : true
+          isFormValid = ispurchaserDOBValid == true ? true : false;
+        }
+  
+        if (!ispurchaserDOBValid) {
+          break;
+        }
+      }
         var isPurchaserDetailsValid = validateFields(
           `components.div.children.formwizardFifthStep.children.purchaserDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item${i}.children.cardContent.children.purchaserCard.children`,
           state,
@@ -532,7 +553,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if (isPurchaserDetailsValid) {
+    if (isPurchaserDetailsValid && ispurchaserDOBValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
@@ -708,13 +729,17 @@ const callBackForNext = async (state, dispatch) => {
       `Properties[0].propertyDetails.paymentConfig.paymentConfigItems`,
       []
     )
+    let rentItemGroundRentType = get(
+      state.screenConfiguration.preparedFinalObject,
+      `Properties[0].propertyDetails.paymentConfig.groundRentGenerationType`
+    )
     const reviewJsonPath = !!isGroundRent ? "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents" : "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewLicenseFee.children.cardContent.children.viewLicenses";
 
     let securityAmount = rentItems[0].groundRentAmount * noOfMonths;
     dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.securityAmount", securityAmount));
 
       const _cardName = !!isGroundRent ? "groundRent" : "licenseFee"
-
+      const monthlyYearlyLabel = rentItemGroundRentType === "Monthly" ? "Monthly" : "Annually"
       if (_components && _components.length > 0) {
         for (var i = 0; i < _components.length; i++) {
           if (!_components[i].isDeleted) {
@@ -733,7 +758,7 @@ const callBackForNext = async (state, dispatch) => {
       isStartAndEndYearValid = rentItems.every(item => item.groundRentEndMonth > item.groundRentStartMonth)
       if(!!isRentDetailsValid) {
         dispatch(prepareFinalObject("Properties[0].propertyDetails.paymentConfig.paymentConfigItems", rentItems))
-        getReviewAllotmentMultipleSectionDetails(state, dispatch, screenKey, reviewJsonPath, _cardName, rentItems.length);
+        getReviewAllotmentMultipleSectionDetails(state, dispatch, screenKey, reviewJsonPath, _cardName, rentItems.length, monthlyYearlyLabel);
       }
     }
     const hasValidation = !!isGroundRent ? isGroundRentValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid : isLicenseFeeValid && isSecurityDetailsValid && isRentDetailsValid && isDemandValid && isInterestDetailsValid && isStartAndEndYearValid
@@ -814,6 +839,14 @@ const callBackForNext = async (state, dispatch) => {
       scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 
+    else if(ispurchaserDOBValid === false){
+      let errorMessage = {
+        labelName: "Date of birth cannot be current or future date",
+        labelKey: "ES_ERR_DATE_OF_BIRTH_CANNOT_BE_CURRENT_OR_FUTURE"
+    };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }  
     else if(isDOBValid === false){
       let errorMessage = {
         labelName: "Date of birth cannot be current or future date",
