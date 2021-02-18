@@ -22,6 +22,7 @@ import {
 import get from "lodash/get";
 import {
   validateFields,
+  convertEpochToDate
 } from "../utils";
 import {
   httpRequest
@@ -407,7 +408,8 @@ const updateAllFields = async (action, state, dispatch) => {
                 applicationNumber: item.applicationNumber,
                 branchType: item.branchType,
                 moduleType: item.moduleType,
-                applicationType: item.applicationType
+                applicationType: item.applicationType,
+                approvalDate:convertEpochToDate(item.auditDetails.lastModifiedTime)
               })
             })
 

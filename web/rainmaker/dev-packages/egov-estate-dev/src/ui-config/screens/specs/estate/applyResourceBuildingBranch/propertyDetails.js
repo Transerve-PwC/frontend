@@ -165,7 +165,7 @@ const fileNumberField = {
   },
   required: true,
   errorMessage:"ES_ERR_FILENUMBER_FEILD",
-  pattern: _getPattern("fileNumber"),
+  pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
   jsonPath: "Properties[0].fileNumber",
   afterFieldChange: (action, state, dispatch) => {
     dispatch(handleField(

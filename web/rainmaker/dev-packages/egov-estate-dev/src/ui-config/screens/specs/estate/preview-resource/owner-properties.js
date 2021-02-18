@@ -398,7 +398,7 @@ export const headerDiv = {
           },
           {
             label: "ES_APPROVAL_DATE",
-            jsonPath: ""
+            jsonPath: "approvalDate"        
           }
         ]
       }

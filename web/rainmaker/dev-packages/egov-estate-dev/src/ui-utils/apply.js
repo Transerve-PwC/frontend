@@ -246,12 +246,16 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     )
     
     if (prevOwners.length) {
-      prevOwners = prevOwners.filter(item => item.ownerDetails.isPreviousOwnerRequired == "true");
-      prevOwners.map((item, index) => {
-        if (typeof item.isDeleted === "undefined") {
-          set(queryObject[0], `propertyDetails.purchaser[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.purchaser[index].ownerDetails.dob))
-        }
-      })
+
+      prevOwners = prevOwners.filter(item => !!item.isDeleted || item.ownerDetails.isPreviousOwnerRequired == "true").map((item) => ({...item, ownerDetails: {...item.ownerDetails, dob: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dob) : ""}}))
+
+
+      // prevOwners = prevOwners.filter(item => item.ownerDetails.isPreviousOwnerRequired == "true");
+      // prevOwners.map((item, index) => {
+      //   if (typeof item.isDeleted === "undefined") {
+      //     set(queryObject[0], `propertyDetails.purchaser[${index}].ownerDetails.dob`, convertDateToEpoch(queryObject[0].propertyDetails.purchaser[index].ownerDetails.dob))
+      //   }
+      // })
     }
 
     owners = get(
@@ -263,9 +267,9 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
     if (owners.length) {
       owners = owners.map((item) => {
         return {...item, ownerDetails : {...item.ownerDetails, 
-          possesionDate: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.possesionDate) : item.ownerDetails.possesionDate,
-          dateOfAllotment: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dateOfAllotment) : item.ownerDetails.dateOfAllotment,
-          dob: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dob) : item.ownerDetails.dob
+          possesionDate: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.possesionDate) : "",
+          dateOfAllotment: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dateOfAllotment) : "",
+          dob: typeof item.isDeleted === "undefined" ? convertDateToEpoch(item.ownerDetails.dob) : ""
         }}
       })
       
@@ -481,10 +485,10 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
       owners = owners.map(item => {
         let ownerDocuments = item.ownerDetails.ownerDocuments;
-        let isPreviousOwnerRequired = item.ownerDetails.isPreviousOwnerRequired;
+        let isPreviousOwnerRequired = typeof item.isDeleted === "undefined" ? item.ownerDetails.isPreviousOwnerRequired : "";
         const removedDocs = ownerDocuments.filter(item => !item.isActive);
         ownerDocuments = ownerDocuments.filter(item => item.isActive)
-        return {...item, share: (item.share).toString(), ownerDetails: {...item.ownerDetails, isPreviousOwnerRequired: typeof isPreviousOwnerRequired != "undefined" && isPreviousOwnerRequired != null ? isPreviousOwnerRequired.toString() : isPreviousOwnerRequired, ownerDocuments, removedDocs}}
+        return {...item, share: (item.share).toString(), ownerDetails: {...item.ownerDetails, isPreviousOwnerRequired: typeof isPreviousOwnerRequired != "undefined" && isPreviousOwnerRequired != null && !!isPreviousOwnerRequired ? isPreviousOwnerRequired.toString() : isPreviousOwnerRequired, ownerDocuments, removedDocs}}
       })
 
       if (screenName != "apply-building-branch") {

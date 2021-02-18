@@ -127,7 +127,7 @@ class ActionDialog extends React.Component {
           })
         }
       }
-      if(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION"){
+      if(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION"||applicationState==="ES_MM_PENDING_DS_VERIFICATION"){
         if(!!validationDate) {
           this.props.onButtonClick(buttonLabel, isDocRequired)
         } else {
@@ -273,7 +273,7 @@ class ActionDialog extends React.Component {
                       placeholder={fieldConfig.comments.placeholder}
                       inputProps={{ maxLength: 120 }}
                     />
-                    {!!this.state.commentsErr && (<span style={{color: "red"}}>Please enter Comments</span>)}
+                    {!!this.state.commentsErr && (<span style={{color: "red"}}>Please enter comments</span>)}
                   </Grid>
                   {buttonLabel === "FORWARD" && (applicationState === "ES_PENDING_DS_VERIFICATION" || applicationState == "ES_MM_PENDING_DS_VERIFICATION") && (
                     <Grid item sm="12">
