@@ -9,7 +9,7 @@ import {
     getCommonGrayCard,
     getLabel,
     getCommonSubHeader,
-    getLabelWithValue
+    getLabelWithValue as _getLabelWithValue
   } from "egov-ui-framework/ui-config/screens/specs/utils";
   import {
     prepareFinalObject
@@ -20,7 +20,12 @@ import {
   } from "../../utils";
   import get from "lodash/get";
   
- 
+  function getLabelWithValue(labelName, path, visible) {
+    const label = _getLabelWithValue(labelName, path);
+    label.visible = visible
+    // label.gridDefination.xs = 12;
+    return label;
+  }
 export const purchaserHeader = getCommonTitle({
     labelName: "Purchaser Details",
     labelKey: "ES_PURCHASER_DETAILS_HEADER"
@@ -137,7 +142,9 @@ export const headerDiv = {
     }
 }
 
-   export const getPurchaserDetails = (isEditable = true, index) => {
+   export const getPurchaserDetails = (isEditable = true, index,state) => {
+     const branch=get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.branchType")
+     const visible =(!!branch && branch==="MANI_MAJRA")||(!!(window.location.href).includes("apply-manimajra"))
     return getCommonGrayCard({
       headerDiv: {
         ...headerDiv,
@@ -200,7 +207,8 @@ export const headerDiv = {
         share: getLabelWithValue(
           shareField, {
             jsonPath:`Properties[0].propertyDetails.purchaser[${index}].share`
-          }
+          },
+          visible
         ),
         modeOfTransfer: getLabelWithValue(
           modeOfTransferField, {

@@ -127,7 +127,7 @@ const updateAllFields = async (action, state, dispatch) => {
   let containers={}
     if(properties[0].propertyDetails.purchaser){
       properties[0].propertyDetails.purchaser.forEach((element,index) => { 
-        let purchaseDetailContainer = getPurchaserDetails(false,index);
+        let purchaseDetailContainer = getPurchaserDetails(false,index,state);
         containers[index] = getCommonCard({purchaseDetailContainer})
       });
       

@@ -2,7 +2,7 @@ import {
   getCommonGrayCard,
   getCommonSubHeader,
   getCommonContainer,
-  getLabelWithValue,
+  getLabelWithValue as _getLabelWithValue,
   getDivider,
   getLabel,
   getCommonTitle
@@ -23,6 +23,13 @@ import { changeStep as changeStepManimajra} from "../applyResourceManimajra/foot
 import React from "react";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+
+function getLabelWithValue(labelName, path, visible) {
+  const label = _getLabelWithValue(labelName, path);
+  label.visible = visible
+  // label.gridDefination.xs = 12;
+  return label;
+}
 
 const allocationTypeLabel = {
   labelName: "Type of Allocation",
@@ -487,6 +494,7 @@ const modeOfTransferLabel = {
 }
 
 export const getReviewPurchaser = (isEditable = true, purchaser = 0, step = 4, screenKey = "apply") => {
+  const visible =!!(window.location.href).includes("apply-manimajra")
   return getCommonGrayCard({
     headerDiv: {
       ...headerDiv,
@@ -554,7 +562,8 @@ export const getReviewPurchaser = (isEditable = true, purchaser = 0, step = 4, s
       percentShare: getLabelWithValue(
         percentShareLabel, {
           jsonPath: `Properties[0].propertyDetails.purchaser[${purchaser}].share`
-        }
+        },
+        visible
       ),
       modeOfTransfer: getLabelWithValue(
         modeOfTransferLabel, {

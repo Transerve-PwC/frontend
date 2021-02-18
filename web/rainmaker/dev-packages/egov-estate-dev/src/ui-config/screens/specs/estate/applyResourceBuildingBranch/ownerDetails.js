@@ -176,7 +176,7 @@ const shareField = {
   required: true,
   errorMessage:"ER_ERR_SHARE_NUMBER",
   pattern: _getPattern("share"),
-  jsonPath: "Properties[0].propertyDetails.owners[0].share"
+  jsonPath: "Properties[0].propertyDetails.owners[0].share",
 }
 
 const getIsCurrentOwnerRadioButton = {

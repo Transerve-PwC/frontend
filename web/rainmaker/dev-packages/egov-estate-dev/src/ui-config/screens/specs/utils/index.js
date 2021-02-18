@@ -2331,7 +2331,7 @@ export const _getPattern = (type) => {
     case "float": 
         return /^[+-]?\d+(\.\d+)?$/i;
     case "share":
-      return /^[+-]?\d{1,5}(\.\d{1,2})?$/i;
+      return /^[1-9][0-9]?$|^100$/i;
     case "areaOfProperty":
       return /^[+-]?\d{2,15}(\.\d{1,2})?$/i;
     case "alphaNumeric":
@@ -2345,7 +2345,7 @@ export const _getPattern = (type) => {
     case "address":
       return /^([\s\S]){1,150}$/i
     case "ownerShare":
-      return /^[+-]?\d{2,5}(\.\d{1,2})?$/i;
+      return /^[1-9][0-9]?$|^100$/i;
     case "courtCase":
       return /^([\s\S]){1,250}$/i;
       case "numeric-with-no-firstdigit-zero":
@@ -2366,6 +2366,8 @@ export const _getPattern = (type) => {
         return /^[1-9][0-9]{1,49}$/i;
         case "width":
         return /^[1-9][0-9]{0,49}$/i;
+        case "HouseNumber":
+          return /^[1-9a-zA-Z][\s\S]{1,49}$/i;
   }
 }
 

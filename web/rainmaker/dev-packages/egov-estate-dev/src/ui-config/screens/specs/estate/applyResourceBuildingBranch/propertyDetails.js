@@ -196,7 +196,7 @@ const houseNumberField = {
     sm: 6
   },
   required: true,
-  pattern: _getPattern("fileNumber"),
+  pattern: _getPattern("HouseNumber"),
   errorMessage:"ES_ERR_HOUSE_NUMBER",
   jsonPath: "Properties[0].propertyDetails.houseNumber",
   afterFieldChange: (action, state, dispatch) => {
@@ -275,10 +275,18 @@ const sizeOfAreaPurchasedField = {
       xs: 12,
       sm: 6
   },
-  pattern: _getPattern("areaOfProperty"),
+  pattern: _getPattern("numeric"),
   required: true,
   errorMessage:"ES_ERR_SIZE_OF_AREA_PROPERTY",
-  jsonPath: "Properties[0].propertyDetails.areaSqft"
+  jsonPath: "Properties[0].propertyDetails.areaSqft",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 150) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_SIZE_OF_AREA_PROPERTY",action.screenKey);
+    }
+}
 }
 
 export const propertyDetailsHeader = getCommonTitle({
