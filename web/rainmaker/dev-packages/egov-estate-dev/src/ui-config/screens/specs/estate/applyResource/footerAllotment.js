@@ -78,6 +78,7 @@ const callBackForNext = async (state, dispatch) => {
   let rentYearMismatch = false;
   let isBiddersListValid = true;
   let isownerDOBValid = true;
+  let iscourtCaseFieldLengthValid = true;
   let licenseFeeYearMismatch = false;
   let isStartAndEndYearValid = true;
   let propertyType = get(
@@ -399,6 +400,19 @@ const callBackForNext = async (state, dispatch) => {
       state.screenConfiguration.screenConfig,
       "allotment.components.div.children.formwizardFifthStepAllotment.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
+    if(courtCases && courtCases.length > 0){
+      for (let i = 0; i < courtCases.length; i++) {
+        let advisorToAdminCourt = !!courtCases[i].advisorToAdminCourt ? courtCases[i].advisorToAdminCourt.length : 0
+        let chiefAdministartorsCourt = !!courtCases[i].chiefAdministartorsCourt ? courtCases[i].chiefAdministartorsCourt.length : 0
+        let commissionersCourt = !!courtCases[i].commissionersCourt ? courtCases[i].commissionersCourt.length : 0
+        let estateOfficerCourt = !!courtCases[i].estateOfficerCourt ? courtCases[i].estateOfficerCourt.length : 0
+        let honorableDistrictCourt = !!courtCases[i].honorableDistrictCourt ? courtCases[i].honorableDistrictCourt.length : 0
+        let honorableHighCourt = !!courtCases[i].honorableHighCourt ? courtCases[i].honorableHighCourt.length : 0
+        let honorableSupremeCourt = !!courtCases[i].honorableSupremeCourt ? courtCases[i].honorableSupremeCourt.length : 0
+        if(advisorToAdminCourt > 250 || chiefAdministartorsCourt > 250 || commissionersCourt > 250 || estateOfficerCourt > 250 || honorableDistrictCourt > 250 || honorableHighCourt > 250 || honorableSupremeCourt > 250)
+        iscourtCaseFieldLengthValid = false;
+      }
+    }
 
     if (courtCaseItems && courtCaseItems.length > 0) {
       for (var i = 0; i < courtCaseItems.length; i++) {
@@ -420,7 +434,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if (isCourtCaseDetailsValid) {
+    if (isCourtCaseDetailsValid && iscourtCaseFieldLengthValid) {
       const res = await applyEstates(state, dispatch, activeStep, screenKey);
       if (!res) {
         return
@@ -582,6 +596,14 @@ const callBackForNext = async (state, dispatch) => {
       // scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     }  
+    // iscourtCaseFieldLengthValid
+    else if(!iscourtCaseFieldLengthValid) {
+      let errorMessage = {
+        labelName: "Shouldn't exceed 250 characters",
+        labelKey: "ERR_COURT_DETAILS_250_CHARACTERS"
+      }
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
     else if(!isStartAndEndYearValid) {
       let errorMessage = {
         labelName: "End Month should be greater than Start Month",

@@ -97,6 +97,7 @@ const callBackForNext = async (state, dispatch) => {
   let isDOBValid = true;
   let ispurchaserDOBValid = true;
   let isBiddersListValid = true;
+  let iscourtCaseFieldLengthValid = true;
   // let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
   let isStartAndEndYearValid = true
@@ -648,6 +649,20 @@ const callBackForNext = async (state, dispatch) => {
       "screenConfiguration.screenConfig.apply.components.div.children.formwizardSeventhStep.children.courtCaseDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items"
     );
 
+    if(courtCases && courtCases.length > 0){
+      for (let i = 0; i < courtCases.length; i++) {
+        let advisorToAdminCourt = !!courtCases[i].advisorToAdminCourt ? courtCases[i].advisorToAdminCourt.length : 0
+        let chiefAdministartorsCourt = !!courtCases[i].chiefAdministartorsCourt ? courtCases[i].chiefAdministartorsCourt.length : 0
+        let commissionersCourt = !!courtCases[i].commissionersCourt ? courtCases[i].commissionersCourt.length : 0
+        let estateOfficerCourt = !!courtCases[i].estateOfficerCourt ? courtCases[i].estateOfficerCourt.length : 0
+        let honorableDistrictCourt = !!courtCases[i].honorableDistrictCourt ? courtCases[i].honorableDistrictCourt.length : 0
+        let honorableHighCourt = !!courtCases[i].honorableHighCourt ? courtCases[i].honorableHighCourt.length : 0
+        let honorableSupremeCourt = !!courtCases[i].honorableSupremeCourt ? courtCases[i].honorableSupremeCourt.length : 0
+        if(advisorToAdminCourt > 250 || chiefAdministartorsCourt > 250 || commissionersCourt > 250 || estateOfficerCourt > 250 || honorableDistrictCourt > 250 || honorableHighCourt > 250 || honorableSupremeCourt > 250)
+        iscourtCaseFieldLengthValid = false;
+      }
+    }
+
     if (courtCaseItems && courtCaseItems.length > 0) {
       for (var i = 0; i < courtCaseItems.length; i++) {
         if (courtCaseItems[i].isDeleted) {
@@ -668,7 +683,7 @@ const callBackForNext = async (state, dispatch) => {
       }
     }
 
-    if (isCourtCaseDetailsValid) {
+    if (isCourtCaseDetailsValid && iscourtCaseFieldLengthValid) {
       const res = await applyEstates(state, dispatch, activeStep);
       if (!res) {
         return
@@ -839,6 +854,13 @@ const callBackForNext = async (state, dispatch) => {
       scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));
     } 
+    else if(!iscourtCaseFieldLengthValid) {
+      let errorMessage = {
+        labelName: "Shouldn't exceed 250 characters",
+        labelKey: "ERR_COURT_DETAILS_250_CHARACTERS"
+      }
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    }
     else if(ispurchaserDOBValid === false){
       let errorMessage = {
         labelName: "Date of birth cannot be current or future date",

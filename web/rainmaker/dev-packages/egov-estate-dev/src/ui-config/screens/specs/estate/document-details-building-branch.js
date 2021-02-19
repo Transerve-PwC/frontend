@@ -45,7 +45,8 @@ if(payload) {
   `PropertiesTemp[${index}].reviewDocData`,
   dispatch,'ES'
   );
-  let documentListContainer = getReviewDocuments(false,'document-details-building-branch',`PropertiesTemp[${index}].reviewDocData`);
+  let documentListOwnerName = properties[0].propertyDetails.owners[index].ownerDetails.ownerName
+  let documentListContainer = getReviewDocuments(false,'document-details-building-branch',`PropertiesTemp[${index}].reviewDocData`,2 , documentListOwnerName);
   containers[index] = getCommonCard({
     documentListContainer
     }); 
