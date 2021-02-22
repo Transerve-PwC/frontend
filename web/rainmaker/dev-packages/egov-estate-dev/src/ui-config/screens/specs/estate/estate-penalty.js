@@ -27,7 +27,7 @@ import {
 import {addPenalty} from '../../../../ui-utils/apply'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
-import { validateFields } from "../utils";
+import { validateFields ,_getPattern,displayCustomErr} from "../utils";
 
 const header = getCommonHeader({
   labelName: "Penalty",
@@ -98,14 +98,25 @@ const amountField = {
       labelName: "Enter Amount",
       labelKey: "ES_AMOUNT_PLACEHOLDER"
   },
-  errorMessage: "ES_ERR_PENALTY_AMOUNT_FIELD",
+  errorMessage: "ES_ERR_AMOUNT_FIELD",
   gridDefination: {
       xs: 12,
       sm: 6
   },
-  pattern: getPattern("Amount"),
+  pattern: _getPattern("Amount"),
   required: true,
-  jsonPath: "propertyPenalties[0].penaltyAmount"
+  jsonPath: "propertyPenalties[0].penaltyAmount",
+  minLength:2,
+  maxLength:7,
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 7) {
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+    } else if(action.value.length < 2){
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_MIN", action.screenKey);
+    }else{
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_FIELD",action.screenKey);
+    }
+  }
 }
 
 export const penaltyDetails = getCommonCard({

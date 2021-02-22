@@ -319,6 +319,16 @@ export const monthField = {
     }
     },
     afterFieldChange: (action, state, dispatch) => {
+      dispatch(
+        handleField(
+"manimajra-payment",
+"components.div.children.loader",
+"visible",
+true
+      ))
+      setTimeout(() => {
+        
+
     let {toDate} = state.screenConfiguration.preparedFinalObject.offlinePaymentDetails
     let todaysdate=getTodaysDateInYMD()
     todaysdate=convertDateToEpoch(todaysdate)
@@ -404,6 +414,14 @@ else{
       )
     );
       }
+      dispatch(
+        handleField(
+  "manimajra-payment",
+  "components.div.children.loader",
+  "visible",
+  false
+      ))
+    }, 5000);
     }
   }
 
@@ -603,6 +621,11 @@ const manimajraPayment = {
                   ...header
                 }
               }
+            },
+            loader:{
+              uiFramework: "custom-molecules",
+              componentPath: "LoadingIndicator",
+              visible:false
             },
             detailsContainer :  detailsContainer,
             footer: paymentFooter

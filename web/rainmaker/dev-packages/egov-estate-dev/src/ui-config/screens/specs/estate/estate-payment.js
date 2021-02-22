@@ -7,7 +7,7 @@ import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { propertyInfo } from "./preview-resource/preview-properties";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch, validateFields, getRentSummaryCard } from "../utils";
+import { convertDateToEpoch, validateFields, getRentSummaryCard,displayCustomErr,_getPattern } from "../utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import {penaltyStatmentResult,extensionStatmentResult,securityStatmentResult} from './searchResource/functions'
 import { penaltySummary } from "./generatePenaltyStatement";
@@ -149,7 +149,13 @@ import { penaltySummary } from "./generatePenaltyStatement";
         xs: 12,
         sm: 6
     },
-    jsonPath: "payment.comments"
+    jsonPath: "payment.comments",
+    pattern:_getPattern("courtCase"),
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 250) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_250", action.screenKey);
+      }
+  }
   }
 
   const paymentType = {
@@ -341,7 +347,7 @@ import { penaltySummary } from "./generatePenaltyStatement";
   const getPatternAmount = (type) => {
     switch (type) {
       case "Amount":
-        return (/^[1-9][0-9]{0,9}$/i
+        return (/^[1-9][0-9]{1,7}$/i
         );
     }
   }
@@ -365,7 +371,18 @@ import { penaltySummary } from "./generatePenaltyStatement";
   },
     required: true,
     pattern: getPatternAmount("Amount"),
-    jsonPath: "payment.paymentAmount"
+    jsonPath: "payment.paymentAmount",
+    minLength:2,
+    maxLength:7,
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 7) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+      } else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_MIN", action.screenKey);
+      }else{
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_FIELD",action.screenKey);
+      }
+    }
   }
 
   const bankName = {
@@ -384,7 +401,21 @@ import { penaltySummary } from "./generatePenaltyStatement";
   },
     required: true,
     jsonPath: "payment.bankName",
-    visible: process.env.REACT_APP_NAME !== "Citizen"
+    minLength:3,
+    maxLength:250,
+    pattern:_getPattern("BankName"),
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 250) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_250", action.screenKey);
+      }
+      else if(action.value.length<3){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_BANK_NAME_3", action.screenKey);
+      }
+      else {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_BANK_NAME_FIELD",action.screenKey);
+      }
+  }
   }
 
   const transactionId = {
@@ -402,8 +433,22 @@ import { penaltySummary } from "./generatePenaltyStatement";
       labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
     },
     required: true,
+    minLength:3,
+    maxLength:250,
     jsonPath: "payment.transactionNumber",
-    visible: process.env.REACT_APP_NAME !== "Citizen"
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    pattern:_getPattern("transactionid"),
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 250) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_250", action.screenKey);
+      }
+      else if(action.value.length <3){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_TRANSACTION_ID_3", action.screenKey);
+      }
+      else {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_TRANSACTION_ID_FIELD",action.screenKey);
+      }
+  }
   }
 
   export const applicationOfflinePaymentDetails = getCommonCard({

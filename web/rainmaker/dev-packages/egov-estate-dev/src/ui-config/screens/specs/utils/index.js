@@ -2335,7 +2335,7 @@ export const _getPattern = (type) => {
     case "areaOfProperty":
       return /^[+-]?\d{2,15}(\.\d{1,2})?$/i;
     case "alphaNumeric":
-      return /^[a-zA-Z0-9]{1,100}$/i;
+      return /^[a-zA-Z0-9 ]{1,100}$/i;
     case "fileNumber":
       return /^[A-Za-z0-9_@./#&+-]{1,50}$/i;
     case "alphabet":  
@@ -2361,7 +2361,7 @@ export const _getPattern = (type) => {
         case "variationdetail":
             return /^([\s\S]){0,150}$/i;
             case "street":
-              return /^[a-zA-Z0-9]{2,100}$/i;
+              return /^[a-zA-Z0-9 ]{2,100}$/i;
               case "height":
       return /^[1-9][0-9]{0,6}$/i;
       case "numeric":
@@ -2371,7 +2371,11 @@ export const _getPattern = (type) => {
         case "HouseNumber":
           return /^[1-9a-zA-Z][\s\S]{0,49}$/i;
           case "transactionid":
-            return /^[1-9a-zA-Z][0-9a-zA-Z]{1,249}$/i;
+            return /^[1-9a-zA-Z][0-9a-zA-Z ]{1,249}$/i;
+            case "Amount":
+              return /^[1-9][0-9]{1,7}$/i;
+              case "BankName":
+                return /^[a-zA-Z ]{1,250}$/i;
   }
 }
 

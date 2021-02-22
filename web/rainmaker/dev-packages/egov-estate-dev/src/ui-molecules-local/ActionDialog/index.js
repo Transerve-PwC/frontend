@@ -127,7 +127,7 @@ class ActionDialog extends React.Component {
           })
         }
       }
-      if(buttonLabel === "FORWARD" && applicationState === "ES_PENDING_DS_VERIFICATION"||applicationState==="ES_MM_PENDING_DS_VERIFICATION"){
+      if(buttonLabel === "FORWARD" && (applicationState === "ES_PENDING_DS_VERIFICATION"||applicationState==="ES_MM_PENDING_DS_VERIFICATION")){
         if(!!validationDate) {
           this.props.onButtonClick(buttonLabel, isDocRequired)
         } else {

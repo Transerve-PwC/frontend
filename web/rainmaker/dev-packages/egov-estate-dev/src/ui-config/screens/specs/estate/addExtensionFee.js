@@ -26,7 +26,7 @@ import {
   } from "egov-ui-framework/ui-utils/commons";
   import {createExtensionFee} from '../../../../ui-utils/apply'
   import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-  import { validateFields } from "../utils";
+  import { validateFields ,_getPattern,displayCustomErr} from "../utils";
 
   const beforeInitFn = async (action, state, dispatch) => {
     let fileNumber = getQueryArg(window.location.href, "fileNumber")
@@ -64,10 +64,21 @@ import {
         xs: 12,
         sm: 6
     },
-    errorMessage: "ES_ERR_EXTENSION_AMOUNT_FIELD",
-    pattern: getPattern("Amount"),
+    errorMessage: "ES_ERR_AMOUNT_FIELD",
+    pattern: _getPattern("Amount"),
     required: true,
-    jsonPath: "ExtensionFees[0].amount"
+    jsonPath: "ExtensionFees[0].amount",
+    minLength:2,
+    maxLength:7,
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 7) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_7", action.screenKey);
+      } else if(action.value.length < 2){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_MIN", action.screenKey);
+      }else{
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AMOUNT_FIELD",action.screenKey);
+      }
+    }
   }
   
   export const extensionFeeDetails = getCommonCard({
