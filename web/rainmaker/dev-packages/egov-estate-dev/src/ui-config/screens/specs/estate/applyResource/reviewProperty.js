@@ -1516,25 +1516,67 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
           }
         );
       
-        detailsObj[`startYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "Start Year",
-            labelKey: "ES_START_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
-          }
-        )
+        if(monthlyYearlyLabel === "Monthly"){
+          detailsObj[`startYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "Start Month",
+              labelKey: "ES_START_MONTH_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+            }
+          )
+  
+          detailsObj[`endYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "End Month",
+              labelKey: "ES_END_MONTH_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+            }
+          )
+        }
+        else if(monthlyYearlyLabel === "Annually"){
+          detailsObj[`startYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "Start Year",
+              labelKey: "ES_START_YEAR_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+            }
+          )
+  
+          detailsObj[`endYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "End Year",
+              labelKey: "ES_END_YEAR_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+            }
+          )
+        }
+        // detailsObj[`startYear_${i}`] = getLabelWithValue(
+        //   {
+        //     labelName: "Start Year",
+        //     labelKey: "ES_START_YEAR_LABEL"
+        //   }, 
+        //   {
+        //     jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+        //   }
+        // )
 
-        detailsObj[`endYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "End Year",
-            labelKey: "ES_END_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
-          }
-        )
+        // detailsObj[`endYear_${i}`] = getLabelWithValue(
+        //   {
+        //     labelName: "End Year",
+        //     labelKey: "ES_END_YEAR_LABEL"
+        //   }, 
+        //   {
+        //     jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+        //   }
+        // )
       }
       break;
 
@@ -1550,96 +1592,102 @@ export const getReviewAllotmentMultipleSectionDetails = (state, dispatch, screen
           }
         );
       
-        detailsObj[`startYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "Start Year",
-            labelKey: "ES_START_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
-          }
-        )
+        if(monthlyYearlyLabel === "Monthly"){
+          detailsObj[`startYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "Start Month",
+              labelKey: "ES_START_MONTH_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+            }
+          )
+  
+          detailsObj[`endYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "End Month",
+              labelKey: "ES_END_MONTH_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+            }
+          )
+        }
+        else if(monthlyYearlyLabel === "Annually"){
+          detailsObj[`startYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "Start Year",
+              labelKey: "ES_START_YEAR_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+            }
+          )
+  
+          detailsObj[`endYear_${i}`] = getLabelWithValue(
+            {
+              labelName: "End Year",
+              labelKey: "ES_END_YEAR_LABEL"
+            }, 
+            {
+              jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+            }
+          )
+        }
+        // detailsObj[`startYear_${i}`] = getLabelWithValue(
+        //   {
+        //     labelName: "Start Year",
+        //     labelKey: "ES_START_YEAR_LABEL"
+        //   }, 
+        //   {
+        //     jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
+        //   }
+        // )
 
-        detailsObj[`endYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "End Year",
-            labelKey: "ES_END_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
-          }
-        )
+        // detailsObj[`endYear_${i}`] = getLabelWithValue(
+        //   {
+        //     labelName: "End Year",
+        //     labelKey: "ES_END_YEAR_LABEL"
+        //   }, 
+        //   {
+        //     jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
+        //   }
+        // )
       }
       break;
   }
-  switch(monthlyYearlyLabel){
-      case "Monthly": 
-      for (var i=0; i<count; i++) {
-        detailsObj[`rentAmount_${i}`] = getLabelWithValue(
-          {
-            labelName: "Rent Amount",
-            labelKey: "ES_RENT_AMOUNT_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
-          }
-        );
+  // switch(monthlyYearlyLabel){
+  //     case "Monthly": 
+  //     for (var i=0; i<count; i++) {
+  //       detailsObj[`rentAmount_${i}`] = getLabelWithValue(
+  //         {
+  //           labelName: "Rent Amount",
+  //           labelKey: "ES_RENT_AMOUNT_LABEL"
+  //         }, 
+  //         {
+  //           jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
+  //         }
+  //       );
       
-        detailsObj[`startYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "Start Month",
-            labelKey: "ES_START_MONTH_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
-          }
-        )
-
-        detailsObj[`endYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "End Month",
-            labelKey: "ES_END_MONTH_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
-          }
-        )
-      }
-      break;
-    case "Annually":
-      for (var i=0; i<count; i++) {
-        detailsObj[`rentAmount_${i}`] = getLabelWithValue(
-          {
-            labelName: "Rent Amount",
-            labelKey: "ES_RENT_AMOUNT_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
-          }
-        );
+        
+  //     }
+  //     break;
+  //   case "Annually":
+  //     for (var i=0; i<count; i++) {
+  //       detailsObj[`rentAmount_${i}`] = getLabelWithValue(
+  //         {
+  //           labelName: "Rent Amount",
+  //           labelKey: "ES_RENT_AMOUNT_LABEL"
+  //         }, 
+  //         {
+  //           jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentAmount`
+  //         }
+  //       );
       
-        detailsObj[`startYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "Start Year",
-            labelKey: "ES_START_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentStartMonth`
-          }
-        )
-
-        detailsObj[`endYear_${i}`] = getLabelWithValue(
-          {
-            labelName: "End Year",
-            labelKey: "ES_END_YEAR_LABEL"
-          }, 
-          {
-            jsonPath: `Properties[0].propertyDetails.paymentConfig.paymentConfigItems[${i}].groundRentEndMonth`
-          }
-        )
-      }
-      break;
-  }
+        
+  //     }
+  //     break;
+  // }
   dispatch(
     handleField(
       screenName,

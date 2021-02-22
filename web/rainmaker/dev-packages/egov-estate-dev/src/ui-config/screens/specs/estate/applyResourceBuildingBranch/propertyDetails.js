@@ -165,7 +165,7 @@ const fileNumberField = {
   },
   required: true,
   errorMessage:"ES_ERR_FILENUMBER_FEILD",
-  pattern: _getPattern("file-number-only-with-no-firstdigit-zero"),
+  pattern: _getPattern("file-number-no-firstdigit-zero"),
   jsonPath: "Properties[0].fileNumber",
   afterFieldChange: (action, state, dispatch) => {
     dispatch(handleField(
@@ -282,6 +282,9 @@ const sizeOfAreaPurchasedField = {
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 150) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_150", action.screenKey);
+    }
+    else if(action.value.length<2){
+      displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AREA_MIN", action.screenKey);
     }
     else {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_SIZE_OF_AREA_PROPERTY",action.screenKey);

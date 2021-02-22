@@ -25,7 +25,8 @@ import {
 import {
   displayCustomErr,
   displayDefaultErr,
-  _getPattern
+  _getPattern,
+  ifUserRoleExists
 } from "../../utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
@@ -523,7 +524,15 @@ export const estateApplication = getCommonCard({
         onClickDefination: {
           action: "condition",
           callBack: (state, dispatch) => {
+            const roleExists = ifUserRoleExists("ES_EB_FINANCIAL_OFFICER");
+            const type=getQueryArg(window.location.href,"type")
             const branchType = getQueryArg(window.location.href, "branchType") || "ESTATE_BRANCH";
+            if(type==="payment" && branchType==="ESTATE_BRANCH" && process.env.REACT_APP_NAME !== "Citizen" &&  roleExists){
+              searchApiCall(state, dispatch, [
+                { key: "branchType", value: branchType }
+              ])
+            }
+            else{
             let approvedState;
             switch (branchType) {
               case "BUILDING_BRANCH":
@@ -540,6 +549,7 @@ export const estateApplication = getCommonCard({
               { key: "state", value: approvedState },
               { key: "branchType", value: branchType }
             ])
+          }
           }
         }
       }

@@ -34,7 +34,8 @@ const houseNumberField = {
     sm: 6
   },
   required: true,
-  pattern: _getPattern("fileNumber"),
+  pattern: _getPattern("HouseNumber"),
+  errorMessage:"ES_ERR_HOUSE_NUMBER",
   jsonPath: "Properties[0].propertyDetails.houseNumber",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 50) {

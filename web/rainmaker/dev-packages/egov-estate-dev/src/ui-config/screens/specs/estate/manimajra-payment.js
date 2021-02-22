@@ -4,7 +4,7 @@ import { httpRequest } from "../../../../ui-utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getPropertyInfoManimajra } from "./applyResourceManimajra/reviewDetails";
 import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
-import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalMapping } from "../utils";
+import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalMapping, _getPattern,displayCustomErr } from "../utils";
 import {demandResults} from './searchResource/searchResults'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 
@@ -224,9 +224,22 @@ export const monthField = {
       labelName: "Enter Bank Name",
       labelKey: "ES_ENTER_BANK_NAME_PLACEHOLDER"
   },
+  minLength:3,
+  maxLength:250,
     required: true,
     jsonPath: "payment.bankName",
-    visible: process.env.REACT_APP_NAME !== "Citizen"
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 250) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_250", action.screenKey);
+      }
+      else if(action.value.length<3){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_BANK_NAME_3", action.screenKey);
+      }
+      else {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_BANK_NAME_FIELD",action.screenKey);
+      }
+  }
   }
 
   const transactionId = {
@@ -244,8 +257,22 @@ export const monthField = {
       labelKey: "ES_ENTER_TRANSACTION_ID_PLACEHOLDER"
     },
     required: true,
+    minLength:3,
+    maxLength:250,
     jsonPath: "payment.transactionNumber",
-    visible: process.env.REACT_APP_NAME !== "Citizen"
+    visible: process.env.REACT_APP_NAME !== "Citizen",
+    pattern:_getPattern("transactionid"),
+    afterFieldChange: (action, state, dispatch) => {
+      if (action.value.length > 250) {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_250", action.screenKey);
+      }
+      else if(action.value.length <3){
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_TRANSACTION_ID_3", action.screenKey);
+      }
+      else {
+          displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_TRANSACTION_ID_FIELD",action.screenKey);
+      }
+  }
   }
   
   const paymentDate = {
@@ -459,6 +486,15 @@ else{
 
     if(!!isValid) {
       let {amount} = state.screenConfiguration.preparedFinalObject.payment
+      if(parseInt(amount)===0){
+        let errorMessage = {
+          labelName:
+              "Please enter amount greater then zero",
+          labelKey: "ES_ERR_ZERO_AMOUNT"
+      };
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      }
+      else{
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const {payment} = state.screenConfiguration.preparedFinalObject
       if(!!propertyId ) {
@@ -495,6 +531,7 @@ else{
           console.log("error", error)
         }
       }
+    }
     }
   }
   

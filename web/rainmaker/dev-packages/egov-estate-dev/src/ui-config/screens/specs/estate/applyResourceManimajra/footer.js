@@ -129,7 +129,7 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = true;
   if (activeStep === PROPERTY_DETAILS_STEP) {
     const isPropertyInfoValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.propertyInfoDetails.children.cardContent.children.detailsContainer.children",
+      "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children",
       state,
       dispatch,
       "apply-manimajra"

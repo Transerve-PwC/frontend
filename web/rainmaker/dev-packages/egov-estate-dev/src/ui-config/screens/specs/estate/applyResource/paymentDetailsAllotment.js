@@ -865,6 +865,182 @@ const licenseFeeGenerationTypeField = {
         !!(action.value == "Monthly")
       )
     )
+  },
+  afterFieldChange: (action, state, dispatch) => {
+    if(action.value == 'Monthly'){
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_MONTH_PLACEHOLDER"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_MONTH_PLACEHOLDER"
+      )) 
+      
+      // Allotment summary page
+
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+      //   "props.labelKey",
+      //   "ES_START_MONTH_LABEL"
+      // )) 
+      
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+      //   "props.labelKey",
+      //   "ES_END_MONTH_LABEL"
+      // )) 
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+      //   "props.labelName",
+      //   "Start Month"
+      // )) 
+      
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+      //   "props.labelName",
+      //   "End Month"
+      // )) 
+      
+      // for PM rent details step
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_MONTH_PLACEHOLDER"
+      )) 
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_MONTH_LABEL"
+      )) 
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_MONTH_PLACEHOLDER"
+      )) 
+
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+      //   "props.label.labelKey",
+      //   "ES_MONTHLY_RENT_LABEL"
+      // ))
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
+      //   "props.placeholder.labelKey",
+      //   "ES_MONTHLY_RENT_PLACEHOLDER"
+      // ))
+
+    }else{
+      //ES_MONTHLY_RENT_LABEL
+      //ES_MONTHLY_RENT_PLACEHOLDER
+      
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_YEAR_LABEL"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_YEAR_LABEL"
+      )) 
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_YEAR_PLACEHOLDER"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_YEAR_PLACEHOLDER"
+      )) 
+      // Allotment summary page
+
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
+      //   "props.labelKey",
+      //   "ES_START_YEAR_LABEL"
+      // )) 
+      
+      // dispatch(handleField(
+      //   action.screenKey,
+      //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
+      //   "props.labelKey",
+      //   "ES_END_YEAR_LABEL"
+      // )) 
+
+      // For PM rent details step
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.label.labelKey",
+        "ES_END_YEAR_LABEL"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.label.labelKey",
+        "ES_START_YEAR_LABEL"
+      )) 
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
+        "props.placeholder.labelKey",
+        "ES_END_YEAR_PLACEHOLDER"
+      ))
+
+      dispatch(handleField(
+        action.screenKey,
+        "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
+        "props.placeholder.labelKey",
+        "ES_START_YEAR_PLACEHOLDER"
+      )) 
+    }
   }
 
 }
