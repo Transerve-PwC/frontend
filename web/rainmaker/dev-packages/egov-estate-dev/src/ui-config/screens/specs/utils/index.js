@@ -2273,6 +2273,18 @@ export const getTextToLocalMapping = label => {
         "ES_END_MONTH_LABEL",
         localisationLabels
       );
+      case "Start year":
+      return getLocaleLabels(
+        "Start year",
+        "ES_START_YEAR_LABEL",
+        localisationLabels
+      );
+    case "End year":
+      return getLocaleLabels(
+        "End year",
+        "ES_END_YEAR_LABEL",
+        localisationLabels
+      );
     case "Till":
       return getLocaleLabels(
         "Till",

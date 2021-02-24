@@ -21,7 +21,7 @@ import moment from 'moment'
     const userInfo = JSON.parse(getUserInfo());
     const {roles = []} = userInfo
     const manimajraPaymentPageAccess = roles.find(item => item.code === "ES_MM_FINANCIAL_OFFICER");
-    if(!manimajraPaymentPageAccess){
+    if(manimajraPaymentPageAccess === undefined && userInfo.type != "CITIZEN"){
       dispatch(
         setRoute(
          `/estate/home`

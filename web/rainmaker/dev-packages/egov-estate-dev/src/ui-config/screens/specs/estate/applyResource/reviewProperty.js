@@ -1394,6 +1394,50 @@ export const rentDetailsTable =  {
   }
 }
 
+export const rentDetailsTableAnnual =  {
+  uiFramework: "custom-molecules",
+  componentPath: "Table",
+  props: {
+    title: React.createElement('button', {style: editButtonStyle, onClick: () => {
+      const fileNumber = getQueryArg(window.location.href, "fileNumber");
+      window.location.href = `edit-rent-info?fileNumber=${fileNumber}&tenantId=${getTenantId()}`;
+    } }, "EDIT"),
+    columns: [
+      getTextToLocalMapping("Rent amount"),
+      getTextToLocalMapping("Start year"),
+      getTextToLocalMapping("End year"),
+      getTextToLocalMapping("Till"),
+    ],
+    options: {
+      pagination: false,
+      filter: false,
+      download: false,
+      print: false,
+      search:false,
+      viewColumns:false,
+      responsive: "stacked",
+      selectableRows: false,
+      hover: true,
+      rowsPerPageOptions: [10, 15, 20]
+    },
+    customSortColumn: {
+      column: "Application Date",
+      sortingFn: (data, i, sortDateOrder) => {
+        const epochDates = data.reduce((acc, curr) => {
+          acc.push([...curr, getEpochForDate(curr[4], "dayend")]);
+          return acc;
+        }, []);
+        const order = sortDateOrder === "asc" ? true : false;
+        const finalData = sortByEpoch(epochDates, !order).map(item => {
+          item.pop();
+          return item;
+        });
+        return { data: finalData, currentOrder: !order ? "asc" : "desc" };
+      }
+    }
+  }
+}
+
 export const getReviewAuction = (isEditable = true, screenName) => {
   return getCommonGrayCard({
     headerDiv: {

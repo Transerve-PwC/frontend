@@ -96,6 +96,7 @@ const callBackForNext = async (state, dispatch) => {
   let ownerPosAllotDateValid = true;
   let isDOBValid = true;
   let ispurchaserDOBValid = true;
+  let isOwnerShareValid = true;
   let isBiddersListValid = true;
   let isAuctionIdValid = true;
   let iscourtCaseFieldLengthValid = true;
@@ -242,6 +243,21 @@ const callBackForNext = async (state, dispatch) => {
       `apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items`
     );
 
+    let ownerShareSum = 0;
+    if (propertyOwnersItems && propertyOwnersItems.length) {
+      
+      for (var i = 0; i < propertyOwnersItems.length; i++) {
+        let ownerShareEntered = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].share`);
+        let ownerShareFieldValue = get(state.screenConfiguration.screenConfig, `apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item0.children.cardContent.children.ownerCard.children.share.props.value`)
+        ownerShareSum += ownerShareEntered
+        if(parseInt(ownerShareFieldValue) > 100){
+          isOwnerShareValid = false;
+        }
+      }
+    if(ownerShareSum > 100)
+      isOwnerShareValid = false;
+    }
+
     if (propertyOwnersItems && propertyOwnersItems.length) {
       for (var i = 0; i < propertyOwnersItems.length; i++) {
         if (!!propertyOwnersItems[i].isDeleted) {
@@ -325,7 +341,7 @@ const callBackForNext = async (state, dispatch) => {
         );
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails", entityType);
-        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerPosAllotDateValid) && (isDOBValid)) {
+        if (isOwnerOrPartnerDetailsValid && isCompanyDetailsValid && (ownerPosAllotDateValid) && (isDOBValid) && isOwnerShareValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -343,7 +359,7 @@ const callBackForNext = async (state, dispatch) => {
         )
 
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "partnerDetails", entityType);
-        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid) {
+        if (isFirmDetailsValid && isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid && isOwnerShareValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -365,7 +381,7 @@ const callBackForNext = async (state, dispatch) => {
           dispatch,
           screenKey
         )
-        if (isFirmDetailsValid && isProprietorshipDetailsValid && ownerPosAllotDateValid && isDOBValid) {
+        if (isFirmDetailsValid && isProprietorshipDetailsValid && ownerPosAllotDateValid && isDOBValid && isOwnerShareValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -376,7 +392,7 @@ const callBackForNext = async (state, dispatch) => {
         break;
       default:
         isOwnerOrPartnerDetailsValid = setOwnersOrPartners(state, dispatch, "ownerDetails", entityType);
-        if (isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid) {
+        if (isOwnerOrPartnerDetailsValid && ownerPosAllotDateValid && isDOBValid && isOwnerShareValid) {
           const res = await applyEstates(state, dispatch, activeStep, screenKey);
           if (!res) {
             return
@@ -884,6 +900,14 @@ const callBackForNext = async (state, dispatch) => {
       let errorMessage = {
         labelName: "Date of birth cannot be current or future date",
         labelKey: "ES_ERR_DATE_OF_BIRTH_CANNOT_BE_CURRENT_OR_FUTURE"
+    };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
+    else if(isOwnerShareValid === false){
+      let errorMessage = {
+        labelName: "Total owner share of all owners cannot exceed 100",
+        labelKey: "ES_ERR_TOTAL_OWNER_SHARE_CANNOT_EXCEED_100"
     };
       scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));

@@ -61,7 +61,7 @@ const citizenEstateSearchAndResult = {
     const {roles = []} = userInfo
     // block refund tile access in Manimajra as there is no refund page there
     const manimajraRefundPageAccess = roles.find(item => /^ES_EB/.test(item.code));
-    if(!manimajraRefundPageAccess){
+    if(manimajraRefundPageAccess === undefined && userInfo.type != "CITIZEN"){
       dispatch(
         setRoute(
          `/estate/home`
