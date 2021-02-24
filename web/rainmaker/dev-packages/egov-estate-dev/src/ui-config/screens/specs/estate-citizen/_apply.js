@@ -142,6 +142,11 @@ const getData = async (action, state, dispatch) => {
       "children.cardContent.children.ES_SAMPLE_SITE_MAP_HEADER.visible",
       process.env.REACT_APP_NAME !== "Citizen"
     )
+    set(
+      third_step, 
+      "children.cardContent.children.ES_HARD_COPY_DATE.visible",
+      process.env.REACT_APP_NAME !== "Citizen"
+    )
     inputProps.push(...second_step_sections);
     return {
       div: {

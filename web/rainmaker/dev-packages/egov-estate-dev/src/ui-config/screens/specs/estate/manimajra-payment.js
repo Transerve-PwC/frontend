@@ -7,6 +7,9 @@ import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/comm
 import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalMapping, _getPattern,displayCustomErr } from "../utils";
 import {demandResults} from './searchResource/searchResults'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+
+
 
 import moment from 'moment'
   const header = getCommonHeader({
@@ -15,6 +18,17 @@ import moment from 'moment'
   });
   
   const beforeInitFn = async(action, state, dispatch)=>{
+    const userInfo = JSON.parse(getUserInfo());
+    const {roles = []} = userInfo
+    const manimajraPaymentPageAccess = roles.find(item => item.code === "ES_MM_FINANCIAL_OFFICER");
+    if(!manimajraPaymentPageAccess){
+      dispatch(
+        setRoute(
+         `/estate/home`
+        )
+      )
+    }
+
     dispatch(prepareFinalObject("Properties", []))
     let propertyId = getQueryArg(window.location.href, "propertyId")
     const fileNumber = getQueryArg(window.location.href, "fileNumber")

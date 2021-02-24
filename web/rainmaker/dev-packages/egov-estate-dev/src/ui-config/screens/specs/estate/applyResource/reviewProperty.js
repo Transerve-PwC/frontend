@@ -1419,10 +1419,10 @@ export const getReviewAuction = (isEditable = true, screenName) => {
           labelKey: "ES_AUCTION_ID_LABEL"
         }, 
         {
-          jsonPath: `Properties[0].propertyDetails.bidders[0].auctionId`,
-          callBack: (value) => {
-            return Math.floor(value)
-          }
+          jsonPath: `auctionIdFieldValue`,
+          // callBack: (value) => {
+          //   return Math.floor(value)
+          // }
         }
       ),
       schemeName: getLabelWithValue(

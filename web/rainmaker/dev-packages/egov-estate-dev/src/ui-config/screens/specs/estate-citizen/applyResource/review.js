@@ -77,11 +77,23 @@ const setArrayValues = (value) => {
   return !!array.length ? array.join(", ") : "-"
 }
 
+export const convertTimeAMPM = (value) => {
+  value = value.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [value];
+
+  if (value.length > 1) { // If time format correct
+    value = value.slice (1);  // Remove full string match value
+    value[5] = +value[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+    value[0] = +value[0] % 12 || 12; // Adjust hours
+  }
+  return value.join (''); // return adjusted time or original string
+}
+
 const callBackForPreview = (type) => (value) => {
   switch(type) {
     case "date": return convertEpochToDate(value)
     case "boolean": return setYesOrNo(value)
     case "array": return setArrayValues(value)
+    case "time" : return convertTimeAMPM(value)
   }
 }
 

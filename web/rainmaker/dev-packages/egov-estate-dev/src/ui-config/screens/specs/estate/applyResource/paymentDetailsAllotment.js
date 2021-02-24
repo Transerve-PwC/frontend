@@ -1173,19 +1173,39 @@ const commonLicenseInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig",
         callBack: (value) =>  {
-          if (value) {
-            const years = (Number(value) / 12 | 0)
-            const months = Number(value) % 12
-            if(years > 0 && months > 0) {
-              return years + " Year(s) " + months +" Month(s)"
-            } else if(years < 1) {
-              return months + " Month(s)"
-            } else if(months < 1) {
-              return years + " Year(s)"
+          
+          if(value.isGroundRent === "false"){
+            if(value.groundRentGenerationType === "Annually"){
+              let tillDateData = value.paymentConfigItems[0].tillDate;
+              if(tillDateData){
+              return tillDateData + " Year(s)"
+              }
+              else{
+                return "-"
+              }
             }
+            else if (value.groundRentGenerationType === "Monthly") {
+              let tillDateData = value.paymentConfigItems[0].tillDate;
+              if(!!tillDateData){
+              const years = (Number(tillDateData) / 12 | 0)
+              const months = Number(tillDateData) % 12
+              if(years > 0 && months > 0) {
+                return years + " Year(s) " + months +" Month(s)"
+              } else if(years < 1) {
+                return months + " Month(s)"
+              } else if(months < 1) {
+                return years + " Year(s)"
+              }
+            }
+            else{
+              return "-"
+            }
+            }
+            
           }
+          
           return "-"
         }
       }

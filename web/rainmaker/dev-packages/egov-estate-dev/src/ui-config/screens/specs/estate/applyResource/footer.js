@@ -97,6 +97,7 @@ const callBackForNext = async (state, dispatch) => {
   let isDOBValid = true;
   let ispurchaserDOBValid = true;
   let isBiddersListValid = true;
+  let isAuctionIdValid = true;
   let iscourtCaseFieldLengthValid = true;
   // let ownerTwoPosAllotDateValid = true;
   let auctionEMDDateValid = true;
@@ -197,11 +198,20 @@ const callBackForNext = async (state, dispatch) => {
         
         auctionEMDDateValid = auctionDateEpoch - emdDateEpoch > 0 ? true : false;
       }
+      // check for auction id to be alphanumeric only else throw validation error
+      let auctionList =  get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.bidders");
+      for (let i = 0; i < auctionList.length; i++) {
+        let singleAuctionId = Number.isInteger(Number(auctionList[i].auctionId)) ? parseInt(Number(auctionList[i].auctionId)).toString() : auctionList[i].auctionId
+        if(!(/^[a-z0-9]+$/i.test(singleAuctionId))){
+          isAuctionIdValid = false;
+        }
+        
+      }
       let biddersListArr = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.bidders");
       if(biddersListArr === null || biddersListArr.length === 0){
           isBiddersListValid = false;
       }
-      if (isAuctionValid && auctionEMDDateValid && isBiddersListValid) {
+      if (isAuctionValid && auctionEMDDateValid && isBiddersListValid && isAuctionIdValid) {
         const res = await applyEstates(state, dispatch, activeStep);
         if (!res) {
           return
@@ -882,6 +892,14 @@ const callBackForNext = async (state, dispatch) => {
       let errorMessage = {
         labelName: "Please fill all mandatory fields and upload the documents !",
         labelKey: "ES_ERR_FILL_MANDATORY_FIELDS_UPLOAD_DOCS"
+      };
+      scrollTop = false
+      dispatch(toggleSnackbar(true, errorMessage, "warning"));
+    } 
+    else if(isAuctionIdValid === false){
+      let errorMessage = {
+        labelName: "Invalid Auction ID. Only alphenumeric allowed.",
+        labelKey: "ES_ERR_INVALID_AUCTION_ID_ONLY_ALPHANUMERIC_ALLOWED"
       };
       scrollTop = false
       dispatch(toggleSnackbar(true, errorMessage, "warning"));

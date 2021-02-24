@@ -78,6 +78,12 @@ const getAcknowledgementCard = (
         labelKey: "ES_MASTER_ENTRY_MODIFY_SUCCESS_MESSAGE_MAIN"
       }
     }
+    else if(purpose === "cancel") {
+      header = {
+        labelName: "Estate Property Master Entry Cancelled",
+        labelKey: "ES_MASTER_ENTRY_CANCEL_SUCCESS_MESSAGE_MAIN"
+      }
+    }
     else {
       header = {}
     }
@@ -146,8 +152,8 @@ const getAcknowledgementCard = (
         componentPath: "Div",
         children: {
           card: acknowledgementCard({
-            icon: purpose === "reject" ? "close" : "done",
-            backgroundColor: purpose === "reject" ? "#E54D42" : "#39CB74",
+            icon: (purpose === "reject" || purpose === "cancel") ? "close" : "done",
+            backgroundColor: (purpose === "reject" || purpose === "cancel") ? "#E54D42" : "#39CB74",
             header,
             tailText: tailText,
             number: fileNumber || applicationNumber

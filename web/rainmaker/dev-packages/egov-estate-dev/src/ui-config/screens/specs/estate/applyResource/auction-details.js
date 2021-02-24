@@ -105,7 +105,7 @@ const auctionIdField = {
   props: {
     disabled:true
   },
-  jsonPath: "Properties[0].propertyDetails.bidders[0].auctionId"
+  jsonPath: "auctionIdFieldValue"
 }
 
 const schemeName = {

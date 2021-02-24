@@ -13,6 +13,8 @@ import {
   handleScreenConfigurationFieldChange as handleField
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
+import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 
 
 const header = getCommonHeader({
@@ -55,6 +57,17 @@ const citizenEstateSearchAndResult = {
   uiFramework: "material-ui",
   name: "property-search",
   beforeInitScreen: (action, state, dispatch) => {
+    const userInfo = JSON.parse(getUserInfo());
+    const {roles = []} = userInfo
+    // block refund tile access in Manimajra as there is no refund page there
+    const manimajraRefundPageAccess = roles.find(item => /^ES_EB/.test(item.code));
+    if(!manimajraRefundPageAccess){
+      dispatch(
+        setRoute(
+         `/estate/home`
+        )
+      )
+    }
     state.screenConfiguration.preparedFinalObject.citizenSearchScreen = {}
     resetFields(state, dispatch);
     getMdmsData(dispatch);

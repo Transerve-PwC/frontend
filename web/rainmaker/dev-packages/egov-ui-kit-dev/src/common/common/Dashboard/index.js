@@ -42,7 +42,7 @@ const Dashboard = ({ moduleItems, userName, history, onPGRClick, onDialogueClose
       <div className="rainmaker-displayInline">
         <Label className="landingPageUser" label={"CS_LANDING_PAGE_WELCOME_TEXT"} />
         <Label className="landingPageUser" label={userName} />
-        <Label className="landingPageUser" label={","} />
+        {/* <Label className="landingPageUser" label={","} /> */}
       </div>
       <ModuleCard onPGRClick={onPGRClick} items={moduleItems} onButton2Click={onButton2Click} onButton1Click={onButton1Click} history={history} />
       {/* {renderCityPicker && <CityPicker history={history} moduleItems={moduleItems} onDialogueClose={onDialogueClose} dialogueOpen={dialogueOpen} />} */}
