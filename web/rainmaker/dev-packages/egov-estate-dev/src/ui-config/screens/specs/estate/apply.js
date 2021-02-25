@@ -710,7 +710,12 @@ const getData = async (action, state, dispatch) => {
       false
     )
   )
-
+dispatch(handleField(
+  action.screenKey,
+  "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewAdvanceRent",
+  "visible",
+  false
+))
   if (!!fileNumber) {
     await getPMDetailsByFileNumber(action, state, dispatch, fileNumber, action.screenKey)
   }

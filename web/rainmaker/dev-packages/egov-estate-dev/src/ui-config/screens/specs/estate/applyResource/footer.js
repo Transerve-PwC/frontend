@@ -853,6 +853,12 @@ const callBackForNext = async (state, dispatch) => {
         if (!res) {
           return
         }
+        dispatch(handleField(
+          "apply",
+          "components.div.children.formwizardTenthStep.children.reviewDetails.children.cardContent.children.reviewAdvanceRent",
+          "visible",
+          false
+        ))
       } else {
         isFormValid = false;
       }

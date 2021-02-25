@@ -202,7 +202,14 @@ const updateAllFields = (action, state, dispatch) => {
   }))
 
   let isInterestFixedLabel = properties[0].propertyDetails.paymentConfig.isIntrestApplicable ? "ES_FIXED_INTEREST_LABEL" : "ES_YEARLY_INTEREST_LABEL";
-
+  dispatch(
+    handleField(
+      action.screenKey,
+      "components.div.children.reviewRentInfo.children.cardContent.children.advanceRentDetails",
+      "visible",
+      !!(isPropertyMasterOrAllotmentOfSite == "ALLOTMENT_OF_SITE")
+    )
+  )
   dispatch(
     handleField(
       action.screenKey,
