@@ -38,6 +38,18 @@ export const callBackForCancelParkAndCC = async (state, dispatch) => {
         "screenConfiguration.preparedFinalObject.Booking.businessService",
         {}
     );
+
+    const cancellationReason = get(
+        state,
+        "screenConfiguration.preparedFinalObject.Booking.bkRemarks",
+        {}
+    );
+    // console.log(typeof(state.screenConfiguration.preparedFinalObject.Booking.bkRemarks));
+    // if(state && state.screenConfiguration.preparedFinalObject.Booking.bkRemarks){
+    //     console.log("Not Null Nero")
+    // }else{
+    //     console.log(" sssssNull Nero",)
+    // }
 /*
     var billAccountDetails = get(
         screenConfiguration,
@@ -120,7 +132,8 @@ export const callBackForCancelParkAndCC = async (state, dispatch) => {
             dispatch(toggleSnackbar(true, errorMessage, "error"));
         }
     }*/
-
+   // console.log(state, "Nero state")
+if(state && state.screenConfiguration.preparedFinalObject.Booking.bkRemarks){
     let response = await createUpdatePCCApplication(
         state,
         dispatch,
@@ -142,6 +155,14 @@ export const callBackForCancelParkAndCC = async (state, dispatch) => {
         };
         dispatch(toggleSnackbar(true, errorMessage, "error"));
     }
+
+} else {
+    let errorMessage = {
+        labelName: "Please enter booking cancellation reason",
+        labelKey: "", //UPLOAD_FILE_TOAST
+    };
+    dispatch(toggleSnackbar(true, errorMessage, "error"));
+}
 
 };
 

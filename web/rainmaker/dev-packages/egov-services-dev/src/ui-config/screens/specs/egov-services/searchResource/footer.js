@@ -72,8 +72,18 @@ export const footerReviewTop = (
         },
         leftIcon: "assignment",
     };
-
     if (
+        (status === "APPLIED" &&  applicationNumber.includes('ROOM'))
+        ) {
+            downloadMenu = [
+                receiptDownloadObject,
+                certificateDownloadObject,
+            ];
+            printMenu = [
+                receiptPrintObject,
+                certificatePrintObject,
+            ];
+        }else if (
         (status === "APPLIED" || status === "APPROVED"  || status === "MODIFIED" || status === "RE_INITIATED")
     ) {
         downloadMenu = [

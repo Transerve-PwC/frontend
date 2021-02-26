@@ -17,9 +17,9 @@ const tenantId = getQueryArg(window.location.href, "tenantId")
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
 const service = getQueryArg(window.location.href, "service");
 window.localStorage.getItem("wns_workflow")
-const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NEWWS1" ? "NewWS1":  window.localStorage.getItem("wns_workflow") : "NewSW1";
+const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NEWWS1" ? "NewWS1":  window.localStorage.getItem("wns_workflow") : "SW_SEWERAGE";
 
-const serviceUrl = serviceModuleName === "NewSW1" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
+const serviceUrl = serviceModuleName === "SW_SEWERAGE" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
 const getApplicationNumber = (dispatch,connectionsObj) => {
   let appNos = "";
   if(connectionsObj.length > 1){

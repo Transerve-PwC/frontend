@@ -2056,6 +2056,9 @@ export const getMdmsEncroachmentSectorData = async (action, state, dispatch) => 
             },
             {
               name: "cardList"
+            },
+            {
+              name: "NotificationTemplate"
             }
           ]
         },

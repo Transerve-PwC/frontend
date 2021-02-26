@@ -1,39 +1,224 @@
-.ReactTable .-pagination .-btn {
-    -webkit-appearance: none;
-    appearance: none;
-    display: revert;
-    width: 20%;
-    height: 100%;
-    border: 0;
-    border-radius: 3px;
-    padding: 6px;
-    font-size: 1em;
-    color: rgba(0,0,0,0.6);
-    background: rgba(0,0,0,0.1);
-    transition: all .1s ease;
-    cursor: pointer;
-    outline-width: 0;
-}
+/* .ReactTable .-pagination .-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  display: revert;
+  width: 20%;
+  height: 100%;
+  border: 0;
+  border-radius: 3px;
+  padding: 6px;
+  font-size: 1em;
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.1);
+  transition: all .1s ease;
+  cursor: pointer;
+  outline-width: 0; } */
 
-.rt-resizable-header-content {
-    font-weight: bold;
-  }
 
-  .ReactTable .-pagination .-previous button.-btn {
-    margin-left: 163%;
-}
-
-.ReactTable .-pagination .-next button.-btn {
-    margin-left: -200%;
-}
-
-select{
-    margin-left: 63%;
-}
-
-.ReactTable .-pagination .-pageInfo {
+  .rt-resizable-header-content {
+    font-weight: bold; }
+  
+  /* .ReactTable .-pagination .-previous button.-btn {
+    margin-left: 163%; }
+  
+  .ReactTable .-pagination .-next button.-btn {
+    margin-left: -200%; } */
+  
+  /* select {
+    margin-left: 63%; }
+  
+  .ReactTable .-pagination .-pageInfo {
     display: inline-block;
     margin: 3px 107px;
     white-space: nowrap;
-    margin-left: 1%;
-}
+    margin-left: 1%; } */
+  
+  /* Table css PDF and column visivility code */
+  .columnVisibilityCard {
+    position: absolute;
+    z-index: 1000;
+    /* display: none; */
+    /* float: left; */
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: white;
+    background-clip: padding-box;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    /* -webkit-box-shadow: 0 6px 12px rgb(0 0 0 / 18%); */
+    /* box-shadow: 0 6px 12px rgb(0 0 0 / 18%); */
+    margin-left: 80%; }
+  
+  .columnToggleBtn {
+    margin-left: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #333333;
+    background-color: white;
+    border-color: #cccccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px; }
+  
+  .columnToggle-Text {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #333333;
+    background-color: white;
+    border-color: #cccccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid white;
+    border-radius: 4px; }
+  
+  .tableFeature {
+    position: relative;
+    margin-left: 70%;
+    margin-bottom: 10px;
+    margin-top: 10px; }
+  
+  .toggleBtn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #333333;
+    background-color: #fe7a51;
+    border-color: #cccccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid white;
+    border-radius: 4px;
+    /* margin: 10px; */
+    /* padding: 10px; */
+    border-radius: 4px; }
+  
+  .toggleBtnClicked {
+    border: none;
+    background-color: white;
+    margin-bottom: 0;
+    font-size: 14px;
+    cursor: pointer; }
+  
+  .toggleBtn:hover {
+    background-color: #cccccc; }
+  
+  .clickedlistItem {
+    padding: 0;
+    margin: 0; }
+  
+  .tableContainer {
+    /* position: absolute; */
+    z-index: 1000;
+    /* display: none; */
+    /* float: left; */
+    width: 98%;
+    padding: 5px 0;
+    margin: 0 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: white;
+    background-clip: padding-box;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    /* -webkit-box-shadow: 0 6px 12px rgb(0 0 0 / 18%); */
+    /* box-shadow: 0 6px 12px rgb(0 0 0 / 18%); */
+    /* margin-left: 80%; */ }
+  
+  /* .rt-tr {
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px; } */
+  
+  
+  .rt-table {
+    text-align: center;
+  }
+  
+  /* Dashboard responsive CSS */
+  .graphDashboard{
+      display: flex;
+      height: 500px
+  }
+  
+  .halfGraph{
+      width: 50%; 
+      border-style: ridge
+  }
+  
+  @media only screen and (max-width: 500px) {
+      .graphDashboard {
+      display: contents;
+      height: 300px;
+      width: 700px;
+      padding: 0px 0px 0px 8px; 
+      } 
+  
+      .halfGraph{
+      width: 100%; 
+      height: 300px;
+      border-style: ridge
+      }
+  
+      .tableFeature{
+          position: relative;
+          margin-left: 10%;
+          margin-bottom: 10px;
+          margin-top: 10px;
+      }
+  
+      .columnVisibilityCard {
+        margin-left: 40%; }
+      
+  }

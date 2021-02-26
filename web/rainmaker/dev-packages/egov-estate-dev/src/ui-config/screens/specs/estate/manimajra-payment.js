@@ -1,5 +1,5 @@
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject,toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getCommonHeader,getBreak, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel, getDateField  } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonHeader,getBreak, getCommonCard, getCommonContainer, getTextField, getSelectField,getPattern, getCommonGrayCard, getCommonTitle, getLabel, getDateField, convertEpochToDate  } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { httpRequest } from "../../../../ui-utils";
 import { getSearchResults } from "../../../../ui-utils/commons";
 import { getPropertyInfoManimajra } from "./applyResourceManimajra/reviewDetails";
@@ -351,6 +351,13 @@ true
     const {ManiMajraAccountStatement} = state.screenConfiguration.preparedFinalObject
     if(ManiMajraAccountStatement && ManiMajraAccountStatement!=null){
       fromDate = ManiMajraAccountStatement[0].date
+      let fromDateStr = convertEpochToDate(fromDate)
+      dispatch(prepareFinalObject(
+        "payment.fromDate", fromDateStr.split("/").reverse().join("-")
+      ))
+      dispatch(prepareFinalObject(
+        "payment.toDate", convertEpochToDate(toDate).split("/").reverse().join("-")
+      ))
    }
    fromDate = convertDateToEpoch(fromDate)
 

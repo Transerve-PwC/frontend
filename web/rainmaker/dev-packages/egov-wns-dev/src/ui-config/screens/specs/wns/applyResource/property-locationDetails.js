@@ -12,7 +12,7 @@ import {
 import set from 'lodash/set';
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
   import { changeStep } from "../viewBillResource/footer";
-  
+  let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
   // const getHeader = label => {
   //   return {
   //     uiFramework: "custom-molecules-local",
@@ -101,6 +101,7 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
       props: {
         optionLabel: "name",
         optionValue: "code",
+        disabled: IsEdit,
         style: {
           width: "100%",
           cursor: "pointer"
@@ -164,6 +165,9 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
         label: { labelKey: "WS_PROP_DETAIL_DHNO_INPUT" },
         placeholder: { labelKey: "WS_PROP_DETAIL_DHNO_INPUT_PLACEHOLDER" },
         required: true,
+        props:{
+          disabled: IsEdit,
+        },
        // sourceJsonPath: "applyScreenMdmsData.ws-services-masters.waterSource",
         gridDefination: { xs: 12, sm: 6 },
        // errorMessage: "ERR_INVALID_BILLING_PERIOD",
@@ -186,7 +190,10 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
       ...getTextField({
         label: { labelKey: "WS_PROP_DETAIL_BUILD_NAME_LABEL_INPUT" },
         placeholder: { labelKey: "WS_PROP_DETAIL_BUILD_NAME_LABEL_INPUT_PLACEHOLDER" },
-        required: true,       
+        required: true,  
+        props:{
+          disabled: IsEdit,
+        } ,    
         gridDefination: { xs: 12, sm: 6 },
        // errorMessage: "ERR_INVALID_BILLING_PERIOD",
         jsonPath: "applyScreen.property.address.buildingName"
@@ -208,7 +215,9 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
         label: { labelKey: "WS_PROP_DETAIL_STREET_NAME_INPUT" },
         placeholder: { labelKey: "WS_PROP_DETAIL_STREET_NAME_INPUT_PLACEHOLDER" },
         required: true,
-       
+       props:{
+        disabled: IsEdit,
+       },
         gridDefination: { xs: 12, sm: 6 },
        // errorMessage: "ERR_INVALID_BILLING_PERIOD",
         jsonPath: "applyScreen.property.address.street"
@@ -252,6 +261,9 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
         label: { labelKey: "WS_PROP_DETAIL_PINCODE_INPUT" },
         placeholder: { labelKey: "WS_PROP_DETAIL_PINCODE_INPUT_PLACEHOLDER" },
         required: false,
+        props:{
+          disabled: IsEdit,
+        },
         pattern: getPattern("Pincode"),
         gridDefination: { xs: 12, sm: 6 },
        // errorMessage: "ERR_INVALID_BILLING_PERIOD",

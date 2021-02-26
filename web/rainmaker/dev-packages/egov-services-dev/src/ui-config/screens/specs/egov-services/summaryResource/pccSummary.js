@@ -134,7 +134,7 @@ export const pccSummary = getCommonGrayCard({
                     bkDisplayFromTime: getLabelWithValue(
                         {
                             labelName: "From Date/Time",
-                            labelKey: "BK_PCC_FROM_DATE_TIME_LABEL",
+                            labelKey: "From Date/Time",
                         },
                         {
                             jsonPath: "DisplayTimeSlotData.bkDisplayFromDateTime",
@@ -169,7 +169,7 @@ export const pccSummary = getCommonGrayCard({
                     bkDisplayToTime: getLabelWithValue(
                         {
                             labelName: "To Date/Time",
-                            labelKey: "BK_PCC_TO_DATE_TIME_LABEL",
+                            labelKey: "To Date/Time",
                         },
                         {
                             jsonPath: "DisplayTimeSlotData.bkDisplayToDateTime",
@@ -418,7 +418,7 @@ export const changedVenueDatepccSummary = getCommonGrayCard({
                     bkDisplayFromTime: getLabelWithValue(
                         {
                             labelName: "From Date/Time",
-                            labelKey: "BK_PCC_FROM_DATE_TIME_LABEL",
+                            labelKey: "From Date/Time",
                         },
                         {
                             jsonPath: "DisplayTimeSlotData.bkDisplayFromDateTime",
@@ -453,7 +453,7 @@ export const changedVenueDatepccSummary = getCommonGrayCard({
                     bkDisplayToTime: getLabelWithValue(
                         {
                             labelName: "To Date/Time",
-                            labelKey: "BK_PCC_TO_DATE_TIME_LABEL",
+                            labelKey: "To Date/Time",
                         },
                         {
                             jsonPath: "DisplayTimeSlotData.bkDisplayToDateTime",

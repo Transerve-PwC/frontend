@@ -135,17 +135,19 @@ export const bankAccountDetails = getCommonCard({
     //   }
     // ),
     // break: getBreak(),
-    
+
     personalDetailsContainer: getCommonContainer({
         bkAccountName: {
             ...getTextField({
                 label: {
                     labelName: "Bank Name",
-                    labelKey: "BK_PCC_BANK_NAME_LABEL",
+                    labelKey:  "Bank Name",
+                    //labelKey: "BK_PCC_BANK_NAME_LABEL",
                 },
                 placeholder: {
-                    labelName: "Enter Bank Name",
-                    labelKey: "BK_PCC_BANK_NAME_PLACEHOLDER",
+                    labelName: "Bank Name",
+                    labelKey:  "Bank Name",
+                    //labelKey: "BK_PCC_BANK_NAME_LABEL",
                 },
                 required: true,
                 pattern: getPattern("Name"),
@@ -153,19 +155,21 @@ export const bankAccountDetails = getCommonCard({
                 jsonPath: "Booking.bkBankName",
             }),
         },
-        
+
         bkAccountNumber: {
             ...getTextField({
                 label: {
                     labelName: "Account Number",
-                    labelKey: "BK_PCC_ACCOUNT_NUMBER_LABEL",
+                    labelKey: "Account Number",
+                    //labelKey: "BK_PCC_ACCOUNT_NUMBER_LABEL",
                 },
                 placeholder: {
-                    labelName: "Enter Account Number",
-                    labelKey: "BK_PCC_ACCOUNT_NUMBER__PLACEHOLDER",
-                },
+                    labelName: "Account Number",
+                    labelKey: "Account Number",
+                    //labelKey: "BK_PCC_ACCOUNT_NUMBER_LABEL",
+                 },
                 required: true,
-                pattern: getPattern("Name"),
+                pattern: getPattern("bankAccountNo"),
                 errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
                 requiredMessage: "required Message",
                 jsonPath: "Booking.bkBankAccountNumber",
@@ -178,11 +182,13 @@ export const bankAccountDetails = getCommonCard({
             ...getTextField({
                 label: {
                     labelName: "IFSC Code",
-                    labelKey: "BK_PCC_IFSC_CODE_LABEL",
+                    labelKey:  "IFSC Code",
+                    //labelKey: "BK_PCC_IFSC_CODE_LABEL",
                 },
                 placeholder: {
-                    labelName: "Enter IFSC Code",
-                    labelKey: "BK_PCC_IFSC_CODE_PLACEHOLDER",
+                    labelName: "IFSC Code",
+                    labelKey:  "IFSC Code",
+                    //labelKey: "BK_PCC_IFSC_CODE_LABEL",
                 },
                 required: true,
                 pattern: getPattern("Name"),
@@ -194,11 +200,13 @@ export const bankAccountDetails = getCommonCard({
             ...getTextField({
                 label: {
                     labelName: "Account Holder Name",
-                    labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
+                    labelKey: "Account Holder Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
                 },
                 placeholder: {
-                    labelName: "Enter Account Holder Name",
-                    labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_PLACEHOLDER",
+                    labelName: "Account Holder Name",
+                    labelKey: "Account Holder Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
                 },
                 required: true,
                 pattern: getPattern("Name"),
@@ -206,7 +214,7 @@ export const bankAccountDetails = getCommonCard({
                 jsonPath: "Booking.bkBankAccountHolder",
             }),
         },
-      
+
           bankAccountTypeRadioGroup: {
             uiFramework: "custom-containers",
             componentPath: "RadioGroupContainer",
@@ -219,9 +227,9 @@ export const bankAccountDetails = getCommonCard({
             jsonPath: "Booking.bkAccountType",
             props: {
               label: {
-                name: "Bank Account Type",
-                key: "BK_PCC_BANK_ACCOUNT_TYPE_LABEL",
-              },
+                labelName: "Bank Account Type",
+                labelKey: "Bank Account Type",
+               },
               buttons: [
                 {
                   labelName: "Saving",
@@ -240,7 +248,7 @@ export const bankAccountDetails = getCommonCard({
             },
             required: true,
             type: "array",
-        },      
+        },
         dummyDiv: {
             uiFramework: "custom-atoms",
             componentPath: "Div",
@@ -437,7 +445,7 @@ export const bookingDetails = getCommonCard({
             ...getTextField({
                 label: {
                     labelName: "From Date/Time",
-                    labelKey: "BK_PCC_FROM_DATE_TIME_LABEL",
+                    labelKey: "From Date/Time",
                 },
                 placeholder: {
                     labelName: "From Date/Time",
@@ -457,11 +465,11 @@ export const bookingDetails = getCommonCard({
             ...getTextField({
                 label: {
                     labelName: "To Date/Time",
-                    labelKey: "BK_PCC_TO_DATE_TIME_LABEL",
+                    labelKey: "To Date/Time",
                 },
                 placeholder: {
                     labelName: "To Date/Time",
-                    labelKey: "BK_PCC_TO_DATE_TIME_PLACEHOLDER",
+                    labelKey: "To Date/Time",
                 },
 
                 required: true,

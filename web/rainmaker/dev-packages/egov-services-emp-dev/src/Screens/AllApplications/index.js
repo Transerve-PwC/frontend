@@ -5,7 +5,7 @@ import get from "lodash/get";
 import MenuButton from "egov-ui-framework/ui-molecules/MenuButton";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import { SortDialog, Screen } from "modules/common";
-import { fetchApplications, fetchApplicationType } from "egov-ui-kit/redux/bookings/actions";
+import { fetchApplications, fetchApplicationType,clearBookingData } from "egov-ui-kit/redux/bookings/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import Label from "egov-ui-kit/utils/translationNode";
 import { transformComplaintForComponent } from "egov-ui-kit/utils/commons";
@@ -81,62 +81,6 @@ class AllRequests extends Component {
       true,
       true
     );
-
-// let moduleName = localStorage.getItem(Employee.module);
-//    console.log("moduleName--",moduleName)
-
-// let codes = localStorage.getItem(localization_en_IN);
-// console.log("codes--",codes)
-
-// let abc = localStorage.getItem("localization_en_IN")
-// console.log("abc--",abc)
-
-// let xyz = window.localStorage.getItem("module")
-// console.log("xyz--",xyz)
-
-// let ui = window.localStorage.getItem("localization_en_IN")
-// console.log("ui--",ui)
-
-// let myLabelsOne;
-// let myLabelsTwo;
-// let myLabelsThree;
-// let myLabelsfour;
-
-//   if (abc && abc.length > 0) {
-//     abc.forEach((item) => {
-//       item.forEach((value) => {
-//         if (value.code == "BK_MYBK_PCC_APPLICATION_REQUEST") { 
-//           myLabelsOne = value
-//         }
-//         if (value.code == "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER") { 
-//           myLabelsTwo = value
-//         }
-//         if (value.code == "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE") { 
-//           myLabelsThree = value
-//         }
-//         if (value.code == "BK_CS_COMMON_SEND_MESSAGE") { 
-//           myLabelsfour = value
-//         }
-
-//       })
-//     })
-//   }
-// console.log("myLabelsOne--",myLabelsOne)
-// console.log("myLabelsTwo--",myLabelsTwo)
-// console.log("myLabelsThree--",myLabelsThree)
-// console.log("myLabelsfour--",myLabelsfour)
-
-
-  
-
-
-    // let appListFromAPI = await httpRequest(
-    //   "egov-workflow-v2/egov-wf/process/_search?",
-    //   "_search", [],
-    //   []
-    // );
-    // this.setState({applicationList:appListFromAPI&&appListFromAPI.ProcessInstances})
-    // console.log('appListFromAPI',appListFromAPI)
   };
 
   componentWillReceiveProps = nextProps => {
@@ -169,6 +113,14 @@ class AllRequests extends Component {
     });
   };
   gotoPArkAndCommunityTanker = () => {
+    let ApplicationData = this.props.bookings;
+    let CheckData = this.props.bookings ? (this.props.bookings.applicationData ?(this.props.bookings.applicationData.bookingsModelList.length > 0 ? (this.props.bookings.applicationData.bookingsModelList): 'NA'): 'NA'): "NA"
+    if(CheckData !== 'NA'){
+      // let newbooking ={...this.props.bookings,applicationData:null} 
+
+    this.props.clearBookingData(null,true,true)
+}
+
     this.props.history.push(`/egov-services/checkavailability_pcc`);
   };
   gotoMcc = () => {
@@ -1311,7 +1263,8 @@ const mapStateToProps = state => {
     role,
     loading,
     transformedComplaints,
-    roles
+    roles,
+    bookings
   };
 };
 
@@ -1336,7 +1289,9 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: "SET_SEARCH_PARAMS", searchParams });
     },
     fetchApplications: (criteria, hasUsers, overWrite) =>
-      dispatch(fetchApplications(criteria, hasUsers, overWrite)),
+      dispatch(fetchApplications(criteria, hasUsers, overWrite)),  // clearBookingData:() 
+    clearBookingData: (criteria, hasUsers, overWrite) =>
+      dispatch(clearBookingData(criteria, hasUsers, overWrite)),
     fetchApplicationType: () =>
       dispatch(fetchApplicationType()),
     toggleSnackbarAndSetText: (open, message, error) =>

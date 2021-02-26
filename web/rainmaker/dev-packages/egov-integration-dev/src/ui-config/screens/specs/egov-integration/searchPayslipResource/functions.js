@@ -6,10 +6,10 @@ import {
   toggleSpinner,
   prepareFinalObject
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getSearchResults ,getprintpdf,downloadReceiptFromFilestoreID} from "../../../../../ui-utils/commons";
+import { getSearchResults ,getprintpdf,downloadReceiptFromFilestoreID, getAmounttoWords} from "../../../../../ui-utils/commons";
 //import { getprintpdf } from "../../../../ui-utils/storecommonsapi";
 import { getTextToLocalMapping } from "./searchResults";
-import { validateFields,convertDateToEpoch } from "../../utils";
+import { validateFields,convertDateToEpoch,epochToYmdDate } from "../../utils";
 import { httpRequest } from "../../../../../ui-utils";
 import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import set from "lodash/set";
@@ -132,6 +132,10 @@ if(Allowances.length>Deductions.length)
         Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
         Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
         Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+        Deductions_Inst_No:"",
+        Non_Gov_Text:"",
+        Non_Gov_Amount:"",
+        Non_Gov_Inst_No:"",
       } 
     )       
   }
@@ -145,6 +149,10 @@ if(Allowances.length>Deductions.length)
         Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
         Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
         Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+        Deductions_Inst_No:"",
+        Non_Gov_Text:"",
+        Non_Gov_Amount:"",
+        Non_Gov_Inst_No:"",
       } 
     )       
   }
@@ -158,40 +166,107 @@ if(Allowances.length>Deductions.length)
           Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
           Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
           Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+          Deductions_Inst_No:"",
+          Non_Gov_Text:"",
+          Non_Gov_Amount:"",
+          Non_Gov_Inst_No:"",
         } 
       )       
     }
 
   }
   
-  Allowances_Deductions.push(
-    {
-      Allowances_Text: 'Total Allowances',
-      Allowances_Amount:Allowances_total,
-      Deductions_Text: 'Total Deductions',
-      Deductions_Amount:Deductions_total,
-    }
-  )
-  Allowances_Deductions.push(
-    {
-      Allowances_Text: '',
-      Allowances_Amount:'',
-      Deductions_Text: 'Net Pay',
-      Deductions_Amount:Allowances_total - Deductions_total,
-    }
-  )
+  // Allowances_Deductions.push(
+  //   {
+  //     Allowances_Text: 'Total Allowances',
+  //     Allowances_Amount:Allowances_total,
+  //     Deductions_Text: 'Total Deductions',
+  //     Deductions_Amount:Deductions_total,
+  //   }
+  // )
+  // Allowances_Deductions.push(
+  //   {
+  //     Allowances_Text: '',
+  //     Allowances_Amount:'',
+  //     Deductions_Text: 'Net Pay',
+  //     Deductions_Amount:Allowances_total - Deductions_total,
+  //   }
+  // )
+  // make sentence start 
+  let Net_Pay_In_Word = (Allowances_total - Deductions_total) 
+  Net_Pay_In_Word = getAmounttoWords(Net_Pay_In_Word);
+ let  Month = searchScreenObject.month;
+  switch(Month)
+      {
+        case "01":
+          Month= "January"
+        break;
+        case "02":
+          Month= "February"
+        break;
+        case "03":
+          Month= "March"
+        break;
+        case "04":
+          Month= "April"
+        break;
+        case "05":
+          Month= "May"
+        break;
+        case "06":
+          Month= "June"
+        break;
+        case "07":
+          Month= "July"
+        break;
+        case "08":
+          Month= "August"
+        break;
+        case "09":
+          Month= "September"
+        break;
+        case "10":
+          Month= "October"
+        break;
+        case "11":
+          Month= "November"
+        break;
+        case "12":
+          Month= "December"
+        break;
+      }
+      let Date_time = new Date()
+      Date_time = convertDateToEpoch(Date_time);
+      Date_time = epochToYmdDate(Date_time);
+  //end
+  
   let PaySlip ={
     //Deductions:Deductions,
 
     Allowances:Allowances_Deductions,
-    Designation:APIData.PaySlip.Designation,
-    EmployeeCode:APIData.PaySlip.EmployeeCode,
-    DDOName:APIData.PaySlip.DDOName,
-    DDOCode:APIData.PaySlip.DDOCode,
-    PayScale:APIData.PaySlip.PayScale,
-    PayCommission:APIData.PaySlip.PayCommission,
-    Name:APIData.PaySlip.Name,
-    FatherName:APIData.PaySlip.FatherName,
+        corporationName:'MUNICIPAL CORPORATION CHANDIGARH',
+        corporationAddress:'New Deluxe Building, Sector 17, Chandigarh',
+        corporationContact:'+91-172-2541002, 0172-2541003',
+        corporationWebsite:'http://mcchandigarh.gov.in',
+        month:Month,
+        year:searchScreenObject.year
+        ,  
+        EmployeeCode:APIData.PaySlip.EmployeeCode,
+        Name:APIData.PaySlip.Name,
+        FatherName:APIData.PaySlip.FatherName,
+        Designation:APIData.PaySlip.Designation,
+        DDOName:APIData.PaySlip.DDOName,
+        DDOCode:APIData.PaySlip.DDOCode,
+        Total_Emolument:Allowances_total,
+        Total_Govt_Recoveries:Deductions_total,
+        Total_NG_Recoveries:0,
+        Net_Pay:(Allowances_total - Deductions_total),
+        Voucher_Date:"",
+        Voucher_No:"",
+        Net_Pay_In_Word:Net_Pay_In_Word,
+        Date_time:epochToYmdDate(Date_time) ,
+        PayScale:APIData.PaySlip.PayScale,
+        PayCommission:APIData.PaySlip.PayCommission,
   }
  // dispatch(prepareFinalObject("PaySlip",PaySlip));
   dispatch(prepareFinalObject("APIData.PaySlip",PaySlip));

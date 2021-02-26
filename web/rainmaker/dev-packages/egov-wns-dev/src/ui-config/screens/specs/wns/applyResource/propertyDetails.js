@@ -9,9 +9,12 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from 'lodash/get';
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { prepareFinalObject,
+   handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { propertySearchApiCall } from './functions';
 import { handlePropertySubUsageType, handleNA } from '../../utils';
+
+let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
 const displaysubUsageType = (usageType, dispatch, state) => {
 
   let UsageCategory = get(
@@ -29,6 +32,27 @@ const displaysubUsageType = (usageType, dispatch, state) => {
             })
           }
       });
+      if(subUsageType.length>0)
+      {
+        dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.IDDetails.children.cardContent.children.propertyIDDetails.children.viewTwo.children.propertySubUsageType",
+            "required",
+            true
+          )
+        );
+      }
+      else{
+        dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.IDDetails.children.cardContent.children.propertyIDDetails.children.viewTwo.children.propertySubUsageType",
+            "required",
+            false
+          )
+        );
+      }
           dispatch(prepareFinalObject("applyScreenMdmsData.subUsageType",subUsageType));
 }
 export const propertyHeader = getCommonSubHeader({
@@ -121,9 +145,15 @@ const propertyDetails = getCommonContainer({
       props: {
         optionValue: "code",
         optionLabel: "name",
+        disabled: IsEdit
       },
       beforeFieldChange: async (action, state, dispatch) => {
         displaysubUsageType(action.value, dispatch, state);
+      let subUsageType=  get(state.screenConfiguration.preparedFinalObject, "applyScreenMdmsData.subUsageType",[]);
+        if(subUsageType.length===0)
+        {
+        dispatch(prepareFinalObject("applyScreen.property.subusageCategory", action.value));
+        }
 
        
    }
@@ -142,6 +172,7 @@ const propertyDetails = getCommonContainer({
       props: {
         optionValue: "code",
         optionLabel: "name",
+        disabled: IsEdit
       }
     }),
     beforeFieldChange: async (action, state, dispatch) => {
@@ -160,8 +191,29 @@ const propertyDetails = getCommonContainer({
       sourceJsonPath: "applyScreenMdmsData.ws-services-masters.waterSource",
       gridDefination: { xs: 12, sm: 6 },
       pattern: getPattern("numeric-only"),
+      props:{
+        disabled: IsEdit
+      },
      // errorMessage: "ERR_INVALID_BILLING_PERIOD",
       jsonPath: "applyScreen.property.landArea"
+    }),
+    beforeFieldChange: async (action, state, dispatch) => {
+    
+    }
+  },
+  superBuiltUpArea: {
+    ...getTextField({
+      label: { labelKey: "WS_PROP_DETAIL_BUILD_UP_AREA_LABEL_INPUT" },
+      placeholder: { labelKey: "WS_PROP_DETAIL_BUILD_UP_AREA_LABEL_INPUT_PLACEHOLDER" },
+      required: true,
+      props:{
+        disabled: IsEdit
+      },
+     // sourceJsonPath: "applyScreenMdmsData.ws-services-masters.waterSource",
+      gridDefination: { xs: 12, sm: 6 },
+      pattern: getPattern("numeric-only"),
+     // errorMessage: "ERR_INVALID_BILLING_PERIOD",
+      jsonPath: "applyScreen.property.superBuiltUpArea"
     }),
     beforeFieldChange: async (action, state, dispatch) => {
     
@@ -180,9 +232,11 @@ const propertyDetails = getCommonContainer({
       props: {
         optionValue: "code",
         optionLabel: "name",
+        disabled: IsEdit
       }
     }),
     beforeFieldChange: async (action, state, dispatch) => {
+      dispatch(prepareFinalObject("applyScreen.property.address.floorNo", action.value));
     
     }
   },

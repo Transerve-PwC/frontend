@@ -200,7 +200,42 @@ if(purchaseOrders)
         let path = "";
         toggleSpinner();
         if (moduleName === "StoreManagement") {
-          setRoute('/inbox')
+          // setRoute('/inbox')
+          // acknowledgement
+          let mode = "";
+          switch (wfUpdatePayload.workFlowDetails.action) { 
+            case "REVIEWOFCE":
+            case "REVIEWOFEE":
+            case "REVIEWOFSE":
+            case "REVIEWOFJC":
+            case "REVIEWOFCAO":              
+            case "REVIEWOFMOH":
+            case "REVIEWOFACMC":
+            case "REVIEWOFSO":
+              mode = "REVIEW_APPROVAL";
+              break;
+            case "REVIEWOFSDO":
+            case "REVIEWOFSA":
+            case "REVIEWOFSP":
+            case "REVIEWOFJE":
+            case "REVIEWOFSO":              
+              mode = "REVIEW";
+              break;
+            case "COMMISSIONERAPPROVAL":
+              mode = "COMMISSIONERAPPROVAL";
+              break;
+            case "SENDTOCREATOR":
+              mode = "SENDTOCREATOR";
+              break;
+            case "APPROVE":
+              mode = "APPROVE";
+            break;
+            case "REJECT":
+              mode = "REJECT";
+            break;
+            
+          }
+          setRoute(`/egov-store-asset/acknowledgement?screen=WF&mode=${mode}&code=${wfUpdatePayload.workFlowDetails.businessId}`);
         }
       }
     } catch (e) {
@@ -358,6 +393,7 @@ if(purchaseOrders)
     const businessServiceData = JSON.parse(
       localStorageGet("businessServiceData")
     );
+    
     const data = find(businessServiceData, { businessService: moduleName });
     let roles = [];
     if (nextAction === currentAction) {

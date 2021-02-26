@@ -1205,12 +1205,20 @@ const ageField = {
     const licenseType = get(state.screenConfiguration.preparedFinalObject,
         "Licenses[0].businessService","")
 		if (licenseType === DL_PEDAL_RICKSHAW_LOADING_REHRI) {
+            // change login for this case afer client feedback on 25-02-2021
+            let _licensePeriod = get(state,'applyScreenMdmsData.TradeLicense.LicensePeriod',[])
+                            let code = "5"
+                            if(_licensePeriod && _licensePeriod[0])
+                            {
+                                code = _licensePeriod[0].code;
+                            }
 				dispatch(
 					handleField(
 							"apply",
 							"components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.detailsContainer.children._licensePeriod",
 							"props.value",
-							action.value > 50 ? "5" : "15"
+                            //action.value > 50 ? "5" : "15"
+                            code
 					)
 				); 			
         }
@@ -1279,6 +1287,33 @@ const licensePeriodField = {
       sm: 6
   }
 }
+const licensePeriodFieldD = {
+    label: {
+        labelName: "License Period",
+        labelKey: "TL_LICENSE_PERIOD_LABEL"
+    },
+    placeholder: {
+        labelName: "Enter Period for which License is required",
+        labelKey: "TL_LICENSE_PERIOD_PLACEHOLDER"
+    },
+    errorMessage: "TL_ERR_LICENCE_PERIOD",
+    required: true,
+    visible: false,
+    optionValue: "code",
+    optionLabel: "label",
+    sourceJsonPath: "applyScreenMdmsData.TradeLicense.LicensePeriod",
+    jsonPath: "Licenses[0].tradeLicenseDetail.additionalDetail.licensePeriod",
+    props: {
+        optionValue: "code",
+        optionLabel: "name",
+        
+      },
+  //   sourceJsonPath: "applyScreenMdmsData.TradeLicense.LicensePeriod",
+    gridDefination: {
+        xs: 12,
+        sm: 6
+    }
+  }
 
 const mobileNumberField = {
   label: {
@@ -1775,7 +1810,7 @@ function buildOwnerDetailsObj() {
 export const tradeDetails = getCommonCard(buildTradeDetailsObj())
 
 export const showHideFields = (action, state, dispatch, data = {}) => {
-    const {applicationType = false, licensePeriod = false , occupation = false, fullAddress = false, completeResidentialAddress = false, permanentAddress = false, familyMonthlyIncome = false, trade = false, particularsOfArea = false, platformNumber = false, placeOfWork = false, businessStartDate = false, _licensePeriod = false} = data
+    const {applicationType = false, licensePeriod = false , occupation = false, fullAddress = false, completeResidentialAddress = false, permanentAddress = false, familyMonthlyIncome = false, trade = false, particularsOfArea = false, platformNumber = false, placeOfWork = false, businessStartDate = false, _licensePeriod = false,licensePeriodD = false} = data
 
     dispatch(
         handleField(
@@ -1801,6 +1836,15 @@ export const showHideFields = (action, state, dispatch, data = {}) => {
             _licensePeriod
         )
     );
+    _licensePeriod
+    // dispatch(
+    //     handleField(
+    //         "apply",
+    //         "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.detailsContainer.children.licensePeriodD",
+    //         "visible",
+    //         licensePeriodD
+    //     )
+    // );
     dispatch(
         handleField(
             "apply",
@@ -1939,6 +1983,7 @@ export function buildTradeDetailsObj() {
                         applicationType: action.value === RC_PEDAL_RICKSHAW_LOADING_REHRI || action.value === DL_PEDAL_RICKSHAW_LOADING_REHRI || action.value === LICENSE_DHOBI_GHAT,
                         licensePeriod: action.value === RC_PEDAL_RICKSHAW_LOADING_REHRI,
                         _licensePeriod: action.value === DL_PEDAL_RICKSHAW_LOADING_REHRI,
+                        //licensePeriodD: action.value === DL_PEDAL_RICKSHAW_LOADING_REHRI,
                         occupation: action.value === RC_PEDAL_RICKSHAW_LOADING_REHRI || action.value === DL_PEDAL_RICKSHAW_LOADING_REHRI,
                         fullAddress: action.value === RC_PEDAL_RICKSHAW_LOADING_REHRI || action.value === DL_PEDAL_RICKSHAW_LOADING_REHRI || action.value === LICENSE_DHOBI_GHAT,
                         completeResidentialAddress: action.value === RENEWAL_RENT_DEED_SHOP,
@@ -1962,13 +2007,28 @@ export function buildTradeDetailsObj() {
                                     action.value ===  DL_PEDAL_RICKSHAW_LOADING_REHRI
                             )
                         )
+                        dispatch(
+                            handleField(
+                                    "apply",
+                                    "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.detailsContainer.children._licensePeriod",
+                                    "props.disabled",
+                                    action.value ===  DL_PEDAL_RICKSHAW_LOADING_REHRI
+                            )
+                        )
                         if(action.value ===  DL_PEDAL_RICKSHAW_LOADING_REHRI) {
+                           // get from mdms
+                            let _licensePeriod = get(state,'applyScreenMdmsData.TradeLicense.LicensePeriod',[])
+                            let code = "5"
+                            if(_licensePeriod && _licensePeriod[0])
+                            {
+                                code = _licensePeriod[0].code;
+                            }
                             dispatch(
                                 handleField(
                                         "apply",
                                         "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.detailsContainer.children._licensePeriod",
                                         "props.value",
-                                        "15"
+                                        code
                                 )
                             )
                         }
@@ -2006,6 +2066,10 @@ export function buildTradeDetailsObj() {
                   ...getSelectField(licensePeriodField)
               },
             _licensePeriod: getTextField(licensePeriodField),
+            // new change
+            licensePeriodD: {
+                ...getSelectField(licensePeriodFieldD)
+            },
             trade: getTextField(tradeField),
             particularsOfArea: getTextField(particularsOfAreaField),
             platformNumber: getTextField(platformNumberField),

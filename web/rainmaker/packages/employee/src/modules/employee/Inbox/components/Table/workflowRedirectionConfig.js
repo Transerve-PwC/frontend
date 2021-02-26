@@ -37,7 +37,12 @@ export const getWFConfig = (module, businessService, taskId) => {
       };
     }
   }
-
+  else if (businessService == "Engineering Issue Note" || businessService == "IT Issue Note" || businessService == "Caretaker Issue Note" || businessService == "MOH Issue Note") {
+      return {
+        INITIATED: "/egov-store-asset/view-indent-note",
+        DEFAULT: "/egov-store-asset/view-indent-note",
+      };
+  }
   else if (businessService == "Engineering" || businessService == "IT" || businessService == "Caretaker" || businessService == "MOH") {
     if (taskId.includes('MRNIN')) {
       return {
@@ -50,12 +55,7 @@ export const getWFConfig = (module, businessService, taskId) => {
         DEFAULT: "/egov-store-asset/view-indent-inword",
       };
     }
-    else if (taskId.includes('MRIN')) {
-      return {
-        INITIATED: "/egov-store-asset/view-indent-note",
-        DEFAULT: "/egov-store-asset/view-indent-note",
-      };
-    } else if (taskId.includes('IND')) {
+	else if (taskId.includes('IND')) {
       return {
         INITIATED: "/egov-store-asset/view-indent",
         DEFAULT: "/egov-store-asset/view-indent",

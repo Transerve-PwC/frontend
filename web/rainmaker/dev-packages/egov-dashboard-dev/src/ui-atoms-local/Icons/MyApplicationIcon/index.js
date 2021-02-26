@@ -1,6 +1,6 @@
 import React from "react";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import "../index.css";
+// import "../index.css";
 
 class MyApplicationIcon extends React.Component {
   render() {

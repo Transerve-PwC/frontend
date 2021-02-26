@@ -15,6 +15,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import {
     getPaymentGateways,
     getSearchResultsView,
+    getSearchResultsViewForRoomBooking
 } from "../../../../ui-utils/commons";
 
 import {
@@ -34,7 +35,9 @@ const header = getCommonContainer({
                 ? "Open Space within MCC jurisdiction"
                 : getapplicationType() === "PACC"
                 ? "Parks & Community Center/Banquet Halls"
-                : "Water Tankers"
+                : getapplicationType() === "BKROOM"
+                ?"Community Center Room Booking" 
+                :"Water Tankers"
         } (${getCurrentFinancialYear()})`, //later use getFinancialYearDates
     }),
     applicationNumber: {
@@ -53,35 +56,68 @@ const setSearchResponse = async (
     action,
     dispatch,
     applicationNumber,
-    tenantId
+    tenantId,
+    businessService
 ) => {
-    const response = await getSearchResultsView([
-        { key: "tenantId", value: tenantId },
-        { key: "applicationNumber", value: applicationNumber },
-    ]);
-    let recData = get(response, "bookingsModelList", []);
-    dispatch(
-        prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
-    );
-    dispatch(
-        prepareFinalObject("BookingDocument", get(response, "documentMap", {}))
-    );
-console.log(recData[0], "Search Result");
-let businesServiceTemp = '';
-if(recData[0].businessService == 'BWT'){
-  businesServiceTemp = "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES";
-}else{
-  businesServiceTemp = recData[0].businessService;
-}
-    await generateBill(
-        state,
-        dispatch,
-        applicationNumber,
-        tenantId,
-        //recData[0].businessService
-        businesServiceTemp
-    );
 
+    if(businessService==='BKROOM'){
+
+        const response = await getSearchResultsViewForRoomBooking([
+            
+            { key: "applicationNumber", value: applicationNumber },
+        ]);
+    
+        let recResponseData = get(response, "communityCenterRoomBookingMap", []);
+      
+        dispatch(
+            prepareFinalObject("Booking", recResponseData !==undefined ? recResponseData[Object.keys(recResponseData)[0]]  : {})
+        );
+        dispatch(
+            prepareFinalObject("BookingDocument", get(response, "communityCenterDocumentMap", {}))
+        );
+
+        await generateBill(
+            state,
+            dispatch,
+            applicationNumber,
+            tenantId,
+            //recData[0].businessService
+            businessService
+        );
+        
+    }else{
+        const response = await getSearchResultsView([
+            { key: "tenantId", value: tenantId },
+            { key: "applicationNumber", value: applicationNumber },
+        ]);
+        let recData = get(response, "bookingsModelList", []);
+        dispatch(
+            prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
+        );
+        dispatch(
+            prepareFinalObject("BookingDocument", get(response, "documentMap", {}))
+        );
+        console.log(recData[0], "Search Result");
+        let businesServiceTemp = '';
+        if(recData[0].businessService == 'OSBM'){
+            businesServiceTemp = "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE";
+          }
+        else if(recData[0].businessService == 'BWT'){
+          businesServiceTemp = "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES";
+        }else{
+          businesServiceTemp = recData[0].businessService;
+        }
+            await generateBill(
+                state,
+                dispatch,
+                applicationNumber,
+                tenantId,
+                //recData[0].businessService
+                businesServiceTemp
+            );
+        
+        }
+        
     // await handleCheckAvailability(
     //     recData.length > 0 ? recData[0] : {},
     //     action,
@@ -174,7 +210,7 @@ const screenConfig = {
         setapplicationNumber(applicationNumber);
         setapplicationType(businessService);
         setPaymentMethods(action, state, dispatch);
-        setSearchResponse(state, action, dispatch, applicationNumber, tenantId);
+        setSearchResponse(state, action, dispatch, applicationNumber, tenantId,businessService);
 
         return action;
     },

@@ -12,7 +12,8 @@ import {
   getPriceListSearchResults,
   GetMdmsNameBycode,
   updatematerialissues,
-  getWFPayload
+  getWFPayload,
+  getWFPayloadForIssueNote
 } from "../../../../../ui-utils/storecommonsapi";
 import { httpRequest } from "../../../../../ui-utils";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
@@ -282,7 +283,7 @@ export const createUpdateIndent = async (state, dispatch, action) => {
 
   if (action === "CREATE") {
     try {
-      let wfobject = getWFPayload(state, dispatch)
+      let wfobject = getWFPayloadForIssueNote(state, dispatch,"businessServiceIssueNote")
 
       console.log(queryObject)
       console.log("queryObject")

@@ -23,33 +23,10 @@ import "./index.css";
 // };
 
 class PayDetails extends Component {
-  // navigateToComplaintType = () => {
-  //   this.props.history.push("/complaint-type");
-  // };
-  // getImageSource = (imageSource, size) => {
-  //   const images = imageSource.split(",");
-  //   if (!images.length) {
-  //     return null;
-  //   }
-  //   switch (size) {
-  //     case "small":
-  //       imageSource = images[2];
-  //       break;
-  //     case "medium":
-  //       imageSource = images[1];
-  //       break;
-  //     case "large":
-  //     default:
-  //       imageSource = images[0];
-  //   }
-  //   return imageSource || images[0];
-  // };
-  // onImageClick = (source) => {
-  //   window.open(this.getImageSource(source, "large"), 'Image');
-  // };
 
-  render() {
-    const { bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus,PayMentOne,PayMentTwo } = this.props;
+  render() {  
+  
+    const { PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,FACILITATION_CHARGE,PACC_ROUND_OFF,bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus,PayMentOne,PayMentTwo } = this.props;
 
     return (
       <div>
@@ -68,29 +45,57 @@ class PayDetails extends Component {
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_REGISTRATION_RENT" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_PACC_ROUND_OFF" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{PACC_ROUND_OFF}</h5>
                 </div>
               </div>
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK__EMP_LUXURY_TAX" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[3].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{LUXURY_TAX}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT_PACC" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_REFUNDABLE_SECURITY" /> {/*BK_MYBK_TAX_RENT_PACC*/}
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[4].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{REFUNDABLE_SECURITY}</h5>
                 </div>
               </div>
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_PACC_TAX" /> {/*BK_MYBK_TAX_RENT_PACC*/}
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  <h5 style={{ textAlign: "right" }}>{PACC_TAX}</h5>
+                </div>
+              </div>
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT_PACC" /> {/*BK_MYBK_TAX_RENT_PACC*/}
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  <h5 style={{ textAlign: "right" }}>{PACC}</h5>
+                </div>
+              </div>
+              {FACILITATION_CHARGE !== 0 ? 
+               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+               <div className="col-sm-4 col-xs-12">
+                 <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_FACILITATION_CHARGE" /> {/*BK_MYBK_TAX_RENT_PACC*/}
+               </div>
+               <div className="col-sm-4 col-xs-12">
+                 <h5 style={{ textAlign: "right" }}>{FACILITATION_CHARGE}</h5>
+               </div>
+             </div>
+              : "" }
+             
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <hr class="MuiDividerLine" style={{ marginbottom: "16px" }}></hr>
                 <div className="col-sm-4 col-xs-12">

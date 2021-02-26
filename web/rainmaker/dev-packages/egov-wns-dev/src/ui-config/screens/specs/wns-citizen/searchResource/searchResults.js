@@ -131,7 +131,7 @@ export const searchResults = {
           filter: false,
           customBodyRender: (value, data) => {
             //if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
-              if (data.rowData[9] ==='INITIATED') {
+              if (data.rowData[9] !=='PAID') {
               return (
                 // <Link
                 //   to={`/wns/viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}`}
@@ -148,7 +148,7 @@ export const searchResults = {
                   />
                 </div>
               )
-            } else if (data.rowData[5] === 0) {
+            } else if (data.rowData[9] === "PAID") {//PAID
               return (
                 <div style={{ color: '#008000', textTransform: 'uppercase', fontWeight: 400 }}>
                   Paid
@@ -156,7 +156,7 @@ export const searchResults = {
               )
             }
             else {
-              return ("NA")
+              return ("BUILD data is not present")
             }
           }
         }

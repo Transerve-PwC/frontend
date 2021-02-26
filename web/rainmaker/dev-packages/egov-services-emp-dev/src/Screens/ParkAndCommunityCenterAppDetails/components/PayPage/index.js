@@ -16,7 +16,8 @@ import SubmitPaymentDetails from "../SubmitPaymentDetails"
 import { getFileUrlFromAPI } from '../../../../modules/commonFunction'
 import jp from "jsonpath";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { httpRequest } from "egov-ui-kit/utils/api"
+import { httpRequest } from "egov-ui-kit/utils/api" //PaymentDetailsTwo
+import PaymentDetailsTwo from "../PaymentDetailsTwo"  
 
 class SummaryDetails extends Component {
 
@@ -56,6 +57,15 @@ class SummaryDetails extends Component {
             utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,discountType } = this.props;
 
 
+            await fetchApplications(
+                {
+                    "applicationNumber": fetchApplicationNumber, 'uuid': userInfo.uuid,
+                    "applicationStatus": "",
+                    "mobileNumber": "", "bookingType": "",
+                    "tenantId":userInfo.tenantId
+                }
+            );
+
  fetchPayment(
     [{ key: "consumerCode", value: fetchApplicationNumber }, { key: "businessService", value: "PACC" }, { key: "tenantId", value: userInfo.tenantId }
     ])
@@ -64,14 +74,7 @@ class SummaryDetails extends Component {
         [{ key: "consumerCodes", value: fetchApplicationNumber }, { key: "tenantId", value: userInfo.tenantId }
         ])
 
-    await fetchApplications(
-        {
-            "applicationNumber": fetchApplicationNumber, 'uuid': userInfo.uuid,
-            "applicationStatus": "",
-            "mobileNumber": "", "bookingType": "",
-            "tenantId":userInfo.tenantId
-        }
-    );
+   
     }
 
     handleChange = input => e => {
@@ -311,8 +314,14 @@ console.log("this.state--PaidBy",PaidBy)
                 <div className="form-without-button-cont-generic">
                     <div classsName="container">
                         <div className="col-xs-12">
-{this.props.ApplicantAppStatus != "OFFLINE_RE_INITIATED" ? 
+{/* {this.props.ApplicantAppStatus != "OFFLINE_RE_INITIATED" ? 
  <PaymentDetails
+ paymentDetails={paymentDetails && paymentDetails}
+  />     
+: ""} */}
+
+{this.props.ApplicantAppStatus != "OFFLINE_RE_INITIATED" ? 
+ <PaymentDetailsTwo
  paymentDetails={paymentDetails && paymentDetails}
   />     
 : ""}
@@ -410,6 +419,7 @@ Status={this.props.ApplicantAppStatus && this.props.ApplicantAppStatus}
     }
 }
 
+
 const mapStateToProps = state => {
 
     const { bookings, common, auth, form } = state;
@@ -417,6 +427,8 @@ const mapStateToProps = state => {
     const { userInfo } = state.auth;
     const { facilationChargesSuccess, arrayName } = bookings;
     const { applicationData } = bookings;
+    
+    
     let selectedComplaint = applicationData ? applicationData.bookingsModelList[0] : ''
     
     let ApplicantName = selectedComplaint ? selectedComplaint.bkApplicantName : 'notFound'
@@ -538,7 +550,7 @@ let IFSC = state.screenConfiguration.preparedFinalObject.IFSC ?  state.screenCon
     return {
         createPACCApplicationData,userInfo,ppaidBy,pChequeNo,ChnChqDate,newDDno,NewTrxNo,NewddDate,ApplicantAppStatus,
         documentMap,facilationChargesSuccess,billId,ApplicantName,ApplicantMobNum,pddIFSC,pIFSC,
-        fCharges,myLocationtwo,paymentDetails,TotalAmount,paymentMode
+        fCharges,myLocationtwo,paymentDetails,TotalAmount,paymentMode,applicationData,selectedComplaint
     }
 
 }

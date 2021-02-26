@@ -47,7 +47,7 @@ const employeeSearchResults = {
     const businessServiceData = JSON.parse(
       localStorageGet("businessServiceData")
     );
-    if (businessServiceData[0].businessService === "REGULARWSCONNECTION" || businessServiceData[0].businessService === "NewSW1" || businessServiceData[0].businessService === "WS_CONVERSION" || businessServiceData[0].businessService === "WS_DISCONNECTION" || businessServiceData[0].businessService === "WS_RENAME" || businessServiceData[0].businessService === "WS_TUBEWELL") {
+    if (businessServiceData[0].businessService === "REGULARWSCONNECTION" || businessServiceData[0].businessService === "SW_SEWERAGE" || businessServiceData[0].businessService === "WS_CONVERSION" || businessServiceData[0].businessService === "WS_DISCONNECTION" || businessServiceData[0].businessService === "WS_RENAME" || businessServiceData[0].businessService === "WS_TUBEWELL") {
       const data = find(businessServiceData, { businessService: businessServiceData[0].businessService });
       const { states } = data || [];
       if (states && states.length > 0) {
@@ -89,7 +89,7 @@ const employeeSearchResults = {
                 sm: 6,
                 align: "right"
               },
-              visible: true,
+              visible: false,
               props: {
                 variant: "contained",
                 color: "primary",

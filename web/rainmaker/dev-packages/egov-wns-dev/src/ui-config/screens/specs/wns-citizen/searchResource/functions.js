@@ -78,10 +78,10 @@ export const searchApiCall = async (state, dispatch) => {
       let finalArray = [];
       let searchWaterConnectionResults, searcSewerageConnectionResults;
       try { searchWaterConnectionResults = await getSearchResult } catch (error) { finalArray = []; console.log(error) }
-    // try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
+     try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
       const waterConnections = searchWaterConnectionResults ? searchWaterConnectionResults.WaterConnection.map(e => { e.service = 'WATER'; return e }) : []
-    // const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = 'SEWERAGE'; return e }) : [];
-      let combinedSearchResults = waterConnections;// searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
+     const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = 'SEWERAGE'; return e }) : [];
+      let combinedSearchResults = searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
       for (let i = 0; i < combinedSearchResults.length; i++) {
         let element = combinedSearchResults[i];
         if (element.property && element.property !== "NA" && element.connectionNo !== null && element.connectionNo !== 'NA') {
@@ -120,6 +120,7 @@ export const searchApiCall = async (state, dispatch) => {
           }
 
           let billResults = await getBillingEstimation(requestBody, dispatch)
+          
           billResults ? billResults.billGeneration.map(bill => {
             let updatedDueDate = bill.dueDateCash;
             // if (element.service === "WATER") {
@@ -130,26 +131,27 @@ export const searchApiCall = async (state, dispatch) => {
             //   updatedDueDate = bill.billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
             // }
             let obj = {
-              due: bill.totalAmount,
-              dueDate: updatedDueDate,
               service: "WATER",
               connectionNo: element.connectionNo,
               name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',
               status: element.status,
-              address: (element.property && element.property !== "NA" && element.property.address) ? element.property.address.street : '',
-              tenantId: element.tenantId,
-              apnstatus: bill.status,
+              due: bill.totalNetAmount ===null?'':bill.totalNetAmount,
+              address: (element.connectionHolders && element.connectionHolders !== null && element.connectionHolders[0].correspondenceAddress) ? element.connectionHolders[0].correspondenceAddress : '',
+              dueDate: updatedDueDate,
+              apnstatus: bill.status, 
+              tenantId: element.tenantId,              
               connectionType: element.connectionType
             }
             finalArray.push(obj)
           }) : finalArray.push({
-            due: 'NA',
-            dueDate: 'NA',
             service: element.service,
             connectionNo: element.connectionNo,
-            name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',
+            name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',// from connection holder.
             status: element.status,
-            address: (element.property && element.property !== "NA" && element.property.address) ? element.property.address.street : '',
+            due: 'NA',
+            address: (element.connectionHolders && element.connectionHolders !== null && element.connectionHolders[0].correspondenceAddress) ? element.connectionHolders[0].correspondenceAddress : '',
+            dueDate: 'NA',  
+            apnstatus:'NA',          
             tenantId: element.tenantId,
             connectionType: element.connectionType
           })

@@ -7,7 +7,6 @@ import ReactTable from "react-table-6";
 import "react-table-6/react-table.css" ;
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-
 // import Dashboardtable from './Dashboardtable';
 // import Pagination from "./Pagination";
 import EChallandata from './EChallan_data.json';
@@ -1406,11 +1405,11 @@ class DashboardEchallan extends React.Component {
         
     return (
         <div>
-        <div style={{display:"flex", height:"500px"}}>
+        <div className="graphDashboard">
         
 
         {this.state.graphClicked >= 0 ? 
-        <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+        <CardContent className="halfGraph">
             <React.Fragment>
                 <Bar
                 data={ PIEgraphOneSortedData }
@@ -1422,7 +1421,7 @@ class DashboardEchallan extends React.Component {
 
         {
             this.state.graphClicked > 0 ?
-            <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+            <CardContent className="halfGraph">
                 <React.Fragment>
                     <HorizontalBar
                     data={ graphTwoSortedData } 
@@ -1439,10 +1438,10 @@ class DashboardEchallan extends React.Component {
 
         {
             this.state.graphClicked > 1 ?
-            <div style={{display:"flex", height:"500px"}}>
+            <div className="graphDashboard">
             {
                 this.state.graphClicked > 1 ?
-                <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                <CardContent className="halfGraph">
                     <React.Fragment>
                         <Bar
                         data={ graphThirdSortedData }
@@ -1455,7 +1454,7 @@ class DashboardEchallan extends React.Component {
 
             {
                 this.state.graphClicked > 2 ?
-                <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                <CardContent className="halfGraph">
                     <React.Fragment>
                         <Pie
                         data={ graphFourthSortedData }
@@ -1474,10 +1473,10 @@ class DashboardEchallan extends React.Component {
 
         {
             this.state.graphClicked > 3 ?
-            <div style={{display:"flex", height:"500px"}}>
+            <div className="graphDashboard">
             {
                 this.state.graphClicked > 3 ?
-                <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                <CardContent className="halfGraph">
                     <React.Fragment>
                         <Bar
                         data={ graphFifthSortedData }
@@ -1490,7 +1489,7 @@ class DashboardEchallan extends React.Component {
     
             {
                 this.state.graphClicked > 4 ?
-                <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                <CardContent className="halfGraph">
                     <React.Fragment>
                         <Bar
                         data={ graphSixthSortedData }
@@ -1505,7 +1504,7 @@ class DashboardEchallan extends React.Component {
             :null
         }
 
-        {/* Table Feature  */}<br/><br/><br/>
+        {/* Table Feature  */}
         {this.state.graphClicked >= 0 ?
         <div className="tableContainer">
         <div className="tableFeature">
@@ -1532,7 +1531,7 @@ class DashboardEchallan extends React.Component {
 
         {
             this.state.graphClicked >= 0 ?
-            <ReactTable id="customReactTable"
+            <ReactTable
             // PaginationComponent={Pagination}
             data={ this.state.rowData }  
             columns={ this.state.columnData } 

@@ -382,6 +382,16 @@ export const getComplaintDisplayOrder = (order) => {
 	};
 };
 
+const CompleteAmountCondition = () => {
+	return { type: actionTypes.REF_AMOUNT_CONDITION};
+};
+
+export const AmountRefCondition = () => {
+	console.log("come AmountRefCondition")
+	return async (dispatch) => {
+		dispatch(CompleteAmountCondition())
+	}
+}
 
 export const fetchApplications = (requestBody, hasUsers = true, overWrite) => {
 	console.log('requestBody in own module',requestBody)
@@ -396,6 +406,36 @@ export const fetchApplications = (requestBody, hasUsers = true, overWrite) => {
 		}
 	};
 };
+
+export const clearBookingData = (data, hasUsers = true, overWrite) => {
+	console.log('clearBookingData',data)
+	return async (dispatch, getState) => {
+		try {
+			console.log('dataToClear', data)
+			dispatch(clearBookingDataComplete(data, overWrite));
+		} catch (error) {
+			dispatch(clearBookingDataFetchError(error.message));
+		}
+	};
+};
+
+const clearBookingDataComplete = (payload, overWrite) => {
+	console.log('payload', payload, overWrite)
+	 console.log('actionTypes.APPLICATION_FETCH_COMPLETE',actionTypes)
+	return {
+		type: actionTypes.BOOKING_DATA_COMPLETE,
+		payload,
+		overWrite: overWrite,
+	};
+};
+const clearBookingDataFetchError = (error) => {
+	return {
+		type: actionTypes.BOOKING_DATA_ERROR,
+		error,
+	};
+};
+
+
 export const downloadPaymentReceipt = (requestBody, hasUsers = true, overWrite) => {
 	//   requestBody.tenantId = "ch"
 	return async (dispatch, getState) => {
@@ -954,7 +994,7 @@ export const OSBMfetchperDayRate = (requestBody, hasUsers = true, overWrite) => 
 		return async (dispatch, getState) => {
 		  try {
 			let tenantId = "";
-			const payload = await httpRequest(ESAMPARK.POST.URL, ESAMPARK.POST.ACTION, [], requestBody);
+			const payload = await httpRequest(ESAMPARKPL.POST.URL, ESAMPARKPL.POST.ACTION, [], requestBody);
 			dispatch(downloadESAMPARKPLComplete(payload, overWrite));
 		  } catch (error) {
 			dispatch(downloadESAMPARKPLError(error.message));

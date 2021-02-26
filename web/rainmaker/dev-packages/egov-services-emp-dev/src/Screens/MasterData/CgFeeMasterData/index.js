@@ -86,7 +86,7 @@ class SimpleTable extends React.Component {
 
     const headers=['Id','Locality','Category','Rate Per Day','Booking Venue','Last Modified Date','Created Date' , "Valid From Date", "Valid To Date" ,'Action']
 
-    const foundUser = this.props.userInfo && this.props.userInfo.roles.some(el => el.code === 'BK_MCC_HELPDESK_USER');
+    const foundUser = this.props.userInfo && this.props.userInfo.roles.some(el => el.code === 'BK_ADMIN');
     if(foundUser){
     
     let feeResponse = await httpRequest(

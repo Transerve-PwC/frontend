@@ -12,6 +12,7 @@ import { prepareFormData } from "egov-ui-kit/redux/common/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import OSMCCBookingDetails from "../AllApplications/components/OSMCCBookingDetails"
 import AppDetails from "./components/ApplicantDetails"; 
+import ViewBankDetails from "./components/ViewBankDetails"; 
 import RefundCard from "./components/RefundCard"; 
 import BookingDetails from "./components/BookingDetails"
 import DocumentPreview from "../AllApplications/components/DocumentPreview"
@@ -149,7 +150,7 @@ class ApplicationDetails extends Component {
 		console.log("res--",res)
 
 		let fromTime = res[0] 
-		console.log("fromTime--",fromTime);
+		console.log("fromTime--",fromTime)
 
 		prepareFinalObject("oldAvailabilityCheckData.TimeSlotfromTime",fromTime);
 
@@ -272,6 +273,9 @@ class ApplicationDetails extends Component {
 		let { details } = this.state;
 	}
 
+	BookRoom = () => {
+		this.props.history.push(`/egov-services/ApplyForRoomBooking`);
+	}
 
 	calculateCancelledBookingRefundAmount = async (applicationNumber, tenantId, bookingDate) => {
 		const {payloadone, paymentDetailsForReceipt, payloadTwo, ConRefAmt,refConAmount} = this.props;
@@ -900,7 +904,7 @@ console.log("AmountCondition--",AmountCondition)
 					"venueName": selectedComplaint.bkLocation,
 					"sector": selectedComplaint.bkSector,
 					"groundName": selectedComplaint.bkSector,
-					"bookingPurpose": selectedComplaint.bkBookingPurpose,
+					"bookingPupose": selectedComplaint.bkBookingPurpose,
 					"duration": "FULLDAY Months",
 					"categoryImage": "",
 					"parkDim": selectedComplaint.bkDimension
@@ -1411,18 +1415,29 @@ else{
 									{...complaint}
 
 								/>
-
+ 
 								<BookingDetails
 									{...complaint}
 									historyApiData={historyApiData && historyApiData}
 								/>
+						 		<ViewBankDetails
+									{...complaint}
+
+								/>
+
 								{this.state.CheckStatus != "OFFLINE_MODIFIED" ? <PaymentDetails
 									paymentDetails={paymentDetails && paymentDetails}
 									PayMentTwo={PayMentTwo && PayMentTwo}
 									PayMentOne={PayMentOne && PayMentOne}
-
+									PACC={this.props.PACC}
+                                    LUXURY_TAX={this.props.LUXURY_TAX}
+									REFUNDABLE_SECURITY={this.props.REFUNDABLE_SECURITY}
+									PACC_TAX={this.props.PACC_TAX}
+									PACC_ROUND_OFF={this.props.PACC_ROUND_OFF}
+									FACILITATION_CHARGE={this.props.FACILITATION_CHARGE}
 								/> : " "}
-								
+
+
 								
 {this.state.CheckStatus == "OFFLINE_MODIFIED" ? 
 <div>
@@ -1603,6 +1618,44 @@ paymentDetails={this.state.fullAmountDetail && this.state.fullAmountDetail}
 <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
       <div className="col-sm-12 col-xs-12" style={{textAlign: 'right'}}>
 		  {/*Cancel Button    checkNumDays,checkGreaterDate*/}  
+		  <Button
+		  label={
+			<Label
+			  buttonLabel={true}
+			  color="#fe7a51"
+			  label="Room Book"
+			/>
+		  }
+		  labelStyle={{
+			letterSpacing: 0.7,
+			padding: 0,
+			color: "#fe7a51"
+		  }}
+		  buttonStyle={{ border: "1px solid #fe7a51" }}
+		  style={{ width: "15%" }}
+		  onClick={() => this.BookRoom()}
+		/> 
+
+		  {/* {( this.props.RoomBookingDate === "Valid" && complaint.bkBookingType == "Community Center") ? 
+		  <Button
+		  label={
+			<Label
+			  buttonLabel={true}
+			  color="#fe7a51"
+			  label="Room Book"
+			/>
+		  }
+		  labelStyle={{
+			letterSpacing: 0.7,
+			padding: 0,
+			color: "#fe7a51"
+		  }}
+		  buttonStyle={{ border: "1px solid #fe7a51" }}
+		  style={{ width: "15%" }}
+		  onClick={() => this.BookRoom()}
+		/> 
+		  : ""} */}
+
 		  {(Difference_In_Days_check > 15 || Difference_In_Days_check == 15 )? 
 		  <Button
 		  label={
@@ -1836,8 +1889,16 @@ const mapStateToProps = (state, ownProps) => {
 	let dateFromDate = new Date(bookFDate)
 	console.log("dateFromDate--gg",dateFromDate)
 
+	let RoomDate = new Date(bookTDate)
+	console.log("RoomDate--",RoomDate)
+
 	let Todaydate = new Date();
 	console.log("Todaydate--",Todaydate)
+
+	let RoomBookingDate = ""
+	if(Todaydate.getTime() < RoomDate.getTime()){
+		RoomBookingDate = "Valid"
+	}
 
 	let first = false;
 	if(dateFromDate < Todaydate){
@@ -1921,6 +1982,36 @@ console.log("recNumber--",recNumber)
 
 let billAccountDetailsArray =  ReceiptPaymentDetails ? ReceiptPaymentDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails : "NOt found Any Array"
 console.log("billAccountDetailsArray--",billAccountDetailsArray)
+let PACC = 0;
+let LUXURY_TAX = 0;
+let REFUNDABLE_SECURITY = 0;
+let PACC_TAX = 0;
+let PACC_ROUND_OFF = 0;
+let FACILITATION_CHARGE = 0;
+
+
+for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
+
+if(billAccountDetailsArray[i].taxHeadCode == "PACC"){
+    PACC = billAccountDetailsArray[i].amount
+}
+else if(billAccountDetailsArray[i].taxHeadCode == "LUXURY_TAX"){
+    LUXURY_TAX = billAccountDetailsArray[i].amount
+}
+else if(billAccountDetailsArray[i].taxHeadCode == "REFUNDABLE_SECURITY"){
+    REFUNDABLE_SECURITY = billAccountDetailsArray[i].amount
+}
+else if(billAccountDetailsArray[i].taxHeadCode == "PACC_TAX"){
+    PACC_TAX = billAccountDetailsArray[i].amount
+}
+else if(billAccountDetailsArray[i].taxHeadCode == "PACC_ROUND_OFF"){
+    PACC_ROUND_OFF = billAccountDetailsArray[i].amount
+}
+else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
+    FACILITATION_CHARGE = billAccountDetailsArray[i].amount
+}
+}
+
 let one = 0;
 let two = 0;
 let three = 0;
@@ -1949,6 +2040,27 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 }
 }
 
+for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
+
+	if(billAccountDetailsArray[i].taxHeadCode == "PACC"){
+		PACC = billAccountDetailsArray[i].amount
+	}
+	else if(billAccountDetailsArray[i].taxHeadCode == "LUXURY_TAX"){
+		LUXURY_TAX = billAccountDetailsArray[i].amount
+	}
+	else if(billAccountDetailsArray[i].taxHeadCode == "REFUNDABLE_SECURITY"){
+		REFUNDABLE_SECURITY = billAccountDetailsArray[i].amount
+	}
+	else if(billAccountDetailsArray[i].taxHeadCode == "PACC_TAX"){
+		PACC_TAX = billAccountDetailsArray[i].amount
+	}
+	else if(billAccountDetailsArray[i].taxHeadCode == "PACC_ROUND_OFF"){
+		PACC_ROUND_OFF = billAccountDetailsArray[i].amount
+	}
+	else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
+		FACILITATION_CHARGE = billAccountDetailsArray[i].amount
+	}
+	}
 
 	let historyApiData = {}
 	if (historyObject) {
@@ -1993,7 +2105,17 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 			bkBookingPurpose: selectedComplaint.bkBookingPurpose,
 			bkDimension: selectedComplaint.bkDimension,
 			bkLocation: selectedComplaint.bkLocation,
-			tenantId: selectedComplaint.tenantId
+			tenantId: selectedComplaint.tenantId,
+			bkBankAccountNumber: selectedComplaint.bkBankAccountNumber,
+			bkBankName:selectedComplaint.bkBankName,
+			bkIfscCode:selectedComplaint.bkIfscCode,
+			bkAccountType:selectedComplaint.bkAccountType,
+			bkBankAccountHolder:selectedComplaint.bkBankAccountHolder,
+			bkSurchargeRent:selectedComplaint.bkSurchargeRent,
+			bkRent:selectedComplaint.bkRent,
+			bkUtgst:selectedComplaint.bkUtgst,
+			bkCgst:selectedComplaint.bkCgst
+
 		}
 	
 		let transformedComplaint;
@@ -2010,7 +2132,7 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 		);
 
 		return {
-			paymentDetails,offlineTransactionNum,recNumber,six,one,DownloadReceiptDetailsforPCC,refConAmount,
+			paymentDetails,offlineTransactionNum,recNumber,DownloadReceiptDetailsforPCC,refConAmount,RoomBookingDate,
 			offlineTransactionDate,
 			historyApiData,
 			DownloadPaymentReceiptDetails,
@@ -2029,11 +2151,17 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 			PayMentOne,
 			PayMentTwo,
 			selectedNumber,
-			offlinePayementMode,Difference_In_Days_check,first
+			offlinePayementMode,Difference_In_Days_check,first,PACC,
+			LUXURY_TAX,
+			REFUNDABLE_SECURITY,
+			PACC_TAX,
+			PACC_ROUND_OFF,
+			FACILITATION_CHARGE,one,two,three,four,five
+			
 		};
 	} else {
 		return {
-			paymentDetails,offlineTransactionNum,recNumber,six,one,DownloadReceiptDetailsforPCC,refConAmount,
+			paymentDetails,offlineTransactionNum,recNumber,DownloadReceiptDetailsforPCC,refConAmount,RoomBookingDate,
 			offlinePayementMode,Difference_In_Days_check,first,
 			offlineTransactionDate,
 			historyApiData,
@@ -2051,7 +2179,13 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 			userInfo,
 			PayMentOne,
 			PayMentTwo,
-			selectedNumber
+			selectedNumber,PACC,
+			LUXURY_TAX,
+			REFUNDABLE_SECURITY,
+			PACC_TAX,
+			PACC_ROUND_OFF,
+			FACILITATION_CHARGE,one,two,three,four,five,six
+			
 		};
 	}
 };

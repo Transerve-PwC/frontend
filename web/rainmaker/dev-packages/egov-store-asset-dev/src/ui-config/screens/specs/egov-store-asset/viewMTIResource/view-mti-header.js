@@ -92,6 +92,13 @@ export const getMTIHeaderView = (isReview = true) => {
         },
         { jsonPath: "indents[0].indentDate" }
       ),
+      expectedDeliveryDate: getLabelWithValue(
+        {
+          labelName: "Indent Date",
+          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE"
+        },
+        { jsonPath: "indents[0].expectedDeliveryDate" }
+      ),
       indentPurpose: getLabelWithValue(
         { labelName: "Indent Purpose", labelKey: "STORE_MATERIAL_INDENT_INDENT_PURPOSE" },
         { jsonPath: "indents[0].indentPurpose" }

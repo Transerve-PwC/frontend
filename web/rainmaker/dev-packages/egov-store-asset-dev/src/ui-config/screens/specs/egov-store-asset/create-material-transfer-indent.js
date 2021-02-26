@@ -199,7 +199,7 @@ import {
     // dispatch(prepareFinalObject("indents[0].designation", "MD",));
      dispatch(prepareFinalObject("indents[0].materialHandOverTo", "",));
      dispatch(prepareFinalObject("indents[0].inventoryType", "",));
-     dispatch(prepareFinalObject("indents[0].expectedDeliveryDate", 1609353000000,));//31 DEC 2020
+    // dispatch(prepareFinalObject("indents[0].expectedDeliveryDate", 1609353000000,));//31 DEC 2020
       
       return action;
     },

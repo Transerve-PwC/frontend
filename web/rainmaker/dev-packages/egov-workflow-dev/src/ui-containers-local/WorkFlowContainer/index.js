@@ -55,14 +55,14 @@ class WorkFlowContainer extends React.Component {
         );
         addWflowFileUrl(processInstances, prepareFinalObject);
       } else {
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Workflow returned empty object !",
-            labelKey: "WRR_WORKFLOW_ERROR"
-          },
-          "error"
-        );
+        // toggleSnackbar(
+        //   true,
+        //   {
+        //     labelName: "Workflow returned empty object !",
+        //     labelKey: "WRR_WORKFLOW_ERROR"
+        //   },
+        //   "error"
+        // );
       }
     } catch (e) {
       toggleSnackbar(
@@ -227,7 +227,18 @@ class WorkFlowContainer extends React.Component {
       "applicationNumber"
     );
 
-    if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "NewSW1"|| moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+    if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION" 
+        || moduleName === "SW_SEWERAGE"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+        || moduleName === "WS_TUBEWELL") {
       data = data[0];
       data.assignees = [];
       if (data.assignee) {
@@ -237,24 +248,155 @@ class WorkFlowContainer extends React.Component {
           })
         })
       }
-      data.processInstance = {
-        documents: data.wfDocuments,
-        assignes: data.assignees,
-        comment: data.comment,
-        action: data.action
+      // set additionalDetails for W&S module
+      if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+      {
+        let businessServiceData = JSON.parse(
+          localStorageGet("businessServiceData")
+        );
+        let nextStateid=null
+        let searchPreviewScreenMdmsData =null
+        let roles =[]
+        let rolecode ='';
+        let nextActions
+        let curstateactions = businessServiceData[0].states.filter(x=>x.applicationStatus === data.applicationStatus )
+       // let actions_ = data.action
+        if(curstateactions && curstateactions[0])
+        {
+          nextActions = curstateactions[0].actions.filter(x=>x.action === data.action)
+          if(nextStateid !== undefined && nextStateid !== null)
+          {
+          nextStateid = nextActions[0].nextState
+          businessServiceData = businessServiceData[0].states.filter(x=>x.uuid === nextStateid )
+          }
+        } 
+        searchPreviewScreenMdmsData  = preparedFinalObject.searchPreviewScreenMdmsData;
+        // for sw swSectorList
+          //swWorkflowRole
+          // for water wsWorkflowRole
+        searchPreviewScreenMdmsData= searchPreviewScreenMdmsData['ws-services-masters'].wsWorkflowRole.filter(x=>x.state === businessServiceData[0].state)
+       
+        //let searchPreviewScreenMdmsData =[]
+        // if(nextActions && nextActions[0])
+        // {
+        //  nextStateid = nextActions[0].nextState
+        // businessServiceData = businessServiceData[0].states.filter(x=>x.uuid === nextStateid )
+        // let searchPreviewScreenMdmsData  = preparedFinalObject.searchPreviewScreenMdmsData;
+        // searchPreviewScreenMdmsData= searchPreviewScreenMdmsData['ws-services-masters'].wsWorkflowRole.filter(x=>x.state === businessServiceData[0].state)
+        // }
+        if(searchPreviewScreenMdmsData && searchPreviewScreenMdmsData[0])
+        {
+          roles =  searchPreviewScreenMdmsData = searchPreviewScreenMdmsData[0].roles
+         roles = roles.filter(x=>x.subdivision === data.subdiv )
+         if(roles.length>0)
+         {
+          rolecode = roles[0].role 
+         }
+        }
+        //searchPreviewScreenMdmsData = searchPreviewScreenMdmsData['ws-services-masters'].wsWorkflowRole.filter(x=>x.state === data.action)
+      //   let roles =[]
+      //   let rolecode ='';
+      //   if(searchPreviewScreenMdmsData.length>0)
+      //   {
+      //   if(searchPreviewScreenMdmsData && searchPreviewScreenMdmsData[0])
+      //   {
+      //     roles =  searchPreviewScreenMdmsData = searchPreviewScreenMdmsData[0].roles
+      //    roles = roles.filter(x=>x.subdivision === data.subdiv )
+      //    if(roles.length>0)
+      //    {
+      //     rolecode = roles[0].role 
+      //    }
+
+      //   }
+      // }
+      if(rolecode)
+      {
+        data.processInstance = {
+          documents: data.wfDocuments,
+          assignes: data.assignees,
+          comment: data.comment,
+          action: data.action,
+          additionalDetails:{
+            role:rolecode
+          }
+        }
+
       }
+      else{
+              data.processInstance = {
+                documents: data.wfDocuments,
+                assignes: data.assignees,
+                comment: data.comment,
+                action: data.action,
+                additionalDetails:null
+              }
+            }
+
+      }
+      else{
+        data.processInstance = {
+          documents: data.wfDocuments,
+          assignes: data.assignees,
+          comment: data.comment,
+          action: data.action
+        }
+      }      
       data.waterSource = data.waterSource + "." + data.waterSubSource;
     
     }
 
-    if (moduleName === "NewSW1") {
+    if (moduleName === "SW_SEWERAGE") {
       dataPath = "SewerageConnection";
     }
 
+    let validRequest = true
+    if (moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+      {
+        validRequest =  this.ValidateRequest(data)
+
+      }
+    
+
     try {
-      const payload = await httpRequest("post", updateUrl, "", [], {
+      let payload = null
+      if(validRequest)
+      {
+      const response = await httpRequest("post", updateUrl, "", [], {
         [dataPath]: data
       });
+      payload = response
+    }
+    else{
+      toggleSnackbar(
+        true,
+        {
+          labelName: "Please update filed which is use in calculation",
+          labelKey: 'WS_REQUEST_VALIDATION_MESSAGE'
+        },
+        "error"
+      ); 
+      return false;
+
+    }
 
       this.setState({
         open: false
@@ -278,7 +420,22 @@ class WorkFlowContainer extends React.Component {
           label
         )}&applicationNumber=${applicationNumber}&tenantId=${tenant}&secondNumber=${licenseNumber}`;
 
-        if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "NewSW1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+        if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+         {
+           let action = ''
+           if(data.action);
+           action = data.action
+      // window.localStorage.setItem("WNS_STATUS",action );
           window.location.href = `acknowledgement?${this.getPurposeString(label)}&applicationNumber=${applicationNumber}&tenantId=${tenant}`;
         }
 
@@ -293,7 +450,19 @@ class WorkFlowContainer extends React.Component {
           },
           "error"
         );
-      }else if(moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "NewSW1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL" ){
+      }else 
+      if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+      {
         toggleSnackbar(
           true,
           {
@@ -354,7 +523,18 @@ class WorkFlowContainer extends React.Component {
     else {
       var validated = true;
       const{WaterConnection} = preparedFinalObject
-      if(moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "NewSW1" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL" ){
+      if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+      {
         if (WaterConnection[0].comment.length === 0) {
           validated = false;
           toggleSnackbar(
@@ -400,11 +580,47 @@ class WorkFlowContainer extends React.Component {
     } else if (moduleName === "BPA") {
       baseUrl = "egov-bpa";
       bservice = ((applicationStatus == "PENDING_APPL_FEE") ? "BPA.NC_APP_FEE" : "BPA.NC_SAN_FEE");
-    } else if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "NewSW1" ||moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+    } else 
+    if (moduleName === "NewWS1" 
+      || moduleName === "SW_SEWERAGE"
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+    {
       baseUrl = "wns"
-      if (moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION" || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL") {
+      if (moduleName === "NewWS1" 
+      || moduleName === "SW_SEWERAGE"
+      || moduleName === "REGULARWSCONNECTION"
+      || moduleName === "TEMPORARY_WSCONNECTION"
+      || moduleName === "WS_TEMP_TEMP" 
+      ||moduleName === "WS_TEMP_REGULAR"
+      ||moduleName === "WS_DISCONNECTION" 
+      ||moduleName === "WS_TEMP_DISCONNECTION"
+      || moduleName === "WS_RENAME" 
+      || moduleName === "WS_CONVERSION" 
+      || moduleName === "WS_REACTIVATE"
+    || moduleName === "WS_TUBEWELL")
+      {
         bservice = "WS.ONE_TIME_FEE"
-        if(moduleName === "NewWS1" || moduleName === "REGULARWSCONNECTION")   window.localStorage.setItem("isTubeWell",false);
+        if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+      || moduleName === "WS_TUBEWELL")
+         window.localStorage.setItem("isTubeWell",false);
         if( moduleName === "WS_TUBEWELL") window.localStorage.setItem("isTubeWell",true);
       } else {
         bservice = "SW.ONE_TIME_FEE"
@@ -431,7 +647,63 @@ class WorkFlowContainer extends React.Component {
     }
   };
 
+//
+//validation methos for water Request if submit without filling rewuired field
+//
+ValidateRequest =(payload) =>{
+  let isvalidRequest = false
 
+  if(payload.applicationStatus ==='PENDING_FOR_SECURITY_DEPOSIT' && payload.action==='VERIFY_AND_FORWARD_FOR_PAYMENT')
+  {
+    isvalidRequest = false;
+    // logic for null value validation for Connection Details date and Activation Details
+    /// start
+      // if(payload.plumberInfo === null)
+      // {
+        if(payload.div!= null && 
+          payload.div !== "" &&
+          payload.subdiv!= null &&
+          payload.subdiv !== "" &&
+          payload.ledgerNo!= null &&
+          payload.ledgerNo !== "" &&
+          payload.billGroup!= null &&
+          payload.billGroup !== "" 
+          )
+        {
+          isvalidRequest = true
+
+        }
+        else
+        {
+          isvalidRequest = false
+
+        }
+      //}
+
+    /// end
+    // logic for null value validation for security value if required
+    /// start
+    /// end
+
+  }
+  else{
+    isvalidRequest = true
+  }
+  // change tarrif type when state is PENDING_FOR_CONNECTION_TARIFF_CHANGE for action CHANGE_TARIFF
+
+ if(payload.applicationStatus ==='PENDING_FOR_CONNECTION_TARIFF_CHANGE' && payload.action==='CHANGE_TARIFF')
+  {
+    if(payload.proposedUsageCategory !==null)
+    payload.waterProperty.usageCategory = payload.proposedUsageCategory
+   
+  }
+  if(payload.applicationStatus ==='PENDING_FOR_CONNECTION_EXTENSION_REGULAR' && payload.action==='CONVERT_INTO_REGULAR_CONNECTION')
+  {
+    payload.waterApplicationType = "REGULAR";
+  }
+
+  return isvalidRequest
+}
   getHeaderName = action => {
     return {
       labelName: `${action} Application`,
@@ -586,25 +858,117 @@ class WorkFlowContainer extends React.Component {
         isLast: item.action === "PAY"||  item.action ===  "PAY_FOR_TEMPORARY_CONNECTION"||item.action === "PAY_FOR_REGULAR_CONNECTION" ? true : false,
         buttonUrl: getRedirectUrl(item.action, businessId, businessService),
         dialogHeader: getHeaderName(item.action),
-        showEmployeeList: (businessService === "NewWS1" || businessService === "NewSW1" ||businessService === "WS_CONVERSION" || businessService === "WS_DISCONNECTION" || businessService === "WS_RENAME" || businessService === "WS_TUBEWELL") ? !checkIfTerminatedState(item.nextState, businessService) && item.action !== "SEND_BACK_TO_CITIZEN" && item.action !== "RESUBMIT_APPLICATION" : !checkIfTerminatedState(item.nextState, businessService) && item.action !== "SENDBACKTOCITIZEN",
+        showEmployeeList: (businessService === "NewWS1" 
+                          || businessService === "SW_SEWERAGE" 
+                          ||businessService === "WS_CONVERSION" 
+                          || businessService === "WS_DISCONNECTION" 
+                          || businessService === "WS_RENAME" 
+                          || businessService === "WS_TUBEWELL") ? !checkIfTerminatedState(item.nextState, businessService) && item.action !== "SEND_BACK_TO_CITIZEN" && item.action !== "RESUBMIT_APPLICATION" : !checkIfTerminatedState(item.nextState, businessService) && item.action !== "SENDBACKTOCITIZEN",
         roles: getEmployeeRoles(item.nextState, item.currentState, businessService),
         isDocRequired: checkIfDocumentRequired(item.nextState, businessService)
       };
     });
     actions = actions.filter(item => item.buttonLabel !== 'INITIATE');
     //workflow change for water connection 
-    if((businessService=='NewWS1' || businessService === "REGULARWSCONNECTION") && applicationStatus == 'PENDING_FOR_SDE_APPROVAL'){
+    if((businessService=='NewWS1' 
+      || businessService === "REGULARWSCONNECTION"  
+        || businessService === 'SW_SEWERAGE' 
+        || businessService === "TEMPORARY_WSCONNECTION"
+        || businessService === "WS_TEMP_TEMP" 
+        ||businessService === "WS_TEMP_REGULAR"
+        ||businessService === "WS_DISCONNECTION" 
+        ||businessService === "WS_TEMP_DISCONNECTION"
+        || businessService === "WS_RENAME" 
+        || businessService === "WS_CONVERSION" 
+        || businessService === "WS_REACTIVATE"     
+    || businessService === "WS_TUBEWELL") && applicationStatus == 'PENDING_FOR_SDE_APPROVAL'){
       const {WaterConnection} = preparedFinalObject;
       let pipeSize = 0 ;
+      //applicationStatus: "PENDING_FOR_SDE_APPROVAL"
       pipeSize = WaterConnection && WaterConnection[0].proposedPipeSize;
-      if(  pipeSize == '15'){
-        actions = actions.filter(item => item.buttonLabel !== 'FORWARD');
+      pipeSize = parseInt(pipeSize);
+      if(  pipeSize === 15){
+       // actions = actions.filter(item => item.buttonLabel !== 'FORWARD');
+       if(WaterConnection[0].applicationStatus ==='PENDING_FOR_SDE_APPROVAL')
+       actions = actions.filter(item => item.buttonLabel !== 'FORWARD_TO_EE');
+       else
+       actions = actions.filter(item => item.buttonLabel !== 'FORWARD');
+      }
+      else if (pipeSize >= 20 && pipeSize <= 40)
+      {
+        // required to modify the connection
+        actions = actions.filter(item => item.buttonLabel !== 'FORWARD_TO_JE_FOR_SECURITY_DEPOSIT');
+
       }
       else{
-        actions = actions.filter(item => item.buttonLabel !== 'APPROVE_FOR_CONNECTION');
+        //actions = actions.filter(item => item.buttonLabel !== 'APPROVE_FOR_CONNECTION');
+        if(WaterConnection[0].applicationStatus ==='PENDING_FOR_SDE_APPROVAL')
+        actions = actions.filter(item => item.buttonLabel !== 'FORWARD_TO_JE_FOR_SECURITY_DEPOSIT');
+        else
+       actions = actions.filter(item => item.buttonLabel !== 'APPROVE_FOR_CONNECTION');
       }
     }
-    if((businessService=='NewWS1' || businessService === "REGULARWSCONNECTION") && applicationStatus == 'PENDING_FOR_PAYMENT'){
+    if((businessService=='NewWS1' 
+      || businessService === "REGULARWSCONNECTION"  
+        || businessService === 'SW_SEWERAGE' 
+       // || businessService === "TEMPORARY_WSCONNECTION"
+        || businessService === "WS_TEMP_TEMP" 
+        ||businessService === "WS_TEMP_REGULAR"
+       // ||businessService === "WS_DISCONNECTION" 
+       // ||businessService === "WS_TEMP_DISCONNECTION"
+        || businessService === "WS_RENAME" 
+        //|| businessService === "WS_CONVERSION" 
+        || businessService === "WS_REACTIVATE"     
+        //|| businessService === "WS_TUBEWELL"
+    ) && applicationStatus == 'PENDING_FOR_EE_APPROVAL'){
+      const {WaterConnection} = preparedFinalObject;
+      let pipeSize = 0 ;
+      //applicationStatus: "PENDING_FOR_SDE_APPROVAL"
+      pipeSize = WaterConnection && WaterConnection[0].proposedPipeSize;
+      pipeSize = parseInt(pipeSize);
+       if (pipeSize >= 20 && pipeSize <= 40)
+      {
+        // required to modify the connection
+        actions = actions.filter(item => item.buttonLabel !== 'VERIFY_AND_FORWARD_TO_SE');
+
+      }
+      else{
+        // "VERIFY_AND_FORWARD_TO_SDE
+        actions = actions.filter(item => item.buttonLabel !== 'VERIFY_AND_FORWARD_TO_SDE');
+        
+      }
+    }
+    // VERIFY_AND_FORWARD_TO_JE_FOR_FEE VERIFY_AND_FORWARD_TO_SE, PENDING_FOR_SDE_APPROVAL_FOR_JE TEMPORARY_WSCONNECTION
+    if(businessService === "TEMPORARY_WSCONNECTION"  && applicationStatus == 'PENDING_FOR_SDE_APPROVAL_FOR_JE' )
+    {
+      const {WaterConnection} = preparedFinalObject;
+      let pipeSize = 0 ;
+      
+      pipeSize = WaterConnection && WaterConnection[0].proposedPipeSize;
+      pipeSize = parseInt(pipeSize);
+       if (pipeSize <= 15)
+      {
+        actions = actions.filter(item => item.buttonLabel !== 'VERIFY_AND_FORWARD_TO_SE');
+
+      }
+      else{
+        actions = actions.filter(item => item.buttonLabel !== 'VERIFY_AND_FORWARD_TO_JE_FOR_FEE');
+      }
+
+    }
+    if((businessService=='NewWS1' 
+      || businessService === "REGULARWSCONNECTION"  
+        || businessService === 'SW_SEWERAGE' 
+        || businessService === "TEMPORARY_WSCONNECTION"
+        || businessService === "WS_TEMP_TEMP" 
+        ||businessService === "WS_TEMP_REGULAR"
+        ||businessService === "WS_DISCONNECTION" 
+        ||businessService === "WS_TEMP_DISCONNECTION"
+        || businessService === "WS_RENAME" 
+        || businessService === "WS_CONVERSION" 
+        || businessService === "WS_REACTIVATE"     
+    || businessService === "WS_TUBEWELL") 
+    && applicationStatus == 'PENDING_FOR_PAYMENT'){
       const {WaterConnection} = preparedFinalObject;
       let connectionType = "" ;
       connectionType = WaterConnection && WaterConnection[0].waterApplicationType;
@@ -615,7 +979,19 @@ class WorkFlowContainer extends React.Component {
         actions = actions.filter(item => item.buttonLabel !== 'PAY_FOR_REGULAR_CONNECTION');
       }
     }
-    if((businessService=='NewWS1' || businessService === "REGULARWSCONNECTION") && applicationStatus == 'PENDING_FOR_TEMPORARY_TO_REGULAR_CONNECTION_APPROVAL'){
+    if((businessService=='NewWS1' 
+      || businessService === "REGULARWSCONNECTION"  
+        || businessService === 'SW_SEWERAGE' 
+        || businessService === "TEMPORARY_WSCONNECTION"
+        || businessService === "WS_TEMP_TEMP" 
+        ||businessService === "WS_TEMP_REGULAR"
+        ||businessService === "WS_DISCONNECTION" 
+        ||businessService === "WS_TEMP_DISCONNECTION"
+        || businessService === "WS_RENAME" 
+        || businessService === "WS_CONVERSION" 
+        || businessService === "WS_REACTIVATE"     
+    || businessService === "WS_TUBEWELL")
+    && applicationStatus == 'PENDING_FOR_TEMPORARY_TO_REGULAR_CONNECTION_APPROVAL'){
       //    actions.forEach(item => {
       //     if(item.buttonLabel === 'APPROVE_FOR_CONNECTION_CONVERSION')
       //     // prepareFinalObject("WaterConnection[0].waterApplicationType","REGULAR")
@@ -625,15 +1001,28 @@ class WorkFlowContainer extends React.Component {
       const {WaterConnection} = preparedFinalObject;;
       const  activityType = WaterConnection && WaterConnection[0].activityType;
 
-      if(activityType ==="TEMPORARY_DISCONNECTION"){
-        actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_STOP_BILLING');
-      }
-      else if(activityType ==="PERMANENT_DISCONNECTION"){
-        actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_TEMP_STOP_BILLING');
-      }
+      // if(activityType ==="TEMPORARY_DISCONNECTION"){
+      //   actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_STOP_BILLING');
+      // }
+      // else if(activityType ==="PERMANENT_DISCONNECTION"){
+      //   actions = actions.filter(item => item.buttonLabel !== 'APPROVE_AND_TEMP_STOP_BILLING');
+      // }
     }
 
-    if(businessService=='NewWS1' || businessService === "REGULARWSCONNECTION" || businessService ==='WS_RENAME' ||businessService === "WS_CONVERSION" || businessService === "WS_DISCONNECTION" || businessService === "WS_TUBEWELL"){
+    if(businessService === "NewWS1" 
+        || businessService === "REGULARWSCONNECTION"  
+        || businessService === 'SW_SEWERAGE' 
+        || businessService === "TEMPORARY_WSCONNECTION"
+        || businessService === "WS_TEMP_TEMP" 
+        ||businessService === "WS_TEMP_REGULAR"
+        ||businessService === "WS_DISCONNECTION" 
+        ||businessService === "WS_TEMP_DISCONNECTION"
+        || businessService === "WS_RENAME" 
+        || businessService === "WS_CONVERSION" 
+        || businessService === "WS_REACTIVATE"  
+        ||  businessService === "WS_TUBEWELL")
+    
+    {
       const userRoles = JSON.parse(getUserInfo()).roles;
       const roleIndex = userRoles.some(item => item.code ==="CITIZEN" || item.code=== "WS_CEMP" );
       const isButtonPresent =  window.localStorage.getItem("WNS_STATUS") || false;
@@ -681,7 +1070,19 @@ class WorkFlowContainer extends React.Component {
       ProcessInstances.length > 0 &&
       this.prepareWorkflowContract(ProcessInstances, moduleName);
      let showFooter;
-      if(moduleName==='NewWS1'|| moduleName==='REGULARWSCONNECTION' ||moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL"){
+     if (moduleName === "NewWS1" 
+        || moduleName === "REGULARWSCONNECTION" 
+        || moduleName === "SW_SEWERAGE"
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE"
+        || moduleName === "WS_TUBEWELL") 
+     {
          showFooter=true;
       } else if(moduleName==='ROADCUTNOC'||moduleName==='PETNOC'||moduleName==='ADVERTISEMENTNOC'||moduleName==='SELLMEATNOC'){
         showFooter=false;

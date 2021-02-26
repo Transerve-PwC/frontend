@@ -558,12 +558,12 @@ class SportCultureDashboard extends React.Component {
     return (
         <div>
         
-        <div style={{display:"flex", height:"500px"}}>
+        <div className="graphDashboard">
         
 
         {
             this.state.graphClicked >= 0 ?
-            <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+            <CardContent className="halfGraph">
                 <React.Fragment>
                     <Pie
                     data={ PIEgraphOneSortedData }
@@ -576,7 +576,7 @@ class SportCultureDashboard extends React.Component {
 
         {
             this.state.graphClicked > 0 ?
-            <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+            <CardContent className="halfGraph">
                 <React.Fragment>
                     <Pie
                     data={ graphTwoSortedData } 

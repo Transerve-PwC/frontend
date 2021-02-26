@@ -47,6 +47,7 @@ export const MTONHeader = getCommonCard({
           className: "hr-generic-selectfield",
           optionValue: "id",
           optionLabel: "indentNumber",
+         // disabled:true,
         }
       }),
       beforeFieldChange: (action, state, dispatch) => {
@@ -188,7 +189,8 @@ export const MTONHeader = getCommonCard({
     },  
     issuingStoreName: {
       ...getSelectField({
-        label: { labelName: "Issuing Store Name", labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME" },
+        //label: { labelName: "Issuing Store Name", labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME" },
+        label: { labelName: "Indenting Store", labelKey: "STORE_MATERIAL_INDENT_NOTE_INDENTING_STORE" },
         placeholder: {
           labelName: "Select Issuing Store Name",
           labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME_SELECT"
@@ -225,7 +227,8 @@ export const MTONHeader = getCommonCard({
     },  
     indentingStore: {
       ...getSelectField({
-        label: { labelName: "Indenting Store", labelKey: "STORE_MATERIAL_INDENT_NOTE_INDENTING_STORE" },
+       // label: { labelName: "Indenting Store", labelKey: "STORE_MATERIAL_INDENT_NOTE_INDENTING_STORE" },
+        label: { labelName: "Issuing Store Name", labelKey: "STORE_MATERIAL_INDENT_NOTE_ISSUING_STORE_NAME" },
         placeholder: {
           labelName: "Select Store Name",
           labelKey: "STORE_DETAILS_STORE_NAME_SELECT"

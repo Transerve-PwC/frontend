@@ -64,7 +64,7 @@ export const SportCultureDashboardFilterForm = getCommonCard({
           },
       props: {
         style: {
-        width: "200%",
+        width: "100%",
         cursor: "pointer"
       },
   
@@ -101,9 +101,9 @@ export const SportCultureDashboardFilterForm = getCommonCard({
         variant: "contained",
         color: "primary",
         style: {
-        width: "60%",
+        width: "100%",
         height: "55px",
-        marginLeft: "90%"
+        // marginLeft: "90%"
         }
       },
       children: {

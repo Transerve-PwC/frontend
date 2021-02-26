@@ -93,19 +93,31 @@ console.log(matcodes)
         const empdesignation = payload.Employees[0].assignments[0].designation;
        const empDetails = 
        payload.Employees.filter((item, index) =>  stores[0].storeInCharge.code === item.code);
-     
-       if(empDetails && empDetails[0] ){
+      //  screenConfiguration.preparedFinalObject.indents[0].indentCreatedBy
+       let indentCreatedByDesg = get(
+        state.screenConfiguration.preparedFinalObject,
+        "indents[0].designation",
+        null
+      );
+      let indentCreatedBy = get(
+        state.screenConfiguration.preparedFinalObject,
+        "indents[0].indentCreatedBy",
+        null
+      );
+       dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee", indentCreatedBy));  
+       dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", indentCreatedByDesg));
+       //if(empDetails && empDetails[0] ){
          //alert(empDetails[0].user.name)        
-         dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee",empDetails[0].user.name));  
-         if(designationsById){
-          const desgnName = Object.values(designationsById).filter(item =>  item.code === empdesignation )
-          dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", desgnName[0].name));
-          }
-       }
-       else{
-        dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee",""));  
-        dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", ''));
-       }
+        //  dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee",empDetails[0].user.name));  
+        //  if(designationsById){
+        //   const desgnName = Object.values(designationsById).filter(item =>  item.code === empdesignation )
+        //   dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", desgnName[0].name));
+        //   }
+      //  }
+      //  else{
+      //   dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee",""));  
+      //   dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation", ''));
+      //  }
      }
    }
   } catch (e) {
@@ -200,6 +212,7 @@ console.log(matcodes)
           // {
             if(fromstore&&fromstore[0])
             {
+              
                 dispatch(prepareFinalObject("materialIssues[0].fromStore.id",fromstore[0].id));
                 dispatch(prepareFinalObject("materialIssues[0].fromStore.code",fromstore[0].code));
                 dispatch(prepareFinalObject("materialIssues[0].fromStore.name",fromstore[0].name));

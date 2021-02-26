@@ -468,6 +468,63 @@ class TableData extends Component {
 
     return responseDataHorticulture
   };
+  getWaterRoleBasedServiceRequestData =  (responseData) => {
+    
+    var userRolesForWS = []
+    var userRolesCodesForWS = []
+    var responseDataWater = []
+    userRolesForWS = get(this.props, "userInfo.roles");
+    userRolesCodesForWS = userRolesForWS.map((item) => { return item.code})
+    
+    var WaterBusinessServices =
+    ["REGULARWSCONNECTION",
+    "TEMPORARY_WSCONNECTION",
+    "WS_TEMP_TEMP",
+    "WS_TEMP_REGULAR",
+    "WS_DISCONNECTION",
+    "WS_TEMP_DISCONNECTION",
+    "WS_RENAME",
+    "WS_CONVERSION",
+    "WS_REACTIVATE",
+    "WS_TUBEWELL" ,]
+    
+      responseDataWater = orderBy(
+      filter(responseData.ProcessInstances, (item) =>{
+        if(WaterBusinessServices.includes(get(item,'businessService'))){
+         
+          if (get(item,'additionalDetails') != null && (get(item,'state.state') != 'REJECTED' || get(item,'state.state') != 'COMPLETED')  )
+         {
+          
+          let currentAssignedRole = get(item,'additionalDetails.role')
+          if(currentAssignedRole!== undefined)
+          {
+              currentAssignedRole = currentAssignedRole.split(",")          
+            if(userRolesCodesForWS.some(element => currentAssignedRole.includes(element)) )
+          {return item}
+
+          }
+          
+        }
+          
+        }
+        
+    }),
+      ["businesssServiceSla"]
+    );
+
+    return responseDataWater
+  };
+  getWaterRoleBasedServiceRequestDataWithoutAdditionalDetails =  (responseData) => {  
+    
+    responseData = responseData.ProcessInstances.filter(x=>x.additionalDetails === null || x.additionalDetails === undefined)
+    // filter(
+    //   {
+
+    //   }
+    // )
+
+    return responseData
+  };
   getOtherApplicationsData =  (responseData) => {
  
     var horticultureBusinessServices =
@@ -505,12 +562,39 @@ class TableData extends Component {
 
        //Horticulture code changes starts here
        var AssignedToAlldataForHorticulture = []
+        //W&S code changes starts here
+        var AssignedToAlldataForWNS = []
+
        var AssignedToAlldataForOtherModules = []
         AssignedToAlldataForHorticulture = this.getHorticultureRoleBasedServiceRequestData(responseData)
+        AssignedToAlldataForWNS = this.getWaterRoleBasedServiceRequestData(responseData)
         AssignedToAlldataForOtherModules = this.getOtherApplicationsData(responseData)
+        let WithoutAdditionalDetails = responseData
+         WithoutAdditionalDetails = this.getWaterRoleBasedServiceRequestDataWithoutAdditionalDetails(WithoutAdditionalDetails)
  
        var finalDataAssignedToAll = []
-       finalDataAssignedToAll.ProcessInstances = [...AssignedToAlldataForHorticulture, ...AssignedToAlldataForOtherModules]
+       if(window.localStorage.getItem("wns_workflow") ==='REGULARWSCONNECTION'
+        || window.localStorage.getItem("wns_workflow") ==='TEMPORARY_WSCONNECTION'
+        || window.localStorage.getItem("wns_workflow") === "WS_TEMP_TEMP" 
+        || window.localStorage.getItem("wns_workflow") === "WS_TEMP_REGULAR"
+        || window.localStorage.getItem("wns_workflow") === "WS_DISCONNECTION" 
+        || window.localStorage.getItem("wns_workflow") === "WS_TEMP_DISCONNECTION"
+        || window.localStorage.getItem("wns_workflow") === "WS_RENAME" 
+        || window.localStorage.getItem("wns_workflow") === "WS_CONVERSION" 
+        || window.localStorage.getItem("wns_workflow") === "WS_REACTIVATE"  
+        || window.localStorage.getItem("wns_workflow") === "WS_TUBEWELL"
+       )
+       {
+        finalDataAssignedToAll.ProcessInstances = [...WithoutAdditionalDetails, ...AssignedToAlldataForWNS]
+
+       }
+       else
+       {
+        finalDataAssignedToAll.ProcessInstances = [...AssignedToAlldataForHorticulture, ...AssignedToAlldataForOtherModules]
+
+       }
+      
+       //finalDataAssignedToAll.ProcessInstances = [...AssignedToAlldataForHorticulture, ...AssignedToAlldataForOtherModules, ...AssignedToAlldataForWNS]
        
        //horticulture code changes ends here
 

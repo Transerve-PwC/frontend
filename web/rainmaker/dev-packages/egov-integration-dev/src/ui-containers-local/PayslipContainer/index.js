@@ -50,7 +50,7 @@ class PayslipContainer extends Component {
                <div style={{ overscrollBehaviorX:"overlay",overflow:"overlay"}}>
 
                 <table style={{width: "100%",}}>
-                <tr><td  style={{
+                {/* <tr><td  style={{
                   textAlign: "center",
                   width:"100%",
                   
@@ -66,7 +66,7 @@ class PayslipContainer extends Component {
                   
                 }} colSpan="2"><Label labelClassName="" label={get(APIData.PaySlip, `EmployeeCode`, "-") || "-"} /></td>              
                
-                </tr>
+                </tr> */}
                 <tr><td  style={{
                   textAlign: "left",
                   width:"15%"
@@ -162,105 +162,47 @@ class PayslipContainer extends Component {
                               )
                             
                             }))
+                            
+                              
+                     }                    
+                   </tbody>
+                   <tbody>
+                     {
+                       APIData&&(
+                         <tr>
+                           <th>Total Allowances</th>
+                                  <th style={{fontWeight: "initial", textAlign:"right"}}>
+                                    {/* <Label labelClassName="" label={get(APIData.PaySlip, `Total_Emolument`, 0) || 0}/> */}
+                                    {APIData.PaySlip.Total_Emolument}
+                                    </th>
+                                  <th>Total Allowances</th>
+                                  <th style={{fontWeight: "initial", textAlign:"right"}} colSpan="1">
+                                    {/* <Label labelClassName="" label={get(APIData.PaySlip, `Total_Govt_Recoveries`, 0) || 0}/> */}
+                                    {APIData.PaySlip.Total_Govt_Recoveries}
+                                    </th>
+                         </tr>
+                         
+                       )
+                     }
+                   </tbody>
+                   <tbody>
+                     {
+                       APIData&&(
+                         <tr>
+                           <th>Net Pay (Rs.)</th>
+                                  <th style={{fontWeight: "initial", textAlign:"right"}} colSpan="3">
+                                    {/* <Label labelClassName="" label={get(APIData.PaySlip, `Net_Pay`, "-") || "-"}/> */}
+                                    {APIData.PaySlip.Net_Pay}({APIData.PaySlip.Net_Pay_In_Word})
+                                    </th>
+                                  
+                         </tr>
+                         
+                       )
                      }
                    </tbody>
                  </table>
                       </div>
                  }
-                 
-              {/* <table  id="reportTable"
-                 style={{
-                   width: "100%",
-                   marginBottom:"20px"
-                 }}
-                 className="table table-striped table-bordered">
-                  
-                 <thead>
-                 <tr className="report-table-header">
-                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2">
-                  <Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_EOFFICE_STATE_HEADING"
-                  />
-                  </th>
-                 
-                 </tr>
-                 <tr className="report-table-header">
-                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
-                 
-                  </th>
-                  <th   style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
-                  <Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_EOFFICE_COUNT_HEADING"
-                  />
-                  </th>
-                 
-                 </tr>
-                 
-                 </thead>
-                 {
-                    APIData&&(
-                      <tbody>
-                         {
-                            <tr>
-                          <th><Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_TOTAL_FILE_PENDING_CNT"
-                  /></th>                            
-                            <th>{get(APIData.eofficestat, `totalFilesPendingCnt`, "-") || "-"}</th>                                            
-                            
-                           
-                          </tr>
-                         }
-                         {
-                           <tr>
-                             <th><Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_TOTAL_FILE_CLOSED_CNT"
-                  /></th>                            
-                            <th>{get(APIData.eofficestat, `totalFilesClosed`, "-") || "-"}</th> 
-                           </tr>
-                         }
-                          {
-                           <tr>
-                             <th><Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_TOTAL_RECEIPT_PENDING_CNT"
-                  /></th>                            
-                            <th>{get(APIData.eofficestat, `totalReceiptsPending`, "-") || "-"}</th> 
-                           </tr>
-                         }
-                          {
-                           <tr>
-                             <th><Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_TOTAL_RECEIPT_CLOSED_CNT"
-                  /></th>                            
-                            <th>{get(APIData.eofficestat, `totalReceiptsClosed`, "-") || "-"}</th> 
-                           </tr>
-                         }
-                          {
-                           <tr>
-                             <th><Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
-                    label="INTIGRATION_TOTAL_VIP_RECEIPT_PENDING_CNT"
-                  /></th>                            
-                            <th>{get(APIData.eofficestat, `totalVIPReceiptsPending`, "-") || "-"}</th> 
-                           </tr>
-                         }
-    
-                    </tbody>
-                    )                
-                  }
-                 </table> */}
                 
                   </div>
                

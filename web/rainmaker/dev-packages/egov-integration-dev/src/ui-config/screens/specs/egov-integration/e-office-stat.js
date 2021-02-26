@@ -40,11 +40,75 @@ import {
     
   };
   const getMdmsData = async (state, dispatch) => {
-    const tenantId =  getstoreTenantId();
+    const tenantId =  getTenantId();
+    // let mdmsBody = {
+    //   eOfficeRequest: {
+    //     orgid: 37,
+    //     postdetailid:212,
+       
+    //   }
+    // };
+    const userInfo = JSON.parse(getUserInfo());
+    let employeeCode ='11819';
+    if(userInfo){
+      
+      const queryParams = [{ key: "uuids", value: userInfo.uuid },{ key: "tenantId", value:  tenantId }];
+      try { 
+        const payload = await httpRequest(
+          "post",
+          "/egov-hrms/employees/_search",
+          "_search",
+          queryParams
+        );
+        if(payload){ 
+          employeeCode = payload.Employees[0].code;
+          // dispatch(prepareFinalObject("searchScreen.empCode", payload.Employees[0].code));
+          // dispatch(prepareFinalObject("empCode", payload.Employees[0].code));
+        }
+        
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    let postdetailid =[]
+    // call api integration-services/eoffice/v1/_getPostDetailsId
+    dispatch(toggleSpinner());
+    let Request ={
+      employeePostDetailMap:{
+        //employeeCode:"11819",// need to replace by login user id
+        employeeCode:employeeCode,
+      }
+    }
+    try {
+      const response_ = await httpRequest(
+          "post",
+          "/integration-services/eoffice/v1/_getPostDetailsId",
+          "_getPostDetailsId",
+          [],
+          Request
+      );
+      
+      if (response_ && response_.ResponseBody[0]) {
+        //[{"post_detail_id" : "1882"},{"post_detail_id" : "2323"}]
+        
+        let postdetail = response_.ResponseBody[0].postdetail
+        const valuesArray = JSON.parse(postdetail);
+        for (let index = 0; index < valuesArray.length; index++) {
+          const element = valuesArray[index];
+
+          postdetailid.push(element.post_detail_id)
+        }
+
+      }
+  } catch (error) {
+      dispatch(toggleSpinner());
+      console.log(error);
+  }
+    //
     let mdmsBody = {
       eOfficeRequest: {
         orgid: 37,
-        postdetailid:212,
+        postdetailid:postdetailid,
        
       }
     };
@@ -175,6 +239,7 @@ import {
       return true;
     } catch (e) {
     //  alert('1')
+    dispatch(toggleSpinner());
       console.log(e);
     }
   };

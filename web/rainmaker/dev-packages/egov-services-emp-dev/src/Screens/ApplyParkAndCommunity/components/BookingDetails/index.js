@@ -13,7 +13,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { fetchApplicaionSector, fetchfacilationCharges } from "egov-ui-kit/redux/bookings/actions";
 import "./index.css";
 import Footer from "../../../../modules/footer"
-
+import moment from 'moment';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -27,7 +27,7 @@ class BookingsDetails extends Component {
     genderValue: "female"
   }
 
-
+ 
   componentDidMount = async () => {
     let { fetchApplicaionSector } = this.props;
     fetchApplicaionSector();
@@ -85,10 +85,10 @@ class BookingsDetails extends Component {
 
  
   render() {
-    const { arrayName, result,fCharges, jobTitle, jobCompany, jobLocation, handleChangeDiscount, discountType, dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess } = this.props;
+    const { arrayName, result,fCharges, jobTitle, jobCompany, jobLocation, handleChangeDiscount, discountType, dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,firstToTimeSlot } = this.props;
     let sectorData = [];
     sectorData.push(complaintSector);
-    let fc = fCharges?fCharges.facilitationCharge:'100';
+    let fc = fCharges ? fCharges.facilitationCharge :'100'
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -257,7 +257,7 @@ class BookingsDetails extends Component {
               required={true}
               hintText={
                 <Label
-                  label="BK_MYBK_NAME_SURCHARGE_PLACEHOLDER"
+                  label="Surcharge On Rent"   // label="BK_MYBK_NAME_SURCHARGE_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -266,7 +266,7 @@ class BookingsDetails extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_CREATE_SURCHARGE"
+                  label="Surcharge On Rent"   //label="BK_MYBK_CREATE_SURCHARGE"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -286,7 +286,7 @@ class BookingsDetails extends Component {
               required={true}
               hintText={
                 <Label
-                  label="BK_MYBK_UTGST_PLACEHOLDER"
+                label="UTGST"               //label="BK_MYBK_UTGST_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -295,7 +295,7 @@ class BookingsDetails extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_CREATE_UTGST"
+                  label="UTGST"                         // label="BK_MYBK_CREATE_UTGST"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -424,14 +424,15 @@ class BookingsDetails extends Component {
               underlineFocusStyle={{ bottom: 7 }}
               hintStyle={{ width: "100%" }}
             />
+
           </div>
           <div className="col-sm-6 col-xs-6">
             <TextField
               id="to-date"
               name="to-date"
               type="text"
-
-              value={toDate}
+              value={toDate}   
+              // value={ConcatFirstToDate}
               required={true}
               disabled={true}
               hintText={
@@ -456,6 +457,79 @@ class BookingsDetails extends Component {
               hintStyle={{ width: "100%" }}
             />
           </div>
+{/*conditionForWholeDay*/}
+
+{/* {this.props.conditionForWholeDay === "9AM-9PM" ? :""} */}
+
+          {/*new-requirement*/}
+          {/* {this.props.SecTimeSlotFromTime != "notFound" && this.props.SecTimeSlotToTime != "notFound"? 
+          <div>
+          <div className="col-sm-6 col-xs-6">
+          <TextField
+            id="new-from-date"
+            name="new-from-date"
+            type="text"
+
+            value={this.props.ConcatFromDateTime}//ConcatFromDateTime,ConcatToDateTime
+            required={true}
+            disabled={true}
+            hintText={
+              <Label
+                label="BK_SECOND_FROM_DATE"
+                color="rgba(0, 0, 0, 0.3799999952316284)"
+                fontSize={16}
+                labelStyle={hintTextStyle}
+              />
+            }
+            floatingLabelText={
+              <Label
+                key={0}
+                label="BK_SECOND_FROM_DATE"
+                color="rgba(0,0,0,0.60)"
+                fontSize="12px"
+              />
+            }
+            onChange={handleChange('toDate')}
+            underlineStyle={{ bottom: 7 }}
+            underlineFocusStyle={{ bottom: 7 }}
+            hintStyle={{ width: "100%" }}
+          />
+        </div>
+        <div className="col-sm-6 col-xs-6">
+          <TextField
+            id="new_to-date"
+            name="new_to-date"
+            type="text"
+
+            value={this.props.ConcatToDateTime}//SecTimeSlotFromTime,SecTimeSlotToTime
+            required={true}
+            disabled={true}
+            hintText={
+              <Label
+                label="BK_SECOND_TO_DATE"
+                color="rgba(0, 0, 0, 0.3799999952316284)"
+                fontSize={16}
+                labelStyle={hintTextStyle}
+              />
+            }
+            floatingLabelText={
+              <Label
+                key={0}
+                label="BK_SECOND_TO_DATE"
+                color="rgba(0,0,0,0.60)"
+                fontSize="12px"
+              />
+            }
+            onChange={handleChange('toDate')}
+            underlineStyle={{ bottom: 7 }}
+            underlineFocusStyle={{ bottom: 7 }}
+            hintStyle={{ width: "100%" }}
+          />
+        </div>
+        </div>
+          :""} */}
+          
+          {/*new requirement end*/}
           <div className="col-sm-6 col-xs-6">
             <TextField
               id="dimension"
@@ -579,6 +653,60 @@ const mapStateToProps = state => {
   const { complaintSector } = complaints;
   const { facilationChargesSuccess, arrayName } = bookings;
   
+  // let NewBookFromDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkFromDate || "notFound"
+  // console.log("NewBookFromDate--",NewBookFromDate)
+
+  // let NewBookToDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkToDate || "notFound"
+  // console.log("NewBookToDate--",NewBookToDate)
+
+
+  let SecTimeSlotFromTime = 
+  state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+  (state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo: "notFound" ) : "notFound"
+
+
+  // let SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo || "notFound"
+  // console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+
+  // let SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo || "notFound"
+  // console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+
+
+  let SecTimeSlotToTime = 
+  state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+  (state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo: "notFound" ) : "notFound"
+
+
+  let firstToTimeSlot = 
+  state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+  (state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.bkToTime: "notFound" ) : "notFound"
+
+
+
+  // let firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTime || "notFound"
+  // console.log("firstToTimeSlot--",firstToTimeSlot)
+
+  let strMid = ","
+
+  // let newtoDate = moment(bookingData.bkToDate).format("YYYY-MM-DD");
+
+		// let ConcatFromDateTime = NewBookFromDate.concat(strMid).concat(SecTimeSlotFromTime);
+    // console.log("ConcatFromDateTime--",ConcatFromDateTime)
+    
+    // let ConcatToDateTime = NewBookToDate.concat(strMid).concat(SecTimeSlotToTime);
+    // console.log("ConcatToDateTime--",ConcatToDateTime)
+    // //.format("YYYY-MM-DD")
+    // let ConcatFirstToDate = NewBookToDate.concat(strMid).concat(firstToTimeSlot);
+    // console.log("ConcatFromDateTime--",ConcatFirstToDate)
+  
+  // let conditionForWholeDay = state.screenConfiguration.preparedFinalObject.Booking.timeslots[0].slot ? state.screenConfiguration.preparedFinalObject.Booking.timeslots[0].slot :"notFound"
+  // console.log("conditionForWholeDay--",conditionForWholeDay)
+
+  // let conditionForWholeDay = 
+  // state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+  // (state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.bkToTime: "notFound" ) : "notFound"
+
+
   let fCharges;
   if (arrayName && arrayName.length > 0) {
     arrayName.forEach((item) => {
@@ -590,7 +718,7 @@ const mapStateToProps = state => {
     })
   }
   return {
-    complaintSector,
+    complaintSector,SecTimeSlotFromTime,SecTimeSlotToTime,firstToTimeSlot,
     facilationChargesSuccess,
     fCharges
   }

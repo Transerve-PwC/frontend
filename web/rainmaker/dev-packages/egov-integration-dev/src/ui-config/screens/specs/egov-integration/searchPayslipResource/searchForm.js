@@ -9,6 +9,7 @@ import {
   getTextField,
   getDateField,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import get from "lodash/get";
 import {
   handleScreenConfigurationFieldChange as handleField,
   prepareFinalObject,
@@ -32,6 +33,8 @@ const resetFields = (state, dispatch) => {
     }
   }
   dispatch(prepareFinalObject("searchScreen", {}));
+  let empCode = get(state, "screenConfiguration.preparedFinalObject.empCode");
+  dispatch(prepareFinalObject("searchScreen.empCode", empCode));
 };
 
 export const searchForm = getCommonCard({

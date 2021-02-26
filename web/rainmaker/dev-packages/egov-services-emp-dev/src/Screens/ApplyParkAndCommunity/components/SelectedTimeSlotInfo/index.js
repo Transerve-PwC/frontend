@@ -70,7 +70,7 @@ class SelectedTimeSlotInfo extends Component {
       
 
     render() {
-//         const { bookingLocation, fromDate, toDate, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDateTime} = this.props;
+        const { ConcatFromDateTime,ConcatToDateTime,ConcatFirstToDate,wholeDayFromDate,wholeDayToDate} = this.props;
 //    console.log("propsInSelectedTimeSlot--",this.props)
 
 const { bookingLocation, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDateTime} = this.state;
@@ -166,16 +166,157 @@ const { bookingLocation, fromTime, toTime, bkDisplayFromDateTime,  bkDisplayToDa
                             letterSpacing: "0.67px",
                         }}
                     >
-                        {console.log("toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime--",toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime)}
+                        {console.log("toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime--",toTime && toTime.length == 0?'--/--/--':ConcatFirstToDate)}
                         {console.log("toTime--",toTime)}
                         {console.log("bkDisplayToDateTime23--",bkDisplayToDateTime)}
                         {toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime}
                     </span>
                 </Grid>
+                {/*newRequirment*/}
+                {/* {this.props.SecTimeSlotFromTime != "notFound" && this.props.SecTimeSlotToTime != "notFound"?
+                <div>
+ <Grid item={true} xs={1}>
+                    <span
+                        style={{
+                            display: "block",
+                            color: "rgba(0, 0, 0, 0.54)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            lineHeight: "1.375em",
+                        }}
+                    >
+                        From:
+                    </span>
+
+                </Grid>
+                <Grid item={true} xs={11}>
+
+<span
+    style={{
+        color: "rgba(0, 0, 0, 0.87)",
+        fontSize: 16,
+        fontWeight: 400,
+        display: "block",
+        marginBottom: "10px",
+        letterSpacing: "0.67px",
+    }}
+>
+    {console.log("fromTime--",fromTime)};
+    {console.log("bkDisplayFromDateTime--23",bkDisplayFromDateTime)}
+    {console.log("fromTime && fromTime.length == 0?'--/--/--':bkDisplayFromDateTime",
+    fromTime && fromTime.length == 0?'--/--/--':bkDisplayFromDateTime
+    )}
+    {ConcatFromDateTime}
+</span>
+</Grid>
+
+
+<Grid item={true} xs={1}>
+                    <span
+                        style={{
+                            display: "block",
+                            color: "rgba(0, 0, 0, 0.54)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            lineHeight: "1.375em",
+                        }}
+                    >
+                        To:
+                    </span>
+
+                </Grid>
+                <Grid item={true} xs={11}>
+
+                    <span
+                        style={{
+                            color: "rgba(0, 0, 0, 0.87)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            display: "block",
+                            marginBottom: "10px",
+                            letterSpacing: "0.67px",
+                        }}
+                    >
+                        {console.log("toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime--",toTime && toTime.length == 0?'--/--/--':bkDisplayToDateTime)}
+                        {console.log("toTime--",toTime)}
+                        {console.log("bkDisplayToDateTime23--",bkDisplayToDateTime)}
+                        {ConcatToDateTime}
+                    </span>
+                </Grid>
+                </div>
+                : ""} */}
+
+                {/*wholeDay*/} 
+                {this.props.wholeDayFromDate != "notFound" && this.props.wholeDayToDate != "notFound"?
+                <div>
+ <Grid item={true} xs={1}>
+                    <span
+                        style={{
+                            display: "block",
+                            color: "rgba(0, 0, 0, 0.54)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            lineHeight: "1.375em",
+                        }}
+                    >
+                        From:
+                    </span>
+
+                </Grid>
+                <Grid item={true} xs={11}>
+
+<span
+    style={{
+        color: "rgba(0, 0, 0, 0.87)",
+        fontSize: 16,
+        fontWeight: 400,
+        display: "block",
+        marginBottom: "10px",
+        letterSpacing: "0.67px",
+    }}
+>
+    {wholeDayFromDate}
+</span>
+</Grid>
+
+
+<Grid item={true} xs={1}>
+                    <span
+                        style={{
+                            display: "block",
+                            color: "rgba(0, 0, 0, 0.54)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            lineHeight: "1.375em",
+                        }}
+                    >
+                        To:
+                    </span>
+
+                </Grid>
+                <Grid item={true} xs={11}>
+
+                    <span
+                        style={{
+                            color: "rgba(0, 0, 0, 0.87)",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            display: "block",
+                            marginBottom: "10px",
+                            letterSpacing: "0.67px",
+                        }}
+                    >
+                        {wholeDayToDate}
+                    </span>
+                </Grid>
+                </div>
+                : ""}
+                
             </Grid>
         )
     }
 }
+
 
 const mapStateToProps = (state, ownProps) => {
     let bookingLocation = get(
@@ -223,14 +364,57 @@ console.log("bkFromTime--bkFromTime",bkFromTime)
         []
     );
     console.log("bkDisplayToDateTime--bkDisplayToDateTime",bkDisplayToDateTime)
+
+    let NewBookFromDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkFromDate || "notFound"
+  console.log("NewBookFromDate--",NewBookFromDate)
+
+  let NewBookToDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkToDate || "notFound"
+  console.log("NewBookToDate--",NewBookToDate)
+
+  let SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo || "notFound"
+  console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+
+  let SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo || "notFound"
+  console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+
+  let firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTime || "notFound"
+  console.log("firstToTimeSlot--",firstToTimeSlot)
+
+  let strMid = ","
+
+    let ConcatFromDateTime = NewBookFromDate.concat(strMid).concat(SecTimeSlotFromTime);
+    console.log("ConcatFromDateTime--",ConcatFromDateTime)
+    
+    let ConcatToDateTime = NewBookToDate.concat(strMid).concat(SecTimeSlotToTime);
+    console.log("ConcatToDateTime--",ConcatToDateTime)
+    
+    let ConcatFirstToDate = NewBookToDate.concat(strMid).concat(firstToTimeSlot);
+    console.log("ConcatFromDateTime--",ConcatFirstToDate)
+//Booking.wholeDay.FromDate
+    // let wholeDayFromDate = state.screenConfiguration.preparedFinalObject.Booking ?
+    // state.screenConfiguration.preparedFinalObject.Booking.wholeDay ? state.screenConfiguration.preparedFinalObject.Booking.wholeDay.FromDate : "notFound"
+    //  :"notFound"
+//     state.screenConfiguration.preparedFinalObject.Booking.wholeDay.FromDate != undefined ? state.screenConfiguration.preparedFinalObject.Booking.wholeDay.FromDate : "notFound"
+//   console.log("wholeDayFromDate--",wholeDayFromDate)
+
+let wholeDayFromDate = state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+    (state.screenConfiguration.preparedFinalObject.Booking.wholeDay !== undefined ? (state.screenConfiguration.preparedFinalObject.Booking.wholeDay.FromDate !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.wholeDay.FromDate : "notFound") : "notFound") :
+    "notFound"
+
+//   let wholeDayToDate = state.screenConfiguration.preparedFinalObject.Booking.wholeDay.ToDate != undefined ? state.screenConfiguration.preparedFinalObject.Booking.wholeDay.ToDate : "notFound"
+//   console.log("wholeDayToDate--",wholeDayToDate)
+
+let wholeDayToDate = state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+(state.screenConfiguration.preparedFinalObject.Booking.wholeDay !== undefined ? (state.screenConfiguration.preparedFinalObject.Booking.wholeDay.ToDate !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.wholeDay.ToDate : "notFound") : "notFound") :
+"notFound"
     return { 
-        bookingLocation: bookingLocation,
+        bookingLocation: bookingLocation,SecTimeSlotFromTime,SecTimeSlotToTime,wholeDayFromDate,wholeDayToDate,
         fromDate: bkFromDate,
         toDate: bkToDate,
         fromTime: bkFromTime,
         toTime: bkToTime,
         bkDisplayFromDateTime: bkDisplayFromDateTime,
-        bkDisplayToDateTime: bkDisplayToDateTime
+        bkDisplayToDateTime: bkDisplayToDateTime,ConcatFromDateTime,ConcatToDateTime,ConcatFirstToDate
 
      };
 };

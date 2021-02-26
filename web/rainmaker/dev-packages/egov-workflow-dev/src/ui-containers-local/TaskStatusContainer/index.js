@@ -55,7 +55,18 @@ class TastStatusContainer extends React.Component {
       }
     let taskLabel = "Task Status";
     let taskKey   = "TL_TASK_STATUS";
-    if(moduleName === 'NewWS1' || moduleName === "REGULARWSCONNECTION"  || moduleName === 'NewSW1' || moduleName === "WS_CONVERSION" || moduleName === "WS_DISCONNECTION" || moduleName === "WS_RENAME" || moduleName === "WS_TUBEWELL"){
+    if(moduleName === 'NewWS1' 
+        || moduleName === "REGULARWSCONNECTION"  
+        || moduleName === 'SW_SEWERAGE' 
+        || moduleName === "TEMPORARY_WSCONNECTION"
+        || moduleName === "WS_TEMP_TEMP" 
+        ||moduleName === "WS_TEMP_REGULAR"
+        ||moduleName === "WS_DISCONNECTION" 
+        ||moduleName === "WS_TEMP_DISCONNECTION"
+        || moduleName === "WS_RENAME" 
+        || moduleName === "WS_CONVERSION" 
+        || moduleName === "WS_REACTIVATE" 
+        || moduleName === "WS_TUBEWELL"){
        if(process.env.REACT_APP_NAME === "Citizen"){
         taskLabel =  "Application Summary";
         taskKey   =  "WS_COMMON_APPLICATION_SUMMARY_LABEL";

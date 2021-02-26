@@ -417,7 +417,9 @@ import {
                 },
                 props:{
                   disabled:true
+
                 },
+                visible:false,
                 required: false,
                 pattern: getPattern("Name") || null,
                 jsonPath: "materialIssues[0].materialIssueDetails[0].indentDetail.BalanceQtyAfterIssue"

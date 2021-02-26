@@ -29,11 +29,11 @@ class SummaryDetails extends Component {
 
     componentDidMount = async () => {
        
-        let { createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications } = this.props;
+        let {createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications,conJsonSecond,conJsonfirst } = this.props;
         let { firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,
             utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, 
-            BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,accountType,
-            locality, residenials, facilationChargesSuccess,discountType,checkAppStatus,checkAppNum } = this.props;
+            BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,accountType,SecTimeSlotFromTime,SecTimeSlotToTime,
+            locality, residenials, facilationChargesSuccess,discountType,checkAppStatus,checkAppNum,firstToTimeSlot } = this.props;
 console.log("this.propos--insummaryPage--",this.props)
 console.log("discountType--",discountType)
 console.log("newConsole--ut",utGST)
@@ -43,6 +43,16 @@ console.log("checkAppStatus-props-",checkAppNum ? checkAppNum : "notFound")
 this.setState({
     appStatus : checkAppStatus
 })
+
+let sendCurrentStatus;
+if(checkAppStatus){
+    if(checkAppStatus == "NOTFOUND"){
+        sendCurrentStatus = "OFFLINE_INITIATE"
+    }
+   else if(checkAppStatus == "OFFLINE_APPLIED"){
+       sendCurrentStatus = "OFFLINE_RE_INITIATE"
+   }
+}
 
 prepareFinalObject("SummaryutGST",this.props.utGST);
 prepareFinalObject("SummarycGST",this.props.cGST);
@@ -100,14 +110,16 @@ else if(discountType == "20%"){
             "bkEmail": email,
             "bkHouseNo": houseNo,
             "bkBookingPurpose": purpose,
+            // "bkPaymentStatus": checkAppStatus == "OFFLINE_APPLIED" ? "SUCCESS" : "",  
             "bkPaymentStatus": checkAppStatus == "OFFLINE_APPLIED" ? "SUCCESS" : "",
-            "bkApplicationNumber": checkAppNum ? checkAppNum : null,
+            "bkApplicationNumber": checkAppNum !== "NOTFOUND" ? checkAppNum : null,
             "bkCustomerGstNo": GSTnumber,
             "wfDocuments": [{
                 "fileStoreId": fid[0]
             }],
             "tenantId": userInfo.tenantId,
-            "bkAction": checkAppStatus == "OFFLINE_APPLIED" ? "OFFLINE_RE_INITIATE" : "OFFLINE_INITIATE",
+            // "bkAction": checkAppStatus == "OFFLINE_APPLIED" ? "OFFLINE_RE_INITIATE" : "OFFLINE_INITIATE", //sendCurrentStatus
+            "bkAction": sendCurrentStatus,
             "businessService": "PACC",
             "financeBusinessService": "PACC",
             "reInitiateStatus": checkAppStatus == "OFFLINE_APPLIED" ? true : false,
@@ -119,10 +131,32 @@ else if(discountType == "20%"){
             "bkBankAccountHolder":AccountHolderName
         }
 
-        if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
-            Booking.timeslots = [{
-                "slot": bookingData.bkFromTime + '-' + bookingData.bkToTime
-            }],
+if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
+let slotArray = []
+let checkslotArray = []
+// if(wholeDaySlot != "notFound" && wholeDaySlot != "notFound"){
+//     console.log("OneDay")
+//     checkslotArray[0] = {"slot":"9AM - 1PM"}
+//     checkslotArray[1] = {"slot": "1PM - 5PM"}
+//     checkslotArray[2] = {"slot": "5PM - 9PM"}
+// }
+if(SecTimeSlotFromTime != "notFound" && SecTimeSlotToTime != "notFound"){
+    console.log("secondTimeSlot")
+    slotArray[0] = conJsonfirst,
+    slotArray[1] = conJsonSecond //conJsonSecond,conJsonfirst  ,second
+
+    checkslotArray[0] = this.props.first,
+    checkslotArray[1] = this.props.second
+}
+else{
+    console.log("oneTimeSlot")
+	checkslotArray[0] = {
+	"slot": bookingData.bkFromTime + '-' + firstToTimeSlot
+	}
+}
+console.log("slotArray_",slotArray)   //checkslotArray
+console.log("checkslotArray",checkslotArray)
+				Booking.timeslots = checkslotArray,
                 Booking.bkDuration = "HOURLY",
                 Booking.bkFromDate = bookingData.bkFromDate,
                 Booking.bkToDate = bookingData.bkToDate,
@@ -139,12 +173,22 @@ else if(discountType == "20%"){
              
                 "applicationType": "PACC",
                 "applicationStatus": "",
-                "applicationId": checkAppNum ? checkAppNum : null,
+                "applicationId": checkAppNum !== "NOTFOUND" ? checkAppNum : null,
                 "tenantId": userInfo.tenantId,
                 "Booking": Booking   
             }
         
 console.log("createAppData--",createAppData)
+
+/** 
+ {
+        "slot": "1PM-5PM"
+      },
+      {
+        "slot": "5PM-9PM"
+      }
+ * **/
+
 
 let payloadfund = await httpRequest(
             "bookings/park/community/_create",
@@ -229,7 +273,7 @@ let payloadfund = await httpRequest(
             prepareFinalObject('documentsPreview', documentsPreview)
         }
     }
-
+  
 submit = async (InitiateAppNumber) => {
 
 console.log("this.state.CashPaymentApplicationNumber--",this.state.CashPaymentApplicationNumber)    
@@ -435,21 +479,100 @@ console.log("seven--",seven ? seven : "sdfg")
         })
       })
     }
+
     let documentMap = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.documentMap : "";
     let bkLocation = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkLocation : "";
+   let checkAppStatus = 'NOTFOUND';
+   let checkAppNum = 'NOTFOUND';
+   let createInitateApp = bookings ? (bookings.applicationData ?(bookings.applicationData.bookingsModelList.length > 0 ? (bookings.applicationData.bookingsModelList): 'NA'): 'NA'): "NA"
+  console.log("createInitateApp--createInitateApp",createInitateApp)
+   if(createInitateApp !== "NA"){
+    console.log("comeInFoundCondition")
+    checkAppStatus = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0].bkApplicationStatus : "NOTFOUND";
+    console.log("checkAppStatus-id",checkAppStatus)
+    checkAppNum = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0].bkApplicationNumber : "NOTFOUND";
+    console.log("checkAppNum-id",checkAppNum)   
+}
    
-   let checkAppStatus = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0].bkApplicationStatus : "NOTFOUND";
    console.log("checkAppStatus--",checkAppStatus)
+   console.log("checkAppNum--",checkAppNum)
+// checkAppStatus = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0].bkApplicationStatus : "NOTFOUND";
+   let DropDownValue = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.bkBookingData.name : "";
+   console.log("DropDownValue--",DropDownValue)
+   let SecTimeSlotFromTime = ""
+   let SecTimeSlotToTime = ""
+   let firstToTimeSlot = ""
+   let firstTimeSlotValue = ""
+   let first  = ""
+   let conJsonfirst = ""
+   let SecondTimeSlotValue = ""
+   let second = ""
+   let conJsonSecond = ""
+//HALL FOR 4 HOURS AT COMMUNITY CENTRE SECTOR 39 CHANDIGARH
+   if(DropDownValue === "HALL FOR 4 HOURS AT COMMUNITY CENTRE SECTOR 39 CHANDIGARH"){
 
-   let checkAppNum = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0].bkApplicationNumber : "NOTFOUND";
-   console.log("checkAppStatus--bkApplicationNumber",checkAppNum)
+    SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo || "notFound"
+    console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)//screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo
+  
+    SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo || "notFound"
+    console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+     //OFFLINE_APPLIED
+  
+     firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTime || "notFound"
+    console.log("firstToTimeSlot--",firstToTimeSlot)
+  
+  
+  //Booking.wholeDay
+  // let wholeDaySlot = state.screenConfiguration.preparedFinalObject.Booking.wholeDay && state.screenConfiguration.preparedFinalObject.Booking.wholeDay || "notFound"
+  // console.log("wholeDaySlot--",wholeDaySlot)
+  
+  // let firstTimeSlotValue = state.screenConfiguration.preparedFinalObject.Booking.timeslots !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.timeslots[0] : "notFound"
+  // console.log("firstTimeSlotValue-",firstTimeSlotValue)
+  
+  firstTimeSlotValue = 
+    state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+    (state.screenConfiguration.preparedFinalObject.Booking.timeslots !== undefined ? (state.screenConfiguration.preparedFinalObject.Booking.timeslots[0] !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.timeslots[0] : "notFound") : "notFound") :
+    "notFound"
+  
+ 
+  if(firstTimeSlotValue !== "notFound"){
+      first=firstTimeSlotValue 
+  console.log("first--",first)
+  }
+  
+ 
+  if(firstTimeSlotValue !== "notFound"){
+  conJsonfirst= JSON.stringify(firstTimeSlotValue);
+  console.log("conJsconJsonfirston--",conJsonfirst)
+  }
+  // let SecondTimeSlotValue = state.screenConfiguration.preparedFinalObject.Booking.timeslotsTwo !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.timeslotsTwo[0] : "notFound"
+  // console.log("SecondTimeSlotValue-",SecondTimeSlotValue)
+  
+   SecondTimeSlotValue = 
+    state.screenConfiguration.preparedFinalObject.Booking !== undefined ?
+    (state.screenConfiguration.preparedFinalObject.Booking.timeslotsTwo !== undefined ? (state.screenConfiguration.preparedFinalObject.Booking.timeslotsTwo[0] !== undefined ? state.screenConfiguration.preparedFinalObject.Booking.timeslotsTwo[0] : "notFound") : "notFound") :
+    "notFound"
+  
+ 
+  if(SecondTimeSlotValue !== "notFound"){
+      second=SecondTimeSlotValue 
+  console.log("second--",second)
+  }
+  
+  if(SecondTimeSlotValue !== "notFound"){
+  conJsonSecond = JSON.stringify(SecondTimeSlotValue);
+  console.log("conJsonSecond--",conJsonSecond)
+  }
+  
 
-   //OFFLINE_APPLIED
+   }
 
+   
     return {
-        //BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,
+        //BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,  wholeDay !== undefined ? 
         //PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE,
-        createPACCApplicationData,userInfo,InitiateAppNumber,
+        firstTimeSlotValue,SecondTimeSlotValue,first,second,
+        createPACCApplicationData,userInfo,InitiateAppNumber,SecTimeSlotFromTime,SecTimeSlotToTime,firstToTimeSlot,conJsonSecond,conJsonfirst,
         documentMap, bkLocation, facilationChargesSuccess,seven,
         fCharges,myLocationtwo,totalAmountSuPage,one,two,three,four,five,six,checkAppStatus,checkAppNum
     }

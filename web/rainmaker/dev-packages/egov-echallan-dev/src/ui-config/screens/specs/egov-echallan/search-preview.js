@@ -737,7 +737,16 @@ const setSearchResponse = async (
         paystatus
       )
     );
-
+    if (paystatus === 'UNPAID') { 
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.employeeFooter.children.sendMessageButton",
+          "visible",
+          true
+        )
+      );
+    }
 
     let encroachmentType = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].encroachmentType", '');
     let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'PENDING');

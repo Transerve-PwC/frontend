@@ -77,6 +77,7 @@ const waterAndSewerageSearchAndResult = {
                                 jsonPath: "components.adhocDialog"
                             }
                         }
+                        //route: "wns/apply"
 
                     }
                 },

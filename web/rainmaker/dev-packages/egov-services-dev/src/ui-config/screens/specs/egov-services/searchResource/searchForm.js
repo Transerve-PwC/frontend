@@ -16,7 +16,7 @@ import {
     prepareFinalObject,
     handleScreenConfigurationFieldChange as handleField,
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
+import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 export const callBackForReset = (state, dispatch, action) => {
     const preparedFinalObject = get(
         state,
@@ -86,8 +86,23 @@ export const callBackForReset = (state, dispatch, action) => {
     }
     fetchData(action, state, dispatch);
 };
-export const callBackForSearch = (state, dispatch, action) => {
-    fetchData(action, state, dispatch);
+export const callBackForSearch = async(state, dispatch, action) => {
+    await fetchData(action, state, dispatch);
+    const myApplicationsCount = get(
+        state,
+        "screenConfiguration.preparedFinalObject.myApplicationsCount"
+    );
+console.log(state.screenConfiguration.preparedFinalObject, "Nero Search form")
+    console.log(myApplicationsCount, "Nero myApplicationsCount")
+    if(myApplicationsCount && myApplicationsCount == 0){
+        dispatch(
+            toggleSnackbar(
+                true,
+                { labelName: "Invalid Application Number!", labelKey: "" },
+                "warning"
+            )
+        );
+    }
 };
 
 export const searchForm = getCommonCard({

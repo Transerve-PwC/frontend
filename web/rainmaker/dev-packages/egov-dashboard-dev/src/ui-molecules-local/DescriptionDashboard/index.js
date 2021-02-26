@@ -906,12 +906,12 @@ class DescriptionDashboard extends React.Component {
        
     return (
       <div>
-        <div style={{display:"flex", height:"500px"}}> 
+        <div className="graphDashboard"> 
             {
                 // Graph 1
                 <React.Fragment>
                     {this.state.drilDownLevel >= 0 ?
-                    <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                    <CardContent className="halfGraph">
                         <React.Fragment>
                             <Bar
                             data={ graphDatabyStatus }
@@ -922,7 +922,7 @@ class DescriptionDashboard extends React.Component {
                     :null}
                  {/* Graph 2 */}
                     {this.state.drilDownLevel >= 1 ?
-                    <CardContent style={{width:"50%", borderStyle: "ridge"}}>
+                    <CardContent className="halfGraph">
                         <React.Fragment>
                             <HorizontalBar
                             data={ graphDatabyDepartment }
@@ -947,8 +947,6 @@ class DescriptionDashboard extends React.Component {
         <br/><br/>
         
         {/* Table Feature Code */}
-        
-
         {
             this.state.drilDownLevel >= 0 ?
 
@@ -975,7 +973,7 @@ class DescriptionDashboard extends React.Component {
                 </div> 
                : null
             }
-            <ReactTable id="customReactTable"
+            <ReactTable
             data={this.state.rowData}
             columns={this.state.columnData}  
             defaultPageSize = {this.state.defaultPageSize}

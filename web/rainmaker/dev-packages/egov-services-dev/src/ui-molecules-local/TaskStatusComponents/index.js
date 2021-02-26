@@ -6,6 +6,10 @@ import {
   DownloadFileContainer
 } from "egov-ui-framework/ui-containers";
 import { convertEpochToDate } from "egov-ui-framework/ui-config/screens/specs/utils";
+import {
+  
+  getUserInfo,
+} from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 //import "./index.css";
 
@@ -27,6 +31,9 @@ export const getCurrentStatus = status => {
 };
 
 const TaskStatusComponents = ({ currentObj, index }) => {
+  let userData1=getUserInfo()
+  var userData = JSON.parse(userData1);
+  
   return (
     <Grid
       container={true}
@@ -75,7 +82,7 @@ const TaskStatusComponents = ({ currentObj, index }) => {
         xs={12}
         sm={6}
         md={4}
-        lg={3}
+        lg={2}
         style={{ marginTop: 15, paddingRight: 20 }}
       >
         <Typography variant="caption">
@@ -131,14 +138,8 @@ const TaskStatusComponents = ({ currentObj, index }) => {
           classes={{
             body2: "body2-word-wrap"
           }}
-        >
-          <LabelContainer
-            labelName={
-              get(currentObj, "assignee.name")
-                ? get(currentObj, "assignee.name")
-                : "NA"
-            }
-          />
+        >{userData.name}
+       
         </Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3} style={{ marginTop: 15 }}>
@@ -169,5 +170,6 @@ const TaskStatusComponents = ({ currentObj, index }) => {
     </Grid>
   );
 };
+
 
 export default TaskStatusComponents;

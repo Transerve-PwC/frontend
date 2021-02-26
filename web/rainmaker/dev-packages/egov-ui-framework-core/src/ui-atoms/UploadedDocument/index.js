@@ -31,6 +31,13 @@ const UploadedDocument = props => {
 }
 
 else{
+  // can not delete if module name in wns and employee login -- start
+  let IsEdit = true
+  if(moduleName==="wns" && process.env.REACT_APP_NAME !== "Citizen")
+  {
+    IsEdit = false
+  }
+  // end
   return (
     <Button
       variant="outlined"
@@ -44,12 +51,15 @@ else{
       }}
     >
       {document.fileName}
+     
+      {IsEdit &&
       <Icon
         style={{ color: "#E54D42", marginLeft: "16px" }}
         onClick={removeDocument}
       >
         <i class="material-icons">highlight_off</i>
       </Icon>
+}
     </Button>
   );
     }

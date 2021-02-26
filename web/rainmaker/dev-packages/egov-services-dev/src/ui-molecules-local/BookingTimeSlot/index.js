@@ -164,7 +164,7 @@ class CustomTimeSlots extends Component {
       {
        
         
-      alert('hi')
+    
             this.props.prepareFinalObject('perDayBookedSlotCount',this.props.perDayBookedSlotCount+1 ); 
             let perDayBookedSlotCount= this.props.perDayBookedSlotCount
     

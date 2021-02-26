@@ -12,28 +12,54 @@ import {
 
   const ConnectionConversionDetails = getCommonContainer({
     connectionUsagesType: getSelectField({
-        label: { labelKey: "WS_CONN_CONVERSION_USAGE_TYPE" },
-        //sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
+        label: { labelKey: "WS_PROPERTY_USAGE_TYPE_TARRIF_LABEL_INPUT" },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.tariffType",
         placeholder: { labelKey: "WS_CONN_CONVERSION_USAGE_TYPE_PLACEHOLDER" },
         required: true,
         gridDefination: { xs: 12, sm: 6 },
-        jsonPath: "WaterConnection[0].connectionUsagesType",
+        jsonPath: "WaterConnection[0].waterProperty.usageCategory",// tarrif type
         props: {
             optionValue: "code",
             optionLabel: "name",
-          data:
-          [
-            {
-              "id": 1,
-              "code": "DOMESTIC",
-              "name": "Domestic"
-            },
-            {
-              "id": 2,
-              "code": "COMMERCIAL",
-              "name": "Commercial"
-            }
-          ]
+            disabled:true,
+      // data:
+      // [
+      //   {
+      //     "id": 1,
+      //     "code": "DOMESTIC",
+      //     "name": "Domestic"
+      //   },
+      //   {
+      //     "id": 2,
+      //     "code": "COMMERCIAL",
+      //     "name": "Commercial"
+      //   }
+      // ]
+        },
+      }),
+      proposedUsageCategory: getSelectField({
+        label: { labelKey: "WS_PROPERTY_USAGE_TYPE_TARRIF_LABEL_INPUT_PROPOSED" },
+        sourceJsonPath: "applyScreenMdmsData.ws-services-masters.tariffType",
+        placeholder: { labelKey: "WS_PROPERTY_USAGE_TYPE_TARRIF_LABEL_INPUT_PROPOSED_PLACEHOLDER" },
+        required: true,
+        gridDefination: { xs: 12, sm: 6 },
+        jsonPath: "WaterConnection[0].proposedUsageCategory",// tarrif type
+        props: {
+            optionValue: "code",
+            optionLabel: "name",
+      // data:
+      // [
+      //   {
+      //     "id": 1,
+      //     "code": "DOMESTIC",
+      //     "name": "Domestic"
+      //   },
+      //   {
+      //     "id": 2,
+      //     "code": "COMMERCIAL",
+      //     "name": "Commercial"
+      //   }
+      // ]
         },
       }),
   });

@@ -95,7 +95,7 @@ class ApplicatInfo extends Component {
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_Bank_Account_Name"
+                label="Bank Name"// label="BK_MYBK_Bank_Account_Name"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -104,7 +104,7 @@ class ApplicatInfo extends Component {
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_Bank_Account_Name"
+                label="Bank Name"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -125,7 +125,7 @@ class ApplicatInfo extends Component {
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_Nominee_Name"
+              label="Nominee Name"    // label="BK_MYBK_Nominee_Name"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -134,7 +134,7 @@ class ApplicatInfo extends Component {
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_Nominee_Name"
+                label="Nominee Name"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -156,7 +156,7 @@ class ApplicatInfo extends Component {
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_Bank_Account_Number"
+              label="Bank Account Number" // label="BK_MYBK_Bank_Account_Number"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -165,7 +165,7 @@ class ApplicatInfo extends Component {
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_Bank Account Number"
+                label="Bank Account Number"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -187,7 +187,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_IFSCCode"
+                label="IFSC Code" // label="BK_MYBK_IFSCCode"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -196,7 +196,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_IFSCCode"
+                  label="IFSC Code"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -217,7 +217,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_AccountHolderName"
+                label="Account Holder Name"// label="BK_MYBK_AccountHolderName"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -226,7 +226,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_AccountHolderName"
+                  label="Account Holder Name"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -240,8 +240,8 @@ class ApplicatInfo extends Component {
 
           {/*newRequirement*/} 
           <div className="col-sm-12" style={{marginTop: '19px'}}> 
-            <FormControl component="fieldset">
-              <FormLabel component="legend"><Label label="BK_MYBK_BankAccount_Type" /></FormLabel>
+            <FormControl component="fieldset">  {/*label="BK_MYBK_BankAccount_Type"*/}
+              <FormLabel component="legend"><Label label="Bank Account Type" /></FormLabel>
               <RadioGroup row aria-label="position" name="gender1"  value={accountType} onChange={AccountType}>
                 <FormControlLabel className={classes.cool} value="Saving" control={<Radio color="primary" />} label="Saving" />
                 <FormControlLabel className={classes.cool} value="Current"  control={<Radio color="primary" />} label="Current" />

@@ -1263,7 +1263,11 @@ export const downloadInventoryPdf = async ( searchScreenObject, Reportname,mode=
   let Url =``;
   if(Reportname ==="OB")
   Url =`/store-asset-services/openingbalance/_report`
-  else if(Reportname==='INV')
+  else if(Reportname ==="CB")
+  Url =`/store-asset-services/openingbalance/_closingReport`
+  else if (Reportname === 'Stock')
+  Url =`/store-asset-services/openingbalance/_stockReport`
+  else if (Reportname === 'INV')
   Url =`/store-asset-services/receiptnotes/_inventoryreport`
   let queryObject = [
     {

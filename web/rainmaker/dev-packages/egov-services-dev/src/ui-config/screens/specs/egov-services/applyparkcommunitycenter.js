@@ -5,7 +5,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { footer } from "./applyResourceParkCommunityCenter/footer";
 import {
-    bankAccountDetails, 
+    bankAccountDetails,
     personalDetails,
     bookingDetails,
 } from "./applyResourceParkCommunityCenter/nocDetails";
@@ -41,8 +41,8 @@ import {
 
 export const stepsData = [
     { labelName: "Applicant Details", labelKey: "BK_PCC_APPLICANT_DETAILS" },
-    { labelName: "Booking Details", labelKey: "BK_PCC_BOOKING_DETAILS" },
-    { labelName: "Bank Account Details", labelKey: "BK_PCC_BANK_ACCOUNT_DETAILS" },
+    { labelName: "Venue Details", labelKey: "BK_PCC_BOOKING_DETAILS" },
+    { labelName: "Bank Account Details", labelKey: "Bank Account Details" },
     { labelName: "Documents", labelKey: "BK_PCC_DOCUMENTS" },
     { labelName: "Summary", labelKey: "BK_PCC_SUMMARY" },
 ];
@@ -493,7 +493,7 @@ const screenConfig = {
                 prepareFinalObject("Booking.bkAccountType", "Saving")
             );
 
-            
+
             dispatch(
                 prepareFinalObject(
                     "Booking.bkFromDate",

@@ -41,6 +41,7 @@ import {
         );
         if(payload){ 
           dispatch(prepareFinalObject("searchScreen.empCode", payload.Employees[0].code));
+          dispatch(prepareFinalObject("empCode", payload.Employees[0].code));
         }
         
       } catch (e) {
@@ -161,6 +162,10 @@ if(Allowances.length>Deductions.length)
             Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
             Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
             Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+            Deductions_Inst_No:"",
+            Non_Gov_Text:"",
+            Non_Gov_Amount:"",
+            Non_Gov_Inst_No:"",
           } 
         )       
       }
@@ -174,6 +179,10 @@ if(Allowances.length>Deductions.length)
             Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
             Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
             Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+            Deductions_Inst_No:"",
+            Non_Gov_Text:"",
+            Non_Gov_Amount:"",
+            Non_Gov_Inst_No:"",
           } 
         )       
       }
@@ -187,40 +196,59 @@ if(Allowances.length>Deductions.length)
               Allowances_Amount:Allowances_ !== undefined? Allowances_.Value :'',
               Deductions_Text: Deductions_!== undefined? Deductions_.ItemName :'',
               Deductions_Amount:Deductions_!== undefined? Deductions_.Value :'',
+              Deductions_Inst_No:"",
+              Non_Gov_Text:"",
+              Non_Gov_Amount:"",
+              Non_Gov_Inst_No:"",
             } 
           )       
         }
 
       }
       
-      Allowances_Deductions.push(
-        {
-          Allowances_Text: 'Total Allowances',
-          Allowances_Amount:Allowances_total,
-          Deductions_Text: 'Total Deductions',
-          Deductions_Amount:Deductions_total,
-        }
-      )
-      Allowances_Deductions.push(
-        {
-          Allowances_Text: '',
-          Allowances_Amount:'',
-          Deductions_Text: 'Net Pay',
-          Deductions_Amount:Allowances_total - Deductions_total,
-        }
-      )
+      // Allowances_Deductions.push(
+      //   {
+      //     Allowances_Text: 'Total Allowances',
+      //     Allowances_Amount:Allowances_total,
+      //     Deductions_Text: 'Total Deductions',
+      //     Deductions_Amount:Deductions_total,
+      //   }
+      // )
+      // Allowances_Deductions.push(
+      //   {
+      //     Allowances_Text: '',
+      //     Allowances_Amount:'',
+      //     Deductions_Text: 'Net Pay',
+      //     Deductions_Amount:Allowances_total - Deductions_total,
+      //   }
+      // )
       let PaySlip ={
         //Deductions:Deductions,
 
         Allowances:Allowances_Deductions,
-        Designation:APIData.PaySlip.Designation,
+        corporationName:'',
+        corporationAddress:'',
+        corporationContact:'',
+        corporationWebsite:'',
+        month:'',
+        year:'',  
         EmployeeCode:APIData.PaySlip.EmployeeCode,
-        DDOName:APIData.PaySlip.DDOName,
-        DDOCode:APIData.PaySlip.DDOCode,
-        PayScale:APIData.PaySlip.PayScale,
-        PayCommission:APIData.PaySlip.PayCommission,
         Name:APIData.PaySlip.Name,
         FatherName:APIData.PaySlip.FatherName,
+        Designation:APIData.PaySlip.Designation,
+        DDOName:APIData.PaySlip.DDOName,
+        DDOCode:APIData.PaySlip.DDOCode,
+        Total_Emolument:Deductions_total,
+        Total_Govt_Recoveries:0,
+        Total_NG_Recoveries:0,
+        Net_Pay:(Allowances_total - Deductions_total),
+        Voucher_Date:"",
+        Voucher_No:"",
+        Date_time:"", // current date 
+        PayScale:APIData.PaySlip.PayScale,
+        PayCommission:APIData.PaySlip.PayCommission,
+        
+        
       }
      // dispatch(prepareFinalObject("PaySlip",PaySlip));
       dispatch(prepareFinalObject("APIData.PaySlip.Allowances",[]));

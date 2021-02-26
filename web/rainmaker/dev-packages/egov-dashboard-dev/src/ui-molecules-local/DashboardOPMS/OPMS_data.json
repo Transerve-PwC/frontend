@@ -1,0 +1,219 @@
+{
+  "graphOne" : {
+    "reportHeader": [
+        {
+          "localisationRequired": false,
+          "name": "applcationType",
+          "label": "report.pm.applcationType",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "totalNoOfApplicationRecieved",
+          "label": "report.pm.totalNoOfApplicationRecieved",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "revenueCollected",
+          "label": "report.pm.revenueCollected",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "totalNoApplicationApprovedWithNilCharges",
+          "label": "report.pm.totalNoApplicationApprovedWithNilCharges",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        }
+      ],
+      "reportData": [
+        [
+          "Permission for Advertisement",
+          65,
+          847004,
+          0
+        ],
+        [
+          "Permission to Keep Pet Dog",
+          36,
+          8925,
+          0
+        ],
+        [
+          "Permission for Road Cut",
+          74,
+          1482651,
+          0
+        ],
+        [
+          "Permission to Sell Meat",
+          18,
+          0,
+          7
+        ]
+      ]
+  },
+  "graphTwo" : {
+    "reportHeader": [
+        {
+          "localisationRequired": false,
+          "name": "applcationType",
+          "label": "report.pm.applcationType",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "totalNoOfApplicationReceived",
+          "label": "report.pm.totalNoOfApplicationReceived",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "noOfApplicationProcessed",
+          "label": "report.pm.noOfApplicationProcessed",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "noOfApplicationPending",
+          "label": "report.pm.noOfApplicationPending",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        },
+        {
+          "localisationRequired": false,
+          "name": "noOfApplicationRejected",
+          "label": "report.pm.noOfApplicationRejected",
+          "type": "string",
+          "defaultValue": null,
+          "isMandatory": false,
+          "isLocalisationRequired": false,
+          "localisationPrefix": "",
+          "showColumn": true,
+          "total": false,
+          "rowTotal": null,
+          "columnTotal": null,
+          "initialValue": null,
+          "minValue": null,
+          "maxValue": null
+        }
+      ],
+    "reportData": [
+    [
+    "Permission for Advertisement",
+    65,
+    23,
+    41,
+    1
+    ],
+    [
+    "Permission to Keep Pet Dog",
+    36,
+    9,
+    25,
+    2
+    ],
+    [
+    "Permission for Road Cut",
+    74,
+    23,
+    46,
+    5
+    ],
+    [
+    "Permission to Sell Meat",
+    18,
+    7,
+    7,
+    4
+    ]
+    ]
+}
+}

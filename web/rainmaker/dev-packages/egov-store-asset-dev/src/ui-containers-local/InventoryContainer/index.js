@@ -262,6 +262,191 @@ console.log("InventoryData")
                </div>);
 
           }
+          else if(pageName ==="CB")
+          {
+            return  ( <div>
+              {
+                 InventoryData.length>0?(              
+                  <div>               
+                
+               <table 
+                style={{
+                  width: "100%",
+                }}>
+               <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}><Label labelClassName="" label="STORE_DETAILS_STORE_NAME" /></td>
+                <td><Label labelClassName="" label={InventoryData.OpeningBalanceReport[0].storeName} /></td>
+                <td style={{
+                  textAlign: "right",
+                 
+                }}> 
+    
+                <Button  color="primary" onClick={() => this.onPrintClick('CB')}  style={{ alignItems: "right"}}>
+                                         <LabelContainer
+                                                 labelName="PRINT"
+                                                 labelKey="STORE_PRINT"
+                                                 color="#FE7A51"/> </Button>
+                </td>
+                </tr>
+               <tr><td  style={{
+                  textAlign: "left",
+                }}><Label labelClassName="" label="STORE_MATERIAL_OPENNING_BALANCE_FINANCIAL_YEAR" /></td>
+                <td><Label labelClassName="" label={InventoryData.OpeningBalanceReport[0].asOnDate} /></td>
+                </tr>
+                     
+              </table>
+              </div>
+                ):
+                (
+                  <div style={{
+                    textAlign: "right",}}>
+                     <Button  color="primary" onClick={() => this.onPrintClick('CB')}  style={{ alignItems: "right"}}>
+                                         <LabelContainer
+                                                 labelName="PRINT"
+                                                 labelKey="STORE_PRINT"
+                                                 color="#FE7A51"/> </Button>
+                  </div>
+                )
+              }         
+             {
+              //  InventoryData&&InventoryData[0]&&( 
+               <div style={{ overscrollBehaviorX:"overlay",overflow:"overlay"}}>
+                 
+                  <table  id="reportTable"
+                 style={{
+                   width: "100%",
+                   marginBottom:"20px"
+                 }}
+                 className="table table-striped table-bordered">
+                 <thead>
+                 <tr className="report-table-header">
+                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Sr No."
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Code"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Name"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Type Name"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="UOM"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Qty."
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Rate"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Total Amount"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="1">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Remarks"
+                  />
+                  </th>
+                 </tr>
+                
+                 {
+                   InventoryData&&(
+                     <tr>
+                       {
+                          InventoryData.length==0?(                     
+                            
+                              <th  style={{ verticalAlign:"middle", textAlign: "center"}}colSpan="9" ><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
+                           
+                           
+                          ):(
+                            <div  style={{ display:"none"}}></div>
+                          )
+                       }
+                     </tr>
+                   )
+                 }
+                 </thead>
+                 {
+                    InventoryData&&(
+                      <tbody>
+                         {
+                           InventoryData.length==0?(
+                            
+                             <tr  style={{ display:"none"}}>
+                               <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2"><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
+                             </tr>
+                            
+                           ):(
+                            InventoryData.OpeningBalanceReport[0].balanceDetails.map((item,i)=>{
+                              return(
+                                <tr>
+                                  <th>{item.srNo}</th>
+                                  <th>{item.materialCode}</th>
+                                  <th>{item.materialName}</th>
+                                  <th>{item.materialType}</th>
+                                  <th>{item.uomName}</th>
+                                  <th>{item.quantity}</th>
+                                  <th>{item.unitRate}</th>
+                                  <th>{item.totalAmount}</th>
+                                  <th>{item.remarks}</th>
+                                 
+                                </tr>
+                              )
+                            
+                            })
+                           )
+                          
+                         }
+    
+                    </tbody>
+                    )                
+                  }
+                 </table>
+                 </div>
+               //)
+            }
+               
+               </div>);
+
+          }
           else if(pageName ==="INVENTRY")
           {
             return  ( <div>
@@ -568,6 +753,246 @@ console.log("InventoryData")
 
           }
           
+          else if(pageName ==="Stock")
+          {
+            return  ( <div>
+              {
+                InventoryData&&InventoryData[0]&&(              
+                  <div>               
+                
+               <table 
+                style={{
+                  width: "100%",
+                }}>
+               <tr><td  style={{
+                  textAlign: "left",
+                  width:"15%"
+                }}><Label labelClassName="" label="STORE_DETAILS_STORE_NAME" /></td>
+                <td><Label labelClassName="" label={InventoryData[0].storeName} /></td>
+                <td style={{
+                  textAlign: "right",
+                 
+                }}> 
+    
+                <Button  color="primary" onClick={() => this.onPrintClick('Stock')}  style={{ alignItems: "right"}}>
+                                         <LabelContainer
+                                                 labelName="PRINT"
+                                                 labelKey="STORE_PRINT"
+                                                 color="#FE7A51"/> </Button>
+                </td>
+                </tr>
+               <tr><td  style={{
+                  textAlign: "left",
+                }}><Label labelClassName="" label="STORE_DETAILS_DEPARTMENT_NAME" /></td>
+                <td><Label labelClassName="" label={InventoryData[0].storeDepartment} /></td>
+                </tr>
+               <tr><td  style={{
+                  textAlign: "left",
+                }}><Label labelClassName="" label="STORE_MATERIAL_NAME" /></td>
+                <td><Label labelClassName="" label={InventoryData[0].materialName} /></td>
+                </tr>
+                
+               <tr><td  style={{
+                  textAlign: "left",
+                }}><Label labelClassName="" label="STORE_CB_ASON_DATE" /></td>
+                <td><Label labelClassName="" label={InventoryData[0].asOnDate} /></td>
+                </tr>        
+              </table>
+              </div>
+                )
+              }         
+             {
+              //  InventoryData&&InventoryData[0]&&( 
+               <div style={{ overscrollBehaviorX:"overlay",overflow:"overlay"}}>
+                 
+                  <table  id="reportTable"
+                 style={{
+                   width: "100%",
+                   marginBottom:"20px"
+                 }}
+                 className="table table-striped table-bordered">
+                 <thead>
+                 <tr className="report-table-header">
+                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Code"
+                  />
+                  </th>
+                  <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Name"
+                  />
+                  </th>
+                  <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Material Type Name"
+                  />
+                  </th>                                    
+                  <th   style={{ verticalAlign:"middle", textAlign: "center"}} rowspan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Unit Rate"
+                  />
+                  </th>                                    
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="0 to 90 Days"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="91 to 180 Days"
+                  />
+                  </th>
+                  <th  style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="181 and above"
+                  />
+                  </th>
+                 
+                <th  style={{ verticalAlign:"middle", textAlign:"center"}} colSpan="2">
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Total"
+                  />
+                  </th>             
+                 </tr>
+                 <tr>
+                
+                  <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                  <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Qty."
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Value"
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Qty."
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Value"
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Qty."
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Value"
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Qty."
+                  />
+                 </th>
+                 <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"1"}}>
+                 <Label
+                    className="report-header-row-label"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    label="Value"
+                  />
+                 </th>
+                 </tr>
+                 {
+                   InventoryData&&(
+                     <tr>
+                       {
+                          InventoryData.length==0?(                      
+                            
+                              <th  style={{ verticalAlign:"middle", textAlign: "center"}}colSpan="21" ><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th>
+                           
+                           
+                          ):(
+                            <div  style={{ display:"none"}}></div>
+                          )
+                       }
+                     </tr>
+                   )
+                 }
+                 </thead>
+                 {
+                    InventoryData&&(
+                      <tbody>
+                         {
+                           InventoryData.length==0?(
+                            
+                             <tr  style={{ display:"none"}}>
+                               {/* <th  style={{ verticalAlign:"middle", textAlign: "center",columnSpan:"21"}} ><Label labelClassName="" label="COMMON_INBOX_NO_DATA" /></th> */}
+                             </tr>
+                            
+                           ):(
+                            InventoryData[0].stockDetails.map((item,i)=>{
+                              return(
+                                <tr>
+                                  {/* <th>{item.srNo}</th> */}
+                                  <th>{item.materialCode}</th>
+                                  <th>{item.materialName}</th>
+                                  <th>{item.materialType}</th>
+                                  <th>{item.unitrate}</th>
+                                  <th>{item['0-90daysQty']}</th>
+                                  <th>{item['0-90daysStockvalue']}</th>
+                                  <th>{item['90-180daysQty']}</th>
+                                  <th>{item['90-180daysStockvalue']}</th>
+                                  <th>{item['181 and aboveQty']}</th>
+                                  <th>{item['181 and aboveStockvalue']}</th>
+                                  <th>{item.totalQty}</th>
+                                  <th>{item.totalStackValue}</th>
+                                </tr>
+                              )
+                            
+                            })
+                           )
+                          
+                         }
+    
+                    </tbody>
+                    )                
+                  }
+                 </table>
+                 </div>
+               //)
+            }
+               
+               </div>);
+
+          }
 
       }
   }

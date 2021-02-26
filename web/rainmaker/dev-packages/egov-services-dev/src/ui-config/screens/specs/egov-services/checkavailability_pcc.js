@@ -34,6 +34,7 @@ import {
 import {
     getAvailabilityDataPCC,
     getMasterDataPCC,
+    getAvailabilityData,
     getBetweenDays,
 } from "../utils";
 import { httpRequest } from "../../../../ui-utils";
@@ -69,6 +70,9 @@ const getMdmsData = async (action, state, dispatch) => {
                         {
                             name: "Booking_Config",
                         },
+                        {
+                            name: "Booking_Vanue",
+                        },
 
                     ],
                 },
@@ -84,6 +88,19 @@ const getMdmsData = async (action, state, dispatch) => {
             mdmsBody
         );
         dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+        let bookingTypeData = get(
+            state,
+            "screenConfiguration.preparedFinalObject.Booking.bkBookingType", 
+            ""
+        );
+        if(bookingTypeData=== "Commercial Ground"){
+            dispatch(prepareFinalObject("sectorJsonPath", payload.MdmsRes.Booking.Booking_Vanue));
+        
+        }else{
+            dispatch(prepareFinalObject("sectorJsonPath", payload.MdmsRes.Booking.Sector));
+        
+        }
+        
     } catch (e) {
         console.log(e);
     }

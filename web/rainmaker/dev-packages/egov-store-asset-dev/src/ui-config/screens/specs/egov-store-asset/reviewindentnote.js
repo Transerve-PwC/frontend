@@ -34,7 +34,7 @@ import {
           {
             moduleName: "store-asset",
             masterDetails: [
-              { name: "businessService" },
+              { name: "businessServiceIssueNote" },
             ]
           }
         ]

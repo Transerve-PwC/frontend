@@ -101,6 +101,28 @@ export const MTIHeader = getCommonCard({
         jsonPath: "indents[0].indentStore.department.name"
       })
     },
+    expectedDeliveryDate: {
+      ...getDateField({
+        label: {
+          labelName: "Expected Delivery Date",
+          labelKey: "STORE_MATERIAL_INDENT_EXPECTED_DELIVERY_DATE"
+        },
+        placeholder: {
+          labelName: "Enter Expected Delivery Date",
+          labelKey: "STORE_MATERIAL_INDENT_EXPECTED_DELIVERY_DATE_PLACEHOLDER"
+        },
+        required: true,
+        errorMessage: "STORE_VALIDATION_EXPECTED_DELIVERY_DATE",
+        pattern: getPattern("Date") || null,
+        jsonPath: "indents[0].expectedDeliveryDate",
+        props: {
+          inputProps: {
+            min: new Date().toISOString().slice(0, 10),
+          },
+          disabled: false,
+        }
+      })
+    },
     divisionName: {
       ...getTextField({
         label: {

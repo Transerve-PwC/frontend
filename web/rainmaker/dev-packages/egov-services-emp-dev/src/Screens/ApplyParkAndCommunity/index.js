@@ -457,9 +457,13 @@ const mapStateToProps = state => {
   let bookingOne = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.bkBookingData:"two"
   let stateData = state;
 
-  let appData = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0] : ""
-  console.log("appData--",appData)
+//   let appData = state.bookings.applicationData ? state.bookings.applicationData.bookingsModelList[0] : ""
+//   console.log("appData--",appData)
 
+  let appData = state.bookings ? (state.bookings.applicationData !== undefined && state.bookings.applicationData !== null ? state.bookings.applicationData.bookingsModelList.length > 0 ?(state.bookings.applicationData.bookingsModelList[0]) :'NA' : 'NA'): 'NA'
+  console.log("appData--",appData)
+  
+  
   let fCharges;
   if (arrayName && arrayName.length > 0) {
     arrayName.forEach((item) => {

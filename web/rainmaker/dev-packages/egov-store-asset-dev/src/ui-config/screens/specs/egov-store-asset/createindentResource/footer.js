@@ -183,10 +183,14 @@ export const callBackForNext = async (state, dispatch) => {
     {
       indentDateValid = false
     }
-    if(expectedDeliveryDate_<CurrentDate)
-    {
-      expectedDeliveryDateValid = false
-    }
+    // if(expectedDeliveryDate_<CurrentDate)
+    // {
+    //   expectedDeliveryDateValid = false
+    // }
+    // else if(expectedDeliveryDate_ === CurrentDate)
+    // {
+    //   expectedDeliveryDateValid =true;
+    // }
     if(!expectedDeliveryDateValid)
     {
       let id = get(

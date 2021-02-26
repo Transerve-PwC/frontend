@@ -1662,31 +1662,30 @@ class ReportPreview extends React.Component {
                 </div>
 
             <h2> { this.state.description } </h2>
-                <div className="previewTableContainer">
+                <div>
+                <table className="bodyTable">
+                <tr>
+                    <th> Application State  </th>
+                    <th> Application Status </th>
+                    <th> Action  </th>
+                    <th> Actor  </th>
+                    <th> Next  </th>
+                </tr>
+                </table>
                 {
                     this.state.DATAJSON.map((applicationState, index) => (
-                        <table className={ (index > 0 && (index %2 === 0)) ? "evenRow" : "oddRow"}>
-                        {index === 0 ? 
-                        <tr>
-                        <td className="tableHead"> <b> {"Application State            "} </b> </td>
-                        <td className="tableHead"> <b> {"Application Status           "} </b></td>
-                        <td className="tableHead"> <b> {"Action                        "} </b> </td>
-                        <td className="tableHead"> <b> {"Actor                        "} </b> </td>
-                        <td className="tableHead"> <b> {"Next State                        "} </b> </td>
-                        </tr>
-                        :
-                        null}
+                        <table className={ (index > 0 && (index %2 === 0)) ? "bodyTable evenRow" : "bodyTable"}>
                         {/* <li> Level {applicationState.state} </li> */}
                         {
                             applicationState.actions === null ?
                             <tr>
-                                {/* class={index === this.state.DATAJSON.length ? "apply" : ""} */}
+                            {/* class={index === this.state.DATAJSON ? alert("Check") : ""} */}
                             {/* <dd>{ index }</dd>  */}
-                            <td className={ index+1 === this.state.DATAJSON.length ? "" : ""}> { applicationState.state } </td>
-                            <td className={ index+1 === this.state.DATAJSON.length ? "" : ""}> { applicationState.applicationStatus } </td>
-                            <td className={ index+1 === this.state.DATAJSON.length ? "" : ""}> --- </td>
-                            <td className={ index+1 === this.state.DATAJSON.length ? "" : ""}> --- </td>
-                            <td className={ index+1 === this.state.DATAJSON.length ? "" : ""}> --- </td>
+                            <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> { applicationState.state } </td>
+                            <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> { applicationState.applicationStatus } </td>
+                            <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
+                            <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
+                            <td className={ index+1 === this.state.DATAJSON.length ? "endLine" : ""}> --- </td>
                             </tr>
                             :
                             null  
@@ -1710,8 +1709,8 @@ class ReportPreview extends React.Component {
                                 <td> { action.roles[0] } </td>
                                 <td> { action.nextState ? this.state.STATEJSON[action.nextState] : ""   } </td>
                                 </tr> 
-                                :
-                                <tr>
+                                    :
+                                    <tr>
                                 {/* <dd>{ index }</dd>  */}
                                 <td> { applicationState.state } </td>
                                 <td> { applicationState.applicationStatus } </td>

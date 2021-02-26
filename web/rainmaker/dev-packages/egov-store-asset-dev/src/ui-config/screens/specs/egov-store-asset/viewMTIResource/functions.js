@@ -90,7 +90,7 @@ export const furnishindentData = (state, dispatch) => {
     "indents",
     []
   );
-   setDateInYmdFormat(indents[0], ["indentDate",]);
+   setDateInYmdFormat(indents[0], ["indentDate","expectedDeliveryDate"]);
   
   dispatch(prepareFinalObject("indents", indents));
 };
@@ -147,6 +147,10 @@ export const handleCreateUpdateIT = (state, dispatch) => {
   get(state, "screenConfiguration.preparedFinalObject.indents[0].indentDate",0) 
   indentDate = convertDateToEpoch(indentDate, "dayStart");
   set(indents[0],"indentDate", indentDate);
+  let expectedDeliveryDate =
+  get(state, "screenConfiguration.preparedFinalObject.indents[0].expectedDeliveryDate",0) 
+  expectedDeliveryDate = convertDateToEpoch(expectedDeliveryDate, "dayStart");
+  set(indents[0],"expectedDeliveryDate", expectedDeliveryDate);
   //furnishindentData(state, dispatch);
   if (uuid) {
     createUpdateIT(state, dispatch, "UPDATE");

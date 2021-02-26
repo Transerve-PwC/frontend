@@ -150,15 +150,16 @@ export const callBackForNext = async (state, dispatch) => {
       if(Number(issueDate))
       issueDate = epochToYmd(issueDate)
     const  issueDate_ = new Date(issueDate)
-      if(fromStore === toStore)
-      {
-        const errorMessage = {
-          labelName: "Intenting Store and Issuing Store can not be same ",
-          labelKey: "STORE_MATERIAL_INDENT_NOTE_STORE_SELECTION_VALIDATION"
-        }; 
-        dispatch(toggleSnackbar(true, errorMessage, "warning"));
-      }
-      else if (issueDate_>CurrentDate)
+      // if(fromStore === toStore)
+      // {
+      //   const errorMessage = {
+      //     labelName: "Intenting Store and Issuing Store can not be same ",
+      //     labelKey: "STORE_MATERIAL_INDENT_NOTE_STORE_SELECTION_VALIDATION"
+      //   }; 
+      //   dispatch(toggleSnackbar(true, errorMessage, "warning"));
+      // }
+      // else
+      if (issueDate_ > CurrentDate)
       {
         const errorMessage = {
           labelName: "Intent Isue Date can not be greater then current date",

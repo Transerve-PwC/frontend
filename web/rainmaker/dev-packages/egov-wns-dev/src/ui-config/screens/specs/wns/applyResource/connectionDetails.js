@@ -1,6 +1,7 @@
 import { getCommonCard, getPattern, getCommonSubHeader, getTextField, getSelectField, getCommonContainer } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from 'lodash/get';
+let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
 // export const getGenderRadioButton = {
 //   uiFramework: "custom-containers",
 //   componentPath: "RadioGroupContainer",
@@ -47,7 +48,9 @@ export const getCheckboxContainer = {
     jsonPathSewerage: "applyScreen.sewerage",
     jsonPathWater: "applyScreen.water",
     jsonPathTubewell: "applyScreen.tubewell",
-    required: true
+    required: true,
+    disabled:IsEdit,
+
   },
   type: "array",
 };
@@ -67,6 +70,10 @@ export const OwnerInfoCard = getCommonCard({
       placeholder: { labelKey: "WS_SERV_DETAIL_NO_OF_TAPS_PLACEHOLDER" },
       gridDefination: { xs: 12, sm: 6 },
       required: true,
+      visible:false,
+      props:{
+        disabled:IsEdit
+      },
       sourceJsonPath: "applyScreen.proposedTaps",
       jsonPath: "applyScreen.proposedTaps",
       pattern: /^[0-9]*$/i,
@@ -89,6 +96,9 @@ export const OwnerInfoCard = getCommonCard({
         sourceJsonPath: "applyScreenMdmsData.ws-services-calculation.pipeSize",
         placeholder: { labelKey: "WS_SERV_DETAIL_PIPE_SIZE_PLACEHOLDER" },
         required: true,
+        props:{
+          disabled:IsEdit
+        },
         gridDefination: { xs: 12, sm: 6 },
         jsonPath: "applyScreen.proposedPipeSize"
       }),
@@ -131,6 +141,7 @@ export const OwnerInfoCard = getCommonCard({
       props: {
         optionValue: "code",
         optionLabel: "name",
+        disabled:IsEdit
       // data:
       // [
       //   {
@@ -148,6 +159,34 @@ export const OwnerInfoCard = getCommonCard({
     beforeFieldChange: async (action, state, dispatch) => {
        displaysubUsageType(action.value, dispatch, state);
    }
+    }),
+    contractValue: getTextField({
+      label: { labelKey: "WS_ADDN_DETAILS_CONTRACT_VALUE" },
+      placeholder: { labelKey: "WS_ADDN_DETAILS_CONTRACT_VALUE_PLACEHOLDER" },
+      gridDefination: { xs: 12, sm: 6 },
+      pattern: getPattern("Name"),
+      visible:true,
+      props:{
+        disabled:IsEdit
+      },
+      jsonPath: "applyScreen.contractValue",
+      pattern: /^[0-9]*$/i,
+      
+     // errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+    }),
+    ferruleSize: getTextField({
+      label: { labelKey: "WS_ADDN_DETAILS_FERRULE_INPUT" },
+      placeholder: { labelKey: "WS_ADDN_DETAILS_FERRULE_INPUT_PLACEHOLDER" },
+      gridDefination: { xs: 12, sm: 6 },
+      pattern: getPattern("AlphaNumValidation"),
+      visible:false,
+      props:{
+        disabled:IsEdit
+      },
+      jsonPath: "applyScreen.ferruleSize",
+      //pattern: /^[0-9]*$/i,
+      
+     // errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
     }),
 
     numberOfWaterClosets: getTextField({

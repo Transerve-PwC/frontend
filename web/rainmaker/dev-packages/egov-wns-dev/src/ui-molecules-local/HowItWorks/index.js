@@ -24,7 +24,7 @@ class HowItWorks extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root} onClick={this.clickHandler}>
-        <List component="nav">
+        {/* <List component="nav">
           <ListItem button>
             <ListItemText
               primary={
@@ -45,6 +45,7 @@ class HowItWorks extends React.Component {
             </ListItemSecondaryAction>
           </ListItem>
         </List>
+      */}
       </div>
     );
   }

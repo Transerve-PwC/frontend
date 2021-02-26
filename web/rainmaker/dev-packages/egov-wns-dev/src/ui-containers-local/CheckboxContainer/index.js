@@ -99,6 +99,7 @@ class CheckboxLabels extends React.Component {
   render() {
     const { classes, required, preparedFinalObject } = this.props;
     let checkedWater, checkedSewerage,checkedTubewell;
+    let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
     if (this.state.interChange) {
       checkedWater = this.state.checkedWater;
       checkedSewerage = this.state.checkedSewerage;
@@ -108,6 +109,7 @@ class CheckboxLabels extends React.Component {
       checkedSewerage = (preparedFinalObject && preparedFinalObject.applyScreen.sewerage) ? preparedFinalObject.applyScreen.sewerage : false;
       checkedTubewell = (preparedFinalObject && preparedFinalObject.applyScreen.tubewell) ? preparedFinalObject.applyScreen.tubewell : false;
     }
+
 
     return (
       <div className={classes.root}>
@@ -121,6 +123,7 @@ class CheckboxLabels extends React.Component {
               control={
                 <Checkbox
                   checked={checkedWater}
+                  disabled={IsEdit}
                   onChange={this.handleWater("checkedWater")}
                   classes={{ root: classes.radioRoot, checked: classes.checked }}
                   color="primary"
@@ -132,6 +135,7 @@ class CheckboxLabels extends React.Component {
               control={
                 <Checkbox
                   checked={checkedSewerage}
+                  disabled={IsEdit}
                   onChange={this.handleSewerage("checkedSewerage")}
                   classes={{ root: classes.radioRoot, checked: classes.checked }}
                   color="primary"
@@ -143,6 +147,7 @@ class CheckboxLabels extends React.Component {
               control={
                 <Checkbox
                   checked={checkedTubewell}
+                  disabled={IsEdit}
                   onChange={this.handleTubewell("checkedTubewell")}
                   classes={{ root: classes.radioRoot, checked: classes.checked }}
                   color="primary"

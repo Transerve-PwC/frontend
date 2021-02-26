@@ -23,6 +23,8 @@ import isEmpty from "lodash/isEmpty";
 const intialState = {
   loading: false,
   error: false,
+  CheckConRefAmt: false,
+  name: "Ram",
   errorMessage: "",
   byId: {},
   categoriesById: {},
@@ -43,7 +45,22 @@ const complaintsReducer = (state = intialState, action) => {
         fetchSuccess: true,
         applicationData: action.payload
       };
-
+      case actionTypes.BOOKING_DATA_COMPLETE:
+        console.log('BOOKING_DATA_COMPLETE',action.payload)
+        return {
+          ...state,
+          loading: false,
+          fetchSuccess: true,
+          applicationData: action.payload
+        };
+        case actionTypes.BOOKING_DATA_ERROR:
+          return {
+            ...state,
+            loading: false,
+            fetchSuccess: true,
+            error: true,
+            errorMessage: action.error,
+          };
     case actionTypes.CREATE_WATER_TANKER_COMPLETE:
       return {
         ...state,
@@ -333,7 +350,14 @@ const complaintsReducer = (state = intialState, action) => {
         loading: false,
         order: action.order,
       };
-
+    case actionTypes.REF_AMOUNT_CONDITION:
+      console.log("actionAmount--",action)
+        return {
+          ...state,
+          loading: false,
+          CheckConRefAmt: true,
+          name: "Shayam"
+        };
     case actionTypes.COMPLAINTS_SEND_MESSAGE:
       return {
         ...state,

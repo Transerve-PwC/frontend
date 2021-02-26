@@ -114,7 +114,7 @@ class SimpleTable extends React.Component {
       "Action"
     ]
 
-    const foundUser = this.props.userInfo && this.props.userInfo.roles.some(el => el.code === 'BK_MCC_HELPDESK_USER');
+    const foundUser = this.props.userInfo && this.props.userInfo.roles.some(el => el.code === 'BK_ADMIN');
     if(foundUser)
     {
 

@@ -12,7 +12,7 @@ import {
 import set from "lodash/set";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
+let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
   const displaysubUsageType = (usageType, dispatch, state) => {
 
     let subTypeValues = get(
@@ -38,6 +38,7 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
         props: {
             optionValue: "code",
             optionLabel: "name",
+            disabled: IsEdit,
         },
        beforeFieldChange: async (action, state, dispatch) => {
                    // displaysubUsageType(action.value, dispatch, state);
@@ -54,6 +55,7 @@ import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-fra
         props: {
             optionValue: "code",
             optionLabel: "name",
+            disabled: IsEdit,
         },
       }),
   });

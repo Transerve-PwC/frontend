@@ -8,7 +8,7 @@ import set from "lodash/set";
 import { httpRequest } from "../../../../../ui-utils/api";
 import { convertDateToEpoch, validateFields } from "../../utils";
 import { ifUserRoleExists } from "../../utils";
-
+import {  getUserInfo} from "egov-ui-kit/utils/localStorageUtils";
 export const callPGService = async (state, dispatch) => {
   const isAdvancePaymentAllowed =get(state, "screenConfiguration.preparedFinalObject.businessServiceInfo.isAdvanceAllowed");
   const tenantId = getQueryArg(window.location.href, "tenantId");
@@ -41,11 +41,23 @@ export const callPGService = async (state, dispatch) => {
     return;
   }
 
-  const user = {
-    name: get(billPayload, "Bill[0].payerName"),
-    mobileNumber: get(billPayload, "Bill[0].mobileNumber"),
-    tenantId
-  };
+ // set user for water module
+
+
+const userInfo = JSON.parse(getUserInfo());
+const user =  (businessService ==='WS.ONE_TIME_FEE' || businessService ==="WS") ?
+{
+
+  name: userInfo.name,
+  mobileNumber: userInfo.mobileNumber,
+  tenantId
+}
+:{
+  name: get(billPayload, "Bill[0].payerName"),
+  mobileNumber: get(billPayload, "Bill[0].mobileNumber"),
+  tenantId
+};
+///
   let taxAndPayments = [];
   taxAndPayments.push({
     // taxAmount:taxAmount,

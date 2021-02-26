@@ -90,7 +90,7 @@ class HCDashboard extends React.Component {
             {
             "sortBy": "service_type",
             "msgX": "No of Request",
-            "msgY": "Type of Service",
+            "msgY": "",
             "title": "Service Type wise Horticulture Status Report",
             },
             { 
@@ -199,7 +199,7 @@ class HCDashboard extends React.Component {
             {
             "sortBy": "service_type",
             "msgX": "No of Request",
-            "msgY": "Type of Service",
+            "msgY": "",
             "title": "Service Type wise Horticulture Status Report",
             },
             { 
@@ -748,7 +748,7 @@ class HCDashboard extends React.Component {
     return (
       <div>
 
-        <div style={{display:"flex", height:"500px"}}>
+        <div className="graphDashboard">
         {/* <CardContent style={{width:"40%", borderStyle: "ridge"}}>
             <React.Fragment>
                 <Bar
@@ -760,7 +760,7 @@ class HCDashboard extends React.Component {
 
         {
             this.state.graphClicked >= 0 ?
-            <CardContent style={{width:"40%", borderStyle: "ridge"}}>
+            <CardContent className="halfGraph-40">
                 <React.Fragment>
                     <Pie
                     data={ PIEgraphOneSortedData }
@@ -773,7 +773,7 @@ class HCDashboard extends React.Component {
         
         {
             this.state.graphClicked > 0 ?
-            <CardContent style={{width:"60%", borderStyle: "ridge"}}>
+            <CardContent className="halfGraph-60">
                 <React.Fragment>
                     <HorizontalBar
                     data={ graphTwoSortedData } 
@@ -797,11 +797,9 @@ class HCDashboard extends React.Component {
             </CardContent>
         :null
         }
-
-        <br/><br/><br/><br/>
         {
             this.state.graphClicked >= 0 ?
-            <ReactTable id="customReactTable"
+            <ReactTable
             // PaginationComponent={Pagination}
             data={ this.state.rowData }  
             columns={ this.state.columnData }  

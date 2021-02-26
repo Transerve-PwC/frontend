@@ -102,12 +102,12 @@ class CheckAvailability extends Component {
 
     if (this.state.vanueType != undefined) {
       if (this.state.vanueType == "Commercial Ground") {
-        alert("Commercial Ground");
+        // alert("Commercial Ground");
       } else if (
         this.state.vanueType === "Community Center" ||
         this.state.vanueType === "Parks"
       ) {
-        alert("park & community");
+        // alert("park & community");
       }
     }
     this.setState({
@@ -641,6 +641,16 @@ else{  /**loop for new Booking Create**/
      console.log("fgasdfghjkklllll")
     this.props.history.push(`/egov-services/applyResourceCommercialGround`);
    }
+   if(NewBookFromDate == "notFound" && NewBookToDate == "notFound"){
+    toggleSnackbarAndSetText(
+      true,
+      {
+        labelName: "Please Select From Date & To Date",
+        labelKey: `Please Select From Date & To Date`
+      },
+      "error"
+    );
+   }
    else{
     this.props.history.push(`/egov-services/applyPark-community-center`); 
    }
@@ -665,6 +675,8 @@ else{  /**loop for new Booking Create**/
       classes,
       oldBookingData,
       DropDownValue,
+      NewBookToDate,
+      NewBookFromDate
     } = this.props;
     console.log("propsInCheckAvail--", this.props);
     console.log("StateInCheckAvailPage--", this.state);
@@ -686,9 +698,9 @@ else{  /**loop for new Booking Create**/
       if (item) {
         let finalValues = Object.values(item);
         finalValues.forEach((event) => {
-          console.log("event-cpage--", event);
+          // console.log("event-cpage--", event);
           arrayData.push(event);
-          console.log("arrayData-cpage--", arrayData);
+          // console.log("arrayData-cpage--", arrayData);
         });
       }
     });
@@ -758,20 +770,20 @@ else{  /**loop for new Booking Create**/
                       classes={classes.label}
                       labelPlacement="end"
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                       value="Commercial Ground"
                       control={<Radio color="primary" />}
                       label="Commercial Ground"
                       classes={classes.label}
                       labelPlacement="end"
-                    />
+                    /> */}
                   </RadioGroup>
                 </FormControl>
               </div>
             </div>
 
             {/*New Requirement Changes*/}
-            {this.state.vanueType === "Community Center" || this.state.vanueType === "Parks"? (
+            {/* {this.state.vanueType === "Community Center" || this.state.vanueType === "Parks"? (
             <div>
               <div className="col-sm-6 col-xs-6">
                 <FormControl component="fieldset">
@@ -802,7 +814,7 @@ else{  /**loop for new Booking Create**/
                   </RadioGroup>
                 </FormControl>
               </div>
-            </div>) : ""}
+            </div>) : ""} */}
 
             {/*condition rendering for Dropdown according to Booking Type*/}
             {this.props.DropDownValue != "notfound" &&
@@ -887,7 +899,7 @@ else{  /**loop for new Booking Create**/
               "this.state.oldBookingData--12345",
               this.state.oldBookingData
             )}
-            {this.state.oldBookingData &&
+            {/* {this.state.oldBookingData &&
             this.state.oldBookingData != "notfound" ? (
               <div>
                 {console.log("dropdown in date/Venue CHANGE")}
@@ -929,7 +941,7 @@ else{  /**loop for new Booking Create**/
               </div>
             ) : (
               ""
-            )}
+            )} */}
 
             {/*Import Booking Media for Commercial*/}
             {this.state.vanueType === "Commercial Ground" &&
@@ -1054,7 +1066,38 @@ else{  /**loop for new Booking Create**/
                   availabilityCheckData={this.state.availabilityCheckData}
                 />
               )}
+{/*New testing Start*/}
+{/* {this.state.availabilityCheckData &&
+              this.state.availabilityCheckData.bkBookingType ==
+                "Community Center" &&
+              vanueData &&
+              vanueData.bookingAllowedFor != "" && (
+                <BookingCalendar
+                  witholDdATA={"withNewData"}
+                  masterDataPCC={this.state.masterDataPCC}
+                  availabilityCheckData={this.state.availabilityCheckData}
+                  bookingVenue={this.props && this.props.bookingVenue}
+                  oldBookingData={this.state.oldBookingData}
+                />
+              )}
 
+{this.state.availabilityCheckData.bkBookingType ==
+                "Community Center" && NewBookFromDate != "notFound" && this.props.BothDateSame == "BothDateSame" && (
+                <BookingTimeSlot
+                  masterDataPCC={this.state.masterDataPCC}
+                  availabilityCheckData={this.state.availabilityCheckData}
+                  oldFromDate
+                  oldToDate
+                />
+              )}
+            {this.state.availabilityCheckData.bkBookingType ==
+                "Community Center" && NewBookFromDate != "notFound" && NewBookToDate != "notFound" && this.props.BothDateSame == "BothDateSame" &&(
+                <SelectedTimeSlotInfo
+                  masterDataPCC={this.state.masterDataPCC}
+                  availabilityCheckData={this.state.availabilityCheckData}
+                />
+              )} */}
+{/*NewTesting End*/}
             {this.state.availabilityCheckData &&
               this.state.availabilityCheckData.bkSector &&
               vanueData != undefined &&
@@ -1184,6 +1227,7 @@ const mapStateToProps = (state) => {
   const { bookings, common, auth, form } = state;
   let stateData = state;
   const { complaintSector, sImageUrl, applicationSector } = bookings;
+  var BothDateSame;
   var bookingVenueData =
     state &&
     state.screenConfiguration.preparedFinalObject.availabilityCheckData;  //bkLocation
@@ -1232,6 +1276,19 @@ const mapStateToProps = (state) => {
   let NewBookToDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkToDate || "notFound"
   console.log("NewBookToDate--",NewBookToDate)
 
+if(NewBookFromDate != "notFound" && NewBookToDate != "notFound"){
+  
+let d1 = new Date(NewBookFromDate)
+let d2 = new Date(NewBookToDate)
+if(d1.getTime() === d2.getTime()){
+BothDateSame = "BothDateSame"
+console.log("BothDateSame-first",BothDateSame)
+}
+else{
+  console.log("BothDateSame-Second",BothDateSame)
+}
+  }
+
   let AppStatus = state.screenConfiguration.preparedFinalObject.PreviousBookingData && state.screenConfiguration.preparedFinalObject.PreviousBookingData.ApplicationStatus || "notFound"
   console.log("AppStatus--",AppStatus)
 
@@ -1251,7 +1308,7 @@ const mapStateToProps = (state) => {
 
   return {
     userInfo,NewBookFromDate,NewBookToDate,AppStatus,AgainNewFromDate,AgainNewFromDate,PrevFromDate,PrevToDate,
-    DropDownValue,
+    DropDownValue,BothDateSame,
     complaintSector,
     bookingVenue,
     stateData,

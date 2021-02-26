@@ -269,7 +269,7 @@ class ActionDialog extends React.Component {
                         handleFieldChange(`${dataPath}.comments`, e.target.value)
                       }
                       // required = {true}
-                      jsonPath={this.open != true ? "" : `${dataPath}.comments`}
+                      //jsonPath={this.open != true ? "" : `${dataPath}.comments`}
                       placeholder={fieldConfig.comments.placeholder}
                       inputProps={{ maxLength: 120 }}
                     />

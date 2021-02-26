@@ -6,10 +6,10 @@ import set from "lodash/set";
 import Label from "egov-ui-kit/utils/translationNode";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { Pie } from 'react-chartjs-2';
+import { Pie, HorizontalBar, Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Chart from 'chart.js';
-import "./index.scss";
+import "./index.css";
 
 class EawasContainer extends Component {
 
@@ -80,7 +80,7 @@ class EawasContainer extends Component {
                 }
             ], 
             legend: {
-                display: true,
+                display: false,
                 position: 'right',
                 labels: {
                 fontFamily: "Comic Sans MS",
@@ -91,17 +91,54 @@ class EawasContainer extends Component {
             tooltips: {
                 enabled: true
             },
-            // title: {
-            //     display: true,
-            //     text: this.state.graphHardOneData.title,
-            // },
-           
-            plugins: {
-                datalabels: {
-               
-                }
-                }
+            title: {
+            display: true,
+            text: "Graphical Stat Report"
+            },
+            scales: {
+            xAxes: [{
+                gridLines: {
+                    display:true
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    // suggestedMax: 100,
+                    stepSize: 1
+                },
+                // scaleLabel: {
+                //     display: true,
+                //     labelString: this.state.graphHardTwoData.msgX
+                //   }, 
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: true
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    stepSize: 1
+                },
+                // scaleLabel: {
+                //     display: true,
+                //     labelString: this.state.graphHardTwoData.msgY
+                //   }, 
+            }]
+        },
+        plugins: {
+            datalabels: {
+                display: true,
+                color: 'white',
+            //     backgroundColor: 'grey',
+            //     labels: {
+            //         title: {
+            //             font: {
+            //                 weight: 'bold'
+            //             }
+            //         }
+            //     }}
             }
+            }
+          }
   // Second Horizontal Graph
 //   var graphTwoSortedData = {
 //     labels: ["totalAccommodation","totalBidSubmitted","totalOnlineAllotment","vacantAccommodation","AllottedAccommodations"],
@@ -193,28 +230,26 @@ class EawasContainer extends Component {
 // }
           if(pageName ==="INTIGRATION_EAWAS")
           {
-            return  ( <div>
+            return  ( 
+              <React.Fragment>
+            
               {
                  APIData&&(
-                 
-                  <div>
- {
-               
-               <div style={{display:"flex", height:"310px"}}>
-                 
+              <div className="statReportContainer">
+
               <table  id="reportTable"
-                 style={{
-                   width: "50%",
-                   marginBottom:"20px"
-                 }}
-                 className="table table-striped table-bordered">
+                //  style={{
+                //    width: "100%",
+                //    marginBottom:"20px"
+                //  }}
+                 className="table-striped table-bordered">
                   
                  <thead>
                  <tr className="report-table-header">
-                 <th   style={{ verticalAlign:"middle", textAlign: "center"}} colSpan="2">
+                 <th   style={{ verticalAlign:"middle",fontSize:"21px", padding: "5px", textAlign: "center"}} colSpan="2">
                   <Label
-                    className="report-header-row-label"
-                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold", }}
+                    className="report-header-row-label-HEADING"
+                    labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontSize:"21px", padding: "5px", fontWeight: "bold", }}
                     label="INTIGRATION_EOFFICE_STATE_HEADING"
                   />
                   </th>
@@ -299,9 +334,9 @@ class EawasContainer extends Component {
                  {
                    // graph code
                   //  <div style={{display:"flex", }}>
-            <CardContent style={{width:"50%", }}>
+            <CardContent className="graphData">
                    <React.Fragment>
-                   <Pie
+                   <Bar
                    data={ PIEgraphOneSortedData } 
                    options={ PIEgraphOneOption } 
                    />
@@ -309,9 +344,7 @@ class EawasContainer extends Component {
                </CardContent>
               //  </div>
                  }
-                  </div>
                
-            }
                   </div>
                  
                
@@ -319,7 +352,8 @@ class EawasContainer extends Component {
               }         
             
                
-               </div>);
+            </React.Fragment>
+            );
 
           }
          

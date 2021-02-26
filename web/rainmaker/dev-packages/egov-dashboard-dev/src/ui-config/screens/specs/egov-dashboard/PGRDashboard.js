@@ -12,7 +12,7 @@ let role_name = JSON.parse(getUserInfo()).roles[0].code
 const header = getCommonHeader(
   {
     labelName: "PGR Dashboard",
-    labelKey: "DASHBOARD_1"
+    labelKey: "Pgr_dashboard_1"
   },
   {
     classes: {

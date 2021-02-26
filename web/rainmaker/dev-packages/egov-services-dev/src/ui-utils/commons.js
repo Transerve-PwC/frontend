@@ -57,6 +57,41 @@ export const getPaymentGateways = async () => {
     }
 };
 
+
+
+export const getSearchResultsViewForRoomBooking = async (queryObject) => {
+    try {
+        const response = await httpRequest(
+            "post",
+            "bookings/api/citizen/community/center/room/_search",
+            "",
+            [],
+            {
+                //tenantId: queryObject[0]["value"],
+                applicationNumber: queryObject[0]["value"],
+                applicationStatus: "",
+                mobileNumber: "",
+                fromDate: "",
+                typeOfRoom: "",
+                toDate: "",
+                bookingType: "",
+                uuid: JSON.parse(getUserInfo()).uuid,
+            }
+        );
+        return response;
+    } catch (error) {
+        store.dispatch(
+            toggleSnackbar(
+                true,
+                { labelName: error.message, labelCode: error.message },
+                "error"
+            )
+        );
+    }
+};
+
+
+
 export const getSearchResultsView = async (queryObject) => {
     try {
         const response = await httpRequest(
@@ -87,6 +122,53 @@ export const getSearchResultsView = async (queryObject) => {
     }
 };
 
+
+export const getSearchResultsViewForHall = async (queryObject) => {
+    try {
+        const response = await httpRequest(
+            "post",
+            "bookings/api/community/center/_search",
+            "",
+            [],
+            {
+                applicationNumber: queryObject[0]["value"],
+                
+            }
+        );
+        return response;
+    } catch (error) {
+        store.dispatch(
+            toggleSnackbar(
+                true,
+                { labelName: error.message, labelCode: error.message },
+                "error"
+            )
+        );
+    }
+};
+export const getRoomDataForHall = async (queryObject) => {
+    try {
+        const response = await httpRequest(
+            "post",
+            "bookings/community/room/availability/_fetch",
+            "",
+            [],
+            {
+                applicationNumber: queryObject[0]["value"],
+                
+            }
+        );
+        return response;
+    } catch (error) {
+        store.dispatch(
+            toggleSnackbar(
+                true,
+                { labelName: error.message, labelCode: error.message },
+                "error"
+            )
+        );
+    }
+};
 export const getSearchResultsViewForNewLocOswmcc = async (queryObject) => {
     try {
         const response = await httpRequest(
@@ -419,9 +501,18 @@ export const createUpdatePCCApplication = async (state, dispatch, action) => {
                 setApplicationNumberBox(state, dispatch);
 
 
+
                 if (response.data.timeslots && response.data.timeslots.length > 0) {
                     console.log(response.data.timeslots, "Hello Nero");
-                    var [fromTime, toTime] = response.data.timeslots[0].slot.split('-')
+                    if(response.data.timeslots && response.data.timeslots.length > 1){
+                        var [fromTime, toTimeOne] = response.data.timeslots[0].slot.split('-')
+                        var [fromTimeTwo, toTime] = response.data.timeslots[1].slot.split('-')
+                   
+                   
+                    }else{
+                        var [fromTime, toTime] = response.data.timeslots[0].slot.split('-')
+                   
+                    }
                     let DisplayPaccObject = {
                         bkDisplayFromDateTime: response.data.bkFromDate + "#" + fromTime,
                         bkDisplayToDateTime: response.data.bkToDate + "#" + toTime
@@ -822,6 +913,129 @@ export const createUpdateWtbApplication = async (state, dispatch, action) => {
             return { status: "success", data: response.data };
         }
     } catch (error) {
+        dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+
+        // Revert the changed pfo in case of request failure
+        let BookingData = get(
+            state,
+            "screenConfiguration.preparedFinalObject.Booking",
+            []
+        );
+        dispatch(prepareFinalObject("Booking", BookingData));
+
+        return { status: "failure", message: error };
+    }
+};
+
+
+export const createUpdateRoomApplication = async (state, dispatch, action) => {
+    
+    let response = "";
+    let tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    // let applicationNumber =
+    //     getapplicationNumber() === "null" ? "" : getapplicationNumber();
+    let method = action === "INITIATE" ? "CREATE" : "UPDATE";
+
+    try {
+        let payload = get(
+            state.screenConfiguration.preparedFinalObject,
+            "Booking",
+            []
+        );
+        let roomData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "roomData",
+            []
+        );
+
+        let roomType = roomData.typeOfRoom
+        
+        if (action === "INITIATE") {
+            set(payload, "financeBusinessService", "BKROOM");
+            set(payload, "roomBusinessService", "BKROOM");
+        }
+        let roomObject=[]
+        if(roomType==='Both'){
+            
+             roomObject= [{
+                'action':action,
+                'remarks':"string",
+                'roomBusinessService':"BKROOM",
+                'totalNoOfRooms':roomData.bkAcRoomToBeBooked,
+                'typeOfRoom':"AC",
+                'fromDate':roomData.fromDate,
+                'toDate': roomData.toDate
+            },
+            {
+                "action": action,
+                "remarks": "string",
+                "roomBusinessService": "BKROOM",
+                "totalNoOfRooms": roomData.bkNonAcRoomToBeBooked,
+                "typeOfRoom": "NON AC",
+                "fromDate":roomData.fromDate,
+                "toDate":roomData.toDate
+            }
+        ]
+            set(payload, "roomsModel", roomObject);
+
+        }else{
+
+            
+             roomObject= [{
+                'action':action,
+                'remarks':"string",
+                'roomBusinessService':"BKROOM",
+                'totalNoOfRooms':roomData.totalNoOfRooms,
+                'typeOfRoom':roomData.typeOfRoom,
+                'fromDate':roomData.fromDate,
+                'toDate': roomData.toDate
+            }]
+            set(payload, "roomsModel", roomObject);
+           
+            
+        }
+        
+        set(payload, "financialYear", `${getCurrentFinancialYear()}`);
+        
+        
+        console.log('payload1234', payload)
+        if (method === "CREATE") {
+            response = await httpRequest(
+                "post",
+                "bookings/community/room/_create",
+                "",
+                [],
+                {
+                    Booking: payload,
+                }
+            );
+            if (
+                response.data.bkApplicationNumber !== "null" ||
+                response.data.bkApplicationNumber !== ""
+            ) {
+                dispatch(prepareFinalObject("Booking", response.data));
+                setapplicationNumber(response.data.bkApplicationNumber);
+                setApplicationNumberBox(state, dispatch);
+                return { status: "success", data: response.data };
+            } else {
+                return { status: "fail", data: response.data };
+            }
+        } else if (method === "UPDATE") {
+            response = await httpRequest(
+                "post",
+                "bookings/community/room/_update",
+                "",
+                [],
+                {
+                    Booking: payload,
+                }
+            );
+            setapplicationNumber(response.data.bkApplicationNumber);
+            dispatch(prepareFinalObject("Booking", response.data));
+            return { status: "success", data: response.data };
+        }
+    } catch (error) {
+        
         dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
 
         // Revert the changed pfo in case of request failure

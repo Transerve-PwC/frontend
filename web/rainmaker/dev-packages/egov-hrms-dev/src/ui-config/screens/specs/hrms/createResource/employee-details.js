@@ -171,8 +171,8 @@ export const employeeDetails = getCommonCard({
           )          
         );
 
-        dispatch(prepareFinalObject("Employee[0].serviceHistory[0].serviceFrom", epochToYmdDate(dateOfAppointment_)));
-        dispatch(prepareFinalObject("Employee[0].dateOfAppointment", epochToYmdDate(dateOfAppointment_)));
+        // dispatch(prepareFinalObject("Employee[0].serviceHistory[0].serviceFrom", epochToYmdDate(dateOfAppointment_)));
+        // dispatch(prepareFinalObject("Employee[0].dateOfAppointment", epochToYmdDate(dateOfAppointment_)));
         //set defaule date for assignment start data and service start date to ease date selection
         // dispatch(
         //   handleField(`create`,        
@@ -305,11 +305,11 @@ export const professionalDetails = getCommonCard(
           required: true,
           pattern: getPattern("Date"),
           jsonPath: "Employee[0].dateOfSuperannuation",
-          props: {
-            inputProps: {
-              min: new Date().toISOString().slice(0, 10),
-            }
-          },
+          // props: {
+          //   inputProps: {
+          //     min: new Date().toISOString().slice(0, 10),
+          //   }
+          // },
         }),
       },
       employmentType: {

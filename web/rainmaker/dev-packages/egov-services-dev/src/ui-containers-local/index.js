@@ -29,6 +29,10 @@ const EstimateCardContainer = Loadable({
   loader: () => import("./EstimateCardContainer"),
   loading: () => <Loading />
 });
+const RoomCardsContainer = Loadable({
+  loader: () => import("./RoomCardsContainer"),
+  loading: () => <Loading />
+});
 const DocumentListContainer = Loadable({
   loader: () => import("./DocumentListContainer"),
   loading: () => <Loading />
@@ -100,5 +104,6 @@ export {
   BookingMediaContainer,
   RefundAmountContainer,
   RefundFeeAmountContainer,
-  modifiedBookingPaymentCard
+  modifiedBookingPaymentCard,
+  RoomCardsContainer
 };

@@ -5,16 +5,14 @@ import { getUserInfo, setapplicationType } from "egov-ui-kit/utils/localStorageU
 import { getDashboardDropdownData } from "../../../../ui-utils/commons";
 // import { HCDashboardFilterForm, HCDashboardResults } from "./HCDashboard/HCDashboard";
 import { EChallanDashboardFilterForm, EchallanDashboardResults } from "./EChallanDashboard/EChallanDashboard";
-import { PGRDashboardResults } from "./searchResource/dashboardTypeSearchResults";
-import { allDashboardSearchAPICall, SearchDashboardData } from "./searchResource/functions";
 import './index.css';
 
 let role_name = JSON.parse(getUserInfo()).roles[0].code
 
 const header = getCommonHeader(
   {
-    labelName: "HC Dashboard",
-    labelKey: "DASHBOARD_2"
+    labelName: "Challan Dashboard",
+    labelKey: "Challan_dashboard_1"
   },
   {
     classes: {

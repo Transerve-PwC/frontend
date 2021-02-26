@@ -275,16 +275,17 @@ export const header = getCommonContainer({
           {
           const userInfo = JSON.parse(getUserInfo());
           let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
-          // filter store based on login user role and assign business service
+          // filter store based on login user role and assign business service apply after tersting report
+          // remove on 22/02/2021 User should have the provision to select store of any department (Same or others) while raising indent.
           let roles = userInfo.roles
-          for (let index = 0; index < roles.length; index++) {
-          const element = roles[index];
-          businessService = businessService.filter(x=>x.role === element.code)
-          if(businessService.length==1)
-          response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
-          break;        
-          }
-          dispatch(prepareFinalObject("store.stores", response));
+          // for (let index = 0; index < roles.length; index++) {
+          // const element = roles[index];
+          // businessService = businessService.filter(x=>x.role === element.code)
+          // if(businessService.length==1)
+          // response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
+          // break;        
+          // }
+          dispatch(prepareFinalObject("store.stores", response.stores));
            }
           });
           // if(userInfo){

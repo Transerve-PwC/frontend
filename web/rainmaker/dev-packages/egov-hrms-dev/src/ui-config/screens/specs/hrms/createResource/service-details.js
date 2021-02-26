@@ -329,7 +329,7 @@ const serviceDetailsCard = {
         let serviceFromDate = convertDateToEpoch(get(employeeObject[0], "dateOfAppointment"))// convertDateToEpoch(action.value, "dayStart")
        
                
-        set(muliItemContent[key], "props.value", new Date(serviceFromDate).toISOString().slice(0, 10));
+       // set(muliItemContent[key], "props.value", new Date(serviceFromDate).toISOString().slice(0, 10));
         
         }
 
@@ -340,10 +340,23 @@ const serviceDetailsCard = {
             `Employee[0].serviceHistory[${cardIndex}].isCurrentPosition`,
             []
           );
+          // if(isCurrentPosition)
+          // set(muliItemContent["serviceToDate"], "props.disabled", true);
+          // else
+          // set(muliItemContent["serviceToDate"], "props.disabled", false);
+
+           isCurrentPosition = get(
+            state.screenConfiguration.preparedFinalObject,
+            `Employee[0].serviceHistory[${cardIndex}].isCurrentPosition`,
+            false
+          );
           if(isCurrentPosition)
-          set(muliItemContent["serviceToDate"], "props.disabled", true);
-          else
-          set(muliItemContent["serviceToDate"], "props.disabled", false);
+          {
+            set(muliItemContent["serviceToDate"], "props.disabled", isCurrentPosition);
+          }
+          else{
+            set(muliItemContent["serviceToDate"], "props.disabled", isCurrentPosition);
+          }
 
         }
         

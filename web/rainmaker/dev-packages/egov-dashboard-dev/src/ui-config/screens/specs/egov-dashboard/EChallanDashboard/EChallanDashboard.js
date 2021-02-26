@@ -64,7 +64,7 @@ export const EChallanDashboardFilterForm = getCommonCard({
           },
       props: {
         style: {
-        width: "200%",
+        width: "100%",
         cursor: "pointer"
       },
   
@@ -101,10 +101,8 @@ export const EChallanDashboardFilterForm = getCommonCard({
         variant: "contained",
         color: "primary",
         style: {
-        width: "60%",
-        height: "55px",
-        /* margin-right: 80px; */
-        marginLeft: "180px"
+          width: "60%",
+          height: "55px",
         }
       },
       children: {

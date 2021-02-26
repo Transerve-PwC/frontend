@@ -101,12 +101,35 @@ const DashboardEchallan = Loadable({
   loading: () => <Loading />
 });
 
-
 const DashboardSportCulture = Loadable({
   loader: () => import("./DashboardSportCulture"),
   loading: () => <Loading />
 });
 
+const DashboardPublicRelation = Loadable({
+  loader: () => import("./DashboardPublicRelation"),
+  loading: () => <Loading />
+});
+
+const DashboardTradeLicense = Loadable({
+  loader: () => import("./DashboardTradeLicense"),
+  loading: () => <Loading />
+});
+
+const DashboardEaawas = Loadable({
+  loader: () => import("./DashboardEaawas"),
+  loading: () => <Loading />
+});
+
+const DashboardOPMS = Loadable({
+  loader: () => import("./DashboardOPMS"),
+  loading: () => <Loading />
+});
+
+const DashboardOSBM = Loadable({
+  loader: () => import("./DashboardOSBM"),
+  loading: () => <Loading />
+});
 
 export {
   TestMolecules,
@@ -129,5 +152,10 @@ export {
   HCDashboard,
   ReportPreview,
   DashboardEchallan,
-  DashboardSportCulture
+  DashboardSportCulture,
+  DashboardPublicRelation,
+  DashboardTradeLicense,
+  DashboardEaawas,
+  DashboardOPMS,
+  DashboardOSBM
 };

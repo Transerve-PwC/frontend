@@ -64,7 +64,11 @@ div#custom-containers-local-moduleDashboardDropdown {
 
 div#custom-containers-local-moduleDashboardDropdown {
   position: absolute;
-  width: 30%; }
+  width: 325px }
+
+button#material-ui-searchButton {
+margin-left: 165px;
+}
 
 .css-16pqwjk-indicatorContainer {
   color: #1a1a1a;
@@ -77,3 +81,20 @@ div#custom-containers-local-moduleDashboardDropdown {
   transition: color 150ms;
   box-sizing: border-box;
   width: 10%; }
+
+@media only screen and (max-width: 900px) {
+  div#material-ui-FilterConstraintsContainer {
+  display: block;
+  }
+
+  button#material-ui-searchButton {
+  margin-left: 0px;
+  margin-top: 94px;
+  width: 150px;
+  }
+
+  div#custom-containers-local-moduleDashboardDropdown {
+  position: absolute;
+  width: 250px;
+  }
+}

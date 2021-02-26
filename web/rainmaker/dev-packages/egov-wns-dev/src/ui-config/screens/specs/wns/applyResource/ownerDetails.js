@@ -11,6 +11,7 @@ import {
 import { changeStep } from "../viewBillResource/footer";
 import { convertEpochToDateAndHandleNA, handleNA } from '../../utils';
 import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
 const getHeader = label => {
   return {
     uiFramework: "custom-molecules-local",
@@ -198,6 +199,9 @@ export const getOwnerDetails = (isEditable = true) => {
                 labelKey: "WS_OWN_DETAIL_OWN_NAME_LABEL_PLACEHOLDER"
               },
               required: true,
+              props:{
+                disabled:IsEdit
+              },
               pattern: getPattern("Name"),
               errorMessage: "Invalid Name",
               jsonPath: "applyScreen.property.owners[0].name",
@@ -216,6 +220,9 @@ export const getOwnerDetails = (isEditable = true) => {
                 labelKey: "WS_OWN_DETAIL_MOBILE_NO_LABEL_INPUT_PLACEHOLDER"
               },
               required: true,
+              props:{
+                disabled:IsEdit
+              },
               pattern: getPattern("MobileNo"),
               errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
               jsonPath: "applyScreen.property.owners[0].mobileNumber",
@@ -236,6 +243,7 @@ export const getOwnerDetails = (isEditable = true) => {
               },
               pattern: getPattern("Email"),
               required: true,
+             
              // errorMessage: "Invalid Address",
               jsonPath: "applyScreen.property.owners[0].emailId",
               gridDefination: {
@@ -243,7 +251,8 @@ export const getOwnerDetails = (isEditable = true) => {
                 sm: 6
               },
               props: {
-                className: "applicant-details-error"
+                className: "applicant-details-error",
+                disabled:IsEdit
               }
             }),
             guardianName:{
@@ -257,6 +266,9 @@ export const getOwnerDetails = (isEditable = true) => {
                 labelKey: "WS_OWN_DETAIL_FATHER_NAME_PLACEHOLDER"
               },
               required: true,
+              props:{
+                disabled:IsEdit
+              },
               pattern: getPattern("Name"),
              // errorMessage: "Invalid Name",
               jsonPath: "applyScreen.property.owners[0].fatherOrHusbandName",
@@ -288,6 +300,7 @@ export const getOwnerDetails = (isEditable = true) => {
               },
               pattern: getPattern("Address"),
               required: true,
+              
              // errorMessage: "Invalid Address",
               jsonPath: "applyScreen.property.owners[0].correspondenceAddress",
               gridDefination: {
@@ -295,7 +308,31 @@ export const getOwnerDetails = (isEditable = true) => {
                 sm: 6
               },
               props: {
-                className: "applicant-details-error"
+                className: "applicant-details-error",
+                disabled:IsEdit
+              }
+            }),
+            aadharCardnumber: getTextField({
+              label: {
+                labelName: "Aadhar Card number",
+                labelKey: "WS_OWN_DETAIL_ADDHAR_NO"
+              },
+              placeholder: {
+                labelName: "Enter Aadhar Card number",
+                labelKey: "WS_OWN_DETAIL_ADDHAR_NO_PLACEHOLDER"
+              },
+              pattern: getPattern("AdharCardNumber"),
+              required: false,
+              
+             // errorMessage: "Invalid Address",
+              jsonPath: "applyScreen.property.owners[0].aadharCardnumber",
+              gridDefination: {
+                xs: 12,
+                sm: 6
+              },
+              props: {
+                className: "applicant-details-error",
+                disabled:IsEdit
               }
             }),
             // ownerMobileNumber: getLabelWithValue(
@@ -491,6 +528,29 @@ export const getMultipleOwnerDetails = (isEditable = true) => {
               },
               props: {
                 className: "applicant-details-error"
+              }
+            }),
+            aadharCardnumber: getTextField({
+              label: {
+                labelName: "Aadhar Card number",
+                labelKey: "WS_OWN_DETAIL_ADDHAR_NO"
+              },
+              placeholder: {
+                labelName: "Enter Aadhar Card number",
+                labelKey: "WS_OWN_DETAIL_ADDHAR_NO_PLACEHOLDER"
+              },
+              pattern: getPattern("AdharCardNumber"),
+              required: true,
+              
+             // errorMessage: "Invalid Address",
+              jsonPath: "applyScreen.property.owners[0].aadharCardnumber",
+              gridDefination: {
+                xs: 12,
+                sm: 6
+              },
+              props: {
+                className: "applicant-details-error",
+                disabled:IsEdit
               }
             }),
             // ownerMobileNumber: getLabelWithValue(

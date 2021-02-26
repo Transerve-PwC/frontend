@@ -23,14 +23,17 @@ class Applications extends React.Component {
     data.service = data.service.toUpperCase();
     if(data.activityType){
       switch(data.activityType){
-        case "UPDATE_CONNECTION_HOLDER_INFO" :  window.localStorage.setItem("wns_workflow","WS_RENAME"); break;
-        case "REACTIVATE_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTIONA"); break;
-        case "TEMPORARY_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;
-        case "APPLY_FOR_REGULAR_INFO":  window.localStorage.setItem("wns_workflow","REGULARWSCONNECTION"); break;
         case "NEW_WS_CONNECTION":  window.localStorage.setItem("wns_workflow","REGULARWSCONNECTION"); break;
-        case "PERMANENT_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;
+        case "APPLY_FOR_TEMPORARY_CONNECTION":  window.localStorage.setItem("wns_workflow","TEMPORARY_WSCONNECTION"); break;
+        case "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_TEMP"); break;
+        case "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_REGULAR"); break;
+        case "PERMANENT_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;        
+        case "TEMPORARY_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_DISCONNECTION"); break;
+        case "UPDATE_CONNECTION_HOLDER_INFO":  window.localStorage.setItem("wns_workflow","WS_RENAME"); break;
         case "CONNECTION_CONVERSION":  window.localStorage.setItem("wns_workflow","WS_CONVERSION"); break;
+        case "REACTIVATE_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_REACTIVATE"); break;
         case "NEW_TUBEWELL_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
+        //case "CONNECTION_CONVERSION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
       }
 }
     window.location.href = `/citizen/wns/search-preview?applicationNumber=${data.applicationNo}&history=${true}&tenantId=${data.property.tenantId}&service=${data.service}`

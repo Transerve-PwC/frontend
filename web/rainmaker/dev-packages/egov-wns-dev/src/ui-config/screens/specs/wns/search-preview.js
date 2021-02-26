@@ -7,6 +7,8 @@ import {
   getCommonSubHeader,
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import commonConfig from "config/common.js";
+import { httpRequest } from "../../../../ui-utils";
 import get from "lodash/get";
 import set from "lodash/set";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
@@ -19,7 +21,8 @@ import {
   setValidToFromVisibilityForSV,
   getDialogButton,
   convertDateToEpoch,
-  showHideAdhocPopup
+  showHideAdhocPopup,
+  GetMdmsNameBycode
 } from "../utils";
 import { footerReview } from "./applyResource/footer";
 import { downloadPrintContainer } from "../wns/acknowledgement";
@@ -38,8 +41,8 @@ import { getWorkFlowData } from "../../../../ui-utils/commons";
 const tenantId = getQueryArg(window.location.href, "tenantId");
 let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
 let service = getQueryArg(window.location.href, "service");
-const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="NewSW1" ? "NewSW1":  window.localStorage.getItem("wns_workflow"):"NewSW1";
-const serviceUrl = serviceModuleName === "NewSW1" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
+const serviceModuleName = service === "WATER" ? window.localStorage.getItem("wns_workflow")==="SW_SEWERAGE" ? "SW_SEWERAGE":  window.localStorage.getItem("wns_workflow"):"SW_SEWERAGE";
+const serviceUrl = serviceModuleName === "SW_SEWERAGE" ?  "/sw-services/swc/_update" : "/ws-services/wc/_update" ;
 
 const getLabelForWnsHeader = () => {
   const wnsHeader =  window.localStorage.getItem("wns_workflow");
@@ -104,6 +107,9 @@ const beforeInitFn = async (action, state, dispatch, applicationNumber) => {
       let applyScreenObject = get(state.screenConfiguration.preparedFinalObject, "applyScreen");
       applyScreenObject.applicationNo.includes("WS")?applyScreenObject.service="WATER":applyScreenObject.service="SEWERAGE";
       let parsedObject = parserFunction(findAndReplace(applyScreenObject, "NA", null));
+      let code = '03';
+        code =GetMdmsNameBycode(state, dispatch,"searchPreviewScreenMdmsData.ws-services-masters.sectorList",parsedObject.property.address.locality.code)   
+      set(parsedObject, 'property.address.locality.name', code);
       dispatch(prepareFinalObject("WaterConnection[0]", parsedObject));
        let estimate;
        if(processInstanceAppStatus==="CONNECTION_ACTIVATED"){
@@ -379,6 +385,33 @@ export const reviewConnectionDetails = getReviewConnectionDetails(false);
 export const reviewOwnerDetails = getReviewOwner(false);
 
 export const reviewDocumentDetails = getReviewDocuments(false);
+export const getMdmsData = async (state,dispatch) => {
+  let tenantId = getQueryArg(window.location.href, "tenantId");
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+       // { moduleName: "common-masters", masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }] },
+       
+        { moduleName: "ws-services-masters", 
+        masterDetails: [
+          { name: "wsWorkflowRole" },
+          { name: "sectorList" },
+        
+        ] },
+        
+      ]
+    }
+  };
+  try {
+    let payload = null;
+    payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
+    
+   
+    dispatch(prepareFinalObject("searchPreviewScreenMdmsData", payload.MdmsRes));
+    //
+  } catch (e) { console.log(e); }
+};
 
 // let approvalDetails = getApprovalDetails(status);
 let title = getCommonTitle({ labelName: titleText });
@@ -425,7 +458,8 @@ const screenConfig = {
     const status = getQueryArg(window.location.href, "status");
     const tenantId = getQueryArg(window.location.href, "tenantId");
     const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
-
+    
+    getMdmsData( state, dispatch).then(() => { });
     //To set the application no. at the  top
     set(action.screenConfig, "components.div.children.headerDiv.children.header1.children.application.children.applicationNumber.props.number", applicationNumber);
     // if (status !== "pending_payment") {
@@ -553,6 +587,13 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
     payload.WaterConnection[0].service = service;
     payload.WaterConnection[0].property.subusageCategory = payload.WaterConnection[0].property.usageCategory;
     payload.WaterConnection[0].property.usageCategory = payload.WaterConnection[0].property.usageCategory.split('.')[0];
+    //
+    
+      let code = '';
+        code =GetMdmsNameBycode(state, dispatch,"searchPreviewScreenMdmsData.ws-services-masters.sectorList",payload.WaterConnection[0].property.address.locality.code)   
+        payload.WaterConnection[0].property.address.locality.name = code;
+     // set(payload, 'property.address.locality.name', code);
+    ///
     //payload.WaterConnection[0].service = service;
 
     const convPayload = findAndReplace(payload, "NA", null)
@@ -562,6 +603,8 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
       waterConnection: convPayload.WaterConnection[0]
     }]
     if (payload !== undefined && payload !== null) {
+      //set locality
+
       dispatch(prepareFinalObject("WaterConnection[0]", payload.WaterConnection[0]));
       if(!payload.WaterConnection[0].connectionHolders || payload.WaterConnection[0].connectionHolders === 'NA'){        
         set(action.screenConfig, "components.div.children.taskDetails.children.cardContent.children.reviewConnectionDetails.children.cardContent.children.viewFive.visible",false);
@@ -585,7 +628,7 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
         "WaterConnection[0].documents",
         "DocumentsData",
         dispatch,
-        "WS"
+        //"WS"
       );
     }
     estimate = await waterEstimateCalculation(queryObjectForEst, dispatch);
@@ -629,7 +672,7 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
         "WaterConnection[0].documents",
         "DocumentsData",
         dispatch,
-        "WS"
+        //"WS"
       );
     }
 

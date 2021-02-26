@@ -95,7 +95,13 @@ export const correspondenceAddress = getLabelWithValue(
   },
   { jsonPath: "WaterConnection[0].property.owners[0].correspondenceAddress" }
 )
-
+export const aadharCardnumber = getLabelWithValue(
+  {
+    labelName: "Correspondence Address",
+    labelKey: "WS_OWN_DETAIL_CROSADD"
+  },
+  { jsonPath: "WaterConnection[0].property.owners[0].aadharCardnumber" }
+)
 export const getOwnerDetails = (isEditable = true) => {
   return getCommonGrayCard({
     headerDiv: {
@@ -155,12 +161,13 @@ export const getOwnerDetails = (isEditable = true) => {
           viewFive: getCommonContainer({
             ownerMobileNumber,
             ownerName,
-            gender,
-            guardian,
+            //gender,
+            //guardian,
             guardianName,
             ownerCategory,
             email,
-            correspondenceAddress
+            correspondenceAddress,
+            aadharCardnumber
           }),
         }),
         items: [],
@@ -203,30 +210,30 @@ export const connectionHolderDetails={
     { jsonPath: "applyScreenOld.connectionHolders[0].name", callBack: handleNA }
     
   ),
-  gender: getLabelWithValueForModifiedLabel(
-    {
-      labelKey: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL"
-    },
-    {
-      jsonPath: "WaterConnection[0].connectionHolders[0].gender",
-      callBack: handleNA,
-      localePrefix: {
-        moduleName: "COMMON",
-        masterName: "GENDER"
-      }
-    },
-    {
-      labelKey: "WS_OLD_LABEL_NAME"
-    },
-    {
-      jsonPath: "applyScreenOld.connectionHolders[0].gender",
-      callBack: handleNA,
-      localePrefix: {
-        moduleName: "COMMON",
-        masterName: "GENDER"
-      }
-    },
-  ),
+  // gender: getLabelWithValueForModifiedLabel(
+  //   {
+  //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_GENDER_LABEL"
+  //   },
+  //   {
+  //     jsonPath: "WaterConnection[0].connectionHolders[0].gender",
+  //     callBack: handleNA,
+  //     localePrefix: {
+  //       moduleName: "COMMON",
+  //       masterName: "GENDER"
+  //     }
+  //   },
+  //   {
+  //     labelKey: "WS_OLD_LABEL_NAME"
+  //   },
+  //   {
+  //     jsonPath: "applyScreenOld.connectionHolders[0].gender",
+  //     callBack: handleNA,
+  //     localePrefix: {
+  //       moduleName: "COMMON",
+  //       masterName: "GENDER"
+  //     }
+  //   },
+  // ),
   fatherName: getLabelWithValueForModifiedLabel(
     {
       labelKey: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME"
@@ -237,16 +244,16 @@ export const connectionHolderDetails={
     },
     { jsonPath: "applyScreenOld.connectionHolders[0].fatherOrHusbandName", callBack: handleNA }
   ),
-  relationship: getLabelWithValueForModifiedLabel(
-    {
-      labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL"
-    },
-    { jsonPath: "WaterConnection[0].connectionHolders[0].relationship", callBack: handleNA },
-    {
-      labelKey: "WS_OLD_LABEL_NAME"
-    },
-    { jsonPath: "applyScreenOld.connectionHolders[0].relationship", callBack: handleNA }
-  ),
+  // relationship: getLabelWithValueForModifiedLabel(
+  //   {
+  //     labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL"
+  //   },
+  //   { jsonPath: "WaterConnection[0].connectionHolders[0].relationship", callBack: handleNA },
+  //   {
+  //     labelKey: "WS_OLD_LABEL_NAME"
+  //   },
+  //   { jsonPath: "applyScreenOld.connectionHolders[0].relationship", callBack: handleNA }
+  // ),
   correspondenceAddress: getLabelWithValueForModifiedLabel(
     {
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_CROSADD"
@@ -260,6 +267,22 @@ export const connectionHolderDetails={
     },
     {
       jsonPath: "applyScreenOld.connectionHolders[0].correspondenceAddress",
+      callBack: handleNA
+    }
+  ),
+  aadharCardnumber: getLabelWithValueForModifiedLabel(
+    {
+      labelKey: "WS_CONN_HOLDER_OWN_DETAIL_CROSADD"
+    },
+    {
+      jsonPath: "WaterConnection[0].connectionHolders[0].aadharCardnumber",
+      callBack: handleNA
+    },
+    {
+      labelKey: "WS_OLD_LABEL_NAME"
+    },
+    {
+      jsonPath: "applyScreenOld.connectionHolders[0].aadharCardnumber",
       callBack: handleNA
     }
   ),

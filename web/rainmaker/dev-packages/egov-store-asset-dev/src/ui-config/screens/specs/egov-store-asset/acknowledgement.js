@@ -114,7 +114,12 @@ let labelValue = "";
       labelKey: `STORE_APPLICATION_SUCCESS_${screenName}_${mode}`,
     }
     break;
-      default :  labelValue = {
+    case "WF": labelValue = {
+      labelName: "Submitted Successfully",
+      labelKey: `STORE_APPLICATION_SUCCESS_${screenName}_${mode}`,
+    }
+    break;
+    default: labelValue = {
       labelName: "Submitted Successfully",
       labelKey: "",
     }
@@ -205,8 +210,11 @@ const getApplicationDisplayCode =() => {
       labelKey: `STORE_DISPOSAL_NUMBER`,
     }
     break;
-    
-    
+    case "WF": labelValue = {
+      labelName: "Application Number",
+      labelKey: `STORE_APPLICATION_NO`,
+    }
+    break;
     default :  labelValue = {
       labelName: "Application No.",
       labelKey: "NOC_HOME_SEARCH_RESULTS_APP_NO_LABEL",

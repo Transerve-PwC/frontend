@@ -64,7 +64,7 @@ export const HCDashboardFilterForm = getCommonCard({
           },
       props: {
         style: {
-        width: "130%",
+        width: "100%",
         cursor: "pointer"
       },
   
@@ -101,10 +101,10 @@ export const HCDashboardFilterForm = getCommonCard({
         variant: "contained",
         color: "primary",
         style: {
-        width: "60%",
+        width: "75%",
         height: "55px",
         /* margin-right: 80px; */
-        marginLeft: "90%"
+        // marginLeft: "90%"
         }
       },
       children: {

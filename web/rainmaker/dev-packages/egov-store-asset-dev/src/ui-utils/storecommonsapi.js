@@ -1623,16 +1623,55 @@ export const updateIndentInword = async (queryObject, payload, dispatch) => {
   }
 };
 
-export const getWFPayload = (state, dispatch) => {
+export const getWFPayload = (state, dispatch,businessService="businessService") => {
   try {
     let businessSeviceTypeData =
-      get(state, "screenConfiguration.preparedFinalObject.businessServiceTypeData.store-asset.businessService", [])
+      get(state, `screenConfiguration.preparedFinalObject.businessServiceTypeData.store-asset.${businessService}`, [])
 
     let roles = JSON.parse(getUserInfo()).roles
     let businessServiceName = "";
     businessSeviceTypeData.map(item => {
       roles.some(r => {
         if (item.role.includes(r.code)) {
+          businessServiceName = item.name
+        }
+      })
+    });
+    let wfobject = {
+      "businessService": businessServiceName,
+      "action": "CREATED",
+      "comments": "",
+      "assignee":[JSON.parse(getUserInfo()).uuid]
+    }
+    return wfobject;
+  } catch (error) {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+    throw error;
+  }
+};
+
+
+export const getWFPayloadForIssueNote = (state, dispatch,businessService="businessService") => {
+  try {
+    let businessSeviceTypeData =
+      get(state, `screenConfiguration.preparedFinalObject.businessServiceTypeData.store-asset.${businessService}`, [])
+
+      let deptCategory =
+      get(state, `screenConfiguration.preparedFinalObject.indents[0].indentStore.department.deptCategory`, [])
+
+
+    
+    let roles = JSON.parse(getUserInfo()).roles
+    let businessServiceName = "";
+    businessSeviceTypeData.map(item => {
+      roles.some(r => {
+        if (item.role.includes(r.code) && deptCategory==item.deptCategory) {
           businessServiceName = item.name
         }
       })

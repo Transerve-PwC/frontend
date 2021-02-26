@@ -43,7 +43,7 @@ export const fetchData = async (action, state, dispatch) => {
         newData = Object.assign(newData, data);
     }
     const response = await getSearchResults(newData);
-
+console.log(response, "search response")
     try {
         if (response.bookingsModelList.length > 0) {
             dispatch(
@@ -56,12 +56,12 @@ export const fetchData = async (action, state, dispatch) => {
                 )
             );
         }
-        // else {
-        //   dispatch(prepareFinalObject("searchResults", response.bookingsModelList));
-        //   dispatch(
-        //     prepareFinalObject("myApplicationsCount", response.bookingsModelList.length)
-        //   );
-        // }
+        else {
+          dispatch(prepareFinalObject("searchResults", response.bookingsModelList));
+          dispatch(
+            prepareFinalObject("myApplicationsCount", response.bookingsModelList.length)
+          );
+        }
     } catch (error) {
         console.log(error);
     }

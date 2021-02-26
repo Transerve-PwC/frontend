@@ -48,6 +48,10 @@ const getpurchaseOrder = async ( state,dispatch)=>{
       key: "store",
       value: storecode
     });
+    queryObject.push({
+      key: "pageSize",
+      value: 500
+    });
   //   if(suppliercode)
   //   {
   //   queryObject.push({

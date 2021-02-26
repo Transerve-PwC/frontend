@@ -1232,6 +1232,15 @@ export const createEstimateData = async (
   window.parent.document.dispatchEvent(event);
   return payload;
 };
+export const GetMdmsNameBycode = (state, dispatch,jsonpath, code) => {
+  //Material
+  let Obj  = get(state, `screenConfiguration.preparedFinalObject.${jsonpath}`,[]) 
+  let Name = code
+  Obj = Obj.filter(x=>x.code === code)
+  if(Obj &&Obj[0])
+  Name = Obj[0].name
+  return Name;
+};
 
 export const getCurrentFinancialYear = () => {
   var today = new Date();

@@ -58,16 +58,7 @@ class AppDetails extends Component {
                       label={houseNo}
                     />
                   </div>
-                  <div className="col-md-4">
-                    <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_SECTOR_FOR_PARK" />
-                    <Label
-                      className="col-xs-12 col-sm-12 col-md-12  status-result-color"
-                    
-                      id="complaint-details-submission-date"
-                      labelStyle={{ color: "inherit" }}
-                      label={sector}
-                    />
-                  </div>
+                 
                
                
                 </div>

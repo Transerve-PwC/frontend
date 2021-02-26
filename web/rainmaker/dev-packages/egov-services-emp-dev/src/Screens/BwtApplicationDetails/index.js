@@ -9,7 +9,7 @@ import CommonShare from "egov-ui-kit/components/CommonShare";
 import { Screen } from "modules/common";
 import pinIcon from "egov-ui-kit/assets/Location_pin.svg";
 import { resetFiles } from "egov-ui-kit/redux/form/actions";
-import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button"; 
 import ShareIcon from "@material-ui/icons/Share";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
@@ -637,6 +637,21 @@ downloadApplicationFunction = async (e) => {
 		bookingForTime } = this.props;
 	const {complaint} = transformedComplaint;
 	console.log("complaint--In-Water-Tanker--",complaint)
+	let PdfStatus;
+if(complaint.status){
+	if(complaint.status == "PENDINGASSIGNMENTDRIVER"){
+		PdfStatus = "Pending Assign to Driver"
+	}
+	if(complaint.status == "PENDINGUPDATE"){
+		PdfStatus = "Pending for Update"
+	}
+	if(complaint.status == "DELIVERED"){
+		PdfStatus = "Processed"
+	}
+}
+	
+
+
 	const { createWaterTankerApplicationData,downloadBWTApplication } = this.props;
     let applicationDetails = createWaterTankerApplicationData ? createWaterTankerApplicationData.data : '';
 	let paymentData = paymentDetails;
@@ -670,7 +685,7 @@ downloadApplicationFunction = async (e) => {
           "propertyType": complaint.residentialCommercial,
           "date": bookingForDate,
           "time": bkTime,
-          "applicationStatus": complaint.status,
+          "applicationStatus": PdfStatus,
           "applicationType": complaint.bkStatus
         },
         feeDetail: {

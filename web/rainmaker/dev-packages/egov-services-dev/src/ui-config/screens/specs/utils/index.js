@@ -15,7 +15,7 @@ import {
     getCommonCaption,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getFileUrlFromAPI } from "egov-ui-framework/ui-utils/commons";
-import { getBookingWorkflowHistory, getSearchResultsView } from "../../../../ui-utils/commons";
+import { getBookingWorkflowHistory, getSearchResultsView , } from "../../../../ui-utils/commons";
 import axios from "axios";
 
 export const getCommonApplyFooter = (children) => {
@@ -545,7 +545,7 @@ export const getNextMonthDateInYMD = () => {
 
 
 export const getReceiptUrlFromFilestoreID = async (fileStoreId, mode, tenantId) => {
-    const fileRes = await getFileUrlFromAPI(fileStoreId, tenantId)
+    const fileRes = await getFileUrlFromAPIForPdf(fileStoreId, tenantId)
     return fileRes[fileStoreId]
 
 }
@@ -732,6 +732,15 @@ const getMdmsTenantsData = async () => {
                         },
                     ],
                 },
+                {
+                    "moduleName": "Booking",
+                    "masterDetails": [
+                        {
+                            "name": "PDF_BOOKING_DETAILS"
+                        }
+                    ]
+                }
+
             ],
         },
     };
@@ -751,13 +760,12 @@ const getMdmsTenantsData = async () => {
 export const downloadReceipt = async (
     state,
     applicationNumber,
-    tenantId,
+    tenantId = "ch.chandigarh",
     flag = 'false',
     mode = "download"
 ) => {
 
-
-    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    // tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     // let applicationData = get(
     //     state.screenConfiguration.preparedFinalObject,
     //     "Booking"
@@ -766,34 +774,63 @@ export const downloadReceipt = async (
     let applicationData = {}
     let receiptUrl = ""
     let receiptVal
+    let roomDataForGivenApplicationNumber= {}
     if (flag === 'false') {
-        const response = await getSearchResultsView([
-            { key: "tenantId", value: tenantId },
-            { key: "applicationNumber", value: applicationNumber },
-        ]);
-        let recData = get(response, "bookingsModelList", []);
-        /*
-            dispatch(
-                prepareFinalObject("Booking", recData.length > 0 ? recData[0] : {})
-            );
+
+        applicationData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "Booking"
+         );
+            if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 ){
+
+                let communityApplicationNumber= get(
+                state.screenConfiguration.preparedFinalObject,
+                "Booking.bkApplicationNumber"
+                 );
+                 const response = await getSearchResultsView([
+                    { key: "tenantId", value: tenantId },
+                    { key: "applicationNumber", value: communityApplicationNumber },
+                ]);
+                let recData = get(response, "bookingsModelList", []);
+                recData[0].roomsModel= prepareRoomCard(recData[0].roomsModel)
+                console.log('plRoomData', recData)
 
 
-               applicationData = get(
-                    state.screenConfiguration.preparedFinalObject,
-                    "Booking"
-                );*/
+                if(applicationData.bkApplicationNumber!==applicationNumber){
 
-        applicationData = recData[0];
+                    recData[0].roomsModel.map( (e)=>{
+                        if(e.roomApplicationNumber===applicationNumber) {
+                            roomDataForGivenApplicationNumber =e
+                        }
+                     })
+                }
+                applicationData = recData[0];
+            }
+            else{
+                const response = await getSearchResultsView([
+                    { key: "tenantId", value: tenantId },
+                    { key: "applicationNumber", value: applicationNumber },
+                ]);
+                let recData = get(response, "bookingsModelList", []);
+
+
+                applicationData = recData[0];
+
+            }
 
     }
     else if (flag === 'true') {
-        applicationData = state
+        Object.assign(applicationData, state)
 
+        if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0){
+            applicationData.roomsModel= prepareRoomCard(applicationData.roomsModel)
+
+        }
     }
 
-const refundDetailsResp = await getRefundDetails(applicationNumber, tenantId);
+    const refundDetailsResp = await getRefundDetails(applicationNumber, tenantId);
 
-let bankName = refundDetailsResp.data[0].gateway;
+    let bankName = refundDetailsResp.data[0].gateway;
     const receiptQueryString = [
         { key: "consumerCodes", value: applicationNumber },
         {
@@ -826,11 +863,19 @@ let bankName = refundDetailsResp.data[0].gateway;
             receiptQueryString
         )
 
-
         let queryStr = "";
-        if (applicationData.businessService === "PACC") {
+        if (applicationData.roomsModel !== undefined && applicationData.roomsModel.length> 0 && applicationData.bkApplicationNumber!==applicationNumber) {
             queryStr = [
-                { key: "key", value: "pacc-payment-receipt" },
+                { key: "key", value: "room-payment-receipt" },
+                {
+                    key: "tenantId",
+                    value: tenantId,
+
+                },
+            ];
+        } else if (applicationData.businessService === "PACC") {
+            queryStr = [
+                { key: "key", value: "pacc-payment-receipt-new" },
                 {
                     key: "tenantId",
                     value: tenantId,
@@ -864,8 +909,11 @@ let bankName = refundDetailsResp.data[0].gateway;
             console.log("Could not find any receipts");
             return;
         }
-
+        let tenantData = await getMdmsTenantsData();
+        console.log(tenantData,"nero TenatntData")
         let paymentInfoData = "";
+        let bankInfo = {};
+        let tenantInfo = "";
         if (applicationData.businessService === "PACC") {
             paymentInfoData = {
                 paymentDate: convertEpochToDate(
@@ -909,29 +957,73 @@ let bankName = refundDetailsResp.data[0].gateway;
                 receiptNo:
                     payloadReceiptDetails.Payments[0].paymentDetails[0]
                         .receiptNumber,
+                cleaningCharges: parseFloat(
+                    applicationData.bkCleansingCharges
+                ).toFixed(2),
+                baseCharge: parseFloat(applicationData.bkRent).toFixed(2),
+                cgst: parseFloat(applicationData.bkCgst),
+                utgst: parseFloat(applicationData.bkUtgst),
+                totalgst: (
+                    parseFloat(applicationData.bkUtgst) +
+                    parseFloat(applicationData.bkCgst)
+                ).toFixed(2),
+                refundableCharges: applicationData.bkRefundAmount,
+                totalPayment: (
+                    parseFloat(applicationData.bkRent) +
+                    parseFloat(applicationData.bkCleansingCharges) +
+                    parseFloat(applicationData.bkSurchargeRent)
+                ).toFixed(2),
+                paymentDate: convertEpochToDate(
+                    payloadReceiptDetails.Payments[0].transactionDate,
+                    "dayend"
+                ),
+                paymentType: payloadReceiptDetails.Payments[0].paymentMode,
+                facilitationCharge: applicationData.bkFacilitationCharges ? parseFloat(applicationData.bkFacilitationCharges).toFixed(2) : 0,
+                discType: "NotFound",
+                totalPaymentInWords: NumInWords(
+                    payloadReceiptDetails.Payments[0].totalAmountPaid
+                ),
+                custGSTN: applicationData.bkCustomerGstNo? applicationData.bkCustomerGstNo : "NA",
+                mcGSTN: "04AAALM0758K1Z1",
             };
+            bankInfo.accountholderName = applicationData.bkBankAccountHolder;
+            bankInfo.rBankName = applicationData.bkBankName;
+            bankInfo.rBankACNo = applicationData.bkBankAccountNumber;
+            bankInfo.rIFSCCode = applicationData.bkIfscCode;
+            tenantInfo = {
+                municipalityName:
+                    tenantData.tenants[0].city.municipalityName,
+                address: tenantData.tenants[0].address,
+                contactNumber: tenantData.tenants[0].contactNumber,
+                webSite: tenantData.tenants[0].domainUrl,
+                logoUrl: "https://chstage.blob.core.windows.net/fileshare/logo.png",
+
+                statecode: "04",
+                hsncode: "9963"
+            }
+
         } else {
-let tax = 0;
-let amount = 0;
-          if(applicationData.businessService === "OSBM"){
-          tax =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                (el) => el.taxHeadCode.includes("CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
-            )[0].amount;
-            amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                  (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
-              )[0].amount;
-          } else if(applicationData.businessService === "BWT"){
-            amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                  (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
-              )[0].amount;
-          }else{
-          amount =  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                (el) => !el.taxHeadCode.includes("TAX")
-            )[0].amount;
-            tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                (el) => el.taxHeadCode.includes("TAX")
-            )[0].amount;
-          }
+            let tax = 0;
+            let amount = 0;
+            if (applicationData.businessService === "OSBM") {
+                tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+                )[0].amount;
+                amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
+                )[0].amount;
+            } else if (applicationData.businessService === "BWT") {
+                amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
+                )[0].amount;
+            } else {
+                amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => !el.taxHeadCode.includes("TAX")
+                )[0].amount;
+                tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("TAX")
+                )[0].amount;
+            }
             paymentInfoData = {
                 paymentDate: convertEpochToDate(
                     payloadReceiptDetails.Payments[0].transactionDate,
@@ -952,17 +1044,17 @@ let amount = 0;
                         )
                         : `${applicationData.bkDate} , ${applicationData.bkTime} `,
                 bookingItem: `Online Payment Against Booking of ${payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                        .businessService === "GFCP"
-                        ? "Commercial Ground"
+                    .businessService === "GFCP"
+                    ? "Commercial Ground"
+                    : payloadReceiptDetails.Payments[0]
+                        .paymentDetails[0].bill.businessService ===
+                        "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE"
+                        ? "Open Space for Building Material"
                         : payloadReceiptDetails.Payments[0]
                             .paymentDetails[0].bill.businessService ===
-                            "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE"
-                            ? "Open Space for Building Material"
-                            : payloadReceiptDetails.Payments[0]
-                                .paymentDetails[0].bill.businessService ===
-                                "OSUJM"
-                                ? "Open Space within MCC jurisdiction"
-                                : "Water Tanker"
+                            "OSUJM"
+                            ? "Open Space within MCC jurisdiction"
+                            : "Water Tanker"
                     }`,
                 amount: amount,
                 tax: tax,
@@ -991,7 +1083,7 @@ let amount = 0;
         var date2 = new Date();
 
         var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
-       
+
         let receiptData = [
             {
                 applicantDetail: {
@@ -1003,11 +1095,20 @@ let amount = 0;
                     permanentCity:
                         payloadReceiptDetails.Payments[0].tenantId,
                     sector: applicationData.bkSector,
+                    placeOfService: applicationData.businessService === "PACC" ? "Chandigarh" : ""
                 },
                 booking: {
                     bkApplicationNumber:
                         payloadReceiptDetails.Payments[0].paymentDetails[0]
                             .bill.consumerCode,
+                    applicationDate: applicationData.bkDateCreated,
+                    bkLocation: applicationData.bkLocation,
+                    bkDept: applicationData.bkBookingType,
+                    bkFromTo: getDurationDate(
+                        applicationData.bkFromDate,
+                        applicationData.bkToDate
+                    )
+
                 },
                 paymentInfo: paymentInfoData,
                 payerInfo: {
@@ -1019,8 +1120,110 @@ let amount = 0;
                     generatedBy: JSON.parse(getUserInfo()).name,
                     generatedDateTime: generatedDateTime
                 },
+                bankInfo,
+                tenantInfo
             },
         ];
+        if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 && applicationData.bkApplicationNumber!==applicationNumber){
+
+            paymentInfoData = {
+                currentDate:  `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}`,
+                cleaningCharges: "0",
+                paymentDate: convertEpochToDate(
+                    payloadReceiptDetails.Payments[0].transactionDate,
+                    "dayend"
+                ),
+                transactionId:
+                    payloadReceiptDetails.Payments[0].transactionNumber,
+                bookingPeriod: getDurationDate(
+                    applicationData.roomsModel[0].fromDate,
+                    applicationData.roomsModel[0].toDate
+                ),
+                cgst: (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount)/2,
+                utgst: (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount)/2,
+                totalgst: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount,
+
+                paymentType: "ONLINE",
+                mcGSTN: "aasdadad",
+                discType: "",
+                custGSTN: "asd",
+                bookingItem: `Online Payment Against Booking of ${applicationData.bkLocation}`,
+                baseCharge: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode==="BKROOM"
+                )[0].amount,
+                cleaningCharges: "",
+                surcharges: "",
+                facilitationCharge: "0.00",
+                gst:  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount,
+                totalAmount:payloadReceiptDetails.Payments[0].totalAmountPaid ,
+
+                amountInWords: NumInWords(payloadReceiptDetails.Payments[0].totalAmountPaid),
+                paymentItemExtraColumnLabel: "Booking Period",
+
+                paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
+                bankName: bankName,
+                receiptNo:
+                    payloadReceiptDetails.Payments[0].paymentDetails[0]
+                        .receiptNumber,
+            };
+             receiptData = [
+                {
+                     applicantDetails: {
+                        name: payloadReceiptDetails.Payments[0].payerName,
+
+                    },
+                    booking: {
+
+                        noOfAcRooms: applicationData.roomsModel[0].totalNoOfACRooms,
+                        noOfNonAcRooms:applicationData.roomsModel[0].totalNoOfNonACRooms ,
+                        placeOfService: "Chandigarh",
+                        bkDept : applicationData.bkBookingType,
+                        bkStartDate:applicationData.bkFromDate,
+                        bkEndDate:applicationData.bkToDate,
+                        bkLocation: applicationData.bkLocation,
+                        bookingPupose: applicationData.bkBookingPurpose,
+                        bkApplicationNumber:
+                            payloadReceiptDetails.Payments[0].paymentDetails[0]
+                                .bill.consumerCode,
+                    },
+                    paymentInfo: paymentInfoData,
+                    payerInfo: {
+                        payerName: payloadReceiptDetails.Payments[0].payerName,
+                        payerMobile:
+                            payloadReceiptDetails.Payments[0].mobileNumber,
+                    },
+                    generatedBy: {
+                        generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
+                    },
+                    bankInfo: {
+                         accountholderName :  applicationData.bkBankAccountHolder ,
+                         rBankName :  applicationData.bkBankName ,
+                         rBankACNo :  applicationData.bkBankAccountNumber ,
+                         rIFSCCode :  applicationData.bkIfscCode
+                    },
+                    tenantInfo: {
+                            municipalityName: "Municipal Corporation Chandigarh",
+                            address: "New Deluxe Building, Sector 17, Chandigarh",
+                            contactNumber: "+91-172-2541002, 0172-2541003",
+                            logoUrl: "https://chstage.blob.core.windows.net/fileshare/logo.png",
+                            webSite: "http://mcchandigarh.gov.in",
+                            mcGSTN: "aasdadad",
+                            statecode: "998",
+                            hsncode: "45"
+                },
+                },
+            ];
+        }
+
 
 
         let res = await httpRequest(
@@ -1055,7 +1258,7 @@ let amount = 0;
 
 
     } catch (exception) {
-      console.log(exception, "Nero PDF Exception")
+        console.log(exception, "Nero PDF Exception")
         alert("Some Error Occured while downloading Receipt!");
     }
 
@@ -1068,13 +1271,13 @@ let amount = 0;
 export const downloadCertificate = async (
     state,
     applicationNumber,
-    tenantId,
+    tenantId = "ch.chandigarh",
     flag = 'false',
     mode = "download"
 ) => {
     let applicationData = {}
-
-    tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
+    tenantId = "ch.chandigarh"
+    //tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     let bookingWfHistory = await getBookingWorkflowHistory(applicationNumber, tenantId);
 
     let apporvedByDetail = {
@@ -1090,8 +1293,11 @@ export const downloadCertificate = async (
                 let filteredRole = bookingWfHistory[i].assignee.roles.filter((role) => {
                     return role.code == "BK_OSBM_APPROVER";
                 });
+                if(filteredRole !== undefined && filteredRole !== null)
+                {
 
-                apporvedByDetail.role = filteredRole[0].name;
+                    apporvedByDetail.role = filteredRole[0].name;
+                }
             }
         }
     }
@@ -1099,65 +1305,126 @@ export const downloadCertificate = async (
 
     let receiptUrl = ""
     let receiptVal
+    let roomDataForGivenApplicationNumber= {}
     if (flag === 'false') {
+
         applicationData = get(
-            state.screenConfiguration.preparedFinalObject,
-            "Booking"
-        );
+        state.screenConfiguration.preparedFinalObject,
+        "Booking"
+         );
+            if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 ){
+
+                let communityApplicationNumber= get(
+                state.screenConfiguration.preparedFinalObject,
+                "Booking.bkApplicationNumber"
+                 );
+                 const response = await getSearchResultsView([
+                    { key: "tenantId", value: tenantId },
+                    { key: "applicationNumber", value: communityApplicationNumber },
+                ]);
+                let recData = get(response, "bookingsModelList", []);
+                recData[0].roomsModel= prepareRoomCard(recData[0].roomsModel)
+                console.log('plRoomData', recData)
+
+
+                if(applicationData.bkApplicationNumber!==applicationNumber){
+
+                    recData[0].roomsModel.map( (e)=>{
+                        if(e.roomApplicationNumber===applicationNumber) {
+                            roomDataForGivenApplicationNumber =e
+                        }
+                     })
+                }
+                applicationData = recData[0];
+            }
+            else{
+                const response = await getSearchResultsView([
+                    { key: "tenantId", value: tenantId },
+                    { key: "applicationNumber", value: applicationNumber },
+                ]);
+                let recData = get(response, "bookingsModelList", []);
+
+
+                applicationData = recData[0];
+
+            }
 
     }
     else if (flag === 'true') {
-        applicationData = state
-    }
+        Object.assign(applicationData, state)
 
+        if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0){
+            applicationData.roomsModel= prepareRoomCard(applicationData.roomsModel)
+
+        }
+    }
+    const refundDetailsResp = await getRefundDetails(applicationNumber, tenantId);
+
+    let bankName = refundDetailsResp.data[0].gateway;
     let tenantData = await getMdmsTenantsData();
 
+    const receiptQueryString = [
+        { key: "consumerCodes", value: applicationNumber },
+        {
+            key: "tenantId",
 
-    const DOWNLOADCERTIFICATE = {
+            // value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+            value: tenantId,
+
+        },
+    ];
+    const FETCHRECEIPT = {
+        GET: {
+            URL: "/collection-services/payments/_search",
+            ACTION: "_get",
+        },
+    };
+    const DOWNLOADRECEIPT = {
         GET: {
             URL: "/pdf-service/v1/_create",
             // ACTION: "_get",
         },
     };
-    try {
+
+    const DOWNLOADCERTIFICATE = {
+        GET: {
+            URL: "/pdf-service/v1/_create",
+             // ACTION: "_get",
+        },
+    };
+    let payloadReceiptDetails={}
+    if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 && applicationData.bkApplicationNumber!==applicationNumber){
+       payloadReceiptDetails = await httpRequest(
+            "post",
+            FETCHRECEIPT.GET.URL,
+            FETCHRECEIPT.GET.ACTION,
+            receiptQueryString
+        )
+
+
+    }
+
         let queryStr = [
             {
                 key: "key",
-                value:
-                    applicationData.businessService == "OSBM"
+                value:(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 && applicationData.bkApplicationNumber!==applicationNumber)
+                        ?"bk-room-booking-pl"
+                        :applicationData.businessService == "OSBM"
                         ? "bk-osbm-pl"
                         : applicationData.businessService == "PACC"
-                            ? "bk-pacc-booking-pl"
+                            ? "bk-pk-booking-pl"
                             : applicationData.businessService == "OSUJM"
                                 ? "bk-oswmcc-booking-pl"
-                                : "bk-cg-pl",
+                                :"bk-cg-pl",
             },
 
             { key: "tenantId", value: tenantId },
 
         ];
 
-        // applicationData.businessService == "OSBM"
-        //     ? queryStr = [
-        //         { key: "key", value: "bk-osbm-pl" },
-        //         { key: "tenantId", value: "ch" },
-        //     ]
-        //     : queryStr = [
-        //         { key: "key", value: "bk-cg-pl" },
-        //         { key: "tenantId", value: "ch" },
-        //     ]
         let bookingDuration = '';
         if (applicationData.businessService == "PACC" && applicationData.bkBookingType == "Community Center") {
             if (applicationData.timeslots && applicationData.timeslots.length > 0) {
-                // if (applicationData.bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1475") {
-                //     applicationData.bookingItemType = "HOURLY"
-                // } else if (applicationData.bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1476") {
-                //     applicationData.bookingItemType = "HOURLY";
-                // } else if (applicationData.bkBookingVenue === "fabc3ff6-70d8-4ae6-8ac7-00c9c714c1474") {
-                //     applicationData.bookingItemType = "FULLDAY";
-                // } else {
-                //     applicationData.bookingItemType = "FULLDAY";
-                // }
 
                 var [fromTime, toTime] = applicationData.timeslots[0].slot.split('-')
 
@@ -1176,6 +1443,70 @@ export const downloadCertificate = async (
                 applicationData.bkToDate
             )
         }
+        var date2 = new Date();
+
+        let paymentInfo = {};
+        let bankInfo = {};
+        if (applicationData.businessService === "PACC") {
+            //console.log(applicationData, "nero AvvapplicationDatassssss")
+            const receiptQueryString = [
+                { key: "consumerCodes", value: applicationData.bkApplicationNumber },
+                {
+                    key: "tenantId",
+
+                    // value: tenantId.length > 2 ? tenantId.split('.')[0] : tenantId,
+                    value: tenantId,
+
+                },
+            ];
+            const FETCHRECEIPT = {
+                GET: {
+                    URL: "/collection-services/payments/_search",
+                    ACTION: "_get",
+                },
+            };
+            let payloadReceiptDetails = await httpRequest(
+                "post",
+                FETCHRECEIPT.GET.URL,
+                FETCHRECEIPT.GET.ACTION,
+                receiptQueryString
+            )
+
+
+            paymentInfo.cleaningCharges = parseFloat(
+                applicationData.bkCleansingCharges
+            ).toFixed(2);
+            paymentInfo.baseCharge = parseFloat(applicationData.bkRent).toFixed(2);
+            paymentInfo.cgst = parseFloat(applicationData.bkCgst);
+            paymentInfo.utgst = parseFloat(applicationData.bkUtgst);
+            paymentInfo.totalgst = (
+                parseFloat(applicationData.bkUtgst) +
+                parseFloat(applicationData.bkCgst)
+            ).toFixed(2);
+            paymentInfo.refundableCharges = applicationData.bkRefundAmount;
+            paymentInfo.totalPayment = (
+                parseFloat(applicationData.bkRent) +
+                parseFloat(applicationData.bkCleansingCharges) +
+                parseFloat(applicationData.bkSurchargeRent)
+            ).toFixed(2);
+            paymentInfo.paymentDate = convertEpochToDate(
+                payloadReceiptDetails.Payments[0].transactionDate,
+                "dayend"
+            );
+            paymentInfo.receiptNo = payloadReceiptDetails.Payments[0].paymentDetails[0]
+                .receiptNumber;
+            paymentInfo.custGSTN = applicationData.bkCustomerGstNo? applicationData.bkCustomerGstNo : "NA";
+            paymentInfo.mcGSTN = "04AAALM0758K1Z1";
+
+            bankInfo.accountholderName = applicationData.bkBankAccountHolder;
+            bankInfo.rBankName = applicationData.bkBankName;
+            bankInfo.rBankACNo = applicationData.bkBankAccountNumber;
+            bankInfo.rIFSCCode = applicationData.bkIfscCode;
+
+
+
+        }
+        var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
 
         let certificateData = [
             {
@@ -1190,6 +1521,7 @@ export const downloadCertificate = async (
                     permanentCity: tenantData.tenants[0].city.name,
                     sector: applicationData.bkSector,
                     fatherName: applicationData.bkFatherName,
+                    placeOfService: applicationData.businessService == "PACC" ? "Chandigarh" : ""
                 },
                 bookingDetail: {
                     applicationNumber: applicationNumber,
@@ -1217,7 +1549,8 @@ export const downloadCertificate = async (
                             : `${applicationData.bkDuration} Months`,
 
                     categoryImage: "",
-                    // categoryImage: "http://3.6.65.87:3000/static/media/cat-a.4e1bc5ec.jpeg"
+                    statecode: applicationData.businessService == "PACC" ? "04" : "",
+                    hsncode: applicationData.businessService == "PACC" ? "9963" : "NA",
                 },
                 approvedBy: apporvedByDetail,
                 tenantInfo: {
@@ -1229,9 +1562,109 @@ export const downloadCertificate = async (
                 },
                 generatedBy: {
                     generatedBy: JSON.parse(getUserInfo()).name,
+
                 },
+                paymentInfo,
+                bankInfo
             },
         ];
+        let paymentInfoData={}
+        if(applicationData.roomsModel!==undefined  && applicationData.roomsModel.length>0 && applicationData.bkApplicationNumber!==applicationNumber){
+
+            paymentInfoData = {
+
+                cleaningCharges: "0",
+                baseCharge:  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode==="BKROOM"
+                )[0].amount,
+                cgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount)/2,
+                utgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount)/2,
+                totalgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                )[0].amount),
+                refundableCharges: "",
+                totalPayment: payloadReceiptDetails.Payments[0].totalAmountPaid,
+                paymentDate: convertEpochToDate(
+                    payloadReceiptDetails.Payments[0].transactionDate,
+                    "dayend"
+                ),
+                receiptNo: payloadReceiptDetails.Payments[0].paymentDetails[0]
+                .receiptNumber,
+                currentDate:  `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+                paymentType: payloadReceiptDetails.Payments[0].paymentMode,
+                facilitationCharge: "Not Applicable",
+                custGSTN: applicationData.bkCustomerGstNo ,
+                mcGSTN: "",
+                bankName: bankName,
+                transactionId: payloadReceiptDetails.Payments[0].transactionNumber,
+                totalPaymentInWords:  NumInWords(payloadReceiptDetails.Payments[0].totalAmountPaid),
+                discType: "0"
+
+            };
+            certificateData = [
+                {
+                applicantDetails: {
+                        name: payloadReceiptDetails.Payments[0].payerName,
+                        permanentAddress: applicationData.bkHouseNo,
+                        permanentCity: tenantData.tenants[0].city.name,
+                        placeOfService: "Chandigarh"
+
+                    },
+                    bookingDetails: {
+                        bkLocation: applicationData.bkLocation,
+                        bkDept : applicationData.bkBookingType,
+
+                        noOfACRooms: applicationData.roomsModel[0].totalNoOfACRooms,
+                        noOfNonACRooms:applicationData.roomsModel[0].totalNoOfNonACRooms,
+                        bookingPupose: applicationData.bkBookingPurpose,
+                        bkStartDate:applicationData.bkFromDate,
+                        bkEndDate:applicationData.bkToDate,
+                        placeOfService: "Chandigarh",
+                        venueName: applicationData.bkLocation,
+                        sector: applicationData.bkSector,
+                        bookingType:applicationData.bkBookingType,
+                        applicationDate: convertDateInDMY(
+                            applicationData.bkDateCreated
+                        ),
+                        bookingPeriod: bookingDuration,
+                        bkApplicationNumber:
+                            payloadReceiptDetails.Payments[0].paymentDetails[0]
+                                .bill.consumerCode,
+                    },
+
+                    payerInfo: {
+                        payerName: payloadReceiptDetails.Payments[0].payerName,
+                        payerMobile:
+                            payloadReceiptDetails.Payments[0].mobileNumber,
+                    },
+                    paymentInfo:  paymentInfoData,
+                    generatedBy: {
+                        generatedBy: JSON.parse(getUserInfo()).name,
+                        generatedDateTime: generatedDateTime
+                    },
+                    bankInfo: {
+                         accountholderName :  applicationData.bkBankAccountHolder ,
+                         rBankName :  applicationData.bkBankName ,
+                         rBankACNo :  applicationData.bkBankAccountNumber ,
+                         rIFSCCode :  applicationData.bkIfscCode
+                    },
+                    tenantInfo: {
+                            municipalityName: "Municipal Corporation Chandigarh",
+                            address: "New Deluxe Building, Sector 17, Chandigarh",
+                            contactNumber: "+91-172-2541002, 0172-2541003",
+                            logoUrl: "https://chstage.blob.core.windows.net/fileshare/logo.png",
+                            webSite: "http://mcchandigarh.gov.in",
+                            mcGSTN: "aasdadad",
+                            statecode: "998",
+                            hsncode: "45"
+                },
+                },
+            ];
+        }
 
         let res = await httpRequest(
             "post",
@@ -1265,9 +1698,7 @@ export const downloadCertificate = async (
         }
 
         //   })
-    } catch (exception) {
-        alert("Some Error Occured while downloading Permission Letter!");
-    }
+
     return receiptVal
 };
 
@@ -1372,8 +1803,8 @@ export const downloadApplication = async (
             applicationDate: applicationData.bkDateCreated,
             propertyType: applicationData.bkType,
             date: convertDateInDMY(applicationData.bkDate),
-            time: applicationData.bkTime,  
-            applicationStatus: applicationData.bkApplicationStatus==="PENDINGASSIGNMENTDRIVER"? "Request Verification Pending" :applicationData.bkApplicationStatus,
+            time: applicationData.bkTime,
+            applicationStatus: applicationData.bkApplicationStatus === "PENDINGASSIGNMENTDRIVER" ? "Request Verification Pending" : applicationData.bkApplicationStatus === "PENDINGUPDATE" ? "Out for Delivery" : applicationData.bkApplicationStatus === "DELIVERED" ? "Processed" : applicationData.bkApplicationStatus,
             applicationType: applicationData.bkStatus,
         };
         let bookingDataGFCP = {
@@ -1419,30 +1850,30 @@ export const downloadApplication = async (
         let ugst = null;
         let cgst = null;
 
-        if(applicationData.businessService == "OSBM"){
+        if (applicationData.businessService == "OSBM") {
 
-          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+            baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => el.taxHeadCode.includes("PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
             )[0].amount;
-          taxes = paymentData.billDetails[0].billAccountDetails.filter(
+            taxes = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => el.taxHeadCode.includes("CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH")
             )[0].amount;
-            ugst = taxes/2;
-            cgst = taxes/2;
+            ugst = taxes / 2;
+            cgst = taxes / 2;
 
-        }else if(applicationData.businessService == "BWT"){
-          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+        } else if (applicationData.businessService == "BWT") {
+            baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
             )[0].amount;
 
-        }else {
+        } else {
 
-          baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
-              (el) => !el.taxHeadCode.includes("TAX")
-          )[0].amount;
-          taxes = paymentData.billDetails[0].billAccountDetails.filter(
-              (el) => el.taxHeadCode.includes("TAX")
-          )[0].amount;
+            baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => !el.taxHeadCode.includes("TAX")
+            )[0].amount;
+            taxes = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("TAX")
+            )[0].amount;
 
         }
 
@@ -1567,10 +1998,10 @@ export const downloadApplication = async (
                     //             : paymentData.totalAmount,
                     // },
                     feeDetail: {
-                        baseCharge:baseCharge,
-                        taxes:taxes,
-                        ugst:ugst,
-                        cgst:cgst,
+                        baseCharge: baseCharge,
+                        taxes: taxes,
+                        ugst: ugst,
+                        cgst: cgst,
                         totalAmount:
                             paymentData === undefined
                                 ? null
@@ -1608,7 +2039,7 @@ export const downloadApplication = async (
         });
         //   })
     } catch (exception) {
-      console.log(exception, "Something Went Wront")
+        console.log(exception, "Something Went Wront")
         alert("Some Error Occured while downloading Application!");
     }
 };
@@ -2113,6 +2544,7 @@ export const downloadCancelledBookingReceipt = async (
                             applicationData.bkFromDate,
                             applicationData.bkToDate
                         ),
+                        bkCancellationReasoon: applicationData.bkRemarks
                     },
                     paymentInfo: paymentInfoData,
                     tenantInfo: {
@@ -2140,7 +2572,7 @@ export const downloadCancelledBookingReceipt = async (
                 res.filestoreIds[0];
                 if (res && res.filestoreIds && res.filestoreIds.length > 0) {
                     res.filestoreIds.map((fileStoreId) => {
-                        downloadReceiptFromFilestoreID(fileStoreId, mode, tenantId);
+                        downloadReceiptFromFilestoreIDForPdf(fileStoreId, mode, tenantId);
                     });
                 } else {
                     console.log("Error In Receipt Download");
@@ -2355,25 +2787,25 @@ export const downloadReceiptFromFilestoreIDForPdf = (fileStoreId, mode, tenantId
         }
     });
 };
-export const getFileUrlFromAPIForPdf = async (fileStoreId,tenantId) => {
-  console.log(tenantId, "My Tenant Id");
+export const getFileUrlFromAPIForPdf = async (fileStoreId, tenantId) => {
+    console.log(tenantId, "My Tenant Id");
 
-  const queryObject = [
-  	{ key: "tenantId", value: tenantId },
-//    { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
-    { key: "fileStoreIds", value: fileStoreId }
-  ];
-  try {
-    const fileUrl = await httpRequest(
-      "get",
-      "/filestore/v1/files/url",
-      "",
-      queryObject
-    );
-    return fileUrl;
-  } catch (e) {
-    console.log(e);
-  }
+    const queryObject = [
+        { key: "tenantId", value: tenantId },
+        //    { key: "tenantId", value: tenantId || commonConfig.tenantId.length > 2 ? commonConfig.tenantId.split('.')[0] : commonConfig.tenantId },
+        { key: "fileStoreIds", value: fileStoreId }
+    ];
+    try {
+        const fileUrl = await httpRequest(
+            "get",
+            "/filestore/v1/files/url",
+            "",
+            queryObject
+        );
+        return fileUrl;
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 export const getAllbillsOfBooking = async (applicationNumber, tenantId) => {
@@ -2394,3 +2826,68 @@ export const getAllbillsOfBooking = async (applicationNumber, tenantId) => {
         console.log(error, "errornew");
     }
 };
+
+
+
+
+
+
+
+export const prepareRoomCard= (nonOptimisedRoomData)=>{
+
+    let tempArray = [];
+    let roomModels= nonOptimisedRoomData
+    var roomsData = roomModels
+      .map((roomData) => {
+        if (!tempArray.includes(roomData.roomApplicationNumber)) {
+          tempArray.push(roomData.roomApplicationNumber);
+          let slicearray = roomModels.slice(
+            roomModels.findIndex((element) => {
+              if (element === roomData) {
+                return true;
+              }
+            }) + 1,
+            roomModels.length
+          );
+          let duplicateObject = slicearray.filter(
+            (data) =>
+              data.roomApplicationNumber === roomData.roomApplicationNumber
+          );
+          if (duplicateObject.length > 0) {
+            let newObj = {
+              roomApplicationNumber: roomData.roomApplicationNumber,
+              toDate: roomData.toDate,
+              fromDate: roomData.fromDate,
+              typeOfRooms: "BOTH"
+            };
+            if (duplicateObject[0].typeOfRoom === "NON-AC") {
+              newObj.totalNoOfACRooms = roomData.totalNoOfRooms;
+              newObj.totalNoOfNonACRooms = duplicateObject[0].totalNoOfRooms;
+            } else {
+              newObj.totalNoOfACRooms = duplicateObject[0].totalNoOfRooms;
+              newObj.totalNoOfNonACRooms = roomData.totalNoOfRooms;
+            }
+            return newObj;
+          } else {
+            let newObj = {
+              roomApplicationNumber: roomData.roomApplicationNumber,
+              toDate: roomData.toDate,
+              fromDate: roomData.fromDate
+            };
+            if (roomData.typeOfRoom === "NON-AC") {
+              newObj.totalNoOfACRooms = 0;
+              newObj.typeOfRooms = "NON-AC";
+              newObj.totalNoOfNonACRooms = roomData.totalNoOfRooms;
+            } else {
+              newObj.totalNoOfACRooms = roomData.totalNoOfRooms;
+              newObj.typeOfRooms = "AC";
+              newObj.totalNoOfNonACRooms = 0;
+            }
+            return newObj;
+          }
+        }
+        return;
+      }).filter(Boolean);
+      console.log('roomsData1234', roomsData)
+      return roomsData
+  }

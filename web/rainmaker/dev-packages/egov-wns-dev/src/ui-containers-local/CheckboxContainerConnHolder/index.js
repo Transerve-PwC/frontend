@@ -69,6 +69,7 @@ class CheckboxLabels extends React.Component {
       screenKey,
       preparedFinalObject,
       approveCheck,
+      section,
       jsonPath
     } = this.props;
 
@@ -82,11 +83,12 @@ class CheckboxLabels extends React.Component {
       const name =  get(preparedFinalObject.applyScreen.property.owners[0], "name");
       const emailId =  get(preparedFinalObject.applyScreen.property.owners[0], "emailId");
       const correspondenceAddress =  get(preparedFinalObject.applyScreen.property.owners[0], "correspondenceAddress");
+      //const ownerType =  get(preparedFinalObject.applyScreen.property.owners[0], "correspondenceAddress");
       approveCheck('connectionHolders[0].mobileNumber', mobileNumber)
       approveCheck('connectionHolders[0].name', name)
       approveCheck('connectionHolders[0].emailId', emailId)
       approveCheck('connectionHolders[0].correspondenceAddress', correspondenceAddress)
-     // approveCheck('connectionHolders[0].mobileNumber', mobileNumber)
+     approveCheck('connectionHolders[0].ownerType', "INDIVIDUAL.SINGLEOWNER")
       }
 
 
@@ -97,6 +99,16 @@ class CheckboxLabels extends React.Component {
       approveCheck('connectionHolders[0].emailId', null)
       approveCheck('connectionHolders[0].correspondenceAddress', null)
     }
+    if(section !== undefined)
+    {
+      if(section === 'SECURITY')
+        {
+          //
+          //
+
+        }
+
+    }
 
     this.setState({ [name]: isChecked }, () =>
       approveCheck(jsonPath, isChecked)
@@ -104,8 +116,50 @@ class CheckboxLabels extends React.Component {
   };
 
   render() {
-    const { classes, content, label } = this.props;
+    const { classes, content, label,preparedFinalObject,section } = this.props;
     let isChecked = (this.state.checkedG === null)?this.props.isChecked:this.state.checkedG;
+    let isdisabled = false
+    //isFerruleApplicable should be enable to change the value in step  PENDING_FOR_SECURITY_DEPOSIT
+    if(preparedFinalObject.WaterConnection.length>0)
+    {
+      if(preparedFinalObject.WaterConnection[0].waterApplication)
+      {
+        const {applicationStatus} = preparedFinalObject.WaterConnection[0];
+        if(applicationStatus !== undefined)
+        {
+          if(applicationStatus ==='PENDING_FOR_SECURITY_DEPOSIT')
+          {
+            isdisabled = false
+          }
+          else
+          {
+            isdisabled = true
+            isChecked = true//preparedFinalObject.WaterConnection[0].waterApplication.isFerruleApplicable
+           // approveCheck('WaterConnection[0].waterApplication.isFerruleApplicable', true)
+            
+          }
+        }
+        else
+        {
+          if(section === undefined)
+          {
+            isdisabled = false
+            isChecked = false
+
+          }
+          else{
+            isdisabled = true
+
+          }
+          
+
+        }
+  
+      }
+
+    }
+    
+ 
     return (
       <FormGroup row>
         <FormControlLabel
@@ -113,6 +167,7 @@ class CheckboxLabels extends React.Component {
           control={
             <Checkbox
               checked={isChecked}
+              disabled={isdisabled}
               onChange={this.handleChange("checkedG")}
               value={isChecked}
               classes={{

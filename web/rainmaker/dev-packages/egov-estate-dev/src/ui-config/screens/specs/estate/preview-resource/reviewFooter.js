@@ -82,9 +82,6 @@ import {
                     ];
                   
                   const billPayload = await getBill(queryObj);
-                  // debugger
-                  console.log(billPayload);
-                
                   const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
                     if(taxAmount === 0){
                       dispatch(toggleSnackbar(
@@ -172,9 +169,6 @@ import {
                     ];
                   
                   const billPayload = await getBill(queryObj);
-                  // debugger
-                  console.log(billPayload);
-                
                   const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
                     if(taxAmount === 100){
                       dispatch(toggleSnackbar(

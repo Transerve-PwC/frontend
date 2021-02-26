@@ -1349,6 +1349,175 @@ export const getSportAndCultureDashboardData = async ( dispatch, data ) => {
   }
 };
 
+// Get Dashboard Data for PublicRelation
+export const getPublicRelationData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = {
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "moduleCode": "PR",
+    "eventDetailUuid": "",
+    "eventTitle": "",
+    "eventStatus": "",
+    "status": "",
+    "startDate": data.fromDate,
+    "endDate": data.toDate,
+    "eventId": "",
+    "defaultGrid": false
+  },
+  "reportSortBy": data.reportSortBy
+  }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/prscp-services/v1/event/_get",
+      "",
+      [],
+      payloadData
+    );
+
+    //debugger;
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "PublicRelationDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for TradeLicense
+export const getTradeLicenseData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = {
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "moduleCode": "PR",
+    "eventDetailUuid": "",
+    "eventTitle": "",
+    "eventStatus": "",
+    "status": "",
+    "startDate": data.fromDate,
+    "endDate": data.toDate,
+    "eventId": "",
+    "defaultGrid": false
+  },
+  "reportSortBy": data.reportSortBy
+  }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/tl-services/v1/_search?tenantId="+data.tenantId+"&limit=100&fromDate="+data.fromDate+"&toDate="+data.toDate+"",
+      "",
+      [],
+      payloadData
+    );
+
+    //debugger;
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "TradeLicenseDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Eaawas
+export const getEaawasData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = {
+    "eawasRequest": {
+      "wsmsconstrant": "Nic@Chandigarh@#123"
+    }
+  }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/integration-services/eawas/v1/_get",
+      "",
+      [],
+      payloadData
+    );
+
+    //debugger;
+    var response = DescriptionReport;
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "EaawasDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
 // Get Legal Dashboard Data
 export const getLegalDashboardData = async ( dispatch, data ) => {
   try {
@@ -1371,9 +1540,153 @@ export const getLegalDashboardData = async ( dispatch, data ) => {
       )
     );
   }
-  alert(JSON.stringify(response));
+}; 
+
+// Get Dashboard Data for OPMS Revenue
+export const getOPMSData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData_Revenue = {
+  "tenantId": data.tenantId,
+  "applicationType": null,
+  "applicationStatus": null,
+  "applicationId": null,
+  "reportName": "RevenueCollectionReportApplicationTypeWise",
+  "searchParams": [
+    {
+      "name": "fromDate",
+      "input": data.fromDate
+    },
+    {
+      "name": "toDate",
+      "input": data.toDate
+    }
+  ],
+  "reportSortBy": data.reportSortBy
+  }
+
+  var payloadData_Summary = {
+    "applicationType": null,
+    "applicationStatus": null,
+    "applicationId": null,
+    "tenantId": data.tenantId,
+    "reportName": "MISSummaryReport",
+    "searchParams": [
+      {
+        "name": "fromDate",
+        "input": data.fromDate
+      },
+      {
+        "name": "toDate",
+        "input": data.toDate
+      }
+    ],
+    "reportSortBy": data.reportSortBy
+    }
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/report/pm-services/RevenueCollectionReportApplicationTypeWise/_get",
+      "",
+      [],
+      payloadData_Revenue
+    );
+
+    const DescriptionReport2 = await httpRequest(
+      "post",
+      "/report/pm-services/MISSummaryReport/_get",
+      "",
+      [],
+      payloadData_Summary
+    );
+
+    //debugger;
+    var resJSON = {
+      "graphOne" : {
+        "reportHeader": DescriptionReport.reportResponses[0].reportHeader,
+        "reportData" : DescriptionReport.reportResponses[0].reportData
+      },
+      "graphTwo": {
+        "reportHeader": DescriptionReport2.reportResponses[0].reportHeader,
+        "reportData" : DescriptionReport2.reportResponses[0].reportData
+      }
+    }
+    var response = [ resJSON, payloadData_Summary.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", resJSON));
+
+    // OK
+    dispatch(
+      handleField(
+      "OPMSDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
 };
 
+// Get Dashboard Data for OSBM
+export const getOSBMData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = data
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/bookings/api/employee/_search?tenantId=ch.chandigarh",
+      "",
+      [],
+      payloadData
+    );
+
+    //debugger;
+    var response = [ DescriptionReport, payloadData.reportSortBy ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "OSBMDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+//---------------------------------------DROPDOWN----------------------------------------
 // API call for Dropdown Data
 export const getWorkflowDropdownData = async (state, dispatch, status) => {
   let response = '';
@@ -1409,7 +1722,7 @@ export const getWorkflowDropdownData = async (state, dispatch, status) => {
       var dropdownItem = {}
       var listData = HARDDATA.businessServiceDescription
       for(var i=0; i<listData.length; i++){
-        var dropdownOneData = {"name":listData[i].business, "code": listData[i].business}
+        var dropdownOneData = {"name":listData[i].business.toUpperCase(), "code": listData[i].business}
         dropdownOne.push(dropdownOneData)
         // dropdownOne.push(HARDDATA[i].business)
         dropdownItem[listData[i].business] = listData[i];
@@ -1442,7 +1755,7 @@ export const getWorkflowDropdownData = async (state, dispatch, status) => {
       var dropdownTwoDesc= []
       var desc = {}
       for(var i=0; i<dropdownTwo.length; i++){
-      var dropdownOneData = {"name":dropdownTwo[i].businessService, "code": dropdownTwo[i].businessService}
+      var dropdownOneData = {"name":dropdownTwo[i].businessService.toUpperCase(), "code": dropdownTwo[i].businessService}
       // dropdownTwoService.push(dropdownTwo[i].businessService)
       dropdownTwoService.push(dropdownOneData);
       desc[dropdownTwo[i].businessService] = dropdownTwo[i].businessServiceDescription

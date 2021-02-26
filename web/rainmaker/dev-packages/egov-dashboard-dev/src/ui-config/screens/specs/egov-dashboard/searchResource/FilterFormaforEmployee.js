@@ -214,7 +214,6 @@ export const FilterFormDashboard = getCommonCard({
         style: {
         width: "60%",
         height: "55px",
-        marginLeft: "90%"
         }
       },
       children: {

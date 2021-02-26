@@ -66,6 +66,10 @@ const BookingCalendar = Loadable({
   loader: () => import("./BookingCalendar"),
   loading: () => <Loading />
 });
+const RoomDetailsComponents = Loadable({
+  loader: () => import("./RoomDetailsComponents"),
+  loading: () => <Loading />
+});
 const BookingMedia = Loadable({
   loader: () => import("./BookingMedia"),
   loading: () => <Loading />
@@ -101,5 +105,6 @@ export {
   BookingMedia,
   ImageList,
   BookingTimeSlot,
-  SelectedTimeSlotInfo
+  SelectedTimeSlotInfo,
+  RoomDetailsComponents
 };

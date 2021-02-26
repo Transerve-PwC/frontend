@@ -2,8 +2,9 @@ import {
     getCommonCard,
     getCommonContainer,
     getCommonHeader,
-    getBreak,
-    getCommonGrayCard
+    getTextField,
+    getCommonGrayCard,
+    getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
     handleScreenConfigurationFieldChange as handleField,
@@ -51,6 +52,26 @@ import { httpRequest } from "../../../../ui-utils";
 let role_name = JSON.parse(getUserInfo()).roles[0].code;
 let bookingStatus = "";
 
+const reasonForCancellation = getCommonCard({
+    reasonForCancellation: getCommonContainer({
+        bkRemarks: {
+            ...getTextField({
+                label: {
+                    labelName: "Booking Cancelation Reason",
+                    labelKey: "BK_PCC_CANCELLATION_REASON",
+                },
+                placeholder: {
+                    labelName: "Enter cancellation reason",
+                    labelKey: "BK_PCC_CANCELLATION_REASON_PLACEHOLDER",
+                },
+                required: true,
+                pattern: getPattern("Name"),
+                errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+                jsonPath: "Booking.bkRemarks",
+            }),
+        }
+    })
+});
 const confirmationStatement = getCommonGrayCard({
 
     header: getCommonHeader({
@@ -315,7 +336,9 @@ const screenConfig = {
                 body: getCommonCard({
                     estimateSummary: estimateSummary,
                     pccSummary: pccSummary,
-                    confirmationStatement: confirmationStatement
+                    reasonForCancellation: reasonForCancellation,
+                    confirmationStatement: confirmationStatement,
+
 
                 }),
                 footer: footerForParkAndCC,

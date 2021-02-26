@@ -102,7 +102,7 @@ class BookingDetails extends Component {
     // this.props.history.push(`/image?source=${source}`);
   };
   render() {
-    const { status, historyApiData, applicantName, applicationNo, submittedDate, dateCreated,bkLocation,bkDimension, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
+    const { bkToDate,bkCgst,bkUtgst,bkRent,bkSurchargeRent,bkFromDate,bkBookingPurpose,status, historyApiData, applicantName, applicationNo, submittedDate, dateCreated,bkLocation,bkDimension, address, sector, houseNo, bookingType, mapAction, images, action, role } = this.props;
     var ProcessInstances = [];
 
     if (historyApiData != undefined && historyApiData.ProcessInstances && historyApiData.ProcessInstances.length > 0) {
@@ -165,6 +165,36 @@ class BookingDetails extends Component {
                     />
                   </div>
                   <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_BOOKING_TYPE" />
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bookingType}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_PURPOSE_LABEL" />
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkBookingPurpose}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICANT_SECTOR_FOR_PARK" />
+                    <Label
+                      className="col-xs-12 col-sm-12 col-md-12  status-result-color"
+                    
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={sector}
+                    />
+                  </div>
+                  <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_DETAILS_CURRENT_STATUS" />
                     <Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
@@ -173,47 +203,102 @@ class BookingDetails extends Component {
                       label={status}
                     />
                   </div>
+
+
                   <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_DETAILS_SUBMISSION_DATE" />
                     <b><Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
-                      label={submittedDate}
+                      // label={submittedDate}
                       id="complaint-details-submission-date"
                       labelStyle={{ color: "inherit" }}
                       label={dateCreated}
                     /></b>
-                  </div>
+                  </div> 
+
                   <div className="col-md-4">
-                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_APPLICATION_BOOKING_TYPE" />
-                    <Label
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_FROM_DATE_LABEL" />
+                    <b><Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
-                      label={submittedDate}
+                      // label={submittedDate}
                       id="complaint-details-submission-date"
                       labelStyle={{ color: "inherit" }}
-                      label={bookingType}
-                    />
+                      label={bkFromDate}
+                    /></b>
                   </div>
+
                   <div className="col-md-4">
-                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_PARK_LOCATIION_BOOKING" />
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_TO_DATE_LABEL" />
+                    <b><Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkToDate}
+                    /></b>
+                  </div>
+                 
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_LOCATION_LABEL" />  {/*BK_MYBK_PARK_LOCATIION_BOOKING*/}
                     <Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
-                      label={submittedDate}
+                      // label={submittedDate}
                       id="complaint-details-submission-date"
                       labelStyle={{ color: "inherit" }}
                       label={bkLocation}
                     />
                   </div>
                   <div className="col-md-4">
-                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_PARK_DIMENTION_AREA" />
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_DIMENSION_LABEL" /> {/*BK_MYBK_PARK_DIMENTION_AREA*/}
                     <Label
                       className="col-xs-12  col-sm-12 col-md-12  status-result-color"
-                      label={submittedDate}
+                      // label={submittedDate}
                       id="complaint-details-submission-date"
                       labelStyle={{ color: "inherit" }}
-                      label={bkDimension}
+                      label={bkDimension + "Sq.Yards"}
                     />
                   </div>
-
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_SURCHARGE_RENT_LABEL" /> {/*BK_MYBK_PARK_DIMENTION_AREA*/}
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkSurchargeRent}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_RENT_LABEL" /> {/*BK_MYBK_PARK_DIMENTION_AREA*/}
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkRent}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_UTGST_LABEL" /> {/*BK_MYBK_PARK_DIMENTION_AREA*/}
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkUtgst}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_PCC_CGST_LABEL" /> {/*BK_MYBK_PARK_DIMENTION_AREA*/}
+                    <Label
+                      className="col-xs-12  col-sm-12 col-md-12  status-result-color"
+                      // label={submittedDate}
+                      id="complaint-details-submission-date"
+                      labelStyle={{ color: "inherit" }}
+                      label={bkCgst}
+                    />
+                  </div>
+                 
                 </div>
               </div>
             </div>

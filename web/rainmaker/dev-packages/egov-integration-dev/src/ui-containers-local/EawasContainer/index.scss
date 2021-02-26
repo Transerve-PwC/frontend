@@ -18,9 +18,8 @@
 
 .report-table-header th {
   border-top: 1px solid #e0e0e0 !important;
-  border-bottom: 1px solid #e0e0e0 !important; 
-  /* width: 100%; */
-}
+  border-bottom: 1px solid #e0e0e0 !important;
+  /* width: 100%; */ }
 
 .report-download-button-text {
   border: none !important;
@@ -48,7 +47,15 @@
   border: 1px solid #ddd; }
 
 .report-header-row-label {
-  font-weight: bold; }
+  font-weight: bold;
+  padding: 5px
+}
+
+.report-header-row-label-HEADING{
+  font-weight: bold;
+  padding: 7px;
+  font-size: 21px;
+}
 
 .dataTables_filter {
   float: left !important;
@@ -73,6 +80,43 @@
 .report_filters {
   margin-bottom: 8px; }
 
-@media only screen and (max-width: 704px) {
+.statReportContainer{
+  display: flex;
+  height: 310px;
+}
+
+#reportTable{
+  width: 50%;
+  margin-bottom: 20px;
+  height: 350px;
+  background-color: white;
+}
+
+.graphData{
+  width:50%;
+  height:350px;
+  border:ridge;
+}
+
+@media only screen and (max-width: 980px) {
   #reportTable_wrapper {
-    overflow: scroll; } }
+    overflow: scroll; } 
+
+  .statReportContainer{
+    display: block;
+    height: 310px;
+  }
+  #reportTable{
+    width: 100%;
+    margin-bottom: 20px;
+    height: 350px;
+    background-color: white;
+  }
+  .graphData{
+    width:100%;
+    height:350px;
+    border:ridge;
+  }
+  
+
+}

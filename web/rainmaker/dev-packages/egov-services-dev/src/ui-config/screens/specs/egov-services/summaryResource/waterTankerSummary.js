@@ -63,6 +63,7 @@ export const waterTankerSummary = getCommonGrayCard({
                     //     }
                     // ),
                     HouseNo: getLabelWithValue(
+                        
                         {
                             labelName: "House No.",
                             labelKey: "BK_WTB_HOUSE_NUMBER_LABEL",
@@ -73,8 +74,8 @@ export const waterTankerSummary = getCommonGrayCard({
                     ),
                     CompleteAddress: getLabelWithValue(
                         {
-                            labelName: "House No.",
-                            labelKey: "BK_WTB_COMPLETE_ADDRESS_LABEL",
+                            labelName: "Place of Delivery of Water Tanker",
+                            labelKey: "Place of Delivery of Water Tanker",
                         },
                         {
                             jsonPath: "Booking.bkCompleteAddress",

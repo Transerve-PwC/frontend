@@ -38,6 +38,7 @@ const UploadSingleFile = ({
                     <UploadedDocument
                       document={document}
                       removeDocument={removeDocument}
+                      moduleName="wns"
                     />
                   )}
                 </div>

@@ -186,6 +186,7 @@ export const header = getCommonContainer({
               { name: "InventoryType", },
               { name: "MaterialType", filter: "[?(@.active == true)]"},
               { name: "businessService" }, 
+              { name: "businessServiceIssueNote" }, 
             ],
           },
           {
@@ -400,15 +401,21 @@ export const header = getCommonContainer({
            if(response)
            {
            const userInfo = JSON.parse(getUserInfo());
-           let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessService`,[]) 
+           let businessService  = get(state, `screenConfiguration.preparedFinalObject.createScreenMdmsData.store-asset.businessServiceIssueNote`,[]) 
            // filter store based on login user role and assign business service
            let roles = userInfo.roles
            for (let index = 0; index < roles.length; index++) {
            const element = roles[index];
            businessService = businessService.filter(x=>x.role === element.code)
-           if(businessService.length==1)
-           response = response.stores.filter(x=>x.department.deptCategory===businessService[0].name)
-           break;        
+          //  if(businessService.length==1)
+          //  response = response.stores.filter(x=>x.department.deptCategory===businessService[0].deptCategory)
+          let deptCategory =
+               get(state, `screenConfiguration.preparedFinalObject.indents[0].indentStore.department.deptCategory`)
+             if (!deptCategory) {
+               deptCategory = get(state, `screenConfiguration.preparedFinalObject.materialIssues[0].indent.indentStore.department.deptCategory`);
+             }
+             response = response.stores.filter(x => x.department.deptCategory === deptCategory)
+             break;        
            }
            dispatch(prepareFinalObject("store.stores", response));
             }
@@ -681,6 +688,7 @@ export const header = getCommonContainer({
               //     { max: new Date().toISOString().slice(0, 10)}
               //   )
               // );   
+            
               dispatch(prepareFinalObject("materialIssues[0].issuedToEmployee",null));
               dispatch(prepareFinalObject("materialIssues[0].issuedToDesignation",null));
               const userInfo = JSON.parse(getUserInfo());

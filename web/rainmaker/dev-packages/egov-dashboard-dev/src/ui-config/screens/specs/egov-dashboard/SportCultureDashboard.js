@@ -11,8 +11,8 @@ let role_name = JSON.parse(getUserInfo()).roles[0].code
 
 const header = getCommonHeader(
   {
-    labelName: "HC Dashboard",
-    labelKey: "DASHBOARD_2"
+    labelName: "Sport And Culture Dashboard",
+    labelKey: "Sport&Culture_dashboard_1"
   },
   {
     classes: {

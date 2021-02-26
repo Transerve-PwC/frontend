@@ -12,6 +12,7 @@ import store from "ui-redux/store";
 import "./index.css";
 import "./customfooter.css";
 import set from "lodash/set";
+import { httpRequest } from "../../../../../ui-utils";
 
 let state = store.getState();
 
@@ -35,6 +36,34 @@ const callbackforAuction = async (state, dispatch) => {
     }&tenantId=${challandetails.tenantId}&Key=${challandetails.challanUuid}`;
   dispatch(setRoute(reviewUrl));
 
+};
+
+const callbackforSendMessage = async (state, dispatch) => {
+  let challandetails = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', {});
+  try {
+    let notificationTemplate = get(state, "screenConfiguration.preparedFinalObject.applyScreenMdmsData.egec.NotificationTemplate[0]", {});
+    let message = notificationTemplate.message.replace('<EnchroachmentType>', challandetails.encroachmentType).replace('<Date and Time>', challandetails.violationDate + " " + challandetails.violationTime);
+    let body = notificationTemplate.body.replace('<EnchroachmentType>', challandetails.encroachmentType).replace('<Date and Time>', challandetails.violationDate + " " + challandetails.violationTime);
+    let modifiedNotificationTemplate = {};
+    modifiedNotificationTemplate.email = challandetails.emailId;
+    modifiedNotificationTemplate.subject = notificationTemplate.subject;
+    modifiedNotificationTemplate.body = body;
+    modifiedNotificationTemplate.attachmentUrls = null;
+    modifiedNotificationTemplate.mobileNumber = challandetails.contactNumber;
+    modifiedNotificationTemplate.message = message;
+    modifiedNotificationTemplate.isHtml = notificationTemplate.isHtml;
+
+    set(challandetails, 'notificationTemplate', modifiedNotificationTemplate)
+
+ let response = await httpRequest("post", "/ec-services/violation/_sendMessage", "", [], { requestBody: challandetails });
+    if (response.ResponseBody.challanId !== 'null' || response.ResponseBody.challanId !== '') {
+    dispatch(toggleSnackbar(true, { labelName: "Notification Sent Successfully",labelKey: "EC_SEND_NOTIFICATION" }, "success"));
+  } else {
+    dispatch(toggleSnackbar(true, { labelName: "ERROR" }, "error"));
+  }
+  } catch (error) {
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+  }
 };
 
 const updateonGroundPayment = async (state, dispatch) => {
@@ -704,6 +733,49 @@ export const footer = getCommonApplyFooter({
     },
     visible: true
   },
+  
+  sendMessageButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "16px",
+        background: "#fff",
+        border: "1px solid #ddd",
+        color: "#000"
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12,
+    },
+    children: {
+      nextButtonLabel: getLabel({
+        labelName: "Send Message",
+        labelKey: "EC_SEND_MESSAGE_BUTTON"
+      }),
+      nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_right"
+        }
+      }
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: callbackforSendMessage
+    },
+    visible: false,
+    roleDefination: {
+      rolePath: "user-info.roles",
+      roles: ["challanSI"]
+    }
+  }
 });
 
 

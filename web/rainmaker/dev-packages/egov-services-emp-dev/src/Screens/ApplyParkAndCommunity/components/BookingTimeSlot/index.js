@@ -13,7 +13,7 @@ import get from "lodash/get";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-
+import moment from 'moment';
 import {
   prepareFinalObject,
   toggleSnackbar,
@@ -126,7 +126,7 @@ class CustomTimeSlots extends Component {
       );
       let goDate = `${goDay}-${goMonth}-${goYear}`;
       let i = 0;
-
+      console.log("this.porps.rows", this.porps.rows);
       for (i; i < this.props.rows.length; i++) {
         if (this.props.rows[i].date == goDate) {
           break;
@@ -152,53 +152,148 @@ class CustomTimeSlots extends Component {
   }
   selectTimeSlot = (e) => {
     //alert(e.target.getAttribute('data-date')+'---'+e.target.getAttribute('data-timeslot'));
+    console.log(e, "elon");
     var cbarray = document.getElementsByName("time-slot");
+    // console.log("cbarray", cbarray);
+    if (e.target.getAttribute("data-date") == this.props.isSameDate) {
+      this.props.prepareFinalObject(
+        "perDayBookedSlotCount",
+        this.props.perDayBookedSlotCount + 1
+      );
+      let perDayBookedSlotCount = this.props.perDayBookedSlotCount;
 
-    for (var i = 0; i < cbarray.length; i++) {
-      cbarray[i].checked = false;
+      // document.getElementById(
+      //     e.target.getAttribute("data-date") +
+      //     ":" +
+      //     e.target.getAttribute("data-timeslot")
+      // ).checked = true;
+      // console.log(
+      //     e.target.getAttribute("data-date") +
+      //     "---" +
+      //     e.target.getAttribute("data-timeslot")
+      // );
+      if(e.target.getAttribute("data-timeslot") === "9AM-9PM"){
+         console.log("When click on whole day")
+         for (var i = 0; i < cbarray.length; i++) {
+            cbarray[i].checked = false;
+          }
+    
+          document.getElementById(
+            e.target.getAttribute("data-date") +
+              ":" +
+              e.target.getAttribute("data-timeslot")
+          ).checked = true;
+
+         var [apiDay, apiMonth, apiYear] = e.target
+         .getAttribute("data-date")
+         .split("-");
+       let apiDate = `${apiYear}-${apiMonth}-${apiDay}`;
+
+       let changefromDate = moment(apiDate).format("YYYY-MM-DD");
+       console.log("changefromDate",changefromDate)
+       let changeToDate = moment(apiDate).format("YYYY-MM-DD");
+       console.log("changeToDate",changeToDate)
+
+this.props.prepareFinalObject("Booking.wholeDay",apiDate)
+this.props.prepareFinalObject("Booking.wholeDay.slotOne","9AM - 1PM")
+this.props.prepareFinalObject("Booking.wholeDay.slotTwo","1PM - 5PM")
+this.props.prepareFinalObject("Booking.wholeDay.slotThree","5PM - 9PM")
+this.props.prepareFinalObject("Booking.wholeDay.FromDate",changefromDate + "," +"9AM")
+this.props.prepareFinalObject("Booking.wholeDay.ToDate",changeToDate + "," +"9PM")
+      }
+      var [from, to] = e.target.getAttribute("data-timeslot").split("-");
+      var [apiDay, apiMonth, apiYear] = e.target
+        .getAttribute("data-date")
+        .split("-");
+      let apiDate = `${apiYear}-${apiMonth}-${apiDay}`;
+      this.props.prepareFinalObject("Booking.bkToDate", apiDate);
+      this.props.prepareFinalObject("Booking.bkFromDate", apiDate);
+      this.props.prepareFinalObject("Booking.bkFromTimeTwo", from);
+      this.props.prepareFinalObject("Booking.bkToTimeTwo", to);
+
+      this.props.prepareFinalObject("availabilityCheckData.bkToDate", apiDate);
+      this.props.prepareFinalObject(
+        "availabilityCheckData.bkFromDate",
+        apiDate
+      );
+      this.props.prepareFinalObject(
+        "availabilityCheckData.bkFromTimeTwo",
+        from
+      );
+      this.props.prepareFinalObject("availabilityCheckData.bkToTimeTwo", to);
+      var selectedTimeSlots = [];
+      //this.setState({ selectedTimeSlots: { slot: `${from}-${to}` } },
+      selectedTimeSlots.push({ slot: `${from}-${to}` });
+      this.props.prepareFinalObject("Booking.timeslotsTwo", selectedTimeSlots);
+      this.props.prepareFinalObject(
+        "availabilityCheckData.timeslotsTwo",
+        selectedTimeSlots
+      );
+      // this.props.prepareFinalObject(
+      //     "DisplayPacc.bkDisplayFromDateTime",
+      //     e.target.getAttribute("data-date") + ", " + from
+      // );
+      this.props.prepareFinalObject(
+        "DisplayPacc.bkDisplayToDateTime",
+        e.target.getAttribute("data-date") + ", " + to
+      );
+    } else {
+      this.props.prepareFinalObject("perDayBookedSlotCount", 1);
+
+      this.props.prepareFinalObject(
+        "isSameDate",
+        e.target.getAttribute("data-date")
+      );
+
+      for (var i = 0; i < cbarray.length; i++) {
+        cbarray[i].checked = false;
+      }
+
+      document.getElementById(
+        e.target.getAttribute("data-date") +
+          ":" +
+          e.target.getAttribute("data-timeslot")
+      ).checked = true;
+    //   console.log(
+    //     e.target.getAttribute("data-date") +
+    //       "---" +
+    //       e.target.getAttribute("data-timeslot")
+    //   );
+      var [from, to] = e.target.getAttribute("data-timeslot").split("-");
+      var [apiDay, apiMonth, apiYear] = e.target
+        .getAttribute("data-date")
+        .split("-");
+      let apiDate = `${apiYear}-${apiMonth}-${apiDay}`;
+      this.props.prepareFinalObject("Booking.bkToDate", apiDate);
+      this.props.prepareFinalObject("Booking.bkFromDate", apiDate);
+      this.props.prepareFinalObject("Booking.bkFromTime", from);
+      this.props.prepareFinalObject("Booking.bkToTime", to);
+
+      this.props.prepareFinalObject("availabilityCheckData.bkToDate", apiDate);
+      this.props.prepareFinalObject(
+        "availabilityCheckData.bkFromDate",
+        apiDate
+      );
+      this.props.prepareFinalObject("availabilityCheckData.bkFromTime", from);
+      this.props.prepareFinalObject("availabilityCheckData.bkToTime", to);
+      var selectedTimeSlots = [];
+      //this.setState({ selectedTimeSlots: { slot: `${from}-${to}` } },
+      selectedTimeSlots.push({ slot: `${from}-${to}` });
+      this.props.prepareFinalObject("Booking.timeslots", selectedTimeSlots);
+      this.props.prepareFinalObject(
+        "availabilityCheckData.timeslots",
+        selectedTimeSlots
+      );
+      this.props.prepareFinalObject(
+        "DisplayPacc.bkDisplayFromDateTime",
+        e.target.getAttribute("data-date") + ", " + from
+      );
+      this.props.prepareFinalObject(
+        "DisplayPacc.bkDisplayToDateTime",
+        e.target.getAttribute("data-date") + ", " + to
+      );
+      //)
     }
-
-    document.getElementById(
-      e.target.getAttribute("data-date") +
-        ":" +
-        e.target.getAttribute("data-timeslot")
-    ).checked = true;
-    console.log(
-      e.target.getAttribute("data-date") +
-        "---" +
-        e.target.getAttribute("data-timeslot")
-    );
-    var [from, to] = e.target.getAttribute("data-timeslot").split("-");
-    var [apiDay, apiMonth, apiYear] = e.target
-      .getAttribute("data-date")
-      .split("-");
-    let apiDate = `${apiYear}-${apiMonth}-${apiDay}`;
-    this.props.prepareFinalObject("Booking.bkToDate", apiDate);
-    this.props.prepareFinalObject("Booking.bkFromDate", apiDate);
-    this.props.prepareFinalObject("Booking.bkFromTime", from);
-    this.props.prepareFinalObject("Booking.bkToTime", to);
-
-    this.props.prepareFinalObject("availabilityCheckData.bkToDate", apiDate);
-    this.props.prepareFinalObject("availabilityCheckData.bkFromDate", apiDate);
-    this.props.prepareFinalObject("availabilityCheckData.bkFromTime", from);
-    this.props.prepareFinalObject("availabilityCheckData.bkToTime", to);
-    var selectedTimeSlots = [];
-    //this.setState({ selectedTimeSlots: { slot: `${from}-${to}` } },
-    selectedTimeSlots.push({ slot: `${from}-${to}` });
-    this.props.prepareFinalObject("Booking.timeslots", selectedTimeSlots);
-    this.props.prepareFinalObject(
-      "availabilityCheckData.timeslots",
-      selectedTimeSlots
-    );
-    this.props.prepareFinalObject(
-      "DisplayPacc.bkDisplayFromDateTime",
-      e.target.getAttribute("data-date") + ", " + from
-    );
-    this.props.prepareFinalObject(
-      "DisplayPacc.bkDisplayToDateTime",
-      e.target.getAttribute("data-date") + ", " + to
-    );
-    //)
   };
 
   goHandler = () => {
@@ -230,7 +325,7 @@ class CustomTimeSlots extends Component {
     let { rows, currentDate, currentSelectedTimeSlot } = this.props;
 
     // document.getElementById(currentSelectedTimeSlot).checked = true;
-    console.log(this.props, "this.props booking time slot");
+    // console.log(this.props, "this.props booking time slot");
     const arrowStyles = {
       position: "absolute",
       zIndex: 2,
@@ -307,6 +402,7 @@ class CustomTimeSlots extends Component {
         >
           {rows &&
             rows.map((item) => {
+            //   console.log("itemInTimeSlot--", item);
               return (
                 <div>
                   <Paper className={classes.root}>
@@ -317,7 +413,7 @@ class CustomTimeSlots extends Component {
                         <TableRow>
                           <TableCell
                             className={"header-date"}
-                            colSpan={3}
+                            colSpan={4}
                             align={"center"}
                           >
                             {item.date}
@@ -327,13 +423,19 @@ class CustomTimeSlots extends Component {
                       <TableBody>
                         <TableRow>
                           {item.timeSlots.map((item1, id) => {
+                            // console.log("itemTimeSlot1--", item1);
                             let availabilityClass = "";
                             let timeSlotExpired = "";
                             if (item1.indexOf(":booked") !== -1) {
+                            //   console.log(
+                            //     " item1 = item1.split(--",
+                            //     (item1 = item1.split(":")[0])
+                            //   );
                               item1 = item1.split(":")[0];
                               availabilityClass = "booked-time-slot";
                             } else if (item1.indexOf(":initiated") !== -1) {
                               item1 = item1.split(":")[0];
+                            //   console.log("itemInElse-if--", item1);
                               availabilityClass = "initiated-time-slot";
                             } else {
                               availabilityClass = "available-time-slot";
@@ -343,28 +445,51 @@ class CustomTimeSlots extends Component {
                             let currentTime = parseFloat(
                               `${currentDate.getHours()}.${currentDate.getMinutes()}`
                             );
-
+                            // console.log("currentTime-currentTime", currentTime);
                             let currentMonth = (
                               "0" +
                               (currentDate.getMonth() + 1)
                             ).slice(-2);
+                            // console.log(
+                            //   "currentMonth--currentMonth",
+                            //   currentMonth
+                            // );
                             let currentDay = (
                               "0" + currentDate.getDate()
                             ).slice(-2);
+                            // console.log("currentDay--", currentDay);
                             let currentYear = currentDate.getFullYear();
+                            // console.log(
+                            //   "currentYear--currentYear",
+                            //   currentYear
+                            // );
                             let compareDate = `${currentDay}-${currentMonth}-${currentYear}`;
-
+                            // console.log(
+                            //   "compareDate--compareDate",
+                            //   compareDate
+                            // );
+                            // console.log("item.dateitem.date--", item.date);
+                            // console.log("item1BeforeIfCondition--", item1);
                             let slot = "";
                             if (item.date === compareDate) {
                               if (item1.includes("AM")) {
+                                // console.log("item1--item1AM", item1);
+                                let check = item1.substring(0, 2);
+                                // console.log("check--", check);
                                 slot = item1.substring(0, 2);
+                                // console.log("slotInAMBlock-", slot);
                               } else {
-                                let singleTimeDigit = item1.substring(0, 1);
+                                // console.log("item1-in-item1", item1);
 
-                                if (singleTimeDigit === "2") {
-                                  slot = 14;
-                                } else if (singleTimeDigit === "6") {
-                                  slot = 18;
+                                let singleTimeDigit = item1.substring(0, 1);
+                                // console.log(
+                                //   "singleTimeDigit-singleTimeDigit",
+                                //   singleTimeDigit
+                                // );
+                                if (singleTimeDigit === "1") {
+                                  slot = 13;
+                                } else if (singleTimeDigit === "5") {
+                                  slot = 17;
                                 }
                               }
                               if (currentTime > parseFloat(slot)) {
@@ -421,7 +546,31 @@ class CustomTimeSlots extends Component {
                                   />
                                 </TableCell>
                               );
-                            } else {
+                            }
+                            else if(item1 === "Whole Day"){
+                                // console.log("comeInReturnOfWholeDay")
+                                return (
+                                  <TableCell
+                                    className={`date-timeslot ${timeSlotExpired} ${availabilityClass}`}
+                                    data-date={item.date}
+                                    data-timeslot={"9AM-9PM"}
+                                    align={"center"}
+                                    onClick={this.selectTimeSlot}
+                                  >
+                                    {item1}
+                                    <input
+                                      className="book-timeslot"
+                                      name="time-slot"
+                                      type="checkbox"          
+                                      id={item.date + ":" + "9AM-9PM"}
+                                      data-date={item.date}
+                                      data-timeslot={"9AM-9PM"}
+                                      onClick={this.selectTimeSlot}
+                                    />
+                                  </TableCell>
+                                );
+                              }
+                            else { //when we do nothing
                               return (
                                 <TableCell
                                   className={`date-timeslot ${timeSlotExpired} ${availabilityClass}`}
@@ -491,7 +640,17 @@ const mapStateToProps = (state) => {
     state,
     "screenConfiguration.preparedFinalObject.availabilityCheckData.reservedTimeSlotsData"
   );
-  console.log("reservedTimeSlotsData--propswala--", reservedTimeSlotsData);
+
+  let isSameDate = get(
+    state,
+    "screenConfiguration.preparedFinalObject.isSameDate"
+  );
+
+  let perDayBookedSlotCount = get(
+    state,
+    "screenConfiguration.preparedFinalObject.perDayBookedSlotCount",
+    1
+  );
 
   let timeSlotArray = [];
   let bookedSlotArray = [];
@@ -517,14 +676,23 @@ const mapStateToProps = (state) => {
   //Edit Case Coverd To show Checkbox Checked
   const initiatedBookingTimeSlot = get(
     state,
-    "screenConfiguration.preparedFinalObject.availabilityCheckData.timeslots"
-  );
-  const initiatedBookingFromDate = get(
-    state,
-    "screenConfiguration.preparedFinalObject.oldAvailabilityCheckData.bkFromDate"
+    "screenConfiguration.preparedFinalObject.availabilityCheckData.timeslots",
+    ""
   );
 
-  //******************************** */oldAvailabilityCheckData.bkFromDate
+  const initiatedBookingTimeSlotTwo = get(
+    state,
+    "screenConfiguration.preparedFinalObject.availabilityCheckData.timeslotsTwo",
+    ""
+  );
+
+  const initiatedBookingFromDate = get(
+    state,
+    "screenConfiguration.preparedFinalObject.availabilityCheckData.bkFromDate",
+    ""
+  );
+
+  //******************************** */
 
   for (let i = 0; i < 180; i++) {
     let month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -532,13 +700,15 @@ const mapStateToProps = (state) => {
     let year = date.getFullYear();
     timeSlotArray.push({
       date: `${day}-${month}-${year}`,
-      timeSlots: ["10AM-2PM", "2PM-6PM", "6PM-10PM"],
+      timeSlots: ["9AM-1PM", "1PM-5PM", "5PM-9PM"],
+      // timeSlots: ["9AM-1PM", "1PM-5PM", "5PM-9PM", "Whole Day"],
     });
     date.setDate(date.getDate() + 1);
   }
 
   let finalBookedTimeSlots = [];
   for (let j = 0; j < timeSlotArray.length; j++) {
+    // console.log("yoyo");
     let tempObj = {};
     tempObj.date = timeSlotArray[j].date;
     tempObj.timeSlots = timeSlotArray[j].timeSlots;
@@ -562,17 +732,16 @@ const mapStateToProps = (state) => {
         }
       }
     }
-
     if (initiatedBookingFromDate) {
       var [goYear, goMonth, goDay] = initiatedBookingFromDate.split("-");
       let goDate = `${goDay}-${goMonth}-${goYear}`;
       if (timeSlotArray[j].date === goDate && initiatedBookingTimeSlot) {
         for (let l = 0; l < timeSlotArray[j].timeSlots.length; l++) {
-          console.log(
-            timeSlotArray[j].timeSlots[l],
-            initiatedBookingTimeSlot[0].slot,
-            "fsdfsfsdf"
-          );
+        //   console.log(
+        //     timeSlotArray[j].timeSlots[l],
+        //     initiatedBookingTimeSlot[0].slot,
+        //     "fsdfsfsdf"
+        //   );
 
           if (
             initiatedBookingTimeSlot[0].slot === timeSlotArray[j].timeSlots[l]
@@ -583,20 +752,36 @@ const mapStateToProps = (state) => {
               1,
               `${timeSlotArray[j].timeSlots[l]}:initiated`
             );
+            console.log("timeSlotArray[j]", timeSlotArray[j]);
+          }
+
+          if (perDayBookedSlotCount !== 1) {
+            if (
+              initiatedBookingTimeSlotTwo[0].slot ===
+              timeSlotArray[j].timeSlots[l]
+            ) {
+              console.log("Hello Bulbul");
+              timeSlotArray[j].timeSlots.splice(
+                l,
+                1,
+                `${timeSlotArray[j].timeSlots[l]}:initiated`
+              );
+              console.log("timeSlotArray[j]", timeSlotArray[j]);
+            }
           }
         }
       }
     }
     finalBookedTimeSlots.push(tempObj);
+    // console.log("tempObj", tempObj);
   }
 
   return {
-    /* rows: finalBookedTimeSlots,
-        currentDate: new Date(),
-        initiatedBookingFromDate: initiatedBookingFromDate, */
     rows: finalBookedTimeSlots,
     currentDate: new Date(),
     initiatedBookingFromDate: initiatedBookingFromDate,
+    isSameDate: isSameDate,
+    perDayBookedSlotCount: perDayBookedSlotCount,
   };
 };
 

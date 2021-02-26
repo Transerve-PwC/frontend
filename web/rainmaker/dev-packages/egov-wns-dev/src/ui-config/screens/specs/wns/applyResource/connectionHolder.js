@@ -9,7 +9,7 @@ import {
     getSelectField,
   } from "egov-ui-framework/ui-config/screens/specs/utils";
 
-
+  let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
   const connHolderDetail = getCommonContainer({
     applicantName: getTextField({
       label: {
@@ -21,6 +21,10 @@ import {
         labelKey: "WS_CONN_HOLDER_OWN_DETAIL_OWN_NAME_PLACEHOLDER"
       },
       required: true,
+      props: {
+        
+        disabled: IsEdit,
+    },
       pattern: getPattern("Name"),
       errorMessage: "Invalid Name",
       jsonPath: "connectionHolders[0].name",
@@ -38,6 +42,10 @@ import {
         labelName: "Enter Mobile No.",
         labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_PLACEHOLDER"
       },
+      props: {
+        
+        disabled: IsEdit,
+    },
       required: true,
       pattern: getPattern("MobileNo"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
@@ -56,6 +64,7 @@ import {
         labelName: "Enter email",
         labelKey: "WS_OWNER_DETAILS_EMAIL_LABEL_PLACEHOLDER"
       },
+      
       pattern: getPattern("Email"),
       required: true,
      // errorMessage: "Invalid Address",
@@ -65,7 +74,8 @@ import {
         sm: 6
       },
       props: {
-        className: "applicant-details-error"
+        className: "applicant-details-error",
+        disabled: IsEdit,
       }
     }),
 
@@ -162,7 +172,8 @@ import {
         sm: 6
       },
       props: {
-        className: "applicant-details-error"
+        className: "applicant-details-error",
+        disabled: IsEdit,
       }
     }),
     // specialApplicantCategory: getSelectField({
