@@ -383,7 +383,8 @@ export const applyEstates = async (state, dispatch, activeIndex, screenName = "a
 
       if (screenName != "apply-building-branch") {
         // owners = removeByAttr(owners,'isDeleted',true);
-        owners = owners.filter(item => typeof item.isDeleted === "undefined").map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
+        let entityType = get(state.screenConfiguration.preparedFinalObject,"Properties[0].propertyDetails.entityType") || ""
+        owners = owners.filter(item => typeof item.isDeleted === "undefined").map(item => ({...item, share: !!entityType && entityType === "ET.PROPRIETORSHIP" ? 100 : parseInt(item.share) , ownerDetails: {...item.ownerDetails, isCurrentOwner: true}}))
         prevOwners = prevOwners.filter(item => typeof item.isDeleted === "undefined").map(item => ({...item, ownerDetails: {...item.ownerDetails, isCurrentOwner: false}}))
         owners = [...owners, ...prevOwners];
       
