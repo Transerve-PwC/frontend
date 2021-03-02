@@ -8,10 +8,9 @@ import { convertDateToEpoch, validateFields, getRentSummaryCard, getTextToLocalM
 import {demandResults} from './searchResource/searchResults'
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-
-
-
 import moment from 'moment'
+import { payerField } from "./estate-payment";
+
   const header = getCommonHeader({
     labelName: "Rent Payment",
     labelKey: "ES_RENT_PAYMENT_HEADER"
@@ -470,6 +469,7 @@ else{
   export const paymentDetails = getCommonCard({
     // header: paymentDetailsHeader,
     detailsContainer: getCommonContainer({
+      payer: getSelectField(payerField),
       Amount: getTextField(paymentAmount),
       bankName: getTextField(bankName),
       dateOfPayment: getDateField(paymentDate),
@@ -536,11 +536,13 @@ else{
       else{
       const propertyId = getQueryArg(window.location.href, "propertyId")
       const {payment} = state.screenConfiguration.preparedFinalObject
+      const {payer, ...rest} = payment
       if(!!propertyId ) {
         const payload = [
           { id: propertyId, 
+            payer,
             propertyDetails: {
-              offlinePaymentDetails: [payment]
+              offlinePaymentDetails: [rest]
             }
           }
         ]

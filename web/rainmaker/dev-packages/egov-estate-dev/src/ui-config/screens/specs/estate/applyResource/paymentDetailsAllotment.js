@@ -20,6 +20,7 @@ import {
 } from "../../utils";
 import get from "lodash/get";
 import { set } from "lodash";
+import store from "../../../../../ui-redux/store";
 
 function getLabelWithValue(labelName, path) {
   const label = _getLabelWithValue(labelName, path);
@@ -339,215 +340,6 @@ const groundRentGenerationTypeField = {
       )
     )
   },
-  // afterFieldChange: (action, state, dispatch) => {
-  //   if(action.value == 'Monthly'){
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_MONTH_PLACEHOLDER"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_MONTH_PLACEHOLDER"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.label.labelKey",
-  //       "ES_MONTHLY_RENT_LABEL"
-  //     ))
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.placeholder.labelKey",
-  //       "ES_MONTHLY_RENT_PLACEHOLDER"
-  //     ))
-  //     // Allotment summary page
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //       "props.labelKey",
-  //       "ES_START_MONTH_LABEL"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //       "props.labelKey",
-  //       "ES_END_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //       "props.labelName",
-  //       "Start Month"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //       "props.labelName",
-  //       "End Month"
-  //     )) 
-      
-  //     // for PM rent details step
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_MONTH_PLACEHOLDER"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_MONTH_PLACEHOLDER"
-  //     )) 
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.label.labelKey",
-  //       "ES_MONTHLY_RENT_LABEL"
-  //     ))
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.placeholder.labelKey",
-  //       "ES_MONTHLY_RENT_PLACEHOLDER"
-  //     ))
-
-  //   }else{
-  //     //ES_MONTHLY_RENT_LABEL
-  //     //ES_MONTHLY_RENT_PLACEHOLDER
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.label.labelKey",
-  //       "ES_YEARLY_RENT_LABEL"
-  //     ))
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.placeholder.labelKey",
-  //       "ES_YEARLY_RENT_PLACEHOLDER"
-  //     ))
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_YEAR_LABEL"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_YEAR_LABEL"
-  //     )) 
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_YEAR_PLACEHOLDER"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_YEAR_PLACEHOLDER"
-  //     )) 
-  //     // Allotment summary page
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //       "props.labelKey",
-  //       "ES_START_YEAR_LABEL"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //       "props.labelKey",
-  //       "ES_END_YEAR_LABEL"
-  //     )) 
-
-  //     // For PM rent details step
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.label.labelKey",
-  //       "ES_YEARLY_RENT_LABEL"
-  //     ))
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //       "props.placeholder.labelKey",
-  //       "ES_YEARLY_RENT_PLACEHOLDER"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_YEAR_LABEL"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_YEAR_LABEL"
-  //     )) 
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_YEAR_PLACEHOLDER"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_YEAR_PLACEHOLDER"
-  //     )) 
-  //   }
-  // }
-
 }
 
 const billingStartDateField = {
@@ -589,12 +381,12 @@ const dateToGenerateDemandRentField = {
 
 const rentAmountField = {
   label: {
-      labelName: "Monthly Rent",
-      labelKey: "ES_MONTHLY_RENT_LABEL"
+      labelName: "Monthly/ Yearly Rent",
+      labelKey: "ES_MONTHLY_YEARLY_RENT_LABEL"
   },
   placeholder: {
-      labelName: "Enter Monthly Rent",
-      labelKey: "ES_MONTHLY_RENT_PLACEHOLDER"
+      labelName: "Enter Monthly/ Yearly Rent",
+      labelKey: "ES_MONTHLY_YEARLY_RENT_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -603,19 +395,19 @@ const rentAmountField = {
   maxLength: 100,
   minLength: 1,
   required: true,
-  errorMessage:"ES_ERR_MONTHLY_RENT",
+  errorMessage:"ES_ERR_MONTHLY_YEARLY_RENT",
   pattern: _getPattern("float"),
   jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].groundRentAmount"
 }
 
 const startYearField = {
   label: {
-      labelName: "Start Month",
-      labelKey: "ES_START_MONTH_LABEL"
+      labelName: "Start Month/ Year",
+      labelKey: "ES_START_MONTH_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter Start Month",
-      labelKey: "ES_START_MONTH_PLACEHOLDER"
+      labelName: "Enter Start Month/ Year",
+      labelKey: "ES_START_MONTH_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -631,12 +423,12 @@ const startYearField = {
 
 const endYearField = {
   label: {
-      labelName: "End Month",
-      labelKey: "ES_END_MONTH_LABEL"
+      labelName: "End Month/ Year",
+      labelKey: "ES_END_MONTH_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter End Month",
-      labelKey: "ES_END_MONTH_PLACEHOLDER"
+      labelName: "Enter End Month/ Year",
+      labelKey: "ES_END_MONTH_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -684,28 +476,19 @@ const commonRentInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
         callBack: (value) =>  {
-          // console.log(this.state);
-          // let groundRentGenerationType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType")
-          // if(!!groundRentGenerationType && value && groundRentGenerationType === "Annually"){
-          //   return years + " Year(s)"
-          // }
-          if(value.isGroundRent){
-            if(value.groundRentGenerationType === "Annually"){
-              let tillDateData = value.paymentConfigItems[0].tillDate;
-              if(tillDateData){
-              return tillDateData + " Year(s)"
-              }
-              else{
-                return "-"
-              }
+          const state = store.getState()
+          const groundRentGenerationType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType")
+          if(groundRentGenerationType === "Annually") {
+            if(value) {
+              return value + " Year(s)"
             }
-            else if (value.groundRentGenerationType === "Monthly") {
-              let tillDateData = value.paymentConfigItems[0].tillDate;
-              if(!!tillDateData){
-              const years = (Number(tillDateData) / 12 | 0)
-              const months = Number(tillDateData) % 12
+            return "-"
+          } else if(groundRentGenerationType === "Monthly") {
+            if (value) {
+              const years = (Number(value) / 12 | 0)
+              const months = Number(value) % 12
               if(years > 0 && months > 0) {
                 return years + " Year(s) " + months +" Month(s)"
               } else if(years < 1) {
@@ -714,14 +497,8 @@ const commonRentInformation = () => {
                 return years + " Year(s)"
               }
             }
-            else{
-              return "-"
-            }
-            }
-            
+            return "-"
           }
-          
-          return "-"
         }
       }
       )
@@ -866,183 +643,6 @@ const licenseFeeGenerationTypeField = {
       )
     )
   },
-  // afterFieldChange: (action, state, dispatch) => {
-  //   if(action.value == 'Monthly'){
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_MONTH_PLACEHOLDER"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_MONTH_PLACEHOLDER"
-  //     )) 
-      
-  //     // Allotment summary page
-
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //     //   "props.labelKey",
-  //     //   "ES_START_MONTH_LABEL"
-  //     // )) 
-      
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //     //   "props.labelKey",
-  //     //   "ES_END_MONTH_LABEL"
-  //     // )) 
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //     //   "props.labelName",
-  //     //   "Start Month"
-  //     // )) 
-      
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //     //   "props.labelName",
-  //     //   "End Month"
-  //     // )) 
-      
-  //     // for PM rent details step
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_MONTH_PLACEHOLDER"
-  //     )) 
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_MONTH_LABEL"
-  //     )) 
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_MONTH_PLACEHOLDER"
-  //     )) 
-
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //     //   "props.label.labelKey",
-  //     //   "ES_MONTHLY_RENT_LABEL"
-  //     // ))
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardEighthStep.children.groundRentDetails.children.cardContent.children.rentContainer.children.cardContent.children.detailsContainer.children.multipleRentContainer.children.multipleRentInfo.props.items[0].item0.children.cardContent.children.rentCard.children.rentAmount",
-  //     //   "props.placeholder.labelKey",
-  //     //   "ES_MONTHLY_RENT_PLACEHOLDER"
-  //     // ))
-
-  //   }else{
-  //     //ES_MONTHLY_RENT_LABEL
-  //     //ES_MONTHLY_RENT_PLACEHOLDER
-      
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_YEAR_LABEL"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_YEAR_LABEL"
-  //     )) 
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_YEAR_PLACEHOLDER"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardSixthStepAllotment.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_YEAR_PLACEHOLDER"
-  //     )) 
-  //     // Allotment summary page
-
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.startYear_0.children.label.children.key",
-  //     //   "props.labelKey",
-  //     //   "ES_START_YEAR_LABEL"
-  //     // )) 
-      
-  //     // dispatch(handleField(
-  //     //   action.screenKey,
-  //     //   "components.div.children.formwizardSeventhStepAllotment.children.reviewAllotmentDetails.children.cardContent.children.reviewGroundRent.children.cardContent.children.viewRents.children.endYear_0.children.label.children.key",
-  //     //   "props.labelKey",
-  //     //   "ES_END_YEAR_LABEL"
-  //     // )) 
-
-  //     // For PM rent details step
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.label.labelKey",
-  //       "ES_END_YEAR_LABEL"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.label.labelKey",
-  //       "ES_START_YEAR_LABEL"
-  //     )) 
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.endYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_END_YEAR_PLACEHOLDER"
-  //     ))
-
-  //     dispatch(handleField(
-  //       action.screenKey,
-  //       "components.div.children.formwizardEighthStep.children.licenseFeeDetails.children.cardContent.children.licenseFeeForYearContainer.children.cardContent.children.detailsContainer.children.multipleLicenseContainer.children.multipleLicenseInfo.props.items[0].item0.children.cardContent.children.licenseCard.children.startYear",
-  //       "props.placeholder.labelKey",
-  //       "ES_START_YEAR_PLACEHOLDER"
-  //     )) 
-  //   }
-  // }
-
 }
 
 const dateToGenerateDemandLicenseFeeField = {
@@ -1107,12 +707,12 @@ const licenseFeeField = {
 
 const startYearLfField = {
   label: {
-      labelName: "Start Month",
-      labelKey: "ES_START_MONTH_LABEL"
+      labelName: "Start Month/ Year",
+      labelKey: "ES_START_MONTH_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter Start Month",
-      labelKey: "ES_START_MONTH_PLACEHOLDER"
+      labelName: "Enter Start Month/ Year",
+      labelKey: "ES_START_MONTH_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -1128,12 +728,12 @@ const startYearLfField = {
 
 const endYearLfField = {
   label: {
-      labelName: "End Month",
-      labelKey: "ES_END_MONTH_LABEL"
+      labelName: "End Month/ Year",
+      labelKey: "ES_END_MONTH_YEAR_LABEL"
   },
   placeholder: {
-      labelName: "Enter End Month",
-      labelKey: "ES_END_MONTH_PLACEHOLDER"
+      labelName: "Enter End Month/ Year",
+      labelKey: "ES_END_MONTH_YEAR_PLACEHOLDER"
   },
   gridDefination: {
       xs: 12,
@@ -1173,24 +773,19 @@ const commonLicenseInformation = () => {
         labelKey: "ES_TILL_LABEL_IN_YEARS"
       },
       {
-        jsonPath: "Properties[0].propertyDetails.paymentConfig",
+        jsonPath: "Properties[0].propertyDetails.paymentConfig.paymentConfigItems[0].tillDate",
         callBack: (value) =>  {
-          
-          if(value.isGroundRent === "false"){
-            if(value.groundRentGenerationType === "Annually"){
-              let tillDateData = value.paymentConfigItems[0].tillDate;
-              if(tillDateData){
-              return tillDateData + " Year(s)"
-              }
-              else{
-                return "-"
-              }
+          const state = store.getState()
+          const groundRentGenerationType = get(state.screenConfiguration.preparedFinalObject, "Properties[0].propertyDetails.paymentConfig.groundRentGenerationType")
+          if(groundRentGenerationType === "Annually") {
+            if(value) {
+              return value + " Year(s)"
             }
-            else if (value.groundRentGenerationType === "Monthly") {
-              let tillDateData = value.paymentConfigItems[0].tillDate;
-              if(!!tillDateData){
-              const years = (Number(tillDateData) / 12 | 0)
-              const months = Number(tillDateData) % 12
+            return "-"
+          } else if(groundRentGenerationType === "Monthly") {
+            if (value) {
+              const years = (Number(value) / 12 | 0)
+              const months = Number(value) % 12
               if(years > 0 && months > 0) {
                 return years + " Year(s) " + months +" Month(s)"
               } else if(years < 1) {
@@ -1199,14 +794,8 @@ const commonLicenseInformation = () => {
                 return years + " Year(s)"
               }
             }
-            else{
-              return "-"
-            }
-            }
-            
+            return "-"
           }
-          
-          return "-"
         }
       }
       )

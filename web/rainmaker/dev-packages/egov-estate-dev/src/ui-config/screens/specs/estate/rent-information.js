@@ -97,80 +97,27 @@ const getData = async (action, state, dispatch, fileNumber) => {
 }
 
 const getFormattedTill = (startMonth, endMonth, paymentConfigData) => {
-  // let till = (endMonth-startMonth)+1;
-
-  // if (till) {
-  //   const years = (Number(till) / 12 | 0)
-  //   const months = Number(till) % 12
-  //   if(years > 0 && months > 0) {
-  //     return years + " Year(s) " + months +" Month(s)"
-  //   } else if(years < 1) {
-  //     return months + " Month(s)"
-  //   } else if(months < 1) {
-  //     return years + " Year(s)"
-  //   }
-  // }
-  // return "-"
-  
-  if(paymentConfigData.isGroundRent === "false" || paymentConfigData.isGroundRent === false){
-    if(paymentConfigData.groundRentGenerationType === "Annually"){
-      let tillDateData = (endMonth-startMonth)+1;
-      if(tillDateData){
-      return tillDateData + " Year(s)"
+  const value = (Number(endMonth) - Number(startMonth)) + 1
+  const groundRentGenerationType = get(paymentConfigData, "groundRentGenerationType")
+    if(groundRentGenerationType === "Annually") {
+      if(value) {
+        return value + " Year(s)"
       }
-      else{
-        return "-"
-      }
-    }
-    else if (paymentConfigData.groundRentGenerationType === "Monthly") {
-      let tillDateData = (endMonth-startMonth)+1;
-      if(!!tillDateData){
-      const years = (Number(tillDateData) / 12 | 0)
-      const months = Number(tillDateData) % 12
-      if(years > 0 && months > 0) {
-        return years + " Year(s) " + months +" Month(s)"
-      } else if(years < 1) {
-        return months + " Month(s)"
-      } else if(months < 1) {
-        return years + " Year(s)"
-      }
-    }
-    else{
       return "-"
-    }
-    }
-    
-  }
-  else if(paymentConfigData.isGroundRent === "true" || paymentConfigData.isGroundRent === true){
-    if(paymentConfigData.groundRentGenerationType === "Annually"){
-      let tillDateData = (endMonth-startMonth)+1;
-      if(tillDateData){
-      return tillDateData + " Year(s)"
-      }
-      else{
-        return "-"
-      }
-    }
-    else if (paymentConfigData.groundRentGenerationType === "Monthly") {
-      let tillDateData = (endMonth-startMonth)+1;
-      if(!!tillDateData){
-      const years = (Number(tillDateData) / 12 | 0)
-      const months = Number(tillDateData) % 12
-      if(years > 0 && months > 0) {
-        return years + " Year(s) " + months +" Month(s)"
-      } else if(years < 1) {
-        return months + " Month(s)"
-      } else if(months < 1) {
-        return years + " Year(s)"
+    } else if(groundRentGenerationType === "Monthly") {
+      if (value) {
+        const years = (Number(value) / 12 | 0)
+        const months = Number(value) % 12
+        if(years > 0 && months > 0) {
+          return years + " Year(s) " + months +" Month(s)"
+        } else if(years < 1) {
+          return months + " Month(s)"
+        } else if(months < 1) {
+          return years + " Year(s)"
+        }
       }
     }
-    else{
-      return "-"
-    }
-    }
-  }
-  
-  // return "-"
+    return "-"
 }
 
 const updateAllFields = (action, state, dispatch) => {
