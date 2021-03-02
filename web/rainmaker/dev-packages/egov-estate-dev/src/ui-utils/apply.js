@@ -605,6 +605,7 @@ export const addHocDemandUpdate = async (state, dispatch) => {
     set(adhocDetails , "collectedRentPenalty",0 )
     set(adhocDetails , "collectedGSTPenalty",0 )
     queryObject[0].propertyDetails.estateDemands.push(adhocDetails)
+    set(queryObject[0].propertyDetails.adhocDemand, true)
     let response;
     if(queryObject) {  
       response = await httpRequest(

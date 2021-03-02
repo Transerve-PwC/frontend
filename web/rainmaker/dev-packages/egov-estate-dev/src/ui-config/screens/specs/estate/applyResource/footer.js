@@ -249,7 +249,7 @@ const callBackForNext = async (state, dispatch) => {
       for (var i = 0; i < propertyOwnersItems.length; i++) {
         let ownerShareEntered = get(state.screenConfiguration.preparedFinalObject, `Properties[0].propertyDetails.owners[${i}].share`);
         let ownerShareFieldValue = get(state.screenConfiguration.screenConfig, `apply.components.div.children.formwizardThirdStep.children.ownerDetails.children.cardContent.children.detailsContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[${i}].item0.children.cardContent.children.ownerCard.children.share.props.value`)
-        ownerShareSum += ownerShareEntered
+        ownerShareSum += Number(ownerShareEntered)
         if(parseInt(ownerShareFieldValue) > 100){
           isOwnerShareValid = false;
         }
