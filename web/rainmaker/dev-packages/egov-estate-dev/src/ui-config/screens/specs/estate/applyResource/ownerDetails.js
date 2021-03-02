@@ -136,7 +136,7 @@ const dateOfBirthField = {
       labelName: "Enter Date of Birth",
       labelKey: "ES_DOB_PLACEHOLDER"
   },
-  required: true,
+  required: false,
   errorMessage:"ES_ERR_DATE_OF_BIRTH",
   pattern: getPattern("Date"),
   jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.dob",
@@ -190,7 +190,7 @@ export const mobileNumberField = {
     labelName: "Enter Mobile No.",
     labelKey: "ES_MOBILE_NUMBER_PLACEHOLDER"
   },
-  required: true,
+  required: false,
   pattern: getPattern("MobileNo"),
   // props: {
   //   value: userInfo.userName,

@@ -150,7 +150,7 @@ export const mobileNumberField = {
     labelName: "Enter Mobile No.",
     labelKey: "ES_MOBILE_NUMBER_PLACEHOLDER"
   },
-  required: true,
+  required: false,
   pattern: getPattern("MobileNo"),
   // props: {
   //   value: userInfo.userName,
