@@ -47,7 +47,7 @@ class PushLocalization extends Component {
 
     if (labelName && labelMsg && module && locale) {
       const requestBody = {
-        "tenantId": "od",
+        "tenantId": "uk",
         "messages": [
           {
             "code": this.state.labelName,

@@ -4,7 +4,7 @@ import {getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 
 export const fetchData = async (action, state, dispatch) => {
-  let tenantId = process.env.REACT_APP_NAME === "Employee" ? getTenantId() : get(state,"auth.userInfo.permanentCity","od");
+  let tenantId = process.env.REACT_APP_NAME === "Employee" ? getTenantId() : get(state,"auth.userInfo.permanentCity","uk");
   let queryObject = [
     { key: "tenantId", value: tenantId }
   ];

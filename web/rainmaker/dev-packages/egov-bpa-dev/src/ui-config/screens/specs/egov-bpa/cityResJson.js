@@ -235,8 +235,8 @@ export const cityModuleMockJson = {
         ],
         "StateInfo": [
           {
-            "name": "Panjab",
-            "code": "od",
+            "name": "Uttarakhand",
+            "code": "uk",
             "bannerUrl": "https://s3.ap-south-1.amazonaws.com/pb-egov-assets/pb.testing/Punjab-bg-QA.jpg",
             "logoUrl": "https://raw.githubusercontent.com/egovernments/egov-web-app/rainmaker-v1-dynamic-state/web/rainmaker/packages/assets/images/pb/mseva-punjab.png",
             "hasLocalisation": true,
@@ -264,9 +264,9 @@ export const cityModuleMockJson = {
       "tenant": {
         "tenants": [
           {
-            "code": "od",
-            "name": "Punjab",
-            "description": "Punjab",
+            "code": "uk",
+            "name": "Uttarakhand",
+            "description": "Uttarakhand",
             "logoId": "https://s3.ap-south-1.amazonaws.com/pb-egov-assets/pb.jalandhar/logo.png",
             "imageId": "https://s3.ap-south-1.amazonaws.com/pb-egov-assets/pb.jalandhar/logo.png",
             "domainUrl": "www.mcjalandhar.in",
