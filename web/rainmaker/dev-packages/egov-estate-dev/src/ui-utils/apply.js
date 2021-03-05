@@ -102,7 +102,7 @@ export const applyforApplication = async (state, dispatch, activeIndex) => {
     }
 
     keys.forEach((key, index) => {
-     if(Array.isArray(values[index])) {
+     if(Array.isArray(values[index])&& !values[index].includes(null)) {
        let arr = values[index]
        arr = arr.filter(item => !item.isDeleted)
        set(queryObject[0], `applicationDetails[${key}]`, arr)

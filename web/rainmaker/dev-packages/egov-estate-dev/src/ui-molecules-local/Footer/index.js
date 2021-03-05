@@ -105,7 +105,10 @@ class Footer extends React.Component {
           };
         });
     }
-
+if(employeeList.length===0){
+  assignee=[]
+  handleFieldChange(`${dataPath}[0].assignee`, assignee);
+}
     this.setState({ open: true, data: item, employeeList });
   };
 
