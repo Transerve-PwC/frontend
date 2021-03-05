@@ -682,7 +682,7 @@ const screenConfig = {
                     pccSummary: pccSummary,
                     changedVenueDatepccSummary: changedVenueDatepccSummary,
                     pccBankSummary: pccBankSummary, 
-                    roomBookingSummary :roomBookingSummary,
+                    //roomBookingSummary :roomBookingSummary,
                     documentsSummary: documentsSummary,
                     // remarksSummary: remarksSummary,
                 }),

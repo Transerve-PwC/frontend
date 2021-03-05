@@ -10,7 +10,7 @@ import pinIcon from "egov-ui-kit/assets/Location_pin.svg";
 import { resetFiles } from "egov-ui-kit/redux/form/actions";
 import Button from "@material-ui/core/Button";
 import ShareIcon from "@material-ui/icons/Share";
-import get from "lodash/get";
+import get from "lodash/get"; 
 import isEqual from "lodash/isEqual";
 import { httpRequest } from "egov-ui-kit/utils/api";
 import { prepareFormData } from "egov-ui-kit/redux/common/actions";
@@ -690,6 +690,10 @@ const {documentMap,userInfo}=this.props;
 		let action;
 		let complaintLoc = {};
 		
+let checkDocumentUpload = Object.entries(documentMap).length === 0;
+console.log("checkDocumentUpload",checkDocumentUpload)
+
+
 		if (complaint) {
 			if (role === "ao") {
 				if (complaint.complaintStatus.toLowerCase() === "unassigned") {
@@ -845,8 +849,8 @@ Application Details
 								}}><b>Documents</b><br></br>
 
 									{documentMap && Object.values(documentMap) ? Object.values(documentMap) : "Not found"}
-									<button className="ViewDetailButton" data-doc={documentMap} onClick={(e) => { this.callApiForDocumentData(e) }}>VIEW</button>
-								</div>
+									{checkDocumentUpload == true ? " ":<button className="ViewDetailButton" data-doc={documentMap} onClick={(e) => { this.callApiForDocumentData(e) }}>VIEW</button>}
+                        		</div>
 							</div>
 						</div>
 					)}

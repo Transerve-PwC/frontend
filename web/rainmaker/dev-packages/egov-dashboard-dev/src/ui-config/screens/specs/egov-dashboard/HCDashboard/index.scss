@@ -41,6 +41,14 @@ form#datagridsummary .MuiPaper-elevation4-466 {
   letter-spacing: 0.67px;
   word-break: break-all !important; }
 
+.css-16pqwjk-indicatorContainer {
+  color: rgb(19, 14, 14);
+  display: grid;
+  padding: 8px;
+  transition: color 150ms ease 0s;
+  box-sizing: border-box;
+}
+
 .MuiGrid-container-59 {
   width: 125%;
   display: flex;
@@ -56,29 +64,23 @@ div#material-ui-FilterConstraintsContainer {
 input#custom-containers-toDate {
   height: 10%; }
 
+div#material-ui-FilterConstraintsContainer {
+  width: 150%; }
+
+div#custom-containers-local-moduleDashboardDropdown {
+  position: absolute;
+  width: 325px; }
+
+button#material-ui-searchButton {
+  margin-left: 165px; }
+
+@media only screen and (max-width: 900px) {
   div#material-ui-FilterConstraintsContainer {
-    width: 150%; }
-  div#custom-containers-local-moduleDashboardDropdown {
-    position: absolute;
-    width: 325px }
-  
+    display: block; }
   button#material-ui-searchButton {
-  margin-left: 165px;
-  }
-  
-  @media only screen and (max-width: 900px) {
-    div#material-ui-FilterConstraintsContainer {
-    display: block;
-    }
-  
-    button#material-ui-searchButton {
     margin-left: 0px;
     margin-top: 94px;
-    width: 150px;
-    }
-  
-    div#custom-containers-local-moduleDashboardDropdown {
+    width: 150px; }
+  div#custom-containers-local-moduleDashboardDropdown {
     position: absolute;
-    width: 250px;
-    }
-  }
+    width: 250px; } }

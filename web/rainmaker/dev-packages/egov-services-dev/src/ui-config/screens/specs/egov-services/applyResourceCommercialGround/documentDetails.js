@@ -33,9 +33,9 @@ export const documentDetails = getCommonCard({
         labelName: "UPLOAD FILE",
         labelKey: "BK_CGB_DOCUMENT_UPLOAD_BUTTON"
       },
-      description: "Only .jpg, .jpeg, .png and .pdf files. 1MB max file size.",
+      description: "Only .pdf files. 1MB max file size.",
       inputProps: {
-        accept: ".pdf,.png,.jpg,.jpeg"
+        accept: ".pdf"
       },
       maxFileSize: 1025,
       moduleName: "GFCP"

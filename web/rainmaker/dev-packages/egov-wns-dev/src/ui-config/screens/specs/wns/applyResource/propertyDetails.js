@@ -164,7 +164,7 @@ const propertyDetails = getCommonContainer({
     ...getSelectField({
       label: { labelKey: "WS_PROPERTY_SUB_USAGE_TYPE_LABEL_INPUT" },
       placeholder: { labelKey: "WS_PROPERTY_SUB_USAGE_TYPE_LABEL_INPUT_PLACEHOLDER" },
-      required: true,
+     // required: true,
       sourceJsonPath: "applyScreenMdmsData.subUsageType",
       gridDefination: { xs: 12, sm: 6 },
      // errorMessage: "ERR_INVALID_BILLING_PERIOD",

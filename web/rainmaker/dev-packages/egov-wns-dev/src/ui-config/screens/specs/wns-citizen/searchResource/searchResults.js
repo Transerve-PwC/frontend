@@ -65,6 +65,12 @@ export const getTextToLocalMapping = (label) => {
         "WS_COMMON_TABLE_COL_CONNECTIONTYPE_LABEL",
         localisationLabels
       );
+      case"billGenerationId":
+      return getLocaleLabels(
+        "billGenerationId",
+        "WS_BILLGENERATION_ID",
+        localisationLabels
+      );
     case "Status":
       return getLocaleLabels(
         "Status",
@@ -174,14 +180,21 @@ export const searchResults = {
         options: {
           display: false
         }
-      },
+      },      
       {
         name: getTextToLocalMapping("connectionType"),
         labelKey: "WS_COMMON_TABLE_COL_CONNECTIONTYPE_LABEL",
         options: {
           display: false
         }
-      }
+      },
+      {
+        name: getTextToLocalMapping("billGenerationId"),
+        labelKey: "WS_BILLGENERATION_ID",
+        options: {
+          display: false
+        }
+      },
     ],
     title: getTextToLocalMapping("Search Results for Water & Sewerage Connections"),
     options: {
@@ -212,5 +225,5 @@ export const searchResults = {
 
 
 const getViewBillDetails = data => {
-  window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}&connectionType=${data.rowData[9]}`
+  window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}&connectionType=${data.rowData[9]}&id=${data.rowData[10]}`
 }

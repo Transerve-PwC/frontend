@@ -2,13 +2,14 @@ import {
     dispatchMultipleFieldChangeAction,
     getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { toggleSnackbar,prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
 
 import {
     getCommonApplyFooter,
     generateBill,
+    prepareRoomCard
 } from "../../utils";
 import "./index.css";
 import { createUpdateRoomApplication } from "../../../../../ui-utils/commons";
@@ -17,6 +18,7 @@ import {
     setapplicationNumber,
 } from "egov-ui-kit/utils/localStorageUtils";
 import { set } from "lodash";
+
 const moveToReview = (state, dispatch) => {
     let validateDocumentField = true;
 
@@ -100,6 +102,23 @@ const callBackForNext = async (state, dispatch) => {
             dispatch,
             "INITIATE"
         );
+        let roomApplicationNumber = get(
+            response,
+            "data.roomsModel[0].roomApplicationNumber",
+            ""
+        );
+        if(response !== undefined){
+            let roomModel=  response.data.roomsModel
+            let newRoomModel=   prepareRoomCard(roomModel)
+            console.log('newRoomModel', newRoomModel)
+            newRoomModel.map( (e)=>{
+               if(e.roomApplicationNumber===roomApplicationNumber) {
+                  dispatch(prepareFinalObject("roomDetailPageData", e));
+        
+               }
+            })
+          }
+          
         let responseStatus = get(response, "status", "");
         if (responseStatus == "SUCCESS" || responseStatus == "success" || responseStatus == "200") {
             isFormValid = true;

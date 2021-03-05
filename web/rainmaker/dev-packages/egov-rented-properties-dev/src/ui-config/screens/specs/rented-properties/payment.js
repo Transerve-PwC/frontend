@@ -220,7 +220,8 @@ const bankNameField = {
   minLength: 1,
   maxLength: 40,
   jsonPath: "paymentInfo.bankName",
-  visible: process.env.REACT_APP_NAME !== "Citizen",
+  visible: false,
+  // visible: process.env.REACT_APP_NAME !== "Citizen",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 40) {
         dispatch(
@@ -280,7 +281,8 @@ const transactionNumberField = {
   minLength: 1,
   maxLength: 40,
   jsonPath: "paymentInfo.transactionNumber",
-  visible: process.env.REACT_APP_NAME !== "Citizen",
+  visible: false,
+  // visible: process.env.REACT_APP_NAME !== "Citizen",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 40) {
         dispatch(
@@ -321,12 +323,85 @@ const transactionNumberField = {
   }
 }
 
+const paymentMode = {
+  label: {
+    labelName: "Payment Mode",
+    labelKey: "RP_PAYMENT_MODE_LABEL",
+  },
+  placeholder: {
+    labelName: "Select Payment Mode",
+    labelKey: "RP_PAYMENT_MODE_PLACEHOLDER",
+  },
+  required: true,
+  optionValue: "value",
+  optionLabel: "label",
+  jsonPath: "paymentInfo.paymentMode",
+  data: [
+    {
+      label: "RP_PAYMENT_CASH",
+      value: "CASH",
+    },
+    {
+      label: "RP_PAYMENT_DD",
+      value: "DD",
+    },
+    {
+      label: "RP_PAYMENT_CHEQUE",
+      value: "CHEQUE",
+    },
+  ],
+  gridDefination: {
+    xs: 12,
+    sm: 6,
+  },
+  errorMessage: "RP_ERR_PAYMENT_TYPE_FIELD",
+  afterFieldChange: (action, state, dispatch) => {
+    const screenName = "payment"
+    const commonPath = "components.div.children.detailsContainer.children.paymentInfo.children.cardContent.children.detailsContainer.children"
+    dispatch(handleField(
+        screenName,
+        `${commonPath}.bankName`,
+        "visible",
+        action.value !== "CASH"
+      )
+    )
+    dispatch(handleField(
+        screenName,
+        `${commonPath}.transactionNumber`,
+        "visible",
+        action.value !== "CASH"
+      )
+    )
+      dispatch(
+        handleField(
+          screenName,
+          `${commonPath}.transactionNumber.props.label`,
+          "labelKey",
+          action.value === "DD"
+            ? "RP_DD_NUMBER_LABEL"
+            : "RP_CHEQUE_NUMBER_LABEL"
+        )
+      );
+      dispatch(
+        handleField(
+          screenName,
+          `${commonPath}.transactionNumber.props.placeholder`,
+          "labelKey",
+          action.value === "DD"
+            ? "RP_DD_NUMBER_PLACEHOLDER"
+            : "RP_CHEQUE_NUMBER_PLACEHOLDER"
+        )
+      );
+  }
+};
+
 const paymentInfo = getCommonCard({
   header: paymentInfoHeader,
   detailsContainer: getCommonContainer({
+    type: getSelectField(paymentMode),
     amount: getTextField(amountField),
     bankName: getTextField(bankNameField),
-    transactionNumber: getTextField(transactionNumberField)
+    transactionNumber: getTextField(transactionNumberField),
   })
 })
 
@@ -383,12 +458,18 @@ const goToPayment = async (state, dispatch, type) => {
        id = await getRentPaymentPropertyDetails(state, dispatch)
     }
     if(!!propertyId || !!id) {
-      const payload = {Properties: [{
+      let payload = {Properties: [{
         id: propertyId || id,
         paymentAmount: paymentInfo.amount,
         transactionId: paymentInfo.transactionNumber,
         bankName: paymentInfo.bankName
       }]}
+      payload = type === ONLINE ? payload : {
+        Properties: [{
+          ...payload.Properties[0],
+          paymentMode: paymentInfo.paymentMode
+        }]
+      }
       const response = await getConsumerCode(state, dispatch, payload)
       if(!!response && !!response.Properties.length){
         const {rentPaymentConsumerCode, tenantId} = response.Properties[0]

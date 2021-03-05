@@ -106,7 +106,7 @@ const searchResults = async (action, state, dispatch, consumerCode) => {
     let billResults = await getBillingEstimation(requestBody, dispatch)
 
     let payload = await getSearchResults(queryObjForSearch);
-   
+    consumerCode = getQueryArg(window.location.href, "id");
     let queryObjectForFetchBill = [{ key: "tenantId", value: tenantId }, { key: "consumerCode", value: consumerCode }, { key: "businessService", value: "WS" }];
     data = await fetchBill(queryObjectForFetchBill, dispatch);
     if (payload !== null && payload !== undefined && data !== null && data !== undefined) {

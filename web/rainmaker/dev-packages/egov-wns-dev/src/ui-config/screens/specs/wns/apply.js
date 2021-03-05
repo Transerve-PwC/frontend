@@ -179,6 +179,7 @@ export const documentDetails = getCommonCard({
         labelName: "UPLOAD FILE",
         labelKey: "WS_DOCUMENT_DETAILS_BUTTON_UPLOAD_FILE"
       },
+      pageName:"wns",
       // description: "Only .jpg and .pdf files. 6MB max file size.",
       inputProps: {
         accept: "image/*, .pdf, .png, .jpeg"
@@ -219,6 +220,7 @@ export const getMdmsData = async (state,dispatch) => {
             {name:"MeterUnit"},
             {name:"MFRCode"},
             {name:"sectorList"},
+            {name:"swSectorList"},
             {name:"tariffType"},
             {name:"wsCategory"},
             { name: "wsWorkflowRole" },
@@ -331,6 +333,8 @@ export const getMdmsData = async (state,dispatch) => {
     payload.MdmsRes.City = City
     dispatch(prepareFinalObject("applyScreen.property.address.city", City[0].name));
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
+    if(payload.MdmsRes['ws-services-masters'].sectorList !== undefined)
+    dispatch(prepareFinalObject("applyScreenMdmsData.ws-services-masters.wssectorList", payload.MdmsRes['ws-services-masters'].sectorList));
     //
   } catch (e) { console.log(e); }
 };
@@ -402,7 +406,7 @@ export const getData = async (action, state, dispatch) => {
     displaysubUsageType(usageCategory_, dispatch, state);
     displayUsagecategory(waterApplicationType, dispatch, state);
                 // check for security deposite for PENDING_FOR_SECURITY_DEPOSIT//PENDING_ROADCUT_NOC_BY_CITIZEN
-                if(applicationStatus === "PENDING_FOR_SECURITY_DEPOSIT" || applicationStatus === "PENDING_FOR_JE_APPROVAL_FOR_PAYMENT"){
+                if(applicationStatus === "PENDING_FOR_SECURITY_DEPOSIT" || applicationStatus === "PENDING_FOR_JE_APPROVAL_AFTER_SUPERINTEDENT"){
                     //regular
                     if(waterApplicationType ==='REGULAR')
                     {
@@ -420,6 +424,8 @@ export const getData = async (action, state, dispatch) => {
                             securityCharges
                           )
                         );
+                       
+                        applyScreen.waterApplication.securityCharge
   
                         dispatch(
                           handleField(
@@ -430,7 +436,9 @@ export const getData = async (action, state, dispatch) => {
                           )
                         );
                         payloadWater.WaterConnection[0].securityCharge = securityCharges;
+                         //set security
                         dispatch(prepareFinalObject("applyScreen.securityCharge", securityCharges));
+                        dispatch(prepareFinalObject("WaterConnection[0].securityCharge", securityCharges));
                         payloadWater.WaterConnection[0].waterApplication.securityCharge = securityCharges;
                         dispatch(prepareFinalObject("applyScreen.waterApplication.securityCharge", securityCharges));
                         //
@@ -461,6 +469,7 @@ export const getData = async (action, state, dispatch) => {
 
                 }
                 else {
+                  dispatch(prepareFinalObject("applyScreen.waterApplication.isFerruleApplicable",true));
                   dispatch(
                     handleField(
                       "apply",
@@ -726,12 +735,12 @@ const getApplyScreenChildren = () => {
     case "APPLY_FOR_REGULAR_INFO":
     case "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION": 
     case "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION": 
-      return { IDDetails, Details,OwnerInfoCard, propertyUsageDetails, ownerDetails,connectionHolderDetails,  };
-    default :    return { IDDetails, Details, OwnerInfoCard,propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
+      return { IDDetails, OwnerInfoCard,Details, propertyUsageDetails, ownerDetails,connectionHolderDetails,  };
+    default :    return { IDDetails,OwnerInfoCard, Details, propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
   }
  }
  else {
-   return { IDDetails, Details, OwnerInfoCard, propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
+   return { IDDetails,OwnerInfoCard, Details,  propertyUsageDetails,ownerDetails, connectionHolderDetails,  };
  }
 
 }
@@ -1040,9 +1049,9 @@ const screenConfig = {
       togglePropertyFeilds(action, true)
       if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.water") && get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
         toggleWaterFeilds(action, true);
-        toggleSewerageFeilds(action, true);
+        toggleSewerageFeilds(action, false);
       } else if (get(state.screenConfiguration.preparedFinalObject, "applyScreen.sewerage")) {
-        toggleWaterFeilds(action, true);
+        toggleWaterFeilds(action, false);
         toggleSewerageFeilds(action, true);
       } else {
         toggleWaterFeilds(action, true);

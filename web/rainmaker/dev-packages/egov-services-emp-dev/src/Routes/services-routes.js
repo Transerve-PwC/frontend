@@ -101,6 +101,11 @@ const CreateSuccessForPCC= Loadable({
   loader: () => import("../Screens/CreateSuccessForPCC"),
   loading: Loading
 });
+
+const CreateSuccessForRoomBooking= Loadable({
+  loader: () => import("../Screens/CreateSuccessForRoomBooking"),
+  loading: Loading
+});
 //NewLocationApplicationDetails
 const NewLocationApplicationDetails = Loadable({
   loader: () => import("../Screens/NewLocationApplicationDetails"),
@@ -111,6 +116,12 @@ const PaymentSuccessForEmployee = Loadable({
   loader: () => import("../Screens/PaymentSuccessForEmployee"),
   loading: Loading
 });
+//PaymentSuccessForEmployeeRoomBooking
+const PaymentSuccessForEmployeeRoomBooking = Loadable({
+  loader: () => import("../Screens/PaymentSuccessForEmployeeRoom"),
+  loading: Loading
+});
+
 //Cancel an application from emp
 const ApplyCancelEmpApplication = Loadable({
   loader: () => import("../Screens/ApplyCancelEmpApplication"),
@@ -153,6 +164,14 @@ const RoomSteeper = Loadable({
   loader: () => import("../Screens/EmployeeRoomBooking/formForRoomApplication"),
   loading: Loading
 })
+const ApplicationDetailForRoom = Loadable({
+  loader: () => import("../Screens/EmployeeRoomBooking/ApplicationDetailsPage"),
+  loading: Loading
+})
+// const RoomSteeper = Loadable({
+//   loader: () => import("../Screens/EmployeeRoomBooking/formForRoomApplication"),
+//   loading: Loading
+// })
 const ServiceHome = Loadable({
   loader: () => import("../Screens/ApplicationDetails"),
   loading: Loading
@@ -276,9 +295,6 @@ const ReserveDates= Loadable({
   loader: () => import("../Screens/ApplyParkAndCommunity/components/CheckAvailability/ReserveDates"),
   loading: Loading
 })
-
-
-
 // const MyTry = Loadable({
 //   loader: () => import("../Screens/MyTry/payment-methods"),
 //   loading: Loading
@@ -394,6 +410,20 @@ const routes = [
       customTitle: "BK_MYBK_APPLY_FOR_ROOM_BOOKING"
     }
   },
+  //ApplicationDetailForRoom
+  {
+    path: "egov-services/Employee/ApplicationDetailsForRoom/:applicationId",
+    component: ApplicationDetailForRoom,
+    needsAuthentication: true,
+    options: {
+      hideFooter: true,
+      // title: "ES_OPEN_APPLICAION_HEADER",
+      hideTitle: false,
+      customFor: "employee",
+      // customTitle: "Make Offline Payment",
+      // customTitle: "BK_MYBK_APPLY_FOR_ROOM_BOOKING"
+    }
+  },
   {
     path: "egov-services/ServicesTest",
     component: ServicesTest,
@@ -424,7 +454,34 @@ const routes = [
     redirectionUrl
   }
 },
-
+//CreateSuccessForRoomBooking
+{
+  path: "egov-services/RoomBooking-Created-Successfully",
+  component: CreateSuccessForRoomBooking,
+  needsAuthentication: true,
+  options: {
+    hideBackButton: true,
+    customFor: "employee",
+    hideFooter: true,
+    title: "CS_COMPLAINT_DETAILS_COMPLAINT_RESOLVED",
+    hideTitle: true,
+    redirectionUrl
+  }
+},
+//room success page
+{
+  path: "egov-services/Room-Payment-Success",
+  component: PaymentSuccessForEmployeeRoomBooking,
+  needsAuthentication: true,
+  options: {
+    hideBackButton: true,
+    customFor: "employee",
+    hideFooter: true,
+    title: "CS_COMPLAINT_DETAILS_COMPLAINT_RESOLVED",
+    hideTitle: true,
+    redirectionUrl
+  }
+},
 // PaymentForEmployee
 {
   path: "egov-services/success-payment",

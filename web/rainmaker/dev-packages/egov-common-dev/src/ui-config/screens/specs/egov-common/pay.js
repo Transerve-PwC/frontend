@@ -154,8 +154,19 @@ const fetchBill = async (state, dispatch, consumerCode, tenantId, billBusinessSe
     }
 
     const consumeCodeComponentPath = 'components.div.children.headerDiv.children.header.children.consumerCode';
-    const consumerCodeFromResponse = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].consumerCode");;
-    dispatch(handleField("pay", consumeCodeComponentPath, "props.number", consumerCodeFromResponse));
+    const consumerCodeFromResponse = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].consumerCode");
+    const businessService_ = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].businessService");
+    if(businessService_ ==='WS')
+    {
+       let  consumerCode =  getQueryArg(window.location.href, "consumerCode");
+        dispatch(handleField("pay", consumeCodeComponentPath, "props.number", consumerCode));
+
+    }
+    else
+    {
+        dispatch(handleField("pay", consumeCodeComponentPath, "props.number", consumerCodeFromResponse));
+    }
+    
 
     const raidButtonComponentPath = "components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.AmountToBePaid.children.cardContent.children.amountDetailsCardContainer.children.AmountToPaidButton";
     dispatch(handleField("pay", raidButtonComponentPath, "props.value", "full_amount"));
@@ -194,6 +205,10 @@ const screenConfig = {
         let consumerCode = getQueryArg(window.location.href, "consumerCode");
         let tenantId = getQueryArg(window.location.href, "tenantId");
         let businessService = getQueryArg(window.location.href, "businessService");
+        if(businessService === "WS")
+        {
+            consumerCode = getQueryArg(window.location.href, "id");  
+        }
         fetchBill(state, dispatch, consumerCode, tenantId, businessService);
         const data = getPaymentCard();
         set(action, "screenConfig.components.div.children.formwizardFirstStep", data);

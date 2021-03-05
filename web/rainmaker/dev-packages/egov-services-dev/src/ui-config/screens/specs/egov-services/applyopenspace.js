@@ -222,14 +222,21 @@ export const prepareEditFlow = async (
             fileStoreIds.length > 0
                 ? await getFileUrlFromAPI(fileStoreIds)
                 : {};
-        dispatch(prepareFinalObject("documentsUploadReduxOld.documents", [
-			{
+                dispatch(prepareFinalObject("documentsUploadReduxOld.documents[0]", 
+                {
 				fileName: fileStoreIdsValue[0],
 				fileStoreId: fileStoreIds[0],
 				fileUrl: fileUrls[fileStoreIds[0]],
 			},
-		]));
-    }
+            ));
+            dispatch(prepareFinalObject("documentsUploadReduxOld.documents[1]", 
+                {
+                    fileName: fileStoreIdsValue[1],
+                    fileStoreId: fileStoreIds[1],
+                    fileUrl: fileUrls[fileStoreIds[1]],
+                },
+            ));
+         }
 };
 
 const screenConfig = {

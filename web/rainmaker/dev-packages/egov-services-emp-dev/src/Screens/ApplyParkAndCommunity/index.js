@@ -3,7 +3,7 @@ import PersonalInfo from './components/ApplicatDetails';
 import BookingDetails from './components/BookingDetails'; 
 import BankDetails from './components/BankDetails';
 import SummaryInfo from './components/SummaryDetails';
-import DocumentDetails from './components/DocumentsDetails';
+import DocumentDetails from './components/DocumentsDetails'; 
 import ParkPaymentDetails from './components/PaccPaymentDetails'
 import fetchfacilationCharges from 'egov-ui-kit/redux/bookings/actions'
 import { connect } from "react-redux";
@@ -40,6 +40,7 @@ export class StepForm extends Component {
         approverName: '',//bkBookingPurpose
         comment: '',
         dimension: '',
+        DiscountReason : '',
         location: '',
         cleaningCharges: '',
         rent: '',
@@ -129,7 +130,7 @@ export class StepForm extends Component {
     firstStep = () => {
         const { step } = this.state;
         this.setState({
-            step: step - 3
+            step: step - 5
         });
     }
 
@@ -187,7 +188,7 @@ export class StepForm extends Component {
     console.log("fchargesInshowStep--",this.state.NewfCharges)
         let { step, firstName, transactionDate, transactionNumber, bankName, paymentMode,
             BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,
-            lastName, utGST, cGST, GSTnumber, type, jobTitle, facilitationCharges, surcharge,
+            lastName, utGST, cGST, GSTnumber, type, jobTitle, facilitationCharges, surcharge,DiscountReason,
             jobCompany, approverName, comment, jobLocation, mobileNo, email,fCharges,
             dimension, cleaningCharges, houseNo, rent, purpose, locality, residenials, discountType,NewfCharges,accountType } = this.state;
             let fc = fCharges?fCharges.facilitationCharge:'100';
@@ -301,6 +302,7 @@ let vrent = Number(vanueData.rent);
                 houseNo={houseNo}
                 handleChangeDiscount={this.handleChangeDiscount}
                 discountType={discountType}
+                DiscountReason={DiscountReason}
             />);
         if (step === 1)
             return (<BookingDetails
@@ -390,7 +392,7 @@ let vrent = Number(vanueData.rent);
                 transactionNumber={transactionNumber}
                 paymentMode={paymentMode}
                 comment={comment} 
-                BankAccountName={BankAccountName}  //start for bank details
+                BankAccountName={BankAccountName}  //start for bank details 
                 NomineeName={NomineeName} 
                 BankAccountNumber={BankAccountNumber}
                 IFSCCode={IFSCCode}
@@ -407,6 +409,7 @@ let vrent = Number(vanueData.rent);
                 mobileNo={mobileNo}
                 email={email}
                 houseNo={houseNo}
+                DiscountReason={DiscountReason}
                 dimension={dimension}
                 location={location}
                 cleaningCharges={cleaningCharges}

@@ -13,11 +13,19 @@ import {
 } from "egov-ui-kit/redux/bookings/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { convertEpochToDate, getDurationDate,getFileUrlFromAPI} from '../../modules/commonFunction'
-
-
+import { httpRequest } from "egov-ui-kit/utils/api";
+ 
 class CreateWBTApplicationSuccess extends Component {
 
-
+	constructor(props) {
+		super(props);
+		this.state = {
+	operatorCode : "",
+  Address : "",
+  hsnCode : "",
+  name : ""
+}
+	}
   NumInWords = (number) => {
 		const first = [
 			"",
@@ -87,110 +95,192 @@ class CreateWBTApplicationSuccess extends Component {
 
 
   Submit = async () => {
-	//   alert("comesInSubmit Function")
-   let { conJsonSecond,conJsonfirst,updatePACCApplication, documentMap,createAppData, bookingData, venueType,prepareFinalObject,createPACCApplicationData,SecTimeSlotFromTime,SecTimeSlotToTime,firstToTimeSlot} = this.props;
-console.log("AllPropsOfSubmitPage--",this.props)	   
-   let data = createAppData.data
-		console.log("data--",data)
-        // let data  = dataOne;
-        // console.log("data--",data),
-        prepareFinalObject("CreatePaccAppData",data);
-        let fid = documentMap ? Object.keys(documentMap) : ""
-        const { firstName, userInfo, email, mobileNo, surcharge, fromDate, toDate, utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, locality, residenials } = this.props;
-     
-        if (data) {
-			console.log("HereIsData--",data)
-            let Booking = {
-                bkBookingType: data.bkBookingType,
-                bkBookingVenue: data.bkBookingVenue,
-                bkApplicantName: data.bkApplicantName,
-                bkMobileNumber: data.bkMobileNumber,
-				bkDimension: data.bkDimension,
-				bkPaymentStatus: "SUCCESS",
-                bkLocation: data.bkLocation,
-                bkFromDate: data.bkFromDate,
-                bkToDate: data.bkToDate,
-                bkCleansingCharges: data.bkCleansingCharges,
-                bkRent: data.bkRent,
-                bkSurchargeRent: data.bkSurchargeRent,
-                bkUtgst: data.bkUtgst,
-                bkCgst: data.bkCgst,
-                bkSector: data.bkSector,
-                bkEmail: data.bkEmail,
-                bkHouseNo: data.bkHouseNo,
-                bkBookingPurpose: data.bkBookingPurpose,
-                bkApplicationNumber: data.bkApplicationNumber,
-                bkCustomerGstNo: data.bkCustomerGstNo ? data.bkCustomerGstNo : 'NA',
-                "wfDocuments": [{
-                    "fileStoreId": fid[0]
-                }],
-                "tenantId": userInfo.tenantId,
-                "bkAction": data.bkApplicationStatus == "OFFLINE_RE_INITIATED" ? "OFFLINE_MODIFY" : "OFFLINE_APPLY",
-				"businessService": "PACC",
-				"reInitiateStatus": false,
-				"financialYear": "2020-2021",
-				"bkBankAccountNumber":data.bkBankAccountNumber,
-				"bkBankName":data.bkBankName,
-				"bkIfscCode":data.bkIfscCode,
-				"bkAccountType":data.bkAccountType,
-				"bkBankAccountHolder":data.bkBankAccountHolder
-            }
+	  let {acRoomId,nonAcRoomId,discountForRoom,GlobalNonAccRoomToBook,GlobalAccRoomToBook,RoomId,AppNum,DataForRoomBooking,roomFromDate,roomToDate,userInfo,bothRoom,typeOfRoom,totalRoom,updateNumOfAcRoom,updateNumOfNonAcRoom} = this.props
+console.log("typesforDiscount--",typeof(discountForRoom))
+
+	  let BothRoomSelect=[];
+	  if(bothRoom == "Both"){
+		  console.log("one")
+		  BothRoomSelect = [
+ 
+			  { "id": acRoomId,
+			  "roomApplicationNumber": AppNum,
+				  "action": "OFFLINE_APPLY",
+				  "remarks": "string",
+				  "roomBusinessService": "BKROOM",
+				  "discount": discountForRoom,
+				   "totalNoOfRooms": updateNumOfAcRoom,
+					"typeOfRoom": "AC",            //updateNumOfAcRoom,updateNumOfNonAcRoom
+				  "fromDate": roomFromDate,
+				  "toDate": roomToDate
+				},
+				{
+				"id": nonAcRoomId,
+				"roomApplicationNumber": AppNum,
+				"action": "OFFLINE_APPLY",
+				  "remarks": "string",
+				  "discount": discountForRoom,
+				  "roomBusinessService": "BKROOM",
+				  "totalNoOfRooms": updateNumOfNonAcRoom,
+				  "typeOfRoom": "NON-AC",
+				  "fromDate": roomFromDate,
+				  "toDate":roomToDate
+				  }]
+
+				   }
+
+	 else if(bothRoom == "AC"){
+		 console.log("two")
+	  BothRoomSelect = [
+		  {
+			"id": acRoomId,
+				"roomApplicationNumber": AppNum,
+				"action": "OFFLINE_APPLY",
+			"remarks": "string",
+			"roomBusinessService": "BKROOM",
+			"discount": discountForRoom,
+			 "totalNoOfRooms": updateNumOfAcRoom,
+			  "typeOfRoom": typeOfRoom,
+			"fromDate": roomFromDate,
+			"toDate": roomToDate
+		  }]
+		
+				  }
+			  else if (bothRoom == "NON-AC"){
+				  console.log("three")
+				  BothRoomSelect = [
+					  {
+						"id": nonAcRoomId,
+				"roomApplicationNumber": AppNum,
+				"action": "OFFLINE_APPLY",
+						"remarks": "string",
+						"roomBusinessService": "BKROOM",
+						"discount": discountForRoom,
+						 "totalNoOfRooms": updateNumOfNonAcRoom,
+						  "typeOfRoom": typeOfRoom,
+						"fromDate": roomFromDate,
+						"toDate": roomToDate
+					  }]
+			  }
+console.log("BothRoomSelect--success--",BothRoomSelect)
+	  
+	let Booking = {
+		"bkRemarks": null,
+		"reInitiateStatus": false,
+		"bkApplicationNumber": DataForRoomBooking.bookingsModelList[0].bkApplicationNumber,
+		"bkHouseNo": DataForRoomBooking.bookingsModelList[0].bkHouseNo,
+		"bkAddress": null,
+		"bkSector": DataForRoomBooking.bookingsModelList[0].bkSector,
+		"bkVillCity": null,
+		"bkAreaRequired": null,
+		"bkDuration": "FULLDAY",
+		"bkCategory": null,
+		"bkEmail": DataForRoomBooking.bookingsModelList[0].bkEmail,
+		"bkContactNo": null,
+		"bkDocumentUploadedUrl": null,
+		"bkDateCreated":  DataForRoomBooking.bookingsModelList[0].bkDateCreated,
+		"bkCreatedBy": null,
+		"bkWfStatus": null,
+		"bkAmount": null,
+		"bkPaymentStatus": "SUCCESS",
+		"bkBookingType": DataForRoomBooking.bookingsModelList[0].bkBookingType,
+		"bkFromDate": DataForRoomBooking.bookingsModelList[0].bkFromDate,
+		"bkToDate": DataForRoomBooking.bookingsModelList[0].bkToDate,
+		"bkApplicantName": DataForRoomBooking.bookingsModelList[0].bkApplicantName,
+		"bkBookingPurpose": DataForRoomBooking.bookingsModelList[0].bkBookingPurpose,
+		"bkVillage": null,
+		"bkDimension":DataForRoomBooking.bookingsModelList[0].bkDimension,
+		"bkLocation": DataForRoomBooking.bookingsModelList[0].bkLocation,
+		"bkStartingDate": null,
+		"bkEndingDate": null,
+		"bkType": null,
+		"bkResidenceProof": null,
+		"bkCleansingCharges": DataForRoomBooking.bookingsModelList[0].bkCleansingCharges,
+		"bkRent": DataForRoomBooking.bookingsModelList[0].bkRent,
+		"bkSurchargeRent": DataForRoomBooking.bookingsModelList[0].bkSurchargeRent,
+		"bkFacilitationCharges": DataForRoomBooking.bookingsModelList[0].bkFacilitationCharges,
+		"bkUtgst": DataForRoomBooking.bookingsModelList[0].bkUtgst,
+		"bkCgst": DataForRoomBooking.bookingsModelList[0].bkCgst,
+		"bkMobileNumber": DataForRoomBooking.bookingsModelList[0].bkMobileNumber,
+		"bkCustomerGstNo": DataForRoomBooking.bookingsModelList[0].bkCustomerGstNo,
+		"bkCurrentCharges": null,
+		"bkLocationChangeAmount": null,
+		"bkVenue": null,
+		"bkDate": null,
+		"bkFatherName": null,
+		"bkBookingVenue": DataForRoomBooking.bookingsModelList[0].bkBookingVenue,
+		"bkBookingDuration": null,
+		"bkIdProof": null,
+		"bkApplicantContact": null,
+		"bkOpenSpaceLocation": null,
+		"bkLandmark": null,
+		"bkRequirementArea": null,
+		"bkLocationPictures": null,
+		"bkParkOrCommunityCenter": null,
+		"bkRefundAmount": DataForRoomBooking.bookingsModelList[0].bkRefundAmount,
+		"bkBankAccountNumber": DataForRoomBooking.bookingsModelList[0].bkBankAccountNumber,
+		"bkBankName": DataForRoomBooking.bookingsModelList[0].bkBankName,
+		"bkIfscCode": DataForRoomBooking.bookingsModelList[0].bkIfscCode,
+		"bkAccountType": DataForRoomBooking.bookingsModelList[0].bkAccountType,
+		"bkBankAccountHolder": DataForRoomBooking.bookingsModelList[0].bkBankAccountHolder,
+		"bkPropertyOwnerName": null,
+		"bkCompleteAddress": null,
+		"bkResidentialOrCommercial": null,
+		"bkMaterialStorageArea": null,
+		"bkPlotSketch": null,
+		"bkApplicationStatus": DataForRoomBooking.bookingsModelList[0].bkApplicationStatus,
+		"bkTime": null,
+		"bkStatusUpdateRequest": null,
+		"bkStatus": null,
+		"bkDriverName": null,
+		"bkVehicleNumber": null,
+		"bkEstimatedDeliveryTime": null,
+		"bkActualDeliveryTime": null,
+		"bkNormalWaterFailureRequest": null,
+		"bkUpdateStatusOption": null,
+		"bkAddSpecialRequestDetails": null,
+		"bkBookingTime": null,
+		"bkApprovedBy": null,
+		"bkModuleType": null,
+		// "uuid": "5f09ffbe-db9f-41e8-a9b2-dda6515d9cc7",
+		"tenantId": DataForRoomBooking.bookingsModelList[0].tenantId,
+		"bkAction": DataForRoomBooking.bookingsModelList[0].bkAction,
+		"bkConstructionType": null,
+		"businessService": DataForRoomBooking.bookingsModelList[0].businessService,
+		"bkApproverName": null,
+		"assignee": null,
+		"wfDocuments": null,
+		"financialYear": "2020-2021",
+		"financeBusinessService": "BKROOM",
+		// "roomBusinessService": "BKROOM",
+		"roomsModel": BothRoomSelect,
+	  }
+
+let createAppData = {
+"applicationType": "PACC",
+"applicationStatus": null,
+"applicationId": DataForRoomBooking.bookingsModelList[0].bkApplicationNumber,
+"tenantId": userInfo.tenantId,
+"Booking": Booking   
+		}
+	
+console.log("createAppData--",createAppData)
+
+let payloadfund = await httpRequest(
+	"bookings/community/room/_update",
+	"_search",[],
+	createAppData
+	);
+
+console.log("payloadfund--",payloadfund)
+
+this.props.prepareFinalObject("ApplicationCreateForRoom",payloadfund)
+
+this.props.history.push(`/egov-services/RoomBooking-Created-Successfully`);
 
 
-            if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
-				let slotArray = []
-				let checkslotArray = []
-				// if(wholeDaySlot != "notFound" && wholeDaySlot != "notFound"){
-				// 	console.log("OneDay")
-				// 	checkslotArray[0] = {"slot":"9AM - 1PM"}
-				// 	checkslotArray[1] = {"slot": "1PM - 5PM"}
-				// 	checkslotArray[2] = {"slot": "5PM - 9PM"}
-				// }
-				if(SecTimeSlotFromTime != "notFound" && SecTimeSlotToTime != "notFound"){
-					console.log("secondTimeSlot")
-					slotArray[0] = conJsonfirst,
-					slotArray[1] = conJsonSecond //conJsonSecond,conJsonfirst
-				
-					checkslotArray[0] = this.props.first,
-                     checkslotArray[1] = this.props.second
-				}
-				else{
-					console.log("oneTimeSlot")
-					checkslotArray[0] = {
-					"slot": bookingData.bkFromTime + '-' + firstToTimeSlot
-					}
-				}
-				console.log("slotArray_",slotArray)   //checkslotArray
-				console.log("checkslotArray",checkslotArray)
-				Booking.timeslots = checkslotArray,
-                Booking.bkDuration = "HOURLY",
-                Booking.bkFromDate = bookingData.bkFromDate,
-                Booking.bkToDate = bookingData.bkToDate,
-                Booking.bkFromTime = bookingData.bkFromTime,
-                Booking.bkToTime = bookingData.bkToTime
-            }
-            else if (venueType == "Community Center" && (!bookingData) && (!bookingData.bkFromTime)) {
-                Booking.timeslots = [{
-                    "slot": "9:00 AM - 8:59 AM"
-                }],
-                    Booking.bkDuration = "FULLDAY"
-            }
-
-console.log("Booking-requestBody--",Booking)
-
- await updatePACCApplication(
-                {
-                    "applicationType": "PACC",
-                    "applicationStatus": "",
-                    "applicationId": data.bkApplicationNumber,
-                    "tenantId": userInfo.tenantId,
-                    "Booking": Booking
-				});
-				
-            this.props.history.push(`/egov-services/create-success-pcc`);
-        }
   };
-  componentDidMount = async () => {   
+  componentDidMount = async () => {  
   }
 
 	downloadPaymentReceiptButton = async (e) => {
@@ -314,7 +404,8 @@ console.log("Booking-requestBody--",Booking)
       <Screen loading={loading}>
       <div className="success-message-main-screen resolve-success">
       <SuccessMessageForPayment
-         headermessage="Collection Details"
+        //   headermessage="Collection Details"
+		  headermessage={`Rooms Booking`}
           successmessage="Payment has been collected successfully!"
           secondaryLabel="A notification regarding Payment Collection has been sent to property owner at registered Mobile No."
           containerStyle={{ display: "inline-block" }}
@@ -324,14 +415,14 @@ console.log("Booking-requestBody--",Booking)
           ReceiptNumber={RecNumber}
         />
         <div className="responsive-action-button-cont">
-          <Button
+          {/* <Button
             className="responsive-action-button"
             primary={true}
             label={<Label buttonLabel={true} label="BK_CORE_COMMON_DOWNLOAD" />}
             fullWidth={true}
             onClick={this.downloadPaymentReceiptButton}
             style={{ marginRight: 18 }}
-          />
+          /> */}
           <Button
             id="resolve-success-continue"
             primary={true}
@@ -365,8 +456,63 @@ console.log("offlinePayment--",offlinePayment)
 let RoomBookingData = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.RoomBookingData : "NA"
 console.log("-RoomBookingData-",RoomBookingData)  
 
-let AppNum = RoomBookingData.bookingsModelList[0].bkApplicationNumber
+let DataForRoomBooking = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.RoomBookingData : "NA"
+console.log("DataForRoomBooking-",DataForRoomBooking)
+let CreateRoomApplication = state.screenConfiguration.preparedFinalObject ? state.screenConfiguration.preparedFinalObject.CreateRoomApplication : "NA"
+console.log("CreateRoomApplication-",CreateRoomApplication)
+let AppNum = CreateRoomApplication.data.roomsModel[0].roomApplicationNumber
+console.log("AppNum--AppNum",AppNum)
 
+let acRoomId;  //acRoomId,nonAcRoomId
+let nonAcRoomId;
+let updateNumOfAcRoom; //updateNumOfAcRoom,updateNumOfNonAcRoom
+
+let updateNumOfNonAcRoom;
+//data.roomsModel
+for(let i = 0; i < CreateRoomApplication.data.roomsModel.length; i++){
+console.log("CreateRoomApplication.data.roomsModel",CreateRoomApplication.data.roomsModel)
+if(CreateRoomApplication.data.roomsModel[i].typeOfRoom == "AC"){
+	console.log("CreateRoomApplication.TypeOfAcRoom",CreateRoomApplication.data.roomsModel[i])
+	updateNumOfAcRoom = CreateRoomApplication.data.roomsModel[i].totalNoOfRooms   
+	acRoomId = CreateRoomApplication.data.roomsModel[i].id
+}
+if(CreateRoomApplication.data.roomsModel[i].typeOfRoom == "NON-AC"){
+	nonAcRoomId = CreateRoomApplication.data.roomsModel[i].id
+	updateNumOfNonAcRoom = CreateRoomApplication.data.roomsModel[i].totalNoOfRooms
+}
+}
+console.log("acRoomId--",acRoomId)
+console.log("nonAcRoomId--",nonAcRoomId)
+console.log("updateNumOfAcRoom--",updateNumOfAcRoom)
+console.log("updateNumOfNonAcRoom--",updateNumOfNonAcRoom)
+let totalRoom = CreateRoomApplication.data.roomsModel[0].totalNoOfRooms
+console.log("totalRoom--",totalRoom)
+
+let discountForRoom = CreateRoomApplication.data.roomsModel[0].discount
+console.log("discountForRoom--",discountForRoom)
+//GlobalNonAccRoomToBook,GlobalAccRoomToBook
+let GlobalNonAccRoomToBook = state.screenConfiguration.preparedFinalObject ? 
+(state.screenConfiguration.preparedFinalObject.GlobalNonAccRoomToBook != undefined && state.screenConfiguration.preparedFinalObject.GlobalNonAccRoomToBook != null ? (state.screenConfiguration.preparedFinalObject.GlobalNonAccRoomToBook) : 'NA') : "NA"
+console.log("GlobalNonAccRoomToBook--",GlobalNonAccRoomToBook)
+let GlobalAccRoomToBook = state.screenConfiguration.preparedFinalObject ? 
+(state.screenConfiguration.preparedFinalObject.GlobalAccRoomToBook != undefined && state.screenConfiguration.preparedFinalObject.GlobalAccRoomToBook != null ? (state.screenConfiguration.preparedFinalObject.GlobalAccRoomToBook) : 'NA') : "NA"
+console.log("GlobalAccRoomToBook-",GlobalAccRoomToBook)
+
+let typeOfRoom = CreateRoomApplication.data.roomsModel[0].typeOfRoom
+console.log("totalRoom--",typeOfRoom)
+
+let roomFromDate = CreateRoomApplication.data.roomsModel[0].fromDate
+console.log("roomFromDate--roomFromDate",roomFromDate)
+
+let roomToDate = CreateRoomApplication.data.roomsModel[0].toDate
+console.log("roomToDate--roomToDate",roomToDate)   //roomFromDate,roomToDatep  
+
+let RoomId = CreateRoomApplication.data.roomsModel[0].id
+console.log("RoomId--",RoomId)
+
+let bothRoom = state.screenConfiguration.preparedFinalObject ?
+(state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom !== undefined && state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom !== null ?state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom : 'NA'): "NA"
+console.log("bothRoom--",bothRoom)
 
 //transactionNum
 let offlineTransactionNum = offlinePayment ? offlinePayment.Payments[0].transactionNumber : "NotFound"
@@ -417,9 +563,9 @@ else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
 }
 }
 
-return {
-	RecNumber,offlinePayment,offlineTransactionNum,offlineTransactionDate,AppNum,
-	offlinePayementMode,totalAmountPaid,totalAmount,RoomBookingData
+return {typeOfRoom,totalRoom,GlobalNonAccRoomToBook,GlobalAccRoomToBook,discountForRoom,acRoomId,nonAcRoomId,updateNumOfAcRoom,updateNumOfNonAcRoom,
+	RecNumber,offlinePayment,offlineTransactionNum,offlineTransactionDate,AppNum,roomFromDate,roomToDate,
+	offlinePayementMode,totalAmountPaid,totalAmount,RoomBookingData,RoomId,DataForRoomBooking,userInfo,bothRoom
 }
 
 //surcharges

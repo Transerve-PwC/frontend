@@ -71,15 +71,17 @@ const waterAndSewerageSearchAndResult = {
                     moduleName: "egov-wns",
                     componentPath: "NewConnection",
                     props: {
-                        items: {
-                            route: {
-                                screenKey: "home",
-                                jsonPath: "components.adhocDialog"
-                            }
-                        }
-                        //route: "wns/apply"
+                        
+                    },
+                    // props: {
+                    //     items: {
+                    //         route: {
+                    //             screenKey: "home",
+                    //             jsonPath: "components.adhocDialog"
+                    //         }
+                    //     }                       
 
-                    }
+                    // }
                 },
                 listCard1: {
                     uiFramework: "custom-molecules-local",

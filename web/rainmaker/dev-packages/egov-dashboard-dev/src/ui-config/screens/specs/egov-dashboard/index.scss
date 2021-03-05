@@ -4,6 +4,14 @@ div#material-ui-form {
 div#material-ui-ServiceRequestFilterFormForEmployee {
   overflow: visible !important; }
 
+.css-16pqwjk-indicatorContainer {
+  color: rgb(204, 204, 204);
+  display: grid;
+  padding: 8px;
+  transition: color 150ms ease 0s;
+  box-sizing: border-box;
+}
+
 @media only screen and (min-width: 768px) {
   .common-header-cont {
     display: inherit;
@@ -17,9 +25,13 @@ div#material-ui-ServiceRequestFilterFormForEmployee {
 div#material-ui-body {
   overflow: visible; }
 
+div#custom-atoms-headerDiv {
+  width: 100%;
+}
+
 form#dashboardReportFilter {
   margin: 10px 16px 88px 16px; }
 
-  div#material-ui-cardContent {
-    width: 100%;
-    display: flex; }
+div#material-ui-cardContent {
+  width: 100%;
+  display: flex; }

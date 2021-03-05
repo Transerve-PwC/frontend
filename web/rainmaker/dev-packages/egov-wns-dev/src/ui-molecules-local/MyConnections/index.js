@@ -42,7 +42,7 @@ tenantId = data.property.tenantId;
   }
 
   getViewBillDetails = data => {
-    window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.connectionNo}&tenantId=${data.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}`
+    window.location.href = `/citizen/wns/viewBill?connectionNumber=${data.connectionNo}&tenantId=${data.tenantId}&service=${data.service.toUpperCase()}&connectionType=${data.connectionType}&id=${data.id}`
   }
 
   render() {
@@ -152,9 +152,18 @@ tenantId = data.property.tenantId;
                           />
                         </Grid>
                         <Grid item md={8} xs={6}>
-                        { (item.property && item.property.address && item.property.address.street) ?
+                        {/* { (item.property && item.property.address && item.property.address.street) ?
                             (<Label
                             labelName={item.property.address.street}
+                            fontSize={14}
+                            style={{ fontSize: 14, color: "rgba(0, 0, 0, 0.87" }}
+                          />) :
+                          (<div></div>)
+                        } */}
+                        
+                        { (item.connectionHolders && item.connectionHolders[0]) ?
+                            (<Label
+                            labelName={item.connectionHolders[0].correspondenceAddress}
                             fontSize={14}
                             style={{ fontSize: 14, color: "rgba(0, 0, 0, 0.87" }}
                           />) :
@@ -181,7 +190,16 @@ tenantId = data.property.tenantId;
                       </Grid>
                       <div>
                         {item.status === "NA" ?
-                          (<div></div>)
+                          (<div>
+                            <LabelContainer
+                                labelKey={item.error}
+                                labelName ={item.error}
+                                style={{
+                                  color: "#FF6347",
+                                  fontSize: 14,
+                                }}
+                              />
+                          </div>)
                           : item.status !== "INITIATED" ?
                             (<div> <LabelContainer
                               labelKey="WS_COMMON_PAID_LABEL"

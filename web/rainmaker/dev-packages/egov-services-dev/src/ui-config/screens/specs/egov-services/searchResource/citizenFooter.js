@@ -17,7 +17,7 @@ export const callBackForEdit = (state, dispatch) => {
     let applicationNumber = getapplicationNumber()
     let businessService = getapplicationType();
     let tenantId = getTenantId().split(".")[0]
-    dispatch(setRoute(`/egov-services/checkavailability_pcc?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`));
+    dispatch(setRoute(`/egov-services/checkavailability_pcc?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}&changeDateVenue=Enabled`));
 };
 
 export const callBackForNext = (state, dispatch, pathKey) => {

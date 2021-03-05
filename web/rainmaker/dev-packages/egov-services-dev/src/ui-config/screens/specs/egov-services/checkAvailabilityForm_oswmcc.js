@@ -8,6 +8,7 @@ import {
     getSelectField,
     getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import "./checkAvailabilityCss/index.css";
 import { showHideAdhocPopup } from "../utils";
 import {
     getTenantId,
@@ -171,7 +172,7 @@ const callBackForBook = async (state, dispatch) => {
         state.screenConfiguration.preparedFinalObject.availabilityCheckData;
     if (availabilityCheckData === undefined) {
         let warrningMsg = {
-            labelName: "Please Select Date Range",
+            labelName: "Please select date range",
             labelKey: "",
         };
         dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -182,7 +183,7 @@ const callBackForBook = async (state, dispatch) => {
             availabilityCheckData.bkToDate === null
         ) {
             let warrningMsg = {
-                labelName: "Please Select Date Range",
+                labelName: "Please select date range",
                 labelKey: "",
             };
             dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -203,7 +204,7 @@ const callBackForBook = async (state, dispatch) => {
         //     availabilityCheckData.bkToDate === ""
         // ) {
         //     let warrningMsg = {
-        //         labelName: "Please select Date RANGE",
+        //         labelName: "Please select date range",
         //         labelKey: "",
         //     };
         //     dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -686,6 +687,7 @@ export const availabilityForm = getCommonCard({
             props: {
                 variant: "contained",
                 color: "primary",
+                
                 style: {
                     minWidth: "200px",
                     height: "48px",

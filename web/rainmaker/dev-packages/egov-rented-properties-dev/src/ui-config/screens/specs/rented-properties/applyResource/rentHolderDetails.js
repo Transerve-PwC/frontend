@@ -2,6 +2,7 @@ import { getCommonCard, getSelectField, getTextField, getDateField, getCommonTit
 import { getTodaysDateInYMD } from "../../utils";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { ALPHA_WITH_SPACE_DOTS } from "../../../../../ui-constants";
 
 let userInfo = JSON.parse(getUserInfo());
 
@@ -142,7 +143,7 @@ const fatherOrHusbandsNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    pattern:getPattern("alpha-only-with-space"),
+    pattern:ALPHA_WITH_SPACE_DOTS,
     jsonPath: "Properties[0].owners[0].ownerDetails.fatherOrHusband",
     errorMessage: "RP_ERR_FATHER_OR_HUSBAND_FIELD",
     afterFieldChange: (action, state, dispatch) => {
@@ -219,7 +220,7 @@ export const ownerNameField = {
     minLength: 4,
     maxLength: 40,
     required: true,
-    pattern:getPattern("alpha-only-with-space"),
+    pattern:ALPHA_WITH_SPACE_DOTS,
     jsonPath: "Properties[0].owners[0].ownerDetails.name",
     errorMessage: "RP_ERR_OWNER_NAME_FIELD",
     afterFieldChange: (action, state, dispatch) => {
@@ -639,7 +640,7 @@ const applicantNameField = {
     },
     minLength: 4,
     maxLength: 100,
-    pattern:getPattern("alpha-only-with-space"),
+    pattern:ALPHA_WITH_SPACE_DOTS,
     required: true,
     jsonPath: "Owners[0].ownerDetails.name",
     errorMessage:"RP_ERR_APPLICANT_NAME_FIELD",

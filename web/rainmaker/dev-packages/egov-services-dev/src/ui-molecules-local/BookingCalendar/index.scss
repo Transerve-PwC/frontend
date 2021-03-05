@@ -20,7 +20,15 @@
         font-weight: 500;
     }
 }
-
+@media only screen and (max-width: 600px) {
+    .calendar-wrapper {
+      flex-direction:  column;
+    }
+    .calendar-info {
+      width:  100%;
+      padding: 0 20px;
+    }
+}
 .DayPicker-NavButton--prev {
     margin-right: 0;
     left: 1.5em;

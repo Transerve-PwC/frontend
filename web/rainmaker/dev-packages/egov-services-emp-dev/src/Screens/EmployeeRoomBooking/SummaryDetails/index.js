@@ -9,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import "./index.css";
 import Footer from "../../../modules/footer"
 // import PaccFeeEstimate from "../PaccFeeEstimate"
-// import SummaryCCBookingDetail from "../SummaryCCBookingDetail"
+import SummaryCCBookingDetail from "../SummaryCCBookingDetail"
 import SummaryVenueDetail from "../SummaryVenueDetail"
 import SummaryRoomBookingDetail from "../SummaryRoomBookingDetail"
 // import { getFileUrlFromAPI } from '../../../../modules/commonFunction' //
@@ -30,68 +30,70 @@ class SummaryDetails extends Component {
         createPACCApp: '',
         CashPaymentApplicationNumber: '',
         appStatus: '',
-        currentAppStatus: ''
+        currentAppStatus: '' 
     }
 
     componentDidMount = async () => {
 
-      
-        let {DataForRoomBooking,userInfo,roomToDate,roomFromDate,fetchPayment,prepareFinalObject} = this.props
+        let {DataForRoomBooking,userInfo,roomToDate,roomFromDate,fetchPayment,prepareFinalObject,bothRoom} = this.props
         console.log("propsINROOMPAGE--",this.props)
-       
-//         let {createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications,conJsonSecond,conJsonfirst } = this.props;
-//         let { firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,
-//             utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, 
-//             BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,accountType,SecTimeSlotFromTime,SecTimeSlotToTime,
-//             locality, residenials, facilationChargesSuccess,discountType,checkAppStatus,checkAppNum,firstToTimeSlot } = this.props;
-// console.log("this.propos--insummaryPage--",this.props)
-// console.log("discountType--",discountType)
-// console.log("newConsole--ut",utGST)
+ let BothRoomSelect=[];
+        if(bothRoom == "Both"){
+            console.log("first")
+            BothRoomSelect = [
+                {
+                    "action": "OFFLINE_INITIATE",
+                    "remarks": "string",
+                    "roomBusinessService": "BKROOM",
+                    "discount": this.props.discount,
+                     "totalNoOfRooms": this.props.AccRoomToBook,
+                      "typeOfRoom": "AC",
+                    "fromDate": roomFromDate,
+                    "toDate": roomToDate
+                  },
+                  {
+                    "action": "OFFLINE_INITIATE",
+                    "remarks": "string",
+                    "roomBusinessService": "BKROOM",
+                    "discount": this.props.discount,
+                    "totalNoOfRooms": this.props.NonAccRoomToBook,
+                    "typeOfRoom": "NON-AC",
+                    "fromDate": roomFromDate,
+                    "toDate":roomToDate
+                  }]
+                }
 
-// console.log("checkAppStatus-props-",checkAppStatus ? checkAppStatus : "notFound")
-// console.log("checkAppStatus-props-",checkAppNum ? checkAppNum : "notFound")
-// this.setState({
-//     appStatus : checkAppStatus
-// })
-
-// prepareFinalObject("SummaryutGST",this.props.utGST);
-// prepareFinalObject("SummarycGST",this.props.cGST);
-// prepareFinalObject("Summarysurcharge",this.props.surcharge);
-
-
-// prepareFinalObject("cGSTSummary",cGST);
-
-
-// let newDisCount;
-// let finalDiscount;
-// if(discountType == "50%"){
-// newDisCount = 50; 
-// finalDiscount = Number(newDisCount);
-// console.log("newDisCount--",newDisCount)
-// console.log("finalDiscount--",finalDiscount)
-// }
-// else if(discountType == "20%"){
-//     newDisCount = 20; 
-//     finalDiscount = Number(newDisCount);
-//     console.log("newDisCount--",newDisCount)
-//     console.log("finalDiscount--",finalDiscount)
-//     }
-//     else if (discountType == '100%' || discountType == "KirayaBhog" || discountType == "ReligiousFunction"){
-//         newDisCount = 100; 
-//         finalDiscount = Number(newDisCount);
-//         console.log("newDisCount--",newDisCount)
-//         console.log("finalDiscount--",finalDiscount)
-//         }
-//         else{
-//             newDisCount = 0; 
-//             finalDiscount = Number(newDisCount);
-//             console.log("newDisCount--",newDisCount)
-//             console.log("finalDiscount--",finalDiscount)
-//             }
-
-
-//         let fid = documentMap ? Object.keys(documentMap) : ""
-      let Booking = {
+       if(bothRoom == "AC"){
+        console.log("second")
+        BothRoomSelect = [
+            {
+              "action": "OFFLINE_INITIATE",
+              "remarks": "string",
+              "roomBusinessService": "BKROOM",
+              "discount": this.props.discount,
+               "totalNoOfRooms": this.props.AccRoomToBook,
+                "typeOfRoom": this.props.TypeOfRoomToBook,
+              "fromDate": roomFromDate,
+              "toDate": roomToDate
+            }]
+                    }
+                if (bothRoom == "NON-AC"){
+                    console.log("three")
+                    BothRoomSelect = [
+                        {
+                          "action": "OFFLINE_INITIATE",
+                          "remarks": "string",
+                          "roomBusinessService": "BKROOM",
+                          "discount": this.props.discount,
+                           "totalNoOfRooms": this.props.NonAccRoomToBook,
+                            "typeOfRoom": this.props.TypeOfRoomToBook,
+                          "fromDate": roomFromDate,
+                          "toDate": roomToDate
+                        }]
+                      
+                }
+console.log("BothRoomSelect--",BothRoomSelect)
+            let Booking = {
             "bkRemarks": null,
             "reInitiateStatus": false,
             "bkApplicationNumber": DataForRoomBooking.bookingsModelList[0].bkApplicationNumber,
@@ -180,20 +182,7 @@ class SummaryDetails extends Component {
             "financialYear": "2020-2021",
             "financeBusinessService": "BKROOM",
             // "roomBusinessService": "BKROOM",
-            "roomsModel": [
-              {
-                "action": "OFFLINE_INITIATE",
-                "remarks": "string",
-                "roomBusinessService": "BKROOM",
-                "discount": 25,
-                // "totalNoOfRooms": this.props.AccRoomToBook,
-                // "typeOfRoom": this.props.TypeOfRoomToBook,
-                 "totalNoOfRooms": this.props.AccRoomToBook,
-                  "typeOfRoom": this.props.TypeOfRoomToBook,
-                "fromDate": roomFromDate,
-                "toDate": roomToDate
-              }
-            ]   ,
+            "roomsModel": BothRoomSelect,
           }
         let createAppData = {
   "applicationType": "PACC",
@@ -346,10 +335,11 @@ this.props.SetPaymentURL(`/egov-services/PaymentReceiptDteail/ForRoomBooking/${t
                             BKROOM_TAX={this.props.BKROOM_TAX}
                             BKROOM={this.props.BKROOM}
                             BKROOM_ROUND_OFF={this.props.BKROOM_ROUND_OFF}
+                            four={this.props.four}
                             />
                            
 
-{/* <SummaryCCBookingDetail
+<SummaryCCBookingDetail 
 Name={this.props.Name}    
 purpose={this.props.purpose}
 houseNo={this.props.houseNo}
@@ -357,7 +347,7 @@ mobileNo={this.props.mobileNo}
 Sector={this.props.Sector}
 gstNo={this.props.gstNo}
 ProofOfResidence={this.props.ProofOfResidence}
-                            /> */}
+                            />
 
                             <SummaryVenueDetail
                                  location={this.props.location}
@@ -442,13 +432,16 @@ let DataForRoomBooking = state.screenConfiguration.preparedFinalObject ? state.s
     let paymentDataOne = paymentData ? paymentData : "wrong";
     console.log("paymentDataOne--",paymentDataOne)
 
+    let bothRoom = state.screenConfiguration.preparedFinalObject ?
+     (state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom !== undefined && state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom !== null ?state.screenConfiguration.preparedFinalObject.GlobalTypeOfRoom : 'NA'): "NA"
+console.log("bothRoom--",bothRoom)
     let billAccountDetailsArray =  paymentDataOne ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails : "NOt found Any Array"
 console.log("billAccountDetailsArray--",billAccountDetailsArray)
 let TotalAmount = paymentDataOne.Bill[0].totalAmount
 let BKROOM_TAX = 0;
 let BKROOM = 0;
-let BKROOM_ROUND_OFF = 0;  
-
+let BKROOM_ROUND_OFF = 0;   
+let four = 0;
 
 for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
 
@@ -460,6 +453,9 @@ for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
     }
     else if(billAccountDetailsArray[i].taxHeadCode == "BKROOM_ROUND_OFF"){
         BKROOM_ROUND_OFF = billAccountDetailsArray[i].amount
+    }
+    else if(billAccountDetailsArray[i].taxHeadCode == "ROOM_FACILITATION_CHARGE"){
+        four = billAccountDetailsArray[i].amount
     }
 }
 console.log("BKROOM_TAX-BKROOM-BKROOM_ROUND_OFF",BKROOM_TAX,BKROOM,BKROOM_ROUND_OFF)
@@ -579,8 +575,8 @@ console.log("BKROOM_TAX-BKROOM-BKROOM_ROUND_OFF",BKROOM_TAX,BKROOM,BKROOM_ROUND_
 //    }
 
    
-    return {
-     state,DataForRoomBooking,userInfo,TotalAmount,BKROOM_TAX,BKROOM,BKROOM_ROUND_OFF,SetPaymentURL
+    return { four,
+     state,DataForRoomBooking,userInfo,TotalAmount,BKROOM_TAX,BKROOM,BKROOM_ROUND_OFF,SetPaymentURL,bothRoom
         //BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,  wholeDay !== undefined ? 
         //PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE,
         // firstTimeSlotValue,SecondTimeSlotValue,first,second,

@@ -350,7 +350,7 @@ class ApplicatInfo extends Component {
               >
                 <MenuItem value="" disabled>Types Of Room</MenuItem>
                 <MenuItem value='AC'>AC</MenuItem>
-                <MenuItem value='NoN-AC'>Non-AC</MenuItem>
+                <MenuItem value='NON-AC'>NON-AC</MenuItem>
                 <MenuItem value='Both'>Both</MenuItem>
               </Select>
             </FormControl>
@@ -414,7 +414,7 @@ class ApplicatInfo extends Component {
     </div>
     : ""}
         
-    {this.props.TypeOfRoomToBook === 'Non-AC' ? 
+    {this.props.TypeOfRoomToBook === 'NON-AC' ? 
      <div className="col-sm-6 col-xs-6">       
      <TextField
        id="name"

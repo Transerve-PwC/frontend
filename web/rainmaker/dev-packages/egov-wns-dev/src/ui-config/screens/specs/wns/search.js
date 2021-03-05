@@ -47,16 +47,34 @@ const employeeSearchResults = {
     const businessServiceData = JSON.parse(
       localStorageGet("businessServiceData")
     );
-    if (businessServiceData[0].businessService === "REGULARWSCONNECTION" || businessServiceData[0].businessService === "SW_SEWERAGE" || businessServiceData[0].businessService === "WS_CONVERSION" || businessServiceData[0].businessService === "WS_DISCONNECTION" || businessServiceData[0].businessService === "WS_RENAME" || businessServiceData[0].businessService === "WS_TUBEWELL") {
+    if(businessServiceData && businessServiceData[0])
+    {
+    if (businessServiceData[0].businessService === "REGULARWSCONNECTION" 
+      || businessServiceData[0].businessService === "TEMPORARY_WSCONNECTION" 
+      || businessServiceData[0].businessService === "WS_TEMP_TEMP" 
+      || businessServiceData[0].businessService === "WS_TEMP_REGULAR" 
+      || businessServiceData[0].businessService === "WS_DISCONNECTION" 
+      || businessServiceData[0].businessService === "WS_TEMP_DISCONNECTION"
+      || businessServiceData[0].businessService === "WS_CONVERSION"
+      || businessServiceData[0].businessService === "WS_REACTIVATE"
+      || businessServiceData[0].businessService === "WS_TUBEWELL") {
       const data = find(businessServiceData, { businessService: businessServiceData[0].businessService });
       const { states } = data || [];
       if (states && states.length > 0) {
         const status = states.map((item) => { return { code: item.state } });
-        const applicationStatus = status.filter(item => item.code != null);
-        dispatch(prepareFinalObject("applyScreenMdmsData.searchScreen.applicationStatus", applicationStatus));
+        let applicationStatus = status.filter(item => item.code != null);
+        applicationStatus.push(
+          {
+            code:"INITIATED"
+          }
+        )  
+       const applicationdistStatus = applicationStatus.filter((n, i) => applicationStatus.indexOf(n) === i);
+        dispatch(prepareFinalObject("applyScreenMdmsData.searchScreen.applicationStatus", applicationdistStatus));
       }
     }
-    const applicationType = [{ code: "New Water connection", code: "New Water connection" }, { code: "New Sewerage Connection", code: "New Sewerage Connection" }]
+  }
+    const applicationType = [{ code: "New Water connection", code: "New Water connection" }, 
+    { code: "New Sewerage Connection", code: "New Sewerage Connection" }]
     dispatch(prepareFinalObject("applyScreenMdmsData.searchScreen.applicationType", applicationType));
 
     return action;

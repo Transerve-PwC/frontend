@@ -632,6 +632,7 @@ const NumInWords = (number) => {
             } else {
                 word =
                     tens[Math.floor(tempNumber / (10 * Math.pow(1000, i)))] +
+                    " "+
                     first[Math.floor(tempNumber / Math.pow(1000, i)) % 10] +
                     mad[i] +
                     " " +
@@ -764,6 +765,7 @@ export const downloadReceipt = async (
     flag = 'false',
     mode = "download"
 ) => {
+
 
     // tenantId = process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity : getTenantId();
     // let applicationData = get(
@@ -985,6 +987,7 @@ export const downloadReceipt = async (
                 ),
                 custGSTN: applicationData.bkCustomerGstNo? applicationData.bkCustomerGstNo : "NA",
                 mcGSTN: "04AAALM0758K1Z1",
+
             };
             bankInfo.accountholderName = applicationData.bkBankAccountHolder;
             bankInfo.rBankName = applicationData.bkBankName;
@@ -1182,9 +1185,9 @@ export const downloadReceipt = async (
                     },
                     booking: {
 
-                        noOfAcRooms: applicationData.roomsModel[0].totalNoOfACRooms,
-                        noOfNonAcRooms:applicationData.roomsModel[0].totalNoOfNonACRooms ,
-                        placeOfService: "Chandigarh",
+                      noOfAcRooms: roomDataForGivenApplicationNumber.totalNoOfACRooms,
+                        noOfNonAcRooms:roomDataForGivenApplicationNumber.totalNoOfNonACRooms ,
+                          placeOfService: "Chandigarh",
                         bkDept : applicationData.bkBookingType,
                         bkStartDate:applicationData.bkFromDate,
                         bkEndDate:applicationData.bkToDate,
@@ -1293,7 +1296,7 @@ export const downloadCertificate = async (
                 let filteredRole = bookingWfHistory[i].assignee.roles.filter((role) => {
                     return role.code == "BK_OSBM_APPROVER";
                 });
-                if(filteredRole !== undefined && filteredRole !== null)
+                if(filteredRole !== undefined && filteredRole.length > 0)
                 {
 
                     apporvedByDetail.role = filteredRole[0].name;
@@ -1618,9 +1621,9 @@ export const downloadCertificate = async (
                         bkLocation: applicationData.bkLocation,
                         bkDept : applicationData.bkBookingType,
 
-                        noOfACRooms: applicationData.roomsModel[0].totalNoOfACRooms,
-                        noOfNonACRooms:applicationData.roomsModel[0].totalNoOfNonACRooms,
-                        bookingPupose: applicationData.bkBookingPurpose,
+                        noOfACRooms: roomDataForGivenApplicationNumber.totalNoOfACRooms,
+                        noOfNonACRooms:roomDataForGivenApplicationNumber.totalNoOfNonACRooms,
+                         bookingPupose: applicationData.bkBookingPurpose,
                         bkStartDate:applicationData.bkFromDate,
                         bkEndDate:applicationData.bkToDate,
                         placeOfService: "Chandigarh",
@@ -1827,6 +1830,8 @@ export const downloadApplication = async (
                 applicationData.bkToDate
             ),
             bookingPurpose: applicationData.bkBookingPurpose,
+            status:  applicationData.bkApplicationStatus === "PENDINGAPPROVAL" ? "Pending Approval" : applicationData.bkApplicationStatus === "PENDINGPAYMENT" ? "Pending Payment" : applicationData.bkApplicationStatus === "APPROVED" ? "Approved" : applicationData.bkApplicationStatus,
+        
         };
         let bookingDataPacc = {
             applicationNumber: applicationNumber,
@@ -1866,7 +1871,16 @@ export const downloadApplication = async (
                 (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
             )[0].amount;
 
-        } else {
+        } else if(applicationData.businessService == "OSUJM") {
+
+            baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => (el.taxHeadCode=="OSUJM")
+            )[0].amount;
+            taxes = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode.includes("TAX")
+            )[0].amount;
+
+        }else {
 
             baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => !el.taxHeadCode.includes("TAX")

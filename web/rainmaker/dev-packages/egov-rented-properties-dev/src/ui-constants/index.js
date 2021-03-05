@@ -23,3 +23,5 @@ export const WORKFLOW_BUSINESS_SERVICE_DC = "DuplicateCopyOfAllotmentLetterRP";
 export const BILLING_BUSINESS_SERVICE_RENT = "RentedProperties.Rent"
 export const OFFLINE = "OFFLINE";
 export const ONLINE = "ONLINE";
+
+export const ALPHA_WITH_SPACE_DOTS = /^[a-zA-Z\s\.]+$/i;

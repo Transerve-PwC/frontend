@@ -183,7 +183,8 @@ export const DownloadAndPrint = (state,
       onClickDefination: {
         action: "condition",
         callBack: () => { handleAppDownloadAndPrint(state, "download") }
-      }
+      },
+      visible:false
     },
     printFormButton: {
       componentPath: "Button",
@@ -206,7 +207,8 @@ export const DownloadAndPrint = (state,
       onClickDefination: {
         action: "condition",
         callBack: () => { handleAppDownloadAndPrint(state, "print") }
-      }
+      },
+      visible:false
     }
   })
 

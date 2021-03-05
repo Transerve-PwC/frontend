@@ -32,7 +32,8 @@ export const createRevisedPension = async (state, dispatch) => {
       if(Year >= Number(new Date().getFullYear()))
     {
       if(Month< (Number(new Date().getMonth()) +1) && Year === Number(new Date().getFullYear()))
-      IsValidMonth = false
+      IsValidMonth = true
+      //IsValidMonth = false
         if(IsValidMonth)
         {
             let IsValidSubmissionDate = true;
@@ -50,7 +51,8 @@ export const createRevisedPension = async (state, dispatch) => {
             if(Month == (Number(new Date().getMonth()) +1))
             {
               if(configDayMonth<new Date().getDate() && Year === Number(new Date().getFullYear()))
-              IsValidSubmissionDate = false;
+              //IsValidSubmissionDate = false;
+              IsValidSubmissionDate = true;
             }
                         
             if(IsValidSubmissionDate)
@@ -213,7 +215,8 @@ export const calculateRevisedPension = async (state, dispatch) => {
     {
        
         if(Month< (Number(new Date().getMonth()) +1) && Year === Number(new Date().getFullYear()))
-        IsValidMonth = false
+        IsValidMonth = true
+        //IsValidMonth = false
         if(IsValidMonth)
         {
           let IsValidSubmissionDate = true;
@@ -232,7 +235,8 @@ export const calculateRevisedPension = async (state, dispatch) => {
           {
            
             if(configDayMonth<new Date().getDate() && Year === Number(new Date().getFullYear()))
-            IsValidSubmissionDate = false;
+            //IsValidSubmissionDate = false;
+            IsValidSubmissionDate = true;
           }
             if(IsValidSubmissionDate)
             {
@@ -350,8 +354,9 @@ export const updateRevisedPension = async (state, dispatch) => {
   {
       if(Month< (Number(new Date().getMonth()) +1) && Year === Number(new Date().getFullYear()))     
       if(Month< (Number(new Date().getMonth()) +1))
-      IsValidMonth = false
      
+      IsValidMonth = true
+      //IsValidMonth = false
         if(IsValidMonth)
         {
           let IsValidSubmissionDate = true;
@@ -369,7 +374,8 @@ export const updateRevisedPension = async (state, dispatch) => {
           if(Month == (Number(new Date().getMonth()) +1))
           {
             if(configDayMonth<new Date().getDate() && Year === Number(new Date().getFullYear()))
-            IsValidSubmissionDate = false;
+            //IsValidSubmissionDate = false;
+            IsValidSubmissionDate = true;
           }
             if(IsValidSubmissionDate)
             {

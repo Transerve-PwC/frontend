@@ -50,9 +50,22 @@ const propertyDetails = getCommonContainer({
       labelKey: "WS_PROPERTY_USAGE_TYPE_LABEL"
     },
     { jsonPath: "WaterConnection[0].property.usageCategory",
+    callBack: handleNA,
     localePrefix: {
       moduleName: "WS",
       masterName: "PROPUSGTYPE"
+    } 
+ }
+  ),
+  propertysubUsageType: getLabelWithValue(
+    {
+      labelKey: "WS_PROPERTY_SUB_USAGE_TYPE_LABEL"
+    },
+    { jsonPath: "WaterConnection[0].property.subusageCategory",
+    callBack: handleNA,
+    localePrefix: {
+      moduleName: "WS",
+      masterName: "PROPSUBUSGTYPE"
     }
  }
   ),
@@ -70,6 +83,14 @@ const propertyDetails = getCommonContainer({
       labelKey: "WS_PROPERTY_NO_OF_FLOOR_LABEL"
     },
     { jsonPath: "WaterConnection[0].property.noOfFloors",
+    callBack: handleNA }
+  ),
+  reviewCoveredArea: getLabelWithValue(
+    {
+      labelName: "Covered Area",
+      labelKey: "WS_PROP_DETAIL_BUILD_UP_AREA_LABEL_INPUT"
+    },
+    { jsonPath: "WaterConnection[0].property.superBuiltUpArea",
     callBack: handleNA }
   ),
 })

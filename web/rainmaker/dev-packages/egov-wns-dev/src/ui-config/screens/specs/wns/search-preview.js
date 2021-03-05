@@ -509,6 +509,7 @@ const screenConfig = {
                 sm: 4,
                 align: "right"
               },
+              visible:false
             }
           }
         },
@@ -700,6 +701,12 @@ const searchResults = async (action, state, dispatch, applicationNumber,processI
 };
 
 const parserFunction = (obj) => {
+  let isFerruleApplicable = false
+  if(obj.waterApplication.applicationStatus !== 'PENDING_FOR_SECURITY_DEPOSIT')
+  {
+      isFerruleApplicable  =true;
+
+  }
   let parsedObject = {
     roadCuttingArea: parseInt(obj.roadCuttingArea),
     meterInstallationDate: convertDateToEpoch(obj.meterInstallationDate),
@@ -720,7 +727,8 @@ const parserFunction = (obj) => {
       ) ? obj.additionalDetails.detailsProvidedBy : "",
     },
     noOfTaps: parseInt(obj.noOfTaps),
-    proposedTaps: parseInt(obj.proposedTaps),
+    isFerruleApplicable:isFerruleApplicable,
+   // proposedTaps: parseInt(obj.proposedTaps),
     waterProperty :{
     usageCategory: (obj.waterProperty.usageCategory === null || obj.waterProperty.usageCategory === "NA") ? "" : obj.waterProperty.usageCategory,
     usageSubCategory: (obj.waterProperty.usageSubCategory === null || obj.waterProperty.usageSubCategory === "NA") ? "" : obj.waterProperty.usageSubCategory,

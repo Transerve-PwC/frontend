@@ -99,7 +99,7 @@ class Applications extends React.Component {
                           />
                         </Grid>
                         <Grid item md={8} xs={6}>
-                          {item.property && item.property.owner&&
+                          {item.property && item.property.owners&&
                           <LabelContainer
                           labelName={item.property.owners.map(owner =>owner.name).join(",")}
                           fontSize={14}

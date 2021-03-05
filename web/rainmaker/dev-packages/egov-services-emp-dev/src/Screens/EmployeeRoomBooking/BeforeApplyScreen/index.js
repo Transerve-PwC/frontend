@@ -98,7 +98,7 @@ let {DataForRoomBooking} = this.props
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_RB_SECTOR"
+                label="BK_MYBK_APPLICANT_SECTOR_FOR_PARK"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -107,7 +107,7 @@ let {DataForRoomBooking} = this.props
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_RB_SECTOR"
+                label="BK_MYBK_APPLICANT_SECTOR_FOR_PARK"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -160,7 +160,7 @@ let {DataForRoomBooking} = this.props
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_BOOKING_PURPOSE"
+                label="BK_MYBK_NAME_PURPOSE_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -169,7 +169,7 @@ let {DataForRoomBooking} = this.props
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_BOOKING_PURPOSE"
+                label="BK_MYBK_NAME_PURPOSE_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -190,7 +190,7 @@ let {DataForRoomBooking} = this.props
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_VENUE_LOCATION"
+                label="BK_MYBK_NAME_LOCATION_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -199,7 +199,7 @@ let {DataForRoomBooking} = this.props
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_VENUE_LOCATION"
+                label="BK_MYBK_NAME_LOCATION_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -220,7 +220,7 @@ let {DataForRoomBooking} = this.props
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_FROM_DATE"
+                label="BK_From_Date"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -229,7 +229,7 @@ let {DataForRoomBooking} = this.props
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_ROOM_FROM_DATE"
+                label="BK_From_Date"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -250,7 +250,7 @@ let {DataForRoomBooking} = this.props
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_TO_DATE"
+                label="BK_MY_BK_ROOM_TO_DATE"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -259,7 +259,7 @@ let {DataForRoomBooking} = this.props
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_ROOM_TO_DATE"
+                label="BK_MY_BK_ROOM_TO_DATE"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />

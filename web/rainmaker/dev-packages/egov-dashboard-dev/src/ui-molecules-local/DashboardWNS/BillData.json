@@ -1,0 +1,26 @@
+
+{
+    "ResponseInfo": {
+    "apiId": "Rainmaker",
+    "ver": ".01",
+    "ts": null,
+    "resMsgId": "uief87324",
+    "msgId": "20170310130900|en_IN",
+    "status": "successful"
+    },
+    "billData": [
+    {
+    "consumerCode": "5150101871010E",
+    "billCycle": "1",
+    "lastModifiedTime": 1614556800000,
+    "totalAmountPaid": 9900
+    },
+    {
+    "consumerCode": "5150101871020E",
+    "billCycle": "1",
+    "lastModifiedTime": 1612137600000,
+    "totalAmountPaid": 9900
+    }
+    ]
+    }
+    

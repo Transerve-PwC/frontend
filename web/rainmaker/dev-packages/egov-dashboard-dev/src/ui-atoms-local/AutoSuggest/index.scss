@@ -1,5 +1,12 @@
 .citizen-city-picker {
   width: "80%";
-  max-height: "200px";
-  // overflow-y: "scroll";
- }
+  max-height: "200px"; }
+
+  .css-16pqwjk-indicatorContainer {
+    color: rgb(204, 204, 204);
+    display: grid;
+    padding: 8px;
+    transition: color 150ms ease 0s;
+    box-sizing: border-box;
+  }
+  

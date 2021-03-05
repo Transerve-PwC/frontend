@@ -7,6 +7,7 @@ export const documentList = {
       labelName: "UPLOAD FILE",
       labelKey: "TL_BUTTON_UPLOAD FILE"
     },
+    pageName:"wns",
     inputProps: [
       {
         type: "OWNERIDPROOF",

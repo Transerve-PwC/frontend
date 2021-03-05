@@ -9,7 +9,9 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import "./index.css";
 
-const styles = (theme) => ({
+
+import { getUserInfo} from '../../../utils/localStorageUtils'
+ const styles = (theme) => ({
   webRoot: {
     flexGrow: 1,
     width: "10%",
@@ -62,6 +64,42 @@ class ServiceList extends React.Component {
     let list ;
     if(process.env.REACT_APP_NAME === "Citizen"){
       list = menu && menu.filter((item) => item.url === "card" && item.name.startsWith("rainmaker-citizen"));
+       //filter list bassed on condition include mobile number()
+    const userInfo = JSON.parse(getUserInfo());
+    let ContactNumber =[
+      {
+        Number:"9748345660"//P
+      },
+      {
+        Number:"8961201542"//T
+      },
+      {
+        Number:"8100277847"//S
+      },
+      {
+        Number:"7207303021"//SRI
+      },
+      {
+        Number:"7385213293"//R
+      },
+      {
+        Number:"7405490720"//N
+      },
+      {
+        Number:"9039000009"//AG
+      },
+      {
+        Number:"7558357883"//A
+      }
+    ]
+    ContactNumber = ContactNumber.filter((item)=>item.Number === userInfo.mobileNumber)
+    if(ContactNumber.length ===0)
+    {
+      list = list.filter((item)=>item.name !=='rainmaker-citizen-wns'
+                                && item.name !== 'rainmaker-citizen-rented-properties'
+                                && item.name !== 'rainmaker-citizen-estate-properties')
+
+    }
     }else{
       list = menu && menu.filter((item) => item.url === "card");
     }

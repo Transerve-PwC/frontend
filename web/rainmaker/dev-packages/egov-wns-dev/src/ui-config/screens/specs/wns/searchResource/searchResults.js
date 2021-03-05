@@ -50,7 +50,8 @@ export const searchResults = {
         options: {
           filter: false,
           customBodyRender: (value, data) => {
-            if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
+           // if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
+              if ((data.rowData[4] > 0 && data.rowData[4] !== 0) &&(data.rowData[3] !== undefined? data.rowData[3].toUpperCase() !== "INITIATED":'')) {
               return (
                 <div className="linkStyle" onClick={() => getViewBillDetails(data)} style={{ color: '#fe7a51', textTransform: 'uppercase' }}>
                   <LabelContainer
@@ -64,7 +65,7 @@ export const searchResults = {
               )
             } else if (data.rowData[4] === 0) {
               return (
-                <div style={{ textTransform: 'uppercase' }}>
+                <div style={{ textTransform: 'uppercase',color: "#008000", }}>
                   Paid
                 </div>
               )

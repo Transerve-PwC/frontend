@@ -195,7 +195,7 @@ export const additionDetails = getCommonCard({
         placeholder: { labelKey: "WS_ADDN_DETAILS_FERRULE_INPUT_PLACEHOLDER" },
         gridDefination: { xs: 12, sm: 6 },
         pattern: getPattern("AlphaNumValidation"),
-        visible:false,
+        visible:true,
         props:{
           disabled:IsEdit
         },

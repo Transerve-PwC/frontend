@@ -6,8 +6,11 @@ import {
 import { footer } from "./applyResourceParkCommunityCenter/footer";
 import {
     bankAccountDetails,
+    bankAccountDetailsDisabled, 
     personalDetails,
+    personalDetailsDisabled,
     bookingDetails,
+    bookingDetailsDisabled
 } from "./applyResourceParkCommunityCenter/nocDetails";
 import { convertDateInYMD, getBill } from "../utils";
 import { documentDetails } from "./applyResourceParkCommunityCenter/documentDetails";
@@ -94,6 +97,7 @@ export const formwizardFirstStep = {
     },
     children: {
         personalDetails,
+        personalDetailsDisabled
     },
 };
 
@@ -105,6 +109,7 @@ export const formwizardSecondStep = {
     },
     children: {
         bookingDetails,
+        bookingDetailsDisabled
     },
     visible: false,
 };
@@ -117,6 +122,7 @@ export const formwizardThirdStep = {
     },
     children: {
         bankAccountDetails ,
+        bankAccountDetailsDisabled
     },
     visible: false,
 };
@@ -650,6 +656,12 @@ const screenConfig = {
                 formwizardFourthStep,
                 formwizardFifthStep,
                 footer,
+                ParkChangeDateVenueFieldDisabler: {
+                    uiFramework: "custom-containers-local",
+                    moduleName: "egov-services",
+                    componentPath: "ParkChangeDateVenueFieldDisabler",
+                   
+                },
             },
         },
     },

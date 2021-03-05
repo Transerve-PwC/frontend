@@ -124,7 +124,7 @@ class ApplicatInfo extends Component {
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_LOCATION"
+                label="BK_MYBK_NAME_CITIZEN_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -133,7 +133,7 @@ class ApplicatInfo extends Component {
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_ROOM_LOCATION"
+                label="BK_MYBK_NAME_CITIZEN_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -154,7 +154,7 @@ class ApplicatInfo extends Component {
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CREATE_CITIZEN_EMAIL"
+                label="BK_MYBK_CITIZEN_EMAIL_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -163,7 +163,7 @@ class ApplicatInfo extends Component {
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CREATE_CITIZEN_EMAIL"
+                label="BK_MYBK_CITIZEN_EMAIL_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -215,7 +215,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_START_DATE"
+                  label="BK_MY_BK_ROOM_FROM_DATE"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -224,7 +224,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_START_DATE"
+                  label="BK_MY_BK_ROOM_FROM_DATE"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -245,7 +245,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_TO_DATE"
+                  label="BK_MY_BK_ROOM_FROM_DATE"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -254,7 +254,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_TO_DATE"
+                  label="BK_MY_BK_ROOM_FROM_DATE"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -276,7 +276,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_DIMENSION"
+                  label="BK_MYBK_DIMENSION_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -285,7 +285,38 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_DIMENSION"
+                  label="BK_MYBK_DIMENSION_PLACEHOLDER"
+                  color="rgba(0,0,0,0.60)"
+                  fontSize="12px"
+                />
+              }
+              onChange={handleChange('houseNo')}
+              underlineStyle={{ bottom: 7 }}
+              underlineFocusStyle={{ bottom: 7 }}
+              hintStyle={{ width: "100%" }}
+            />
+          </div>
+
+
+          <div className="col-sm-6 col-xs-6">
+            <TextField
+              id="houseNo"
+              name="houseNo"
+              type="text"
+              value={this.props.ReasonForDiscount}
+              required = {true}
+              hintText={
+                <Label
+                  label="BK_MYBK_ROOM_REASON_FOR_DISCOUNT"
+                  color="rgba(0, 0, 0, 0.3799999952316284)"
+                  fontSize={16}
+                  labelStyle={hintTextStyle}
+                />
+              }
+              floatingLabelText={
+                <Label
+                  key={0}
+                  label="BK_MYBK_ROOM_REASON_FOR_DISCOUNT"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -301,6 +332,37 @@ class ApplicatInfo extends Component {
             <TextField
               id="houseNo"
               name="houseNo"
+              type="text"
+              value={this.props.discount}
+              required = {true}
+              hintText={
+                <Label
+                  label="BK_MYBK_ROOM_DISCOUNT"
+                  color="rgba(0, 0, 0, 0.3799999952316284)"
+                  fontSize={16}
+                  labelStyle={hintTextStyle}
+                />
+              }
+              floatingLabelText={
+                <Label
+                  key={0}
+                  label="BK_MYBK_ROOM_DISCOUNT"
+                  color="rgba(0,0,0,0.60)"
+                  fontSize="12px"
+                />
+              }
+              onChange={handleChange('houseNo')}
+              underlineStyle={{ bottom: 7 }}
+              underlineFocusStyle={{ bottom: 7 }}
+              hintStyle={{ width: "100%" }}
+            />
+          </div>
+
+
+          {/* <div className="col-sm-6 col-xs-6">
+            <TextField
+              id="houseNo"
+              name="houseNo"  //discount
               type="text"
               value={this.props.RefundableSecurity}
               required = {true}
@@ -325,7 +387,7 @@ class ApplicatInfo extends Component {
               underlineFocusStyle={{ bottom: 7 }}
               hintStyle={{ width: "100%" }}
             />
-          </div>
+          </div> */}
 
 
           <div className="col-sm-6 col-xs-6">
@@ -337,7 +399,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CLEANING_CHARGES"
+                  label="BK_MYBK_CLEANING_CHARGES_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -346,7 +408,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CLEANING_CHARGES"
+                  label="BK_MYBK_CLEANING_CHARGES_PLACEHOLDER"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -368,7 +430,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CC_RENT"
+                  label="BK_MYBK_RENT_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -377,7 +439,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CC_RENT"
+                  label="BK_MYBK_RENT_PLACEHOLDER"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -398,7 +460,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CGST"
+                  label="BK_MYBK_CGST_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -407,7 +469,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CGST"
+                  label="BK_MYBK_CGST_PLACEHOLDER"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -428,7 +490,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CC_UGST"
+                  label="UTGST"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -437,7 +499,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CC_UGST"
+                  label="UTGST"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -458,7 +520,7 @@ class ApplicatInfo extends Component {
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CC_SURCHARGES"
+                  label="Surcharge On Rent"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -467,7 +529,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CC_SURCHARGES"
+                  label="Surcharge On Rent"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -485,11 +547,12 @@ class ApplicatInfo extends Component {
               id="houseNo"
               name="houseNo"
               type="text"
-              value={this.props.facilitationCharges}
+              // value={this.props.facilitationCharges}
+              value={"100"}
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_ROOM_CC_FACILITATION_CHARGES"
+                  label="BK_MYBK_FACILITATION_CHARGES_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -498,7 +561,7 @@ class ApplicatInfo extends Component {
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_ROOM_CC_FACILITATION_CHARGES"
+                  label="BK_MYBK_FACILITATION_CHARGES_PLACEHOLDER"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />

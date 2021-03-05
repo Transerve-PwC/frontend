@@ -649,9 +649,6 @@ if(complaint.status){
 		PdfStatus = "Processed"
 	}
 }
-	
-
-
 	const { createWaterTankerApplicationData,downloadBWTApplication } = this.props;
     let applicationDetails = createWaterTankerApplicationData ? createWaterTankerApplicationData.data : '';
 	let paymentData = paymentDetails;

@@ -312,7 +312,7 @@ export const getOwnerDetails = (isEditable = true) => {
                 disabled:IsEdit
               }
             }),
-            aadharCardnumber: getTextField({
+            aadharNo: getTextField({
               label: {
                 labelName: "Aadhar Card number",
                 labelKey: "WS_OWN_DETAIL_ADDHAR_NO"
@@ -325,7 +325,7 @@ export const getOwnerDetails = (isEditable = true) => {
               required: false,
               
              // errorMessage: "Invalid Address",
-              jsonPath: "applyScreen.property.owners[0].aadharCardnumber",
+              jsonPath: "applyScreen.aadharNo",
               gridDefination: {
                 xs: 12,
                 sm: 6
@@ -530,7 +530,7 @@ export const getMultipleOwnerDetails = (isEditable = true) => {
                 className: "applicant-details-error"
               }
             }),
-            aadharCardnumber: getTextField({
+            aadharNo: getTextField({
               label: {
                 labelName: "Aadhar Card number",
                 labelKey: "WS_OWN_DETAIL_ADDHAR_NO"
@@ -543,7 +543,7 @@ export const getMultipleOwnerDetails = (isEditable = true) => {
               required: true,
               
              // errorMessage: "Invalid Address",
-              jsonPath: "applyScreen.property.owners[0].aadharCardnumber",
+              jsonPath: "applyScreen.aadharNo",
               gridDefination: {
                 xs: 12,
                 sm: 6

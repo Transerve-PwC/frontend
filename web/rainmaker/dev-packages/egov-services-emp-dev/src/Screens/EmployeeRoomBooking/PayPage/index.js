@@ -236,7 +236,7 @@ console.log("ReceiptNum--",ReceiptNum)
 
 prepareFinalObject("CollectionReceiptNum",ReceiptNum)
 
-this.props.history.push(`/egov-services/success-payment`);
+this.props.history.push(`/egov-services/Room-Payment-Success`);
     }
 
     firstStep = e => {

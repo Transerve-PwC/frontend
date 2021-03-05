@@ -131,11 +131,11 @@ const renderSearchConnectionTable = async (state, dispatch) => {
                 (bill.billDetails[0].toPeriod + waterMeteredDemandExipryDate) :
                 (bill.billDetails[0].toPeriod + waterNonMeteredDemandExipryDate));
             } else if (element.service === "SEWERAGE") {
-              updatedDueDate = bill.billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
+              updatedDueDate = bill[0].billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
             }
             finalArray.push({
-              due: bill.totalAmount,
-              dueDate: updatedDueDate,
+              due: bill.totalAmount ===null?'':bill.totalAmount,
+              dueDate: updatedDueDate>0? convertDateToEpoch(updatedDueDate):'',
               service: element.service,
               connectionNo: element.connectionNo,
               name: (element.property) ? element.property.owners[0].name : '',
@@ -309,8 +309,11 @@ const handleAddress = (element) => {
     element.property.address.locality !== null &&
     element.property.address.locality.name !== null
   ) ? element.property.address.locality.name : "";
-
-  return (city === "" && localityName === "") ? "NA" : `${localityName}, ${city}`;
+return (element.connectionHolders && element.connectionHolders !== null
+   && element.connectionHolders[0].correspondenceAddress) 
+   ? element.connectionHolders[0].correspondenceAddress 
+   : '';
+  //return (city === "" && localityName === "") ? "NA" : `${localityName}, ${city}`;
 }
 
 const showHideConnectionTable = (booleanHideOrShow, dispatch) => {

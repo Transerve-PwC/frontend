@@ -71,6 +71,7 @@ import {
       }
     }
     let postdetailid =[]
+    let orgid = 37
     // call api integration-services/eoffice/v1/_getPostDetailsId
     dispatch(toggleSpinner());
     let Request ={
@@ -92,6 +93,7 @@ import {
         //[{"post_detail_id" : "1882"},{"post_detail_id" : "2323"}]
         
         let postdetail = response_.ResponseBody[0].postdetail
+        orgid = response_.ResponseBody[0].org_unit_id
         const valuesArray = JSON.parse(postdetail);
         for (let index = 0; index < valuesArray.length; index++) {
           const element = valuesArray[index];
@@ -107,7 +109,8 @@ import {
     //
     let mdmsBody = {
       eOfficeRequest: {
-        orgid: 37,
+       // orgid: 37, // set from  integration-services/eoffice/v1/_getPostDetailsId responce
+        orgid: orgid,
         postdetailid:postdetailid,
        
       }

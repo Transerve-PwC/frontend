@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { Card, Image, Icon, Button } from "components";
 import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
-import { connect } from "react-redux";
+import { connect } from "react-redux"; 
 import "./index.css";
-
+import EditIcon from '@material-ui/icons/Edit';
 class CGBookingDetails extends Component {
 
   render() {
-    const { firstName, email, mobileNo } = this.props;
+    const { firstName, email, mobileNo,firstStep } = this.props;
 return (
       <div>
         <Card
@@ -17,6 +17,18 @@ return (
               <div className="rainmaker-displayInline">
                 
                 <Label label="BK_MYBK_APPLICANT_DETAILS" containerStyle={{ marginLeft: "13px" }} labelClassName="dark-heading" />
+              
+                <button
+                        style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "650", float: 'right',marginLeft: "73%", marginRight: '43px', marginTop: '-11px', background: "white" }}
+                        onClick={(e)=>this.props.firstStep(e)}
+                        >
+                        <EditIcon />
+                        <h5 style={{ fontSize: "14px", marginTop: "-27px", marginBottom: "15px", marginLeft: "59px" }}>
+                            Edit
+                       
+              </h5>
+                    </button>
+              
               </div>
               <div key={10} className="complaint-detail-full-width">
               

@@ -32,7 +32,7 @@ class CancelRequestApproved extends Component {
   };
 
   async componentDidMount() {
-    let { fetchApplications, match, payload, payloadTwo, userInfo,matchparams,applicationNumber,trasformData,fetchResponseForRefdunf,selectedComplaint } = this.props;
+    let { fetchApplications, match, payload, payloadTwo, paymentDetailsForReceipt,userInfo,matchparams,applicationNumber,trasformData,fetchResponseForRefdunf,selectedComplaint } = this.props;
     console.log("propsincompcancelpage--",payload)
     console.log("applicationNumber--",applicationNumber)
     console.log("match--",match)
@@ -203,27 +203,66 @@ if(selectedComplaint.bkAction == "OFFLINE_CANCEL"){
     // let totalRefAmount = await this.RefundAmountRefundAPI(applicationNumber, userInfo.tenantId, dateForCancel);
     // console.log("totalRefAmount--",totalRefAmount)
   
-    let data={
-      "RefundTransaction" : {
-      "additionalDetails": {},
+  //   let data={    //Before Suggestion Of Obadh we use another signature for refund and cancellation so this hide for temp 
+  //     "RefundTransaction" : {  //Before suggestion we use this request body
+  //     "additionalDetails": {},
       
-      "gateway": gateway,
-      "gatewayRefundStatusCode": txnStatus,
-      "gatewayRefundStatusMsg": txnStatusMsg,
-      "gatewayTxnId": gatewayTxnId,
-      "refundAmount": totalRes,
-      "tenantId": userInfo.tenantId,
-      "txnAmount": txnAmount,
-      "txnId": txnId
+  //     "gateway": gateway,
+  //     "gatewayRefundStatusCode": txnStatus,
+  //     "gatewayRefundStatusMsg": txnStatusMsg,
+  //     "gatewayTxnId": gatewayTxnId,
+  //     "refundAmount": totalRes,
+  //     "tenantId": userInfo.tenantId,
+  //     "txnAmount": txnAmount,
+  //     "txnId": txnId
   
-    }
-  }
+  //   }
+  // }
+
+  let Receipt = {
+  "receiptNumber":paymentDetailsForReceipt.Payments[0].paymentDetails[0]
+  .receiptNumber,
+"isCitizenRefund":"Y",
+"citizenName":"G.P.Shukla",
+"correspondingAddress":"Test Address",
+"bankName":"Oriental Bank of Commerce",
+"bankAccount":"00381132000317",
+"ifscCode":"ORBC0102252",
+    "ledgers":[
+       {
+          "glcode":"1601004",
+          "debitAmount":60.0,
+          "creditAmount":0.0,
+       },
+       {
+          "glcode":"1601002",
+          "debitAmount":40.0,
+          "creditAmount":0.0,
+          
+       },
+       {
+          "glcode":"1601001",
+          "debitAmount":20.0,
+          "creditAmount":0.0,
+          
+       }
+    ]
+
+ }
+
+
+ let ResOfRefund = await httpRequest(
+  "pg-service/transaction/v1/_refund",
+  "_search",[],
+  Receipt
+);
+
   
-    let ResOfRefund = await httpRequest(
-      "pg-service/transaction/v1/_refund",
-      "_search",[],
-      data
-    );
+    // let ResOfRefund = await httpRequest(
+    //   "pg-service/transaction/v1/_refund",
+    //   "_search",[],
+    //   data
+    // );
   
     console.log("ResOfRefund--",ResOfRefund)
 
@@ -525,6 +564,11 @@ const mapStateToProps = (state, ownProps) => {
   let payloadone = fetchPaymentAfterPayment;
   console.log("payload--in--mapstatetoprops--",payloadone)
 
+  let paymentDetailsForReceipt = fetchPaymentAfterPayment;
+	console.log("paymentDetailsForReceipt--",paymentDetailsForReceipt)
+
+
+  
   // const serviceRequestId = ownProps.match.params.applicationId;
   let trasformData = applicationData?applicationData.bookingsModelList[0]:'';
 
@@ -540,7 +584,7 @@ const mapStateToProps = (state, ownProps) => {
   let Cancelstatus = trasformData.bkStatus;
   console.log("Cancelstatus--",Cancelstatus)
 
-  return { trasformData, businessServiceData,dataforRefund,payloadone,ConRefAmt,Cancelstatus};
+  return { trasformData, businessServiceData,dataforRefund,payloadone,ConRefAmt,Cancelstatus,paymentDetailsForReceipt};
 }
 
 

@@ -217,9 +217,10 @@ class Footer extends React.Component {
         if(curstateactions && curstateactions[0])
         {
           nextActions = curstateactions[0].actions.filter(x=>x.action === actions_)
-          if(nextStateid !== undefined && nextStateid !== null)
+          if(nextActions !== undefined && nextActions !== null)
           {
           nextStateid = nextActions[0].nextState
+          if(nextStateid !== undefined && nextStateid !== null)
           businessServiceData = businessServiceData[0].states.filter(x=>x.uuid === nextStateid )
           }
         } 

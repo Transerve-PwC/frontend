@@ -16,6 +16,11 @@ const LabelContainer = Loadable({
   loader: () => import("./LabelContainer"),
   loading: () => <Loading />
 });
+const ParkChangeDateVenueFieldDisabler = Loadable({
+  loader: () => import("./ParkChangeDateVenueFieldDisabler"),
+  loading: () => <Loading />
+});
+
 
 const CheckboxContainer = Loadable({
   loader: () => import("./CheckboxContainer"),
@@ -105,5 +110,6 @@ export {
   RefundAmountContainer,
   RefundFeeAmountContainer,
   modifiedBookingPaymentCard,
-  RoomCardsContainer
+  RoomCardsContainer,
+  ParkChangeDateVenueFieldDisabler
 };

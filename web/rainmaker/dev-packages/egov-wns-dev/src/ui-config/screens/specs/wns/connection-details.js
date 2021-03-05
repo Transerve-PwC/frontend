@@ -12,6 +12,11 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
 import { connectionDetailsFooter } from "./connectionDetailsResource/connectionDetailsFooter";
 import { getServiceDetails } from "./connectionDetailsResource/service-details";
 import { getPropertyDetails } from "./connectionDetailsResource/property-details";
+import { 
+  GetMdmsNameBycode
+} from "../utils";
+import { httpRequest } from "../../../../ui-utils";
+import commonConfig from "config/common.js";
 import { getOwnerDetails, connHolderDetailsSummary, connHolderDetailsSameAsOwnerSummary } from "./connectionDetailsResource/owner-deatils";
 const tenantId = getQueryArg(window.location.href, "tenantId")
 let connectionNumber = getQueryArg(window.location.href, "connectionNumber");
@@ -108,7 +113,16 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
         //   payloadData.SewerageConnections[0].property.propertyTypeData = "NA"
         // }
       }
+      //set Property Usage Type and Property Sub Usage Type
+      if(payloadData.SewerageConnections[0].property.usageCategory!== null && payloadData.SewerageConnections[0].property.usageCategory !== undefined)
+      {
+        payloadData.SewerageConnections[0].property.subusageCategory = payloadData.SewerageConnections[0].property.usageCategory
+        payloadData.SewerageConnections[0].property.usageCategory = payloadData.SewerageConnections[0].property.usageCategory.split(".")[0]
 
+      }
+      let code = '03';
+      code =GetMdmsNameBycode(state, dispatch,"applyScreenMdmsData.ws-services-masters.wssectorList",payloadData.WaterConnection[0].property.address.locality.code)   
+      payloadData.SewerageConnections[0].property.address.locality.name = code
       if (payloadData.SewerageConnections[0].noOfToilets === undefined) { payloadData.SewerageConnections[0].noOfToilets = "NA" }
       if (payloadData.SewerageConnections[0].noOfToilets === 0) { payloadData.SewerageConnections[0].noOfToilets = "0" }
       payloadData.SewerageConnections[0].connectionExecutionDate = convertEpochToDate(payloadData.SewerageConnections[0].connectionExecutionDate)
@@ -139,6 +153,16 @@ const searchResults = async (action, state, dispatch, connectionNumber) => {
       } else {
         payloadData.WaterConnection[0].connectionExecutionDate = 'NA'
       }
+      //set Property Usage Type and Property Sub Usage Type
+      if(payloadData.WaterConnection[0].property.usageCategory!== null && payloadData.WaterConnection[0].property.usageCategory !== undefined)
+      {
+        payloadData.WaterConnection[0].property.subusageCategory = payloadData.WaterConnection[0].property.usageCategory
+        payloadData.WaterConnection[0].property.usageCategory = payloadData.WaterConnection[0].property.usageCategory.split(".")[0]
+
+      }
+      let code = '03';
+      code =GetMdmsNameBycode(state, dispatch,"applyScreenMdmsData.ws-services-masters.sectorList",payloadData.WaterConnection[0].property.address.locality.code)   
+      payloadData.WaterConnection[0].property.address.locality.name = code
       if (payloadData.WaterConnection[0].noOfTaps === undefined) { payloadData.WaterConnection[0].noOfTaps = "NA" }
       if (payloadData.WaterConnection[0].noOfTaps === 0) { payloadData.WaterConnection[0].noOfTaps = "0" }
       if (payloadData.WaterConnection[0].pipeSize === 0) { payloadData.WaterConnection[0].pipeSize = "0" }
@@ -197,11 +221,40 @@ const connectionHolders = connHolderDetailsSummary();
 
 const connectionHoldersSameAsOwner = connHolderDetailsSameAsOwnerSummary();
 export const connectionDetails = getCommonCard({ serviceDetails, propertyDetails, ownerDetails, connectionHolders, connectionHoldersSameAsOwner});
-
+export const getData = async (action, state, dispatch) => {  
+  await getMdmsData(state, dispatch);
+}
+export const getMdmsData = async (state,dispatch) => {
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: commonConfig.tenantId,
+      moduleDetails: [
+       
+        {
+          moduleName: "ws-services-masters", masterDetails: [
+            
+            {name:"sectorList"},
+            {name:"swSectorList"},            
+          ]
+        }
+      ]
+    }
+  };
+  try {
+    let payload = null;
+    payload = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);    
+    dispatch(prepareFinalObject("applyScreenMdmsData.ws-services-masters.sectorList",
+     payload.MdmsRes['ws-services-masters'].sectorList));
+     dispatch(prepareFinalObject("applyScreenMdmsData.ws-services-masters.wssectorList",
+     payload.MdmsRes['ws-services-masters'].swSectorList));
+    //
+  } catch (e) { console.log(e); }
+};
 const screenConfig = {
   uiFramework: "material-ui",
   name: "connection-details",
   beforeInitScreen: (action, state, dispatch) => {
+    getData(action, state, dispatch).then(() => { });
     beforeInitFn(action, state, dispatch, connectionNumber);
     return action;
   },
@@ -256,7 +309,7 @@ const screenConfig = {
                 word2: {
                   ...getCommonTitle({
                     labelName: "Active",
-                    // jsonPath: "WaterConnection[0].headerSideText.word2"
+                    jsonPath: "WaterConnection[0].status"
                   }
                     ,
                     {

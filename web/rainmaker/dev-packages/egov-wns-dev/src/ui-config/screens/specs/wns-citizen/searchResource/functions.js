@@ -132,7 +132,8 @@ export const searchApiCall = async (state, dispatch) => {
             // }
             let obj = {
               service: "WATER",
-              connectionNo: element.connectionNo,
+              connectionNo: element.connectionNo, 
+              billGenerationId:bill.billGenerationId,
               name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',
               status: element.status,
               due: bill.totalNetAmount ===null?'':bill.totalNetAmount,
@@ -146,6 +147,7 @@ export const searchApiCall = async (state, dispatch) => {
           }) : finalArray.push({
             service: element.service,
             connectionNo: element.connectionNo,
+            billGenerationId:0,
             name: (element.property && element.property !== "NA" && element.property.owners) ? element.property.owners[0].name : '',// from connection holder.
             status: element.status,
             due: 'NA',
@@ -183,7 +185,8 @@ const showResults = (connections, dispatch, tenantId) => {
     [getTextToLocalMapping("Due Date")]: (item.dueDate !== undefined && item.dueDate !== "NA") ? convertEpochToDate(item.dueDate) : item.dueDate,
     [getTextToLocalMapping("tenantId")]: item.tenantId,
     [getTextToLocalMapping("Application Status")]: item.apnstatus,
-    [getTextToLocalMapping("connectionType")]: item.connectionType
+    [getTextToLocalMapping("connectionType")]: item.connectionType,
+    [getTextToLocalMapping("connectionType")]: item.billGenerationId
   }))
 
   dispatch(handleField("search", "components.div.children.searchResults", "props.data", data));

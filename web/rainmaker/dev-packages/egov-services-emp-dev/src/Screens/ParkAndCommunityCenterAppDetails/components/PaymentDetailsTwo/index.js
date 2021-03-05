@@ -49,11 +49,27 @@ class PayDetails extends Component {
   // };
 
   render() {
-    const { bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus,PayMentOne,PayMentTwo } = this.props;
+    const { bkPaymentDate, paymentDetails, bkPaymentReceiptNumber, bkPaymentStatus,
+      PayMentOne,PayMentTwo, 
+      one,two,three,four,five,six,
+    } = this.props;
 
+
+let ONE =  (Math.round(one * 100) / 100).toFixed(2);
+
+let TWO = (Math.round(two * 100) / 100).toFixed(2);
+
+let THREE = (Math.round(three * 100) / 100).toFixed(2);
+
+let FOUR = (Math.round(four * 100) / 100).toFixed(2);
+
+let FIVE = (Math.round(five * 100) / 100).toFixed(2);
+
+let SIX = (Math.round(six * 100) / 100).toFixed(2);
+ 
     return (
       <div>
-        <Card
+        <Card 
           textChildren={
             <div>
               <div className="rainmaker-displayInline row">
@@ -68,29 +84,63 @@ class PayDetails extends Component {
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_REGISTRATION_RENT" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_FEE_HEAD_PACC" />
                 </div>
-                <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
+                <div className="col-sm-4 col-xs-12"> 
+                <h5 style={{ textAlign: "right" }}>{ONE ? ONE : 'NA'}</h5>
                 </div>
               </div>
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="PACC_TAX" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[3].amount}</h5>
+                <h5 style={{ textAlign: "right" }}>{FOUR ? FOUR : 'NA'}</h5>
                 </div>
               </div>
+             
+
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT_PACC" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="PACPACC_ROUND_OFFC_TAX" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[4].amount}</h5>
+                <h5 style={{ textAlign: "right" }}>{FIVE ? FIVE : 'NA'}</h5>
+              
                 </div>
               </div>
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_FACILITATION_CHARGE" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                <h5 style={{ textAlign: "right" }}>{SIX ? SIX : 'NA'}</h5>
+              
+                </div>
+              </div>
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="LUXURY_TAX" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                <h5 style={{ textAlign: "right" }}>{TWO ? TWO : 'NA'}</h5>
+              
+                </div>
+              </div>
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="REFUNDABLE_SECURITY"/>
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                <h5 style={{ textAlign: "right" }}>{THREE ? THREE: "100"}</h5>
+               
+                </div>
+              </div>
+
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <hr class="MuiDividerLine" style={{ marginbottom: "16px" }}></hr>
                 <div className="col-sm-4 col-xs-12">

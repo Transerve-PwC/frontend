@@ -310,12 +310,16 @@ const usageCategory = get(
 
     return
 
-  }
+  }  
   removingDocumentsWorkFlow(state, dispatch) ;
+  prepareDocumentsUploadData(state, dispatch);
   try{
     let abc = await applyForWater(state, dispatch);
     window.localStorage.setItem("ActivityStatusFlag","true");
   }catch (err){
+    if(localStorage.getItem("WNS_STATUS")){
+      window.localStorage.removeItem("WNS_STATUS");
+  }
     console.log("errrr")
   }
 }
@@ -339,12 +343,17 @@ else if(wnsStatus && wnsStatus === "UPDATE_CONNECTION_HOLDER_INFO"){
     )
     return;
   }
+  
   removingDocumentsWorkFlow(state, dispatch) ;
+  prepareDocumentsUploadData(state, dispatch);
   try{
     let abc = await applyForWater(state, dispatch);
     window.localStorage.setItem("ActivityStatusFlag","true");
  
   }catch (err){
+    if(localStorage.getItem("WNS_STATUS")){
+      window.localStorage.removeItem("WNS_STATUS");
+  }
     console.log("errrr")
   }
 } 
@@ -368,11 +377,16 @@ else if(wnsStatus && (wnsStatus === "REACTIVATE_CONNECTION"||wnsStatus === "TEMP
     )
     return;
   }
+ 
   removingDocumentsWorkFlow(state, dispatch) ;
+  prepareDocumentsUploadData(state, dispatch);
   try{
     let abc = await applyForWater(state, dispatch);
     window.localStorage.setItem("ActivityStatusFlag","true");
   }catch (err){
+    if(localStorage.getItem("WNS_STATUS")){
+      window.localStorage.removeItem("WNS_STATUS");
+  }
     console.log("errrr")
   }
  
@@ -412,6 +426,7 @@ else if(wnsStatus && wnsStatus === "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION" ||
   }
   
   removingDocumentsWorkFlow(state, dispatch) ;
+  prepareDocumentsUploadData(state, dispatch);
   try{
     // call api property search then property-services/property/_update  
     let queryObject = [];//[{ key: "tenantId", value: tenantId }];
@@ -674,6 +689,43 @@ else if(wnsStatus && wnsStatus === "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION" ||
            }
         
        // propertyPayload.address.locality.code = propertyPayload.address.locality.code.value;
+       // validate water field 
+       if (water) {
+        if (validateFeildsForWater(applyScreenObject)) {
+          isFormValid = true;
+          hasFieldToaster = false;
+        } else {
+          isFormValid = false;
+          dispatch(
+            toggleSnackbar(
+              true, {
+              labelKey: "WS_FILL_REQUIRED_FIELDS",
+              labelName: "Please fill Required details"
+            },
+              "warning"
+            )
+          )
+          return;
+        }
+      }
+      if (sewerage) {
+        if (validateFeildsForSewerage(applyScreenObject)) {
+          isFormValid = true;
+          hasFieldToaster = false;
+        } else {
+          isFormValid = false;
+          dispatch(
+            toggleSnackbar(
+              true, {
+              labelKey: "WS_FILL_REQUIRED_FIELDS",
+              labelName: "Please fill Required details"
+            },
+              "warning"
+            )
+          )
+          return;
+        }
+      }
         propertyPayload.rainWaterHarvesting=false;
         try {
         propertyPayload.creationReason = 'CREATE';

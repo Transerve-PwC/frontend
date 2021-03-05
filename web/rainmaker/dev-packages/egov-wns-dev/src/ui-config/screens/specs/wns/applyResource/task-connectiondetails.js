@@ -92,7 +92,10 @@ export const getConnectionDetails = () => {
 
 export const renderService = () => {
     if (service === "WATER") {
-        return getCommonContainer({ taskApplicationType, taskNumberOfTapsPropsed, taskPipeSizeProposed,taskWaterApplicationType });
+        return getCommonContainer({ taskApplicationType,
+            // taskNumberOfTapsPropsed, 
+             taskPipeSizeProposed,
+             taskWaterApplicationType });
     } else if (service === "SEWERAGE") {
         return getCommonContainer({ taskApplicationType, taskNoOfClosets, taskNoOfToilets })
     }

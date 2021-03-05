@@ -24,7 +24,7 @@ const styles = theme => ({
 
 class NewConnection extends React.Component {
 
-  clickHandler = route => {
+  clickHandler = () => {
     const {
       screenConfig,
       handleField,
@@ -34,12 +34,16 @@ class NewConnection extends React.Component {
       value
     } = this.props;
 
-    let toggle = get(
-      screenConfig[route.screenKey],
-      `${route.jsonPath}.props.open`,
-      false
-    );
-    handleField(route.screenKey, route.jsonPath, "props.open", !toggle);
+    // let toggle = get(
+    //   screenConfig[route.screenKey],
+    //   `${route.jsonPath}.props.open`,
+    //   false
+    // );
+   // handleField(route.screenKey, route.jsonPath, "props.open", !toggle);
+  // window.location.href = "wns/apply"
+  const applyUrl = "../wns/apply"
+  setRoute(applyUrl)
+  //dispatch(setRoute(applyUrl));
 
   };
   render() {
@@ -47,7 +51,7 @@ class NewConnection extends React.Component {
 
     return (
       <div className={classes.root}>
-        <List component="nav" onClick={() => this.clickHandler(items.route)}>
+        <List component="nav" onClick={() => this.clickHandler()}>
           <ListItem button>
             <ListItemText
               primary={

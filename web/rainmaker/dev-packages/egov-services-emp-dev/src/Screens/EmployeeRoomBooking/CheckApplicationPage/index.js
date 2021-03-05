@@ -34,7 +34,7 @@ findApplicationNumber = async (event) => {
   //   "applicationStatus": "",
   //   "mobileNumber": "", "bookingType": "","tenantId" : userInfo.tenantId
   // }
-
+ 
   let complaintCountRequest = 
   {
     "applicationNumber": this.state.ApplicationNumber, 

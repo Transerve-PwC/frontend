@@ -133,6 +133,7 @@ const requiredIcon = (
 class DocumentList extends Component {
     state = {
         uploadedDocIndex: 0,
+        test: 1
     };
 
     componentDidMount = () => {
@@ -191,6 +192,7 @@ class DocumentList extends Component {
                                 oldDocumentData = {
                                     documents: [documentsUploadReduxOld.documents[index]],
                                 };
+                                this.setState({test: 0})
                             }
                             let newDocumentData = {
                                 documentType: docType.code,
@@ -207,13 +209,21 @@ class DocumentList extends Component {
                             //         ...newDocumentData,
                             //     })
                             //     :
-                            (documentsUploadRedux[index] = { ...newDocumentData });
+                            
+                            Object.keys(documentsUploadReduxOld).length > 0
+                            ? (documentsUploadRedux[index] = {
+                                ...oldDocumentData,
+                            
+                            })
+                            :
+                     (documentsUploadRedux[index] = { ...newDocumentData });
                         }
                         index++;
                     }
                 });
         });
         prepareFinalObject("documentsUploadRedux", documentsUploadRedux);
+
     };
 
     onUploadClick = (uploadedDocIndex) => {
@@ -268,8 +278,8 @@ console.log(card, "Card He");
             <Grid container={true}>
                 <Grid item={true} xs={2} sm={1} className={classes.iconDiv}>
                     {documentsUploadRedux[key] &&
-                        documentsUploadRedux[key].documents ? (
-                            <div className={classes.documentSuccess}>
+            documentsUploadRedux[key].documents && documentsUploadRedux[key].documents[0]!= undefined ? (
+                                        <div className={classes.documentSuccess}>
                                 <Icon>
                                     <i class="material-icons">done</i>
                                 </Icon>
@@ -310,8 +320,8 @@ console.log(card, "Card He");
                         }
                         uploaded={
                             documentsUploadRedux[key] &&
-                                documentsUploadRedux[key].documents
-                                ? true
+                            documentsUploadRedux[key].documents && documentsUploadRedux[key].documents[0]!= undefined
+                            ? true
                                 : false
                         }
                         removeDocument={() => this.removeDocument(key)}

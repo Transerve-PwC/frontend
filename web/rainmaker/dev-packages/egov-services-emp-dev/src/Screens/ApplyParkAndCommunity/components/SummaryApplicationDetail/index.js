@@ -4,7 +4,7 @@ import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 import "./index.css";
-
+import EditIcon from '@material-ui/icons/Edit';
 class CGBookingDetails extends Component {
 
   render() {
@@ -12,7 +12,7 @@ class CGBookingDetails extends Component {
         utGST, cGST, GSTnumber, cgstone, PrintutGST2,
         PrintcGST,
         Printsurcharge,
-       utgstRateOne,surchargeOne,fCharges,
+       utgstRateOne,surchargeOne,fCharges,firstStep,
       dimension, cleaningCharges, rent, purpose, bkLocation, myLocation, secondRate ,myLocationtwo,firstrent, cleanOne} = this.props;
       console.log("propsInbookingSummaryPage--",this.props)
       if(PrintutGST2 != "notfound"){
@@ -82,6 +82,18 @@ return (
               <div className="rainmaker-displayInline">
                 
                 <Label label="BK_MYBK_APPLICANTION_DETAILS" containerStyle={{ marginLeft: "13px" }} labelClassName="dark-heading" />
+             
+                <button
+                        style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "650", float: 'right', marginRight: '43px',marginLeft: "73%", marginTop: '-11px', background: "white" }}
+                        onClick={(e)=>this.props.firstStep(e)}
+                        >
+                        <EditIcon />
+                        <h5 style={{ fontSize: "14px", marginTop: "-27px", marginBottom: "15px", marginLeft: "59px" }}>
+                            Edit
+                       
+              </h5>
+                    </button>
+             
               </div>
               <div key={10} className="complaint-detail-full-width">
               

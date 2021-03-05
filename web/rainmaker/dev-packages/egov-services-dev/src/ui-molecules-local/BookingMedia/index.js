@@ -19,9 +19,9 @@ class BookingMedia extends React.Component {
         }
 
         return (
-            <div>
-            <div style={{"textAlign": "center", "fontSize": "large", "marginBottom": "20px"}} >Select venue from below picture</div>
-                <img
+            <div style ={{ "overflowX": "scroll"}}>
+            <div style={{"textAlign": "center", "fontSize": "large", "marginBottom": "20px" }} >Select venue from below picture</div>
+             <img
                     id="imageMap-pccMaps"
                     src={`${pacc_image
 

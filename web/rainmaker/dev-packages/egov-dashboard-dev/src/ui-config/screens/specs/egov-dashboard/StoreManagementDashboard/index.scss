@@ -1,0 +1,93 @@
+/************************ OPMS CSS START *************************/
+form#datagridsummary .MuiPaper-elevation4-466 {
+  overflow: auto !important; }
+
+/************************ OPMS CSS END *************************/
+@media only screen and (max-width: 551px) {
+  .apply-wizard-footer {
+    background-color: white;
+    -webkit-box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.24);
+    /* padding: 8px; */
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    text-align: right;
+    display: flex;
+    padding: initial; }
+  .apply-wizard-footer button {
+    width: 100% !important;
+    margin: initial;
+    border: none;
+    margin: 0 !important;
+    border-radius: none !important; } }
+
+.applicant-details-error p {
+  font-size: 14px; }
+
+#custom-containers-propertyMohalla div p {
+  font-size: 14px; }
+
+#custom-containers-key {
+  word-break: break-all !important; }
+
+.MuiTypography-body2-204 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: Roboto;
+  line-height: 19px;
+  letter-spacing: 0.67px;
+  word-break: break-all !important; }
+
+.MuiGrid-container-59 {
+  width: 125%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box; }
+
+div#material-ui-FilterConstraintsContainer {
+  width: 121%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box; }
+
+input#custom-containers-toDate {
+  height: 10%; }
+
+input#custom-containers-fromDate {
+  height: 10%; }
+
+div#material-ui-FilterConstraintsContainer {
+  width: 150%; }
+
+div#custom-containers-local-moduleDashboardDropdown {
+  position: absolute;
+  width: 260px;
+  margin-left: 95px;
+}
+
+div#custom-containers-local-moduleDashboardDropdownStore {
+  position: absolute;
+  width: 300px;
+}
+
+button#material-ui-searchButton {
+  margin-left: 165px; }
+
+@media only screen and (max-width: 900px) {
+  div#material-ui-FilterConstraintsContainer {
+    display: block; }
+  button#material-ui-searchButton {
+    margin-left: 0px;
+    margin-top: 150px;
+    width: 150px;  
+  }
+  div#custom-containers-local-moduleDashboardDropdown {
+    position: absolute;
+    width: 250px;
+    margin-top: 70px;
+    margin-left: 0px;
+  } 
+}

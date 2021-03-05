@@ -943,6 +943,46 @@ export const getDashboardDropdownData = async (state, dispatch, status) =>  {
 	}
 };
 
+export const getStoreDropdownData = async (action, state, dispatch) => {
+  debugger;
+  try {
+    store.dispatch(toggleSpinner());
+    const response = await httpRequest(
+      "post",
+      "/store-asset-services/stores/_search?tenantId="+getTenantId(),
+      "",
+      [],
+      []
+    );
+
+    // alert("OK....")
+    // dispatch(prepareFinalObject("StoreName", response));
+    var storeDropdown = []
+    for(var i=0; i<response.stores.length; i++){
+      var storeData = {}
+      storeData["name"] = response.stores[i].name;
+      storeData["code"] = response.stores[i].code;
+      storeDropdown.push(storeData);
+    }
+    dispatch(prepareFinalObject("dahsboardHome.storeName", storeDropdown));
+    var storeData = {}
+    storeData["label"] = response.stores[0].name;
+    storeData["value"] = response.stores[0].code;
+    dispatch(prepareFinalObject("dahsboardHome.storeNameDefault", storeData));
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+}
+
 export const getDashboardResult = async ( dispatch, data ) => {
   debugger
 
@@ -1666,6 +1706,278 @@ export const getOSBMData = async ( dispatch, data ) => {
     dispatch(
       handleField(
       "OSBMDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Store Indent Issue Note
+export const getStoreIndentData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = data;
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/store-asset-services/materialissues/_search?tenantId="+getTenantId()
+      +"&fromStore="+payloadData.storeName.value+"&issueFromDate="+payloadData.fromDate
+      +"&issueToDate="+payloadData.toDate+"",
+      "",
+      [],
+      []
+    );
+
+    //debugger;
+    var response = [ DescriptionReport.materialIssues, payloadData ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "StoreDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Store MaterialReceipt Data
+export const getStoreMaterialReceiptData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  // var payloadData = {
+  //   "tenantId": data.tenantId,
+  //   "startDate": data.fromDate,
+  //   "endDate": data.toDate,
+  //   "reportSortBy": data.reportSortBy
+  // }
+
+  var payloadData = data;
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "store-asset-services/receiptnotes/_search?tenantId="+getTenantId()+"&receiptType=PURCHASE%20RECEIPT&receivingStore="
+      +payloadData.storeName.value+"",
+      "",
+      [],
+      []
+    );
+
+    //debugger;
+    var response = [ DescriptionReport.MaterialReceipt, payloadData ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "StoreDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Store Purchase Order Data
+export const getStorePurchaseOrderData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  // var payloadData = {
+  //   "tenantId": data.tenantId,
+  //   "startDate": data.fromDate,
+  //   "endDate": data.toDate,
+  //   "reportSortBy": data.reportSortBy
+  // }
+
+  var payloadData = data;
+
+  try {
+    store.dispatch(toggleSpinner());
+    const DescriptionReport = await httpRequest(
+      "post",
+      "/store-asset-services/purchaseorders/_search?tenantId="+getTenantId()+"&store="+payloadData.storeName.value+"",
+      "",
+      [],
+      []
+    );
+
+    //debugger;
+    var response = [ DescriptionReport.purchaseOrders, payloadData ];
+    dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // OK
+    dispatch(
+      handleField(
+      "StoreDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Water n Sewerage
+export const getWNSData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = {
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "moduleCode": "PR",
+    "eventDetailUuid": "",
+    "eventTitle": "",
+    "eventStatus": "",
+    "status": "",
+    "startDate": data.fromDate,
+    "endDate": data.toDate,
+    "eventId": "",
+    "defaultGrid": false
+  },
+  "reportSortBy": data.reportSortBy
+  }
+  let response = payloadData.reportSortBy ;
+  try {
+    store.dispatch(toggleSpinner());
+    // const DescriptionReport = await httpRequest(
+    //   "post",
+    //   "/prscp-services/v1/event/_get",
+    //   "",
+    //   [],
+    //   payloadData
+    // );
+
+    // //debugger;
+    // var response = [ DescriptionReport, payloadData.reportSortBy ];
+    // dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // // OK
+    dispatch(
+      handleField(
+      "WNSDashboard",
+      "components.div.children.DashboardResults",
+      "props.data",
+      response
+      )
+      );
+      
+    store.dispatch(toggleSpinner());
+    return response;
+  } catch (error) {
+    store.dispatch(toggleSpinner());
+    store.dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelCode: error.message },
+        "error"
+      )
+    );
+  }
+};
+
+// Get Dashboard Data for Work
+export const getWorkData = async ( dispatch, data ) => {
+  
+  debugger;
+  // Same as per Sport and culture but module code is different
+  var payloadData = {
+  "tenantId": data.tenantId,
+  "RequestBody": {
+    "tenantId": data.tenantId,
+    "moduleCode": "PR",
+    "eventDetailUuid": "",
+    "eventTitle": "",
+    "eventStatus": "",
+    "status": "",
+    "startDate": data.fromDate,
+    "endDate": data.toDate,
+    "eventId": "",
+    "defaultGrid": false
+  },
+  "reportSortBy": data.reportSortBy
+  }
+  let response = payloadData.reportSortBy ;
+  try {
+    store.dispatch(toggleSpinner());
+    // const DescriptionReport = await httpRequest(
+    //   "post",
+    //   "/prscp-services/v1/event/_get",
+    //   "",
+    //   [],
+    //   payloadData
+    // );
+
+    // //debugger;
+    // var response = [ DescriptionReport, payloadData.reportSortBy ];
+    // dispatch(prepareFinalObject("allDashboardSearchData", response));
+
+    // // OK
+    dispatch(
+      handleField(
+      "WorkDashboard",
       "components.div.children.DashboardResults",
       "props.data",
       response

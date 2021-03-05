@@ -5,6 +5,7 @@ import "./index.css";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const connectionNo = getQueryArg(window.location.href, "connectionNumber");
+const billGenerationId = getQueryArg(window.location.href, "id");
 const tenantId = getQueryArg(window.location.href, "tenantId");
 const businessService = connectionNo.includes("WS") ? "WS" : "WS";
 
@@ -24,27 +25,27 @@ const callDownloadBill = () => {
 
 
 export const viewBillFooter = getCommonApplyFooter({
-  downloadButton: {
-    componentPath: "Button",
-    props: {
-      variant: "outlined",
-      color: "primary",
-      style: {
-        minWidth: "200px",
-        height: "48px",
-        marginRight: "16px"
-      }
-    },
-    children: {
-      downloadButton: getLabel({
-        labelKey: "WS_COMMON_DOWNLOAD_BILL"
-      })
-    },
-    onClickDefination: {
-      action: "condition",
-      callBack: callDownloadBill
-    },
-  },
+  // downloadButton: {
+  //   componentPath: "Button",
+  //   props: {
+  //     variant: "outlined",
+  //     color: "primary",
+  //     style: {
+  //       minWidth: "200px",
+  //       height: "48px",
+  //       marginRight: "16px"
+  //     }
+  //   },
+  //   children: {
+  //     downloadButton: getLabel({
+  //       labelKey: "WS_COMMON_DOWNLOAD_BILL"
+  //     })
+  //   },
+  //   onClickDefination: {
+  //     action: "condition",
+  //     callBack: callDownloadBill
+  //   },
+  // },
   payButton: {
     componentPath: "Button",
     props: {
@@ -63,7 +64,7 @@ export const viewBillFooter = getCommonApplyFooter({
     },
     onClickDefination: {
       action: "page_change",
-      path: `/egov-common/pay?consumerCode=${connectionNo}&tenantId=${tenantId}&businessService=${businessService}`
+      path: `/egov-common/pay?consumerCode=${connectionNo}&tenantId=${tenantId}&businessService=${businessService}&id=${billGenerationId}`
     }
   }
 });

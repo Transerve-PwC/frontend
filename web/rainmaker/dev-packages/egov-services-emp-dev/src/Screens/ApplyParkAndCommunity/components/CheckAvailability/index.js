@@ -757,17 +757,18 @@ else{  /**loop for new Booking Create**/
                     onChange={this.handleChange}
                   >
                     <FormControlLabel
+                      // style={{marginBottom : "0px"}}
                       value="Community Center"
                       control={<Radio color="primary" />}
                       label="Community Center"
-                      classes={classes.label}
+                      classes={{label:classes.label}}
                       labelPlacement="end"
                     />
                     <FormControlLabel
                       value="Parks"
                       control={<Radio color="primary" />}
                       label="Park"
-                      classes={classes.label}
+                      classes={{label:classes.label}}
                       labelPlacement="end"
                     />
                     {/* <FormControlLabel

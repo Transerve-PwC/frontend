@@ -125,7 +125,7 @@ let xyz = abc[0]
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_NAME"
+                label="BK_MYBK_NAME_CITIZEN_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -134,7 +134,7 @@ let xyz = abc[0]
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CREATE_CITIZEN_NAME"
+                label="BK_MYBK_NAME_CITIZEN_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -155,7 +155,7 @@ let xyz = abc[0]
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_PURPOSE"
+                label="BK_MYBK_NAME_PURPOSE_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -164,7 +164,7 @@ let xyz = abc[0]
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_ROOM_PURPOSE"
+                label="BK_MYBK_NAME_PURPOSE_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -186,7 +186,7 @@ let xyz = abc[0]
             required = {true}
             hintText={
               <Label
-                label="BK_MYBK_CC_ROOM_HOUSENO"
+                label="BK_MYBK_CITIZEN_HOUSE_NUMBER_PLACEHOLDER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -195,7 +195,7 @@ let xyz = abc[0]
             floatingLabelText={
               <Label
                 key={0}
-                label="BK_MYBK_CC_ROOM_HOUSENO"
+                label="BK_MYBK_CITIZEN_HOUSE_NUMBER_PLACEHOLDER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -216,7 +216,7 @@ let xyz = abc[0]
               required = {true}
               hintText={
                 <Label
-                  label="BK_MYBK_CC_ROOM_MOBILENO"
+                  label="BK_MYBK_CITIZEN_MOBILENO_PLACEHOLDER"
                   color="rgba(0, 0, 0, 0.3799999952316284)"
                   fontSize={16}
                   labelStyle={hintTextStyle}
@@ -225,7 +225,7 @@ let xyz = abc[0]
               floatingLabelText={
                 <Label
                   key={0}
-                  label="BK_MYBK_CC_ROOM_MOBILENO"
+                  label="BK_MYBK_CITIZEN_MOBILENO_PLACEHOLDER"
                   color="rgba(0,0,0,0.60)"
                   fontSize="12px"
                 />
@@ -242,7 +242,7 @@ let xyz = abc[0]
               id="gst"
               name="gst"
               type="text"
-              value={this.props.gstNo}
+              value={this.props.gstNo == "NA" ? "NOT APPLICABLE" : this.props.gstNo}
               required = {true}
               hintText={
                 <Label

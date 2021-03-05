@@ -190,7 +190,7 @@ export const prepareEditFlow = async (
             });
             let part1 = newLocationImagesPreview && newLocationImagesPreview.filter(item => item.documentType == "IDPROOF");
             let part2 = newLocationImagesPreview && newLocationImagesPreview.filter(item => item.documentType != "IDPROOF");
-            dispatch(prepareFinalObject("documentsUploadReduxOld.documents", part1.concat(part2)));
+          // dispatch(prepareFinalObject("documentsUploadReduxOld.documents", part1.concat(part2)));
         }
 
 

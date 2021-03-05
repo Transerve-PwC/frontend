@@ -68,7 +68,8 @@ const commonHeader = (state,
               applicationNumber,
               tenant
             ),
-          }
+          },
+          visible:false
 
         }
       }

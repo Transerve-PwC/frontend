@@ -28,6 +28,8 @@ export class StepForm extends Component {
       email : this.props.DataForRoomBooking.bookingsModelList[0].bkEmail,
       purpose : this.props.DataForRoomBooking.bookingsModelList[0].bkBookingPurpose,
       houseNo : this.props.DataForRoomBooking.bookingsModelList[0].bkHouseNo,//
+      ReasonForDiscount : this.props.DataForRoomBooking.bookingsModelList[0].bkRemarks,
+      discount: this.props.DataForRoomBooking.bookingsModelList[0].discount,
       Sector : this.props.DataForRoomBooking.bookingsModelList[0].bkSector,
       mobileNo : this.props.DataForRoomBooking.bookingsModelList[0].bkMobileNumber,
       gstNo : this.props.DataForRoomBooking.bookingsModelList[0].bkCustomerGstNo,
@@ -180,12 +182,27 @@ export class StepForm extends Component {
         })
 
     }
-
+ 
 
 
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value });
+        if(e.target.value === "Both"){
+            this.props.prepareFinalObject("GlobalTypeOfRoom",e.target.value)
+        }
+        else if(e.target.value === "AC"){
+            this.props.prepareFinalObject("GlobalTypeOfRoom",e.target.value)
+        }
+        else if(e.target.value === "NON-AC"){
+            this.props.prepareFinalObject("GlobalTypeOfRoom",e.target.value)
+        }
+        else if(e.target.value === "AccRoomToBook"){
+            this.props.prepareFinalObject("GlobalAccRoomToBook",e.target.value)
+        }
+        else if(e.target.value ===  "NonAccRoomToBook"){
+            this.props.prepareFinalObject("GlobalNonAccRoomToBook",e.target.value)
+        }
     }
 
 
@@ -201,8 +218,8 @@ export class StepForm extends Component {
     };
     showStep = () => {
  
-   const {utgst,cgst,RefundableSecurity,Rent,dimension,Name,purpose,houseNo,Sector,mobileNo,gstNo,ProofOfResidence, location,NoOfDays,locality, fromDate,toDate,
-    facilitationCharges,step,cleaningCharges,surcharges,
+   const {utgst,cgst,RefundableSecurity,Rent,dimension,Name,purpose,houseNo,ReasonForDiscount,Sector,mobileNo,gstNo,ProofOfResidence, location,NoOfDays,locality, fromDate,toDate,
+    facilitationCharges,step,cleaningCharges,surcharges,discount,
     AccRoomToBook,NonAccRoomToBook,RoomBookingData,TypeOfRoomToBook,NumOfDaysToBookRoom,
     roomFromDate,roomToDate,email
   } = this.state
@@ -230,6 +247,8 @@ export class StepForm extends Component {
                 locality={locality}
                 fromDate={fromDate}
                 toDate={toDate}
+                ReasonForDiscount={ReasonForDiscount}
+                discount={discount}
                 dimension={dimension}
                 RefundableSecurity={RefundableSecurity}
                 cleaningCharges={cleaningCharges}
@@ -268,6 +287,7 @@ export class StepForm extends Component {
                 handleChange={this.handleChange}
                 Name={Name}    
                 purpose={purpose}
+                discount={discount}
                 houseNo={houseNo}
                 mobileNo={mobileNo}
                 Sector={Sector}

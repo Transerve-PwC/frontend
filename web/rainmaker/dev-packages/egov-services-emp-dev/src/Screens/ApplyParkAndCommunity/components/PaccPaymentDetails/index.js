@@ -13,6 +13,7 @@ import "./index.css";
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import moment from 'moment';
 class ApplicatInfo extends Component {
   state = {
     open: false, setOpen: false
@@ -29,7 +30,7 @@ class ApplicatInfo extends Component {
     let re = /\S+@\S+\.\S+/;
     let mb=/^\d{10}$/;
     e.preventDefault();
-    if(this.props.amount==""||this.props.transactionDate==""){
+    if(this.props.amount==""){
 
 
       this.props.toggleSnackbarAndSetText(
@@ -75,9 +76,16 @@ class ApplicatInfo extends Component {
           arrayData.push(event);
       })
     }
-    })
+    }) 
 
+    let TodayDate = new Date()
+    console.log("TodayDate--",TodayDate) //YYYY-MM-DD
+    let FormatChange = moment(TodayDate).format("DD-MM-YYYY");
+    console.log("FormatChange--",FormatChange)
 
+    let strDate = FormatChange.toString();
+    console.log("strDate--",strDate)
+    
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -177,13 +185,50 @@ class ApplicatInfo extends Component {
           />
         
         </div>    
+      
+      
         <div className="col-sm-6 col-xs-6">
+          <TextField
+            id="transactionDate"
+            name="transactionDate"
+            type="string"
+            value={strDate}
+            required = {true}   
+            hintText={
+              <Label
+                label="BK_MYBK_TRDATE_PLACEHOLDER"
+                color="rgba(0, 0, 0, 0.3799999952316284)"
+                fontSize={16}
+                labelStyle={hintTextStyle}
+              />
+            }
+            floatingLabelText={
+              <Label
+                key={0}
+                label="BK_MYBK_TRDATE_PLACEHOLDER"
+                color="rgba(0,0,0,0.60)"
+                fontSize="12px"
+              />
+            }
+            onChange={handleChange('transactionDate')}
+            underlineStyle={{ bottom: 7 }}
+            underlineFocusStyle={{ bottom: 7 }}
+            hintStyle={{ width: "100%" }}
+          />
+        
+        </div>
+
+
+
+        {/* <div className="col-sm-6 col-xs-6">
         
         <TextField
                     id="transactionDate"
                     name="transactionDate"
-                    value={transactionDate}
-                    required = {true}   
+                    // value={transactionDate}
+                    value={FormatChange}
+                    required = {true}  
+                    type="number" 
                     hintText={
                       <Label
                         color="rgba(0, 0, 0, 0.3799999952316284)"
@@ -211,7 +256,7 @@ class ApplicatInfo extends Component {
                     }}
                     hintStyle={{ width: "100%" }}
 
-                    type="date"
+                    // type="date"
                     defaultValue="2017-05-24"
                     InputLabelProps={{
                       shrink: true,
@@ -219,7 +264,7 @@ class ApplicatInfo extends Component {
                   />
         
         </div>    
-      
+       */}
         <Footer className="apply-wizard-footer" style={{ display: 'flex', justifyContent: 'flex-end' }} children={
           <div className="col-sm-12 col-xs-12" style={{textAlign: 'right'}}>
           <Button

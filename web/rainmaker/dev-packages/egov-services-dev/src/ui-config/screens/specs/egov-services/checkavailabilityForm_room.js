@@ -82,87 +82,10 @@ const callBackForSearch = async (state, dispatch, action) => {
             
             { key: "applicationNumber", value: applicationNumber },
         ]);
-        dispatch(prepareFinalObject("roomAvailabilityData", response2.data))
-
-        if(response2.data.availableAcRooms==0 && response2.data.availableNonAcRooms==0){
-            set(
-                state.screenConfiguration.screenConfig["checkavailability_room"],
-               "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
-                false
-            );
-
-        }else{
-        
-            set(
-                state.screenConfiguration.screenConfig["checkavailability_room"],
-               "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
-                true
-            );
-        }
-
        
-        let selectDateArray=[]
-        if(new Date(response.bookingsModelList[0].bkFromDate).getTime()===new Date(response.bookingsModelList[0].bkToDate).getTime()){
-           
-            selectDateArray.push({code: 1 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)}`})
-            
-        }else{
-            
-            selectDateArray.push({code: 1 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)}`})
-            selectDateArray.push({code: 2 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkToDate)}`})
-            selectDateArray.push({code: 3 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)} and ${convertDateInDMY(response.bookingsModelList[0].bkToDate)}`})
-            
-            
-        //     selectDateArray.push({code:response.bookingsModelList[0].bkFromDate ,name:  `Book For ${response.bookingsModelList[0].bkFromDate}`})
-        //     selectDateArray.push({code:response.bookingsModelList[0].bkToDate  ,name:  `Book For ${response.bookingsModelList[0].bkToDate}`})
-        //     selectDateArray.push({code:[response.bookingsModelList[0].bkFromDate,response.bookingsModelList[0].bkToDate ],name:  `Book For Both ${response.bookingsModelList[0].bkFromDate} and ${response.bookingsModelList[0].bkToDate}`})
-         }
-         let roomTypeArray=[
-            {code  : 'AC'},
-            {code  : 'NON-AC'},
-            {code  : 'Both'},
-        ]
-        
-        dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
-       
-        
-        let availableAcRoomsArray=[]
-        if(response2.data.availableAcRooms==0){
-            localStorageSet('availableAcRoomStatus' , 'Available')
-            let roomTypeArray=[
-                {code  : 'NON-AC'},
-            ]
-            
-        dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
-        }
-
-        if(response2.data.availableNonAcRooms==0){
-            localStorageSet('availableNonAcRoomStatus' , 'Available') 
-            let roomTypeArray=[
-                {code  : 'AC'},
-            ]
-            
-        dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
-        }
-
-        
-        for(let i=1 ; i<= response2.data.availableAcRooms; i++){
-            
-            availableAcRoomsArray.push({code: i})
-        }
-        let availableNonAcRoomsArray=[]
-        for(let i=1 ; i<= response2.data.availableNonAcRooms; i++){
-            availableNonAcRoomsArray.push({code: i})
-        }
-        dispatch(prepareFinalObject("roomAvailabilityData.availableAcRoomsArray",availableAcRoomsArray ))
-        dispatch(prepareFinalObject("roomAvailabilityData.availableNonAcRoomsArray", availableNonAcRoomsArray))
-        dispatch(prepareFinalObject("roomAvailabilityData.selectDateArray", selectDateArray))
-        
-       console.log('response2', response2)
         let bookingsModelList = get(response, "bookingsModelList", []);
-        let documentMap = get(response, "documentMap", {});
-       console.log('response', response)
-        if (bookingsModelList !== null && bookingsModelList.length > 0) {
+    
+        if (bookingsModelList[0]!==null && bookingsModelList.length > 0 && response2.data!={}) {
             
             set(
                 state.screenConfiguration.screenConfig["checkavailability_room"],
@@ -170,14 +93,92 @@ const callBackForSearch = async (state, dispatch, action) => {
                true
             );
             dispatch(prepareFinalObject("Booking", response.bookingsModelList[0]))
-          
-        }
+    
+            dispatch(prepareFinalObject("roomAvailabilityData", response2.data))
 
+            if(response2.data.availableAcRooms==0 && response2.data.availableNonAcRooms==0){
+                set(
+                    state.screenConfiguration.screenConfig["checkavailability_room"],
+                   "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
+                    false
+                );
+    
+            }else{
+            
+                set(
+                    state.screenConfiguration.screenConfig["checkavailability_room"],
+                   "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
+                    true
+                );
+            }
+    
+           
+            let selectDateArray=[]
+            if(new Date(response.bookingsModelList[0].bkFromDate).getTime()===new Date(response.bookingsModelList[0].bkToDate).getTime()){
+               
+                selectDateArray.push({code: 1 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)}`})
+                
+            }else{
+                
+                selectDateArray.push({code: 1 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)}`})
+                selectDateArray.push({code: 2 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkToDate)}`})
+                selectDateArray.push({code: 3 ,name:  `Book For ${convertDateInDMY(response.bookingsModelList[0].bkFromDate)} and ${convertDateInDMY(response.bookingsModelList[0].bkToDate)}`})
+                
+                
+            //     selectDateArray.push({code:response.bookingsModelList[0].bkFromDate ,name:  `Book For ${response.bookingsModelList[0].bkFromDate}`})
+            //     selectDateArray.push({code:response.bookingsModelList[0].bkToDate  ,name:  `Book For ${response.bookingsModelList[0].bkToDate}`})
+            //     selectDateArray.push({code:[response.bookingsModelList[0].bkFromDate,response.bookingsModelList[0].bkToDate ],name:  `Book For Both ${response.bookingsModelList[0].bkFromDate} and ${response.bookingsModelList[0].bkToDate}`})
+             }
+             let roomTypeArray=[
+                {code  : 'AC'},
+                {code  : 'NON-AC'},
+                {code  : 'Both'},
+            ]
+            
+            dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
+           
+            
+            let availableAcRoomsArray=[]
+            if(response2.data.availableAcRooms==0){
+                localStorageSet('availableAcRoomStatus' , 'Available')
+                let roomTypeArray=[
+                    {code  : 'NON-AC'},
+                ]
+                
+            dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
+            }
+    
+            if(response2.data.availableNonAcRooms==0){
+                localStorageSet('availableNonAcRoomStatus' , 'Available') 
+                let roomTypeArray=[
+                    {code  : 'AC'},
+                ]
+                
+            dispatch(prepareFinalObject("roomAvailabilityData.roomTypeArray", roomTypeArray))
+            }
+    
+            
+            for(let i=1 ; i<= response2.data.availableAcRooms; i++){
+                
+                availableAcRoomsArray.push({code: i})
+            }
+            let availableNonAcRoomsArray=[]
+            for(let i=1 ; i<= response2.data.availableNonAcRooms; i++){
+                availableNonAcRoomsArray.push({code: i})
+            }
+            dispatch(prepareFinalObject("roomAvailabilityData.availableAcRoomsArray",availableAcRoomsArray ))
+            dispatch(prepareFinalObject("roomAvailabilityData.availableNonAcRoomsArray", availableNonAcRoomsArray))
+            dispatch(prepareFinalObject("roomAvailabilityData.selectDateArray", selectDateArray))
+            
+          
+         
+        }
+       
         else{
             dispatch(
                 toggleSnackbar(
                     true,
-                    { labelName: "Please Enter Correct Community Center/Banquet Halls Application Number!", labelKey: "" },
+                    { labelName: "Please enter correct community center/banquet hall application number!", labelKey: "" },
                     "warning"
                 )
             );
@@ -193,7 +194,7 @@ const callBackForSearch = async (state, dispatch, action) => {
         dispatch(
             toggleSnackbar(
                 true,
-                { labelName: "Please Enter Community Center/Banquet Halls Application Number!", labelKey: "" },
+                { labelName: "Please enter correct community center/banquet hall application number!", labelKey: "" },
                 "warning"
             )
         );

@@ -17,14 +17,16 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles= theme=>({
-
+const styles = (theme) => ({
   cool: {
-   lebel :{
-      marginBottom: 0
-    }
+    "& .MuiFormControlLabel-label": {
+      marginBottom: "0px",
+    },
   },
-})
+  label: {
+    marginBottom: "0px !important",
+  },
+});
 
 class ApplicatInfo extends Component {
 
@@ -43,7 +45,17 @@ class ApplicatInfo extends Component {
     let mb=/^\d{10}$/;
     let fname = /^[a-zA-Z'-]+$/;
     e.preventDefault();
-    if(this.props.email==""||this.props.mobileNo==""||this.props.houseNo==""){
+    // if(this.props.firstName==""||this.props.mobileNo==""||this.props.houseNo=="" ||this.props.DiscountReason==""){
+    //   this.props.toggleSnackbarAndSetText(
+    //     true,
+    //     {
+    //       labelName: "Error_Message_For_Water_tanker_Application",
+    //       labelKey: `BK_ERROR_MESSAGE_FOR_WATER_TANKER_APPLICATION`
+    //     },
+    //     "warning"
+    //   );
+    // }
+    if(this.props.firstName==""||this.props.mobileNo==""||this.props.houseNo==""){
       this.props.toggleSnackbarAndSetText(
         true,
         {
@@ -52,6 +64,16 @@ class ApplicatInfo extends Component {
         },
         "warning"
       );
+    }
+    if(this.props.discountType !=="General" && this.props.DiscountReason==""){
+      this.props.toggleSnackbarAndSetText(
+        true,
+        {
+          labelName: "Error_Message_For_Water_tanker_Application",
+          labelKey: `BK_ERROR_MESSAGE_FOR_WATER_TANKER_APPLICATION`
+        },
+        "warning"
+      ); 
     }
     else if(!re.test(this.props.email)){
       this.props.toggleSnackbarAndSetText(
@@ -82,7 +104,7 @@ class ApplicatInfo extends Component {
 
   newBookingType = async (event) => {
     let { prepareFinalObject } = this.props;
-    this.setState(
+    this.setState( 
       { NewbkBookingType: event.target.value }); 
       prepareFinalObject("NewbkBookingTypeApplicant", event.target.value)
   };
@@ -95,7 +117,7 @@ class ApplicatInfo extends Component {
   };
 
   render() {
-    const { firstName, email, mobileNo, lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes,prepareFinalObject} = this.props;
+    const { firstName, email, mobileNo,DiscountReason ,lastName,houseNo, handleChange,discountType,handleChangeDiscount,classes,prepareFinalObject} = this.props;
     const hintTextStyle = {
       letterSpacing: "0.7px",
       textOverflow: "ellipsis",
@@ -234,12 +256,12 @@ class ApplicatInfo extends Component {
            <FormControl component="fieldset">
              <FormLabel component="legend"><Label label="BK_MYBK_CATEGORY_TYPE" /></FormLabel>
              <RadioGroup row aria-label="position" name="gender1" value={discountType} onChange={handleChangeDiscount}>
-               <FormControlLabel className={classes.cool} value="General" control={<Radio color="primary" />} label="General" />
-               <FormControlLabel className={classes.cool} value="100%"  control={<Radio color="primary" />} label="Discount 100%" />
-               <FormControlLabel className={classes.cool} value="50%" control={<Radio color="primary" />} label="Discount 50%"/>
-               <FormControlLabel className={classes.cool} value="20%" control={<Radio color="primary"/>} label="Discount 20%"/>
-               <FormControlLabel className={classes.cool} value="KirayaBhog" control={<Radio color="primary" />} label="Kiraya/Bhog" />
-               <FormControlLabel className={classes.cool} value="ReligiousFunction" control={<Radio color="primary" />} label="Religious Function" />
+               <FormControlLabel  classes={{label:classes.label}} value="General" control={<Radio color="primary" />} label="General" />
+               <FormControlLabel  classes={{label:classes.label}} value="100%"  control={<Radio color="primary" />} label="Discount 100%" />
+               <FormControlLabel  classes={{label:classes.label}} value="50%" control={<Radio color="primary" />} label="Discount 50%"/>
+               <FormControlLabel  classes={{label:classes.label}} value="20%" control={<Radio color="primary"/>} label="Discount 20%"/>
+               <FormControlLabel  classes={{label:classes.label}} value="KirayaBhog" control={<Radio color="primary" />} label="Kiraya/Bhog" />
+               <FormControlLabel  classes={{label:classes.label}} value="ReligiousFunction" control={<Radio color="primary" />} label="Religious Function" />
            </RadioGroup>
            </FormControl>         
          </div>
@@ -247,11 +269,11 @@ class ApplicatInfo extends Component {
           <FormControl component="fieldset">
             <FormLabel component="legend"><Label label="BK_MYBK_CATEGORY_TYPE" /></FormLabel>
             <RadioGroup row aria-label="position" name="gender1" value={discountType} onChange={handleChangeDiscount}>
-              <FormControlLabel className={classes.cool} value="General" control={<Radio color="primary" />} label="General" />
-              <FormControlLabel className={classes.cool} value="100%"  control={<Radio color="primary" />} label="Discount 100%" />
-              <FormControlLabel className={classes.cool} value="50%" control={<Radio color="primary" />} label="Discount 50%"/>
-              <FormControlLabel className={classes.cool} value="20%" control={<Radio color="primary"/>} label="Discount 20%"/>
-              <FormControlLabel className={classes.cool} value="KirayaBhog" control={<Radio color="primary" />} label="Kiraya/Bhog" />
+              <FormControlLabel  classes={{label:classes.label}} value="General" control={<Radio color="primary" />} label="General" />
+              <FormControlLabel  classes={{label:classes.label}} value="100%"  control={<Radio color="primary" />} label="Discount 100%" />
+              <FormControlLabel  classes={{label:classes.label}} value="50%" control={<Radio color="primary" />} label="Discount 50%"/>
+              <FormControlLabel  classes={{label:classes.label}} value="20%" control={<Radio color="primary"/>} label="Discount 20%"/>
+              <FormControlLabel  classes={{label:classes.label}} value="KirayaBhog" control={<Radio color="primary" />} label="Kiraya/Bhog" />
           </RadioGroup>
           </FormControl>         
         </div>}
@@ -267,10 +289,10 @@ class ApplicatInfo extends Component {
             </RadioGroup>
             </FormControl>         
           </div> */}
-{discountType === "100%" || discountType === "50%" || discountType === "20%" || discountType === "KirayaBhog" || discountType ==="ReligiousFunction" ? 
+{/* {discountType === "100%" || discountType === "50%" || discountType === "20%" || discountType === "KirayaBhog" || discountType ==="ReligiousFunction" ? 
 <div className="col-sm-6 col-xs-6">
           <TextField
-            id="reasonForDiscount"
+            id="reasonForDiscount" 
             name="reasonForDiscount"
             type="text"
             value={this.state.ReasonForDiscount}
@@ -297,7 +319,45 @@ class ApplicatInfo extends Component {
             hintStyle={{ width: "100%" }}
           />     
         </div>    
+: ""} */}
+
+
+{discountType === "100%" || discountType === "50%" || discountType === "20%" || discountType === "KirayaBhog" || discountType ==="ReligiousFunction" ? 
+<div className="col-sm-6 col-xs-6">
+          <TextField
+            id="reasonForDiscount" 
+            name="reasonForDiscount"
+            type="text"
+            value={DiscountReason}
+            required = {true}
+            hintText={
+              <Label
+                label="Reason For Discount"
+                color="rgba(0, 0, 0, 0.3799999952316284)"
+                fontSize={16}
+                labelStyle={hintTextStyle}
+              />
+            }
+            floatingLabelText={
+              <Label
+                key={0}
+                label="Reason For Discount"
+                color="rgba(0,0,0,0.60)"
+                fontSize="12px"
+              />
+            }
+            onChange={handleChange('DiscountReason')}
+            underlineStyle={{ bottom: 7 }}
+            underlineFocusStyle={{ bottom: 7 }}
+            hintStyle={{ width: "100%" }}
+          />     
+        </div>    
 : ""}
+
+
+
+
+
 
 <div className="col-sm-6 col-xs-6">
   <div>

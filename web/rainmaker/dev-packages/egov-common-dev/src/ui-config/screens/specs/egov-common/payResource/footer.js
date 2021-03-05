@@ -12,7 +12,12 @@ import {  getUserInfo} from "egov-ui-kit/utils/localStorageUtils";
 export const callPGService = async (state, dispatch) => {
   const isAdvancePaymentAllowed =get(state, "screenConfiguration.preparedFinalObject.businessServiceInfo.isAdvanceAllowed");
   const tenantId = getQueryArg(window.location.href, "tenantId");
-  const consumerCode = getQueryArg(window.location.href, "consumerCode");
+  let consumerCode = getQueryArg(window.location.href, "consumerCode");
+  const id = getQueryArg(window.location.href, "id");
+      if(id)
+      {
+        consumerCode = id;
+      }
   const businessService = get(
     state,
     "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].businessService"

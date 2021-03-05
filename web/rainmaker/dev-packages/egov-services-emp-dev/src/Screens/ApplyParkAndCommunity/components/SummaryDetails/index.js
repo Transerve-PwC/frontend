@@ -30,7 +30,7 @@ class SummaryDetails extends Component {
     componentDidMount = async () => {
        
         let {createPACCApplication, userInfo, documentMap,fetchPayment,prepareFinalObject,fetchApplications,conJsonSecond,conJsonfirst } = this.props;
-        let { firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,
+        let { DiscountReason,firstName, venueType, bokingType, bookingData, email, mobileNo, surcharge, fromDate, toDate,myLocationtwo,ReasonForDiscount,
             utGST, cGST, GSTnumber, dimension, location, facilitationCharges, cleaningCharges, rent, houseNo, type, purpose, 
             BankAccountName,NomineeName,BankAccountNumber,IFSCCode,AccountHolderName,accountType,SecTimeSlotFromTime,SecTimeSlotToTime,
             locality, residenials, facilationChargesSuccess,discountType,checkAppStatus,checkAppNum,firstToTimeSlot } = this.props;
@@ -81,7 +81,7 @@ else if(discountType == "20%"){
         finalDiscount = Number(newDisCount);
         console.log("newDisCount--",newDisCount)
         console.log("finalDiscount--",finalDiscount)
-        }
+        } 
         else{
             newDisCount = 0; 
             finalDiscount = Number(newDisCount);
@@ -92,6 +92,8 @@ else if(discountType == "20%"){
 
         let fid = documentMap ? Object.keys(documentMap) : ""
         let Booking = {
+            "uuid": userInfo.uuid,
+           "bkRemarks": DiscountReason,
             "discount": finalDiscount,
             "bkBookingType": venueType,
             "bkBookingVenue": bokingType,
@@ -128,7 +130,8 @@ else if(discountType == "20%"){
             "bkBankName":BankAccountName,
             "bkIfscCode":IFSCCode,
             "bkAccountType":accountType,
-            "bkBankAccountHolder":AccountHolderName
+            "bkBankAccountHolder":AccountHolderName,
+            
         }
 
 if (venueType == "Community Center" && bookingData && bookingData.bkFromTime) {
@@ -309,9 +312,9 @@ this.props.history.push(`/egov-services/PaymentReceiptDteail/${this.state.CashPa
                            
 
 <PaccFeeEstimate
-one={one}
+one={one} 
 two={two}
-three={three}
+three={three} 
 four={four}
 five={five}
 six={six}
@@ -330,11 +333,13 @@ totalAmountSuPage={totalAmountSuPage}
                             />
 
                             <SummaryApplicantDetail
+                             firstStep={this.firstStep}
                                 firstName={firstName}
                                 email={email}
                                 mobileNo={mobileNo}
                             />                   
                             <SummaryApplicationDetail
+                             firstStep={this.firstStep}
                                 purpose={purpose}
                                 locality={locality}
                                 dimension={dimension}
@@ -347,7 +352,8 @@ totalAmountSuPage={totalAmountSuPage}
                                 utGST={this.props.utGST}
                                 GSTnumber={GSTnumber}
                             />
-                            <SummaryBankDetails   
+                            <SummaryBankDetails  
+                               firstStep={this.firstStep} 
                                 BankAccountName={BankAccountName}
                                 NomineeName={NomineeName}
                                 BankAccountNumber={BankAccountNumber}
@@ -410,6 +416,12 @@ const mapStateToProps = state => {
     let checkBillLength =  paymentDataOne != "wrong" ? paymentDataOne.Bill.length > 0 : "";
     let totalAmountSuPage = checkBillLength ? paymentDataOne.Bill[0].totalAmount: "notfound";
     console.log("totalAmountSuPage-",totalAmountSuPage)
+ 
+
+    let ReasonForDiscount = state.screenConfiguration.preparedFinalObject ? 
+    (state.screenConfiguration.preparedFinalObject.ReasonForDiscount !== undefined && state.screenConfiguration.preparedFinalObject.ReasonForDiscount !== null ? (state.screenConfiguration.preparedFinalObject.ReasonForDiscount):'NA') :"NA";  
+
+    console.log("ReasonForDiscount--",ReasonForDiscount)
 
     let billAccountDetailsArray =  checkBillLength ? paymentDataOne.Bill[0].billDetails[0].billAccountDetails : "NOt found Any Array"
     console.log("billAccountDetailsArray--",billAccountDetailsArray)
@@ -571,7 +583,7 @@ console.log("seven--",seven ? seven : "sdfg")
     return {
         //BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,  wholeDay !== undefined ? 
         //PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE,
-        firstTimeSlotValue,SecondTimeSlotValue,first,second,
+        firstTimeSlotValue,SecondTimeSlotValue,first,second,ReasonForDiscount,
         createPACCApplicationData,userInfo,InitiateAppNumber,SecTimeSlotFromTime,SecTimeSlotToTime,firstToTimeSlot,conJsonSecond,conJsonfirst,
         documentMap, bkLocation, facilationChargesSuccess,seven,
         fCharges,myLocationtwo,totalAmountSuPage,one,two,three,four,five,six,checkAppStatus,checkAppNum

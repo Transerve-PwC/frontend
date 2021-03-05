@@ -220,7 +220,7 @@ const prepareEditFlow = async (
                     toggleSnackbar(
                         true,
                         {
-                            labelName: "Please Try After Sometime!",
+                            labelName: "Please try after sometime!",
                             labelKey: "",
                         },
                         "warning"

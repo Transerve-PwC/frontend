@@ -358,3 +358,29 @@ export const WATERTANKERPAYRECEIPT = {
     ACTION: "_search",
   },
 }
+
+export const DownloadEmpRoomPaymentReceipt = {
+  POST: {
+    URL: "pdf-service/v1/_create?key=room-payment-receipt-emp",
+    ACTION: "_search",
+  },
+};
+export const DownloadEmpRoomPermissionLetter = {
+  POST: {
+    URL: "pdf-service/v1/_create?key=bk-room-booking-pl-emp",
+    ACTION: "_search",
+  },
+};
+export const DownloadEmpPACCPermissionLetter = {
+  POST: {
+    URL: "pdf-service/v1/_create?key=bk-pk-booking-pl-emp",
+    ACTION: "_search",
+  },
+};
+
+export const DownloadESAMPRECEIPT = {
+  POST: {
+    URL: "pdf-service/v1/_create?key=pacc-payment-receipt-new-emp",
+    ACTION: "_search",
+  },
+};

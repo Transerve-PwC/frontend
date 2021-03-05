@@ -149,21 +149,21 @@ let documentCode = [
   continue = (e) => {
     const { toggleSnackbarAndSetText,docVal,documentMAP2 } = this.props;
     e.preventDefault();
+    this.props.nextStep();
+  //  if(docVal === false || documentMAP2 === "Document Not Found"){
+  //     this.props.toggleSnackbarAndSetText(
+  //           true,
+  //           {
+  //             labelName: "Please upload mandatory documents!",
+  //             labelKey: `Please upload mandatory documents!`,
+  //           },
+  //           "warning"
+  //         );
+  //   }
 
-   if(docVal === false || documentMAP2 === "Document Not Found"){
-      this.props.toggleSnackbarAndSetText(
-            true,
-            {
-              labelName: "Please upload mandatory documents!",
-              labelKey: `Please upload mandatory documents!`,
-            },
-            "warning"
-          );
-    }
-
-    else if(docVal === true){
-      this.props.nextStep();
-    }
+  //   else if(docVal === true){
+  //     this.props.nextStep();
+  //   }
   };
   onCitizenNameChange = (e) => {};
   back = (e) => {

@@ -11,7 +11,7 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from "lodash/get";
 import { pccSummary, changedVenueDatepccSummary } from "../summaryResource/pccSummary";
-import { pccApplicantSummary,pccBankSummary,roomBookingSummary } from "../summaryResource/pccApplicantSummary";
+import { pccApplicantSummary,pccBankSummary,roomBookingSummary,roomDetaiPage } from "../summaryResource/pccApplicantSummary";
 import { documentsSummary } from "../summaryResource/documentsSummary";
 import { estimateSummary } from "../summaryResource/estimateSummary";
 
@@ -36,8 +36,8 @@ export const changeStep = (
     }
 
     const isPreviousButtonVisible = activeStep > 0 ? true : false;
-    const isNextButtonVisible = activeStep < 3 ? true : false;
-    const isPayButtonVisible = activeStep === 3 ? true : false;
+    const isNextButtonVisible = activeStep < 4 ? true : false;
+    const isPayButtonVisible = activeStep === 4 ? true : false;
     const actionDefination = [
         {
             path: "components.div.children.stepper.props",
@@ -100,7 +100,7 @@ export const renderSteps = (activeStep, dispatch) => {
             dispatchMultipleFieldChangeAction(
                 "applyCommunityCenterRoom",
                 getActionDefinationForStepper(
-                    "components.div.children.formwizardFourthStep"
+                    "components.div.children.formwizardForthStep"
                 ),
                 dispatch
             );
@@ -124,7 +124,7 @@ export const getActionDefinationForStepper = (path) => {
             value: false,
         },
         {
-            path: "components.div.children.formwizardFourthStep",
+            path: "components.div.children.formwizardForthStep",
             property: "visible",
             value: false,
         },
@@ -215,7 +215,8 @@ export const summaryDetails = getCommonCard({
     pccApplicantSummary: pccApplicantSummary,
     pccSummary: pccSummary,
     pccBankSummary:pccBankSummary,
-    roomBookingSummary:roomBookingSummary
-  //  changedVenueDatepccSummary: changedVenueDatepccSummary,
+    roomDetaiPage:roomDetaiPage
+    //roomBookingSummary:roomBookingSummary
+ //  changedVenueDatepccSummary: changedVenueDatepccSummary,
    // documentsSummary: documentsSummary
 });

@@ -28,7 +28,12 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import get from "lodash/get";
 import set from "lodash/set";
 import { convertDateInYMD, calculateBetweenDaysCount } from "../utils";
-
+import {
+  getFileUrlFromAPI,
+  getQueryArg,
+  getTransformedLocale,
+  setBusinessServiceDataToLocalStorage,
+} from "egov-ui-framework/ui-utils/commons";
 
 export const validatestepform = (activeStep, isFormValid, hasFieldToaster) => {
   let allAreFilled = true;
@@ -198,7 +203,7 @@ const callBackForBook = async (state, dispatch) => {
   console.log(oldAvailabilityCheckData, "oldAvailabilityCheckData");
   if (availabilityCheckData === undefined || !("bkToDate" in availabilityCheckData) || (availabilityCheckData.bkToDate == null)) {
     let warrningMsg = {
-      labelName: "Please Select Date Range",
+      labelName: "Please select date range",
       labelKey: "",
     };
     dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -264,11 +269,25 @@ console.log(alreadyBookedDaysCount, selectedDaysCount, "aNero from file");
 
 
       } else {
+
+        let routeUrl
+        const changeDateVenue = getQueryArg(
+          window.location.href,
+          "changeDateVenue"
+        );
+       
         if ("bkApplicationNumber" in availabilityCheckData) {
-          dispatch(
+          if(changeDateVenue!= null){
+            routeUrl= `/egov-services/applyparkcommunitycenter?applicationNumber=${availabilityCheckData.bkApplicationNumber}&tenantId=${availabilityCheckData.tenantId}&businessService=${availabilityCheckData.businessService}&changeDateVenue=Enabled`
+            
+          }else{
+            routeUrl= `/egov-services/applyparkcommunitycenter?applicationNumber=${availabilityCheckData.bkApplicationNumber}&tenantId=${availabilityCheckData.tenantId}&businessService=${availabilityCheckData.businessService}`
+            
+          }
+              dispatch(
             setRoute(
-              `/egov-services/applyparkcommunitycenter?applicationNumber=${availabilityCheckData.bkApplicationNumber}&tenantId=${availabilityCheckData.tenantId}&businessService=${availabilityCheckData.businessService}`
-            )
+              routeUrl
+              )
           );
         } else {
           dispatch(setRoute(`/egov-services/applyparkcommunitycenter`));
@@ -281,7 +300,7 @@ console.log(alreadyBookedDaysCount, selectedDaysCount, "aNero from file");
         availabilityCheckData.bkToDate === null
       ) {
         let warrningMsg = {
-          labelName: "Please Select Date Range",
+          labelName: "Please select date range",
           labelKey: "",
         };
         dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -774,6 +793,9 @@ export const availabilityMediaCard = getCommonCard({
         sm: 12,
         md: 12,
       },
+      props : {
+        style : { overflowX : scroll}
+      }
     },
   }),
 });

@@ -614,6 +614,8 @@ const setOnGroundButtonVisibleTrueFalse = (isVisible, dispatch) => {
   );
 }
 
+
+
 const setReceiveButtonVisibleTrueFalse = (isVisible, dispatch) => {
   dispatch(
     handleField(
@@ -664,6 +666,16 @@ const setSendtoSoreButtonVisibleTrueFalse = (isVisible, dispatch) => {
     handleField(
       "summary",
       "components.div.children.employeeFooter.children.sendtoSoreButton",
+      "visible",
+      isVisible
+    )
+  );
+}
+const setSendMessageButtonButtonVisibleTrueFalse = (isVisible, dispatch) => {
+  dispatch(
+    handleField(
+      "summary",
+      "components.div.children.employeeFooter.children.sendMessageButton",
       "visible",
       isVisible
     )
@@ -947,6 +959,7 @@ const HideshowEdit = (state, action,dispatch) => {
   set(state, 'screenConfiguration.preparedFinalObject.WFStatus', []);
 
   checkVisibility(state, "SENT TO STORE", "sendtoSoreButton", action, "screenConfig.components.div.children.employeeFooter.children.sendtoSoreButton.visible", false);
+  checkVisibility(state, "SENT TO STORE", "sendMessageButton", action, "screenConfig.components.div.children.employeeFooter.children.sendMessageButton.visible", false);
   checkVisibility(state, "ADDED TO STORE", "StoreManagerAddToStoreProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerAddToStoreProcess.visible", false);
   //checkVisibility(state, "SENT TO STORE", "StoreManagerHODApprovalProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerHODApprovalProcess.visible", null)
   if (encroachmentType !== 'Unauthorized/Unregistered Vendor') {
@@ -956,6 +969,7 @@ const HideshowEdit = (state, action,dispatch) => {
         : "" : "";
     processInstanceData.action === 'ADDED TO STORE' ? checkVisibility(state, "PAID", "StoreManagerReceivePaymentProcess", action, "screenConfig.components.div.children.employeeFooter.children.StoreManagerReceivePaymentProcess.visible", true) : "";
     processInstanceData.action === 'CHALLAN ISSUED' ? setOnGroundButtonVisibleTrueFalse(true, dispatch) : "";
+   // processInstanceData.action === 'UNPAID' ? setSendMessageButtonButtonVisibleTrueFalse(true, dispatch) : "";
   }
 
 
@@ -1056,7 +1070,10 @@ const setSearchResponse = async (
     setAddToStoreButtonVisibleTrueFalse(false, dispatch);
     setHodApprovalButtonVisibleTrueFalse(false, dispatch);
     setOnGroundButtonVisibleTrueFalse(false, dispatch);
+    setSendMessageButtonButtonVisibleTrueFalse(false,dispatch);
     setSendtoSoreButtonVisibleTrueFalse(false, dispatch);
+    setSendMessageButtonButtonVisibleTrueFalse(false,dispatch)
+   
 
     HideshowEdit(state, action,dispatch);
 
@@ -1073,7 +1090,20 @@ const setSearchResponse = async (
       setAddToStoreButtonVisibleTrueFalse(false, dispatch);
       setHodApprovalButtonVisibleTrueFalse(false, dispatch);
       setOnGroundButtonVisibleTrueFalse(false, dispatch);
+      setSendMessageButtonButtonVisibleTrueFalse(false,dispatch)
       setSendtoSoreButtonVisibleTrueFalse(false, dispatch);
+     // setSendMessageButtonButtonVisibleTrueFalse(false,dispatch)
+    }
+    let paystatus_ = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", '') === 'PENDING' ? 'UNPAID' : 'PAID';
+    if (paystatus_ === 'UNPAID') { 
+      dispatch(
+        handleField(
+          "summary",
+          "components.div.children.employeeFooter.children.sendMessageButton",
+          "visible",
+          true
+        )
+      );
     }
   }
 };

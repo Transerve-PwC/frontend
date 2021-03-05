@@ -7,6 +7,7 @@ import {
     getSelectField,
     getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import "./checkAvailabilityCss/index.css";
 import {
     getTenantId,
     setapplicationType,
@@ -125,14 +126,14 @@ const callBackForBook = async (state, dispatch) => {
     console.log(availabilityCheckData, "availabilityCheckData");
     if (availabilityCheckData === undefined) {
         let warrningMsg = {
-            labelName: "Please select Date RANGE",
+            labelName: "Please select date range",
             labelKey: "",
         };
         dispatch(toggleSnackbar(true, warrningMsg, "warning"));
     } else {
         if (availabilityCheckData.bkToDate === undefined || availabilityCheckData.bkToDate === "" || availabilityCheckData.bkToDate === null) {
             let warrningMsg = {
-                labelName: "Please select Date RANGE",
+                labelName: "Please select date range",
                 labelKey: "",
             };
             dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -160,7 +161,7 @@ const callBackForBook = async (state, dispatch) => {
     //         );
     //         if (availabilityCheckData.bkToDate === undefined) {
     //             let warrningMsg = {
-    //                 labelName: "Please select Date RANGE",
+    //                 labelName: "Please select date range",
     //                 labelKey: "",
     //             };
     //             dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -198,7 +199,7 @@ const callBackForBook = async (state, dispatch) => {
     //     }
     // } else {
     //     let warrningMsg = {
-    //         labelName: "Please select Date RANGE",
+    //         labelName: "Please select date range",
     //         labelKey: "",
     //     };
     //     dispatch(toggleSnackbar(true, warrningMsg, "warning"));
@@ -254,7 +255,7 @@ const callBackForSearch = async (state, dispatch) => {
                 dispatch(
                     toggleSnackbar(
                         true,
-                        { labelName: "Please Try After Sometime!", labelKey: "" },
+                        { labelName: "Please try after sometime!", labelKey: "" },
                         "warning"
                     )
                 );
@@ -310,7 +311,7 @@ const callBackForSearch = async (state, dispatch) => {
     //         dispatch(
     //             toggleSnackbar(
     //                 true,
-    //                 { labelName: "Please Try After Sometime!", labelKey: "" },
+    //                 { labelName: "Please try after sometime!", labelKey: "" },
     //                 "warning"
     //             )
     //         );
@@ -455,8 +456,10 @@ export const checkAvailabilityCalendar = getCommonCard({
                 xs: 12,
             },
             props: {
+                className: "checkavailability-footer",
                 style: {
-                    justifyContent: "flex-end",
+                  //  justifyContent: window.matchMedia("(max-width: 400px)").matches? "flex-start":  "flex-end",
+                  justifyContent:"flex-end"
                 },
             },
             children : {

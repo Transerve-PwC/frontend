@@ -6,6 +6,7 @@ const UploadSingleFile = ({
   classes,
   handleFileUpload,
   documents,
+  pagename,
   removeDocument,
   onButtonClick,
   inputProps,
@@ -39,6 +40,7 @@ const UploadSingleFile = ({
                       document={document}
                       removeDocument={removeDocument}
                       moduleName="wns"
+                      pagename={pagename}
                     />
                   )}
                 </div>

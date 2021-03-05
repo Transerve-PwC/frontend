@@ -295,6 +295,7 @@ class DocumentList extends Component {
             onButtonClick={() => this.onUploadClick(key)}
             inputProps={this.props.inputProps}
             buttonLabel={this.props.buttonLabel}
+            pagename ={this.props.pageName}
           />
         </Grid>
       </Grid>

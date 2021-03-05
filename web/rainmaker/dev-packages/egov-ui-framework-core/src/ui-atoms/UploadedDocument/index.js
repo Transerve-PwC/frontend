@@ -3,7 +3,7 @@ import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 
 const UploadedDocument = props => {
-  const { document, removeDocument ,moduleName} = props;
+  const { document, removeDocument ,moduleName,pagename} = props;
  
   if(moduleName==="opms" || moduleName==="PR")
   {
@@ -33,7 +33,7 @@ const UploadedDocument = props => {
 else{
   // can not delete if module name in wns and employee login -- start
   let IsEdit = true
-  if(moduleName==="wns" && process.env.REACT_APP_NAME !== "Citizen")
+  if(moduleName==="wns" && pagename==='wns' && process.env.REACT_APP_NAME !== "Citizen")
   {
     IsEdit = false
   }
