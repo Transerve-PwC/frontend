@@ -6,9 +6,9 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getQueryArg, setDocuments } from "egov-ui-framework/ui-utils/commons";
 import { getSearchResults } from "../../../../ui-utils/commons";
-import { downloadCertificateForm} from "../utils";
+import { downloadCertificateForm, getReceipt} from "../utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails ,getGrantDetails,getGrantDetailsAvailed} from "./applyResource/review-property";
+import { getReviewOwner, getReviewProperty, getReviewAddress, getReviewRentDetails, getReviewPaymentDetails,getReviewGrantDetails ,getGrantDetails,getGrantDetailsAvailed, getPaymentHistory} from "./applyResource/review-property";
 import { getReviewDocuments } from "./applyResource/review-documents";
 import { getUserInfo ,getTenantId} from "egov-ui-kit/utils/localStorageUtils";
 import { prepareFinalObject, toggleSnackbar,handleScreenConfigurationFieldChange as handleField,
@@ -50,6 +50,7 @@ const reviewDocumentDetails = getReviewDocuments(false, "apply")
 const grantDetailAvailed=getGrantDetailsAvailed(false)
 const reviewGrantDetails = getReviewGrantDetails(false)
 const grantDetail=getGrantDetails(false)
+const reviewPaymentHistory = getPaymentHistory()
 export const propertyReviewDetails = getCommonCard({
   reviewPropertyDetails,
   reviewAddressDetails,
@@ -57,10 +58,10 @@ export const propertyReviewDetails = getCommonCard({
   reviewRentDetails,
   reviewPaymentDetails,
   reviewDocumentDetails,
+  reviewPaymentHistory,
   grantDetailAvailed,
   reviewGrantDetails,
   grantDetail
-  
 });
 
 export const searchResults = async (action, state, dispatch, transitNumber) => {
@@ -224,6 +225,21 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
         );
         
   }
+  const rentPaymentConsumerCode = properties[0].rentPaymentConsumerCode;
+  const paymentQueryObj = [
+    {
+      key: "tenantId",
+      value: properties[0].tenantId,
+    },
+    {
+      key: "consumerCode",
+      value: rentPaymentConsumerCode,
+    },
+  ];
+  const paymentResponse = await getReceipt(paymentQueryObj)
+  const _date = new Date().getTime() - 90 * 24 * 60 * 60 * 1000
+  const payments = paymentResponse.Payments.filter(item => item.transactionDate >= _date);
+  dispatch(prepareFinalObject("paymentHistory", payments))
 }
 }
 

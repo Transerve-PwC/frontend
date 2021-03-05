@@ -72,6 +72,11 @@ const RentSummaryCardContainer = Loadable({
   loading: () => <Loading />
 });
 
+const ExpansionPanelContainer = Loadable({
+  loader: () => import("./ExpansionPanelContainer"),
+  loading: () => <Loading/>
+})
+
 export {
   CustomTabContainer,
   LabelContainer,
@@ -87,5 +92,6 @@ export {
   WorkFlowContainer,
   MultipleOwnerContainer,
   MultipleDocumentsContainer,
-  RentSummaryCardContainer
+  RentSummaryCardContainer,
+  ExpansionPanelContainer
 };

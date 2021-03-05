@@ -91,6 +91,10 @@ const MultiDownloadCard = Loadable({
   loader: () => import("./MultiDownloadCard"),
   loading: () => <Loading />
 });
+const ExpansionPanelMolecule = Loadable({
+  loader: () => import("./ExpansionPanel"),
+  loading: () => <Loading />
+})
 export {
   TestMolecules,
   RadioButtonsGroup,
@@ -110,5 +114,6 @@ export {
   MultiDownloadCardNoticePreview,
   RentSummaryCard,
   MultiDownloadCard,
-  SimpleModal
+  SimpleModal,
+  ExpansionPanelMolecule
 }
