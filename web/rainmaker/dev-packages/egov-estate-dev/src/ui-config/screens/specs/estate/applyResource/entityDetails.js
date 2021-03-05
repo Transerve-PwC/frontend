@@ -431,7 +431,7 @@ const mobileNumberField = {
     xs: 12,
     sm: 6
   },
-  required: false,
+  required: true,
   pattern: getPattern("MobileNo"),
   errorMessage:"ER_ERR_MOBILE_NUMBER",
   maxLength: 10,

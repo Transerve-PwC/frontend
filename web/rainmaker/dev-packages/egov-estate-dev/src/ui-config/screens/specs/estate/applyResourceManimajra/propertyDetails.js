@@ -64,6 +64,7 @@ const streetField = {
   maxLength: 100,
   pattern:_getPattern("street"),
   jsonPath: "Properties[0].propertyDetails.street",
+  errorMessage:"ES_ERR_STREET_NUMBER",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 100) {
       displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
@@ -92,6 +93,7 @@ const areaofPropertyField = {
   pattern: _getPattern("numeric-with-no-firstdigit-zero"),
   required: true,
   jsonPath: "Properties[0].propertyDetails.areaSqft",
+  errorMessage:"ES_ERR_AREA_OF_PROPERTY_FIELD",
   afterFieldChange: (action, state, dispatch) => {
     if (action.value.length > 25) {
         displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_AREA_OF_PROPERTY_MAX_25", screenName);

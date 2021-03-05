@@ -106,7 +106,7 @@ export const updateReadOnlyForAllFields = (action, state, dispatch) => {
           /*
            * removing error message if the field is not changed by the user
            */
-          actionItem = [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.error", value: !!curr.props.error?curr.props.error:false}]
+          actionItem = [{path: curr.componentJsonpath, property: currValue.property, value: evaluate(evalParams)}, {path: curr.componentJsonpath, property: "props.error", value: !!curr.props.error && !!curr.props.disabled?false:!!curr.props.error?curr.props.error:false}]
         } 
         else if(currValue.value === "disability" && curr.componentPath === "RadioGroupContainer") {
           /*

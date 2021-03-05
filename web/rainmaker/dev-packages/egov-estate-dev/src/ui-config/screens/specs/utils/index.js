@@ -585,7 +585,18 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
         ]
       break;
       case 'Mortgage':
-      case 'MortgageIntimation':  
+      case 'MortgageIntimation': 
+      if(applicationType == 'MortgageIntimation') {
+        Applications = [{
+          ...Applications[0],
+          "applicationHeader" : 'Intimation to Mortgage'
+        }]
+      }else{
+        Applications = [{
+          ...Applications[0],
+          "applicationHeader" : 'Permission to Mortgage'
+        }]
+      }
           queryStr = [{
             key: "key",
             value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
