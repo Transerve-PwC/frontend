@@ -95,10 +95,7 @@ class ServiceList extends React.Component {
     ContactNumber = ContactNumber.filter((item)=>item.Number === userInfo.mobileNumber)
     if(ContactNumber.length ===0)
     {
-      list = list.filter((item)=>item.name !=='rainmaker-citizen-wns'
-                                && item.name !== 'rainmaker-citizen-rented-properties'
-                                && item.name !== 'rainmaker-citizen-estate-properties')
-
+      list = list.filter((item)=>item.name !=='rainmaker-citizen-wns')
     }
     }else{
       list = menu && menu.filter((item) => item.url === "card");
