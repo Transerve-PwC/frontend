@@ -132,7 +132,7 @@ export const searchApiCall = async (state, dispatch, onInit, offset, limit = 100
       let data = response.Properties.map(item => ({
         [getTextToLocalMapping("File Number")]: item.fileNumber || "-",
         [getTextToLocalMapping("Sector Number")]: item.sectorNumber || "-",
-        [getTextToLocalMapping("Status")]: item.state || "-",
+        [getTextToLocalMapping("Status")]: getTextToLocalMapping(item.state) || "-",
         [getTextToLocalMapping("Last Modified On")]: convertEpochToDate(item.auditDetails.lastModifiedTime) || "-"
       }));
 

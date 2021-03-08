@@ -242,7 +242,7 @@ const categoryField = {
             )
         )
         
-        if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL") {
+        if (action.value == "CAT.RESIDENTIAL" || action.value == "CAT.COMMERCIAL" || action.value == "CAT.RESIDENTIALCUMCOMMERCIAL") {
             dispatch(
                 handleField(
                     screenName,

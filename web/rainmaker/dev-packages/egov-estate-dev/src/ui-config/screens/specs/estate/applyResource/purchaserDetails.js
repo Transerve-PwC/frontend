@@ -14,6 +14,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getTodaysDateInYMD, 
+  getYesterdaysDateInYMD,
   _getPattern,
   displayCustomErr,
   displayDefaultErr
@@ -175,7 +176,7 @@ const dateOfBirthField = {
   jsonPath: "Properties[0].propertyDetails.purchaser[0].ownerDetails.dob",
   props: {
     inputProps: {
-        max: getTodaysDateInYMD(),
+        max: getYesterdaysDateInYMD(),
         style: {
             lineHeight: "initial"
         }

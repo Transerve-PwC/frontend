@@ -481,7 +481,31 @@ const cpNumberField = {
     }
   }
 }
-
+const npNumberField = {
+  label: {
+    labelName: "NP No.",
+    labelKey: "ES_NP_NUMBER_LABEL"
+  },
+  placeholder: {
+    labelName: "Enter NP No.",
+    labelKey: "ES_NP_NUMBER_PLACEHOLDER"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 6
+  },
+  pattern: _getPattern("alphaNumeric"),
+  errorMessage:"ES_ERR_NPNUMBER",
+  jsonPath: "Properties[0].propertyDetails.owners[0].npNumber",
+  afterFieldChange: (action, state, dispatch) => {
+    if (action.value.length > 100) {
+        displayCustomErr(action.componentJsonpath, dispatch, "ES_ERR_MAXLENGTH_100", screenName);
+    }
+    else {
+      displayCustomErr(action.componentJsonpath, dispatch,"ES_ERR_NPNUMBER", screenName);
+    }
+  }
+}
 const getRelationshipRadioButton = {
   uiFramework: "custom-containers",
   componentPath: "RadioGroupContainer",
@@ -540,6 +564,7 @@ const commonPartnerInformation = () => {
       address: getTextField(addressField),
       mobileNumber: getTextField(mobileNumberField),
       share: getTextField(shareField),
+      npNumber:getTextField(npNumberField),
       cpNumber: getTextField(cpNumberField)
     })
   });
@@ -601,6 +626,7 @@ export const proprietorshipDetails = getCommonCard({
     address: getTextField(addressField),
     mobileNumber: getTextField(mobileNumberField),
     // share: getTextField(shareField),
+    npNumber:getTextField(npNumberField),
     cpNumber: getTextField(cpNumberField)
   })
 });

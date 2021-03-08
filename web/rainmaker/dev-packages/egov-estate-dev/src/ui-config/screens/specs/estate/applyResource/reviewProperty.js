@@ -23,7 +23,12 @@ import { changeStep as changeStepManimajra} from "../applyResourceManimajra/foot
 import React from "react";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+export const roundup = value => {
+  if (value) {
+let val=value.toFixed(2)
+return Number(val)
+  }
+};
 function getLabelWithValue(labelName, path, visible) {
   const label = _getLabelWithValue(labelName, path);
   label.visible = visible
@@ -377,7 +382,10 @@ const cpNumberLabel = {
   labelName: "CP No.",
   labelKey: "ES_CP_NUMBER_LABEL"
 }
-
+const npNumberLabel = {
+  labelName: "NP No.",
+  labelKey: "ES_NP_NUMBER_LABEL"
+}
 export const getReviewOwner = (isEditable = true, owner = 0) => {
   return getCommonGrayCard({
     headerDiv: {
@@ -431,6 +439,11 @@ export const getReviewOwner = (isEditable = true, owner = 0) => {
       share: getLabelWithValue(
         shareLabel, {
           jsonPath: `Properties[0].propertyDetails.owners[${owner}].share`
+        }
+      ),
+      npNumber: getLabelWithValue(
+        npNumberLabel, {
+          jsonPath: `Properties[0].propertyDetails.owners[${owner}].npNumber`
         }
       ),
       cpNumber: getLabelWithValue(
@@ -1917,6 +1930,15 @@ export const getReviewProprietorshipDetails = (isEditable = true, screenkey = "a
           jsonPath: "Properties[0].propertyDetails.owners[0].ownerDetails.mobileNumber"
         }
       ),
+      npNumber: getLabelWithValue(
+        {
+          labelName: "NP Number",
+          labelKey: "ES_NP_NUMBER_LABEL"
+        },
+        {
+          jsonPath: "Properties[0].propertyDetails.owners[0].npNumber"
+        }
+      ),
       cpNumber: getLabelWithValue(
         {
           labelName: "CP Number",
@@ -1956,6 +1978,7 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
         }, 
         {
           jsonPath: "Properties[0].propertyDetails.estateDemands[0].rent",
+          callBack:roundup
         }
       ),
       consolidatedGst: getLabelWithValue(
@@ -1964,7 +1987,8 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
           labelKey: "ES_CONSOLIDATED_GST_LABEL"
         },
         {
-          jsonPath: "Properties[0].propertyDetails.estateDemands[0].gst"
+          jsonPath: "Properties[0].propertyDetails.estateDemands[0].gst",
+          callBack:roundup
         }
       ),
       consolidatedInterestOnRent: getLabelWithValue(
@@ -1973,7 +1997,8 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
           labelKey: "ES_CONSOLIDATED_INTEREST_ON_RENT_LABEL"
         },
         {
-          jsonPath: "Properties[0].propertyDetails.estateDemands[0].penaltyInterest"
+          jsonPath: "Properties[0].propertyDetails.estateDemands[0].penaltyInterest",
+          callBack:roundup
         }
       ),
       consolidatedInterestOnGst: getLabelWithValue(
@@ -1982,7 +2007,8 @@ export const getReviewConsolidatedPaymentDetails = (isEditable = true, screenkey
           labelKey: "ES_CONSOLIDATED_INTEREST_ON_GST_LABEL"
         },
         {
-          jsonPath: "Properties[0].propertyDetails.estateDemands[0].gstInterest"
+          jsonPath: "Properties[0].propertyDetails.estateDemands[0].gstInterest",
+          callBack:roundup
         }
       ),
       consolidatedTill: getLabelWithValue(

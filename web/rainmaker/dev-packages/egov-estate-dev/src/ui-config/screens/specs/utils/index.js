@@ -492,6 +492,8 @@ const modifiedOwner = PropertiesTempOwners.map((owner) => {
 
 
 export const downloadAcknowledgementForm = (Applications, applicationType,feeEstimate,state, mode = "download") => {
+  let Application = Applications[0];
+
   let queryStr = []
   switch (applicationType) {
     case 'SaleDeed':
@@ -725,7 +727,28 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
     key: "tenantId",
     value: `${getTenantId().split('.')[0]}`
   }
-  
+  let {wfDocuments} = Applications[0].additionalDetails;
+  if(wfDocuments && wfDocuments.length){
+      const wflength = wfDocuments.length % 4
+      wfDocuments = !!wflength ? [...wfDocuments, ...new Array(4 - wflength).fill({
+        title: "",
+        name: ""
+      })] : wfDocuments
+      const myWfDocuments = wfDocuments.map((item) => ({
+        ...item,
+        title: getLocaleLabels(item.title, item.title)
+      })).reduce((splits, i) => {
+        const length = splits.length
+        const rest = splits.slice(0, length - 1);
+        const lastArray = splits[length - 1] || [];
+        return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
+      }, []);
+        Application = {
+          ...Application,
+          wfDocuments: myWfDocuments
+        
+        }
+      }
   let {
     documents
   } = Applications[0].additionalDetails;
@@ -743,7 +766,6 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
     const lastArray = splits[length - 1] || [];
     return lastArray.length < 4 ? [...rest, [...lastArray, i]] : [...splits, [i]]
   }, []);
-  let Application = Applications[0];
   Application = {
     ...Application,
     applicationDocuments: myDocuments
@@ -1959,7 +1981,15 @@ export const getTodaysDateInYMD = () => {
   // date = epochToYmdDate(date);
   return date;
 };
-
+export const getYesterdaysDateInYMD = () => {
+  let date = new Date();
+  //date = date.valueOf();
+  let month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  let day = date.getDate() - 1 < 10 ? `0${date.getDate()-1}` : date.getDate()-1;
+  date = `${date.getFullYear()}-${month}-${day}`;
+  // date = epochToYmdDate(date);
+  return date;
+};
 export const getNextMonthDateInYMD = () => {
   //For getting date of same day but of next month
   let date = getTodaysDateInYMD();

@@ -958,6 +958,16 @@ const getMonthsOfRentRadioButton = {
         label: "3 months rent",
         labelKey: "ES_THREE_MONTHS_RENT_LABEL",
         value: 3
+      },
+      {
+        label: "6 months rent",
+        labelKey: "ES_SIX_MONTHS_RENT_LABEL",
+        value: 6
+      },
+      {
+        label: "12 months rent",
+        labelKey: "ES_TWELVE_MONTHS_RENT_LABEL",
+        value: 12
       }
     ],
     jsonPath: "Properties[0].propertyDetails.paymentConfig.noOfMonths",

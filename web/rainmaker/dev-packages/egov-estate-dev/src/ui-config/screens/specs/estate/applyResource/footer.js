@@ -1546,6 +1546,7 @@ export const downloadPrintContainer = (
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      const wfDocuments = temp[0].reviewWfDocData ? temp[0].reviewWfDocData : []
       let { applicationType} = Applications[0];
       const {branchType} = Applications[0];
       if(branchType === "BuildingBranch"){
@@ -1555,6 +1556,7 @@ export const downloadPrintContainer = (
         applicationType =  "MM-" + applicationType 
        }
       set(Applications[0],"additionalDetails.documents",documents)
+      set(Applications[0],"additionalDetails.wfDocuments",wfDocuments)
       const feeEstimate = temp[0].estimateCardData;
       downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState);
     },
@@ -1713,6 +1715,7 @@ export const downloadPrintContainer = (
     link: () => {
       const { Applications,temp } = state.screenConfiguration.preparedFinalObject;
       const documents = temp[0].reviewDocData;
+      const wfDocuments = temp[0].reviewWfDocData ? temp[0].reviewWfDocData : []
       let { applicationType} = Applications[0];
       const {branchType} = Applications[0];
       if(branchType === "BuildingBranch"){
@@ -1722,6 +1725,7 @@ export const downloadPrintContainer = (
         applicationType =  "MM-" + applicationType 
        }
       set(Applications[0],"additionalDetails.documents",documents)
+      set(Applications[0],"additionalDetails.wfDocuments",wfDocuments)
       const feeEstimate = temp[0].estimateCardData;
       downloadAcknowledgementForm(Applications,applicationType,feeEstimate,applicationState,'print');    },
     leftIcon: "assignment"
@@ -1984,6 +1988,15 @@ export const downloadPrintContainer = (
             break;
         case 'NOC-ES_PENDING_SDE_APPROVAL': 
         case 'NOC-ES_APPROVED' : 
+          if(process.env.REACT_APP_NAME === "Citizen"){
+            downloadMenu = [
+              applicationDownloadObject
+              
+            ]
+            printMenu = [
+              applicationPrintObject
+            ]
+          }else{
             downloadMenu = [
               applicationDownloadObject,
               LetterDownloadObject,
@@ -1996,7 +2009,8 @@ export const downloadPrintContainer = (
               LetterPrintObject,
               NOCproposalLetterPrintObject,
               paymentLetterPrintObject
-            ] 
+            ]
+          }
           break;
         case 'IssuanceOfNotice-ES_REJECTED':  
         case 'IssuanceOfNotice-ES_PENDING_JE_CLARIFICATION':
@@ -2058,7 +2072,7 @@ export const downloadPrintContainer = (
              applicationDownloadObject
            ]
            printMenu = [
-               applicationPrintObject
+              applicationPrintObject
           ]
       break;
 
