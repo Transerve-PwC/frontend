@@ -46,7 +46,6 @@ import {
   populateBiddersTable
 } from "../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import * as previousDocsData from './applyResource/previousOwnerDocs.json';
 import * as legacyAccStmtData from "./applyResource/legacyAccountStmtDoc.json";
 import { toggleEntityOwnersDivsBasedOnEntityType, toggleEntityOwnersDivsBasedOnPropertyRegisteredTo, getActionDefinationForAuctionDetailsFields } from './applyResource/propertyDetails'
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
@@ -187,7 +186,14 @@ export const setDocumentData = async (action, state, dispatch, owner = 0, docume
 
 }
 
-export const setPrevOwnerDocs = (action, state, dispatch, prevOwnerIndex = 0, documentStep = "formwizardSixthStep") => {
+export const setPrevOwnerDocs = async (action, state, dispatch, prevOwnerIndex = 0, documentStep = "formwizardSixthStep") => {
+  const documentTypePayload = [{
+    moduleName: ESTATE_SERVICES_MDMS_MODULE,
+    masterDetails: [{
+      name: "previousOwnerDocs"
+    }]
+  }]
+  const previousDocsData = await getMdmsData(dispatch, documentTypePayload);
   const {
     EstateServices
   } = previousDocsData && previousDocsData.MdmsRes ? previousDocsData.MdmsRes : {}

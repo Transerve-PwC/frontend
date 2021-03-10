@@ -5,7 +5,8 @@ import {
 import {
   getLabel,
   dispatchMultipleFieldChangeAction,
-  getPattern
+  getPattern,
+  convertDateToEpoch
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   toggleSnackbar,
@@ -155,6 +156,10 @@ const callBackForNext = async (state, dispatch) => {
           `apply-building-branch.components.div.children.formwizardFourthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
           reviewOwnerDetails
         )
+        let possesionDate= get( state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`)
+        if(!!possesionDate){
+        set( state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`,convertDateToEpoch(possesionDate))
+        }
       }
     }
 

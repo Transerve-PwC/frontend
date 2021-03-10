@@ -7,8 +7,8 @@ import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 
 const userInfo = JSON.parse(getUserInfo());
 const {roles = []} = userInfo
-const refundEmdAccess = roles.find(item => item.code === "ES_EB_CHEIF_ACCOUNTS_OFFICER" || item.code === "ES_EB_LOCAL_AUDIT_OFFICER" || item.code === "ES_ADDITIONAL_COMMISSIONER" || item.code === "ES_EB_SECTION_OFFICER");
-
+const refundEmdAccess = roles.find(item => item.code === "ES_EB_CHEIF_ACCOUNTS_OFFICER" || item.code === "ES_EB_LOCAL_AUDIT_OFFICER" || item.code === "ES_ADDITIONAL_COMMISSIONER");
+const refund=roles.find(item=>item.code==="ES_EB_SECTION_OFFICER")
 let citizenCardItems = []
 
 const header = getCommonHeader({
@@ -20,7 +20,7 @@ const header = getCommonHeader({
   }
 });
 
-const cardItems =  !!refundEmdAccess ? [
+const cardItems =  !!refund ? [
   {
     label: {
       labelKey: "ES_ISSUANCE_OF_REFUND",
@@ -37,7 +37,16 @@ const cardItems =  !!refundEmdAccess ? [
     icon: < FormIcon / > ,
     route: `/estate/refund-search-applications?branchType=ESTATE_BRANCH`
   }
-] : []
+] : !!refundEmdAccess?[
+  {
+    label: {
+      labelKey: "ES_SEARCH_PROPERTIES",
+      labelName: "Search Property"
+    },
+    icon: < FormIcon / > ,
+    route: `/estate/refund-search-applications?branchType=ESTATE_BRANCH`
+  }
+]:[]
 
 const refundEmd = {
   uiFramework: "material-ui",
