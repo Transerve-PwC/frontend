@@ -763,6 +763,7 @@ export const getPaymentHistory = () => {
         },
       ],
       header: "RP_PAYMENT_HISTORY",
+      emptyMessage: "RP_NO_PAYMENT_HISTORY",
       onButtonClick: downloadReceipt
     },
   };

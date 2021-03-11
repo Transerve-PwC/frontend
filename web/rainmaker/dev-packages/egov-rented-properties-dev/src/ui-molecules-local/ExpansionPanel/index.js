@@ -66,59 +66,90 @@ class ExpansionPanelMolecule extends Component {
   };
 
   render() {
-    let { data, contents, classes, header, onButtonClick } = this.props;
+    let {
+      data,
+      contents,
+      classes,
+      header,
+      onButtonClick,
+      emptyMessage,
+    } = this.props;
     data = data || [];
     const { open } = this.state;
     return (
       <div className={classes.root}>
-        <ExpansionPanel expanded={!!open} onChange={this.changeExpansion} style={{backgroundColor: "rgb(242, 242, 242)"}}>
+        <ExpansionPanel
+          expanded={!!open}
+          onChange={this.changeExpansion}
+          style={{ backgroundColor: "rgb(242, 242, 242)" }}
+        >
           <ExpansionPanelSummary expandIcon={<ExpandMoreRounded />}>
             <Grid xs={12} sm={12} container>
               <Typography variant="headline">{header}</Typography>
             </Grid>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Grid sm={12} xs={12} >
-            {data.map((datum, index) => (
-              <Grid style={{ marginBottom: 12 }}>
-                  {contents.map((content, ind) => (
-                    <Grid container>
-                      <Grid datum xs={6}>
+            <Grid sm={12} xs={12}>
+              {!!data.length ? (
+                data.map((datum, index) => (
+                  <Grid style={{ marginBottom: 12 }}>
+                    {contents.map((content, ind) => (
+                      <Grid container>
+                        <Grid datum xs={6}>
+                          <Label
+                            labelKey={content.label}
+                            fontSize={14}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.60",
+                            }}
+                          />
+                        </Grid>
+                        <Grid datum xs={6}>
+                          <Label
+                            labelKey={this.generateLabelKey(content, datum)}
+                            fontSize={14}
+                            checkValueForNA={checkValueForNA}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(0, 0, 0, 0.87)",
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    ))}
+                    {!!onButtonClick && (
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          onButtonClick(datum, this.props.preparedFinalObject)
+                        }
+                      >
                         <Label
-                          labelKey={content.label}
-                          fontSize={14}
+                          labelKey="RP_DOWNLOAD_RECEIPT"
+                          textTransform={"uppercase"}
                           style={{
+                            color: "#fe7a51",
                             fontSize: 14,
-                            color: "rgba(0, 0, 0, 0.60",
+                            textTransform: "uppercase",
                           }}
                         />
-                      </Grid>
-                      <Grid datum xs={6}>
-                        <Label
-                          labelKey={this.generateLabelKey(content, datum)}
-                          fontSize={14}
-                          checkValueForNA={checkValueForNA}
-                          style={{
-                            fontSize: 14,
-                            color: "rgba(0, 0, 0, 0.87",
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  ))}
-                  {!!onButtonClick && (<div style={{ cursor: "pointer" }} onClick={() => onButtonClick(datum, this.props.preparedFinalObject)}>
-                    <Label
-                      labelKey="RP_DOWNLOAD_RECEIPT"
-                      textTransform={"uppercase"}
-                      style={{
-                        color: "#fe7a51",
-                        fontSize: 14,
-                        textTransform: "uppercase",
-                      }}
-                    />
-                  </div>)}
-              </Grid>
-            ))}
+                      </div>
+                    )}
+                  </Grid>
+                ))
+              ) : (
+                <div>
+                  <Label
+                    labelKey={emptyMessage}
+                    fontSize={14}
+                    style={{
+                      fontSize: 14,
+                      color: "red",
+                    }}
+                  />
+                </div>
+              )}
             </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -136,8 +167,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   const { screenConfiguration } = state;
-  return {preparedFinalObject: screenConfiguration.preparedFinalObject }
-}
+  return { preparedFinalObject: screenConfiguration.preparedFinalObject };
+};
 
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(ExpansionPanelMolecule)
