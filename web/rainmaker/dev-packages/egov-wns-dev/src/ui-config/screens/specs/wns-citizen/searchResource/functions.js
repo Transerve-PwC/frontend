@@ -186,7 +186,7 @@ const showResults = (connections, dispatch, tenantId) => {
     [getTextToLocalMapping("tenantId")]: item.tenantId,
     [getTextToLocalMapping("Application Status")]: item.apnstatus,
     [getTextToLocalMapping("connectionType")]: item.connectionType,
-    [getTextToLocalMapping("connectionType")]: item.billGenerationId
+    [getTextToLocalMapping("billGenerationId")]: item.billGenerationId
   }))
 
   dispatch(handleField("search", "components.div.children.searchResults", "props.data", data));

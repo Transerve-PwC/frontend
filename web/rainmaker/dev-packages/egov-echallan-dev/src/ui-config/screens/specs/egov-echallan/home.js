@@ -13,6 +13,7 @@ import { headerChallan } from "./challanManage/headerChallan/manageChallanHeader
 import { getDashboardChallanCount } from "../../../../ui-utils/commons";
 import { handleFieldChange } from "egov-ui-kit/redux/form/actions";
 import { checkForRole, getMdmsEncroachmentSectorData } from "../utils";
+import { lSRemoveItem, lSRemoveItemlocal } from "egov-ui-kit/utils/localStorageUtils";
 
 const header = getCommonHeader(
   {
@@ -141,6 +142,11 @@ const eChallanPermissionManagement = {
   uiFramework: "material-ui",
   name: "home",
   beforeInitScreen: (action, state, dispatch) => {
+    lSRemoveItemlocal('eChallanMasterGrid');
+    lSRemoveItem('eChallanMasterGrid');
+    lSRemoveItemlocal('echallanSearchCrieteria');
+    lSRemoveItem('echallanSearchCrieteria');
+    dispatch(prepareFinalObject("searchCriteriaManageChallan", []));
     setapplicationType("egov-echallan");
     getMdmsEncroachmentSectorData(action, state, dispatch).then(response => {
       setcardList(state, dispatch);

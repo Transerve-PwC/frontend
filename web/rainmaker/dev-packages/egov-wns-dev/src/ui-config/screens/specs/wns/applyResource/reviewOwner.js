@@ -237,7 +237,7 @@ export const reviewSecurityCharge = getLabelWithValue(
     labelKey: "WS_ADDN_DETAILS_SECURITY_CHARGES_LABEL"
   },
   {
-    jsonPath: "applyScreen.securityCharge",
+    jsonPath: "applyScreen.waterApplication.securityCharge",
     callBack: handleNA
   }
 );

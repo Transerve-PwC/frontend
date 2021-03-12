@@ -93,7 +93,7 @@ class CGApplicationDetails extends Component {
 			{ key: "businessIds", value: match.params.applicationId }, { key: "history", value: true }, { key: "tenantId", value: userInfo.tenantId }])
 		
 		fetchPayment(
-			[{ key: "consumerCode", value: match.params.applicationId }, { key: "businessService", value: "GFCP" }, { key: "tenantId", value: userInfo.tenantId }
+			[{ key: "consumerCode", value: match.params.applicationId }, { key: "businessService", value: "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND" }, { key: "tenantId", value: userInfo.tenantId }
 			])
 		fetchDataAfterPayment(
 			[{ key: "consumerCodes", value: match.params.applicationId }, { key: "tenantId", value: userInfo.tenantId }
@@ -229,6 +229,11 @@ class CGApplicationDetails extends Component {
 		
 		const { transformedComplaint,paymentDetails,downloadPermissionLetterforCG,userInfo } = this.props;
 		
+		var date2 = new Date();
+
+		var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+	
+
 		const {complaint} = transformedComplaint;
 		let receiptData = [
 			{
@@ -254,6 +259,7 @@ class CGApplicationDetails extends Component {
 				},
 				generatedBy: {
 					generatedBy: userInfo.name,
+					"generatedDateTime":generatedDateTime
 				},
 			}]
 	
@@ -336,12 +342,17 @@ let BookingInfo = [{
         "bookingPurpose": complaint.bkBookingPurpose
 	},
 	"feeDetail": {
-		"baseCharge": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-			(el) => !el.taxHeadCode.includes("TAX")
-		)[0].amount,
-		"taxes": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-			(el) => el.taxHeadCode.includes("TAX")
-		)[0].amount,
+		// "baseCharge": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+		// 	(el) => !el.taxHeadCode.includes("TAX")
+		// )[0].amount,
+		// "taxes": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+		// 	(el) => el.taxHeadCode.includes("TAX")
+		// )[0].amount,
+		"baseCharge": this.props.CommercialParkingCharges,
+			// "tax": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+			// 	(el) => el.taxHeadCode.includes("TAX")
+			// )[0].amount,
+			"taxes": this.props.CommercialTaxes,
 		"totalAmount": paymentDetailsForReceipt.Payments[0].totalAmountPaid,
 	},
 	generatedBy: {
@@ -476,13 +487,15 @@ downloadReceiptFunction = async (e) => {
 				complaint.bkFromDate,
 				complaint.bkToDate
 			),
-			"bookingItem": "Online Payment Against Booking of Commercial Ground",
-			"amount": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-				(el) => !el.taxHeadCode.includes("TAX")
-			)[0].amount,
-			"tax": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-				(el) => el.taxHeadCode.includes("TAX")
-			)[0].amount,
+			"bookingItem": "Online Payment Against Booking of Commercial Ground",//
+			// "amount": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+			// 	(el) => !el.taxHeadCode.includes("TAX")
+			// )[0].amount,
+			"amount": this.props.CommercialParkingCharges,
+			// "tax": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+			// 	(el) => el.taxHeadCode.includes("TAX")
+			// )[0].amount,
+			"tax": this.props.CommercialTaxes,
 			"grandTotal": paymentDetailsForReceipt.Payments[0].totalAmountPaid,
 			"amountInWords": this.NumInWords(
 				paymentDetailsForReceipt.Payments[0].totalAmountPaid
@@ -830,14 +843,18 @@ Application Details
 
                               <CGBookingDetails
 									{...complaint}
-								/>
+								/> 
                                  
 							
 
 <CGPaymentDetails
 	paymentDetails={paymentDetails && paymentDetails}
 	perDayRupees={perDayRupees && perDayRupees}
-
+	CommercialcleaningCharge={this.props.CommercialcleaningCharge}//1
+	CommercialFaciliCharges={this.props.CommercialFaciliCharges}//2
+	CommercialSecurityCharges={this.props.CommercialSecurityCharges}//3
+	CommercialTaxes={this.props.CommercialTaxes}//4
+	CommercialParkingCharges={this.props.CommercialParkingCharges}//5
 />
 
                              <div style={{
@@ -893,20 +910,66 @@ const mapStateToProps = (state, ownProps) => {
 	let historyObject = HistoryData ? HistoryData : ''
 	const { paymentData } = bookings;
 	const { fetchPaymentAfterPayment } = bookings;
+	console.log("fetchPaymentAfterPayment-123-comm",fetchPaymentAfterPayment)
 	const { perDayRate } = bookings;
 	let paymentDetailsForReceipt = fetchPaymentAfterPayment;
-	let paymentDetails;
+	let paymentDetails;  //bookings.paymentData.Bill[0].billDetails[0].billAccountDetails
 	let perDayRupees;
+let OfflineInitatePayArray;
+//Variables to show Amount
+let CommercialcleaningCharge = 0;
+let CommercialFaciliCharges = 0;
+let CommercialSecurityCharges = 0;
+let CommercialTaxes = 0;
+let CommercialParkingCharges = 0;//CommercialcleaningCharge,CommercialFaciliCharges,CommercialSecurityCharges,CommercialTaxes,CommercialParkingCharges
 	if (selectedComplaint && selectedComplaint.bkApplicationStatus == "APPLIED") {
+//bookings.fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill
+//bookings.fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails
+
 		paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill ;
-		perDayRupees = perDayRate && perDayRate ? perDayRate.data.ratePerDay : '';
+console.log("paymentDetails-1",paymentDetails)
+
+OfflineInitatePayArray = paymentDetails !== undefined && paymentDetails !== null ? 
+(paymentDetails.billDetails !== undefined && paymentDetails.billDetails !== null ? (paymentDetails.billDetails.length > 0 ? 
+(paymentDetails.billDetails[0].billAccountDetails !== undefined && paymentDetails.billDetails[0].billAccountDetails !== null ?
+(paymentDetails.billDetails[0].billAccountDetails): "NA"): "NA") : "NA"): "NA"
+console.log("OfflineInitatePayArray-1",OfflineInitatePayArray)		
+perDayRupees = perDayRate && perDayRate ? perDayRate.data.ratePerDay : '';
 	} 
-	else {
-		paymentDetails = paymentData ? paymentData.Bill[0] : '';
+	else { 
+		paymentDetails =paymentData && paymentData !== null && paymentData !== undefined ? 
+		(paymentData.Bill && paymentData.Bill !== undefined && paymentData.Bill !== null ? 
+		(paymentData.Bill.length > 0 ?(paymentData.Bill[0]):"NA"):"NA"): "NA";
+        console.log("paymentDetails-2",paymentDetails)
+		if(paymentDetails !== "NA"){
+			OfflineInitatePayArray = paymentData.Bill[0].billDetails !== undefined && paymentData.Bill[0].billDetails !== null ? 
+			(paymentData.Bill[0].billDetails !== undefined && paymentData.Bill[0].billDetails !== null ? (paymentData.Bill[0].billDetails.length > 0 ? (paymentData.Bill[0].billDetails[0].billAccountDetails !== undefined && paymentData.Bill[0].billDetails[0].billAccountDetails !== null ? 
+			(paymentData.Bill[0].billDetails[0].billAccountDetails ? (paymentData.Bill[0].billDetails[0].billAccountDetails.length > 0 ? (paymentData.Bill[0].billDetails[0].billAccountDetails) : "NA"): "NA"): "NA"): "NA"): "NA") : "NA"
+			}
+			console.log("OfflineInitatePayArray-1",OfflineInitatePayArray)		
 		perDayRupees = perDayRate && perDayRate ? perDayRate.data.ratePerDay : '';
 	} 
 
-	
+	if(OfflineInitatePayArray !== "NA"){
+		for(let i = 0; i < OfflineInitatePayArray.length ; i++ ){
+		
+		if(OfflineInitatePayArray[i].taxHeadCode == "CLEANING_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH"){
+			CommercialcleaningCharge = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "FACILITATION_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH"){
+			CommercialFaciliCharges = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "SECURITY_COMMERCIAL_GROUND_BOOKING_BRANCH"){
+			CommercialSecurityCharges = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "CGST_UTGST_COMMERCIAL_GROUND_BOOKING_BRANCH"){  //tax
+			CommercialTaxes = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "PARKING_LOTS_COMMERCIAL_GROUND_BOOKING_BRANCH"){
+			CommercialParkingCharges = OfflineInitatePayArray[i].amount
+		}
+		}
+	}
 	let historyApiData = {}
 	if (historyObject) {
 		historyApiData = historyObject;
@@ -968,6 +1031,7 @@ const mapStateToProps = (state, ownProps) => {
 		);
 		
 		return {
+			CommercialcleaningCharge,CommercialFaciliCharges,CommercialSecurityCharges,CommercialTaxes,CommercialParkingCharges,
 			paymentDetails,
 			historyApiData,
 			DownloadPaymentReceiptDetailsforCG,
@@ -988,6 +1052,7 @@ const mapStateToProps = (state, ownProps) => {
 		};
 	} else {
 		return {
+			CommercialcleaningCharge,CommercialFaciliCharges,CommercialSecurityCharges,CommercialTaxes,CommercialParkingCharges,
 			paymentDetails,
 			historyApiData,
 			DownloadPaymentReceiptDetailsforCG,

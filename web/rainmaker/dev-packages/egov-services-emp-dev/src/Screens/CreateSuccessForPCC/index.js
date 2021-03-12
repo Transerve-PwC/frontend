@@ -164,8 +164,9 @@ name: "",
     
       }
  
-   downloadPermissionButton = async (e) => {
-    await this.downloadPermissionLetter();
+downloadPermissionButton = async (e) => {
+  console.log("comInFunction")
+await this.downloadPermissionLetter();
      const {DownloadBWTApplicationDetails,userInfo,EmpPaccPermissionLetter}=this.props;
  
      var documentsPreview = [];
@@ -209,8 +210,8 @@ name: "",
          
        }
    }
-
-  downloadPermissionLetter= async () => {
+  downloadPermissionLetter = async (e) => {
+    console.log("comeInAnotherFunction")
     const { downloadPaccPermissionLetter, userInfo,createPACCApplicationData,documentMap,PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,PACC_ROUND_OFF,FACILITATION_CHARGE} = this.props;
 
     let applicationDetails = createPACCApplicationData ? createPACCApplicationData : 'dataNotFound';
@@ -222,7 +223,7 @@ name: "",
     let ugst = PACC_TAX 
     let find50Per = (perFind/100) * ugst
     console.log("find50Per--",find50Per)		
-    let findNumOrNot = Number.isInteger(find50Per);
+    let findNumOrNot = Number.isInteger(find50Per); 
     console.log("findNumOrNot--",findNumOrNot)
     if(findNumOrNot == true){
       Newugst = find50Per
@@ -239,7 +240,18 @@ name: "",
       approverName = userInfo.roles[i].name
     }
   }
-    let fdocname = Object.entries(documentMap)[0][1]
+  let fdocname = "Not Applicable"
+  let checkDocumentUpload;
+if(documentMap !== undefined && documentMap !== null){
+
+  checkDocumentUpload = Object.entries(documentMap).length === 0;
+  console.log("checkDocumentUpload",checkDocumentUpload)
+
+
+  if(checkDocumentUpload == false){
+    fdocname = Object.entries(documentMap)[0][1]
+  }
+}
    let BookingInfo  = [
      {
     "applicantDetail": {
@@ -260,7 +272,8 @@ name: "",
                 applicationDetails.bkFromDate,
                 applicationDetails.bkToDate
               ),
-              "bookingType": applicationDetails.bkBookingType,
+              "bookingType": applicationDetails.bkBookingType, 
+              "bkRemarks": applicationDetails.bkRemarks,
                "venueName": applicationDetails.bkLocation,
               "sector": applicationDetails.bkSector,
               "bookingPurpose": applicationDetails.bkBookingPurpose,
@@ -274,7 +287,7 @@ name: "",
         },
         "emp": {
           "samparkName": this.state.name,
-          "address":this.state.Address,
+          "samparkaddress": this.state.Address,
           "OpCode":this.state.operatorCode
         },
   //PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,PACC_ROUND_OFF,FACILITATION_CHARGE     
@@ -315,15 +328,16 @@ name: "",
   // downloadEsamparkApp({ BookingInfo: BookingInfo })
   downloadPaccPermissionLetter({ BookingInfo: BookingInfo })
 
+  
+
   }
+
 
   downloadPaymentReceiptBody = async (e) => {
     const { downloadEsamparkApp, userInfo,createPACCApplicationData,documentMap,downloadEsampPaymentReceipt,PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,PACC_ROUND_OFF,FACILITATION_CHARGE} = this.props;
     
     let applicationDetails = createPACCApplicationData ? createPACCApplicationData : 'dataNotFound';
     console.log("applicationDetails--",applicationDetails)
-    // let fdocname = Object.entries(documentMap)[0][1]
-
     let Newugst;
     let perFind = 50;
     let ugst = PACC_TAX 
@@ -346,19 +360,30 @@ name: "",
       approverName = userInfo.roles[i].name
     }
   }
-    let fdocname = Object.entries(documentMap)[0][1]
+  let fdocname = "Not Applicable"
+  let checkDocumentUpload;
+if(documentMap !== undefined && documentMap !== null){
 
+  checkDocumentUpload = Object.entries(documentMap).length === 0;
+  console.log("checkDocumentUpload",checkDocumentUpload)
+
+
+  if(checkDocumentUpload == false){
+    fdocname = Object.entries(documentMap)[0][1]
+  } 
+
+}
     let BookingInfo = [
       {
           "applicantDetail": {
             "name": applicationDetails.bkApplicantName,
             "mobileNumber":applicationDetails.bkMobileNumber,
             "email": applicationDetails.bkEmail,
-              "permanentAddress": "",
+              "permanentAddress": applicationDetails.bkHouseNo,
               "permanentCity": "Chandigarh",
               "sector": applicationDetails.bkSector,
               "fatherName": "",
-              "custGSTN": applicationDetails.bkCustomerGstNo,
+              "custGSTN": applicationDetails.bkCustomerGstNo == "NA" ? "Not Applicable":applicationDetails.bkCustomerGstNo ,
               "placeOfService": "Chandigarh"
           },
           "bookingDetail": {
@@ -367,7 +392,7 @@ name: "",
               "bookingPeriod": getDurationDate(
                 applicationDetails.bkFromDate,
                 applicationDetails.bkToDate
-              ),
+              ), 
               "bookingType": applicationDetails.bkBookingType,
               "venueName": applicationDetails.bkLocation,
               "sector": applicationDetails.bkSector,
@@ -381,6 +406,7 @@ name: "",
                 applicationDetails.bkFromDate,
                 applicationDetails.bkToDate
               ),
+              "applicationNumber": applicationDetails.bkApplicationNumber,
           },
           "generated": {
             "generatedBy": userInfo.name,
@@ -400,7 +426,7 @@ name: "",
             "cgst" :applicationDetails.bkCgst,
             "utgst": applicationDetails.bkCgst,
             "totalgst": PACC_TAX,
-            "refundableCharges": applicationDetails.bkRefundAmount,
+            "refundableCharges": this.props.REFUNDABLE_SECURITY,    //applicationDetails.bkRefundAmount,
             "totalPayment": this.props.totalAmount,
             "paymentDate": convertEpochToDate(this.props.offlineTransactionDate,"dayend"),
             "receiptNo": this.props.recNumber,
@@ -441,69 +467,55 @@ name: "",
   ]
   downloadEsampPaymentReceipt({ BookingInfo: BookingInfo })
  };
-
-  downloadPaymentReceiptButton = async (e) => {
-   await this.downloadPaymentReceiptBody();
-    const {DownloadBWTApplicationDetails,userInfo,Downloadesamparkdetails,PaymentReceiptByESamp}=this.props;
-
-		var documentsPreview = [];
-		let documentsPreviewData;
-		if (PaymentReceiptByESamp && PaymentReceiptByESamp.filestoreIds.length > 0) {	
-			documentsPreviewData = PaymentReceiptByESamp.filestoreIds[0];
-				documentsPreview.push({
-					title: "DOC_DOC_PICTURE",
-					fileStoreId: documentsPreviewData,
-					linkText: "View",
-				});
-				let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
-				let fileUrls =
-					fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
-				
-	
-				documentsPreview = documentsPreview.map(function (doc, index) {
-					doc["link"] =
-						(fileUrls &&
-							fileUrls[doc.fileStoreId] &&
-							fileUrls[doc.fileStoreId].split(",")[0]) ||
-						"";
-					
-					doc["name"] =
-						(fileUrls[doc.fileStoreId] &&
-							decodeURIComponent(
-								fileUrls[doc.fileStoreId]
-									.split(",")[0]
-									.split("?")[0]
-									.split("/")
-									.pop()
-									.slice(13)
-							)) ||
-						`Document - ${index + 1}`;
-					return doc;
-				});
-		
-				setTimeout(() => {
-					window.open(documentsPreview[0].link);
-				}, 100);
-				
-			}
+ downloadPaymentReceiptButton = async (e) => {
+  await this.downloadPaymentReceiptBody();
+  const {DownloadBWTApplicationDetails,userInfo,Downloadesamparkdetails,PaymentReceiptByESamp}=this.props;
   
+      var documentsPreview = [];
+      let documentsPreviewData;
+      if (PaymentReceiptByESamp && PaymentReceiptByESamp.filestoreIds.length > 0) {	
+        documentsPreviewData = PaymentReceiptByESamp.filestoreIds[0];
+          documentsPreview.push({
+            title: "DOC_DOC_PICTURE",
+            fileStoreId: documentsPreviewData,
+            linkText: "View",
+          });
+          let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
+          let fileUrls =
+            fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds,userInfo.tenantId) : {};
+          
     
-  
-  }
-
+          documentsPreview = documentsPreview.map(function (doc, index) {
+            doc["link"] =
+              (fileUrls &&
+                fileUrls[doc.fileStoreId] &&
+                fileUrls[doc.fileStoreId].split(",")[0]) ||
+              "";
+            
+            doc["name"] =
+              (fileUrls[doc.fileStoreId] &&
+                decodeURIComponent(
+                  fileUrls[doc.fileStoreId]
+                    .split(",")[0]
+                    .split("?")[0]
+                    .split("/")
+                    .pop()
+                    .slice(13)
+                )) ||
+              `Document - ${index + 1}`;
+            return doc;
+          });
+      
+          setTimeout(() => {
+            window.open(documentsPreview[0].link);
+          }, 100);
+          
+        }}
+    
 
 
   render() {
     const { createWaterTankerApplicationData,myLocationtwo, downloadBWTApplication,loading,createPACCApplicationData, updatePACCApplicationData } = this.props;
-    //BK_MYBK_PCC_CREATE_APPLICATION_HEADER
-    // Park And Community Centre
-
-    console.log("InSuccessPage--",
-    { labelName: "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER-Value", labelKey: "BK_MYBK_APPLY_SPECIAL_REQUEST_HEADER" },
-    { labelName: "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE--", labelKey: "BK_ES_APPLICATION_CREATED_SUCCESS_MESSAGE" },
-    { labelName: "BK_CS_COMMON_SEND_MESSAGE--", labelKey: "BK_CS_COMMON_SEND_MESSAGE" },
-)
- 
     return (
       <Screen loading={loading}>
       <div className="success-message-main-screen resolve-success">
@@ -588,22 +600,22 @@ let FACILITATION_CHARGE = 0;
 if(billAccountDetailsArray !== "NOt found Any Array"){
 for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
 
-if(billAccountDetailsArray[i].taxHeadCode == "PACC"){
+  if(billAccountDetailsArray[i].taxHeadCode == "PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){//PACC
     PACC = billAccountDetailsArray[i].amount
 }
-else if(billAccountDetailsArray[i].taxHeadCode == "LUXURY_TAX"){
+else if(billAccountDetailsArray[i].taxHeadCode == "CLEANING_CHRGS_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){//LUXURY_TAX
     LUXURY_TAX = billAccountDetailsArray[i].amount
 }
-else if(billAccountDetailsArray[i].taxHeadCode == "REFUNDABLE_SECURITY"){
+else if(billAccountDetailsArray[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){//REFUNDABLE_SECURITY
     REFUNDABLE_SECURITY = billAccountDetailsArray[i].amount
 }
-else if(billAccountDetailsArray[i].taxHeadCode == "PACC_TAX"){
+else if(billAccountDetailsArray[i].taxHeadCode == "CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){//PACC_TAX
     PACC_TAX = billAccountDetailsArray[i].amount
 }
-else if(billAccountDetailsArray[i].taxHeadCode == "PACC_ROUND_OFF"){
+else if(billAccountDetailsArray[i].taxHeadCode == "PACC_ROUND_OFF"){//FACILITATION_CHARGE
     PACC_ROUND_OFF = billAccountDetailsArray[i].amount
 }
-else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHARGE"){
+else if(billAccountDetailsArray[i].taxHeadCode == "FACILITATION_CHRGS_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){
     FACILITATION_CHARGE = billAccountDetailsArray[i].amount
 }
 }

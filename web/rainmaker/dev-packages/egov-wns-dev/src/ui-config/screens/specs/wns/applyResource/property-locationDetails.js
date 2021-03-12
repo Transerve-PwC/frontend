@@ -172,9 +172,33 @@ import { prepareFinalObject, handleScreenConfigurationFieldChange as handleField
         gridDefination: { xs: 12, sm: 6 },
        // errorMessage: "ERR_INVALID_BILLING_PERIOD",
         jsonPath: "applyScreen.property.address.doorNo",
-        pattern: getPattern("alpha-numeric-with-space-and-newline"),
+       // pattern: getPattern("alpha-numeric-with-space-and-newline"),
+         pattern: /^(0)*[1-9][0-9]{0,3}$/i,
       }),
       beforeFieldChange: async (action, state, dispatch) => {
+        if(action.value)
+      { 
+        let plotNo  = Number(action.value)
+        if(plotNo<9)
+        {
+          plotNo =`000${plotNo}`
+        }
+        if(plotNo<99 && plotNo >9 )
+        {
+          plotNo =`00${plotNo}`
+        }
+        if(plotNo<999 && plotNo >99 )
+        {
+          plotNo =`0${plotNo}`
+        }
+        if(plotNo>999)
+        {
+          plotNo =`${plotNo}`
+        }
+          dispatch(prepareFinalObject("applyScreen.property.address.plotNo", plotNo)); 
+          dispatch(prepareFinalObject("applyScreen.property.address.doorNo", plotNo));         
+        
+      }
       
       }
     },

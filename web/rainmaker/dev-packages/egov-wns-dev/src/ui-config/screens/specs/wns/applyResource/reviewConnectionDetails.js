@@ -218,22 +218,22 @@ const getPropertyDetails = {
     scheama: getCommonGrayCard({
       div2: propertyDetailsHeader,
         getPropertyDetailsContainer: getCommonContainer({
-          reviewPropertyId: getLabelWithValueForModifiedLabel(
-            {
-              labelName: "Property Id",
-              labelKey: "WS_PROPERTY_ID_LABEL"
-            },
-            {
-              jsonPath: "applyScreen.property.propertyId",
-            },
-            {
-              labelKey: "WS_OLD_LABEL_NAME"
-            },
-            {
-              jsonPath: "applyScreenOld.property.propertyId",
-              callBack: handleNA,
-            },
-          ),
+          // reviewPropertyId: getLabelWithValueForModifiedLabel(
+          //   {
+          //     labelName: "Property Id",
+          //     labelKey: "WS_PROPERTY_ID_LABEL"
+          //   },
+          //   {
+          //     jsonPath: "applyScreen.property.propertyId",
+          //   },
+          //   {
+          //     labelKey: "WS_OLD_LABEL_NAME"
+          //   },
+          //   {
+          //     jsonPath: "applyScreenOld.property.propertyId",
+          //     callBack: handleNA,
+          //   },
+          // ),
           // reviewPropertyType: getLabelWithValueForModifiedLabel(
           //   {
           //     labelName: "Property Type",

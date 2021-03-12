@@ -15,7 +15,8 @@ import {
   import { getPaymentGateways } from "../../../../ui-utils/commons";
   import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSINESS_SERVICE_RENT } from "../../../../ui-constants";
-
+import {applicationOfflinePaymentDetails} from "../rented-properties/payment"
+import get from "lodash/get";
   const header = getCommonContainer({
     header: getCommonHeader({
       labelName: "Application for Ownership Transfer",
@@ -34,7 +35,7 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
   const setPaymentMethods = async (action, state, dispatch) => {
     const businessService = getQueryArg(window.location.href, "businessService")
     const response = await getPaymentGateways();
-    if(!!response.length) {
+    if(!!response && !!response.length) {
       const paymentMethods = response.map(item => ({
         label: { labelName: item,
         labelKey: item},
@@ -53,7 +54,9 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
         { key: "tenantId", value: tenantId },
         { key: "businessServices", value: businessService }
       ];
+      if(process.env.REACT_APP_NAME === "Citizen") {
       setPaymentMethods(action, state, dispatch)
+      }
       // setBusinessServiceDataToLocalStorage(queryObject, dispatch);
       await fetchBill(action, state, dispatch, businessService);
       let sourceJsonPath, header;
@@ -117,6 +120,19 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
         consumerCode
       )
     )
+    let estimate=get(state.screenConfiguration.preparedFinalObject,"OwnersTemp[0].estimateCardData")
+    let value=0
+   for(var i=0;i<estimate.length;i++){
+     value= value+Number(estimate[i].value)
+   }
+    dispatch(
+      handleField(
+        "pay",
+        "components.div.children.formwizardFirstStep.children.offlinePaymentDetails.children.cardContent.children.detailsContainer.children.amount",
+        "props.value",
+        value.toString()
+      )
+    )
   }
   
   const screenConfig = {
@@ -157,7 +173,11 @@ import { BILLING_BUSINESS_SERVICE_OT, BILLING_BUSINESS_SERVICE_DC, BILLING_BUSIN
                   labelKey: "RP_PAYMENT_HEAD"
                 }),
                 // estimateDetails
-              })
+              }),
+              offlinePaymentDetails : {
+                ...applicationOfflinePaymentDetails,
+                visible: process.env.REACT_APP_NAME === "Employee"
+              }
             }
           },
           footer

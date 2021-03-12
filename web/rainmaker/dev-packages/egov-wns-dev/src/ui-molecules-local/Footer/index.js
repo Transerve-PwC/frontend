@@ -78,8 +78,8 @@ class Footer extends React.Component {
         "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION",
         "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION"];
    
-          if(btnName.includes(item.buttonLabel))
-              window.localStorage.setItem("WNS_STATUS",item.buttonLabel);
+          // if(btnName.includes(item.buttonLabel))
+          //     window.localStorage.setItem("WNS_STATUS",item.buttonLabel);
         }
       setRoute(url);
       return;

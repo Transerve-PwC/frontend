@@ -1,7 +1,7 @@
 import { handleScreenConfigurationFieldChange as handleField, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getUserInfo, getTenantIdCommon } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
-import { fetchBill, findAndReplace, getSearchResults, getSearchResultsForSewerage, getWorkFlowData } from "../../../../../ui-utils/commons";
+import { fetchBill, findAndReplace, getSearchResults, getSearchResultsForSewerage, getWorkFlowData,getBillingEstimation } from "../../../../../ui-utils/commons";
 import { validateFields } from "../../utils";
 import { convertDateToEpoch, convertEpochToDate, resetFieldsForApplication, resetFieldsForConnection } from "../../utils/index";
 import { httpRequest } from "../../../../../ui-utils";
@@ -93,9 +93,36 @@ const renderSearchConnectionTable = async (state, dispatch) => {
         if (element.connectionNo !== "NA" && element.connectionNo !== null) {
           let queryObjectForWaterFetchBill;
           if (element.service === "WATER") {
-            queryObjectForWaterFetchBill = [{ key: "tenantId", value: getTenantIdCommon() }, { key: "consumerCode", value: element.connectionNo }, { key: "businessService", value: "WS" }];
+            // queryObjectForWaterFetchBill = [{ key: "tenantId", value: getTenantIdCommon() },
+            //  { key: "consumerCode", value: element.connectionNo },
+            //  {ket:'paymentMode',value:'cash'},
+            //  {ket:'isGenerateDemand',value:false}
+            //  // { key: "businessService", value: "WS" }
+            // ];
+            queryObjectForWaterFetchBill = {billGeneration:
+              {            
+                consumerCode:element.connectionNo,
+                tenantId:getTenantIdCommon(),
+                paymentMode:'cash',
+                isGenerateDemand:false,            
+              }
+            }
+            
           } else {
-            queryObjectForWaterFetchBill = [{ key: "tenantId", value: getTenantIdCommon() }, { key: "consumerCode", value: element.connectionNo }, { key: "businessService", value: "SW" }];
+            // queryObjectForWaterFetchBill = [{ key: "tenantId", value: getTenantIdCommon() },
+            //  { key: "consumerCode", value: element.connectionNo },
+            //  {ket:'paymentMode',value:'cash'},
+            //  {ket:'isGenerateDemand',value:false}
+            //  // { key: "businessService", value: "SW" }
+            // ];
+            queryObjectForWaterFetchBill = {billGeneration:
+              {            
+                consumerCode:element.connectionNo,
+                tenantId:getTenantIdCommon(),
+                paymentMode:'cash',
+                isGenerateDemand:false,            
+              }
+            }
           }
 
           if (element.service === "WATER" &&
@@ -123,37 +150,43 @@ const renderSearchConnectionTable = async (state, dispatch) => {
             });
           }
 
-          let billResults = await fetchBill(queryObjectForWaterFetchBill, dispatch)
-          billResults ? billResults.Bill.map(bill => {
+         // let billResults = await fetchBill(queryObjectForWaterFetchBill, dispatch)
+          let billResults = await getBillingEstimation(queryObjectForWaterFetchBill, dispatch)
+          billResults ? billResults.billGeneration.map(bill => {
             let updatedDueDate = 0;
-            if (element.service === "WATER") {
-              updatedDueDate = (element.connectionType === 'Metered' ?
-                (bill.billDetails[0].toPeriod + waterMeteredDemandExipryDate) :
-                (bill.billDetails[0].toPeriod + waterNonMeteredDemandExipryDate));
-            } else if (element.service === "SEWERAGE") {
-              updatedDueDate = bill[0].billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
-            }
+            // if (element.service === "WATER") {
+            //   updatedDueDate = (element.connectionType === 'Metered' ?//
+            //     (bill.billDetails[0].toPeriod + waterMeteredDemandExipryDate) :
+            //     (bill.billDetails[0].toPeriod + waterNonMeteredDemandExipryDate));
+            // } else if (element.service === "SEWERAGE") {
+            //   updatedDueDate = bill[0].billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
+            // }
             finalArray.push({
-              due: bill.totalAmount ===null?'':bill.totalAmount,
-              dueDate: updatedDueDate>0? convertDateToEpoch(updatedDueDate):'',
+              //due: bill.totalAmount ===null?'':bill.totalAmount,
+              due: bill.totalNetAmount ===null?'':bill.totalNetAmount,
+              dueDate:bill.dueDateCash,// updatedDueDate>0? convertDateToEpoch(updatedDueDate):'',
               service: element.service,
               connectionNo: element.connectionNo,
+              billGenerationId:bill.billGenerationId,
               name: (element.property) ? element.property.owners[0].name : '',
               status: element.status,
               address: handleAddress(element),
               connectionType: element.connectionType,
-              tenantId: element.tenantId
+              tenantId: element.tenantId,
+              ActionType:element.activityType
             })
           }) : finalArray.push({
             due: 'NA',
             dueDate: 'NA',
             service: element.service,
             connectionNo: element.connectionNo,
+            billGenerationId:bill.billGenerationId,
             name: (element.property) ? element.property.owners[0].name : '',
             status: element.status,
             address: handleAddress(element),
             connectionType: element.connectionType,
-            tenantId: element.tenantId
+            tenantId: element.tenantId,
+            ActionType:element.activityType
           })
         }
 
@@ -273,7 +306,8 @@ const renderSearchApplicationTable = async (state, dispatch) => {
               address: handleAddress(element),
               service: element.service,
               connectionType: element.connectionType,
-              tenantId: element.tenantId
+              tenantId: element.tenantId,
+              ActionType:element.activityType,
             })
           } else {
             finalArray.push({
@@ -284,7 +318,8 @@ const renderSearchApplicationTable = async (state, dispatch) => {
               address: handleAddress(element),
               service: element.service,
               connectionType: element.connectionType,
-              tenantId: element.tenantId
+              tenantId: element.tenantId,
+              ActionType:element.activityType,
             })
           }
         }
@@ -334,7 +369,8 @@ const showConnectionResults = (connections, dispatch) => {
     [getTextToLocalMapping("Address")]: item.address,
     [getTextToLocalMapping("Due Date")]: (item.dueDate !== undefined && item.dueDate !== "NA") ? convertEpochToDate(item.dueDate) : item.dueDate,
     [getTextToLocalMapping("tenantId")]: item.tenantId,
-    [getTextToLocalMapping("connectionType")]: item.connectionType
+    [getTextToLocalMapping("connectionType")]: item.connectionType,
+    [getTextToLocalMapping("billGenerationId")]: item.billGenerationId
   }));
   dispatch(handleField("search", "components.div.children.searchResults", "props.data", data));
   dispatch(handleField("search", "components.div.children.searchResults", "props.rows",
@@ -354,6 +390,7 @@ const showApplicationResults = (connections, dispatch) => {
     [getTextToLocalMapping("tenantId")]: item.tenantId,
     [getTextToLocalMapping("service")]: item.service,
     [getTextToLocalMapping("connectionType")]: item.connectionType,
+    [getTextToLocalMapping("ActionType")]: item.ActionType,
   }));
   dispatch(handleField("search", "components.div.children.searchApplicationResults", "props.data", data));
   dispatch(handleField("search", "components.div.children.searchApplicationResults", "props.rows",

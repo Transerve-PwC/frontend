@@ -37,7 +37,7 @@ export const documentDetails = getCommonCard({
       inputProps: {
         accept: ".pdf"
       },
-      maxFileSize: 1025,
+      maxFileSize: 5024,
       moduleName: "GFCP"
     },
     type: "array"

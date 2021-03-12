@@ -371,14 +371,43 @@ console.log("bkFromTime--bkFromTime",bkFromTime)
   let NewBookToDate = state.screenConfiguration.preparedFinalObject.availabilityCheckData && state.screenConfiguration.preparedFinalObject.availabilityCheckData.bkToDate || "notFound"
   console.log("NewBookToDate--",NewBookToDate)
 
-  let SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo || "notFound"
-  console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+//   let SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo || "notFound"
+//   console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+let SecTimeSlotFromTime  = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo",
+    "NotFound"
+);
+console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+let SecTimeSlotToTime = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo",
+    "NotFound"
+);
+console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
 
-  let SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo || "notFound"
-  console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+let firstToTimeSlot = get(
+    state,
+    "screenConfiguration.preparedFinalObject.Booking.bkToTime",
+    "NotFound"
+);
+console.log("firstToTimeSlot--",firstToTimeSlot)
 
-  let firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTime || "notFound"
-  console.log("firstToTimeSlot--",firstToTimeSlot)
+// let SecTimeSlotFromTime = state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo !== undefined && state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo !== null ? state.screenConfiguration.preparedFinalObject.Booking.bkFromTimeTwo : "notFound"
+//   console.log("SecTimeSlotFromTime--",SecTimeSlotFromTime)
+
+//   let SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo || "notFound"
+//   console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+
+// let SecTimeSlotToTime = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== undefined && state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== null ? state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo :"notFound"
+//   console.log("SecTimeSlotToTime--",SecTimeSlotToTime)
+
+
+//   let firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo && state.screenConfiguration.preparedFinalObject.Booking.bkToTime || "notFound"
+//   console.log("firstToTimeSlot--",firstToTimeSlot)
+
+// let firstToTimeSlot = state.screenConfiguration.preparedFinalObject.Booking.bkToTimeTwo !== undefined && state.screenConfiguration.preparedFinalObject.Booking.bkToTime !== null? state.screenConfiguration.preparedFinalObject.Booking.bkToTime: "notFound"
+//   console.log("firstToTimeSlot--",firstToTimeSlot)
 
   let strMid = ","
 

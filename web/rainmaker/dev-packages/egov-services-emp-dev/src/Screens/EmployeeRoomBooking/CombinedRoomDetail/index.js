@@ -102,7 +102,7 @@ return (
                       label={this.props.ToDate}
                     />
                   </div>
-                  <div className="col-md-4">
+                  {/* <div className="col-md-4">
                     <Label className="col-xs-112  col-sm-12 col-md-12 status-color" label="BK_MY_BK_ROOM_APPLIED_DISCOUNT" />
                     <Label
                       className="col-xs-12 col-sm-12 col-md-12  status-result-color"
@@ -111,7 +111,7 @@ return (
                       labelStyle={{ color: "inherit" }}
                       label={duplicateDiscount}
                     />
-                  </div>
+                  </div> */}
                
                 </div>
               </div>

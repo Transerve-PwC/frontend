@@ -129,7 +129,8 @@ const callBackForNext = async (state, dispatch) => {
                 "data.roomsModel[0].roomApplicationNumber",
                 ""
             );
-            let businessService = get(response, "data.roomsModel[0].roomBusinessService", "");
+            let businessService = "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR";
+           
             const reviewUrl = `/egov-services/applyCommunityCenterRoom?applicationNumber=${roomApplicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));
 

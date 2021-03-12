@@ -185,16 +185,16 @@ const propertyLocationDetails = {
 };
 
 export const propertyDetails={
-  reviewPropertyId: getLabelWithValue(
-    {
-      labelName: "Property Id",
-      labelKey: "WS_PROPERTY_ID_LABEL"
-    },
-    {
-      jsonPath: "WaterConnection[0].property.propertyId",
-      callBack: handleNA
-    }
-  ),
+  // reviewPropertyId: getLabelWithValue(
+  //   {
+  //     labelName: "Property Id",
+  //     labelKey: "WS_PROPERTY_ID_LABEL"
+  //   },
+  //   {
+  //     jsonPath: "WaterConnection[0].property.propertyId",
+  //     callBack: handleNA
+  //   }
+  // ),
   // reviewPropertyType: getLabelWithValue(
   //   {
   //     labelName: "Property Type",

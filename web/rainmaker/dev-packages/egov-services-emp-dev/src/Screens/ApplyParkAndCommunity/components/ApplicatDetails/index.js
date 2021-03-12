@@ -34,10 +34,19 @@ class ApplicatInfo extends Component {
     NewbkBookingType: "Normal Booking",
     ReasonForDiscount : ""
   }
-
+ 
   componentDidMount = async () => {
+    let ShowAmountBooking;    
+    if(this.props.venueType == "Parks"){
+     ShowAmountBooking = "Parks"
+    }   
+   if(this.props.venueType == "Community Center"){
+     ShowAmountBooking = "Community Center"
+    }   
+if(ShowAmountBooking !== null && ShowAmountBooking !== undefined){
 
-
+   this.props.prepareFinalObject("ShowAmountBooking",ShowAmountBooking)
+}
   }
 
   continue = e => {
@@ -125,7 +134,6 @@ class ApplicatInfo extends Component {
       width: "90%",
       overflow: "hidden"
     };
-    
     return (
       <div style={{float: 'left', width: '100%', padding: '36px 15px' }}>
       <div className="col-xs-12" style={{background:'#fff', padding: '15px 0'}}>

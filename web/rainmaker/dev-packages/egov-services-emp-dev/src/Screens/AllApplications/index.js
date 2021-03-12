@@ -119,7 +119,7 @@ class AllRequests extends Component {
       // let newbooking ={...this.props.bookings,applicationData:null} 
 
     this.props.clearBookingData(null,true,true)
-}
+      }
 
     this.props.history.push(`/egov-services/checkavailability_pcc`);
   };

@@ -203,6 +203,7 @@ export const createUpdateIT = async (state, dispatch, action) => {
   
     } catch (error) {
       dispatch(toggleSnackbar(true, { labelName: error.message, labelCode: error.message }, "error" ) );
+      furnishindentData(state, dispatch);
     }
   } else if (action === "UPDATE") {
     try {
@@ -220,6 +221,7 @@ export const createUpdateIT = async (state, dispatch, action) => {
   
     } catch (error) {
       dispatch(toggleSnackbar(true, { labelName: error.message, labelCode: error.message }, "error" ) );
+      furnishindentData(state, dispatch);
     }
   } 
 };

@@ -229,15 +229,19 @@ export const bookingDetails = getCommonCard({
                     } else {
                         let errorMessage = {
                             labelName:
-                                "Something went wrong, Try Again later!",
+                                "Area cannot be more than 1000 square feet",
                             labelKey: "", //UPLOAD_FILE_TOAST
                         };
                         dispatch(
-                            toggleSnackbar(true, errorMessage, "error")
+                            toggleSnackbar(
+                                true,
+                                errorMessage,
+                                "warning"
+                            )
                         );
-                    }
                 }
-
+            }
+            
             }
         },
         venuebasedSummary: {

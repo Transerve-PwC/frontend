@@ -101,7 +101,7 @@ let SIX = (Math.round(six * 100) / 100).toFixed(2);
               </div>
              
 
-              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+              {/* <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="PACPACC_ROUND_OFFC_TAX" />
                 </div>
@@ -109,7 +109,7 @@ let SIX = (Math.round(six * 100) / 100).toFixed(2);
                 <h5 style={{ textAlign: "right" }}>{FIVE ? FIVE : 'NA'}</h5>
               
                 </div>
-              </div>
+              </div> */}
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
@@ -123,7 +123,7 @@ let SIX = (Math.round(six * 100) / 100).toFixed(2);
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="LUXURY_TAX" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_CLEANING_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
                 <h5 style={{ textAlign: "right" }}>{TWO ? TWO : 'NA'}</h5>

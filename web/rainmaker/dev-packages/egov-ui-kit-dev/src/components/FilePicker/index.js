@@ -17,21 +17,40 @@ class FilePicker extends Component {
         .slice(0, maxFiles)
         .forEach(async (key, index) => {
           const file = files[key];
-          if (file.type.match(/^image\//)) {
-            const imageUri = await getImageUrlByFile(file);
-            this.props.handleimage(file, imageUri);
-            if(imageUri)
+            // check filename
+            // const extension = [".txt",
+            //                     ".php",
+            //                     ".exe",
+            //                     ".json"
+            //                     ];
+            let valid = ((file.name.toLowerCase().indexOf(".txt") !== -1)
+                      || (file.name.toLowerCase().indexOf(".php") !== -1)
+                      || (file.name.toLowerCase().indexOf(".exe") !== -1)
+                      || (file.name.toLowerCase().indexOf(".json") !== -1))//extension.includes(file.name);
+            if(!valid)
             {
-              //toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "CORE_COMMON_IMAGE_FILE_UPLOAD_SUCCESS" }, "success");
+            if (file.type.match(/^image\//)) {
+              const imageUri = await getImageUrlByFile(file);
+              this.props.handleimage(file, imageUri);
+              if(imageUri)
+              {
+                //toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "CORE_COMMON_IMAGE_FILE_UPLOAD_SUCCESS" }, "success");
+              }
+              }
+           
+            else
+            {
+              
+              toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "CORE_COMMON_INVALID_IMAGE_FILE" }, "warning");
+  
             }
-            }
-         
-          else
-          {
-            
-            toggleSnackbarAndSetText(true, { labelName: "The file is not a valid image", labelKey: "CORE_COMMON_INVALID_IMAGE_FILE" }, "warning");
-
           }
+          else
+            {
+              
+              toggleSnackbarAndSetText(true, { labelName: "Please select valid file!", labelKey: "CORE_COMMON_INVALID_FILE_EXTENSION" }, "warning");
+  
+            }
         });
     }
   };

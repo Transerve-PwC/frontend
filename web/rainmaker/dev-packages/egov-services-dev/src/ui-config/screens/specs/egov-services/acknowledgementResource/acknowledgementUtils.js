@@ -5,6 +5,7 @@ import {
   getCommonContainer
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 
+import "./index.css";
 const style = {
   bodyBox: {
     marginLeft: 16,
@@ -60,6 +61,7 @@ const acknowledgementCard = ({
           )
         },
         props: {
+          className: "card-view",
           style: style.tailBox
         }
       }

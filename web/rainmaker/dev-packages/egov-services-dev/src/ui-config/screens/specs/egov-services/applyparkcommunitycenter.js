@@ -6,7 +6,7 @@ import {
 import { footer } from "./applyResourceParkCommunityCenter/footer";
 import {
     bankAccountDetails,
-    bankAccountDetailsDisabled, 
+    bankAccountDetailsDisabled,
     personalDetails,
     personalDetailsDisabled,
     bookingDetails,
@@ -194,8 +194,14 @@ const getMdmsData = async (action, state, dispatch) => {
                 code: "PCC_DOCUMENT",
                 description: "PCC_DOCUMENT_DESCRIPTION",
                 documentType: "DOC",
-                dropdownData: [],
-                hasDropdown: false,
+                dropdownData: [
+                    {code:"PCC_DOCUMENT_RATION_CARD", active: true},
+                     {code: "PCC_DOCUMENT_VOTER_ID", active:true},
+                     {code:"PCC_DOCUMENT_DL", active: true},
+                     {code: "PCC_DOCUMENT_ADHAR", active:true},
+                     {code: "PCC_DOCUMENT_OTHERS", active:true}
+                    ],
+                hasDropdown: true,
                 required: true,
             },
         ];
@@ -594,7 +600,7 @@ const screenConfig = {
                 )
             );
         } else {
-            // dispatch(setRoute(`/egov-services/checkavailability_pcc`));
+            dispatch(setRoute(`/egov-services/checkavailability_pcc`));
         }
 
         // Code to goto a specific step through URL
@@ -660,7 +666,7 @@ const screenConfig = {
                     uiFramework: "custom-containers-local",
                     moduleName: "egov-services",
                     componentPath: "ParkChangeDateVenueFieldDisabler",
-                   
+
                 },
             },
         },

@@ -7,7 +7,7 @@ import { httpRequest } from "egov-ui-kit/utils/api";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Paper } from '@material-ui/core';
 import SearchIcon from "material-ui/svg-icons/action/search";
-
+import moment from 'moment';
 
 
 class CGBookingDetails extends Component {
@@ -44,6 +44,13 @@ const hintTextStyle = {
   overflow: "hidden"
 };
 
+let TodayDate = new Date()
+    console.log("TodayDate--",TodayDate) //YYYY-MM-DD
+    let FormatChange = moment(TodayDate).format("DD-MM-YYYY");
+    console.log("FormatChange--",FormatChange)
+    let strDate = FormatChange.toString();
+    console.log("strDate--",strDate)
+
 return (
       <div>
         <Card
@@ -61,12 +68,12 @@ return (
           <TextField
             id="PaymentReceiptNumber"
             name="PaymentReceiptNumber"
-            type="string"
+            type="string" 
             value={PaymentReceiptNumber}
             required = {true}
             hintText={
               <Label
-                label="Receipt Number"   // label="BK_MYBK_RECEIPT_NUMBER"
+                label="BK_MYBK_CREATE_TRANSACTION_NUMBER"   // label="BK_MYBK_RECEIPT_NUMBER"
                 color="rgba(0, 0, 0, 0.3799999952316284)"
                 fontSize={16}
                 labelStyle={hintTextStyle}
@@ -75,7 +82,7 @@ return (
             floatingLabelText={
               <Label
                 key={0}
-                label="Receipt Number"
+                label="BK_MYBK_CREATE_TRANSACTION_NUMBER"
                 color="rgba(0,0,0,0.60)"
                 fontSize="12px"
               />
@@ -92,7 +99,8 @@ return (
                   <TextField
                     id="transactionDate"
                     name="transactionDate"
-                    value={transactionDate}
+                    type="string"
+                    value={strDate}
                     hintText={
                       <Label
                         color="rgba(0, 0, 0, 0.3799999952316284)"
@@ -104,7 +112,7 @@ return (
                     floatingLabelText={
                       <Label
                         key={1}
-                        label="Transaction Date"    // label="BK_MYBK_TRDATE_PLACEHOLDER"
+                        label="BK_MYBK_TRDATE_PLACEHOLDER"    // label="BK_MYBK_TRDATE_PLACEHOLDER"
                         color="rgba(0,0,0,0.60)"
                         fontSize="12px"
                       />
@@ -119,8 +127,6 @@ return (
                       borderBottom: "1px solid #e0e0e0"
                     }}
                     hintStyle={{ width: "100%" }}
-
-                    type="date"
                     defaultValue="2017-05-24"
                     InputLabelProps={{
                       shrink: true,

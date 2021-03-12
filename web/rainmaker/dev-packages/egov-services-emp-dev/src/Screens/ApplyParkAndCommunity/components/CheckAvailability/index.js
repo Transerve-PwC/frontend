@@ -97,7 +97,8 @@ class CheckAvailability extends Component {
     // this.setState({ vanueType: event.target.value },this.SetDataParkCom());
     this.setState(
       { vanueType: event.target.value },
-      prepareFinalObject("DropDownValue", event.target.value)
+      prepareFinalObject("DropDownValue", event.target.value),
+      prepareFinalObject("DropDownValue333",this.state.vanueType)
     );
 
     if (this.state.vanueType != undefined) {
@@ -110,6 +111,7 @@ class CheckAvailability extends Component {
         // alert("park & community");
       }
     }
+    prepareFinalObject("DropDownValue222", this.state.vanueType)
     this.setState({
       availabilityCheckData: { bkBookingType: event.target.value },
     });
@@ -542,7 +544,7 @@ if(NewBookFromDate != "notFound" && NewBookToDate != "notFound"){
       console.log("xinMap--",x)
       // if(x.name == oldBookingData.Sector){
       //   RepeatSectorData = x
-      // }
+      // } 
       console.log("x.name == oldBookingData.Sector--",x.name == oldBookingData.Sector)
       // console.log("dfghkllll--",RepeatSectorData)
       return x.name == oldBookingData.bkBookingVenue 
@@ -550,7 +552,7 @@ if(NewBookFromDate != "notFound" && NewBookToDate != "notFound"){
     console.log("result--",result)
     prepareFinalObject(
       "bkBookingData",
-      result
+      result[0]
   );
     console.log("testingPurpose--fouruuuuu")
     this.props.history.push(`/egov-services/applyPark-community-center`);
@@ -984,6 +986,7 @@ else{  /**loop for new Booking Create**/
             {/*for old availbility check  import timeSlot Selected One*/}
             {this.state.oldBookingData &&
             this.state.oldBookingData.bkBookingType == "Community Center" &&
+            this.state.oldBookingData.bkBookingVenue !== "HALL+LAWN AT COMMUNITY CENTRE SECTOR 39 CHANDIGARH" &&
             this.state.availabilityCheckData.bkBookingType ==
               "Community Center" &&
             this.props.bookingVenue == "NotFound" ? (
@@ -999,7 +1002,7 @@ else{  /**loop for new Booking Create**/
             )}
 
             {/*for old availbility check  import Selected timeSlot To show On UI*/}
-            {this.state.oldBookingData &&
+            {this.state.oldBookingData && this.state.oldBookingData.bkBookingVenue !== "HALL+LAWN AT COMMUNITY CENTRE SECTOR 39 CHANDIGARH" &&
             this.state.oldBookingData.bkBookingType == "Community Center" &&
             this.state.availabilityCheckData.bkBookingType ==
               "Community Center" &&
@@ -1151,8 +1154,7 @@ else{  /**loop for new Booking Create**/
               )}
             {/*end of book button for commercil*/}
 
-            {this.state.availabilityCheckData &&
-              this.state.availabilityCheckData.bkSector &&
+            {this.state.oldBookingData == "notfound"&&
               vanueData != undefined && (
                 <div
                   className="col-sm-12 col-xs-12"

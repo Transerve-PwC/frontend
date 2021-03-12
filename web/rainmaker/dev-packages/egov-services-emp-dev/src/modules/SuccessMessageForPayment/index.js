@@ -16,6 +16,7 @@ class SuccessMessage extends Component {
             <div className="col-sm-5 spl-app-header-number" > <Label label={label1} /></div>
             {/* <div class="col-sm-5">  </div> */}
           </div>
+
         </div>
         <Card
 

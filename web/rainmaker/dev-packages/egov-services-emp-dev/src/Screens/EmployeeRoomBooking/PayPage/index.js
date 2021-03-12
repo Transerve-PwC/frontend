@@ -67,7 +67,7 @@ class SummaryDetails extends Component {
             // );
 
  fetchPayment(
-    [{ key: "consumerCode", value: fetchApplicationNumber }, { key: "businessService", value: "BKROOM" }, { key: "tenantId", value: userInfo.tenantId }
+    [{ key: "consumerCode", value: fetchApplicationNumber }, { key: "businessService", value: "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR" }, { key: "tenantId", value: userInfo.tenantId }
     ])
 
  fetchDataAfterPayment(
@@ -150,7 +150,7 @@ class SummaryDetails extends Component {
             "Payment" : {         
                 "paymentDetails": [
                     {
-                      "businessService": "PACC",
+                      "businessService": "BKROOM",
                       "billId": billId,
                       "totalDue": TotalAmount,
                       "totalAmountPaid": TotalAmount
@@ -174,7 +174,7 @@ class SummaryDetails extends Component {
             "Payment" : {         
                 "paymentDetails": [
                     {
-                      "businessService": "PACC",
+                      "businessService": "BKROOM",
                       "billId": billId,
                       "totalDue": TotalAmount,
                       "totalAmountPaid": TotalAmount
@@ -198,7 +198,7 @@ class SummaryDetails extends Component {
             "Payment" : {         
                 "paymentDetails": [
                     {
-                      "businessService": "PACC",
+                      "businessService": "BKROOM",
                       "billId": billId,
                       "totalDue": TotalAmount,
                       "totalAmountPaid": TotalAmount
@@ -467,17 +467,11 @@ console.log("paymentDataOne--",paymentDataOne)
     let six = 0;
 for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
 
-    if(billAccountDetailsArray[i].taxHeadCode == "BKROOM_TAX"){
+    if(billAccountDetailsArray[i].taxHeadCode == "CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
         one = billAccountDetailsArray[i].amount
     }
-    else if(billAccountDetailsArray[i].taxHeadCode == "BKROOM"){
+    else if(billAccountDetailsArray[i].taxHeadCode == "RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
         two = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "BKROOM_ROUND_OFF"){
-        three = billAccountDetailsArray[i].amount
-    }
-    else if(billAccountDetailsArray[i].taxHeadCode == "ROOM_FACILITATION_CHARGE"){
-        four = billAccountDetailsArray[i].amount
     }
 }
 

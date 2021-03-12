@@ -114,7 +114,8 @@ export const revisionDetails = (IsEdit) => {
          minValue:0,
           maxLength:18,
         props: {
-         disabled:!IsEdit,       
+          //disabled:false,
+          disabled:!IsEdit,       
         },
         // localePrefix: {
         //   moduleName: "egov-pms",
@@ -145,6 +146,7 @@ export const revisionDetails = (IsEdit) => {
        minValue:0,
         maxLength:18,
       props: {
+       // disabled:false,
         disabled:!IsEdit,       
       },
       // localePrefix: {
@@ -177,7 +179,7 @@ export const revisionDetails = (IsEdit) => {
      minValue:0,
       maxLength:18,
     props: {
-     disabled:true,       
+     disabled:false,       
     },
     // localePrefix: {
     //   moduleName: "egov-pms",
@@ -208,7 +210,7 @@ effectiveEndMonth:{
    minValue:0,
     maxLength:18,
   props: {
-    disabled:true,       
+    disabled:false,       
   },
   // localePrefix: {
   //   moduleName: "PENSION",

@@ -89,7 +89,8 @@ const setSearchResponse = async (
     if (bookingStatus === "APPLIED") {
         await generageBillCollection(state, dispatch, roomapplicationNumber, tenantId)
     } else {
-        await generateBill(state, dispatch, roomapplicationNumber, tenantId, recData[0].businessService);
+          
+        await generateBill(state, dispatch, roomapplicationNumber, tenantId, "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR");
     }
     const CitizenprintCont = footerReviewTop(
        action,

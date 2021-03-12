@@ -10,6 +10,8 @@ import {
   getLabel,
   getPattern,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+
+import "./checkAvailabilityCss/pccCheckAvailability.css";
 import {
   
   getAvailabilityData,
@@ -352,6 +354,8 @@ export const availabilityForm = getCommonCard({
     uiFramework: "custom-atoms",
     componentPath: "Container",
     props: {
+      
+      className: "checkavailability-footer",
       style: { marginBottom: "10px" },
     },
     children: {
@@ -393,11 +397,11 @@ export const availabilityForm = getCommonCard({
             labelKey: "Parks",
             value: "Parks",
           },
-          {
-            label: "Commercial Ground",
-            labelKey: "Commercial Ground",
-            value: "Commercial Ground",
-          },
+         // {
+          //   label: "Commercial Ground",
+          //   labelKey: "Commercial Ground",
+          //   value: "Commercial Ground",
+          // },
         ],
         jsonPath: "availabilityCheckData.bkBookingType",
         defaultValue: "Parks",
@@ -941,6 +945,8 @@ export const availabilityCalendar = getCommonCard({
         xs: 12,
       },
       props: {
+        
+        className: "checkavailability-footer",
         style: {
           justifyContent: "flex-end",
         },

@@ -13,7 +13,7 @@ render() {//currentAppStatus
 const {amount, cGST, utGST, location,facilationChargesSuccess,result, firstStep,fc,seven,
   BK_FEE_HEAD_PACC,LUXURY_TAX,REFUNDABLE_SECURITY,PACC_TAX,totalAmountSuPage,one,two,three,four,five,six,currentAppStatus,
   PACPACC_ROUND_OFFC_TAX,FACILITATION_CHARGE} = this.props
-
+console.log("propsOfIniateOfPACCpage",this.props)
 // let num = 100.000;
 // let convNumAmount =  Number(amount)
 // let conNumcGST =  Number(cGST)
@@ -77,12 +77,12 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
 // let RoundAmount = (Math.round(TotalAmountSp * 100) / 100).toFixed(2);
     return (
       <div>
-        <Card
+        <Card 
           textChildren={
             <div>  
                 <Label label="BK_MYBK_FEE_ESTIMATE" containerStyle={{ marginLeft: "13px" }} labelClassName="dark-heading" />
                       <button
-                        style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "650", float: 'right', marginRight: '43px', marginTop: '-16px', background: "white" }}
+                        style={{ color: "#FE7A51", border: "none", outline: "none", fontWeight: "650", float: 'right', marginRight: '43px', marginTop: '-2px', background: "white" }}
                         onClick={(e)=>this.props.firstStep(e)}
                         >
                         <EditIcon />
@@ -93,7 +93,7 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
                     </button>
                 {currentAppStatus == "OFFLINE_RE_INITIATED" ?  <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_DATE/VENUE_CHANGE" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAXES" />
                 </div>
                 <div className="col-sm-4 col-xs-12"> 
                 <h5 style={{ textAlign: "right" }}>{seven ? seven : 'NA'}</h5>
@@ -120,7 +120,7 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
               </div>
              
 
-              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+              {/* <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="PACPACC_ROUND_OFFC_TAX" />
                 </div>
@@ -128,7 +128,7 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
                 <h5 style={{ textAlign: "right" }}>{FIVE ? FIVE : 'NA'}</h5>
               
                 </div>
-              </div>
+              </div> */}
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
@@ -142,7 +142,7 @@ let SEVEN = (Math.round(totalAmountSuPage * 100) / 100).toFixed(2);
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="LUXURY_TAX" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_CLEANING_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
                 <h5 style={{ textAlign: "right" }}>{TWO ? TWO : 'NA'}</h5>

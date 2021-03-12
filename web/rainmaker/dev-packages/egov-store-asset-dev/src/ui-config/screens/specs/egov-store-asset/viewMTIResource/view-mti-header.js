@@ -94,8 +94,8 @@ export const getMTIHeaderView = (isReview = true) => {
       ),
       expectedDeliveryDate: getLabelWithValue(
         {
-          labelName: "Indent Date",
-          labelKey: "STORE_MATERIAL_INDENT_INDENT_DATE"
+          labelName: "Expected Delivery Date",
+          labelKey: "STORE_MATERIAL_INDENT_EXPECTED_DELIVERY_DATE"
         },
         { jsonPath: "indents[0].expectedDeliveryDate" }
       ),

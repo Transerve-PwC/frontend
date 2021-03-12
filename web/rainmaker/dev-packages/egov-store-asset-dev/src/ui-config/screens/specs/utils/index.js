@@ -118,6 +118,10 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
       DateObj.setHours(DateObj.getHours() + 24);
       DateObj.setSeconds(DateObj.getSeconds() - 1);
     }
+    if (dayStartOrEnd === "daymid") {
+      DateObj.setHours(DateObj.getHours() + 8);
+      DateObj.setSeconds(DateObj.getSeconds() - 1);
+    }
     return DateObj.getTime();
   } catch (e) {
     return dateString;

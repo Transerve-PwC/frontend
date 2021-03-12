@@ -27,7 +27,7 @@ import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import { generageBillCollection, generateBill, clearlocalstorageAppDetails, calculateCancelledBookingRefundAmount, getAllbillsOfBooking } from "../utils";
-import { pccSummary, changedVenueDatepccSummary } from "./summaryResource/pccSummary";
+import { pccSummary,pccParkSummary,  changedVenueDatepccSummary } from "./summaryResource/pccSummary";
 import { pccApplicantSummary,pccBankSummary ,roomBookingSummary} from "./summaryResource/pccApplicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary, modifiedBookingPaymentCard } from "./summaryResource/estimateSummary";
@@ -119,12 +119,12 @@ const HideshowFooter = async (action, bookingStatus, fromDate, bookingObj, state
     let showFooter = false;
     if (bookingObj.timeslots.length > 0) {
         let [fromTime] = bookingObj.timeslots[0].slot.split("-");
-        if (fromTime == "10AM") {
-            bookingTimeStamp = new Date(`${fromDate}T10:00:00`).getTime();
-        } else if (fromTime == "2PM") {
-            bookingTimeStamp = new Date(`${fromDate}T14:00:00`).getTime();
-        } else if (fromTime == "6PM") {
-            bookingTimeStamp = new Date(`${fromDate}T18:00:00`).getTime();
+        if (fromTime == "9AM") {
+            bookingTimeStamp = new Date(`${fromDate}T09:00:00`).getTime();
+        } else if (fromTime == "1PM") {
+            bookingTimeStamp = new Date(`${fromDate}T13:00:00`).getTime();
+        } else if (fromTime == "5PM") {
+            bookingTimeStamp = new Date(`${fromDate}T17:00:00`).getTime();
         }
     }
     if (bookingStatus === "APPLIED") {
@@ -144,11 +144,11 @@ const HideshowFooter = async (action, bookingStatus, fromDate, bookingObj, state
     let refundSecAmount = 0;
     // let refundAmount = 0;
     for (let i = 0; i < billAccountDetails.length; i++) {
-        if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+        if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH" ||billAccountDetails[i].taxHeadCode =="SECURITY_CHRGS_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH") {
             bookingAmount += billAccountDetails[i].amount;
             refundSecAmount += billAccountDetails[i].amount;
         }
-        if (billAccountDetails[i].taxHeadCode == "PACC") {
+        if (billAccountDetails[i].taxHeadCode == "PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH" || billAccountDetails[i].taxHeadCode =="RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH") {
             bookingAmount += billAccountDetails[i].amount;
         }
     }
@@ -353,6 +353,13 @@ const setSearchResponse = async (
                 ])
             );
         } else {
+            let businessService=""
+            if(recData[0].bkBookingType==="Community Center"){
+                businessService = "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR";
+            }else{
+                businessService = "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE";
+            }
+           
             await generateBill(
                 state,
                 dispatch,
@@ -680,12 +687,21 @@ const screenConfig = {
                     modifiedBookingPaymentCard: modifiedBookingPaymentCard,
                     pccApplicantSummary: pccApplicantSummary,
                     pccSummary: pccSummary,
+                    pccParkSummaryDetail: pccParkSummary, 
                     changedVenueDatepccSummary: changedVenueDatepccSummary,
                     pccBankSummary: pccBankSummary, 
                     //roomBookingSummary :roomBookingSummary,
                     documentsSummary: documentsSummary,
                     // remarksSummary: remarksSummary,
                 }),
+                ParkChangeDateVenueFieldDisablerNew: {
+                    uiFramework: "custom-containers-local",
+                    moduleName: "egov-services",
+                    componentPath: "ParkChangeDateVenueFieldDisabler",
+                    props: {
+                       page : "previewPage"
+                      },
+                },
                 // break: getBreak(),
                 footer: footerForParkAndCC,
             },

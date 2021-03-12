@@ -147,7 +147,12 @@ import {
                {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].purchaseOrderDetail.id`,purchaseOrderDetails[0].id));
                 if(material.length>0)
-                dispatch(prepareFinalObject("ReceiptMaterial",material));
+                {
+                  dispatch(prepareFinalObject("ReceiptMaterial",[]));
+                  dispatch(prepareFinalObject("ReceiptMaterial",material));
+
+                }
+               
                 else
                 {
                   let LocalizationCodeValue = getLocalizationCodeValue("STORE_MATERIAL_NOT_EXIST_PO")
@@ -157,14 +162,15 @@ import {
                   };
                   dispatch(toggleSnackbar(true, errorMessage, "warning"));
                 }
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.code`,purchaseOrderDetails[0].uom.code));
-                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.name`,purchaseOrderDetails[0].uom.name));
-                //set AvailableQty from  po purchaseOrderDetails 0 index receivedQuantity,orderQuantity,unitPrice(unitRate)
-                //
-                  dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,purchaseOrderDetails[0].receivedQuantity));
-                  dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,purchaseOrderDetails[0].orderQuantity));
-                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
-                
+                ////
+                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.code`,purchaseOrderDetails[0].uom.code));
+                // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.name`,purchaseOrderDetails[0].uom.name));
+                // //set AvailableQty from  po purchaseOrderDetails 0 index receivedQuantity,orderQuantity,unitPrice(unitRate)
+                // //
+                //   dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,purchaseOrderDetails[0].receivedQuantity));
+                //   dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,purchaseOrderDetails[0].orderQuantity));
+                //  dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
+                ////
                  
                  //materialReceipt[0].supplier.code
                  
@@ -183,25 +189,34 @@ import {
                   dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].supplier.code`,purchaseOrder[0].supplier.code));
                   dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].supplier.name`,purchaseOrder[0].supplier.name));
                  }
+                //set AvailableQty from  po purchaseOrderDetails 0 index receivedQuantity,orderQuantity,unitPrice(unitRate) null                  
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.code`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.name`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.name`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.code`,''));
+                dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.description`,''));
                  
                  //dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].receivedQty`,purchaseOrderDetails[0].receivedQuantity));
                 // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].acceptedQty`,purchaseOrderDetails[0].orderQuantity));
                 // dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].totalAcceptedvalue`,purchaseOrderDetails[0].orderQuantity * purchaseOrderDetails[0].unitPrice));
 
                  //set total value on Qty Change
-                 let cardJsonPath =
-                 "components.div.children.formwizardSecondStep.children.materialReceiptDetail.children.cardContent.children.materialReceiptCard.props.items";
-                let pagename = `createMaterialReceiptNote`;
-                let jasonpath =  "materialReceipt[0].receiptDetails";
-                let InputQtyValue = "indentQuantity";
-                let TotalValue_ = "totalAcceptedvalue";
-                let TotalQty ="acceptedQty"
-                let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
-                if(Qty && Qty[0])
-                {                
-                 dispatch(prepareFinalObject(`materialReceipt[0].totalvalue`, Qty[0].TotalValue));
-                 dispatch(prepareFinalObject(`materialReceipt[0].totalQty`, Qty[0].TotalQty)); 
-                }
+                //  let cardJsonPath =
+                //  "components.div.children.formwizardSecondStep.children.materialReceiptDetail.children.cardContent.children.materialReceiptCard.props.items";
+                // let pagename = `createMaterialReceiptNote`;
+                // let jasonpath =  "materialReceipt[0].receiptDetails";
+                // let InputQtyValue = "indentQuantity";
+                // let TotalValue_ = "totalAcceptedvalue";
+                // let TotalQty ="acceptedQty"
+                // let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
+                // if(Qty && Qty[0])
+                // {                
+                //  dispatch(prepareFinalObject(`materialReceipt[0].totalvalue`, Qty[0].TotalValue));
+                //  dispatch(prepareFinalObject(`materialReceipt[0].totalQty`, Qty[0].TotalQty)); 
+                // }
 
               }
             }
@@ -243,6 +258,52 @@ import {
                 dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].material.description`,materials[0].description));
                 //dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].baseUom.code));
                // dispatch(prepareFinalObject("materialReceipt[0].receiptDetails[0].uom.name",materials[0].name));
+                }
+                if(action.value)
+                {
+                  
+                  ////
+                  let purchaseOrder = get(
+                    state.screenConfiguration.preparedFinalObject,
+                    `purchaseOrder.purchaseOrders`,
+                    []
+                  ); 
+                  let purchaseOrderNumber = get(state,'screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDetails[0].purchaseOrderDetail.purchaseOrderNumber','')
+                  purchaseOrder = purchaseOrder.filter(x=>x.purchaseOrderNumber === purchaseOrderNumber)
+                  let purchaseOrderDetails =get(
+                    purchaseOrder[0],
+                    `purchaseOrderDetails`,
+                    []
+                  );
+                  
+                  //purchaseOrder =  purchaseOrder.filter(x=> x.purchaseOrderNumber === purchaseOrderNumber) 
+                  purchaseOrderDetails = purchaseOrderDetails.filter(x=>x.material.code === action.value)
+                  if(purchaseOrderDetails &&purchaseOrderDetails[0])
+                  {
+                    dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.code`,purchaseOrderDetails[0].uom.code));
+                    dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].uom.name`,purchaseOrderDetails[0].uom.name));
+                    //set AvailableQty from  po purchaseOrderDetails 0 index receivedQuantity,orderQuantity,unitPrice(unitRate)
+                    //
+                    dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].AvailableQty`,purchaseOrderDetails[0].receivedQuantity));
+                    dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].orderQuantity`,purchaseOrderDetails[0].orderQuantity));
+                    dispatch(prepareFinalObject(`materialReceipt[0].receiptDetails[${cardIndex}].unitRate`,purchaseOrderDetails[0].unitPrice));
+
+                  }
+                
+                ////
+                }
+                let cardJsonPath =
+                 "components.div.children.formwizardSecondStep.children.materialReceiptDetail.children.cardContent.children.materialReceiptCard.props.items";
+                let pagename = `createMaterialReceiptNote`;
+                let jasonpath =  "materialReceipt[0].receiptDetails";
+                let InputQtyValue = "indentQuantity";
+                let TotalValue_ = "totalAcceptedvalue";
+                let TotalQty ="acceptedQty"
+                let Qty = GetTotalQtyValue(state,cardJsonPath,pagename,jasonpath,InputQtyValue,TotalValue_,TotalQty)
+                if(Qty && Qty[0])
+                {                
+                 dispatch(prepareFinalObject(`materialReceipt[0].totalvalue`, Qty[0].TotalValue));
+                 dispatch(prepareFinalObject(`materialReceipt[0].totalQty`, Qty[0].TotalQty)); 
                 }
 
               }

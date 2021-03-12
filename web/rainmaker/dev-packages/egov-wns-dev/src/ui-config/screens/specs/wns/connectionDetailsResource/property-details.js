@@ -98,12 +98,12 @@ const propertyDetails = getCommonContainer({
 // const locationOnMap = WaterConnection[0].property.address.locality.code + WaterConnection[0].property.address.locality.code
 
 const propertyLocationDetails = getCommonContainer({
-  propertyId: getLabelWithValue(
-    {
-      labelKey: "WS_PROPERTY_ID_LABEL"
-    },
-    { jsonPath: "WaterConnection[0].property.propertyId" }
-  ),
+  // propertyId: getLabelWithValue(
+  //   {
+  //     labelKey: "WS_PROPERTY_ID_LABEL"
+  //   },
+  //   { jsonPath: "WaterConnection[0].property.propertyId" }
+  // ),
   city: getLabelWithValue(
     {
       labelKey: "WS_PROP_DETAIL_CITY"

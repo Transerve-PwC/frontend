@@ -181,7 +181,7 @@ const callBackForNext = async (state, dispatch) => {
                 "data.bkApplicationNumber",
                 ""
             );
-            let businessService = get(response, "data.businessService", "");
+            let businessService = "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES";
             // const reviewUrl = `/egov-services/applyopenspacewmcc?applicationNumber=${applicationData.bkApplicationNumber}&tenantId=${applicationData.tenantId}&businessService=${applicationData.businessService}&fromDate=${applicationData.bkFromDate}&toDate=${applicationData.bkToDate}&sector=${applicationData.bkSector}&venue=${applicationData.bkBookingVenue}`;
             const reviewUrl = `/egov-services/applyopenspacewmcc?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));

@@ -9,7 +9,75 @@ import {
   } from "egov-ui-framework/ui-redux/screen-configuration/actions";
  class index extends Component {
 
-    componentDidMount(){
+    
+    componentDidMount (){
+
+        if(this.props.page!==undefined && this.props.page=== "summaryDetails"){
+            this.parkSummaryVenueDetailsDisabler()
+        }else if(this.props.page!==undefined && this.props.page=== "previewPage"){
+            this.changeDateVenuePreviewCardDisabler()
+           
+        }else{
+            this.changeDateVenueCardDisabler()
+        }
+    }
+    changeDateVenuePreviewCardDisabler(){
+        const bookingType = get(
+            this.props.state,
+            "screenConfiguration.preparedFinalObject.Booking.bkBookingType",
+            {}
+        );
+
+
+       
+        if(bookingType!= {} && bookingType === "Parks"){
+          
+            set(
+                this.props.state.screenConfiguration.screenConfig["pcc-search-preview"],
+                "components.div.children.body.children.cardContent.children.changedVenueDatepccSummary.visible" ,
+                  false
+                );
+          
+        }else{
+
+            set(
+                this.props.state.screenConfiguration.screenConfig["pcc-search-preview"], 
+                "components.div.children.body.children.cardContent.children.pccParkSummaryDetail.visible" , 
+                   false
+                );
+           
+        }
+        this.setState({test: 2})
+	    this.props.prepareFinalObject("changeDateVenue",'Enabled')
+	} 
+    parkSummaryVenueDetailsDisabler(){
+        const bookingType = get(
+            this.props.state,
+            "screenConfiguration.preparedFinalObject.Booking.bkBookingType",
+            {}
+        );
+
+
+       
+        if(bookingType!= {} && bookingType === "Parks"){
+            set(
+                this.props.state.screenConfiguration.screenConfig["applyparkcommunitycenter"],
+                "components.div.children.formwizardFifthStep.children.summaryDetails.children.cardContent.children.pccSummary.visible",
+                 false
+                );
+          
+        }else{
+            set(
+                this.props.state.screenConfiguration.screenConfig["applyparkcommunitycenter"], 
+                "components.div.children.formwizardFifthStep.children.summaryDetails.children.cardContent.children.pccParkSummary.visible",
+                false
+                );
+           
+        }
+        this.setState({test: 2})
+	    this.props.prepareFinalObject("changeDateVenue",'Enabled')
+	} 
+    changeDateVenueCardDisabler(){
         const changeDateVenue = getQueryArg(
             window.location.href,
             "changeDateVenue"

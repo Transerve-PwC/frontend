@@ -34,7 +34,7 @@ const mapStateToProps = (state, ownProps) => {
     );
     let refundAmount = 0;
     for(let i = 0; i<billAccountDetails.length; i++){
-        if(billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY"){
+        if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH" ||billAccountDetails[i].taxHeadCode =="SECURITY_CHRGS_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH") {
             refundAmount += billAccountDetails[i].amount;
         }
 

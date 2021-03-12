@@ -86,6 +86,19 @@ export const getTextToLocalMapping = (label) => {
             "WS_COMMON_TABLE_COL_ACTION_LABEL",
             localisationLabels
           );
+          case "ActionType":
+            return getLocaleLabels(
+              "ActionType",
+              "Action Type",
+              localisationLabels
+            );
+            case"billGenerationId":
+            return getLocaleLabels(
+              "billGenerationId",
+              "billGenerationId",
+              localisationLabels
+            );
+
     case "Search Results for Water & Sewerage Application":
       return getLocaleLabels(
         "Search Results for Water & Sewerage Application",
@@ -154,6 +167,37 @@ export const searchApplicationResults = {
       getTextToLocalMapping("Application Status"),
       getTextToLocalMapping("Address"),
       {
+        name: getTextToLocalMapping("Action"),
+        options: {
+          filter: false,
+          customBodyRender: (value, data) => {
+           // if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
+              if ((data.rowData[4] > 0 && data.rowData[4] !== 0) &&(data.rowData[3] !== undefined? data.rowData[3].toUpperCase() !== "INITIATED":'')) {
+              return (
+                <div className="linkStyle" onClick={() => getViewBillDetails(data)} style={{ color: '#fe7a51', textTransform: 'uppercase' }}>
+                  <LabelContainer
+                    labelKey="WS_COMMON_COLLECT_LABEL"
+                    style={{
+                      color: "#fe7a51",
+                      fontSize: 14,
+                    }}
+                  />
+                </div>
+              )
+            } else if (data.rowData[4] === 0) {
+              return (
+                <div style={{ textTransform: 'uppercase',color: "#008000", }}>
+                  Paid
+                </div>
+              )
+            }
+            else {
+              return ("NA")
+            }
+          }
+        }
+      },
+      {
         name:   getTextToLocalMapping("tenantId"),
         options: {
           display: false
@@ -167,6 +211,18 @@ export const searchApplicationResults = {
       },
       {
         name:   getTextToLocalMapping("connectionType"),
+        options: {
+          display: false
+        }
+      },
+      {
+        name:   getTextToLocalMapping("ActionType"),
+        options: {
+          display: false
+        }
+      },
+      {
+        name: getTextToLocalMapping("billGenerationId"),
         options: {
           display: false
         }
@@ -200,9 +256,29 @@ export const searchApplicationResults = {
 };
 
 const getApplicationDetails = data => {
-  window.location.href = `search-preview?applicationNumber=${data.rowData[1]}&tenantId=${data.rowData[6]}&history=true&service=${data.rowData[7]}`
+  const activityType = data.rowData[9]
+  if(activityType){
+    switch(activityType.toUpperCase()){
+      case "NEW_WS_CONNECTION":  window.localStorage.setItem("wns_workflow","REGULARWSCONNECTION"); break;
+      case "APPLY_FOR_TEMPORARY_CONNECTION":  window.localStorage.setItem("wns_workflow","TEMPORARY_WSCONNECTION"); break;
+      case "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_TEMP"); break;
+      case "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_REGULAR"); break;
+      case "PERMANENT_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_DISCONNECTION"); break;        
+      case "TEMPORARY_DISCONNECTION":  window.localStorage.setItem("wns_workflow","WS_TEMP_DISCONNECTION"); break;
+      case "UPDATE_CONNECTION_HOLDER_INFO":  window.localStorage.setItem("wns_workflow","WS_RENAME"); break;
+      case "CONNECTION_CONVERSION":  window.localStorage.setItem("wns_workflow","WS_CONVERSION"); break;
+      case "REACTIVATE_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_REACTIVATE"); break;
+      case "NEW_TUBEWELL_CONNECTION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
+      //case "CONNECTION_CONVERSION":  window.localStorage.setItem("wns_workflow","WS_TUBEWELL"); break;
+    }
+}
+
+  window.location.href = `search-preview?applicationNumber=${data.rowData[1]}&tenantId=${data.rowData[7]}&history=true&service=${data.rowData[8]}`
 }
 
 const getConnectionDetails = data => {
-  window.location.href = `connection-details?connectionNumber=${data.rowData[0]}&tenantId=${data.rowData[6]}&service=${data.rowData[7]}&connectionType=${data.rowData[8]}`
+  window.location.href = `connection-details?connectionNumber=${data.rowData[0]}&tenantId=${data.rowData[7]}&service=${data.rowData[8]}&connectionType=${data.rowData[9]}`
+}
+const getViewBillDetails = data => {
+  window.location.href = `viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[7]}&service=${data.rowData[8]}&connectionType=${data.rowData[9]}&id=${data.rowData[11]}`
 }

@@ -158,7 +158,8 @@ const callBackForNext = async (state, dispatch) => {
                 ""
 
             );
-            businessService = get(response, "data.businessService", "");
+            let businessService = "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND";
+            
             const reviewUrl = `/egov-services/applycommercialground?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
             dispatch(setRoute(reviewUrl));
 
@@ -168,7 +169,7 @@ const callBackForNext = async (state, dispatch) => {
                 "components.div.children.headerDiv.children.header.children.applicationNumber.visible",
                 true
             );
-            await generateBill(state, dispatch, applicationNumber, tenantId, "GFCP");
+            await generateBill(state, dispatch, applicationNumber, tenantId,businessService );
 
             // GET DOCUMENT DATA FOR DOWNLOAD
             const uploadedDocData = get(

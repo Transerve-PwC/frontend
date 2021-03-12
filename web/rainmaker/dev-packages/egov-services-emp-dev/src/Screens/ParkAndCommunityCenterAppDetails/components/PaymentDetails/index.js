@@ -43,14 +43,14 @@ class PayDetails extends Component {
                 </div>
               </div>
 
-              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
+              {/* <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_EMP_PACC_ROUND_OFF" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
                   <h5 style={{ textAlign: "right" }}>{PACC_ROUND_OFF}</h5>
                 </div>
-              </div>
+              </div> */}
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">

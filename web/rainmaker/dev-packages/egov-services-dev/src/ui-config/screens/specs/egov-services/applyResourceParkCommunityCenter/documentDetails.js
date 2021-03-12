@@ -37,7 +37,7 @@ export const documentDetails = getCommonCard({
       inputProps: {
         accept: ".pdf,.png,.jpg,.jpeg"
       },
-      maxFileSize: 1025,
+      maxFileSize: 5024,
       moduleName : "PCC"
     },
     type: "array"

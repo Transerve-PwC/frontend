@@ -298,7 +298,8 @@ export const getOwnerDetails = (isEditable = true) => {
                 labelName: "Enter Correspondence Address",
                 labelKey: "WS_OWN_DETAIL_CROSADD_PLACEHOLDER"
               },
-              pattern: getPattern("Address"),
+              //pattern: getPattern("Address"),
+              pattern: /^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,500}$/i,
               required: true,
               
              // errorMessage: "Invalid Address",
@@ -518,7 +519,8 @@ export const getMultipleOwnerDetails = (isEditable = true) => {
                 labelName: "Enter Correspondence Address",
                 labelKey: "WS_OWN_DETAIL_CROSADD_PLACEHOLDER"
               },
-              pattern: getPattern("Address"),
+              //pattern: getPattern("Address"),
+              pattern: /^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,500}$/i,
               required: true,
              // errorMessage: "Invalid Address",
               jsonPath: "applyScreen.property.owners[0].correspondenceAddress",

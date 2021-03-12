@@ -30,7 +30,8 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label={label1} />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[1].amount}</h5>
+                  {/* <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[1].amount}</h5> */}
+                  <h5 style={{ textAlign: "right" }}>{this.props.CommercialParkingCharges}</h5>
                 </div>
               </div>
 
@@ -39,9 +40,43 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAX_RENT" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
+                  {/* <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5> */}
+                  <h5 style={{ textAlign: "right" }}>{this.props.CommercialTaxes}</h5>
                 </div>
               </div>
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_CLEANING_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  {/* <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5> */}
+                  <h5 style={{ textAlign: "right" }}>{this.props.CommercialcleaningCharge}</h5>
+                </div>
+              </div>
+
+           
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_FACILITATION_CHRGS_COMMERCIAL_GROUND_BOOKING_BRANCH" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  {/* <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5> */}
+                  <h5 style={{ textAlign: "right" }}>{this.props.CommercialFaciliCharges}</h5>
+                </div>
+              </div>
+
+
+              <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
+                <div className="col-sm-4 col-xs-12">
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_SECURITY_COMMERCIAL_GROUND_BOOKING_BRANCH" />
+                </div>
+                <div className="col-sm-4 col-xs-12">
+                  {/* <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5> */}
+                  <h5 style={{ textAlign: "right" }}>{this.props.CommercialSecurityCharges}</h5> 
+                </div>
+              </div>
+           
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <hr class="MuiDividerLine" style={{ marginbottom: "16px" }}></hr>
                 <div className="col-sm-4 col-xs-12">

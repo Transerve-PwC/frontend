@@ -10,7 +10,7 @@ import {
     getCommonGrayCard
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import get from "lodash/get";
-import { pccSummary, changedVenueDatepccSummary } from "../summaryResource/pccSummary";
+import { pccSummary, pccParkSummary,changedVenueDatepccSummary } from "../summaryResource/pccSummary";
 import { pccApplicantSummary,pccBankSummary } from "../summaryResource/pccApplicantSummary";
 import { documentsSummary } from "../summaryResource/documentsSummary";
 import { estimateSummary } from "../summaryResource/estimateSummary";
@@ -225,10 +225,19 @@ export const summaryDetails = getCommonCard({
         },
     },
    // confirmationStatement: confirmationStatement,
-    estimateSummary: estimateSummary,
-    pccApplicantSummary: pccApplicantSummary,
-    pccSummary: pccSummary,
-    pccBankSummary:pccBankSummary,
-  //  changedVenueDatepccSummary: changedVenueDatepccSummary,
-    documentsSummary: documentsSummary
+   estimateSummary: estimateSummary,
+   pccApplicantSummary: pccApplicantSummary,
+   pccSummary: pccSummary,
+   pccParkSummary : pccParkSummary,
+   pccBankSummary:pccBankSummary,
+ //  changedVenueDatepccSummary: changedVenueDatepccSummary,
+   documentsSummary: documentsSummary,
+   ParkChangeDateVenueFieldDisabler: {
+       uiFramework: "custom-containers-local",
+       moduleName: "egov-services",
+       componentPath: "ParkChangeDateVenueFieldDisabler",
+       props: {
+          page : "summaryDetails"
+         },
+   },
 });

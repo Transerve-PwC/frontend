@@ -361,25 +361,25 @@ export const bankAccountDetails = getCommonCard({
             required: true,
             type: "array",
         },
-           // bkNomineeName: {
-        //     ...getTextField({
-        //         label: {
-        //             labelName: "Nominee Name",
-        //             labelKey: "Nominee Name",
-        //             //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
-        //         },
-        //         placeholder: {
-        //             labelName: "Nominee Name",
-        //             labelKey: "Nominee Name",
-        //             //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
-        //         },
-        //         required: true,
-        //         pattern: getPattern("Name"),
-        //         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        //         jsonPath: "Booking.bkNomineeName",
-        //     }),
-        // },
-        
+        bkNomineeName: {
+            ...getTextField({
+                label: {
+                    labelName: "Nominee Name",
+                    labelKey: "Nominee Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
+                },
+                placeholder: {
+                    labelName: "Nominee Name",
+                    labelKey: "Nominee Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
+                },
+                required: true,
+                pattern: getPattern("Name"),
+                errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+                jsonPath: "Booking.bkNomineeName",
+            }),
+        },
+
         dummyDiv: {
             uiFramework: "custom-atoms",
             componentPath: "Div",
@@ -540,27 +540,27 @@ export const bankAccountDetailsDisabled = getCommonCard({
             required: true,
             type: "array",
         },
-        // bkNomineeNameDisabled: {
-        //     ...getTextField({
-        //         label: {
-        //             labelName: "Nominee Name",
-        //             labelKey: "Nominee Name",
-        //             //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
-        //         },
-        //         placeholder: {
-        //             labelName: "Nominee Name",
-        //             labelKey: "Nominee Name",
-        //             //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
-        //         },
-        //         required: true,
-        //         props: {
-        //             disabled: true,
-        //         },
-        //         pattern: getPattern("Name"),
-        //         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        //         jsonPath: "Booking.bkNomineeName",
-        //     }),
-        // },
+        bkNomineeNameDisabled: {
+            ...getTextField({
+                label: {
+                    labelName: "Nominee Name",
+                    labelKey: "Nominee Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
+                },
+                placeholder: {
+                    labelName: "Nominee Name",
+                    labelKey: "Nominee Name",
+                    //labelKey: "BK_PCC_ACCOUNT_HOLDER_NAME_LABEL",
+                },
+                required: true,
+                props: {
+                    disabled: true,
+                },
+                pattern: getPattern("Name"),
+                errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+                jsonPath: "Booking.bkNomineeName",
+            }),
+        },
      
         dummyDiv: {
             uiFramework: "custom-atoms",

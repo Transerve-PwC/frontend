@@ -121,9 +121,9 @@ if (user_mobileNumber=="6265678234" || user_mobileNumber=="7558357883" || user_m
                 },
                 {
                     label: {
-                        labelKey: "Community Center/Banquet Halls Room",
-                        labelName: "Community Center/Banquet Halls Room",
-                    },
+                        labelKey: "Room booking at Community Center/Banquet Hall",
+                        labelName: "Room booking at Community Center/Banquet Hall",
+                         },
                     icon : <ParkIcon width={40} height={50}/>,
                     icon: (
                         <i

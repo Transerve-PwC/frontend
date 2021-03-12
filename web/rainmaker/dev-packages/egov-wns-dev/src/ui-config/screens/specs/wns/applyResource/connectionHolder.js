@@ -163,7 +163,9 @@ import {
         labelName: "Enter Correspondence Address",
         labelKey: "WS_CONN_HOLDER_OWN_DETAIL_CROSADD_PLACEHOLDER"
       },
-      pattern: getPattern("Address"),
+      //pattern: getPattern("Address"),
+      pattern: /^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,500}$/i,
+      
       required: true,
       errorMessage: "Invalid Address",
       jsonPath: "connectionHolders[0].correspondenceAddress",

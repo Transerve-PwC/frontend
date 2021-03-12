@@ -251,7 +251,7 @@ console.log("BothRoomSelect--success--",BothRoomSelect)
 		"assignee": null,
 		"wfDocuments": null,
 		"financialYear": "2020-2021",
-		"financeBusinessService": "BKROOM",
+		"financeBusinessService": "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR",
 		// "roomBusinessService": "BKROOM",
 		"roomsModel": BothRoomSelect,
 	  }

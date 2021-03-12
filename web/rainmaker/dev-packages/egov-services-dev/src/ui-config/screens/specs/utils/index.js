@@ -1019,6 +1019,20 @@ export const downloadReceipt = async (
                 amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
                     (el) => el.taxHeadCode.includes("WATER_TANKAR_CHARGES_BOOKING_BRANCH")
                 )[0].amount;
+            }else if (applicationData.businessService === "GFCP") {
+                amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("PARKING_LOTS_COMMERCIAL_GROUND_BOOKING_BRANCH")
+                )[0].amount;
+                tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMERCIAL_GROUND_BOOKING_BRANCH")
+                )[0].amount;
+            } else if (applicationData.businessService === "OSUJM") {
+                amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("PARKING_LOTS_GROUND_OPEN_SPACES_BOOKING_BRANCH")
+                )[0].amount;
+                tax = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_GROUND_OPEN_SPACES_BOOKING_BRANCH")
+                )[0].amount;
             } else {
                 amount = payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
                     (el) => !el.taxHeadCode.includes("TAX")
@@ -1038,16 +1052,16 @@ export const downloadReceipt = async (
                     payloadReceiptDetails.Payments[0].paymentDetails[0].bill
                         .businessService === "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "GFCP" ||
+                        .businessService === "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND" ||
                         payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "OSUJM"
+                            .businessService === "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES"
                         ? getDurationDate(
                             applicationData.bkFromDate,
                             applicationData.bkToDate
                         )
                         : `${applicationData.bkDate} , ${applicationData.bkTime} `,
                 bookingItem: `Online Payment Against Booking of ${payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                    .businessService === "GFCP"
+                    .businessService === "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND"
                     ? "Commercial Ground"
                     : payloadReceiptDetails.Payments[0]
                         .paymentDetails[0].bill.businessService ===
@@ -1055,7 +1069,7 @@ export const downloadReceipt = async (
                         ? "Open Space for Building Material"
                         : payloadReceiptDetails.Payments[0]
                             .paymentDetails[0].bill.businessService ===
-                            "OSUJM"
+                            "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES"
                             ? "Open Space within MCC jurisdiction"
                             : "Water Tanker"
                     }`,
@@ -1067,14 +1081,14 @@ export const downloadReceipt = async (
                     payloadReceiptDetails.Payments[0].totalAmountPaid
                 ),
                 paymentItemExtraColumnLabel:
+                payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                    .businessService === "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE" ||
                     payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                        .businessService === "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE" ||
-                        payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "GFCP" ||
-                        payloadReceiptDetails.Payments[0].paymentDetails[0].bill
-                            .businessService === "OSUJM"
-                        ? "Booking Period"
-                        : "Date & Time",
+                    .businessService === "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND" ||
+                    payloadReceiptDetails.Payments[0].paymentDetails[0].bill
+                        .businessService === "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES"
+                    ? "Booking Period"
+                    : "Date & Time",
                 paymentMode: payloadReceiptDetails.Payments[0].paymentMode,
                 bankName: bankName,
                 receiptNo:
@@ -1143,13 +1157,13 @@ export const downloadReceipt = async (
                     applicationData.roomsModel[0].toDate
                 ),
                 cgst: (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount)/2,
                 utgst: (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount)/2,
                 totalgst: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount,
 
                 paymentType: "ONLINE",
@@ -1158,13 +1172,13 @@ export const downloadReceipt = async (
                 custGSTN: "asd",
                 bookingItem: `Online Payment Against Booking of ${applicationData.bkLocation}`,
                 baseCharge: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode==="BKROOM"
+                    (el) => el.taxHeadCode==="RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"
                 )[0].amount,
                 cleaningCharges: "",
                 surcharges: "",
                 facilitationCharge: "0.00",
                 gst:  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount,
                 totalAmount:payloadReceiptDetails.Payments[0].totalAmountPaid ,
 
@@ -1578,16 +1592,16 @@ export const downloadCertificate = async (
 
                 cleaningCharges: "0",
                 baseCharge:  payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode==="BKROOM"
+                    (el) => el.taxHeadCode==="RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"
                 )[0].amount,
                 cgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount)/2,
                 utgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount)/2,
                 totalgst:  (payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-                    (el) => el.taxHeadCode.includes("BKROOM_TAX")
+                    (el) => el.taxHeadCode.includes("CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH")
                 )[0].amount),
                 refundableCharges: "",
                 totalPayment: payloadReceiptDetails.Payments[0].totalAmountPaid,
@@ -1744,7 +1758,8 @@ export const downloadApplication = async (
     }
     let paymentData = get(
         state.screenConfiguration.preparedFinalObject,
-        "ReceiptTemp[0].Bill[0]"
+        "ReceiptTemp[0].Bill[0]",
+        []
     );
 
 
@@ -1874,13 +1889,23 @@ export const downloadApplication = async (
         } else if(applicationData.businessService == "OSUJM") {
 
             baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
-                (el) => (el.taxHeadCode=="OSUJM")
+                (el) => (el.taxHeadCode=="PARKING_LOTS_GROUND_OPEN_SPACES_BOOKING_BRANCH")
             )[0].amount;
             taxes = paymentData.billDetails[0].billAccountDetails.filter(
-                (el) => el.taxHeadCode.includes("TAX")
+                (el) => el.taxHeadCode.includes("CGST_UTGST_GROUND_OPEN_SPACES_BOOKING_BRANCH")
             )[0].amount;
 
-        }else {
+        }else if(applicationData.businessService === "GFCP"){
+
+            baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode=="PARKING_LOTS_COMMERCIAL_GROUND_BOOKING_BRANCH"
+            )[0].amount;
+            taxes = paymentData.billDetails[0].billAccountDetails.filter(
+                (el) => el.taxHeadCode=="CGST_UTGST_COMMERCIAL_GROUND_BOOKING_BRANCH"
+            )[0].amount;
+
+        }
+        else if(applicationData.businessService !== "NLUJM"){
 
             baseCharge = paymentData.billDetails[0].billAccountDetails.filter(
                 (el) => !el.taxHeadCode.includes("TAX")
@@ -2617,11 +2642,11 @@ export const calculateCancelledBookingRefundAmount = async (applicationNumber, t
             let bookingAmount = 0;
             let refundSecurity = 0;
             for (let i = 0; i < billAccountDetails.length; i++) {
-                if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH" ||billAccountDetails[i].taxHeadCode =="SECURITY_CHRGS_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH") {
                     bookingAmount += billAccountDetails[i].amount;
                     refundSecurity += billAccountDetails[i].amount;
                 }
-                if (billAccountDetails[i].taxHeadCode == "PACC") {
+                if (billAccountDetails[i].taxHeadCode == "PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH" || billAccountDetails[i].taxHeadCode =="RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH") {
                     bookingAmount += billAccountDetails[i].amount;
                 }
             }

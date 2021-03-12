@@ -8,7 +8,7 @@ import CommonShare from "egov-ui-kit/components/CommonShare";
 import { Screen } from "modules/common";
 import pinIcon from "egov-ui-kit/assets/Location_pin.svg";
 import { resetFiles } from "egov-ui-kit/redux/form/actions";
-import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button"; 
 import ShareIcon from "@material-ui/icons/Share";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
@@ -147,7 +147,7 @@ class ApplicationDetails extends Component {
 			{ key: "businessIds", value: match.params.applicationId }, { key: "history", value: true }, { key: "tenantId", value: userInfo.tenantId }])
 		
 		fetchPayment(
-			[{ key: "consumerCode", value: match.params.applicationId }, { key: "businessService", value: "OSUJM" }, { key: "tenantId", value: userInfo.tenantId }
+			[{ key: "consumerCode", value: match.params.applicationId }, { key: "businessService", value: "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES" }, { key: "tenantId", value: userInfo.tenantId }
 			])
 		fetchDataAfterPayment(
 			[{ key: "consumerCodes", value: match.params.applicationId }, { key: "tenantId", value: userInfo.tenantId }
@@ -421,6 +421,12 @@ class ApplicationDetails extends Component {
 	downloadReceiptFunction = async (e) => {
 		const { transformedComplaint, paymentDetailsForReceipt, downloadPaymentReceiptforCG,downloadReceiptforCG, userInfo, paymentDetails } = this.props;
 		const { complaint } = transformedComplaint;
+
+		var date2 = new Date();
+
+		var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+	
+
 		let BookingInfo = [{
 			"applicantDetail": {
 				"name": complaint && complaint.applicantName ? complaint.applicantName : 'NA',
@@ -441,12 +447,14 @@ class ApplicationDetails extends Component {
 					complaint.bkToDate
 				),
 				"bookingItem": "Online Payment Against Booking of Open Space WithIn MCC",
-				"amount": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-					(el) => !el.taxHeadCode.includes("TAX")
-				)[0].amount,
-				"tax": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
-					(el) => el.taxHeadCode.includes("TAX")
-				)[0].amount,
+				// "amount": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+				// 	(el) => !el.taxHeadCode.includes("TAX")
+				// )[0].amount,
+				"amount":this.props.CommercialParkingCharges,
+				// "tax": paymentDetailsForReceipt.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.filter(
+				// 	(el) => el.taxHeadCode.includes("TAX")
+				// )[0].amount,
+				"tax":this.props.CommercialTaxes,
 				"grandTotal": paymentDetailsForReceipt.Payments[0].totalAmountPaid,
 				"amountInWords": this.NumInWords(
 					paymentDetailsForReceipt.Payments[0].totalAmountPaid
@@ -466,6 +474,7 @@ class ApplicationDetails extends Component {
 			},
 			generatedBy: {
 				generatedBy: userInfo.name,
+				"generatedDateTime":generatedDateTime
 			},
 		}
 		]
@@ -527,6 +536,16 @@ class ApplicationDetails extends Component {
 	downloadApplicationFunction = async (e) => {
 		const { transformedComplaint,paymentDetailsForReceipt,paymentDetails,downloadPermissionLetter, downloadMccApp, userInfo} = this.props;
 		const {complaint} = transformedComplaint;
+let ApplicationStatus;
+if(complaint.status == "PENDINGAPPROVAL"){
+	ApplicationStatus = "Pending Approval"
+}
+if(complaint.status == "PENDINGPAYMENT"){
+	ApplicationStatus = "Pending Payment"
+}  
+if(complaint.status == "APPROVED"){
+	ApplicationStatus = "Approved"
+}  
 		let receiptData = [
 			{
 				applicantDetail: {
@@ -551,16 +570,25 @@ class ApplicationDetails extends Component {
 					venueName : complaint.bkBookingVenue,
 					sector: complaint.sector,
 					bookingPurpose : complaint.bkBookingPurpose,
+					status: ApplicationStatus
 				},
+				// feeDetail: {
+                //     baseCharge:
+                //         paymentDetails === undefined
+                //             ? null
+                //             : paymentDetails.billDetails[0].billAccountDetails.filter(el => !el.taxHeadCode.includes("TAX"))[0].amount,
+                //     taxes:
+                //         paymentDetails === undefined
+                //             ? null
+                //             : paymentDetails.billDetails[0].billAccountDetails.filter(el => el.taxHeadCode.includes("TAX"))[0].amount,
+                //     totalAmount:
+                //         paymentDetails === undefined
+                //             ? null
+                //             : paymentDetails.totalAmount,
+				// },
 				feeDetail: {
-                    baseCharge:
-                        paymentDetails === undefined
-                            ? null
-                            : paymentDetails.billDetails[0].billAccountDetails.filter(el => !el.taxHeadCode.includes("TAX"))[0].amount,
-                    taxes:
-                        paymentDetails === undefined
-                            ? null
-                            : paymentDetails.billDetails[0].billAccountDetails.filter(el => el.taxHeadCode.includes("TAX"))[0].amount,
+                    baseCharge: this.props.CommercialParkingCharges,            
+                    taxes: this.props.CommercialParkingCharges,
                     totalAmount:
                         paymentDetails === undefined
                             ? null
@@ -625,10 +653,22 @@ class ApplicationDetails extends Component {
 			prepareFinalObject('documentsPreview', documentsPreview)
 		}
 	}
-	downloadPLFunction = async (e) => {
+downloadPLFunction = async (e) => {
 		const { transformedComplaint, paymentDetailsForReceipt,downloadMccPL,downloadPaymentReceiptforCG, userInfo, paymentDetails } = this.props;
 		const { complaint } = transformedComplaint;
 	
+		let approverName;
+		//userInfo.roles
+				for(let i = 0; i < userInfo.roles.length ; i++ ){
+					if(userInfo.roles[i].code == "BK_MCC_APPROVER"){
+						approverName = userInfo.roles[i].name
+					}
+				}
+	   var date2 = new Date();
+
+		var generatedDateTime = `${date2.getDate()}-${date2.getMonth() + 1}-${date2.getFullYear()}, ${date2.getHours()}:${date2.getMinutes() < 10 ? "0" : ""}${date2.getMinutes()}`;
+	
+		
 	
 	let receiptData = [
 		{
@@ -653,15 +693,16 @@ class ApplicationDetails extends Component {
 				),
 				venueName : complaint.bkBookingVenue,
 				sector: complaint.sector,
-				bookingPurpose : complaint.bkBookingPurpose,
+				bookingPupose : complaint.bkBookingPurpose,
 			},
 			generatedBy: {
 				generatedBy: userInfo.name,
+				"generatedDateTime":generatedDateTime
 			},
-			approvedBy: {
-				approvedBy: "Renil Commissioner",
-				role: "Additional Commissioner"
-			  },
+			approvedBy:{
+				approvedBy: userInfo.name,
+				role: approverName,
+			}, 
 			  tenantInfo: {
 				municipalityName: "Municipal Corporation Chandigarh",
 				address: "New Deluxe Building, Sector 17, Chandigarh",
@@ -901,13 +942,17 @@ class ApplicationDetails extends Component {
 								historyApiData={historyApiData && historyApiData}
 								/>
 							
-
 								<OSBMPaymentDetails
 									paymentDetails={paymentDetails && paymentDetails}
 									perDayRupees={perDayRupees && perDayRupees}
 									area={area && area}
 									fromDate={fromDate && fromDate}
 									toDate={toDate && toDate}
+									CommercialcleaningCharge={this.props.CommercialcleaningCharge}
+									CommercialFaciliCharges={this.props.CommercialFaciliCharges}
+									CommercialSecurityCharges={this.props.CommercialSecurityCharges}
+									CommercialTaxes={this.props.CommercialTaxes}
+									CommercialParkingCharges={this.props.CommercialParkingCharges}
 									
 								/>
 								<div style={{
@@ -1071,19 +1116,68 @@ const mapStateToProps = (state, ownProps) => {
 	const { HistoryData } = bookings;	
 	let historyObject = HistoryData ? HistoryData : ''
 	const { paymentData } = bookings;
-	const { fetchPaymentAfterPayment } = bookings;
+	const { fetchPaymentAfterPayment } = bookings; 
 	const { OSBMperDayRate } = bookings;
 
 	let paymentDetailsForReceipt = fetchPaymentAfterPayment;
 	let paymentDetails;
 	let perDayRupees;
+	let OfflineInitatePayArray;
+//Variables to show Amount
+let CommercialcleaningCharge = 0;
+let CommercialFaciliCharges = 0;  
+let CommercialSecurityCharges = 0;
+let CommercialTaxes = 0;
+let CommercialParkingCharges = 0;
 	if (selectedComplaint && selectedComplaint.bkApplicationStatus == "APPROVED") {
-		paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill;
-	    perDayRupees = OSBMperDayRate && OSBMperDayRate ? OSBMperDayRate.data.ratePerSqrFeetPerDay : '';
+	
+paymentDetails = fetchPaymentAfterPayment && fetchPaymentAfterPayment.Payments[0] && fetchPaymentAfterPayment.Payments[0].paymentDetails[0].bill ;
+console.log("paymentDetails-1",paymentDetails)
+
+OfflineInitatePayArray = paymentDetails !== undefined && paymentDetails !== null ? 
+(paymentDetails.billDetails !== undefined && paymentDetails.billDetails !== null ? (paymentDetails.billDetails.length > 0 ? 
+(paymentDetails.billDetails[0].billAccountDetails !== undefined && paymentDetails.billDetails[0].billAccountDetails !== null ?
+(paymentDetails.billDetails[0].billAccountDetails): "NA"): "NA") : "NA"): "NA"
+console.log("OfflineInitatePayArray-1",OfflineInitatePayArray)		
+		
+		
+		
+		perDayRupees = OSBMperDayRate && OSBMperDayRate ? OSBMperDayRate.data.ratePerSqrFeetPerDay : '';
 	} else {
-		paymentDetails = paymentData ? paymentData.Bill[0] : '';
+		paymentDetails =paymentData && paymentData !== null && paymentData !== undefined ? 
+		(paymentData.Bill && paymentData.Bill !== undefined && paymentData.Bill !== null ? 
+		(paymentData.Bill.length > 0 ?(paymentData.Bill[0]):"NA"):"NA"): "NA";
+        console.log("paymentDetails-2",paymentDetails)
+		if(paymentDetails !== "NA"){
+			OfflineInitatePayArray = paymentData.Bill[0].billDetails !== undefined && paymentData.Bill[0].billDetails !== null ? 
+			(paymentData.Bill[0].billDetails !== undefined && paymentData.Bill[0].billDetails !== null ? (paymentData.Bill[0].billDetails.length > 0 ? (paymentData.Bill[0].billDetails[0].billAccountDetails !== undefined && paymentData.Bill[0].billDetails[0].billAccountDetails !== null ? 
+			(paymentData.Bill[0].billDetails[0].billAccountDetails ? (paymentData.Bill[0].billDetails[0].billAccountDetails.length > 0 ? (paymentData.Bill[0].billDetails[0].billAccountDetails) : "NA"): "NA"): "NA"): "NA"): "NA") : "NA"
+			}
+			console.log("OfflineInitatePayArray-1",OfflineInitatePayArray)		
 		perDayRupees = OSBMperDayRate && OSBMperDayRate ? OSBMperDayRate.data.ratePerSqrFeetPerDay : '';
 	}
+
+	if(OfflineInitatePayArray !== "NA" && OfflineInitatePayArray !== undefined && OfflineInitatePayArray !== null){
+		for(let i = 0; i < OfflineInitatePayArray.length ; i++ ){
+		
+		if(OfflineInitatePayArray[i].taxHeadCode == "CLEANING_CHRGS_GROUND_OPEN_SPACES_BOOKING_BRANCH"){ //1
+			CommercialcleaningCharge = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "FACILITATION_CHRGS_GROUND_OPEN_SPACES_BOOKING_BRANCH"){//3
+			CommercialFaciliCharges = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "SECURITY_GROUND_OPEN_SPACES_BOOKING_BRANCH"){ //2
+			CommercialSecurityCharges = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "CGST_UTGST_GROUND_OPEN_SPACES_BOOKING_BRANCH"){  //4
+			CommercialTaxes = OfflineInitatePayArray[i].amount
+		}
+		else if(OfflineInitatePayArray[i].taxHeadCode == "PARKING_LOTS_GROUND_OPEN_SPACES_BOOKING_BRANCH"){ //5
+			CommercialParkingCharges = OfflineInitatePayArray[i].amount
+		}
+		}
+	}
+
 
 	
 	let historyApiData = {}
@@ -1167,7 +1261,8 @@ const mapStateToProps = (state, ownProps) => {
 			serviceRequestId,
 			isAssignedToEmployee,
 			complaintTypeLocalised,
-			userInfo
+			userInfo,
+			CommercialcleaningCharge,CommercialFaciliCharges,CommercialSecurityCharges,CommercialTaxes,CommercialParkingCharges
 		};
 	} else {
 		return {
@@ -1190,7 +1285,8 @@ const mapStateToProps = (state, ownProps) => {
 			role,
 			serviceRequestId,
 			isAssignedToEmployee,
-			userInfo
+			userInfo,
+			CommercialcleaningCharge,CommercialFaciliCharges,CommercialSecurityCharges,CommercialTaxes,CommercialParkingCharges
 		};
 	}
 };

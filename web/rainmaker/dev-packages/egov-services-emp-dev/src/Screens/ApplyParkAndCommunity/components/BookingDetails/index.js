@@ -85,7 +85,9 @@ class BookingsDetails extends Component {
 
  
   render() {
-    const { arrayName, result,fCharges, jobTitle, jobCompany, jobLocation, handleChangeDiscount, discountType, dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,firstToTimeSlot } = this.props;
+    const { arrayName, result,fCharges, jobTitle, jobCompany, jobLocation, handleChangeDiscount, discountType, dimension, complaintSector, fromDate, surcharge, toDate, onFromDateChange, onToDateChange, utGST, cGST, GSTnumber, handleChange, location, facilitationCharges, cleaningCharges, rent, approverName, comment, houseNo, type, purpose, locality, residenials, facilationChargesSuccess,firstToTimeSlot,
+      refundAbleAmount } = this.props;
+      console.log("propsForApplyBooking--",this.props)
     let sectorData = [];
     sectorData.push(complaintSector);
     let fc = fCharges ? fCharges.facilitationCharge :'100'
@@ -219,6 +221,38 @@ class BookingsDetails extends Component {
               hintStyle={{ width: "100%" }}
             />
           </div>
+  
+          <div className="col-sm-6 col-xs-6">
+            <TextField
+              id="rent"
+              name="rent"
+              type="text"
+              value={refundAbleAmount}
+              required={true}
+              hintText={ 
+                <Label
+                  label="BK_MYBK_REFUNDABLE_AMOUNT"
+                  color="rgba(0, 0, 0, 0.3799999952316284)"
+                  fontSize={16}
+                  labelStyle={hintTextStyle}
+                />
+              }
+              floatingLabelText={
+                <Label
+                  key={0}
+                  label="BK_MYBK_REFUNDABLE_AMOUNT"
+                  color="rgba(0,0,0,0.60)"
+                  fontSize="12px"
+                />
+              }
+              onChange={handleChange('rent')}
+              underlineStyle={{ bottom: 7 }}
+              underlineFocusStyle={{ bottom: 7 }}
+              hintStyle={{ width: "100%" }}
+            />
+          </div>
+ 
+
           <div className="col-sm-6 col-xs-6">
             <TextField
               id="facilitationCharges"

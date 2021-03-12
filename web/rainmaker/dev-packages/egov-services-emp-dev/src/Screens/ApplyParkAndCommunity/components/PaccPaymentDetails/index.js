@@ -64,8 +64,9 @@ class ApplicatInfo extends Component {
     this.props.prevStep();
   }
   render() {
-    let { bankName, transactionNumber,finalRent,facilitationCharges,applicationPmode,  discountType,rent, paymentMode, amount,transactionDate,transactionDateChange, handleChange } = this.props;
-
+    let { bankName, transactionNumber,finalRent,facilitationCharges,applicationPmode,  showAmount,discountType,rent, paymentMode, amount,transactionDate,transactionDateChange, handleChange } = this.props;
+console.log("PrpsForRent--",this.props)
+console.log("TypeForRent--",typeof(rent))
     let sectorData=[];
     sectorData.push(applicationPmode);
     let arrayData=[];
@@ -82,9 +83,14 @@ class ApplicatInfo extends Component {
     console.log("TodayDate--",TodayDate) //YYYY-MM-DD
     let FormatChange = moment(TodayDate).format("DD-MM-YYYY");
     console.log("FormatChange--",FormatChange)
-
+    let strRent
     let strDate = FormatChange.toString();
     console.log("strDate--",strDate)
+if(showAmount !== undefined && showAmount !== null){
+  strRent = showAmount.toString();
+  console.log("strDate--strRent",strRent,typeof(strRent))
+}
+    
     
     const hintTextStyle = {
       letterSpacing: "0.7px",
@@ -159,7 +165,8 @@ class ApplicatInfo extends Component {
           <TextField
             id="amount"
             name="amount"
-            type="number"
+            type="string"
+            // value={strRent == undefined && strRent == null ? rent : strRent}
             value={rent}
             required = {true}   
             hintText={
@@ -183,7 +190,7 @@ class ApplicatInfo extends Component {
             underlineFocusStyle={{ bottom: 7 }}
             hintStyle={{ width: "100%" }}
           />
-        
+         
         </div>    
       
       

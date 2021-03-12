@@ -180,7 +180,7 @@ console.log("BothRoomSelect--",BothRoomSelect)
             "assignee": null,
             "wfDocuments": null,
             "financialYear": "2020-2021",
-            "financeBusinessService": "BKROOM",
+            "financeBusinessService": "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR",//"BKROOM",//BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR
             // "roomBusinessService": "BKROOM",
             "roomsModel": BothRoomSelect,
           }
@@ -236,7 +236,7 @@ let payloadfund = await httpRequest(
 
 
  fetchPayment(
-    [{ key: "consumerCode", value: payloadfund.data.roomsModel[0].roomApplicationNumber }, { key: "businessService", value: "BKROOM" }, { key: "tenantId", value: userInfo.tenantId }
+    [{ key: "consumerCode", value: payloadfund.data.roomsModel[0].roomApplicationNumber }, { key: "businessService", value: "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR" }, { key: "tenantId", value: userInfo.tenantId }
     ])
     }
 
@@ -324,7 +324,7 @@ this.props.SetPaymentURL(`/egov-services/PaymentReceiptDteail/ForRoomBooking/${t
         //     console.log("stateofBooking--",this.state.createPACCApp)
 
             
-        return (
+        return ( 
             <div>
                 <div className="form-without-button-cont-generic">
                     <div classsName="container">
@@ -344,7 +344,7 @@ Name={this.props.Name}
 purpose={this.props.purpose}
 houseNo={this.props.houseNo}
 mobileNo={this.props.mobileNo}
-Sector={this.props.Sector}
+Sector={this.props.Sector} 
 gstNo={this.props.gstNo}
 ProofOfResidence={this.props.ProofOfResidence}
                             />
@@ -445,10 +445,10 @@ let four = 0;
 
 for(let i = 0; i < billAccountDetailsArray.length ; i++ ){
 
-    if(billAccountDetailsArray[i].taxHeadCode == "BKROOM_TAX"){
+    if(billAccountDetailsArray[i].taxHeadCode == "CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
         BKROOM_TAX = billAccountDetailsArray[i].amount
     }
-    else if(billAccountDetailsArray[i].taxHeadCode == "BKROOM"){
+    else if(billAccountDetailsArray[i].taxHeadCode == "RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
         BKROOM = billAccountDetailsArray[i].amount
     }
     else if(billAccountDetailsArray[i].taxHeadCode == "BKROOM_ROUND_OFF"){

@@ -62,6 +62,8 @@ const setSearchResponse = async (
 
     if(businessService==='BKROOM'){
 
+        let businesServiceTemp = "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR";
+    
         const response = await getSearchResultsViewForRoomBooking([
             
             { key: "applicationNumber", value: applicationNumber },
@@ -82,7 +84,7 @@ const setSearchResponse = async (
             applicationNumber,
             tenantId,
             //recData[0].businessService
-            businessService
+            businesServiceTemp
         );
         
     }else{
@@ -104,7 +106,21 @@ const setSearchResponse = async (
           }
         else if(recData[0].businessService == 'BWT'){
           businesServiceTemp = "BOOKING_BRANCH_SERVICES.WATER_TANKAR_CHARGES";
-        }else{
+        }
+        else if(recData[0].businessService == 'GFCP'){
+            businesServiceTemp = "BOOKING_BRANCH_SERVICES.BOOKING_COMMERCIAL_GROUND";
+        }
+        else if(recData[0].businessService == "OSUJM"){
+            businesServiceTemp = "BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES";
+        }
+        else if(recData[0].businessService == "PACC" && recData[0].bkBookingType==="Parks"){
+            businesServiceTemp = "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE";
+        }
+        else if(recData[0].businessService == "PACC" && recData[0].bkBookingType==="Community Center"){
+            businesServiceTemp = "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR";
+        }
+       
+        else{
           businesServiceTemp = recData[0].businessService;
         }
             await generateBill(

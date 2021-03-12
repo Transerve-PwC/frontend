@@ -66,6 +66,47 @@ const callbackforSendMessage = async (state, dispatch) => {
   }
 };
 
+const callbackforMarkAsPaid = async (state, dispatch) => {
+  let challandetails = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', {});
+  let paymentData = get(state, 'screenConfiguration.preparedFinalObject.eChallan.paymentServiceData[0]', {});
+  try {
+    
+    let requestBody = {};
+    requestBody.challanId = paymentData.consumerCode;
+    requestBody.paymentGateway = paymentData.gateway;
+    requestBody.transactionId = paymentData.txnId;
+    requestBody.pgStatus = paymentData.gatewayStatusMsg;
+    requestBody.paymentStatus = paymentData.txnStatus == "SUCCESS" ? "PAID": "PENDING";
+    requestBody.paymentMode = "ONLINE";
+    let response = await httpRequest("post", "/ec-services/violation/_updatePayment", "", [], { requestBody: requestBody });
+    if (response.ResponseInfo.status == 'Success') {
+    dispatch(toggleSnackbar(true, { labelName: "Success",labelKey: "EC_MARK_AS_PAID_SUCCESS" }, "success"));
+  } else {
+    dispatch(toggleSnackbar(true, { labelName: "ERROR" }, "error"));
+  }
+  } catch (error) {
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+  }
+};
+
+const callbackforDeleteChallan = async (state, dispatch) => {
+  let challandetails = get(state, 'screenConfiguration.preparedFinalObject.eChallanDetail[0]', {});
+  try {
+    
+    let requestBody = {};
+    requestBody.challanId = challandetails.challanId;
+    let response = await httpRequest("post", "/ec-services/violation/_deleteChallan", "", [], { requestBody: requestBody });
+    if (response.ResponseInfo.status == 'Success') {
+      dispatch(setRoute("/egov-echallan/echallan-landing"));
+      dispatch(toggleSnackbar(true, { labelName: "Success", labelKey: "EC_DELETE_CHALLAN_SUCCESS" }, "success"));
+    
+  } else {
+    dispatch(toggleSnackbar(true, { labelName: "ERROR" }, "error"));
+  }
+  } catch (error) {
+  dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
+  }
+};
 const updateonGroundPayment = async (state, dispatch) => {
   let paymentStatus = get(state, "screenConfiguration.preparedFinalObject.eChallanDetail[0].paymentDetails.paymentStatus", 'Not Available');
   if (paymentStatus !== 'PAID') {
@@ -775,7 +816,91 @@ export const footer = getCommonApplyFooter({
       rolePath: "user-info.roles",
       roles: ["challanSI"]
     }
-  }
+  },
+markAsPaidButton: {
+    componentPath: "Button",
+    props: {
+      variant: "contained",
+      color: "primary",
+      style: {
+        minWidth: "200px",
+        height: "48px",
+        marginRight: "16px",
+        background: "#fff",
+        border: "1px solid #ddd",
+        color: "#000"
+      }
+    },
+    gridDefination: {
+      xs: 12,
+      sm: 12,
+      md: 12,
+    },
+    children: {
+      nextButtonLabel: getLabel({
+        labelName: "Mark As Paid",
+        labelKey: "EC_MARK_AS_PAID_BUTTON"
+      }),
+      nextButtonIcon: {
+        uiFramework: "custom-atoms",
+        componentPath: "Icon",
+        props: {
+          iconName: "keyboard_arrow_right"
+        }
+      }
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: callbackforMarkAsPaid
+    },
+    visible: false,
+    roleDefination: {
+      rolePath: "user-info.roles",
+      roles: ["challanSI"]
+    }
+  },
+  deleteChallanButton: {
+      componentPath: "Button",
+      props: {
+        variant: "contained",
+        color: "primary",
+        style: {
+          minWidth: "200px",
+          height: "48px",
+          marginRight: "16px",
+          background: "#fff",
+          border: "1px solid #ddd",
+          color: "#000"
+        }
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 12,
+        md: 12,
+      },
+      children: {
+        nextButtonLabel: getLabel({
+          labelName: "Delete Challan",
+          labelKey: "EC_DELETE_CHALLAN_BUTTON"
+        }),
+        nextButtonIcon: {
+          uiFramework: "custom-atoms",
+          componentPath: "Icon",
+          props: {
+            iconName: "keyboard_arrow_right"
+          }
+        }
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: callbackforDeleteChallan
+      },
+      visible: false,
+      roleDefination: {
+        rolePath: "user-info.roles",
+        roles: ["CHALLAN_DELETE"]
+      }
+    }
 });
 
 

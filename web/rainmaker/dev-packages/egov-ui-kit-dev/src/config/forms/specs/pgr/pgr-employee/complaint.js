@@ -142,7 +142,9 @@ const formConfig = {
       jsonPath: "services[0].addressDetail.houseNoAndStreetName",
       floatingLabelText: "CS_ADDCOMPLAINT_HOUSE_NO",
       hintText: "CS_ADDCOMPLAINT_HOUSE_NO_PLACEHOLDER",
-      errorMessage: "PT_HOUSE_NO_ERROR_MESSAGE",
+     // errorMessage: "PT_HOUSE_NO_ERROR_MESSAGE",
+      errorMessage: "CS_HOUSE_NO_ERROR_MESSAGE_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,100}$/i, 
       value: "",
     },
     landmark: {
@@ -150,6 +152,8 @@ const formConfig = {
       jsonPath: "services[0].addressDetail.landmark",
       floatingLabelText: "CS_ADDCOMPLAINT_LANDMARK",
       hintText: "CS_ADDCOMPLAINT_LANDMARK_PLACEHOLDER",
+      errorMessage: "CS_ADDCOMPLAINT_LANDMARK_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,100}$/i,
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
       value: "",
       errorText: "",
@@ -161,6 +165,8 @@ const formConfig = {
       hintText: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_PLACEHOLDER",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
       value: "",
+      errorMessage: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,500}$/i, 
       errorText: "",
       maxlength: "500"
     },

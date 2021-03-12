@@ -191,8 +191,20 @@ const callBackForNext = async (state, dispatch) => {
                     "data.bkApplicationNumber",
                     ""
                 );
-                let businessService = get(response, "data.businessService", "");
-                const reviewUrl = `/egov-services/applyparkcommunitycenter?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
+                let bookType = get(
+                    response,
+                    "data.bkBookingType",
+                    ""
+                );
+               
+                let businessService=""
+                if(bookType==="Community Center"){
+                    businessService = "BOOKING_BRANCH_SERVICES.COMMUNITY_CENTRES_JHANJ_GHAR";
+                }else{
+                    businessService = "BOOKING_BRANCH_SERVICES.MANUAL_OPEN_SPACE";
+                }
+                 
+                 const reviewUrl = `/egov-services/applyparkcommunitycenter?applicationNumber=${applicationNumber}&tenantId=${tenantId}&businessService=${businessService}`;
                 dispatch(setRoute(reviewUrl));
 
                 set(

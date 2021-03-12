@@ -73,7 +73,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_Date/Venue_CHANGE_CHARGES" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[5].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.Amount}</h5>
                 </div>
               </div>
 
@@ -82,7 +82,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAXES" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[3].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.dateVenueCharge}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
@@ -90,7 +90,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_AMOUNT" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[0].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.Taxes}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
@@ -98,7 +98,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_LUXURY_TAX" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[1].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.luxarytaxes}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
@@ -106,7 +106,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_REFUNDABLE_SECURITY" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[2].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.refundabelSecurity}</h5>
                 </div>
               </div>
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
@@ -114,7 +114,7 @@ class PayDetails extends Component {
                   <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_ROUNDOFF" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[4].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.facilitationCHG}</h5>
                 </div>
               </div>
               

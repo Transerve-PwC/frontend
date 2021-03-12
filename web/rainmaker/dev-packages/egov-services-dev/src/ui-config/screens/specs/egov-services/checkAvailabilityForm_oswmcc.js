@@ -8,7 +8,7 @@ import {
     getSelectField,
     getLabel,
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import "./checkAvailabilityCss/index.css";
+import "./checkAvailabilityCss/openSpaceMccCheckAvailability.css";
 import { showHideAdhocPopup } from "../utils";
 import {
     getTenantId,
@@ -125,7 +125,7 @@ const callBackForReset = (state, dispatch, action) => {
         }
         set(
             state.screenConfiguration.screenConfig["checkavailability_oswmcc"],
-            "components.div.children.availabilityForm.children.cardContent.children.availabilitySearchContainer.children.viewDetailsButton.visible",
+            "components.div.children.availabilitySearch.children.availabilityForm.children.cardContent.children.availabilityActions.children.actionButtons.children.viewDetailsButton.visible",
             false
         );
         dispatch(prepareFinalObject("availabilityCheckData", undefined));
@@ -408,7 +408,9 @@ export const availabilityForm = getCommonCard({
         uiFramework: "custom-atoms",
         componentPath: "Container",
         props: {
-            style: { marginBottom: "10px" },
+            
+            className: "addLocation-header",
+            style: { marginBottom: "10px"},
         },
         children: {
             header: {
@@ -541,7 +543,7 @@ export const availabilityForm = getCommonCard({
                 },
 
                 placeholder: {
-                    labelName: "Select Booking Location",
+                    labelName: "Select Booking Venue",
                     labelKey: "BK_OSWMCC_BOOKING_VENUE_PLACEHOLDER",
                 },
                 gridDefination: {
@@ -566,7 +568,7 @@ export const availabilityForm = getCommonCard({
                         state.screenConfiguration.screenConfig[
                             "checkavailability_oswmcc"
                         ],
-                        "components.div.children.availabilitySearch.children.availabilityForm.children.cardContent.children.availabilityActions.children.viewDetailsButton.visible",
+                        "components.div.children.availabilitySearch.children.availabilityForm.children.cardContent.children.availabilityActions.children.actionButtons.children.viewDetailsButton.visible",
                         true
                     );
 
@@ -682,6 +684,17 @@ export const availabilityForm = getCommonCard({
         },
     }),
     availabilityActions: getCommonContainer({
+        actionButtons : {
+            uiFramework: "custom-atoms",
+            componentPath: "Container",
+            gridDefination: {
+                xs: 12,
+            },
+            props: {
+                className: "checkavailability-footer",
+              
+            },
+            children : {
         searchButton: {
             componentPath: "Button",
             props: {
@@ -732,6 +745,7 @@ export const availabilityForm = getCommonCard({
             },
             visible: true,
         },
+
         viewDetailsButton: {
             componentPath: "Button",
             props: {
@@ -763,6 +777,7 @@ export const availabilityForm = getCommonCard({
             },
             visible: false,
         },
+    }},
     }),
 });
 
@@ -799,6 +814,7 @@ export const availabilityCalendar = getCommonCard({
                 xs: 12,
             },
             props: {
+                className: "checkavailability-footer",
                 style: {
                     justifyContent: "flex-end",
                 },

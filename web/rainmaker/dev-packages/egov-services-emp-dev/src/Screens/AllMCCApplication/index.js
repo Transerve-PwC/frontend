@@ -966,7 +966,12 @@ class AllRequests extends Component {
                 status="open"
               />
               <CustomComplaints
-                noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
+                // noComplaintMessage={"ES_MYCOMPLAINTS_NO_COMPLAINTS_ASSIGNED"}
+                noComplaintMessage={
+                  search
+                    ? "No Search Results Found"
+                    : "BK_MYBK_NO_APPLICATION_ASSIGNED" 
+                }
                 onComplaintClick={onComplaintClick}
                 complaints={
                   search ? searchFilterEmployeeComplaints : employeeComplaints

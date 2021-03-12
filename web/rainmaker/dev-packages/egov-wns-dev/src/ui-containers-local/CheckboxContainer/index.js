@@ -12,7 +12,7 @@ import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configurat
 import "./index.css";
 import { toggleWater, toggleSewerage } from './toggleFeilds';
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-
+import set from "lodash/set";
 const styles = {
   root: {
     color: "#FE7A51",
@@ -55,6 +55,11 @@ class CheckboxLabels extends React.Component {
     this.setState({ [name]: event.target.checked, interChange: true ,checkedTubewell : false,checkedSewerage : false}, () => {
       if (this.state.checkedWater) {
         toggleWater(onFieldChange, true);
+        set(
+          'apply',
+          "components.div.children.formwizardFirstStep.children.propertyUsageDetails.visible",
+          true
+        );
         // check sector list then set sector list for SW to WS
         const { preparedFinalObject } = this.props;
         const wssectorList = preparedFinalObject.applyScreenMdmsData['ws-services-masters'].wssectorList
@@ -105,6 +110,12 @@ class CheckboxLabels extends React.Component {
       if (this.state.checkedSewerage) {
         toggleSewerage(onFieldChange, true);
        // check sector list then set sector list for SW to WS
+       // set sw field
+       set(
+        'apply',
+        "components.div.children.formwizardFirstStep.children.propertyUsageDetails.visible",
+        false
+      );
        const { preparedFinalObject } = this.props;
        const swSectorList = preparedFinalObject.applyScreenMdmsData['ws-services-masters'].swSectorList
        approveCheck('applyScreenMdmsData.ws-services-masters.sectorList', swSectorList);
@@ -149,6 +160,11 @@ class CheckboxLabels extends React.Component {
     const { jsonPathTubewell, approveCheck, onFieldChange,jsonPathWater,jsonPathSewerage } = this.props;
     this.setState({ [name]: event.target.checked, interChange: true,checkedWater : false,checkedSewerage : false }, () => {
       if (this.state.checkedTubewell) {
+        set(
+          'apply',
+          "components.div.children.formwizardFirstStep.children.propertyUsageDetails.visible",
+          true
+        );
         toggleWater(onFieldChange, false);
         if (this.state.checkedSewerage) { toggleSewerage(onFieldChange, false); }
         else { toggleSewerage(onFieldChange, false); }
@@ -164,11 +180,28 @@ class CheckboxLabels extends React.Component {
     const { classes, required, preparedFinalObject } = this.props;
     let checkedWater, checkedSewerage,checkedTubewell;
     let IsEdit = process.env.REACT_APP_NAME === "Citizen"?false:true;
+    if(preparedFinalObject.WaterConnection.length>0)
+    {
+      let applicationNumber = (preparedFinalObject && preparedFinalObject.WaterConnection[0].applicationNo) ? true : false;
+      if(applicationNumber && process.env.REACT_APP_NAME === "Citizen")
+      {
+        IsEdit = true;
+      }
+
+    }
+    const applicationNo_ = getQueryArg(window.location.href, "applicationNumber");
+    if(getQueryArg(window.location.href, "action") === "edit" && applicationNo_ )
+    {
+      IsEdit = true;
+
+    }
+   
     if (this.state.interChange) {
       checkedWater = this.state.checkedWater;
       checkedSewerage = this.state.checkedSewerage;
       checkedTubewell = this.state.checkedTubewell;
     } else {
+      
       checkedWater = (preparedFinalObject && preparedFinalObject.applyScreen.water) ? preparedFinalObject.applyScreen.water : false;
       checkedSewerage = (preparedFinalObject && preparedFinalObject.applyScreen.sewerage) ? preparedFinalObject.applyScreen.sewerage : false;
       checkedTubewell = (preparedFinalObject && preparedFinalObject.applyScreen.tubewell) ? preparedFinalObject.applyScreen.tubewell : false;

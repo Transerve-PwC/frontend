@@ -279,6 +279,11 @@ const screenConfig = {
     uiFramework: "material-ui",
     name: "checkavailability",
     beforeInitScreen: (action, state, dispatch) => {
+        set(
+            action.screenConfig,
+            "components.div.children.checkAvailabilityCalendar.visible",
+            false
+        );
         // clearlocalstorageAppDetails(state);
         const applicationNumber = getQueryArg(
             window.location.href,

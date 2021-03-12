@@ -181,15 +181,15 @@ export const additionDetails = getCommonCard({
           }
         }
       },
-      numberOfTaps: getTextField({
-        label: { labelKey: "WS_SERV_DETAIL_NO_OF_TAPS" },
-        placeholder: { labelKey: "WS_SERV_DETAIL_NO_OF_TAPS_PLACEHOLDER" },
-        gridDefination: { xs: 12, sm: 6 },
-        jsonPath: "applyScreen.noOfTaps",
-        //pattern: /^[0-9]*$/i,
-        pattern: getPattern("numeric-only"),
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-      }),
+      // numberOfTaps: getTextField({
+      //   label: { labelKey: "WS_SERV_DETAIL_NO_OF_TAPS" },
+      //   placeholder: { labelKey: "WS_SERV_DETAIL_NO_OF_TAPS_PLACEHOLDER" },
+      //   gridDefination: { xs: 12, sm: 6 },
+      //   jsonPath: "applyScreen.noOfTaps",
+      //   //pattern: /^[0-9]*$/i,
+      //   pattern: getPattern("numeric-only"),
+      //   errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      // }),
       ferruleSize: getTextField({
         label: { labelKey: "WS_ADDN_DETAILS_FERRULE_INPUT" },
         placeholder: { labelKey: "WS_ADDN_DETAILS_FERRULE_INPUT_PLACEHOLDER" },

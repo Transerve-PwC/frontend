@@ -51,7 +51,8 @@ const formConfig = {
       jsonPath: "services[0].description",
       floatingLabelText: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS",
       hintText: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_PLACEHOLDER",
-      errorMessage: "Landmark should be less than 300 characters",
+      errorMessage: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,500}$/i, 
       maxlength: "500"
     },
     latitude: {
@@ -123,14 +124,18 @@ const formConfig = {
       jsonPath: "services[0].addressDetail.houseNoAndStreetName",
       floatingLabelText: "CS_ADDCOMPLAINT_HOUSE_NO",
       hintText: "CS_ADDCOMPLAINT_HOUSE_NO_PLACEHOLDER",
-      errorMessage: "PT_HOUSE_NO_ERROR_MESSAGE",
+      errorMessage: "CS_HOUSE_NO_ERROR_MESSAGE_VALIDATION",
+      //errorMessage: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,100}$/i, 
     },
     landmark: {
       id: "landmark",
       jsonPath: "services[0].addressDetail.landmark",
       floatingLabelText: "CS_ADDCOMPLAINT_LANDMARK",
       hintText: "CS_ADDCOMPLAINT_LANDMARK_PLACEHOLDER",
-      errorMessage: "PT_LANDMARK_ERROR_MESSAGE",
+      errorMessage: "CS_ADDCOMPLAINT_LANDMARK_VALIDATION",
+     // errorMessage: "CS_ADDCOMPLAINT_COMPLAINT_DETAILS_VALIDATION",
+      pattern:/^[^\$\"'<>\?~`!&@#$%^+={}\[\]*:;]{1,100}$/i, 
     },
     tenantId: {
       id: "add-complaint-tenantid",

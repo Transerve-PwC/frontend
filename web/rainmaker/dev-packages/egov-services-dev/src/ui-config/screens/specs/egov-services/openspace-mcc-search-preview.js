@@ -159,7 +159,7 @@ const setSearchResponse = async (
     if (bookingStatus === "APPROVED") {
         await generageBillCollection(state, dispatch, applicationNumber, tenantId)
     } else {
-        await generateBill(state, dispatch, applicationNumber, tenantId, recData[0].businessService);
+        await generateBill(state, dispatch, applicationNumber, tenantId,"BOOKING_BRANCH_SERVICES.BOOKING_GROUND_OPEN_SPACES");
     }
 
 

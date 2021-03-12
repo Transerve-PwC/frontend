@@ -258,7 +258,7 @@ class WorkFlowContainer extends React.Component {
     }
     let baseUrl = "rented-properties";
     let bservice = "";
-    const payUrl = `/egov-common/pay?consumerCode=${businessId}&tenantId=${tenant}`;
+    const payUrl = `/rented-properties-citizen/pay?consumerCode=${businessId}&tenantId=${tenant}`;
     switch (action) {
       case "PAY": return bservice ? `${payUrl}&businessService=${bservice}` : payUrl;
       case "EDIT": return isAlreadyEdited

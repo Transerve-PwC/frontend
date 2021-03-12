@@ -156,9 +156,10 @@ const screenConfig = {
                     },
                 },
                 applicationsCard: {
-                    uiFramework: "custom-molecules",
+                    uiFramework: "custom-molecules-local",
+                    moduleName: "egov-services",
                     componentPath: "SingleApplication",
-                    visible: true,
+                              visible: true,
                     props: {
                         contents: [
                             {

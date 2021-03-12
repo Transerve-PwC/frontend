@@ -337,11 +337,11 @@ const otherFieldDisabled = (dispatch, isRequired, isdisabled) => {
 
 const clearFields = (dispatch) => {
   let screenKey = "apply";
-  dispatch(
-    handleField(
-      screenKey,
-      "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
-      "props.value", ""));
+  // dispatch(
+  //   handleField(
+  //     screenKey,
+  //     "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+  //     "props.value", ""));
   dispatch(
     handleField(
       screenKey,
@@ -566,8 +566,44 @@ const articleDetailData = () => {
           let encroachmentType = get(state, 'screenConfiguration.preparedFinalObject.eChallan.encroachmentType', '');
           if (action.value === 'Other' || encroachmentType === 'Seizure of Vehicles') {
             otherFieldDisabled(dispatch, true, false);
-          } else {
+            dispatch(
+              handleField(
+                "apply",
+                "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                "props.value", ""));              
+            dispatch(
+              handleField(
+                "apply",
+                "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                "props.disabled", false));              
+
+          } else if (action.value === 'PHARI') {
             otherFieldDisabled(dispatch, false, true);
+
+            dispatch(
+                handleField(
+                  "apply",
+                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                  "props.value", "1"));              
+              dispatch(
+                handleField(
+                  "apply",
+                  "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                  "props.disabled", true));              
+
+            } else {
+            otherFieldDisabled(dispatch, false, true);
+            dispatch(
+              handleField(
+                "apply",
+                "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                "props.value", ""));              
+            dispatch(
+              handleField(
+                "apply",
+                "components.div.children.formwizardSecondStep.children.ArticleDetails.children.cardContent.children.articleDetailsConatiner.children.articleContainer.children.articleCard.children.Quantity",
+                "props.disabled", false));              
+
           }
           clearFields(dispatch);
 

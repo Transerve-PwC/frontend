@@ -96,23 +96,53 @@ const callBackForSearch = async (state, dispatch, action) => {
     
             dispatch(prepareFinalObject("roomAvailabilityData", response2.data))
 
-            if(response2.data.availableAcRooms==0 && response2.data.availableNonAcRooms==0){
-                set(
-                    state.screenConfiguration.screenConfig["checkavailability_room"],
-                   "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
-                    false
-                );
-    
-            }else{
             
-                set(
-                    state.screenConfiguration.screenConfig["checkavailability_room"],
-                   "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
-                    true
-                );
-            }
-    
+            if (response.bookingsModelList[0].timeslots && response.bookingsModelList[0].timeslots.length > 0) {
+                if (response.bookingsModelList[0].timeslots && response.bookingsModelList[0].timeslots.length > 1) {
+                  var [fromTime, toTimeOne] = response.bookingsModelList[0].timeslots[0].slot.split("-");
+                  var [fromTimeTwo, toTime] = response.bookingsModelList[0].timeslots[1].slot.split("-");
+                } else {
+                  var [fromTime, toTime] = response.bookingsModelList[0].timeslots[0].slot.split("-");
+                }
+                fromTime = fromTime.trim();
+                toTime = toTime.trim();
+            
+                if (fromTime == "9:00 AM" && toTime == "8:59 AM") {
+                    if(response2.data.availableAcRooms==0 && response2.data.availableNonAcRooms==0){
+                        set(
+                            state.screenConfiguration.screenConfig["checkavailability_room"],
+                           "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
+                            false
+                        );
+            
+                    }else{
+                    
+                        set(
+                            state.screenConfiguration.screenConfig["checkavailability_room"],
+                           "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
+                            true
+                        );
+                    }
+                }else{
+                    set(
+                        state.screenConfiguration.screenConfig["checkavailability_room"],
+                       "components.div.children.personalDetails.children.cardContent.children.personalDetailsContainer.children.buttonContainer.visible",
+                        false
+                    );
+                    dispatch(
+                        toggleSnackbar(
+                            true,
+                            { labelName: "Room booking is not allowed for hourly basis.", labelKey: "" },
+                            "warning"
+                        )
+                    );
+        
+                }
+              }
+            
            
+    
+              
             let selectDateArray=[]
             if(new Date(response.bookingsModelList[0].bkFromDate).getTime()===new Date(response.bookingsModelList[0].bkToDate).getTime()){
                

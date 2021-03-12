@@ -3,7 +3,8 @@ import { Card, Image, Icon, Button } from "components";
 import Label from "egov-ui-kit/utils/translationNode";
 import isEmpty from "lodash/isEmpty";
 import "./index.css";
-
+import { connect } from "react-redux";
+import get from "lodash/get";
 // const iconStyle = {
 //   marginRight: "13px",
 //   height: "24px",
@@ -25,6 +26,7 @@ import "./index.css";
 class PayDetails extends Component {
   render() {
     const {paymentDetails} = this.props;
+    console.log("PayDetailsInAppStateModified--",this.props)
 
     return (
       <div>
@@ -44,19 +46,19 @@ class PayDetails extends Component {
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px',marginTop:30}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_Date/Venue_CHANGE_CHARGES" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_DATE/VENUE_CHANGE_CHARGES" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[5].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.ChangeAmount}</h5>
                 </div>
               </div>
 
               <div className="complaint-detail-detail-section-status row" style={{marginLeft:'-10px'}}>
                 <div className="col-sm-4 col-xs-12">
-                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_TAXES" />
+                  <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label="BK_MYBK_AMOUNT" />
                 </div>
                 <div className="col-sm-4 col-xs-12">
-                  <h5 style={{ textAlign: "right" }}>{paymentDetails && paymentDetails.billDetails[0] && paymentDetails.billDetails[0].billAccountDetails[3].amount}</h5>
+                  <h5 style={{ textAlign: "right" }}>{this.props.taxes}</h5>
                 </div>
               </div>
             </div>
@@ -67,4 +69,65 @@ class PayDetails extends Component {
   }
 }
 
-export default PayDetails;
+const mapStateToProps = state => {
+
+  const { bookings, common, auth, form } = state;
+  const { createPACCApplicationData} = bookings;
+  const { userInfo } = state.auth;
+  const { facilationChargesSuccess, arrayName } = bookings;
+  const { applicationData } = bookings;
+  let selectedComplaint = applicationData ? applicationData.bookingsModelList[0] : ''
+  let selectedType = selectedComplaint ? selectedComplaint.bkBookingType : ''
+let DateVenueChangeArray;
+let ChangeAmount;
+let taxes;
+  let DateVenueChangeAmount  = get(
+    state,
+    "screenConfiguration.preparedFinalObject.DateVenueChngeAmount",
+    "NotFound"
+);
+console.log("DateVenueChangeAmount",DateVenueChangeAmount)
+
+if(DateVenueChangeAmount !== "NotFound"){
+  DateVenueChangeArray = DateVenueChangeAmount.Bill[2].billDetails[0].billAccountDetails
+
+if(selectedType == "Community Center"){
+  for(let i=0; i<DateVenueChangeArray.length ; i++){
+    if(DateVenueChangeArray[i].taxHeadCode == "COMMUNITY_LOCATION_AND_VENUE_CHANGE_AMOUNT"){
+      ChangeAmount = DateVenueChangeArray[i].amount
+    }
+    if(DateVenueChangeArray[i].taxHeadCode == "CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
+      taxes = DateVenueChangeArray[i].amount
+    }
+      }
+}
+
+if(selectedType == "Parks"){
+  for(let i=0; i<DateVenueChangeArray.length ; i++){
+    if(DateVenueChangeArray[i].taxHeadCode == "PARK_LOCATION_AND_VENUE_CHANGE_AMOUNT"){
+      ChangeAmount = DateVenueChangeArray[i].amount
+    }
+    if(DateVenueChangeArray[i].taxHeadCode == "CGST_UTGST_MANUAL_OPEN_SPACE_BOOKING_BRANCH"){
+      taxes = DateVenueChangeArray[i].amount
+    }
+      }
+}
+  
+}
+console.log("ChangeAmount,taxes",ChangeAmount,taxes)
+return {
+  ChangeAmount,taxes,userInfo
+}
+
+}
+
+const mapDispatchToProps = dispatch => {
+  return { 
+          prepareFinalObject: (jsonPath, value) =>
+          dispatch(prepareFinalObject(jsonPath, value)),
+  }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PayDetails);

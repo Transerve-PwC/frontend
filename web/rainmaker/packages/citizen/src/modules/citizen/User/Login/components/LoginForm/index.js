@@ -57,6 +57,7 @@ const LoginForm = ({ handleFieldChange, form, logoUrl,qrCodeURL,enableWhatsApp,l
           </div>
           <Label style={{ marginBottom: "12px" }} className="text-center" bold={true} dark={true} fontSize={16} label="CORE_COMMON_LOGIN" />
           <Field fieldKey="phone" field={fields.phone} handleFieldChange={handleFieldChange}  />
+          {/* pattern={/^[0-9]{10}$/i} */}
           <div style={{ marginBottom: "0px", position: "relative", zIndex: 10,marginRight:20}} className="text-right">
             <Label id="otp-trigger" className="otp-prompt" label="CORE_LOGIN_NO_ACCOUNT" />
             <Link to="/user/register">

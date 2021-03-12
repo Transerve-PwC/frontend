@@ -1,5 +1,6 @@
 import React from "react";
-import { sortByEpoch, getEpochForDate } from "../../utils";
+import { sortByEpoch, getEpochForDate,ifUserRoleExists } from "../../utils";
+//import { ifUserRoleExists } from "../utils";
 import './index.css'
 import {getTextToLocalMapping} from "./searchApplicationResults"
 import LabelContainer from "egov-ui-framework/ui-containers/LabelContainer";
@@ -51,7 +52,9 @@ export const searchResults = {
           filter: false,
           customBodyRender: (value, data) => {
            // if (data.rowData[4] > 0 && data.rowData[4] !== 0) {
-              if ((data.rowData[4] > 0 && data.rowData[4] !== 0) &&(data.rowData[3] !== undefined? data.rowData[3].toUpperCase() !== "INITIATED":'')) {
+             // check role exists for WS_CEMP
+             const roleExists = ifUserRoleExists("WS_CEMP");
+              if ((data.rowData[4] > 0 && data.rowData[4] !== 0 && roleExists) &&(data.rowData[3] !== undefined? data.rowData[3].toUpperCase() !== "INITIATED":'')) {
               return (
                 <div className="linkStyle" onClick={() => getViewBillDetails(data)} style={{ color: '#fe7a51', textTransform: 'uppercase' }}>
                   <LabelContainer
@@ -84,6 +87,12 @@ export const searchResults = {
       },
       {
         name: getTextToLocalMapping("connectionType"),
+        options: {
+          display: false
+        }
+      },
+      {
+        name: getTextToLocalMapping("billGenerationId"),
         options: {
           display: false
         }
@@ -121,5 +130,5 @@ const getConnectionDetails = data => {
 }
 
 const getViewBillDetails = data => {
-  window.location.href = `viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}&connectionType=${data.rowData[9]}`
+  window.location.href = `viewBill?connectionNumber=${data.rowData[1]}&tenantId=${data.rowData[8]}&service=${data.rowData[0]}&connectionType=${data.rowData[9]}&id=${data.rowData[10]}`
 }

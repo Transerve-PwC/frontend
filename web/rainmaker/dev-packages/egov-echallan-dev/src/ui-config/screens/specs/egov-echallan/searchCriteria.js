@@ -15,7 +15,7 @@ import get from "lodash/get";
 import { searchResultApiResponse } from "./searchResource/searchResultApiResponse";
 import { resetAllFields } from "../utils";
 import "./index.css";
-
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 const resetAll = async (state, dispatch) => {
 
   const objectJsonPath = `components.div.children.searchCriteria.children.cardContent.children`;
@@ -24,7 +24,8 @@ const resetAll = async (state, dispatch) => {
     objectJsonPath,
     {}
   );
-  
+  dispatch(prepareFinalObject("searchCriteriaManageChallan",[]));
+
   resetAllFields(children, dispatch, state, 'echallan-landing');
 }
 /*...SearchTextViewSizureReport..*/

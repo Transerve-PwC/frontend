@@ -383,46 +383,47 @@ export const getMyApplicationResults = async (queryObject, dispatch) => {
                         }
                         const data = await httpRequest(
                             "post",
-                            //`billing-service/bill/v2/_fetchbill?consumerCode=${response.WaterConnection[i].applicationNo}&tenantId=${response.WaterConnection[i].property.tenantId}&businessService=WS.ONE_TIME_FEE`,
-                            '/ws-services/billGeneration/_getBillData',
+                            `billing-service/bill/v2/_fetchbill?consumerCode=${response.WaterConnection[i].applicationNo}&tenantId=${response.WaterConnection[i].property.tenantId}&businessService=WS.ONE_TIME_FEE`,
+                            //'/ws-services/billGeneration/_getBillData',
                             "_search",
                              queryObject
                         );
-                        // if (data && data !== undefined) {
-                        //     if (data.Bill !== undefined && data.Bill.length > 0) {
-                        //         if (data.Bill[0].totalAmount !== 0) {
-                        //             response.WaterConnection[i].due = data.Bill[0].totalAmount
-                        //         } else {
-                        //             response.WaterConnection[i].due = "NA"
-                        //         }
-                        //     }
-
-                        // } else {
-                        //     response.WaterConnection[i].due = 0
-                        // }
                         if (data && data !== undefined) {
-                            if (data.billGeneration !== undefined && data.billGeneration.length > 0) {
-                               response.WaterConnection[i].due = 0//data.billGeneration[0].totalAmount
-                                response.WaterConnection[i].status = data.billGeneration[0].status
-                                response.WaterConnection[i].id = data.billGeneration[0].billGenerationId
-                                response.WaterConnection[i].error = ""
+                            if (data.Bill !== undefined && data.Bill.length > 0) {
+                                if (data.Bill[0].totalAmount !== 0) {
+                                    response.WaterConnection[i].due = data.Bill[0].totalAmount
+                                } else {
+                                    response.WaterConnection[i].due = "NA"
+                                }
                             }
 
                         } else {
-                            response.WaterConnection[i].due = "NA"
-                            response.WaterConnection[i].status = "NA"
-                            response.WaterConnection[i].error = ""
-                            response.WaterConnection[i].id = 0
+                            response.WaterConnection[i].due = 0
                         }
+                        // if (data && data !== undefined) {
+                        //     if (data.billGeneration !== undefined && data.billGeneration.length > 0) {
+                        //        response.WaterConnection[i].due = 0//data.billGeneration[0].totalAmount
+                        //         response.WaterConnection[i].status = data.billGeneration[0].status
+                        //         response.WaterConnection[i].id = data.billGeneration[0].billGenerationId
+                        //         response.WaterConnection[i].error = ""
+                        //     }
+
+                        // } else {
+                        //     response.WaterConnection[i].due = "NA"
+                        //     response.WaterConnection[i].status = "NA"
+                        //     response.WaterConnection[i].error = ""
+                        //     response.WaterConnection[i].id = 0
+                        // }
 
                     } catch (err) {
                         console.log(err)
                         response.WaterConnection[i].due = "NA"
-                        response.WaterConnection[i].status = "NA"
+                        //response.WaterConnection[i].status = "NA"
                         response.WaterConnection[i].error = err.message
                         response.WaterConnection[i].id = 0
                     }
                 }
+                
             }
             // });
         }
@@ -463,37 +464,37 @@ export const getSWMyApplicationResults = async (queryObject, dispatch) => {
                             "_search",
                             queryObject
                         );
-                        // if (data && data !== undefined) {
-                        //     if (data.Bill !== undefined && data.Bill.length > 0) {
-                        //         if (data.Bill[0].totalAmount !== 0) {
-                        //             response.SewerageConnections[i].due = data.Bill[0].totalAmount
-                        //         } else {
-                        //             response.SewerageConnections[i].due = "NA"
-                        //         }
-                        //     }
-
-                        // } else {
-                        //     response.SewerageConnections[i].due = 0
-                        // }
                         if (data && data !== undefined) {
-                            if (data.billGeneration !== undefined && data.billGeneration.length > 0) {
-                               response.SewerageConnections[i].due = 0//data.billGeneration[0].totalAmount
-                                response.SewerageConnections[i].status = data.billGeneration[0].status
-                                response.SewerageConnections[i].id = data.billGeneration[0].billGenerationId
-                                response.SewerageConnections[i].error = ""
+                            if (data.Bill !== undefined && data.Bill.length > 0) {
+                                if (data.Bill[0].totalAmount !== 0) {
+                                    response.SewerageConnections[i].due = data.Bill[0].totalAmount
+                                } else {
+                                    response.SewerageConnections[i].due = "NA"
+                                }
                             }
 
                         } else {
-                            response.SewerageConnections[i].due = "NA"
-                            response.SewerageConnections[i].status = "NA"
-                            response.SewerageConnections[i].error = ""
-                            response.SewerageConnections[i].id = 0
+                            response.SewerageConnections[i].due = 0
                         }
+                        // if (data && data !== undefined) {
+                        //     if (data.billGeneration !== undefined && data.billGeneration.length > 0) {
+                        //        response.SewerageConnections[i].due = 0//data.billGeneration[0].totalAmount
+                        //         response.SewerageConnections[i].status = data.billGeneration[0].status
+                        //         response.SewerageConnections[i].id = data.billGeneration[0].billGenerationId
+                        //         response.SewerageConnections[i].error = ""
+                        //     }
+
+                        // } else {
+                        //     response.SewerageConnections[i].due = "NA"
+                        //     response.SewerageConnections[i].status = "NA"
+                        //     response.SewerageConnections[i].error = ""
+                        //     response.SewerageConnections[i].id = 0
+                        // }
 
                     } catch (err) {
                         console.log(err)
                         response.SewerageConnections[i].due = "NA"
-                        response.SewerageConnections[i].status = "NA"
+                       // response.SewerageConnections[i].status = "NA"
                         response.SewerageConnections[i].error = err.message
                         response.SewerageConnections[i].id = 0
                     }
@@ -520,7 +521,8 @@ export const getPropertyResults = async (queryObject, dispatch) => {
             queryObject
         );
         dispatch(toggleSpinner());
-        return findAndReplace(response, null, "NA");
+       // return findAndReplace(response, null, "NA");
+       return response;
     } catch (error) {
         dispatch(toggleSpinner());
         console.log(error);
@@ -868,7 +870,14 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
             "screenConfiguration.preparedFinalObject.WaterConnection[0].activityType",
             ''
         );
-        const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+        //const wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+        let wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+        let  ActionType = getQueryArg(window.location.href, "actionType");
+        if(wnsStatus === null)
+        {
+        wnsStatus =ActionType;
+        } 
+
         const wns_workflow =  window.localStorage.getItem("wns_workflow"); 
                 if(wnsStatus){
                     activityType = wnsStatus
@@ -885,21 +894,21 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
             if(occupancycode && applicationType && category)
             {
 
-                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO')
+                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO' || activityType ==='WS_RENAME')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "UPDATE_CONNECTION_HOLDER_INFO")
                 }
-                else if(activityType ==='TEMPORARY_DISCONNECTION')
+                else if(activityType ==='TEMPORARY_DISCONNECTION' || activityType ==='WS_TEMP_DISCONNECTION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "TEMPORARY_DISCONNECTION")
                 }
-                else if(activityType ==='CONNECTION_CONVERSION')
+                else if(activityType ==='CONNECTION_CONVERSION' || activityType ==='WS_CONVERSION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "CONNECTION_CONVERSION")
                 }
-                else if(activityType ==='PERMANENT_DISCONNECTION')
+                else if(activityType ==='PERMANENT_DISCONNECTION' || activityType ==='WS_DISCONNECTION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === 'PERMANENT_DISCONNECTION')
                 }
                 else if(activityType ==='NEW_WS_CONNECTION' 
                      || activityType ==='APPLY_FOR_TEMPORARY_REGULAR_CONNECTION' 
@@ -907,6 +916,13 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
                      || activityType ==='REGULARWSCONNECTION'
                      || activityType ==='TEMPORARY_WSCONNECTION'
                      || activityType === 'WS_TUBEWELL'
+                     || activityType === 'WS_TEMP_TEMP'
+                     || activityType === 'WS_TEMP_REGULAR'
+                     || activityType === 'WS_DISCONNECTION'
+                     || activityType === 'WS_TEMP_DISCONNECTION'
+                     || activityType === 'WS_RENAME'
+                     || activityType === 'WS_CONVERSION'
+                     || activityType === 'WS_REACTIVATE'
                      || activityType ==='APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION')
                 {
                     if(applicationType ==='TEMPORARY' ||  activityType ==='APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION' || activityType ==='WS_TEMP_TEMP')
@@ -921,6 +937,34 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
                             && x.occupancycode === occupancycode)
                     } 
                 }  
+            }
+            else{
+                if(applicationType ==='REGULAR')
+                {
+                
+                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO' || activityType ==='WS_RENAME')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "UPDATE_CONNECTION_HOLDER_INFO")
+                }
+                else if(activityType ==='TEMPORARY_DISCONNECTION' || activityType ==='WS_TEMP_DISCONNECTION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "TEMPORARY_DISCONNECTION")
+                }
+                else if(activityType ==='CONNECTION_CONVERSION' || activityType ==='WS_CONVERSION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "CONNECTION_CONVERSION")
+                }
+                else if(activityType ==='PERMANENT_DISCONNECTION' || activityType ==='WS_DISCONNECTION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === 'PERMANENT_DISCONNECTION')
+                }
+            }
+            else if(applicationType ==='TEMPORARY'){
+                wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+                    && x.category === category)
+
+            }
+
             }
             }
             else if (sewerage)
@@ -941,6 +985,12 @@ export const prepareDocumentsUploadData = (state, dispatch,type="upload") => {
             }
             if( sewerage === false && tubewell === false && water === false)
             {
+                if(applicationType ==='TEMPORARY'){
+                    wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+                        && x.category === category)
+    
+                }
+                else
                 wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
             }
             if(wsDocument && wsDocument[0])
@@ -1368,7 +1418,13 @@ export const prefillDocuments = async (payload, destJsonPath, dispatch) => {
                     "WaterConnection[0].activityType",
                     ''
                 );
-                const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+               // const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+                let wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+                let  ActionType = getQueryArg(window.location.href, "actionType");
+                if(wnsStatus === null)
+                {
+                wnsStatus =ActionType;
+                }
                 const wns_workflow =  window.localStorage.getItem("wns_workflow"); 
                 if(wnsStatus){
                     activityType = wnsStatus
@@ -1386,21 +1442,21 @@ export const prefillDocuments = async (payload, destJsonPath, dispatch) => {
             {
                 
                 console.log(activityType);
-                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO')
+                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO' || activityType ==='WS_RENAME')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "UPDATE_CONNECTION_HOLDER_INFO")
                 }
-                else if(activityType ==='TEMPORARY_DISCONNECTION')
+                else if(activityType ==='TEMPORARY_DISCONNECTION' || activityType ==='WS_TEMP_DISCONNECTION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "TEMPORARY_DISCONNECTION")
                 }
-                else if(activityType ==='CONNECTION_CONVERSION')
+                else if(activityType ==='CONNECTION_CONVERSION' || activityType ==='WS_CONVERSION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "CONNECTION_CONVERSION")
                 }
-                else if(activityType ==='PERMANENT_DISCONNECTION')
+                else if(activityType ==='PERMANENT_DISCONNECTION' || activityType ==='WS_DISCONNECTION')
                 {
-                    wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === 'PERMANENT_DISCONNECTION')
                 }
                 else if(activityType ==='NEW_WS_CONNECTION' 
                      || activityType ==='APPLY_FOR_TEMPORARY_REGULAR_CONNECTION' 
@@ -1408,6 +1464,13 @@ export const prefillDocuments = async (payload, destJsonPath, dispatch) => {
                      || activityType ==='REGULARWSCONNECTION'
                      || activityType ==='TEMPORARY_WSCONNECTION'
                      || activityType === 'WS_TUBEWELL'
+                     || activityType === 'WS_TEMP_TEMP'
+                     || activityType === 'WS_TEMP_REGULAR'
+                     || activityType === 'WS_DISCONNECTION'
+                     || activityType === 'WS_TEMP_DISCONNECTION'
+                     || activityType === 'WS_RENAME'
+                     || activityType === 'WS_CONVERSION'
+                     || activityType === 'WS_REACTIVATE'
                      || activityType ==='APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION')
                 {
                     if(applicationType ==='TEMPORARY' ||  activityType ==='APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION' || activityType ==='WS_TEMP_TEMP')
@@ -1422,6 +1485,34 @@ export const prefillDocuments = async (payload, destJsonPath, dispatch) => {
                             && x.occupancycode === occupancycode)
                     } 
                 }  
+            }
+            else{
+                if(applicationType ==='REGULAR')
+                {
+                
+                if(activityType ==='UPDATE_CONNECTION_HOLDER_INFO' || activityType ==='WS_RENAME')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "UPDATE_CONNECTION_HOLDER_INFO")
+                }
+                else if(activityType ==='TEMPORARY_DISCONNECTION' || activityType ==='WS_TEMP_DISCONNECTION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "TEMPORARY_DISCONNECTION")
+                }
+                else if(activityType ==='CONNECTION_CONVERSION' || activityType ==='WS_CONVERSION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === "CONNECTION_CONVERSION")
+                }
+                else if(activityType ==='PERMANENT_DISCONNECTION' || activityType ==='WS_DISCONNECTION')
+                {
+                    wsDocument = wsDocument.filter(x=>x.WaterActivity === 'PERMANENT_DISCONNECTION')
+                }
+            }
+            else if(applicationType ==='TEMPORARY'){
+                wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+                    && x.category === category)
+
+            }
+
             }
             }
             else if (sewerage)
@@ -1442,6 +1533,17 @@ export const prefillDocuments = async (payload, destJsonPath, dispatch) => {
             }
             if(sewerage === false && tubewell === false && water === false)
             {
+                if(applicationType ==='TEMPORARY'){
+                    wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+                        && x.category === category)
+    
+                }
+                // else if(applicationType ==='REGULAR'){
+                //     wsDocument = wsDocument.filter(x=>x.applicationType === applicationType 
+                //         && x.occupancycode === occupancycode)
+    
+                // }
+                else
                 wsDocument = wsDocument.filter(x=>x.WaterActivity === activityType)
             }
                 
@@ -1524,6 +1626,7 @@ export const applyForWaterOrSewerage = async (state, dispatch) => {
 export const applyForWater = async (state, dispatch) => {
     let queryObject = parserFunction(state);
     let waterId = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].id");
+    let plotNo = get(state, "screenConfiguration.preparedFinalObject.applyScreen.property.address.plotNo");
     let method = waterId ? "UPDATE" : "CREATE";
     try {
         const tenantId = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].property.tenantId");
@@ -1534,14 +1637,19 @@ export const applyForWater = async (state, dispatch) => {
                 state.screenConfiguration.preparedFinalObject,
                 "WaterConnection[0].additionalDetails.appCreatedDate"
             )
-
-            let queryObjectForUpdate = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0]");
-                                  
+            let queryObjectForUpdate = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0]");                                  
             set(queryObjectForUpdate, "tenantId", queryObject.tenantId);
             queryObjectForUpdate = { ...queryObjectForUpdate, ...queryObject }
             set(queryObjectForUpdate, "processInstance.action", "SUBMIT_APPLICATION");
             // need to add status from the localstorage here for the status and remove the local storage
-            const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+           // const wnsStatus =  window.localStorage.getItem("WNS_STATUS"); 
+            let wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+            let  ActionType = getQueryArg(window.location.href, "actionType");
+            if(wnsStatus === null)
+            {
+              wnsStatus =ActionType;
+            }
+
             if(wnsStatus){
               switch(wnsStatus){
                 case "UPDATE_CONNECTION_HOLDER_INFO" :   dispatch(prepareFinalObject("WaterConnection[0].activityType", "UPDATE_CONNECTION_HOLDER_INFO")); break;
@@ -1553,13 +1661,19 @@ export const applyForWater = async (state, dispatch) => {
                 case "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION")); break;
                 case "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION":  dispatch(prepareFinalObject("WaterConnection[0].activityType", "APPLY_FOR_TEMPORARY_REGULAR_CONNECTION")); break;
               }
-              set(queryObjectForUpdate, "processInstance.action", "INITIATE");  
-
-              set(queryObjectForUpdate, "processInstance.action", "INITIATE");
-              ///
-              set(queryObjectForUpdate, "waterApplication", null);
+              let activeStep = get(state.screenConfiguration.screenConfig["apply"], "components.div.children.stepper.props.activeStep", 0);
+              if(activeStep === 0)
+              {
+                set(queryObjectForUpdate, "processInstance.action", "INITIATE"); 
+                set(queryObjectForUpdate, "waterApplication", null);
+              }
+              else{
+                set(queryObjectForUpdate, "processInstance.action", "SUBMIT_APPLICATION");
+              }             
+              
               set(queryObjectForUpdate, "activityType", wnsStatus);
-            }             
+            } 
+            
            
             set(queryObjectForUpdate, "waterSource", (queryObjectForUpdate.waterSource + "." + queryObjectForUpdate.waterSubSource));
             const appNumber =   getQueryArg(window.location.href, "applicationNumber");
@@ -1621,6 +1735,8 @@ export const applyForWater = async (state, dispatch) => {
             
         } else {
             set(queryObject, "processInstance.action", "INITIATE")
+            //set doorNo
+            set(queryObject, "property.address.doorNo", plotNo)
             queryObject = findAndReplace(queryObject, "NA", null);
             if(get(state, "screenConfiguration.preparedFinalObject.applyScreen.tubewell")){
                 queryObject.activityType = "NEW_TUBEWELL_CONNECTION";

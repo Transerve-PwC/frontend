@@ -101,11 +101,75 @@ export const stepper = getStepperObject({ props: { activeStep: 0 } }, stepperDat
 
 const getLabelForWnsHeader = () => {
   const wnsHeader =  window.localStorage.getItem("WNS_STATUS");
+  const ActionType = getQueryArg(window.location.href, "actionType");
 
-  if(wnsHeader)
-    return `${wnsHeader}_HEADER`;
+  if(wnsHeader ||ActionType)
+  {
+  if(ActionType)
+  {
+    let header =''
+    if(ActionType ==='UPDATE_CONNECTION_HOLDER_INFO')
+    {
+      header = 'WS_RENAME_DETAIL_HEADER'
+
+    }
+    if(ActionType==='TEMPORARY_DISCONNECTION')
+    {
+      header = 'WS_TEMP_DISCONNECTION_DETAIL_HEADER'
+
+    }
+    if(ActionType==='CONNECTION_CONVERSION')
+    {
+      header = 'WS_CONVERSION_DETAIL_HEADER'
+
+    }
+    if(ActionType==='PERMANENT_DISCONNECTION')
+    {
+      header = 'WS_DISCONNECTION_DETAIL_HEADER'
+
+    }
+    if(ActionType==='REACTIVATE_CONNECTION')
+    {
+      header = 'WS_REACTIVATE_DETAIL_HEADER'
+
+    }
+    if(ActionType==='APPLY_FOR_TEMPORARY_TEMPORARY_CONNECTION')
+    {
+      header = 'WS_TEMP_TEMP_DETAIL_HEADER'
+
+    }
+    if(ActionType==='APPLY_FOR_TEMPORARY_REGULAR_CONNECTION')
+    {
+      header = 'WS_TEMP_REGULAR_DETAIL_HEADER'
+    }
+    return header
+
+  }
+  else{
+ 
+    const wnsHeader_ =  window.localStorage.getItem("wns_workflow");
+    if(wnsHeader_)
+    {
+      return `${wnsHeader_}_DETAIL_HEADER`;
+    }
+    else
+    return `${wnsHeader}_DETAIL_HEADER`;
+
+  }
+}
+    
   else if( process.env.REACT_APP_NAME === "Citizen")
+  {
+    const wnsHeader_ =  window.localStorage.getItem("wns_workflow");
+    if(wnsHeader_)
+    {
+      return `${wnsHeader_}_DETAIL_HEADER`;
+    }
+    else   
     return  "WS_APPLY_NEW_CONNECTION_HEADER"
+
+  }
+    
   else
   {
     const wnsHeaderTepm =  window.localStorage.getItem("wns_workflow");
@@ -360,6 +424,16 @@ export const getData = async (action, state, dispatch) => {
         try { payloadSewerage = await getSearchResultsForSewerage(queryObject, dispatch) } catch (error) { console.error(error); }
         payloadSewerage.SewerageConnections[0].water = false;
         payloadSewerage.SewerageConnections[0].sewerage = true;
+         //set modify property
+         payloadSewerage.SewerageConnections[0].property.subusageCategory = payloadSewerage.SewerageConnections[0].property.usageCategory;
+         if(payloadSewerage.SewerageConnections[0].property.usageCategory !==undefined)
+         { 
+          const swusageCategory_ = payloadSewerage.SewerageConnections[0].property.usageCategory;
+         payloadSewerage.SewerageConnections[0].property.usageCategory = payloadSewerage.SewerageConnections[0].property.usageCategory.split('.')[0]; 
+         
+        
+         displaysubUsageType(swusageCategory_, dispatch, state);
+         }
         dispatch(prepareFinalObject("SewerageConnection", payloadSewerage.SewerageConnections));
       } else {
         try { payloadWater = await getSearchResults(queryObject) } catch (error) { console.error(error); };
@@ -402,7 +476,7 @@ export const getData = async (action, state, dispatch) => {
     // binddependent dropdown object Property Sub Usage Type , Uses Caregory
     const usageCategory_ = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].property.usageCategory");
     const waterApplicationType = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].waterApplicationType");
-    const activityType = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].waterApplicationType");
+    const activityType = get(state, "screenConfiguration.preparedFinalObject.WaterConnection[0].activityType");
     displaysubUsageType(usageCategory_, dispatch, state);
     displayUsagecategory(waterApplicationType, dispatch, state);
                 // check for security deposite for PENDING_FOR_SECURITY_DEPOSIT//PENDING_ROADCUT_NOC_BY_CITIZEN
@@ -423,10 +497,8 @@ export const getData = async (action, state, dispatch) => {
                             "props.value",
                             securityCharges
                           )
-                        );
-                       
-                        applyScreen.waterApplication.securityCharge
-  
+                        );                       
+                       // payloadWater.WaterConnection[0].waterApplication.securityCharge  
                         dispatch(
                           handleField(
                             "apply",
@@ -437,8 +509,7 @@ export const getData = async (action, state, dispatch) => {
                         );
                         payloadWater.WaterConnection[0].securityCharge = securityCharges;
                          //set security
-                        dispatch(prepareFinalObject("applyScreen.securityCharge", securityCharges));
-                        dispatch(prepareFinalObject("WaterConnection[0].securityCharge", securityCharges));
+                        dispatch(prepareFinalObject("applyScreen.waterApplication.securityCharge", securityCharges));                        
                         payloadWater.WaterConnection[0].waterApplication.securityCharge = securityCharges;
                         dispatch(prepareFinalObject("applyScreen.waterApplication.securityCharge", securityCharges));
                         //
@@ -470,6 +541,7 @@ export const getData = async (action, state, dispatch) => {
                 }
                 else {
                   dispatch(prepareFinalObject("applyScreen.waterApplication.isFerruleApplicable",true));
+                  dispatch(prepareFinalObject("WaterConnection[0].waterApplication.isFerruleApplicable",true));
                   dispatch(
                     handleField(
                       "apply",
@@ -722,10 +794,12 @@ export const getData = async (action, state, dispatch) => {
 
 const getApplyScreenChildren = () => {
  const wnsStatus =  window.localStorage.getItem("WNS_STATUS");
+ const ActionType = getQueryArg(window.location.href, "actionType");
+ let Action = wnsStatus !== null?wnsStatus:ActionType;
  
- if(wnsStatus){
-  switch(wnsStatus){
-    case "UPDATE_CONNECTION_HOLDER_INFO" : return {connectionHolderDetails }; 
+ if(wnsStatus || ActionType){
+  switch(Action){
+    case "UPDATE_CONNECTION_HOLDER_INFO" : return {connConversionDetails,connectionHolderDetails }; 
     case "REACTIVATE_CONNECTION":
     case "TEMPORARY_DISCONNECTION":
     case "PERMANENT_DISCONNECTION":
@@ -991,6 +1065,10 @@ const screenConfig = {
     if(!applicationNumber)
     {
       window.localStorage.removeItem("WNS_STATUS");
+      if(localStorage.getItem("wns_workflow")){
+        window.localStorage.removeItem("wns_workflow");
+      }
+
     }
 
     if (propertyId) {

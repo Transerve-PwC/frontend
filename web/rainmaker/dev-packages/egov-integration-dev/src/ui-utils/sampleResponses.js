@@ -8,191 +8,692 @@ export const sampleeofficestat = () => {
       msgId: "20170310130900|en_IN",
       status: "successful"
     },
-    ResponseBody:{
-    totalFilesPendingCnt:3,
-    totalFilesClosed  :23,
-    totalReceiptsPending  :4,
-    totalReceiptsClosed: 5,  
-    totalVIPReceiptsPending :7,
-    VipReceipts:{
-      Row:{
-        Column:[
-          {
-            name:"DepartmentId",
-            content:34
+    ResponseBody: [
+      {
+          details: {
+              VipReceipts: {
+                  Row: {
+                      Column: [
+                          {
+                              name: "DepartmentId",
+                              content: 186.0
+                          },
+                          {
+                              name: "DepartmentName",
+                              content: "MC"
+                          },
+                          {
+                              name: "OrgId",
+                              content: 393.0
+                          },
+                          {
+                              name: "OrgName",
+                              content: "ADVERTISEMENT BRANCH"
+                          },
+                          {
+                              name: "EmployeeName",
+                              content: "SURENDER SHARMA"
+                          },
+                          {
+                              name: "MarkingAbbr",
+                              content: "AO(SS)-ADVERTISEMENT"
+                          },
+                          {
+                              name: "PostDetailId",
+                              content: 1622.0
+                          },
+                          {
+                              name: "NumberOfElectronicVipreceipt",
+                              content: 0.0
+                          },
+                          {
+                              name: "NumberOfPhysicalVipreceipt",
+                              content: 0.0
+                          },
+                          {
+                              name: "Total",
+                              content: 0.0
+                          }
+                      ]
+                  }
+              },
+              FileHierarchy: {
+                  Row: {
+                      Column: [
+                          {
+                              name: "Id",
+                              content: 393.0
+                          },
+                          {
+                              name: "Sectionname",
+                              content: "ADVERTISEMENT BRANCH"
+                          },
+                          {
+                              name: "NumberOfElectronicFilesPending",
+                              content: 4.0
+                          },
+                          {
+                              name: "NumberOfPhysicalFilesPending",
+                              content: 129.0
+                          },
+                          {
+                              name: "Total",
+                              content: 133.0
+                          }
+                      ]
+                  }
+              },
+              ReceiptPending: {
+                  Row: {
+                      Column: [
+                          {
+                              name: "Departmentid",
+                              content: 186.0
+                          },
+                          {
+                              name: "DepartmentName",
+                              content: "MC"
+                          },
+                          {
+                              name: "OrgId",
+                              content: 393.0
+                          },
+                          {
+                              name: "OrgName",
+                              content: "ADVERTISEMENT BRANCH"
+                          },
+                          {
+                              name: "EmployeeName",
+                              content: "SURENDER SHARMA"
+                          },
+                          {
+                              name: "MarkingAbbr",
+                              content: "AO(SS)-ADVERTISEMENT"
+                          },
+                          {
+                              name: "PostDetailId",
+                              content: 1622.0
+                          },
+                          {
+                              name: "ElectronicReceipt",
+                              content: 0.0
+                          },
+                          {
+                              name: "PhysicalReceipt",
+                              content: 482.0
+                          },
+                          {
+                              name: "Total",
+                              content: 482.0
+                          }
+                      ]
+                  }
+              },
+              FilePending: {
+                  Row: {
+                      Column: [
+                          {
+                              name: "Departmentid",
+                              content: 186.0
+                          },
+                          {
+                              name: "DepartmentName",
+                              content: "MC"
+                          },
+                          {
+                              name: "OrgId",
+                              content: 393.0
+                          },
+                          {
+                              name: "OrgName",
+                              content: "ADVERTISEMENT BRANCH"
+                          },
+                          {
+                              name: "EmployeeName",
+                              content: "SURENDER SHARMA"
+                          },
+                          {
+                              name: "MarkingAbbr",
+                              content: "AO(SS)-ADVERTISEMENT"
+                          },
+                          {
+                              name: "PostDetailId",
+                              content: 1622.0
+                          },
+                          {
+                              name: "ElectronicFile",
+                              content: 4.0
+                          },
+                          {
+                              name: "PhysicalFile",
+                              content: 128.0
+                          },
+                          {
+                              name: "Total",
+                              content: 132.0
+                          }
+                      ]
+                  }
+              },
+              FileClosed: "",
+              ReceiptClosed: "",
           },
-          {
-            name:"DepartmentName",
-            content:"Food and Supplies"
-          },
-          {
-            name:"OrgId",
-            content:34
-          },
-          {
-            name:"OrgName",
-            content:"EStablishment-FSCA"
-          },
-          {
-            name:"EmployeeName",
-            content:"RENU SHARMA"
-          },
-          {
-            name:"MarkingAbbr",
-            content:"SA(RS)-ESTT-FSCA"
-          },
-          {
-            name:"PostDetailId",
-            content:212
-          },
-          {
-            name:"NumberOfElectronicVipreceipt",
-            content:0
-          },
-          {
-            name:"NumberOfPhysicalVipreceipt",
-            content:34
-          },
-          {
-            name:"Total",
-            content:1
-          }
-
-        ]
-      }
+          postdetailid: "1622"
+      },
+      {
+        details: {
+            VipReceipts: {
+                Row: {
+                    Column: [
+                        {
+                            name: "DepartmentId",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "NumberOfElectronicVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "NumberOfPhysicalVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "Total",
+                            content: 0.0
+                        }
+                    ]
+                }
+            },
+            FileHierarchy: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Id",
+                            content: 393.0
+                        },
+                        {
+                            name: "Sectionname",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "NumberOfElectronicFilesPending",
+                            content: 4.0
+                        },
+                        {
+                            name: "NumberOfPhysicalFilesPending",
+                            content: 129.0
+                        },
+                        {
+                            name: "Total",
+                            content: 133.0
+                        }
+                    ]
+                }
+            },
+            ReceiptPending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicReceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "PhysicalReceipt",
+                            content: 482.0
+                        },
+                        {
+                            name: "Total",
+                            content: 482.0
+                        }
+                    ]
+                }
+            },
+            FilePending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicFile",
+                            content: 4.0
+                        },
+                        {
+                            name: "PhysicalFile",
+                            content: 128.0
+                        },
+                        {
+                            name: "Total",
+                            content: 1322.0
+                        }
+                    ]
+                }
+            },
+            FileClosed: "",
+            ReceiptClosed: "",
+        },
+        postdetailid: "1623"
     },
-    FileHierarchy:{
-      Row:{
-        Column:[
-          {
-            name:"Id",
-            content:37
-          },
-          {
-            name:"Sectionname",
-            content:"EStablishment-FSCA"
-          },
-          {
-            name:"NumberOfElectronicFilesPending",
-            content:0
-          },
-          {
-            name:"NumberOfPhysicalFilesPending",
-            content:0
-          },
-          {
-            name:"Total",
-            content:34
-          },
-          
-
-        ]
-      }
+    {
+        details: {
+            VipReceipts: {
+                Row: {
+                    Column: [
+                        {
+                            name: "DepartmentId",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "NumberOfElectronicVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "NumberOfPhysicalVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "Total",
+                            content: 0.0
+                        }
+                    ]
+                }
+            },
+            FileHierarchy: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Id",
+                            content: 393.0
+                        },
+                        {
+                            name: "Sectionname",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "NumberOfElectronicFilesPending",
+                            content: 4.0
+                        },
+                        {
+                            name: "NumberOfPhysicalFilesPending",
+                            content: 129.0
+                        },
+                        {
+                            name: "Total",
+                            content: 133.0
+                        }
+                    ]
+                }
+            },
+            ReceiptPending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicReceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "PhysicalReceipt",
+                            content: 482.0
+                        },
+                        {
+                            name: "Total",
+                            content: 482.0
+                        }
+                    ]
+                }
+            },
+            FilePending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicFile",
+                            content: 4.0
+                        },
+                        {
+                            name: "PhysicalFile",
+                            content: 128.0
+                        },
+                        {
+                            name: "Total",
+                            content: 1323.0
+                        }
+                    ]
+                }
+            },
+            FileClosed: "",
+            ReceiptClosed: "",
+        },
+        postdetailid: "1624"
     },
-    ReceiptPending:{
-      Row:{
-        Column:[
-          {
-            name:"Departmentid",
-            content:34
-          },
-          {
-            name:"DepartmentName",
-            content:"Food and Supplies"
-          },
-          {
-            name:"OrgId",
-            content:37
-          },
-          {
-            name:"OrgName",
-            content:"EStablishment-FSCA"
-          },
-          {
-            name:"EmployeeName",
-            content:"RENU SHARMA"
-          },
-          {
-            name:"MarkingAbbr",
-            content:"SA(RS)-ESTT-FSCA"
-          },
-          {
-            name:"PostDetailId",
-            content:212
-          },
-          {
-            name:"ElectronicReceipt",
-            content:1672
-          },
-          {
-            name:"PhysicalReceipt",
-            content:5
-          },
-          {
-            name:"Total",
-            content:1677
-          }
-
-        ]
-      }
-    },
-    
-    FilePending:{
-
-    },
-    FileClosed:{
-
-    },
-    
-    ReceiptClosed:{
-      Row:{
-        Column:[
-          {
-            name:"Departmentid",
-            content:34
-          },
-          {
-            name:"DepartmentName",
-            content:"Food and Supplies"
-          },
-          {
-            name:"OrgId",
-            content:37
-          },
-          {
-            name:"OrgName",
-            content:"EStablishment-FSCA"
-          },
-          {
-            name:"EmployeeName",
-            content:"RENU SHARMA"
-          },
-          {
-            name:"MarkingAbbr",
-            content:"SA(RS)-ESTT-FSCA"
-          },
-          {
-            name:"PostDetailId",
-            content:212
-          },
-          {
-            name:"ElectronicReceipt",
-            content:133
-          },
-          {
-            name:"PhysicalReceipt",
-            content:0
-          },
-          {
-            name:"Total",
-            content:133
-          }
-
-        ]
-      }
-    },
-
-   }
+    {
+        details: {
+            VipReceipts: {
+                Row: {
+                    Column: [
+                        {
+                            name: "DepartmentId",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "NumberOfElectronicVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "NumberOfPhysicalVipreceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "Total",
+                            content: 0.0
+                        }
+                    ]
+                }
+            },
+            FileHierarchy: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Id",
+                            content: 393.0
+                        },
+                        {
+                            name: "Sectionname",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "NumberOfElectronicFilesPending",
+                            content: 4.0
+                        },
+                        {
+                            name: "NumberOfPhysicalFilesPending",
+                            content: 129.0
+                        },
+                        {
+                            name: "Total",
+                            content: 133.0
+                        }
+                    ]
+                }
+            },
+            ReceiptPending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicReceipt",
+                            content: 0.0
+                        },
+                        {
+                            name: "PhysicalReceipt",
+                            content: 482.0
+                        },
+                        {
+                            name: "Total",
+                            content: 482.0
+                        }
+                    ]
+                }
+            },
+            FilePending: {
+                Row: {
+                    Column: [
+                        {
+                            name: "Departmentid",
+                            content: 186.0
+                        },
+                        {
+                            name: "DepartmentName",
+                            content: "MC"
+                        },
+                        {
+                            name: "OrgId",
+                            content: 393.0
+                        },
+                        {
+                            name: "OrgName",
+                            content: "ADVERTISEMENT BRANCH"
+                        },
+                        {
+                            name: "EmployeeName",
+                            content: "SURENDER SHARMA"
+                        },
+                        {
+                            name: "MarkingAbbr",
+                            content: "AO(SS)-ADVERTISEMENT"
+                        },
+                        {
+                            name: "PostDetailId",
+                            content: 1622.0
+                        },
+                        {
+                            name: "ElectronicFile",
+                            content: 4.0
+                        },
+                        {
+                            name: "PhysicalFile",
+                            content: 128.0
+                        },
+                        {
+                            name: "Total",
+                            content: 1324.0
+                        }
+                    ]
+                }
+            },
+            FileClosed: "",
+            ReceiptClosed: "",
+        },
+        postdetailid: "1625"
+    }
+  ]
   };
   return res;
 };

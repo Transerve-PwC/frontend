@@ -59,7 +59,8 @@ prepareRoomCard(nonOptimisedRoomData){
   let roomModels= nonOptimisedRoomData
   var roomsData = roomModels
     .map((roomData) => {
-      if (!tempArray.includes(roomData.roomApplicationNumber)) {
+      if(roomData.roomApplicationStatus!=="INITIATED"){
+        if (!tempArray.includes(roomData.roomApplicationNumber)) {
         tempArray.push(roomData.roomApplicationNumber);
         let slicearray = roomModels.slice(
           roomModels.findIndex((element) => {
@@ -106,6 +107,8 @@ prepareRoomCard(nonOptimisedRoomData){
           return newObj;
         }
       }
+    }
+    
       return;
     }).filter(Boolean);
     console.log('roomsData1234', roomsData)

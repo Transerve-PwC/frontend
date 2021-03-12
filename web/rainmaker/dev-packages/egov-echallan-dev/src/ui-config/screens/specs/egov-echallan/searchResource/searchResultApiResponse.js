@@ -10,6 +10,7 @@ import set from "lodash/set";
 import { fetchMasterChallanData, fetchViewSeizureData, fetchPaymentDetailsData, fetchStoreItemHODMasterChallanData, fetchSearchMasterChallanData } from "../../../../../ui-utils/commons";
 import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import { getTodaysDateInYMD } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 
 export const searchResultApiResponse = async (state, dispatch) => {
 
@@ -100,6 +101,7 @@ export const searchResultApiResponse = async (state, dispatch) => {
       "status": challanStatus
     }
     try {
+      localStorageSet("echallanSearchCrieteria", JSON.stringify(requestBody));
       let response;
       response = await fetchSearchMasterChallanData(requestBody);
 

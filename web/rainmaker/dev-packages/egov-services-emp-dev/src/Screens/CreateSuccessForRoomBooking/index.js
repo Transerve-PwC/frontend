@@ -286,7 +286,8 @@ else{
             "bookingPurpose": applicationDetails.bkBookingPurpose,
             "bkStartDate":RoomFromDate,
             "bkEndDate":  RoomToDate,
-            "placeOfService": "Chandigarh"
+            "placeOfService": "Chandigarh",
+            "applicationNumber":this.props.AppNum
         },
         "generatedBy":{
           "generatedBy": userInfo.name,
@@ -303,8 +304,8 @@ else{
         "paymentInfo": {
             "cleaningCharges": "Not Applicable",
             "baseCharge": BKROOM,
-            "cgst": applicationDetails.bkCgst,
-            "utgst": applicationDetails.bkCgst,
+            "cgst": Newugst,
+            "utgst": Newugst,
             "totalgst": BKROOM_TAX,
             "refundableCharges": applicationDetails.bkRefundAmount,
             "totalPayment": this.props.totalAmount,
@@ -312,9 +313,9 @@ else{
             "receiptNo": this.props.ReceiptNumber,
             "currentDate": convertEpochToDate(toDayDate,"dayend"),
             "paymentType": this.props.paymentMode,
-            "facilitationCharge": four,
-            "custGSTN": applicationDetails.bkCustomerGstNo,
-            "mcGSTN": "",
+            "facilitationCharge": "100",
+            "custGSTN": applicationDetails.bkCustomerGstNo == "NA" ? "Not Applicable": applicationDetails.bkCustomerGstNo,
+            "mcGSTN": "Not Applicable",
             "bankName": "",
             "transactionId": this.props.transactionNumber,
             "totalPaymentInWords": this.NumInWords(
@@ -630,10 +631,10 @@ let four = 0;
 
 for(let i = 0; i < ArrayForPayment.length ; i++ ){
 
-if(ArrayForPayment[i].taxHeadCode == "BKROOM_TAX"){
+if(ArrayForPayment[i].taxHeadCode == "CGST_UTGST_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
 BKROOM_TAX = ArrayForPayment[i].amount
 }
-else if(ArrayForPayment[i].taxHeadCode == "BKROOM"){
+else if(ArrayForPayment[i].taxHeadCode == "RENT_COMMUNITY_CENTRES_JHANJ_GHAR_BOOKING_BRANCH"){
 BKROOM = ArrayForPayment[i].amount
 }
 else if(ArrayForPayment[i].taxHeadCode == "BKROOM_ROUND_OFF"){

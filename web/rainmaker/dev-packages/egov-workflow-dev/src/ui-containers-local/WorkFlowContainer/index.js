@@ -324,7 +324,7 @@ class WorkFlowContainer extends React.Component {
       {
         data.processInstance = {
           documents: data.wfDocuments,
-          assignes: data.assignees,
+          assignee: data.assignees[0],
           comment: data.comment,
           action: data.action,
           additionalDetails:{
@@ -336,7 +336,7 @@ class WorkFlowContainer extends React.Component {
       else{
               data.processInstance = {
                 documents: data.wfDocuments,
-                assignes: data.assignees,
+                assignee: data.assignees.length === 0?null:data.assignees[0],
                 comment: data.comment,
                 action: data.action,
                 additionalDetails:null
@@ -372,7 +372,7 @@ class WorkFlowContainer extends React.Component {
         || moduleName === "WS_REACTIVATE"
       || moduleName === "WS_TUBEWELL")
       {
-        validRequest =  this.ValidateRequest(data)
+        validRequest = this.ValidateRequest(data)
       }   
 
     try {
@@ -732,7 +732,8 @@ ValidateRequest =(payload) =>{
   }
   // change tarrif type when state is PENDING_FOR_CONNECTION_TARIFF_CHANGE for action CHANGE_TARIFF
 
- if(payload.applicationStatus ==='PENDING_FOR_CONNECTION_TARIFF_CHANGE' && payload.action==='CHANGE_TARIFF')
+ if((payload.applicationStatus ==='PENDING_FOR_CONNECTION_TARIFF_CHANGE' && payload.action==='CHANGE_TARIFF')
+    ||(payload.applicationStatus ==='PENDING_FOR_CONNECTION_HOLDER_CHANGE' && payload.action==='CHANGE_CONNECTION_HOLDER'))//PENDING_FOR_CONNECTION_HOLDER_CHANGE may be include for UPDATE_CONNECTION_HOLDER_INFO and CHANGE_CONNECTION_HOLDER
   {
     if(payload.proposedUsageCategory !==null)
     payload.waterProperty.usageCategory = payload.proposedUsageCategory

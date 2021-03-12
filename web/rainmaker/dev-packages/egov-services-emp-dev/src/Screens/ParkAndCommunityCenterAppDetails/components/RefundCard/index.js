@@ -46,7 +46,7 @@ if(hh != "NotFound"){
       "_search",
       RequestData
       );
-    
+
       console.log("RequestData--for-Refund-payment",RequestData)
       console.log("payloadfund--for-Refund-payment",payloadfundAmount)
       console.log("payloadfund.payloadfundAmount--",payloadfundAmount.Payments)
@@ -64,11 +64,11 @@ if(hh != "NotFound"){
     this.setState({
       lastAmountShow : labelLast
     })
-  
+
 //BookingRefundAmount
     // let totalRes = await this.calculateCancelledBookingRefundAmount(applicationNo, tenantId, bkFromDate,AmountFromBackEnd);
     // console.log("totalRes--inrefundPage",totalRes)
-  
+
     // this.setState({
     //   totalAmount: totalRes
     // })
@@ -92,51 +92,51 @@ if(hh != "NotFound"){
     this.setState({
       payload :AmountFromBackEnd
     })
-    
+
     var CheckDate = new Date(bookingDate);
-    console.log("CheckDate--",CheckDate) 
+    console.log("CheckDate--",CheckDate)
     var todayDate = new Date();
     console.log("todayDate--",todayDate)
-    
-    
+
+
         if (applicationNumber && tenantId) {
-          
+
             console.log("Payment Details",this.state.payload ? this.state.payload : "NOTFOUND");
             if (this.state.payload) {
-    
+
               if(todayDate > CheckDate){
                 // alert("refundCondition")
                 let billAccountDetails = this.state.payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
                 let bookingAmount = 0;
                 for (let i = 0; i < billAccountDetails.length; i++) {
-                    if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                    if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                         bookingAmount += billAccountDetails[i].amount;
                     }
                 }
-              
+
                 return bookingAmount;
-              
+
               }
               if(todayDate < CheckDate) {
                 // alert("cancelCondition")
                 let billAccountDetails =this.state.payload.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
                 let bookingAmount = 0;
                 for (let i = 0; i < billAccountDetails.length; i++) {
-                    if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                    if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                         bookingAmount += billAccountDetails[i].amount;
                     }
-                    if (billAccountDetails[i].taxHeadCode == "PACC") {
+                    if (billAccountDetails[i].taxHeadCode == "PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                         bookingAmount += billAccountDetails[i].amount;
                     }
                 }
-    
-    
-    
+
+
+
                 let mdmsBody = {
                     MdmsCriteria: {
                         tenantId: tenantId,
                         moduleDetails: [
-    
+
                             {
                                 moduleName: "Booking",
                                 masterDetails: [
@@ -145,13 +145,13 @@ if(hh != "NotFound"){
                                     }
                                 ],
                             },
-    
+
                         ],
                     },
                 };
-    
+
                 let refundPercentage = '';
-    
+
                 let payloadRes = null;
                 payloadRes = await httpRequest(
                     "egov-mdms-service/v1/_search",
@@ -161,9 +161,9 @@ if(hh != "NotFound"){
                 console.log(payloadRes, "RefundPercentage");
                 refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
     console.log("refundPercentage--2--",refundPercentage)
-    
+
               var date1 = new Date(bookingDate);
-              console.log("date1--",date1) 
+              console.log("date1--",date1)
                 var date2 = new Date();
     console.log("date2--",date2)
                 var Difference_In_Time = date1.getTime() - date2.getTime();
@@ -175,42 +175,42 @@ if(hh != "NotFound"){
                 if (Difference_In_Days > 29) {
                     let refundPercent = refundPercentage.MORETHAN30DAYS.refundpercentage;
                     console.log("refundPercent--1",refundPercent)
-    
+
                     refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
                 } else if (Difference_In_Days > 15 && Difference_In_Days < 30) {
-    
+
                     let refundPercent = refundPercentage.LETTHAN30MORETHAN15DAYS.refundpercentage;
                     refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
                     console.log("refundPercent--2",refundPercent)
                 }
-    
-    
+
+
                 return refundAmount;
               }
-    
-    
+
+
             }
         }
-    
-    
+
+
     }
 
     BookingRefundAmount = async (applicationNumber, tenantId, bookingDate,AmountFromBackEnd) => {
       const {payloadone, payload, payloadTwo, ConRefAmt,fetchPaymentAfterPayment} = this.props;
       console.log("propsforcalculateCancelledBookingRefundAmount--second",this.props)
-  
+
       // this.setState({
       //   payload :AmountFromBackEnd
       // })
-      
+
       var CheckDate = new Date(bookingDate);
-      console.log("CheckDate--",CheckDate) 
+      console.log("CheckDate--",CheckDate)
       var todayDate = new Date();
       console.log("todayDate--",todayDate)
-      
-      
+
+
           if (applicationNumber && tenantId) {
-            
+
               console.log("Payment Details--second",AmountFromBackEnd ? AmountFromBackEnd : "NOTFOUND");
               if (AmountFromBackEnd && AmountFromBackEnd) {
                 if(todayDate > CheckDate){
@@ -218,34 +218,34 @@ if(hh != "NotFound"){
                   let billAccountDetails = AmountFromBackEnd[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
                   let bookingAmount = 0;
                   for (let i = 0; i < billAccountDetails.length; i++) {
-                      if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                      if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                           bookingAmount += billAccountDetails[i].amount;
                       }
                   }
-                
+
                   return bookingAmount;
-                
+
                 }
                 if(todayDate < CheckDate) {
                   // alert("cancelCondition")
                   let billAccountDetails = AmountFromBackEnd[0].paymentDetails[0].bill.billDetails[0].billAccountDetails;
                   let bookingAmount = 0;
                   for (let i = 0; i < billAccountDetails.length; i++) {
-                      if (billAccountDetails[i].taxHeadCode == "REFUNDABLE_SECURITY") {
+                      if (billAccountDetails[i].taxHeadCode == "SECURITY_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                           bookingAmount += billAccountDetails[i].amount;
                       }
-                      if (billAccountDetails[i].taxHeadCode == "PACC") {
+                      if (billAccountDetails[i].taxHeadCode == "PARKING_LOTS_MANUAL_OPEN_SPACE_BOOKING_BRANCH") {
                           bookingAmount += billAccountDetails[i].amount;
                       }
                   }
-      
-      
-      
+
+
+
                   let mdmsBody = {
                       MdmsCriteria: {
                           tenantId: tenantId,
                           moduleDetails: [
-      
+
                               {
                                   moduleName: "Booking",
                                   masterDetails: [
@@ -254,13 +254,13 @@ if(hh != "NotFound"){
                                       }
                                   ],
                               },
-      
+
                           ],
                       },
                   };
-      
+
                   let refundPercentage = '';
-      
+
                   let payloadRes = null;
                   payloadRes = await httpRequest(
                       "egov-mdms-service/v1/_search",
@@ -270,9 +270,9 @@ if(hh != "NotFound"){
                   console.log(payloadRes, "RefundPercentage");
                   refundPercentage = payloadRes.MdmsRes.Booking.bookingCancellationRefundCalc[0];
       console.log("refundPercentage--2--",refundPercentage)
-      
+
                 var date1 = new Date(bookingDate);
-                console.log("date1--",date1) 
+                console.log("date1--",date1)
                   var date2 = new Date();
       console.log("date2--",date2)
                   var Difference_In_Time = date1.getTime() - date2.getTime();
@@ -284,26 +284,26 @@ if(hh != "NotFound"){
                   if (Difference_In_Days > 29) {
                       let refundPercent = refundPercentage.MORETHAN30DAYS.refundpercentage;
                       console.log("refundPercent--1",refundPercent)
-      
+
                       refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
                   } else if (Difference_In_Days > 15 && Difference_In_Days < 30) {
-      
+
                       let refundPercent = refundPercentage.LETTHAN30MORETHAN15DAYS.refundpercentage;
                       refundAmount = (parseFloat(bookingAmount) * refundPercent) / 100
                       console.log("refundPercent--2",refundPercent)
                   }
-      
-      
+
+
                   return refundAmount;
                 }
-      
-      
+
+
               }
           }
-      
-      
+
+
       }
-  
+
 
 
   render() {
@@ -326,7 +326,7 @@ if(hh != "NotFound"){
                   <div className="col-md-4">
                     <Label className="col-xs-12  col-sm-12 col-md-12 status-color" label={this.state.lastAmountShow}/>
                   </div>
-                  {/* <h5>{this.state.NewReFund}</h5> 
+                  {/* <h5>{this.state.NewReFund}</h5>
                   <h3>{this.state.lastAmountShow}</h3> */}
                 </div>
               </div>
@@ -338,7 +338,7 @@ if(hh != "NotFound"){
   }
 }
 
-const mapStateToProps = state => {  
+const mapStateToProps = state => {
   const { bookings, common, auth, form } = state;
 
   const { fetchPaymentAfterPayment } = bookings;

@@ -242,7 +242,7 @@ export const createUpdateMR = async (state, dispatch, action) => {
 
   let receiptDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].receiptDate",0) 
-  receiptDate = convertDateToEpoch(receiptDate, "dayStart");
+  receiptDate = convertDateToEpoch(receiptDate, "daymid");
   set(materialReceipt[0],"receiptDate", receiptDate);
   let supplierBillDate =
   get(state, "screenConfiguration.preparedFinalObject.materialReceipt[0].supplierBillDate",0) 

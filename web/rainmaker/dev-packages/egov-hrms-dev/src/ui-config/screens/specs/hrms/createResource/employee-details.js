@@ -163,13 +163,13 @@ export const employeeDetails = getCommonCard({
         let employeeCode = getQueryArg(window.location.href, "employeeCode");
       if(!employeeCode)
       {
-        dispatch(
-          handleField(`create`,        
-            "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.dateOfAppointment",
-            "props.value",
-            dateOfAppointment_
-          )          
-        );
+        // dispatch(
+        //   handleField(`create`,        
+        //     "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.dateOfAppointment",
+        //     "props.value",
+        //     dateOfAppointment_
+        //   )          
+        // );
 
         // dispatch(prepareFinalObject("Employee[0].serviceHistory[0].serviceFrom", epochToYmdDate(dateOfAppointment_)));
         // dispatch(prepareFinalObject("Employee[0].dateOfAppointment", epochToYmdDate(dateOfAppointment_)));

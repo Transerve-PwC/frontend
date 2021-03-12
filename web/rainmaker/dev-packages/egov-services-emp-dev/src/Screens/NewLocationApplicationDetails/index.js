@@ -455,20 +455,51 @@ class ApplicationDetails extends Component {
 							: paymentDetails.totalAmount,
 				},
 			},
-		];
+		]; 
 
 
 		downloadApplication({ BookingInfo: appData })
 	}
 	// Download Application 
-	downloadApplicationButton = async (e) => {
-		this.downloadApplicationFunction();
+	downloadApplicationButton = async (mode) => {
+		// this.downloadApplicationFunction(); 
+		const { transformedComplaint, paymentDetailsForReceipt, downloadApplication, paymentDetails, userInfo } = this.props;
 
-		const { DownloadApplicationDetails } = this.props;
+		const { complaint } = transformedComplaint;
+		let BookingInfo = [
+			{
+				"applicantDetail": {  
+					"name": complaint.applicationNo,
+					"mobileNumber": complaint.bkMobileNumber,
+					"permanentAddress": complaint.address,
+					"sector":  complaint.sector,
+					"email": complaint.bkEmail
+				},
+				"locationDetail": {
+					"applicationNumber": complaint.applicationNo,
+					"locality": complaint.sector,
+					"address": complaint.address,
+					"landmark": complaint.landmark,
+					"areaReq": complaint.areaRequirement
+				},
+				
+				"generatedBy": {
+					"generatedBy": userInfo.name,
+				}
+			}
+		]
+      console.log("BookingInfo--",BookingInfo)
+      let downloadAppform = await httpRequest(
+			"pdf-service/v1/_create?key=bk-oswmcc-newloc-app-form",
+			"_search",[],
+			{ BookingInfo: BookingInfo } 
+			);
+		 console.log("downloadAppform--",downloadAppform)//filestoreIds
+
 		var documentsPreview = [];
 		let documentsPreviewData;
-		if (DownloadApplicationDetails && DownloadApplicationDetails.filestoreIds.length > 0) {
-			documentsPreviewData = DownloadApplicationDetails.filestoreIds[0];
+		if (downloadAppform && downloadAppform.filestoreIds.length > 0) {
+			documentsPreviewData = downloadAppform.filestoreIds[0];
 			documentsPreview.push({
 				title: "DOC_DOC_PICTURE",
 				fileStoreId: documentsPreviewData,
@@ -489,7 +520,7 @@ class ApplicationDetails extends Component {
 				doc["name"] =
 					(fileUrls[doc.fileStoreId] &&
 						decodeURIComponent(
-							fileUrls[doc.fileStoreId]
+	 						fileUrls[doc.fileStoreId]
 								.split(",")[0]
 								.split("?")[0]
 								.split("/")
@@ -500,12 +531,40 @@ class ApplicationDetails extends Component {
 				return doc;
 			});
 
-			setTimeout(() => {
-				window.open(documentsPreview[0].link);
-			}, 100);
+			if(mode==='print'){
+
+				var response = await axios.get(documentsPreview[0].link, {
+					//responseType: "blob",
+					responseType: "arraybuffer",
+					
+					
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/pdf",
+					},
+				});
+				console.log("responseData---", response);
+				const file = new Blob([response.data], { type: "application/pdf" });
+				const fileURL = URL.createObjectURL(file);
+				var myWindow = window.open(fileURL);
+				if (myWindow != undefined) {
+					myWindow.addEventListener("load", (event) => {
+						myWindow.focus();
+						myWindow.print();
+					});
+				}
+			}
+
+
+			else{
+
+				setTimeout(() => {
+				
+					window.open(documentsPreview[0].link);
+				}, 100);
+			}
 			prepareFinalObject('documentsPreview', documentsPreview)
 		}
-
 	}
 
 	//*****Download Permission letter for OSBM application*****//
@@ -805,7 +864,7 @@ class ApplicationDetails extends Component {
 		const foundFirstLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_MCC_APPROVER');
 		const foundSecondLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_OSD_APPROVER');
 		const foundthirdLavel = userInfo && userInfo.roles.some(el => el.code === 'BK_ADMIN_APPROVER');
-
+ 
 
 		return (
 			<div>
@@ -816,9 +875,53 @@ class ApplicationDetails extends Component {
 								<div className="container" >
 									<div className="row">
 										<div className="col-12 col-md-6" style={{ fontSize: 'x-large' }}>
-
 											Application Details
 										</div>
+										<div className="col-12 col-md-6 row">
+											<div class="col-12 col-md-6 col-sm-3" >
+												<ActionButtonDropdown data={{
+													label: { labelName: "Download ", labelKey: "BK_COMMON_DOWNLOAD_ACTION" },
+													rightIcon: "arrow_drop_down",
+													leftIcon: "cloud_download",
+													props: {
+														variant: "outlined",
+														style: { marginLeft: 5, marginRight: 15, color: "#FE7A51", height: "60px" }, className: "tl-download-button"
+													},
+													menu:
+													[{
+														label: {
+															labelName: "Application",
+															labelKey: "BK_MYBK_DOWNLOAD_APPLICATION"
+														},
+														link: () => this.downloadApplicationButton('Application'),
+														leftIcon: "assignment"
+													}]
+												}} />
+											</div>
+
+											<div class="col-12 col-md-6 col-sm-3" >
+												<ActionButtonDropdown data={{
+													label: { labelName: "Print", labelKey: "BK_COMMON_PRINT_ACTION" },
+													rightIcon: "arrow_drop_down",
+													leftIcon: "print",
+													props: {
+														variant: "outlined",
+														style: { marginLeft: 5, marginRight: 15, color: "#FE7A51", height: "60px" }, className: "tl-download-button"
+													},
+													menu:[{
+														label: {
+															labelName: "Application",
+															labelKey: "BK_MYBK_PRINT_APPLICATION"
+														},
+														link: () => this.downloadApplicationButton('print'),
+														leftIcon: "assignment"
+													}]
+												}} />
+
+											</div>
+
+											</div>
+
 										<div className="col-12 col-md-6 row">
 											<div class="col-12 col-md-6 col-sm-3" >
 
@@ -1120,8 +1223,9 @@ const mapStateToProps = (state, ownProps) => {
 			bkToDate: selectedComplaint.bkToDate,
 			localityAddress: selectedComplaint.localityAddress,
 			landmark: selectedComplaint.landmark,
-			areaRequirement: selectedComplaint.areaRequirement
-
+			areaRequirement: selectedComplaint.areaRequirement,
+			BookingVenue: selectedComplaint.bkBookingVenue,
+			areaRequired : selectedComplaint.bkAreaRequired,
 		}
 
 

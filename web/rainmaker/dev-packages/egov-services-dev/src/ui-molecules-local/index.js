@@ -15,6 +15,11 @@ const CustomTab = Loadable({
   loading: () => <Loading />
 });
 
+const SingleApplication = Loadable({
+  loader: () => import("./SingleApplication"),
+  loading: () => <Loading />
+});
+
 const UploadSingleFile = Loadable({
   loader: () => import("./UploadSingleFile"),
   loading: () => <Loading />
@@ -106,5 +111,6 @@ export {
   ImageList,
   BookingTimeSlot,
   SelectedTimeSlotInfo,
-  RoomDetailsComponents
+  RoomDetailsComponents,
+  SingleApplication
 };

@@ -219,7 +219,17 @@ export const pccBankSummary = getCommonGrayCard({
                             jsonPath: "Booking.bkAccountType",
                         }
                     ),
-                    
+                    bkNomineeName: getLabelWithValue(
+                        {
+                            labelName: "Nominee Name",
+                            labelName: "Nominee Name",
+                            //labelKey: "BK_PCC_BANK_ACCOUNT_TYPE_LABEL",
+                        },
+                        {
+                            jsonPath: "Booking.bkNomineeName",
+                        }
+                    ),
+                   
                    
                 }),
             }),

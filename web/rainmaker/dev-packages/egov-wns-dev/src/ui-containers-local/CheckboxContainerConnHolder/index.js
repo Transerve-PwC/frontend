@@ -127,7 +127,7 @@ class CheckboxLabels extends React.Component {
         const {applicationStatus} = preparedFinalObject.WaterConnection[0];
         if(applicationStatus !== undefined)
         {
-          if(applicationStatus ==='PENDING_FOR_SECURITY_DEPOSIT')
+          if(applicationStatus ==='PENDING_FOR_JE_APPROVAL_AFTER_SUPERINTEDENT')
           {
             isdisabled = false
           }
