@@ -232,7 +232,7 @@ export const searchResults = async (action, state, dispatch, transitNumber) => {
       value: properties[0].tenantId,
     },
     {
-      key: "consumerCode",
+      key: "consumerCodes",
       value: rentPaymentConsumerCode,
     },
   ];
