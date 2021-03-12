@@ -694,7 +694,7 @@ export const getReviewGrantDetails = () => {
     })
 }
 
-const downloadReceipt = async (data, preparedObject) => {
+const downloadReceipt = async (data, preparedObject,properties) => {
     const receiptNumber = data.paymentDetails[0].receiptNumber
     const receiptQueryString = [{
         key: "receiptNumbers",
@@ -707,7 +707,7 @@ const downloadReceipt = async (data, preparedObject) => {
     try {
         const payloadReceiptDetails = await httpRequest(FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString);
         const queryStr = [
-          { key: "key", value: "rp-payment-receipt" },
+          { key: "key", value: "rp-rent-payment-receipt" },
           { key: "tenantId", value: receiptQueryString[1].value.split('.')[0] }
         ]
         const oldFileStoreId = get(payloadReceiptDetails.Payments[0], "fileStoreId")
@@ -715,7 +715,7 @@ const downloadReceipt = async (data, preparedObject) => {
           downloadReceiptFromFilestoreID(oldFileStoreId, "download")
         }
         else {
-          httpRequest(DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Payments: payloadReceiptDetails.Payments, generatedBy: "" }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+          httpRequest(DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Properties:properties,Payments: payloadReceiptDetails.Payments, generatedBy: "" }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
             .then(res => {
               getFileUrlFromAPI(res.filestoreIds[0]).then((fileRes) => {
                 var win = window.open(fileRes[res.filestoreIds[0]], '_blank');
@@ -740,7 +740,7 @@ const downloadReceipt = async (data, preparedObject) => {
     
 }
 
-export const getPaymentHistory = () => {
+export const getPaymentHistory = (state) => {
   return {
     uiFramework: "custom-containers-local",
     moduleName: "egov-rented-properties",

@@ -70,6 +70,7 @@ class ExpansionPanelMolecule extends Component {
   render() {
     let {
       data,
+      properties,
       contents,
       classes,
       header,
@@ -78,6 +79,7 @@ class ExpansionPanelMolecule extends Component {
     } = this.props;
     data = data || [];
     const { open } = this.state;
+    console.log(properties)
     return (
       <div className={classes.root}>
         <ExpansionPanel
@@ -124,7 +126,7 @@ class ExpansionPanelMolecule extends Component {
                       <div
                         style={{ cursor: "pointer" }}
                         onClick={() =>
-                          onButtonClick(datum, this.props.preparedFinalObject)
+                          onButtonClick(datum, this.props.preparedFinalObject,properties)
                         }
                       >
                         <Label
