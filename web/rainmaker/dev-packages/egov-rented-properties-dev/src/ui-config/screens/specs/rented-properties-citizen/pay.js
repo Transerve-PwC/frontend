@@ -121,10 +121,20 @@ import get from "lodash/get";
       )
     )
     let estimate=get(state.screenConfiguration.preparedFinalObject,"OwnersTemp[0].estimateCardData")
+
+    let dupestimate=get(state.screenConfiguration.preparedFinalObject,"DuplicateTemp[0].estimateCardData")
     let value=0
+    if(!!estimate){
    for(var i=0;i<estimate.length;i++){
      value= value+Number(estimate[i].value)
    }
+  }
+  else if(!!dupestimate){
+    for(var i=0;i<dupestimate.length;i++){
+      value= value+Number(dupestimate[i].value)
+    }
+  }
+
     dispatch(
       handleField(
         "pay",
