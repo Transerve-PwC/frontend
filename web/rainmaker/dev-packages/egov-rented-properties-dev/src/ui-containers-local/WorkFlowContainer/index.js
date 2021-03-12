@@ -138,6 +138,8 @@ class WorkFlowContainer extends React.Component {
       return "purpose=sentforreject&status=success"
       case "COMPLETE":
         return "purpose=complete&status=success"
+        case "SENDTOAPRO":
+          return "purpose=forward&status=success"
     }
   };
 

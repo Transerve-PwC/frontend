@@ -151,10 +151,27 @@ class Footer extends React.Component {
       window.location.href,
       "transitNumber"
     );
+    let contractdata=contractData
+    const aprocharge=get(state.screenConfiguration.preparedFinalObject,"Owners[0].ownerDetails.isAPROChargePaid")
+    const applicationState=get(state.screenConfiguration.preparedFinalObject,"Owners[0].applicationState")
+    if(aprocharge===true && applicationState==="OT_PENDINGCAAPPROVAL"){
+      contractdata= contractData &&  contractData.filter(item=>{
+if(item.buttonLabel !=="SENDTOAPRO"){
+  return item
+}
+    })
+  }
+  else if(aprocharge===false && applicationState==="OT_PENDINGCAAPPROVAL"){
+    contractdata=contractData && contractData.filter(item=>{
+      if(item.buttonLabel !== "APPROVE"){
+        return item
+      }
+          })
+  }
     const tenant = getQueryArg(window.location.href, "tenantId");
     const downloadMenu =
-      contractData &&
-      contractData.map(item => {
+    contractdata &&
+    contractdata.map(item => {
         const { buttonLabel, moduleName } = item;
           return {
             labelName: { buttonLabel },

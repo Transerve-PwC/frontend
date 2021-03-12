@@ -11,9 +11,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import { withStyles } from "@material-ui/core/styles";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
-import { get } from "lodash";
+import { get,set } from "lodash";
 import { UploadMultipleFiles } from "egov-ui-framework/ui-molecules";
 import { WORKFLOW_BUSINESS_SERVICE_DC, WORKFLOW_BUSINESS_SERVICE_OT } from "../../ui-constants";
+import { CheckboxContainer } from "../../../../../packages/lib/egov-ui-framework/ui-containers";
 
 const styles = theme => ({
   root: {
@@ -170,6 +171,7 @@ class ActionDialog extends React.Component {
     this.state = {
       showEmployeeList: false,
       isDocRequired: false,
+      aprocheck:false,
       roles: "",
       fields: {
         "comments": ""
@@ -281,7 +283,7 @@ class ActionDialog extends React.Component {
       return
     }
 
-  if(this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") ) {
+  if(this.props.moduleName === WORKFLOW_BUSINESS_SERVICE_OT && ( applicationState === "OT_PENDINGAPRO" || applicationState === "OT_PENDINGSAVERIFICATION") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") ) {
     let formIsValid = true;
     const value = applicationState === "OT_PENDINGSAVERIFICATION" ? data.ownerDetails.dueAmount : data.ownerDetails.aproCharge
     if(!value) {
@@ -688,11 +690,15 @@ if(open==false){
 errors["bankname"]="";
 errors["uploadfile"] = "";
 errors["roles"]="";
+const apro=get(state.screenConfiguration.preparedFinalObject,"Owners[0].ownerDetails.isAPROChargePaid")
+const otapplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
+if(!!apro && otapplicationState==="OT_PENDINGSAVERIFICATION"){
+set(state.screenConfiguration.preparedFinalObject,"Owners[0].ownerDetails.isAPROChargePaid",false)
+}
 }
     const masterState=(get(state.screenConfiguration.preparedFinalObject,dataPath)||[]).masterDataState
     const applicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).applicationState
     const duplicateCopyApplicationState = (get(state.screenConfiguration.preparedFinalObject, dataPath) || []).state
-    
     return (
       <Dialog
         fullScreen={fullscreen}
@@ -809,7 +815,7 @@ errors["roles"]="";
                     <span style={{color: "red"}}>{this.state.errors["comments"]}</span>
                   </Grid>
                   )}
-                  {moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGSAVERIFICATION" || applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
+                  {moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
                     <Grid item sm="12">
                     <TextFieldContainer
                       required={true}
@@ -825,7 +831,28 @@ errors["roles"]="";
                     <span style={{color: "red"}}>{this.state.errors["dueamount"]}</span>
                   </Grid>
                   )}
-
+         {moduleName === WORKFLOW_BUSINESS_SERVICE_OT && (applicationState === "OT_PENDINGSAVERIFICATION" ) && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
+                    <Grid item sm="12">
+                       <TextFieldContainer
+                      required={true}
+                      style={{ width: "90%" }}
+                      InputLabelProps={{ shrink: true }}
+                      label={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.label : fieldConfig.publicationCharges.label}
+                      onChange={e =>{
+                        this.handleChange("dueamount", e); handleFieldChange(applicationState === "OT_PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge` , e.target.value)
+                      }}
+                      jsonPath={applicationState === "OT_PENDINGSAVERIFICATION" ? `${dataPath}.ownerDetails.dueAmount` : `${dataPath}.ownerDetails.aproCharge`}
+                      placeholder={applicationState === "OT_PENDINGSAVERIFICATION" ? fieldConfig.applicationCharges.placeholder : fieldConfig.publicationCharges.placeholder}
+                    />
+                    <span style={{color: "red"}}>{this.state.errors["dueamount"]}</span>
+                    <CheckboxContainer
+                    onClick={()=>this.state.aprocheck=!this.state.aprocheck}
+                   checked={this.state.aprocheck} 
+                   onChange={e=>{
+                     handleFieldChange( `${dataPath}.ownerDetails.isAPROChargePaid` , e.target.checked)
+                   }}/><span>Apro Charge Paid</span>
+                  </Grid>
+                  )}
                   {moduleName === WORKFLOW_BUSINESS_SERVICE_DC && (duplicateCopyApplicationState === "DC_PENDINGSAVERIFICATION" || duplicateCopyApplicationState === "DC_PENDINGAPRO") && (buttonLabel === "FORWARD" || buttonLabel === "SUBMIT") && (
                     <Grid item sm="12">
                     <TextFieldContainer
