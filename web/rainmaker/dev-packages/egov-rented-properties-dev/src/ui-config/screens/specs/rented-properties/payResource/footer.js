@@ -200,45 +200,76 @@ const taxAmount = Number(get(billPayload, "Bill[0].totalAmount"));
       const id=get(state.screenConfiguration.preparedFinalObject,"Owners[0].id")
       const  ownerid=get(state.screenConfiguration.preparedFinalObject,"Owners[0].ownerDetails.ownerId")
       const paymentInfo = get(state.screenConfiguration.preparedFinalObject, "payment")
-      const payload = 
-        [
-        {
-          id:id,
-          tenantId:tenantId,
-          ownerDetails: {
-            ownerId:ownerid,
-            applicationNumber:applicationNumber,
-            transactionId:paymentInfo.transactionNumber,
-            bankName:paymentInfo.bankName,
-            paymentAmount:paymentInfo.amount,
-            paymentMode:paymentInfo.paymentMode
-          }
-        }
-        ]
+
       
 let paths
       if(consumerNumber==="OT"){
           paths="/rp-services/ownership-transfer/_pay-fee"
+          const payload = 
+          [
+          {
+            id:id,
+            tenantId:tenantId,
+            ownerDetails: {
+              ownerId:ownerid,
+              applicationNumber:applicationNumber,
+              transactionId:paymentInfo.transactionNumber,
+              bankName:paymentInfo.bankName,
+              paymentAmount:paymentInfo.amount,
+              paymentMode:paymentInfo.paymentMode
+            }
+          }
+          ]
+          try {
+            const response = await httpRequest("post",
+            paths,
+            "",
+            [],
+            { Owners : payload })
+            if(!!response) {
+              const path = `/rented-properties/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${businessService}`
+              dispatch(
+                setRoute(path)
+              );
+            }
+          } catch (error) {
+            console.log("error", error)
+          }
       }
       else if(consumerNumber==="DC"){
            paths ="/rp-services/duplicatecopy/_pay-fee"
+           const res = 
+           [
+           {
+             
+             tenantId:tenantId,
+              
+               applicationNumber:applicationNumber,
+               transactionId:paymentInfo.transactionNumber,
+               bankName:paymentInfo.bankName,
+               paymentAmount:paymentInfo.amount,
+               paymentMode:paymentInfo.paymentMode
+            
+           }
+           ]
+           try {
+            const response = await httpRequest("post",
+            paths,
+            "",
+            [],
+            { DuplicateCopyApplications : res })
+            if(!!response) {
+              const path = `/rented-properties/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${businessService}`
+              dispatch(
+                setRoute(path)
+              );
+            }
+          } catch (error) {
+            console.log("error", error)
+          }
       }
 
-      try {
-        const response = await httpRequest("post",
-        paths,
-        "",
-        [],
-        { Owners : payload })
-        if(!!response) {
-          const path = `/rented-properties/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&type=${businessService}`
-          dispatch(
-            setRoute(path)
-          );
-        }
-      } catch (error) {
-        console.log("error", error)
-      }
+ 
     }
   }
  
