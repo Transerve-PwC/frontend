@@ -12,7 +12,9 @@ import { checkValueForNA } from "egov-ui-framework/ui-config/screens/specs/utils
 import Label from "egov-ui-framework/ui-containers/LabelContainer";
 import { get } from "lodash";
 import { ExpandLessRounded, ExpandMoreRounded } from "@material-ui/icons";
-
+import {
+  getTextToLocalMapping
+} from "../../ui-config/screens/specs/utils";
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -85,7 +87,7 @@ class ExpansionPanelMolecule extends Component {
         >
           <ExpansionPanelSummary expandIcon={<ExpandMoreRounded />}>
             <Grid xs={12} sm={12} container>
-              <Typography variant="headline">{header}</Typography>
+              <Typography variant="headline">{getTextToLocalMapping(header)}</Typography>
             </Grid>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
@@ -141,7 +143,7 @@ class ExpansionPanelMolecule extends Component {
               ) : (
                 <div>
                   <Label
-                    labelKey={emptyMessage}
+                    labelKey={getTextToLocalMapping(emptyMessage)}
                     fontSize={14}
                     style={{
                       fontSize: 14,
