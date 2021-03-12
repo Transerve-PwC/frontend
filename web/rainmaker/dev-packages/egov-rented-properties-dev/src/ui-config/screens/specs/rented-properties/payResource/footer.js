@@ -51,7 +51,17 @@ export const callPGService = async (state, dispatch, item, _businessService) => 
   //     : taxAmount;
   // amtToPay = amtToPay ? Number(amtToPay) : taxAmount;
   const amtToPay = Number(taxAmount)
-
+  if(taxAmount === 0){
+    dispatch(toggleSnackbar(
+      true,
+      {
+        labelName: "Amount already Paid !",
+        labelKey: "RP_ERR_FEE_AMOUNT_PAID"
+      },
+      "error"
+    ));
+  }
+  else{
   // if(amtToPay>taxAmount&&!isAdvancePaymentAllowed){
   //   alert("Advance Payment is not allowed");
   //   return;
@@ -143,7 +153,7 @@ export const callPGService = async (state, dispatch, item, _businessService) => 
       moveToFailure(dispatch);
     }
   }
-} catch (error) {
+} }catch (error) {
   console.log(error);
 }
 };

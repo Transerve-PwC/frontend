@@ -109,6 +109,36 @@ const colonyField = {
                 )
             );
         }
+        if(action.value==="COLONY_VIKAS_NAGAR"){
+          dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+            "props.value",
+            "VK-"
+          ))
+          dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+            "pattern",
+            /^((\w+)\-(\d+))$/
+          ))
+          dispatch(
+            handleField(
+              "apply",
+              "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+              "maxLength",
+              ""
+            )
+          )
+        }
+        else{
+          dispatch(handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.propertyDetails.children.cardContent.children.detailsContainer.children.transitNumber",
+            "props.value",
+            ""
+          ))
+        }
       }
 }
 
@@ -189,6 +219,26 @@ export const transitNumberConfig = {
         pattern:getPattern("TransitNumberValidation"),
         errorMessage: "RP_ERR_TRANSIT_FIELD",
         afterFieldChange: (action, state, dispatch) => {
+          let colony=get(state.screenConfiguration.preparedFinalObject,"Properties[0].colony")
+          if(colony&&colony==="COLONY_VIKAS_NAGAR"){
+            dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "pattern",
+            /^((\w+)\-(\d+))$/
+              )
+            )
+            dispatch(
+              handleField(
+                "apply",
+                action.componentJsonpath,
+                "maxLength",
+                ""
+              )
+            )
+          }
+          else{
           if (parseInt(action.value) > 10000) {
               dispatch(
                   handleField(
@@ -225,6 +275,23 @@ export const transitNumberConfig = {
                   )
               )
           }
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "pattern",
+              getPattern("TransitNumberValidation")
+            )
+          )
+          dispatch(
+            handleField(
+              "apply",
+              action.componentJsonpath,
+              "maxLength",
+              5
+            )
+          )
+        }
         }
 }
 

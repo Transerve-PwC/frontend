@@ -22,7 +22,7 @@ getCommonHeader({
   const offlinePaymentDetailsHeader = getCommonTitle(
     {
         labelName: "Payment Details",
-        labelKey: "ES_PAYMENT_DETAILS_HEADER"
+        labelKey: "RP_PAYMENT_DETAILS_HEADER"
     },
     {
         style: {
