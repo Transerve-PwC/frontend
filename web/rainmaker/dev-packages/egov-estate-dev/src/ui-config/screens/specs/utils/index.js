@@ -591,16 +591,17 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
       case 'Mortgage':
       case 'MortgageIntimation': 
       if(applicationType == 'MortgageIntimation') {
-        Applications = [{
-          ...Applications[0],
-          "applicationHeader" : 'Intimation to Mortgage'
-        }]
+        Application = {
+          ...Application,
+          ["applicationHeader"] : 'Intimation to Mortgage'
+        }
       }else{
-        Applications = [{
-          ...Applications[0],
-          "applicationHeader" : 'Permission to Mortgage'
-        }]
+        Application = {
+          ...Application,
+          ["applicationHeader"] : 'Permission to Mortgage'
+        }
       }
+      console.log(Application)
           queryStr = [{
             key: "key",
             value: (state == "ES_PENDING_PAYMENT" || state == "ES_PENDING_DA_PREPARE_LETTER" ||
@@ -643,30 +644,30 @@ export const downloadAcknowledgementForm = (Applications, applicationType,feeEst
             key:"key",
             value:"bb-IssuanceOfNotice-application"
           }] 
-          Applications = [{
-            ...Applications[0],
+          Application = {
+            ...Application,
             applicationDetails:{
-              ...Applications[0].applicationDetails,
-              groundCoverage: Applications[0].applicationDetails.groundCoverage == 'false' ? "No" : 'Yes',
-              groundCoverageSanctionable: Applications[0].applicationDetails.groundCoverageSanctionable == 'false' ? "No" : 'Yes',
-              maximumFloors: Applications[0].applicationDetails.maximumFloors == 'false' ? "No" : 'Yes',
-              maximumFloorsSanctionable: Applications[0].applicationDetails.maximumFloorsSanctionable == 'false' ? "No" : 'Yes',
-              maximumHeight: Applications[0].applicationDetails.maximumHeight == 'false' ? "No" : 'Yes',
-              maximumHeightSanctionable: Applications[0].applicationDetails.maximumHeightSanctionable == 'false' ? "No" : 'Yes',
-              minimumCeilingHeight: Applications[0].applicationDetails.minimumCeilingHeight == 'false' ? "No" : 'Yes',
-              minimumCeilingHeightSanctionable: Applications[0].applicationDetails.minimumCeilingHeightSanctionable == 'false' ? "No" : 'Yes',
-              minimunRoomsSize: Applications[0].applicationDetails.minimunRoomsSize == 'false' ? "No" : 'Yes',
-              minimunRoomsSizeSanctionable: Applications[0].applicationDetails.minimunRoomsSizeSanctionable == 'false' ? "No" : 'Yes',
-              permissible: Applications[0].applicationDetails.permissible == 'false' ? "No" : 'Yes',
-              permissibleSanctionable:Applications[0].applicationDetails.permissibleSanctionable == 'false' ? "No" : 'Yes',
-              plinthLevel: Applications[0].applicationDetails.plinthLevel == 'false' ? "No" : 'Yes',
-              plinthLevelSanctionable: Applications[0].applicationDetails.plinthLevelSanctionable == 'false' ? "No" : 'Yes',
-              setBack: Applications[0].applicationDetails.setBack == 'false' ? "No" : 'Yes',
-              setBackSanctionable: Applications[0].applicationDetails.setBackSanctionable == 'false' ? "No" : 'Yes',
-              staircase: Applications[0].applicationDetails.staircase == 'false' ? "No" : 'Yes',
-              staircaseSanctionable: Applications[0].applicationDetails.staircaseSanctionable == 'false' ? "No" : 'Yes'
+              ...Application.applicationDetails,
+              groundCoverage: Application.applicationDetails.groundCoverage == 'false' ? "No" : 'Yes',
+              groundCoverageSanctionable: Application.applicationDetails.groundCoverageSanctionable == 'false' ? "No" : 'Yes',
+              maximumFloors: Application.applicationDetails.maximumFloors == 'false' ? "No" : 'Yes',
+              maximumFloorsSanctionable: Application.applicationDetails.maximumFloorsSanctionable == 'false' ? "No" : 'Yes',
+              maximumHeight: Application.applicationDetails.maximumHeight == 'false' ? "No" : 'Yes',
+              maximumHeightSanctionable: Application.applicationDetails.maximumHeightSanctionable == 'false' ? "No" : 'Yes',
+              minimumCeilingHeight: Application.applicationDetails.minimumCeilingHeight == 'false' ? "No" : 'Yes',
+              minimumCeilingHeightSanctionable: Application.applicationDetails.minimumCeilingHeightSanctionable == 'false' ? "No" : 'Yes',
+              minimunRoomsSize: Application.applicationDetails.minimunRoomsSize == 'false' ? "No" : 'Yes',
+              minimunRoomsSizeSanctionable: Application.applicationDetails.minimunRoomsSizeSanctionable == 'false' ? "No" : 'Yes',
+              permissible: Application.applicationDetails.permissible == 'false' ? "No" : 'Yes',
+              permissibleSanctionable:Application.applicationDetails.permissibleSanctionable == 'false' ? "No" : 'Yes',
+              plinthLevel: Application.applicationDetails.plinthLevel == 'false' ? "No" : 'Yes',
+              plinthLevelSanctionable: Application.applicationDetails.plinthLevelSanctionable == 'false' ? "No" : 'Yes',
+              setBack: Application.applicationDetails.setBack == 'false' ? "No" : 'Yes',
+              setBackSanctionable: Application.applicationDetails.setBackSanctionable == 'false' ? "No" : 'Yes',
+              staircase: Application.applicationDetails.staircase == 'false' ? "No" : 'Yes',
+              staircaseSanctionable: Application.applicationDetails.staircaseSanctionable == 'false' ? "No" : 'Yes'
             }
-          }]
+          }
           break; 
       case 'MM-NDC':
           queryStr = [{
