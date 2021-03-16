@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "license": "egov",
   "private": true,
-  "homepage": "https://digitod.ddns.net/employee/",
-  "proxy": "https://digitod.ddns.net/",
+  "homepage": "http://13.71.22.138/employee",
+  "proxy": "http://10.0.0.12:8083/",
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "@material-ui/core": "^1.5.1",

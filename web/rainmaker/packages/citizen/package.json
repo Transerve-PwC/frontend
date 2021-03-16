@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "license": "egov",
   "private": true,
-  "homepage": "http://localhost:3000/citizen/",
+  "homepage": "http://13.71.22.138/citizen",
   "proxy": "http://10.0.0.12:8083/",
   "dependencies": {
     "@babel/runtime": "^7.3.1",

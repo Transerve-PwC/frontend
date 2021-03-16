@@ -38,7 +38,7 @@ class EGFFinance extends Component {
       erp_url = loc.protocol + "//" + getTenantId().split(".")[1] + "." + subdomainurl + menuUrl;
     }
 
-    // let erp_url='http://jalandhar.test.egov.com:8080'+menuUrl;
+    erp_url='http://13.71.22.138'+menuUrl;
     console.log("ERP URL : " + erp_url);
 
     return (
