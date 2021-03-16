@@ -250,6 +250,7 @@ export const getWFConfig = (module, businessService, taskId) => {
     case "BUILDINGBRANCH":
     case "MANIMAJRA":
     case "ESTATEPROPERTIES":
+      case  "ESTATESERVICES":
       if(businessService === "ES-EB-AllotmentOfSite" || businessService === "ES-EB-PropertyMaster") {
         return {
           INITIATED: 'estate/search-preview',
@@ -280,18 +281,7 @@ export const getWFConfig = (module, businessService, taskId) => {
           DEFAULT: "/estate/preview"
         }
       }
-    case "ESTATESERVICES":
-      if(businessService === "ES-BB-PropertyMaster") {
-        return {
-          INITIATED: "/estate/search-preview-building-branch",
-          DEFAULT: "/estate/search-preview-building-branch"
-        }
-      } else {
-        return {
-          INITIATED: "/estate/preview",
-          DEFAULT: "/estate/preview"
-        }
-      }
+
      case "WS-SERVICES":
       return {
         INITIATED: "/wns/search-preview",

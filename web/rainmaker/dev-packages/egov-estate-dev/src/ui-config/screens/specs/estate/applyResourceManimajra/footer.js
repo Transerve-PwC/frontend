@@ -42,7 +42,7 @@ import {
   getSearchResults,
 } from "../../../../../ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+import {setPrevOwnerDocs} from "../apply"
 export const DEFAULT_STEP = -1;
 export const PROPERTY_DETAILS_STEP = 0;
 export const OWNER_DETAILS_STEP = 1;

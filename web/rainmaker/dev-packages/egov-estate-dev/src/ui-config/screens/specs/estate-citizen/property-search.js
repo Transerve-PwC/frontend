@@ -15,6 +15,7 @@ import {
 import { ESTATE_SERVICES_MDMS_MODULE } from "../../../../ui-constants";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 
 const header = getCommonHeader({
@@ -95,14 +96,46 @@ const citizenEstateSearchAndResult = {
               },
               ...header
             },
-          }
-        },
+            addButton: {
+              componentPath: "Button",
+              visible: getQueryArg(window.location.href, "branchType") === "BUILDING_BRANCH",
+              gridDefination: {
+                xs: 12,
+                sm: 4,
+                align: "right"
+              },
+              props: {
+                variant: "contained",
+                style: {
+                  color: "white",
+                  backgroundColor: "#fe7a51",
+                  borderColor: "#fe7a51",
+                  borderRadius: "2px",
+                  width: "50%",
+                  height: "48px",
+                }
+              },
+              children: {
+                buttonLabel: getLabel({
+                  labelName: "Add Property Master",
+                  labelKey: "ES_ESTATE_HOME_ADD_BUTTON"
+                })
+              },
+              onClickDefination: {
+                action: "condition",
+                callBack: (state, dispatch) => {
+                  window.location.href = `_apply?applicationType=${getQueryArg(window.location.href, "type")}`;
+                  }
+                }
+              }
+            }
+          },
         estateApplication,
         breakAfterSearch: getBreak(),
         searchResults
+      },
       }
     }
-  }
 };
 
 export default citizenEstateSearchAndResult;

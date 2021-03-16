@@ -156,11 +156,12 @@ const callBackForNext = async (state, dispatch) => {
           `apply-building-branch.components.div.children.formwizardFourthStep.children.reviewDetails.children.cardContent.children.reviewOwnerDetails_${i}`,
           reviewOwnerDetails
         )
-        let possesionDate= get( state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`)
-        if(!!possesionDate){
-        set( state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`,convertDateToEpoch(possesionDate))
+        let possesiondate=get(state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`)
+        if(!!possesiondate){
+  set(state.screenConfiguration.preparedFinalObject,`Properties[0].propertyDetails.owners[${i}].ownerDetails.possesionDate`,convertDateToEpoch(possesiondate))
         }
       }
+
     }
 
     if (isOwnerDetailsValid) {

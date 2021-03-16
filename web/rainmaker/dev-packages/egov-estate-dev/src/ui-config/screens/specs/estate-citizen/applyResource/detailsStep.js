@@ -455,7 +455,7 @@ const tableSection = (section, state) => {
     uiFramework: "custom-containers-local",
     componentPath: "Table",
     moduleName: "egov-estate",
-    visible: true,
+    visible: !!data.length,
     props: {
       columns: fields.map(item => getLocaleLabels(item.label, item.label)),
       options: {
@@ -484,13 +484,18 @@ const tableSection = (section, state) => {
 
 export const setFirstStep = async (state, dispatch, {data_config, format_config}) => {
     const {sections = []} = format_config
+    const propertyData = get(state.screenConfiguration.preparedFinalObject, "property");
     const uiConfig = await arrayReduce(sections, async (acc, section) => {
+        const section_header = section.type === "TABLE" ? tableSection(section, state) : section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
+          header: headerObj(section.header),
+          details_container: section.type === "CARD_DETAIL" ? viewFour(section) : section.subType === "ARRAY" ? await getSubDetailsContainer(section, data_config, state) : await getDetailsContainer(section, data_config, state),
+        })
         return {
         ...acc, 
-        [section.header]: section.type === "TABLE" ? tableSection(section, state) : section.type === "EXPANSION_DETAIL" ? expansionSection(section) : getCommonCard({
-            header: headerObj(section.header),
-            details_container: section.type === "CARD_DETAIL" ? viewFour(section) : section.subType === "ARRAY" ? await getSubDetailsContainer(section, data_config, state) : await getDetailsContainer(section, data_config, state)
-        })
+        [section.header]: {
+          ...section_header,
+          visible: section.visibility ? eval(section.visibility) : true
+        }
     }
     }, {})
 

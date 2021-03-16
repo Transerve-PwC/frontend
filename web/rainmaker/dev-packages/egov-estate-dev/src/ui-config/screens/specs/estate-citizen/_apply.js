@@ -87,29 +87,31 @@ const getData = async (action, state, dispatch) => {
       return {}
     }
   } 
-  // else {
-    const queryObject = [
-      {key: "propertyIds", value: propertyId},
-      {key: "fileNumber", value: fileNumber}
-    ]
-    const response = await getSearchResults(queryObject)
-    if(!!response.Properties && !!response.Properties.length) {
-       property = response.Properties[0]
-       dispatch(prepareFinalObject("Applications[0].property.id", propertyId ))
+
+    if(!!fileNumber && !!propertyId) {
+      const queryObject = [
+        {key: "propertyIds", value: propertyId},
+        {key: "fileNumber", value: fileNumber}
+      ]
+      const response = await getSearchResults(queryObject)
+      if(!!response.Properties && !!response.Properties.length) {
+         property = response.Properties[0]
+         dispatch(prepareFinalObject("Applications[0].property.id", propertyId ))
+      }
+      const owners = property.propertyDetails.owners.filter(item => !!item.ownerDetails.isCurrentOwner)
+      const estateRentSummary = property.estateRentSummary
+      const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
+      property = {...property, propertyDetails: {...property.propertyDetails, owners, dueAmount: dueAmount || "0"}}
+      dispatch(prepareFinalObject("property", property));
     }
-  // }
+
     await hideFooter(action, state, dispatch)
-    const owners = property.propertyDetails.owners.filter(item => !!item.ownerDetails.isCurrentOwner)
-    const estateRentSummary = property.estateRentSummary
-    const dueAmount = !!estateRentSummary ? estateRentSummary.balanceRent + estateRentSummary.balanceRentPenalty + estateRentSummary.balanceGSTPenalty + estateRentSummary.balanceGST : "0"
-    property = {...property, propertyDetails: {...property.propertyDetails, owners, dueAmount: dueAmount || "0"}}
     
     const headerLabel = `ES_APPLY_${applicationType.toUpperCase()}`
 
     const header = getCommonApplyHeader({label: headerLabel, number: applicationNumber})
     const headerDeclaration = getCommonTitle({labelName: "Declaration", labelKey: "ES_DECLARATION_CHECKBOX_LABEL"})
     
-    dispatch(prepareFinalObject("property", property));
 
     let {fields: data_config, documentList, uiConfig} = await getApplicationConfig({dispatch, applicationType})
     documentList = documentList.map(_doc => ({filter: true, ..._doc}))
